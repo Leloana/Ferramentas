@@ -13,30 +13,39 @@ Um organizador inteligente e visualmente deslumbrante para sua biblioteca do You
 
 ## 🛠️ Pré-requisitos
 - Python 3.10+
-- [Ollama](https://ollama.com/) instalado e rodando com um modelo disponível (ex: `gemma4:e4b` configurável no `.env`).
-- Conta no Google Cloud com a YouTube Data API v3 ativada.
+- [Ollama](https://ollama.com/) instalado e rodando com um modelo disponível (ex: `gemma4:e4b` configurável). **IMPORTANTE:** Certifique-se de que o aplicativo do Ollama está aberto no seu PC antes de rodar o projeto.
 
-## 🚀 Instalação Rápida
+## 🚀 Como Obter as Credenciais do Google (`client-tv.json`)
 
-1. **Clone o repositório**:
-   ```bash
+Para que o script funcione, você precisa autorizá-lo a editar suas playlists no YouTube Music:
+
+1. **Ative a API:** Acesse [Biblioteca de APIs - YouTube Data API v3](https://console.cloud.google.com/apis/library/youtube.googleapis.com) e clique em **Ativar**.
+2. **Crie a Credencial:** 
+   - Acesse a aba de [Credenciais](https://console.cloud.google.com/apis/credentials).
+   - Clique em **+ CRIAR CREDENCIAIS** > **ID do cliente OAuth**.
+   - Tipo de Aplicativo: Selecione **TVs e dispositivos de entrada limitados**.
+   - Coloque o nome que desejar, clique em Criar e **baixe o arquivo JSON**.
+   - Renomeie o arquivo baixado exatamente para `client-tv.json` e coloque-o na raiz deste projeto.
+3. **Libere o Acesso ao seu Email:** 
+   - Acesse a aba de [Tela de permissão OAuth (Audience)](https://console.cloud.google.com/auth/audience).
+   - Em "Test users" (Usuários de teste), adicione o **e-mail exato da sua conta** que será usada no YouTube Music.
+
+## 📦 Instalação Rápida
+
+1. **Clone o repositório e crie o ambiente**:
+   ```powershell
    git clone <este-repo>
    cd youtube_music_playlist_organizer
-   ```
-
-2. **Crie o ambiente virtual e instale as dependências**:
-   ```powershell
    python -m venv venv
    .\venv\Scripts\activate
    pip install -r requirements.txt
    ```
 
-3. **Configuração de API**:
-   - Coloque seu arquivo `client-tv.json` (baixado do Google Cloud) na raiz do projeto.
-   - Rode o instalador de autenticação inicial:
-     ```powershell
-     python setup_oauth.py
-     ```
+2. **Configuração Inicial de Acesso**:
+   Com o `client-tv.json` na raiz do projeto, rode o instalador:
+   ```powershell
+   python setup_oauth.py
+   ```
 
 ## 🎮 Como Usar
 
