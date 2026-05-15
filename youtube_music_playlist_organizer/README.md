@@ -1,88 +1,68 @@
-# YouTube Music Playlist Organizer
+# ▶ P L A Y L I S T   O R G A N I Z E R (AI Powered)
 
-Um script CLI em Python que automatiza a organização das suas playlists do YouTube Music. Ele lê as músicas de uma playlist de origem, classifica cada uma delas por gênero utilizando inteligência artificial local (Ollama) e, em seguida, as distribui em novas playlists separadas por gênero diretamente na sua conta do YouTube.
+Um organizador inteligente e visualmente deslumbrante para sua biblioteca do YouTube Music. Com interface imersiva inspirada em players cyberpunk, o sistema utiliza Inteligência Artificial local para analisar, categorizar e gerenciar suas músicas.
 
-Tudo isso feito com relatórios visuais maravilhosos pelo terminal.
+## ✨ Novidades da Versão 3.0 (Enterprise)
 
-## Funcionalidades
+- **⚡ Processamento em Lote (Batching)**: A IA agora processa músicas em blocos, reduzindo drasticamente o tempo de mapeamento inicial.
+- **💾 Sistema de Cache Nativo**: Músicas mapeadas são salvas em um cache interno. Se a cota acabar hoje, amanhã a ferramenta continua imediatamente de onde parou.
+- **📊 Gerenciamento Restrito de Cotas**: Monitoramento minucioso do limite diário (10.000 unidades) do YouTube Data API v3 para evitar bloqueios inesperados.
+- **🎨 Identidade Visual Cyberpunk**: Barra de progresso com Equalizadores, painel ASCII retrô, cursores personalizados (▶) e visuais interativos que rementem a apps nativos de áudio (incluindo Widget de "Tocando Agora").
+- **🌳 Arquitetura em Árvore**: Visualização final em `Tree` hierárquico antes de fazer modificações na sua conta, garantindo transparência total da ação.
+- **🌈 Curadoria Contextual Avançada**: A LLM agora ajusta a forma de pensar baseada na sua estratégia (Gênero, Vibe, Estação do ano ou Momento) e prioriza abstrações baseadas em sentimentos e emojis (ex: `🌧️ Melancolia Profunda`).
 
-- Extração de metadados ricos (Artista, Álbum, Título separados) do YT Music.
-- Classificação 100% gratuita, sem API Keys externas de IA, utilizando um modelo LLM rodando localmente na sua máquina via [Ollama](https://ollama.com/).
-- De-duplicação e checagem para não adicionar músicas que já estão em suas playlists de destino.
-- Relatório visual final do processamento (com a biblioteca `rich`).
-- Controle consciente de Quotas da Google API Data v3 para não exceder limites de inserção e listagem.
+## 🛠️ Pré-requisitos
+- Python 3.10+
+- [Ollama](https://ollama.com/) instalado e rodando com um modelo disponível (ex: `gemma4:e4b` configurável no `.env`).
+- Conta no Google Cloud com a YouTube Data API v3 ativada.
 
-## Pré-requisitos
+## 🚀 Instalação Rápida
 
-1. Python 3.8+
-2. [Ollama](https://ollama.com/) instalado em sua máquina e o modelo alvo baixado.
-   * Por padrão, é utilizado o modelo `gemma4:e4b`, mas você pode usar o `llama3`, `mistral`, etc., mudando a tag de configuração ou via terminal.
-   * Se usar o padrão do plano, rode no terminal: `ollama run gemma4:e4b`
-3. Um projeto Google Cloud Desktop habilitado para usar a **YouTube Data API v3** para obter seu *Client ID* e *Client Secret*.
+1. **Clone o repositório**:
+   ```bash
+   git clone <este-repo>
+   cd youtube_music_playlist_organizer
+   ```
 
-## Setup Inicial
+2. **Crie o ambiente virtual e instale as dependências**:
+   ```powershell
+   python -m venv venv
+   .\venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
 
-1. **Instale as dependências do projeto:**
+3. **Configuração de API**:
+   - Coloque seu arquivo `client-tv.json` (baixado do Google Cloud) na raiz do projeto.
+   - Rode o instalador de autenticação inicial:
+     ```powershell
+     python setup_oauth.py
+     ```
 
-```bash
-pip install -r requirements.txt
+## 🎮 Como Usar
+
+### O Assistente Musical (Menu Interativo)
+Basta rodar o comando abaixo e você será guiado pela interface Neon do assistente:
+```powershell
+python main.py
 ```
 
-2. **Configure suas variáveis de ambiente:**
+### O Fluxo Completo:
+1. **Origem:** Selecione qual playlist da sua conta será usada como "molde" (ex: "LM" para Músicas Curtidas).
+2. **Estratégia:** Diga se a IA vai separar as músicas por Gênero, Vibe, Momento ou Estação.
+3. **Limites:** Escolha analisar tudo ou estabeleça limites (quantidade ou após uma data específica).
+4. **Análise IA (Lote):** O Equalizador exibirá o processamento rápido.
+5. **Validação de Mesclagem:** A IA sugere "Merges" entre as músicas e playlists pré-existentes. Você pode aceitar, negar criando uma nova, ou selecionar um destino à força.
+6. **Tape Deck (Sincronização):** Finaliza o fluxo aplicando a estratégia real-time na sua conta do YouTube, gerenciando os seus limites diários e informando o seu orçamento estimado.
 
-Substitua as credenciais de `YOUTUBE_CLIENT_ID` e `YOUTUBE_CLIENT_SECRET` pelo seu app do [Google Cloud Console](https://console.cloud.google.com/):
+## 📂 Estrutura Principal
+- `main.py`: Ponto de entrada, interface gráfica (CLI) com biblioteca `rich` e `questionary`.
+- `core/`:
+    - `classifier.py`: O cérebro local que instrui o Ollama (Lotes, Prompts abstratos).
+    - `ytmusic_client.py`: Leitura de bibliotecas gratuitas pelo YTMusic.
+    - `youtube_client.py`: Escrita/Modificações oficiais autenticadas no YouTube.
+    - `quota_manager.py`: O cofre de contabilização da cota diária do YouTube.
+    - `cache.py`: O armazenador temporal de análise para não sobrecarregar a IA nem a Cota.
+- `logs/`: Logs avançados para auditoria das respostas da IA e da API em tempo real.
 
-Arquivo `.env`:
-```env
-YOUTUBE_CLIENT_ID=seu_client_id_aqui
-YOUTUBE_CLIENT_SECRET=seu_client_secret_aqui
-```
-
-3. **Gere o token do YT Music API (Leitura)**
-
-Você precisa gerar o arquivo `oauth.json` de autorização de leitura da biblioteca não-oficial `ytmusicapi`. Execute no seu terminal:
-
-```bash
-ytmusicapi oauth
-```
-Siga os passos na tela e cole os headers de autenticação conforme a ferramenta instruir (ele usará o navegador para capturar seu cookie de sessão do YT Music).
-
-## Como Usar
-
-Com as credenciais montadas (e o Ollama rodando localmente em `localhost:11434`), execute o script principal usando o seu terminal:
-
-### Sintaxe Básica
-
-```bash
-python main.py --source-playlist <ID_DA_PLAYLIST>
-```
-* **ID_DA_PLAYLIST**: Trata-se daquele código maluco no final da URL da sua playlist original (ex: `PLxxx...`). 
-* **Para organizar Músicas Curtidas**: Passe `LM` como playlist ID (`python main.py --source-playlist LM`).
-
-### Flag de Simulação (Dry-Run)
-
-Se você quiser testar as classificações e ver o painel final **sem de fato fazer nenhuma alteração** nas suas playlists do YouTube (evitando gastos de quota ou de alterar algo não desejado), use `--dry-run`:
-
-```bash
-python main.py --source-playlist <ID_DA_PLAYLIST> --dry-run
-```
-
-### Escolher o modelo de IA
-
-Para mudar o modelo de inteligência artificial durante a execução, use o argumento `--model`:
-
-```bash
-python main.py --source-playlist LM --model llama3
-```
-
-*(Lembre-se de baixar o modelo antes via `ollama pull llama3`)*
-
-## Informações Adicionais (Rate Limits da API)
-
-Ao utilizar a API oficial do YouTube (Google API Data v3) para criar as playlists e salvar as músicas, tenha em mente as seguintes quotas do Google Cloud (Geralmente 10.000 unidades grátis por dia):
-
-- **Listar Playlists e Itens**: 1 Unidade
-- **Criar Playlist**: 50 Unidades
-- **Inserir música na playlist**: 50 Unidades
-
-O painel de processamento no final da CLI mostrará aproximadamente as unidades de API usadas durante a sua requisição para que você possa controlar esse uso de perto!
+## 📜 Licença
+MIT
