@@ -1,0 +1,7 @@
+logs/
+scratch/
+*.json
+!client_secrets.json.example
+.env
+__pycache__/
+*.pyc
