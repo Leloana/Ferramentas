@@ -107,7 +107,8 @@ def print_report(total_tracks, genres_found, created, updated, genre_stats, disc
     
     sorted_genres = sorted(genre_stats.items(), key=lambda x: x[1], reverse=True)
     for genre, count in sorted_genres:
-        genre_table.add_row(genre.ljust(15), f"→ {count} músicas")
+        genre_str = str(genre) if genre is not None else "Desconhecido"
+        genre_table.add_row(genre_str.ljust(15), f"→ {count} músicas")
 
     content = Group(table, "\n", genre_table)
     console.print(Panel.fit(
@@ -179,6 +180,7 @@ def main():
     parser.add_argument("--strategy", choices=["genre", "vibe", "time", "season"], help="Estratégia")
     parser.add_argument("--batch-size", type=int, default=15, help="Tamanho do lote para a IA")
     parser.add_argument("--force", action="store_true", help="Ignora bloqueio de cota excedida")
+    parser.add_argument("--max-playlists", type=int, help="Número máximo de playlists criadas")
     
     args = parser.parse_args()
 
@@ -256,6 +258,12 @@ def run_interactive_wizard(args):
         args.limit = int(questionary.text("Quantas?", default="50", qmark="🎵", style=custom_theme).ask())
     elif limit_mode == "Data":
         args.since = questionary.text("Data (DD-MM-AAAA)?", default="01-01-2024", qmark="🎵", style=custom_theme).ask()
+
+    max_playlists_input = questionary.text("4. Limite de playlists a criar (Deixe vazio para IA decidir):", qmark="🎵", style=custom_theme).ask()
+    if max_playlists_input and max_playlists_input.isdigit():
+        args.max_playlists = int(max_playlists_input)
+    else:
+        args.max_playlists = None
 
     args.dry_run = False
     return args
@@ -382,7 +390,7 @@ def run_organizer(args):
         for i in range(3):
             live.update(get_thinking_panel(i))
             time.sleep(0.8)
-        plano = classifier.generate_global_strategy(all_metadata, existing_playlists_for_ai, args.strategy)
+        plano = classifier.generate_global_strategy(all_metadata, existing_playlists_for_ai, args.strategy, getattr(args, 'max_playlists', None))
         live.update(get_thinking_panel(4))
         time.sleep(0.5)
 
@@ -430,6 +438,10 @@ def run_organizer(args):
     console.print("\n[bold cyan]🤖 Validação de Mesclagens (Merges):[/bold cyan]")
     
     for p in plano_filtrado:
+        # Proteção: Se a IA disser que é merge, mas inventou o nome da playlist, desativamos o merge.
+        if p.get('is_merge') and p.get('target_playlist') not in existing_playlists:
+            p['is_merge'] = False
+
         if p.get('is_merge'):
             ans = questionary.select(
                 f"A IA sugere mesclar '{p['nome_grupo']}' em '{p['target_playlist']}'. O que deseja fazer?",
@@ -459,7 +471,8 @@ def run_organizer(args):
     
     # Atribuição Final
     for track in musical_tracks:
-        track['genre'] = final_mapping[track['temp_group']]
+        genre_val = final_mapping.get(track['temp_group'], "Mistura Musical")
+        track['genre'] = genre_val if genre_val is not None else "Mistura Musical"
 
     from rich.tree import Tree
     tree = Tree("🎧 [bold cyan]Sua Nova Biblioteca Musical[/bold cyan]")

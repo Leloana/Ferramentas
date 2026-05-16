@@ -69,7 +69,7 @@ class MusicClassifier:
             self.logger.error(f"Erro na análise em lote: {e}")
             return {t['id']: {"genero_base": "Outros", "sub_genero": "Geral", "vibe": "Desconhecida", "is_music": True} for t in tracks_batch}
 
-    def generate_global_strategy(self, track_metadata_list, existing_playlists, current_strategy="genre"):
+    def generate_global_strategy(self, track_metadata_list, existing_playlists, current_strategy="genre", max_playlists=None):
         """Analisa o panorama de todas as músicas e decide a estrutura de playlists, considerando as já existentes"""
         summary = {}
         for m in track_metadata_list:
@@ -91,6 +91,10 @@ class MusicClassifier:
             for ex in examples:
                 learning_context += f"- NOME: {ex['playlist_name']} | EXEMPLOS DE FAIXAS: {', '.join(ex['example_tracks'])}\n"
 
+        limit_instruction = ""
+        if max_playlists:
+            limit_instruction = f"5. LIMITE ESTRITO DE PLAYLISTS: O usuário exigiu um limite máximo de {max_playlists} playlists/grupos a serem criados. Você DEVE fazer merges abrangentes de gêneros para garantir que o 'plano' final não exceda {max_playlists} itens. Dê um nome abstrato inovador para os resultados que misturam a essência desses gêneros.\n"
+
         prompt = f"""
         Você é um curador de elite. Tenho a seguinte distribuição de músicas novas:
         {json.dumps(summary, indent=2)}
@@ -100,9 +104,9 @@ class MusicClassifier:
         Sua tarefa: Criar um plano de organização coeso.
         REGRAS CRÍTICAS:
         1. NÃO invente grupos. Crie apenas o necessário para cobrir os estilos acima.
-        2. Se houver poucas músicas (ex: menos de 5), tente agrupá-las em apenas 1 ou 2 categorias no máximo.
-        3. Se um grupo de músicas novas combina muito com uma playlist ATUAL, sugira o MERGE (mesclagem).
-        4. O nome dos grupos e playlists novas ('target_playlist' e 'nome_grupo') NÃO deve ser o nome do gênero. Deve ser um nome altamente abstrato, refletindo emoções ou sensações da música, e OBRIGATORIAMENTE iniciar com um EMOJI. Além disso, o nome deve ser CURTO: máximo de 2 PALAVRAS (sem contar o emoji e conectivos como 'de', 'e', 'ou'). Exemplo: em vez de 'Rock Dark', use '😔 Desolação Total'.
+        2. Se um grupo de músicas novas combina perfeitamente com uma playlist ATUAL, sugira o MERGE (is_merge: true). ATENÇÃO: Nesses casos, o 'target_playlist' DEVE OBRIGATORIAMENTE ser o NOME EXATO da playlist atual. NUNCA invente ou altere o nome se is_merge for true.
+        3. Para playlists NOVAS (is_merge: false), o nome ('target_playlist' e 'nome_grupo') DEVE ser um nome altamente abstrato, refletindo emoções ou sensações da música, e OBRIGATORIAMENTE iniciar com um EMOJI. O nome deve ser CURTO: máximo de 2 PALAVRAS (sem contar emoji/conectivos). Ex: '😔 Desolação Total'. NUNCA use o nome literal do gênero.
+        {limit_instruction}
         
         Responda APENAS um JSON no formato:
         {{
