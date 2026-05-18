@@ -1391,15 +1391,14 @@
     <script>
         // Função auxiliar robusta para obter permissão e stream do microfone com fallbacks inteligentes (evita OverconstrainedError no iOS/Safari)
         async function getMicrophoneStream() {
+            // Se estiver usando o celular como microfone, aplicamos restrições estritas para desativar cancelamento de eco, supressão de ruído e ganho automático
+            const isMobileMic = (typeof myRole !== 'undefined' ? myRole === 'mic' : new URLSearchParams(window.location.search).get('role') === 'mic');
+            if (isMobileMic) {
+                console.log("🎤 [Celular como Mic] Forçando a desativação de echoCancellation, noiseSuppression e autoGainControl para alta fidelidade vocal.");
+            }
+
             const constraintsList = [
-                {
-                    audio: {
-                        echoCancellation: { ideal: false },
-                        noiseSuppression: { ideal: false },
-                        autoGainControl: { ideal: false },
-                        channelCount: { ideal: 1 }
-                    }
-                },
+                // 1. Mais estrito (booleans explícitos)
                 {
                     audio: {
                         echoCancellation: false,
@@ -1408,6 +1407,16 @@
                         channelCount: 1
                     }
                 },
+                // 2. Fallback intermediário usando ideais
+                {
+                    audio: {
+                        echoCancellation: { ideal: false },
+                        noiseSuppression: { ideal: false },
+                        autoGainControl: { ideal: false },
+                        channelCount: { ideal: 1 }
+                    }
+                },
+                // 3. Fallback básico (se o navegador móvel rejeitar os anteriores)
                 {
                     audio: true
                 }
@@ -1418,6 +1427,30 @@
                 try {
                     console.log("Tentando obter microfone com constraints:", constraints);
                     const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                    
+                    // Se conseguimos a permissão com áudio básico, mas o papel é celular,
+                    // tentamos desativar o processamento nas faixas de áudio nativamente se o navegador permitir.
+                    if (isMobileMic && stream) {
+                        stream.getAudioTracks().forEach(track => {
+                            const capabilities = typeof track.getCapabilities === 'function' ? track.getCapabilities() : {};
+                            const settings = typeof track.getSettings === 'function' ? track.getSettings() : {};
+                            console.log("Configurações atuais do microfone do celular:", settings);
+                            
+                            // Tenta aplicar restrições diretamente na track se o navegador suportar applyConstraints
+                            if (typeof track.applyConstraints === 'function') {
+                                track.applyConstraints({
+                                    echoCancellation: false,
+                                    noiseSuppression: false,
+                                    autoGainControl: false
+                                }).then(() => {
+                                    console.log("Restrições acústicas de voz aplicadas diretamente na track com sucesso!");
+                                }).catch(err => {
+                                    console.warn("Não foi possível aplicar restrições adicionais na track:", err);
+                                });
+                            }
+                        });
+                    }
+
                     console.log("Microfone obtido com sucesso!");
                     return stream;
                 } catch (err) {
