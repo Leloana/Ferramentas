@@ -1,0 +1,133 @@
+import numpy as np
+import logging
+import os
+import sys
+
+# Configuração básica de logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Se for Windows, registra as DLLs das rodas da NVIDIA do venv no DLL search path
+if sys.platform == "win32":
+    venv_dir = os.path.dirname(os.path.dirname(sys.executable))
+    venv_site_packages = os.path.join(venv_dir, "Lib", "site-packages")
+    if os.path.exists(venv_site_packages):
+        nvidia_base = os.path.join(venv_site_packages, "nvidia")
+        if os.path.exists(nvidia_base):
+            logger.info("Localizado diretório NVIDIA no venv. Registrando DLLs no search path...")
+            registered_dirs = 0
+            for root, dirs, files in os.walk(nvidia_base):
+                if "bin" in dirs:
+                    bin_dir = os.path.join(root, "bin")
+                    if any(f.endswith(".dll") for f in os.listdir(bin_dir)):
+                        logger.info(f"Registrando diretório de DLL: {bin_dir}")
+                        os.add_dll_directory(bin_dir)
+                        registered_dirs += 1
+            if registered_dirs == 0:
+                logger.warning("Nenhum diretório com DLLs do CUDA foi encontrado dentro de 'nvidia'.")
+        else:
+            logger.warning(f"Diretório base 'nvidia' não encontrado em: {venv_site_packages}")
+    else:
+        logger.warning("Não foi possível localizar o diretório venv site-packages para buscar as DLLs do CUDA.")
+
+# Importa faster_whisper após registrar as DLLs
+from faster_whisper import WhisperModel
+
+class STTEngine:
+    def __init__(self, model_size="medium", device="auto", compute_type="default"):
+        """
+        device: "cuda", "cpu" ou "auto"
+        """
+        # Se device for auto, tenta cuda primeiro
+        if device == "auto":
+            try:
+                logger.info(f"Tentando carregar modelo Whisper '{model_size}' com CUDA...")
+                self.model = WhisperModel(model_size, device="cuda", compute_type="float16")
+                logger.info("Modelo carregado com CUDA com sucesso!")
+                return
+            except Exception as e:
+                logger.warning(f"Falha ao carregar CUDA: {e}. Tentando CPU...")
+        
+        # Fallback para CPU
+        try:
+            logger.info(f"Carregando modelo Whisper '{model_size}' com CPU...")
+            self.model = WhisperModel(model_size, device="cpu", compute_type="int8")
+            logger.info("Modelo carregado com CPU com sucesso.")
+        except Exception as e:
+            logger.error(f"Erro fatal ao carregar Whisper: {e}")
+            raise e
+
+    def transcribe(self, audio_data: np.ndarray, language: str) -> tuple[str, list[dict]]:
+        """
+        Transcreve áudio (numpy float32 16kHz mono).
+        """
+        # A. Filtro de Energia (RMS) extremamente conservador para evitar falsos negativos em microfones de baixo ganho
+        rms = np.sqrt(np.mean(audio_data ** 2)) if len(audio_data) > 0 else 0
+        if rms < 0.0002:
+            logger.info(f"Trecho silencioso detectado (RMS: {rms:.5f}). Ignorando Whisper para prevenir alucinações.")
+            return "", []
+
+        try:
+            segments, info = self.model.transcribe(
+                audio_data, 
+                language=language, 
+                word_timestamps=True,
+                beam_size=5
+            )
+
+            full_text = ""
+            words_list = []
+
+            for segment in segments:
+                text_clean = segment.text.strip()
+                
+                # B. Filtro Antialucinação de Marcas d'água Comuns de datasets do Whisper
+                import re
+                hallucination_pattern = (
+                    r"thanks?\s+for\s+(watching|sharing|playing|the\s+video|this\s+video)|"
+                    r"thank\s+you\s+for\s+(watching|sharing)|"
+                    r"subscribe\s+to\s+my\s+channel|"
+                    r"please\s+subscribe|"
+                    r"amara\.org|"
+                    r"legendas\s+pela|"
+                    r"legendas\s+por|"
+                    r"subtitles\s+by|"
+                    r"translated\s+by|"
+                    r"watching\s+this\s+video"
+                )
+                
+                if re.search(hallucination_pattern, text_clean, re.IGNORECASE):
+                    logger.info(f"Alucinação do Whisper detectada e expurgada: '{text_clean}'")
+                    continue
+
+                full_text += segment.text + " "
+                if segment.words:
+                    for word in segment.words:
+                        word_clean = word.word.strip()
+                        if re.search(hallucination_pattern, word_clean, re.IGNORECASE):
+                            continue
+                        words_list.append({
+                            "word": word_clean,
+                            "start": word.start,
+                            "end": word.end,
+                            "probability": word.probability
+                        })
+            
+            return full_text.strip(), words_list
+        except RuntimeError as e:
+            if "cublas" in str(e).lower() or "cudnn" in str(e).lower():
+                logger.warning("Erro de biblioteca CUDA detectado durante execução. Trocando para CPU...")
+                # Recarrega o modelo em CPU
+                self.model = WhisperModel("medium", device="cpu", compute_type="int8")
+                return self.transcribe(audio_data, language) # Tenta novamente
+            raise e
+
+# Singleton para uso no servidor
+engine = None
+
+def get_stt_engine():
+    global engine
+    if engine is None:
+        # Usamos 'auto' para tentar GPU se disponível, senão CPU
+        engine = STTEngine(device="auto")
+    return engine
