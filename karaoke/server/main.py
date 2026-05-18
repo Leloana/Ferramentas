@@ -114,6 +114,10 @@ async def get_index(response: Response):
     response.headers["Expires"] = "0"
     return FileResponse(Path(__file__).parent.parent / "client" / "index.html")
 
+CLIENT_DIR = Path(__file__).parent.parent / "client"
+app.mount("/styles", StaticFiles(directory=str(CLIENT_DIR / "styles")), name="styles")
+app.mount("/js", StaticFiles(directory=str(CLIENT_DIR / "js")), name="js")
+
 @app.get("/songs")
 @app.get("/api/songs")
 async def list_songs(response: Response):
