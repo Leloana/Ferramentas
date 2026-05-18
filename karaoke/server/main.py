@@ -230,21 +230,53 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         f"   - RMS de Entrada: {rms_original:.6f}\n"
                         f"========================================")
 
-            # 2. Resample (CPU bound) e Transcrever (GPU/CPU bound) em thread separada
-            def compute():
-                # Resampling ultra-rápido via interpolação linear (Numpy) ao invés do lento Fourier Resample do SciPy
-                duration = len(audio_data) / room.client_sample_rate
-                num_target_samples = int(duration * 16000)
-                x_orig = np.linspace(0, duration, len(audio_data))
-                x_target = np.linspace(0, duration, num_target_samples)
-                resampled = np.interp(x_target, x_orig, audio_data).astype(np.float32)
-                return stt.transcribe(resampled, language=seg_lang)
+            # Detecção de vocalizes não-lexicais (Oh-oh, La-la-la, etc.)
+            vocalize_words = {"oh", "la", "uh", "na", "ah", "oo", "woo", "yeah", "yeh", "wow", "hm", "hmm", "hey", "hei"}
+            clean_words = [re.sub(r'[^\w]', '', w.lower()) for w in seg_text.split()]
+            is_vocalize = len(clean_words) > 0 and all(w in vocalize_words for w in clean_words if w)
+
+            if is_vocalize:
+                # Pontua baseado apenas no RMS (se cantou ou não)
+                logger.info(f"⚡ [Bypass Vocalize] Detectado trecho não-lexical ('{seg_text}'). Avaliando por energia (RMS: {rms_original:.6f})")
+                if rms_original > 0.008:
+                    score = 100.0
+                    transcribed_text = seg_text
+                    transcription_processed = seg_text
+                    matched_count = len(clean_words)
+                elif rms_original > 0.002:
+                    score = 50.0
+                    transcribed_text = "(som baixo)"
+                    transcription_processed = "(som baixo)"
+                    matched_count = len(clean_words) // 2
+                else:
+                    score = 0.0
+                    transcribed_text = "(silêncio)"
+                    transcription_processed = "(silêncio)"
+                    matched_count = 0
+
+                room.total_score += score
+                result = {
+                    "score": score,
+                    "transcription": transcription_processed,
+                    "matched_words": matched_count,
+                    "total_expected": len(clean_words)
+                }
+            else:
+                # 2. Resample e Transcrever (com initial_prompt para guiar a IA)
+                def compute():
+                    # Resampling ultra-rápido via interpolação linear (Numpy) ao invés do lento Fourier Resample do SciPy
+                    duration = len(audio_data) / room.client_sample_rate
+                    num_target_samples = int(duration * 16000)
+                    x_orig = np.linspace(0, duration, len(audio_data))
+                    x_target = np.linspace(0, duration, num_target_samples)
+                    resampled = np.interp(x_target, x_orig, audio_data).astype(np.float32)
+                    return stt.transcribe(resampled, language=seg_lang, initial_prompt=seg_text)
+                    
+                transcribed_text, words = await asyncio.to_thread(compute)
                 
-            transcribed_text, words = await asyncio.to_thread(compute)
-            
-            # 4. Pontuar
-            result = calculate_score(seg_lyrics, words)
-            room.total_score += result["score"]
+                # 4. Pontuar
+                result = calculate_score(seg_lyrics, words)
+                room.total_score += result["score"]
             
             logger.info(f"\n========================================\n"
                         f"📝 [DEBUG TRANSCRIÇÃO] Segmento {seg_idx + 1} - Sala {room_id}\n"
@@ -279,9 +311,9 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                     current_seg = room.segments[room.current_segment_idx]
                     current_time = room.last_client_time
                     
-                    # Só acumula áudio se estiver dentro da janela de canto ativa (com margem de 1.5s antes do início real do canto)
+                    # Só acumula áudio se estiver dentro da janela de canto ativa (com margem de 1.5s antes e 0.5s depois para estiramento vocal)
                     # Isso evita acúmulo de áudio durante introdução ou longas pausas instrumentais, eliminando o delay de alinhamento.
-                    if current_time >= (current_seg["sing_start"] - 1.5) and current_time <= current_seg["sing_end"]:
+                    if current_time >= (current_seg["sing_start"] - 1.5) and current_time <= (current_seg["sing_end"] + 0.5):
                         room.audio_buffer.extend(message["bytes"])
                 
             elif "text" in message:
@@ -327,8 +359,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                     if room.current_segment_idx < len(room.segments):
                         current_seg = room.segments[room.current_segment_idx]
                         
-                        # Se vamos transicionar ou se já passou do fim da janela de canto, processa a transcrição
-                        should_transcribe = current_time >= current_seg["sing_end"] or current_time >= current_seg["pause_end"] - 0.15
+                        # Se vamos transicionar ou se já passou do fim da janela de canto (com 0.5s de atraso extra), processa a transcrição
+                        should_transcribe = current_time >= (current_seg["sing_end"] + 0.5) or current_time >= current_seg["pause_end"] - 0.15
                         
                         if should_transcribe and room.audio_buffer and room.current_segment_idx not in room.transcribed_segments:
                             room.transcribed_segments.add(room.current_segment_idx)

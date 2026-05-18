@@ -57,7 +57,7 @@ class STTEngine:
             logger.error(f"Erro fatal ao carregar Whisper: {e}")
             raise e
 
-    def transcribe(self, audio_data: np.ndarray, language: str) -> tuple[str, list[dict]]:
+    def transcribe(self, audio_data: np.ndarray, language: str, initial_prompt: str = None) -> tuple[str, list[dict]]:
         """
         Transcreve áudio (numpy float32 16kHz mono).
         """
@@ -72,7 +72,8 @@ class STTEngine:
                 audio_data, 
                 language=language, 
                 word_timestamps=True,
-                beam_size=5
+                beam_size=5,
+                initial_prompt=initial_prompt
             )
 
             full_text = ""

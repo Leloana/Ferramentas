@@ -1347,6 +1347,47 @@
         </div>
     </div>
 
+    <!-- Modal de Instruções (Onboarding) -->
+    <div id="onboarding-modal" class="modal-overlay" style="display: none; z-index: 1050;">
+        <div class="modal-content admin-modal" style="max-width: 480px; text-align: left; padding: 2.5rem 2rem;">
+            <h2 style="color: var(--accent); margin-top: 0; margin-bottom: 1.5rem; text-align: center; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-weight: 800; font-size: 1.6rem;">
+                🎙️ Dicas para a Nota Máxima!
+            </h2>
+            
+            <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 1.5rem;">
+                <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                    <div style="font-size: 1.5rem; background: rgba(56, 189, 248, 0.15); color: var(--accent); border-radius: 12px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(56, 189, 248, 0.25);">📱</div>
+                    <div>
+                        <strong style="color: var(--text); display: block; margin-bottom: 0.2rem; font-size: 1rem;">1. Posicionamento do Celular</strong>
+                        <span style="color: var(--dim); font-size: 0.88rem; line-height: 1.45;">Mantenha o microfone do celular perto da sua boca (cerca de 3 a 5 cm) para capturar a voz com alta clareza.</span>
+                    </div>
+                </div>
+
+                <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                    <div style="font-size: 1.5rem; background: rgba(168, 85, 247, 0.15); color: #a855f7; border-radius: 12px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(168, 85, 247, 0.25);">🔊</div>
+                    <div>
+                        <strong style="color: var(--text); display: block; margin-bottom: 0.2rem; font-size: 1rem;">2. Som de Fundo (Backing Track)</strong>
+                        <span style="color: var(--dim); font-size: 0.88rem; line-height: 1.45;">A trilha sonora (karaokê) sairá na caixa da TV/PC. Cante acompanhando a TV, mas diretamente no celular.</span>
+                    </div>
+                </div>
+
+                <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                    <div style="font-size: 1.5rem; background: rgba(34, 197, 94, 0.15); color: var(--success); border-radius: 12px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(34, 197, 94, 0.25);">🎧</div>
+                    <div>
+                        <strong style="color: var(--text); display: block; margin-bottom: 0.2rem; font-size: 1rem;">3. Use Fones (Altamente Recomendado)</strong>
+                        <span style="color: var(--dim); font-size: 0.88rem; line-height: 1.45;">Para evitar que o som da TV vaze na sua gravação e obter **100% de pontuação**, conecte fones de ouvido no celular!</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-buttons" style="margin-top: 1.8rem; justify-content: center;">
+                <button type="button" id="btn-close-onboarding" class="btn" style="background: var(--accent-gradient); color: #000; font-weight: 800; border: none; cursor: pointer; width: 100%; font-size: 1rem; padding: 0.8rem 1.5rem; border-radius: 12px; box-shadow: var(--shadow-glow);">
+                    ENTENDI, QUERO CANTAR! ⚡
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Editor de Letras LRC -->
     <div id="lrc-editor-modal" class="modal-overlay" style="display: none; z-index: 1000;">
         <div class="modal-content admin-modal" style="max-width: 600px;">
@@ -2311,16 +2352,35 @@
         }
 
         btnStart.onclick = async () => {
-            btnStart.disabled = true;
-            btnStart.innerText = 'PREPARANDO...';
+            const seen = localStorage.getItem('karaoke_onboarding_seen');
+            if (!seen) {
+                const onboardingModal = document.getElementById('onboarding-modal');
+                const btnCloseOnboarding = document.getElementById('btn-close-onboarding');
+                if (onboardingModal && btnCloseOnboarding) {
+                    onboardingModal.style.display = 'flex';
+                    btnCloseOnboarding.onclick = async () => {
+                        onboardingModal.style.display = 'none';
+                        localStorage.setItem('karaoke_onboarding_seen', 'true');
+                        await doStart();
+                    };
+                } else {
+                    await doStart();
+                }
+            } else {
+                await doStart();
+            }
 
-            try {
-                await startKaraoke();
-            } catch (e) {
-                console.error(e);
-                showToast("Erro ao iniciar: " + e.message, "error");
-                btnStart.disabled = false;
-                btnStart.innerText = 'INICIAR CANTO';
+            async function doStart() {
+                btnStart.disabled = true;
+                btnStart.innerText = 'PREPARANDO...';
+                try {
+                    await startKaraoke();
+                } catch (e) {
+                    console.error(e);
+                    showToast("Erro ao iniciar: " + e.message, "error");
+                    btnStart.disabled = false;
+                    btnStart.innerText = 'INICIAR CANTO';
+                }
             }
         };
 
