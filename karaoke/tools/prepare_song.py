@@ -133,8 +133,8 @@ def prepare_song(song_dir, language="en"):
         else:
             segment_audio = full_audio[start_sample:end_sample]
         
-        # 3. Transcrever segmento
-        _, words = engine.transcribe(segment_audio, language=language)
+        # 3. Transcrever segmento (passando a letra esperada como initial_prompt para guiar a IA)
+        _, words = engine.transcribe(segment_audio, language=language, initial_prompt=line["text"])
         
         # 4. Alinhamento inteligente (Smart Word Alignment)
         lyrics_timed = []
@@ -190,7 +190,8 @@ def prepare_song(song_dir, language="en"):
         # 1. Nenhuma palavra tenha expected_start menor que 0.05s
         # 2. Os tempos expected_start sejam estritamente crescentes (monotônicos com delta de 50ms)
         #    para evitar que palavras posteriores acendam antes de palavras anteriores no frontend!
-        voice_delay = words[0]["start"] if words else 0.0
+        # Ajustar o voice_delay para dar um respiro (margem inicial de 400ms) antes do início do canto
+        voice_delay = max(0.0, words[0]["start"] - 0.4) if words else 0.0
         if words:
             for w in lyrics_timed:
                 w["expected_start"] = max(0.0, round(w["expected_start"] - voice_delay, 3))
@@ -203,16 +204,17 @@ def prepare_song(song_dir, language="en"):
                 if lyrics_timed[idx]["expected_start"] < min_start:
                     lyrics_timed[idx]["expected_start"] = min_start
 
+        total_duration = len(full_audio) / sample_rate
         max_end = end_sample / sample_rate
         if words:
             actual_sing_end = line["start"] + words[-1]["end"]
-            # Encerra o segmento de canto logo após a última palavra
-            sing_end = min(actual_sing_end + 0.5, max_end)
-            # Aciona a troca de interface quase imediatamente
-            pause_end = min(sing_end + 0.1, max_end)
+            # Encerra o segmento com margem final (post-roll) de 400ms extras para o usuário esticar a última nota
+            sing_end = min(actual_sing_end + 0.4, total_duration)
+            # Aciona a troca de interface quase imediatamente (100ms depois)
+            pause_end = min(sing_end + 0.1, total_duration)
         else:
-            sing_end = max_end
-            pause_end = sing_end + 0.5
+            sing_end = min(max_end, total_duration)
+            pause_end = min(sing_end + 0.5, total_duration)
             
         # Aplica o offset global (deslocamento) salvando com proteção de limite mínimo (0.0s)
         s_start = max(0.0, round(line["start"] + offset + voice_delay, 3))

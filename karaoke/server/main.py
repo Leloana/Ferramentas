@@ -64,7 +64,8 @@ class KaraokeRoom:
         self.song_id = song_id
         self.display: Optional[WebSocket] = None
         self.mic: Optional[WebSocket] = None
-        self.audio_buffer = bytearray()
+        self.audio_buffer = bytearray()  # Mantido para retrocompatibilidade se necessário
+        self.segment_buffers = {}  # seg_idx -> bytearray() (buffers dedicados concorrentes por segmento)
         self.client_sample_rate = 48000
         self.current_segment_idx = 0
         self.transcribed_segments = set()
@@ -173,6 +174,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
         room.total_score = 0.0
         room.last_client_time = 0.0
         room.audio_buffer = bytearray()
+        room.segment_buffers = {}
         room.is_singing_active = False
     
     # Registra o WebSocket no papel correspondente
@@ -264,12 +266,13 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
             else:
                 # 2. Resample e Transcrever (com initial_prompt para guiar a IA)
                 def compute():
-                    # Resampling ultra-rápido via interpolação linear (Numpy) ao invés do lento Fourier Resample do SciPy
-                    duration = len(audio_data) / room.client_sample_rate
-                    num_target_samples = int(duration * 16000)
-                    x_orig = np.linspace(0, duration, len(audio_data))
-                    x_target = np.linspace(0, duration, num_target_samples)
-                    resampled = np.interp(x_target, x_orig, audio_data).astype(np.float32)
+                    # Resampling profissional usando scipy.signal.resample_poly com decimação polifásica e filtro FIR anti-aliasing
+                    import scipy.signal
+                    import math
+                    gcd = math.gcd(16000, room.client_sample_rate)
+                    up = 16000 // gcd
+                    down = room.client_sample_rate // gcd
+                    resampled = scipy.signal.resample_poly(audio_data, up, down).astype(np.float32)
                     return stt.transcribe(resampled, language=seg_lang, initial_prompt=seg_text)
                     
                 transcribed_text, words = await asyncio.to_thread(compute)
@@ -311,12 +314,18 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
             
             if "bytes" in message:
                 # Recebendo chunks de áudio PCM Float32 do microfone ativo
+                current_time = room.last_client_time
+                
+                # Só acumula áudio nos buffers dos segmentos cujas janelas de canto (com margens de respiro) estão ativas
+                for seg_idx, seg in enumerate(room.segments):
+                    if current_time >= (seg["sing_start"] - 1.5) and current_time <= (seg["sing_end"] + 0.5):
+                        if seg_idx not in room.segment_buffers:
+                            room.segment_buffers[seg_idx] = bytearray()
+                        room.segment_buffers[seg_idx].extend(message["bytes"])
+                
+                # Mantém retrocompatibilidade com o buffer global se o segmento atual estiver ativo
                 if room.current_segment_idx < len(room.segments):
                     current_seg = room.segments[room.current_segment_idx]
-                    current_time = room.last_client_time
-                    
-                    # Só acumula áudio se estiver dentro da janela de canto ativa (com margem de 1.5s antes e 0.5s depois para estiramento vocal)
-                    # Isso evita acúmulo de áudio durante introdução ou longas pausas instrumentais, eliminando o delay de alinhamento.
                     if current_time >= (current_seg["sing_start"] - 1.5) and current_time <= (current_seg["sing_end"] + 0.5):
                         room.audio_buffer.extend(message["bytes"])
                 
@@ -366,13 +375,15 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         # Se vamos transicionar ou se já passou do fim da janela de canto (com 0.5s de atraso extra), processa a transcrição
                         should_transcribe = current_time >= (current_seg["sing_end"] + 0.5) or current_time >= current_seg["pause_end"] - 0.15
                         
-                        if should_transcribe and room.audio_buffer and room.current_segment_idx not in room.transcribed_segments:
+                        seg_buffer = room.segment_buffers.get(room.current_segment_idx)
+                        if should_transcribe and seg_buffer and room.current_segment_idx not in room.transcribed_segments:
                             room.transcribed_segments.add(room.current_segment_idx)
                             logger.info(f"Processando segmento {room.current_segment_idx + 1} para a sala {room_id}")
                             
-                            # 1. Converter buffer para numpy float32
-                            raw_audio = np.frombuffer(room.audio_buffer, dtype=np.float32).copy()
-                            room.audio_buffer = bytearray() # Limpa para o próximo
+                            # 1. Converter buffer específico para numpy float32
+                            raw_audio = np.frombuffer(seg_buffer, dtype=np.float32).copy()
+                            room.segment_buffers.pop(room.current_segment_idx, None)  # Libera memória imediatamente
+                            room.audio_buffer = bytearray()  # Limpa global para retrocompatibilidade
                             
                             # Lança tarefa de transcrição em background
                             asyncio.create_task(process_and_score(
