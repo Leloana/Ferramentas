@@ -1,0 +1,74 @@
+"""Rotas HTTP simples: listagem, audio backing, delete, get-ip, index."""
+from __future__ import annotations
+
+import logging
+import shutil
+import socket
+from pathlib import Path
+
+from fastapi import APIRouter, HTTPException, Response
+from fastapi.responses import FileResponse
+
+from state import song_manager
+
+logger = logging.getLogger(__name__)
+router = APIRouter()
+
+CLIENT_DIR = Path(__file__).resolve().parent.parent.parent / "client"
+SONGS_DIR = Path(__file__).resolve().parent.parent / "songs"
+
+
+def _no_cache(response: Response) -> None:
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+
+
+@router.get("/")
+async def get_index(response: Response):
+    _no_cache(response)
+    return FileResponse(CLIENT_DIR / "index.html")
+
+
+@router.get("/songs")
+@router.get("/api/songs")
+async def list_songs(response: Response):
+    _no_cache(response)
+    return song_manager.list_songs()
+
+
+@router.get("/songs/{song_id}/audio")
+async def get_audio(song_id: str):
+    audio_path = song_manager.get_audio_path(song_id)
+    if not audio_path:
+        raise HTTPException(status_code=404, detail="Música não encontrada")
+    return FileResponse(audio_path)
+
+
+@router.delete("/api/delete-song/{song_id}")
+async def delete_song(song_id: str):
+    try:
+        song_dir = SONGS_DIR / song_id
+        if not song_dir.exists():
+            raise HTTPException(status_code=404, detail="Música não encontrada")
+        shutil.rmtree(song_dir)
+        logger.info(f"Música deletada do disco: {song_id}")
+        return {"success": True}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Erro ao deletar a música {song_id}: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/api/get-ip")
+async def get_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        s.connect(("8.8.8.8", 1))
+        ip = s.getsockname()[0]
+    except Exception:
+        ip = "127.0.0.1"
+    finally:
+        s.close()
+    return {"ip": ip}
