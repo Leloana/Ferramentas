@@ -274,8 +274,12 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                     
                 transcribed_text, words = await asyncio.to_thread(compute)
                 
+                prev_lyrics = None
+                if seg_idx > 0 and seg_idx - 1 < len(room.segments):
+                    prev_lyrics = room.segments[seg_idx - 1]["lyrics"].split()
+                
                 # 4. Pontuar
-                result = calculate_score(seg_lyrics, words)
+                result = calculate_score(seg_lyrics, words, prev_expected_words=prev_lyrics)
                 room.total_score += result["score"]
             
             logger.info(f"\n========================================\n"

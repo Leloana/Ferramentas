@@ -62,9 +62,37 @@ def clean_text(text):
     # Retorna o correspondente normalizado acusticamente (se houver)
     return ACOUSTIC_NORMALIZATION.get(t_clean, t_clean)
 
-def calculate_score(expected_timed: list[dict], transcribed_words: list[dict]) -> dict:
+def calculate_score(expected_timed: list[dict], transcribed_words: list[dict], prev_expected_words: list[str] = None) -> dict:
     if not expected_timed:
         return {"score": 0, "details": "Nenhuma letra esperada."}
+
+    # A. Detecção e Remoção de Vazamento (Perdão Inteligente)
+    if prev_expected_words and transcribed_words:
+        prev_clean = [clean_text(w) for w in prev_expected_words if w]
+        trans_clean = [clean_text(w["word"]) for w in transcribed_words if w]
+        
+        max_overlap = min(len(prev_clean), len(trans_clean), 6)
+        overlap_found = 0
+        
+        for k in range(max_overlap, 0, -1):
+            prev_suffix = prev_clean[-k:]
+            trans_prefix = trans_clean[:k]
+            
+            match_count = 0
+            for idx in range(k):
+                ratio = fuzz.token_sort_ratio(prev_suffix[idx], trans_prefix[idx])
+                if ratio >= 80:
+                    match_count += 1
+            
+            if match_count / k >= 0.8:
+                overlap_found = k
+                break
+                
+        if overlap_found > 0:
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.info(f"🛡️ [Perdão de Vazamento] Detectadas {overlap_found} palavras vazadas do verso anterior: {[w['word'] for w in transcribed_words[:overlap_found]]}. Expurgando do cálculo do verso atual.")
+            transcribed_words = transcribed_words[overlap_found:]
 
     expected_words = [clean_text(w["word"]) for w in expected_timed]
     transcribed_clean = [{"word": clean_text(w["word"]), "start": w["start"]} for w in transcribed_words]
