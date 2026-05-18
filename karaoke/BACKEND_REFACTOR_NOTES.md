@@ -1,111 +1,102 @@
 # Backend Refactor Notes — Handoff
 
-Documento de transferência para a próxima IA/dev que pegar este projeto.
-Resume **o que mudou no backend (`karaoke/server/`)** em 3 commits sequenciais
-no branch `main` (HEAD: `500f88f`).
+Documento de transferência para a próxima IA/dev. Resume **o que mudou no
+backend (`karaoke/server/`)** ao longo de 6 commits no branch `main`
+(HEAD: `a3dbb47`).
 
-Antes: 1 arquivo `main.py` de 1056 linhas + `score_engine.py` + `stt_engine.py`
+**Antes:** 1 `main.py` de 1056 linhas + `score_engine.py` + `stt_engine.py`
 + `song_manager.py`.
-Agora: `main.py` ≈ 905 linhas, lógica utilitária extraída para package
-`server/utils/`, vários bugs corrigidos.
+**Agora:** `main.py` 52 linhas (só bootstrap). Cada handler num módulo;
+maior arquivo do projeto é `ws/room.py` com 339 linhas.
 
 ---
 
-## Estrutura atual
+## Estrutura final
 
 ```
 karaoke/server/
-├── main.py              # FastAPI app, rotas HTTP e WebSocket (ainda gordo — ver "TODO")
-├── score_engine.py      # Scoring fuzzy palavra-a-palavra + sandwich recovery
-├── stt_engine.py        # Wrapper sobre faster-whisper (CUDA→CPU fallback)
-├── song_manager.py      # Listagem/leitura de pastas de músicas
+├── main.py              52   FastAPI app + monta 4 routers
+├── state.py             16   Singletons: room_manager, song_manager, ffmpeg_bin_dir
+├── rooms.py             61   KaraokeRoom + RoomManager
+├── song_manager.py      50   Listagem/leitura de pastas de músicas
+├── score_engine.py     181   Scoring fuzzy + sandwich recovery + leakage forgiveness
+├── stt_engine.py       137   Wrapper faster-whisper com fallback CUDA→CPU
+├── routes/
+│   ├── __init__.py
+│   ├── songs.py         74   GET / + list/audio/delete/get-ip
+│   ├── lyrics.py        80   GET/POST lyrics.lrc + roda prepare_song
+│   └── upload.py       209   POST /api/upload-song (3 caminhos: LRC pronto / letra plana / só Whisper)
+├── ws/
+│   ├── __init__.py
+│   └── room.py         339   Handler /ws/room/{room_id} + process_and_score
 └── utils/
     ├── __init__.py
-    ├── ffmpeg_bootstrap.py   # Localiza ffmpeg.exe via Winget no Windows
-    ├── lrc.py                # read_lrc_meta(): parser de header [ti:]/[ar:]
-    ├── text.py               # slugify() + parse_time_to_seconds()
-    └── youtube.py            # download_youtube_audio() via yt-dlp
+    ├── ffmpeg_bootstrap.py   66   Localiza ffmpeg.exe via Winget no Windows
+    ├── text.py               44   slugify + parse_time_to_seconds
+    ├── lrc.py                34   read_lrc_meta (parser de header [ti:]/[ar:])
+    ├── lrc_align.py         181   Alinha letra plana ↔ Whisper (função pura)
+    ├── youtube.py            66   download_youtube_audio via yt-dlp
+    └── prepare.py            16   run_prepare_song (wrapper para tools/prepare_song.py)
 ```
 
-`tools/prepare_song.py` é importado dinamicamente em 3 lugares de `main.py`
-(`sys.path.append` em runtime). **Não foi alterado** mas merece virar
-package próprio (`tools/__init__.py`) — ver TODO.
+`tools/prepare_song.py` continua sendo importado dinamicamente (agora via
+`utils/prepare.run_prepare_song`, que checa `sys.path` antes de estender —
+evita crescimento ilimitado). **Não foi alterado** mas merece virar
+package próprio. Ver TODO.
 
 ---
 
-## Commits (do mais antigo para o mais novo)
+## Histórico (do mais antigo para o mais novo)
 
-### `7dd646a` — Batch 1: bugfixes + cleanups
+### `7dd646a` — Batch 1: bugfixes + cleanups iniciais
+- **Cálculo de média errado** corrigido (`room.scored_count` em vez de
+  `seg_idx + 1` — tasks terminam fora de ordem).
+- **WebSocket endpoint duplicado** removido (código morto em `/ws/{song_id}`).
+- **STT fallback CUDA→CPU** preservava `model_size` e `initial_prompt`.
+- **Regex de alucinações do Whisper** compilada uma vez como módulo-level.
+- **Normalização acústica EN/PT** separada (antes colidiam: `"a"→"ah"`
+  quebrava inglês, `"know"→"no"` quebrava português).
+- **Thresholds extraídos** para constantes nomeadas em `score_engine.py`.
+- **Helper `KaraokeRoom.broadcast(msg)`** substitui ~10 padrões de
+  `if room.display: ...; if room.mic: ...`.
+- **`except: pass`** silenciosos → `except Exception: logger.debug(...)`.
+- **`pending_tasks` + `done_callback`** evita GC prematuro de tasks de
+  transcrição.
+- **`audio_ended` aguarda transcrições pendentes** (10s timeout) antes da
+  pontuação final.
 
-**Bugs reais corrigidos:**
-
-1. **Cálculo de média da pontuação errado.** `room.total_score / (seg_idx + 1)`
-   subestimava/superestimava a média porque tasks de transcrição terminam
-   fora de ordem (seg 5 pode finalizar antes do seg 3). Agora há um contador
-   `room.scored_count` incrementado quando cada segmento é efetivamente
-   pontuado, e a média usa esse contador.
-
-2. **Endpoint WebSocket duplicado.** `main.py` tinha duas funções
-   `websocket_endpoint` — a de `/ws/{song_id}` era código morto (a segunda
-   sobrescrevia a primeira por mesmo nome). Removida.
-
-3. **STT fallback CUDA→CPU quebrava parâmetros.** Quando `cublas`/`cudnn`
-   falhava no meio de uma transcrição, o código recarregava
-   `WhisperModel("medium", ...)` com tamanho hardcoded e chamava
-   `self.transcribe(audio_data, language)` perdendo `initial_prompt`.
-   Agora usa `self.model_size` e repassa todos os parâmetros.
-
-4. **Tasks coletáveis pelo GC.** `asyncio.create_task(...)` sem referência
-   forte. Agora ficam em `room.pending_tasks: set` com
-   `task.add_done_callback(room.pending_tasks.discard)`.
-
-5. **Race no `audio_ended`.** Finalizava o jogo sem esperar transcrições em
-   voo, então a média final podia não incluir os últimos segmentos. Agora
-   `await asyncio.wait_for(asyncio.gather(*pending_tasks), timeout=10.0)`.
-
-**Cleanups:**
-
-- Regex de alucinações do Whisper compilada **uma vez** como `_HALLUCINATION_RE`
-  no escopo de módulo (antes recompilava por segmento e por palavra).
-- `ACOUSTIC_NORMALIZATION` separado em `_ACOUSTIC_EN` e `_ACOUSTIC_PT`.
-  Antes colidiam: `"a" → "ah"` quebrava inglês, `"know" → "no"` quebrava
-  português. Função `clean_text(text, language)` escolhe o mapa correto.
-  `calculate_score(..., language=...)` recebe e propaga.
-- Thresholds (`70`, `50`, `80`, `0.4`, `1.0`, `2.5`, `0.85`, `0.65`...)
-  extraídos para constantes nomeadas no topo do `score_engine.py`.
-- Helper `KaraokeRoom.broadcast(msg)` substitui ~10 ocorrências do padrão
-  `if room.display: try: send_json(); if room.mic: try: send_json()`.
-- Todos os `except: pass` silenciosos viraram
-  `except Exception as e: logger.debug(...)` (antes engoliam
-  `KeyboardInterrupt`/`SystemExit`).
-- Imports inline (`re`, `math`, `scipy.signal`, `socket`, `logging`) movidos
-  para o topo dos respectivos módulos. `yt_dlp`, `prepare_song`, `difflib`,
-  `uvicorn` permanecem lazy (são pesados/opcionais).
-
-### `085c5e3` — Batch 2: extract `utils/` package
-
-- **`utils/ffmpeg_bootstrap.py`**: função `bootstrap()` idempotente que
-  localiza `ffmpeg.exe` em `%LOCALAPPDATA%\Microsoft\WinGet\Packages` (ou
-  `\Links`), injeta no `PATH` e configura `pydub.AudioSegment.converter` /
-  `.ffprobe`. Em Linux/macOS retorna `None` (no-op). Substitui ~30 linhas
-  soltas no topo do `main.py`.
-- **`utils/text.py`**:
-  - `slugify(text)` agora usa `unicodedata.normalize("NFKD", ...)` em vez
-    da tabela manual de acentos PT — funciona para qualquer idioma.
-  - `parse_time_to_seconds(time_str)` aceita `"4:30"`, `"04:30.5"`,
-    `"1:02:03"`, `"10"`. Sentinela: `"-1"`/`""` → `-1.0`.
-- **`utils/lrc.py`**: `read_lrc_meta(lrc_path, fallback_title, fallback_artist)
-  -> (title, artist)`. Substitui o mesmo bloco try/for/break duplicado em
-  `SongManager.list_songs` e `SongManager.get_song_data`.
-- `song_manager.py` reescrito: 93 → 50 linhas, comportamento idêntico.
+### `085c5e3` — Batch 2: extract `utils/`
+- `utils/ffmpeg_bootstrap.py` — `bootstrap()` idempotente
+- `utils/text.py` — `slugify()` agora usa `unicodedata.NFKD` (qualquer
+  idioma) + `parse_time_to_seconds()`
+- `utils/lrc.py` — `read_lrc_meta()` compartilhado com `song_manager`
+- `song_manager.py` reescrito (93 → 50 linhas)
 
 ### `500f88f` — Batch 3: extract `utils/youtube.py`
+- `download_youtube_audio()` movido; `ffmpeg_bin_dir` é parâmetro
+  explícito em vez de captura de escopo
 
-- `download_youtube_audio(url, output_path, ffmpeg_bin_dir=None)` movido
-  para módulo próprio. `ffmpeg_bin_dir` agora é **parâmetro explícito** em
-  vez de captura do escopo global — sem acoplamento implícito ao bootstrap.
-- Lógica de limpeza de arquivos residuais (`.webm`/`.m4a`/`.part`) e import
-  lazy de `yt_dlp` preservados.
+### `5c52ab7` — fix: último `except: pass` em `get_lyrics`
+
+### `4da4456` — Refactor estrutural Parte 1: extract WebSocket layer
+- `rooms.py` — `KaraokeRoom` + `RoomManager`
+- `state.py` — singletons compartilhados (evita import circular)
+- `ws/room.py` — handler WS via `APIRouter`, `process_and_score`,
+  `_send_segment_start`, com constantes mágicas nomeadas
+  (`PRE_SING_BUFFER_SEC`, `WHISPER_TARGET_SR`, `VOCALIZE_HIGH_RMS`...)
+- `main.py`: 912 → 553
+
+### `a3dbb47` — Refactor estrutural Parte 2: slim main.py
+- `utils/lrc_align.py` — `align_plain_lyrics()` pura + `draft_lrc_from_whisper()`
+- `utils/prepare.py` — `run_prepare_song()` evita duplicação de
+  `sys.path.append`
+- `routes/songs.py`, `routes/lyrics.py`, `routes/upload.py` — 3 routers
+  via `APIRouter`
+- `upload_song` decomposto em helpers (`_slice_with_padding`,
+  `_vocal_to_float32_mono_16k`, `_acquire_sources`, `_build_meta`); fluxo
+  principal ~60 linhas com 3 branches explícitos
+- `state.py` também expõe `ffmpeg_bin_dir`
+- `main.py`: 553 → **52**
 
 ---
 
@@ -115,68 +106,54 @@ package próprio (`tools/__init__.py`) — ver TODO.
   precisa de: `id`, `label`, `sing_start`, `sing_end`, `pause_end`,
   `lyrics`, `lyrics_timed` (lista de dicts com `word` e `expected_start`),
   `language`.
-- **Mensagens WebSocket cliente→servidor:** `client_info` (sample_rate),
-  `playback_time` (current_time do `<audio>`), `audio_ended`, e blobs
-  binários PCM Float32 com áudio do mic.
+- **Mensagens WebSocket cliente→servidor:** `client_info`, `playback_time`,
+  `audio_ended`, blobs binários PCM Float32.
 - **Mensagens servidor→cliente:** `pairing_status`, `singing_state`,
-  `segment_start`, `segment_result`, `outro_start`, `game_over`. Todas vão
-  pelo helper `room.broadcast(...)`.
+  `segment_start`, `segment_result`, `outro_start`, `game_over`. Todas via
+  `room.broadcast(...)`.
 - **Sample rate do cliente** vem em `client_info` (default 48000).
   Resampling para 16 kHz (Whisper) usa `scipy.signal.resample_poly`.
-- **RMS thresholds** (no `process_and_score`): vocalize → `>0.008` = 100,
-  `>0.002` = 50, senão 0. STT silence gate: `rms < 0.0002` curto-circuita.
+- **RMS thresholds** (em `ws/room.py`): `VOCALIZE_HIGH_RMS=0.008`,
+  `VOCALIZE_LOW_RMS=0.002`. STT silence gate em `stt_engine.py`: `0.0002`.
 - **`KaraokeRoom.segment_buffers: dict[int, bytearray]`** — buffers
   dedicados por segmento, populados nas janelas
-  `[sing_start - 1.5, sing_end + 0.5]`. O buffer global `audio_buffer`
-  ainda existe para retrocompatibilidade mas não é mais a fonte da verdade.
+  `[sing_start - PRE_SING_BUFFER_SEC, sing_end + POST_SING_BUFFER_SEC]`
+  (1.5s antes, 0.5s depois).
+- **Singletons:** `room_manager` e `song_manager` vivem em `state.py`.
+  Sempre importe de lá (não instancie de novo).
 
 ---
 
-## TODO / próximos passos sugeridos para a próxima IA
+## TODO / próximos passos para a próxima IA
 
 Em ordem de impacto:
 
-1. **Extrair o alinhamento Whisper↔letra plana** (~150 linhas dentro de
-   `upload_song`, a partir de `if plain_lyrics and plain_lyrics.strip()`)
-   para `utils/lrc_align.py`. Função pura: recebe `plain_lyrics`,
-   `whisper_segments`, `lyrics_start_val`, `total_duration` e devolve o
-   conteúdo LRC + flag `fallback_used`.
-
-2. **Quebrar `main.py` em routers.** Criar `routes/songs.py` (list/get
-   audio/delete), `routes/upload.py` (`upload_song`), `routes/lyrics.py`
-   (`get_lyrics`/`save_lyrics`), `routes/system.py` (`get_ip`),
-   `ws/room.py` (handler `/ws/room/{room_id}` + `process_and_score`).
-   Montar com `APIRouter` em `main.py`. Alvo: `main.py` < 100 linhas.
-
-3. **`tools/` virar package** (criar `tools/__init__.py`) e importar
-   `from tools.prepare_song import prepare_song` no topo de `main.py`,
-   eliminando os 3 `sys.path.append` em runtime.
-
-4. **Modelar com dataclasses/Pydantic.** `KaraokeRoom`, `Segment`,
-   mensagens WS (`SegmentStartMsg`, `SegmentResultMsg`...) — elimina dicts
-   soltos e dá validação. Considere `pydantic.BaseModel` já que FastAPI
-   está disponível.
-
-5. **Testes** — `tests/` ainda não existe. Começar por unidades puras:
-   - `score_engine.calculate_score` (vários casos: match exato, leakage,
-     sandwich recovery, timing penalty)
-   - `utils.text.parse_time_to_seconds` (formatos válidos e inválidos)
-   - `utils.text.slugify` (PT/EN/CJK)
+1. **`tools/` virar package** (criar `tools/__init__.py`) e importar
+   `from tools.prepare_song import prepare_song` no topo de
+   `utils/prepare.py`, eliminando o `sys.path.append` runtime que sobrou.
+2. **Modelar com dataclasses/Pydantic.** `KaraokeRoom`, `Segment`,
+   mensagens WS — elimina dicts soltos e dá validação. FastAPI já está aí.
+3. **Testes** — `tests/` ainda não existe. Começar pelas funções puras:
+   - `score_engine.calculate_score` (match, leakage, sandwich, timing)
+   - `utils.text.parse_time_to_seconds` / `slugify`
    - `utils.lrc.read_lrc_meta`
-
-6. **Concorrência em `room.total_score`/`scored_count`.** Múltiplas
-   `create_task` mutam. O GIL salva em CPython, mas se um dia o servidor
-   rodar com `--workers > 1` ou interpretador free-threaded, será bug.
-   Considerar `asyncio.Lock`.
-
-7. **CORS `allow_origins=["*"]`** está aberto. Restringir em produção.
-
-8. **Configuração via env**: `WHISPER_MODEL` (atualmente hardcoded
-   `"medium"`), `WHISPER_DEVICE` (atualmente `"auto"`), porta do uvicorn,
-   diretório de songs.
-
-9. **Logging único.** `logging.basicConfig` é chamado em `main.py` **e**
+   - `utils.lrc_align.align_plain_lyrics` (já bem testável — pura)
+4. **`ws/room.py` ainda é grande (339 linhas).** O loop principal do
+   `while True:` poderia ser decomposto em `_handle_bytes`,
+   `_handle_client_info`, `_handle_playback_time`, `_handle_audio_ended`.
+   `process_and_score` poderia virar método de `KaraokeRoom`.
+5. **Concorrência em `room.total_score`/`scored_count`.** Múltiplas
+   `create_task` mutam. O GIL salva em CPython, mas se rodar
+   `--workers > 1` ou interpretador free-threaded, vira bug. Usar
+   `asyncio.Lock`.
+6. **CORS `allow_origins=["*"]`** aberto. Restringir em produção.
+7. **Config via env**: `WHISPER_MODEL` (hardcoded `"medium"` em
+   `stt_engine.py`), `WHISPER_DEVICE`, porta do uvicorn, diretório de
+   songs.
+8. **Logging único.** `logging.basicConfig` chamado em `main.py` E
    `stt_engine.py`. Configurar uma vez no entrypoint.
+9. **Lifespan handler.** Migrar do uvicorn ad-hoc para `lifespan=`
+   context manager do FastAPI — boas práticas modernas.
 
 ---
 
@@ -188,11 +165,14 @@ python -m venv .venv
 .venv/Scripts/activate   # ou source .venv/bin/activate
 pip install fastapi uvicorn numpy scipy faster-whisper rapidfuzz pydub yt-dlp
 python main.py            # serve em 0.0.0.0:8000
+# ou:
+# uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-Em Windows com ffmpeg instalado via Winget (`winget install ffmpeg`), o
-`utils/ffmpeg_bootstrap.bootstrap()` localiza o binário automaticamente.
-Em Linux/macOS, `ffmpeg` precisa estar no `PATH`.
+Em Windows com ffmpeg instalado via Winget (`winget install ffmpeg`),
+`utils/ffmpeg_bootstrap.bootstrap()` localiza o binário automaticamente
+(chamado uma vez no import de `state.py`). Em Linux/macOS, `ffmpeg`
+precisa estar no `PATH`.
 
 ---
 
@@ -203,4 +183,19 @@ Em Linux/macOS, `ffmpeg` precisa estar no `PATH`.
 - Formato dos arquivos persistidos (`segments.json`, `lyrics.lrc`,
   `meta.json`, `backing_track.mp3`, `vocal.mp3`) — intactos.
 - Protocolo WebSocket cliente↔servidor — todas as mensagens preservadas.
-- A árvore `karaoke/server/songs/` — apenas dados, nada tocado.
+- `karaoke/server/songs/` — apenas dados, nada tocado.
+
+---
+
+## Como ler o código pela primeira vez
+
+Sugestão de ordem para a próxima IA:
+
+1. `main.py` (52 linhas) — entende a montagem.
+2. `state.py` (16 linhas) — vê os singletons.
+3. `rooms.py` (61 linhas) — modelo da sala.
+4. `routes/songs.py` — rotas mais simples.
+5. `routes/upload.py` — fluxo complexo, mas decomposto em helpers.
+6. `ws/room.py` — o coração: loop WS + scoring.
+7. `score_engine.py` — função pura `calculate_score`.
+8. `utils/*` — helpers isolados, leitura linear.
