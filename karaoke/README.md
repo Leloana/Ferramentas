@@ -1,79 +1,87 @@
 # 🎤 Karaoke AI Premium — Multi-Dispositivo & Sincronia IA
 
-Um ecossistema moderno e de alta fidelidade para Karaokê, projetado para rodar localmente com **transcrição fonética em tempo real (Whisper GPU)**, **cálculo de pontuação difuso por timing**, e uma arquitetura inovadora **Multi-Dispositivo** (use a TV da sala como tela e o Celular como microfone sem fios via WebSockets e QR Code!).
+Um ecossistema moderno, de alto desempenho e alta fidelidade para Karaokê, projetado para rodar localmente com **transcrição fonética em tempo real (Whisper GPU/CPU)**, **cálculo de pontuação difuso por timing**, e uma arquitetura inovadora **Multi-Dispositivo** (use a TV da sala como tela/display e qualquer Celular conectado como microfone sem fios via WebSockets e QR Code!).
+
+O projeto foi totalmente refatorado, alcançando uma arquitetura altamente modular, limpa e com 100% de separação de responsabilidades.
 
 ---
 
 ## 🌟 Recursos de Destaque (Premium)
 
-### 📺🎙️ Arquitetura de Pareamento Multi-Dispositivo
-* **Modo TV (Tela/Display):** Um dispositivo com tela grande (TV com PC conectado ou Notebook) pode ser configurado apenas como tela de exibição. Ele toca o som instrumental (`backing_track.mp3`), exibe o progresso das letras e as pontuações em tempo real.
-* **Modo Microfone (Celular):** Qualquer smartphone conectado na mesma rede WiFi lê o **QR Code** gerado na TV e se transforma instantaneamente em um microfone de baixa latência, enviando amostras de áudio de voz em tempo real via WebSockets para transcrição pesada de IA no servidor.
+### 📺🎙️ Arquitetura Multi-Dispositivo
+* **Modo TV (Tela/Display):** Um dispositivo com tela grande (TV ou Notebook) atua como console de exibição. Toca a faixa instrumental (`backing_track.mp3`), renderiza as letras dinâmicas e exibe as parciais e médias de pontuação enviadas pelo servidor.
+* **Modo Microfone (Celular):** Qualquer smartphone na mesma rede Wi-Fi escaneia o **QR Code** gerado na TV e se transforma instantaneamente em um microfone de baixíssima latência. Utiliza a API nativa de `AudioWorklet` do navegador para capturar e enviar pacotes binários PCM Float32 diretamente ao servidor.
 
-### 🎥 Dupla Importação Direta do YouTube
-* **Download Concorrente de Alta Velocidade:** Insira a **URL do Vídeo Vocal (Original)** e a **URL do Vídeo Instrumental (Karaokê)**. O servidor realiza downloads simultâneos em paralelo via `asyncio.gather` e `yt-dlp`, reduzindo o tempo de espera pela metade.
-* **Resiliência Windows-Locked:** Totalmente tolerante a falhas do Windows no encerramento de arquivos residuais, com conversão de áudio para MP3 (192kbps) e limpeza automática inteligente de arquivos órfãos (`.webm`, `.m4a`, `.part`).
+### 🎥 Dupla Importação e Download Inteligente
+* **Download Paralelo de Alta Velocidade:** Insira a **URL do Vídeo Vocal (Original)** e a **URL do Vídeo Instrumental (Karaokê)**. O servidor faz os downloads em concorrência paralela via `asyncio.gather` e `yt-dlp`, poupando tempo de rede.
+* **Resiliência Windows-Locked:** Totalmente tolerante a falhas do Windows no encerramento e remoção de arquivos temporários, com conversão profissional de áudio via `pydub` (MP3 192kbps) e expurgo automático de resíduos (`.webm`, `.m4a`, `.part`).
 
 ### ⚙️ Alinhamento Fino & Tratamento de Latência
-* **Silêncio Inicial (Padding):** Adicione um tempo de silêncio (ex: `1.5s`) no início das faixas para dar tempo de o navegador inicializar o fluxo de áudio e o cantor se preparar.
-* **Ajuste LRC da IA (LRC Offset):** Se o Whisper transcrever uma música que começa direto com uma introdução instrumental longa, use o campo **"Início vocal na letra"** para empurrar de forma inteligente todas as marcações de tempo e evitar o efeito bola de neve de atraso na pontuação.
+* **Silêncio de Preparação (Padding):** Adicione um atraso de silêncio no início das faixas para dar tempo de inicializar os fluxos de áudio e preparar o cantor.
+* **Ajuste LRC da IA (LRC Offset):** Use a diretriz **"Início vocal na letra"** para deslocar de forma inteligente todas as marcações de tempo em introduções instrumentais longas, evitando atrasos acumulados de pontuação.
 
-### 🔍 Busca em Tempo Real
-* Interface administrativa elegante com pesquisa instantânea por **Título da Música** ou **Nome do Artista/Banda**.
+### ⚖️ Motor de Pontuação Avançado
+* **Comparação Fonética (Fuzzy matching):** Baseada no algoritmo `rapidfuzz` (`fuzz.token_sort_ratio`) para identificar a canção mesmo sob pequenas distorções de captura.
+* **Ajustes Fonéticos por Idioma:** Mapas acústicos dedicados para Inglês e Português para evitar colisões fonéticas inter-idiomas (ex: `"a" -> "ah"` em português, contrações em inglês).
+* **Perdão de Vazamento (Leakage Forgiveness):** O motor de pontuação detecta se o final do verso anterior vazou para a janela atual e remove automaticamente esse ruído para garantir avaliação justa.
+* **Sandwich Recovery**: Recupera automaticamente uma ou duas palavras falhadas/não capturadas se estiverem circundadas por palavras cantadas corretamente.
 
-### ⚖️ Motor de Pontuação Difuso & Timing Fino
-* **Comparação Fonética:** Baseada na biblioteca `rapidfuzz` (`fuzz.ratio`) para identificar o canto mesmo com pequenas variações.
-* **Penalidade Suave de Ritmo (Timing):** O motor de pontuação monitora a diferença absoluta de segundos do canto:
-  * Diferença $< 0.5s$: Perfeito ($100\%$ de pontuação para a palavra).
-  * Diferença $< 1.0s$: Tolerância leve ($30\%$ de penalidade na palavra).
-  * Diferença $< 2.0s$: Tolerância limite ($60\%$ de penalidade na palavra).
-* **Parciais Justas:** Removemos o bloqueio antigo de zerar a frase inteira por "muitas palavras perdidas". O usuário sempre ganha pontos proporcionais às palavras cantadas no ritmo, tornando o jogo muito mais divertido e gratificante!
+---
+
+## 📂 Estrutura de Diretórios e Guias do Desenvolvedor
+
+A base de código está dividida em camadas perfeitamente desacopladas. Para detalhes completos de engenharia, consulte nossos guias internos dedicados:
+*   📖 **Guia Mestre de Arquitetura e Contratos**: Veja em [PROJECT_GUIDE.md](PROJECT_GUIDE.md) as especificações de rede, modelo do segments.json e restrições.
+*   📖 **Arquitetura Técnica do Client (Frontend)**: Veja em [client/ARCHITECTURE.md](client/ARCHITECTURE.md) o padrão de ES Modules, estado mutável compartilhado e controle CSS de estados.
+*   📖 **Histórico de Refatoração do Backend**: Veja em [BACKEND_REFACTOR_NOTES.md](BACKEND_REFACTOR_NOTES.md) como o monolito do servidor foi decomposto em routers assíncronos.
 
 ---
 
 ## 🚀 Como Iniciar em 3 Passos
 
-### 1. Instalar Dependências e FFmpeg
-Certifique-se de que o Python 3.10+ e o FFmpeg (adicionado ao PATH) estão instalados:
+### 1. Preparar o Ambiente Virtual (venv)
+O ecossistema utiliza um ambiente virtual dedicado contendo todas as dependências pré-instaladas. Para validar ou instalar novas dependências, utilize o terminal a partir da pasta raiz do repositório:
 ```bash
-pip install fastapi "uvicorn[standard]" faster-whisper rapidfuzz numpy pydub python-multipart scipy yt-dlp av
+# Acessar a pasta do karaokê
+cd karaoke
+
+# Ativar o ambiente virtual (Windows PowerShell)
+.\venv\Scripts\Activate.ps1
+
+# Se preferir usar Prompt de Comando (CMD)
+.\venv\Scripts\activate.bat
+
+# Se preferir Linux/macOS
+source venv/bin/activate
 ```
 
+*(Caso precise reinstalar as dependências de raiz, execute `pip install fastapi uvicorn numpy scipy faster-whisper rapidfuzz pydub yt-dlp av python-multipart`)*
+
 ### 2. Rodar o Servidor Exposto na Rede (Modo HTTPS Seguro 🔒)
-Para que os navegadores modernos (Chrome, Safari, Edge) no PC e no Celular **permitam o uso do microfone** em conexões de rede local (Wi-Fi), a página deve ser executada obrigatoriamente sob **HTTPS** (Contexto Seguro).
+Para que os navegadores modernos nos dispositivos móveis e TV **permitam e liberem o uso de captura do microfone**, a página deve ser executada obrigatoriamente sob **HTTPS** (Contexto Seguro).
 
-Nós já fornecemos os certificados locais `key.pem` e `cert.pem` prontos dentro da pasta `server/`. Para iniciar o servidor carregando as dependências do ambiente virtual `venv` e ativando a criptografia SSL, execute o comando correspondente ao seu sistema operacional:
+Nós já fornecemos certificados SSL de desenvolvimento (`key.pem` e `cert.pem`) prontos na pasta `server/`. Para subir o servidor na rede local utilizando o Python do ambiente virtual, execute:
 
-* **No Windows (PowerShell ou Prompt de Comando):**
+* **No Windows (PowerShell/Prompt a partir da pasta `karaoke`):**
   ```powershell
-  venv\Scripts\python.exe -m uvicorn server.main:app --host 0.0.0.0 --port 8000 --ssl-keyfile server/key.pem --ssl-certfile server/cert.pem
+  .\venv\Scripts\python.exe -m uvicorn server.main:app --host 0.0.0.0 --port 8000 --ssl-keyfile server/key.pem --ssl-certfile server/cert.pem
   ```
 
-* **No Linux / macOS (Terminal):**
+* **No Linux / macOS (Terminal a partir da pasta `karaoke`):**
   ```bash
   ./venv/bin/python -m uvicorn server.main:app --host 0.0.0.0 --port 8000 --ssl-keyfile server/key.pem --ssl-certfile server/cert.pem
   ```
-* **Acesso seguro na TV/PC principal:** [https://localhost:8000](https://localhost:8000) ou [https://127.0.0.1:8000](https://127.0.0.1:8000)
-* **Acesso no Celular/Rede:** `https://<seu-ip-local>:8000` (ex: `https://192.168.15.6:8000`)
-* **Nota sobre o Certificado Local:** Por ser um certificado autoassinado (de desenvolvimento local), o seu navegador exibirá uma tela de alerta na primeira entrada ("Sua conexão não é particular"). Basta clicar em **"Avançado"** (Advanced) e em seguida em **"Ir para o site (inseguro)"** (Proceed) para carregar o Karaokê e liberar o microfone instantaneamente!
 
-### 3. Parear TV e Celular (Detecção Inteligente de IP)
-* Nós criamos um sistema de **Detecção Inteligente de IP da Rede Local**: mesmo que você abra a TV usando `localhost`, o nosso sistema descobre automaticamente o IP real do seu computador na rede (ex: `192.168.15.5`).
-* O **QR Code** gerado na tela da TV já conterá o link com o IP correto de rede. Basta apontar a câmera do celular para o QR Code para conectar o celular instantaneamente como microfone, sem precisar configurar nada manualmente!
+* **Acesso seguro na TV/PC principal:** [https://localhost:8000](https://localhost:8000)
+* **Acesso no Celular/Rede:** `https://<seu-ip-local>:8000` (ex: `https://192.168.1.15:8000`)
+* **Ignorar Alerta de Certificado Local:** Por se tratar de um certificado autoassinado para desenvolvimento local, o navegador exibirá a tela "Sua conexão não é particular". Basta clicar em **"Avançado"** (Advanced) e em seguida em **"Ir para o site (inseguro)"** (Proceed) para liberar o acesso ao microfone e iniciar instantaneamente!
 
----
-
-## 📁 Estrutura Interna de Músicas (`server/songs/`)
-
-Cada música criada fica alocada em sua respectiva pasta identificada pelo slug do título e artista, estruturada com arquivos limpos e organizados:
-* `vocal.mp3`: Áudio de voz pura usado como base de comparação de espectro.
-* `backing_track.mp3`: Trilha instrumental (karaokê) tocada na TV.
-* `lyrics.lrc`: Arquivo de letras sincronizado contendo timestamps por linha.
-* `segments.json`: Gerado automaticamente pelo Whisper GPU alinhando cada sílaba e palavra no tempo.
+### 3. Pareamento Inteligente via QR Code
+O servidor descobre automaticamente o IP de rede da sua máquina local. O **QR Code** gerado no Display principal (TV) conterá diretamente o endereço HTTPS correto de rede. Aponte a câmera do celular para o QR Code para conectar instantaneamente como microfone inteligente!
 
 ---
 
 ## 🧠 Tecnologias Utilizadas
-* **Backend:** FastAPI, Faster-Whisper (GPU Medium), RapidFuzz (Phonetic matching).
-* **Frontend Premium:** Vanilla JS (Conexão e gravação de áudio via AudioWorklet), HTML5 Web Audio API, WebSockets.
-* **Processamento de Áudio:** PyAV, Pydub, Scipy (Downsampling de microfone em tempo real).
+* **Backend:** FastAPI (APIRouter desacoplado), Uvicorn SSL, Faster-Whisper, RapidFuzz.
+* **Frontend:** Vanilla JS nativo (ES Modules, Web Audio API, AudioWorkletProcessor de PCM em baixa latência), HTML5, CSS3.
+* **Processamento Acústico:** PyAV, Pydub, Scipy (Downsampling de microfone em tempo real).
