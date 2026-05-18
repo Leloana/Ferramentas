@@ -30,6 +30,7 @@ from stt_engine import get_stt_engine
 from score_engine import calculate_score
 from song_manager import SongManager
 from utils.text import parse_time_to_seconds, slugify
+from utils.youtube import download_youtube_audio
 
 # Configurações
 logging.basicConfig(level=logging.INFO)
@@ -436,59 +437,6 @@ async def send_segment_start(ws: WebSocket, segments: list, idx: int, song_title
         "song_title": song_title
     })
 
-async def download_youtube_audio(url: str, output_path: Path) -> bool:
-    """Downloads audio from a YouTube URL and converts it to MP3 using yt-dlp and FFmpeg."""
-    import yt_dlp
-    
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    temp_template = str(output_path.with_suffix("")) + ".%(ext)s"
-    
-    ydl_opts = {
-        'format': 'bestaudio/best',
-        'postprocessors': [{
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
-            'preferredquality': '192',
-        }],
-        'outtmpl': temp_template,
-        'quiet': True,
-        'no_warnings': True,
-        'noplaylist': True,
-    }
-    
-    if ffmpeg_bin_dir:
-        ydl_opts['ffmpeg_location'] = ffmpeg_bin_dir
-        
-    try:
-        def download():
-            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                ydl.download([url])
-                
-        await asyncio.to_thread(download)
-    except Exception as e:
-        logger.warning(f"Aviso nao-critico durante download do YouTube: {e}")
-        
-    expected_file = output_path.with_suffix(".mp3")
-    if expected_file.exists() and expected_file.stat().st_size > 1000:
-        if expected_file != output_path:
-            try:
-                shutil.move(str(expected_file), str(output_path))
-            except Exception as move_err:
-                logger.warning(f"Aviso ao mover arquivo mp3: {move_err}")
-                
-        # Limpeza proativa de arquivos residuais (.webm, .m4a, .part) causados por concorrencia no Windows
-        for ext in [".webm", ".m4a", ".part"]:
-            leftover = output_path.with_suffix(ext)
-            if leftover.exists():
-                try:
-                    leftover.unlink()
-                except Exception as unlink_err:
-                    logger.debug(f"Nao foi possivel remover arquivo residual {leftover}: {unlink_err}")
-                    
-        return True
-        
-    return False
-
 @app.post("/api/upload-song")
 async def upload_song(
     title: str = Form(...),
@@ -562,8 +510,8 @@ async def upload_song(
             logger.info(f"Instrumental URL: {youtube_backing_url}")
             
             # Downloads em paralelo de alta velocidade usando asyncio.gather
-            v_task = download_youtube_audio(youtube_vocal_url.strip(), temp_vocal_path)
-            b_task = download_youtube_audio(youtube_backing_url.strip(), temp_backing_path)
+            v_task = download_youtube_audio(youtube_vocal_url.strip(), temp_vocal_path, ffmpeg_bin_dir)
+            b_task = download_youtube_audio(youtube_backing_url.strip(), temp_backing_path, ffmpeg_bin_dir)
             
             v_success, b_success = await asyncio.gather(v_task, b_task)
             
