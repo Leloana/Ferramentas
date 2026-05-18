@@ -1,0 +1,3040 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karaoke AI MVP</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
+        :root {
+            --bg: #0b0f19;
+            --bg-gradient: linear-gradient(135deg, #070a13 0%, #0f172a 100%);
+            --card: rgba(15, 23, 42, 0.65);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --accent: #38bdf8;
+            --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #a855f7 100%);
+            --text: #f8fafc;
+            --dim: #94a3b8;
+            --highlight: #fde047;
+            --success: #22c55e;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --shadow-glow: 0 0 20px rgba(56, 189, 248, 0.25);
+            --shadow-premium: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+        }
+
+        body {
+            font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Top Header Navbar */
+        .app-header {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 1rem;
+            box-sizing: border-box;
+            border-bottom: 1px solid var(--card-border);
+            margin-bottom: 1.5rem;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 900;
+            font-size: 1.4rem;
+            letter-spacing: 0.05em;
+            color: var(--text);
+            text-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+        }
+
+        .logo-icon {
+            color: var(--accent);
+            filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.4));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .gradient-text {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+        }
+
+        .header-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(34, 197, 94, 0.08);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            padding: 0.4rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--success);
+            animation: pulse-dot 1.5s infinite alternate;
+        }
+
+        @keyframes pulse-dot {
+            from {
+                opacity: 0.4;
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+        }
+
+        .container {
+            width: 95%;
+            max-width: 800px;
+            padding: 0 1rem 3rem 1rem;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .main-card {
+            background: var(--card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            box-shadow: var(--shadow-premium);
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            font-weight: 900;
+            font-size: 2.5rem;
+            margin: 0 0 1rem 0;
+            letter-spacing: -0.02em;
+        }
+
+        .search-container input:focus {
+            outline: none !important;
+            border-color: var(--accent) !important;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.25) !important;
+            background: rgba(0, 0, 0, 0.35) !important;
+        }
+
+        .song-list {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            margin-top: 1rem;
+        }
+
+        .song-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.2rem 1.5rem;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .song-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 24px rgba(56, 189, 248, 0.15);
+        }
+
+        .song-card.active {
+            border-color: var(--accent);
+            background: rgba(56, 189, 248, 0.05);
+        }
+
+        .game-area {
+            display: none;
+        }
+
+        .game-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .game-header h2 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            width: 100%;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-icon-text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: transparent;
+            border: 1px solid var(--card-border);
+            color: var(--dim);
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-icon-text:hover {
+            border-color: var(--accent);
+            color: var(--text);
+            box-shadow: var(--shadow-glow);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 600px) {
+            .btn-icon-text .btn-text {
+                display: none;
+            }
+
+            .btn-icon-text {
+                padding: 0.5rem 0.75rem !important;
+                font-size: 1.1rem !important;
+                gap: 0 !important;
+            }
+        }
+
+        .carousel-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 280px;
+            width: 100%;
+            margin: 1.5rem 0;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-sizing: border-box;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .carousel-line {
+            min-height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
+            text-align: center;
+            transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 5px 0;
+            box-sizing: border-box;
+            gap: 0.6rem;
+            letter-spacing: 0.02em;
+        }
+
+        .carousel-line.fading {
+            opacity: 0 !important;
+            transform: translateY(-8px) scale(0.97);
+        }
+
+        .prev-line {
+            font-size: 1.2rem;
+            color: var(--dim);
+            opacity: 0.35;
+        }
+
+        .curr-line {
+            font-size: 2.1rem;
+            font-weight: 800;
+            color: white;
+            opacity: 1;
+            text-shadow: 0 0 20px rgba(56, 189, 248, 0.35);
+        }
+
+        .next-line {
+            font-size: 1.2rem;
+            color: var(--dim);
+            opacity: 0.55;
+        }
+
+        .word {
+            color: var(--dim);
+            transition: color 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1),
+                text-shadow 0.15s ease;
+            display: inline-block;
+            margin: 0 0.1rem;
+        }
+
+        .word.passed {
+            color: #f8fafc;
+            transform: scale(1);
+            text-shadow: none;
+        }
+
+        .word.active {
+            color: var(--highlight);
+            transform: scale(1.15);
+            text-shadow: 0 0 15px rgba(253, 224, 71, 0.6), 0 0 5px var(--highlight);
+            font-weight: 800;
+        }
+
+        .controls {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            font-family: 'Outfit', sans-serif;
+            background: var(--accent-gradient);
+            color: #05070f;
+            border: none;
+            padding: 0.9rem 2.2rem;
+            font-size: 1.1rem;
+            font-weight: 800;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-glow);
+            letter-spacing: 0.03em;
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.5), 0 0 10px rgba(168, 85, 247, 0.3);
+        }
+
+        button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--card-border);
+            padding: 1rem;
+            border-radius: 16px;
+            backdrop-filter: blur(4px);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .transcription-debug {
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+            color: var(--dim);
+            font-style: italic;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            border-left: 3px solid var(--accent);
+            display: block;
+            width: 100%;
+            text-align: left;
+            box-sizing: border-box;
+        }
+
+        /* Toasts Container */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 380px;
+            width: calc(100% - 40px);
+            pointer-events: none;
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: rgba(11, 15, 25, 0.9);
+            backdrop-filter: blur(12px);
+            border-left: 4px solid var(--accent);
+            border-top: 1px solid var(--card-border);
+            border-bottom: 1px solid var(--card-border);
+            border-right: 1px solid var(--card-border);
+            padding: 0.9rem 1.2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-premium);
+            color: var(--text);
+            font-size: 0.9rem;
+            font-weight: 500;
+            pointer-events: auto;
+            animation: toastIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.3s ease;
+        }
+
+        .toast.toast-success {
+            border-left-color: var(--success);
+        }
+
+        .toast.toast-error {
+            border-left-color: var(--error);
+        }
+
+        .toast.toast-warning {
+            border-left-color: var(--warning);
+        }
+
+        .toast.toast-info {
+            border-left-color: var(--accent);
+        }
+
+        .toast-icon {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toast-content {
+            flex-grow: 1;
+            line-height: 1.4;
+            text-align: left;
+        }
+
+        .toast-close {
+            background: transparent;
+            border: none;
+            color: var(--dim);
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s;
+            box-shadow: none !important;
+            transform: none !important;
+        }
+
+        .toast-close:hover {
+            color: var(--text);
+        }
+
+        @keyframes toastIn {
+            from {
+                transform: translateX(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Empty State */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3.5rem 1.5rem;
+            border: 2px dashed rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            color: var(--dim);
+            background: rgba(255, 255, 255, 0.01);
+            transition: border-color 0.3s;
+        }
+
+        .empty-state:hover {
+            border-color: rgba(56, 189, 248, 0.3);
+        }
+
+        .empty-state h4 {
+            margin: 1rem 0 0.5rem 0;
+            color: var(--text);
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .empty-state p {
+            margin: 0;
+            font-size: 0.9rem;
+            max-width: 340px;
+            line-height: 1.5;
+        }
+
+        .empty-state code {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 0.15rem 0.4rem;
+            border-radius: 6px;
+            color: var(--accent);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        .empty-icon {
+            animation: pulse 2s infinite alternate;
+        }
+
+        /* Modal styling */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(2, 6, 23, 0.8);
+            backdrop-filter: blur(16px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content.admin-modal {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 550px;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8);
+            animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+
+        .modal-content.admin-modal h2 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-top: 0;
+            margin-bottom: 1.2rem;
+            letter-spacing: -0.02em;
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group select {
+            background: #080d16;
+            border: 1px solid #1e293b;
+            border-radius: 10px;
+            color: var(--text);
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="number"]:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+        }
+
+        .form-group input[type="file"] {
+            font-size: 0.85rem;
+            color: var(--dim);
+        }
+
+        .form-group input[type="file"]::file-selector-button {
+            background: #111827;
+            color: var(--text);
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-right: 0.8rem;
+            transition: all 0.2s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .form-group input[type="file"]::file-selector-button:hover {
+            background: #1e293b;
+            border-color: var(--accent);
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        /* Animations */
+        @keyframes popIn {
+            from {
+                transform: scale(0.9) translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            from {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            to {
+                transform: scale(1.15);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 600px) {
+            .app-header {
+                padding: 1rem 0.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .header-logo {
+                font-size: 1.15rem;
+            }
+
+            .header-status {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.75rem;
+            }
+
+            .main-card {
+                padding: 1.5rem 1rem;
+                border-radius: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .song-card {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: left;
+                padding: 1rem;
+                gap: 0.75rem;
+            }
+
+            .song-card span {
+                text-align: left !important;
+            }
+
+            .song-card button {
+                align-self: flex-end;
+                width: auto;
+            }
+
+            .game-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .curr-line {
+                font-size: clamp(1.4rem, 6.5vw, 1.8rem);
+                line-height: 1.35;
+            }
+
+            .prev-line,
+            .next-line {
+                font-size: clamp(0.9rem, 4.5vw, 1.1rem);
+            }
+
+            .carousel-line {
+                min-height: 65px;
+                gap: 0.4rem;
+            }
+
+            .carousel-container {
+                min-height: 250px;
+                padding: 1rem;
+            }
+
+            form div[style*="display: grid"],
+            form div[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+                gap: 0.75rem !important;
+            }
+
+            .modal-content.admin-modal {
+                padding: 1.5rem 1.2rem;
+                width: 95%;
+            }
+
+            .modal-buttons {
+                flex-direction: column-reverse;
+                width: 100%;
+            }
+
+            .modal-buttons button {
+                width: 100%;
+            }
+
+            .controls {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .controls button {
+                width: 100%;
+            }
+
+            #sync-controls {
+                flex-direction: column;
+                align-items: stretch !important;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            #sync-controls button {
+                width: 100%;
+            }
+
+            .control-divider {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sistema de Toasts -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Top Header Navbar -->
+    <header class="app-header">
+        <div class="header-logo">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round" class="logo-icon">
+                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+                <path d="M19 10v1a7 7 0 0 1-14 0v-1"></path>
+                <line x1="12" x2="12" y1="19" y2="22"></line>
+            </svg>
+            <span>KARAOKE <span class="gradient-text">AI</span></span>
+        </div>
+        <div class="header-status">
+            <span class="status-dot"></span>
+            <span class="status-text">Online</span>
+        </div>
+    </header>
+
+    <!-- Modo Microfone Sem Fio (Celular) -->
+    <div id="mobile-mic-area"
+        style="display: none; min-height: 100vh; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; box-sizing: border-box; background: radial-gradient(circle at center, #0f172a 0%, #020617 100%); text-align: center;">
+        <div style="margin-bottom: 2rem;">
+            <span
+                style="font-size: 0.8rem; color: #a855f7; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase;">Microfone
+                Sem Fio</span>
+            <h1 id="mobile-song-title" style="font-size: 1.8rem; margin: 0.5rem 0; color: #fff; font-weight: 800;">
+                Conectando...</h1>
+            <p id="mobile-status-text" style="color: var(--dim); font-size: 0.95rem; margin: 0;">Pareado com a TV (Sala
+                <span id="mobile-room-id">0000</span>)
+            </p>
+        </div>
+
+        <!-- Botão Ativar / Pulsar Mic -->
+        <div id="mobile-mic-trigger-container" style="margin: 2rem 0; position: relative;">
+            <button id="btn-mobile-activate"
+                style="width: 140px; height: 140px; border-radius: 50%; background: linear-gradient(135deg, #a855f7, #6366f1); border: none; color: #fff; font-size: 1rem; font-weight: 800; cursor: pointer; box-shadow: 0 0 30px rgba(168, 85, 247, 0.4); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; transition: transform 0.2s, box-shadow 0.2s;">
+                <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+                    <path d="M19 10v1a7 7 0 0 1-14 0v-1"></path>
+                    <line x1="12" x2="12" y1="19" y2="22"></line>
+                </svg>
+                <span>LIGAR MIC</span>
+            </button>
+
+            <div id="mobile-mic-vu"
+                style="display: none; width: 140px; height: 140px; border-radius: 50%; border: 3px solid #a855f7; position: absolute; top: 0px; left: 0px; transition: transform 0.1s ease-out, opacity 0.1s ease-out; pointer-events: none; opacity: 0; box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);">
+            </div>
+        </div>
+
+        <!-- Controles de Mudo / Desconexão -->
+        <div id="mobile-active-controls"
+            style="display: none; flex-direction: column; gap: 1rem; width: 100%; max-width: 280px; margin-top: 1rem;">
+            <button id="btn-mobile-mute"
+                style="background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); color: #fff; width: 100%; padding: 0.8rem; border-radius: 30px; font-weight: 700; cursor: pointer; transition: all 0.2s; font-family: inherit;">🎙️
+                Mutar Microfone</button>
+        </div>
+
+        <!-- Letra Espelhada Simplificada -->
+        <div id="mobile-lyrics-container"
+            style="display: none; margin-top: 2rem; background: rgba(0, 0, 0, 0.25); border: 1px solid var(--card-border); padding: 1.5rem; border-radius: 16px; width: 100%; max-width: 320px; min-height: 120px; align-items: center; justify-content: center; box-sizing: border-box; display: flex;">
+            <p id="mobile-lyrics-text"
+                style="color: #fff; font-size: 1.15rem; font-weight: 800; line-height: 1.4; margin: 0; text-align: center;">
+                Aguardando início do canto na TV...</p>
+        </div>
+
+        <!-- Botão de Sair do modo Mic Sem Fio e usar apenas o celular (Solo) -->
+        <div style="margin-top: 2.5rem;">
+            <button id="btn-mobile-exit-mic"
+                style="background: transparent; border: 1px solid rgba(255,255,255,0.15); color: var(--dim); padding: 0.6rem 1.5rem; font-size: 0.85rem; font-weight: 700; border-radius: 30px; cursor: pointer; transition: all 0.2s ease;">
+                📱 Usar Apenas o Celular (Solo)
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="main-card">
+            <div id="selection-area">
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.75rem;">
+                    <h3
+                        style="margin: 0; font-size: 1.25rem; font-weight: 800; letter-spacing: -0.01em; color: var(--text); display: flex; align-items: center; gap: 0.5rem;">
+                        Escolha uma música
+                        <!-- Símbolo Minimalista de Status de Dispositivo Ativo -->
+                        <span id="mic-active-badge"
+                            style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; font-weight: 700; color: var(--dim); background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); padding: 0.25rem 0.5rem; border-radius: 20px; transition: all 0.3s ease;">
+                            <span id="mic-badge-dot"
+                                style="width: 6px; height: 6px; border-radius: 50%; background: #ef4444; box-shadow: 0 0 6px #ef4444; display: inline-block; transition: all 0.3s ease;"></span>
+                            <span id="mic-badge-text">Sem Mic</span>
+                        </span>
+                    </h3>
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <!-- Botão Minimalista Conectar PC -->
+                        <button id="btn-force-pc-mic" class="btn-icon-text"
+                            style="border-color: rgba(255,255,255,0.15); color: var(--text); padding: 0.5rem 1.1rem; transition: all 0.25s ease;">
+                            💻 <span class="btn-text" style="margin-left: 0.35rem;">Conectar PC</span>
+                        </button>
+                        <!-- Botão Minimalista Conectar Celular -->
+                        <button id="btn-open-pairing" class="btn-icon-text"
+                            style="border-color: rgba(255,255,255,0.15); color: var(--text); padding: 0.5rem 1.1rem; transition: all 0.25s ease;">
+                            📱 <span class="btn-text" style="margin-left: 0.35rem;">Conectar Celular</span>
+                        </button>
+                        <!-- Botão Minimalista Adicionar Música -->
+                        <button id="btn-open-add-song" class="btn-icon-text"
+                            style="border-color: var(--accent); color: var(--text); padding: 0.5rem 1.1rem; transition: all 0.25s ease;">
+                            ➕ <span class="btn-text" style="margin-left: 0.35rem;">Adicionar Música</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Barra de Busca de Músicas -->
+                <div class="search-container" style="margin-bottom: 1.5rem; position: relative;">
+                    <input type="text" id="search-input" placeholder="Buscar por título ou artista..."
+                        style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid var(--card-border); color: var(--text); font-family: inherit; font-size: 0.95rem; box-sizing: border-box; transition: all 0.25s ease;">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--dim)" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round"
+                        style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); pointer-events: none;">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" x2="16.65" y1="21" y2="16.65"></line>
+                    </svg>
+                </div>
+
+                <div id="song-list" class="song-list">Carregando músicas...</div>
+            </div>
+
+            <div id="game-area" class="game-area">
+                <div class="game-header">
+                    <button id="btn-back" class="btn-icon-text">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="19" x2="5" y1="12" y2="12"></line>
+                            <polyline points="12 19 5 12 12 5"></polyline>
+                        </svg>
+                        Voltar para Lista
+                    </button>
+                    <h2 id="current-song-title">Nome da Música</h2>
+                </div>
+
+                <!-- Barra de Progresso da Música -->
+                <div class="song-progress-container"
+                    style="width: 100%; margin: -0.75rem 0 1.5rem 0; text-align: left;">
+                    <div
+                        style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--dim); margin-bottom: 0.35rem; font-weight: 700;">
+                        <span id="song-time-current">0:00</span>
+                        <span id="song-time-remaining">-0:00</span>
+                    </div>
+                    <div class="song-progress-bg"
+                        style="width: 100%; height: 6px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.02);">
+                        <div id="song-progress-fill"
+                            style="width: 0%; height: 100%; background: var(--accent); transition: width 0.1s linear;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-label">Último Segmento</div>
+                        <div id="seg-score" class="stat-value">0%</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Ajuste Sincronia</div>
+                        <div id="stats-sync-value" class="stat-value">0ms</div>
+                    </div>
+                </div>
+
+                <!-- Barra de Precisão Geral -->
+                <div class="score-progress-container" style="margin-top: 1.5rem; text-align: left;">
+                    <div
+                        style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--dim); margin-bottom: 0.5rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.08em;">
+                        <span>Precisão Geral</span>
+                        <span id="score-percentage-text">0%</span>
+                    </div>
+                    <div class="progress-bar-bg"
+                        style="width: 100%; height: 14px; background: #080d16; border-radius: 50px; overflow: hidden; border: 1px solid var(--card-border);">
+                        <div id="score-progress-fill"
+                            style="width: 0%; height: 100%; background: linear-gradient(90deg, #38bdf8, #fde047); transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1); box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Painel de Contagem de Pausa Instrumental -->
+                <div id="instrumental-pause-container"
+                    style="display: none; flex-direction: column; align-items: center; justify-content: center; margin: 1.5rem auto; animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); width: 100%; max-width: 320px;">
+                    <div
+                        style="font-size: 0.8rem; color: var(--accent); font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span
+                            style="display: inline-block; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 10px var(--accent); animation: pulse 0.8s infinite alternate;"></span>
+                        <span>INSTRUMENTAL (PREPARE-SE)</span>
+                    </div>
+                    <div
+                        style="width: 100%; height: 8px; background: #080d16; border-radius: 4px; overflow: hidden; border: 1px solid var(--card-border); box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);">
+                        <div id="pause-bar-fill"
+                            style="width: 100%; height: 100%; background: var(--accent); transition: width 0.1s linear; box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);">
+                        </div>
+                    </div>
+                    <div id="pause-timer-text"
+                        style="font-size: 1.6rem; font-weight: 800; color: var(--text); margin-top: 0.4rem; text-shadow: 0 0 10px rgba(255,255,255,0.1);">
+                        0.0s</div>
+                </div>
+
+                <div class="carousel-container">
+                    <!-- Overlay de Silêncio / Solo Instrumental (cobre a letra em silencios > 3s) -->
+                    <div id="silence-overlay"
+                        style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-radius: 20px; flex-direction: column; align-items: center; justify-content: center; z-index: 10; animation: fadeIn 0.3s ease; box-sizing: border-box; padding: 2rem;">
+                        <div
+                            style="font-size: 0.9rem; color: #60a5fa; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; text-shadow: 0 0 10px rgba(96, 165, 250, 0.4);">
+                            <span
+                                style="display: inline-block; width: 10px; height: 10px; background: #60a5fa; border-radius: 50%; box-shadow: 0 0 12px #60a5fa; animation: pulse 0.8s infinite alternate;"></span>
+                            <span>SOLO INSTRUMENTAL</span>
+                        </div>
+                        <div
+                            style="width: 80%; max-width: 350px; height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);">
+                            <div id="silence-progress-fill"
+                                style="width: 100%; height: 100%; background: linear-gradient(90deg, #60a5fa, #3b82f6); transition: width 0.05s linear; box-shadow: 0 0 10px rgba(96, 165, 250, 0.5); border-radius: 10px;">
+                            </div>
+                        </div>
+                        <div id="silence-timer-text"
+                            style="font-size: 2rem; font-weight: 900; color: #fff; margin-top: 0.6rem; text-shadow: 0 0 15px rgba(255,255,255,0.2);">
+                            0.0s</div>
+                    </div>
+
+                    <!-- Overlay de Encerramento da Música (Outro Instrumental) -->
+                    <div id="outro-overlay"
+                        style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.97); backdrop-filter: blur(12px); border-radius: 20px; flex-direction: column; align-items: center; justify-content: center; z-index: 15; animation: fadeIn 0.5s ease; box-sizing: border-box; padding: 2rem; border: 2px solid rgba(56, 189, 248, 0.15); box-shadow: 0 0 30px rgba(56, 189, 248, 0.1);">
+                        <div
+                            style="font-size: 1.1rem; color: var(--accent); font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.6rem; text-shadow: 0 0 15px rgba(56, 189, 248, 0.4); animation: pulse 0.8s infinite alternate;">
+                            🎸 FINALIZANDO APRESENTAÇÃO
+                        </div>
+                        <p
+                            style="color: var(--text); font-size: 1.25rem; font-weight: 700; margin: 0 0 1.2rem 0; text-align: center; font-family: system-ui, sans-serif;">
+                            Você deu o seu show! Aguarde o solo final... ⚡
+                        </p>
+                        <div
+                            style="width: 80%; max-width: 380px; height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08);">
+                            <div id="outro-progress-fill"
+                                style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent), #fde047); box-shadow: 0 0 10px rgba(56, 189, 248, 0.5); border-radius: 10px; transition: width 0.1s linear;">
+                            </div>
+                        </div>
+                        <div id="outro-timer-text"
+                            style="font-size: 0.85rem; color: var(--dim); font-weight: 700; margin-top: 0.6rem; letter-spacing: 0.05em;">
+                            Aguardando pontuação...</div>
+                    </div>
+
+                    <div id="line-prev" class="carousel-line prev-line"></div>
+                    <div id="line-curr" class="carousel-line curr-line"></div>
+                    <!-- Barra de Carregamento Dinâmica do Verso Atual (fora do line-curr para não ser limpa) -->
+                    <div id="verse-progress-container"
+                        style="width: 80%; max-width: 450px; height: 5px; background: rgba(255,255,255,0.06); border-radius: 10px; margin: 0.5rem auto 1.5rem auto; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); transition: opacity 0.3s ease; opacity: 0; box-shadow: inset 0 1px 3px rgba(0,0,0,0.6);">
+                        <div id="verse-progress-fill"
+                            style="width: 0%; height: 100%; background: linear-gradient(90deg, #3b82f6, #60a5fa); transition: width 0.05s linear; box-shadow: 0 0 10px rgba(59, 130, 246, 0.6); border-radius: 10px;">
+                        </div>
+                    </div>
+                    <div id="line-next" class="carousel-line next-line"></div>
+                </div>
+
+                <div id="transcription-text" class="transcription-debug"><strong>Ouvi:</strong> <span
+                        style="color: var(--dim);">[Aguardando canto...]</span></div>
+
+                <div class="controls">
+                    <button id="btn-start">INICIAR CANTO</button>
+                    <button id="btn-exit" style="display: none; background: var(--error);">SAIR DA MÚSICA</button>
+                </div>
+
+                <div id="sync-controls"
+                    style="display: none; margin-top: 1.5rem; background: rgba(0, 0, 0, 0.2); padding: 1rem; border-radius: 12px; border: 1px solid var(--card-border); flex-direction: column; align-items: center; justify-content: center; gap: 1rem; width: 100%; box-sizing: border-box;">
+                    <div
+                        style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 1.5rem; width: 100%;">
+
+                        <!-- Bloco de Sincronia -->
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span
+                                style="color: var(--dim); font-size: 0.85rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Sincronia:</span>
+                            <button id="btn-sync-minus"
+                                style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border-radius: 8px; background: rgba(255,255,255,0.05); color: var(--text); border: 1px solid var(--card-border); box-shadow: none; font-weight: 700;">-100ms</button>
+                            <span id="sync-value"
+                                style="font-weight: 800; font-size: 1rem; min-width: 55px; text-align: center;">0ms</span>
+                            <button id="btn-sync-plus"
+                                style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border-radius: 8px; background: rgba(255, 255, 255, 0.05); color: var(--text); border: 1px solid var(--card-border); box-shadow: none; font-weight: 700;">+100ms</button>
+                        </div>
+
+                        <!-- Divisor vertical discreto no desktop -->
+                        <div class="control-divider"
+                            style="width: 1px; height: 24px; background: rgba(255,255,255,0.1);"></div>
+
+                        <!-- Bloco de Volume do Backing Track -->
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span
+                                style="color: var(--dim); font-size: 0.85rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.35rem;">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                    style="color: var(--accent);">
+                                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                                </svg>
+                                Volume:
+                            </span>
+                            <input type="range" id="backing-volume-slider" min="0" max="1" step="0.05" value="1"
+                                style="width: 120px; accent-color: var(--accent); cursor: pointer; height: 6px; background: rgba(255,255,255,0.1); border-radius: 5px; outline: none; border: none; vertical-align: middle;">
+                            <span id="backing-volume-value"
+                                style="font-weight: 800; font-size: 1rem; min-width: 40px; text-align: center;">100%</span>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Fim de Jogo Cinematográfico -->
+    <div id="game-over-modal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(8px); z-index: 1000; align-items: center; justify-content: center; box-sizing: border-box;">
+        <div
+            style="background: var(--card); border: 2px solid #334155; padding: 3rem 2.5rem; border-radius: 24px; text-align: center; max-width: 420px; width: 90%; box-shadow: 0 0 45px rgba(56, 189, 248, 0.15); animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); box-sizing: border-box;">
+            <h2
+                style="font-size: 2.2rem; font-weight: 800; color: var(--accent); margin: 0 0 0.5rem 0; text-shadow: 0 0 15px rgba(56, 189, 248, 0.3); letter-spacing: 0.05em;">
+                FIM DE JOGO</h2>
+            <p
+                style="color: var(--dim); text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.85rem; margin: 0 0 2rem 0; font-weight: 700;">
+                Desempenho Geral</p>
+
+            <!-- Letra de Rank Gigante -->
+            <div id="rank-badge"
+                style="font-size: 7.5rem; font-weight: 900; line-height: 1; margin: 0 auto 1.2rem auto; text-shadow: 0 0 35px currentColor; font-family: system-ui, sans-serif;">
+                S</div>
+            <div id="rank-title"
+                style="font-size: 1.25rem; font-weight: 700; color: var(--text); margin-bottom: 2rem; letter-spacing: 0.02em;">
+                PERFORMANCE LENDÁRIA!</div>
+
+            <!-- Pontuação Média -->
+            <div
+                style="background: #0f172a; padding: 1.2rem; border-radius: 16px; border: 1px solid #334155; margin-bottom: 2.5rem;">
+                <div
+                    style="font-size: 0.8rem; color: var(--dim); text-transform: uppercase; margin-bottom: 0.4rem; letter-spacing: 0.05em; font-weight: 700;">
+                    Pontuação Média</div>
+                <div id="modal-score" style="font-size: 2.4rem; font-weight: 800; color: var(--highlight);">0.0%</div>
+            </div>
+
+            <button id="btn-restart-game"
+                style="background: var(--accent); color: var(--bg); border: none; padding: 1rem 2.5rem; font-size: 1.15rem; font-weight: 800; border-radius: 50px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); width: 100%; outline: none; letter-spacing: 0.05em;">
+                CANTAR NOVAMENTE
+            </button>
+        </div>
+    </div>
+
+    <audio id="audio-player"></audio>
+
+    <!-- Modal Adicionar Música -->
+    <div id="add-song-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content admin-modal">
+            <h2>Adicionar Nova Música 🎵</h2>
+            <form id="add-song-form" enctype="multipart/form-data">
+                <!-- Seletor de Abas Premium -->
+                <div class="tabs-container"
+                    style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem; background: rgba(0, 0, 0, 0.25); padding: 0.3rem; border-radius: 12px; border: 1px solid var(--card-border);">
+                    <button type="button" id="tab-btn-youtube" class="tab-btn active"
+                        style="flex: 1; padding: 0.65rem; border: none; border-radius: 8px; background: var(--accent-gradient); color: #000; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease;">
+                        🎥 Importar do YouTube
+                    </button>
+                    <button type="button" id="tab-btn-local" class="tab-btn"
+                        style="flex: 1; padding: 0.65rem; border: none; border-radius: 8px; background: transparent; color: var(--dim); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease;">
+                        📁 Enviar Arquivos
+                    </button>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label for="song-title">Título da Música:</label>
+                        <input type="text" id="song-title" name="title" required placeholder="Ex: Teenagers">
+                    </div>
+                    <div class="form-group">
+                        <label for="song-artist">Artista / Banda:</label>
+                        <input type="text" id="song-artist" name="artist" required
+                            placeholder="Ex: My Chemical Romance">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="song-language">Idioma da Letra:</label>
+                    <select id="song-language" name="language">
+                        <option value="en">Inglês (en)</option>
+                        <option value="pt">Português (pt)</option>
+                        <option value="es">Espanhol (es)</option>
+                    </select>
+                </div>
+
+                <!-- Seção do YouTube (Default Ativo) -->
+                <div id="section-youtube-import">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="youtube-vocal-url">URL do Vídeo Vocal (Original):</label>
+                            <input type="text" id="youtube-vocal-url" name="youtube_vocal_url"
+                                placeholder="Ex: https://www.youtube.com/watch?v=kXYiU_JCYtU">
+                        </div>
+                        <div class="form-group">
+                            <label for="youtube-backing-url">URL do Vídeo Instrumental (Karaokê):</label>
+                            <input type="text" id="youtube-backing-url" name="youtube_backing_url"
+                                placeholder="Ex: https://www.youtube.com/watch?v=Zg_F82yB0pU">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção de Arquivos Locais (Oculto por Padrão) -->
+                <div id="section-local-upload" style="display: none;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="vocal-file">Áudio Vocal (.mp3):</label>
+                            <input type="file" id="vocal-file" name="vocal_file" accept="audio/*">
+                        </div>
+                        <div class="form-group">
+                            <label for="backing-file">Áudio Instrumental (.mp3):</label>
+                            <input type="file" id="backing-file" name="backing_file" accept="audio/*">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label for="lrc-file">Arquivo LRC de Letras (Opcional):</label>
+                        <input type="file" id="lrc-file" name="lrc_file" accept=".lrc">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label for="lyrics-start">Início do Vocal na Letra (Ajuste LRC da IA - Ex: 0:10 ou 10.5):</label>
+                    <input type="text" id="lyrics-start" name="lyrics_start" value="0.0">
+                    <span style="font-size: 0.75rem; color: var(--dim); text-align: left;">(Se o Whisper começar a
+                        marcar a letra a partir de 0:00, use este campo para empurrar todos os tempos da letra gerada
+                        pela IA)</span>
+                </div>
+
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label for="plain-lyrics">Letra Completa da Música (Opcional - Ajuda a IA a alinhar sem
+                        erros):</label>
+                    <textarea id="plain-lyrics" name="plain_lyrics" rows="5"
+                        placeholder="Cole a letra original da música aqui (linha por linha, sem marcas de tempo)..."
+                        style="width: 100%; min-height: 120px; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--card-border); border-radius: 8px; color: #fff; padding: 0.6rem; font-family: inherit; font-size: 0.85rem; resize: vertical; box-sizing: border-box; outline: none;"></textarea>
+                    <span
+                        style="font-size: 0.75rem; color: var(--dim); text-align: left; display: block; margin-top: 0.25rem;">(Se
+                        você cololar a letra original aqui, a IA alinhará os tempos do áudio com ela automaticamente,
+                        marcando a música como pronta de imediato!)</span>
+                </div>
+
+                <!-- Configurações Avançadas Colapsáveis (Corte & Silêncio) -->
+                <div style="border-top: 1px solid #334155; margin-top: 1.5rem; padding-top: 1rem;">
+                    <button type="button" id="btn-toggle-advanced"
+                        style="background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); color: var(--dim); padding: 0.6rem 1rem; border-radius: 10px; font-size: 0.85rem; font-weight: 700; width: 100%; cursor: pointer; transition: all 0.2s ease; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; outline: none; box-shadow: none; transform: none;">
+                        <span>⚙️ Opções Avançadas de Ajuste Fino</span>
+                        <span id="advanced-toggle-icon">▼</span>
+                    </button>
+
+                    <div id="advanced-options-container"
+                        style="display: none; margin-top: 1rem; animation: fadeIn 0.3s ease;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label for="vocal-start">Início do Vocal (Ex: 0:10 ou 10.0):</label>
+                                <input type="text" id="vocal-start" name="vocal_start" value="0.0">
+                            </div>
+                            <div class="form-group">
+                                <label for="vocal-end">Fim do Vocal (Ex: 4:30 ou -1.0):</label>
+                                <input type="text" id="vocal-end" name="vocal_end" value="-1.0">
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                            <div class="form-group">
+                                <label for="backing-start">Início do Instrumental (Ex: 0:10 ou 10.0):</label>
+                                <input type="text" id="backing-start" name="backing_start" value="0.0">
+                            </div>
+                            <div class="form-group">
+                                <label for="backing-end">Fim do Instrumental (Ex: 4:30 ou -1.0):</label>
+                                <input type="text" id="backing-end" name="backing_end" value="-1.0">
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <label for="silence-padding" style="display: flex; align-items: center; gap: 0.5rem;">
+                                <span>Tempo Vazio / Silêncio Inicial (Ex: 1.5 ou 0:02):</span>
+                            </label>
+                            <input type="text" id="silence-padding" name="silence_padding" value="0.0">
+                            <span style="font-size: 0.75rem; color: var(--dim); text-align: left;">(Ideal para dar tempo
+                                de preparação ao cantor no começo)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-buttons" style="margin-top: 1.5rem;">
+                    <button type="button" id="btn-close-add-song" class="btn"
+                        style="background: transparent; border: 1px solid #475569; color: var(--text); cursor: pointer;">Cancelar</button>
+                    <button type="submit" class="btn"
+                        style="background: var(--accent); color: #000; font-weight: 800; border: none; cursor: pointer;">Adicionar
+                        Música</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Pareamento de Celular (Microfone) -->
+    <div id="pairing-modal" class="modal-overlay" style="display: none; z-index: 1000;">
+        <div class="modal-content admin-modal" style="max-width: 480px; text-align: center;">
+            <h2
+                style="color: #a855f7; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                🎙️ Celular como Microfone</h2>
+            <p style="font-size: 0.9rem; color: var(--dim); margin-top: 0; margin-bottom: 1.5rem;">
+                Cante livremente usando o microfone do celular enquanto o áudio e a letra rolam na TV!
+            </p>
+
+            <div
+                style="background: rgba(0, 0, 0, 0.3); border: 1px solid var(--card-border); padding: 1.5rem; border-radius: 16px; margin-bottom: 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+                <!-- QR Code do IP do PC -->
+                <img id="pairing-qrcode" src="" alt="QR Code de Pareamento"
+                    style="width: 180px; height: 180px; border-radius: 12px; border: 4px solid #fff; background: #fff; display: none;">
+                <div id="pairing-qrcode-loading"
+                    style="font-size: 0.9rem; color: var(--dim); height: 180px; display: flex; align-items: center; justify-content: center;">
+                    Gerando QR Code...
+                </div>
+
+                <div
+                    style="font-size: 0.85rem; color: var(--dim); text-align: center; word-break: break-all; max-width: 100%;">
+                    Ou acesse este link no seu celular:<br>
+                    <a id="pairing-link" href="#" target="_blank"
+                        style="color: var(--accent); font-weight: 700; text-decoration: none; display: inline-block; margin-top: 0.25rem;">https://localhost:8000/</a>
+                </div>
+            </div>
+
+            <div id="pairing-status-box"
+                style="font-weight: 800; font-size: 1rem; color: #a855f7; display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-bottom: 1rem;">
+                <span id="pairing-status-dot" class="status-dot"
+                    style="background: var(--dim); animation: none; width: 10px; height: 10px;"></span>
+                <span id="pairing-status-text">Aguardando conexão do celular...</span>
+            </div>
+
+            <div class="modal-buttons" style="margin-top: 1.5rem; justify-content: center;">
+                <button type="button" id="btn-close-pairing" class="btn"
+                    style="background: transparent; border: 1px solid #475569; color: var(--text); cursor: pointer; width: 100%; max-width: 200px;">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editor de Letras LRC -->
+    <div id="lrc-editor-modal" class="modal-overlay" style="display: none; z-index: 1000;">
+        <div class="modal-content admin-modal" style="max-width: 600px;">
+            <h2>Revisar Letras da IA 📝🤖</h2>
+            <p style="font-size: 0.85rem; color: var(--dim); margin-top: 0; margin-bottom: 1rem; text-align: left;">
+                Abaixo está o rascunho de letras gerado automaticamente pelo Whisper. Ajuste erros ortográficos ou
+                tempos antes de gerar o Karaokê.
+            </p>
+            <form id="lrc-editor-form">
+                <input type="hidden" id="editor-slug" name="slug">
+                <input type="hidden" id="editor-language" name="language">
+                <div class="form-group">
+                    <label for="editor-textarea">Arquivo LRC (Edite livremente):</label>
+                    <textarea id="editor-textarea" name="lyrics_lrc"
+                        style="width: 100%; height: 300px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: var(--text); padding: 0.8rem; font-family: monospace; font-size: 0.9rem; line-height: 1.5; resize: vertical; box-sizing: border-box;"></textarea>
+                </div>
+                <div class="modal-buttons" style="margin-top: 1.5rem;">
+                    <button type="button" id="btn-close-editor" class="btn"
+                        style="background: transparent; border: 1px solid #475569; color: var(--text); cursor: pointer;">Cancelar</button>
+                    <button type="submit" class="btn"
+                        style="background: var(--accent); color: #000; font-weight: 800; border: none; cursor: pointer;">Salvar
+                        e Gerar Karaokê</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Overlay de Progresso/Aguardando IA -->
+    <div id="loading-overlay" class="modal-overlay"
+        style="display: none; z-index: 1100; background: rgba(2, 6, 23, 0.9);">
+        <div style="text-align: center; color: var(--text);">
+            <div
+                style="width: 60px; height: 60px; border: 4px solid #1e293b; border-top: 4px solid var(--accent); border-radius: 50%; margin: 0 auto 1.5rem; animation: spin 1s linear infinite; box-shadow: 0 0 20px rgba(56,189,248,0.2);">
+            </div>
+            <h2 id="loading-status-title" style="margin-bottom: 0.5rem; font-weight: 800; letter-spacing: 0.05em;">
+                Fatiando Áudios...</h2>
+            <p id="loading-status-desc" style="color: var(--dim); font-size: 0.9rem;">Por favor, aguarde enquanto
+                processamos e transcrevemos as faixas.</p>
+        </div>
+    </div>
+
+    <script>
+        // Função auxiliar robusta para obter permissão e stream do microfone com fallbacks inteligentes (evita OverconstrainedError no iOS/Safari)
+        async function getMicrophoneStream() {
+            const constraintsList = [
+                {
+                    audio: {
+                        echoCancellation: { ideal: false },
+                        noiseSuppression: { ideal: false },
+                        autoGainControl: { ideal: false },
+                        channelCount: { ideal: 1 }
+                    }
+                },
+                {
+                    audio: {
+                        echoCancellation: false,
+                        noiseSuppression: false,
+                        autoGainControl: false,
+                        channelCount: 1
+                    }
+                },
+                {
+                    audio: true
+                }
+            ];
+
+            let lastErr = null;
+            for (const constraints of constraintsList) {
+                try {
+                    console.log("Tentando obter microfone com constraints:", constraints);
+                    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                    console.log("Microfone obtido com sucesso!");
+                    return stream;
+                } catch (err) {
+                    console.warn("Falha ao obter microfone com constraints:", constraints, err);
+                    lastErr = err;
+                }
+            }
+            throw lastErr;
+        }
+
+        const songListEl = document.getElementById('song-list');
+        const selectionArea = document.getElementById('selection-area');
+        const gameArea = document.getElementById('game-area');
+        const lyricsDisplay = document.getElementById('line-curr');
+        const prevLyricsDisplay = document.getElementById('line-prev');
+        const nextLyricsDisplay = document.getElementById('line-next');
+        const btnStart = document.getElementById('btn-start');
+        const btnExit = document.getElementById('btn-exit');
+        const btnBack = document.getElementById('btn-back');
+        const audioPlayer = document.getElementById('audio-player');
+
+        let selectedSongId = null;
+        let allSongs = [];
+        let ws = null;
+        let transcriptionActiveTimer = null;
+        let audioContext = null;
+        let currentSegments = null;
+        let currentSegmentData = null;
+        let lastSegmentLyricsTimed = null;
+        let animationId = null;
+        let syncOffset = 0; // em segundos
+        let isFirstSegment = true;
+        let totalPauseDuration = 0; // Controla o tempo total de uma pausa longa
+        let pauseStartTarget = 0; // Alvo de tempo da pausa instrumental
+
+        // Configurações de Pareamento Multi-Dispositivo (TV + Celular)
+        const urlParams = new URLSearchParams(window.location.search);
+        const myRole = urlParams.get('role') || 'display';
+
+        // Recupera ou gera o ID único e persistente da sala
+        let activeRoomId = localStorage.getItem('karaoke_room_id');
+        if (!activeRoomId) {
+            activeRoomId = Math.floor(1000 + Math.random() * 9000).toString();
+            localStorage.setItem('karaoke_room_id', activeRoomId);
+        }
+        const myRoom = urlParams.get('room') || activeRoomId;
+
+        // Estado da conexão do microfone externo no display (TV)
+        let isMobileMicrophoneConnected = false;
+        let localStreamForced = false;
+        let micSourceMode = 'pc';
+        let isSingingActive = false;
+        let isOutroActive = false;
+        let outroStartPlayerTime = 0;
+        let outroTotalDuration = 0;
+
+        // Detecção inteligente de Modo Solo no Celular (Dispositivo Individual) vs PC/TV (Dispositivo Central)
+        const isSoloMobileMode = (myRole === 'display') && (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768);
+
+        function updateMicStatusPanel() {
+            if (myRole !== 'display') return;
+            const badge = document.getElementById('mic-active-badge');
+            const dot = document.getElementById('mic-badge-dot');
+            const text = document.getElementById('mic-badge-text');
+            const btnForcePc = document.getElementById('btn-force-pc-mic');
+            const btnForceMobile = document.getElementById('btn-open-pairing');
+
+            if (!dot || !text) return;
+
+            if (isSoloMobileMode) {
+                dot.style.display = 'none';
+                text.innerText = 'Modo Solo (Celular)';
+                if (badge) {
+                    badge.style.borderColor = 'rgba(56, 189, 248, 0.3)';
+                    badge.style.background = 'rgba(56, 189, 248, 0.05)';
+                }
+                if (btnForcePc) btnForcePc.style.display = 'none';
+                if (btnForceMobile) btnForceMobile.style.display = 'none';
+                return;
+            }
+
+            if (isMobileMicrophoneConnected && localStreamForced) {
+                dot.style.background = 'linear-gradient(135deg, #3b82f6, #10b981)';
+                dot.style.boxShadow = '0 0 10px #10b981';
+                text.innerText = 'PC + Celular';
+                if (badge) {
+                    badge.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+                    badge.style.background = 'rgba(16, 185, 129, 0.08)';
+                }
+                if (btnForcePc) btnForcePc.style.borderColor = '#3b82f6';
+                if (btnForceMobile) btnForceMobile.style.borderColor = '#a855f7';
+            } else if (isMobileMicrophoneConnected) {
+                dot.style.background = '#10b981';
+                dot.style.boxShadow = '0 0 8px #10b981';
+                text.innerText = 'Celular Ativo';
+                if (badge) {
+                    badge.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+                    badge.style.background = 'rgba(16, 185, 129, 0.05)';
+                }
+                if (btnForcePc) btnForcePc.style.borderColor = 'rgba(255,255,255,0.15)';
+                if (btnForceMobile) btnForceMobile.style.borderColor = '#a855f7';
+            } else if (localStreamForced) {
+                dot.style.background = '#3b82f6';
+                dot.style.boxShadow = '0 0 8px #3b82f6';
+                text.innerText = 'PC Ativo';
+                if (badge) {
+                    badge.style.borderColor = 'rgba(59, 130, 246, 0.3)';
+                    badge.style.background = 'rgba(59, 130, 246, 0.05)';
+                }
+                if (btnForcePc) btnForcePc.style.borderColor = '#3b82f6';
+                if (btnForceMobile) btnForceMobile.style.borderColor = 'rgba(255,255,255,0.15)';
+            } else {
+                dot.style.background = '#ef4444';
+                dot.style.boxShadow = '0 0 8px #ef4444';
+                text.innerText = 'Sem Mic';
+                if (badge) {
+                    badge.style.borderColor = 'rgba(239, 68, 68, 0.2)';
+                    badge.style.background = 'rgba(239, 68, 68, 0.03)';
+                }
+                if (btnForcePc) btnForcePc.style.borderColor = 'rgba(255,255,255,0.15)';
+                if (btnForceMobile) btnForceMobile.style.borderColor = 'rgba(255,255,255,0.15)';
+            }
+        }
+
+        async function checkInitialMicPermission() {
+            if (myRole !== 'display') return;
+            try {
+                if (navigator.permissions && navigator.permissions.query) {
+                    const status = await navigator.permissions.query({ name: 'microphone' });
+                    localStreamForced = (status.state === 'granted');
+                    updateMicStatusPanel();
+
+                    status.onchange = () => {
+                        localStreamForced = (status.state === 'granted');
+                        updateMicStatusPanel();
+                    };
+                }
+            } catch (e) {
+                console.debug("navigator.permissions não suportado:", e);
+            }
+            updateMicStatusPanel();
+        }
+
+        // Inicialização da View com base no papel (TV ou Celular)
+        window.addEventListener('DOMContentLoaded', () => {
+            if (myRole === 'mic') {
+                // Esconde toda a interface padrão da TV/PC
+                const containerEl = document.querySelector('.container');
+                const headerEl = document.querySelector('.app-header');
+                if (containerEl) containerEl.style.display = 'none';
+                if (headerEl) headerEl.style.display = 'none';
+
+                // Exibe a interface de Microfone Sem Fio
+                const mobileMicArea = document.getElementById('mobile-mic-area');
+                if (mobileMicArea) mobileMicArea.style.display = 'flex';
+
+                const roomIdEl = document.getElementById('mobile-room-id');
+                if (roomIdEl) roomIdEl.innerText = myRoom;
+
+                // Conecta ao WebSocket da sala persistentemente
+                connectMobileMicrophoneWebSocket();
+            } else {
+                // Setup do microfone local e status (Individual / Solo ou PC/TV)
+                if (isSoloMobileMode) {
+                    localStreamForced = true;
+                    micSourceMode = 'pc';
+                    updateMicStatusPanel();
+                } else {
+                    checkInitialMicPermission();
+                }
+
+                const btnForcePc = document.getElementById('btn-force-pc-mic');
+                if (btnForcePc) {
+                    btnForcePc.onclick = async () => {
+                        try {
+                            const testStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                            testStream.getTracks().forEach(t => t.stop());
+
+                            localStreamForced = true;
+                            isMobileMicrophoneConnected = false;
+                            micSourceMode = 'pc';
+                            updateMicStatusPanel();
+                            showToast("Microfone do PC ativado e pronto para cantar!", "success");
+                        } catch (e) {
+                            console.error("Erro ao ativar microfone local:", e);
+                            localStreamForced = false;
+                            updateMicStatusPanel();
+
+                            if (e.name === 'NotAllowedError' || e.name === 'PermissionDeniedError') {
+                                showToast("Microfone bloqueado! Clique no ícone de CADEADO 🔒 ou MICROFONE 🎤 na barra de endereços (lado esquerdo) e mude para 'Permitir'.", "error", 10000);
+                            } else if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+                                showToast("O navegador bloqueia microfone em conexões HTTP sem fio. Acesse via http://localhost:8000/ no PC para liberar!", "error", 12000);
+                            } else {
+                                showToast("Não foi possível acessar o microfone do PC: " + e.message, "error");
+                            }
+                        }
+                    };
+                }
+            }
+        });
+
+        let mobileWs = null;
+        let micMuted = false;
+
+        function connectMobileMicrophoneWebSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws/room/${myRoom}?role=mic`;
+
+            mobileWs = new WebSocket(wsUrl);
+            mobileWs.binaryType = 'arraybuffer';
+
+            mobileWs.onopen = () => {
+                document.getElementById('mobile-song-title').innerText = "Aguardando início...";
+                document.getElementById('mobile-status-text').innerHTML = `🎙️ Microfone Pareado (Sala <span style="color: #a855f7; font-weight: 800;">${myRoom}</span>)`;
+                showToast("Microfone pareado com sucesso!", "success");
+            };
+
+            mobileWs.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+
+                if (data.type === 'pairing_status') {
+                    if (data.status === 'paired') {
+                        document.getElementById('mobile-status-text').innerHTML = `🎙️ Pareado e Pronto (Sala <span style="color: #a855f7; font-weight: 800;">${myRoom}</span>)`;
+                    } else if (data.status === 'unpaired') {
+                        document.getElementById('mobile-status-text').innerHTML = `<span style="color: var(--error); font-weight: 800;">⚠️ TV Desconectada (Sala ${myRoom})</span>`;
+                    }
+                } else if (data.type === 'singing_state') {
+                    isSingingActive = data.active;
+                } else if (data.type === 'segment_start') {
+                    // Espelha a letra da música na tela do celular!
+                    const lyrContainer = document.getElementById('mobile-lyrics-container');
+                    if (lyrContainer) lyrContainer.style.display = 'flex';
+
+                    const lyrText = document.getElementById('mobile-lyrics-text');
+                    if (lyrText) lyrText.innerText = data.lyrics;
+
+                    if (data.song_title) {
+                        document.getElementById('mobile-song-title').innerText = data.song_title;
+                    }
+                } else if (data.type === 'segment_result') {
+                    // Mostra o resultado do último segmento na tela do celular!
+                    const lyrText = document.getElementById('mobile-lyrics-text');
+                    if (lyrText) {
+                        lyrText.innerHTML = `Segmento Anterior: <span style="color: #fde047; font-weight: 900;">${data.score}%</span><br><span style="font-size: 0.95rem; color: var(--dim); font-weight: 500;">Precisão Geral: ${data.total_score}%</span>`;
+                    }
+                } else if (data.type === 'outro_start') {
+                    const lyrText = document.getElementById('mobile-lyrics-text');
+                    if (lyrText) {
+                        lyrText.innerHTML = `🎸 FINALIZANDO APRESENTAÇÃO<br><span style="font-size: 1rem; color: #a855f7; font-weight: 800;">Você deu o seu show! ⚡</span><br><span style="font-size: 0.9rem; color: var(--dim);">Aguardando pontuação final...</span>`;
+                    }
+                } else if (data.type === 'game_over') {
+                    const lyrText = document.getElementById('mobile-lyrics-text');
+                    if (lyrText) {
+                        lyrText.innerHTML = `🎉 JOGO CONCLUÍDO!<br>Média Final: <span style="color: #fde047; font-weight: 900; font-size: 1.4rem;">${data.total_score}%</span>`;
+                    }
+                }
+            };
+
+            mobileWs.onclose = () => {
+                document.getElementById('mobile-status-text').innerHTML = `<span style="color: var(--error); font-weight: 800;">❌ Conexão Perdida. Reconectando...</span>`;
+                setTimeout(connectMobileMicrophoneWebSocket, 3000);
+            };
+        }
+
+        function connectDisplayWebSocket() {
+            if (myRole !== 'display') return;
+
+            // Se já existe um WebSocket aberto para o display, não cria outro
+            if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) {
+                return;
+            }
+
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            // Conecta sem o parâmetro song_id porque ainda não escolhemos nenhuma música na home screen!
+            const wsUrl = `${protocol}//${window.location.host}/ws/room/${myRoom}?role=display`;
+
+            ws = new WebSocket(wsUrl);
+            ws.binaryType = 'arraybuffer';
+
+            ws.onopen = () => {
+                console.log("WebSocket do Display conectado na sala:", myRoom);
+            };
+
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                handleServerMessage(data);
+            };
+
+            ws.onclose = () => {
+                console.log("WebSocket do Display desconectado. Tentando reconectar...");
+                // Só reconecta automaticamente se ainda não iniciamos o jogo (se o gameArea estiver oculto!)
+                const selectionArea = document.getElementById('selection-area');
+                if (selectionArea && selectionArea.style.display !== 'none') {
+                    setTimeout(connectDisplayWebSocket, 3000);
+                }
+            };
+
+            ws.onerror = (err) => {
+                console.error("Erro no WebSocket do Display:", err);
+            };
+        }
+
+        // Vinculação de eventos para controles do celular
+        window.addEventListener('DOMContentLoaded', () => {
+            const btnMobileActivate = document.getElementById('btn-mobile-activate');
+            const mobileActiveControls = document.getElementById('mobile-active-controls');
+            const mobileLyricsContainer = document.getElementById('mobile-lyrics-container');
+            const btnMobileMute = document.getElementById('btn-mobile-mute');
+            const mobileMicVu = document.getElementById('mobile-mic-vu');
+
+            if (btnMobileActivate) {
+                btnMobileActivate.onclick = async () => {
+                    btnMobileActivate.disabled = true;
+                    btnMobileActivate.innerText = "ATIVANDO...";
+
+                    try {
+                        // Inicializa áudio e captura no celular
+                        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                        const stream = await getMicrophoneStream();
+
+                        // Handshake com o sample rate do celular
+                        if (mobileWs && mobileWs.readyState === WebSocket.OPEN) {
+                            mobileWs.send(JSON.stringify({ type: "client_info", sample_rate: audioCtx.sampleRate }));
+                        }
+
+                        // AudioWorklet para stream com Buffer de 4096 amostras (reduz overhead de pacotes em 97%)
+                        const workletCode = `
+                        class AudioProcessor extends AudioWorkletProcessor {
+                            constructor() {
+                                super();
+                                this.bufferSize = 4096;
+                                this.buffer = new Float32Array(this.bufferSize);
+                                this.bufferIndex = 0;
+                            }
+                            process(inputs, outputs, parameters) {
+                                const input = inputs[0];
+                                if (input.length > 0) {
+                                    const samples = input[0];
+                                    for (let i = 0; i < samples.length; i++) {
+                                        this.buffer[this.bufferIndex++] = samples[i];
+                                        if (this.bufferIndex >= this.bufferSize) {
+                                            const chunk = this.buffer.slice(0);
+                                            this.port.postMessage(chunk.buffer, [chunk.buffer]);
+                                            this.bufferIndex = 0;
+                                        }
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                        registerProcessor('audio-processor', AudioProcessor);
+                    `;
+                        const blob = new Blob([workletCode], { type: 'application/javascript' });
+                        const workletUrl = URL.createObjectURL(blob);
+
+                        await audioCtx.audioWorklet.addModule(workletUrl);
+                        const source = audioCtx.createMediaStreamSource(stream);
+                        const processor = new AudioWorkletNode(audioCtx, 'audio-processor');
+
+                        // Analisador para o VU Meter visual premium!
+                        const analyser = audioCtx.createAnalyser();
+                        analyser.fftSize = 256;
+                        const bufferLength = analyser.frequencyBinCount;
+                        const dataArray = new Uint8Array(bufferLength);
+                        source.connect(analyser);
+
+                        processor.port.onmessage = (event) => {
+                            if (mobileWs && mobileWs.readyState === WebSocket.OPEN && !micMuted && isSingingActive) {
+                                mobileWs.send(event.data);
+                            }
+                        };
+
+                        source.connect(processor);
+                        processor.connect(audioCtx.destination); // Mudo
+
+                        // Atualiza UI para estado Ativo
+                        btnMobileActivate.innerHTML = `<svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" x2="12" y1="19" y2="22"></line></svg><span>ATIVO</span>`;
+                        btnMobileActivate.style.background = 'linear-gradient(135deg, #10b981, #059669)'; // Verde
+                        btnMobileActivate.style.boxShadow = '0 0 35px rgba(16, 185, 129, 0.6)';
+
+                        if (mobileActiveControls) mobileActiveControls.style.display = 'flex';
+                        if (mobileLyricsContainer) mobileLyricsContainer.style.display = 'flex';
+                        if (mobileMicVu) mobileMicVu.style.display = 'block';
+
+                        // Loop do VU Meter
+                        function drawVU() {
+                            if (!analyser || micMuted) {
+                                if (mobileMicVu) {
+                                    mobileMicVu.style.transform = 'scale(1.0)';
+                                    mobileMicVu.style.opacity = '0';
+                                }
+                                requestAnimationFrame(drawVU);
+                                return;
+                            }
+                            analyser.getByteFrequencyData(dataArray);
+                            let sum = 0;
+                            for (let i = 0; i < bufferLength; i++) {
+                                sum += dataArray[i];
+                            }
+                            const average = sum / bufferLength;
+
+                            // Transforma o tamanho e brilho do VU com base na amplitude vocal!
+                            const scale = 1.0 + (average / 128.0) * 0.45; // Até 45% maior
+                            const opacity = Math.min(average / 48.0, 1.0);
+
+                            if (mobileMicVu) {
+                                mobileMicVu.style.transform = `scale(${scale})`;
+                                mobileMicVu.style.opacity = opacity;
+                            }
+
+                            requestAnimationFrame(drawVU);
+                        }
+                        drawVU();
+
+                        showToast("Microfone capturando áudio!", "success");
+                    } catch (e) {
+                        console.error(e);
+                        showToast("Erro ao ativar microfone: " + e.message, "error");
+                        btnMobileActivate.disabled = false;
+                        btnMobileActivate.innerText = "LIGAR MIC";
+                    }
+                };
+            }
+
+            if (btnMobileMute) {
+                btnMobileMute.onclick = () => {
+                    micMuted = !micMuted;
+                    if (micMuted) {
+                        btnMobileMute.innerText = "🎙️ Desmutar Microfone";
+                        btnMobileMute.style.background = 'rgba(239, 68, 68, 0.1)';
+                        btnMobileMute.style.borderColor = 'var(--error)';
+                        btnMobileMute.style.color = 'var(--error)';
+                        if (btnMobileActivate) {
+                            btnMobileActivate.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)'; // Vermelho
+                            btnMobileActivate.style.boxShadow = '0 0 35px rgba(239, 68, 68, 0.6)';
+                            const btnSpan = btnMobileActivate.querySelector('span');
+                            if (btnSpan) btnSpan.innerText = 'MUDO';
+                        }
+                    } else {
+                        btnMobileMute.innerText = "🎙️ Mutar Microfone";
+                        btnMobileMute.style.background = 'rgba(255, 255, 255, 0.05)';
+                        btnMobileMute.style.borderColor = 'var(--card-border)';
+                        btnMobileMute.style.color = '#fff';
+                        if (btnMobileActivate) {
+                            btnMobileActivate.style.background = 'linear-gradient(135deg, #10b981, #059669)'; // Verde
+                            btnMobileActivate.style.boxShadow = '0 0 35px rgba(16, 185, 129, 0.6)';
+                            const btnSpan = btnMobileActivate.querySelector('span');
+                            if (btnSpan) btnSpan.innerText = 'ATIVO';
+                        }
+                    }
+                };
+            }
+
+            const btnMobileExitMic = document.getElementById('btn-mobile-exit-mic');
+            if (btnMobileExitMic) {
+                btnMobileExitMic.onclick = () => {
+                    // Remove os parâmetros de query e recarrega como display principal (Modo Solo)
+                    window.location.href = window.location.origin + window.location.pathname;
+                };
+            }
+        });
+
+        const btnSyncMinus = document.getElementById('btn-sync-minus');
+        const btnSyncPlus = document.getElementById('btn-sync-plus');
+        const syncValueEl = document.getElementById('sync-value');
+
+        btnSyncMinus.onclick = () => { syncOffset -= 0.1; updateSyncDisplay(); };
+        btnSyncPlus.onclick = () => { syncOffset += 0.1; updateSyncDisplay(); };
+
+        const backingVolumeSlider = document.getElementById('backing-volume-slider');
+        const backingVolumeValue = document.getElementById('backing-volume-value');
+
+        if (backingVolumeSlider) {
+            backingVolumeSlider.oninput = (e) => {
+                const val = parseFloat(e.target.value);
+                audioPlayer.volume = val;
+                backingVolumeValue.innerText = Math.round(val * 100) + '%';
+                localStorage.setItem('karaoke_backing_volume', val);
+            };
+
+            // Inicializa o volume com base na preferência salva ou 100% por padrão
+            const savedVolume = localStorage.getItem('karaoke_backing_volume');
+            if (savedVolume !== null) {
+                const vol = parseFloat(savedVolume);
+                audioPlayer.volume = vol;
+                backingVolumeSlider.value = vol;
+                backingVolumeValue.innerText = Math.round(vol * 100) + '%';
+            } else {
+                audioPlayer.volume = 1.0;
+                backingVolumeSlider.value = 1.0;
+                backingVolumeValue.innerText = '100%';
+            }
+        }
+
+        function updateSyncDisplay() {
+            const valStr = (syncOffset > 0 ? '+' : '') + (syncOffset * 1000).toFixed(0) + 'ms';
+            syncValueEl.innerText = valStr;
+            const statsSync = document.getElementById('stats-sync-value');
+            if (statsSync) statsSync.innerText = valStr;
+        }
+
+        // Sistema de Notificações Toast
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+
+            let iconSvg = '';
+            if (type === 'success') {
+                iconSvg = `<svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--success)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+            } else if (type === 'error') {
+                iconSvg = `<svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--error)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>`;
+            } else if (type === 'warning') {
+                iconSvg = `<svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--warning)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" x2="12" y1="9" y2="13"></line><line x1="12" x2="12.01" y1="17" y2="17"></line></svg>`;
+            } else {
+                iconSvg = `<svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--accent)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>`;
+            }
+
+            toast.innerHTML = `
+            <div class="toast-icon">${iconSvg}</div>
+            <div class="toast-content">${message}</div>
+            <button class="toast-close" onclick="this.parentElement.classList.add('fading-out'); setTimeout(() => this.parentElement.remove(), 300)">
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"></line><line x1="6" x2="18" y1="6" y2="18"></line></svg>
+            </button>
+        `;
+
+            container.appendChild(toast);
+
+            // Auto remove toast after 5s
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.classList.add('fading-out');
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 4700);
+        }
+
+        // Reset de estado e navegação (SPA)
+        function resetGameState() {
+            if (transcriptionActiveTimer) {
+                clearTimeout(transcriptionActiveTimer);
+                transcriptionActiveTimer = null;
+            }
+            if (ws) {
+                ws.close();
+                ws = null;
+            }
+            if (audioContext) {
+                if (audioContext.state !== 'closed') {
+                    audioContext.close();
+                }
+                audioContext = null;
+            }
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
+            isSingingActive = false;
+            isOutroActive = false;
+            const outroOverlay = document.getElementById('outro-overlay');
+            if (outroOverlay) outroOverlay.style.display = 'none';
+            const silenceOverlay = document.getElementById('silence-overlay');
+            if (silenceOverlay) silenceOverlay.style.display = 'none';
+            audioPlayer.pause();
+            audioPlayer.src = '';
+
+            // Reseta scores e elementos visuais
+            document.getElementById('seg-score').innerText = '0%';
+            const statsSyncVal = document.getElementById('stats-sync-value');
+            if (statsSyncVal) statsSyncVal.innerText = '0ms';
+
+            // Reseta barra de progresso da música
+            const progFill = document.getElementById('song-progress-fill');
+            if (progFill) progFill.style.width = '0%';
+            const timeCurrent = document.getElementById('song-time-current');
+            if (timeCurrent) timeCurrent.innerText = '0:00';
+            const timeRemaining = document.getElementById('song-time-remaining');
+            if (timeRemaining) timeRemaining.innerText = '-0:00';
+
+            const transText = document.getElementById('transcription-text');
+            if (transText) {
+                transText.innerHTML = '<strong>Ouvi:</strong> <span style="color: var(--dim);">[Aguardando canto...]</span>';
+            }
+
+            document.getElementById('score-progress-fill').style.width = '0%';
+            document.getElementById('score-percentage-text').innerText = '0%';
+            document.getElementById('instrumental-pause-container').style.display = 'none';
+
+            // Reset barra de progresso do verso
+            const verseContainer = document.getElementById('verse-progress-container');
+            const verseFill = document.getElementById('verse-progress-fill');
+            if (verseContainer && verseFill) {
+                verseFill.style.width = '0%';
+                verseContainer.style.opacity = '0';
+            }
+
+            if (silenceOverlay) {
+                silenceOverlay.style.display = 'none';
+                document.getElementById('silence-progress-fill').style.width = '0%';
+            }
+
+            // Limpar carrossel de letras
+            document.getElementById('line-prev').innerHTML = '';
+            document.getElementById('line-curr').innerHTML = '';
+            document.getElementById('line-next').innerHTML = '';
+
+            // Restaurar botões
+            btnStart.style.display = 'inline-block';
+            btnStart.disabled = false;
+            btnStart.innerText = 'INICIAR CANTO';
+            btnExit.style.display = 'none';
+            document.getElementById('sync-controls').style.display = 'none';
+
+            // Reset de variáveis
+            selectedSongId = null;
+            currentSegments = null;
+            currentSegmentData = null;
+            lastSegmentLyricsTimed = null;
+            syncOffset = 0;
+            isFirstSegment = true;
+            totalPauseDuration = 0;
+            updateSyncDisplay();
+
+            // Retornar para tela de seleção
+            gameArea.style.display = 'none';
+            selectionArea.style.display = 'block';
+
+            showToast("Retornou à lista de músicas", "info");
+
+            // Reconecta o WebSocket de pareamento na home screen
+            connectDisplayWebSocket();
+        }
+
+        btnBack.onclick = resetGameState;
+
+        // 1. Buscar músicas
+        async function fetchSongs() {
+            try {
+                songListEl.innerHTML = `
+                <div style="text-align: center; padding: 2rem; color: var(--dim);">
+                    <div style="width: 32px; height: 32px; border: 3px solid #1e293b; border-top: 3px solid var(--accent); border-radius: 50%; margin: 0 auto 1rem; animation: spin 1s linear infinite;"></div>
+                    Carregando músicas...
+                </div>
+            `;
+
+                const resp = await fetch('/api/songs');
+                const songs = await resp.json();
+                allSongs = songs;
+
+                // Limpa barra de busca ao carregar músicas
+                document.getElementById('search-input').value = '';
+
+                renderSongs(songs);
+            } catch (e) {
+                songListEl.innerHTML = `
+                <div class="empty-state">
+                    <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="var(--error)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="empty-icon"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
+                    <h4 style="color: var(--error)">Erro ao conectar com o servidor</h4>
+                    <p>Certifique-se de que o backend está rodando localmente.</p>
+                    <button onclick="fetchSongs()" class="btn-icon-text" style="margin: 1.5rem auto 0 auto; border-color: rgba(239, 68, 68, 0.4); color: var(--error); padding: 0.5rem 1.2rem;">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+                        Tentar Novamente
+                    </button>
+                </div>
+            `;
+                showToast("Não foi possível conectar ao servidor", "error");
+            }
+        }
+
+        // Renderiza a lista de músicas no DOM
+        function renderSongs(songsList) {
+            songListEl.innerHTML = '';
+
+            if (songsList.length === 0) {
+                songListEl.innerHTML = `
+                <div class="empty-state">
+                    <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="var(--dim)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="empty-icon"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
+                    <h4>Nenhuma música encontrada</h4>
+                    <p>Tente buscar por outro termo ou adicione arquivos na pasta <code>server/songs/</code>!</p>
+                </div>
+            `;
+                return;
+            }
+
+            songsList.forEach(song => {
+                const card = document.createElement('div');
+                card.className = 'song-card';
+                card.onclick = () => selectSong(song);
+
+                const titleSpan = document.createElement('span');
+                titleSpan.style.flex = '1';
+                titleSpan.style.textAlign = 'left';
+                titleSpan.style.display = 'flex';
+                titleSpan.style.flexDirection = 'column';
+                titleSpan.style.gap = '0.15rem';
+
+                const songTitle = document.createElement('div');
+                songTitle.innerText = song.title;
+                songTitle.style.fontWeight = '800';
+                songTitle.style.fontSize = '1.1rem';
+                songTitle.style.color = '#fff';
+
+                const songArtist = document.createElement('div');
+                songArtist.innerText = song.artist || "Artista Desconhecido";
+                songArtist.style.fontWeight = '500';
+                songArtist.style.fontSize = '0.85rem';
+                songArtist.style.color = 'var(--dim)';
+
+                titleSpan.appendChild(songTitle);
+                titleSpan.appendChild(songArtist);
+
+                const actionsGroup = document.createElement('div');
+                actionsGroup.style.display = 'flex';
+                actionsGroup.style.alignItems = 'center';
+                actionsGroup.style.gap = '0.5rem';
+
+                const editBtn = document.createElement('button');
+                editBtn.innerHTML = '📝 Letras';
+                editBtn.title = 'Editar Letras e Alinhamento';
+                editBtn.style.background = 'transparent';
+                editBtn.style.border = '1px solid var(--card-border)';
+                editBtn.style.borderRadius = '30px';
+                editBtn.style.padding = '0.4rem 1rem';
+                editBtn.style.fontSize = '0.85rem';
+                editBtn.style.color = 'var(--dim)';
+                editBtn.style.cursor = 'pointer';
+                editBtn.style.fontWeight = '800';
+                editBtn.style.transition = 'all 0.2s';
+
+                editBtn.onmouseenter = () => {
+                    editBtn.style.borderColor = 'var(--accent)';
+                    editBtn.style.background = 'rgba(56, 189, 248, 0.08)';
+                    editBtn.style.color = 'var(--accent)';
+                    editBtn.style.boxShadow = '0 0 10px rgba(56, 189, 248, 0.2)';
+                };
+                editBtn.onmouseleave = () => {
+                    editBtn.style.borderColor = 'var(--card-border)';
+                    editBtn.style.background = 'transparent';
+                    editBtn.style.color = 'var(--dim)';
+                    editBtn.style.boxShadow = 'none';
+                };
+
+                editBtn.onclick = (e) => {
+                    e.stopPropagation(); // Evita iniciar o jogo ao clicar em editar
+                    loadAndOpenLrcEditor(song.id);
+                };
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.innerHTML = '🗑️';
+                deleteBtn.title = 'Apagar Música';
+                deleteBtn.style.background = 'transparent';
+                deleteBtn.style.border = '1px solid rgba(239, 68, 68, 0.25)';
+                deleteBtn.style.borderRadius = '30px';
+                deleteBtn.style.padding = '0.4rem 0.8rem';
+                deleteBtn.style.fontSize = '0.85rem';
+                deleteBtn.style.color = '#ef4444';
+                deleteBtn.style.cursor = 'pointer';
+                deleteBtn.style.transition = 'all 0.2s';
+
+                deleteBtn.onmouseenter = () => {
+                    deleteBtn.style.borderColor = '#ef4444';
+                    deleteBtn.style.background = 'rgba(239, 68, 68, 0.08)';
+                    deleteBtn.style.boxShadow = '0 0 10px rgba(239, 68, 68, 0.2)';
+                };
+                deleteBtn.onmouseleave = () => {
+                    deleteBtn.style.borderColor = 'rgba(239, 68, 68, 0.25)';
+                    deleteBtn.style.background = 'transparent';
+                    deleteBtn.style.boxShadow = 'none';
+                };
+
+                deleteBtn.onclick = async (e) => {
+                    e.stopPropagation(); // Evita iniciar o jogo ao clicar em apagar
+
+                    if (confirm(`Tem certeza que deseja excluir permanentemente a música "${song.title}"? Todos os arquivos de áudio, letras e segmentos serão apagados do servidor!`)) {
+                        try {
+                            const resp = await fetch(`/api/delete-song/${song.id}`, {
+                                method: 'DELETE'
+                            });
+
+                            if (!resp.ok) {
+                                const err = await resp.json();
+                                throw new Error(err.detail || "Erro ao excluir música");
+                            }
+
+                            showToast(`Música "${song.title}" excluída com sucesso!`, "success");
+                            fetchSongs(); // Recarrega a lista de músicas
+                        } catch (err) {
+                            showToast(`Erro ao excluir música: ${err.message}`, "error");
+                        }
+                    }
+                };
+
+                actionsGroup.appendChild(editBtn);
+                actionsGroup.appendChild(deleteBtn);
+
+                card.appendChild(titleSpan);
+                card.appendChild(actionsGroup);
+                songListEl.appendChild(card);
+            });
+        }
+
+        // Configura o evento do campo de busca (cruzando Título + Artista)
+        document.getElementById('search-input').oninput = (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            const filtered = allSongs.filter(song =>
+                song.title.toLowerCase().includes(query) ||
+                (song.artist && song.artist.toLowerCase().includes(query))
+            );
+            renderSongs(filtered);
+        };
+
+        async function loadAndOpenLrcEditor(slug) {
+            // Exibir overlay de carregamento
+            loadingStatusTitle.innerText = "Carregando Letras...";
+            loadingStatusDesc.innerText = "Buscando o arquivo LRC no servidor...";
+            loadingOverlay.style.display = 'flex';
+
+            try {
+                const resp = await fetch(`/api/get-lyrics?slug=${encodeURIComponent(slug)}&t=${Date.now()}`, {
+                    headers: {
+                        'Cache-Control': 'no-cache',
+                        'Pragma': 'no-cache'
+                    }
+                });
+                if (!resp.ok) throw new Error("Não foi possível carregar as letras");
+                const data = await resp.json();
+
+                loadingOverlay.style.display = 'none';
+
+                if (data.success) {
+                    document.getElementById('editor-slug').value = slug;
+                    document.getElementById('editor-language').value = data.language;
+                    document.getElementById('editor-textarea').value = data.lyrics;
+                    lrcEditorModal.style.display = 'flex';
+                } else {
+                    showToast("Erro: O arquivo de letras não foi localizado no servidor.", "error");
+                }
+            } catch (e) {
+                loadingOverlay.style.display = 'none';
+                showToast("Erro ao carregar as letras: " + e.message, "error");
+            }
+        }
+
+        function selectSong(song) {
+            selectedSongId = song.id;
+            document.getElementById('current-song-title').innerText = song.title;
+            selectionArea.style.display = 'none';
+            gameArea.style.display = 'block';
+            audioPlayer.src = `/songs/${song.id}/audio`;
+
+            // Garante aplicação do volume salvo
+            const savedVolume = localStorage.getItem('karaoke_backing_volume');
+            if (savedVolume !== null) {
+                audioPlayer.volume = parseFloat(savedVolume);
+            }
+        }
+
+        btnStart.onclick = async () => {
+            btnStart.disabled = true;
+            btnStart.innerText = 'PREPARANDO...';
+
+            try {
+                await startKaraoke();
+            } catch (e) {
+                console.error(e);
+                showToast("Erro ao iniciar: " + e.message, "error");
+                btnStart.disabled = false;
+                btnStart.innerText = 'INICIAR CANTO';
+            }
+        };
+
+        btnExit.onclick = resetGameState;
+
+        audioPlayer.onended = () => {
+            console.log("Backing track finalizado. Encerrando jogo...");
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ type: "audio_ended" }));
+            }
+        };
+
+        async function startKaraoke() {
+            // A. Setup Audio Context
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const sampleRate = audioContext.sampleRate;
+
+            // B. Permissão de Microfone (Permitido simultaneamente com o Celular se localStreamForced estiver ativo ou se nenhum celular estiver conectado)
+            let stream = null;
+            if (localStreamForced || !isMobileMicrophoneConnected) {
+                try {
+                    stream = await getMicrophoneStream();
+                } catch (err) {
+                    console.warn("Sem microfone local detectado. Continuando apenas para reprodução...", err);
+                    if (!isMobileMicrophoneConnected) {
+                        showToast("Modo som de fundo ativo (sem microfone local)", "warning");
+                    }
+                }
+            }
+
+            // C. WebSocket
+            if (ws) {
+                try {
+                    ws.onclose = null; // Evita loop de reconexão do WebSocket de pareamento da home screen
+                    ws.close();
+                } catch (e) { }
+                ws = null;
+            }
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws/room/${myRoom}?role=display&song_id=${selectedSongId}`;
+            ws = new WebSocket(wsUrl);
+            ws.binaryType = 'arraybuffer';
+
+            ws.onopen = () => {
+                ws.send(JSON.stringify({ type: "client_info", sample_rate: sampleRate }));
+                isFirstSegment = true; // Reseta estado do carrossel
+                currentSegmentData = null; // Garante que inicia sem dados residuais
+                audioPlayer.play();
+                startTimeSync();
+            };
+
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                handleServerMessage(data);
+            };
+
+            // D. AudioWorklet (Apenas se capturamos o áudio local)
+            if (stream) {
+                const workletCode = `
+                class AudioProcessor extends AudioWorkletProcessor {
+                    constructor() {
+                        super();
+                        this.bufferSize = 4096;
+                        this.buffer = new Float32Array(this.bufferSize);
+                        this.bufferIndex = 0;
+                    }
+                    process(inputs, outputs, parameters) {
+                        const input = inputs[0];
+                        if (input.length > 0) {
+                            const samples = input[0];
+                            for (let i = 0; i < samples.length; i++) {
+                                this.buffer[this.bufferIndex++] = samples[i];
+                                if (this.bufferIndex >= this.bufferSize) {
+                                    const chunk = this.buffer.slice(0);
+                                    this.port.postMessage(chunk.buffer, [chunk.buffer]);
+                                    this.bufferIndex = 0;
+                                }
+                            }
+                        }
+                        return true;
+                    }
+                }
+                registerProcessor('audio-processor', AudioProcessor);
+            `;
+                const blob = new Blob([workletCode], { type: 'application/javascript' });
+                const workletUrl = URL.createObjectURL(blob);
+
+                await audioContext.audioWorklet.addModule(workletUrl);
+                const source = audioContext.createMediaStreamSource(stream);
+                const processor = new AudioWorkletNode(audioContext, 'audio-processor');
+
+                processor.port.onmessage = (event) => {
+                    if (ws && ws.readyState === WebSocket.OPEN && isSingingActive) {
+                        ws.send(event.data);
+                    }
+                };
+
+                source.connect(processor);
+                processor.connect(audioContext.destination); // Mudo (apenas para manter fluxo)
+            }
+
+            btnStart.style.display = 'none';
+            btnExit.style.display = 'inline-block';
+            document.getElementById('sync-controls').style.display = 'inline-flex';
+        }
+
+        function handleServerMessage(data) {
+            if (data.type === 'pairing_status') {
+                const pairingStatusText = document.getElementById('pairing-status-text');
+                const pairingStatusDot = document.getElementById('pairing-status-dot');
+
+                if (data.status === 'paired') {
+                    isMobileMicrophoneConnected = true;
+                    updateMicStatusPanel();
+                    if (pairingStatusText) {
+                        pairingStatusText.innerHTML = `✅ <span style="color: #10b981; font-weight: 800;">Celular conectado com sucesso!</span>`;
+                    }
+                    if (pairingStatusDot) {
+                        pairingStatusDot.style.background = '#10b981';
+                        pairingStatusDot.style.boxShadow = '0 0 10px #10b981';
+                    }
+                    showToast("Microfone sem fio pareado e ativo!", "success");
+                } else if (data.status === 'unpaired') {
+                    isMobileMicrophoneConnected = false;
+                    updateMicStatusPanel();
+                    if (pairingStatusText) {
+                        pairingStatusText.innerText = "Aguardando conexão do celular...";
+                    }
+                    if (pairingStatusDot) {
+                        pairingStatusDot.style.background = 'var(--dim)';
+                        pairingStatusDot.style.boxShadow = 'none';
+                    }
+                    showToast("Microfone sem fio desconectado.", "warning");
+                }
+            }
+            else if (data.type === 'singing_state') {
+                isSingingActive = data.active;
+                const transText = document.getElementById('transcription-text');
+                if (transText && !transcriptionActiveTimer) {
+                    transText.innerHTML = `<strong>Ouvi:</strong> <span style="color: var(--dim);">${isSingingActive ? '[Ouvindo...]' : '[Solo Instrumental...]'}</span>`;
+                }
+            }
+            else if (data.type === 'outro_start') {
+                isOutroActive = true;
+                outroStartPlayerTime = audioPlayer.currentTime;
+                outroTotalDuration = Math.max(1, audioPlayer.duration - outroStartPlayerTime);
+
+                const outroOverlay = document.getElementById('outro-overlay');
+                if (outroOverlay) outroOverlay.style.display = 'flex';
+                const silenceOverlay = document.getElementById('silence-overlay');
+                if (silenceOverlay) silenceOverlay.style.display = 'none';
+
+                // Atualiza o HUD de escuta
+                const transText = document.getElementById('transcription-text');
+                if (transText) {
+                    transText.innerHTML = '<strong>Ouvi:</strong> <span style="color: var(--accent); font-weight: 700;">[Show Finalizado! 🎸]</span>';
+                }
+            }
+            else if (data.type === 'segment_start') {
+                // No início do trecho (que começa com pausa instrumental), mostra Solo Instrumental se não houver feedback ativo
+                if (!transcriptionActiveTimer) {
+                    const transText = document.getElementById('transcription-text');
+                    if (transText) {
+                        transText.innerHTML = '<strong>Ouvi:</strong> <span style="color: var(--dim);">[Solo Instrumental...]</span>';
+                    }
+                }
+
+                renderLyrics(data);
+                startHighlightLoop();
+            } else if (data.type === 'segment_result') {
+                document.getElementById('seg-score').innerText = data.score + '%';
+
+                // Mostra o feedback visual do "Ouvi" comparando palavras corretas
+                const transText = document.getElementById('transcription-text');
+
+                if (data.transcription && data.transcription.trim()) {
+                    const words = data.transcription.split(/\s+/);
+                    transText.innerHTML = '<strong>Ouvi:</strong> ';
+
+                    // Normaliza as palavras esperadas do último segmento para correspondência
+                    const expectedNormalized = lastSegmentLyricsTimed
+                        ? lastSegmentLyricsTimed.map(w => w.word.toLowerCase().replace(/[^\w\s]/g, '').trim())
+                        : [];
+
+                    words.forEach(word => {
+                        const cleanWord = word.toLowerCase().replace(/[^\w\s]/g, '').trim();
+                        const isMatch = expectedNormalized.includes(cleanWord);
+
+                        const span = document.createElement('span');
+                        span.innerText = word + ' ';
+                        span.style.fontWeight = '700';
+                        if (isMatch) {
+                            span.style.color = '#22c55e'; // Verde de sucesso
+                            span.style.textShadow = '0 0 10px rgba(34, 197, 94, 0.4)';
+                        } else {
+                            span.style.color = '#ef4444'; // Vermelho para erro
+                            span.style.textShadow = '0 0 10px rgba(239, 68, 68, 0.4)';
+                        }
+                        transText.appendChild(span);
+                    });
+
+                    // Mantém o feedback de transcrição visível por pelo menos 3.5 segundos!
+                    if (transcriptionActiveTimer) {
+                        clearTimeout(transcriptionActiveTimer);
+                    }
+                    transcriptionActiveTimer = setTimeout(() => {
+                        transcriptionActiveTimer = null;
+                        if (document.getElementById('game-area').style.display === 'block') {
+                            transText.innerHTML = `<strong>Ouvi:</strong> <span style="color: var(--dim);">${isSingingActive ? '[Ouvindo...]' : '[Solo Instrumental...]'}</span>`;
+                        }
+                    }, 3500);
+                } else {
+                    transText.innerHTML = '<strong>Ouvi:</strong> <span style="color: var(--dim);">[Silêncio ou Incompreensível]</span>';
+                    if (transcriptionActiveTimer) {
+                        clearTimeout(transcriptionActiveTimer);
+                    }
+                    transcriptionActiveTimer = setTimeout(() => {
+                        transcriptionActiveTimer = null;
+                        if (document.getElementById('game-area').style.display === 'block') {
+                            transText.innerHTML = `<strong>Ouvi:</strong> <span style="color: var(--dim);">${isSingingActive ? '[Ouvindo...]' : '[Solo Instrumental...]'}</span>`;
+                        }
+                    }, 3500);
+                }
+
+                // Atualiza a barra de progresso e porcentagem no painel
+                const val = parseFloat(data.total_score) || 0;
+                document.getElementById('score-progress-fill').style.width = val + '%';
+                document.getElementById('score-percentage-text').innerText = val.toFixed(1) + '%';
+            } else if (data.type === 'game_over') {
+                audioPlayer.pause();
+                showGameOverModal(parseFloat(data.total_score) || 0);
+            }
+        }
+
+        function showGameOverModal(finalScore) {
+            const modal = document.getElementById('game-over-modal');
+            const rankBadge = document.getElementById('rank-badge');
+            const rankTitle = document.getElementById('rank-title');
+            const modalScore = document.getElementById('modal-score');
+
+            modalScore.innerText = finalScore.toFixed(1) + '%';
+
+            let rank = 'C';
+            let color = '#ef4444'; // Vermelho
+            let title = 'PRECISA PRATICAR!';
+
+            if (finalScore >= 95) {
+                rank = 'S';
+                color = '#fde047'; // Amarelo Gold
+                title = 'PERFORMANCE LENDÁRIA!';
+            } else if (finalScore >= 85) {
+                rank = 'A';
+                color = '#38bdf8'; // Azul
+                title = 'EXCELENTE APRESENTAÇÃO!';
+            } else if (finalScore >= 70) {
+                rank = 'B';
+                color = '#22c55e'; // Verde
+                title = 'BOM TRABALHO!';
+            }
+
+            rankBadge.innerText = rank;
+            rankBadge.style.color = color;
+            rankTitle.innerText = title;
+
+            modal.style.display = 'flex';
+
+            document.getElementById('btn-restart-game').onclick = () => {
+                document.getElementById('game-over-modal').style.display = 'none';
+                resetGameState();
+            };
+        }
+
+        function renderLyrics(data) {
+            // Calcula a duração total da pausa instrumental
+            const virtualTime = audioPlayer.currentTime + syncOffset;
+            const pauseTime = data.sing_start - virtualTime;
+
+            if (pauseTime > 1.0) {
+                totalPauseDuration = pauseTime;
+                pauseStartTarget = data.sing_start;
+            } else {
+                totalPauseDuration = 0;
+                pauseStartTarget = 0;
+            }
+
+            if (isFirstSegment) {
+                isFirstSegment = false;
+                lastSegmentLyricsTimed = null;
+                currentSegmentData = data; // Atualiza os dados imediatamente na primeira carga
+                updateLyricsDOM(data);
+                return;
+            }
+
+            const linePrev = document.getElementById('line-prev');
+            const lineCurr = document.getElementById('line-curr');
+            const lineNext = document.getElementById('line-next');
+
+            // 1. Aplica o fade-out rápido (150ms)
+            linePrev.classList.add('fading');
+            lineCurr.classList.add('fading');
+            lineNext.classList.add('fading');
+
+            // 2. Após 150ms (fim do fade-out), atualiza os dados reais e aplica o fade-in
+            setTimeout(() => {
+                lastSegmentLyricsTimed = currentSegmentData ? currentSegmentData.lyrics_timed : null;
+                currentSegmentData = data; // Atualiza a sincronia exatamente na transição física
+                updateLyricsDOM(data);
+
+                // Remove a classe fading para surgir o novo verso suavemente
+                linePrev.classList.remove('fading');
+                lineCurr.classList.remove('fading');
+                lineNext.classList.remove('fading');
+            }, 150);
+        }
+
+        function updateLyricsDOM(data) {
+            prevLyricsDisplay.innerText = data.prev_lyrics || "";
+            nextLyricsDisplay.innerText = data.next_lyrics || "";
+
+            lyricsDisplay.innerHTML = '';
+            data.lyrics_timed.forEach((item, idx) => {
+                const span = document.createElement('span');
+                span.className = 'word';
+                span.innerText = item.word + ' '; // Adiciona espaço de volta para evitar colagem!
+                span.id = `word-${idx}`;
+                lyricsDisplay.appendChild(span);
+            });
+        }
+
+        function startHighlightLoop() {
+            if (animationId) cancelAnimationFrame(animationId);
+
+            function update() {
+                // Lógica da Barra de Progresso da Música
+                if (audioPlayer.duration) {
+                    const cur = audioPlayer.currentTime;
+                    const dur = audioPlayer.duration;
+                    const pct = Math.max(0, Math.min(100, (cur / dur) * 100));
+
+                    const formatTime = (secs) => {
+                        const m = Math.floor(secs / 60);
+                        const s = Math.floor(secs % 60);
+                        return `${m}:${s < 10 ? '0' : ''}${s}`;
+                    };
+
+                    const progFill = document.getElementById('song-progress-fill');
+                    if (progFill) progFill.style.width = pct + '%';
+                    const timeCurrent = document.getElementById('song-time-current');
+                    if (timeCurrent) timeCurrent.innerText = formatTime(cur);
+                    const timeRemaining = document.getElementById('song-time-remaining');
+                    if (timeRemaining) timeRemaining.innerText = '-' + formatTime(Math.max(0, dur - cur));
+                }
+
+                // Lógica de Barra de Carregamento e Timer do Outro/Encerramento
+                if (isOutroActive && audioPlayer.duration) {
+                    const outroOverlay = document.getElementById('outro-overlay');
+                    if (outroOverlay) outroOverlay.style.display = 'flex';
+
+                    const cur = audioPlayer.currentTime;
+                    const elapsed = cur - outroStartPlayerTime;
+                    const remaining = Math.max(0, audioPlayer.duration - cur);
+
+                    const pct = Math.max(0, Math.min(100, (elapsed / outroTotalDuration) * 100));
+
+                    const outroFill = document.getElementById('outro-progress-fill');
+                    if (outroFill) outroFill.style.width = pct + '%';
+
+                    const outroText = document.getElementById('outro-timer-text');
+                    if (outroText) {
+                        outroText.innerText = `Finalizando em ${remaining.toFixed(1)}s...`;
+                    }
+
+                    animationId = requestAnimationFrame(update);
+                    return;
+                }
+
+                if (!currentSegmentData) {
+                    animationId = requestAnimationFrame(update);
+                    return;
+                }
+
+                const virtualTime = audioPlayer.currentTime + syncOffset;
+                const relativeTime = virtualTime - currentSegmentData.sing_start;
+
+                // Lógica do Contador de Pausa Instrumental / Solo
+                const silenceOverlay = document.getElementById('silence-overlay');
+                const pauseContainer = document.getElementById('instrumental-pause-container');
+
+                if (totalPauseDuration > 1.0) {
+                    // Silêncio (> 1s): ativa o Overlay que tampa as letras usando o alvo fixado no início da transição
+                    const remainingTime = pauseStartTarget - virtualTime;
+
+                    if (remainingTime > 0) {
+                        if (pauseContainer) pauseContainer.style.display = 'none';
+                        if (silenceOverlay) {
+                            silenceOverlay.style.display = 'flex';
+                            const fill = document.getElementById('silence-progress-fill');
+                            const text = document.getElementById('silence-timer-text');
+
+                            const pct = Math.max(0, Math.min(100, (remainingTime / totalPauseDuration) * 100));
+                            if (fill) fill.style.width = pct + '%';
+                            if (text) text.innerText = remainingTime.toFixed(1) + 's';
+                        }
+                    } else {
+                        if (silenceOverlay) silenceOverlay.style.display = 'none';
+                        totalPauseDuration = 0; // Finaliza
+                        pauseStartTarget = 0;
+                    }
+                } else {
+                    if (silenceOverlay) silenceOverlay.style.display = 'none';
+                    if (pauseContainer) pauseContainer.style.display = 'none';
+                }
+
+                // Lógica da Barra de Carregamento Dinâmica do Verso (Seguimento)
+                const verseContainer = document.getElementById('verse-progress-container');
+                const verseFill = document.getElementById('verse-progress-fill');
+                if (verseContainer && verseFill) {
+                    const segStart = currentSegmentData.sing_start;
+                    const segEnd = currentSegmentData.sing_end;
+                    const duration = segEnd - segStart;
+
+                    if (virtualTime >= segStart && virtualTime <= segEnd && duration > 0) {
+                        const pct = Math.max(0, Math.min(100, ((virtualTime - segStart) / duration) * 100));
+                        verseFill.style.width = pct + '%';
+                        verseContainer.style.opacity = '1';
+                    } else if (virtualTime > segEnd) {
+                        verseFill.style.width = '100%';
+                        verseContainer.style.opacity = '0.5';
+                    } else {
+                        verseFill.style.width = '0%';
+                        verseContainer.style.opacity = '0';
+                    }
+                }
+
+                currentSegmentData.lyrics_timed.forEach((item, idx) => {
+                    const el = document.getElementById(`word-${idx}`);
+                    if (!el) return;
+
+                    if (relativeTime >= item.expected_start) {
+                        el.classList.add('passed');
+                        el.classList.remove('active');
+                    } else {
+                        el.classList.remove('passed');
+                    }
+
+                    // Marca a palavra "atual"
+                    const nextItem = currentSegmentData.lyrics_timed[idx + 1];
+                    if (relativeTime >= item.expected_start && (!nextItem || relativeTime < nextItem.expected_start)) {
+                        el.classList.add('active');
+                        el.classList.remove('passed');
+                    } else {
+                        if (relativeTime < item.expected_start) el.classList.remove('active');
+                    }
+                });
+
+                animationId = requestAnimationFrame(update);
+            }
+            update();
+        }
+
+        function startTimeSync() {
+            setInterval(() => {
+                if (ws && ws.readyState === WebSocket.OPEN) {
+                    ws.send(JSON.stringify({
+                        type: "playback_time",
+                        current_time: audioPlayer.currentTime + syncOffset
+                    }));
+                }
+            }, 100);
+        }
+
+        // Lógica do Modal Administrativo de Upload de Músicas
+        const addSongModal = document.getElementById('add-song-modal');
+        const lrcEditorModal = document.getElementById('lrc-editor-modal');
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const btnOpenAddSong = document.getElementById('btn-open-add-song');
+        const btnCloseAddSong = document.getElementById('btn-close-add-song');
+        const btnCloseEditor = document.getElementById('btn-close-editor');
+        const addSongForm = document.getElementById('add-song-form');
+        const lrcEditorForm = document.getElementById('lrc-editor-form');
+        const loadingStatusTitle = document.getElementById('loading-status-title');
+        const loadingStatusDesc = document.getElementById('loading-status-desc');
+
+        // Lógica do Modal de Pareamento de Celular
+        const pairingModal = document.getElementById('pairing-modal');
+        const btnOpenPairing = document.getElementById('btn-open-pairing');
+        const btnClosePairing = document.getElementById('btn-close-pairing');
+        const pairingQrcode = document.getElementById('pairing-qrcode');
+        const pairingQrcodeLoading = document.getElementById('pairing-qrcode-loading');
+        const pairingLink = document.getElementById('pairing-link');
+
+        btnOpenPairing.onclick = async () => {
+            pairingModal.style.display = 'flex';
+            pairingQrcode.style.display = 'none';
+            pairingQrcodeLoading.style.display = 'flex';
+
+            let targetHost = window.location.host;
+            try {
+                const ipRes = await fetch('/api/get-ip');
+                if (ipRes.ok) {
+                    const ipData = await ipRes.json();
+                    if (ipData.ip && ipData.ip !== '127.0.0.1') {
+                        // Substitui apenas o nome do host (preservando a porta ativa, ex: :8000)
+                        const port = window.location.port ? `:${window.location.port}` : '';
+                        targetHost = `${ipData.ip}${port}`;
+                    }
+                }
+            } catch (e) {
+                console.warn("Nao foi possivel obter o IP da rede local, usando fallback do host do navegador:", e);
+            }
+
+            // Gera a URL do celular na mesma rede local com o IP real detectado
+            const pairingUrl = `${window.location.protocol}//${targetHost}/?role=mic&room=${activeRoomId}`;
+            pairingLink.href = pairingUrl;
+            pairingLink.innerText = pairingUrl;
+
+            // Gera o QR Code dinamicamente usando a API de QR Code de alta velocidade
+            pairingQrcode.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(pairingUrl)}`;
+
+            pairingQrcode.onload = () => {
+                pairingQrcodeLoading.style.display = 'none';
+                pairingQrcode.style.display = 'block';
+            };
+        };
+
+        btnClosePairing.onclick = () => {
+            pairingModal.style.display = 'none';
+        };
+
+        let activeUploadTab = "youtube"; // "youtube" ou "local"
+        const tabBtnLocal = document.getElementById('tab-btn-local');
+        const tabBtnYoutube = document.getElementById('tab-btn-youtube');
+        const sectionLocalUpload = document.getElementById('section-local-upload');
+        const sectionYoutubeImport = document.getElementById('section-youtube-import');
+
+        tabBtnLocal.onclick = () => {
+            activeUploadTab = "local";
+            tabBtnLocal.classList.add('active');
+            tabBtnLocal.style.background = 'var(--accent-gradient)';
+            tabBtnLocal.style.color = '#000';
+            tabBtnLocal.style.fontWeight = '800';
+
+            tabBtnYoutube.classList.remove('active');
+            tabBtnYoutube.style.background = 'transparent';
+            tabBtnYoutube.style.color = 'var(--dim)';
+            tabBtnYoutube.style.fontWeight = '700';
+
+            sectionLocalUpload.style.display = 'block';
+            sectionYoutubeImport.style.display = 'none';
+        };
+
+        tabBtnYoutube.onclick = () => {
+            activeUploadTab = "youtube";
+            tabBtnYoutube.classList.add('active');
+            tabBtnYoutube.style.background = 'var(--accent-gradient)';
+            tabBtnYoutube.style.color = '#000';
+            tabBtnYoutube.style.fontWeight = '800';
+
+            tabBtnLocal.classList.remove('active');
+            tabBtnLocal.style.background = 'transparent';
+            tabBtnLocal.style.color = 'var(--dim)';
+            tabBtnLocal.style.fontWeight = '700';
+
+            sectionLocalUpload.style.display = 'none';
+            sectionYoutubeImport.style.display = 'block';
+        };
+
+        btnOpenAddSong.onclick = () => {
+            addSongForm.reset();
+
+            // Garante que o painel de opções avançadas inicie colapsado
+            const advancedOptionsContainer = document.getElementById('advanced-options-container');
+            const advancedToggleIcon = document.getElementById('advanced-toggle-icon');
+            const btnToggleAdvanced = document.getElementById('btn-toggle-advanced');
+            if (advancedOptionsContainer) advancedOptionsContainer.style.display = 'none';
+            if (advancedToggleIcon) advancedToggleIcon.innerText = '▼';
+            if (btnToggleAdvanced) {
+                btnToggleAdvanced.style.background = 'rgba(255,255,255,0.03)';
+                btnToggleAdvanced.style.borderColor = 'var(--card-border)';
+                btnToggleAdvanced.style.color = 'var(--dim)';
+            }
+
+            tabBtnYoutube.click(); // Garante que inicia na aba do YouTube
+            addSongModal.style.display = 'flex';
+        };
+
+        // Toggle de opções avançadas de corte e silêncio no formulário
+        const btnToggleAdvanced = document.getElementById('btn-toggle-advanced');
+        const advancedOptionsContainer = document.getElementById('advanced-options-container');
+        const advancedToggleIcon = document.getElementById('advanced-toggle-icon');
+
+        if (btnToggleAdvanced && advancedOptionsContainer) {
+            btnToggleAdvanced.onclick = () => {
+                if (advancedOptionsContainer.style.display === 'none') {
+                    advancedOptionsContainer.style.display = 'block';
+                    advancedToggleIcon.innerText = '▲';
+                    btnToggleAdvanced.style.background = 'rgba(56, 189, 248, 0.08)';
+                    btnToggleAdvanced.style.borderColor = 'var(--accent)';
+                    btnToggleAdvanced.style.color = 'var(--text)';
+                } else {
+                    advancedOptionsContainer.style.display = 'none';
+                    advancedToggleIcon.innerText = '▼';
+                    btnToggleAdvanced.style.background = 'rgba(255,255,255,0.03)';
+                    btnToggleAdvanced.style.borderColor = 'var(--card-border)';
+                    btnToggleAdvanced.style.color = 'var(--dim)';
+                }
+            };
+        }
+
+        // Auto-sincroniza o offset da letra com o início do corte vocal para evitar digitação dupla
+        document.getElementById('vocal-start').oninput = (e) => {
+            document.getElementById('lyrics-start').value = e.target.value;
+        };
+
+        btnCloseAddSong.onclick = () => {
+            addSongModal.style.display = 'none';
+        };
+
+        btnCloseEditor.onclick = () => {
+            lrcEditorModal.style.display = 'none';
+        };
+
+        addSongForm.onsubmit = async (e) => {
+            e.preventDefault();
+
+            // Validação com base na aba ativa
+            if (activeUploadTab === "local") {
+                const vocalFile = document.getElementById('vocal-file').files[0];
+                const backingFile = document.getElementById('backing-file').files[0];
+                if (!vocalFile || !backingFile) {
+                    showToast("Por favor, selecione os arquivos Vocal e Instrumental locais.", "error");
+                    return;
+                }
+            } else if (activeUploadTab === "youtube") {
+                const vocalUrl = document.getElementById('youtube-vocal-url').value.trim();
+                const backingUrl = document.getElementById('youtube-backing-url').value.trim();
+                if (!vocalUrl || !backingUrl) {
+                    showToast("Por favor, insira ambos os links do YouTube (Vocal e Instrumental).", "error");
+                    return;
+                }
+                if ((!vocalUrl.includes("youtube.com") && !vocalUrl.includes("youtu.be")) ||
+                    (!backingUrl.includes("youtube.com") && !backingUrl.includes("youtu.be"))) {
+                    showToast("Por favor, insira URLs do YouTube válidas para ambos os campos.", "error");
+                    return;
+                }
+            }
+
+            const formData = new FormData(addSongForm);
+
+            // Exibir o loading spinner
+            addSongModal.style.display = 'none';
+            if (activeUploadTab === "youtube") {
+                loadingStatusTitle.innerText = "Baixando do YouTube...";
+                loadingStatusDesc.innerText = "Baixando as pistas Vocal e Instrumental em paralelo...";
+            } else {
+                loadingStatusTitle.innerText = "Cortando Áudios...";
+                loadingStatusDesc.innerText = "Fatiando os vocais e instrumental com pydub...";
+            }
+            loadingOverlay.style.display = 'flex';
+
+            try {
+                // Se o arquivo LRC não estiver preenchido, avisa que a IA vai transcrever
+                const lrcFile = document.getElementById('lrc-file').files[0];
+                if (!lrcFile) {
+                    // Atualiza status do loading para a fase de IA
+                    setTimeout(() => {
+                        loadingStatusTitle.innerText = "IA Transcrevendo Letra...";
+                        if (activeUploadTab === "youtube") {
+                            loadingStatusDesc.innerText = "Aguardando o Whisper extrair a letra do áudio baixado...";
+                        } else {
+                            loadingStatusDesc.innerText = "Isso pode levar alguns segundos na GPU RTX 4070...";
+                        }
+                    }, 4000);
+                }
+
+                const response = await fetch('/api/upload-song', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const err = await response.json();
+                    throw new Error(err.detail || "Erro desconhecido");
+                }
+
+                const data = await response.json();
+
+                loadingOverlay.style.display = 'none';
+
+                if (data.lyrics_status === 'draft') {
+                    // Abrir o editor interativo de LRC
+                    document.getElementById('editor-slug').value = data.slug;
+                    document.getElementById('editor-language').value = formData.get('language');
+                    document.getElementById('editor-textarea').value = data.draft_lrc;
+                    lrcEditorModal.style.display = 'flex';
+                } else {
+                    if (data.fallback_used) {
+                        showToast("Música adicionada! Nota: A IA teve baixa correspondência e ativou a distribuição uniforme. Recomendamos ajustar manualmente os tempos no Sincronizador para um resultado perfeito!", "warning");
+                    } else {
+                        showToast("Música adicionada com sucesso! Divirta-se! 🎉", "success");
+                    }
+                    fetchSongs(); // Recarrega lista
+                }
+
+            } catch (error) {
+                loadingOverlay.style.display = 'none';
+                showToast("Erro ao adicionar música: " + error.message, "error");
+                addSongModal.style.display = 'flex';
+            }
+        };
+
+        lrcEditorForm.onsubmit = async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(lrcEditorForm);
+
+            lrcEditorModal.style.display = 'none';
+            loadingStatusTitle.innerText = "Alinhando Letras...";
+            loadingStatusDesc.innerText = "Mapeando sílabas das palavras e calculando fonemas...";
+            loadingOverlay.style.display = 'flex';
+
+            try {
+                const response = await fetch('/api/save-lyrics', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const err = await response.json();
+                    throw new Error(err.detail || "Erro ao salvar");
+                }
+
+                loadingOverlay.style.display = 'none';
+                showToast("Sincronização concluída com sucesso! Divirta-se! 🎉", "success");
+                fetchSongs(); // Recarrega lista
+
+            } catch (error) {
+                loadingOverlay.style.display = 'none';
+                showToast("Erro ao salvar letras: " + error.message, "error");
+                lrcEditorModal.style.display = 'flex';
+            }
+        };
+
+        fetchSongs();
+        connectDisplayWebSocket();
+    </script>
+
+</body>
+
+</html>
