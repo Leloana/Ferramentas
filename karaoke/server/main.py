@@ -852,9 +852,9 @@ async def get_lyrics(slug: str, response: Response):
                     segs = json.load(sf)
                     if segs and len(segs) > 0:
                         language = segs[0].get("language", "en")
-            except:
-                pass
-                
+            except Exception as e:
+                logger.debug(f"Falha ao ler language de segments.json: {e}")
+
         return {"success": True, "lyrics": content, "language": language}
     except Exception as e:
         logger.error(f"Erro ao obter letras: {e}", exc_info=True)
