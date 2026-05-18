@@ -1,7 +1,25 @@
-import numpy as np
 import logging
 import os
+import re
 import sys
+
+import numpy as np
+
+# Padrões de alucinação conhecidos do Whisper (legendas/agradecimentos genéricos
+# que vazam do dataset de treinamento). Compilado uma única vez.
+_HALLUCINATION_RE = re.compile(
+    r"thanks?\s+for\s+(watching|sharing|playing|the\s+video|this\s+video)|"
+    r"thank\s+you\s+for\s+(watching|sharing)|"
+    r"subscribe\s+to\s+my\s+channel|"
+    r"please\s+subscribe|"
+    r"amara\.org|"
+    r"legendas\s+pela|"
+    r"legendas\s+por|"
+    r"subtitles\s+by|"
+    r"translated\s+by|"
+    r"watching\s+this\s+video",
+    re.IGNORECASE,
+)
 
 # Configuração básica de logging
 logging.basicConfig(level=logging.INFO)
@@ -38,6 +56,7 @@ class STTEngine:
         """
         device: "cuda", "cpu" ou "auto"
         """
+        self.model_size = model_size
         # Se device for auto, tenta cuda primeiro
         if device == "auto":
             try:
@@ -81,23 +100,8 @@ class STTEngine:
 
             for segment in segments:
                 text_clean = segment.text.strip()
-                
-                # B. Filtro Antialucinação de Marcas d'água Comuns de datasets do Whisper
-                import re
-                hallucination_pattern = (
-                    r"thanks?\s+for\s+(watching|sharing|playing|the\s+video|this\s+video)|"
-                    r"thank\s+you\s+for\s+(watching|sharing)|"
-                    r"subscribe\s+to\s+my\s+channel|"
-                    r"please\s+subscribe|"
-                    r"amara\.org|"
-                    r"legendas\s+pela|"
-                    r"legendas\s+por|"
-                    r"subtitles\s+by|"
-                    r"translated\s+by|"
-                    r"watching\s+this\s+video"
-                )
-                
-                if re.search(hallucination_pattern, text_clean, re.IGNORECASE):
+
+                if _HALLUCINATION_RE.search(text_clean):
                     logger.info(f"Alucinação do Whisper detectada e expurgada: '{text_clean}'")
                     continue
 
@@ -105,22 +109,21 @@ class STTEngine:
                 if segment.words:
                     for word in segment.words:
                         word_clean = word.word.strip()
-                        if re.search(hallucination_pattern, word_clean, re.IGNORECASE):
+                        if _HALLUCINATION_RE.search(word_clean):
                             continue
                         words_list.append({
                             "word": word_clean,
                             "start": word.start,
                             "end": word.end,
-                            "probability": word.probability
+                            "probability": word.probability,
                         })
-            
+
             return full_text.strip(), words_list
         except RuntimeError as e:
             if "cublas" in str(e).lower() or "cudnn" in str(e).lower():
                 logger.warning("Erro de biblioteca CUDA detectado durante execução. Trocando para CPU...")
-                # Recarrega o modelo em CPU
-                self.model = WhisperModel("medium", device="cpu", compute_type="int8")
-                return self.transcribe(audio_data, language) # Tenta novamente
+                self.model = WhisperModel(self.model_size, device="cpu", compute_type="int8")
+                return self.transcribe(audio_data, language, initial_prompt=initial_prompt)
             raise e
 
 # Singleton para uso no servidor

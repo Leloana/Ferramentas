@@ -1,17 +1,21 @@
+import asyncio
 import json
 import logging
-import asyncio
+import math
+import os
+import re
+import shutil
+import socket
+import sys
+from pathlib import Path
+from typing import Optional
+
 import numpy as np
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, UploadFile, File, Form, Response
+import scipy.signal
+from fastapi import FastAPI, File, Form, HTTPException, Response, UploadFile, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-from pathlib import Path
-from typing import Optional
-import re
-import shutil
-import sys
-import os
 
 # Garante que a pasta server está no path do Python para localizador de módulos
 server_dir = str(Path(__file__).parent.absolute())
@@ -70,10 +74,23 @@ class KaraokeRoom:
         self.current_segment_idx = 0
         self.transcribed_segments = set()
         self.total_score = 0.0
+        self.scored_count = 0  # nº de segmentos efetivamente pontuados (correto para média mesmo fora-de-ordem)
         self.last_client_time = 0.0
         self.segments = []
         self.is_active = True
         self.is_singing_active = False
+        self.song_title = ""
+        self.pending_tasks: set = set()
+
+    async def broadcast(self, msg: dict) -> None:
+        """Envia uma mensagem para display e mic (quando conectados), tolerando falhas."""
+        for ws in (self.display, self.mic):
+            if ws is None:
+                continue
+            try:
+                await ws.send_json(msg)
+            except Exception as e:
+                logger.debug(f"Falha ao enviar para websocket: {e}")
 
 class RoomManager:
     def __init__(self):
@@ -134,16 +151,6 @@ async def get_audio(song_id: str):
     return FileResponse(audio_path)
 
 # WebSocket
-@app.websocket("/ws/{song_id}")
-async def websocket_endpoint(websocket: WebSocket, song_id: str):
-    await websocket.accept()
-    
-    song_data = song_manager.get_song_data(song_id)
-    if not song_data:
-        await websocket.close(code=1008, reason="Música não encontrada")
-        return
-
-# WebSocket
 @app.websocket("/ws/room/{room_id}")
 async def websocket_endpoint(websocket: WebSocket, room_id: str):
     await websocket.accept()
@@ -176,6 +183,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
         room.current_segment_idx = 0
         room.transcribed_segments = set()
         room.total_score = 0.0
+        room.scored_count = 0
         room.last_client_time = 0.0
         room.audio_buffer = bytearray()
         room.segment_buffers = {}
@@ -186,39 +194,37 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
         if room.mic:
             try:
                 await room.mic.close(code=1000, reason="Novo microfone conectado")
-            except:
-                pass
+            except Exception as e:
+                logger.debug(f"Falha ao fechar mic anterior: {e}")
         room.mic = websocket
         logger.info(f"Microfone conectado para a sala: {room_id}")
-        
-        # Avisa que pareou com sucesso
+
         await websocket.send_json({"type": "pairing_status", "status": "paired", "role": "mic"})
         if room.display:
             await room.display.send_json({"type": "pairing_status", "status": "paired", "role": "display"})
-            
-    else: # role == "display"
+
+    else:  # role == "display"
         if room.display:
             try:
                 await room.display.close(code=1000, reason="Novo display conectado")
-            except:
-                pass
+            except Exception as e:
+                logger.debug(f"Falha ao fechar display anterior: {e}")
         room.display = websocket
         logger.info(f"Display (TV) conectado para a sala: {room_id}")
-        
+
         if room.mic:
             await websocket.send_json({"type": "pairing_status", "status": "paired", "role": "display"})
             try:
                 await room.mic.send_json({"type": "pairing_status", "status": "paired", "role": "mic"})
-            except:
-                pass
+            except Exception as e:
+                logger.debug(f"Falha ao notificar mic do pareamento: {e}")
         else:
             await websocket.send_json({"type": "pairing_status", "status": "unpaired", "role": "display"})
-            
-    # Envia o estado de canto inicial
+
     try:
         await websocket.send_json({"type": "singing_state", "active": room.is_singing_active})
-    except:
-        pass
+    except Exception as e:
+        logger.debug(f"Falha ao enviar estado inicial: {e}")
             
     stt = get_stt_engine()
     
@@ -268,47 +274,44 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                     "total_expected": len(clean_words)
                 }
             else:
-                # 2. Resample e Transcrever (com initial_prompt para guiar a IA)
+                # Resampling polifásico para 16 kHz (Whisper) com filtro FIR anti-aliasing.
                 def compute():
-                    # Resampling profissional usando scipy.signal.resample_poly com decimação polifásica e filtro FIR anti-aliasing
-                    import scipy.signal
-                    import math
                     gcd = math.gcd(16000, room.client_sample_rate)
                     up = 16000 // gcd
                     down = room.client_sample_rate // gcd
                     resampled = scipy.signal.resample_poly(audio_data, up, down).astype(np.float32)
                     return stt.transcribe(resampled, language=seg_lang, initial_prompt=seg_text)
-                    
+
                 transcribed_text, words = await asyncio.to_thread(compute)
-                
+
                 prev_lyrics = None
                 if seg_idx > 0 and seg_idx - 1 < len(room.segments):
                     prev_lyrics = room.segments[seg_idx - 1]["lyrics"].split()
-                
-                # 4. Pontuar
-                result = calculate_score(seg_lyrics, words, prev_expected_words=prev_lyrics)
+
+                result = calculate_score(seg_lyrics, words, prev_expected_words=prev_lyrics, language=seg_lang)
                 room.total_score += result["score"]
-            
+
+            # Conta este segmento como pontuado e usa contador real para a média
+            # (tasks de transcrição podem terminar fora de ordem — dividir por seg_idx+1
+            # subestimava/superestimava a média).
+            room.scored_count += 1
+            running_avg = round(room.total_score / room.scored_count, 1)
+
             logger.info(f"\n========================================\n"
                         f"📝 [DEBUG TRANSCRIÇÃO] Segmento {seg_idx + 1} - Sala {room_id}\n"
                         f"   - Texto Transcrito (Whisper): '{transcribed_text}'\n"
                         f"   - Palavras Mapeadas: {result['matched_words']}/{result['total_expected']}\n"
                         f"   - Transcrição acústica processada: '{result['transcription']}'\n"
                         f"   - Pontuação Deste Segmento: {result['score']}%\n"
-                        f"   - Média de Pontuação Geral Atual: {round(room.total_score / (seg_idx + 1), 1)}%\n"
+                        f"   - Média de Pontuação Geral Atual: {running_avg}%\n"
                         f"========================================")
-            
-            # Envia resultados para os dois dispositivos se estiverem conectados
-            response_msg = {
+
+            await room.broadcast({
                 "type": "segment_result",
                 "score": result["score"],
                 "transcription": result["transcription"],
-                "total_score": round(room.total_score / (seg_idx + 1), 1)
-            }
-            if room.display:
-                await room.display.send_json(response_msg)
-            if room.mic:
-                await room.mic.send_json(response_msg)
+                "total_score": running_avg,
+            })
         except Exception as e:
             logger.error(f"Erro no processamento do segmento: {e}", exc_info=True)
 
@@ -360,17 +363,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                     
                     if is_singing != room.is_singing_active:
                         room.is_singing_active = is_singing
-                        state_msg = {"type": "singing_state", "active": is_singing}
-                        if room.display:
-                            try:
-                                await room.display.send_json(state_msg)
-                            except:
-                                pass
-                        if room.mic:
-                            try:
-                                await room.mic.send_json(state_msg)
-                            except:
-                                pass
+                        await room.broadcast({"type": "singing_state", "active": is_singing})
                     
                     # Lógica de transição de segmentos compartilhada
                     if room.current_segment_idx < len(room.segments):
@@ -389,14 +382,16 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                             room.segment_buffers.pop(room.current_segment_idx, None)  # Libera memória imediatamente
                             room.audio_buffer = bytearray()  # Limpa global para retrocompatibilidade
                             
-                            # Lança tarefa de transcrição em background
-                            asyncio.create_task(process_and_score(
-                                room.current_segment_idx, 
-                                raw_audio, 
-                                current_seg["language"], 
+                            # Mantém referência forte à task — sem isso o GC pode coletá-la antes de terminar.
+                            task = asyncio.create_task(process_and_score(
+                                room.current_segment_idx,
+                                raw_audio,
+                                current_seg["language"],
                                 current_seg["lyrics_timed"],
-                                current_seg["lyrics"]
+                                current_seg["lyrics"],
                             ))
+                            room.pending_tasks.add(task)
+                            task.add_done_callback(room.pending_tasks.discard)
                             
                         # Transiciona para o próximo segmento imediatamente ao término do canto (sing_end)
                         # Isso dá tempo ao front-end de receber a letra do próximo verso e exibir a barra de silêncio
@@ -409,29 +404,18 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                                     await send_segment_start(room.mic, room.segments, room.current_segment_idx, room.song_title)
                             else:
                                 logger.info(f"Último segmento cantado na sala {room_id}. Aguardando o backing track terminar...")
-                                outro_msg = {"type": "outro_start"}
-                                if room.display:
-                                    try:
-                                        await room.display.send_json(outro_msg)
-                                    except:
-                                        pass
-                                if room.mic:
-                                    try:
-                                        await room.mic.send_json(outro_msg)
-                                    except:
-                                        pass
-                                
+                                await room.broadcast({"type": "outro_start"})
+
                 elif msg_type == "audio_ended":
                     logger.info(f"Áudio finalizado pelo cliente na sala {room_id}. Finalizando jogo...")
+                    # Aguarda transcrições pendentes para que a média final inclua todos os segmentos processáveis
+                    if room.pending_tasks:
+                        try:
+                            await asyncio.wait_for(asyncio.gather(*room.pending_tasks, return_exceptions=True), timeout=10.0)
+                        except asyncio.TimeoutError:
+                            logger.warning(f"Timeout aguardando transcrições pendentes na sala {room_id}")
                     total_score_avg = round(room.total_score / max(1, len(room.segments)), 1)
-                    game_over_msg = {
-                        "type": "game_over",
-                        "total_score": total_score_avg
-                    }
-                    if room.display:
-                        await room.display.send_json(game_over_msg)
-                    if room.mic:
-                        await room.mic.send_json(game_over_msg)
+                    await room.broadcast({"type": "game_over", "total_score": total_score_avg})
                     break
                                 
     except (WebSocketDisconnect, RuntimeError):
@@ -439,29 +423,26 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
     except Exception as e:
         logger.error(f"Erro no WebSocket da sala {room_id}: {e}", exc_info=True)
     finally:
-        # Limpa o websocket do respectivo papel ao desconectar
         if role == "mic":
             room.mic = None
             if room.display:
                 try:
                     await room.display.send_json({"type": "pairing_status", "status": "unpaired", "role": "mic"})
-                except:
-                    pass
+                except Exception as e:
+                    logger.debug(f"Falha ao notificar display do unpair: {e}")
         else:
             room.display = None
             if room.mic:
                 try:
                     await room.mic.send_json({"type": "pairing_status", "status": "unpaired", "role": "display"})
-                except:
-                    pass
-                    
-        # Fecha a conexão fisicamente
+                except Exception as e:
+                    logger.debug(f"Falha ao notificar mic do unpair: {e}")
+
         try:
             await websocket.close()
-        except:
-            pass
-            
-        # Deleta a sala inteira se todos os participantes desconectarem
+        except Exception as e:
+            logger.debug(f"Falha ao fechar websocket: {e}")
+
         room_manager.clean_room(room_id)
 
 async def send_segment_start(ws: WebSocket, segments: list, idx: int, song_title: str = ""):
@@ -958,7 +939,6 @@ async def upload_song(
 
 @app.get("/api/get-ip")
 async def get_ip():
-    import socket
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
         s.connect(('8.8.8.8', 1))
