@@ -2,7 +2,6 @@ import asyncio
 import json
 import logging
 import math
-import os
 import re
 import shutil
 import socket
@@ -22,41 +21,15 @@ server_dir = str(Path(__file__).parent.absolute())
 if server_dir not in sys.path:
     sys.path.insert(0, server_dir)
 
-# Localizador Dinâmico Inteligente de FFmpeg no Windows
-winget_packages_dir = Path(os.path.expandvars(r"%LOCALAPPDATA%\Microsoft\WinGet\Packages"))
-ffmpeg_bin_dir = None
+from utils.ffmpeg_bootstrap import bootstrap as _bootstrap_ffmpeg
+ffmpeg_bin_dir = _bootstrap_ffmpeg()
 
-# 1. Busca recursivamente no diretório de pacotes instalados pelo Winget
-if winget_packages_dir.exists():
-    for p in winget_packages_dir.glob("**/bin/ffmpeg.exe"):
-        ffmpeg_bin_dir = str(p.parent)
-        break
-
-# 2. Fallback para o diretório de atalhos Links do Winget
-if not ffmpeg_bin_dir:
-    winget_links_path = os.path.expandvars(r"%LOCALAPPDATA%\Microsoft\WinGet\Links")
-    if Path(winget_links_path).exists():
-        ffmpeg_bin_dir = winget_links_path
-
-# Injeta a pasta localizada no PATH do ambiente ativo
-if ffmpeg_bin_dir:
-    if ffmpeg_bin_dir not in os.environ["PATH"]:
-        os.environ["PATH"] += os.pathsep + ffmpeg_bin_dir
-
-from pydub import AudioSegment
-
-# Configura explicitamente os conversores no pydub
-if ffmpeg_bin_dir:
-    ffmpeg_exe = Path(ffmpeg_bin_dir) / "ffmpeg.exe"
-    if ffmpeg_exe.exists():
-        AudioSegment.converter = str(ffmpeg_exe)
-        ffprobe_exe = Path(ffmpeg_bin_dir) / "ffprobe.exe"
-        if ffprobe_exe.exists():
-            AudioSegment.ffprobe = str(ffprobe_exe)
+from pydub import AudioSegment  # noqa: E402  (precisa vir após bootstrap do ffmpeg)
 
 from stt_engine import get_stt_engine
 from score_engine import calculate_score
 from song_manager import SongManager
+from utils.text import parse_time_to_seconds, slugify
 
 # Configurações
 logging.basicConfig(level=logging.INFO)
@@ -462,51 +435,6 @@ async def send_segment_start(ws: WebSocket, segments: list, idx: int, song_title
         "next_lyrics": next_lyrics,
         "song_title": song_title
     })
-
-def slugify(text: str) -> str:
-    # Converte para minúsculas, remove acentos simplificados e substitui espaços por traços
-    text = text.lower().strip()
-    # Substituições comuns de caracteres com acento em português
-    replacements = {
-        'á': 'a', 'à': 'a', 'â': 'a', 'ã': 'a', 'ä': 'a',
-        'é': 'e', 'è': 'e', 'ê': 'e', 'ë': 'e',
-        'í': 'i', 'ì': 'i', 'î': 'i', 'ï': 'i',
-        'ó': 'o', 'ò': 'o', 'ô': 'o', 'õ': 'o', 'ö': 'o',
-        'ú': 'u', 'ù': 'u', 'û': 'u', 'ü': 'u',
-        'ç': 'c', 'ñ': 'n'
-    }
-    for char, replacement in replacements.items():
-        text = text.replace(char, replacement)
-    text = re.sub(r'[^\w\s-]', '', text)
-    text = re.sub(r'[\s_-]+', '-', text)
-    return text
-
-def parse_time_to_seconds(time_str: str) -> float:
-    # Converte string de tempo flexível (ex: "4:30", "04:30.5", "10") para segundos (float)
-    time_str = str(time_str).strip()
-    if not time_str or time_str == "-1.0" or time_str == "-1":
-        return -1.0
-        
-    try:
-        return float(time_str)
-    except ValueError:
-        pass
-        
-    parts = time_str.split(':')
-    try:
-        if len(parts) == 2:
-            m = float(parts[0])
-            s = float(parts[1])
-            return m * 60 + s
-        elif len(parts) == 3:
-            h = float(parts[0])
-            m = float(parts[1])
-            s = float(parts[2])
-            return h * 3600 + m * 60 + s
-    except Exception as e:
-        logger.error(f"Erro ao converter string de tempo '{time_str}': {e}")
-        
-    return 0.0
 
 async def download_youtube_audio(url: str, output_path: Path) -> bool:
     """Downloads audio from a YouTube URL and converts it to MP3 using yt-dlp and FFmpeg."""
