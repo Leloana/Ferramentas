@@ -27,11 +27,8 @@ graph TD
 
 ```
 karaoke/
-├── BACKEND_REFACTOR_NOTES.md   # Registro histórico da refatoração do backend
-├── PROJECT_GUIDE.md             # Este arquivo (guia principal)
 ├── client/                     # Código da Interface do Usuário (Client-side)
 │   ├── index.html              # Shell HTML (templates, modais e markup)
-│   ├── ARCHITECTURE.md         # Manual detalhado da arquitetura do client
 │   ├── styles/
 │   │   └── main.css            # CSS monolítico com classes de estado discretas
 │   └── js/
@@ -71,9 +68,14 @@ karaoke/
 │       ├── lrc_align.py        # Alinhador puro de letras planas vs Whisper
 │       ├── youtube.py          # Wrapper yt-dlp assíncrono com limpeza de residuais
 │       └── prepare.py          # Adaptador dinâmico para invocar a tool prepare_song
-└── tools/                      # Scripts auxiliares e automações
-    ├── prepare_song.py         # Alinhador word-level de áudio vocal com LRC para gerar segmentos
-    └── generate_lrc.py         # Gerador de LRC via Whisper puro
+├── tools/                      # Scripts auxiliares e automações
+│   ├── prepare_song.py         # Alinhador word-level de áudio vocal com LRC para gerar segmentos
+│   └── generate_lrc.py         # Gerador de LRC via Whisper puro
+└── docs/                       # Documentação técnica e especificações do projeto
+    ├── ARCHITECTURE.md         # Manual de ES Modules e estado do client
+    ├── BACKEND_REFACTOR_NOTES.md # Histórico de refatoração do backend
+    ├── PLANO.md                # Planejamento original do projeto
+    └── PROJECT_GUIDE.md        # Este arquivo (guia principal)
 ```
 
 ---

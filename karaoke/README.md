@@ -31,9 +31,9 @@ O projeto foi totalmente refatorado, alcançando uma arquitetura altamente modul
 ## 📂 Estrutura de Diretórios e Guias do Desenvolvedor
 
 A base de código está dividida em camadas perfeitamente desacopladas. Para detalhes completos de engenharia, consulte nossos guias internos dedicados:
-*   📖 **Guia Mestre de Arquitetura e Contratos**: Veja em [PROJECT_GUIDE.md](PROJECT_GUIDE.md) as especificações de rede, modelo do segments.json e restrições.
-*   📖 **Arquitetura Técnica do Client (Frontend)**: Veja em [client/ARCHITECTURE.md](client/ARCHITECTURE.md) o padrão de ES Modules, estado mutável compartilhado e controle CSS de estados.
-*   📖 **Histórico de Refatoração do Backend**: Veja em [BACKEND_REFACTOR_NOTES.md](BACKEND_REFACTOR_NOTES.md) como o monolito do servidor foi decomposto em routers assíncronos.
+*   📖 **Guia Mestre de Arquitetura e Contratos**: Veja em [docs/PROJECT_GUIDE.md](docs/PROJECT_GUIDE.md) as especificações de rede, modelo do segments.json e restrições.
+*   📖 **Arquitetura Técnica do Client (Frontend)**: Veja em [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) o padrão de ES Modules, estado mutável compartilhado e controle CSS de estados.
+*   📖 **Histórico de Refatoração do Backend**: Veja em [docs/BACKEND_REFACTOR_NOTES.md](docs/BACKEND_REFACTOR_NOTES.md) como o monolito do servidor foi decomposto em routers assíncronos.
 
 ---
 
@@ -64,7 +64,7 @@ Nós já fornecemos certificados SSL de desenvolvimento (`key.pem` e `cert.pem`)
 
 * **No Windows (PowerShell/Prompt a partir da pasta `karaoke`):**
   ```powershell
-  .\venv\Scripts\python.exe -m uvicorn server.main:app --host 0.0.0.0 --port 8000 --ssl-keyfile server/key.pem --ssl-certfile server/cert.pem
+  Get-NetTCPConnection -LocalPort 8000 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }; .\venv\Scripts\python.exe -m uvicorn server.main:app --host 0.0.0.0 --port 8000 --ssl-keyfile server/key.pem --ssl-certfile server/cert.pem
   ```
 
 * **No Linux / macOS (Terminal a partir da pasta `karaoke`):**
