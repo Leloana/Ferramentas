@@ -1,0 +1,1614 @@
+[
+  {
+    "id": 1,
+    "label": "Parte 1",
+    "sing_start": 0.0,
+    "sing_end": 3.5,
+    "pause_start": 3.5,
+    "pause_end": 3.5,
+    "language": "en",
+    "lyrics": "They're gonna clean up your looks with all the lies in the books",
+    "lyrics_timed": [
+      {
+        "word": "They're",
+        "expected_start": 0.0
+      },
+      {
+        "word": "gonna",
+        "expected_start": 0.84
+      },
+      {
+        "word": "clean",
+        "expected_start": 1.1
+      },
+      {
+        "word": "up",
+        "expected_start": 1.46
+      },
+      {
+        "word": "your",
+        "expected_start": 1.76
+      },
+      {
+        "word": "looks",
+        "expected_start": 2.06
+      },
+      {
+        "word": "with",
+        "expected_start": 2.42
+      },
+      {
+        "word": "all",
+        "expected_start": 2.94
+      },
+      {
+        "word": "the",
+        "expected_start": 3.22
+      },
+      {
+        "word": "lies",
+        "expected_start": 3.46
+      },
+      {
+        "word": "in",
+        "expected_start": 3.68
+      },
+      {
+        "word": "the",
+        "expected_start": 4.04
+      },
+      {
+        "word": "books",
+        "expected_start": 4.32
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "label": "Parte 2",
+    "sing_start": 3.5,
+    "sing_end": 7.62,
+    "pause_start": 7.62,
+    "pause_end": 7.72,
+    "language": "en",
+    "lyrics": "To make a citizen out of you",
+    "lyrics_timed": [
+      {
+        "word": "To",
+        "expected_start": 0.0
+      },
+      {
+        "word": "make",
+        "expected_start": 0.6
+      },
+      {
+        "word": "a",
+        "expected_start": 0.96
+      },
+      {
+        "word": "citizen",
+        "expected_start": 1.34
+      },
+      {
+        "word": "out",
+        "expected_start": 1.92
+      },
+      {
+        "word": "of",
+        "expected_start": 2.64
+      },
+      {
+        "word": "you",
+        "expected_start": 3.2
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "label": "Parte 3",
+    "sing_start": 7.92,
+    "sing_end": 12.24,
+    "pause_start": 12.24,
+    "pause_end": 12.24,
+    "language": "en",
+    "lyrics": "Because they sleep with a gun and keep an eye on you, son",
+    "lyrics_timed": [
+      {
+        "word": "Because",
+        "expected_start": 0.0
+      },
+      {
+        "word": "they",
+        "expected_start": 0.0
+      },
+      {
+        "word": "sleep",
+        "expected_start": 0.84
+      },
+      {
+        "word": "with",
+        "expected_start": 0.84
+      },
+      {
+        "word": "a",
+        "expected_start": 1.42
+      },
+      {
+        "word": "gun",
+        "expected_start": 1.78
+      },
+      {
+        "word": "and",
+        "expected_start": 2.06
+      },
+      {
+        "word": "keep",
+        "expected_start": 2.06
+      },
+      {
+        "word": "an",
+        "expected_start": 2.6
+      },
+      {
+        "word": "eye",
+        "expected_start": 2.88
+      },
+      {
+        "word": "on",
+        "expected_start": 3.22
+      },
+      {
+        "word": "you,",
+        "expected_start": 3.68
+      },
+      {
+        "word": "son",
+        "expected_start": 4.0
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "label": "Parte 4",
+    "sing_start": 12.24,
+    "sing_end": 16.58,
+    "pause_start": 16.58,
+    "pause_end": 16.68,
+    "language": "en",
+    "lyrics": "So they can watch all the things you do",
+    "lyrics_timed": [
+      {
+        "word": "So",
+        "expected_start": 0.0
+      },
+      {
+        "word": "they",
+        "expected_start": 0.64
+      },
+      {
+        "word": "can",
+        "expected_start": 0.96
+      },
+      {
+        "word": "watch",
+        "expected_start": 1.28
+      },
+      {
+        "word": "all",
+        "expected_start": 1.6
+      },
+      {
+        "word": "the",
+        "expected_start": 1.9
+      },
+      {
+        "word": "things",
+        "expected_start": 2.18
+      },
+      {
+        "word": "you",
+        "expected_start": 2.6
+      },
+      {
+        "word": "do",
+        "expected_start": 3.12
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "label": "Parte 5",
+    "sing_start": 16.82,
+    "sing_end": 21.18,
+    "pause_start": 21.18,
+    "pause_end": 21.18,
+    "language": "en",
+    "lyrics": "Because the drugs never work, they're gonna give you a smirk",
+    "lyrics_timed": [
+      {
+        "word": "Because",
+        "expected_start": 0.0
+      },
+      {
+        "word": "the",
+        "expected_start": 0.92
+      },
+      {
+        "word": "drugs",
+        "expected_start": 1.26
+      },
+      {
+        "word": "never",
+        "expected_start": 1.42
+      },
+      {
+        "word": "work,",
+        "expected_start": 2.04
+      },
+      {
+        "word": "they're",
+        "expected_start": 2.66
+      },
+      {
+        "word": "gonna",
+        "expected_start": 3.02
+      },
+      {
+        "word": "give",
+        "expected_start": 3.3
+      },
+      {
+        "word": "you",
+        "expected_start": 3.64
+      },
+      {
+        "word": "a",
+        "expected_start": 4.04
+      },
+      {
+        "word": "smirk",
+        "expected_start": 4.24
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "label": "Parte 6",
+    "sing_start": 21.18,
+    "sing_end": 25.36,
+    "pause_start": 25.36,
+    "pause_end": 25.44,
+    "language": "en",
+    "lyrics": "'Cause they got methods of keeping you clean",
+    "lyrics_timed": [
+      {
+        "word": "'Cause",
+        "expected_start": 0.0
+      },
+      {
+        "word": "they",
+        "expected_start": 0.62
+      },
+      {
+        "word": "got",
+        "expected_start": 0.92
+      },
+      {
+        "word": "methods",
+        "expected_start": 1.2
+      },
+      {
+        "word": "of",
+        "expected_start": 1.72
+      },
+      {
+        "word": "keeping",
+        "expected_start": 2.08
+      },
+      {
+        "word": "you",
+        "expected_start": 2.4
+      },
+      {
+        "word": "clean",
+        "expected_start": 3.0
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "label": "Parte 7",
+    "sing_start": 25.44,
+    "sing_end": 29.99,
+    "pause_start": 29.99,
+    "pause_end": 29.99,
+    "language": "en",
+    "lyrics": "They're gonna rip up your heads, your aspirations to shreds",
+    "lyrics_timed": [
+      {
+        "word": "They're",
+        "expected_start": 0.0
+      },
+      {
+        "word": "gonna",
+        "expected_start": 0.76
+      },
+      {
+        "word": "rip",
+        "expected_start": 1.2
+      },
+      {
+        "word": "up",
+        "expected_start": 1.62
+      },
+      {
+        "word": "your",
+        "expected_start": 1.84
+      },
+      {
+        "word": "heads,",
+        "expected_start": 2.2
+      },
+      {
+        "word": "your",
+        "expected_start": 3.04
+      },
+      {
+        "word": "aspirations",
+        "expected_start": 3.04
+      },
+      {
+        "word": "to",
+        "expected_start": 3.98
+      },
+      {
+        "word": "shreds",
+        "expected_start": 4.34
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "label": "Parte 8",
+    "sing_start": 29.99,
+    "sing_end": 33.48,
+    "pause_start": 33.48,
+    "pause_end": 33.48,
+    "language": "en",
+    "lyrics": "Another cog in the murder machine",
+    "lyrics_timed": [
+      {
+        "word": "Another",
+        "expected_start": 0.0
+      },
+      {
+        "word": "cog",
+        "expected_start": 0.98
+      },
+      {
+        "word": "in",
+        "expected_start": 1.48
+      },
+      {
+        "word": "the",
+        "expected_start": 1.64
+      },
+      {
+        "word": "murder",
+        "expected_start": 1.88
+      },
+      {
+        "word": "machine",
+        "expected_start": 2.8
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "label": "Parte 9",
+    "sing_start": 33.48,
+    "sing_end": 39.3,
+    "pause_start": 39.3,
+    "pause_end": 39.35,
+    "language": "en",
+    "lyrics": "They said, \"All teenagers scare the living shit out of me",
+    "lyrics_timed": [
+      {
+        "word": "They",
+        "expected_start": 0.0
+      },
+      {
+        "word": "said,",
+        "expected_start": 0.84
+      },
+      {
+        "word": "\"All",
+        "expected_start": 0.84
+      },
+      {
+        "word": "teenagers",
+        "expected_start": 1.48
+      },
+      {
+        "word": "scare",
+        "expected_start": 2.1
+      },
+      {
+        "word": "the",
+        "expected_start": 2.48
+      },
+      {
+        "word": "living",
+        "expected_start": 3.26
+      },
+      {
+        "word": "shit",
+        "expected_start": 3.7
+      },
+      {
+        "word": "out",
+        "expected_start": 4.04
+      },
+      {
+        "word": "of",
+        "expected_start": 4.78
+      },
+      {
+        "word": "me",
+        "expected_start": 5.0
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "label": "Parte 10",
+    "sing_start": 39.35,
+    "sing_end": 43.31,
+    "pause_start": 43.31,
+    "pause_end": 43.31,
+    "language": "en",
+    "lyrics": "They could care less as long as someone'll bleed\"",
+    "lyrics_timed": [
+      {
+        "word": "They",
+        "expected_start": 0.0
+      },
+      {
+        "word": "could",
+        "expected_start": 0.72
+      },
+      {
+        "word": "care",
+        "expected_start": 0.98
+      },
+      {
+        "word": "less",
+        "expected_start": 1.34
+      },
+      {
+        "word": "as",
+        "expected_start": 1.8
+      },
+      {
+        "word": "long",
+        "expected_start": 2.32
+      },
+      {
+        "word": "as",
+        "expected_start": 2.68
+      },
+      {
+        "word": "someone'll",
+        "expected_start": 3.06
+      },
+      {
+        "word": "bleed\"",
+        "expected_start": 3.46
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "label": "Parte 11",
+    "sing_start": 43.31,
+    "sing_end": 47.19,
+    "pause_start": 47.19,
+    "pause_end": 47.19,
+    "language": "en",
+    "lyrics": "So darken your clothes or strike a violent pose",
+    "lyrics_timed": [
+      {
+        "word": "So",
+        "expected_start": 0.0
+      },
+      {
+        "word": "darken",
+        "expected_start": 0.7
+      },
+      {
+        "word": "your",
+        "expected_start": 0.7
+      },
+      {
+        "word": "clothes",
+        "expected_start": 1.32
+      },
+      {
+        "word": "or",
+        "expected_start": 1.56
+      },
+      {
+        "word": "strike",
+        "expected_start": 2.38
+      },
+      {
+        "word": "a",
+        "expected_start": 2.58
+      },
+      {
+        "word": "violent",
+        "expected_start": 3.26
+      },
+      {
+        "word": "pose",
+        "expected_start": 3.56
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "label": "Parte 12",
+    "sing_start": 47.19,
+    "sing_end": 50.64,
+    "pause_start": 50.64,
+    "pause_end": 50.64,
+    "language": "en",
+    "lyrics": "Maybe they'll leave you alone, but not me",
+    "lyrics_timed": [
+      {
+        "word": "Maybe",
+        "expected_start": 0.0
+      },
+      {
+        "word": "they'll",
+        "expected_start": 0.78
+      },
+      {
+        "word": "leave",
+        "expected_start": 1.4
+      },
+      {
+        "word": "you",
+        "expected_start": 1.48
+      },
+      {
+        "word": "alone,",
+        "expected_start": 1.72
+      },
+      {
+        "word": "but",
+        "expected_start": 2.84
+      },
+      {
+        "word": "not",
+        "expected_start": 2.84
+      },
+      {
+        "word": "me",
+        "expected_start": 3.12
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "label": "Parte 13",
+    "sing_start": 50.64,
+    "sing_end": 55.79,
+    "pause_start": 55.79,
+    "pause_end": 55.79,
+    "language": "en",
+    "lyrics": "The boys and girls in the clique, the awful names that they stick",
+    "lyrics_timed": [
+      {
+        "word": "The",
+        "expected_start": 0.0
+      },
+      {
+        "word": "boys",
+        "expected_start": 0.9
+      },
+      {
+        "word": "and",
+        "expected_start": 1.38
+      },
+      {
+        "word": "girls",
+        "expected_start": 2.0
+      },
+      {
+        "word": "in",
+        "expected_start": 2.28
+      },
+      {
+        "word": "the",
+        "expected_start": 2.62
+      },
+      {
+        "word": "clique,",
+        "expected_start": 2.88
+      },
+      {
+        "word": "the",
+        "expected_start": 3.14
+      },
+      {
+        "word": "awful",
+        "expected_start": 3.72
+      },
+      {
+        "word": "names",
+        "expected_start": 4.04
+      },
+      {
+        "word": "that",
+        "expected_start": 4.4
+      },
+      {
+        "word": "they",
+        "expected_start": 4.66
+      },
+      {
+        "word": "stick",
+        "expected_start": 4.98
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "label": "Parte 14",
+    "sing_start": 55.79,
+    "sing_end": 59.87,
+    "pause_start": 59.87,
+    "pause_end": 59.97,
+    "language": "en",
+    "lyrics": "You're never gonna fit in much, kid",
+    "lyrics_timed": [
+      {
+        "word": "You're",
+        "expected_start": 0.0
+      },
+      {
+        "word": "never",
+        "expected_start": 0.62
+      },
+      {
+        "word": "gonna",
+        "expected_start": 1.06
+      },
+      {
+        "word": "fit",
+        "expected_start": 1.62
+      },
+      {
+        "word": "in",
+        "expected_start": 2.12
+      },
+      {
+        "word": "much,",
+        "expected_start": 2.5
+      },
+      {
+        "word": "kid",
+        "expected_start": 2.92
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "label": "Parte 15",
+    "sing_start": 60.14,
+    "sing_end": 64.52,
+    "pause_start": 64.52,
+    "pause_end": 64.52,
+    "language": "en",
+    "lyrics": "But if you're troubled and hurt, what you got under your shirt",
+    "lyrics_timed": [
+      {
+        "word": "But",
+        "expected_start": 0.0
+      },
+      {
+        "word": "if",
+        "expected_start": 0.6
+      },
+      {
+        "word": "you're",
+        "expected_start": 0.92
+      },
+      {
+        "word": "troubled",
+        "expected_start": 1.16
+      },
+      {
+        "word": "and",
+        "expected_start": 1.7
+      },
+      {
+        "word": "hurt,",
+        "expected_start": 2.02
+      },
+      {
+        "word": "what",
+        "expected_start": 2.28
+      },
+      {
+        "word": "you",
+        "expected_start": 2.8
+      },
+      {
+        "word": "got",
+        "expected_start": 3.14
+      },
+      {
+        "word": "under",
+        "expected_start": 3.38
+      },
+      {
+        "word": "your",
+        "expected_start": 3.9
+      },
+      {
+        "word": "shirt",
+        "expected_start": 4.24
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "label": "Parte 16",
+    "sing_start": 64.52,
+    "sing_end": 68.03,
+    "pause_start": 68.03,
+    "pause_end": 68.03,
+    "language": "en",
+    "lyrics": "Will make them pay for the things that they did",
+    "lyrics_timed": [
+      {
+        "word": "Will",
+        "expected_start": 0.0
+      },
+      {
+        "word": "make",
+        "expected_start": 0.7
+      },
+      {
+        "word": "them",
+        "expected_start": 0.86
+      },
+      {
+        "word": "pay",
+        "expected_start": 1.14
+      },
+      {
+        "word": "for",
+        "expected_start": 1.42
+      },
+      {
+        "word": "the",
+        "expected_start": 1.8
+      },
+      {
+        "word": "things",
+        "expected_start": 2.08
+      },
+      {
+        "word": "that",
+        "expected_start": 2.46
+      },
+      {
+        "word": "they",
+        "expected_start": 2.88
+      },
+      {
+        "word": "did",
+        "expected_start": 3.28
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "label": "Parte 17",
+    "sing_start": 68.03,
+    "sing_end": 73.91,
+    "pause_start": 73.91,
+    "pause_end": 73.91,
+    "language": "en",
+    "lyrics": "They said, \"All teenagers scare the living shit out of me",
+    "lyrics_timed": [
+      {
+        "word": "They",
+        "expected_start": 0.0
+      },
+      {
+        "word": "said,",
+        "expected_start": 0.8
+      },
+      {
+        "word": "\"All",
+        "expected_start": 0.8
+      },
+      {
+        "word": "teenagers",
+        "expected_start": 1.68
+      },
+      {
+        "word": "scare",
+        "expected_start": 2.14
+      },
+      {
+        "word": "the",
+        "expected_start": 2.62
+      },
+      {
+        "word": "living",
+        "expected_start": 3.22
+      },
+      {
+        "word": "shit",
+        "expected_start": 3.7
+      },
+      {
+        "word": "out",
+        "expected_start": 4.14
+      },
+      {
+        "word": "of",
+        "expected_start": 4.76
+      },
+      {
+        "word": "me",
+        "expected_start": 5.06
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "label": "Parte 18",
+    "sing_start": 73.91,
+    "sing_end": 77.83,
+    "pause_start": 77.83,
+    "pause_end": 77.83,
+    "language": "en",
+    "lyrics": "They could care less as long as someone'll bleed\"",
+    "lyrics_timed": [
+      {
+        "word": "They",
+        "expected_start": 0.0
+      },
+      {
+        "word": "could",
+        "expected_start": 0.74
+      },
+      {
+        "word": "care",
+        "expected_start": 1.02
+      },
+      {
+        "word": "less",
+        "expected_start": 1.58
+      },
+      {
+        "word": "as",
+        "expected_start": 2.1
+      },
+      {
+        "word": "long",
+        "expected_start": 2.32
+      },
+      {
+        "word": "as",
+        "expected_start": 2.66
+      },
+      {
+        "word": "someone'll",
+        "expected_start": 2.9
+      },
+      {
+        "word": "bleed\"",
+        "expected_start": 3.3
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "label": "Parte 19",
+    "sing_start": 77.83,
+    "sing_end": 81.64,
+    "pause_start": 81.64,
+    "pause_end": 81.64,
+    "language": "en",
+    "lyrics": "So darken your clothes or strike a violent pose",
+    "lyrics_timed": [
+      {
+        "word": "So",
+        "expected_start": 0.0
+      },
+      {
+        "word": "darken",
+        "expected_start": 0.56
+      },
+      {
+        "word": "your",
+        "expected_start": 0.76
+      },
+      {
+        "word": "clothes",
+        "expected_start": 1.36
+      },
+      {
+        "word": "or",
+        "expected_start": 1.62
+      },
+      {
+        "word": "strike",
+        "expected_start": 2.36
+      },
+      {
+        "word": "a",
+        "expected_start": 2.44
+      },
+      {
+        "word": "violent",
+        "expected_start": 2.9
+      },
+      {
+        "word": "pose",
+        "expected_start": 3.34
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "label": "Parte 20",
+    "sing_start": 81.64,
+    "sing_end": 87.7,
+    "pause_start": 87.7,
+    "pause_end": 87.8,
+    "language": "en",
+    "lyrics": "Maybe they'll leave you alone, but not me, oh, yeah!",
+    "lyrics_timed": [
+      {
+        "word": "Maybe",
+        "expected_start": 0.0
+      },
+      {
+        "word": "they'll",
+        "expected_start": 1.8
+      },
+      {
+        "word": "leave",
+        "expected_start": 3.82
+      },
+      {
+        "word": "you",
+        "expected_start": 5.2
+      },
+      {
+        "word": "alone,",
+        "expected_start": 5.2
+      },
+      {
+        "word": "but",
+        "expected_start": 5.2
+      },
+      {
+        "word": "not",
+        "expected_start": 5.2
+      },
+      {
+        "word": "me,",
+        "expected_start": 5.2
+      },
+      {
+        "word": "oh,",
+        "expected_start": 5.2
+      },
+      {
+        "word": "yeah!",
+        "expected_start": 5.2
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "label": "Parte 21",
+    "sing_start": 101.91,
+    "sing_end": 107.72,
+    "pause_start": 107.72,
+    "pause_end": 107.72,
+    "language": "en",
+    "lyrics": "They said, \"All teenagers scare the living shit out of me",
+    "lyrics_timed": [
+      {
+        "word": "They",
+        "expected_start": 0.0
+      },
+      {
+        "word": "said,",
+        "expected_start": 0.82
+      },
+      {
+        "word": "\"All",
+        "expected_start": 0.82
+      },
+      {
+        "word": "teenagers",
+        "expected_start": 1.5
+      },
+      {
+        "word": "scare",
+        "expected_start": 2.58
+      },
+      {
+        "word": "the",
+        "expected_start": 2.58
+      },
+      {
+        "word": "living",
+        "expected_start": 3.2
+      },
+      {
+        "word": "shit",
+        "expected_start": 3.7
+      },
+      {
+        "word": "out",
+        "expected_start": 4.44
+      },
+      {
+        "word": "of",
+        "expected_start": 4.74
+      },
+      {
+        "word": "me",
+        "expected_start": 5.0
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "label": "Parte 22",
+    "sing_start": 107.72,
+    "sing_end": 111.72,
+    "pause_start": 111.72,
+    "pause_end": 111.72,
+    "language": "en",
+    "lyrics": "They could care less as long as someone'll bleed\"",
+    "lyrics_timed": [
+      {
+        "word": "They",
+        "expected_start": 0.0
+      },
+      {
+        "word": "could",
+        "expected_start": 0.72
+      },
+      {
+        "word": "care",
+        "expected_start": 0.94
+      },
+      {
+        "word": "less",
+        "expected_start": 1.5
+      },
+      {
+        "word": "as",
+        "expected_start": 2.08
+      },
+      {
+        "word": "long",
+        "expected_start": 2.3
+      },
+      {
+        "word": "as",
+        "expected_start": 2.62
+      },
+      {
+        "word": "someone'll",
+        "expected_start": 3.08
+      },
+      {
+        "word": "bleed\"",
+        "expected_start": 3.56
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "label": "Parte 23",
+    "sing_start": 111.72,
+    "sing_end": 115.56,
+    "pause_start": 115.56,
+    "pause_end": 115.56,
+    "language": "en",
+    "lyrics": "So darken your clothes or strike a violent pose",
+    "lyrics_timed": [
+      {
+        "word": "So",
+        "expected_start": 0.0
+      },
+      {
+        "word": "darken",
+        "expected_start": 0.66
+      },
+      {
+        "word": "your",
+        "expected_start": 1.02
+      },
+      {
+        "word": "clothes",
+        "expected_start": 1.32
+      },
+      {
+        "word": "or",
+        "expected_start": 1.56
+      },
+      {
+        "word": "strike",
+        "expected_start": 2.18
+      },
+      {
+        "word": "a",
+        "expected_start": 2.52
+      },
+      {
+        "word": "violent",
+        "expected_start": 2.92
+      },
+      {
+        "word": "pose",
+        "expected_start": 3.52
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "label": "Parte 24",
+    "sing_start": 115.56,
+    "sing_end": 118.95,
+    "pause_start": 118.95,
+    "pause_end": 118.95,
+    "language": "en",
+    "lyrics": "Maybe they'll leave you alone, but not me",
+    "lyrics_timed": [
+      {
+        "word": "Maybe",
+        "expected_start": 0.0
+      },
+      {
+        "word": "they'll",
+        "expected_start": 0.74
+      },
+      {
+        "word": "leave",
+        "expected_start": 1.16
+      },
+      {
+        "word": "you",
+        "expected_start": 1.36
+      },
+      {
+        "word": "alone,",
+        "expected_start": 1.8
+      },
+      {
+        "word": "but",
+        "expected_start": 2.46
+      },
+      {
+        "word": "not",
+        "expected_start": 2.7
+      },
+      {
+        "word": "me",
+        "expected_start": 3.08
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "label": "Parte 25",
+    "sing_start": 118.95,
+    "sing_end": 120.46,
+    "pause_start": 120.46,
+    "pause_end": 120.46,
+    "language": "en",
+    "lyrics": "All together now!",
+    "lyrics_timed": [
+      {
+        "word": "All",
+        "expected_start": 0.0
+      },
+      {
+        "word": "together",
+        "expected_start": 0.7
+      },
+      {
+        "word": "now!",
+        "expected_start": 1.2
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "label": "Parte 26",
+    "sing_start": 120.46,
+    "sing_end": 124.68,
+    "pause_start": 124.68,
+    "pause_end": 124.68,
+    "language": "en",
+    "lyrics": "\"Teenagers scare the living shit out of me",
+    "lyrics_timed": [
+      {
+        "word": "\"Teenagers",
+        "expected_start": 0.0
+      },
+      {
+        "word": "scare",
+        "expected_start": 0.76
+      },
+      {
+        "word": "the",
+        "expected_start": 1.32
+      },
+      {
+        "word": "living",
+        "expected_start": 1.72
+      },
+      {
+        "word": "shit",
+        "expected_start": 2.14
+      },
+      {
+        "word": "out",
+        "expected_start": 2.48
+      },
+      {
+        "word": "of",
+        "expected_start": 3.08
+      },
+      {
+        "word": "me",
+        "expected_start": 3.44
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "label": "Parte 27",
+    "sing_start": 124.68,
+    "sing_end": 128.56,
+    "pause_start": 128.56,
+    "pause_end": 128.56,
+    "language": "en",
+    "lyrics": "They could care less as long as someone'll bleed\"",
+    "lyrics_timed": [
+      {
+        "word": "They",
+        "expected_start": 0.0
+      },
+      {
+        "word": "could",
+        "expected_start": 0.76
+      },
+      {
+        "word": "care",
+        "expected_start": 0.76
+      },
+      {
+        "word": "less",
+        "expected_start": 1.06
+      },
+      {
+        "word": "as",
+        "expected_start": 1.54
+      },
+      {
+        "word": "long",
+        "expected_start": 2.06
+      },
+      {
+        "word": "as",
+        "expected_start": 2.64
+      },
+      {
+        "word": "someone'll",
+        "expected_start": 2.88
+      },
+      {
+        "word": "bleed\"",
+        "expected_start": 3.44
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "label": "Parte 28",
+    "sing_start": 128.56,
+    "sing_end": 132.37,
+    "pause_start": 132.37,
+    "pause_end": 132.37,
+    "language": "en",
+    "lyrics": "So darken your clothes or strike a violent pose",
+    "lyrics_timed": [
+      {
+        "word": "So",
+        "expected_start": 0.0
+      },
+      {
+        "word": "darken",
+        "expected_start": 0.68
+      },
+      {
+        "word": "your",
+        "expected_start": 0.68
+      },
+      {
+        "word": "clothes",
+        "expected_start": 1.34
+      },
+      {
+        "word": "or",
+        "expected_start": 1.56
+      },
+      {
+        "word": "strike",
+        "expected_start": 2.22
+      },
+      {
+        "word": "a",
+        "expected_start": 2.62
+      },
+      {
+        "word": "violent",
+        "expected_start": 2.96
+      },
+      {
+        "word": "pose",
+        "expected_start": 3.34
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "label": "Parte 29",
+    "sing_start": 132.37,
+    "sing_end": 136.43,
+    "pause_start": 136.43,
+    "pause_end": 136.53,
+    "language": "en",
+    "lyrics": "Maybe they'll leave you alone, but not me, oh-oh!",
+    "lyrics_timed": [
+      {
+        "word": "Maybe",
+        "expected_start": 0.0
+      },
+      {
+        "word": "they'll",
+        "expected_start": 0.82
+      },
+      {
+        "word": "leave",
+        "expected_start": 1.24
+      },
+      {
+        "word": "you",
+        "expected_start": 1.84
+      },
+      {
+        "word": "alone,",
+        "expected_start": 2.5
+      },
+      {
+        "word": "but",
+        "expected_start": 2.8
+      },
+      {
+        "word": "not",
+        "expected_start": 3.2
+      },
+      {
+        "word": "me,",
+        "expected_start": 3.2
+      },
+      {
+        "word": "oh-oh!",
+        "expected_start": 3.2
+      }
+    ]
+  },
+  {
+    "id": 30,
+    "label": "Parte 30",
+    "sing_start": 137.34,
+    "sing_end": 141.5,
+    "pause_start": 141.5,
+    "pause_end": 141.53,
+    "language": "en",
+    "lyrics": "\"Teenagers scare the living shit out of me",
+    "lyrics_timed": [
+      {
+        "word": "\"Teenagers",
+        "expected_start": 0.0
+      },
+      {
+        "word": "scare",
+        "expected_start": 0.74
+      },
+      {
+        "word": "the",
+        "expected_start": 1.06
+      },
+      {
+        "word": "living",
+        "expected_start": 1.68
+      },
+      {
+        "word": "shit",
+        "expected_start": 2.08
+      },
+      {
+        "word": "out",
+        "expected_start": 2.56
+      },
+      {
+        "word": "of",
+        "expected_start": 3.16
+      },
+      {
+        "word": "me",
+        "expected_start": 3.4
+      }
+    ]
+  },
+  {
+    "id": 31,
+    "label": "Parte 31",
+    "sing_start": 141.53,
+    "sing_end": 145.46,
+    "pause_start": 145.46,
+    "pause_end": 145.46,
+    "language": "en",
+    "lyrics": "They could care less as long as someone'll bleed\"",
+    "lyrics_timed": [
+      {
+        "word": "They",
+        "expected_start": 0.0
+      },
+      {
+        "word": "could",
+        "expected_start": 0.74
+      },
+      {
+        "word": "care",
+        "expected_start": 0.74
+      },
+      {
+        "word": "less",
+        "expected_start": 1.32
+      },
+      {
+        "word": "as",
+        "expected_start": 1.86
+      },
+      {
+        "word": "long",
+        "expected_start": 2.12
+      },
+      {
+        "word": "as",
+        "expected_start": 2.68
+      },
+      {
+        "word": "someone'll",
+        "expected_start": 3.12
+      },
+      {
+        "word": "bleed\"",
+        "expected_start": 3.44
+      }
+    ]
+  },
+  {
+    "id": 32,
+    "label": "Parte 32",
+    "sing_start": 145.46,
+    "sing_end": 149.23,
+    "pause_start": 149.23,
+    "pause_end": 149.23,
+    "language": "en",
+    "lyrics": "So darken your clothes or strike a violent pose",
+    "lyrics_timed": [
+      {
+        "word": "So",
+        "expected_start": 0.0
+      },
+      {
+        "word": "darken",
+        "expected_start": 0.74
+      },
+      {
+        "word": "your",
+        "expected_start": 0.74
+      },
+      {
+        "word": "clothes",
+        "expected_start": 1.36
+      },
+      {
+        "word": "or",
+        "expected_start": 1.6
+      },
+      {
+        "word": "strike",
+        "expected_start": 2.14
+      },
+      {
+        "word": "a",
+        "expected_start": 2.62
+      },
+      {
+        "word": "violent",
+        "expected_start": 2.92
+      },
+      {
+        "word": "pose",
+        "expected_start": 3.5
+      }
+    ]
+  },
+  {
+    "id": 33,
+    "label": "Parte 33",
+    "sing_start": 149.23,
+    "sing_end": 153.41,
+    "pause_start": 153.41,
+    "pause_end": 153.51,
+    "language": "en",
+    "lyrics": "Maybe they'll leave you alone, but not me",
+    "lyrics_timed": [
+      {
+        "word": "Maybe",
+        "expected_start": 0.0
+      },
+      {
+        "word": "they'll",
+        "expected_start": 0.82
+      },
+      {
+        "word": "leave",
+        "expected_start": 1.34
+      },
+      {
+        "word": "you",
+        "expected_start": 1.42
+      },
+      {
+        "word": "alone,",
+        "expected_start": 1.88
+      },
+      {
+        "word": "but",
+        "expected_start": 2.56
+      },
+      {
+        "word": "not",
+        "expected_start": 2.78
+      },
+      {
+        "word": "me",
+        "expected_start": 3.16
+      }
+    ]
+  }
+]

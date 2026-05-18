@@ -1,0 +1,1542 @@
+[
+  {
+    "id": 1,
+    "label": "Parte 1",
+    "sing_start": 12.0,
+    "sing_end": 17.0,
+    "pause_start": 17.0,
+    "pause_end": 17.0,
+    "language": "en",
+    "lyrics": "She says she's no good with words, but I'm worse",
+    "lyrics_timed": [
+      {
+        "word": "She",
+        "expected_start": 0.0
+      },
+      {
+        "word": "says",
+        "expected_start": 1.28
+      },
+      {
+        "word": "she's",
+        "expected_start": 1.56
+      },
+      {
+        "word": "no",
+        "expected_start": 2.06
+      },
+      {
+        "word": "good",
+        "expected_start": 2.46
+      },
+      {
+        "word": "with",
+        "expected_start": 2.9
+      },
+      {
+        "word": "words,",
+        "expected_start": 3.46
+      },
+      {
+        "word": "but",
+        "expected_start": 3.72
+      },
+      {
+        "word": "I'm",
+        "expected_start": 4.12
+      },
+      {
+        "word": "worse",
+        "expected_start": 4.68
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "label": "Parte 2",
+    "sing_start": 17.0,
+    "sing_end": 21.0,
+    "pause_start": 21.0,
+    "pause_end": 21.0,
+    "language": "en",
+    "lyrics": "Barely stuttered out a joke of a romantic stuck to my tongue",
+    "lyrics_timed": [
+      {
+        "word": "Barely",
+        "expected_start": 0.0
+      },
+      {
+        "word": "stuttered",
+        "expected_start": 0.287
+      },
+      {
+        "word": "out",
+        "expected_start": 0.575
+      },
+      {
+        "word": "a",
+        "expected_start": 0.862
+      },
+      {
+        "word": "joke",
+        "expected_start": 1.149
+      },
+      {
+        "word": "of",
+        "expected_start": 1.436
+      },
+      {
+        "word": "a",
+        "expected_start": 1.724
+      },
+      {
+        "word": "romantic",
+        "expected_start": 2.011
+      },
+      {
+        "word": "stuck",
+        "expected_start": 2.298
+      },
+      {
+        "word": "to",
+        "expected_start": 2.585
+      },
+      {
+        "word": "my",
+        "expected_start": 2.873
+      },
+      {
+        "word": "tongue",
+        "expected_start": 3.16
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "label": "Parte 3",
+    "sing_start": 21.0,
+    "sing_end": 25.0,
+    "pause_start": 25.0,
+    "pause_end": 25.0,
+    "language": "en",
+    "lyrics": "Weighed down with words too overdramatic",
+    "lyrics_timed": [
+      {
+        "word": "Weighed",
+        "expected_start": 0.0
+      },
+      {
+        "word": "down",
+        "expected_start": 0.92
+      },
+      {
+        "word": "with",
+        "expected_start": 1.04
+      },
+      {
+        "word": "words",
+        "expected_start": 1.34
+      },
+      {
+        "word": "too",
+        "expected_start": 1.76
+      },
+      {
+        "word": "overdramatic",
+        "expected_start": 2.58
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "label": "Parte 4",
+    "sing_start": 25.0,
+    "sing_end": 29.0,
+    "pause_start": 29.0,
+    "pause_end": 29.0,
+    "language": "en",
+    "lyrics": "Tonight it's it cant get much worse versus no one should ever feel like",
+    "lyrics_timed": [
+      {
+        "word": "Tonight",
+        "expected_start": 0.0
+      },
+      {
+        "word": "it's",
+        "expected_start": 1.04
+      },
+      {
+        "word": "it",
+        "expected_start": 1.38
+      },
+      {
+        "word": "cant",
+        "expected_start": 1.6
+      },
+      {
+        "word": "get",
+        "expected_start": 1.9
+      },
+      {
+        "word": "much",
+        "expected_start": 1.96
+      },
+      {
+        "word": "worse",
+        "expected_start": 2.34
+      },
+      {
+        "word": "versus",
+        "expected_start": 2.68
+      },
+      {
+        "word": "no",
+        "expected_start": 3.04
+      },
+      {
+        "word": "one",
+        "expected_start": 3.2
+      },
+      {
+        "word": "should",
+        "expected_start": 3.34
+      },
+      {
+        "word": "ever",
+        "expected_start": 3.54
+      },
+      {
+        "word": "feel",
+        "expected_start": 3.9
+      },
+      {
+        "word": "like",
+        "expected_start": 3.9
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "label": "Parte 5",
+    "sing_start": 29.0,
+    "sing_end": 33.0,
+    "pause_start": 33.0,
+    "pause_end": 33.0,
+    "language": "en",
+    "lyrics": "I'm two quarters and a heart down, and I don't want to forget how your voice sounds",
+    "lyrics_timed": [
+      {
+        "word": "I'm",
+        "expected_start": 0.0
+      },
+      {
+        "word": "two",
+        "expected_start": 0.86
+      },
+      {
+        "word": "quarters",
+        "expected_start": 1.12
+      },
+      {
+        "word": "and",
+        "expected_start": 1.36
+      },
+      {
+        "word": "a",
+        "expected_start": 1.58
+      },
+      {
+        "word": "heart",
+        "expected_start": 1.76
+      },
+      {
+        "word": "down,",
+        "expected_start": 2.0
+      },
+      {
+        "word": "and",
+        "expected_start": 2.16
+      },
+      {
+        "word": "I",
+        "expected_start": 2.56
+      },
+      {
+        "word": "don't",
+        "expected_start": 2.7
+      },
+      {
+        "word": "want",
+        "expected_start": 2.9
+      },
+      {
+        "word": "to",
+        "expected_start": 3.1
+      },
+      {
+        "word": "forget",
+        "expected_start": 3.46
+      },
+      {
+        "word": "how",
+        "expected_start": 3.68
+      },
+      {
+        "word": "your",
+        "expected_start": 3.76
+      },
+      {
+        "word": "voice",
+        "expected_start": 3.525
+      },
+      {
+        "word": "sounds",
+        "expected_start": 3.76
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "label": "Parte 6",
+    "sing_start": 33.0,
+    "sing_end": 38.22,
+    "pause_start": 38.22,
+    "pause_end": 38.32,
+    "language": "en",
+    "lyrics": "These words are all I have so I write them, so you need them just to get by",
+    "lyrics_timed": [
+      {
+        "word": "These",
+        "expected_start": 0.0
+      },
+      {
+        "word": "words",
+        "expected_start": 0.72
+      },
+      {
+        "word": "are",
+        "expected_start": 1.0
+      },
+      {
+        "word": "all",
+        "expected_start": 1.2
+      },
+      {
+        "word": "I",
+        "expected_start": 1.3
+      },
+      {
+        "word": "have",
+        "expected_start": 1.46
+      },
+      {
+        "word": "so",
+        "expected_start": 1.7
+      },
+      {
+        "word": "I",
+        "expected_start": 1.86
+      },
+      {
+        "word": "write",
+        "expected_start": 2.14
+      },
+      {
+        "word": "them,",
+        "expected_start": 2.48
+      },
+      {
+        "word": "so",
+        "expected_start": 2.76
+      },
+      {
+        "word": "you",
+        "expected_start": 2.98
+      },
+      {
+        "word": "need",
+        "expected_start": 3.1
+      },
+      {
+        "word": "them",
+        "expected_start": 3.3
+      },
+      {
+        "word": "just",
+        "expected_start": 3.6
+      },
+      {
+        "word": "to",
+        "expected_start": 3.8
+      },
+      {
+        "word": "get",
+        "expected_start": 4.1
+      },
+      {
+        "word": "by",
+        "expected_start": 4.1
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "label": "Parte 7",
+    "sing_start": 40.0,
+    "sing_end": 44.0,
+    "pause_start": 44.0,
+    "pause_end": 44.0,
+    "language": "en",
+    "lyrics": "Dance, dance, we're falling apart to halftime",
+    "lyrics_timed": [
+      {
+        "word": "Dance,",
+        "expected_start": 0.0
+      },
+      {
+        "word": "dance,",
+        "expected_start": 2.0
+      },
+      {
+        "word": "we're",
+        "expected_start": 2.44
+      },
+      {
+        "word": "falling",
+        "expected_start": 2.78
+      },
+      {
+        "word": "apart",
+        "expected_start": 3.4
+      },
+      {
+        "word": "to",
+        "expected_start": 3.92
+      },
+      {
+        "word": "halftime",
+        "expected_start": 3.92
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "label": "Parte 8",
+    "sing_start": 44.0,
+    "sing_end": 49.0,
+    "pause_start": 49.0,
+    "pause_end": 49.0,
+    "language": "en",
+    "lyrics": "Dance, dance, and these are the lives you love to lead",
+    "lyrics_timed": [
+      {
+        "word": "Dance,",
+        "expected_start": 0.0
+      },
+      {
+        "word": "dance,",
+        "expected_start": 0.438
+      },
+      {
+        "word": "and",
+        "expected_start": 0.876
+      },
+      {
+        "word": "these",
+        "expected_start": 1.314
+      },
+      {
+        "word": "are",
+        "expected_start": 1.752
+      },
+      {
+        "word": "the",
+        "expected_start": 2.19
+      },
+      {
+        "word": "lives",
+        "expected_start": 2.628
+      },
+      {
+        "word": "you",
+        "expected_start": 3.066
+      },
+      {
+        "word": "love",
+        "expected_start": 3.504
+      },
+      {
+        "word": "to",
+        "expected_start": 3.942
+      },
+      {
+        "word": "lead",
+        "expected_start": 4.38
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "label": "Parte 9",
+    "sing_start": 49.0,
+    "sing_end": 57.08,
+    "pause_start": 57.08,
+    "pause_end": 57.18,
+    "language": "en",
+    "lyrics": "Dance, this is the way they'd love, if they knew how misery loved me",
+    "lyrics_timed": [
+      {
+        "word": "Dance,",
+        "expected_start": 0.0
+      },
+      {
+        "word": "this",
+        "expected_start": 0.74
+      },
+      {
+        "word": "is",
+        "expected_start": 1.22
+      },
+      {
+        "word": "the",
+        "expected_start": 1.48
+      },
+      {
+        "word": "way",
+        "expected_start": 1.78
+      },
+      {
+        "word": "they'd",
+        "expected_start": 2.4
+      },
+      {
+        "word": "love,",
+        "expected_start": 2.56
+      },
+      {
+        "word": "if",
+        "expected_start": 2.76
+      },
+      {
+        "word": "they",
+        "expected_start": 3.54
+      },
+      {
+        "word": "knew",
+        "expected_start": 4.14
+      },
+      {
+        "word": "how",
+        "expected_start": 4.7
+      },
+      {
+        "word": "misery",
+        "expected_start": 5.44
+      },
+      {
+        "word": "loved",
+        "expected_start": 6.22
+      },
+      {
+        "word": "me",
+        "expected_start": 6.22
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "label": "Parte 10",
+    "sing_start": 59.0,
+    "sing_end": 69.0,
+    "pause_start": 69.0,
+    "pause_end": 69.0,
+    "language": "en",
+    "lyrics": "You always fold just before you're found out",
+    "lyrics_timed": [
+      {
+        "word": "You",
+        "expected_start": 5.82
+      },
+      {
+        "word": "always",
+        "expected_start": 6.76
+      },
+      {
+        "word": "fold",
+        "expected_start": 7.28
+      },
+      {
+        "word": "just",
+        "expected_start": 7.7
+      },
+      {
+        "word": "before",
+        "expected_start": 8.44
+      },
+      {
+        "word": "you're",
+        "expected_start": 9.1
+      },
+      {
+        "word": "found",
+        "expected_start": 9.52
+      },
+      {
+        "word": "out",
+        "expected_start": 9.82
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "label": "Parte 11",
+    "sing_start": 69.0,
+    "sing_end": 73.0,
+    "pause_start": 73.0,
+    "pause_end": 73.0,
+    "language": "en",
+    "lyrics": "Drink up, it's last call, last resort, but only the first mistake and I",
+    "lyrics_timed": [
+      {
+        "word": "Drink",
+        "expected_start": 0.0
+      },
+      {
+        "word": "up,",
+        "expected_start": 0.72
+      },
+      {
+        "word": "it's",
+        "expected_start": 0.98
+      },
+      {
+        "word": "last",
+        "expected_start": 1.46
+      },
+      {
+        "word": "call,",
+        "expected_start": 1.48
+      },
+      {
+        "word": "last",
+        "expected_start": 1.8
+      },
+      {
+        "word": "resort,",
+        "expected_start": 2.12
+      },
+      {
+        "word": "but",
+        "expected_start": 2.98
+      },
+      {
+        "word": "only",
+        "expected_start": 3.0
+      },
+      {
+        "word": "the",
+        "expected_start": 3.34
+      },
+      {
+        "word": "first",
+        "expected_start": 3.6
+      },
+      {
+        "word": "mistake",
+        "expected_start": 3.86
+      },
+      {
+        "word": "and",
+        "expected_start": 3.563
+      },
+      {
+        "word": "I",
+        "expected_start": 3.86
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "label": "Parte 12",
+    "sing_start": 73.0,
+    "sing_end": 77.0,
+    "pause_start": 77.0,
+    "pause_end": 77.0,
+    "language": "en",
+    "lyrics": "I'm two quarters and a heart down, and I don't want to forget how your voice sounds",
+    "lyrics_timed": [
+      {
+        "word": "I'm",
+        "expected_start": 0.58
+      },
+      {
+        "word": "two",
+        "expected_start": 0.96
+      },
+      {
+        "word": "quarters",
+        "expected_start": 1.18
+      },
+      {
+        "word": "and",
+        "expected_start": 1.4
+      },
+      {
+        "word": "a",
+        "expected_start": 1.5
+      },
+      {
+        "word": "heart",
+        "expected_start": 1.66
+      },
+      {
+        "word": "down,",
+        "expected_start": 1.98
+      },
+      {
+        "word": "and",
+        "expected_start": 2.18
+      },
+      {
+        "word": "I",
+        "expected_start": 2.54
+      },
+      {
+        "word": "don't",
+        "expected_start": 2.7
+      },
+      {
+        "word": "want",
+        "expected_start": 2.94
+      },
+      {
+        "word": "to",
+        "expected_start": 3.12
+      },
+      {
+        "word": "forget",
+        "expected_start": 3.48
+      },
+      {
+        "word": "how",
+        "expected_start": 3.7
+      },
+      {
+        "word": "your",
+        "expected_start": 3.84
+      },
+      {
+        "word": "voice",
+        "expected_start": 3.636
+      },
+      {
+        "word": "sounds",
+        "expected_start": 3.84
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "label": "Parte 13",
+    "sing_start": 77.0,
+    "sing_end": 81.0,
+    "pause_start": 81.0,
+    "pause_end": 81.0,
+    "language": "en",
+    "lyrics": "These words are all I have so I write them, so you need them just to get by",
+    "lyrics_timed": [
+      {
+        "word": "These",
+        "expected_start": 0.0
+      },
+      {
+        "word": "words",
+        "expected_start": 0.7
+      },
+      {
+        "word": "are",
+        "expected_start": 0.96
+      },
+      {
+        "word": "all",
+        "expected_start": 1.16
+      },
+      {
+        "word": "I",
+        "expected_start": 1.28
+      },
+      {
+        "word": "have",
+        "expected_start": 1.36
+      },
+      {
+        "word": "so",
+        "expected_start": 1.72
+      },
+      {
+        "word": "I",
+        "expected_start": 1.88
+      },
+      {
+        "word": "write",
+        "expected_start": 2.16
+      },
+      {
+        "word": "them,",
+        "expected_start": 2.78
+      },
+      {
+        "word": "so",
+        "expected_start": 2.78
+      },
+      {
+        "word": "you",
+        "expected_start": 2.96
+      },
+      {
+        "word": "need",
+        "expected_start": 3.1
+      },
+      {
+        "word": "them",
+        "expected_start": 3.3
+      },
+      {
+        "word": "just",
+        "expected_start": 3.6
+      },
+      {
+        "word": "to",
+        "expected_start": 3.8
+      },
+      {
+        "word": "get",
+        "expected_start": 3.98
+      },
+      {
+        "word": "by",
+        "expected_start": 3.98
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "label": "Parte 14",
+    "sing_start": 81.0,
+    "sing_end": 88.6,
+    "pause_start": 88.6,
+    "pause_end": 88.7,
+    "language": "en",
+    "lyrics": "Why don't you show me a little bit of spine, you've been saving for his mattress, love",
+    "lyrics_timed": [
+      {
+        "word": "Why",
+        "expected_start": 0.92
+      },
+      {
+        "word": "don't",
+        "expected_start": 1.68
+      },
+      {
+        "word": "you",
+        "expected_start": 1.88
+      },
+      {
+        "word": "show",
+        "expected_start": 2.12
+      },
+      {
+        "word": "me",
+        "expected_start": 2.6
+      },
+      {
+        "word": "a",
+        "expected_start": 3.2
+      },
+      {
+        "word": "little",
+        "expected_start": 3.46
+      },
+      {
+        "word": "bit",
+        "expected_start": 3.68
+      },
+      {
+        "word": "of",
+        "expected_start": 4.02
+      },
+      {
+        "word": "spine,",
+        "expected_start": 4.36
+      },
+      {
+        "word": "you've",
+        "expected_start": 4.64
+      },
+      {
+        "word": "been",
+        "expected_start": 4.96
+      },
+      {
+        "word": "saving",
+        "expected_start": 5.28
+      },
+      {
+        "word": "for",
+        "expected_start": 5.5
+      },
+      {
+        "word": "his",
+        "expected_start": 5.88
+      },
+      {
+        "word": "mattress,",
+        "expected_start": 6.0
+      },
+      {
+        "word": "love",
+        "expected_start": 6.4
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "label": "Parte 15",
+    "sing_start": 89.0,
+    "sing_end": 95.0,
+    "pause_start": 95.0,
+    "pause_end": 95.0,
+    "language": "en",
+    "lyrics": "Dance, dance, we're falling apart to halftime",
+    "lyrics_timed": [
+      {
+        "word": "Dance,",
+        "expected_start": 1.34
+      },
+      {
+        "word": "dance,",
+        "expected_start": 2.56
+      },
+      {
+        "word": "we're",
+        "expected_start": 3.32
+      },
+      {
+        "word": "falling",
+        "expected_start": 4.02
+      },
+      {
+        "word": "apart",
+        "expected_start": 4.08
+      },
+      {
+        "word": "to",
+        "expected_start": 4.68
+      },
+      {
+        "word": "halftime",
+        "expected_start": 5.12
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "label": "Parte 16",
+    "sing_start": 95.0,
+    "sing_end": 99.0,
+    "pause_start": 99.0,
+    "pause_end": 99.0,
+    "language": "en",
+    "lyrics": "Dance, dance, and these are the lives you love to lead",
+    "lyrics_timed": [
+      {
+        "word": "Dance,",
+        "expected_start": 0.0
+      },
+      {
+        "word": "dance,",
+        "expected_start": 0.9
+      },
+      {
+        "word": "and",
+        "expected_start": 1.8
+      },
+      {
+        "word": "these",
+        "expected_start": 2.1
+      },
+      {
+        "word": "are",
+        "expected_start": 2.4
+      },
+      {
+        "word": "the",
+        "expected_start": 2.64
+      },
+      {
+        "word": "lives",
+        "expected_start": 2.94
+      },
+      {
+        "word": "you",
+        "expected_start": 3.36
+      },
+      {
+        "word": "love",
+        "expected_start": 3.7
+      },
+      {
+        "word": "to",
+        "expected_start": 3.33
+      },
+      {
+        "word": "lead",
+        "expected_start": 3.7
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "label": "Parte 17",
+    "sing_start": 99.0,
+    "sing_end": 107.78,
+    "pause_start": 107.78,
+    "pause_end": 107.88,
+    "language": "en",
+    "lyrics": "Dance, this is the way they'd love, if they knew how misery loved me",
+    "lyrics_timed": [
+      {
+        "word": "Dance,",
+        "expected_start": 0.0
+      },
+      {
+        "word": "this",
+        "expected_start": 0.72
+      },
+      {
+        "word": "is",
+        "expected_start": 1.16
+      },
+      {
+        "word": "the",
+        "expected_start": 1.58
+      },
+      {
+        "word": "way",
+        "expected_start": 1.94
+      },
+      {
+        "word": "they'd",
+        "expected_start": 2.14
+      },
+      {
+        "word": "love,",
+        "expected_start": 2.82
+      },
+      {
+        "word": "if",
+        "expected_start": 3.46
+      },
+      {
+        "word": "they",
+        "expected_start": 3.6
+      },
+      {
+        "word": "knew",
+        "expected_start": 3.9
+      },
+      {
+        "word": "how",
+        "expected_start": 4.3
+      },
+      {
+        "word": "misery",
+        "expected_start": 5.04
+      },
+      {
+        "word": "loved",
+        "expected_start": 5.72
+      },
+      {
+        "word": "me",
+        "expected_start": 6.38
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "label": "Parte 18",
+    "sing_start": 111.0,
+    "sing_end": 121.0,
+    "pause_start": 121.0,
+    "pause_end": 121.0,
+    "language": "en",
+    "lyrics": "Why don't you show me a little bit of spine, you've been saving for his mattress (mattress, mattress)",
+    "lyrics_timed": [
+      {
+        "word": "Why",
+        "expected_start": 4.38
+      },
+      {
+        "word": "don't",
+        "expected_start": 5.06
+      },
+      {
+        "word": "you",
+        "expected_start": 5.44
+      },
+      {
+        "word": "show",
+        "expected_start": 5.76
+      },
+      {
+        "word": "me",
+        "expected_start": 6.14
+      },
+      {
+        "word": "a",
+        "expected_start": 6.5
+      },
+      {
+        "word": "little",
+        "expected_start": 6.74
+      },
+      {
+        "word": "bit",
+        "expected_start": 7.2
+      },
+      {
+        "word": "of",
+        "expected_start": 7.56
+      },
+      {
+        "word": "spine,",
+        "expected_start": 7.86
+      },
+      {
+        "word": "you've",
+        "expected_start": 8.02
+      },
+      {
+        "word": "been",
+        "expected_start": 8.7
+      },
+      {
+        "word": "saving",
+        "expected_start": 8.84
+      },
+      {
+        "word": "for",
+        "expected_start": 9.16
+      },
+      {
+        "word": "his",
+        "expected_start": 9.56
+      },
+      {
+        "word": "mattress",
+        "expected_start": 9.88
+      },
+      {
+        "word": "(mattress,",
+        "expected_start": 9.556
+      },
+      {
+        "word": "mattress)",
+        "expected_start": 9.88
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "label": "Parte 19",
+    "sing_start": 121.0,
+    "sing_end": 131.0,
+    "pause_start": 131.0,
+    "pause_end": 131.0,
+    "language": "en",
+    "lyrics": "I only want sympathy in the form of you crawling into bed with me",
+    "lyrics_timed": [
+      {
+        "word": "I",
+        "expected_start": 2.68
+      },
+      {
+        "word": "only",
+        "expected_start": 3.44
+      },
+      {
+        "word": "want",
+        "expected_start": 4.08
+      },
+      {
+        "word": "sympathy",
+        "expected_start": 4.52
+      },
+      {
+        "word": "in",
+        "expected_start": 5.7
+      },
+      {
+        "word": "the",
+        "expected_start": 5.98
+      },
+      {
+        "word": "form",
+        "expected_start": 6.22
+      },
+      {
+        "word": "of",
+        "expected_start": 6.42
+      },
+      {
+        "word": "you",
+        "expected_start": 6.72
+      },
+      {
+        "word": "crawling",
+        "expected_start": 7.54
+      },
+      {
+        "word": "into",
+        "expected_start": 7.7
+      },
+      {
+        "word": "bed",
+        "expected_start": 8.26
+      },
+      {
+        "word": "with",
+        "expected_start": 8.48
+      },
+      {
+        "word": "me",
+        "expected_start": 9.02
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "label": "Parte 20",
+    "sing_start": 131.0,
+    "sing_end": 139.96,
+    "pause_start": 139.96,
+    "pause_end": 140.06,
+    "language": "en",
+    "lyrics": "Dance, dance, we're falling apart to halftime",
+    "lyrics_timed": [
+      {
+        "word": "Dance,",
+        "expected_start": 5.3
+      },
+      {
+        "word": "dance,",
+        "expected_start": 5.607
+      },
+      {
+        "word": "we're",
+        "expected_start": 5.913
+      },
+      {
+        "word": "falling",
+        "expected_start": 6.22
+      },
+      {
+        "word": "apart",
+        "expected_start": 6.527
+      },
+      {
+        "word": "to",
+        "expected_start": 6.833
+      },
+      {
+        "word": "halftime",
+        "expected_start": 7.14
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "label": "Parte 21",
+    "sing_start": 141.0,
+    "sing_end": 145.0,
+    "pause_start": 145.0,
+    "pause_end": 145.0,
+    "language": "en",
+    "lyrics": "Dance, dance, and these are the lives you love to lead",
+    "lyrics_timed": [
+      {
+        "word": "Dance,",
+        "expected_start": 0.0
+      },
+      {
+        "word": "dance,",
+        "expected_start": 0.94
+      },
+      {
+        "word": "and",
+        "expected_start": 1.64
+      },
+      {
+        "word": "these",
+        "expected_start": 1.98
+      },
+      {
+        "word": "are",
+        "expected_start": 2.32
+      },
+      {
+        "word": "the",
+        "expected_start": 3.24
+      },
+      {
+        "word": "lives",
+        "expected_start": 3.46
+      },
+      {
+        "word": "you",
+        "expected_start": 3.74
+      },
+      {
+        "word": "love",
+        "expected_start": 3.74
+      },
+      {
+        "word": "to",
+        "expected_start": 3.86
+      },
+      {
+        "word": "lead",
+        "expected_start": 3.86
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "label": "Parte 22",
+    "sing_start": 145.0,
+    "sing_end": 148.82,
+    "pause_start": 148.82,
+    "pause_end": 148.92,
+    "language": "en",
+    "lyrics": "Dance, this is the way they'd love (way they'd love)",
+    "lyrics_timed": [
+      {
+        "word": "Dance,",
+        "expected_start": 0.0
+      },
+      {
+        "word": "this",
+        "expected_start": 0.94
+      },
+      {
+        "word": "is",
+        "expected_start": 0.98
+      },
+      {
+        "word": "the",
+        "expected_start": 1.32
+      },
+      {
+        "word": "way",
+        "expected_start": 1.66
+      },
+      {
+        "word": "they'd",
+        "expected_start": 1.86
+      },
+      {
+        "word": "love",
+        "expected_start": 2.28
+      },
+      {
+        "word": "(way",
+        "expected_start": 2.94
+      },
+      {
+        "word": "they'd",
+        "expected_start": 2.613
+      },
+      {
+        "word": "love)",
+        "expected_start": 2.94
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "label": "Parte 23",
+    "sing_start": 149.0,
+    "sing_end": 153.0,
+    "pause_start": 153.0,
+    "pause_end": 153.0,
+    "language": "en",
+    "lyrics": "Dance, this is the way they'd love (way they'd love)",
+    "lyrics_timed": [
+      {
+        "word": "Dance,",
+        "expected_start": 0.0
+      },
+      {
+        "word": "this",
+        "expected_start": 1.24
+      },
+      {
+        "word": "is",
+        "expected_start": 1.48
+      },
+      {
+        "word": "the",
+        "expected_start": 1.86
+      },
+      {
+        "word": "way",
+        "expected_start": 2.14
+      },
+      {
+        "word": "they'd",
+        "expected_start": 2.6
+      },
+      {
+        "word": "love",
+        "expected_start": 3.14
+      },
+      {
+        "word": "(way",
+        "expected_start": 3.5
+      },
+      {
+        "word": "they'd",
+        "expected_start": 3.111
+      },
+      {
+        "word": "love)",
+        "expected_start": 3.5
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "label": "Parte 24",
+    "sing_start": 153.0,
+    "sing_end": 156.0,
+    "pause_start": 156.0,
+    "pause_end": 156.0,
+    "language": "en",
+    "lyrics": "Dance, this is the way they'd love",
+    "lyrics_timed": [
+      {
+        "word": "Dance,",
+        "expected_start": 0.0
+      },
+      {
+        "word": "this",
+        "expected_start": 1.16
+      },
+      {
+        "word": "is",
+        "expected_start": 2.18
+      },
+      {
+        "word": "the",
+        "expected_start": 2.32
+      },
+      {
+        "word": "way",
+        "expected_start": 2.64
+      },
+      {
+        "word": "they'd",
+        "expected_start": 2.98
+      },
+      {
+        "word": "love",
+        "expected_start": 2.98
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "label": "Parte 25",
+    "sing_start": 156.0,
+    "sing_end": 161.88,
+    "pause_start": 161.88,
+    "pause_end": 161.98,
+    "language": "en",
+    "lyrics": "If they knew how misery loved me",
+    "lyrics_timed": [
+      {
+        "word": "If",
+        "expected_start": 0.0
+      },
+      {
+        "word": "they",
+        "expected_start": 0.627
+      },
+      {
+        "word": "knew",
+        "expected_start": 1.253
+      },
+      {
+        "word": "how",
+        "expected_start": 1.88
+      },
+      {
+        "word": "misery",
+        "expected_start": 2.507
+      },
+      {
+        "word": "loved",
+        "expected_start": 3.133
+      },
+      {
+        "word": "me",
+        "expected_start": 3.76
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "label": "Parte 26",
+    "sing_start": 170.0,
+    "sing_end": 178.56,
+    "pause_start": 178.56,
+    "pause_end": 178.66,
+    "language": "en",
+    "lyrics": "Dance, dance, dance, dance, dance, dance, dance, dance",
+    "lyrics_timed": [
+      {
+        "word": "Dance,",
+        "expected_start": 0.0
+      },
+      {
+        "word": "dance,",
+        "expected_start": 1.24
+      },
+      {
+        "word": "dance,",
+        "expected_start": 2.84
+      },
+      {
+        "word": "dance,",
+        "expected_start": 3.18
+      },
+      {
+        "word": "dance,",
+        "expected_start": 5.48
+      },
+      {
+        "word": "dance,",
+        "expected_start": 6.06
+      },
+      {
+        "word": "dance,",
+        "expected_start": 7.58
+      },
+      {
+        "word": "dance",
+        "expected_start": 7.58
+      }
+    ]
+  }
+]

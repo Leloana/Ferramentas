@@ -1,0 +1,16 @@
+{
+    "title": "Holiday",
+    "artist": "Green Day",
+    "language": "en",
+    "vocal_start": "0.0",
+    "vocal_end": "-1.0",
+    "backing_start": "10.5",
+    "backing_end": "-1.0",
+    "silence_padding": "0.0",
+    "lyrics_start": "9.0",
+    "youtube_vocal_url": "https://youtu.be/Ajxn0PKbv7I?list=RDAjxn0PKbv7I",
+    "youtube_backing_url": "https://youtu.be/azA7YCqiiZU?list=RDazA7YCqiiZU",
+    "has_vocal_file": false,
+    "has_backing_file": false,
+    "has_lrc_file": false
+}

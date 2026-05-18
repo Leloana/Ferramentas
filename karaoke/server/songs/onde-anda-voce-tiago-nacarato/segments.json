@@ -1,0 +1,786 @@
+[
+  {
+    "id": 1,
+    "label": "Parte 1",
+    "sing_start": 17.45,
+    "sing_end": 25.13,
+    "pause_start": 25.13,
+    "pause_end": 25.23,
+    "language": "pt",
+    "lyrics": "E por falar em saudade Onde anda você, onde andam seus olhos",
+    "lyrics_timed": [
+      {
+        "word": "E",
+        "expected_start": 0.05
+      },
+      {
+        "word": "por",
+        "expected_start": 0.54
+      },
+      {
+        "word": "falar",
+        "expected_start": 0.82
+      },
+      {
+        "word": "em",
+        "expected_start": 1.5
+      },
+      {
+        "word": "saudade",
+        "expected_start": 2.0
+      },
+      {
+        "word": "Onde",
+        "expected_start": 3.34
+      },
+      {
+        "word": "anda",
+        "expected_start": 3.88
+      },
+      {
+        "word": "você,",
+        "expected_start": 4.1
+      },
+      {
+        "word": "onde",
+        "expected_start": 5.18
+      },
+      {
+        "word": "andam",
+        "expected_start": 5.56
+      },
+      {
+        "word": "seus",
+        "expected_start": 6.14
+      },
+      {
+        "word": "olhos",
+        "expected_start": 6.54
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "label": "Parte 2",
+    "sing_start": 25.3,
+    "sing_end": 34.16,
+    "pause_start": 34.16,
+    "pause_end": 34.26,
+    "language": "pt",
+    "lyrics": "Que a gente não vê onde anda esse corpo Que me deixou morto de tanto prazer",
+    "lyrics_timed": [
+      {
+        "word": "Que",
+        "expected_start": 0.05
+      },
+      {
+        "word": "a",
+        "expected_start": 0.3
+      },
+      {
+        "word": "gente",
+        "expected_start": 0.44
+      },
+      {
+        "word": "não",
+        "expected_start": 0.7
+      },
+      {
+        "word": "vê",
+        "expected_start": 1.06
+      },
+      {
+        "word": "onde",
+        "expected_start": 1.44
+      },
+      {
+        "word": "anda",
+        "expected_start": 2.04
+      },
+      {
+        "word": "esse",
+        "expected_start": 2.36
+      },
+      {
+        "word": "corpo",
+        "expected_start": 2.8
+      },
+      {
+        "word": "Que",
+        "expected_start": 4.04
+      },
+      {
+        "word": "me",
+        "expected_start": 4.5
+      },
+      {
+        "word": "deixou",
+        "expected_start": 4.76
+      },
+      {
+        "word": "morto",
+        "expected_start": 5.36
+      },
+      {
+        "word": "de",
+        "expected_start": 6.1
+      },
+      {
+        "word": "tanto",
+        "expected_start": 6.58
+      },
+      {
+        "word": "prazer",
+        "expected_start": 7.08
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "label": "Parte 3",
+    "sing_start": 35.3,
+    "sing_end": 42.3,
+    "pause_start": 42.3,
+    "pause_end": 42.3,
+    "language": "pt",
+    "lyrics": "E por falar em beleza Onde anda a canção que se ouvia na noite",
+    "lyrics_timed": [
+      {
+        "word": "E",
+        "expected_start": 0.05
+      },
+      {
+        "word": "por",
+        "expected_start": 0.34
+      },
+      {
+        "word": "falar",
+        "expected_start": 0.56
+      },
+      {
+        "word": "em",
+        "expected_start": 1.22
+      },
+      {
+        "word": "beleza",
+        "expected_start": 1.64
+      },
+      {
+        "word": "Onde",
+        "expected_start": 2.6
+      },
+      {
+        "word": "anda",
+        "expected_start": 3.6
+      },
+      {
+        "word": "a",
+        "expected_start": 3.88
+      },
+      {
+        "word": "canção",
+        "expected_start": 4.04
+      },
+      {
+        "word": "que",
+        "expected_start": 4.7
+      },
+      {
+        "word": "se",
+        "expected_start": 4.98
+      },
+      {
+        "word": "ouvia",
+        "expected_start": 5.22
+      },
+      {
+        "word": "na",
+        "expected_start": 5.7
+      },
+      {
+        "word": "noite",
+        "expected_start": 6.08
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "label": "Parte 4",
+    "sing_start": 42.3,
+    "sing_end": 52.06,
+    "pause_start": 52.06,
+    "pause_end": 52.16,
+    "language": "pt",
+    "lyrics": "Nos bares de então onde a gente ficava Onde a gente se amava em total solidão",
+    "lyrics_timed": [
+      {
+        "word": "Nos",
+        "expected_start": 0.05
+      },
+      {
+        "word": "bares",
+        "expected_start": 0.96
+      },
+      {
+        "word": "de",
+        "expected_start": 1.34
+      },
+      {
+        "word": "então",
+        "expected_start": 1.66
+      },
+      {
+        "word": "onde",
+        "expected_start": 2.02
+      },
+      {
+        "word": "a",
+        "expected_start": 2.5
+      },
+      {
+        "word": "gente",
+        "expected_start": 2.74
+      },
+      {
+        "word": "ficava",
+        "expected_start": 3.1
+      },
+      {
+        "word": "Onde",
+        "expected_start": 4.76
+      },
+      {
+        "word": "a",
+        "expected_start": 5.28
+      },
+      {
+        "word": "gente",
+        "expected_start": 5.46
+      },
+      {
+        "word": "se",
+        "expected_start": 5.68
+      },
+      {
+        "word": "amava",
+        "expected_start": 6.0
+      },
+      {
+        "word": "em",
+        "expected_start": 6.46
+      },
+      {
+        "word": "total",
+        "expected_start": 6.78
+      },
+      {
+        "word": "solidão",
+        "expected_start": 7.38
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "label": "Parte 5",
+    "sing_start": 53.3,
+    "sing_end": 62.3,
+    "pause_start": 62.3,
+    "pause_end": 62.3,
+    "language": "pt",
+    "lyrics": "Hoje eu saio na noite vazia Numa boemia sem razão de ser",
+    "lyrics_timed": [
+      {
+        "word": "Hoje",
+        "expected_start": 0.05
+      },
+      {
+        "word": "eu",
+        "expected_start": 1.28
+      },
+      {
+        "word": "saio",
+        "expected_start": 1.68
+      },
+      {
+        "word": "na",
+        "expected_start": 2.28
+      },
+      {
+        "word": "noite",
+        "expected_start": 2.58
+      },
+      {
+        "word": "vazia",
+        "expected_start": 3.3
+      },
+      {
+        "word": "Numa",
+        "expected_start": 5.16
+      },
+      {
+        "word": "boemia",
+        "expected_start": 5.58
+      },
+      {
+        "word": "sem",
+        "expected_start": 6.6
+      },
+      {
+        "word": "razão",
+        "expected_start": 7.1
+      },
+      {
+        "word": "de",
+        "expected_start": 7.86
+      },
+      {
+        "word": "ser",
+        "expected_start": 8.38
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "label": "Parte 6",
+    "sing_start": 62.3,
+    "sing_end": 69.22,
+    "pause_start": 69.22,
+    "pause_end": 69.32,
+    "language": "pt",
+    "lyrics": "Na rotina dos bares Que apesar dos pesares me trazem você",
+    "lyrics_timed": [
+      {
+        "word": "Na",
+        "expected_start": 0.05
+      },
+      {
+        "word": "rotina",
+        "expected_start": 0.58
+      },
+      {
+        "word": "dos",
+        "expected_start": 1.1
+      },
+      {
+        "word": "bares",
+        "expected_start": 1.42
+      },
+      {
+        "word": "Que",
+        "expected_start": 2.34
+      },
+      {
+        "word": "apesar",
+        "expected_start": 2.78
+      },
+      {
+        "word": "dos",
+        "expected_start": 3.18
+      },
+      {
+        "word": "pesares",
+        "expected_start": 3.5
+      },
+      {
+        "word": "me",
+        "expected_start": 4.18
+      },
+      {
+        "word": "trazem",
+        "expected_start": 4.62
+      },
+      {
+        "word": "você",
+        "expected_start": 5.14
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "label": "Parte 7",
+    "sing_start": 70.3,
+    "sing_end": 75.3,
+    "pause_start": 75.3,
+    "pause_end": 75.3,
+    "language": "pt",
+    "lyrics": "E por falar em paixão Em razão de viver",
+    "lyrics_timed": [
+      {
+        "word": "E",
+        "expected_start": 0.05
+      },
+      {
+        "word": "por",
+        "expected_start": 0.54
+      },
+      {
+        "word": "falar",
+        "expected_start": 0.82
+      },
+      {
+        "word": "em",
+        "expected_start": 1.46
+      },
+      {
+        "word": "paixão",
+        "expected_start": 1.96
+      },
+      {
+        "word": "Em",
+        "expected_start": 3.26
+      },
+      {
+        "word": "razão",
+        "expected_start": 3.58
+      },
+      {
+        "word": "de",
+        "expected_start": 4.02
+      },
+      {
+        "word": "viver",
+        "expected_start": 4.24
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "label": "Parte 8",
+    "sing_start": 75.3,
+    "sing_end": 82.3,
+    "pause_start": 82.3,
+    "pause_end": 82.3,
+    "language": "pt",
+    "lyrics": "Você bem que podia me aparecer Nesses mesmos lugares",
+    "lyrics_timed": [
+      {
+        "word": "Você",
+        "expected_start": 0.05
+      },
+      {
+        "word": "bem",
+        "expected_start": 0.98
+      },
+      {
+        "word": "que",
+        "expected_start": 1.26
+      },
+      {
+        "word": "podia",
+        "expected_start": 1.42
+      },
+      {
+        "word": "me",
+        "expected_start": 2.1
+      },
+      {
+        "word": "aparecer",
+        "expected_start": 3.0
+      },
+      {
+        "word": "Nesses",
+        "expected_start": 4.86
+      },
+      {
+        "word": "mesmos",
+        "expected_start": 5.5
+      },
+      {
+        "word": "lugares",
+        "expected_start": 6.04
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "label": "Parte 9",
+    "sing_start": 82.3,
+    "sing_end": 87.24,
+    "pause_start": 87.24,
+    "pause_end": 87.34,
+    "language": "pt",
+    "lyrics": "Na noite nos bares onde anda você",
+    "lyrics_timed": [
+      {
+        "word": "Na",
+        "expected_start": 0.05
+      },
+      {
+        "word": "noite",
+        "expected_start": 0.56
+      },
+      {
+        "word": "nos",
+        "expected_start": 1.1
+      },
+      {
+        "word": "bares",
+        "expected_start": 1.16
+      },
+      {
+        "word": "onde",
+        "expected_start": 1.88
+      },
+      {
+        "word": "anda",
+        "expected_start": 2.34
+      },
+      {
+        "word": "você",
+        "expected_start": 2.82
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "label": "Parte 10",
+    "sing_start": 123.91,
+    "sing_end": 132.31,
+    "pause_start": 132.31,
+    "pause_end": 132.31,
+    "language": "pt",
+    "lyrics": "Hoje eu saio na noite vazia Numa boemia sem razão de ser",
+    "lyrics_timed": [
+      {
+        "word": "Hoje",
+        "expected_start": 0.05
+      },
+      {
+        "word": "eu",
+        "expected_start": 1.12
+      },
+      {
+        "word": "saio",
+        "expected_start": 1.56
+      },
+      {
+        "word": "na",
+        "expected_start": 2.12
+      },
+      {
+        "word": "noite",
+        "expected_start": 2.4
+      },
+      {
+        "word": "vazia",
+        "expected_start": 3.14
+      },
+      {
+        "word": "Numa",
+        "expected_start": 4.94
+      },
+      {
+        "word": "boemia",
+        "expected_start": 5.4
+      },
+      {
+        "word": "sem",
+        "expected_start": 6.34
+      },
+      {
+        "word": "razão",
+        "expected_start": 6.9
+      },
+      {
+        "word": "de",
+        "expected_start": 7.7
+      },
+      {
+        "word": "ser",
+        "expected_start": 8.22
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "label": "Parte 11",
+    "sing_start": 132.31,
+    "sing_end": 139.19,
+    "pause_start": 139.19,
+    "pause_end": 139.29,
+    "language": "pt",
+    "lyrics": "Na rotina dos bares Que apesar dos pesares me trazem você",
+    "lyrics_timed": [
+      {
+        "word": "Na",
+        "expected_start": 0.05
+      },
+      {
+        "word": "rotina",
+        "expected_start": 1.0
+      },
+      {
+        "word": "dos",
+        "expected_start": 1.56
+      },
+      {
+        "word": "bares",
+        "expected_start": 1.84
+      },
+      {
+        "word": "Que",
+        "expected_start": 2.86
+      },
+      {
+        "word": "apesar",
+        "expected_start": 3.2
+      },
+      {
+        "word": "dos",
+        "expected_start": 3.66
+      },
+      {
+        "word": "pesares",
+        "expected_start": 3.94
+      },
+      {
+        "word": "me",
+        "expected_start": 4.68
+      },
+      {
+        "word": "trazem",
+        "expected_start": 5.24
+      },
+      {
+        "word": "você",
+        "expected_start": 5.6
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "label": "Parte 12",
+    "sing_start": 140.31,
+    "sing_end": 146.23,
+    "pause_start": 146.23,
+    "pause_end": 146.31,
+    "language": "pt",
+    "lyrics": "E por falar em paixão Em razão de viver",
+    "lyrics_timed": [
+      {
+        "word": "E",
+        "expected_start": 0.05
+      },
+      {
+        "word": "por",
+        "expected_start": 1.02
+      },
+      {
+        "word": "falar",
+        "expected_start": 1.32
+      },
+      {
+        "word": "em",
+        "expected_start": 1.96
+      },
+      {
+        "word": "paixão",
+        "expected_start": 2.48
+      },
+      {
+        "word": "Em",
+        "expected_start": 4.04
+      },
+      {
+        "word": "razão",
+        "expected_start": 4.42
+      },
+      {
+        "word": "de",
+        "expected_start": 4.8
+      },
+      {
+        "word": "viver",
+        "expected_start": 5.0
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "label": "Parte 13",
+    "sing_start": 146.31,
+    "sing_end": 154.31,
+    "pause_start": 154.31,
+    "pause_end": 154.31,
+    "language": "pt",
+    "lyrics": "Você bem que podia me aparecer Nesses mesmos lugares",
+    "lyrics_timed": [
+      {
+        "word": "Você",
+        "expected_start": 0.05
+      },
+      {
+        "word": "bem",
+        "expected_start": 1.0
+      },
+      {
+        "word": "que",
+        "expected_start": 1.2
+      },
+      {
+        "word": "podia",
+        "expected_start": 1.5
+      },
+      {
+        "word": "me",
+        "expected_start": 2.18
+      },
+      {
+        "word": "aparecer",
+        "expected_start": 3.08
+      },
+      {
+        "word": "Nesses",
+        "expected_start": 5.34
+      },
+      {
+        "word": "mesmos",
+        "expected_start": 6.48
+      },
+      {
+        "word": "lugares",
+        "expected_start": 7.0
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "label": "Parte 14",
+    "sing_start": 154.31,
+    "sing_end": 159.97,
+    "pause_start": 159.97,
+    "pause_end": 160.07,
+    "language": "pt",
+    "lyrics": "Na noite nos bares onde anda você",
+    "lyrics_timed": [
+      {
+        "word": "Na",
+        "expected_start": 0.05
+      },
+      {
+        "word": "noite",
+        "expected_start": 0.58
+      },
+      {
+        "word": "nos",
+        "expected_start": 1.04
+      },
+      {
+        "word": "bares",
+        "expected_start": 1.2
+      },
+      {
+        "word": "onde",
+        "expected_start": 2.0
+      },
+      {
+        "word": "anda",
+        "expected_start": 2.34
+      },
+      {
+        "word": "você",
+        "expected_start": 2.92
+      }
+    ]
+  }
+]

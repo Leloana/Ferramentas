@@ -1,0 +1,1746 @@
+[
+  {
+    "id": 1,
+    "label": "Parte 1",
+    "sing_start": 11.5,
+    "sing_end": 13.5,
+    "pause_start": 13.5,
+    "pause_end": 13.5,
+    "language": "en",
+    "lyrics": "I'm so nervous",
+    "lyrics_timed": [
+      {
+        "word": "I'm",
+        "expected_start": 0.78
+      },
+      {
+        "word": "so",
+        "expected_start": 0.83
+      },
+      {
+        "word": "nervous",
+        "expected_start": 1.42
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "label": "Parte 2",
+    "sing_start": 13.5,
+    "sing_end": 18.28,
+    "pause_start": 18.28,
+    "pause_end": 18.38,
+    "language": "en",
+    "lyrics": "It shakes the fingertips that are coursing through your hair",
+    "lyrics_timed": [
+      {
+        "word": "It",
+        "expected_start": 0.05
+      },
+      {
+        "word": "shakes",
+        "expected_start": 0.22
+      },
+      {
+        "word": "the",
+        "expected_start": 0.54
+      },
+      {
+        "word": "fingertips",
+        "expected_start": 1.02
+      },
+      {
+        "word": "that",
+        "expected_start": 1.82
+      },
+      {
+        "word": "are",
+        "expected_start": 2.56
+      },
+      {
+        "word": "coursing",
+        "expected_start": 3.02
+      },
+      {
+        "word": "through",
+        "expected_start": 3.38
+      },
+      {
+        "word": "your",
+        "expected_start": 3.66
+      },
+      {
+        "word": "hair",
+        "expected_start": 4.08
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "label": "Parte 3",
+    "sing_start": 18.5,
+    "sing_end": 22.0,
+    "pause_start": 22.0,
+    "pause_end": 22.0,
+    "language": "en",
+    "lyrics": "With those lovely lips that are made to kiss",
+    "lyrics_timed": [
+      {
+        "word": "With",
+        "expected_start": 0.05
+      },
+      {
+        "word": "those",
+        "expected_start": 0.6
+      },
+      {
+        "word": "lovely",
+        "expected_start": 0.88
+      },
+      {
+        "word": "lips",
+        "expected_start": 1.34
+      },
+      {
+        "word": "that",
+        "expected_start": 1.82
+      },
+      {
+        "word": "are",
+        "expected_start": 2.02
+      },
+      {
+        "word": "made",
+        "expected_start": 2.3
+      },
+      {
+        "word": "to",
+        "expected_start": 2.62
+      },
+      {
+        "word": "kiss",
+        "expected_start": 3.04
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "label": "Parte 4",
+    "sing_start": 22.0,
+    "sing_end": 24.72,
+    "pause_start": 24.72,
+    "pause_end": 24.82,
+    "language": "en",
+    "lyrics": "Oh, you put me in a spin",
+    "lyrics_timed": [
+      {
+        "word": "Oh,",
+        "expected_start": 0.05
+      },
+      {
+        "word": "you",
+        "expected_start": 0.3
+      },
+      {
+        "word": "put",
+        "expected_start": 0.74
+      },
+      {
+        "word": "me",
+        "expected_start": 0.92
+      },
+      {
+        "word": "in",
+        "expected_start": 1.46
+      },
+      {
+        "word": "a",
+        "expected_start": 1.62
+      },
+      {
+        "word": "spin",
+        "expected_start": 1.96
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "label": "Parte 5",
+    "sing_start": 25.5,
+    "sing_end": 30.28,
+    "pause_start": 30.28,
+    "pause_end": 30.38,
+    "language": "en",
+    "lyrics": "Oh, you've got a body of a goddess",
+    "lyrics_timed": [
+      {
+        "word": "Oh,",
+        "expected_start": 0.05
+      },
+      {
+        "word": "you've",
+        "expected_start": 0.74
+      },
+      {
+        "word": "got",
+        "expected_start": 1.16
+      },
+      {
+        "word": "a",
+        "expected_start": 1.46
+      },
+      {
+        "word": "body",
+        "expected_start": 1.74
+      },
+      {
+        "word": "of",
+        "expected_start": 2.34
+      },
+      {
+        "word": "a",
+        "expected_start": 3.0
+      },
+      {
+        "word": "goddess",
+        "expected_start": 3.3
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "label": "Parte 6",
+    "sing_start": 32.0,
+    "sing_end": 35.0,
+    "pause_start": 35.0,
+    "pause_end": 35.0,
+    "language": "en",
+    "lyrics": "You've got the moves that make me sweat",
+    "lyrics_timed": [
+      {
+        "word": "You've",
+        "expected_start": 0.05
+      },
+      {
+        "word": "got",
+        "expected_start": 1.08
+      },
+      {
+        "word": "the",
+        "expected_start": 1.34
+      },
+      {
+        "word": "moves",
+        "expected_start": 1.7
+      },
+      {
+        "word": "that",
+        "expected_start": 2.02
+      },
+      {
+        "word": "make",
+        "expected_start": 2.4
+      },
+      {
+        "word": "me",
+        "expected_start": 2.68
+      },
+      {
+        "word": "sweat",
+        "expected_start": 2.86
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "label": "Parte 7",
+    "sing_start": 35.0,
+    "sing_end": 38.0,
+    "pause_start": 38.0,
+    "pause_end": 38.0,
+    "language": "en",
+    "lyrics": "You've got a voice that makes me breathless",
+    "lyrics_timed": [
+      {
+        "word": "You've",
+        "expected_start": 0.05
+      },
+      {
+        "word": "got",
+        "expected_start": 0.62
+      },
+      {
+        "word": "a",
+        "expected_start": 0.94
+      },
+      {
+        "word": "voice",
+        "expected_start": 1.16
+      },
+      {
+        "word": "that",
+        "expected_start": 1.42
+      },
+      {
+        "word": "makes",
+        "expected_start": 1.78
+      },
+      {
+        "word": "me",
+        "expected_start": 2.04
+      },
+      {
+        "word": "breathless",
+        "expected_start": 2.54
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "label": "Parte 8",
+    "sing_start": 38.0,
+    "sing_end": 41.5,
+    "pause_start": 41.5,
+    "pause_end": 41.5,
+    "language": "en",
+    "lyrics": "Girl, I've got you under a spell",
+    "lyrics_timed": [
+      {
+        "word": "Girl,",
+        "expected_start": 0.05
+      },
+      {
+        "word": "I've",
+        "expected_start": 0.94
+      },
+      {
+        "word": "got",
+        "expected_start": 0.99
+      },
+      {
+        "word": "you",
+        "expected_start": 1.6
+      },
+      {
+        "word": "under",
+        "expected_start": 1.65
+      },
+      {
+        "word": "a",
+        "expected_start": 2.5
+      },
+      {
+        "word": "spell",
+        "expected_start": 2.9
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "label": "Parte 9",
+    "sing_start": 41.5,
+    "sing_end": 45.0,
+    "pause_start": 45.0,
+    "pause_end": 45.0,
+    "language": "en",
+    "lyrics": "And I don't think I'll be letting you out",
+    "lyrics_timed": [
+      {
+        "word": "And",
+        "expected_start": 0.05
+      },
+      {
+        "word": "I",
+        "expected_start": 0.1
+      },
+      {
+        "word": "don't",
+        "expected_start": 0.78
+      },
+      {
+        "word": "think",
+        "expected_start": 1.22
+      },
+      {
+        "word": "I'll",
+        "expected_start": 1.64
+      },
+      {
+        "word": "be",
+        "expected_start": 2.0
+      },
+      {
+        "word": "letting",
+        "expected_start": 2.24
+      },
+      {
+        "word": "you",
+        "expected_start": 2.68
+      },
+      {
+        "word": "out",
+        "expected_start": 2.92
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "label": "Parte 10",
+    "sing_start": 45.0,
+    "sing_end": 48.0,
+    "pause_start": 48.0,
+    "pause_end": 48.0,
+    "language": "en",
+    "lyrics": "I've got you",
+    "lyrics_timed": [
+      {
+        "word": "I've",
+        "expected_start": 1.16
+      },
+      {
+        "word": "got",
+        "expected_start": 2.04
+      },
+      {
+        "word": "you",
+        "expected_start": 2.18
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "label": "Parte 11",
+    "sing_start": 48.0,
+    "sing_end": 52.34,
+    "pause_start": 52.34,
+    "pause_end": 52.44,
+    "language": "en",
+    "lyrics": "If this is heaven, then baby I don't want to know hell",
+    "lyrics_timed": [
+      {
+        "word": "If",
+        "expected_start": 0.05
+      },
+      {
+        "word": "this",
+        "expected_start": 0.44
+      },
+      {
+        "word": "is",
+        "expected_start": 1.02
+      },
+      {
+        "word": "heaven,",
+        "expected_start": 1.56
+      },
+      {
+        "word": "then",
+        "expected_start": 2.04
+      },
+      {
+        "word": "baby",
+        "expected_start": 2.38
+      },
+      {
+        "word": "I",
+        "expected_start": 3.02
+      },
+      {
+        "word": "don't",
+        "expected_start": 3.07
+      },
+      {
+        "word": "want",
+        "expected_start": 3.12
+      },
+      {
+        "word": "to",
+        "expected_start": 3.17
+      },
+      {
+        "word": "know",
+        "expected_start": 3.22
+      },
+      {
+        "word": "hell",
+        "expected_start": 3.27
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "label": "Parte 12",
+    "sing_start": 54.0,
+    "sing_end": 57.0,
+    "pause_start": 57.0,
+    "pause_end": 57.0,
+    "language": "en",
+    "lyrics": "She says my singing gets her thinking filthy",
+    "lyrics_timed": [
+      {
+        "word": "She",
+        "expected_start": 0.05
+      },
+      {
+        "word": "says",
+        "expected_start": 0.88
+      },
+      {
+        "word": "my",
+        "expected_start": 1.08
+      },
+      {
+        "word": "singing",
+        "expected_start": 1.3
+      },
+      {
+        "word": "gets",
+        "expected_start": 1.58
+      },
+      {
+        "word": "her",
+        "expected_start": 1.94
+      },
+      {
+        "word": "thinking",
+        "expected_start": 2.24
+      },
+      {
+        "word": "filthy",
+        "expected_start": 2.8
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "label": "Parte 13",
+    "sing_start": 57.0,
+    "sing_end": 60.0,
+    "pause_start": 60.0,
+    "pause_end": 60.0,
+    "language": "en",
+    "lyrics": "The thoughts she's thinking, I'm not worthy",
+    "lyrics_timed": [
+      {
+        "word": "The",
+        "expected_start": 0.58
+      },
+      {
+        "word": "thoughts",
+        "expected_start": 0.63
+      },
+      {
+        "word": "she's",
+        "expected_start": 0.68
+      },
+      {
+        "word": "thinking,",
+        "expected_start": 1.3
+      },
+      {
+        "word": "I'm",
+        "expected_start": 1.82
+      },
+      {
+        "word": "not",
+        "expected_start": 2.1
+      },
+      {
+        "word": "worthy",
+        "expected_start": 2.62
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "label": "Parte 14",
+    "sing_start": 60.0,
+    "sing_end": 63.0,
+    "pause_start": 63.0,
+    "pause_end": 63.0,
+    "language": "en",
+    "lyrics": "I know what I need to sweep her off her feet",
+    "lyrics_timed": [
+      {
+        "word": "I",
+        "expected_start": 0.05
+      },
+      {
+        "word": "know",
+        "expected_start": 0.1
+      },
+      {
+        "word": "what",
+        "expected_start": 0.66
+      },
+      {
+        "word": "I",
+        "expected_start": 0.71
+      },
+      {
+        "word": "need",
+        "expected_start": 1.06
+      },
+      {
+        "word": "to",
+        "expected_start": 1.54
+      },
+      {
+        "word": "sweep",
+        "expected_start": 1.59
+      },
+      {
+        "word": "her",
+        "expected_start": 1.92
+      },
+      {
+        "word": "off",
+        "expected_start": 2.02
+      },
+      {
+        "word": "her",
+        "expected_start": 2.44
+      },
+      {
+        "word": "feet",
+        "expected_start": 2.78
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "label": "Parte 15",
+    "sing_start": 63.0,
+    "sing_end": 66.0,
+    "pause_start": 66.0,
+    "pause_end": 66.0,
+    "language": "en",
+    "lyrics": "She knows the work will damn near kill me",
+    "lyrics_timed": [
+      {
+        "word": "She",
+        "expected_start": 0.05
+      },
+      {
+        "word": "knows",
+        "expected_start": 0.66
+      },
+      {
+        "word": "the",
+        "expected_start": 0.71
+      },
+      {
+        "word": "work",
+        "expected_start": 0.88
+      },
+      {
+        "word": "will",
+        "expected_start": 1.42
+      },
+      {
+        "word": "damn",
+        "expected_start": 1.72
+      },
+      {
+        "word": "near",
+        "expected_start": 2.12
+      },
+      {
+        "word": "kill",
+        "expected_start": 2.44
+      },
+      {
+        "word": "me",
+        "expected_start": 2.74
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "label": "Parte 16",
+    "sing_start": 66.0,
+    "sing_end": 70.0,
+    "pause_start": 70.0,
+    "pause_end": 70.0,
+    "language": "en",
+    "lyrics": "Girl, I've got you under a spell",
+    "lyrics_timed": [
+      {
+        "word": "Girl,",
+        "expected_start": 0.05
+      },
+      {
+        "word": "I've",
+        "expected_start": 0.1
+      },
+      {
+        "word": "got",
+        "expected_start": 2.1
+      },
+      {
+        "word": "you",
+        "expected_start": 2.15
+      },
+      {
+        "word": "under",
+        "expected_start": 2.2
+      },
+      {
+        "word": "a",
+        "expected_start": 2.8
+      },
+      {
+        "word": "spell",
+        "expected_start": 3.46
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "label": "Parte 17",
+    "sing_start": 70.0,
+    "sing_end": 74.0,
+    "pause_start": 74.0,
+    "pause_end": 74.0,
+    "language": "en",
+    "lyrics": "And I don't think I'll be letting you out",
+    "lyrics_timed": [
+      {
+        "word": "And",
+        "expected_start": 0.62
+      },
+      {
+        "word": "I",
+        "expected_start": 0.67
+      },
+      {
+        "word": "don't",
+        "expected_start": 1.08
+      },
+      {
+        "word": "think",
+        "expected_start": 1.3
+      },
+      {
+        "word": "I'll",
+        "expected_start": 1.76
+      },
+      {
+        "word": "be",
+        "expected_start": 2.34
+      },
+      {
+        "word": "letting",
+        "expected_start": 2.54
+      },
+      {
+        "word": "you",
+        "expected_start": 3.22
+      },
+      {
+        "word": "out",
+        "expected_start": 3.72
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "label": "Parte 18",
+    "sing_start": 74.0,
+    "sing_end": 76.5,
+    "pause_start": 76.5,
+    "pause_end": 76.5,
+    "language": "en",
+    "lyrics": "I've got you",
+    "lyrics_timed": [
+      {
+        "word": "I've",
+        "expected_start": 0.05
+      },
+      {
+        "word": "got",
+        "expected_start": 1.52
+      },
+      {
+        "word": "you",
+        "expected_start": 1.98
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "label": "Parte 19",
+    "sing_start": 76.5,
+    "sing_end": 80.0,
+    "pause_start": 80.0,
+    "pause_end": 80.0,
+    "language": "en",
+    "lyrics": "If this is heaven, then baby I don't want to know hell",
+    "lyrics_timed": [
+      {
+        "word": "If",
+        "expected_start": 0.05
+      },
+      {
+        "word": "this",
+        "expected_start": 0.1
+      },
+      {
+        "word": "is",
+        "expected_start": 0.68
+      },
+      {
+        "word": "heaven,",
+        "expected_start": 1.04
+      },
+      {
+        "word": "then",
+        "expected_start": 1.09
+      },
+      {
+        "word": "baby",
+        "expected_start": 1.34
+      },
+      {
+        "word": "I",
+        "expected_start": 1.7
+      },
+      {
+        "word": "don't",
+        "expected_start": 1.92
+      },
+      {
+        "word": "want",
+        "expected_start": 2.56
+      },
+      {
+        "word": "to",
+        "expected_start": 2.68
+      },
+      {
+        "word": "know",
+        "expected_start": 2.73
+      },
+      {
+        "word": "hell",
+        "expected_start": 3.16
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "label": "Parte 20",
+    "sing_start": 80.0,
+    "sing_end": 83.5,
+    "pause_start": 83.5,
+    "pause_end": 83.5,
+    "language": "en",
+    "lyrics": "Girl, I've got you under a spell",
+    "lyrics_timed": [
+      {
+        "word": "Girl,",
+        "expected_start": 0.05
+      },
+      {
+        "word": "I've",
+        "expected_start": 0.7
+      },
+      {
+        "word": "got",
+        "expected_start": 1.06
+      },
+      {
+        "word": "you",
+        "expected_start": 1.11
+      },
+      {
+        "word": "under",
+        "expected_start": 1.98
+      },
+      {
+        "word": "a",
+        "expected_start": 2.03
+      },
+      {
+        "word": "spell",
+        "expected_start": 3.14
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "label": "Parte 21",
+    "sing_start": 83.5,
+    "sing_end": 87.0,
+    "pause_start": 87.0,
+    "pause_end": 87.0,
+    "language": "en",
+    "lyrics": "And I don't think I'll be letting you out",
+    "lyrics_timed": [
+      {
+        "word": "And",
+        "expected_start": 0.05
+      },
+      {
+        "word": "I",
+        "expected_start": 0.38
+      },
+      {
+        "word": "don't",
+        "expected_start": 0.82
+      },
+      {
+        "word": "think",
+        "expected_start": 1.24
+      },
+      {
+        "word": "I'll",
+        "expected_start": 1.6
+      },
+      {
+        "word": "be",
+        "expected_start": 1.82
+      },
+      {
+        "word": "letting",
+        "expected_start": 2.3
+      },
+      {
+        "word": "you",
+        "expected_start": 2.54
+      },
+      {
+        "word": "out",
+        "expected_start": 2.98
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "label": "Parte 22",
+    "sing_start": 87.0,
+    "sing_end": 89.5,
+    "pause_start": 89.5,
+    "pause_end": 89.5,
+    "language": "en",
+    "lyrics": "I've got you",
+    "lyrics_timed": [
+      {
+        "word": "I've",
+        "expected_start": 0.05
+      },
+      {
+        "word": "got",
+        "expected_start": 1.76
+      },
+      {
+        "word": "you",
+        "expected_start": 1.81
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "label": "Parte 23",
+    "sing_start": 89.5,
+    "sing_end": 93.0,
+    "pause_start": 93.0,
+    "pause_end": 93.0,
+    "language": "en",
+    "lyrics": "If this is heaven, then baby I don't want to know hell",
+    "lyrics_timed": [
+      {
+        "word": "If",
+        "expected_start": 0.05
+      },
+      {
+        "word": "this",
+        "expected_start": 0.54
+      },
+      {
+        "word": "is",
+        "expected_start": 0.59
+      },
+      {
+        "word": "heaven,",
+        "expected_start": 0.82
+      },
+      {
+        "word": "then",
+        "expected_start": 1.14
+      },
+      {
+        "word": "baby",
+        "expected_start": 1.48
+      },
+      {
+        "word": "I",
+        "expected_start": 1.74
+      },
+      {
+        "word": "don't",
+        "expected_start": 1.79
+      },
+      {
+        "word": "want",
+        "expected_start": 2.38
+      },
+      {
+        "word": "to",
+        "expected_start": 2.48
+      },
+      {
+        "word": "know",
+        "expected_start": 2.92
+      },
+      {
+        "word": "hell",
+        "expected_start": 3.14
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "label": "Parte 24",
+    "sing_start": 93.0,
+    "sing_end": 100.0,
+    "pause_start": 100.0,
+    "pause_end": 100.5,
+    "language": "en",
+    "lyrics": "Girl, I've got you",
+    "lyrics_timed": [
+      {
+        "word": "Girl,",
+        "expected_start": 0.05
+      },
+      {
+        "word": "I've",
+        "expected_start": 1.75
+      },
+      {
+        "word": "got",
+        "expected_start": 3.5
+      },
+      {
+        "word": "you",
+        "expected_start": 5.25
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "label": "Parte 25",
+    "sing_start": 100.0,
+    "sing_end": 102.56,
+    "pause_start": 102.56,
+    "pause_end": 102.66,
+    "language": "en",
+    "lyrics": "I've got you",
+    "lyrics_timed": [
+      {
+        "word": "I've",
+        "expected_start": 0.05
+      },
+      {
+        "word": "got",
+        "expected_start": 0.78
+      },
+      {
+        "word": "you",
+        "expected_start": 1.64
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "label": "Parte 26",
+    "sing_start": 106.5,
+    "sing_end": 109.44,
+    "pause_start": 109.44,
+    "pause_end": 109.54,
+    "language": "en",
+    "lyrics": "She makes me weak at my knees",
+    "lyrics_timed": [
+      {
+        "word": "She",
+        "expected_start": 0.05
+      },
+      {
+        "word": "makes",
+        "expected_start": 0.1
+      },
+      {
+        "word": "me",
+        "expected_start": 1.06
+      },
+      {
+        "word": "weak",
+        "expected_start": 1.52
+      },
+      {
+        "word": "at",
+        "expected_start": 2.08
+      },
+      {
+        "word": "my",
+        "expected_start": 2.13
+      },
+      {
+        "word": "knees",
+        "expected_start": 2.18
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "label": "Parte 27",
+    "sing_start": 110.0,
+    "sing_end": 113.86,
+    "pause_start": 113.86,
+    "pause_end": 113.96,
+    "language": "en",
+    "lyrics": "Take me",
+    "lyrics_timed": [
+      {
+        "word": "Take",
+        "expected_start": 0.05
+      },
+      {
+        "word": "me",
+        "expected_start": 1.88
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "label": "Parte 28",
+    "sing_start": 115.0,
+    "sing_end": 118.5,
+    "pause_start": 118.5,
+    "pause_end": 118.5,
+    "language": "en",
+    "lyrics": "She can't resist me",
+    "lyrics_timed": [
+      {
+        "word": "She",
+        "expected_start": 0.05
+      },
+      {
+        "word": "can't",
+        "expected_start": 1.0
+      },
+      {
+        "word": "resist",
+        "expected_start": 1.66
+      },
+      {
+        "word": "me",
+        "expected_start": 2.06
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "label": "Parte 29",
+    "sing_start": 118.5,
+    "sing_end": 121.5,
+    "pause_start": 121.5,
+    "pause_end": 121.5,
+    "language": "en",
+    "lyrics": "She's just what I need",
+    "lyrics_timed": [
+      {
+        "word": "She's",
+        "expected_start": 0.05
+      },
+      {
+        "word": "just",
+        "expected_start": 0.88
+      },
+      {
+        "word": "what",
+        "expected_start": 1.42
+      },
+      {
+        "word": "I",
+        "expected_start": 1.7
+      },
+      {
+        "word": "need",
+        "expected_start": 2.36
+      }
+    ]
+  },
+  {
+    "id": 30,
+    "label": "Parte 30",
+    "sing_start": 121.5,
+    "sing_end": 127.5,
+    "pause_start": 127.5,
+    "pause_end": 127.5,
+    "language": "en",
+    "lyrics": "She makes me so weak at my knees",
+    "lyrics_timed": [
+      {
+        "word": "She",
+        "expected_start": 0.05
+      },
+      {
+        "word": "makes",
+        "expected_start": 1.18
+      },
+      {
+        "word": "me",
+        "expected_start": 1.44
+      },
+      {
+        "word": "so",
+        "expected_start": 2.48
+      },
+      {
+        "word": "weak",
+        "expected_start": 3.34
+      },
+      {
+        "word": "at",
+        "expected_start": 4.12
+      },
+      {
+        "word": "my",
+        "expected_start": 4.54
+      },
+      {
+        "word": "knees",
+        "expected_start": 5.14
+      }
+    ]
+  },
+  {
+    "id": 31,
+    "label": "Parte 31",
+    "sing_start": 127.5,
+    "sing_end": 131.0,
+    "pause_start": 131.0,
+    "pause_end": 131.0,
+    "language": "en",
+    "lyrics": "Girl, I've got you",
+    "lyrics_timed": [
+      {
+        "word": "Girl,",
+        "expected_start": 0.05
+      },
+      {
+        "word": "I've",
+        "expected_start": 0.94
+      },
+      {
+        "word": "got",
+        "expected_start": 1.88
+      },
+      {
+        "word": "you",
+        "expected_start": 2.54
+      }
+    ]
+  },
+  {
+    "id": 32,
+    "label": "Parte 32",
+    "sing_start": 131.0,
+    "sing_end": 134.5,
+    "pause_start": 134.5,
+    "pause_end": 134.5,
+    "language": "en",
+    "lyrics": "Under a spell and I don't think I'll be letting you out",
+    "lyrics_timed": [
+      {
+        "word": "Under",
+        "expected_start": 0.05
+      },
+      {
+        "word": "a",
+        "expected_start": 0.1
+      },
+      {
+        "word": "spell",
+        "expected_start": 0.15
+      },
+      {
+        "word": "and",
+        "expected_start": 0.2
+      },
+      {
+        "word": "I",
+        "expected_start": 1.82
+      },
+      {
+        "word": "don't",
+        "expected_start": 1.87
+      },
+      {
+        "word": "think",
+        "expected_start": 1.92
+      },
+      {
+        "word": "I'll",
+        "expected_start": 1.97
+      },
+      {
+        "word": "be",
+        "expected_start": 2.32
+      },
+      {
+        "word": "letting",
+        "expected_start": 2.37
+      },
+      {
+        "word": "you",
+        "expected_start": 2.42
+      },
+      {
+        "word": "out",
+        "expected_start": 2.47
+      }
+    ]
+  },
+  {
+    "id": 33,
+    "label": "Parte 33",
+    "sing_start": 134.5,
+    "sing_end": 141.0,
+    "pause_start": 141.0,
+    "pause_end": 141.0,
+    "language": "en",
+    "lyrics": "I've got you under a spell",
+    "lyrics_timed": [
+      {
+        "word": "I've",
+        "expected_start": 0.05
+      },
+      {
+        "word": "got",
+        "expected_start": 1.9
+      },
+      {
+        "word": "you",
+        "expected_start": 2.32
+      },
+      {
+        "word": "under",
+        "expected_start": 3.1
+      },
+      {
+        "word": "a",
+        "expected_start": 4.74
+      },
+      {
+        "word": "spell",
+        "expected_start": 5.42
+      }
+    ]
+  },
+  {
+    "id": 34,
+    "label": "Parte 34",
+    "sing_start": 141.0,
+    "sing_end": 144.22,
+    "pause_start": 144.22,
+    "pause_end": 144.32,
+    "language": "en",
+    "lyrics": "Girl, I've got you",
+    "lyrics_timed": [
+      {
+        "word": "Girl,",
+        "expected_start": 0.05
+      },
+      {
+        "word": "I've",
+        "expected_start": 1.08
+      },
+      {
+        "word": "got",
+        "expected_start": 1.54
+      },
+      {
+        "word": "you",
+        "expected_start": 1.59
+      }
+    ]
+  },
+  {
+    "id": 35,
+    "label": "Parte 35",
+    "sing_start": 145.5,
+    "sing_end": 149.0,
+    "pause_start": 149.0,
+    "pause_end": 149.0,
+    "language": "en",
+    "lyrics": "Under a spell and I don't think I'll be letting you out",
+    "lyrics_timed": [
+      {
+        "word": "Under",
+        "expected_start": 0.05
+      },
+      {
+        "word": "a",
+        "expected_start": 0.1
+      },
+      {
+        "word": "spell",
+        "expected_start": 0.15
+      },
+      {
+        "word": "and",
+        "expected_start": 1.52
+      },
+      {
+        "word": "I",
+        "expected_start": 1.57
+      },
+      {
+        "word": "don't",
+        "expected_start": 1.62
+      },
+      {
+        "word": "think",
+        "expected_start": 1.67
+      },
+      {
+        "word": "I'll",
+        "expected_start": 2.2
+      },
+      {
+        "word": "be",
+        "expected_start": 2.25
+      },
+      {
+        "word": "letting",
+        "expected_start": 2.54
+      },
+      {
+        "word": "you",
+        "expected_start": 2.59
+      },
+      {
+        "word": "out",
+        "expected_start": 2.64
+      }
+    ]
+  },
+  {
+    "id": 36,
+    "label": "Parte 36",
+    "sing_start": 149.0,
+    "sing_end": 152.5,
+    "pause_start": 152.5,
+    "pause_end": 152.5,
+    "language": "en",
+    "lyrics": "I've got you!",
+    "lyrics_timed": [
+      {
+        "word": "I've",
+        "expected_start": 0.05
+      },
+      {
+        "word": "got",
+        "expected_start": 1.16
+      },
+      {
+        "word": "you!",
+        "expected_start": 2.38
+      }
+    ]
+  },
+  {
+    "id": 37,
+    "label": "Parte 37",
+    "sing_start": 152.5,
+    "sing_end": 155.5,
+    "pause_start": 155.5,
+    "pause_end": 155.5,
+    "language": "en",
+    "lyrics": "If this is heaven, then baby I don't want to know hell",
+    "lyrics_timed": [
+      {
+        "word": "If",
+        "expected_start": 0.05
+      },
+      {
+        "word": "this",
+        "expected_start": 0.1
+      },
+      {
+        "word": "is",
+        "expected_start": 0.15
+      },
+      {
+        "word": "heaven,",
+        "expected_start": 0.2
+      },
+      {
+        "word": "then",
+        "expected_start": 1.76
+      },
+      {
+        "word": "baby",
+        "expected_start": 1.81
+      },
+      {
+        "word": "I",
+        "expected_start": 1.86
+      },
+      {
+        "word": "don't",
+        "expected_start": 1.91
+      },
+      {
+        "word": "want",
+        "expected_start": 1.96
+      },
+      {
+        "word": "to",
+        "expected_start": 2.38
+      },
+      {
+        "word": "know",
+        "expected_start": 2.43
+      },
+      {
+        "word": "hell",
+        "expected_start": 2.48
+      }
+    ]
+  },
+  {
+    "id": 38,
+    "label": "Parte 38",
+    "sing_start": 155.5,
+    "sing_end": 158.5,
+    "pause_start": 158.5,
+    "pause_end": 158.5,
+    "language": "en",
+    "lyrics": "Girl, I've got you",
+    "lyrics_timed": [
+      {
+        "word": "Girl,",
+        "expected_start": 0.05
+      },
+      {
+        "word": "I've",
+        "expected_start": 0.74
+      },
+      {
+        "word": "got",
+        "expected_start": 1.74
+      },
+      {
+        "word": "you",
+        "expected_start": 2.38
+      }
+    ]
+  },
+  {
+    "id": 39,
+    "label": "Parte 39",
+    "sing_start": 158.5,
+    "sing_end": 161.5,
+    "pause_start": 161.5,
+    "pause_end": 161.5,
+    "language": "en",
+    "lyrics": "Under a spell and I don't think I'll be letting you out",
+    "lyrics_timed": [
+      {
+        "word": "Under",
+        "expected_start": 0.05
+      },
+      {
+        "word": "a",
+        "expected_start": 0.44
+      },
+      {
+        "word": "spell",
+        "expected_start": 0.49
+      },
+      {
+        "word": "and",
+        "expected_start": 0.92
+      },
+      {
+        "word": "I",
+        "expected_start": 0.97
+      },
+      {
+        "word": "don't",
+        "expected_start": 1.02
+      },
+      {
+        "word": "think",
+        "expected_start": 1.88
+      },
+      {
+        "word": "I'll",
+        "expected_start": 1.93
+      },
+      {
+        "word": "be",
+        "expected_start": 1.98
+      },
+      {
+        "word": "letting",
+        "expected_start": 2.03
+      },
+      {
+        "word": "you",
+        "expected_start": 2.92
+      },
+      {
+        "word": "out",
+        "expected_start": 2.97
+      }
+    ]
+  },
+  {
+    "id": 40,
+    "label": "Parte 40",
+    "sing_start": 161.5,
+    "sing_end": 165.0,
+    "pause_start": 165.0,
+    "pause_end": 165.0,
+    "language": "en",
+    "lyrics": "I've got you!",
+    "lyrics_timed": [
+      {
+        "word": "I've",
+        "expected_start": 0.05
+      },
+      {
+        "word": "got",
+        "expected_start": 1.22
+      },
+      {
+        "word": "you!",
+        "expected_start": 2.22
+      }
+    ]
+  },
+  {
+    "id": 41,
+    "label": "Parte 41",
+    "sing_start": 165.0,
+    "sing_end": 168.0,
+    "pause_start": 168.0,
+    "pause_end": 168.0,
+    "language": "en",
+    "lyrics": "If this is heaven, then baby I don't want to know hell",
+    "lyrics_timed": [
+      {
+        "word": "If",
+        "expected_start": 1.16
+      },
+      {
+        "word": "this",
+        "expected_start": 1.21
+      },
+      {
+        "word": "is",
+        "expected_start": 1.26
+      },
+      {
+        "word": "heaven,",
+        "expected_start": 1.31
+      },
+      {
+        "word": "then",
+        "expected_start": 1.36
+      },
+      {
+        "word": "baby",
+        "expected_start": 1.41
+      },
+      {
+        "word": "I",
+        "expected_start": 1.46
+      },
+      {
+        "word": "don't",
+        "expected_start": 2.08
+      },
+      {
+        "word": "want",
+        "expected_start": 2.13
+      },
+      {
+        "word": "to",
+        "expected_start": 2.18
+      },
+      {
+        "word": "know",
+        "expected_start": 2.23
+      },
+      {
+        "word": "hell",
+        "expected_start": 2.28
+      }
+    ]
+  },
+  {
+    "id": 42,
+    "label": "Parte 42",
+    "sing_start": 168.0,
+    "sing_end": 185.12,
+    "pause_start": 185.12,
+    "pause_end": 185.22,
+    "language": "en",
+    "lyrics": "If this is heaven, then baby I don't want to know hell",
+    "lyrics_timed": [
+      {
+        "word": "If",
+        "expected_start": 0.05
+      },
+      {
+        "word": "this",
+        "expected_start": 2.22
+      },
+      {
+        "word": "is",
+        "expected_start": 3.72
+      },
+      {
+        "word": "heaven,",
+        "expected_start": 3.77
+      },
+      {
+        "word": "then",
+        "expected_start": 12.4
+      },
+      {
+        "word": "baby",
+        "expected_start": 12.45
+      },
+      {
+        "word": "I",
+        "expected_start": 12.96
+      },
+      {
+        "word": "don't",
+        "expected_start": 15.14
+      },
+      {
+        "word": "want",
+        "expected_start": 16.16
+      },
+      {
+        "word": "to",
+        "expected_start": 16.21
+      },
+      {
+        "word": "know",
+        "expected_start": 16.26
+      },
+      {
+        "word": "hell",
+        "expected_start": 16.31
+      }
+    ]
+  }
+]

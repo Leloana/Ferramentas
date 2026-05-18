@@ -1,0 +1,2466 @@
+[
+  {
+    "id": 1,
+    "label": "Parte 1",
+    "sing_start": 0.5,
+    "sing_end": 12.0,
+    "pause_start": 12.0,
+    "pause_end": 12.5,
+    "language": "en",
+    "lyrics": "Dare me to jump off of this Jersey bridge",
+    "lyrics_timed": [
+      {
+        "word": "Dare",
+        "expected_start": 0.05
+      },
+      {
+        "word": "me",
+        "expected_start": 1.278
+      },
+      {
+        "word": "to",
+        "expected_start": 2.556
+      },
+      {
+        "word": "jump",
+        "expected_start": 3.833
+      },
+      {
+        "word": "off",
+        "expected_start": 5.111
+      },
+      {
+        "word": "of",
+        "expected_start": 6.389
+      },
+      {
+        "word": "this",
+        "expected_start": 7.667
+      },
+      {
+        "word": "Jersey",
+        "expected_start": 8.944
+      },
+      {
+        "word": "bridge",
+        "expected_start": 10.222
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "label": "Parte 2",
+    "sing_start": 12.0,
+    "sing_end": 14.0,
+    "pause_start": 14.0,
+    "pause_end": 14.0,
+    "language": "en",
+    "lyrics": "I bet you never had a Friday night like this",
+    "lyrics_timed": [
+      {
+        "word": "I",
+        "expected_start": 0.05
+      },
+      {
+        "word": "bet",
+        "expected_start": 0.34
+      },
+      {
+        "word": "you",
+        "expected_start": 0.44
+      },
+      {
+        "word": "never",
+        "expected_start": 0.74
+      },
+      {
+        "word": "had",
+        "expected_start": 0.79
+      },
+      {
+        "word": "a",
+        "expected_start": 1.06
+      },
+      {
+        "word": "Friday",
+        "expected_start": 1.11
+      },
+      {
+        "word": "night",
+        "expected_start": 1.34
+      },
+      {
+        "word": "like",
+        "expected_start": 1.66
+      },
+      {
+        "word": "this",
+        "expected_start": 1.9
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "label": "Parte 3",
+    "sing_start": 14.0,
+    "sing_end": 16.0,
+    "pause_start": 16.0,
+    "pause_end": 16.0,
+    "language": "en",
+    "lyrics": "Keep it up, keep it up, let's raise our hands",
+    "lyrics_timed": [
+      {
+        "word": "Keep",
+        "expected_start": 0.05
+      },
+      {
+        "word": "it",
+        "expected_start": 0.34
+      },
+      {
+        "word": "up,",
+        "expected_start": 0.52
+      },
+      {
+        "word": "keep",
+        "expected_start": 0.68
+      },
+      {
+        "word": "it",
+        "expected_start": 0.84
+      },
+      {
+        "word": "up,",
+        "expected_start": 1.08
+      },
+      {
+        "word": "let's",
+        "expected_start": 1.34
+      },
+      {
+        "word": "raise",
+        "expected_start": 1.62
+      },
+      {
+        "word": "our",
+        "expected_start": 1.82
+      },
+      {
+        "word": "hands",
+        "expected_start": 1.98
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "label": "Parte 4",
+    "sing_start": 16.0,
+    "sing_end": 18.0,
+    "pause_start": 18.0,
+    "pause_end": 18.0,
+    "language": "en",
+    "lyrics": "I take a look up in the sky and I see red",
+    "lyrics_timed": [
+      {
+        "word": "I",
+        "expected_start": 0.05
+      },
+      {
+        "word": "take",
+        "expected_start": 0.1
+      },
+      {
+        "word": "a",
+        "expected_start": 0.6
+      },
+      {
+        "word": "look",
+        "expected_start": 0.65
+      },
+      {
+        "word": "up",
+        "expected_start": 0.7
+      },
+      {
+        "word": "in",
+        "expected_start": 0.86
+      },
+      {
+        "word": "the",
+        "expected_start": 1.02
+      },
+      {
+        "word": "sky",
+        "expected_start": 1.14
+      },
+      {
+        "word": "and",
+        "expected_start": 1.28
+      },
+      {
+        "word": "I",
+        "expected_start": 1.5
+      },
+      {
+        "word": "see",
+        "expected_start": 1.74
+      },
+      {
+        "word": "red",
+        "expected_start": 1.9
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "label": "Parte 5",
+    "sing_start": 18.0,
+    "sing_end": 20.0,
+    "pause_start": 20.0,
+    "pause_end": 20.0,
+    "language": "en",
+    "lyrics": "Red for the cancer, red for the wealthy",
+    "lyrics_timed": [
+      {
+        "word": "Red",
+        "expected_start": 0.05
+      },
+      {
+        "word": "for",
+        "expected_start": 0.44
+      },
+      {
+        "word": "the",
+        "expected_start": 0.54
+      },
+      {
+        "word": "cancer,",
+        "expected_start": 0.7
+      },
+      {
+        "word": "red",
+        "expected_start": 1.32
+      },
+      {
+        "word": "for",
+        "expected_start": 1.5
+      },
+      {
+        "word": "the",
+        "expected_start": 1.64
+      },
+      {
+        "word": "wealthy",
+        "expected_start": 1.8
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "label": "Parte 6",
+    "sing_start": 20.0,
+    "sing_end": 22.0,
+    "pause_start": 22.0,
+    "pause_end": 22.0,
+    "language": "en",
+    "lyrics": "Red for the drink that's mixed with suicide",
+    "lyrics_timed": [
+      {
+        "word": "Red",
+        "expected_start": 0.05
+      },
+      {
+        "word": "for",
+        "expected_start": 0.1
+      },
+      {
+        "word": "the",
+        "expected_start": 0.5
+      },
+      {
+        "word": "drink",
+        "expected_start": 0.7
+      },
+      {
+        "word": "that's",
+        "expected_start": 1.06
+      },
+      {
+        "word": "mixed",
+        "expected_start": 1.32
+      },
+      {
+        "word": "with",
+        "expected_start": 1.44
+      },
+      {
+        "word": "suicide",
+        "expected_start": 1.82
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "label": "Parte 7",
+    "sing_start": 22.0,
+    "sing_end": 25.62,
+    "pause_start": 25.62,
+    "pause_end": 25.72,
+    "language": "en",
+    "lyrics": "Everything red",
+    "lyrics_timed": [
+      {
+        "word": "Everything",
+        "expected_start": 0.05
+      },
+      {
+        "word": "red",
+        "expected_start": 1.84
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "label": "Parte 8",
+    "sing_start": 26.0,
+    "sing_end": 29.0,
+    "pause_start": 29.0,
+    "pause_end": 29.0,
+    "language": "en",
+    "lyrics": "Please, won't you push me for the last time?",
+    "lyrics_timed": [
+      {
+        "word": "Please,",
+        "expected_start": 0.82
+      },
+      {
+        "word": "won't",
+        "expected_start": 1.32
+      },
+      {
+        "word": "you",
+        "expected_start": 1.7
+      },
+      {
+        "word": "push",
+        "expected_start": 1.86
+      },
+      {
+        "word": "me",
+        "expected_start": 2.08
+      },
+      {
+        "word": "for",
+        "expected_start": 2.42
+      },
+      {
+        "word": "the",
+        "expected_start": 2.62
+      },
+      {
+        "word": "last",
+        "expected_start": 2.9
+      },
+      {
+        "word": "time?",
+        "expected_start": 2.98
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "label": "Parte 9",
+    "sing_start": 29.0,
+    "sing_end": 32.0,
+    "pause_start": 32.0,
+    "pause_end": 32.0,
+    "language": "en",
+    "lyrics": "Let's scream until there's nothing left",
+    "lyrics_timed": [
+      {
+        "word": "Let's",
+        "expected_start": 0.05
+      },
+      {
+        "word": "scream",
+        "expected_start": 0.68
+      },
+      {
+        "word": "until",
+        "expected_start": 0.92
+      },
+      {
+        "word": "there's",
+        "expected_start": 1.56
+      },
+      {
+        "word": "nothing",
+        "expected_start": 2.06
+      },
+      {
+        "word": "left",
+        "expected_start": 2.42
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "label": "Parte 10",
+    "sing_start": 32.0,
+    "sing_end": 35.0,
+    "pause_start": 35.0,
+    "pause_end": 35.0,
+    "language": "en",
+    "lyrics": "So sick of playing, I don't want this anymore",
+    "lyrics_timed": [
+      {
+        "word": "So",
+        "expected_start": 0.05
+      },
+      {
+        "word": "sick",
+        "expected_start": 0.66
+      },
+      {
+        "word": "of",
+        "expected_start": 0.71
+      },
+      {
+        "word": "playing,",
+        "expected_start": 0.94
+      },
+      {
+        "word": "I",
+        "expected_start": 1.22
+      },
+      {
+        "word": "don't",
+        "expected_start": 1.52
+      },
+      {
+        "word": "want",
+        "expected_start": 2.08
+      },
+      {
+        "word": "this",
+        "expected_start": 2.48
+      },
+      {
+        "word": "anymore",
+        "expected_start": 2.76
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "label": "Parte 11",
+    "sing_start": 35.0,
+    "sing_end": 37.0,
+    "pause_start": 37.0,
+    "pause_end": 37.0,
+    "language": "en",
+    "lyrics": "The thought of you is no fucking fun",
+    "lyrics_timed": [
+      {
+        "word": "The",
+        "expected_start": 0.05
+      },
+      {
+        "word": "thought",
+        "expected_start": 0.42
+      },
+      {
+        "word": "of",
+        "expected_start": 0.47
+      },
+      {
+        "word": "you",
+        "expected_start": 0.86
+      },
+      {
+        "word": "is",
+        "expected_start": 1.02
+      },
+      {
+        "word": "no",
+        "expected_start": 1.36
+      },
+      {
+        "word": "fucking",
+        "expected_start": 1.41
+      },
+      {
+        "word": "fun",
+        "expected_start": 1.64
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "label": "Parte 12",
+    "sing_start": 37.0,
+    "sing_end": 40.0,
+    "pause_start": 40.0,
+    "pause_end": 40.0,
+    "language": "en",
+    "lyrics": "You want a martyr? I'll be one",
+    "lyrics_timed": [
+      {
+        "word": "You",
+        "expected_start": 0.05
+      },
+      {
+        "word": "want",
+        "expected_start": 0.66
+      },
+      {
+        "word": "a",
+        "expected_start": 0.96
+      },
+      {
+        "word": "martyr?",
+        "expected_start": 1.36
+      },
+      {
+        "word": "I'll",
+        "expected_start": 1.68
+      },
+      {
+        "word": "be",
+        "expected_start": 2.0
+      },
+      {
+        "word": "one",
+        "expected_start": 2.62
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "label": "Parte 13",
+    "sing_start": 40.0,
+    "sing_end": 42.0,
+    "pause_start": 42.0,
+    "pause_end": 42.0,
+    "language": "en",
+    "lyrics": "Because enough's enough",
+    "lyrics_timed": [
+      {
+        "word": "Because",
+        "expected_start": 0.05
+      },
+      {
+        "word": "enough's",
+        "expected_start": 1.4
+      },
+      {
+        "word": "enough",
+        "expected_start": 1.98
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "label": "Parte 14",
+    "sing_start": 42.0,
+    "sing_end": 44.0,
+    "pause_start": 44.0,
+    "pause_end": 44.0,
+    "language": "en",
+    "lyrics": "We're done",
+    "lyrics_timed": [
+      {
+        "word": "We're",
+        "expected_start": 0.05
+      },
+      {
+        "word": "done",
+        "expected_start": 0.88
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "label": "Parte 15",
+    "sing_start": 44.0,
+    "sing_end": 49.0,
+    "pause_start": 49.0,
+    "pause_end": 49.0,
+    "language": "en",
+    "lyrics": "You told me: Think about it, well, I did",
+    "lyrics_timed": [
+      {
+        "word": "You",
+        "expected_start": 0.05
+      },
+      {
+        "word": "told",
+        "expected_start": 1.3
+      },
+      {
+        "word": "me:",
+        "expected_start": 1.62
+      },
+      {
+        "word": "Think",
+        "expected_start": 1.96
+      },
+      {
+        "word": "about",
+        "expected_start": 2.24
+      },
+      {
+        "word": "it,",
+        "expected_start": 2.78
+      },
+      {
+        "word": "well,",
+        "expected_start": 3.18
+      },
+      {
+        "word": "I",
+        "expected_start": 3.44
+      },
+      {
+        "word": "did",
+        "expected_start": 4.2
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "label": "Parte 16",
+    "sing_start": 49.0,
+    "sing_end": 53.0,
+    "pause_start": 53.0,
+    "pause_end": 53.0,
+    "language": "en",
+    "lyrics": "Now I don't wanna feel a thing anymore",
+    "lyrics_timed": [
+      {
+        "word": "Now",
+        "expected_start": 0.05
+      },
+      {
+        "word": "I",
+        "expected_start": 0.56
+      },
+      {
+        "word": "don't",
+        "expected_start": 0.88
+      },
+      {
+        "word": "wanna",
+        "expected_start": 1.34
+      },
+      {
+        "word": "feel",
+        "expected_start": 1.6
+      },
+      {
+        "word": "a",
+        "expected_start": 2.02
+      },
+      {
+        "word": "thing",
+        "expected_start": 2.34
+      },
+      {
+        "word": "anymore",
+        "expected_start": 2.88
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "label": "Parte 17",
+    "sing_start": 53.0,
+    "sing_end": 57.0,
+    "pause_start": 57.0,
+    "pause_end": 57.0,
+    "language": "en",
+    "lyrics": "I'm tired of begging for the things that I want",
+    "lyrics_timed": [
+      {
+        "word": "I'm",
+        "expected_start": 0.05
+      },
+      {
+        "word": "tired",
+        "expected_start": 1.04
+      },
+      {
+        "word": "of",
+        "expected_start": 1.18
+      },
+      {
+        "word": "begging",
+        "expected_start": 1.52
+      },
+      {
+        "word": "for",
+        "expected_start": 1.74
+      },
+      {
+        "word": "the",
+        "expected_start": 2.24
+      },
+      {
+        "word": "things",
+        "expected_start": 2.56
+      },
+      {
+        "word": "that",
+        "expected_start": 3.0
+      },
+      {
+        "word": "I",
+        "expected_start": 3.36
+      },
+      {
+        "word": "want",
+        "expected_start": 3.8
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "label": "Parte 18",
+    "sing_start": 57.0,
+    "sing_end": 62.3,
+    "pause_start": 62.3,
+    "pause_end": 62.4,
+    "language": "en",
+    "lyrics": "I'm over sleeping like a dog on the floor",
+    "lyrics_timed": [
+      {
+        "word": "I'm",
+        "expected_start": 0.05
+      },
+      {
+        "word": "over",
+        "expected_start": 0.78
+      },
+      {
+        "word": "sleeping",
+        "expected_start": 1.3
+      },
+      {
+        "word": "like",
+        "expected_start": 2.18
+      },
+      {
+        "word": "a",
+        "expected_start": 2.54
+      },
+      {
+        "word": "dog",
+        "expected_start": 2.88
+      },
+      {
+        "word": "on",
+        "expected_start": 3.1
+      },
+      {
+        "word": "the",
+        "expected_start": 3.54
+      },
+      {
+        "word": "floor",
+        "expected_start": 3.94
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "label": "Parte 19",
+    "sing_start": 69.0,
+    "sing_end": 71.0,
+    "pause_start": 71.0,
+    "pause_end": 71.0,
+    "language": "en",
+    "lyrics": "The thing I think I love",
+    "lyrics_timed": [
+      {
+        "word": "The",
+        "expected_start": 0.05
+      },
+      {
+        "word": "thing",
+        "expected_start": 0.82
+      },
+      {
+        "word": "I",
+        "expected_start": 0.96
+      },
+      {
+        "word": "think",
+        "expected_start": 1.26
+      },
+      {
+        "word": "I",
+        "expected_start": 1.54
+      },
+      {
+        "word": "love",
+        "expected_start": 1.88
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "label": "Parte 20",
+    "sing_start": 71.0,
+    "sing_end": 73.0,
+    "pause_start": 73.0,
+    "pause_end": 73.0,
+    "language": "en",
+    "lyrics": "Will surely bring me pain",
+    "lyrics_timed": [
+      {
+        "word": "Will",
+        "expected_start": 0.05
+      },
+      {
+        "word": "surely",
+        "expected_start": 0.1
+      },
+      {
+        "word": "bring",
+        "expected_start": 0.96
+      },
+      {
+        "word": "me",
+        "expected_start": 1.28
+      },
+      {
+        "word": "pain",
+        "expected_start": 1.72
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "label": "Parte 21",
+    "sing_start": 73.0,
+    "sing_end": 77.0,
+    "pause_start": 77.0,
+    "pause_end": 77.0,
+    "language": "en",
+    "lyrics": "Intoxication, paranoia, and a lot of fame",
+    "lyrics_timed": [
+      {
+        "word": "Intoxication,",
+        "expected_start": 2.16
+      },
+      {
+        "word": "paranoia,",
+        "expected_start": 2.21
+      },
+      {
+        "word": "and",
+        "expected_start": 2.26
+      },
+      {
+        "word": "a",
+        "expected_start": 2.31
+      },
+      {
+        "word": "lot",
+        "expected_start": 2.36
+      },
+      {
+        "word": "of",
+        "expected_start": 2.62
+      },
+      {
+        "word": "fame",
+        "expected_start": 3.5
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "label": "Parte 22",
+    "sing_start": 77.0,
+    "sing_end": 79.0,
+    "pause_start": 79.0,
+    "pause_end": 79.0,
+    "language": "en",
+    "lyrics": "Three cheers for throwing up",
+    "lyrics_timed": [
+      {
+        "word": "Three",
+        "expected_start": 0.05
+      },
+      {
+        "word": "cheers",
+        "expected_start": 0.1
+      },
+      {
+        "word": "for",
+        "expected_start": 1.16
+      },
+      {
+        "word": "throwing",
+        "expected_start": 1.21
+      },
+      {
+        "word": "up",
+        "expected_start": 1.46
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "label": "Parte 23",
+    "sing_start": 79.0,
+    "sing_end": 81.0,
+    "pause_start": 81.0,
+    "pause_end": 81.0,
+    "language": "en",
+    "lyrics": "Pubescent drama queen",
+    "lyrics_timed": [
+      {
+        "word": "Pubescent",
+        "expected_start": 1.1
+      },
+      {
+        "word": "drama",
+        "expected_start": 1.15
+      },
+      {
+        "word": "queen",
+        "expected_start": 1.2
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "label": "Parte 24",
+    "sing_start": 81.0,
+    "sing_end": 87.16,
+    "pause_start": 87.16,
+    "pause_end": 87.26,
+    "language": "en",
+    "lyrics": "You make me sick, I make it worse by drinking late",
+    "lyrics_timed": [
+      {
+        "word": "You",
+        "expected_start": 0.05
+      },
+      {
+        "word": "make",
+        "expected_start": 1.28
+      },
+      {
+        "word": "me",
+        "expected_start": 1.6
+      },
+      {
+        "word": "sick,",
+        "expected_start": 1.92
+      },
+      {
+        "word": "I",
+        "expected_start": 2.52
+      },
+      {
+        "word": "make",
+        "expected_start": 2.57
+      },
+      {
+        "word": "it",
+        "expected_start": 2.76
+      },
+      {
+        "word": "worse",
+        "expected_start": 3.2
+      },
+      {
+        "word": "by",
+        "expected_start": 3.58
+      },
+      {
+        "word": "drinking",
+        "expected_start": 4.18
+      },
+      {
+        "word": "late",
+        "expected_start": 4.94
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "label": "Parte 25",
+    "sing_start": 89.0,
+    "sing_end": 91.0,
+    "pause_start": 91.0,
+    "pause_end": 91.0,
+    "language": "en",
+    "lyrics": "(Scream) until there's nothing left",
+    "lyrics_timed": [
+      {
+        "word": "(Scream)",
+        "expected_start": 0.05
+      },
+      {
+        "word": "until",
+        "expected_start": 1.16
+      },
+      {
+        "word": "there's",
+        "expected_start": 1.21
+      },
+      {
+        "word": "nothing",
+        "expected_start": 1.26
+      },
+      {
+        "word": "left",
+        "expected_start": 1.46
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "label": "Parte 26",
+    "sing_start": 91.0,
+    "sing_end": 94.0,
+    "pause_start": 94.0,
+    "pause_end": 94.0,
+    "language": "en",
+    "lyrics": "So sick of playing, I don't want this anymore",
+    "lyrics_timed": [
+      {
+        "word": "So",
+        "expected_start": 0.05
+      },
+      {
+        "word": "sick",
+        "expected_start": 0.1
+      },
+      {
+        "word": "of",
+        "expected_start": 1.12
+      },
+      {
+        "word": "playing,",
+        "expected_start": 1.17
+      },
+      {
+        "word": "I",
+        "expected_start": 1.38
+      },
+      {
+        "word": "don't",
+        "expected_start": 1.74
+      },
+      {
+        "word": "want",
+        "expected_start": 2.12
+      },
+      {
+        "word": "this",
+        "expected_start": 2.4
+      },
+      {
+        "word": "anymore",
+        "expected_start": 2.45
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "label": "Parte 27",
+    "sing_start": 94.0,
+    "sing_end": 97.0,
+    "pause_start": 97.0,
+    "pause_end": 97.0,
+    "language": "en",
+    "lyrics": "The thought of you is no fucking fun",
+    "lyrics_timed": [
+      {
+        "word": "The",
+        "expected_start": 0.05
+      },
+      {
+        "word": "thought",
+        "expected_start": 0.5
+      },
+      {
+        "word": "of",
+        "expected_start": 0.72
+      },
+      {
+        "word": "you",
+        "expected_start": 1.02
+      },
+      {
+        "word": "is",
+        "expected_start": 1.38
+      },
+      {
+        "word": "no",
+        "expected_start": 1.62
+      },
+      {
+        "word": "fucking",
+        "expected_start": 2.18
+      },
+      {
+        "word": "fun",
+        "expected_start": 2.64
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "label": "Parte 28",
+    "sing_start": 97.0,
+    "sing_end": 100.0,
+    "pause_start": 100.0,
+    "pause_end": 100.0,
+    "language": "en",
+    "lyrics": "You want a martyr? I'll be one",
+    "lyrics_timed": [
+      {
+        "word": "You",
+        "expected_start": 0.05
+      },
+      {
+        "word": "want",
+        "expected_start": 0.34
+      },
+      {
+        "word": "a",
+        "expected_start": 0.7
+      },
+      {
+        "word": "martyr?",
+        "expected_start": 1.2
+      },
+      {
+        "word": "I'll",
+        "expected_start": 1.76
+      },
+      {
+        "word": "be",
+        "expected_start": 2.12
+      },
+      {
+        "word": "one",
+        "expected_start": 2.17
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "label": "Parte 29",
+    "sing_start": 100.0,
+    "sing_end": 102.0,
+    "pause_start": 102.0,
+    "pause_end": 102.0,
+    "language": "en",
+    "lyrics": "Because enough's enough",
+    "lyrics_timed": [
+      {
+        "word": "Because",
+        "expected_start": 0.05
+      },
+      {
+        "word": "enough's",
+        "expected_start": 0.88
+      },
+      {
+        "word": "enough",
+        "expected_start": 1.34
+      }
+    ]
+  },
+  {
+    "id": 30,
+    "label": "Parte 30",
+    "sing_start": 102.0,
+    "sing_end": 104.0,
+    "pause_start": 104.0,
+    "pause_end": 104.0,
+    "language": "en",
+    "lyrics": "We're done",
+    "lyrics_timed": [
+      {
+        "word": "We're",
+        "expected_start": 0.05
+      },
+      {
+        "word": "done",
+        "expected_start": 0.76
+      }
+    ]
+  },
+  {
+    "id": 31,
+    "label": "Parte 31",
+    "sing_start": 104.0,
+    "sing_end": 108.0,
+    "pause_start": 108.0,
+    "pause_end": 108.0,
+    "language": "en",
+    "lyrics": "You told me: Think about it, well, I did",
+    "lyrics_timed": [
+      {
+        "word": "You",
+        "expected_start": 0.05
+      },
+      {
+        "word": "told",
+        "expected_start": 1.06
+      },
+      {
+        "word": "me:",
+        "expected_start": 1.16
+      },
+      {
+        "word": "Think",
+        "expected_start": 1.48
+      },
+      {
+        "word": "about",
+        "expected_start": 1.8
+      },
+      {
+        "word": "it,",
+        "expected_start": 2.24
+      },
+      {
+        "word": "well,",
+        "expected_start": 2.6
+      },
+      {
+        "word": "I",
+        "expected_start": 2.94
+      },
+      {
+        "word": "did",
+        "expected_start": 3.5
+      }
+    ]
+  },
+  {
+    "id": 32,
+    "label": "Parte 32",
+    "sing_start": 108.0,
+    "sing_end": 112.0,
+    "pause_start": 112.0,
+    "pause_end": 112.0,
+    "language": "en",
+    "lyrics": "Now I don't wanna feel a thing anymore",
+    "lyrics_timed": [
+      {
+        "word": "Now",
+        "expected_start": 0.05
+      },
+      {
+        "word": "I",
+        "expected_start": 0.98
+      },
+      {
+        "word": "don't",
+        "expected_start": 1.32
+      },
+      {
+        "word": "wanna",
+        "expected_start": 1.66
+      },
+      {
+        "word": "feel",
+        "expected_start": 2.08
+      },
+      {
+        "word": "a",
+        "expected_start": 2.5
+      },
+      {
+        "word": "thing",
+        "expected_start": 2.84
+      },
+      {
+        "word": "anymore",
+        "expected_start": 3.26
+      }
+    ]
+  },
+  {
+    "id": 33,
+    "label": "Parte 33",
+    "sing_start": 112.0,
+    "sing_end": 116.0,
+    "pause_start": 116.0,
+    "pause_end": 116.0,
+    "language": "en",
+    "lyrics": "I'm tired of begging for the things that I want",
+    "lyrics_timed": [
+      {
+        "word": "I'm",
+        "expected_start": 0.78
+      },
+      {
+        "word": "tired",
+        "expected_start": 1.38
+      },
+      {
+        "word": "of",
+        "expected_start": 1.64
+      },
+      {
+        "word": "begging",
+        "expected_start": 1.94
+      },
+      {
+        "word": "for",
+        "expected_start": 2.24
+      },
+      {
+        "word": "the",
+        "expected_start": 2.68
+      },
+      {
+        "word": "things",
+        "expected_start": 2.98
+      },
+      {
+        "word": "that",
+        "expected_start": 3.24
+      },
+      {
+        "word": "I",
+        "expected_start": 3.78
+      },
+      {
+        "word": "want",
+        "expected_start": 3.98
+      }
+    ]
+  },
+  {
+    "id": 34,
+    "label": "Parte 34",
+    "sing_start": 116.0,
+    "sing_end": 120.0,
+    "pause_start": 120.0,
+    "pause_end": 120.0,
+    "language": "en",
+    "lyrics": "I'm over sleeping like a dog on the floor",
+    "lyrics_timed": [
+      {
+        "word": "I'm",
+        "expected_start": 0.05
+      },
+      {
+        "word": "over",
+        "expected_start": 0.1
+      },
+      {
+        "word": "sleeping",
+        "expected_start": 1.32
+      },
+      {
+        "word": "like",
+        "expected_start": 1.37
+      },
+      {
+        "word": "a",
+        "expected_start": 1.76
+      },
+      {
+        "word": "dog",
+        "expected_start": 2.68
+      },
+      {
+        "word": "on",
+        "expected_start": 2.73
+      },
+      {
+        "word": "the",
+        "expected_start": 2.98
+      },
+      {
+        "word": "floor",
+        "expected_start": 3.58
+      }
+    ]
+  },
+  {
+    "id": 35,
+    "label": "Parte 35",
+    "sing_start": 120.0,
+    "sing_end": 125.0,
+    "pause_start": 125.0,
+    "pause_end": 125.0,
+    "language": "en",
+    "lyrics": "Imagine living like a king someday",
+    "lyrics_timed": [
+      {
+        "word": "Imagine",
+        "expected_start": 0.05
+      },
+      {
+        "word": "living",
+        "expected_start": 1.34
+      },
+      {
+        "word": "like",
+        "expected_start": 1.39
+      },
+      {
+        "word": "a",
+        "expected_start": 2.28
+      },
+      {
+        "word": "king",
+        "expected_start": 3.3
+      },
+      {
+        "word": "someday",
+        "expected_start": 4.02
+      }
+    ]
+  },
+  {
+    "id": 36,
+    "label": "Parte 36",
+    "sing_start": 125.0,
+    "sing_end": 129.0,
+    "pause_start": 129.0,
+    "pause_end": 129.0,
+    "language": "en",
+    "lyrics": "A single night without a ghost in the walls",
+    "lyrics_timed": [
+      {
+        "word": "A",
+        "expected_start": 0.05
+      },
+      {
+        "word": "single",
+        "expected_start": 1.06
+      },
+      {
+        "word": "night",
+        "expected_start": 1.48
+      },
+      {
+        "word": "without",
+        "expected_start": 1.92
+      },
+      {
+        "word": "a",
+        "expected_start": 2.5
+      },
+      {
+        "word": "ghost",
+        "expected_start": 2.86
+      },
+      {
+        "word": "in",
+        "expected_start": 3.16
+      },
+      {
+        "word": "the",
+        "expected_start": 3.52
+      },
+      {
+        "word": "walls",
+        "expected_start": 3.98
+      }
+    ]
+  },
+  {
+    "id": 37,
+    "label": "Parte 37",
+    "sing_start": 129.0,
+    "sing_end": 133.0,
+    "pause_start": 133.0,
+    "pause_end": 133.0,
+    "language": "en",
+    "lyrics": "And if the bass shakes the earth underground",
+    "lyrics_timed": [
+      {
+        "word": "And",
+        "expected_start": 0.74
+      },
+      {
+        "word": "if",
+        "expected_start": 0.79
+      },
+      {
+        "word": "the",
+        "expected_start": 0.84
+      },
+      {
+        "word": "bass",
+        "expected_start": 1.42
+      },
+      {
+        "word": "shakes",
+        "expected_start": 2.0
+      },
+      {
+        "word": "the",
+        "expected_start": 2.6
+      },
+      {
+        "word": "earth",
+        "expected_start": 3.06
+      },
+      {
+        "word": "underground",
+        "expected_start": 3.5
+      }
+    ]
+  },
+  {
+    "id": 38,
+    "label": "Parte 38",
+    "sing_start": 133.0,
+    "sing_end": 138.5,
+    "pause_start": 138.5,
+    "pause_end": 138.6,
+    "language": "en",
+    "lyrics": "We'll start a new revolution now",
+    "lyrics_timed": [
+      {
+        "word": "We'll",
+        "expected_start": 0.05
+      },
+      {
+        "word": "start",
+        "expected_start": 1.76
+      },
+      {
+        "word": "a",
+        "expected_start": 3.82
+      },
+      {
+        "word": "new",
+        "expected_start": 3.87
+      },
+      {
+        "word": "revolution",
+        "expected_start": 3.92
+      },
+      {
+        "word": "now",
+        "expected_start": 3.97
+      }
+    ]
+  },
+  {
+    "id": 39,
+    "label": "Parte 39",
+    "sing_start": 143.0,
+    "sing_end": 145.0,
+    "pause_start": 145.0,
+    "pause_end": 145.5,
+    "language": "en",
+    "lyrics": "(Alright, here we go)",
+    "lyrics_timed": [
+      {
+        "word": "(Alright,",
+        "expected_start": 0.05
+      },
+      {
+        "word": "here",
+        "expected_start": 0.5
+      },
+      {
+        "word": "we",
+        "expected_start": 1.0
+      },
+      {
+        "word": "go)",
+        "expected_start": 1.5
+      }
+    ]
+  },
+  {
+    "id": 40,
+    "label": "Parte 40",
+    "sing_start": 145.0,
+    "sing_end": 150.0,
+    "pause_start": 150.0,
+    "pause_end": 150.0,
+    "language": "en",
+    "lyrics": "Hail Mary, forgive me",
+    "lyrics_timed": [
+      {
+        "word": "Hail",
+        "expected_start": 0.05
+      },
+      {
+        "word": "Mary,",
+        "expected_start": 1.9
+      },
+      {
+        "word": "forgive",
+        "expected_start": 3.84
+      },
+      {
+        "word": "me",
+        "expected_start": 4.52
+      }
+    ]
+  },
+  {
+    "id": 41,
+    "label": "Parte 41",
+    "sing_start": 150.0,
+    "sing_end": 154.0,
+    "pause_start": 154.0,
+    "pause_end": 154.0,
+    "language": "en",
+    "lyrics": "Blood for blood, hearts beating",
+    "lyrics_timed": [
+      {
+        "word": "Blood",
+        "expected_start": 0.05
+      },
+      {
+        "word": "for",
+        "expected_start": 1.2
+      },
+      {
+        "word": "blood,",
+        "expected_start": 1.68
+      },
+      {
+        "word": "hearts",
+        "expected_start": 1.73
+      },
+      {
+        "word": "beating",
+        "expected_start": 3.24
+      }
+    ]
+  },
+  {
+    "id": 42,
+    "label": "Parte 42",
+    "sing_start": 154.0,
+    "sing_end": 159.74,
+    "pause_start": 159.74,
+    "pause_end": 159.84,
+    "language": "en",
+    "lyrics": "Come at me, now this is war!",
+    "lyrics_timed": [
+      {
+        "word": "Come",
+        "expected_start": 0.05
+      },
+      {
+        "word": "at",
+        "expected_start": 1.9
+      },
+      {
+        "word": "me,",
+        "expected_start": 2.4
+      },
+      {
+        "word": "now",
+        "expected_start": 3.7
+      },
+      {
+        "word": "this",
+        "expected_start": 3.94
+      },
+      {
+        "word": "is",
+        "expected_start": 4.44
+      },
+      {
+        "word": "war!",
+        "expected_start": 5.06
+      }
+    ]
+  },
+  {
+    "id": 43,
+    "label": "Parte 43",
+    "sing_start": 160.0,
+    "sing_end": 162.0,
+    "pause_start": 162.0,
+    "pause_end": 162.5,
+    "language": "en",
+    "lyrics": "Fuck with this new beat",
+    "lyrics_timed": [
+      {
+        "word": "Fuck",
+        "expected_start": 0.05
+      },
+      {
+        "word": "with",
+        "expected_start": 0.4
+      },
+      {
+        "word": "this",
+        "expected_start": 0.8
+      },
+      {
+        "word": "new",
+        "expected_start": 1.2
+      },
+      {
+        "word": "beat",
+        "expected_start": 1.6
+      }
+    ]
+  },
+  {
+    "id": 44,
+    "label": "Parte 44",
+    "sing_start": 162.0,
+    "sing_end": 165.0,
+    "pause_start": 165.0,
+    "pause_end": 165.5,
+    "language": "en",
+    "lyrics": "Oh",
+    "lyrics_timed": [
+      {
+        "word": "Oh",
+        "expected_start": 0.05
+      }
+    ]
+  },
+  {
+    "id": 45,
+    "label": "Parte 45",
+    "sing_start": 165.0,
+    "sing_end": 172.0,
+    "pause_start": 172.0,
+    "pause_end": 172.5,
+    "language": "en",
+    "lyrics": "Now!",
+    "lyrics_timed": [
+      {
+        "word": "Now!",
+        "expected_start": 0.05
+      }
+    ]
+  },
+  {
+    "id": 46,
+    "label": "Parte 46",
+    "sing_start": 172.0,
+    "sing_end": 182.0,
+    "pause_start": 182.0,
+    "pause_end": 182.5,
+    "language": "en",
+    "lyrics": "Terror begins inside a bloodless vein",
+    "lyrics_timed": [
+      {
+        "word": "Terror",
+        "expected_start": 0.05
+      },
+      {
+        "word": "begins",
+        "expected_start": 1.667
+      },
+      {
+        "word": "inside",
+        "expected_start": 3.333
+      },
+      {
+        "word": "a",
+        "expected_start": 5.0
+      },
+      {
+        "word": "bloodless",
+        "expected_start": 6.667
+      },
+      {
+        "word": "vein",
+        "expected_start": 8.333
+      }
+    ]
+  },
+  {
+    "id": 47,
+    "label": "Parte 47",
+    "sing_start": 182.0,
+    "sing_end": 185.0,
+    "pause_start": 185.0,
+    "pause_end": 185.5,
+    "language": "en",
+    "lyrics": "I was just a product of the street youth's rage",
+    "lyrics_timed": [
+      {
+        "word": "I",
+        "expected_start": 0.05
+      },
+      {
+        "word": "was",
+        "expected_start": 0.3
+      },
+      {
+        "word": "just",
+        "expected_start": 0.6
+      },
+      {
+        "word": "a",
+        "expected_start": 0.9
+      },
+      {
+        "word": "product",
+        "expected_start": 1.2
+      },
+      {
+        "word": "of",
+        "expected_start": 1.5
+      },
+      {
+        "word": "the",
+        "expected_start": 1.8
+      },
+      {
+        "word": "street",
+        "expected_start": 2.1
+      },
+      {
+        "word": "youth's",
+        "expected_start": 2.4
+      },
+      {
+        "word": "rage",
+        "expected_start": 2.7
+      }
+    ]
+  },
+  {
+    "id": 48,
+    "label": "Parte 48",
+    "sing_start": 185.0,
+    "sing_end": 187.0,
+    "pause_start": 187.0,
+    "pause_end": 187.0,
+    "language": "en",
+    "lyrics": "Born in this world without a voice or say",
+    "lyrics_timed": [
+      {
+        "word": "Born",
+        "expected_start": 0.05
+      },
+      {
+        "word": "in",
+        "expected_start": 0.42
+      },
+      {
+        "word": "this",
+        "expected_start": 0.47
+      },
+      {
+        "word": "world",
+        "expected_start": 0.76
+      },
+      {
+        "word": "without",
+        "expected_start": 0.84
+      },
+      {
+        "word": "a",
+        "expected_start": 1.1
+      },
+      {
+        "word": "voice",
+        "expected_start": 1.32
+      },
+      {
+        "word": "or",
+        "expected_start": 1.52
+      },
+      {
+        "word": "say",
+        "expected_start": 1.86
+      }
+    ]
+  },
+  {
+    "id": 49,
+    "label": "Parte 49",
+    "sing_start": 187.0,
+    "sing_end": 189.0,
+    "pause_start": 189.0,
+    "pause_end": 189.0,
+    "language": "en",
+    "lyrics": "Caught in the spokes with an abandoned brain",
+    "lyrics_timed": [
+      {
+        "word": "Caught",
+        "expected_start": 0.05
+      },
+      {
+        "word": "in",
+        "expected_start": 0.86
+      },
+      {
+        "word": "the",
+        "expected_start": 0.91
+      },
+      {
+        "word": "spokes",
+        "expected_start": 0.98
+      },
+      {
+        "word": "with",
+        "expected_start": 1.14
+      },
+      {
+        "word": "an",
+        "expected_start": 1.28
+      },
+      {
+        "word": "abandoned",
+        "expected_start": 1.52
+      },
+      {
+        "word": "brain",
+        "expected_start": 1.98
+      }
+    ]
+  },
+  {
+    "id": 50,
+    "label": "Parte 50",
+    "sing_start": 189.0,
+    "sing_end": 191.0,
+    "pause_start": 191.0,
+    "pause_end": 191.0,
+    "language": "en",
+    "lyrics": "I know you well, but this ain't a game",
+    "lyrics_timed": [
+      {
+        "word": "I",
+        "expected_start": 0.05
+      },
+      {
+        "word": "know",
+        "expected_start": 0.1
+      },
+      {
+        "word": "you",
+        "expected_start": 0.52
+      },
+      {
+        "word": "well,",
+        "expected_start": 0.76
+      },
+      {
+        "word": "but",
+        "expected_start": 0.86
+      },
+      {
+        "word": "this",
+        "expected_start": 1.08
+      },
+      {
+        "word": "ain't",
+        "expected_start": 1.38
+      },
+      {
+        "word": "a",
+        "expected_start": 1.66
+      },
+      {
+        "word": "game",
+        "expected_start": 1.71
+      }
+    ]
+  },
+  {
+    "id": 51,
+    "label": "Parte 51",
+    "sing_start": 191.0,
+    "sing_end": 193.0,
+    "pause_start": 193.0,
+    "pause_end": 193.5,
+    "language": "en",
+    "lyrics": "Blow the smoke in a diamond shape",
+    "lyrics_timed": [
+      {
+        "word": "Blow",
+        "expected_start": 0.05
+      },
+      {
+        "word": "the",
+        "expected_start": 0.286
+      },
+      {
+        "word": "smoke",
+        "expected_start": 0.571
+      },
+      {
+        "word": "in",
+        "expected_start": 0.857
+      },
+      {
+        "word": "a",
+        "expected_start": 1.143
+      },
+      {
+        "word": "diamond",
+        "expected_start": 1.429
+      },
+      {
+        "word": "shape",
+        "expected_start": 1.714
+      }
+    ]
+  },
+  {
+    "id": 52,
+    "label": "Parte 52",
+    "sing_start": 193.0,
+    "sing_end": 199.0,
+    "pause_start": 199.0,
+    "pause_end": 199.0,
+    "language": "en",
+    "lyrics": "Dying is a gift, so close your eyes and rest in peace",
+    "lyrics_timed": [
+      {
+        "word": "Dying",
+        "expected_start": 0.05
+      },
+      {
+        "word": "is",
+        "expected_start": 0.96
+      },
+      {
+        "word": "a",
+        "expected_start": 1.01
+      },
+      {
+        "word": "gift,",
+        "expected_start": 1.52
+      },
+      {
+        "word": "so",
+        "expected_start": 2.14
+      },
+      {
+        "word": "close",
+        "expected_start": 2.54
+      },
+      {
+        "word": "your",
+        "expected_start": 3.12
+      },
+      {
+        "word": "eyes",
+        "expected_start": 3.62
+      },
+      {
+        "word": "and",
+        "expected_start": 4.16
+      },
+      {
+        "word": "rest",
+        "expected_start": 4.74
+      },
+      {
+        "word": "in",
+        "expected_start": 4.79
+      },
+      {
+        "word": "peace",
+        "expected_start": 5.26
+      }
+    ]
+  },
+  {
+    "id": 53,
+    "label": "Parte 53",
+    "sing_start": 199.0,
+    "sing_end": 203.0,
+    "pause_start": 203.0,
+    "pause_end": 203.0,
+    "language": "en",
+    "lyrics": "You told me: Think about it, well, I did",
+    "lyrics_timed": [
+      {
+        "word": "You",
+        "expected_start": 0.05
+      },
+      {
+        "word": "told",
+        "expected_start": 0.66
+      },
+      {
+        "word": "me:",
+        "expected_start": 0.94
+      },
+      {
+        "word": "Think",
+        "expected_start": 1.18
+      },
+      {
+        "word": "about",
+        "expected_start": 1.56
+      },
+      {
+        "word": "it,",
+        "expected_start": 2.04
+      },
+      {
+        "word": "well,",
+        "expected_start": 2.4
+      },
+      {
+        "word": "I",
+        "expected_start": 2.72
+      },
+      {
+        "word": "did",
+        "expected_start": 3.48
+      }
+    ]
+  },
+  {
+    "id": 54,
+    "label": "Parte 54",
+    "sing_start": 203.0,
+    "sing_end": 207.0,
+    "pause_start": 207.0,
+    "pause_end": 207.0,
+    "language": "en",
+    "lyrics": "Now I don't wanna feel a thing anymore",
+    "lyrics_timed": [
+      {
+        "word": "Now",
+        "expected_start": 0.05
+      },
+      {
+        "word": "I",
+        "expected_start": 0.86
+      },
+      {
+        "word": "don't",
+        "expected_start": 1.18
+      },
+      {
+        "word": "wanna",
+        "expected_start": 1.5
+      },
+      {
+        "word": "feel",
+        "expected_start": 1.92
+      },
+      {
+        "word": "a",
+        "expected_start": 2.34
+      },
+      {
+        "word": "thing",
+        "expected_start": 2.64
+      },
+      {
+        "word": "anymore",
+        "expected_start": 3.04
+      }
+    ]
+  },
+  {
+    "id": 55,
+    "label": "Parte 55",
+    "sing_start": 207.0,
+    "sing_end": 211.0,
+    "pause_start": 211.0,
+    "pause_end": 211.0,
+    "language": "en",
+    "lyrics": "I'm tired of begging for the things that I want",
+    "lyrics_timed": [
+      {
+        "word": "I'm",
+        "expected_start": 0.05
+      },
+      {
+        "word": "tired",
+        "expected_start": 1.18
+      },
+      {
+        "word": "of",
+        "expected_start": 1.5
+      },
+      {
+        "word": "begging",
+        "expected_start": 1.86
+      },
+      {
+        "word": "for",
+        "expected_start": 2.12
+      },
+      {
+        "word": "the",
+        "expected_start": 2.56
+      },
+      {
+        "word": "things",
+        "expected_start": 3.08
+      },
+      {
+        "word": "that",
+        "expected_start": 3.3
+      },
+      {
+        "word": "I",
+        "expected_start": 3.62
+      },
+      {
+        "word": "want",
+        "expected_start": 3.98
+      }
+    ]
+  },
+  {
+    "id": 56,
+    "label": "Parte 56",
+    "sing_start": 211.0,
+    "sing_end": 216.0,
+    "pause_start": 216.0,
+    "pause_end": 216.0,
+    "language": "en",
+    "lyrics": "I'm over sleeping like a dog on the floor",
+    "lyrics_timed": [
+      {
+        "word": "I'm",
+        "expected_start": 0.05
+      },
+      {
+        "word": "over",
+        "expected_start": 0.1
+      },
+      {
+        "word": "sleeping",
+        "expected_start": 1.62
+      },
+      {
+        "word": "like",
+        "expected_start": 1.67
+      },
+      {
+        "word": "a",
+        "expected_start": 2.52
+      },
+      {
+        "word": "dog",
+        "expected_start": 2.86
+      },
+      {
+        "word": "on",
+        "expected_start": 3.42
+      },
+      {
+        "word": "the",
+        "expected_start": 3.84
+      },
+      {
+        "word": "floor",
+        "expected_start": 4.28
+      }
+    ]
+  },
+  {
+    "id": 57,
+    "label": "Parte 57",
+    "sing_start": 216.0,
+    "sing_end": 220.0,
+    "pause_start": 220.0,
+    "pause_end": 220.0,
+    "language": "en",
+    "lyrics": "Imagine living like a king someday",
+    "lyrics_timed": [
+      {
+        "word": "Imagine",
+        "expected_start": 0.05
+      },
+      {
+        "word": "living",
+        "expected_start": 1.1
+      },
+      {
+        "word": "like",
+        "expected_start": 1.15
+      },
+      {
+        "word": "a",
+        "expected_start": 1.9
+      },
+      {
+        "word": "king",
+        "expected_start": 2.5
+      },
+      {
+        "word": "someday",
+        "expected_start": 3.3
+      }
+    ]
+  },
+  {
+    "id": 58,
+    "label": "Parte 58",
+    "sing_start": 220.0,
+    "sing_end": 224.0,
+    "pause_start": 224.0,
+    "pause_end": 224.0,
+    "language": "en",
+    "lyrics": "A single night without a ghost in the walls",
+    "lyrics_timed": [
+      {
+        "word": "A",
+        "expected_start": 0.05
+      },
+      {
+        "word": "single",
+        "expected_start": 0.88
+      },
+      {
+        "word": "night",
+        "expected_start": 0.93
+      },
+      {
+        "word": "without",
+        "expected_start": 1.34
+      },
+      {
+        "word": "a",
+        "expected_start": 1.74
+      },
+      {
+        "word": "ghost",
+        "expected_start": 2.32
+      },
+      {
+        "word": "in",
+        "expected_start": 2.37
+      },
+      {
+        "word": "the",
+        "expected_start": 3.24
+      },
+      {
+        "word": "walls",
+        "expected_start": 3.8
+      }
+    ]
+  },
+  {
+    "id": 59,
+    "label": "Parte 59",
+    "sing_start": 224.0,
+    "sing_end": 228.0,
+    "pause_start": 228.0,
+    "pause_end": 228.0,
+    "language": "en",
+    "lyrics": "We are the shadows, screaming: Take us now!",
+    "lyrics_timed": [
+      {
+        "word": "We",
+        "expected_start": 0.05
+      },
+      {
+        "word": "are",
+        "expected_start": 1.22
+      },
+      {
+        "word": "the",
+        "expected_start": 1.5
+      },
+      {
+        "word": "shadows,",
+        "expected_start": 1.82
+      },
+      {
+        "word": "screaming:",
+        "expected_start": 2.16
+      },
+      {
+        "word": "Take",
+        "expected_start": 2.8
+      },
+      {
+        "word": "us",
+        "expected_start": 3.44
+      },
+      {
+        "word": "now!",
+        "expected_start": 3.84
+      }
+    ]
+  },
+  {
+    "id": 60,
+    "label": "Parte 60",
+    "sing_start": 228.0,
+    "sing_end": 232.0,
+    "pause_start": 232.0,
+    "pause_end": 232.0,
+    "language": "en",
+    "lyrics": "We'd rather die than live to rust on the ground",
+    "lyrics_timed": [
+      {
+        "word": "We'd",
+        "expected_start": 1.06
+      },
+      {
+        "word": "rather",
+        "expected_start": 1.66
+      },
+      {
+        "word": "die",
+        "expected_start": 1.76
+      },
+      {
+        "word": "than",
+        "expected_start": 2.28
+      },
+      {
+        "word": "live",
+        "expected_start": 2.58
+      },
+      {
+        "word": "to",
+        "expected_start": 2.76
+      },
+      {
+        "word": "rust",
+        "expected_start": 3.04
+      },
+      {
+        "word": "on",
+        "expected_start": 3.42
+      },
+      {
+        "word": "the",
+        "expected_start": 3.76
+      },
+      {
+        "word": "ground",
+        "expected_start": 3.98
+      }
+    ]
+  },
+  {
+    "id": 61,
+    "label": "Parte 61",
+    "sing_start": 232.0,
+    "sing_end": 233.94,
+    "pause_start": 233.94,
+    "pause_end": 234.04,
+    "language": "en",
+    "lyrics": "Shit",
+    "lyrics_timed": [
+      {
+        "word": "Shit",
+        "expected_start": 0.05
+      }
+    ]
+  }
+]
