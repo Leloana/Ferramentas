@@ -1,8 +1,6 @@
 import asyncio
 import json
 import logging
-import math
-import re
 import shutil
 import socket
 import sys
@@ -10,8 +8,7 @@ from pathlib import Path
 from typing import Optional
 
 import numpy as np
-import scipy.signal
-from fastapi import FastAPI, File, Form, HTTPException, Response, UploadFile, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, File, Form, HTTPException, Response, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -26,67 +23,15 @@ ffmpeg_bin_dir = _bootstrap_ffmpeg()
 
 from pydub import AudioSegment  # noqa: E402  (precisa vir após bootstrap do ffmpeg)
 
-from stt_engine import get_stt_engine
-from score_engine import calculate_score
-from song_manager import SongManager
+from state import song_manager
 from utils.text import parse_time_to_seconds, slugify
 from utils.youtube import download_youtube_audio
+from ws.room import router as ws_router
 
 # Configurações
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Gerenciamento de Salas Multi-Dispositivo
-class KaraokeRoom:
-    def __init__(self, song_id: str):
-        self.song_id = song_id
-        self.display: Optional[WebSocket] = None
-        self.mic: Optional[WebSocket] = None
-        self.audio_buffer = bytearray()  # Mantido para retrocompatibilidade se necessário
-        self.segment_buffers = {}  # seg_idx -> bytearray() (buffers dedicados concorrentes por segmento)
-        self.client_sample_rate = 48000
-        self.current_segment_idx = 0
-        self.transcribed_segments = set()
-        self.total_score = 0.0
-        self.scored_count = 0  # nº de segmentos efetivamente pontuados (correto para média mesmo fora-de-ordem)
-        self.last_client_time = 0.0
-        self.segments = []
-        self.is_active = True
-        self.is_singing_active = False
-        self.song_title = ""
-        self.pending_tasks: set = set()
-
-    async def broadcast(self, msg: dict) -> None:
-        """Envia uma mensagem para display e mic (quando conectados), tolerando falhas."""
-        for ws in (self.display, self.mic):
-            if ws is None:
-                continue
-            try:
-                await ws.send_json(msg)
-            except Exception as e:
-                logger.debug(f"Falha ao enviar para websocket: {e}")
-
-class RoomManager:
-    def __init__(self):
-        self.rooms = {} # room_id -> KaraokeRoom
-
-    def get_or_create_room(self, room_id: str, song_id: str, segments: list) -> KaraokeRoom:
-        if room_id not in self.rooms:
-            room = KaraokeRoom(song_id)
-            room.segments = segments
-            self.rooms[room_id] = room
-            logger.info(f"Sala de Karaokê criada: {room_id} para a música {song_id}")
-        return self.rooms[room_id]
-
-    def clean_room(self, room_id: str):
-        if room_id in self.rooms:
-            room = self.rooms[room_id]
-            if not room.display and not room.mic:
-                del self.rooms[room_id]
-                logger.info(f"Sala de Karaokê removida por inatividade: {room_id}")
-
-room_manager = RoomManager()
-song_manager = SongManager()
 app = FastAPI(title="Karaoke MVP Server")
 
 # CORS
@@ -98,24 +43,29 @@ app.add_middleware(
 )
 
 # Rotas HTTP
-@app.get("/")
-async def get_index(response: Response):
-    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
-    response.headers["Pragma"] = "no-cache"
-    response.headers["Expires"] = "0"
-    return FileResponse(Path(__file__).parent.parent / "client" / "index.html")
-
 CLIENT_DIR = Path(__file__).parent.parent / "client"
 app.mount("/styles", StaticFiles(directory=str(CLIENT_DIR / "styles")), name="styles")
 app.mount("/js", StaticFiles(directory=str(CLIENT_DIR / "js")), name="js")
 
-@app.get("/songs")
-@app.get("/api/songs")
-async def list_songs(response: Response):
+
+def _no_cache(response: Response) -> None:
     response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "0"
+
+
+@app.get("/")
+async def get_index(response: Response):
+    _no_cache(response)
+    return FileResponse(CLIENT_DIR / "index.html")
+
+
+@app.get("/songs")
+@app.get("/api/songs")
+async def list_songs(response: Response):
+    _no_cache(response)
     return song_manager.list_songs()
+
 
 @app.get("/songs/{song_id}/audio")
 async def get_audio(song_id: str):
@@ -124,318 +74,9 @@ async def get_audio(song_id: str):
         raise HTTPException(status_code=404, detail="Música não encontrada")
     return FileResponse(audio_path)
 
-# WebSocket
-@app.websocket("/ws/room/{room_id}")
-async def websocket_endpoint(websocket: WebSocket, room_id: str):
-    await websocket.accept()
-    
-    # Obtém role e song_id a partir dos parâmetros de query
-    role = websocket.query_params.get("role", "display")
-    song_id = websocket.query_params.get("song_id")
-    
-    # Se for display, o song_id é opcional para permitir pareamento inicial na home screen
-        
-    segments = []
-    song_title = ""
-    if song_id:
-        song_data = song_manager.get_song_data(song_id)
-        if not song_data:
-            await websocket.close(code=1008, reason="Música não encontrada")
-            return
-        segments = song_data["segments"]
-        song_title = f"{song_data.get('title', '')} - {song_data.get('artist', '')}" if song_data.get('artist') else song_data.get('title', '')
 
-    room = room_manager.get_or_create_room(room_id, song_id or "", segments)
-    if song_title:
-        room.song_title = song_title
-    
-    # Se a sala já existe e um novo display conectou para outra música, reinicia a sala para a nova faixa
-    if role == "display" and song_id:
-        room.song_id = song_id
-        room.song_title = song_title
-        room.segments = segments
-        room.current_segment_idx = 0
-        room.transcribed_segments = set()
-        room.total_score = 0.0
-        room.scored_count = 0
-        room.last_client_time = 0.0
-        room.audio_buffer = bytearray()
-        room.segment_buffers = {}
-        room.is_singing_active = False
-    
-    # Registra o WebSocket no papel correspondente
-    if role == "mic":
-        if room.mic:
-            try:
-                await room.mic.close(code=1000, reason="Novo microfone conectado")
-            except Exception as e:
-                logger.debug(f"Falha ao fechar mic anterior: {e}")
-        room.mic = websocket
-        logger.info(f"Microfone conectado para a sala: {room_id}")
+app.include_router(ws_router)
 
-        await websocket.send_json({"type": "pairing_status", "status": "paired", "role": "mic"})
-        if room.display:
-            await room.display.send_json({"type": "pairing_status", "status": "paired", "role": "display"})
-
-    else:  # role == "display"
-        if room.display:
-            try:
-                await room.display.close(code=1000, reason="Novo display conectado")
-            except Exception as e:
-                logger.debug(f"Falha ao fechar display anterior: {e}")
-        room.display = websocket
-        logger.info(f"Display (TV) conectado para a sala: {room_id}")
-
-        if room.mic:
-            await websocket.send_json({"type": "pairing_status", "status": "paired", "role": "display"})
-            try:
-                await room.mic.send_json({"type": "pairing_status", "status": "paired", "role": "mic"})
-            except Exception as e:
-                logger.debug(f"Falha ao notificar mic do pareamento: {e}")
-        else:
-            await websocket.send_json({"type": "pairing_status", "status": "unpaired", "role": "display"})
-
-    try:
-        await websocket.send_json({"type": "singing_state", "active": room.is_singing_active})
-    except Exception as e:
-        logger.debug(f"Falha ao enviar estado inicial: {e}")
-            
-    stt = get_stt_engine()
-    
-    # Processador em background compartilhado
-    async def process_and_score(seg_idx, audio_data, seg_lang, seg_lyrics, seg_text):
-        try:
-            # Calcule o RMS e duração do áudio original recebido
-            duration = len(audio_data) / room.client_sample_rate
-            rms_original = np.sqrt(np.mean(audio_data ** 2)) if len(audio_data) > 0 else 0
-            
-            logger.info(f"\n========================================\n"
-                        f"🎤 [DEBUG MICROFONE] Segmento {seg_idx + 1} - Sala {room_id}\n"
-                        f"   - Letra Esperada: '{seg_text}'\n"
-                        f"   - Duração do Áudio Recebido: {duration:.2f}s ({len(audio_data)} samples)\n"
-                        f"   - RMS de Entrada: {rms_original:.6f}\n"
-                        f"========================================")
-
-            # Detecção de vocalizes não-lexicais (Oh-oh, La-la-la, etc.)
-            vocalize_words = {"oh", "la", "uh", "na", "ah", "oo", "woo", "yeah", "yeh", "wow", "hm", "hmm", "hey", "hei"}
-            clean_words = [re.sub(r'[^\w]', '', w.lower()) for w in seg_text.split()]
-            is_vocalize = len(clean_words) > 0 and all(w in vocalize_words for w in clean_words if w)
-
-            if is_vocalize:
-                # Pontua baseado apenas no RMS (se cantou ou não)
-                logger.info(f"⚡ [Bypass Vocalize] Detectado trecho não-lexical ('{seg_text}'). Avaliando por energia (RMS: {rms_original:.6f})")
-                if rms_original > 0.008:
-                    score = 100.0
-                    transcribed_text = seg_text
-                    transcription_processed = seg_text
-                    matched_count = len(clean_words)
-                elif rms_original > 0.002:
-                    score = 50.0
-                    transcribed_text = "(som baixo)"
-                    transcription_processed = "(som baixo)"
-                    matched_count = len(clean_words) // 2
-                else:
-                    score = 0.0
-                    transcribed_text = "(silêncio)"
-                    transcription_processed = "(silêncio)"
-                    matched_count = 0
-
-                room.total_score += score
-                result = {
-                    "score": score,
-                    "transcription": transcription_processed,
-                    "matched_words": matched_count,
-                    "total_expected": len(clean_words)
-                }
-            else:
-                # Resampling polifásico para 16 kHz (Whisper) com filtro FIR anti-aliasing.
-                def compute():
-                    gcd = math.gcd(16000, room.client_sample_rate)
-                    up = 16000 // gcd
-                    down = room.client_sample_rate // gcd
-                    resampled = scipy.signal.resample_poly(audio_data, up, down).astype(np.float32)
-                    return stt.transcribe(resampled, language=seg_lang, initial_prompt=seg_text)
-
-                transcribed_text, words = await asyncio.to_thread(compute)
-
-                prev_lyrics = None
-                if seg_idx > 0 and seg_idx - 1 < len(room.segments):
-                    prev_lyrics = room.segments[seg_idx - 1]["lyrics"].split()
-
-                result = calculate_score(seg_lyrics, words, prev_expected_words=prev_lyrics, language=seg_lang)
-                room.total_score += result["score"]
-
-            # Conta este segmento como pontuado e usa contador real para a média
-            # (tasks de transcrição podem terminar fora de ordem — dividir por seg_idx+1
-            # subestimava/superestimava a média).
-            room.scored_count += 1
-            running_avg = round(room.total_score / room.scored_count, 1)
-
-            logger.info(f"\n========================================\n"
-                        f"📝 [DEBUG TRANSCRIÇÃO] Segmento {seg_idx + 1} - Sala {room_id}\n"
-                        f"   - Texto Transcrito (Whisper): '{transcribed_text}'\n"
-                        f"   - Palavras Mapeadas: {result['matched_words']}/{result['total_expected']}\n"
-                        f"   - Transcrição acústica processada: '{result['transcription']}'\n"
-                        f"   - Pontuação Deste Segmento: {result['score']}%\n"
-                        f"   - Média de Pontuação Geral Atual: {running_avg}%\n"
-                        f"========================================")
-
-            await room.broadcast({
-                "type": "segment_result",
-                "score": result["score"],
-                "transcription": result["transcription"],
-                "total_score": running_avg,
-            })
-        except Exception as e:
-            logger.error(f"Erro no processamento do segmento: {e}", exc_info=True)
-
-    try:
-        while True:
-            message = await websocket.receive()
-            
-            if "bytes" in message:
-                # Recebendo chunks de áudio PCM Float32 do microfone ativo
-                current_time = room.last_client_time
-                
-                # Só acumula áudio nos buffers dos segmentos cujas janelas de canto (com margens de respiro) estão ativas
-                for seg_idx, seg in enumerate(room.segments):
-                    if current_time >= (seg["sing_start"] - 1.5) and current_time <= (seg["sing_end"] + 0.5):
-                        if seg_idx not in room.segment_buffers:
-                            room.segment_buffers[seg_idx] = bytearray()
-                        room.segment_buffers[seg_idx].extend(message["bytes"])
-                
-                # Mantém retrocompatibilidade com o buffer global se o segmento atual estiver ativo
-                if room.current_segment_idx < len(room.segments):
-                    current_seg = room.segments[room.current_segment_idx]
-                    if current_time >= (current_seg["sing_start"] - 1.5) and current_time <= (current_seg["sing_end"] + 0.5):
-                        room.audio_buffer.extend(message["bytes"])
-                
-            elif "text" in message:
-                data = json.loads(message["text"])
-                msg_type = data.get("type")
-                
-                if msg_type == "client_info":
-                    room.client_sample_rate = data.get("sample_rate", 48000)
-                    logger.info(f"Sample rate do cliente na sala {room_id}: {room.client_sample_rate}")
-                    
-                    # Envia o início do primeiro segmento
-                    if room.display:
-                        await send_segment_start(room.display, room.segments, 0, room.song_title)
-                    if room.mic:
-                        await send_segment_start(room.mic, room.segments, 0, room.song_title)
-                    
-                elif msg_type == "playback_time":
-                    # Apenas o display atualiza o tempo principal do player de áudio
-                    current_time = data.get("current_time", 0.0)
-                    room.last_client_time = current_time
-                    
-                    # Determina se há canto ativo no momento (com margem de 1.0s antes e 0.5s depois)
-                    is_singing = False
-                    if room.current_segment_idx < len(room.segments):
-                        current_seg = room.segments[room.current_segment_idx]
-                        is_singing = current_time >= (current_seg["sing_start"] - 1.0) and current_time <= (current_seg["sing_end"] + 0.5)
-                    
-                    if is_singing != room.is_singing_active:
-                        room.is_singing_active = is_singing
-                        await room.broadcast({"type": "singing_state", "active": is_singing})
-                    
-                    # Lógica de transição de segmentos compartilhada
-                    if room.current_segment_idx < len(room.segments):
-                        current_seg = room.segments[room.current_segment_idx]
-                        
-                        # Se vamos transicionar ou se já passou do fim da janela de canto (com 0.5s de atraso extra), processa a transcrição
-                        should_transcribe = current_time >= (current_seg["sing_end"] + 0.5) or current_time >= current_seg["pause_end"] - 0.15
-                        
-                        seg_buffer = room.segment_buffers.get(room.current_segment_idx)
-                        if should_transcribe and seg_buffer and room.current_segment_idx not in room.transcribed_segments:
-                            room.transcribed_segments.add(room.current_segment_idx)
-                            logger.info(f"Processando segmento {room.current_segment_idx + 1} para a sala {room_id}")
-                            
-                            # 1. Converter buffer específico para numpy float32
-                            raw_audio = np.frombuffer(seg_buffer, dtype=np.float32).copy()
-                            room.segment_buffers.pop(room.current_segment_idx, None)  # Libera memória imediatamente
-                            room.audio_buffer = bytearray()  # Limpa global para retrocompatibilidade
-                            
-                            # Mantém referência forte à task — sem isso o GC pode coletá-la antes de terminar.
-                            task = asyncio.create_task(process_and_score(
-                                room.current_segment_idx,
-                                raw_audio,
-                                current_seg["language"],
-                                current_seg["lyrics_timed"],
-                                current_seg["lyrics"],
-                            ))
-                            room.pending_tasks.add(task)
-                            task.add_done_callback(room.pending_tasks.discard)
-                            
-                        # Transiciona para o próximo segmento imediatamente ao término do canto (sing_end)
-                        # Isso dá tempo ao front-end de receber a letra do próximo verso e exibir a barra de silêncio
-                        if current_time >= current_seg["sing_end"]:
-                            room.current_segment_idx += 1
-                            if room.current_segment_idx < len(room.segments):
-                                if room.display:
-                                    await send_segment_start(room.display, room.segments, room.current_segment_idx, room.song_title)
-                                if room.mic:
-                                    await send_segment_start(room.mic, room.segments, room.current_segment_idx, room.song_title)
-                            else:
-                                logger.info(f"Último segmento cantado na sala {room_id}. Aguardando o backing track terminar...")
-                                await room.broadcast({"type": "outro_start"})
-
-                elif msg_type == "audio_ended":
-                    logger.info(f"Áudio finalizado pelo cliente na sala {room_id}. Finalizando jogo...")
-                    # Aguarda transcrições pendentes para que a média final inclua todos os segmentos processáveis
-                    if room.pending_tasks:
-                        try:
-                            await asyncio.wait_for(asyncio.gather(*room.pending_tasks, return_exceptions=True), timeout=10.0)
-                        except asyncio.TimeoutError:
-                            logger.warning(f"Timeout aguardando transcrições pendentes na sala {room_id}")
-                    total_score_avg = round(room.total_score / max(1, len(room.segments)), 1)
-                    await room.broadcast({"type": "game_over", "total_score": total_score_avg})
-                    break
-                                
-    except (WebSocketDisconnect, RuntimeError):
-        logger.info(f"Conexão do papel {role} desconectada na sala {room_id}.")
-    except Exception as e:
-        logger.error(f"Erro no WebSocket da sala {room_id}: {e}", exc_info=True)
-    finally:
-        if role == "mic":
-            room.mic = None
-            if room.display:
-                try:
-                    await room.display.send_json({"type": "pairing_status", "status": "unpaired", "role": "mic"})
-                except Exception as e:
-                    logger.debug(f"Falha ao notificar display do unpair: {e}")
-        else:
-            room.display = None
-            if room.mic:
-                try:
-                    await room.mic.send_json({"type": "pairing_status", "status": "unpaired", "role": "display"})
-                except Exception as e:
-                    logger.debug(f"Falha ao notificar mic do unpair: {e}")
-
-        try:
-            await websocket.close()
-        except Exception as e:
-            logger.debug(f"Falha ao fechar websocket: {e}")
-
-        room_manager.clean_room(room_id)
-
-async def send_segment_start(ws: WebSocket, segments: list, idx: int, song_title: str = ""):
-    segment = segments[idx]
-    prev_lyrics = segments[idx - 1]["lyrics"] if idx > 0 else ""
-    next_lyrics = segments[idx + 1]["lyrics"] if idx < len(segments) - 1 else ""
-    
-    await ws.send_json({
-        "type": "segment_start",
-        "id": segment["id"],
-        "label": segment["label"],
-        "sing_start": segment["sing_start"],
-        "sing_end": segment["sing_end"],
-        "lyrics": segment["lyrics"],
-        "lyrics_timed": segment["lyrics_timed"],
-        "prev_lyrics": prev_lyrics,
-        "next_lyrics": next_lyrics,
-        "song_title": song_title
-    })
 
 @app.post("/api/upload-song")
 async def upload_song(
