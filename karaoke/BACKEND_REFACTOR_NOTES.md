@@ -1,8 +1,8 @@
 # Backend Refactor Notes — Handoff
 
 Documento de transferência para a próxima IA/dev. Resume **o que mudou no
-backend (`karaoke/server/`)** ao longo de 6 commits no branch `main`
-(HEAD: `a3dbb47`).
+backend (`karaoke/server/`)** ao longo de 8 commits no branch `main`
+(HEAD: `502eab9`).
 
 **Antes:** 1 `main.py` de 1056 linhas + `score_engine.py` + `stt_engine.py`
 + `song_manager.py`.
@@ -97,6 +97,10 @@ package próprio. Ver TODO.
   principal ~60 linhas com 3 branches explícitos
 - `state.py` também expõe `ffmpeg_bin_dir`
 - `main.py`: 553 → **52**
+
+### `bcb91cb` / `502eab9` — Documentação de handoff
+- Este arquivo: criado em `bcb91cb`, atualizado em `502eab9` com a
+  estrutura final pós-refactor estrutural.
 
 ---
 
