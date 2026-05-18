@@ -15,6 +15,8 @@ oauth.json
 token.json
 credentials.json
 client_secrets.json
+client_secret_*.json
+client-tv.json
 
 # IDE / Editor
 .vscode/
@@ -31,5 +33,3 @@ build/
 dist/
 *.egg-info/
 
-# AI Rules
-.ai_instructions.md
