@@ -85,44 +85,39 @@ def align_plain_lyrics(
 
     if not whisper_lines:
         # Sem nada do Whisper — distribui linearmente a cada N segundos.
-        last_t = lyrics_start_val
+        last_t = 0.0
         for i, ref in enumerate(ref_lines):
             t = last_t + i * NO_LRC_LINE_INTERVAL_SEC
             lrc_lines.append(f"{_format_timestamp(t)}{ref}")
+            lrc_lines.append(f"{_format_timestamp(t + NO_LRC_LINE_INTERVAL_SEC - 0.5)} ")
         return "\n".join(lrc_lines), False
 
     n = len(ref_lines)
     m = len(whisper_lines)
     logger.info(f"🔎 [LRC ALIGN] Iniciando alinhamento para '{title}'. Letras do usuário: {n} linhas. Whisper transcreveu {m} segmentos.")
-    for idx, wl in enumerate(whisper_lines):
-        logger.info(f"   [Whisper Seg {idx}] ({wl['start']:.2f}s - {wl['end']:.2f}s): \"{wl['text']}\"")
+    
     aligned: list[float | None] = [None] * n
-    aligned[0] = lyrics_start_val
+    aligned_ends: list[float | None] = [None] * n  # NOVO: Rastreador de fim de frase
     segment_to_ref_lines: dict[int, list[int]] = {}
 
     # 1. Para cada linha de referência, procura o melhor segmento do Whisper
-    #    numa janela deslizante (forward-only) para preservar ordem.
     last_j = 0
     matched_count = 0
     for i in range(n):
         best_j = -1
         best_ratio = 0.0
-        logger.info(f" 👉 Alinhando linha {i}: \"{ref_lines[i]}\"")
         for j in range(last_j, min(m, last_j + WHISPER_SEARCH_WINDOW)):
             ratio = _substring_match_ratio(ref_lines[i], whisper_lines[j]["text"])
-            logger.info(f"    - Testando contra Whisper Seg {j} (\"{whisper_lines[j]['text']}\"): similaridade = {ratio:.2f}")
             if ratio > best_ratio:
                 best_ratio = ratio
                 best_j = j
 
         if best_j != -1 and best_ratio >= MIN_MATCH_RATIO:
             aligned[i] = whisper_lines[best_j]["start"]
-            logger.info(f"    ✅ MATCH ENCONTRADO! Linha {i} casou com Whisper Seg {best_j} em {aligned[i]:.2f}s (Ratio: {best_ratio:.2f})")
+            aligned_ends[i] = whisper_lines[best_j]["end"] # NOVO: Guarda o fim exato relatado pelo Whisper
             last_j = best_j
             matched_count += 1
             segment_to_ref_lines.setdefault(best_j, []).append(i)
-        else:
-            logger.info(f"    ❌ Sem match suficiente para linha {i}. Melhor ratio = {best_ratio:.2f} (Necessário >= {MIN_MATCH_RATIO})")
 
     # 2. Se múltiplas refs mapearam pro mesmo segmento, distribui dentro dele.
     for j, indices in segment_to_ref_lines.items():
@@ -130,29 +125,26 @@ def align_plain_lyrics(
             seg_start = whisper_lines[j]["start"]
             seg_end = whisper_lines[j]["end"]
             duration = seg_end - seg_start
-            logger.info(f" 🔀 Distribuindo {len(indices)} linhas mapeadas no mesmo segmento Whisper {j} ({seg_start:.2f}s a {seg_end:.2f}s)")
             for idx, ref_idx in enumerate(indices):
                 aligned[ref_idx] = seg_start + idx * (duration / len(indices))
+                aligned_ends[ref_idx] = seg_start + (idx + 1) * (duration / len(indices))
 
     # 3. Se quase nada bateu, abandona alinhamento e distribui linearmente.
     min_matches_needed = max(MIN_FALLBACK_MATCHES, int(n * MIN_FALLBACK_MATCH_PCT))
-    logger.info(f"📊 [LRC ALIGN STATUS] Matches totais obtidos: {matched_count}/{n}. Mínimo necessário para evitar fallback: {min_matches_needed}")
     if matched_count < min_matches_needed:
-        logger.info(f"⚠️ Poucos matches com o Whisper ({matched_count}/{n}). Usando distribuição linear robusta!")
         fallback_used = True
-        start_t = lyrics_start_val
+        start_t = 0.0
         end_t = max(start_t + LINEAR_FALLBACK_MIN_SPAN, total_vocal_duration_sec - LINEAR_FALLBACK_END_OFFSET)
         step = (end_t - start_t) / max(1, n - 1)
         for i in range(n):
             aligned[i] = start_t + i * step
-            logger.info(f"   [Fallback Linha {i}] tempo = {aligned[i]:.2f}s")
+            aligned_ends[i] = aligned[i] + (step * 0.8) # Estima pausa linearmente
     else:
-        # 4. Interpolação para preencher gaps; força monotonicidade.
-        last_t = lyrics_start_val
+        # 4. Interpolação para preencher gaps
+        last_t = 0.0
         for i in range(n):
             if aligned[i] is None:
                 next_t = None
-                k = i + 1
                 for k in range(i + 1, n):
                     if aligned[k] is not None:
                         next_t = aligned[k]
@@ -165,13 +157,32 @@ def align_plain_lyrics(
             if aligned[i] < last_t:
                 aligned[i] = last_t + 0.1
             last_t = aligned[i]
+            
+        # NOVO: Interpolação dos tempos de fim (quando não detectados pelo Whisper)
+        for i in range(n):
+            if aligned_ends[i] is None:
+                next_start = aligned[i+1] if i + 1 < n else (aligned[i] + 3.0)
+                # O fim será de no máximo 80% do espaço até a próxima linha
+                duration = min(4.0, (next_start - aligned[i]) * 0.8)
+                aligned_ends[i] = aligned[i] + duration
 
-    # 5. Renderiza, forçando o timestamp inicial a `lyrics_start_val` se positivo.
+    # 5. Renderiza e injeta pausas (blocos vazios)
     for i, ref in enumerate(ref_lines):
         t = aligned[i]
-        if i == 0 and lyrics_start_val > 0:
-            t = lyrics_start_val
         lrc_lines.append(f"{_format_timestamp(t)}{ref}")
+        
+        # NOVO: Lógica de Injeção Inteligente de Pausa
+        end_t = aligned_ends[i]
+        if end_t is not None:
+            next_start = aligned[i+1] if i + 1 < n else (end_t + 2.0)
+            
+            # Recua ligeiramente para não encavalar no timestamp seguinte
+            if end_t >= next_start:
+                end_t = next_start - 0.05
+                
+            # Injeta marcador LRC vazio [mm:ss.xx] apenas se houver um silêncio real (maior que 0.6s)
+            if (next_start - end_t) > 0.6:
+                lrc_lines.append(f"{_format_timestamp(end_t)} ")
 
     clean_lines = [line.strip() for line in lrc_lines if line.strip()]
     return "\n".join(clean_lines), fallback_used
@@ -181,12 +192,10 @@ def draft_lrc_from_whisper(
     whisper_segments: list,
     title: str,
     artist: str,
-    lyrics_start_val: float,
+    lyrics_start_val: float = 0.0,
 ) -> str:
     """Gera rascunho LRC direto da saída do Whisper (sem letra de referência)."""
     lrc_lines = [f"[ti:{title}]", f"[ar:{artist}]", ""]
     for i, seg in enumerate(whisper_segments):
-        # Whisper às vezes zera o tempo do primeiro vocal — usa o lyrics_start_val.
-        shifted_start = lyrics_start_val if (i == 0 and lyrics_start_val > 0) else seg.start
-        lrc_lines.append(f"{_format_timestamp(shifted_start)}{seg.text.strip()}")
+        lrc_lines.append(f"{_format_timestamp(seg.start)}{seg.text.strip()}")
     return "\n".join(lrc_lines)

@@ -210,13 +210,12 @@ async def reinstall_song(song_dir_path: str, language: str = None) -> bool:
             
         # 5. Processar, cortar e salvar os canais de áudio definitivos
         logger.info("Cortando e processando os arquivos de áudio...")
-        force_vs = _get_field("audio", "force_vocal_start", False)
-        v_start_sec = parse_time_to_seconds(vocal_start) if force_vs else 0.0
+        v_start_sec = 0.0
         v_end_sec = parse_time_to_seconds(vocal_end)
-        b_start_sec = parse_time_to_seconds(backing_start) if force_vs else 0.0
+        b_start_sec = 0.0
         b_end_sec = parse_time_to_seconds(backing_end)
         padding_sec = max(0.0, parse_time_to_seconds(silence_padding))
-        lyrics_start_val = parse_time_to_seconds(lyrics_start) if force_vs else 0.0
+        lyrics_start_val = 0.0
         
         # Processa Vocal
         processed_vocal = _slice_with_padding(vocal_audio, v_start_sec, v_end_sec, padding_sec)
@@ -260,9 +259,9 @@ async def reinstall_song(song_dir_path: str, language: str = None) -> bool:
                 raw_data,
                 language=song_lang,
                 beam_size=5,
-                vad_filter=True,  # detecta onde a voz realmente começa
-                vad_parameters={"min_silence_duration_ms": 500},
-                condition_on_previous_text=False,
+                vad_filter=True, # LIGADO novamente para pular o instrumental do início
+                vad_parameters=dict(threshold=0.3, min_silence_duration_ms=2000, speech_pad_ms=600), # Parâmetros soltos para não cortar os gritos do punk rock
+                condition_on_previous_text=False, # DESLIGADO para ele não se perder após longas pausas
                 word_timestamps=True,
             )
             segments_list = list(segments)

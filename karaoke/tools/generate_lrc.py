@@ -54,13 +54,14 @@ def generate_lrc(song_dir, language="en"):
     print("Transcrevendo áudio em segmentos e gerando timestamps...")
     # Transcreve usando o Whisper nativo da engine no nível de segmento
     segments, info = engine.model.transcribe(
-    audio,
-    language=language,
-    beam_size=10,
-    word_timestamps=False,
-    vad_filter=True,
-    vad_parameters={"min_silence_duration_ms": 500}
-)
+        audio,
+        language=language,
+        beam_size=10,
+        word_timestamps=True,
+        vad_filter=True,
+        vad_parameters=dict(threshold=0.3, min_silence_duration_ms=2000, speech_pad_ms=600),
+        condition_on_previous_text=False
+    )
     
     lrc_lines = []
     # Metadados iniciais padrões do arquivo LRC
@@ -75,6 +76,7 @@ def generate_lrc(song_dir, language="en"):
         text = segment.text.strip()
         if not text:
             continue
+        first_start = segment.words[0].start if segment.words else segment.start
         raw_segments.append({
             "start": segment.start,
             "end": segment.end,
@@ -84,10 +86,10 @@ def generate_lrc(song_dir, language="en"):
     for seg in raw_segments:
         print(f"  RAW start={seg['start']:.2f} end={seg['end']:.2f} text={seg['text'][:40]}")
 
-    # Mescla segmentos muito próximos (menos de 2s de diferença)
+    # Mescla segmentos se o gap de silêncio entre eles for menor que 0.8 segundos
     merged = []
     for seg in raw_segments:
-        if merged and (seg["start"] - merged[-1]["start"]) < 1.5:
+        if merged and (seg["start"] - merged[-1]["end"]) < 0.8:
             merged[-1]["text"] += " " + seg["text"]
             merged[-1]["end"] = seg["end"]
         else:
@@ -99,10 +101,11 @@ def generate_lrc(song_dir, language="en"):
         print(f"  {lrc_line}")
         lrc_lines.append(lrc_line)
         
-        # Adiciona marcador de fim de verso
+        # Adiciona marcador de fim de verso (uma linha só com timestamp cria o vazio no LRC)
         if seg.get("end") is not None:
             end_timestamp = format_lrc_timestamp(seg["end"])
-            lrc_lines.append(end_timestamp)
+            # Adiciona um espaço após o timestamp para garantir que nenhum player/script ignore a linha
+            lrc_lines.append(f"{end_timestamp} ")
         
     # Grava o lyrics.lrc sem linhas em branco e com quebras de linha limpas
     clean_lines = [line.strip() for line in lrc_lines if line.strip()]

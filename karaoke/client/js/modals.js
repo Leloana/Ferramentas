@@ -230,10 +230,6 @@ function initAddSongModal() {
         const formData = new FormData(addSongForm);
         formData.set('title', songTitle);
         formData.set('artist', songArtist);
-        
-        const forceVocalStart = document.getElementById('force-vocal-start');
-        formData.set('force_vocal_start', (forceVocalStart && forceVocalStart.checked) ? 'true' : 'false');
-
         addSongModal.style.display = 'none';
         if (state.activeUploadTab === 'youtube') {
             startLoadingOverlay("Preparando Música...", "Iniciando download do vocal do YouTube... 🎧", true);

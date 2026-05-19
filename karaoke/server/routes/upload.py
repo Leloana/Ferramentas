@@ -234,14 +234,14 @@ async def upload_song(
         with open(song_dir / "meta.json", "w", encoding="utf-8") as f:
             json.dump(meta, f, indent=4, ensure_ascii=False)
 
-        force_vocal_start_bool = (force_vocal_start.lower() == "true")
+        force_vocal_start_bool = False
 
-        v_start = parse_time_to_seconds(vocal_start) if force_vocal_start_bool else 0.0
+        v_start = 0.0
         v_end = parse_time_to_seconds(vocal_end)
-        b_start = parse_time_to_seconds(backing_start) if force_vocal_start_bool else 0.0
+        b_start = 0.0
         b_end = parse_time_to_seconds(backing_end)
         padding = max(0.0, parse_time_to_seconds(silence_padding))
-        lyrics_start_val = parse_time_to_seconds(lyrics_start) if force_vocal_start_bool else 0.0
+        lyrics_start_val = 0.0
 
         temp_vocal = song_dir / "temp_vocal.mp3"
 
@@ -294,7 +294,6 @@ async def upload_song(
             language=language,
             beam_size=5,
             vad_filter=True,
-            vad_parameters={"min_silence_duration_ms": 500},
             condition_on_previous_text=False,
             word_timestamps=True,
         )
