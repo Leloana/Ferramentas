@@ -112,6 +112,21 @@ async def reinstall_song(song_dir_path: str, language: str = None) -> bool:
         logger.info("Fazendo backup temporário das letras planas (lyrics.txt)...")
         txt_backup = txt_file.read_text(encoding="utf-8")
 
+    # Se plain_lyrics não estiver no meta.json, mas tivermos um backup de lyrics.txt, usamos o backup!
+    if (not plain_lyrics or not plain_lyrics.strip()) and txt_backup and txt_backup.strip():
+        logger.info("plain_lyrics não encontrado no meta.json, mas backup de lyrics.txt está disponível. Utilizando para alinhamento!")
+        plain_lyrics = txt_backup
+        # Sincroniza de volta no meta.json para persistir
+        if "lyrics" not in meta or not isinstance(meta["lyrics"], dict):
+            meta["lyrics"] = {}
+        meta["lyrics"]["plain_lyrics"] = plain_lyrics
+        try:
+            with open(meta_path, "w", encoding="utf-8", newline="\n") as f:
+                json.dump(meta, f, indent=4, ensure_ascii=False)
+            logger.info("meta.json atualizado com plain_lyrics obtido do backup de lyrics.txt.")
+        except Exception as e:
+            logger.warning(f"Não foi possível salvar a atualização no meta.json: {e}")
+
     # 3. Limpeza total da pasta da música (exceto meta.json)
     logger.info("Limpando arquivos antigos da pasta...")
     for item in song_dir.iterdir():
