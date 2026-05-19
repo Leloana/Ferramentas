@@ -1,8 +1,8 @@
 import { state } from './state.js';
-import { dom } from './dom.js';
+import { dom, startLoadingOverlay, stopLoadingOverlay } from './dom.js';
 import { activeRoomId } from './config.js';
 import { showToast } from './toast.js';
-import { fetchSongs } from './selection-view.js';
+import { fetchSongs, loadAndOpenLrcEditor, triggerReinstall } from './selection-view.js';
 
 export function initModals() {
     initPairingModal();
@@ -90,6 +90,35 @@ function initAddSongModal() {
     tabBtnLocal.onclick = () => setTab('local');
     tabBtnYoutube.onclick = () => setTab('youtube');
 
+    let currentStep = 1;
+
+    const setStep = (step) => {
+        currentStep = step;
+        const step1 = document.getElementById('upload-step-1');
+        const step2 = document.getElementById('upload-step-2');
+        const btnBack = document.getElementById('btn-back-step-1');
+        const btnSubmit = document.getElementById('btn-submit-song');
+
+        if (step === 1) {
+            step1.style.display = 'block';
+            step2.style.display = 'none';
+            btnBack.style.display = 'none';
+            btnSubmit.innerText = 'Avançar ➡️';
+        } else {
+            step1.style.display = 'none';
+            step2.style.display = 'block';
+            btnBack.style.display = 'inline-block';
+            btnSubmit.innerText = 'Confirmar e Criar 🎵';
+        }
+    };
+
+    const btnBackStep1 = document.getElementById('btn-back-step-1');
+    if (btnBackStep1) {
+        btnBackStep1.onclick = () => {
+            setStep(1);
+        };
+    }
+
     btnOpenAddSong.onclick = () => {
         addSongForm.reset();
 
@@ -101,6 +130,7 @@ function initAddSongModal() {
         if (btnToggleAdvanced) btnToggleAdvanced.classList.remove('advanced-toggle--open');
 
         setTab('youtube');
+        setStep(1);
         addSongModal.style.display = 'flex';
     };
 
@@ -133,51 +163,85 @@ function initAddSongModal() {
     addSongForm.onsubmit = async (e) => {
         e.preventDefault();
 
-        if (state.activeUploadTab === 'local') {
-            const vocalFile = document.getElementById('vocal-file').files[0];
-            const backingFile = document.getElementById('backing-file').files[0];
-            if (!vocalFile || !backingFile) {
-                showToast("Por favor, selecione os arquivos Vocal e Instrumental locais.", "error");
-                return;
+        if (currentStep === 1) {
+            if (state.activeUploadTab === 'local') {
+                const vocalFile = document.getElementById('vocal-file').files[0];
+                if (!vocalFile) {
+                    showToast("Por favor, selecione o arquivo de áudio Vocal / Original local.", "error");
+                    return;
+                }
+                document.getElementById('song-title').value = '';
+                document.getElementById('song-artist').value = '';
+                setStep(2);
+            } else if (state.activeUploadTab === 'youtube') {
+                const vocalUrl = document.getElementById('youtube-vocal-url').value.trim();
+                if (!vocalUrl) {
+                    showToast("Por favor, insira o link do YouTube da música original.", "error");
+                    return;
+                }
+                if (!vocalUrl.includes("youtube.com") && !vocalUrl.includes("youtu.be")) {
+                    showToast("Por favor, insira uma URL do YouTube válida para a música original.", "error");
+                    return;
+                }
+
+                const backingUrl = document.getElementById('youtube-backing-url').value.trim();
+                if (backingUrl && !backingUrl.includes("youtube.com") && !backingUrl.includes("youtu.be")) {
+                    showToast("Por favor, insira uma URL do YouTube válida para o canal instrumental ou deixe em branco para gerar automaticamente com IA.", "error");
+                    return;
+                }
+
+                const btnSubmit = document.getElementById('btn-submit-song');
+                const origText = btnSubmit.innerText;
+                btnSubmit.innerText = "Buscando dados... ⏳";
+                btnSubmit.disabled = true;
+
+                try {
+                    const res = await fetch(`/api/youtube-metadata?url=${encodeURIComponent(vocalUrl)}`);
+                    if (res.ok) {
+                        const metadata = await res.json();
+                        document.getElementById('song-title').value = metadata.title || '';
+                        document.getElementById('song-artist').value = metadata.artist || '';
+                    } else {
+                        console.warn("Falha ao extrair metadados automaticamente do YouTube");
+                        document.getElementById('song-title').value = '';
+                        document.getElementById('song-artist').value = '';
+                    }
+                } catch (err) {
+                    console.error("Erro ao buscar metadados do YouTube:", err);
+                    document.getElementById('song-title').value = '';
+                    document.getElementById('song-artist').value = '';
+                } finally {
+                    btnSubmit.innerText = origText;
+                    btnSubmit.disabled = false;
+                }
+
+                setStep(2);
             }
-        } else if (state.activeUploadTab === 'youtube') {
-            const vocalUrl = document.getElementById('youtube-vocal-url').value.trim();
-            const backingUrl = document.getElementById('youtube-backing-url').value.trim();
-            if (!vocalUrl || !backingUrl) {
-                showToast("Por favor, insira ambos os links do YouTube (Vocal e Instrumental).", "error");
-                return;
-            }
-            if ((!vocalUrl.includes("youtube.com") && !vocalUrl.includes("youtu.be")) ||
-                (!backingUrl.includes("youtube.com") && !backingUrl.includes("youtu.be"))) {
-                showToast("Por favor, insira URLs do YouTube válidas para ambos os campos.", "error");
-                return;
-            }
+            return;
+        }
+
+        const songTitle = document.getElementById('song-title').value.trim();
+        const songArtist = document.getElementById('song-artist').value.trim();
+        if (!songTitle || !songArtist) {
+            showToast("Por favor, preencha o Título da Música e o Artista / Banda.", "error");
+            return;
         }
 
         const formData = new FormData(addSongForm);
+        formData.set('title', songTitle);
+        formData.set('artist', songArtist);
+        
+        const forceVocalStart = document.getElementById('force-vocal-start');
+        formData.set('force_vocal_start', (forceVocalStart && forceVocalStart.checked) ? 'true' : 'false');
+
         addSongModal.style.display = 'none';
         if (state.activeUploadTab === 'youtube') {
-            dom.loadingStatusTitle.innerText = "Baixando do YouTube...";
-            dom.loadingStatusDesc.innerText = "Baixando as pistas Vocal e Instrumental em paralelo...";
+            startLoadingOverlay("Preparando Música...", "Iniciando download do vocal do YouTube... 🎧", true);
         } else {
-            dom.loadingStatusTitle.innerText = "Cortando Áudios...";
-            dom.loadingStatusDesc.innerText = "Fatiando os vocais e instrumental com pydub...";
+            startLoadingOverlay("Processando Áudio...", "Lendo e fatiando faixa vocal local... 🎧", true);
         }
-        dom.loadingOverlay.style.display = 'flex';
 
         try {
-            const lrcFile = document.getElementById('lrc-file').files[0];
-            if (!lrcFile) {
-                setTimeout(() => {
-                    dom.loadingStatusTitle.innerText = "IA Transcrevendo Letra...";
-                    if (state.activeUploadTab === 'youtube') {
-                        dom.loadingStatusDesc.innerText = "Aguardando o Whisper extrair a letra do áudio baixado...";
-                    } else {
-                        dom.loadingStatusDesc.innerText = "Isso pode levar alguns segundos na GPU RTX 4070...";
-                    }
-                }, 4000);
-            }
-
             const response = await fetch('/api/upload-song', {
                 method: 'POST',
                 body: formData
@@ -189,13 +253,10 @@ function initAddSongModal() {
             }
 
             const data = await response.json();
-            dom.loadingOverlay.style.display = 'none';
+            stopLoadingOverlay();
 
             if (data.lyrics_status === 'draft') {
-                document.getElementById('editor-slug').value = data.slug;
-                document.getElementById('editor-language').value = formData.get('language');
-                document.getElementById('editor-textarea').value = data.draft_lrc;
-                dom.lrcEditorModal.style.display = 'flex';
+                loadAndOpenLrcEditor(data.slug);
             } else {
                 if (data.fallback_used) {
                     showToast("Música adicionada! Nota: A IA teve baixa correspondência e ativou a distribuição uniforme. Recomendamos ajustar manualmente os tempos no Sincronizador para um resultado perfeito!", "warning");
@@ -205,9 +266,10 @@ function initAddSongModal() {
                 fetchSongs();
             }
         } catch (error) {
-            dom.loadingOverlay.style.display = 'none';
+            stopLoadingOverlay();
             showToast("Erro ao adicionar música: " + error.message, "error");
             addSongModal.style.display = 'flex';
+            setStep(2);
         }
     };
 }
@@ -217,18 +279,64 @@ function initLrcEditorModal() {
     const lrcEditorForm = dom.lrcEditorForm;
     if (!btnCloseEditor) return;
 
+    // Inicializa a navegação por abas do editor
+    const btnTabMeta = document.getElementById('btn-tab-meta');
+    const btnTabLrc = document.getElementById('btn-tab-lrc');
+    const sectionMeta = document.getElementById('editor-section-meta');
+    const sectionLrc = document.getElementById('editor-section-lrc');
+
+    if (btnTabMeta && btnTabLrc && sectionMeta && sectionLrc) {
+        btnTabMeta.onclick = () => {
+            sectionMeta.style.display = 'block';
+            sectionLrc.style.display = 'none';
+            btnTabMeta.style.background = 'var(--accent)';
+            btnTabMeta.style.color = '#000';
+            btnTabLrc.style.background = 'transparent';
+            btnTabLrc.style.color = 'var(--dim)';
+        };
+
+        btnTabLrc.onclick = () => {
+            sectionMeta.style.display = 'none';
+            sectionLrc.style.display = 'block';
+            btnTabMeta.style.background = 'transparent';
+            btnTabMeta.style.color = 'var(--dim)';
+            btnTabLrc.style.background = 'var(--accent)';
+            btnTabLrc.style.color = '#000';
+        };
+    }
+
     btnCloseEditor.onclick = () => {
         dom.lrcEditorModal.style.display = 'none';
     };
 
+    const btnReinstallSong = document.getElementById('btn-reinstall-song');
+    if (btnReinstallSong) {
+        btnReinstallSong.onclick = async () => {
+            const songId = document.getElementById('editor-slug')?.value;
+            const songTitle = document.getElementById('editor-meta-textarea') ? 
+                (() => {
+                    try {
+                        const meta = JSON.parse(document.getElementById('editor-meta-textarea').value);
+                        return meta.title;
+                    } catch(e) { return null; }
+                })() : null;
+            if (!songId) return;
+            await triggerReinstall(songId, songTitle || songId);
+        };
+    }
+
     lrcEditorForm.onsubmit = async (e) => {
         e.preventDefault();
+        
+        // Garante que o meta.json e o lyrics_lrc sejam enviados no FormData
         const formData = new FormData(lrcEditorForm);
+        const metaArea = document.getElementById('editor-meta-textarea');
+        if (metaArea) {
+            formData.set('meta_json', metaArea.value);
+        }
 
         dom.lrcEditorModal.style.display = 'none';
-        dom.loadingStatusTitle.innerText = "Alinhando Letras...";
-        dom.loadingStatusDesc.innerText = "Mapeando sílabas das palavras e calculando fonemas...";
-        dom.loadingOverlay.style.display = 'flex';
+        startLoadingOverlay("Alinhando Letras...", "Mapeando sílabas das palavras e calculando fonemas... 📝⚡");
 
         try {
             const response = await fetch('/api/save-lyrics', {
@@ -241,12 +349,12 @@ function initLrcEditorModal() {
                 throw new Error(err.detail || "Erro ao salvar");
             }
 
-            dom.loadingOverlay.style.display = 'none';
+            stopLoadingOverlay();
             showToast("Sincronização concluída com sucesso! Divirta-se! 🎉", "success");
             fetchSongs();
         } catch (error) {
-            dom.loadingOverlay.style.display = 'none';
-            showToast("Erro ao salvar letras: " + error.message, "error");
+            stopLoadingOverlay();
+            showToast("Erro ao salvar dados da música: " + error.message, "error");
             dom.lrcEditorModal.style.display = 'flex';
         }
     };

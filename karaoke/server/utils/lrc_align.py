@@ -93,6 +93,9 @@ def align_plain_lyrics(
 
     n = len(ref_lines)
     m = len(whisper_lines)
+    logger.info(f"🔎 [LRC ALIGN] Iniciando alinhamento para '{title}'. Letras do usuário: {n} linhas. Whisper transcreveu {m} segmentos.")
+    for idx, wl in enumerate(whisper_lines):
+        logger.info(f"   [Whisper Seg {idx}] ({wl['start']:.2f}s - {wl['end']:.2f}s): \"{wl['text']}\"")
     aligned: list[float | None] = [None] * n
     aligned[0] = lyrics_start_val
     segment_to_ref_lines: dict[int, list[int]] = {}
@@ -104,17 +107,22 @@ def align_plain_lyrics(
     for i in range(n):
         best_j = -1
         best_ratio = 0.0
+        logger.info(f" 👉 Alinhando linha {i}: \"{ref_lines[i]}\"")
         for j in range(last_j, min(m, last_j + WHISPER_SEARCH_WINDOW)):
             ratio = _substring_match_ratio(ref_lines[i], whisper_lines[j]["text"])
+            logger.info(f"    - Testando contra Whisper Seg {j} (\"{whisper_lines[j]['text']}\"): similaridade = {ratio:.2f}")
             if ratio > best_ratio:
                 best_ratio = ratio
                 best_j = j
 
         if best_j != -1 and best_ratio >= MIN_MATCH_RATIO:
             aligned[i] = whisper_lines[best_j]["start"]
+            logger.info(f"    ✅ MATCH ENCONTRADO! Linha {i} casou com Whisper Seg {best_j} em {aligned[i]:.2f}s (Ratio: {best_ratio:.2f})")
             last_j = best_j
             matched_count += 1
             segment_to_ref_lines.setdefault(best_j, []).append(i)
+        else:
+            logger.info(f"    ❌ Sem match suficiente para linha {i}. Melhor ratio = {best_ratio:.2f} (Necessário >= {MIN_MATCH_RATIO})")
 
     # 2. Se múltiplas refs mapearam pro mesmo segmento, distribui dentro dele.
     for j, indices in segment_to_ref_lines.items():
@@ -122,19 +130,22 @@ def align_plain_lyrics(
             seg_start = whisper_lines[j]["start"]
             seg_end = whisper_lines[j]["end"]
             duration = seg_end - seg_start
+            logger.info(f" 🔀 Distribuindo {len(indices)} linhas mapeadas no mesmo segmento Whisper {j} ({seg_start:.2f}s a {seg_end:.2f}s)")
             for idx, ref_idx in enumerate(indices):
                 aligned[ref_idx] = seg_start + idx * (duration / len(indices))
 
     # 3. Se quase nada bateu, abandona alinhamento e distribui linearmente.
     min_matches_needed = max(MIN_FALLBACK_MATCHES, int(n * MIN_FALLBACK_MATCH_PCT))
+    logger.info(f"📊 [LRC ALIGN STATUS] Matches totais obtidos: {matched_count}/{n}. Mínimo necessário para evitar fallback: {min_matches_needed}")
     if matched_count < min_matches_needed:
-        logger.info(f"Poucos matches com o Whisper ({matched_count}/{n}). Usando distribuição linear robusta.")
+        logger.info(f"⚠️ Poucos matches com o Whisper ({matched_count}/{n}). Usando distribuição linear robusta!")
         fallback_used = True
         start_t = lyrics_start_val
         end_t = max(start_t + LINEAR_FALLBACK_MIN_SPAN, total_vocal_duration_sec - LINEAR_FALLBACK_END_OFFSET)
         step = (end_t - start_t) / max(1, n - 1)
         for i in range(n):
             aligned[i] = start_t + i * step
+            logger.info(f"   [Fallback Linha {i}] tempo = {aligned[i]:.2f}s")
     else:
         # 4. Interpolação para preencher gaps; força monotonicidade.
         last_t = lyrics_start_val

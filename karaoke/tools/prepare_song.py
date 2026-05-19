@@ -12,36 +12,35 @@ sys.path.append(str(Path(__file__).parent.parent / "server"))
 from stt_engine import STTEngine, get_stt_engine
 
 def parse_lrc(lrc_path):
-    """Parseia arquivo LRC simples [mm:ss.xx] Letra e extrai tags de metadados como offset."""
     lines = []
-    offset = 0.0  # em segundos
+    offset = 0.0
     with open(lrc_path, "r", encoding="utf-8") as f:
         for line in f:
             if not line.strip() or not line.startswith("["):
                 continue
             try:
-                # Verifica se é uma tag de metadados (como offset)
                 if ":" in line and not line.startswith("[0") and not line.startswith("[1") and not line.startswith("[2"):
                     if "offset" in line.lower():
                         match = re.search(r'\[offset:\s*([\d\+\-]+)\]', line, re.IGNORECASE)
                         if match:
-                            offset = float(match.group(1)) / 1000.0  # Converte ms para segundos
+                            offset = float(match.group(1)) / 1000.0
                     continue
                     
                 time_part, text = line.split("]", 1)
-                time_str = time_part[1:] # remove [
+                time_str = time_part[1:]
                 m, s = time_str.split(":")
                 timestamp = int(m) * 60 + float(s)
-                
-                # Ignora marcações de tempo vazias (como limpezas de tela do LRC tradicional)
-                # que causariam segmentos fantasmas de curtíssima duração
                 cleaned_text = text.strip()
+                
                 if not cleaned_text:
+                    if lines:
+                        lines[-1]["end"] = timestamp
                     continue
                     
-                lines.append({"start": timestamp, "text": cleaned_text})
+                lines.append({"start": timestamp, "text": cleaned_text, "end": None})
             except:
                 continue
+                
     return sorted(lines, key=lambda x: x["start"]), offset
 
 def load_audio_full(path):
@@ -124,14 +123,10 @@ def prepare_song(song_dir, language="en"):
             continue
 
         # Extrair trecho do numpy array
-        # Para o último segmento, limita a captação a no máximo 15 segundos para evitar que o Whisper 
-        # tente transcrever o silêncio instrumental final da música (o que causa alucinações e timing distorcido).
-        is_last = (i == len(lrc_lines) - 1)
-        if is_last:
-            max_segment_samples = int(15 * sample_rate)
-            segment_audio = full_audio[start_sample : min(end_sample, start_sample + max_segment_samples)]
-        else:
-            segment_audio = full_audio[start_sample:end_sample]
+        # Limitamos a captação a no máximo 18 segundos para evitar que o Whisper tente transcrever silêncios
+        # longos, solos instrumentais ou pontes (o que causa alucinações de repetição, travamentos ou lentidão).
+        max_segment_samples = int(18 * sample_rate)
+        segment_audio = full_audio[start_sample : min(end_sample, start_sample + max_segment_samples)]
         
         # 3. Transcrever segmento (passando a letra esperada como initial_prompt para guiar a IA)
         _, words = engine.transcribe(segment_audio, language=language, initial_prompt=line["text"])
@@ -208,9 +203,10 @@ def prepare_song(song_dir, language="en"):
         max_end = end_sample / sample_rate
         if words:
             actual_sing_end = line["start"] + words[-1]["end"]
-            # Encerra o segmento com margem final (post-roll) de 400ms extras para o usuário esticar a última nota
-            sing_end = min(actual_sing_end + 0.4, total_duration)
-            # Aciona a troca de interface quase imediatamente (100ms depois)
+            if line.get("end") is not None:
+                sing_end = min(actual_sing_end + 0.4, line["end"])
+            else:
+                sing_end = min(actual_sing_end + 0.4, total_duration)
             pause_end = min(sing_end + 0.1, total_duration)
         else:
             sing_end = min(max_end, total_duration)

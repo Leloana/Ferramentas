@@ -76,13 +76,9 @@ class STTEngine:
             logger.error(f"Erro fatal ao carregar Whisper: {e}")
             raise e
 
-    def transcribe(self, audio_data: np.ndarray, language: str, initial_prompt: str = None) -> tuple[str, list[dict]]:
-        """
-        Transcreve áudio (numpy float32 16kHz mono).
-        """
-        # A. Filtro de Energia (RMS) extremamente conservador para evitar falsos negativos em microfones de baixo ganho
+    def transcribe(self, audio_data, language, initial_prompt=None, rms_threshold=0.00005):
         rms = np.sqrt(np.mean(audio_data ** 2)) if len(audio_data) > 0 else 0
-        if rms < 0.0002:
+        if rms < rms_threshold:
             logger.info(f"Trecho silencioso detectado (RMS: {rms:.5f}). Ignorando Whisper para prevenir alucinações.")
             return "", []
 

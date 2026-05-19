@@ -58,16 +58,36 @@ _ACOUSTIC_EN = {
 
 _ACOUSTIC_PT = {
     "mas": "mais",
-    "e": "eh", "é": "eh",
-    "a": "ah", "há": "ah",
-    "pra": "para",
-    "te": "ti",
-    "o": "oh",
+    "é": "eh",      # só com acento
+    "há": "ah",     # só com acento
 }
 
 # Mapa default conservador (usado quando idioma não é informado) — só os
 # casos EN/PT que não conflitam entre si.
 ACOUSTIC_NORMALIZATION = {**_ACOUSTIC_EN}
+
+VOCAL_FRAGMENTS = {"ah", "oh", "eh", "hm", "mm", "uh", "aah", "ohh", "hmm"}
+
+def filter_vocal_fragments(transcribed_words):
+    filtered = []
+    for i, w in enumerate(transcribed_words):
+        word = w["word"].lower().strip()
+        if word in VOCAL_FRAGMENTS and i > 0:
+            # Ignora fragmento vocal que provavelmente é extensão da palavra anterior
+            continue
+        filtered.append(w)
+    return filtered
+
+def merge_vocal_fragments(transcribed_words):
+    merged = []
+    for w in transcribed_words:
+        word = w["word"].lower().strip()
+        is_fragment = word in VOCAL_FRAGMENTS or (len(word) <= 2 and re.match(r'^[aeiouáéíóúãõ]+$', word))
+        if merged and is_fragment:
+            merged[-1] = {**merged[-1], "end": w.get("end", merged[-1].get("end"))}
+        else:
+            merged.append(w)
+    return merged
 
 def _normalization_map(language: str | None) -> dict:
     if language and language.lower().startswith("pt"):
@@ -75,19 +95,21 @@ def _normalization_map(language: str | None) -> dict:
     return _ACOUSTIC_EN
 
 
-def clean_text(text, language: str | None = None):
-    """Remove pontuação, converte para lowercase e normaliza homófonos e contrações."""
+def clean_text(text, language=None):
     if not text:
         return ""
-    t = re.sub(r'[^\w\s\']', '', text).lower().strip()
-    t_clean = re.sub(r'[^\w\s]', '', t)
-    return _normalization_map(language).get(t_clean, t_clean)
+    t = text.lower().strip()
+    t = t.replace("-", " ")  # hífen vira espaço antes de limpar
+    t = re.sub(r'[^\w\s]', '', t)
+    t = t.strip()
+    return _normalization_map(language).get(t, t)
 
 
 def calculate_score(expected_timed: list[dict], transcribed_words: list[dict], prev_expected_words: list[str] = None, language: str | None = None) -> dict:
     if not expected_timed:
         return {"score": 0, "details": "Nenhuma letra esperada."}
 
+    # A. Detecção e Remoção de Vazamento (Perdão Inteligente)
     # A. Detecção e Remoção de Vazamento (Perdão Inteligente)
     if prev_expected_words and transcribed_words:
         prev_clean = [clean_text(w, language) for w in prev_expected_words if w]
@@ -96,6 +118,7 @@ def calculate_score(expected_timed: list[dict], transcribed_words: list[dict], p
         max_overlap = min(len(prev_clean), len(trans_clean), MAX_LEAKAGE_LOOKBACK)
         overlap_found = 0
 
+        # Checagem 1: sufixo exato do verso anterior (comportamento original)
         for k in range(max_overlap, 0, -1):
             prev_suffix = prev_clean[-k:]
             trans_prefix = trans_clean[:k]
@@ -107,14 +130,35 @@ def calculate_score(expected_timed: list[dict], transcribed_words: list[dict], p
                 overlap_found = k
                 break
 
+        # Checagem 2: qualquer trecho do verso anterior no início da transcrição
+        if overlap_found == 0:
+            for start_idx in range(len(prev_clean) - 1):
+                for k in range(2, min(MAX_LEAKAGE_LOOKBACK, len(trans_clean) + 1)):
+                    prev_slice = prev_clean[start_idx:start_idx + k]
+                    trans_prefix = trans_clean[:k]
+                    if len(prev_slice) != k:
+                        break
+                    match_count = sum(
+                        1 for idx in range(k)
+                        if fuzz.token_sort_ratio(prev_slice[idx], trans_prefix[idx]) >= LEAKAGE_PER_WORD_MATCH
+                    )
+                    if match_count / k >= LEAKAGE_GROUP_MATCH:
+                        overlap_found = k
+                        break
+                if overlap_found > 0:
+                    break
+
         if overlap_found > 0:
             leaked = [w['word'] for w in transcribed_words[:overlap_found]]
             logger.info(f"🛡️ [Perdão de Vazamento] {overlap_found} palavras vazadas do verso anterior: {leaked}")
             transcribed_words = transcribed_words[overlap_found:]
 
+    # B. Merge de fragmentos vocálicos
+    transcribed_words = merge_vocal_fragments(transcribed_words)
+
+    # Tokenização e limpeza acústica normalizada
     expected_words = [clean_text(w["word"], language) for w in expected_timed]
     transcribed_clean = [{"word": clean_text(w["word"], language), "start": w["start"]} for w in transcribed_words]
-
     word_scores = []
     consumed_indices = set()
 

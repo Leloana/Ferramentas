@@ -33,3 +33,8 @@ build/
 dist/
 *.egg-info/
 
+# Karaoke Song Files (Ignore all generated audio/lyrics, keep only meta.json)
+karaoke/server/songs/**/*
+!karaoke/server/songs/**/meta.json
+!karaoke/server/songs/**/
+

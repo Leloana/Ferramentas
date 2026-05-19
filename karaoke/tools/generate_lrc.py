@@ -54,11 +54,13 @@ def generate_lrc(song_dir, language="en"):
     print("Transcrevendo áudio em segmentos e gerando timestamps...")
     # Transcreve usando o Whisper nativo da engine no nível de segmento
     segments, info = engine.model.transcribe(
-        audio,
-        language=language,
-        beam_size=5,
-        word_timestamps=False
-    )
+    audio,
+    language=language,
+    beam_size=10,
+    word_timestamps=False,
+    vad_filter=True,
+    vad_parameters={"min_silence_duration_ms": 500}
+)
     
     lrc_lines = []
     # Metadados iniciais padrões do arquivo LRC
@@ -66,16 +68,41 @@ def generate_lrc(song_dir, language="en"):
     lrc_lines.append(f"[ti: {song_path.name.replace('-', ' ').title()}]")
     lrc_lines.append("[length: --:--]")
     lrc_lines.append("")
-    
+    print(f"Duração total do áudio: {len(audio) / 16000:.2f}s")
+    raw_segments = []
     for segment in segments:
+        print(f"  RAW start={segment.start:.2f} end={segment.end:.2f} text={segment.text[:40]}")
         text = segment.text.strip()
         if not text:
             continue
-            
-        timestamp = format_lrc_timestamp(segment.start)
-        lrc_line = f"{timestamp}{text}"
+        raw_segments.append({
+            "start": segment.start,
+            "end": segment.end,
+            "text": text
+        })
+
+    for seg in raw_segments:
+        print(f"  RAW start={seg['start']:.2f} end={seg['end']:.2f} text={seg['text'][:40]}")
+
+    # Mescla segmentos muito próximos (menos de 2s de diferença)
+    merged = []
+    for seg in raw_segments:
+        if merged and (seg["start"] - merged[-1]["start"]) < 1.5:
+            merged[-1]["text"] += " " + seg["text"]
+            merged[-1]["end"] = seg["end"]
+        else:
+            merged.append({"start": seg["start"], "end": seg["end"], "text": seg["text"]})
+
+    for seg in merged:
+        timestamp = format_lrc_timestamp(seg["start"])
+        lrc_line = f"{timestamp}{seg['text']}"
         print(f"  {lrc_line}")
         lrc_lines.append(lrc_line)
+        
+        # Adiciona marcador de fim de verso
+        if seg.get("end") is not None:
+            end_timestamp = format_lrc_timestamp(seg["end"])
+            lrc_lines.append(end_timestamp)
         
     # Grava o lyrics.lrc sem linhas em branco e com quebras de linha limpas
     clean_lines = [line.strip() for line in lrc_lines if line.strip()]

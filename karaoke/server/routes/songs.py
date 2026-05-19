@@ -6,7 +6,7 @@ import shutil
 import socket
 from pathlib import Path
 
-from fastapi import APIRouter, HTTPException, Response
+from fastapi import APIRouter, HTTPException, Response, BackgroundTasks
 from fastapi.responses import FileResponse
 
 from state import song_manager
@@ -58,6 +58,33 @@ async def delete_song(song_id: str):
         raise
     except Exception as e:
         logger.error(f"Erro ao deletar a música {song_id}: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/api/reinstall-song/{song_id}")
+async def api_reinstall_song(song_id: str):
+    try:
+        song_dir = SONGS_DIR / song_id
+        if not song_dir.exists():
+            raise HTTPException(status_code=404, detail="Música não encontrada")
+        
+        meta_path = song_dir / "meta.json"
+        if not meta_path.exists():
+            raise HTTPException(status_code=400, detail="Arquivo meta.json não encontrado na pasta da música")
+
+        from tools.reinstall_song import reinstall_song
+        success = await reinstall_song(str(song_dir))
+        
+        if success:
+            logger.info(f"Reinstalação concluída com sucesso para a música: {song_id}")
+            return {"success": True, "message": "Reinstalação concluída com sucesso!"}
+        else:
+            logger.error(f"Reinstalação falhou para a música: {song_id}")
+            raise HTTPException(status_code=500, detail="Erro durante o processo de reinstalação da música")
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Erro ao reinstalar a música {song_id}: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))
 
 

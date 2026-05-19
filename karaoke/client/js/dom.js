@@ -29,3 +29,74 @@ export const dom = {
 };
 
 export const $id = $;
+
+let loadingInterval = null;
+const funnyPhrases = [
+    "Ensinando o Whisper a cantar no tom... 🎙️🤖",
+    "Pedindo educadamente para a RTX 4070 ir mais rápido... ⚡",
+    "Separando a voz dos instrumentos com uma pinça digital... 🎻",
+    "Afiando a agulha virtual do toca-discos... 🎶",
+    "Removendo a tosse do baterista... 🥁",
+    "Subornando os robôs para não desafinarem o playback... 🤖🍬",
+    "Limpando os cabos virtuais para evitar chiado... 🔌",
+    "Whisper está escutando a música em 10x de velocidade... ⏩",
+    "Alinhando as sílabas com precisão cirúrgica... ✂️",
+    "Polindo a faixa de áudio para brilhar na sua caixa de som... ✨",
+    "Esfoliando as ondas sonoras... 🛁",
+    "Desembaraçando as frequências graves... 🎸",
+    "Passando pano nos microfones digitais... 🧼"
+];
+
+export function startLoadingOverlay(title, initialDesc, autoProgress = false) {
+    if (loadingInterval) {
+        clearInterval(loadingInterval);
+        loadingInterval = null;
+    }
+    
+    dom.loadingStatusTitle.innerText = title;
+    
+    if (autoProgress) {
+        dom.loadingStatusDesc.innerHTML = `
+            <div style="font-weight: 700; color: var(--accent); margin-bottom: 0.5rem;" id="loading-action-status">${initialDesc}</div>
+            <div style="font-style: italic; color: var(--dim); min-height: 24px; font-size: 0.9rem;" id="loading-funny-phrase">
+                ${funnyPhrases[Math.floor(Math.random() * funnyPhrases.length)]}
+            </div>
+            <div style="margin-top: 1rem; font-size: 0.75rem; color: #10b981; font-weight: 600; line-height: 1.4; opacity: 0.95;">
+                ℹ️ Nota: O vocal e a letra são processados em primeiro plano. O Backing Track instrumental está sendo gerado via separação por Inteligência Artificial (Demucs) em segundo plano usando a sua placa NVIDIA RTX!
+            </div>
+        `;
+        
+        let timeElapsed = 0;
+        loadingInterval = setInterval(() => {
+            timeElapsed += 3;
+            
+            const funnyEl = document.getElementById('loading-funny-phrase');
+            if (funnyEl) {
+                funnyEl.innerText = funnyPhrases[Math.floor(Math.random() * funnyPhrases.length)];
+            }
+            
+            const actionEl = document.getElementById('loading-action-status');
+            if (actionEl) {
+                if (timeElapsed < 8) {
+                    actionEl.innerText = "Fase 1/3: Baixando e preparando faixa vocal principal... 🎧";
+                } else if (timeElapsed < 22) {
+                    actionEl.innerText = "Fase 2/3: Transcrevendo a voz com Whisper AI na GPU RTX... 🎙️🤖";
+                } else {
+                    actionEl.innerText = "Fase 3/3: Mapeando fonemas e alinhando sílabas para o Karaokê... 📝⚡";
+                }
+            }
+        }, 3000);
+    } else {
+        dom.loadingStatusDesc.innerText = initialDesc;
+    }
+    
+    dom.loadingOverlay.style.display = 'flex';
+}
+
+export function stopLoadingOverlay() {
+    if (loadingInterval) {
+        clearInterval(loadingInterval);
+        loadingInterval = null;
+    }
+    dom.loadingOverlay.style.display = 'none';
+}

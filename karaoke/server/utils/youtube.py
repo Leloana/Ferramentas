@@ -64,3 +64,51 @@ async def download_youtube_audio(url: str, output_path: Path, ffmpeg_bin_dir: st
                 logger.debug(f"Nao foi possivel remover arquivo residual {leftover}: {unlink_err}")
 
     return True
+
+
+async def get_youtube_video_info(url: str) -> dict:
+    """Extrai rapidamente metadados do vídeo do YouTube sem fazer o download."""
+    import yt_dlp
+    import re
+
+    ydl_opts: dict = {
+        "quiet": True,
+        "no_warnings": True,
+        "noplaylist": True,
+        "skip_download": True,
+    }
+
+    def _extract() -> dict:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            return ydl.extract_info(url, download=False)
+
+    try:
+        info = await asyncio.to_thread(_extract)
+        raw_title = info.get("title", "")
+        
+        # Heurística de divisão: Artista - Título com múltiplos separadores comuns
+        separators = [" - ", " – ", " — ", " | ", " ~ ", " : "]
+        artist = ""
+        title = raw_title
+        for sep in separators:
+            if sep in raw_title:
+                parts = raw_title.split(sep, 1)
+                artist = parts[0].strip()
+                title = parts[1].strip()
+                break
+        
+        # Limpar títulos e tags de vídeo comuns
+        # Ex: "Teenagers (Official Music Video)" -> "Teenagers"
+        clean_regex = r"\s*[\(\[][^)]*?(official|video|clip|audio|lyric|karaoke|instrumental|legendado|cover|lyrics|4k|hd|subtitles|traducao|tradução)[^)]*?[\)\]]"
+        
+        title = re.sub(clean_regex, "", title, flags=re.IGNORECASE).strip()
+        artist = re.sub(clean_regex, "", artist, flags=re.IGNORECASE).strip()
+        
+        # Limpar aspas adicionais se houver (ex: '"Teenagers"')
+        title = title.strip('"\'')
+        artist = artist.strip('"\'')
+        
+        return {"artist": artist, "title": title}
+    except Exception as e:
+        logger.error(f"Erro ao extrair info do YouTube: {e}", exc_info=True)
+        return {"artist": "", "title": ""}

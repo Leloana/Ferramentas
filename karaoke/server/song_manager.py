@@ -10,12 +10,20 @@ def _title_fallback(name: str) -> str:
     return name.replace("_", " ").replace("-", " ").title()
 
 
+def _get_meta_field(meta: dict, section: str, field: str, default=None):
+    if isinstance(meta.get(section), dict):
+        val = meta[section].get(field)
+        if val is not None:
+            return val
+    return meta.get(field, default)
+
+
 class SongManager:
     def __init__(self, songs_path: Path = SONGS_DIR):
         self.songs_path = songs_path
 
     def list_songs(self):
-        """Lista pastas de músicas que contêm segments.json e backing_track.mp3."""
+        """Lista pastas de músicas que contêm meta.json ou segments.json e backing_track.mp3."""
         if not self.songs_path.exists():
             return []
 
@@ -23,11 +31,36 @@ class SongManager:
         for item in self.songs_path.iterdir():
             if not item.is_dir():
                 continue
-            if not (item / "segments.json").exists() or not (item / "backing_track.mp3").exists():
-                continue
 
-            title, artist = read_lrc_meta(item / "lyrics.lrc", fallback_title=_title_fallback(item.name))
-            songs.append({"id": item.name, "title": title, "artist": artist})
+            # Tenta carregar título e artista do meta.json
+            meta_path = item / "meta.json"
+            title = None
+            artist = None
+            if meta_path.exists():
+                try:
+                    with open(meta_path, "r", encoding="utf-8") as f:
+                        meta = json.load(f)
+                        title = _get_meta_field(meta, "meta", "title")
+                        artist = _get_meta_field(meta, "meta", "artist")
+                except Exception:
+                    pass
+
+            # Fallback para lyrics.lrc ou nome da pasta
+            if not title or not artist:
+                lrc_title, lrc_artist = read_lrc_meta(item / "lyrics.lrc", fallback_title=_title_fallback(item.name))
+                title = title or lrc_title
+                artist = artist or lrc_artist
+
+            has_segments = (item / "segments.json").exists()
+            has_backing = (item / "backing_track.mp3").exists()
+            is_ready = has_segments and has_backing
+
+            songs.append({
+                "id": item.name,
+                "title": title,
+                "artist": artist or "Artista Desconhecido",
+                "is_ready": is_ready
+            })
 
         return songs
 
@@ -41,7 +74,23 @@ class SongManager:
         with open(segments_file, "r", encoding="utf-8") as f:
             segments = json.load(f)
 
-        title, artist = read_lrc_meta(song_dir / "lyrics.lrc", fallback_title=_title_fallback(song_id))
+        title = None
+        artist = None
+        meta_path = song_dir / "meta.json"
+        if meta_path.exists():
+            try:
+                with open(meta_path, "r", encoding="utf-8") as f:
+                    meta = json.load(f)
+                    title = _get_meta_field(meta, "meta", "title")
+                    artist = _get_meta_field(meta, "meta", "artist")
+            except Exception:
+                pass
+
+        if not title or not artist:
+            lrc_title, lrc_artist = read_lrc_meta(song_dir / "lyrics.lrc", fallback_title=_title_fallback(song_id))
+            title = title or lrc_title
+            artist = artist or lrc_artist
+
         return {"id": song_id, "title": title, "artist": artist, "segments": segments}
 
     def get_audio_path(self, song_id: str):
