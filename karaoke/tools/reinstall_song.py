@@ -130,6 +130,7 @@ async def reinstall_song(song_dir_path: str, language: str = None) -> bool:
     use_demucs = not yt_backing or not yt_backing.strip()
     
     try:
+        # 1 - Baixa áudio do YouTube
         if use_demucs:
             logger.info("Nenhuma URL de backing fornecida. Utilizando abordagem Demucs no áudio original!")
             logger.info(f"Baixando áudio original do YouTube: {yt_vocal}")
@@ -137,7 +138,30 @@ async def reinstall_song(song_dir_path: str, language: str = None) -> bool:
             if not success or not original_audio_path.exists():
                 logger.error("Erro crítico: Falha ao baixar o áudio original do YouTube.")
                 return False
-                
+        else:
+            logger.info("Baixando canais de áudio frescos do YouTube...")
+            logger.info(f" -> Vocal: {yt_vocal}")
+            logger.info(f" -> Instrumental: {yt_backing}")
+            
+            v_ok, b_ok = await asyncio.gather(
+                download_youtube_audio(yt_vocal, temp_vocal, ffmpeg_bin_dir),
+                download_youtube_audio(yt_backing, temp_backing, ffmpeg_bin_dir)
+            )
+            
+            if not v_ok or not temp_vocal.exists():
+                logger.error("Erro crítico: Falha ao baixar o canal Vocal do YouTube.")
+                return False
+            if not b_ok or not temp_backing.exists():
+                logger.error("Erro crítico: Falha ao baixar o canal Instrumental do YouTube.")
+                return False
+
+        # 2 - Cria arquivo lyrics.txt
+        if plain_lyrics and plain_lyrics.strip():
+            logger.info("Cria arquivo lyrics.txt a partir de plain_lyrics...")
+            txt_file.write_text(plain_lyrics.strip() + "\n", encoding="utf-8")
+
+        # 3 - Separa áudio do youtube backing e vocal (ou exporta canais já baixados)
+        if use_demucs:
             # Localiza demucs.exe na pasta de binários do python
             python_dir = Path(sys.executable).parent
             demucs_exe = python_dir / "demucs.exe"
@@ -170,26 +194,10 @@ async def reinstall_song(song_dir_path: str, language: str = None) -> bool:
             vocal_audio = AudioSegment.from_file(str(vocals_wav))
             backing_audio = AudioSegment.from_file(str(no_vocals_wav))
         else:
-            logger.info("Baixando canais de áudio frescos do YouTube...")
-            logger.info(f" -> Vocal: {yt_vocal}")
-            logger.info(f" -> Instrumental: {yt_backing}")
-            
-            v_ok, b_ok = await asyncio.gather(
-                download_youtube_audio(yt_vocal, temp_vocal, ffmpeg_bin_dir),
-                download_youtube_audio(yt_backing, temp_backing, ffmpeg_bin_dir)
-            )
-            
-            if not v_ok or not temp_vocal.exists():
-                logger.error("Erro crítico: Falha ao baixar o canal Vocal do YouTube.")
-                return False
-            if not b_ok or not temp_backing.exists():
-                logger.error("Erro crítico: Falha ao baixar o canal Instrumental do YouTube.")
-                return False
-                
             vocal_audio = AudioSegment.from_file(str(temp_vocal))
             backing_audio = AudioSegment.from_file(str(temp_backing))
             
-        # 5. Salvar os canais de áudio definitivos sem corte/slicing
+        # Salvar os canais de áudio definitivos sem corte/slicing
         logger.info("Salvando os canais de áudio definitivos...")
         vocal_audio.export(str(song_dir / "vocal.mp3"), format="mp3")
         backing_audio.export(str(song_dir / "backing_track.mp3"), format="mp3")
@@ -211,11 +219,9 @@ async def reinstall_song(song_dir_path: str, language: str = None) -> bool:
             except Exception:
                 pass
 
-    # 6. Restauração das letras ou geração de nova se não houver backup
+    # 4 - whisper percorre o arquivo vocal fazendo os tempos & 5 - Cria arquivo lyrics.lrc
     if plain_lyrics and plain_lyrics.strip():
-        # Se temos plain_lyrics no meta.json, recriamos o arquivo de letras txt e alinhamos com o Whisper!
-        logger.info("plain_lyrics encontrado no meta.json. Recriando lyrics.txt e alinhando com Whisper...")
-        txt_file.write_text(plain_lyrics.strip() + "\n", encoding="utf-8")
+        logger.info("plain_lyrics disponível. Whisper percorrendo arquivo vocal para cruzar com lyrics.txt...")
         
         try:
             from utils.lrc_align import align_plain_lyrics

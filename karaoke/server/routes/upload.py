@@ -157,8 +157,7 @@ async def background_acquire_and_process_backing(
             except Exception:
                 pass
                 
-        logger.info("Backing track gerado com sucesso em segundo plano! Rodando prepare_song final...")
-        run_prepare_song(str(song_dir), language)
+        logger.info("Backing track gerado com sucesso em segundo plano!")
         
         # Limpeza do temp_vocal_path
         if temp_vocal_path.exists():
