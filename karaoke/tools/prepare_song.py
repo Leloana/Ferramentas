@@ -1,15 +1,18 @@
-import os
-import json
 import argparse
-import numpy as np
-from pathlib import Path
-import av
+import json
 import sys
+from pathlib import Path
+
+# Adiciona o diretório server ao path para importar utilitários compartilhados.
+sys.path.append(str(Path(__file__).parent.parent / "server"))
+from stt_engine import get_stt_engine
+from utils.audio import load_audio_full
+from utils.whisper_params import WHISPER_SR
+
 import re
 
-# Adiciona o diretório server ao path para importar o stt_engine
-sys.path.append(str(Path(__file__).parent.parent / "server"))
-from stt_engine import STTEngine, get_stt_engine
+import numpy as np
+
 
 def parse_lrc(lrc_path):
     lines = []
@@ -25,40 +28,24 @@ def parse_lrc(lrc_path):
                         if match:
                             offset = float(match.group(1)) / 1000.0
                     continue
-                    
+
                 time_part, text = line.split("]", 1)
                 time_str = time_part[1:]
                 m, s = time_str.split(":")
                 timestamp = int(m) * 60 + float(s)
                 cleaned_text = text.strip()
-                
+
                 if not cleaned_text:
                     if lines:
                         lines[-1]["end"] = timestamp
                     continue
-                    
+
                 lines.append({"start": timestamp, "text": cleaned_text, "end": None})
-            except:
+            except Exception:
                 continue
-                
+
     return sorted(lines, key=lambda x: x["start"]), offset
 
-def load_audio_full(path):
-    """Carrega áudio completo e converte para numpy float32 16kHz mono usando PyAV."""
-    container = av.open(str(path))
-    stream = container.streams.audio[0]
-    resampler = av.AudioResampler(format='fltp', layout='mono', rate=16000)
-    
-    audio_data = []
-    for frame in container.decode(stream):
-        for resampled_frame in resampler.resample(frame):
-            audio_data.append(resampled_frame.to_ndarray().flatten())
-    
-    # Finaliza o resampler
-    for resampled_frame in resampler.resample(None):
-        audio_data.append(resampled_frame.to_ndarray().flatten())
-        
-    return np.concatenate(audio_data)
 
 def prepare_song(song_dir, language="en"):
     song_path = Path(song_dir)
@@ -88,7 +75,7 @@ def prepare_song(song_dir, language="en"):
         print(f"Erro ao carregar áudio: {e}")
         return
         
-    sample_rate = 16000
+    sample_rate = WHISPER_SR
     
     # 3. Inicializar Engine (reutiliza singleton se rodando sob o server FastAPI)
     engine = get_stt_engine()

@@ -14,6 +14,7 @@ from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 from score_engine import calculate_score
 from state import room_manager, song_manager
 from stt_engine import get_stt_engine
+from utils.whisper_params import WHISPER_SR
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -31,7 +32,6 @@ PRE_SING_BUFFER_SEC = 1.5
 POST_SING_BUFFER_SEC = 0.5
 SINGING_PRE_BUFFER_SEC = 1.0
 PAUSE_END_LEAD_SEC = 0.15
-WHISPER_TARGET_SR = 16000
 PENDING_TASKS_TIMEOUT_SEC = 10.0
 
 
@@ -110,7 +110,6 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
         room.total_score = 0.0
         room.scored_count = 0
         room.last_client_time = 0.0
-        room.audio_buffer = bytearray()
         room.segment_buffers = {}
         room.is_singing_active = False
 
@@ -178,8 +177,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
             else:
                 # Resampling polifásico para 16 kHz com filtro FIR anti-aliasing
                 def compute():
-                    gcd = math.gcd(WHISPER_TARGET_SR, room.client_sample_rate)
-                    up = WHISPER_TARGET_SR // gcd
+                    gcd = math.gcd(WHISPER_SR, room.client_sample_rate)
+                    up = WHISPER_SR // gcd
                     down = room.client_sample_rate // gcd
                     resampled = scipy.signal.resample_poly(audio_data, up, down).astype(np.float32)
                     return stt.transcribe(resampled, language=seg_lang, initial_prompt=seg_text)
@@ -229,12 +228,6 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                             room.segment_buffers[seg_idx] = bytearray()
                         room.segment_buffers[seg_idx].extend(message["bytes"])
 
-                # Buffer global (retrocompatibilidade)
-                if room.current_segment_idx < len(room.segments):
-                    current_seg = room.segments[room.current_segment_idx]
-                    if (current_seg["sing_start"] - PRE_SING_BUFFER_SEC) <= current_time <= (current_seg["sing_end"] + POST_SING_BUFFER_SEC):
-                        room.audio_buffer.extend(message["bytes"])
-
             elif "text" in message:
                 data = json.loads(message["text"])
                 msg_type = data.get("type")
@@ -275,7 +268,6 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
 
                             raw_audio = np.frombuffer(seg_buffer, dtype=np.float32).copy()
                             room.segment_buffers.pop(room.current_segment_idx, None)
-                            room.audio_buffer = bytearray()
 
                             # Referência forte → evita GC prematuro da task.
                             task = asyncio.create_task(process_and_score(

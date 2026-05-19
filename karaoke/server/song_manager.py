@@ -2,24 +2,14 @@ import json
 from pathlib import Path
 
 from utils.lrc import read_lrc_meta
-
-SONGS_DIR = Path(__file__).parent / "songs"
-
+from utils.meta import get_meta_field
 
 def _title_fallback(name: str) -> str:
     return name.replace("_", " ").replace("-", " ").title()
 
 
-def _get_meta_field(meta: dict, section: str, field: str, default=None):
-    if isinstance(meta.get(section), dict):
-        val = meta[section].get(field)
-        if val is not None:
-            return val
-    return meta.get(field, default)
-
-
 class SongManager:
-    def __init__(self, songs_path: Path = SONGS_DIR):
+    def __init__(self, songs_path: Path):
         self.songs_path = songs_path
 
     def list_songs(self):
@@ -40,8 +30,8 @@ class SongManager:
                 try:
                     with open(meta_path, "r", encoding="utf-8") as f:
                         meta = json.load(f)
-                        title = _get_meta_field(meta, "meta", "title")
-                        artist = _get_meta_field(meta, "meta", "artist")
+                        title = get_meta_field(meta, "meta", "title")
+                        artist = get_meta_field(meta, "meta", "artist")
                 except Exception:
                     pass
 
@@ -81,8 +71,8 @@ class SongManager:
             try:
                 with open(meta_path, "r", encoding="utf-8") as f:
                     meta = json.load(f)
-                    title = _get_meta_field(meta, "meta", "title")
-                    artist = _get_meta_field(meta, "meta", "artist")
+                    title = get_meta_field(meta, "meta", "title")
+                    artist = get_meta_field(meta, "meta", "artist")
             except Exception:
                 pass
 

@@ -1,45 +1,41 @@
-import os
-import sys
+"""CLI: gera um `lyrics.lrc` rascunho transcrevendo o `vocal.mp3` com o Whisper.
+
+Usado como fallback no `reinstall_song.py` quando o alinhamento com
+letra plana falha. Antes definia parâmetros VAD próprios (divergentes
+de `whisper_params.TRANSCRIBE_KWARGS`) e instanciava um `STTEngine`
+novo do zero — agora reaproveita o singleton do servidor para não
+carregar um segundo modelo na VRAM.
+"""
+from __future__ import annotations
+
 import argparse
-import numpy as np
+import sys
 from pathlib import Path
 
-# Adiciona o diretório server ao path para importar o stt_engine
-sys.path.append(str(Path(__file__).parent.parent / "server"))
-from stt_engine import STTEngine
+# Adiciona o diretório `server/` ao path para importar utilitários compartilhados.
+sys.path.append(str(Path(__file__).resolve().parent.parent / "server"))
 
-def load_audio_full(path):
-    """Carrega áudio completo e converte para numpy float32 16kHz mono usando PyAV."""
-    import av
-    container = av.open(str(path))
-    stream = container.streams.audio[0]
-    resampler = av.AudioResampler(format='fltp', layout='mono', rate=16000)
-    
-    audio_data = []
-    for frame in container.decode(stream):
-        for resampled_frame in resampler.resample(frame):
-            audio_data.append(resampled_frame.to_ndarray().flatten())
-            
-    for resampled_frame in resampler.resample(None):
-        audio_data.append(resampled_frame.to_ndarray().flatten())
-        
-    return np.concatenate(audio_data)
+from stt_engine import get_stt_engine
+from utils.audio import load_audio_full
+from utils.whisper_params import TRANSCRIBE_KWARGS
 
-def format_lrc_timestamp(seconds):
-    """Converte segundos em formato de timestamp LRC [mm:ss.xx]"""
+
+def format_lrc_timestamp(seconds: float) -> str:
+    """Converte segundos em formato de timestamp LRC `[mm:ss.xx]`."""
     minutes = int(seconds // 60)
     remaining_seconds = seconds % 60
     return f"[{minutes:02d}:{remaining_seconds:05.2f}]"
 
-def generate_lrc(song_dir, language="en"):
+
+def generate_lrc(song_dir: str, language: str = "en") -> None:
     song_path = Path(song_dir)
     vocal_mp3 = song_path / "vocal.mp3"
     lrc_output = song_path / "lyrics.lrc"
-    
+
     if not vocal_mp3.exists():
         print(f"Erro: Certifique-se de que vocal.mp3 existe em {song_dir}")
         return
-        
+
     print(f"--- Gerando LRC Automático para: {song_path.name} ---")
     print("Carregando áudio vocal (usando PyAV)...")
     try:
@@ -47,47 +43,36 @@ def generate_lrc(song_dir, language="en"):
     except Exception as e:
         print(f"Erro ao carregar áudio: {e}")
         return
-        
-    print("Inicializando STT Engine com GPU...")
-    engine = STTEngine(model_size="medium", device="auto")
-    
+
+    print("Reutilizando STT Engine singleton...")
+    engine = get_stt_engine()
+
     print("Transcrevendo áudio em segmentos e gerando timestamps...")
-    # Transcreve usando o Whisper nativo da engine no nível de segmento
-    segments, info = engine.model.transcribe(
+    # Mesmos parâmetros de VAD usados pelo upload e reinstall — antes
+    # divergiam (threshold=0.3, min_silence=2000ms) e o LRC gerado por
+    # este fallback ficava com versos colados.
+    segments, _info = engine.model.transcribe(
         audio,
         language=language,
-        beam_size=10,
-        word_timestamps=True,
-        vad_filter=True,
-        vad_parameters=dict(threshold=0.3, min_silence_duration_ms=2000, speech_pad_ms=600),
-        condition_on_previous_text=False
+        **TRANSCRIBE_KWARGS,
     )
-    
-    lrc_lines = []
-    # Metadados iniciais padrões do arquivo LRC
-    lrc_lines.append(f"[ar: Artista]")
-    lrc_lines.append(f"[ti: {song_path.name.replace('-', ' ').title()}]")
-    lrc_lines.append("[length: --:--]")
-    lrc_lines.append("")
-    print(f"Duração total do áudio: {len(audio) / 16000:.2f}s")
+
+    lrc_lines: list[str] = [
+        "[ar: Artista]",
+        f"[ti: {song_path.name.replace('-', ' ').title()}]",
+        "[length: --:--]",
+        "",
+    ]
+
     raw_segments = []
     for segment in segments:
-        print(f"  RAW start={segment.start:.2f} end={segment.end:.2f} text={segment.text[:40]}")
         text = segment.text.strip()
         if not text:
             continue
-        first_start = segment.words[0].start if segment.words else segment.start
-        raw_segments.append({
-            "start": segment.start,
-            "end": segment.end,
-            "text": text
-        })
+        raw_segments.append({"start": segment.start, "end": segment.end, "text": text})
 
-    for seg in raw_segments:
-        print(f"  RAW start={seg['start']:.2f} end={seg['end']:.2f} text={seg['text'][:40]}")
-
-    # Mescla segmentos se o gap de silêncio entre eles for menor que 0.8 segundos
-    merged = []
+    # Mescla segmentos com gap de silêncio < 0.8s (evita fragmentos curtos demais).
+    merged: list[dict] = []
     for seg in raw_segments:
         if merged and (seg["start"] - merged[-1]["end"]) < 0.8:
             merged[-1]["text"] += " " + seg["text"]
@@ -96,29 +81,21 @@ def generate_lrc(song_dir, language="en"):
             merged.append({"start": seg["start"], "end": seg["end"], "text": seg["text"]})
 
     for seg in merged:
-        timestamp = format_lrc_timestamp(seg["start"])
-        lrc_line = f"{timestamp}{seg['text']}"
-        print(f"  {lrc_line}")
-        lrc_lines.append(lrc_line)
-        
-        # Adiciona marcador de fim de verso (uma linha só com timestamp cria o vazio no LRC)
-        if seg.get("end") is not None:
-            end_timestamp = format_lrc_timestamp(seg["end"])
-            # Adiciona um espaço após o timestamp para garantir que nenhum player/script ignore a linha
-            lrc_lines.append(f"{end_timestamp} ")
-        
-    # Grava o lyrics.lrc sem linhas em branco e com quebras de linha limpas
+        lrc_lines.append(f"{format_lrc_timestamp(seg['start'])}{seg['text']}")
+        # Marcador de fim de verso: linha só com timestamp vira pausa no LRC.
+        lrc_lines.append(f"{format_lrc_timestamp(seg['end'])} ")
+
     clean_lines = [line.strip() for line in lrc_lines if line.strip()]
     with open(lrc_output, "w", encoding="utf-8", newline="\n") as f:
         f.write("\n".join(clean_lines) + "\n")
-        
+
     print(f"\nSucesso! Legenda LRC gerada em: {lrc_output}")
-    print("Você já pode abrir e editar este arquivo para ajustar o texto e corrigir pequenos erros!")
+    print("Você já pode abrir e editar este arquivo para ajustar o texto.")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("song_dir", help="Pasta da música contendo vocal.mp3")
     parser.add_argument("--lang", default="en", help="Língua da música (ex: en, pt)")
     args = parser.parse_args()
-    
     generate_lrc(args.song_dir, args.lang)

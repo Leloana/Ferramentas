@@ -1,27 +1,25 @@
-import os
-import sys
-import json
-import shutil
 import argparse
 import asyncio
+import json
 import logging
+import shutil
 import subprocess
+import sys
 from pathlib import Path
-from pydub import AudioSegment
-import numpy as np
 
-# Configura o stdout para UTF-8 de forma robusta para evitar UnicodeEncodeError no console do Windows
+from pydub import AudioSegment
+
+# Configura o stdout para UTF-8 (evita UnicodeEncodeError no console do Windows).
 if hasattr(sys.stdout, "reconfigure"):
     try:
         sys.stdout.reconfigure(encoding="utf-8")
     except Exception:
         pass
 
-# Configuração de Logging para a ferramenta CLI
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger("reinstall_song")
 
-# Adiciona o diretório do projeto e o server ao path para os imports corretos
+# Adiciona o diretório do projeto e o server ao path.
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
@@ -29,22 +27,13 @@ if str(PROJECT_ROOT / "server") not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT / "server"))
 
 from state import ffmpeg_bin_dir
-from utils.text import parse_time_to_seconds
+from utils.audio import vocal_to_float32_mono_16k
+from utils.meta import get_meta_field
 from utils.whisper_params import TRANSCRIBE_KWARGS
 from utils.youtube import download_youtube_audio
 from tools.generate_lrc import generate_lrc
 from tools.prepare_song import prepare_song
 
-def _vocal_to_float32_mono_16k(vocal: AudioSegment) -> np.ndarray:
-    """Resamplea vocal para 16kHz mono float32 normalizado, pronto para o Whisper."""
-    WHISPER_SR = 16000
-    resampled = vocal.set_frame_rate(WHISPER_SR).set_channels(1)
-    raw = np.array(resampled.get_array_of_samples(), dtype=np.float32)
-    if resampled.sample_width == 2:
-        raw /= 32768.0
-    elif resampled.sample_width == 4:
-        raw /= 2147483648.0
-    return raw
 
 async def reinstall_song(song_dir_path: str, language: str = None, clean_existing: bool = True) -> bool:
     song_dir = Path(song_dir_path)
@@ -65,11 +54,7 @@ async def reinstall_song(song_dir_path: str, language: str = None, clean_existin
         return False
         
     def _get_field(sec: str, key: str, default=None):
-        if isinstance(meta.get(sec), dict):
-            val = meta[sec].get(key)
-            if val is not None:
-                return val
-        return meta.get(key, default)
+        return get_meta_field(meta, sec, key, default)
 
     # Extrai dados do YouTube
     yt_vocal = _get_field("audio", "youtube_vocal_url")
@@ -278,7 +263,7 @@ async def reinstall_song(song_dir_path: str, language: str = None, clean_existin
             from stt_engine import get_stt_engine
             
             stt = get_stt_engine()
-            raw_data = _vocal_to_float32_mono_16k(vocal_audio)
+            raw_data = vocal_to_float32_mono_16k(vocal_audio)
             # Mesmos parâmetros do path de upload — antes divergiam (upload usava defaults
             # do faster-whisper e reinstall usava min_silence=2000ms agressivo), o que
             # produzia LRC diferente dependendo de qual caminho gerou. Ver

@@ -8,6 +8,10 @@ que reinstalar".
 """
 from __future__ import annotations
 
+# Sample rate alvo do faster-whisper. O modelo é treinado em 16 kHz mono;
+# qualquer áudio com outra taxa precisa ser resampled antes da transcrição.
+WHISPER_SR = 16000
+
 # VAD afrouxado: mantém o objetivo de pular intro instrumental longo
 # (>700ms de silêncio) sem mesclar versos vizinhos num único segmento
 # gigante (causa da colisão no align_plain_lyrics).

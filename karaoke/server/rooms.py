@@ -14,7 +14,8 @@ class KaraokeRoom:
         self.song_id = song_id
         self.display: Optional[WebSocket] = None
         self.mic: Optional[WebSocket] = None
-        self.audio_buffer = bytearray()  # Mantido para retrocompatibilidade
+        # Buffers de áudio dedicados por índice de segmento. O `audio_buffer`
+        # global antigo foi removido — não era mais lido por nenhum caminho.
         self.segment_buffers: dict[int, bytearray] = {}
         self.client_sample_rate = 48000
         self.current_segment_idx = 0

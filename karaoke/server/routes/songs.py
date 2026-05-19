@@ -6,34 +6,28 @@ import shutil
 import socket
 from pathlib import Path
 
-from fastapi import APIRouter, HTTPException, Response, BackgroundTasks
+from fastapi import APIRouter, HTTPException, Response
 from fastapi.responses import FileResponse
 
-from state import song_manager
+from state import SONGS_DIR, song_manager
+from utils.http import set_no_cache
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
 CLIENT_DIR = Path(__file__).resolve().parent.parent.parent / "client"
-SONGS_DIR = Path(__file__).resolve().parent.parent / "songs"
-
-
-def _no_cache(response: Response) -> None:
-    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
-    response.headers["Pragma"] = "no-cache"
-    response.headers["Expires"] = "0"
 
 
 @router.get("/")
 async def get_index(response: Response):
-    _no_cache(response)
+    set_no_cache(response)
     return FileResponse(CLIENT_DIR / "index.html")
 
 
 @router.get("/songs")
 @router.get("/api/songs")
 async def list_songs(response: Response):
-    _no_cache(response)
+    set_no_cache(response)
     return song_manager.list_songs()
 
 

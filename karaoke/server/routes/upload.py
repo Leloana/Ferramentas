@@ -10,36 +10,20 @@ import subprocess
 from pathlib import Path
 from typing import Optional
 
-import numpy as np
-from fastapi import APIRouter, File, Form, HTTPException, UploadFile, BackgroundTasks
+from fastapi import APIRouter, BackgroundTasks, File, Form, HTTPException, UploadFile
 from pydub import AudioSegment
 
-from state import ffmpeg_bin_dir
+from state import SONGS_DIR, ffmpeg_bin_dir
 from stt_engine import get_stt_engine
+from utils.audio import vocal_to_float32_mono_16k
 from utils.lrc_align import align_plain_lyrics, draft_lrc_from_whisper
 from utils.prepare import run_prepare_song, run_reinstall_song
-from utils.text import parse_time_to_seconds, slugify
+from utils.text import slugify
 from utils.whisper_params import TRANSCRIBE_KWARGS
 from utils.youtube import download_youtube_audio, get_youtube_video_info
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
-
-SONGS_DIR = Path(__file__).resolve().parent.parent / "songs"
-WHISPER_SR = 16000
-
-
-
-def _vocal_to_float32_mono_16k(vocal: AudioSegment) -> np.ndarray:
-    """Resamplea vocal para 16kHz mono float32 normalizado, pronto para o Whisper."""
-    resampled = vocal.set_frame_rate(WHISPER_SR).set_channels(1)
-    raw = np.array(resampled.get_array_of_samples(), dtype=np.float32)
-    if resampled.sample_width == 2:
-        raw /= 32768.0
-    elif resampled.sample_width == 4:
-        raw /= 2147483648.0
-    return raw
-
 
 def _build_meta(form: dict) -> dict:
     """Estrutura `meta.json` salvo junto da música para reprodução simples."""
@@ -148,7 +132,7 @@ async def upload_song(
         logger.info("Nenhum arquivo LRC enviado. Transcrevendo vocal com o Whisper em primeiro plano...")
         stt = get_stt_engine()
         vocal_audio = AudioSegment.from_file(str(vocal_path))
-        raw_data = _vocal_to_float32_mono_16k(vocal_audio)
+        raw_data = vocal_to_float32_mono_16k(vocal_audio)
         segments, _info = stt.model.transcribe(
             raw_data,
             language=language,

@@ -3,29 +3,21 @@ from __future__ import annotations
 
 import json
 import logging
-from pathlib import Path
+from typing import Optional
 
 from fastapi import APIRouter, Form, HTTPException, Response
 
+from state import SONGS_DIR
+from utils.http import set_no_cache
 from utils.prepare import run_prepare_song
-
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
-SONGS_DIR = Path(__file__).resolve().parent.parent / "songs"
-
-
-def _no_cache(response: Response) -> None:
-    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
-    response.headers["Pragma"] = "no-cache"
-    response.headers["Expires"] = "0"
-
 
 @router.get("/api/get-lyrics")
 async def get_lyrics(slug: str, response: Response):
-    _no_cache(response)
+    set_no_cache(response)
     try:
         song_dir = SONGS_DIR / slug
         lrc_path = song_dir / "lyrics.lrc"
