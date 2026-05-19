@@ -34,18 +34,6 @@ from utils.youtube import download_youtube_audio
 from tools.generate_lrc import generate_lrc
 from tools.prepare_song import prepare_song
 
-def _slice_with_padding(audio: AudioSegment, start_sec: float, end_sec: float, padding_sec: float) -> AudioSegment:
-    """Corta o áudio e insere silêncio opcional no início (padding)."""
-    duration_ms = len(audio)
-    start_ms = max(0, int(start_sec * 1000))
-    end_ms = int(end_sec * 1000) if end_sec > 0 else duration_ms
-    end_ms = min(end_ms, duration_ms)
-    sliced = audio[start_ms:end_ms]
-    if padding_sec > 0:
-        silence = AudioSegment.silent(duration=int(padding_sec * 1000), frame_rate=sliced.frame_rate)
-        return silence + sliced
-    return sliced
-
 def _vocal_to_float32_mono_16k(vocal: AudioSegment) -> np.ndarray:
     """Resamplea vocal para 16kHz mono float32 normalizado, pronto para o Whisper."""
     WHISPER_SR = 16000
@@ -82,17 +70,10 @@ async def reinstall_song(song_dir_path: str, language: str = None) -> bool:
                 return val
         return meta.get(key, default)
 
-    # Extrai dados do YouTube e parâmetros de corte
+    # Extrai dados do YouTube
     yt_vocal = _get_field("audio", "youtube_vocal_url")
     yt_backing = _get_field("audio", "youtube_backing_url")
     song_lang = language or _get_field("meta", "language") or "pt"
-    
-    vocal_start = _get_field("audio", "vocal_start", "0.0")
-    vocal_end = _get_field("audio", "vocal_end", "-1.0")
-    backing_start = _get_field("audio", "backing_start", "0.0")
-    backing_end = _get_field("audio", "backing_end", "-1.0")
-    silence_padding = _get_field("audio", "silence_padding", "0.0")
-    lyrics_start = _get_field("lyrics", "lyrics_start", "0.0")
     plain_lyrics = _get_field("lyrics", "plain_lyrics")
     
     if not yt_vocal:
@@ -208,26 +189,13 @@ async def reinstall_song(song_dir_path: str, language: str = None) -> bool:
             vocal_audio = AudioSegment.from_file(str(temp_vocal))
             backing_audio = AudioSegment.from_file(str(temp_backing))
             
-        # 5. Processar, cortar e salvar os canais de áudio definitivos
-        logger.info("Cortando e processando os arquivos de áudio...")
-        v_start_sec = 0.0
-        v_end_sec = parse_time_to_seconds(vocal_end)
-        b_start_sec = 0.0
-        b_end_sec = parse_time_to_seconds(backing_end)
-        padding_sec = max(0.0, parse_time_to_seconds(silence_padding))
-        lyrics_start_val = 0.0
-        
-        # Processa Vocal
-        processed_vocal = _slice_with_padding(vocal_audio, v_start_sec, v_end_sec, padding_sec)
-        processed_vocal.export(str(song_dir / "vocal.mp3"), format="mp3")
-        
-        # Processa Instrumental
-        processed_backing = _slice_with_padding(backing_audio, b_start_sec, b_end_sec, padding_sec)
-        processed_backing.export(str(song_dir / "backing_track.mp3"), format="mp3")
-        
-        logger.info("Áudios cortados e exportados com sucesso!")
+        # 5. Salvar os canais de áudio definitivos sem corte/slicing
+        logger.info("Salvando os canais de áudio definitivos...")
+        vocal_audio.export(str(song_dir / "vocal.mp3"), format="mp3")
+        backing_audio.export(str(song_dir / "backing_track.mp3"), format="mp3")
+        logger.info("Áudios exportados com sucesso!")
     except Exception as e:
-        logger.error(f"Erro ao processar/cortar áudios: {e}")
+        logger.error(f"Erro ao processar áudios: {e}")
         return False
     finally:
         # Limpeza proativa de arquivos temporários e do Demucs
@@ -254,7 +222,7 @@ async def reinstall_song(song_dir_path: str, language: str = None) -> bool:
             from stt_engine import get_stt_engine
             
             stt = get_stt_engine()
-            raw_data = _vocal_to_float32_mono_16k(processed_vocal)
+            raw_data = _vocal_to_float32_mono_16k(vocal_audio)
             segments, _info = stt.model.transcribe(
                 raw_data,
                 language=song_lang,
@@ -265,10 +233,10 @@ async def reinstall_song(song_dir_path: str, language: str = None) -> bool:
                 word_timestamps=True,
             )
             segments_list = list(segments)
-            total_duration = len(processed_vocal) / 1000.0
+            total_duration = len(vocal_audio) / 1000.0
             
             lrc_text, fallback_used = align_plain_lyrics(
-                plain_lyrics, segments_list, _get_field("meta", "title", ""), _get_field("meta", "artist", ""), lyrics_start_val, total_duration
+                plain_lyrics, segments_list, _get_field("meta", "title", ""), _get_field("meta", "artist", ""), 0.0, total_duration
             )
             lrc_file.write_text(lrc_text, encoding="utf-8")
             logger.info("Arquivo lyrics.lrc alinhado e gerado com sucesso a partir de plain_lyrics!")

@@ -129,10 +129,10 @@ Mobile Client / PC Mic         Server WS (ws/room.py)         Score & STT Engine
 Ao adicionar uma música na interface, as rotas sob `routes/upload.py` executam operações encadeadas:
 1.  **Conversão Slug**: Cria um ID seguro de URL convertendo `Título - Artista` para minusculizado e limpo (slug).
 2.  **Aquisição de Áudio**: Baixa faixas separadas (Vocal e Instrumental) do YouTube via `yt-dlp` ou armazena os uploads locais em arquivos de áudio temporários.
-3.  **Corte e Alinhamento Temporal**: Se o usuário fornecer tempos de início/fim das faixas (`vocal_start`, `vocal_end`, etc.), as faixas são cortadas com `pydub` e silêncio de padding é adicionado na frente (se configurado) para garantir perfeita sincronia instrumental. Os arquivos finais são salvos como `vocal.mp3` e `backing_track.mp3`. Os temporários pesados são deletados imediatamente.
+3.  **Processamento e Alinhamento Temporal**: Os arquivos finais de áudio são processados e salvos como `vocal.mp3` e `backing_track.mp3`, garantindo perfeita sincronia instrumental. Os temporários pesados são deletados imediatamente.
 4.  **Tratamento de Letras**:
     *   *LRC Pronto*: Salva o arquivo de sincronização `lyrics.lrc` e dispara `prepare_song`.
-    *   *Letra Plana (Texto)*: Transcreve o vocal recortado com o Whisper, extrai os timestamps e faz o alinhamento das palavras com a letra do usuário através de programação dinâmica e interpolação, gerando o arquivo `lyrics.lrc` para então rodar o `prepare_song`.
+    *   *Letra Plana (Texto)*: Transcreve o vocal com o Whisper, extrai os timestamps e faz o alinhamento das palavras com a letra do usuário através de programação dinâmica e interpolação, gerando o arquivo `lyrics.lrc` para então rodar o `prepare_song`.
     *   *Whisper Puro (Sem Letra)*: Transcreve o áudio vocal e cria um rascunho de LRC estruturado com os timestamps da IA para edição manual subsequente.
 
 ---

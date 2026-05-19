@@ -28,18 +28,6 @@ SONGS_DIR = Path(__file__).resolve().parent.parent / "songs"
 WHISPER_SR = 16000
 
 
-def _slice_with_padding(audio: AudioSegment, start_sec: float, end_sec: float, padding_sec: float) -> AudioSegment:
-    """Corta `audio` e prepende `padding_sec` de silêncio (se > 0)."""
-    duration_ms = len(audio)
-    start_ms = max(0, int(start_sec * 1000))
-    end_ms = int(end_sec * 1000) if end_sec > 0 else duration_ms
-    end_ms = min(end_ms, duration_ms)
-    sliced = audio[start_ms:end_ms]
-    if padding_sec > 0:
-        silence = AudioSegment.silent(duration=int(padding_sec * 1000), frame_rate=sliced.frame_rate)
-        return silence + sliced
-    return sliced
-
 
 def _vocal_to_float32_mono_16k(vocal: AudioSegment) -> np.ndarray:
     """Resamplea vocal para 16kHz mono float32 normalizado, pronto para o Whisper."""
@@ -53,7 +41,7 @@ def _vocal_to_float32_mono_16k(vocal: AudioSegment) -> np.ndarray:
 
 
 def _build_meta(form: dict) -> dict:
-    """Estrutura `meta.json` salvo junto da música para auditoria/reprodução."""
+    """Estrutura `meta.json` salvo junto da música para reprodução simples."""
     return {
         "meta": {
             "title": form["title"],
@@ -64,15 +52,8 @@ def _build_meta(form: dict) -> dict:
         "audio": {
             "youtube_vocal_url": form["youtube_vocal_url"],
             "youtube_backing_url": form["youtube_backing_url"],
-            "vocal_start": form["vocal_start"],
-            "vocal_end": form["vocal_end"],
-            "backing_start": form["backing_start"],
-            "backing_end": form["backing_end"],
-            "silence_padding": form["silence_padding"],
-            "force_vocal_start": form.get("force_vocal_start") == "true" or form.get("force_vocal_start") is True,
         },
         "lyrics": {
-            "lyrics_start": form["lyrics_start"],
             "plain_lyrics": form.get("plain_lyrics"),
         },
         "status": {
@@ -111,9 +92,6 @@ async def background_acquire_and_process_backing(
     backing_file_path: Optional[Path],
     temp_vocal_path: Path,
     song_dir: Path,
-    b_start: float,
-    b_end: float,
-    padding: float,
     language: str,
 ) -> None:
     """Adquire e processa a faixa instrumental (backing track) em segundo plano, correndo prepare_song no final."""
@@ -156,8 +134,7 @@ async def background_acquire_and_process_backing(
                 return
                 
             backing_audio = AudioSegment.from_file(str(no_vocals_wav))
-            processed_backing = _slice_with_padding(backing_audio, b_start, b_end, padding)
-            processed_backing.export(str(song_dir / "backing_track.mp3"), format="mp3")
+            backing_audio.export(str(song_dir / "backing_track.mp3"), format="mp3")
             
             try:
                 shutil.rmtree(demucs_out_dir)
@@ -173,8 +150,7 @@ async def background_acquire_and_process_backing(
                     return
                     
             backing_audio = AudioSegment.from_file(str(temp_backing))
-            processed_backing = _slice_with_padding(backing_audio, b_start, b_end, padding)
-            processed_backing.export(str(song_dir / "backing_track.mp3"), format="mp3")
+            backing_audio.export(str(song_dir / "backing_track.mp3"), format="mp3")
             
             try:
                 temp_backing.unlink()
@@ -234,22 +210,13 @@ async def upload_song(
         with open(song_dir / "meta.json", "w", encoding="utf-8") as f:
             json.dump(meta, f, indent=4, ensure_ascii=False)
 
-        force_vocal_start_bool = False
-
-        v_start = 0.0
-        v_end = parse_time_to_seconds(vocal_end)
-        b_start = 0.0
-        b_end = parse_time_to_seconds(backing_end)
-        padding = max(0.0, parse_time_to_seconds(silence_padding))
-        lyrics_start_val = 0.0
-
         temp_vocal = song_dir / "temp_vocal.mp3"
 
         # Adquire vocal sincronamente
         await _acquire_vocal(youtube_vocal_url, vocal_file, temp_vocal)
 
-        # Corte + padding de silêncio na faixa vocal.
-        final_vocal = _slice_with_padding(AudioSegment.from_file(str(temp_vocal)), v_start, v_end, padding)
+        # Salva o vocal completo sem cortes/slicing
+        final_vocal = AudioSegment.from_file(str(temp_vocal))
         final_vocal.export(str(song_dir / "vocal.mp3"), format="mp3")
 
         # Salva backing file local se fornecido
@@ -259,16 +226,13 @@ async def upload_song(
             with open(backing_file_path, "wb") as f:
                 shutil.copyfileobj(backing_file.file, f)
 
-        # Agenda processamento do backing track em segundo plano
+        # Agenda processamento do backing track em segundo plano sem corte/slicing
         background_tasks.add_task(
             background_acquire_and_process_backing,
             youtube_backing_url,
             backing_file_path,
             temp_vocal,
             song_dir,
-            b_start,
-            b_end,
-            padding,
             language,
         )
 
@@ -285,8 +249,8 @@ async def upload_song(
             run_prepare_song(str(song_dir), language)
             return {"success": True, "lyrics_status": "ready", "slug": slug, "fallback_used": False}
 
-        # --- Caminho 2 e 3: sem .lrc — transcreve vocal recortado com Whisper ---
-        logger.info("Nenhum arquivo LRC enviado. Transcrevendo vocais recortados com o Whisper...")
+        # --- Caminho 2 e 3: sem .lrc — transcreve vocal com Whisper ---
+        logger.info("Nenhum arquivo LRC enviado. Transcrevendo vocal com o Whisper...")
         stt = get_stt_engine()
         raw_data = _vocal_to_float32_mono_16k(final_vocal)
         segments, _info = stt.model.transcribe(
@@ -308,7 +272,7 @@ async def upload_song(
 
             total_duration = len(final_vocal) / 1000.0
             lrc_text, fallback_used = align_plain_lyrics(
-                plain_lyrics, segments_list, title, artist, lyrics_start_val, total_duration,
+                plain_lyrics, segments_list, title, artist, 0.0, total_duration,
             )
             with open(song_dir / "lyrics.lrc", "w", encoding="utf-8", newline="\n") as f:
                 f.write(lrc_text)
@@ -316,7 +280,7 @@ async def upload_song(
             return {"success": True, "lyrics_status": "ready", "slug": slug, "fallback_used": fallback_used}
 
         # --- Caminho 3: gera rascunho LRC só com Whisper para edição manual ---
-        draft = draft_lrc_from_whisper(segments_list, title, artist, lyrics_start_val)
+        draft = draft_lrc_from_whisper(segments_list, title, artist, 0.0)
         return {"success": True, "lyrics_status": "draft", "draft_lrc": draft, "slug": slug, "fallback_used": False}
 
     except HTTPException:
