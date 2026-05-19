@@ -62,14 +62,12 @@ def align_plain_lyrics(
     whisper_segments: list,
     title: str,
     artist: str,
-    lyrics_start_val: float,
     total_vocal_duration_sec: float,
 ) -> tuple[str, bool]:
     """Retorna (texto_lrc, fallback_used).
 
     `whisper_segments` é a sequência de segmentos do `faster_whisper` (cada item
-    tem `.start`, `.end`, `.text`). `lyrics_start_val` é o tempo do primeiro
-    verso passado pelo usuário (manda no timestamp inicial).
+    tem `.start`, `.end`, `.text`).
     """
     ref_lines = _parse_ref_lines(plain_lyrics)
     lrc_lines = [f"[ti:{title}]", f"[ar:{artist}]", ""]
@@ -192,7 +190,6 @@ def draft_lrc_from_whisper(
     whisper_segments: list,
     title: str,
     artist: str,
-    lyrics_start_val: float = 0.0,
 ) -> str:
     """Gera rascunho LRC direto da saída do Whisper (sem letra de referência)."""
     lrc_lines = [f"[ti:{title}]", f"[ar:{artist}]", ""]

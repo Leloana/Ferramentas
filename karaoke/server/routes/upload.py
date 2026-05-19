@@ -189,16 +189,9 @@ async def upload_song(
     vocal_file: Optional[UploadFile] = File(None),
     backing_file: Optional[UploadFile] = File(None),
     lrc_file: Optional[UploadFile] = File(None),
-    vocal_start: str = Form("0.0"),
-    vocal_end: str = Form("-1.0"),
-    backing_start: str = Form("0.0"),
-    backing_end: str = Form("-1.0"),
-    silence_padding: str = Form("0.0"),
-    lyrics_start: str = Form("0.0"),
     youtube_vocal_url: Optional[str] = Form(None),
     youtube_backing_url: Optional[str] = Form(None),
     plain_lyrics: Optional[str] = Form(None),
-    force_vocal_start: str = Form("false"),
 ):
     try:
         slug = slugify(f"{title}-{artist}")
@@ -272,7 +265,7 @@ async def upload_song(
 
             total_duration = len(final_vocal) / 1000.0
             lrc_text, fallback_used = align_plain_lyrics(
-                plain_lyrics, segments_list, title, artist, 0.0, total_duration,
+                plain_lyrics, segments_list, title, artist, total_duration,
             )
             with open(song_dir / "lyrics.lrc", "w", encoding="utf-8", newline="\n") as f:
                 f.write(lrc_text)
@@ -280,7 +273,7 @@ async def upload_song(
             return {"success": True, "lyrics_status": "ready", "slug": slug, "fallback_used": fallback_used}
 
         # --- Caminho 3: gera rascunho LRC só com Whisper para edição manual ---
-        draft = draft_lrc_from_whisper(segments_list, title, artist, 0.0)
+        draft = draft_lrc_from_whisper(segments_list, title, artist)
         return {"success": True, "lyrics_status": "draft", "draft_lrc": draft, "slug": slug, "fallback_used": False}
 
     except HTTPException:

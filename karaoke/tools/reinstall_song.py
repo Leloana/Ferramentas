@@ -234,9 +234,8 @@ async def reinstall_song(song_dir_path: str, language: str = None) -> bool:
             )
             segments_list = list(segments)
             total_duration = len(vocal_audio) / 1000.0
-            
             lrc_text, fallback_used = align_plain_lyrics(
-                plain_lyrics, segments_list, _get_field("meta", "title", ""), _get_field("meta", "artist", ""), 0.0, total_duration
+                plain_lyrics, segments_list, _get_field("meta", "title", ""), _get_field("meta", "artist", ""), total_duration
             )
             lrc_file.write_text(lrc_text, encoding="utf-8")
             logger.info("Arquivo lyrics.lrc alinhado e gerado com sucesso a partir de plain_lyrics!")
