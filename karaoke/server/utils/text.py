@@ -1,4 +1,4 @@
-"""Utilitários de texto: slugify e parsing de tempo flexível."""
+"""Utilitários de texto: slugify, parsing de tempo flexível e normalização de letras."""
 from __future__ import annotations
 
 import logging
@@ -6,6 +6,40 @@ import re
 import unicodedata
 
 logger = logging.getLogger(__name__)
+
+
+def normalize_lyrics_text(text: str | None) -> str:
+    """Normaliza letras planas para gravação consistente em `lyrics.txt`/`meta.json`.
+
+    Operações aplicadas (idempotentes):
+    - `\\r\\n` → `\\n` (Windows → Unix)
+    - `\\r` solto → `\\n` (Mac antigo)
+    - `strip()` em cada linha
+    - Remove linhas vazias consecutivas (mantém no máximo uma linha em branco
+      entre versos — útil para preservar separação visual sem inflar arquivos)
+    - `strip()` final do bloco inteiro
+
+    O bug que motivou: `meta.json` salvava `"\\r\\n\\r\\n"` (vindo do Windows),
+    e `reinstall_song.py` gravava esse conteúdo cru no `lyrics.txt`, gerando
+    linhas com `^M` (CR) no Linux/Mac e versos duplamente espaçados.
+    """
+    if not text:
+        return ""
+    # Normaliza line endings
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+    # Strip por linha + colapsa linhas vazias consecutivas
+    lines = [ln.strip() for ln in text.split("\n")]
+    out: list[str] = []
+    prev_blank = False
+    for ln in lines:
+        if not ln:
+            if prev_blank:
+                continue
+            prev_blank = True
+        else:
+            prev_blank = False
+        out.append(ln)
+    return "\n".join(out).strip()
 
 
 def slugify(text: str) -> str:

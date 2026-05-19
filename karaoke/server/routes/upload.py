@@ -18,7 +18,7 @@ from stt_engine import get_stt_engine
 from utils.audio import vocal_to_float32_mono_16k
 from utils.lrc_align import align_plain_lyrics, draft_lrc_from_whisper
 from utils.prepare import run_prepare_song, run_reinstall_song
-from utils.text import slugify
+from utils.text import normalize_lyrics_text, slugify
 from utils.whisper_params import TRANSCRIBE_KWARGS
 from utils.youtube import download_youtube_audio, get_youtube_video_info
 
@@ -77,6 +77,11 @@ async def upload_song(
         song_dir = SONGS_DIR / slug
         song_dir.mkdir(parents=True, exist_ok=True)
 
+        # Normaliza line endings logo na entrada — evita que `\r\n\r\n` do
+        # Windows propague para meta.json e lyrics.txt e quebre a leitura
+        # no Linux/Mac (gera ^M e duplica linhas vazias).
+        plain_lyrics = normalize_lyrics_text(plain_lyrics) or None
+
         # 1. Build and save minimal meta.json
         meta = _build_meta(locals())
         with open(song_dir / "meta.json", "w", encoding="utf-8") as f:
@@ -102,10 +107,10 @@ async def upload_song(
             with open(song_dir / "lyrics.lrc", "w", encoding="utf-8", newline="\n") as f:
                 f.write("\n".join(clean_lines))
 
-        if plain_lyrics and plain_lyrics.strip():
-            txt_lines = [line.strip() for line in plain_lyrics.splitlines() if line.strip()]
+        if plain_lyrics:
+            # `plain_lyrics` já foi normalizado em normalize_lyrics_text acima.
             with open(song_dir / "lyrics.txt", "w", encoding="utf-8", newline="\n") as f:
-                f.write("\n".join(txt_lines) + "\n")
+                f.write(plain_lyrics + "\n")
 
         # --- Caminho 1: usuário forneceu .lrc pronto ---
         if (song_dir / "lyrics.lrc").exists():

@@ -29,6 +29,7 @@ if str(PROJECT_ROOT / "server") not in sys.path:
 from state import ffmpeg_bin_dir
 from utils.audio import vocal_to_float32_mono_16k
 from utils.meta import get_meta_field
+from utils.text import normalize_lyrics_text
 from utils.whisper_params import TRANSCRIBE_KWARGS
 from utils.youtube import download_youtube_audio
 from tools.generate_lrc import generate_lrc
@@ -60,7 +61,9 @@ async def reinstall_song(song_dir_path: str, language: str = None, clean_existin
     yt_vocal = _get_field("audio", "youtube_vocal_url")
     yt_backing = _get_field("audio", "youtube_backing_url")
     song_lang = language or _get_field("meta", "language") or "pt"
-    plain_lyrics = _get_field("lyrics", "plain_lyrics")
+    # Normaliza ao ler: meta.json antigo pode ter sido salvo com `\r\n` do Windows,
+    # o que gera `^M` e linhas duplicadas no lyrics.txt depois.
+    plain_lyrics = normalize_lyrics_text(_get_field("lyrics", "plain_lyrics"))
     
     vocal_exists = (song_dir / "vocal.mp3").exists()
     backing_exists = (song_dir / "backing_track.mp3").exists()
@@ -80,13 +83,13 @@ async def reinstall_song(song_dir_path: str, language: str = None, clean_existin
         lrc_backup = lrc_file.read_text(encoding="utf-8")
     if txt_file.exists():
         logger.info("Fazendo backup temporário das letras planas (lyrics.txt)...")
-        txt_backup = txt_file.read_text(encoding="utf-8")
+        txt_backup = normalize_lyrics_text(txt_file.read_text(encoding="utf-8"))
 
     # Se plain_lyrics não estiver no meta.json, mas tivermos um backup de lyrics.txt, usamos o backup!
-    if (not plain_lyrics or not plain_lyrics.strip()) and txt_backup and txt_backup.strip():
+    if not plain_lyrics and txt_backup and txt_backup.strip():
         logger.info("plain_lyrics não encontrado no meta.json, mas backup de lyrics.txt está disponível. Utilizando para alinhamento!")
-        plain_lyrics = txt_backup
-        # Sincroniza de volta no meta.json para persistir
+        plain_lyrics = normalize_lyrics_text(txt_backup)
+        # Sincroniza de volta no meta.json para persistir (já normalizado)
         if "lyrics" not in meta or not isinstance(meta["lyrics"], dict):
             meta["lyrics"] = {}
         meta["lyrics"]["plain_lyrics"] = plain_lyrics
@@ -189,10 +192,10 @@ async def reinstall_song(song_dir_path: str, language: str = None, clean_existin
                     logger.error("Erro crítico: Falha ao baixar o canal Instrumental do YouTube.")
                     return False
 
-            # 2 - Cria arquivo lyrics.txt
-            if plain_lyrics and plain_lyrics.strip():
+            # 2 - Cria arquivo lyrics.txt (plain_lyrics já foi normalizado no read).
+            if plain_lyrics:
                 logger.info("Cria arquivo lyrics.txt a partir de plain_lyrics...")
-                txt_file.write_text(plain_lyrics.strip() + "\n", encoding="utf-8")
+                txt_file.write_text(plain_lyrics + "\n", encoding="utf-8")
 
             # 3 - Separa áudio do youtube backing e vocal (ou exporta canais já baixados)
             if use_demucs:

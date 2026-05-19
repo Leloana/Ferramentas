@@ -10,6 +10,7 @@ from fastapi import APIRouter, Form, HTTPException, Response
 from state import SONGS_DIR
 from utils.http import set_no_cache
 from utils.prepare import run_prepare_song
+from utils.text import normalize_lyrics_text
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -79,7 +80,14 @@ async def save_lyrics(
                     raise ValueError("O JSON deve ser um objeto contendo chaves/valores.")
             except Exception as je:
                 raise HTTPException(status_code=400, detail=f"Erro de sintaxe no meta.json: {je}")
-            
+
+            # Normaliza `plain_lyrics` antes de persistir — evita que `\r\n` do
+            # editor do usuário se infiltre no JSON e quebre o lyrics.txt depois.
+            if isinstance(meta_data.get("lyrics"), dict):
+                pl = meta_data["lyrics"].get("plain_lyrics")
+                if isinstance(pl, str):
+                    meta_data["lyrics"]["plain_lyrics"] = normalize_lyrics_text(pl)
+
             meta_path = song_dir / "meta.json"
             with open(meta_path, "w", encoding="utf-8", newline="\n") as f:
                 json.dump(meta_data, f, indent=4, ensure_ascii=False)
