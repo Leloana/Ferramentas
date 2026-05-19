@@ -45,7 +45,7 @@ def _vocal_to_float32_mono_16k(vocal: AudioSegment) -> np.ndarray:
         raw /= 2147483648.0
     return raw
 
-async def reinstall_song(song_dir_path: str, language: str = None) -> bool:
+async def reinstall_song(song_dir_path: str, language: str = None, clean_existing: bool = True) -> bool:
     song_dir = Path(song_dir_path)
     meta_path = song_dir / "meta.json"
     
@@ -76,8 +76,11 @@ async def reinstall_song(song_dir_path: str, language: str = None) -> bool:
     song_lang = language or _get_field("meta", "language") or "pt"
     plain_lyrics = _get_field("lyrics", "plain_lyrics")
     
-    if not yt_vocal:
-        logger.error("Erro: meta.json deve conter pelo menos 'youtube_vocal_url' (no campo 'audio') para reinstalação.")
+    vocal_exists = (song_dir / "vocal.mp3").exists()
+    backing_exists = (song_dir / "backing_track.mp3").exists()
+    
+    if not yt_vocal and not vocal_exists:
+        logger.error("Erro: meta.json deve conter 'youtube_vocal_url' (no campo 'audio') ou vocal.mp3 local já deve existir.")
         return False
 
     # 2. Backup de letras customizadas (LRC e TXT) para preservar as edições do usuário se necessário
@@ -104,22 +107,25 @@ async def reinstall_song(song_dir_path: str, language: str = None) -> bool:
         try:
             with open(meta_path, "w", encoding="utf-8", newline="\n") as f:
                 json.dump(meta, f, indent=4, ensure_ascii=False)
-            logger.info("meta.json atualizado com plain_lyrics obtido do backup de lyrics.txt.")
+            logger.info("meta.json updated with plain_lyrics.")
         except Exception as e:
             logger.warning(f"Não foi possível salvar a atualização no meta.json: {e}")
 
-    # 3. Limpeza total da pasta da música (exceto meta.json)
-    logger.info("Limpando arquivos antigos da pasta...")
-    for item in song_dir.iterdir():
-        if item.name == "meta.json":
-            continue
-        try:
-            if item.is_dir():
-                shutil.rmtree(item)
-            else:
-                item.unlink()
-        except Exception as e:
-            logger.warning(f"Não foi possível remover o arquivo residual {item.name}: {e}")
+    # 3. Limpeza total da pasta da música (exceto meta.json) se clean_existing for True
+    if clean_existing:
+        logger.info("Limpando arquivos antigos da pasta...")
+        for item in song_dir.iterdir():
+            if item.name == "meta.json":
+                continue
+            try:
+                if item.is_dir():
+                    shutil.rmtree(item)
+                else:
+                    item.unlink()
+            except Exception as e:
+                logger.warning(f"Não foi possível remover o arquivo residual {item.name}: {e}")
+    else:
+        logger.info("clean_existing=False. Preservando arquivos existentes na pasta para reaproveitamento inteligente.")
 
     # 4. Downloads frescos do YouTube (e separação opcional com Demucs)
     temp_vocal = song_dir / "temp_vocal.mp3"
@@ -130,78 +136,119 @@ async def reinstall_song(song_dir_path: str, language: str = None) -> bool:
     use_demucs = not yt_backing or not yt_backing.strip()
     
     try:
-        # 1 - Baixa áudio do YouTube
-        if use_demucs:
-            logger.info("Nenhuma URL de backing fornecida. Utilizando abordagem Demucs no áudio original!")
-            logger.info(f"Baixando áudio original do YouTube: {yt_vocal}")
-            success = await download_youtube_audio(yt_vocal, original_audio_path, ffmpeg_bin_dir)
-            if not success or not original_audio_path.exists():
-                logger.error("Erro crítico: Falha ao baixar o áudio original do YouTube.")
-                return False
+        if not clean_existing and vocal_exists and backing_exists:
+            logger.info("vocal.mp3 e backing_track.mp3 já existem. Pulando download e separação de áudio.")
+            vocal_audio = AudioSegment.from_file(str(song_dir / "vocal.mp3"))
+            backing_audio = AudioSegment.from_file(str(song_dir / "backing_track.mp3"))
+        elif not clean_existing and vocal_exists:
+            logger.info("vocal.mp3 já existe. Pulando download do vocal.")
+            vocal_audio = AudioSegment.from_file(str(song_dir / "vocal.mp3"))
+            if use_demucs and not backing_exists:
+                logger.info("Executando Demucs no vocal.mp3 existente para separar o instrumental...")
+                python_dir = Path(sys.executable).parent
+                demucs_exe = python_dir / "demucs.exe"
+                if not demucs_exe.exists():
+                    demucs_exe = python_dir / "Scripts" / "demucs.exe"
+                if not demucs_exe.exists():
+                    demucs_exe = "demucs"
+                
+                demucs_cmd = [
+                    str(demucs_exe),
+                    "--two-stems", "vocals",
+                    "-d", "cuda",
+                    "-o", str(demucs_out_dir),
+                    str(song_dir / "vocal.mp3")
+                ]
+                process = subprocess.run(demucs_cmd, capture_output=True, text=True)
+                if process.returncode != 0:
+                    logger.error(f"Erro ao executar Demucs: {process.stderr}")
+                    return False
+                    
+                separated_dir = demucs_out_dir / "htdemucs" / "vocal"
+                no_vocals_wav = separated_dir / "no_vocals.wav"
+                if not no_vocals_wav.exists():
+                    logger.error("Erro crítico: backing track não gerada pelo Demucs.")
+                    return False
+                    
+                backing_audio = AudioSegment.from_file(str(no_vocals_wav))
+                backing_audio.export(str(song_dir / "backing_track.mp3"), format="mp3")
+            elif backing_exists:
+                backing_audio = AudioSegment.from_file(str(song_dir / "backing_track.mp3"))
+            else:
+                # Fallback se não há backing track e use_demucs=False
+                backing_audio = AudioSegment.silent(duration=1000)
         else:
-            logger.info("Baixando canais de áudio frescos do YouTube...")
-            logger.info(f" -> Vocal: {yt_vocal}")
-            logger.info(f" -> Instrumental: {yt_backing}")
-            
-            v_ok, b_ok = await asyncio.gather(
-                download_youtube_audio(yt_vocal, temp_vocal, ffmpeg_bin_dir),
-                download_youtube_audio(yt_backing, temp_backing, ffmpeg_bin_dir)
-            )
-            
-            if not v_ok or not temp_vocal.exists():
-                logger.error("Erro crítico: Falha ao baixar o canal Vocal do YouTube.")
-                return False
-            if not b_ok or not temp_backing.exists():
-                logger.error("Erro crítico: Falha ao baixar o canal Instrumental do YouTube.")
-                return False
+            # 1 - Baixa áudio do YouTube
+            if use_demucs:
+                logger.info("Nenhuma URL de backing fornecida. Utilizando abordagem Demucs no áudio original!")
+                logger.info(f"Baixando áudio original do YouTube: {yt_vocal}")
+                success = await download_youtube_audio(yt_vocal, original_audio_path, ffmpeg_bin_dir)
+                if not success or not original_audio_path.exists():
+                    logger.error("Erro crítico: Falha ao baixar o áudio original do YouTube.")
+                    return False
+            else:
+                logger.info("Baixando canais de áudio frescos do YouTube...")
+                logger.info(f" -> Vocal: {yt_vocal}")
+                logger.info(f" -> Instrumental: {yt_backing}")
+                
+                v_ok, b_ok = await asyncio.gather(
+                    download_youtube_audio(yt_vocal, temp_vocal, ffmpeg_bin_dir),
+                    download_youtube_audio(yt_backing, temp_backing, ffmpeg_bin_dir)
+                )
+                
+                if not v_ok or not temp_vocal.exists():
+                    logger.error("Erro crítico: Falha ao baixar o canal Vocal do YouTube.")
+                    return False
+                if not b_ok or not temp_backing.exists():
+                    logger.error("Erro crítico: Falha ao baixar o canal Instrumental do YouTube.")
+                    return False
 
-        # 2 - Cria arquivo lyrics.txt
-        if plain_lyrics and plain_lyrics.strip():
-            logger.info("Cria arquivo lyrics.txt a partir de plain_lyrics...")
-            txt_file.write_text(plain_lyrics.strip() + "\n", encoding="utf-8")
+            # 2 - Cria arquivo lyrics.txt
+            if plain_lyrics and plain_lyrics.strip():
+                logger.info("Cria arquivo lyrics.txt a partir de plain_lyrics...")
+                txt_file.write_text(plain_lyrics.strip() + "\n", encoding="utf-8")
 
-        # 3 - Separa áudio do youtube backing e vocal (ou exporta canais já baixados)
-        if use_demucs:
-            # Localiza demucs.exe na pasta de binários do python
-            python_dir = Path(sys.executable).parent
-            demucs_exe = python_dir / "demucs.exe"
-            if not demucs_exe.exists():
-                demucs_exe = python_dir / "Scripts" / "demucs.exe"
-            if not demucs_exe.exists():
-                demucs_exe = "demucs"
+            # 3 - Separa áudio do youtube backing e vocal (ou exporta canais já baixados)
+            if use_demucs:
+                python_dir = Path(sys.executable).parent
+                demucs_exe = python_dir / "demucs.exe"
+                if not demucs_exe.exists():
+                    demucs_exe = python_dir / "Scripts" / "demucs.exe"
+                if not demucs_exe.exists():
+                    demucs_exe = "demucs"
+                    
+                logger.info("Executando separação Demucs com aceleração de hardware CUDA...")
+                demucs_cmd = [
+                    str(demucs_exe),
+                    "--two-stems", "vocals",
+                    "-d", "cuda",
+                    "-o", str(demucs_out_dir),
+                    str(original_audio_path)
+                ]
+                process = subprocess.run(demucs_cmd, capture_output=True, text=True)
+                if process.returncode != 0:
+                    logger.error(f"Erro ao executar Demucs: {process.stderr}")
+                    return False
+                    
+                separated_dir = demucs_out_dir / "htdemucs" / "original"
+                vocals_wav = separated_dir / "vocals.wav"
+                no_vocals_wav = separated_dir / "no_vocals.wav"
                 
-            logger.info("Executando separação Demucs com aceleração de hardware CUDA...")
-            demucs_cmd = [
-                str(demucs_exe),
-                "--two-stems", "vocals",
-                "-d", "cuda",
-                "-o", str(demucs_out_dir),
-                str(original_audio_path)
-            ]
-            process = subprocess.run(demucs_cmd, capture_output=True, text=True)
-            if process.returncode != 0:
-                logger.error(f"Erro ao executar Demucs: {process.stderr}")
-                return False
+                if not vocals_wav.exists() or not no_vocals_wav.exists():
+                    logger.error("Erro crítico: Os arquivos separados pelo Demucs não foram gerados.")
+                    return False
+                    
+                vocal_audio = AudioSegment.from_file(str(vocals_wav))
+                backing_audio = AudioSegment.from_file(str(no_vocals_wav))
+            else:
+                vocal_audio = AudioSegment.from_file(str(temp_vocal))
+                backing_audio = AudioSegment.from_file(str(temp_backing))
                 
-            separated_dir = demucs_out_dir / "htdemucs" / "original"
-            vocals_wav = separated_dir / "vocals.wav"
-            no_vocals_wav = separated_dir / "no_vocals.wav"
-            
-            if not vocals_wav.exists() or not no_vocals_wav.exists():
-                logger.error("Erro crítico: Os arquivos separados pelo Demucs não foram gerados.")
-                return False
-                
-            vocal_audio = AudioSegment.from_file(str(vocals_wav))
-            backing_audio = AudioSegment.from_file(str(no_vocals_wav))
-        else:
-            vocal_audio = AudioSegment.from_file(str(temp_vocal))
-            backing_audio = AudioSegment.from_file(str(temp_backing))
-            
-        # Salvar os canais de áudio definitivos sem corte/slicing
-        logger.info("Salvando os canais de áudio definitivos...")
-        vocal_audio.export(str(song_dir / "vocal.mp3"), format="mp3")
-        backing_audio.export(str(song_dir / "backing_track.mp3"), format="mp3")
-        logger.info("Áudios exportados com sucesso!")
+            # Salvar os canais de áudio definitivos sem corte/slicing
+            logger.info("Salvando os canais de áudio definitivos...")
+            vocal_audio.export(str(song_dir / "vocal.mp3"), format="mp3")
+            backing_audio.export(str(song_dir / "backing_track.mp3"), format="mp3")
+            logger.info("Áudios exportados com sucesso!")
     except Exception as e:
         logger.error(f"Erro ao processar áudios: {e}")
         return False
@@ -220,7 +267,9 @@ async def reinstall_song(song_dir_path: str, language: str = None) -> bool:
                 pass
 
     # 4 - whisper percorre o arquivo vocal fazendo os tempos & 5 - Cria arquivo lyrics.lrc
-    if plain_lyrics and plain_lyrics.strip():
+    if lrc_file.exists() and (not plain_lyrics or not plain_lyrics.strip()):
+        logger.info("lyrics.lrc já existe e plain_lyrics não foi fornecido. Mantendo lyrics.lrc existente.")
+    elif plain_lyrics and plain_lyrics.strip():
         logger.info("plain_lyrics disponível. Whisper percorrendo arquivo vocal para cruzar com lyrics.txt...")
         
         try:

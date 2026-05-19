@@ -17,7 +17,7 @@ from pydub import AudioSegment
 from state import ffmpeg_bin_dir
 from stt_engine import get_stt_engine
 from utils.lrc_align import align_plain_lyrics, draft_lrc_from_whisper
-from utils.prepare import run_prepare_song
+from utils.prepare import run_prepare_song, run_reinstall_song
 from utils.text import parse_time_to_seconds, slugify
 from utils.youtube import download_youtube_audio, get_youtube_video_info
 
@@ -64,111 +64,6 @@ def _build_meta(form: dict) -> dict:
     }
 
 
-async def _acquire_vocal(
-    youtube_vocal_url: Optional[str],
-    vocal_file: Optional[UploadFile],
-    temp_vocal: Path,
-) -> None:
-    """Garante que `temp_vocal` exista no disco — via YouTube ou upload local do vocal."""
-    has_yt_v = bool(youtube_vocal_url and youtube_vocal_url.strip())
-
-    if has_yt_v:
-        logger.info(f"Iniciando download do canal Vocal do YouTube: {youtube_vocal_url}")
-        v_ok = await download_youtube_audio(youtube_vocal_url.strip(), temp_vocal, ffmpeg_bin_dir)
-        if not v_ok or not temp_vocal.exists():
-            raise HTTPException(status_code=400, detail="Falha ao baixar o áudio Vocal do YouTube. Verifique a URL.")
-        return
-
-    # Caminho do upload de arquivo local ou erro
-    if not vocal_file or not vocal_file.filename:
-        raise HTTPException(status_code=400, detail="Você precisa subir um arquivo local de áudio ou fornecer o link do YouTube.")
-        
-    with open(temp_vocal, "wb") as f:
-        shutil.copyfileobj(vocal_file.file, f)
-
-
-async def background_acquire_and_process_backing(
-    youtube_backing_url: Optional[str],
-    backing_file_path: Optional[Path],
-    temp_vocal_path: Path,
-    song_dir: Path,
-    language: str,
-) -> None:
-    """Adquire e processa a faixa instrumental (backing track) em segundo plano, correndo prepare_song no final."""
-    try:
-        temp_backing = song_dir / "temp_backing.mp3"
-        use_demucs = not youtube_backing_url or not youtube_backing_url.strip()
-        
-        if backing_file_path and backing_file_path.exists():
-            use_demucs = False
-            shutil.move(str(backing_file_path), str(temp_backing))
-
-        if use_demucs:
-            logger.info("Nenhuma URL ou arquivo de backing fornecido. Executando separação Demucs com GPU CUDA em segundo plano...")
-            demucs_out_dir = song_dir / "demucs_output"
-            python_dir = Path(sys.executable).parent
-            demucs_exe = python_dir / "demucs.exe"
-            if not demucs_exe.exists():
-                demucs_exe = python_dir / "Scripts" / "demucs.exe"
-            if not demucs_exe.exists():
-                demucs_exe = "demucs"
-                
-            demucs_cmd = [
-                str(demucs_exe),
-                "--two-stems", "vocals",
-                "-d", "cuda",
-                "-o", str(demucs_out_dir),
-                str(temp_vocal_path)
-            ]
-            
-            process = subprocess.run(demucs_cmd, capture_output=True, text=True)
-            if process.returncode != 0:
-                logger.error(f"Erro no Demucs em segundo plano: {process.stderr}")
-                return
-                
-            separated_dir = demucs_out_dir / "htdemucs" / temp_vocal_path.stem
-            no_vocals_wav = separated_dir / "no_vocals.wav"
-            
-            if not no_vocals_wav.exists():
-                logger.error("Erro crítico em segundo plano: no_vocals.wav não foi localizado.")
-                return
-                
-            backing_audio = AudioSegment.from_file(str(no_vocals_wav))
-            backing_audio.export(str(song_dir / "backing_track.mp3"), format="mp3")
-            
-            try:
-                shutil.rmtree(demucs_out_dir)
-            except Exception:
-                pass
-        else:
-            # Se já temos o arquivo local movido para temp_backing
-            if not temp_backing.exists():
-                logger.info(f"Baixando canal backing do YouTube em segundo plano: {youtube_backing_url}")
-                success = await download_youtube_audio(youtube_backing_url.strip(), temp_backing, ffmpeg_bin_dir)
-                if not success or not temp_backing.exists():
-                    logger.error("Erro crítico em segundo plano: Falha ao baixar o backing do YouTube.")
-                    return
-                    
-            backing_audio = AudioSegment.from_file(str(temp_backing))
-            backing_audio.export(str(song_dir / "backing_track.mp3"), format="mp3")
-            
-            try:
-                temp_backing.unlink()
-            except Exception:
-                pass
-                
-        logger.info("Backing track gerado com sucesso em segundo plano!")
-        
-        # Limpeza do temp_vocal_path
-        if temp_vocal_path.exists():
-            try:
-                temp_vocal_path.unlink()
-            except Exception:
-                pass
-    except Exception as e:
-        logger.error(f"Erro no processamento em segundo plano do backing track: {e}", exc_info=True)
-
-
 @router.get("/api/youtube-metadata")
 async def get_youtube_metadata(url: str):
     """Obtém de forma rápida (metadados apenas) o artista e título do vídeo do YouTube."""
@@ -197,39 +92,22 @@ async def upload_song(
         song_dir = SONGS_DIR / slug
         song_dir.mkdir(parents=True, exist_ok=True)
 
-        # Snapshot de parâmetros para auditoria.
+        # 1. Build and save minimal meta.json
         meta = _build_meta(locals())
         with open(song_dir / "meta.json", "w", encoding="utf-8") as f:
             json.dump(meta, f, indent=4, ensure_ascii=False)
 
-        temp_vocal = song_dir / "temp_vocal.mp3"
+        # 2. Save uploaded files if provided
+        vocal_path = song_dir / "vocal.mp3"
+        if vocal_file and vocal_file.filename:
+            with open(vocal_path, "wb") as f:
+                shutil.copyfileobj(vocal_file.file, f)
 
-        # Adquire vocal sincronamente
-        await _acquire_vocal(youtube_vocal_url, vocal_file, temp_vocal)
-
-        # Salva o vocal completo sem cortes/slicing
-        final_vocal = AudioSegment.from_file(str(temp_vocal))
-        final_vocal.export(str(song_dir / "vocal.mp3"), format="mp3")
-
-        # Salva backing file local se fornecido
-        backing_file_path = None
         if backing_file and backing_file.filename:
-            backing_file_path = song_dir / "temp_backing_upload.mp3"
-            with open(backing_file_path, "wb") as f:
+            with open(song_dir / "backing_track.mp3", "wb") as f:
                 shutil.copyfileobj(backing_file.file, f)
 
-        # Agenda processamento do backing track em segundo plano sem corte/slicing
-        background_tasks.add_task(
-            background_acquire_and_process_backing,
-            youtube_backing_url,
-            backing_file_path,
-            temp_vocal,
-            song_dir,
-            language,
-        )
-
-        # --- Caminho 1: usuário forneceu .lrc pronto ---
-        if lrc_file is not None and lrc_file.filename:
+        if lrc_file and lrc_file.filename:
             lrc_content = await lrc_file.read()
             try:
                 lrc_text = lrc_content.decode("utf-8")
@@ -238,13 +116,38 @@ async def upload_song(
             clean_lines = [line.strip() for line in lrc_text.splitlines() if line.strip()]
             with open(song_dir / "lyrics.lrc", "w", encoding="utf-8", newline="\n") as f:
                 f.write("\n".join(clean_lines))
-            run_prepare_song(str(song_dir), language)
+
+        if plain_lyrics and plain_lyrics.strip():
+            txt_lines = [line.strip() for line in plain_lyrics.splitlines() if line.strip()]
+            with open(song_dir / "lyrics.txt", "w", encoding="utf-8", newline="\n") as f:
+                f.write("\n".join(txt_lines) + "\n")
+
+        # --- Caminho 1: usuário forneceu .lrc pronto ---
+        if (song_dir / "lyrics.lrc").exists():
+            background_tasks.add_task(run_reinstall_song, str(song_dir), language, False)
             return {"success": True, "lyrics_status": "ready", "slug": slug, "fallback_used": False}
 
-        # --- Caminho 2 e 3: sem .lrc — transcreve vocal com Whisper ---
-        logger.info("Nenhum arquivo LRC enviado. Transcrevendo vocal com o Whisper...")
+        # --- Caminho 2: usuário forneceu letra plana → alinha em segundo plano ---
+        if plain_lyrics and plain_lyrics.strip():
+            background_tasks.add_task(run_reinstall_song, str(song_dir), language, False)
+            return {"success": True, "lyrics_status": "ready", "slug": slug, "fallback_used": False}
+
+        # --- Caminho 3: gera rascunho LRC só com Whisper para edição manual ---
+        # Nesse caminho, precisamos gerar a transcrição no primeiro plano para abrir o editor LRC.
+        # Por isso, precisamos garantir que o vocal.mp3 esteja disponível no disco.
+        if not vocal_path.exists():
+            if youtube_vocal_url and youtube_vocal_url.strip():
+                logger.info(f"Baixando canal Vocal em primeiro plano para transcrição de rascunho: {youtube_vocal_url}")
+                v_ok = await download_youtube_audio(youtube_vocal_url.strip(), vocal_path, ffmpeg_bin_dir)
+                if not v_ok or not vocal_path.exists():
+                    raise HTTPException(status_code=400, detail="Falha ao baixar o áudio Vocal do YouTube. Verifique a URL.")
+            else:
+                raise HTTPException(status_code=400, detail="Você precisa subir um arquivo local de áudio ou fornecer o link do YouTube.")
+
+        logger.info("Nenhum arquivo LRC enviado. Transcrevendo vocal com o Whisper em primeiro plano...")
         stt = get_stt_engine()
-        raw_data = _vocal_to_float32_mono_16k(final_vocal)
+        vocal_audio = AudioSegment.from_file(str(vocal_path))
+        raw_data = _vocal_to_float32_mono_16k(vocal_audio)
         segments, _info = stt.model.transcribe(
             raw_data,
             language=language,
@@ -255,23 +158,9 @@ async def upload_song(
         )
         segments_list = list(segments)
 
-        # --- Caminho 2: usuário forneceu letra plana → alinha com Whisper ---
-        if plain_lyrics and plain_lyrics.strip():
-            logger.info("Letra de referência fornecida. Alinhando com a transcrição do Whisper...")
-            txt_lines = [line.strip() for line in plain_lyrics.splitlines() if line.strip()]
-            with open(song_dir / "lyrics.txt", "w", encoding="utf-8", newline="\n") as f:
-                f.write("\n".join(txt_lines) + "\n")
+        # Agenda a conclusão do processo em segundo plano (backing track Demucs, etc.)
+        background_tasks.add_task(run_reinstall_song, str(song_dir), language, False)
 
-            total_duration = len(final_vocal) / 1000.0
-            lrc_text, fallback_used = align_plain_lyrics(
-                plain_lyrics, segments_list, title, artist, total_duration,
-            )
-            with open(song_dir / "lyrics.lrc", "w", encoding="utf-8", newline="\n") as f:
-                f.write(lrc_text)
-            run_prepare_song(str(song_dir), language)
-            return {"success": True, "lyrics_status": "ready", "slug": slug, "fallback_used": fallback_used}
-
-        # --- Caminho 3: gera rascunho LRC só com Whisper para edição manual ---
         draft = draft_lrc_from_whisper(segments_list, title, artist)
         return {"success": True, "lyrics_status": "draft", "draft_lrc": draft, "slug": slug, "fallback_used": False}
 

@@ -14,3 +14,12 @@ def run_prepare_song(song_dir: str, language: str) -> None:
         sys.path.append(tools_path)
     from prepare_song import prepare_song  # import tardio: depende de pesos/modelos
     prepare_song(song_dir, language)
+
+
+async def run_reinstall_song(song_dir: str, language: str = None, clean_existing: bool = True) -> bool:
+    """Executa o pipeline completo do `reinstall_song` de forma assíncrona."""
+    tools_path = str(_TOOLS_DIR)
+    if tools_path not in sys.path:
+        sys.path.append(tools_path)
+    from reinstall_song import reinstall_song  # import tardio
+    return await reinstall_song(song_dir, language, clean_existing)
