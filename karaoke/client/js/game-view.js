@@ -75,7 +75,7 @@ export function resetGameState() {
     dom.btnStart.disabled = false;
     dom.btnStart.innerText = 'INICIAR CANTO';
     dom.btnExit.style.display = 'none';
-    document.getElementById('sync-controls').style.display = 'none';
+    document.getElementById('sync-controls').style.display = 'flex';
 
     state.selectedSongId = null;
     state.currentSegments = null;
@@ -151,7 +151,7 @@ export async function startKaraoke() {
 
     dom.btnStart.style.display = 'none';
     dom.btnExit.style.display = 'inline-block';
-    document.getElementById('sync-controls').style.display = 'inline-flex';
+    document.getElementById('sync-controls').style.display = 'flex';
 }
 
 export function handleServerMessage(data) {

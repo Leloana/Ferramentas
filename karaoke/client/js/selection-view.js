@@ -101,6 +101,7 @@ export function selectSong(song) {
     document.getElementById('current-song-title').innerText = song.title;
     dom.selectionArea.style.display = 'none';
     dom.gameArea.style.display = 'block';
+    document.getElementById('sync-controls').style.display = 'flex';
     dom.audioPlayer.src = `/songs/${song.id}/audio`;
 
     const savedVolume = localStorage.getItem('karaoke_backing_volume');
