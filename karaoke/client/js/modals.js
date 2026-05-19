@@ -151,11 +151,6 @@ function initAddSongModal() {
             }
         };
     }
-
-    document.getElementById('vocal-start').oninput = (e) => {
-        document.getElementById('lyrics-start').value = e.target.value;
-    };
-
     btnCloseAddSong.onclick = () => {
         addSongModal.style.display = 'none';
     };
