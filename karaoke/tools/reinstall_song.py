@@ -30,6 +30,7 @@ if str(PROJECT_ROOT / "server") not in sys.path:
 
 from state import ffmpeg_bin_dir
 from utils.text import parse_time_to_seconds
+from utils.whisper_params import TRANSCRIBE_KWARGS
 from utils.youtube import download_youtube_audio
 from tools.generate_lrc import generate_lrc
 from tools.prepare_song import prepare_song
@@ -278,14 +279,15 @@ async def reinstall_song(song_dir_path: str, language: str = None, clean_existin
             
             stt = get_stt_engine()
             raw_data = _vocal_to_float32_mono_16k(vocal_audio)
+            # Mesmos parâmetros do path de upload — antes divergiam (upload usava defaults
+            # do faster-whisper e reinstall usava min_silence=2000ms agressivo), o que
+            # produzia LRC diferente dependendo de qual caminho gerou. Ver
+            # `utils/whisper_params.py` para a tabela de tuning.
             segments, _info = stt.model.transcribe(
                 raw_data,
                 language=song_lang,
-                beam_size=5,
-                vad_filter=True, # LIGADO novamente para pular o instrumental do início
-                vad_parameters=dict(threshold=0.3, min_silence_duration_ms=2000, speech_pad_ms=600), # Parâmetros soltos para não cortar os gritos do punk rock
-                condition_on_previous_text=False, # DESLIGADO para ele não se perder após longas pausas
-                word_timestamps=True,
+                initial_prompt=plain_lyrics if plain_lyrics else None,
+                **TRANSCRIBE_KWARGS,
             )
             segments_list = list(segments)
             total_duration = len(vocal_audio) / 1000.0

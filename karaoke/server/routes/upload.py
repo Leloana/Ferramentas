@@ -19,6 +19,7 @@ from stt_engine import get_stt_engine
 from utils.lrc_align import align_plain_lyrics, draft_lrc_from_whisper
 from utils.prepare import run_prepare_song, run_reinstall_song
 from utils.text import parse_time_to_seconds, slugify
+from utils.whisper_params import TRANSCRIBE_KWARGS
 from utils.youtube import download_youtube_audio, get_youtube_video_info
 
 logger = logging.getLogger(__name__)
@@ -151,10 +152,7 @@ async def upload_song(
         segments, _info = stt.model.transcribe(
             raw_data,
             language=language,
-            beam_size=5,
-            vad_filter=True,
-            condition_on_previous_text=False,
-            word_timestamps=True,
+            **TRANSCRIBE_KWARGS,
         )
         segments_list = list(segments)
 
