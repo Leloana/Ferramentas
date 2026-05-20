@@ -22,7 +22,8 @@ from __future__ import annotations
 
 import logging
 import re
-from difflib import SequenceMatcher
+
+from rapidfuzz import fuzz
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +38,15 @@ NO_LRC_LINE_INTERVAL_SEC = 4.0  # usado quando o Whisper não devolveu nada
 # Injeção de marcador de pausa: gap entre fim de uma linha e início da
 # próxima precisa ser maior que isso para virar uma linha vazia no LRC.
 PAUSE_INJECT_MIN_GAP_SEC = 0.6
+
+# Matching word-level com cursor forward-only:
+WORD_SEARCH_WINDOW = 40  # quantas palavras à frente do cursor olhar
+WORD_MIN_FUZZ_RATIO = 80  # rapidfuzz.ratio mínimo p/ aceitar match
+# Limites realistas de taxa de canto (palavras/seg), usados na extrapolação
+# de bordas. Ballads ~0.3 wps; rap denso ~2.5 wps.
+RATE_MIN_SEC_PER_WORD = 0.15
+RATE_MAX_SEC_PER_WORD = 1.5
+DEFAULT_SEC_PER_WORD = 0.4
 
 
 def _format_timestamp(t: float) -> str:
@@ -95,35 +105,51 @@ def _flatten_whisper(whisper_segments: list) -> list[dict]:
     return out
 
 
-def _interp_unmatched(times: list[float | None]) -> list[float]:
-    """Preenche `None` por interpolação linear entre vizinhas conhecidas.
+def _clamp_rate(sec_per_word: float) -> float:
+    """Clipa a taxa estimada (s/palavra) em limites musicalmente realistas."""
+    return max(RATE_MIN_SEC_PER_WORD, min(sec_per_word, RATE_MAX_SEC_PER_WORD))
 
-    Bordas: se não há âncora antes, copia a primeira âncora à frente
-    (e subtrai 0.1s por palavra para preservar ordem); se não há
-    âncora depois, anda 0.3s por palavra. Garante monotonicidade.
+
+def _interp_unmatched(times: list[float | None]) -> list[float]:
+    """Preenche `None` por interpolação entre âncoras conhecidas.
+
+    Estratégia:
+    - Entre duas âncoras: interpolação linear (taxa local).
+    - Antes da primeira âncora: extrapola usando a taxa estimada das 2
+      primeiras âncoras (ou um default conservador se só há 1).
+    - Depois da última âncora: extrapola usando a taxa das 2 últimas.
+    - Monotonicidade forçada com delta mínimo de 0.01s.
+
+    Isso é melhor que a versão anterior (que empacotava as palavras de
+    borda em 100ms/300ms fixos) porque respeita a taxa real de canto
+    estimada pelos vizinhos.
     """
     n = len(times)
     if n == 0:
         return []
 
-    # Encontra anchors (índices com tempo conhecido)
     anchors = [i for i, t in enumerate(times) if t is not None]
     if not anchors:
-        # Nada foi casado — fallback total, retorna zeros (caller decide)
         return [0.0] * n
 
     result: list[float] = [0.0] * n
+
+    # Estima taxa da borda inicial (s/palavra) usando as 2 primeiras âncoras
+    if len(anchors) >= 2:
+        a0, a1 = anchors[0], anchors[1]
+        rate_start = _clamp_rate((times[a1] - times[a0]) / max(1, a1 - a0))
+    else:
+        rate_start = DEFAULT_SEC_PER_WORD
 
     # Antes da primeira âncora
     first = anchors[0]
     t0 = times[first]
     for i in range(first):
-        result[i] = max(0.0, t0 - 0.1 * (first - i))
+        result[i] = max(0.0, t0 - rate_start * (first - i))
 
     # Entre cada par de âncoras consecutivas
     for a, b in zip(anchors, anchors[1:]):
-        ta = times[a]
-        tb = times[b]
+        ta, tb = times[a], times[b]
         result[a] = ta
         gap = b - a
         if gap > 1:
@@ -132,14 +158,18 @@ def _interp_unmatched(times: list[float | None]) -> list[float]:
                 result[a + k] = ta + step * k
         result[b] = tb
 
-    # Depois da última âncora
-    last = anchors[-1]
-    tl = times[last]
-    result[last] = tl
-    for i in range(last + 1, n):
-        result[i] = tl + 0.3 * (i - last)
+    # Estima taxa da borda final
+    if len(anchors) >= 2:
+        am1, am2 = anchors[-1], anchors[-2]
+        rate_end = _clamp_rate((times[am1] - times[am2]) / max(1, am1 - am2))
+    else:
+        rate_end = DEFAULT_SEC_PER_WORD
 
-    # Força monotonicidade estrita (delta mínimo 0.01s)
+    last = anchors[-1]
+    for i in range(last + 1, n):
+        result[i] = times[last] + rate_end * (i - last)
+
+    # Força monotonicidade
     for i in range(1, n):
         if result[i] < result[i - 1] + 0.01:
             result[i] = result[i - 1] + 0.01
@@ -147,10 +177,20 @@ def _interp_unmatched(times: list[float | None]) -> list[float]:
 
 
 def _align_word_level(ref_tokens: list[str], whisper_words: list[dict]) -> tuple[list[float | None], list[float | None], int]:
-    """Casa `ref_tokens` com `whisper_words` via SequenceMatcher.
+    """Casa `ref_tokens` com `whisper_words` via cursor forward-only + fuzzy.
 
-    Retorna `(starts, ends, n_matched)`: dois arrays do tamanho de
-    `ref_tokens` com `None` onde não casou, e o total de matches.
+    Para cada palavra da letra, busca o melhor match nas próximas
+    `WORD_SEARCH_WINDOW` palavras do Whisper a partir do cursor (`rapidfuzz.ratio`
+    >= `WORD_MIN_FUZZ_RATIO`). Se achar, ancora e avança o cursor para depois
+    do match — isso preserva ordem e lida corretamente com refrões repetidos
+    (cada ocorrência pega seu próprio anchor).
+
+    Por que não SequenceMatcher: ele busca a maior subseq comum globalmente.
+    Com 3 refrões idênticos na letra, ele tende a casar todas as 3
+    ocorrências da letra com a MESMA transcrição do Whisper (a primeira que
+    cabe na maior subseq), deixando as outras 2 sem âncora.
+
+    Retorna `(starts, ends, n_matched)`.
     """
     n = len(ref_tokens)
     starts: list[float | None] = [None] * n
@@ -160,17 +200,30 @@ def _align_word_level(ref_tokens: list[str], whisper_words: list[dict]) -> tuple
         return starts, ends, 0
 
     wh_tokens = [w["word"] for w in whisper_words]
-    sm = SequenceMatcher(a=ref_tokens, b=wh_tokens, autojunk=False)
-
+    m = len(wh_tokens)
+    cursor = 0
     matched = 0
-    # get_matching_blocks: cada bloco é (i_em_a, j_em_b, tamanho)
-    for block in sm.get_matching_blocks():
-        for k in range(block.size):
-            ri = block.a + k
-            wj = block.b + k
-            starts[ri] = whisper_words[wj]["start"]
-            ends[ri] = whisper_words[wj]["end"]
+
+    for i, ref_word in enumerate(ref_tokens):
+        if not ref_word:
+            continue
+        best_j = -1
+        best_ratio = 0
+        window_end = min(m, cursor + WORD_SEARCH_WINDOW)
+        for j in range(cursor, window_end):
+            r = fuzz.ratio(ref_word, wh_tokens[j])
+            if r > best_ratio:
+                best_ratio = r
+                best_j = j
+                if r == 100:
+                    break
+
+        if best_j != -1 and best_ratio >= WORD_MIN_FUZZ_RATIO:
+            starts[i] = whisper_words[best_j]["start"]
+            ends[i] = whisper_words[best_j]["end"]
             matched += 1
+            cursor = best_j + 1
+
     return starts, ends, matched
 
 
