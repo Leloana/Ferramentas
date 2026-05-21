@@ -227,9 +227,9 @@ function initAddSongModal() {
         formData.set('artist', songArtist);
         addSongModal.style.display = 'none';
         if (state.activeUploadTab === 'youtube') {
-            startLoadingOverlay("Preparando Música...", "Iniciando download do vocal do YouTube... 🎧", true);
+            startLoadingOverlay("Preparando Música...", "Baixando áudio, separando vocal e gerando rascunho do LRC... 🎧 Pode levar 1-2min.", true);
         } else {
-            startLoadingOverlay("Processando Áudio...", "Lendo e fatiando faixa vocal local... 🎧", true);
+            startLoadingOverlay("Processando Áudio...", "Separando vocal e gerando rascunho do LRC... 🎧 Pode levar 1-2min.", true);
         }
 
         try {
@@ -246,16 +246,15 @@ function initAddSongModal() {
             const data = await response.json();
             stopLoadingOverlay();
 
-            if (data.lyrics_status === 'draft') {
-                loadAndOpenLrcEditor(data.slug);
+            // O backend sempre devolve um rascunho de LRC para o usuário aprovar
+            // antes de finalizar a música. O `segments.json` só é gerado quando
+            // o usuário salva o LRC editado (via /api/save-lyrics).
+            if (data.orphan_lines && data.orphan_lines > 0) {
+                showToast(`Rascunho gerado com ${data.orphan_lines} linha(s) marcadas [??:??.??] — ajuste os tempos manualmente no editor antes de salvar.`, "warning");
             } else {
-                if (data.fallback_used) {
-                    showToast("Música adicionada! Nota: A IA teve baixa correspondência e ativou a distribuição uniforme. Recomendamos ajustar manualmente os tempos no Sincronizador para um resultado perfeito!", "warning");
-                } else {
-                    showToast("Música adicionada com sucesso! Divirta-se! 🎉", "success");
-                }
-                fetchSongs();
+                showToast("Rascunho de LRC pronto! Revise e clique em Salvar para finalizar.", "info");
             }
+            loadAndOpenLrcEditor(data.slug);
         } catch (error) {
             stopLoadingOverlay();
             showToast("Erro ao adicionar música: " + error.message, "error");

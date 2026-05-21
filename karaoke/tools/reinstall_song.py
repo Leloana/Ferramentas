@@ -36,7 +36,19 @@ from tools.generate_lrc import generate_lrc
 from tools.prepare_song import prepare_song
 
 
-async def reinstall_song(song_dir_path: str, language: str = None, clean_existing: bool = True) -> bool:
+async def reinstall_song(
+    song_dir_path: str,
+    language: str = None,
+    clean_existing: bool = True,
+    skip_prepare_song: bool = False,
+) -> bool:
+    """Pipeline completo: download → Demucs → Whisper → LRC → prepare_song.
+
+    Se `skip_prepare_song=True`, pula a última etapa (alinhamento word-level
+    que gera `segments.json`). Útil quando o LRC ainda precisa ser aprovado
+    pelo usuário antes de finalizar — o `segments.json` é regerado depois,
+    no `save_lyrics`, sobre o LRC corrigido.
+    """
     song_dir = Path(song_dir_path)
     meta_path = song_dir / "meta.json"
     
@@ -307,6 +319,14 @@ async def reinstall_song(song_dir_path: str, language: str = None, clean_existin
             logger.error(f"Aviso: Erro ao transcrever letras com o Whisper: {e}")
 
     # 7. Rodar o alinhamento word-level (prepare_song)
+    # Quando `skip_prepare_song=True` (ex: upload aguardando aprovação do
+    # usuário no editor), pula esta etapa — o segments.json será regerado
+    # depois, no save_lyrics, sobre o LRC corrigido pelo usuário.
+    if skip_prepare_song:
+        logger.info("skip_prepare_song=True. Pulando alinhamento word-level (será feito no save-lyrics).")
+        logger.info(f"[SUCCESS] Áudio + LRC preparados para '{song_dir.name}'.")
+        return True
+
     logger.info("Executando o alinhamento word-level (prepare_song)...")
     try:
         prepare_song(str(song_dir), language=song_lang)

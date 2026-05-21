@@ -1,26 +1,17 @@
 """Rota POST /api/upload-song: download/upload, corte de áudio, geração de LRC."""
 from __future__ import annotations
 
-import asyncio
 import json
 import logging
 import shutil
-import sys
-import subprocess
-from pathlib import Path
 from typing import Optional
 
-from fastapi import APIRouter, BackgroundTasks, File, Form, HTTPException, UploadFile
-from pydub import AudioSegment
+from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
-from state import SONGS_DIR, ffmpeg_bin_dir
-from stt_engine import get_stt_engine
-from utils.audio import vocal_to_float32_mono_16k
-from utils.lrc_align import align_plain_lyrics, draft_lrc_from_whisper
-from utils.prepare import run_prepare_song, run_reinstall_song
+from state import SONGS_DIR
+from utils.prepare import run_reinstall_song
 from utils.text import normalize_lyrics_text, slugify
-from utils.whisper_params import TRANSCRIBE_KWARGS
-from utils.youtube import download_youtube_audio, get_youtube_video_info
+from utils.youtube import get_youtube_video_info
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -61,7 +52,6 @@ async def get_youtube_metadata(url: str):
 
 @router.post("/api/upload-song")
 async def upload_song(
-    background_tasks: BackgroundTasks,
     title: str = Form(...),
     artist: str = Form(...),
     language: str = Form("en"),
@@ -112,44 +102,38 @@ async def upload_song(
             with open(song_dir / "lyrics.txt", "w", encoding="utf-8", newline="\n") as f:
                 f.write(plain_lyrics + "\n")
 
-        # --- Caminho 1: usuário forneceu .lrc pronto ---
-        if (song_dir / "lyrics.lrc").exists():
-            background_tasks.add_task(run_reinstall_song, str(song_dir), language, False)
-            return {"success": True, "lyrics_status": "ready", "slug": slug, "fallback_used": False}
-
-        # --- Caminho 2: usuário forneceu letra plana → alinha em segundo plano ---
-        if plain_lyrics and plain_lyrics.strip():
-            background_tasks.add_task(run_reinstall_song, str(song_dir), language, False)
-            return {"success": True, "lyrics_status": "ready", "slug": slug, "fallback_used": False}
-
-        # --- Caminho 3: gera rascunho LRC só com Whisper para edição manual ---
-        # Nesse caminho, precisamos gerar a transcrição no primeiro plano para abrir o editor LRC.
-        # Por isso, precisamos garantir que o vocal.mp3 esteja disponível no disco.
-        if not vocal_path.exists():
-            if youtube_vocal_url and youtube_vocal_url.strip():
-                logger.info(f"Baixando canal Vocal em primeiro plano para transcrição de rascunho: {youtube_vocal_url}")
-                v_ok = await download_youtube_audio(youtube_vocal_url.strip(), vocal_path, ffmpeg_bin_dir)
-                if not v_ok or not vocal_path.exists():
-                    raise HTTPException(status_code=400, detail="Falha ao baixar o áudio Vocal do YouTube. Verifique a URL.")
-            else:
-                raise HTTPException(status_code=400, detail="Você precisa subir um arquivo local de áudio ou fornecer o link do YouTube.")
-
-        logger.info("Nenhum arquivo LRC enviado. Transcrevendo vocal com o Whisper em primeiro plano...")
-        stt = get_stt_engine()
-        vocal_audio = AudioSegment.from_file(str(vocal_path))
-        raw_data = vocal_to_float32_mono_16k(vocal_audio)
-        segments, _info = stt.model.transcribe(
-            raw_data,
+        # Pipeline completo (download YT + Demucs + Whisper + alinhamento de
+        # letra) **menos** `prepare_song`. O usuário precisa aprovar o LRC
+        # gerado no editor antes de finalizar — o `segments.json` será gerado
+        # depois, em `/api/save-lyrics`, sobre o LRC editado pelo usuário.
+        success = await run_reinstall_song(
+            str(song_dir),
             language=language,
-            **TRANSCRIBE_KWARGS,
+            clean_existing=False,
+            skip_prepare_song=True,
         )
-        segments_list = list(segments)
+        if not success:
+            raise HTTPException(status_code=500, detail="Falha ao preparar áudio e LRC. Verifique os logs do servidor.")
 
-        # Agenda a conclusão do processo em segundo plano (backing track Demucs, etc.)
-        background_tasks.add_task(run_reinstall_song, str(song_dir), language, False)
+        # Lê o lyrics.lrc gerado para devolver como draft ao frontend, que
+        # vai abrir o editor para o usuário aprovar/ajustar.
+        lrc_path = song_dir / "lyrics.lrc"
+        if not lrc_path.exists():
+            raise HTTPException(status_code=500, detail="Pipeline não gerou lyrics.lrc. Verifique os logs.")
 
-        draft = draft_lrc_from_whisper(segments_list, title, artist)
-        return {"success": True, "lyrics_status": "draft", "draft_lrc": draft, "slug": slug, "fallback_used": False}
+        draft_lrc = lrc_path.read_text(encoding="utf-8")
+
+        # Detecta se o alinhamento caiu no fallback (muitas linhas com [??:??.??]
+        # ou alta proporção de linhas — sinaliza para o usuário no toast).
+        orphan_lines = sum(1 for line in draft_lrc.splitlines() if line.startswith("[??:??.??]"))
+
+        return {
+            "success": True,
+            "lyrics_status": "draft",
+            "draft_lrc": draft_lrc,
+            "slug": slug,
+            "orphan_lines": orphan_lines,
+        }
 
     except HTTPException:
         raise
