@@ -17,19 +17,47 @@ LRC é regenerado do zero a partir do `meta.json` + `vocal.mp3`.
 
 Abra o `.lrc` gerado e procure:
 
-1. **Sequência de timestamps próximos** (ex: 5+ linhas com gap < 0.3s).
+1. **Linhas com `[??:??.??]`** — linhas órfãs (Whisper não casou
+   nenhuma palavra). Esperado para gritos não-lexicais, versos
+   distorcidos, ou letras com pontuação que confunde matching.
+   **Não é bug; é sinalização.** Edite à mão. Ver seção dedicada
+   abaixo.
+2. **Sequência de timestamps próximos** (ex: 5+ linhas com gap < 0.3s).
    Sinal claro de colisão.
-2. **Primeiras linhas com `[00:00.00]` ou negativas**. Extrapolação
-   inicial quebrada.
-3. **Últimas linhas grudadas no fim do áudio** (ex: 3 linhas dentro de
-   1s no fim). Extrapolação final quebrada.
-4. **Refrão repetido aparecendo só em uma posição**. Cursor não está
+3. **Refrão repetido aparecendo só em uma posição**. Cursor não está
    avançando entre ocorrências.
-5. **Linhas "vazadas" pro verso seguinte** (ex: "I beg to dream..." em
+4. **Linhas "vazadas" pro verso seguinte** (ex: "I beg to dream..." em
    `[00:45.92]` quando o canto real começa em 00:46.50). Word matching
    pegou âncora errada.
+5. **Muitas linhas órfãs (`[??:??.??]`) em sequência** — pode indicar
+   que o threshold de fuzzy está alto demais ou que o Whisper não
+   está capturando o vocal direito.
 
 Aplique a tabela abaixo conforme o sintoma dominante.
+
+---
+
+## 🟡 Sobre as linhas `[??:??.??]` — regra de ouro
+
+O alinhador **não inventa timestamps**. Se uma linha da letra não tem
+nenhuma palavra que o Whisper conseguiu ouvir, ela sai como
+`[??:??.??]<texto>`. Exemplos típicos:
+
+- `(Say: Hey! Cha!)` — grito não-lexical, Whisper transcreve como
+  "hey" ou pula completamente
+- `(The representative from California has the floor)` — fala
+  declamada com efeito de telefone (Holiday)
+- `Ahhhhhhhhhh` — sustentação vocal, Whisper geralmente ignora
+- `[INSTRUMENTAL]` — qualquer marcador artificial
+
+**O que fazer:** abra o `.lrc` no editor da UI (`/api/save-lyrics`),
+ache as linhas `[??:??.??]`, ouça o áudio e troque o timestamp. O
+salvamento já dispara o `prepare_song` que re-gera o alinhamento
+word-level.
+
+**Quando virar problema:** se MUITAS linhas (>20% do total) ficarem
+órfãs, a culpa não é da regra — é do Whisper. Reduzir
+`WORD_MIN_FUZZ_RATIO` (80 → 70) pode ajudar antes de aceitar a derrota.
 
 ---
 
@@ -60,42 +88,26 @@ Whisper transcreveu palavras a mais entre elas.
 
 ---
 
-### 🔴 Linhas no começo todas em `[00:00.00]` ou negativas
+### 🔴 Muitas linhas iniciais com `[??:??.??]`
 
-**Causa**: poucas palavras casaram no início, e o algoritmo extrapolou
-para trás com taxa muito alta (palavras "sobreviventes" foram empurradas
-para tempo negativo, depois clampadas em 0).
+```
+[??:??.??](Say: Hey! Cha!)
+[??:??.??]
+[??:??.??]Hear the sound of the falling rain
+```
+
+**Causa**: as primeiras palavras da letra não casaram com nenhuma
+palavra do Whisper. Pode ser que o Whisper esteja pulando o intro
+(VAD restritivo) ou que as primeiras linhas sejam gritos/vocalize.
 
 **Knobs:**
 | Arquivo | Constante | Default | Tentar |
 |---|---|---|---|
-| `lrc_align.py` | `RATE_MIN_SEC_PER_WORD` | 0.15 | **0.25** (palavras na borda mais espaçadas) |
-| `lrc_align.py` | `WORD_SEARCH_WINDOW` | 40 | **80** (acha mais matches no início) |
+| `whisper_params.py` | `VAD.threshold` | 0.25 | **0.18** |
+| `lrc_align.py` | `WORD_MIN_FUZZ_RATIO` | 80 | **70** |
 
-Se persistir: o problema pode ser **VAD pulando o vocal inicial**. Veja
-seção "Whisper deixa de transcrever".
-
----
-
-### 🔴 Últimas linhas em `[xx:xx.xx]` muito próximas do fim do áudio
-
-```
-[03:25.00]Penúltimo verso
-[03:25.20]Último verso
-[03:25.50]
-```
-
-**Causa**: oposto do anterior — extrapolação final usou taxa alta
-porque as últimas 2 âncoras estavam muito próximas.
-
-**Knobs:**
-| Arquivo | Constante | Default | Tentar |
-|---|---|---|---|
-| `lrc_align.py` | `RATE_MAX_SEC_PER_WORD` | 1.5 | **1.0** (cap mais conservador no fim) |
-| `lrc_align.py` | `DEFAULT_SEC_PER_WORD` | 0.4 | (só usado quando há 1 âncora) |
-
-Se a última âncora real está muito longe do fim, considere se o
-Whisper transcreveu até o fim do áudio — checar log de `reinstall_song`.
+Se persistir: aceitar e editar manualmente — gritos não-lexicais
+genuinamente não casam.
 
 ---
 
@@ -171,29 +183,16 @@ Se aparecer um padrão novo de alucinação, adicione no regex em
 
 ---
 
-### 🔴 Linha 1 do LRC tem timestamp negativo no `meta.json`/log mas vira 0
+### 🔴 Versos de "oh-oh", "la-la-la", "ahhhhh" saem com `[??:??.??]`
 
-```
-DEBUG: aligned[0] = -0.85 → clampado para 0.0
-```
+**Causa**: vocalize não-lexical não casa com palavras do Whisper
+(que muitas vezes os ignora ou transcreve genericamente). Saem como
+órfãs — comportamento esperado.
 
-**Causa**: extrapolação reversa estourou. Já é tratado (clamp em 0)
-mas indica que `RATE_MIN_SEC_PER_WORD` está muito baixo OU a primeira
-âncora está em < 1s e há várias palavras antes dela.
-
-**Knob**: ver "linhas no começo todas em 00:00.00" acima.
-
----
-
-### 🔴 Versos de "oh-oh", "la-la-la", "ahhhhh" ficam fora de sincronia
-
-**Causa**: vocalize não-lexical não casa com palavras transcritas pelo
-Whisper (que muitas vezes os ignora ou transcreve genericamente).
-
-**Knob**: **nenhum** no LRC align. Esses versos são pontuados por
-energia (RMS) no `ws/room.py::_score_vocalize` durante o jogo, não no
-alinhamento. Aceite que o timestamp pode ficar ±2s e edite manualmente
-no `lyrics.lrc` se for crítico.
+**Knob**: **nenhum** no LRC align. Edite manualmente pelo
+`/api/save-lyrics`. Durante o jogo esses versos são pontuados por
+energia (RMS) no `ws/room.py::_score_vocalize`, não pelo texto, então
+ter o timestamp correto basta.
 
 ---
 
@@ -223,8 +222,9 @@ em vocais distorcidos ou áudio com forte reverb).
 1. Rode reinstall_song e abra o lyrics.lrc gerado.
 
 2. Conte os sintomas:
+   [ ] Linhas com [??:??.??]?  → Editar manualmente (regra: não inventar tempo)
    [ ] Versos colidindo?       → Ajuste 1: min_silence_duration_ms↓
-   [ ] Começo em 00:00.00?     → Ajuste 2: RATE_MIN_SEC_PER_WORD↑
+   [ ] Muitas órfãs no início? → Ajuste 2: VAD.threshold↓ ou WORD_MIN_FUZZ_RATIO↓
    [ ] Refrão duplicado?       → Ajuste 3: WORD_MIN_FUZZ_RATIO↓
    [ ] Whisper alucinando?     → Ajuste 4: VAD.threshold↑
 
@@ -246,22 +246,21 @@ Do mais seguro para o mais perigoso:
 
 1. **`PAUSE_INJECT_MIN_GAP_SEC`** (0.6) — só afeta marcadores de
    pausa, não os timestamps das letras. Pode mexer à vontade.
-2. **`WORD_SEARCH_WINDOW`** — aumentar dá mais chance de match,
+2. **`WORD_SEARCH_WINDOW`** (40) — aumentar dá mais chance de match,
    custa só um pouco mais de CPU.
-3. **`WORD_MIN_FUZZ_RATIO`** — diminuir aumenta falsos positivos de
-   match (palavras erradas viram âncoras), mas a interpolação corrige
-   na maioria dos casos.
-4. **`RATE_MIN/MAX_SEC_PER_WORD`** — afeta SÓ as bordas. Mexer altera
-   o início e o fim do LRC, não o meio.
-5. **`MIN_FALLBACK_MATCH_PCT` / `MIN_FALLBACK_MATCHES`** — decide se
-   cai no fallback linear. Aumentar pode forçar fallback (pior). Não
-   recomendado mexer.
-6. **`VAD_PARAMETERS.threshold`** — afeta TUDO. Mexer aqui muda quais
+3. **`WORD_MIN_FUZZ_RATIO`** (80) — diminuir reduz órfãs mas aumenta
+   risco de match falso positivo (palavra errada vira âncora).
+   Tradeoff: 70-75 funciona bem para Whisper com transcrição imperfeita;
+   85+ só pra letras muito limpas.
+4. **`MIN_FALLBACK_MATCH_PCT` / `MIN_FALLBACK_MATCHES`** — decide se
+   cai no fallback linear (toda a letra distribuída uniformemente).
+   Não recomendado mexer.
+5. **`VAD_PARAMETERS.threshold`** — afeta TUDO. Mexer aqui muda quais
    trechos o Whisper sequer transcreve.
-7. **`VAD_PARAMETERS.min_silence_duration_ms`** — mais perigoso ainda.
+6. **`VAD_PARAMETERS.min_silence_duration_ms`** — mais perigoso ainda.
    Afeta como o Whisper agrupa palavras.
 
-Se você nunca mexeu antes, comece pelos 1-4. Os 5-7 são para casos
+Se você nunca mexeu antes, comece pelos 1-3. Os 4-6 são para casos
 extremos.
 
 ---
