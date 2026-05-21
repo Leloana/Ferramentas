@@ -1,7 +1,3 @@
-"""
-Camadas de validação A e B.
-Camadas C e D são adicionadas depois, quando os MCPs e linters estiverem prontos.
-"""
 from __future__ import annotations
 import json
 from pydantic import ValidationError
@@ -14,8 +10,7 @@ class ValidationError_(Exception):
         self.message = message
         super().__init__(f"[Camada {layer}] {message}")
 
-
-# --- Camada A: Sintática ---
+# --- Camada A: Sintática -----
 
 def validate_json_parseable(raw: str) -> dict:
     """Garante que o output é JSON válido."""
@@ -52,8 +47,7 @@ def validate_tool_call_schema(data: dict) -> ToolCall:
     except ValidationError as e:
         raise ValidationError_("A", f"Tool call malformada: {e}")
 
-
-# --- Camada B: Estrutural ---
+# --- Camada B: Estrutural -----
 
 def validate_plan_structure(plan: Plan) -> None:
     """Checa regras estruturais do plano."""
@@ -110,3 +104,21 @@ def validate_tool_whitelist(tool_call: ToolCall, whitelist: list[str]) -> None:
     """Agente 3 só pode chamar tools da whitelist."""
     if tool_call.tool not in whitelist:
         raise ValidationError_("B", f"Tool '{tool_call.tool}' não está na whitelist: {whitelist}")
+
+
+def validate_physical_paths(plan: Plan, codebase_path: str) -> None:
+    """Checa se os caminhos dos arquivos do plano são válidos e condizem com a ação."""
+    import os
+    for step in plan.steps:
+        # Garante que não está tentando acessar caminhos fora da base de código (traversal attack)
+        file_path = step.file
+        # Resolve e sanitiza o caminho
+        full_path = os.path.abspath(os.path.join(codebase_path, file_path))
+        base_abs = os.path.abspath(codebase_path)
+        if not full_path.startswith(base_abs):
+            raise ValidationError_("C", f"Tentativa de path traversal detectada: {file_path}")
+
+        if step.action in ("modify", "delete"):
+            if not os.path.exists(full_path):
+                raise ValidationError_("C", f"Arquivo não encontrado para {step.action}: {file_path}")
+

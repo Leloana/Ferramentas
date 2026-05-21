@@ -41,5 +41,8 @@ karaoke/server/songs/**/*
 # Pipeline project runs and scratch
 pipeline-project/runs/
 pipeline-project/scratch/
+pipeline-project/.srclight/
+.srclight/
+
 
 

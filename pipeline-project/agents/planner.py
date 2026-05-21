@@ -9,6 +9,7 @@ from orchestrator.validators import (
     validate_json_parseable,
     validate_plan_schema,
     validate_plan_structure,
+    validate_physical_paths,
     ValidationError_,
 )
 from orchestrator.retries import with_retry
@@ -78,6 +79,12 @@ def call_model(prompt: str, chunks: list[str], file_tree: str) -> str:
         
     user_content += f"\nESTRUTURA DE ARQUIVOS DA BASE DE CÓDIGO:\n{file_tree}\n"
 
+    # Garante que outros modelos foram descarregados para liberar a GPU
+    from orchestrator.utils import unload_ollama_models
+    unload_ollama_models(except_model=MODEL)
+
+    num_ctx = CONFIG.get("ollama", {}).get("planner_num_ctx", 8192)
+
     payload = {
         "model": MODEL,
         "messages": [
@@ -85,6 +92,9 @@ def call_model(prompt: str, chunks: list[str], file_tree: str) -> str:
             {"role": "user", "content": user_content}
         ],
         "format": "json",
+        "options": {
+            "num_ctx": num_ctx
+        },
         "stream": False
     }
 
@@ -109,12 +119,22 @@ def run(state: PipelineState) -> Plan:
         
         raw = call_model(state.prompt, state.retrieved_chunks, file_tree)
 
+        # Salva o log bruto da saída
+        if state.run_dir:
+            planner_log_dir = Path(state.run_dir) / "planner"
+            planner_log_dir.mkdir(parents=True, exist_ok=True)
+            with open(planner_log_dir / f"attempt_{attempt + 1}.json", "w", encoding="utf-8") as f:
+                f.write(raw)
+
         # Camada A
         data = validate_json_parseable(raw)
         plan = validate_plan_schema(data)
 
         # Camada B
         validate_plan_structure(plan)
+
+        # Camada C: Validação física
+        validate_physical_paths(plan, state.codebase_path)
 
         return plan
 

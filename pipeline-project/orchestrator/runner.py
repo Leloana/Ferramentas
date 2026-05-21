@@ -6,6 +6,8 @@ from __future__ import annotations
 import sys
 import json
 import os
+import subprocess
+import yaml
 from pathlib import Path
 from datetime import datetime
 
@@ -15,6 +17,12 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from orchestrator.state import PipelineState
 from orchestrator.validators import ValidationError_
 from agents import planner, coder, implementer
+from mcps.client import MCPClient
+
+# Carrega a configuração global
+CONFIG_PATH = Path(__file__).parent.parent / "config.yaml"
+with open(CONFIG_PATH, "r", encoding="utf-8") as f:
+    CONFIG = yaml.safe_load(f)
 
 
 RUNS_DIR = Path(__file__).parent.parent / "runs"
@@ -22,7 +30,9 @@ RUNS_DIR = Path(__file__).parent.parent / "runs"
 
 def save_run(state: PipelineState):
     """Salva estado final em runs/<id>/"""
-    run_dir = RUNS_DIR / f"{datetime.now().strftime('%Y-%m-%d')}_{state.run_id}"
+    if not state.run_dir:
+        return
+    run_dir = Path(state.run_dir)
     run_dir.mkdir(parents=True, exist_ok=True)
 
     with open(run_dir / "final_state.json", "w") as f:
@@ -33,6 +43,8 @@ def save_run(state: PipelineState):
 
 def run_pipeline(prompt: str, codebase_path: str = ".") -> PipelineState:
     state = PipelineState(prompt=prompt, codebase_path=codebase_path)
+    run_date = datetime.now().strftime('%Y-%m-%d')
+    state.run_dir = str(RUNS_DIR / f"{run_date}_{state.run_id}")
 
     print(f"\n{'='*60}")
     print(f"Pipeline iniciado — run_id: {state.run_id}")
@@ -40,13 +52,95 @@ def run_pipeline(prompt: str, codebase_path: str = ".") -> PipelineState:
     print(f"{'='*60}")
 
     try:
-        # --- Pré-pipeline: retrieval (mock por enquanto) ---
+        # --- Pré-pipeline: retrieval real via busca híbrida srclight ---
         print("\n[Retrieval]")
-        state.retrieved_chunks = [
-            "# mock chunk 1: src/auth.py — função verify_token",
-            "# mock chunk 2: src/api/users.py — endpoint GET /users",
+        # Garante que outros modelos foram descarregados para liberar a GPU para o embedding
+        from orchestrator.utils import unload_ollama_models
+        unload_ollama_models(except_model=CONFIG["retrieval"]["embedding_model"])
+
+        codebase_abs = Path(state.codebase_path).resolve()
+        db_path = (codebase_abs / ".srclight" / "index.db").resolve()
+        
+        # Cria/indexa base de dados dinamicamente se não existir
+        if not db_path.exists():
+            print(f"  [retrieval] Banco de dados .srclight/index.db não encontrado.")
+            print(f"  [retrieval] Inicializando e indexando a base de código em: {codebase_abs}...")
+            
+            cmd_index = [
+                sys.executable,
+                "-m", "srclight.cli",
+                "index",
+                "--db", str(db_path),
+                "--embed", CONFIG["retrieval"]["embedding_model"],
+                str(codebase_abs)
+            ]
+            print(f"  [index] Executando indexação: {' '.join(cmd_index)}")
+            try:
+                subprocess.run(cmd_index, capture_output=True, text=True, check=True)
+                print("  [index] Base de código indexada com sucesso!")
+            except subprocess.CalledProcessError as e:
+                raise ValidationError_("R", f"Falha ao indexar a base de código: {e.stderr or e.stdout}")
+        
+        # Inicializa cliente MCP srclight
+        server_cmd = [
+            sys.executable,
+            "-m", "srclight.cli",
+            "serve",
+            "-t", "stdio",
+            "--db", str(db_path)
         ]
-        print(f"  [OK] {len(state.retrieved_chunks)} chunks recuperados (mock)")
+        print("  [retrieval] Inicializando cliente MCP srclight...")
+        client = MCPClient(server_cmd, cwd=str(codebase_abs))
+        try:
+            print(f"  [retrieval] Executando busca híbrida (top {CONFIG['retrieval']['top_k']}) para o prompt...")
+            search_args = {
+                "query": prompt,
+                "limit": CONFIG["retrieval"]["top_k"]
+            }
+            raw_search = client.call_tool("hybrid_search", search_args)
+            search_res = json.loads(raw_search)
+            
+            chunks = []
+            results = search_res.get("results", [])
+            for r in results:
+                name = r.get("name")
+                file_path = r.get("file")
+                if not name:
+                    continue
+                
+                # Busca os detalhes do símbolo para obter o código-fonte real
+                raw_symbol = client.call_tool("get_symbol", {"name": name})
+                if not raw_symbol:
+                    continue
+                symbol_data = json.loads(raw_symbol)
+                
+                # Trata múltiplas ocorrências do símbolo
+                symbol = None
+                if "symbols" in symbol_data:
+                    r_file = Path(file_path).as_posix()
+                    for s in symbol_data["symbols"]:
+                        s_file = Path(s.get("file", "")).as_posix()
+                        if s_file == r_file:
+                            symbol = s
+                            break
+                    if not symbol and symbol_data["symbols"]:
+                        symbol = symbol_data["symbols"][0]
+                else:
+                    symbol = symbol_data
+                    
+                if symbol and symbol.get("content"):
+                    chunk = (
+                        f"# Symbol: {symbol.get('name')} ({symbol.get('kind', 'unknown')})\n"
+                        f"# File: {symbol.get('file')} (Lines {symbol.get('start_line')}-{symbol.get('end_line')})\n"
+                        f"# Signature: {symbol.get('signature', '')}\n"
+                        f"{symbol.get('content')}"
+                    )
+                    chunks.append(chunk)
+                    
+            state.retrieved_chunks = chunks
+            print(f"  [OK] {len(state.retrieved_chunks)} chunks reais recuperados com sucesso via busca híbrida srclight!")
+        finally:
+            client.close()
 
         # --- Agente 1: Planejamento ---
         planner.run(state)

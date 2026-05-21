@@ -56,6 +56,7 @@ class PipelineState(BaseModel):
     timestamp: str = Field(default_factory=lambda: datetime.now().isoformat())
     prompt: str
     codebase_path: str = "."
+    run_dir: str | None = None
 
     retrieved_chunks: list[str] = Field(default_factory=list)
     plan: Plan | None = None

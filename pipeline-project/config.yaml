@@ -1,14 +1,17 @@
 models:
-  planner: "qwen3:14b-q4_k_m"
+  planner: "qwen2.5-coder:7b-instruct-q4_K_M"
   coder: "qwen2.5-coder:7b-instruct-q4_K_M"
   implementer: "qwen2.5-coder:7b-instruct-q4_K_M"
 
 ollama:
   base_url: "http://localhost:11434"
+  planner_num_ctx: 8192
+  coder_num_ctx: 8192
+  implementer_num_ctx: 8192
 
 retrieval:
   top_k: 5
-  embedding_model: "nomic-embed-text"
+  embedding_model: "ollama:qwen3-embedding-gpu"
 
 retries:
   layer_a: 3
