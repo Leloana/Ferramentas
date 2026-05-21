@@ -1,0 +1,29 @@
+models:
+  planner: "qwen3:14b-q4_k_m"
+  coder: "qwen2.5-coder:7b-q4_k_m"
+  implementer: "qwen2.5-coder:7b-q4_k_m"
+
+ollama:
+  base_url: "http://localhost:11434"
+
+retrieval:
+  top_k: 5
+  embedding_model: "nomic-embed-text"
+
+retries:
+  layer_a: 3
+  layer_b: 3
+  layer_c: 2
+  layer_d: 2
+
+paths:
+  runs_dir: "runs/"
+  codebase: "."
+
+validation:
+  max_plan_steps: 30
+  min_pseudocode_lines: 2
+
+tool_whitelist:
+  - apply_patch
+  - write_file

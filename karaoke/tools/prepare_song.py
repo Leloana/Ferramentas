@@ -47,10 +47,13 @@ def parse_lrc(lrc_path):
     return sorted(lines, key=lambda x: x["start"]), offset
 
 
-def prepare_song(song_dir, language="en"):
+def prepare_song(song_dir, language="en", debug=False):
     song_path = Path(song_dir)
     vocal_mp3 = song_path / "vocal.mp3"
-    lyrics_lrc = song_path / "lyrics.lrc"
+    if debug:
+        lyrics_lrc = song_path / "lyrics_debug.lrc"
+    else:
+        lyrics_lrc = song_path / "lyrics.lrc"
     
     if not vocal_mp3.exists() or not lyrics_lrc.exists():
         print(f"Erro: Certifique-se que vocal.mp3 e lyrics.lrc existem em {song_dir}")
@@ -129,9 +132,11 @@ def prepare_song(song_dir, language="en"):
                 for idx, off_word in enumerate(official_words):
                     trans_word = words[idx]
                     t_start = trans_word["start"]
+                    t_end = trans_word["end"]
                     lyrics_timed.append({
                         "word": off_word,
-                        "expected_start": round(t_start, 3)
+                        "expected_start": round(t_start, 3),
+                        "expected_end": round(t_end, 3)
                     })
             else:
                 # Caso as contagens divirjam, usamos alinhamento por proximidade ou interpolação linear
@@ -143,18 +148,22 @@ def prepare_song(song_dir, language="en"):
                         if dist < min_dist:
                             min_dist = dist
                             best_match_time = trans_word["start"]
+                            best_match_end = trans_word["end"]
                     
                     if best_match_time is not None:
                         lyrics_timed.append({
                             "word": off_word,
-                            "expected_start": round(best_match_time, 3)
+                            "expected_start": round(best_match_time, 3),
+                            "expected_end": round(best_match_end, 3)
                         })
                     else:
                         ratio = idx / len(official_words)
                         t_start = ratio * (segment_audio.size / sample_rate)
+                        t_end = min(t_start + 0.3, segment_audio.size / sample_rate)
                         lyrics_timed.append({
                             "word": off_word,
-                            "expected_start": round(t_start, 3)
+                            "expected_start": round(t_start, 3),
+                            "expected_end": round(t_end, 3)
                         })
         else:
             # Fallback completo se o Whisper falhar: distribui uniformemente no tempo do segmento extraído
@@ -163,9 +172,11 @@ def prepare_song(song_dir, language="en"):
             for idx, off_word in enumerate(official_words):
                 ratio = idx / n_off
                 t_start = ratio * max_duration
+                t_end = min(t_start + 0.3, max_duration)
                 lyrics_timed.append({
                     "word": off_word,
-                    "expected_start": round(t_start, 3)
+                    "expected_start": round(t_start, 3),
+                    "expected_end": round(t_end, 3)
                 })
         
         # Garante que:
@@ -177,14 +188,20 @@ def prepare_song(song_dir, language="en"):
         if words:
             for w in lyrics_timed:
                 w["expected_start"] = max(0.0, round(w["expected_start"] - voice_delay, 3))
+                w["expected_end"] = max(0.0, round(w["expected_end"] - voice_delay, 3))
 
         # 2. Garante mínimo de 0.05 na primeira palavra e monotônico
         if lyrics_timed:
-            lyrics_timed[0]["expected_start"] = 0.05
+            lyrics_timed[0]["expected_start"] = max(0.05, lyrics_timed[0]["expected_start"])
+            if lyrics_timed[0]["expected_end"] < lyrics_timed[0]["expected_start"] + 0.1:
+                lyrics_timed[0]["expected_end"] = round(lyrics_timed[0]["expected_start"] + 0.1, 3)
+                
             for idx in range(1, len(lyrics_timed)):
                 min_start = round(lyrics_timed[idx - 1]["expected_start"] + 0.05, 3)
                 if lyrics_timed[idx]["expected_start"] < min_start:
                     lyrics_timed[idx]["expected_start"] = min_start
+                if lyrics_timed[idx]["expected_end"] < lyrics_timed[idx]["expected_start"] + 0.1:
+                    lyrics_timed[idx]["expected_end"] = round(lyrics_timed[idx]["expected_start"] + 0.1, 3)
 
         total_duration = len(full_audio) / sample_rate
         max_end = end_sample / sample_rate
@@ -217,7 +234,10 @@ def prepare_song(song_dir, language="en"):
         })
 
     # Salvar segments.json
-    output_path = song_path / "segments.json"
+    if debug:
+        output_path = song_path / "segments_debug.json"
+    else:
+        output_path = song_path / "segments.json"
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(segments_data, f, indent=2, ensure_ascii=False)
         

@@ -2,11 +2,10 @@
   {
     "id": 1,
     "label": "Parte 1",
-    "sing_start": 10.02,
-    "sing_end": 13.74,
-    "pause_start": 13.74,
-    "pause_end": 13.84,
-    "language": "en",
+    "sing_start": 17.02,
+    "sing_end": 19.66,
+    "pause_start": 19.66,
+    "pause_end": 20.16,
     "lyrics": "(Say: Hey! Cha!)",
     "lyrics_timed": [
       {
@@ -15,22 +14,22 @@
       },
       {
         "word": "Hey!",
-        "expected_start": 0.52
+        "expected_start": 0.88
       },
       {
         "word": "Cha!)",
-        "expected_start": 2.5
+        "expected_start": 1.76
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 2,
     "label": "Parte 2",
-    "sing_start": 20.05,
-    "sing_end": 23.37,
-    "pause_start": 23.37,
-    "pause_end": 23.47,
-    "language": "en",
+    "sing_start": 19.66,
+    "sing_end": 23.42,
+    "pause_start": 23.42,
+    "pause_end": 23.52,
     "lyrics": "Hear the sound of the falling rain",
     "lyrics_timed": [
       {
@@ -39,38 +38,38 @@
       },
       {
         "word": "the",
-        "expected_start": 0.5
+        "expected_start": 0.86
       },
       {
         "word": "sound",
-        "expected_start": 0.72
+        "expected_start": 1.1
       },
       {
         "word": "of",
-        "expected_start": 1.08
+        "expected_start": 1.48
       },
       {
         "word": "the",
-        "expected_start": 1.36
+        "expected_start": 1.76
       },
       {
         "word": "falling",
-        "expected_start": 1.66
+        "expected_start": 2.04
       },
       {
         "word": "rain",
-        "expected_start": 2.2
+        "expected_start": 2.5
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 3,
     "label": "Parte 3",
-    "sing_start": 23.12,
-    "sing_end": 27.16,
-    "pause_start": 27.16,
-    "pause_end": 27.26,
-    "language": "en",
+    "sing_start": 23.26,
+    "sing_end": 26.85,
+    "pause_start": 26.85,
+    "pause_end": 26.95,
     "lyrics": "Coming down like an Armageddon flame (hey!)",
     "lyrics_timed": [
       {
@@ -79,38 +78,38 @@
       },
       {
         "word": "down",
-        "expected_start": 0.76
+        "expected_start": 0.62
       },
       {
         "word": "like",
-        "expected_start": 1.24
+        "expected_start": 1.1
       },
       {
         "word": "an",
-        "expected_start": 1.58
+        "expected_start": 1.44
       },
       {
         "word": "Armageddon",
-        "expected_start": 2.0
+        "expected_start": 1.88
       },
       {
         "word": "flame",
-        "expected_start": 3.26
+        "expected_start": 3.16
       },
       {
         "word": "(hey!)",
-        "expected_start": 3.31
+        "expected_start": 3.58
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 4,
     "label": "Parte 4",
-    "sing_start": 26.87,
-    "sing_end": 31.85,
-    "pause_start": 31.85,
-    "pause_end": 31.95,
-    "language": "en",
+    "sing_start": 28.0,
+    "sing_end": 37.14,
+    "pause_start": 37.14,
+    "pause_end": 37.24,
     "lyrics": "The shame, the ones who died without a name",
     "lyrics_timed": [
       {
@@ -119,46 +118,46 @@
       },
       {
         "word": "shame,",
-        "expected_start": 0.46
+        "expected_start": 1.28
       },
       {
         "word": "the",
-        "expected_start": 1.14
+        "expected_start": 2.6
       },
       {
         "word": "ones",
-        "expected_start": 1.3
+        "expected_start": 5.0
       },
       {
         "word": "who",
-        "expected_start": 1.64
+        "expected_start": 5.05
       },
       {
         "word": "died",
-        "expected_start": 2.14
+        "expected_start": 6.68
       },
       {
         "word": "without",
-        "expected_start": 2.42
+        "expected_start": 7.56
       },
       {
         "word": "a",
-        "expected_start": 3.28
+        "expected_start": 9.0
       },
       {
         "word": "name",
-        "expected_start": 3.76
+        "expected_start": 10.34
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 5,
     "label": "Parte 5",
-    "sing_start": 33.14,
-    "sing_end": 36.44,
-    "pause_start": 36.44,
-    "pause_end": 36.54,
-    "language": "en",
+    "sing_start": 39.66,
+    "sing_end": 58.04,
+    "pause_start": 58.04,
+    "pause_end": 58.14,
     "lyrics": "Hear the dogs howling out of key",
     "lyrics_timed": [
       {
@@ -167,38 +166,38 @@
       },
       {
         "word": "the",
-        "expected_start": 0.48
+        "expected_start": 2.82
       },
       {
         "word": "dogs",
-        "expected_start": 0.76
+        "expected_start": 5.52
       },
       {
         "word": "howling",
-        "expected_start": 1.06
+        "expected_start": 7.68
       },
       {
         "word": "out",
-        "expected_start": 1.6
+        "expected_start": 10.56
       },
       {
         "word": "of",
-        "expected_start": 2.0
+        "expected_start": 13.0
       },
       {
         "word": "key",
-        "expected_start": 2.42
+        "expected_start": 15.34
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 6,
     "label": "Parte 6",
-    "sing_start": 36.35,
-    "sing_end": 39.93,
-    "pause_start": 39.93,
-    "pause_end": 40.03,
-    "language": "en",
+    "sing_start": 74.39,
+    "sing_end": 91.65,
+    "pause_start": 91.65,
+    "pause_end": 91.75,
     "lyrics": "To a hymn called Faith And Misery (hey!)",
     "lyrics_timed": [
       {
@@ -207,42 +206,42 @@
       },
       {
         "word": "a",
-        "expected_start": 0.68
+        "expected_start": 2.18
       },
       {
         "word": "hymn",
-        "expected_start": 1.3
+        "expected_start": 3.56
       },
       {
         "word": "called",
-        "expected_start": 1.94
+        "expected_start": 6.82
       },
       {
         "word": "Faith",
-        "expected_start": 2.4
+        "expected_start": 8.24
       },
       {
         "word": "And",
-        "expected_start": 2.45
+        "expected_start": 11.0
       },
       {
         "word": "Misery",
-        "expected_start": 3.6
+        "expected_start": 13.7
       },
       {
         "word": "(hey!)",
-        "expected_start": 4.02
+        "expected_start": 15.94
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 7,
     "label": "Parte 7",
-    "sing_start": 41.14,
-    "sing_end": 44.3,
-    "pause_start": 44.3,
-    "pause_end": 44.4,
-    "language": "en",
+    "sing_start": 99.19,
+    "sing_end": 103.62,
+    "pause_start": 103.62,
+    "pause_end": 103.72,
     "lyrics": "And bleed, The Company lost the war today",
     "lyrics_timed": [
       {
@@ -251,42 +250,42 @@
       },
       {
         "word": "bleed,",
-        "expected_start": 0.8
+        "expected_start": 2.34
       },
       {
         "word": "The",
-        "expected_start": 1.38
+        "expected_start": 4.42
       },
       {
         "word": "Company",
-        "expected_start": 1.92
+        "expected_start": 6.66
       },
       {
         "word": "lost",
-        "expected_start": 2.18
+        "expected_start": 8.62
       },
       {
         "word": "the",
-        "expected_start": 2.62
+        "expected_start": 8.67
       },
       {
         "word": "war",
-        "expected_start": 2.67
+        "expected_start": 8.72
       },
       {
         "word": "today",
-        "expected_start": 2.72
+        "expected_start": 8.77
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 8,
     "label": "Parte 8",
-    "sing_start": 45.92,
-    "sing_end": 51.92,
-    "pause_start": 51.92,
-    "pause_end": 52.02,
-    "language": "en",
+    "sing_start": 117.75,
+    "sing_end": 153.78,
+    "pause_start": 153.78,
+    "pause_end": 154.28,
     "lyrics": "I beg to dream and differ from the hollow lies",
     "lyrics_timed": [
       {
@@ -295,50 +294,50 @@
       },
       {
         "word": "beg",
-        "expected_start": 1.1
+        "expected_start": 1.8
       },
       {
         "word": "to",
-        "expected_start": 1.56
+        "expected_start": 3.6
       },
       {
         "word": "dream",
-        "expected_start": 1.88
+        "expected_start": 5.4
       },
       {
         "word": "and",
-        "expected_start": 2.22
+        "expected_start": 7.2
       },
       {
         "word": "differ",
-        "expected_start": 2.62
+        "expected_start": 9.0
       },
       {
         "word": "from",
-        "expected_start": 3.26
+        "expected_start": 10.8
       },
       {
         "word": "the",
-        "expected_start": 4.3
+        "expected_start": 12.6
       },
       {
         "word": "hollow",
-        "expected_start": 4.86
+        "expected_start": 14.4
       },
       {
         "word": "lies",
-        "expected_start": 5.1
+        "expected_start": 16.2
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 9,
     "label": "Parte 9",
-    "sing_start": 52.92,
-    "sing_end": 59.29,
-    "pause_start": 59.29,
-    "pause_end": 59.39,
-    "language": "en",
+    "sing_start": 153.78,
+    "sing_end": 172.16,
+    "pause_start": 172.16,
+    "pause_end": 172.26,
     "lyrics": "This is the dawning of the rest of our lives",
     "lyrics_timed": [
       {
@@ -347,50 +346,50 @@
       },
       {
         "word": "is",
-        "expected_start": 2.0
+        "expected_start": 1.72
       },
       {
         "word": "the",
-        "expected_start": 3.66
+        "expected_start": 3.02
       },
       {
         "word": "dawning",
-        "expected_start": 5.24
+        "expected_start": 5.22
       },
       {
         "word": "of",
-        "expected_start": 7.32
+        "expected_start": 7.3
       },
       {
         "word": "the",
-        "expected_start": 7.94
+        "expected_start": 8.72
       },
       {
         "word": "rest",
-        "expected_start": 7.99
+        "expected_start": 10.38
       },
       {
         "word": "of",
-        "expected_start": 14.62
+        "expected_start": 12.58
       },
       {
         "word": "our",
-        "expected_start": 14.67
+        "expected_start": 14.42
       },
       {
         "word": "lives",
-        "expected_start": 16.3
+        "expected_start": 16.06
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 10,
     "label": "Parte 10",
-    "sing_start": 106.79,
-    "sing_end": 107.29,
-    "pause_start": 107.29,
-    "pause_end": 107.39,
-    "language": "en",
+    "sing_start": 213.84,
+    "sing_end": 214.26,
+    "pause_start": 214.26,
+    "pause_end": 214.36,
     "lyrics": "On holiday",
     "lyrics_timed": [
       {
@@ -401,16 +400,16 @@
         "word": "holiday",
         "expected_start": 0.1
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 11,
     "label": "Parte 11",
-    "sing_start": 106.91,
-    "sing_end": 107.03,
-    "pause_start": 107.03,
-    "pause_end": 107.53,
-    "language": "en",
+    "sing_start": 213.89,
+    "sing_end": 213.98,
+    "pause_start": 213.98,
+    "pause_end": 214.48,
     "lyrics": "Hear the drum pounding out of time",
     "lyrics_timed": [
       {
@@ -441,16 +440,16 @@
         "word": "time",
         "expected_start": 0.35
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 12,
     "label": "Parte 12",
-    "sing_start": 107.03,
-    "sing_end": 107.45,
-    "pause_start": 107.45,
-    "pause_end": 107.55,
-    "language": "en",
+    "sing_start": 213.98,
+    "sing_end": 214.4,
+    "pause_start": 214.4,
+    "pause_end": 214.5,
     "lyrics": "Another protester has crossed the line (hey!)",
     "lyrics_timed": [
       {
@@ -481,16 +480,16 @@
         "word": "(hey!)",
         "expected_start": 0.35
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 13,
     "label": "Parte 13",
-    "sing_start": 107.15,
-    "sing_end": 107.65,
-    "pause_start": 107.65,
-    "pause_end": 107.75,
-    "language": "en",
+    "sing_start": 214.08,
+    "sing_end": 214.58,
+    "pause_start": 214.58,
+    "pause_end": 214.68,
     "lyrics": "To find the money's on the other side",
     "lyrics_timed": [
       {
@@ -525,16 +524,16 @@
         "word": "side",
         "expected_start": 0.4
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 14,
     "label": "Parte 14",
-    "sing_start": 107.27,
-    "sing_end": 107.69,
-    "pause_start": 107.69,
-    "pause_end": 107.79,
-    "language": "en",
+    "sing_start": 214.21,
+    "sing_end": 214.3,
+    "pause_start": 214.3,
+    "pause_end": 214.8,
     "lyrics": "Can I get another amen? (Amen!)",
     "lyrics_timed": [
       {
@@ -561,16 +560,16 @@
         "word": "(Amen!)",
         "expected_start": 0.3
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 15,
     "label": "Parte 15",
-    "sing_start": 107.39,
-    "sing_end": 107.51,
-    "pause_start": 107.51,
-    "pause_end": 108.01,
-    "language": "en",
+    "sing_start": 214.3,
+    "sing_end": 214.46,
+    "pause_start": 214.46,
+    "pause_end": 214.96,
     "lyrics": "There's a flag wrapped around a score of men (hey!)",
     "lyrics_timed": [
       {
@@ -613,16 +612,16 @@
         "word": "(hey!)",
         "expected_start": 0.5
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 16,
     "label": "Parte 16",
-    "sing_start": 107.51,
-    "sing_end": 108.01,
-    "pause_start": 108.01,
-    "pause_end": 108.11,
-    "language": "en",
+    "sing_start": 214.46,
+    "sing_end": 214.94,
+    "pause_start": 214.94,
+    "pause_end": 215.04,
     "lyrics": "A gag, a plastic bag on a monument",
     "lyrics_timed": [
       {
@@ -657,16 +656,16 @@
         "word": "monument",
         "expected_start": 0.4
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 17,
     "label": "Parte 17",
-    "sing_start": 107.63,
-    "sing_end": 108.13,
-    "pause_start": 108.13,
-    "pause_end": 108.23,
-    "language": "en",
+    "sing_start": 214.58,
+    "sing_end": 215.12,
+    "pause_start": 215.12,
+    "pause_end": 215.22,
     "lyrics": "I beg to dream and differ from the hollow lies",
     "lyrics_timed": [
       {
@@ -709,16 +708,16 @@
         "word": "lies",
         "expected_start": 0.5
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 18,
     "label": "Parte 18",
-    "sing_start": 107.75,
-    "sing_end": 108.25,
-    "pause_start": 108.25,
-    "pause_end": 108.35,
-    "language": "en",
+    "sing_start": 214.74,
+    "sing_end": 215.3,
+    "pause_start": 215.3,
+    "pause_end": 215.4,
     "lyrics": "This is the dawning of the rest of our lives",
     "lyrics_timed": [
       {
@@ -761,16 +760,16 @@
         "word": "lives",
         "expected_start": 0.5
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 19,
     "label": "Parte 19",
-    "sing_start": 107.87,
-    "sing_end": 108.93,
-    "pause_start": 108.93,
-    "pause_end": 109.03,
-    "language": "en",
+    "sing_start": 216.1,
+    "sing_end": 216.78,
+    "pause_start": 216.78,
+    "pause_end": 216.88,
     "lyrics": "On holiday",
     "lyrics_timed": [
       {
@@ -779,34 +778,34 @@
       },
       {
         "word": "holiday",
-        "expected_start": 6.38
+        "expected_start": 0.28
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 20,
     "label": "Parte 20",
-    "sing_start": 129.36,
-    "sing_end": 123.52,
-    "pause_start": 123.52,
-    "pause_end": 123.62,
-    "language": "en",
+    "sing_start": 216.4,
+    "sing_end": 216.56,
+    "pause_start": 216.56,
+    "pause_end": 217.06,
     "lyrics": "(Hey!)",
     "lyrics_timed": [
       {
         "word": "(Hey!)",
         "expected_start": 0.05
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 21,
     "label": "Parte 21",
-    "sing_start": 135.72,
-    "sing_end": 135.18,
-    "pause_start": 135.18,
-    "pause_end": 135.28,
-    "language": "en",
+    "sing_start": 216.56,
+    "sing_end": 217.6,
+    "pause_start": 217.6,
+    "pause_end": 218.1,
     "lyrics": "(The representative from California has the floor)",
     "lyrics_timed": [
       {
@@ -815,38 +814,38 @@
       },
       {
         "word": "representative",
-        "expected_start": 0.4
+        "expected_start": 0.149
       },
       {
         "word": "from",
-        "expected_start": 0.45
+        "expected_start": 0.297
       },
       {
         "word": "California",
-        "expected_start": 0.5
+        "expected_start": 0.446
       },
       {
         "word": "has",
-        "expected_start": 1.8
+        "expected_start": 0.594
       },
       {
         "word": "the",
-        "expected_start": 1.85
+        "expected_start": 0.743
       },
       {
         "word": "floor)",
-        "expected_start": 1.9
+        "expected_start": 0.891
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 22,
     "label": "Parte 22",
-    "sing_start": 144.82,
-    "sing_end": 146.84,
-    "pause_start": 146.84,
-    "pause_end": 146.94,
-    "language": "en",
+    "sing_start": 217.6,
+    "sing_end": 218.1,
+    "pause_start": 218.1,
+    "pause_end": 218.2,
     "lyrics": "Sieg Heil to the president Gasman",
     "lyrics_timed": [
       {
@@ -855,34 +854,34 @@
       },
       {
         "word": "Heil",
-        "expected_start": 0.4
+        "expected_start": 0.1
       },
       {
         "word": "to",
-        "expected_start": 2.02
+        "expected_start": 0.15
       },
       {
         "word": "the",
-        "expected_start": 3.76
+        "expected_start": 0.2
       },
       {
         "word": "president",
-        "expected_start": 6.92
+        "expected_start": 0.25
       },
       {
         "word": "Gasman",
-        "expected_start": 7.7
+        "expected_start": 0.3
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 23,
     "label": "Parte 23",
-    "sing_start": 154.5,
-    "sing_end": 157.24,
-    "pause_start": 157.24,
-    "pause_end": 157.34,
-    "language": "en",
+    "sing_start": 218.5,
+    "sing_end": 219.62,
+    "pause_start": 219.62,
+    "pause_end": 219.72,
     "lyrics": "Bombs away is your punishment",
     "lyrics_timed": [
       {
@@ -891,30 +890,30 @@
       },
       {
         "word": "away",
-        "expected_start": 0.64
+        "expected_start": 0.1
       },
       {
         "word": "is",
-        "expected_start": 1.0
+        "expected_start": 0.15
       },
       {
         "word": "your",
-        "expected_start": 1.28
+        "expected_start": 0.2
       },
       {
         "word": "punishment",
-        "expected_start": 1.48
+        "expected_start": 0.25
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 24,
     "label": "Parte 24",
-    "sing_start": 157.31,
-    "sing_end": 161.01,
-    "pause_start": 161.01,
-    "pause_end": 161.11,
-    "language": "en",
+    "sing_start": 219.25,
+    "sing_end": 220.23,
+    "pause_start": 220.23,
+    "pause_end": 220.33,
     "lyrics": "Pulverize the Eiffel Towers",
     "lyrics_timed": [
       {
@@ -923,26 +922,26 @@
       },
       {
         "word": "the",
-        "expected_start": 1.72
+        "expected_start": 0.22
       },
       {
         "word": "Eiffel",
-        "expected_start": 2.1
+        "expected_start": 0.27
       },
       {
         "word": "Towers",
-        "expected_start": 2.64
+        "expected_start": 0.58
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 25,
     "label": "Parte 25",
-    "sing_start": 160.84,
-    "sing_end": 163.78,
-    "pause_start": 163.78,
-    "pause_end": 163.88,
-    "language": "en",
+    "sing_start": 219.85,
+    "sing_end": 220.83,
+    "pause_start": 220.83,
+    "pause_end": 220.93,
     "lyrics": "Who criticize your government",
     "lyrics_timed": [
       {
@@ -951,26 +950,26 @@
       },
       {
         "word": "criticize",
-        "expected_start": 0.5
+        "expected_start": 0.46
       },
       {
         "word": "your",
-        "expected_start": 1.22
+        "expected_start": 0.51
       },
       {
         "word": "government",
-        "expected_start": 1.64
+        "expected_start": 0.56
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 26,
     "label": "Parte 26",
-    "sing_start": 163.94,
-    "sing_end": 166.43,
-    "pause_start": 166.43,
-    "pause_end": 166.53,
-    "language": "en",
+    "sing_start": 220.45,
+    "sing_end": 221.5,
+    "pause_start": 221.5,
+    "pause_end": 222.0,
     "lyrics": "Bang bang goes the broken glass, and",
     "lyrics_timed": [
       {
@@ -979,38 +978,38 @@
       },
       {
         "word": "bang",
-        "expected_start": 0.1
+        "expected_start": 0.15
       },
       {
         "word": "goes",
-        "expected_start": 1.0
+        "expected_start": 0.3
       },
       {
         "word": "the",
-        "expected_start": 1.44
+        "expected_start": 0.45
       },
       {
         "word": "broken",
-        "expected_start": 1.74
+        "expected_start": 0.6
       },
       {
         "word": "glass,",
-        "expected_start": 2.02
+        "expected_start": 0.75
       },
       {
         "word": "and",
-        "expected_start": 2.54
+        "expected_start": 0.9
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 27,
     "label": "Parte 27",
-    "sing_start": 167.06,
-    "sing_end": 170.5,
-    "pause_start": 170.5,
-    "pause_end": 170.6,
-    "language": "en",
+    "sing_start": 221.5,
+    "sing_end": 222.94,
+    "pause_start": 222.94,
+    "pause_end": 223.04,
     "lyrics": "Kill all the fags that don't agree",
     "lyrics_timed": [
       {
@@ -1019,38 +1018,38 @@
       },
       {
         "word": "all",
-        "expected_start": 0.8
+        "expected_start": 0.46
       },
       {
         "word": "the",
-        "expected_start": 1.04
+        "expected_start": 0.98
       },
       {
         "word": "fags",
-        "expected_start": 1.32
+        "expected_start": 1.03
       },
       {
         "word": "that",
-        "expected_start": 1.72
+        "expected_start": 1.08
       },
       {
         "word": "don't",
-        "expected_start": 1.98
+        "expected_start": 1.13
       },
       {
         "word": "agree",
-        "expected_start": 2.74
+        "expected_start": 1.18
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 28,
     "label": "Parte 28",
-    "sing_start": 170.5,
-    "sing_end": 173.27,
-    "pause_start": 173.27,
-    "pause_end": 173.37,
-    "language": "en",
+    "sing_start": 222.56,
+    "sing_end": 223.52,
+    "pause_start": 223.52,
+    "pause_end": 223.62,
     "lyrics": "Trials by fire, setting fire",
     "lyrics_timed": [
       {
@@ -1059,30 +1058,30 @@
       },
       {
         "word": "by",
-        "expected_start": 0.84
+        "expected_start": 0.1
       },
       {
         "word": "fire,",
-        "expected_start": 1.06
+        "expected_start": 0.56
       },
       {
         "word": "setting",
-        "expected_start": 2.1
+        "expected_start": 0.61
       },
       {
         "word": "fire",
-        "expected_start": 2.46
+        "expected_start": 0.66
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 29,
     "label": "Parte 29",
-    "sing_start": 173.96,
-    "sing_end": 177.24,
-    "pause_start": 177.24,
-    "pause_end": 177.34,
-    "language": "en",
+    "sing_start": 223.31,
+    "sing_end": 224.87,
+    "pause_start": 224.87,
+    "pause_end": 224.97,
     "lyrics": "Is not a way that's meant for me",
     "lyrics_timed": [
       {
@@ -1091,42 +1090,42 @@
       },
       {
         "word": "not",
-        "expected_start": 0.54
+        "expected_start": 0.1
       },
       {
         "word": "a",
-        "expected_start": 0.76
+        "expected_start": 0.15
       },
       {
         "word": "way",
-        "expected_start": 1.02
+        "expected_start": 0.2
       },
       {
         "word": "that's",
-        "expected_start": 1.28
+        "expected_start": 0.25
       },
       {
         "word": "meant",
-        "expected_start": 1.82
+        "expected_start": 1.16
       },
       {
         "word": "for",
-        "expected_start": 2.18
+        "expected_start": 1.21
       },
       {
         "word": "me",
-        "expected_start": 2.6
+        "expected_start": 1.26
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 30,
     "label": "Parte 30",
-    "sing_start": 177.35,
-    "sing_end": 180.06,
-    "pause_start": 180.06,
-    "pause_end": 180.16,
-    "language": "en",
+    "sing_start": 224.5,
+    "sing_end": 225.4,
+    "pause_start": 225.4,
+    "pause_end": 225.9,
     "lyrics": "Just 'cause (hey, hey, hey, hey!)",
     "lyrics_timed": [
       {
@@ -1135,34 +1134,34 @@
       },
       {
         "word": "'cause",
-        "expected_start": 0.64
+        "expected_start": 0.15
       },
       {
         "word": "(hey,",
-        "expected_start": 0.69
+        "expected_start": 0.3
       },
       {
         "word": "hey,",
-        "expected_start": 2.04
+        "expected_start": 0.45
       },
       {
         "word": "hey,",
-        "expected_start": 2.09
+        "expected_start": 0.6
       },
       {
         "word": "hey!)",
-        "expected_start": 2.88
+        "expected_start": 0.75
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 31,
     "label": "Parte 31",
-    "sing_start": 180.74,
-    "sing_end": 183.46,
-    "pause_start": 183.46,
-    "pause_end": 183.56,
-    "language": "en",
+    "sing_start": 225.4,
+    "sing_end": 226.9,
+    "pause_start": 226.9,
+    "pause_end": 227.4,
     "lyrics": "Just 'cause because we're outlaws, yeah (hey, hey, hey, hey!)",
     "lyrics_timed": [
       {
@@ -1171,50 +1170,50 @@
       },
       {
         "word": "'cause",
-        "expected_start": 0.1
+        "expected_start": 0.15
       },
       {
         "word": "because",
-        "expected_start": 0.68
+        "expected_start": 0.3
       },
       {
         "word": "we're",
-        "expected_start": 1.18
+        "expected_start": 0.45
       },
       {
         "word": "outlaws,",
-        "expected_start": 1.23
+        "expected_start": 0.6
       },
       {
         "word": "yeah",
-        "expected_start": 1.8
+        "expected_start": 0.75
       },
       {
         "word": "(hey,",
-        "expected_start": 1.85
+        "expected_start": 0.9
       },
       {
         "word": "hey,",
-        "expected_start": 2.36
+        "expected_start": 1.05
       },
       {
         "word": "hey,",
-        "expected_start": 2.41
+        "expected_start": 1.2
       },
       {
         "word": "hey!)",
-        "expected_start": 3.24
+        "expected_start": 1.35
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 32,
     "label": "Parte 32",
-    "sing_start": 184.13,
-    "sing_end": 189.5,
-    "pause_start": 189.5,
-    "pause_end": 189.6,
-    "language": "en",
+    "sing_start": 226.9,
+    "sing_end": 228.74,
+    "pause_start": 228.74,
+    "pause_end": 228.84,
     "lyrics": "I beg to dream and differ from the hollow lies",
     "lyrics_timed": [
       {
@@ -1223,50 +1222,50 @@
       },
       {
         "word": "beg",
-        "expected_start": 0.62
+        "expected_start": 0.1
       },
       {
         "word": "to",
-        "expected_start": 0.94
+        "expected_start": 0.52
       },
       {
         "word": "dream",
-        "expected_start": 1.34
+        "expected_start": 1.18
       },
       {
         "word": "and",
-        "expected_start": 1.78
+        "expected_start": 1.23
       },
       {
         "word": "differ",
-        "expected_start": 2.12
+        "expected_start": 1.28
       },
       {
         "word": "from",
-        "expected_start": 2.78
+        "expected_start": 1.33
       },
       {
         "word": "the",
-        "expected_start": 3.64
+        "expected_start": 1.38
       },
       {
         "word": "hollow",
-        "expected_start": 4.12
+        "expected_start": 1.43
       },
       {
         "word": "lies",
-        "expected_start": 4.48
+        "expected_start": 1.48
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 33,
     "label": "Parte 33",
-    "sing_start": 190.3,
-    "sing_end": 196.02,
-    "pause_start": 196.02,
-    "pause_end": 196.12,
-    "language": "en",
+    "sing_start": 228.4,
+    "sing_end": 229.9,
+    "pause_start": 229.9,
+    "pause_end": 230.4,
     "lyrics": "This is the dawning of the rest of our lives",
     "lyrics_timed": [
       {
@@ -1275,50 +1274,50 @@
       },
       {
         "word": "is",
-        "expected_start": 1.02
+        "expected_start": 0.15
       },
       {
         "word": "the",
-        "expected_start": 1.5
+        "expected_start": 0.3
       },
       {
         "word": "dawning",
-        "expected_start": 1.8
+        "expected_start": 0.45
       },
       {
         "word": "of",
-        "expected_start": 2.5
+        "expected_start": 0.6
       },
       {
         "word": "the",
-        "expected_start": 2.96
+        "expected_start": 0.75
       },
       {
         "word": "rest",
-        "expected_start": 3.42
+        "expected_start": 0.9
       },
       {
         "word": "of",
-        "expected_start": 3.9
+        "expected_start": 1.05
       },
       {
         "word": "our",
-        "expected_start": 4.76
+        "expected_start": 1.2
       },
       {
         "word": "lives",
-        "expected_start": 5.32
+        "expected_start": 1.35
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 34,
     "label": "Parte 34",
-    "sing_start": 196.87,
-    "sing_end": 202.71,
-    "pause_start": 202.71,
-    "pause_end": 202.81,
-    "language": "en",
+    "sing_start": 229.9,
+    "sing_end": 231.74,
+    "pause_start": 231.74,
+    "pause_end": 231.84,
     "lyrics": "I beg to dream and differ from the hollow lies",
     "lyrics_timed": [
       {
@@ -1327,50 +1326,50 @@
       },
       {
         "word": "beg",
-        "expected_start": 1.0
+        "expected_start": 0.1
       },
       {
         "word": "to",
-        "expected_start": 1.42
+        "expected_start": 0.38
       },
       {
         "word": "dream",
-        "expected_start": 1.78
+        "expected_start": 1.02
       },
       {
         "word": "and",
-        "expected_start": 2.16
+        "expected_start": 1.07
       },
       {
         "word": "differ",
-        "expected_start": 2.52
+        "expected_start": 1.12
       },
       {
         "word": "from",
-        "expected_start": 3.14
+        "expected_start": 1.17
       },
       {
         "word": "the",
-        "expected_start": 4.1
+        "expected_start": 1.22
       },
       {
         "word": "hollow",
-        "expected_start": 4.88
+        "expected_start": 1.4
       },
       {
         "word": "lies",
-        "expected_start": 5.0
+        "expected_start": 1.45
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 35,
     "label": "Parte 35",
-    "sing_start": 203.87,
-    "sing_end": 211.13,
-    "pause_start": 211.13,
-    "pause_end": 211.23,
-    "language": "en",
+    "sing_start": 231.4,
+    "sing_end": 232.85,
+    "pause_start": 232.85,
+    "pause_end": 232.85,
     "lyrics": "This is the dawning of the rest of our lives",
     "lyrics_timed": [
       {
@@ -1379,50 +1378,50 @@
       },
       {
         "word": "is",
-        "expected_start": 0.6
+        "expected_start": 0.145
       },
       {
         "word": "the",
-        "expected_start": 1.1
+        "expected_start": 0.29
       },
       {
         "word": "dawning",
-        "expected_start": 1.36
+        "expected_start": 0.435
       },
       {
         "word": "of",
-        "expected_start": 2.08
+        "expected_start": 0.58
       },
       {
         "word": "the",
-        "expected_start": 2.58
+        "expected_start": 0.725
       },
       {
         "word": "rest",
-        "expected_start": 3.3
+        "expected_start": 0.87
       },
       {
         "word": "of",
-        "expected_start": 3.8
+        "expected_start": 1.015
       },
       {
         "word": "our",
-        "expected_start": 4.3
+        "expected_start": 1.16
       },
       {
         "word": "lives",
-        "expected_start": 5.2
+        "expected_start": 1.305
       }
-    ]
+    ],
+    "language": "en"
   },
   {
     "id": 36,
     "label": "Parte 36",
-    "sing_start": 211.87,
-    "sing_end": 216.21,
-    "pause_start": 216.21,
-    "pause_end": 216.31,
-    "language": "en",
+    "sing_start": 232.9,
+    "sing_end": 232.85,
+    "pause_start": 232.85,
+    "pause_end": 232.85,
     "lyrics": "This is our lives on holiday",
     "lyrics_timed": [
       {
@@ -1431,24 +1430,25 @@
       },
       {
         "word": "is",
-        "expected_start": 0.78
+        "expected_start": 0.1
       },
       {
         "word": "our",
-        "expected_start": 1.3
+        "expected_start": 0.15
       },
       {
         "word": "lives",
-        "expected_start": 1.64
+        "expected_start": 0.2
       },
       {
         "word": "on",
-        "expected_start": 1.98
+        "expected_start": 0.25
       },
       {
         "word": "holiday",
-        "expected_start": 2.44
+        "expected_start": 0.3
       }
-    ]
+    ],
+    "language": "en"
   }
 ]

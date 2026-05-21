@@ -303,20 +303,20 @@ async def reinstall_song(
                 lrc_file.write_text(lrc_backup, encoding="utf-8")
                 if txt_backup is not None:
                     txt_file.write_text(txt_backup, encoding="utf-8")
-            else:
-                logger.info("Tentando fallback de geração automática de LRC puro...")
-                generate_lrc(str(song_dir), language=song_lang)
+        
+            logger.info("Tentando fallback de geração automática de LRC puro...")
+            generate_lrc(str(song_dir), language=song_lang, debug=True)
     elif lrc_backup is not None:
         logger.info("Restaurando backup de letras sincronizadas lyrics.lrc...")
         lrc_file.write_text(lrc_backup, encoding="utf-8")
         if txt_backup is not None:
             txt_file.write_text(txt_backup, encoding="utf-8")
-    else:
-        logger.info("Nenhuma letra disponível. Gerando nova transcrição com Whisper (generate_lrc)...")
-        try:
-            generate_lrc(str(song_dir), language=song_lang)
-        except Exception as e:
-            logger.error(f"Aviso: Erro ao transcrever letras com o Whisper: {e}")
+    
+    logger.info("Nenhuma letra disponível. Gerando nova transcrição com Whisper (generate_lrc)...")
+    try:
+        generate_lrc(str(song_dir), language=song_lang, debug=True)
+    except Exception as e:
+        logger.error(f"Aviso: Erro ao transcrever letras com o Whisper: {e}")
 
     # 7. Rodar o alinhamento word-level (prepare_song)
     # Quando `skip_prepare_song=True` (ex: upload aguardando aprovação do
@@ -329,7 +329,43 @@ async def reinstall_song(
 
     logger.info("Executando o alinhamento word-level (prepare_song)...")
     try:
-        prepare_song(str(song_dir), language=song_lang)
+        prepare_song(str(song_dir), language=song_lang, debug=True)
+        prepare_song(str(song_dir), language=song_lang, debug=False)
+
+        # Realinhamento de segmentos e LRC pós-processamento
+        if txt_file.exists():
+            plain_lyrics_content = txt_file.read_text(encoding="utf-8")
+            from utils.lrc_realign import realign_segments
+            
+            # Corrige a versão debug se existir
+            debug_segments_path = song_dir / "segments_debug.json"
+            if debug_segments_path.exists():
+                logger.info("Realinhando segmentos debug...")
+                try:
+                    with open(debug_segments_path, "r", encoding="utf-8") as f:
+                        debug_segs = json.load(f)
+                    corrected_debug_segs, debug_lrc = realign_segments(debug_segs, plain_lyrics_content)
+                    with open(debug_segments_path, "w", encoding="utf-8") as f:
+                        json.dump(corrected_debug_segs, f, indent=2, ensure_ascii=False)
+                    (song_dir / "lyrics_debug_2.lrc").write_text(debug_lrc, encoding="utf-8")
+                except Exception as e:
+                    logger.warning(f"Erro ao realinhar versão debug: {e}")
+                    
+            # Corrige a versão principal
+            main_segments_path = song_dir / "segments.json"
+            if main_segments_path.exists():
+                logger.info("Realinhando segmentos principais...")
+                try:
+                    with open(main_segments_path, "r", encoding="utf-8") as f:
+                        main_segs = json.load(f)
+                    corrected_main_segs, main_lrc = realign_segments(main_segs, plain_lyrics_content)
+                    with open(main_segments_path, "w", encoding="utf-8") as f:
+                        json.dump(corrected_main_segs, f, indent=2, ensure_ascii=False)
+                    lrc_file.write_text(main_lrc, encoding="utf-8")
+                    logger.info("Realinhamento concluído com sucesso!")
+                except Exception as e:
+                    logger.warning(f"Erro ao realinhar versão principal: {e}")
+
         logger.info(f"[SUCCESS] Reinstalação de '{song_dir.name}' concluída com sucesso absoluto!")
         return True
     except Exception as e:

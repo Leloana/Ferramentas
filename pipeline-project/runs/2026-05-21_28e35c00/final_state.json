@@ -1,0 +1,117 @@
+{
+  "run_id": "28e35c00",
+  "timestamp": "2026-05-21T18:32:09.196978",
+  "prompt": "adicione autenticação JWT no endpoint de usuários",
+  "codebase_path": ".",
+  "retrieved_chunks": [
+    "# mock chunk 1: src/auth.py — função verify_token",
+    "# mock chunk 2: src/api/users.py — endpoint GET /users"
+  ],
+  "plan": {
+    "steps": [
+      {
+        "id": "step_1",
+        "description": "Criar modelo User com campos id, email, hashed_password",
+        "file": "src/models/user.py",
+        "location": "módulo raiz",
+        "action": "create",
+        "depends_on": []
+      },
+      {
+        "id": "step_2",
+        "description": "Implementar função create_access_token em auth.py",
+        "file": "src/auth.py",
+        "location": "função create_access_token",
+        "action": "modify",
+        "depends_on": [
+          "step_1"
+        ]
+      },
+      {
+        "id": "step_3",
+        "description": "Adicionar endpoint POST /login que retorna JWT",
+        "file": "src/api/users.py",
+        "location": "função login_endpoint",
+        "action": "modify",
+        "depends_on": [
+          "step_2"
+        ]
+      }
+    ]
+  },
+  "pseudocode": {
+    "step_1": {
+      "step_id": "step_1",
+      "inputs": [
+        "context: dict"
+      ],
+      "outputs": [
+        "result: bool"
+      ],
+      "pseudocode": "FUNCTION execute_step_1(context):\n  # Criar modelo User com campos id, email, hashed_password\n  SET result = CALL do_work(context)\n  IF result IS None:\n    RETURN False\n  RETURN True",
+      "external_calls": []
+    },
+    "step_2": {
+      "step_id": "step_2",
+      "inputs": [
+        "context: dict"
+      ],
+      "outputs": [
+        "result: bool"
+      ],
+      "pseudocode": "FUNCTION execute_step_2(context):\n  # Implementar função create_access_token em auth.py\n  SET result = CALL do_work(context)\n  IF result IS None:\n    RETURN False\n  RETURN True",
+      "external_calls": []
+    },
+    "step_3": {
+      "step_id": "step_3",
+      "inputs": [
+        "context: dict"
+      ],
+      "outputs": [
+        "result: bool"
+      ],
+      "pseudocode": "FUNCTION execute_step_3(context):\n  # Adicionar endpoint POST /login que retorna JWT\n  SET result = CALL do_work(context)\n  IF result IS None:\n    RETURN False\n  RETURN True",
+      "external_calls": []
+    }
+  },
+  "applied_patches": [
+    "step_1: ok: write_file aplicado",
+    "step_2: ok: write_file aplicado",
+    "step_3: ok: apply_patch aplicado"
+  ],
+  "errors": [],
+  "retries": {},
+  "status": "done",
+  "logs": [
+    {
+      "agent": "planner",
+      "model": "qwen3:14b-q4_k_m",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "latency_ms": 0,
+      "finish_reason": "stop",
+      "validation_layer_failed": null,
+      "retry_count": 0
+    },
+    {
+      "agent": "coder",
+      "model": "qwen2.5-coder:7b-q4_k_m",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "latency_ms": 0,
+      "finish_reason": "stop",
+      "validation_layer_failed": null,
+      "retry_count": 0
+    },
+    {
+      "agent": "implementer",
+      "model": "qwen2.5-coder:7b-q4_k_m",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "latency_ms": 0,
+      "finish_reason": "stop",
+      "validation_layer_failed": null,
+      "retry_count": 0
+    }
+  ]
+}

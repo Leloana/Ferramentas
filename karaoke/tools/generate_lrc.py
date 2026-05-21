@@ -27,10 +27,13 @@ def format_lrc_timestamp(seconds: float) -> str:
     return f"[{minutes:02d}:{remaining_seconds:05.2f}]"
 
 
-def generate_lrc(song_dir: str, language: str = "en") -> None:
+def generate_lrc(song_dir: str, language: str = "en", debug: bool = False) -> None:
     song_path = Path(song_dir)
     vocal_mp3 = song_path / "vocal.mp3"
-    lrc_output = song_path / "lyrics.lrc"
+    if debug:
+        lrc_output = song_path / "lyrics_debug.lrc"
+    else:
+        lrc_output = song_path / "lyrics.lrc"
 
     if not vocal_mp3.exists():
         print(f"Erro: Certifique-se de que vocal.mp3 existe em {song_dir}")

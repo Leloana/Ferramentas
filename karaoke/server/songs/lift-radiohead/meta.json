@@ -1,0 +1,20 @@
+{
+    "meta": {
+        "title": "Lift",
+        "artist": "Radiohead",
+        "language": "en",
+        "slug": "lift-radiohead"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://youtu.be/QBGaO89cBMI?list=LL",
+        "youtube_backing_url": null
+    },
+    "lyrics": {
+        "plain_lyrics": "This is the place\nSit down, you’re safe now\nYou’ve been stuck in a lift\nWe’ve been trying to reach you, Thom\nThis is the place\nIt won’t hurt ever again\n\nThe smell of air conditioning\nThe fish are belly up\nEmpty all your pockets\nBecause it’s time to come home\n\nThis is the place\nRemember me?\nI’m the face you always see\nYou’ve been stuck in a lift\nIn the belly of a whale\nAt the bottom of the ocean\n\nThe smell of air conditioning\nThe fish are belly up\nEmpty all your pockets\nBecause it’s time to come home\n\nThe smell of air conditioning\nThe fish are belly up\nLet it go\n\nToday is the first day\nOf the rest of your days\nSo lighten up, squirt"
+    },
+    "status": {
+        "has_vocal_file": false,
+        "has_backing_file": false,
+        "has_lrc_file": false
+    }
+}
