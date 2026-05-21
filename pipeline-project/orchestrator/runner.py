@@ -64,25 +64,23 @@ def run_pipeline(prompt: str, codebase_path: str = ".", stage: int = 3) -> Pipel
         codebase_abs = Path(state.codebase_path).resolve()
         db_path = (codebase_abs / ".srclight" / "index.db").resolve()
         
-        # Cria/indexa base de dados dinamicamente se não existir
-        if not db_path.exists():
-            print(f"  [retrieval] Banco de dados .srclight/index.db não encontrado.")
-            print(f"  [retrieval] Inicializando e indexando a base de código em: {codebase_abs}...")
-            
-            cmd_index = [
-                sys.executable,
-                "-m", "srclight.cli",
-                "index",
-                "--db", str(db_path),
-                "--embed", CONFIG["retrieval"]["embedding_model"],
-                str(codebase_abs)
-            ]
-            print(f"  [index] Executando indexação: {' '.join(cmd_index)}")
-            try:
-                subprocess.run(cmd_index, capture_output=True, text=True, check=True)
-                print("  [index] Base de código indexada com sucesso!")
-            except subprocess.CalledProcessError as e:
-                raise ValidationError_("R", f"Falha ao indexar a base de código: {e.stderr or e.stdout}")
+        # Indexa/reindexa a base de código a cada execução para garantir que as alterações mais recentes sejam capturadas
+        print(f"  [retrieval] Garantindo indexação atualizada da base de código em: {codebase_abs}...")
+        
+        cmd_index = [
+            sys.executable,
+            "-m", "srclight.cli",
+            "index",
+            "--db", str(db_path),
+            "--embed", CONFIG["retrieval"]["embedding_model"],
+            str(codebase_abs)
+        ]
+        print(f"  [index] Executando indexação: {' '.join(cmd_index)}")
+        try:
+            subprocess.run(cmd_index, capture_output=True, text=True, check=True)
+            print("  [index] Base de código indexada/atualizada com sucesso!")
+        except subprocess.CalledProcessError as e:
+            raise ValidationError_("R", f"Falha ao indexar a base de código: {e.stderr or e.stdout}")
         
         # Inicializa cliente MCP srclight
         server_cmd = [
