@@ -46,14 +46,14 @@ def call_model(step_id: str, description: str, file_content: str, attempt: int, 
 
 def run(state: PipelineState) -> dict[str, PseudocodeStep]:
     """Executa o Agente 2: uma chamada por step."""
-    print(f"\n[Agente 2 — Coder]")
+    print(f"\n[Agente 2 - Coder]")
     assert state.plan is not None, "Agente 2 precisa do plano do Agente 1"
 
     pseudocode: dict[str, PseudocodeStep] = {}
     log = AgentLog(agent="coder", model=MODEL)
 
     for step in state.plan.steps:
-        print(f"  → processando {step.id}: {step.description[:50]}")
+        print(f"  -> processando {step.id}: {step.description[:50]}")
 
         def attempt_fn(attempt: int, last_error, _step=step):
             # Aqui você leria o arquivo real via MCP read_file
@@ -79,5 +79,5 @@ def run(state: PipelineState) -> dict[str, PseudocodeStep]:
 
     state.pseudocode = pseudocode
     state.logs.append(log)
-    print(f"  ✓ Pseudocódigo gerado para {len(pseudocode)} steps")
+    print(f"  [OK] Pseudocódigo gerado para {len(pseudocode)} steps")
     return pseudocode

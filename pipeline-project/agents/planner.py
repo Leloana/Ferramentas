@@ -1,10 +1,9 @@
-"""
-Agente 1 — Planejador (MOCK)
-Retorna um plano JSON fixo para testar o pipeline.
-Quando for real: substituir `call_model()` por chamada ao Ollama.
-"""
 from __future__ import annotations
 import json
+import os
+import requests
+import yaml
+from pathlib import Path
 from orchestrator.state import PipelineState, Plan, AgentLog
 from orchestrator.validators import (
     validate_json_parseable,
@@ -14,52 +13,88 @@ from orchestrator.validators import (
 )
 from orchestrator.retries import with_retry
 
-# Modelo que será usado quando implementar de verdade
-MODEL = "qwen3:14b-q4_k_m"
+# Carrega a configuração global
+CONFIG_PATH = Path(__file__).parent.parent / "config.yaml"
+with open(CONFIG_PATH, "r", encoding="utf-8") as f:
+    CONFIG = yaml.safe_load(f)
 
-# --- Mock: plano fixo que sempre retorna ---
-MOCK_PLAN = {
-    "steps": [
-        {
-            "id": "step_1",
-            "description": "Criar modelo User com campos id, email, hashed_password",
-            "file": "src/models/user.py",
-            "location": "módulo raiz",
-            "action": "create",
-            "depends_on": []
-        },
-        {
-            "id": "step_2",
-            "description": "Implementar função create_access_token em auth.py",
-            "file": "src/auth.py",
-            "location": "função create_access_token",
-            "action": "modify",
-            "depends_on": ["step_1"]
-        },
-        {
-            "id": "step_3",
-            "description": "Adicionar endpoint POST /login que retorna JWT",
-            "file": "src/api/users.py",
-            "location": "função login_endpoint",
-            "action": "modify",
-            "depends_on": ["step_2"]
-        }
-    ]
-}
+OLLAMA_URL = f"{CONFIG['ollama']['base_url']}/api/chat"
+MODEL = CONFIG['models']['planner']
 
 
-def call_model(prompt: str, chunks: list[str], attempt: int, last_error) -> str:
+def get_file_tree(root_dir: str) -> str:
+    """Gera uma árvore de diretórios textual excluindo pastas irrelevantes."""
+    lines = []
+    root_path = Path(root_dir).resolve()
+    
+    # Ignora pastas de cache, dependências e relatórios temporários
+    exclude_dirs = {".git", "__pycache__", ".venv", "runs", ".idea", ".vscode", "docx_to_pdf_converter", "karaoke", "youtube_music_playlist_organizer"}
+    
+    for root, dirs, files in os.walk(root_path):
+        dirs[:] = [d for d in dirs if d not in exclude_dirs]
+        
+        try:
+            rel_path = Path(root).relative_to(root_path)
+        except ValueError:
+            continue
+            
+        level = len(rel_path.parts)
+        indent = "  " * level
+        
+        if rel_path != Path("."):
+            lines.append(f"{indent}📁 {rel_path.name}/")
+        
+        sub_indent = "  " * (level + 1)
+        for f in files:
+            # Ignora arquivos de sistema e de cache
+            if f.endswith((".pyc", ".pyo", ".pyd")) or f in {".gitignore", "LICENSE"}:
+                continue
+            lines.append(f"{sub_indent}📄 {f}")
+            
+    return "\n".join(lines)
+
+
+def call_model(prompt: str, chunks: list[str], file_tree: str) -> str:
     """
-    MOCK: retorna JSON fixo.
-    REAL: fazer POST para Ollama com o system prompt + prompt + chunks.
+    Faz requisição POST para o Ollama local usando o system prompt e os dados da run.
     """
-    print(f"  [agent1] chamando modelo (mock)...")
+    print(f"  [agent1] enviando requisição para o modelo {MODEL} no Ollama...")
 
-    # Simula falha na primeira tentativa para testar retry (descomente para testar):
-    # if attempt == 0:
-    #     raise ValidationError_("A", "JSON inválido simulado")
+    # Carrega o system prompt correspondente
+    system_prompt_path = Path(__file__).parent.parent / "prompts" / "planner.system.md"
+    with open(system_prompt_path, "r", encoding="utf-8") as f:
+        system_prompt = f.read()
 
-    return json.dumps(MOCK_PLAN)
+    # Monta a mensagem do usuário
+    user_content = (
+        f"SOLICITAÇÃO DO USUÁRIO:\n{prompt}\n\n"
+        f"TRECHOS DE CÓDIGO RECUPERADOS (RETRIEVAL):\n"
+    )
+    if chunks:
+        for i, chunk in enumerate(chunks, 1):
+            user_content += f"\n--- Chunk {i} ---\n{chunk}\n"
+    else:
+        user_content += "Nenhum trecho de código recuperado.\n"
+        
+    user_content += f"\nESTRUTURA DE ARQUIVOS DA BASE DE CÓDIGO:\n{file_tree}\n"
+
+    payload = {
+        "model": MODEL,
+        "messages": [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_content}
+        ],
+        "format": "json",
+        "stream": False
+    }
+
+    try:
+        response = requests.post(OLLAMA_URL, json=payload, timeout=90)
+        response.raise_for_status()
+        data = response.json()
+        return data["message"]["content"]
+    except Exception as e:
+        raise ValidationError_("A", f"Falha na chamada ao Ollama: {e}")
 
 
 def run(state: PipelineState) -> Plan:
@@ -69,7 +104,10 @@ def run(state: PipelineState) -> Plan:
     print(f"  prompt: {state.prompt[:80]}...")
 
     def attempt_fn(attempt: int, last_error):
-        raw = call_model(state.prompt, state.retrieved_chunks, attempt, last_error)
+        # Gera o file tree com base no codebase_path
+        file_tree = get_file_tree(state.codebase_path)
+        
+        raw = call_model(state.prompt, state.retrieved_chunks, file_tree)
 
         # Camada A
         data = validate_json_parseable(raw)
@@ -85,5 +123,5 @@ def run(state: PipelineState) -> Plan:
 
     state.plan = plan
     state.logs.append(log)
-    print(f"  ✓ Plano gerado: {len(plan.steps)} passos")
+    print(f"  [OK] Plano gerado: {len(plan.steps)} passos")
     return plan

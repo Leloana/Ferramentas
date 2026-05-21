@@ -1,7 +1,7 @@
 models:
-  planner: "qwen3:14b-q4_k_m"
-  coder: "qwen2.5-coder:7b-q4_k_m"
-  implementer: "qwen2.5-coder:7b-q4_k_m"
+  planner: "qwen2.5-coder:7b-instruct-q4_K_M"
+  coder: "qwen2.5-coder:7b-instruct-q4_K_M"
+  implementer: "qwen2.5-coder:7b-instruct-q4_K_M"
 
 ollama:
   base_url: "http://localhost:11434"

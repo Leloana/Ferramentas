@@ -38,3 +38,8 @@ karaoke/server/songs/**/*
 !karaoke/server/songs/**/meta.json
 !karaoke/server/songs/**/
 
+# Pipeline project runs and scratch
+pipeline-project/runs/
+pipeline-project/scratch/
+
+
