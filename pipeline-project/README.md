@@ -125,15 +125,45 @@ Edite diretamente o arquivo Markdown correspondente para ajustar diretrizes, adi
 
 Certifique-se de que o **Ollama** esteja rodando localmente com os modelos especificados no `config.yaml` carregados.
 
-### Executar o pipeline principal
-Execute o arquivo `runner.py` passando o prompt desejado entre aspas como argumento:
+### Execução Completa (Padrão)
+Execute o arquivo `runner.py` passando o prompt desejado:
 
 ```powershell
 # Ativar o ambiente virtual
 .venv\Scripts\Activate.ps1
 
-# Executar o runner
+# Executar o runner (completo - estágio 3)
 python orchestrator\runner.py "adicione um comentário na primeira linha de config.yaml"
 ```
 
-A execução imprimirá o progresso de cada agente e validará as alterações. O resultado final estará gravado no arquivo alvo e o log completo de estado e respostas brutas estará salvo na pasta `runs/`.
+### Execução por Etapas (Interrupção Controlada)
+Você pode escolher executar o pipeline apenas até uma determinada fase passando o número da etapa (`1`, `2` ou `3`) como argumento posicional ou via flag:
+
+* **Estágio 1 — Planejamento/Análise**: Executa apenas o Retrieval e o Agente 1 (Planner), gerando o plano de ação sem propor pseudocódigo ou aplicar patches.
+* **Estágio 2 — Pseudocódigo**: Executa até o Agente 2 (Coder), gerando o plano de ação e estruturando as modificações em pseudocódigo (sem aplicar alterações no disco).
+* **Estágio 3 — Implementação/Escrita (Padrão)**: Executa todo o pipeline, aplicando fisicamente os patches através do Agente 3 (Implementer), executando validações do Git e lint.
+
+#### Exemplos de Uso por Etapa:
+
+**Usando argumentos posicionais:**
+```powershell
+# Executar apenas o Planejamento (Estágio 1)
+python orchestrator\runner.py "adicione um comentário no README" 1
+
+# Executar até o Pseudocódigo (Estágio 2)
+python orchestrator\runner.py "adicione um comentário no README" 2
+
+# Executar com prompt padrão do sistema apenas o Planejamento (Estágio 1)
+python orchestrator\runner.py 1
+```
+
+**Usando flags (`--stage` ou `-s`):**
+```powershell
+# Executar apenas o Planejamento
+python orchestrator\runner.py "adicione um comentário no README" --stage 1
+
+# Executar até o Pseudocódigo
+python orchestrator\runner.py "adicione um comentário no README" -s 2
+```
+
+A execução imprimirá o progresso até o estágio limite. O estado final e as respostas brutas de cada agente executado estarão salvos na pasta `runs/`.

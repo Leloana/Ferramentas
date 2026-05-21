@@ -41,14 +41,17 @@ def save_run(state: PipelineState):
     print(f"\n  [runner] estado salvo em {run_dir}/final_state.json")
 
 
-def run_pipeline(prompt: str, codebase_path: str = ".") -> PipelineState:
+def run_pipeline(prompt: str, codebase_path: str = ".", stage: int = 3) -> PipelineState:
+    if stage not in (1, 2, 3):
+        raise ValueError("Estágio inválido. Escolha entre 1 (Planejamento), 2 (Pseudocódigo) ou 3 (Implementação).")
+
     state = PipelineState(prompt=prompt, codebase_path=codebase_path)
     run_date = datetime.now().strftime('%Y-%m-%d')
     state.run_dir = str(RUNS_DIR / f"{run_date}_{state.run_id}")
 
     print(f"\n{'='*60}")
     print(f"Pipeline iniciado — run_id: {state.run_id}")
-    print(f"Prompt: {prompt}")
+    print(f"Prompt: {prompt} (Estágio Limite: {stage})")
     print(f"{'='*60}")
 
     try:
@@ -144,12 +147,20 @@ def run_pipeline(prompt: str, codebase_path: str = ".") -> PipelineState:
 
         # --- Agente 1: Planejamento ---
         planner.run(state)
+        if stage == 1:
+            print("\n  [runner] Etapa 1 finalizada (Apenas Planejamento/Análise). Interrompendo fluxo.")
+            state.set_status("done")
+            return state
 
         # HITL opcional: descomente para pausar e esperar aprovação humana
         # _hitl_checkpoint(state)
 
         # --- Agente 2: Pseudocódigo ---
         coder.run(state)
+        if stage == 2:
+            print("\n  [runner] Etapa 2 finalizada (Até Pseudocódigo). Interrompendo fluxo.")
+            state.set_status("done")
+            return state
 
         # --- Agente 3: Implementação ---
         implementer.run(state)
@@ -211,5 +222,48 @@ def _print_summary(state: PipelineState):
 
 
 if __name__ == "__main__":
-    prompt = sys.argv[1] if len(sys.argv) > 1 else "adicione autenticação JWT no endpoint de usuários"
-    run_pipeline(prompt)
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Orquestrador principal do pipeline.")
+    parser.add_argument(
+        "prompt",
+        nargs="?",
+        default="adicione autenticação JWT no endpoint de usuários",
+        help="O prompt/instrução para o pipeline"
+    )
+    parser.add_argument(
+        "stage",
+        nargs="?",
+        type=int,
+        choices=[1, 2, 3],
+        default=None,
+        help="Etapa limite (1: Planejamento, 2: Pseudocódigo, 3: Implementação)"
+    )
+    parser.add_argument(
+        "--stage",
+        "-s",
+        dest="stage_flag",
+        type=int,
+        choices=[1, 2, 3],
+        default=None,
+        help="Etapa limite (sobrescreve posicional)"
+    )
+
+    args = parser.parse_args()
+
+    prompt = args.prompt
+    stage = 3  # Padrão
+
+    # Caso 1: Usuário chamou `python runner.py 1` ou similar
+    if prompt in ("1", "2", "3") and args.stage is None:
+        stage = int(prompt)
+        prompt = "adicione autenticação JWT no endpoint de usuários"
+    else:
+        if args.stage is not None:
+            stage = args.stage
+
+    # Caso 2: A flag explícita --stage ou -s foi passada
+    if args.stage_flag is not None:
+        stage = args.stage_flag
+
+    run_pipeline(prompt, stage=stage)
