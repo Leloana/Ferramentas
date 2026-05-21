@@ -71,7 +71,7 @@ def execute_tool_call(tool_call: ToolCall) -> str:
 
 def run(state: PipelineState) -> list[str]:
     """Executa o Agente 3: uma chamada por step, em ordem topológica."""
-    print(f"\n[Agente 3 — Implementador]")
+    print(f"\n[Agente 3 - Implementador]")
     assert state.plan is not None
     assert state.pseudocode
 
@@ -84,7 +84,7 @@ def run(state: PipelineState) -> list[str]:
 
     for step in ordered:
         ps = state.pseudocode[step.id]
-        print(f"  → aplicando {step.id}: {step.description[:50]}")
+        print(f"  -> aplicando {step.id}: {step.description[:50]}")
 
         def attempt_fn(attempt: int, last_error, _step=step, _ps=ps):
             # Leria arquivo real via MCP read_file
@@ -111,7 +111,7 @@ def run(state: PipelineState) -> list[str]:
 
     state.applied_patches = applied
     state.logs.append(log)
-    print(f"  ✓ {len(applied)} patches aplicados")
+    print(f"  [OK] {len(applied)} patches aplicados")
     return applied
 
 

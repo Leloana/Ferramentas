@@ -46,7 +46,7 @@ def run_pipeline(prompt: str, codebase_path: str = ".") -> PipelineState:
             "# mock chunk 1: src/auth.py — função verify_token",
             "# mock chunk 2: src/api/users.py — endpoint GET /users",
         ]
-        print(f"  ✓ {len(state.retrieved_chunks)} chunks recuperados (mock)")
+        print(f"  [OK] {len(state.retrieved_chunks)} chunks recuperados (mock)")
 
         # --- Agente 1: Planejamento ---
         planner.run(state)
@@ -75,12 +75,12 @@ def run_pipeline(prompt: str, codebase_path: str = ".") -> PipelineState:
     except ValidationError_ as e:
         state.set_status("failed")
         state.add_error(str(e))
-        print(f"\n  ✗ Pipeline falhou: {e}")
+        print(f"\n  [FALHA] Pipeline falhou: {e}")
 
     except Exception as e:
         state.set_status("failed")
         state.add_error(f"Erro inesperado: {e}")
-        print(f"\n  ✗ Erro inesperado: {e}")
+        print(f"\n  [FALHA] Erro inesperado: {e}")
         raise
 
     finally:
@@ -102,14 +102,14 @@ def _hitl_checkpoint(state: PipelineState):
 
 def _print_summary(state: PipelineState):
     print(f"\n{'='*60}")
-    print(f"Resumo — run_id: {state.run_id}")
+    print(f"Resumo - run_id: {state.run_id}")
     print(f"  Status:  {state.status}")
     print(f"  Steps:   {len(state.plan.steps) if state.plan else 0}")
     print(f"  Patches: {len(state.applied_patches)}")
     print(f"  Erros:   {len(state.errors)}")
     if state.errors:
         for e in state.errors:
-            print(f"    ✗ {e}")
+            print(f"    [ERRO] {e}")
     retries = sum(state.retries.values())
     if retries:
         print(f"  Retries: {retries}")

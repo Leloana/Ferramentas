@@ -72,4 +72,4 @@ class PipelineState(BaseModel):
 
     def set_status(self, status: PipelineStatus):
         self.status = status
-        print(f"  [state] status → {status}")
+        print(f"  [state] status -> {status}")
