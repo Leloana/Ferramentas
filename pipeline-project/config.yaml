@@ -1,5 +1,5 @@
 models:
-  planner: "qwen2.5-coder:7b-instruct-q4_K_M"
+  planner: "qwen3:14b-q4_k_m"
   coder: "qwen2.5-coder:7b-instruct-q4_K_M"
   implementer: "qwen2.5-coder:7b-instruct-q4_K_M"
 
