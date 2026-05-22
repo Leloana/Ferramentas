@@ -21,6 +21,7 @@ async def run_reinstall_song(
     language: str = None,
     clean_existing: bool = True,
     skip_prepare_song: bool = False,
+    align_lyrics: bool = False,
 ) -> bool:
     """Executa o pipeline completo do `reinstall_song` de forma assíncrona.
 
@@ -31,4 +32,10 @@ async def run_reinstall_song(
     if tools_path not in sys.path:
         sys.path.append(tools_path)
     from reinstall_song import reinstall_song  # import tardio
-    return await reinstall_song(song_dir, language, clean_existing, skip_prepare_song)
+    return await reinstall_song(
+        song_dir,
+        language=language,
+        clean_existing=clean_existing,
+        skip_prepare_song=skip_prepare_song,
+        align_lyrics=align_lyrics,
+    )

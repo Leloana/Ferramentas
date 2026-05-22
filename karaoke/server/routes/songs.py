@@ -56,7 +56,7 @@ async def delete_song(song_id: str):
 
 
 @router.post("/api/reinstall-song/{song_id}")
-async def api_reinstall_song(song_id: str):
+async def api_reinstall_song(song_id: str, align_lyrics: bool = False):
     try:
         song_dir = SONGS_DIR / song_id
         if not song_dir.exists():
@@ -67,7 +67,7 @@ async def api_reinstall_song(song_id: str):
             raise HTTPException(status_code=400, detail="Arquivo meta.json não encontrado na pasta da música")
 
         from tools.reinstall_song import reinstall_song
-        success = await reinstall_song(str(song_dir))
+        success = await reinstall_song(str(song_dir), align_lyrics=align_lyrics)
         
         if success:
             logger.info(f"Reinstalação concluída com sucesso para a música: {song_id}")

@@ -61,6 +61,7 @@ async def upload_song(
     youtube_vocal_url: Optional[str] = Form(None),
     youtube_backing_url: Optional[str] = Form(None),
     plain_lyrics: Optional[str] = Form(None),
+    align_lyrics: bool = Form(False),
 ):
     try:
         slug = slugify(f"{title}-{artist}")
@@ -111,6 +112,7 @@ async def upload_song(
             language=language,
             clean_existing=False,
             skip_prepare_song=True,
+            align_lyrics=align_lyrics,
         )
         if not success:
             raise HTTPException(status_code=500, detail="Falha ao preparar áudio e LRC. Verifique os logs do servidor.")

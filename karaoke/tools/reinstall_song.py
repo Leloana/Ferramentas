@@ -41,6 +41,7 @@ async def reinstall_song(
     language: str = None,
     clean_existing: bool = True,
     skip_prepare_song: bool = False,
+    align_lyrics: bool = False,
 ) -> bool:
     """Pipeline completo: download → Demucs → Whisper → LRC → prepare_song.
 
@@ -153,22 +154,32 @@ async def reinstall_song(
                 if not demucs_exe.exists():
                     demucs_exe = "demucs"
                 
+                device = "cpu"
+                try:
+                    import torch
+                    if torch.cuda.is_available():
+                        device = "cuda"
+                except Exception:
+                    pass
+
                 demucs_cmd = [
                     str(demucs_exe),
                     "--two-stems", "vocals",
-                    "-d", "cuda",
+                    "-d", device,
                     "-o", str(demucs_out_dir),
                     str(song_dir / "vocal.mp3")
                 ]
-                process = subprocess.run(demucs_cmd, capture_output=True, text=True)
+                process = subprocess.run(demucs_cmd, capture_output=False, text=True)
                 if process.returncode != 0:
-                    logger.error(f"Erro ao executar Demucs: {process.stderr}")
+                    logger.info(f"Demucs exe: {demucs_exe}")
+                    logger.info(f"Demucs cmd: {demucs_cmd}")
+                    logger.info(f"Original audio exists: {original_audio_path.exists()}")
                     return False
                     
                 separated_dir = demucs_out_dir / "htdemucs" / "vocal"
                 no_vocals_wav = separated_dir / "no_vocals.wav"
                 if not no_vocals_wav.exists():
-                    logger.error("Erro crítico: backing track não gerada pelo Demucs.")
+                    logger.exception("Erro crítico: backing track não gerada pelo Demucs.")
                     return False
                     
                 backing_audio = AudioSegment.from_file(str(no_vocals_wav))
@@ -218,17 +229,27 @@ async def reinstall_song(
                 if not demucs_exe.exists():
                     demucs_exe = "demucs"
                     
-                logger.info("Executando separação Demucs com aceleração de hardware CUDA...")
+                device = "cpu"
+                try:
+                    import torch
+                    if torch.cuda.is_available():
+                        device = "cuda"
+                except Exception:
+                    pass
+
+                logger.info(f"Executando separação Demucs no dispositivo: {device}")
                 demucs_cmd = [
                     str(demucs_exe),
                     "--two-stems", "vocals",
-                    "-d", "cuda",
+                    "-d", device,
                     "-o", str(demucs_out_dir),
                     str(original_audio_path)
                 ]
-                process = subprocess.run(demucs_cmd, capture_output=True, text=True)
+                process = subprocess.run(demucs_cmd, capture_output=False, text=True)
                 if process.returncode != 0:
-                    logger.error(f"Erro ao executar Demucs: {process.stderr}")
+                    logger.info(f"Demucs exe: {demucs_exe}")
+                    logger.info(f"Demucs cmd: {demucs_cmd}")
+                    logger.info(f"Original audio exists: {original_audio_path.exists()}")
                     return False
                     
                 separated_dir = demucs_out_dir / "htdemucs" / "original"
@@ -268,10 +289,33 @@ async def reinstall_song(
                 pass
 
     # 4 - whisper percorre o arquivo vocal fazendo os tempos & 5 - Cria arquivo lyrics.lrc
-    if lrc_file.exists() and (not plain_lyrics or not plain_lyrics.strip()):
-        logger.info("lyrics.lrc já existe e plain_lyrics não foi fornecido. Mantendo lyrics.lrc existente.")
-    elif plain_lyrics and plain_lyrics.strip():
-        logger.info("plain_lyrics disponível. Whisper percorrendo arquivo vocal para cruzar com lyrics.txt...")
+    has_lrc = False
+    
+    # Verifica se existe um backup premium/pro desta música para evitar perder alinhamentos lentos/manuais
+    backup_dir = PROJECT_ROOT / "server" / "songs_backup" / song_dir.name
+    backup_lrc = backup_dir / "lyrics.lrc"
+    backup_segs = backup_dir / "segments.json"
+    backup_txt = backup_dir / "lyrics.txt"
+    
+    if backup_lrc.exists() and backup_segs.exists():
+        logger.info(f"Backup premium/pro encontrado em {backup_dir}. Restaurando lyrics.lrc e segments.json...")
+        try:
+            shutil.copy(str(backup_lrc), str(lrc_file))
+            shutil.copy(str(backup_segs), str(song_dir / "segments.json"))
+            if backup_txt.exists():
+                shutil.copy(str(backup_txt), str(txt_file))
+            has_lrc = True
+            skip_prepare_song = True
+            logger.info("Restauração do backup premium/pro concluída com sucesso!")
+        except Exception as e:
+            logger.error(f"Erro ao restaurar backup premium: {e}")
+            
+    if not has_lrc:
+        if lrc_file.exists() and (not plain_lyrics or not plain_lyrics.strip()):
+            logger.info("lyrics.lrc já existe e plain_lyrics não foi fornecido. Mantendo lyrics.lrc existente.")
+            has_lrc = True
+        elif plain_lyrics and plain_lyrics.strip() and align_lyrics:
+            logger.info("plain_lyrics disponível e align_lyrics=True. Whisper percorrendo arquivo vocal para cruzar com lyrics.txt...")
         
         try:
             from utils.lrc_align import align_plain_lyrics
@@ -279,10 +323,6 @@ async def reinstall_song(
             
             stt = get_stt_engine()
             raw_data = vocal_to_float32_mono_16k(vocal_audio)
-            # Mesmos parâmetros do path de upload — antes divergiam (upload usava defaults
-            # do faster-whisper e reinstall usava min_silence=2000ms agressivo), o que
-            # produzia LRC diferente dependendo de qual caminho gerou. Ver
-            # `utils/whisper_params.py` para a tabela de tuning.
             segments, _info = stt.model.transcribe(
                 raw_data,
                 language=song_lang,
@@ -296,6 +336,7 @@ async def reinstall_song(
             )
             lrc_file.write_text(lrc_text, encoding="utf-8")
             logger.info("Arquivo lyrics.lrc alinhado e gerado com sucesso a partir de plain_lyrics!")
+            has_lrc = True
         except Exception as e:
             logger.error(f"Erro ao alinhar plain_lyrics com Whisper: {e}")
             if lrc_backup is not None:
@@ -303,20 +344,35 @@ async def reinstall_song(
                 lrc_file.write_text(lrc_backup, encoding="utf-8")
                 if txt_backup is not None:
                     txt_file.write_text(txt_backup, encoding="utf-8")
-        
-            logger.info("Tentando fallback de geração automática de LRC puro...")
-            generate_lrc(str(song_dir), language=song_lang, debug=True)
-    elif lrc_backup is not None:
-        logger.info("Restaurando backup de letras sincronizadas lyrics.lrc...")
-        lrc_file.write_text(lrc_backup, encoding="utf-8")
-        if txt_backup is not None:
-            txt_file.write_text(txt_backup, encoding="utf-8")
+                has_lrc = True
+            else:
+                logger.info("Tentando fallback de geração automática de LRC puro...")
+                generate_lrc(str(song_dir), language=song_lang, debug=False)
+                has_lrc = True
+
     
-    logger.info("Nenhuma letra disponível. Gerando nova transcrição com Whisper (generate_lrc)...")
-    try:
-        generate_lrc(str(song_dir), language=song_lang, debug=True)
-    except Exception as e:
-        logger.error(f"Aviso: Erro ao transcrever letras com o Whisper: {e}")
+    # Se não geramos lyrics.lrc (ou se align_lyrics=False)
+    if not has_lrc:
+        if plain_lyrics and plain_lyrics.strip():
+            logger.info("Gerando resultado do Whisper direto para lyrics.lrc (alinhamento desativado via align_lyrics=False)...")
+        else:
+            logger.info("Nenhuma letra disponível ou plain_lyrics ausente. Gerando resultado do Whisper direto para lyrics.lrc...")
+        try:
+            generate_lrc(str(song_dir), language=song_lang, debug=False)
+        except Exception as e:
+            logger.error(f"Erro ao gerar transcrição direto com o Whisper: {e}")
+            if lrc_backup is not None:
+                logger.info("Restaurando backup de letras sincronizadas lyrics.lrc devido ao erro...")
+                lrc_file.write_text(lrc_backup, encoding="utf-8")
+                if txt_backup is not None:
+                    txt_file.write_text(txt_backup, encoding="utf-8")
+    else:
+        # Se já alinhamos, opcionalmente geramos a versão debug pura como referência secundária
+        logger.info("Gerando versão de referência de transcrição pura com Whisper (lyrics_debug.lrc)...")
+        try:
+            generate_lrc(str(song_dir), language=song_lang, debug=True)
+        except Exception as e:
+            logger.error(f"Aviso: Erro ao gerar transcrição de debug com o Whisper: {e}")
 
     # 7. Rodar o alinhamento word-level (prepare_song)
     # Quando `skip_prepare_song=True` (ex: upload aguardando aprovação do
@@ -333,7 +389,7 @@ async def reinstall_song(
         prepare_song(str(song_dir), language=song_lang, debug=False)
 
         # Realinhamento de segmentos e LRC pós-processamento
-        if txt_file.exists():
+        if align_lyrics and txt_file.exists():
             plain_lyrics_content = txt_file.read_text(encoding="utf-8")
             from utils.lrc_realign import realign_segments
             
@@ -376,6 +432,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Algoritmo de Reinstalação de Música via meta.json")
     parser.add_argument("song_dir", help="Caminho da pasta da música")
     parser.add_argument("--lang", default=None, help="Idioma da música (opcional, sobrescreve meta.json)")
+    parser.add_argument("--align-lyrics", action="store_true", help="Alinha plain_lyrics com os tempos do Whisper (default: False)")
     args = parser.parse_args()
     
-    asyncio.run(reinstall_song(args.song_dir, args.lang))
+    asyncio.run(reinstall_song(args.song_dir, args.lang, align_lyrics=args.align_lyrics))

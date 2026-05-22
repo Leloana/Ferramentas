@@ -1,0 +1,20 @@
+{
+    "meta": {
+        "title": "Bodysnatchers",
+        "artist": "Radiohead",
+        "language": "en",
+        "slug": "bodysnatchers-radiohead"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://youtu.be/nIQxhSvSRnQ?list=RDnIQxhSvSRnQ",
+        "youtube_backing_url": null
+    },
+    "lyrics": {
+        "plain_lyrics": null
+    },
+    "status": {
+        "has_vocal_file": false,
+        "has_backing_file": false,
+        "has_lrc_file": false
+    }
+}

@@ -1,0 +1,911 @@
+[
+  {
+    "id": 1,
+    "label": "Parte 1",
+    "sing_start": 26.681,
+    "sing_end": 31.061,
+    "pause_start": 31.061,
+    "pause_end": 31.161,
+    "lyrics": "This is the place",
+    "lyrics_timed": [
+      {
+        "word": "This",
+        "expected_start": 0.0,
+        "expected_end": 1.32
+      },
+      {
+        "word": "is",
+        "expected_start": 2.42,
+        "expected_end": 2.54
+      },
+      {
+        "word": "the",
+        "expected_start": 2.6,
+        "expected_end": 2.74
+      },
+      {
+        "word": "place",
+        "expected_start": 2.88,
+        "expected_end": 4.38
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "label": "Parte 2",
+    "sing_start": 32.441,
+    "sing_end": 40.481,
+    "pause_start": 40.481,
+    "pause_end": 40.581,
+    "lyrics": "Sit down, you're safe now",
+    "lyrics_timed": [
+      {
+        "word": "Sit",
+        "expected_start": 0.0,
+        "expected_end": 0.26
+      },
+      {
+        "word": "down,",
+        "expected_start": 0.36,
+        "expected_end": 1.5
+      },
+      {
+        "word": "you're",
+        "expected_start": 3.12,
+        "expected_end": 3.42
+      },
+      {
+        "word": "safe",
+        "expected_start": 3.48,
+        "expected_end": 6.76
+      },
+      {
+        "word": "now",
+        "expected_start": 7.44,
+        "expected_end": 8.04
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "label": "Parte 3",
+    "sing_start": 47.641,
+    "sing_end": 52.341,
+    "pause_start": 52.341,
+    "pause_end": 52.441,
+    "lyrics": "You've been stuck in a lift",
+    "lyrics_timed": [
+      {
+        "word": "You've",
+        "expected_start": 0.0,
+        "expected_end": 0.16
+      },
+      {
+        "word": "been",
+        "expected_start": 0.16,
+        "expected_end": 0.4
+      },
+      {
+        "word": "stuck",
+        "expected_start": 0.58,
+        "expected_end": 1.84
+      },
+      {
+        "word": "in",
+        "expected_start": 3.12,
+        "expected_end": 3.28
+      },
+      {
+        "word": "a",
+        "expected_start": 3.42,
+        "expected_end": 3.44
+      },
+      {
+        "word": "lift",
+        "expected_start": 3.76,
+        "expected_end": 4.7
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "label": "Parte 4",
+    "sing_start": 53.761,
+    "sing_end": 64.582,
+    "pause_start": 64.582,
+    "pause_end": 64.682,
+    "lyrics": "We've been trying to reach you, Thom",
+    "lyrics_timed": [
+      {
+        "word": "We've",
+        "expected_start": 0.0,
+        "expected_end": 0.18
+      },
+      {
+        "word": "been",
+        "expected_start": 0.18,
+        "expected_end": 0.42
+      },
+      {
+        "word": "trying",
+        "expected_start": 0.6,
+        "expected_end": 1.8
+      },
+      {
+        "word": "to",
+        "expected_start": 3.02,
+        "expected_end": 3.18
+      },
+      {
+        "word": "reach",
+        "expected_start": 3.86,
+        "expected_end": 6.86
+      },
+      {
+        "word": "you,",
+        "expected_start": 6.86,
+        "expected_end": 7.02
+      },
+      {
+        "word": "Thom",
+        "expected_start": 9.921,
+        "expected_end": 10.821
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "label": "Parte 5",
+    "sing_start": 72.922,
+    "sing_end": 77.322,
+    "pause_start": 77.322,
+    "pause_end": 77.422,
+    "lyrics": "This is the place",
+    "lyrics_timed": [
+      {
+        "word": "This",
+        "expected_start": 0.0,
+        "expected_end": 1.28
+      },
+      {
+        "word": "is",
+        "expected_start": 2.42,
+        "expected_end": 2.58
+      },
+      {
+        "word": "the",
+        "expected_start": 2.64,
+        "expected_end": 2.76
+      },
+      {
+        "word": "place",
+        "expected_start": 2.9,
+        "expected_end": 4.4
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "label": "Parte 6",
+    "sing_start": 78.402,
+    "sing_end": 97.882,
+    "pause_start": 97.882,
+    "pause_end": 97.982,
+    "lyrics": "It won't hurt ever again",
+    "lyrics_timed": [
+      {
+        "word": "It",
+        "expected_start": 0.0,
+        "expected_end": 0.06
+      },
+      {
+        "word": "won't",
+        "expected_start": 0.12,
+        "expected_end": 0.52
+      },
+      {
+        "word": "hurt",
+        "expected_start": 0.62,
+        "expected_end": 1.84
+      },
+      {
+        "word": "ever",
+        "expected_start": 3.08,
+        "expected_end": 6.74
+      },
+      {
+        "word": "again",
+        "expected_start": 7.02,
+        "expected_end": 19.48
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "label": "Parte 7",
+    "sing_start": 97.882,
+    "sing_end": 100.522,
+    "pause_start": 100.522,
+    "pause_end": 100.622,
+    "lyrics": "The smell of air conditioning",
+    "lyrics_timed": [
+      {
+        "word": "The",
+        "expected_start": 0.0,
+        "expected_end": 0.06
+      },
+      {
+        "word": "smell",
+        "expected_start": 0.12,
+        "expected_end": 0.64
+      },
+      {
+        "word": "of",
+        "expected_start": 0.7,
+        "expected_end": 0.82
+      },
+      {
+        "word": "air",
+        "expected_start": 0.92,
+        "expected_end": 1.06
+      },
+      {
+        "word": "conditioning",
+        "expected_start": 1.16,
+        "expected_end": 2.64
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "label": "Parte 8",
+    "sing_start": 101.002,
+    "sing_end": 103.703,
+    "pause_start": 103.703,
+    "pause_end": 103.803,
+    "lyrics": "The fish are belly up",
+    "lyrics_timed": [
+      {
+        "word": "The",
+        "expected_start": 0.0,
+        "expected_end": 0.08
+      },
+      {
+        "word": "fish",
+        "expected_start": 0.1,
+        "expected_end": 0.5
+      },
+      {
+        "word": "are",
+        "expected_start": 0.5,
+        "expected_end": 0.58
+      },
+      {
+        "word": "belly",
+        "expected_start": 0.68,
+        "expected_end": 1.22
+      },
+      {
+        "word": "up",
+        "expected_start": 1.82,
+        "expected_end": 2.701
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "label": "Parte 9",
+    "sing_start": 104.283,
+    "sing_end": 106.823,
+    "pause_start": 106.823,
+    "pause_end": 106.923,
+    "lyrics": "Empty all your pockets",
+    "lyrics_timed": [
+      {
+        "word": "Empty",
+        "expected_start": 0.0,
+        "expected_end": 0.46
+      },
+      {
+        "word": "all",
+        "expected_start": 0.58,
+        "expected_end": 0.82
+      },
+      {
+        "word": "your",
+        "expected_start": 0.82,
+        "expected_end": 1.14
+      },
+      {
+        "word": "pockets",
+        "expected_start": 1.34,
+        "expected_end": 2.54
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "label": "Parte 10",
+    "sing_start": 106.943,
+    "sing_end": 119.863,
+    "pause_start": 119.863,
+    "pause_end": 119.963,
+    "lyrics": "Because it's time to come home",
+    "lyrics_timed": [
+      {
+        "word": "Because",
+        "expected_start": 0.0,
+        "expected_end": 0.5
+      },
+      {
+        "word": "it's",
+        "expected_start": 0.56,
+        "expected_end": 0.72
+      },
+      {
+        "word": "time",
+        "expected_start": 0.84,
+        "expected_end": 6.28
+      },
+      {
+        "word": "to",
+        "expected_start": 6.3,
+        "expected_end": 6.44
+      },
+      {
+        "word": "come",
+        "expected_start": 6.56,
+        "expected_end": 7.38
+      },
+      {
+        "word": "home",
+        "expected_start": 7.4,
+        "expected_end": 12.92
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "label": "Parte 11",
+    "sing_start": 120.043,
+    "sing_end": 124.283,
+    "pause_start": 124.283,
+    "pause_end": 124.383,
+    "lyrics": "This is the place",
+    "lyrics_timed": [
+      {
+        "word": "This",
+        "expected_start": 0.0,
+        "expected_end": 1.14
+      },
+      {
+        "word": "is",
+        "expected_start": 2.44,
+        "expected_end": 2.58
+      },
+      {
+        "word": "the",
+        "expected_start": 2.64,
+        "expected_end": 2.78
+      },
+      {
+        "word": "place",
+        "expected_start": 2.9,
+        "expected_end": 4.24
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "label": "Parte 12",
+    "sing_start": 124.283,
+    "sing_end": 136.523,
+    "pause_start": 136.523,
+    "pause_end": 136.623,
+    "lyrics": "Remember me? I'm the face you always see",
+    "lyrics_timed": [
+      {
+        "word": "Remember",
+        "expected_start": 0.0,
+        "expected_end": 4.6
+      },
+      {
+        "word": "me?",
+        "expected_start": 4.92,
+        "expected_end": 5.28
+      },
+      {
+        "word": "I'm",
+        "expected_start": 7.4,
+        "expected_end": 7.56
+      },
+      {
+        "word": "the",
+        "expected_start": 7.56,
+        "expected_end": 7.68
+      },
+      {
+        "word": "face",
+        "expected_start": 7.88,
+        "expected_end": 9.88
+      },
+      {
+        "word": "you",
+        "expected_start": 10.24,
+        "expected_end": 10.34
+      },
+      {
+        "word": "always",
+        "expected_start": 10.5,
+        "expected_end": 11.2
+      },
+      {
+        "word": "see",
+        "expected_start": 11.44,
+        "expected_end": 12.24
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "label": "Parte 13",
+    "sing_start": 137.043,
+    "sing_end": 145.904,
+    "pause_start": 145.904,
+    "pause_end": 146.004,
+    "lyrics": "You've been stuck in a lift",
+    "lyrics_timed": [
+      {
+        "word": "You've",
+        "expected_start": 0.0,
+        "expected_end": 3.88
+      },
+      {
+        "word": "been",
+        "expected_start": 3.94,
+        "expected_end": 4.18
+      },
+      {
+        "word": "stuck",
+        "expected_start": 4.38,
+        "expected_end": 6.88
+      },
+      {
+        "word": "in",
+        "expected_start": 6.94,
+        "expected_end": 7.08
+      },
+      {
+        "word": "a",
+        "expected_start": 7.16,
+        "expected_end": 7.18
+      },
+      {
+        "word": "lift",
+        "expected_start": 7.521,
+        "expected_end": 8.861
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "label": "Parte 14",
+    "sing_start": 146.424,
+    "sing_end": 165.864,
+    "pause_start": 165.864,
+    "pause_end": 165.964,
+    "lyrics": "In the belly of a whale at the bottom of the ocean",
+    "lyrics_timed": [
+      {
+        "word": "In",
+        "expected_start": 0.0,
+        "expected_end": 0.54
+      },
+      {
+        "word": "the",
+        "expected_start": 0.54,
+        "expected_end": 0.66
+      },
+      {
+        "word": "belly",
+        "expected_start": 1.06,
+        "expected_end": 1.84
+      },
+      {
+        "word": "of",
+        "expected_start": 2.58,
+        "expected_end": 3.16
+      },
+      {
+        "word": "a",
+        "expected_start": 3.28,
+        "expected_end": 3.3
+      },
+      {
+        "word": "whale",
+        "expected_start": 3.96,
+        "expected_end": 6.72
+      },
+      {
+        "word": "at",
+        "expected_start": 6.8,
+        "expected_end": 6.84
+      },
+      {
+        "word": "the",
+        "expected_start": 6.92,
+        "expected_end": 7.06
+      },
+      {
+        "word": "bottom",
+        "expected_start": 7.16,
+        "expected_end": 8.74
+      },
+      {
+        "word": "of",
+        "expected_start": 9.72,
+        "expected_end": 9.94
+      },
+      {
+        "word": "the",
+        "expected_start": 10.02,
+        "expected_end": 10.16
+      },
+      {
+        "word": "ocean",
+        "expected_start": 10.36,
+        "expected_end": 19.44
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "label": "Parte 15",
+    "sing_start": 165.864,
+    "sing_end": 169.024,
+    "pause_start": 169.024,
+    "pause_end": 169.124,
+    "lyrics": "The smell of air conditioning",
+    "lyrics_timed": [
+      {
+        "word": "The",
+        "expected_start": 0.0,
+        "expected_end": 0.66
+      },
+      {
+        "word": "smell",
+        "expected_start": 0.66,
+        "expected_end": 1.14
+      },
+      {
+        "word": "of",
+        "expected_start": 1.26,
+        "expected_end": 1.3
+      },
+      {
+        "word": "air",
+        "expected_start": 1.38,
+        "expected_end": 1.54
+      },
+      {
+        "word": "conditioning",
+        "expected_start": 1.64,
+        "expected_end": 3.16
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "label": "Parte 16",
+    "sing_start": 169.464,
+    "sing_end": 172.084,
+    "pause_start": 172.084,
+    "pause_end": 172.184,
+    "lyrics": "The fish are belly up",
+    "lyrics_timed": [
+      {
+        "word": "The",
+        "expected_start": 0.0,
+        "expected_end": 0.06
+      },
+      {
+        "word": "fish",
+        "expected_start": 0.14,
+        "expected_end": 0.52
+      },
+      {
+        "word": "are",
+        "expected_start": 0.58,
+        "expected_end": 0.72
+      },
+      {
+        "word": "belly",
+        "expected_start": 0.74,
+        "expected_end": 1.6
+      },
+      {
+        "word": "up",
+        "expected_start": 1.8,
+        "expected_end": 2.62
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "label": "Parte 17",
+    "sing_start": 172.744,
+    "sing_end": 175.104,
+    "pause_start": 175.104,
+    "pause_end": 175.204,
+    "lyrics": "Empty all your pockets",
+    "lyrics_timed": [
+      {
+        "word": "Empty",
+        "expected_start": 0.0,
+        "expected_end": 0.46
+      },
+      {
+        "word": "all",
+        "expected_start": 0.54,
+        "expected_end": 0.82
+      },
+      {
+        "word": "your",
+        "expected_start": 0.84,
+        "expected_end": 1.2
+      },
+      {
+        "word": "pockets",
+        "expected_start": 1.36,
+        "expected_end": 2.36
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "label": "Parte 18",
+    "sing_start": 175.444,
+    "sing_end": 188.065,
+    "pause_start": 188.065,
+    "pause_end": 188.165,
+    "lyrics": "Because it's time to come home",
+    "lyrics_timed": [
+      {
+        "word": "Because",
+        "expected_start": 0.0,
+        "expected_end": 0.56
+      },
+      {
+        "word": "it's",
+        "expected_start": 0.56,
+        "expected_end": 0.74
+      },
+      {
+        "word": "time",
+        "expected_start": 0.86,
+        "expected_end": 6.04
+      },
+      {
+        "word": "to",
+        "expected_start": 6.14,
+        "expected_end": 6.28
+      },
+      {
+        "word": "come",
+        "expected_start": 6.44,
+        "expected_end": 7.18
+      },
+      {
+        "word": "home",
+        "expected_start": 7.18,
+        "expected_end": 12.621
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "label": "Parte 19",
+    "sing_start": 188.165,
+    "sing_end": 191.425,
+    "pause_start": 191.425,
+    "pause_end": 191.525,
+    "lyrics": "The smell of air conditioning",
+    "lyrics_timed": [
+      {
+        "word": "The",
+        "expected_start": 0.0,
+        "expected_end": 0.78
+      },
+      {
+        "word": "smell",
+        "expected_start": 0.78,
+        "expected_end": 1.24
+      },
+      {
+        "word": "of",
+        "expected_start": 1.28,
+        "expected_end": 1.4
+      },
+      {
+        "word": "air",
+        "expected_start": 1.5,
+        "expected_end": 1.66
+      },
+      {
+        "word": "conditioning",
+        "expected_start": 1.76,
+        "expected_end": 3.26
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "label": "Parte 20",
+    "sing_start": 191.885,
+    "sing_end": 203.965,
+    "pause_start": 203.965,
+    "pause_end": 204.065,
+    "lyrics": "The fish are belly up",
+    "lyrics_timed": [
+      {
+        "word": "The",
+        "expected_start": 0.0,
+        "expected_end": 0.06
+      },
+      {
+        "word": "fish",
+        "expected_start": 0.12,
+        "expected_end": 0.52
+      },
+      {
+        "word": "are",
+        "expected_start": 0.52,
+        "expected_end": 0.6
+      },
+      {
+        "word": "belly",
+        "expected_start": 0.7,
+        "expected_end": 11.04
+      },
+      {
+        "word": "up",
+        "expected_start": 11.12,
+        "expected_end": 12.08
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "label": "Parte 21",
+    "sing_start": 203.965,
+    "sing_end": 204.725,
+    "pause_start": 204.725,
+    "pause_end": 204.825,
+    "lyrics": "Let it go",
+    "lyrics_timed": [
+      {
+        "word": "Let",
+        "expected_start": 0.0,
+        "expected_end": 0.24
+      },
+      {
+        "word": "it",
+        "expected_start": 0.28,
+        "expected_end": 0.38
+      },
+      {
+        "word": "go",
+        "expected_start": 0.48,
+        "expected_end": 0.76
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "label": "Parte 22",
+    "sing_start": 210.505,
+    "sing_end": 214.745,
+    "pause_start": 214.745,
+    "pause_end": 214.845,
+    "lyrics": "Today is the first day",
+    "lyrics_timed": [
+      {
+        "word": "Today",
+        "expected_start": 0.0,
+        "expected_end": 0.72
+      },
+      {
+        "word": "is",
+        "expected_start": 2.34,
+        "expected_end": 2.46
+      },
+      {
+        "word": "the",
+        "expected_start": 2.54,
+        "expected_end": 2.64
+      },
+      {
+        "word": "first",
+        "expected_start": 2.78,
+        "expected_end": 3.56
+      },
+      {
+        "word": "day",
+        "expected_start": 3.64,
+        "expected_end": 4.24
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "label": "Parte 23",
+    "sing_start": 216.165,
+    "sing_end": 224.305,
+    "pause_start": 224.305,
+    "pause_end": 224.405,
+    "lyrics": "Of the rest of your days",
+    "lyrics_timed": [
+      {
+        "word": "Of",
+        "expected_start": 0.0,
+        "expected_end": 0.26
+      },
+      {
+        "word": "the",
+        "expected_start": 0.3,
+        "expected_end": 0.36
+      },
+      {
+        "word": "rest",
+        "expected_start": 0.48,
+        "expected_end": 1.86
+      },
+      {
+        "word": "of",
+        "expected_start": 1.96,
+        "expected_end": 2.54
+      },
+      {
+        "word": "your",
+        "expected_start": 2.62,
+        "expected_end": 3.06
+      },
+      {
+        "word": "days",
+        "expected_start": 3.4,
+        "expected_end": 8.14
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "label": "Parte 24",
+    "sing_start": 235.446,
+    "sing_end": 238.746,
+    "pause_start": 238.746,
+    "pause_end": 238.846,
+    "lyrics": "So lighten up, squirt",
+    "lyrics_timed": [
+      {
+        "word": "So",
+        "expected_start": 0.0,
+        "expected_end": 0.12
+      },
+      {
+        "word": "lighten",
+        "expected_start": 0.28,
+        "expected_end": 0.98
+      },
+      {
+        "word": "up,",
+        "expected_start": 1.08,
+        "expected_end": 1.54
+      },
+      {
+        "word": "squirt",
+        "expected_start": 1.88,
+        "expected_end": 3.3
+      }
+    ]
+  }
+]

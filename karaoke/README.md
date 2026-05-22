@@ -2,7 +2,7 @@
 
 Um ecossistema moderno, de alto desempenho e alta fidelidade para Karaokê, projetado para rodar localmente com **transcrição fonética em tempo real (Whisper GPU/CPU)**, **cálculo de pontuação difuso por timing**, e uma arquitetura inovadora **Multi-Dispositivo** (use a TV da sala como tela/display e qualquer Celular conectado como microfone sem fios via WebSockets e QR Code!).
 
-O projeto foi totalmente refatorado, alcançando uma arquitetura altamente modular, limpa e com 100% de separação de responsabilidades.
+O projeto é altamente modular, limpo e com 100% de separação de responsabilidades.
 
 ---
 
@@ -37,51 +37,110 @@ A base de código está dividida em camadas perfeitamente desacopladas. Para det
 
 ---
 
-## 🚀 Como Iniciar em 3 Passos
+## 🛠️ Guia de Instalação e Execução (Passo a Passo)
 
-### 1. Preparar o Ambiente Virtual (venv)
-O ecossistema utiliza um ambiente virtual dedicado contendo todas as dependências pré-instaladas. Para validar ou instalar novas dependências, utilize o terminal a partir da pasta raiz do repositório:
-```bash
-# Acessar a pasta do karaokê
-cd karaoke
+Siga os passos abaixo para preparar o ambiente virtual do Python, instalar as dependências necessárias (com suporte a CPU ou GPU NVIDIA/CUDA) e executar o projeto.
 
-# Ativar o ambiente virtual (Windows PowerShell)
-.\venv\Scripts\Activate.ps1
+### Passo 1: Criar o Ambiente Virtual (venv)
+Na pasta raiz do projeto (`karaoke`), execute o comando para criar um ambiente virtual isolado para as dependências do Python:
 
-# Se preferir usar Prompt de Comando (CMD)
-.\venv\Scripts\activate.bat
-
-# Se preferir Linux/macOS
-source venv/bin/activate
+```powershell
+# No Windows (PowerShell ou CMD)
+python -m venv venv
 ```
 
-*(Caso precise reinstalar as dependências de raiz, execute `pip install fastapi uvicorn numpy scipy faster-whisper rapidfuzz pydub yt-dlp av python-multipart`)*
+```bash
+# No Linux / macOS
+python3 -m venv venv
+```
 
-### 2. Rodar o Servidor Exposto na Rede (Modo HTTPS Seguro 🔒)
-Para que os navegadores modernos nos dispositivos móveis e TV **permitam e liberem o uso de captura do microfone**, a página deve ser executada obrigatoriamente sob **HTTPS** (Contexto Seguro).
+### Passo 2: Ativar o Ambiente Virtual
+Ative o ambiente virtual para garantir que todos os comandos `pip` e `python` subsequentes operem dentro do escopo do projeto:
 
-Nós já fornecemos certificados SSL de desenvolvimento (`key.pem` e `cert.pem`) prontos na pasta `server/`. Para subir o servidor na rede local utilizando o Python do ambiente virtual, execute:
+* **Windows PowerShell:**
+  ```powershell
+  .\venv\Scripts\Activate.ps1
+  ```
+  *(Se você receber um erro de permissão de scripts no PowerShell, execute primeiro `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` e tente ativar novamente).*
 
-* **No Windows (PowerShell/Prompt a partir da pasta `karaoke`):**
+* **Windows Prompt de Comando (CMD):**
+  ```cmd
+  .\venv\Scripts\activate.bat
+  ```
+
+* **Linux / macOS:**
+  ```bash
+  source venv/bin/activate
+  ```
+
+### Passo 3: Instalar as Dependências
+Com o ambiente virtual ativado, prossiga com a instalação dos pacotes. 
+
+#### Opção A: Instalação Padrão (CPU)
+Para rodar em modo CPU (indicado para computadores sem GPU NVIDIA dedicada):
+```bash
+pip install -r requirements.txt
+```
+
+#### Opção B: Instalação Acelerada por GPU (NVIDIA CUDA - Recomendado)
+Se você possui uma GPU NVIDIA (ex: RTX 4070) e deseja aceleração por hardware para a separação de voz (Demucs) e transcrição (Faster-Whisper), instale as wheels oficiais do PyTorch com suporte para CUDA 12.4:
+```bash
+# 1. Instala todas as dependências base do requirements.txt
+pip install -r requirements.txt
+
+# 2. Força a instalação do PyTorch e Torchaudio compilados com CUDA 12.4
+pip install --force-reinstall torch torchaudio --index-url https://download.pytorch.org/whl/cu124
+```
+
+*Nota: Certifique-se de que os drivers da sua placa NVIDIA e o kit de ferramentas CUDA correspondente estejam instalados e atualizados no seu sistema operacional.*
+
+---
+
+## 🚀 Como Executar o Servidor
+
+Para que dispositivos móveis (como celulares) conectados na rede Wi-Fi consigam acessar a página e capturar o áudio do microfone, os navegadores modernos exigem que o servidor rode obrigatoriamente sob **HTTPS** (Contexto Seguro).
+
+Fornecemos os certificados de desenvolvimento `key.pem` e `cert.pem` na pasta `server/`.
+
+### 1. Subir o Servidor Uvicorn
+Com o ambiente virtual ativado, suba o servidor FastAPI:
+
+* **No Windows (PowerShell) - Libera a porta 8000 automaticamente e inicia o servidor:**
   ```powershell
   Get-NetTCPConnection -LocalPort 8000 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }; .\venv\Scripts\python.exe -m uvicorn server.main:app --host 0.0.0.0 --port 8000 --ssl-keyfile server/key.pem --ssl-certfile server/cert.pem
   ```
 
-* **No Linux / macOS (Terminal a partir da pasta `karaoke`):**
+* **No Linux / macOS:**
   ```bash
-  ./venv/bin/python -m uvicorn server.main:app --host 0.0.0.0 --port 8000 --ssl-keyfile server/key.pem --ssl-certfile server/cert.pem
+  python -m uvicorn server.main:app --host 0.0.0.0 --port 8000 --ssl-keyfile server/key.pem --ssl-certfile server/cert.pem
   ```
 
-* **Acesso seguro na TV/PC principal:** [https://localhost:8000](https://localhost:8000)
-* **Acesso no Celular/Rede:** `https://<seu-ip-local>:8000` (ex: `https://192.168.1.15:8000`)
-* **Ignorar Alerta de Certificado Local:** Por se tratar de um certificado autoassinado para desenvolvimento local, o navegador exibirá a tela "Sua conexão não é particular". Basta clicar em **"Avançado"** (Advanced) e em seguida em **"Ir para o site (inseguro)"** (Proceed) para liberar o acesso ao microfone e iniciar instantaneamente!
+### 2. Acessar o Sistema
+* **Na TV ou Computador Principal:** Abra o navegador e acesse [https://localhost:8000](https://localhost:8000).
+* **Alerta de Segurança (Autoassinado):** Por se tratar de um certificado de testes local, clique em **"Avançado"** e em **"Prosseguir para localhost (inseguro)"**. Isso é necessário apenas no primeiro acesso para liberar a transmissão de áudio.
+* **Pareamento do Celular (Microfone):** O display exibirá um **QR Code**. Escaneie-o com a câmera do seu celular (conectado na mesma rede Wi-Fi) para pareá-lo instantaneamente como microfone!
 
-### 3. Pareamento Inteligente via QR Code
-O servidor descobre automaticamente o IP de rede da sua máquina local. O **QR Code** gerado no Display principal (TV) conterá diretamente o endereço HTTPS correto de rede. Aponte a câmera do celular para o QR Code para conectar instantaneamente como microfone inteligente!
+---
+
+## 🎵 Gerenciamento de Canções via CLI
+
+Você também pode reinstalar e reprocessar músicas diretamente pela linha de comando usando a ferramenta `reinstall_song.py`.
+
+### 1. Transcrição Direta (Whisper Puro - Padrão)
+Gera o arquivo `lyrics.lrc` com a transcrição direta feita pela inteligência artificial sem forçar o alinhamento com a letra textual em `plain_lyrics`.
+```bash
+python tools/reinstall_song.py server/songs/lift-radiohead
+```
+
+### 2. Alinhamento de Letra Plana
+Cruza a letra salva em `meta.json` / `lyrics.txt` com as posições de tempo da voz utilizando alinhamento fonético avançado:
+```bash
+python tools/reinstall_song.py server/songs/lift-radiohead --align-lyrics
+```
 
 ---
 
 ## 🧠 Tecnologias Utilizadas
-* **Backend:** FastAPI (APIRouter desacoplado), Uvicorn SSL, Faster-Whisper, RapidFuzz.
+* **Backend:** FastAPI (APIRouter desacoplado), Uvicorn SSL, Faster-Whisper, RapidFuzz, Demucs.
 * **Frontend:** Vanilla JS nativo (ES Modules, Web Audio API, AudioWorkletProcessor de PCM em baixa latência), HTML5, CSS3.
 * **Processamento Acústico:** PyAV, Pydub, Scipy (Downsampling de microfone em tempo real).
