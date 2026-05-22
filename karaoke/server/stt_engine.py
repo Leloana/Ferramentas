@@ -51,6 +51,19 @@ if sys.platform == "win32":
 # Importa faster_whisper após registrar as DLLs
 from faster_whisper import WhisperModel
 
+def _get_word_threshold(no_speech_prob: float) -> float:
+    """Retorna o limiar de probabilidade de palavra aceitável baseado no no_speech_prob do segmento."""
+    if no_speech_prob > 0.60:
+        return 0.70  # Segmento quase certamente silencioso ou com ruído. Exige alta certeza.
+    elif no_speech_prob > 0.40:
+        return 0.55  # Alta probabilidade de silêncio/ruído.
+    elif no_speech_prob > 0.25:
+        return 0.45  # Ruído moderado / possível silêncio.
+    elif no_speech_prob > 0.15:
+        return 0.35  # Baixo ruído, provável voz.
+    else:
+        return 0.25  # Áudio limpo, permite palavras com pronúncia rápida.
+
 class STTEngine:
     def __init__(self, model_size="medium", device="auto", compute_type="default"):
         """
@@ -76,7 +89,7 @@ class STTEngine:
             logger.error(f"Erro fatal ao carregar Whisper: {e}")
             raise e
 
-    def transcribe(self, audio_data, language, initial_prompt=None, rms_threshold=0.00005):
+    def transcribe(self, audio_data, language, initial_prompt=None, rms_threshold=0.001):
         rms = np.sqrt(np.mean(audio_data ** 2)) if len(audio_data) > 0 else 0
         if rms < rms_threshold:
             logger.info(f"Trecho silencioso detectado (RMS: {rms:.5f}). Ignorando Whisper para prevenir alucinações.")
@@ -88,7 +101,8 @@ class STTEngine:
                 language=language, 
                 word_timestamps=True,
                 beam_size=5,
-                initial_prompt=initial_prompt
+                initial_prompt=initial_prompt,
+                vad_filter=True
             )
 
             full_text = ""
@@ -101,12 +115,23 @@ class STTEngine:
                     logger.info(f"Alucinação do Whisper detectada e expurgada: '{text_clean}'")
                     continue
 
-                full_text += segment.text + " "
+                no_speech_prob = getattr(segment, "no_speech_prob", 0.0)
+                word_threshold = _get_word_threshold(no_speech_prob)
+
                 if segment.words:
                     for word in segment.words:
                         word_clean = word.word.strip()
                         if _HALLUCINATION_RE.search(word_clean):
                             continue
+                        
+                        # Filtro de confiança adaptativo baseando-se no ruído/silêncio do segmento
+                        if word.probability < word_threshold:
+                            logger.info(
+                                f"🚫 [Filtro Confiança] Descartando palavra incerta/alucinada '{word_clean}' "
+                                f"(prob={word.probability:.3f} < limiar={word_threshold} para no_speech_prob={no_speech_prob:.3f})"
+                            )
+                            continue
+
                         words_list.append({
                             "word": word_clean,
                             "start": word.start,
@@ -114,6 +139,7 @@ class STTEngine:
                             "probability": word.probability,
                         })
 
+            full_text = " ".join([w["word"] for w in words_list])
             return full_text.strip(), words_list
         except RuntimeError as e:
             if "cublas" in str(e).lower() or "cudnn" in str(e).lower():

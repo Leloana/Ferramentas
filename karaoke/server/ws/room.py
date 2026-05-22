@@ -39,6 +39,7 @@ async def _send_segment_start(ws: WebSocket, segments: list, idx: int, song_titl
     segment = segments[idx]
     prev_lyrics = segments[idx - 1]["lyrics"] if idx > 0 else ""
     next_lyrics = segments[idx + 1]["lyrics"] if idx < len(segments) - 1 else ""
+    upcoming_lyrics = segments[idx + 2]["lyrics"] if idx < len(segments) - 2 else ""
 
     await ws.send_json({
         "type": "segment_start",
@@ -50,6 +51,7 @@ async def _send_segment_start(ws: WebSocket, segments: list, idx: int, song_titl
         "lyrics_timed": segment["lyrics_timed"],
         "prev_lyrics": prev_lyrics,
         "next_lyrics": next_lyrics,
+        "upcoming_lyrics": upcoming_lyrics,
         "song_title": song_title,
     })
 
@@ -175,30 +177,44 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                     "total_expected": total,
                 }
             else:
-                # Resampling polifásico para 16 kHz com filtro FIR anti-aliasing
-                def compute():
-                    gcd = math.gcd(WHISPER_SR, room.client_sample_rate)
-                    up = WHISPER_SR // gcd
-                    down = room.client_sample_rate // gcd
-                    resampled = scipy.signal.resample_poly(audio_data, up, down).astype(np.float32)
-                    return stt.transcribe(resampled, language=seg_lang, initial_prompt=seg_text)
+                if rms_original < 0.0018:
+                    logger.info(f"🔇 [Silêncio Absoluto] Ignorando Whisper devido a RMS muito baixo ({rms_original:.6f})")
+                    transcribed_text = ""
+                    result = {
+                        "score": 0.0,
+                        "transcription": "",
+                        "matched_words": 0,
+                        "total_expected": len(seg_lyrics),
+                    }
+                else:
+                    # Resampling polifásico para 16 kHz com filtro FIR anti-aliasing
+                    def compute():
+                        gcd = math.gcd(WHISPER_SR, room.client_sample_rate)
+                        up = WHISPER_SR // gcd
+                        down = room.client_sample_rate // gcd
+                        resampled = scipy.signal.resample_poly(audio_data, up, down).astype(np.float32)
+                        return stt.transcribe(resampled, language=seg_lang, initial_prompt=seg_text)
 
-                transcribed_text, words = await asyncio.to_thread(compute)
+                    transcribed_text, words = await asyncio.to_thread(compute)
 
-                prev_lyrics = None
-                if seg_idx > 0 and seg_idx - 1 < len(room.segments):
-                    prev_lyrics = room.segments[seg_idx - 1]["lyrics"].split()
+                    prev_lyrics = None
+                    if seg_idx > 0 and seg_idx - 1 < len(room.segments):
+                        prev_lyrics = room.segments[seg_idx - 1]["lyrics"].split()
 
-                result = calculate_score(seg_lyrics, words, prev_expected_words=prev_lyrics, language=seg_lang)
+                    result = calculate_score(seg_lyrics, words, prev_expected_words=prev_lyrics, language=seg_lang)
+                
                 room.total_score += result["score"]
 
             room.scored_count += 1
             running_avg = round(room.total_score / room.scored_count, 1)
 
+            words_detail = ", ".join([f"'{w['word']}' ({w['probability']:.2f})" for w in words]) if (not _is_vocalize(seg_text) and rms_original >= 0.0018 and 'words' in locals() and words) else "nenhuma"
+
             logger.info(
                 f"\n========================================\n"
                 f"📝 [DEBUG TRANSCRIÇÃO] Segmento {seg_idx + 1} - Sala {room_id}\n"
                 f"   - Texto Transcrito (Whisper): '{transcribed_text}'\n"
+                f"   - Palavras Aceitas (prob): {words_detail}\n"
                 f"   - Palavras Mapeadas: {result['matched_words']}/{result['total_expected']}\n"
                 f"   - Transcrição acústica processada: '{result['transcription']}'\n"
                 f"   - Pontuação Deste Segmento: {result['score']}%\n"
