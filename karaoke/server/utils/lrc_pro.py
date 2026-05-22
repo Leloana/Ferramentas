@@ -46,9 +46,9 @@ def parse_and_normalize_lyrics(plain_lyrics: str) -> tuple[list[list[dict]], lis
         words_in_line = []
         for raw_word in line.split():
             # Normalização fonética/alfabética compatível com MMS_FA vocabulary:
-            # remove acentos, converte para minúsculas e mantém apenas a-z, ' e -
+            # remove acentos, converte para minúsculas e mantém apenas a-z e '
             norm_word = unidecode(raw_word).lower()
-            norm_word = re.sub(r"[^a-z'-]", "", norm_word)
+            norm_word = re.sub(r"[^a-z']", "", norm_word)
             
             word_dict = {
                 "raw": raw_word,

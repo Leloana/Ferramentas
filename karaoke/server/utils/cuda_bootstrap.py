@@ -15,12 +15,15 @@ def bootstrap_paths() -> None:
     # Clean up system PATH to avoid DLL symbol mismatches from conflicting system CUDA installations
     path_dirs = os.environ.get("PATH", "").split(os.path.pathsep)
     new_dirs = []
+    removed_dirs = []
     for d in path_dirs:
         # Filter out system NVIDIA CUDA paths that conflict with internal versions
         if "NVIDIA GPU Computing Toolkit" in d or "CUDA" in d:
+            removed_dirs.append(d)
             continue
         new_dirs.append(d)
     os.environ["PATH"] = os.path.pathsep.join(new_dirs)
+    print(f"[CUDA Bootstrap] Removed conflicting CUDA paths: {removed_dirs}")
 
     # Register local DLL directories to DLL search path
     try:
@@ -33,6 +36,7 @@ def bootstrap_paths() -> None:
         if fallback_sp not in site_packages_dirs and os.path.exists(fallback_sp):
             site_packages_dirs.append(fallback_sp)
 
+        print(f"[CUDA Bootstrap] Scanning site-packages: {site_packages_dirs}")
         for sp in site_packages_dirs:
             # 1. Register NVIDIA libraries (cublas, cudnn, etc.) inside venv
             nvidia_base = os.path.join(sp, "nvidia")
@@ -41,14 +45,16 @@ def bootstrap_paths() -> None:
                     if "bin" in dirs:
                         bin_dir = os.path.join(root, "bin")
                         if any(f.endswith(".dll") for f in os.listdir(bin_dir)):
+                            print(f"[CUDA Bootstrap] Registering DLL dir: {bin_dir}")
                             os.add_dll_directory(bin_dir)
             
             # 2. Register PyTorch lib directory inside venv
             torch_lib = os.path.join(sp, "torch", "lib")
             if os.path.exists(torch_lib):
+                print(f"[CUDA Bootstrap] Registering PyTorch lib: {torch_lib}")
                 os.add_dll_directory(torch_lib)
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"[CUDA Bootstrap] Error during DLL registration: {e}")
 
 # Run bootstrap on module import
 bootstrap_paths()

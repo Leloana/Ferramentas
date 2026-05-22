@@ -17,6 +17,9 @@ if server_dir not in sys.path:
 
 # Limpa PATH e registra DLLs do CUDA para evitar conflitos no Windows antes de outras importações
 import utils.cuda_bootstrap  # noqa: F401
+import torch  # noqa: F401 (Força carregamento de DLLs do PyTorch/cuDNN primeiro)
+import torchaudio  # noqa: F401
+
 
 # `state` importa `utils.ffmpeg_bootstrap.bootstrap()` no nível do módulo —
 # garantindo que o ffmpeg esteja no PATH **antes** de qualquer import de pydub

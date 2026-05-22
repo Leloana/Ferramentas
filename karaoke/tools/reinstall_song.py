@@ -28,6 +28,8 @@ if str(PROJECT_ROOT / "server") not in sys.path:
 
 # Limpa PATH e registra DLLs do CUDA antes de qualquer importação de ML
 import utils.cuda_bootstrap  # noqa: F401
+import torch  # noqa: F401 (Força carregamento de DLLs do PyTorch/cuDNN primeiro)
+import torchaudio  # noqa: F401
 
 from state import ffmpeg_bin_dir
 from utils.audio import vocal_to_float32_mono_16k

@@ -8,6 +8,8 @@ sys.path.append(str(Path(__file__).parent.parent / "server"))
 
 # Limpa PATH e registra DLLs do CUDA para evitar conflitos no Windows
 import utils.cuda_bootstrap  # noqa: F401
+import torch  # noqa: F401 (Força carregamento de DLLs do PyTorch/cuDNN primeiro)
+import torchaudio  # noqa: F401
 
 from stt_engine import get_stt_engine
 from utils.audio import load_audio_full
