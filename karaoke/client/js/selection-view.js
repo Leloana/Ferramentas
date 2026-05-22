@@ -331,24 +331,24 @@ export function promptGenerationOptions() {
     return new Promise((resolve) => {
         const modal = document.getElementById('generation-options-modal');
         const btnPro = document.getElementById('btn-gen-pro');
-        const btnFast = document.getElementById('btn-gen-fast');
+        const btnFlash = document.getElementById('btn-gen-flash');
         const btnClose = document.getElementById('btn-close-gen-options');
 
-        if (!modal || !btnPro || !btnFast || !btnClose) {
+        if (!modal || !btnPro || !btnFlash || !btnClose) {
             resolve(null);
             return;
         }
 
         const cleanupAndResolve = (choice) => {
             btnPro.onclick = null;
-            btnFast.onclick = null;
+            btnFlash.onclick = null;
             btnClose.onclick = null;
             modal.style.display = 'none';
             resolve(choice);
         };
 
         btnPro.onclick = () => cleanupAndResolve('pro');
-        btnFast.onclick = () => cleanupAndResolve('fast');
+        btnFlash.onclick = () => cleanupAndResolve('flash');
         btnClose.onclick = () => cleanupAndResolve(null);
 
         modal.style.display = 'flex';

@@ -222,7 +222,7 @@ function initAddSongModal() {
             return;
         }
 
-        // Prompt the user for the generation options (PRO vs Fast vs Cancel)
+        // Prompt the user for the generation options (PRO vs Flash vs Cancel)
         addSongModal.style.display = 'none';
         const choice = await promptGenerationOptions();
         if (!choice) {
