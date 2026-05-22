@@ -180,15 +180,22 @@ export function initSearch() {
 }
 
 export async function triggerReinstall(songId, songTitle) {
-    const confirmed = confirm(`Tem certeza que deseja reinstalar a música "${songTitle || songId}"?\n\nIsso apagará os áudios e letras atuais, gerando tudo do zero a partir do "meta.json" original.`);
-    if (!confirmed) return;
-
     if (dom.lrcEditorModal) dom.lrcEditorModal.style.display = 'none';
+
+    const choice = await promptGenerationOptions();
+    if (!choice) {
+        if (dom.lrcEditorModal && document.getElementById('editor-slug')?.value === songId) {
+            dom.lrcEditorModal.style.display = 'flex';
+        }
+        return;
+    }
+
+    const alignLyrics = (choice === 'pro');
 
     startLoadingOverlay("Reinstalando...", "Executando processo de download, separação Demucs (GPU) e alinhamento Whisper... 🔄🎧", true);
 
     try {
-        const response = await fetch(`/api/reinstall-song/${songId}`, {
+        const response = await fetch(`/api/reinstall-song/${songId}?align_lyrics=${alignLyrics}`, {
             method: 'POST'
         });
 
@@ -318,4 +325,32 @@ export function initSelectionTabs() {
         
         renderReinstallList(state.allSongs);
     };
+}
+
+export function promptGenerationOptions() {
+    return new Promise((resolve) => {
+        const modal = document.getElementById('generation-options-modal');
+        const btnPro = document.getElementById('btn-gen-pro');
+        const btnFast = document.getElementById('btn-gen-fast');
+        const btnClose = document.getElementById('btn-close-gen-options');
+
+        if (!modal || !btnPro || !btnFast || !btnClose) {
+            resolve(null);
+            return;
+        }
+
+        const cleanupAndResolve = (choice) => {
+            btnPro.onclick = null;
+            btnFast.onclick = null;
+            btnClose.onclick = null;
+            modal.style.display = 'none';
+            resolve(choice);
+        };
+
+        btnPro.onclick = () => cleanupAndResolve('pro');
+        btnFast.onclick = () => cleanupAndResolve('fast');
+        btnClose.onclick = () => cleanupAndResolve(null);
+
+        modal.style.display = 'flex';
+    });
 }

@@ -7,6 +7,7 @@ export const dom = {
     get lyricsDisplay() { return $('line-curr'); },
     get prevLyricsDisplay() { return $('line-prev'); },
     get nextLyricsDisplay() { return $('line-next'); },
+    get upcomingLyricsDisplay() { return $('line-upcoming'); },
     get btnStart() { return $('btn-start'); },
     get btnExit() { return $('btn-exit'); },
     get btnBack() { return $('btn-back'); },

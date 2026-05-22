@@ -2,7 +2,7 @@ import { state } from './state.js';
 import { dom, startLoadingOverlay, stopLoadingOverlay } from './dom.js';
 import { activeRoomId } from './config.js';
 import { showToast } from './toast.js';
-import { fetchSongs, loadAndOpenLrcEditor, triggerReinstall } from './selection-view.js';
+import { fetchSongs, loadAndOpenLrcEditor, triggerReinstall, promptGenerationOptions } from './selection-view.js';
 
 export function initModals() {
     initPairingModal();
@@ -222,10 +222,22 @@ function initAddSongModal() {
             return;
         }
 
+        // Prompt the user for the generation options (PRO vs Fast vs Cancel)
+        addSongModal.style.display = 'none';
+        const choice = await promptGenerationOptions();
+        if (!choice) {
+            // Cancelled, show addSongModal again
+            addSongModal.style.display = 'flex';
+            return;
+        }
+
+        const alignLyrics = (choice === 'pro');
+
         const formData = new FormData(addSongForm);
         formData.set('title', songTitle);
         formData.set('artist', songArtist);
-        addSongModal.style.display = 'none';
+        formData.set('align_lyrics', alignLyrics);
+
         if (state.activeUploadTab === 'youtube') {
             startLoadingOverlay("Preparando Música...", "Baixando áudio, separando vocal e gerando rascunho do LRC... 🎧 Pode levar 1-2min.", true);
         } else {

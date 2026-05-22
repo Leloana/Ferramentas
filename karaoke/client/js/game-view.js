@@ -8,6 +8,9 @@ import { updateMicStatusPanel } from './mic-status.js';
 import { connectDisplayWebSocket } from './ws-display.js';
 
 export function resetGameState() {
+    if (state.slideTransitionCleanup) {
+        state.slideTransitionCleanup();
+    }
     if (state.transcriptionActiveTimer) {
         clearTimeout(state.transcriptionActiveTimer);
         state.transcriptionActiveTimer = null;
@@ -51,9 +54,18 @@ export function resetGameState() {
         transText.innerHTML = '<strong>Ouvi:</strong> <span style="color: var(--dim);">[Aguardando canto...]</span>';
     }
 
-    document.getElementById('score-progress-fill').style.width = '0%';
+    const scoreFill = document.getElementById('score-progress-fill');
+    if (scoreFill) {
+        scoreFill.style.height = '0%';
+        scoreFill.style.width = '';
+    }
     document.getElementById('score-percentage-text').innerText = '0%';
     document.getElementById('instrumental-pause-container').style.display = 'none';
+
+    const perfBorder = document.getElementById('perf-border-overlay');
+    if (perfBorder) {
+        perfBorder.className = 'perf-border-idle';
+    }
 
     const verseContainer = document.getElementById('verse-progress-container');
     const verseFill = document.getElementById('verse-progress-fill');
@@ -67,9 +79,33 @@ export function resetGameState() {
         document.getElementById('silence-progress-fill').style.width = '0%';
     }
 
-    document.getElementById('line-prev').innerHTML = '';
-    document.getElementById('line-curr').innerHTML = '';
-    document.getElementById('line-next').innerHTML = '';
+    const linePrev = document.getElementById('line-prev');
+    if (linePrev) {
+        linePrev.innerHTML = '';
+        linePrev.className = 'carousel-line prev-line';
+    }
+    const lineCurr = document.getElementById('line-curr');
+    if (lineCurr) {
+        lineCurr.innerHTML = '';
+        lineCurr.className = 'carousel-line curr-line';
+    }
+    const lineNext = document.getElementById('line-next');
+    if (lineNext) {
+        lineNext.innerHTML = '';
+        lineNext.className = 'carousel-line next-line';
+    }
+    const lineUpcoming = document.getElementById('line-upcoming');
+    if (lineUpcoming) {
+        lineUpcoming.innerHTML = '';
+        lineUpcoming.className = 'carousel-line upcoming-line';
+    }
+    const carouselInner = document.getElementById('carousel-inner');
+    if (carouselInner) {
+        carouselInner.classList.add('no-transition');
+        carouselInner.style.transform = 'translateY(0)';
+        carouselInner.offsetHeight;
+        carouselInner.classList.remove('no-transition');
+    }
 
     dom.btnStart.style.display = 'inline-block';
     dom.btnStart.disabled = false;
@@ -262,8 +298,25 @@ export function handleServerMessage(data) {
         }
 
         const val = parseFloat(data.total_score) || 0;
-        document.getElementById('score-progress-fill').style.width = val + '%';
+        const scoreFill = document.getElementById('score-progress-fill');
+        if (scoreFill) {
+            scoreFill.style.height = val + '%';
+        }
         document.getElementById('score-percentage-text').innerText = val.toFixed(1) + '%';
+
+        // Update performance border overlay based on the last segment score
+        const lastSegmentScore = parseFloat(data.score) || 0;
+        const perfBorder = document.getElementById('perf-border-overlay');
+        if (perfBorder) {
+            perfBorder.className = ''; // Reset classes
+            if (lastSegmentScore >= 85) {
+                perfBorder.className = 'perf-border-good';
+            } else if (lastSegmentScore >= 70) {
+                perfBorder.className = 'perf-border-ok';
+            } else {
+                perfBorder.className = 'perf-border-poor';
+            }
+        }
     } else if (data.type === 'game_over') {
         dom.audioPlayer.pause();
         showGameOverModal(parseFloat(data.total_score) || 0);
@@ -302,11 +355,41 @@ export function showGameOverModal(finalScore) {
     };
 }
 
+function getTranslationForLine(line) {
+    const container = document.querySelector('.carousel-container');
+    const inner = document.getElementById('carousel-inner');
+    if (!container || !inner || !line) return 0;
+    
+    // Get the line's center relative to the top of carousel-inner
+    const lineCenter = line.offsetTop + line.offsetHeight / 2;
+    
+    // The container's center relative to its padding box is container.clientHeight / 2.
+    // So the translation to align the line center with the container center is:
+    return (container.clientHeight / 2) - lineCenter;
+}
+
+// Window resize handler to maintain active line centering
+window.addEventListener('resize', () => {
+    if (state.isSingingActive || (state.currentSegmentData && dom.gameArea.style.display === 'block')) {
+        const carouselInner = document.getElementById('carousel-inner');
+        if (carouselInner) {
+            carouselInner.classList.add('no-transition');
+            const targetLine = state.slideTransitionCleanup ? dom.nextLyricsDisplay : dom.lyricsDisplay;
+            if (targetLine) {
+                const translation = getTranslationForLine(targetLine);
+                carouselInner.style.transform = `translateY(${translation}px)`;
+            }
+            carouselInner.offsetHeight; // force reflow
+            carouselInner.classList.remove('no-transition');
+        }
+    }
+});
+
 export function renderLyrics(data) {
     const virtualTime = dom.audioPlayer.currentTime + state.syncOffset;
     const pauseTime = data.sing_start - virtualTime;
 
-    if (pauseTime > 1.0) {
+    if (pauseTime > 3.0) {
         state.totalPauseDuration = pauseTime;
         state.pauseStartTarget = data.sing_start;
     } else {
@@ -319,31 +402,115 @@ export function renderLyrics(data) {
         state.lastSegmentLyricsTimed = null;
         state.currentSegmentData = data;
         updateLyricsDOM(data);
+        
+        // Initial center alignment
+        const carouselInner = document.getElementById('carousel-inner');
+        if (carouselInner) {
+            carouselInner.classList.add('no-transition');
+            const translation = getTranslationForLine(dom.lyricsDisplay);
+            carouselInner.style.transform = `translateY(${translation}px)`;
+            carouselInner.offsetHeight; // force reflow
+            carouselInner.classList.remove('no-transition');
+        }
         return;
     }
 
-    const linePrev = document.getElementById('line-prev');
-    const lineCurr = document.getElementById('line-curr');
-    const lineNext = document.getElementById('line-next');
+    // Resolve any previous pending transition immediately to avoid overlaps
+    if (state.slideTransitionCleanup) {
+        state.slideTransitionCleanup();
+    }
 
-    linePrev.classList.add('fading');
-    lineCurr.classList.add('fading');
-    lineNext.classList.add('fading');
+    // Update state variables immediately so startHighlightLoop is in sync with the new segment's timing
+    const oldSegmentData = state.currentSegmentData;
+    state.lastSegmentLyricsTimed = oldSegmentData ? oldSegmentData.lyrics_timed : null;
+    state.currentSegmentData = data;
 
-    setTimeout(() => {
-        state.lastSegmentLyricsTimed = state.currentSegmentData ? state.currentSegmentData.lyrics_timed : null;
-        state.currentSegmentData = data;
+    const linePrev = dom.prevLyricsDisplay;
+    const lineCurr = dom.lyricsDisplay;
+    const lineNext = dom.nextLyricsDisplay;
+    const lineUpcoming = dom.upcomingLyricsDisplay;
+    const carouselInner = document.getElementById('carousel-inner');
+
+    if (!carouselInner) {
+        // Fallback in case element is missing
         updateLyricsDOM(data);
+        return;
+    }
 
-        linePrev.classList.remove('fading');
-        lineCurr.classList.remove('fading');
-        lineNext.classList.remove('fading');
-    }, 150);
+    // Strip IDs from current active words in line-curr to avoid duplicates in document.getElementById
+    const currentSpans = lineCurr.querySelectorAll('.word');
+    currentSpans.forEach(span => span.removeAttribute('id'));
+
+    // Populate line-next with new timed lyrics spans immediately, so they start highlighting as they slide up
+    lineNext.innerHTML = '';
+    data.lyrics_timed.forEach((item, idx) => {
+        const span = document.createElement('span');
+        span.className = 'word';
+        span.innerText = item.word + ' ';
+        span.id = `word-${idx}`;
+        lineNext.appendChild(span);
+    });
+
+    // Set line-upcoming to show the incoming line next lyrics
+    if (lineUpcoming) {
+        lineUpcoming.innerText = data.next_lyrics || "";
+    }
+
+    // Calculate translation dynamically to center lineNext
+    const translation = getTranslationForLine(lineNext);
+
+    // Start transition
+    carouselInner.style.transform = `translateY(${translation}px)`;
+    linePrev.classList.add('line-prev-slide-out');
+    lineCurr.classList.add('line-curr-to-prev');
+    lineNext.classList.add('line-next-to-curr');
+    if (lineUpcoming) {
+        lineUpcoming.classList.add('line-upcoming-to-next');
+    }
+
+    // Define cleanup function to commit DOM values
+    const commitTransition = () => {
+        carouselInner.classList.add('no-transition');
+
+        // Swap contents
+        linePrev.innerText = data.prev_lyrics || "";
+        lineCurr.innerHTML = lineNext.innerHTML;
+        lineNext.innerText = data.next_lyrics || "";
+        if (lineUpcoming) {
+            lineUpcoming.innerText = data.upcoming_lyrics || "";
+        }
+
+        // Reset transform to center the new current line (lineCurr) and remove transition classes
+        const steadyTranslation = getTranslationForLine(lineCurr);
+        carouselInner.style.transform = `translateY(${steadyTranslation}px)`;
+        
+        linePrev.classList.remove('line-prev-slide-out');
+        lineCurr.classList.remove('line-curr-to-prev');
+        lineNext.classList.remove('line-next-to-curr');
+        if (lineUpcoming) {
+            lineUpcoming.classList.remove('line-upcoming-to-next');
+        }
+
+        carouselInner.offsetHeight; // force reflow
+        carouselInner.classList.remove('no-transition');
+
+        state.slideTransitionCleanup = null;
+    };
+
+    const timeoutId = setTimeout(commitTransition, 400);
+
+    state.slideTransitionCleanup = () => {
+        clearTimeout(timeoutId);
+        commitTransition();
+    };
 }
 
 export function updateLyricsDOM(data) {
     dom.prevLyricsDisplay.innerText = data.prev_lyrics || "";
     dom.nextLyricsDisplay.innerText = data.next_lyrics || "";
+    if (dom.upcomingLyricsDisplay) {
+        dom.upcomingLyricsDisplay.innerText = data.upcoming_lyrics || "";
+    }
 
     dom.lyricsDisplay.innerHTML = '';
     data.lyrics_timed.forEach((item, idx) => {
@@ -410,7 +577,7 @@ export function startHighlightLoop() {
         const silenceOverlay = document.getElementById('silence-overlay');
         const pauseContainer = document.getElementById('instrumental-pause-container');
 
-        if (state.totalPauseDuration > 1.0) {
+        if (state.totalPauseDuration > 3.0) {
             const remainingTime = state.pauseStartTarget - virtualTime;
 
             if (remainingTime > 0) {
