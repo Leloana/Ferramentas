@@ -15,6 +15,7 @@ from orchestrator.validators import (
     validate_json_parseable,
     validate_pseudocode_schema,
     validate_pseudocode_coverage,
+    validate_direct_content,
     ValidationError_,
 )
 from orchestrator.retries import with_retry
@@ -29,7 +30,8 @@ OLLAMA_URL = f"{CONFIG['ollama']['base_url']}/api/chat"
 MODEL = CONFIG['models']['coder']
 
 
-def call_model(step_id: str, description: str, file_content: str, attempt: int, last_error, state_chunks=None) -> str:
+def call_model(step_id: str, description: str, file_content: str, attempt: int, last_error,
+               state_chunks=None, mode: str = "patch", target_file: str = "") -> str:
     """
     Faz requisição POST para o Ollama local usando o system prompt do Coder.
     """
@@ -44,13 +46,22 @@ def call_model(step_id: str, description: str, file_content: str, attempt: int, 
     user_content = (
         f"PASSO A SER PROCESSADO:\n"
         f"ID: {step_id}\n"
+        f"Mode: {mode}\n"
+        f"File: {target_file}\n"
         f"Descrição: {description}\n\n"
         f"CONTEÚDO DO ARQUIVO ALVO:\n"
         f"{file_content if file_content else '(Arquivo vazio ou novo)'}\n"
     )
 
+    if mode == "direct":
+        user_content += (
+            "\nIMPORTANT: This step is mode='direct'. Output JSON with the keys "
+            "'step_id' and 'file_content' ONLY. 'file_content' must contain the COMPLETE, "
+            "FINAL, ready-to-write content of the file. No pseudocode, no placeholders.\n"
+        )
+
     if state_chunks:
-        user_content += "\nCONTEXTO ADICIONAL (arquivos da codebase para síntese):\n"
+        user_content += "\nADDITIONAL CONTEXT (codebase files for synthesis):\n"
         for chunk in state_chunks:
             user_content += f"\n{chunk}\n"
 
@@ -58,7 +69,10 @@ def call_model(step_id: str, description: str, file_content: str, attempt: int, 
     from orchestrator.utils import unload_ollama_models
     unload_ollama_models(except_model=MODEL)
 
-    num_ctx = CONFIG.get("ollama", {}).get("coder_num_ctx", 8192)
+    if mode == "direct":
+        num_ctx = CONFIG.get("ollama", {}).get("coder_num_ctx_synthesis", 32768)
+    else:
+        num_ctx = CONFIG.get("ollama", {}).get("coder_num_ctx", 16384)
 
     payload = {
         "model": MODEL,
@@ -74,7 +88,8 @@ def call_model(step_id: str, description: str, file_content: str, attempt: int, 
     }
 
     try:
-        response = requests.post(OLLAMA_URL, json=payload, timeout=90)
+        timeout = CONFIG.get("ollama", {}).get("request_timeout", 300)
+        response = requests.post(OLLAMA_URL, json=payload, timeout=timeout)
         response.raise_for_status()
         data = response.json()
         return data["message"]["content"]
@@ -90,10 +105,21 @@ def run(state: PipelineState) -> dict[str, PseudocodeStep]:
     pseudocode: dict[str, PseudocodeStep] = {}
     log = AgentLog(agent="coder", model=MODEL)
 
+    # Importa aqui para evitar ciclo no momento do carregamento do módulo.
+    from orchestrator.runner import _collect_brain_context
+
     for step in state.plan.steps:
+        # Steps de análise foram executados pelo runner antes do Coder; nada a fazer aqui.
+        if step.action == "analyze":
+            continue
+
         print(f"  -> processando {step.id}: {step.description[:50]}")
 
-        def attempt_fn(attempt: int, last_error, _step=step):
+        # Contexto extra: dossiês brain/ de upstream analyze steps (via depends_on).
+        brain_chunks = _collect_brain_context(state, step)
+        step_chunks = list(state.retrieved_chunks) + brain_chunks
+
+        def attempt_fn(attempt: int, last_error, _step=step, _chunks=step_chunks):
             # Lendo arquivo real via MCP read_file
             file_path = _step.file
             full_path = os.path.join(state.codebase_path, file_path)
@@ -111,7 +137,8 @@ def run(state: PipelineState) -> dict[str, PseudocodeStep]:
                 file_content = ""
 
             raw = call_model(_step.id, _step.description, file_content, attempt, last_error,
-                 state_chunks=state.retrieved_chunks)
+                             state_chunks=_chunks,
+                             mode=_step.mode, target_file=_step.file)
 
             # Salva o log bruto da saída
             if state.run_dir:
@@ -122,12 +149,17 @@ def run(state: PipelineState) -> dict[str, PseudocodeStep]:
 
             # Camada A
             data = validate_json_parseable(raw)
+            # Garante que step_id esteja presente (modelo às vezes esquece em direct mode).
+            data.setdefault("step_id", _step.id)
             ps = validate_pseudocode_schema(data)
 
-            # Camada B: pseudocódigo não pode ser trivial
-            min_lines = CONFIG.get("validation", {}).get("min_pseudocode_lines", 2)
-            if len(ps.pseudocode.strip().splitlines()) < min_lines:
-                raise ValidationError_("B", f"{_step.id}: pseudocódigo trivial (< {min_lines} linhas)")
+            # Camada B
+            if _step.mode == "direct":
+                validate_direct_content(ps)
+            else:
+                min_lines = CONFIG.get("validation", {}).get("min_pseudocode_lines", 2)
+                if len(ps.pseudocode.strip().splitlines()) < min_lines:
+                    raise ValidationError_("B", f"{_step.id}: pseudocódigo trivial (< {min_lines} linhas)")
 
             return ps
 

@@ -29,7 +29,8 @@ def get_file_tree(root_dir: str) -> str:
     root_path = Path(root_dir).resolve()
     
     # Ignora pastas de cache, dependências e relatórios temporários
-    exclude_dirs = {".git", "__pycache__", ".venv", "runs", ".idea", ".vscode", "docx_to_pdf_converter", "karaoke", "youtube_music_playlist_organizer"}
+    exclude_dirs = {".git", "__pycache__", ".venv", "runs", ".idea", ".vscode", ".srclight",
+                    "docx_to_pdf_converter", "karaoke", "youtube_music_playlist_organizer"}
     
     for root, dirs, files in os.walk(root_path):
         dirs[:] = [d for d in dirs if d not in exclude_dirs]
@@ -110,7 +111,8 @@ def call_model(prompt: str, chunks: list[str], file_tree: str, attempt: int = 0,
     }
 
     try:
-        response = requests.post(OLLAMA_URL, json=payload, timeout=90)
+        timeout = CONFIG.get("ollama", {}).get("request_timeout", 300)
+        response = requests.post(OLLAMA_URL, json=payload, timeout=timeout)
         response.raise_for_status()
         data = response.json()
         return data["message"]["content"]

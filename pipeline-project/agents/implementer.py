@@ -84,7 +84,8 @@ def call_model(step_id: str, pseudocode: str, file_path: str, file_content: str,
     }
 
     try:
-        response = requests.post(OLLAMA_URL, json=payload, timeout=90)
+        timeout = CONFIG.get("ollama", {}).get("request_timeout", 300)
+        response = requests.post(OLLAMA_URL, json=payload, timeout=timeout)
         response.raise_for_status()
         data = response.json()
         return data["message"]["content"]
@@ -125,8 +126,29 @@ def run(state: PipelineState) -> list[str]:
     log = AgentLog(agent="implementer", model=MODEL)
 
     for step in ordered:
+        # Steps de análise já foram materializados pelo runner antes do Coder.
+        if step.action == "analyze":
+            rel = state.brain_artifacts.get(step.id, "?")
+            applied.append(f"{step.id}: brain artifact em {rel}")
+            print(f"  -> {step.id} [analyze] já materializado em {rel}")
+            continue
+
         ps = state.pseudocode[step.id]
-        print(f"  -> aplicando {step.id}: {step.description[:50]}")
+        print(f"  -> aplicando {step.id} [{step.mode}]: {step.description[:50]}")
+
+        # Modo direct: passthrough puro, sem LLM. O Coder já produziu o arquivo final.
+        if step.mode == "direct":
+            if ps.file_content is None:
+                raise ValidationError_("B", f"{step.id}: mode=direct mas file_content ausente")
+            tool_call = ToolCall(
+                tool="write_file",
+                arguments={"path": step.file, "content": ps.file_content},
+            )
+            validate_tool_whitelist(tool_call, TOOL_WHITELIST)
+            result = execute_tool_call(tool_call, state.codebase_path)
+            applied.append(f"{step.id}: {result}")
+            print(f"  [direct] {step.file} escrito ({len(ps.file_content)} chars)")
+            continue
 
         def attempt_fn(attempt: int, last_error, _step=step, _ps=ps):
             # Lendo arquivo real via MCP read_file

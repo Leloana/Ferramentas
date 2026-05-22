@@ -214,10 +214,165 @@ def apply_patch(path: str, unified_diff: str) -> str:
         
     return f"Patch aplicado e validado com sucesso via git apply em {path}"
 
+# ----- Tools adicionais -------------------------------------------------
+
+# Diretórios proibidos para qualquer mutação (delete/move). path absoluto resolvido
+# precisa ficar dentro do git root, e fora destes nomes.
+_FORBIDDEN_SEGMENTS = {".git", ".srclight", ".venv", "node_modules"}
+
+
+def _safety_check(path: str) -> str:
+    """Resolve path absoluto e bloqueia traversal/segmentos proibidos."""
+    abs_path = path if os.path.isabs(path) else os.path.abspath(path)
+    parts = os.path.normpath(abs_path).split(os.sep)
+    for seg in parts:
+        if seg in _FORBIDDEN_SEGMENTS:
+            raise PermissionError(f"Segmento proibido no path: {seg}")
+    git_root = find_git_root(abs_path)
+    if not abs_path.startswith(os.path.abspath(git_root)):
+        raise PermissionError(f"Path fora do git root: {abs_path}")
+    return abs_path
+
+
+def create_directory(path: str) -> str:
+    p = _safety_check(path)
+    os.makedirs(p, exist_ok=True)
+    return f"Diretório garantido: {p}"
+
+
+def delete_file(path: str) -> str:
+    p = _safety_check(path)
+    if not os.path.exists(p):
+        raise FileNotFoundError(f"Arquivo não encontrado para deletar: {p}")
+    if os.path.isdir(p):
+        raise IsADirectoryError(f"delete_file não remove diretórios. Use delete_directory: {p}")
+    os.remove(p)
+    return f"Arquivo removido: {p}"
+
+
+def move_file(src: str, dest: str) -> str:
+    s = _safety_check(src)
+    d = _safety_check(dest)
+    if not os.path.exists(s):
+        raise FileNotFoundError(f"Origem não existe: {s}")
+    if os.path.exists(d):
+        raise FileExistsError(f"Destino já existe: {d}")
+    os.makedirs(os.path.dirname(d), exist_ok=True)
+    os.rename(s, d)
+    return f"Movido {s} -> {d}"
+
+
+def append_to_file(path: str, content: str) -> str:
+    p = _safety_check(path)
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    with open(p, "a", encoding="utf-8") as f:
+        f.write(content)
+    return f"Append concluído em {p} ({len(content)} chars)"
+
+
+# ----- MCP plumbing -----------------------------------------------------
+
+TOOLS = {
+    "write_file": {
+        "fn": lambda a: write_file(a["path"], a["content"]),
+        "spec": {
+            "name": "write_file",
+            "description": "Writes the entire content to a file, creating directories as needed.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "path": {"type": "string"},
+                    "content": {"type": "string"},
+                },
+                "required": ["path", "content"],
+            },
+        },
+    },
+    "apply_patch": {
+        "fn": lambda a: apply_patch(a["path"], a["unified_diff"]),
+        "spec": {
+            "name": "apply_patch",
+            "description": "Applies a unified diff to a file, validating via 'git apply --check' before writing.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "path": {"type": "string"},
+                    "unified_diff": {"type": "string"},
+                },
+                "required": ["path", "unified_diff"],
+            },
+        },
+    },
+    "create_directory": {
+        "fn": lambda a: create_directory(a["path"]),
+        "spec": {
+            "name": "create_directory",
+            "description": "Creates a directory (and parents) if missing. Idempotent.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {"path": {"type": "string"}},
+                "required": ["path"],
+            },
+        },
+    },
+    "delete_file": {
+        "fn": lambda a: delete_file(a["path"]),
+        "spec": {
+            "name": "delete_file",
+            "description": "Removes a single file. Refuses directories and paths outside the git root or under .git/.venv/.srclight/node_modules.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {"path": {"type": "string"}},
+                "required": ["path"],
+            },
+        },
+    },
+    "move_file": {
+        "fn": lambda a: move_file(a["src"], a["dest"]),
+        "spec": {
+            "name": "move_file",
+            "description": "Renames or moves a file. Fails if destination already exists.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "src": {"type": "string"},
+                    "dest": {"type": "string"},
+                },
+                "required": ["src", "dest"],
+            },
+        },
+    },
+    "append_to_file": {
+        "fn": lambda a: append_to_file(a["path"], a["content"]),
+        "spec": {
+            "name": "append_to_file",
+            "description": "Appends content to a file (creates if missing). Use for logs, incremental docs, or growing outputs.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "path": {"type": "string"},
+                    "content": {"type": "string"},
+                },
+                "required": ["path", "content"],
+            },
+        },
+    },
+}
+
+
+def _response(req_id, result=None, error=None):
+    resp = {"jsonrpc": "2.0", "id": req_id}
+    if error is not None:
+        resp["error"] = error
+    else:
+        resp["result"] = result
+    return resp
+
+
 def main():
     sys.stderr.write("write-server: iniciado\n")
     sys.stderr.flush()
-    
+
     for line in sys.stdin:
         if not line.strip():
             continue
@@ -225,142 +380,43 @@ def main():
             request = json.loads(line)
             method = request.get("method")
             req_id = request.get("id")
-            
-            if req_id is not None:
-                if method == "initialize":
-                    response = {
-                        "jsonrpc": "2.0",
-                        "id": req_id,
-                        "result": {
-                            "protocolVersion": "2024-11-05",
-                            "capabilities": {},
-                            "serverInfo": {"name": "write-server", "version": "1.0.0"}
-                        }
-                    }
-                elif method == "tools/list":
-                    response = {
-                        "jsonrpc": "2.0",
-                        "id": req_id,
-                        "result": {
-                            "tools": [
-                                {
-                                    "name": "write_file",
-                                    "description": "Writes the entire content to a file at the specified path, creating directories if needed.",
-                                    "inputSchema": {
-                                        "type": "object",
-                                        "properties": {
-                                            "path": {
-                                                "type": "string",
-                                                "description": "The absolute or relative path of the file to write."
-                                            },
-                                            "content": {
-                                                "type": "string",
-                                                "description": "The content to write to the file."
-                                            }
-                                        },
-                                        "required": ["path", "content"]
-                                    }
-                                },
-                                {
-                                    "name": "apply_patch",
-                                    "description": "Applies a unified diff patch to a file, verifying correctness via git apply --check first.",
-                                    "inputSchema": {
-                                        "type": "object",
-                                        "properties": {
-                                            "path": {
-                                                "type": "string",
-                                                "description": "The absolute or relative path of the file to patch."
-                                            },
-                                            "unified_diff": {
-                                                "type": "string",
-                                                "description": "The unified diff content to apply."
-                                            }
-                                        },
-                                        "required": ["path", "unified_diff"]
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                elif method == "tools/call":
-                    params = request.get("params", {})
-                    tool_name = params.get("name")
-                    args = params.get("arguments", {})
-                    
-                    if tool_name == "write_file":
-                        file_path = args.get("path")
-                        content = args.get("content")
-                        try:
-                            res_msg = write_file(file_path, content)
-                            response = {
-                                "jsonrpc": "2.0",
-                                "id": req_id,
-                                "result": {
-                                    "content": [
-                                        {
-                                            "type": "text",
-                                            "text": res_msg
-                                        }
-                                    ]
-                                }
-                            }
-                        except Exception as e:
-                            response = {
-                                "jsonrpc": "2.0",
-                                "id": req_id,
-                                "error": {
-                                    "code": -32000,
-                                    "message": str(e)
-                                }
-                            }
-                    elif tool_name == "apply_patch":
-                        file_path = args.get("path")
-                        unified_diff = args.get("unified_diff")
-                        try:
-                            res_msg = apply_patch(file_path, unified_diff)
-                            response = {
-                                "jsonrpc": "2.0",
-                                "id": req_id,
-                                "result": {
-                                    "content": [
-                                        {
-                                            "type": "text",
-                                            "text": res_msg
-                                        }
-                                    ]
-                                }
-                            }
-                        except Exception as e:
-                            response = {
-                                "jsonrpc": "2.0",
-                                "id": req_id,
-                                "error": {
-                                    "code": -32000,
-                                    "message": str(e)
-                                }
-                            }
-                    else:
-                        response = {
-                            "jsonrpc": "2.0",
-                            "id": req_id,
-                            "error": {
-                                "code": -32601,
-                                "message": f"Tool '{tool_name}' nao encontrada no servidor Write."
-                            }
-                        }
+            if req_id is None:
+                continue
+
+            if method == "initialize":
+                response = _response(req_id, {
+                    "protocolVersion": "2024-11-05",
+                    "capabilities": {},
+                    "serverInfo": {"name": "write-server", "version": "1.1.0"},
+                })
+            elif method == "tools/list":
+                response = _response(req_id, {"tools": [t["spec"] for t in TOOLS.values()]})
+            elif method == "tools/call":
+                params = request.get("params", {})
+                name = params.get("name")
+                args = params.get("arguments", {}) or {}
+                tool = TOOLS.get(name)
+                if not tool:
+                    response = _response(req_id, error={
+                        "code": -32601,
+                        "message": f"Tool '{name}' não encontrada no servidor Write.",
+                    })
                 else:
-                    response = {
-                        "jsonrpc": "2.0",
-                        "id": req_id,
-                        "result": {}
-                    }
-                    
-                sys.stdout.write(json.dumps(response) + "\n")
-                sys.stdout.flush()
-            
+                    try:
+                        text = tool["fn"](args)
+                        response = _response(req_id, {"content": [{"type": "text", "text": text}]})
+                    except Exception as e:
+                        response = _response(req_id, error={"code": -32000, "message": str(e)})
+            else:
+                response = _response(req_id, {})
+
+            sys.stdout.write(json.dumps(response) + "\n")
+            sys.stdout.flush()
+
         except Exception as e:
             sys.stderr.write(f"write-server error: {e}\n")
             sys.stderr.flush()
+
 
 if __name__ == "__main__":
     main()

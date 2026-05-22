@@ -93,9 +93,17 @@ def validate_plan_structure(plan: Plan) -> None:
                 raise ValidationError_("B", "Ciclo detectado no grafo de dependências")
 
 
+def validate_direct_content(ps: PseudocodeStep, min_chars: int = 50) -> None:
+    """Para steps mode=direct, file_content deve ser não-trivial."""
+    if ps.file_content is None or not ps.file_content.strip():
+        raise ValidationError_("B", f"{ps.step_id}: mode=direct mas file_content vazio")
+    if len(ps.file_content.strip()) < min_chars:
+        raise ValidationError_("B", f"{ps.step_id}: file_content trivial (< {min_chars} chars)")
+
+
 def validate_pseudocode_coverage(plan: Plan, pseudocode: dict) -> None:
-    """Todo step_id do plano deve ter pseudocódigo."""
-    missing = [s.id for s in plan.steps if s.id not in pseudocode]
+    """Todo step_id do plano (exceto action=analyze) deve ter pseudocódigo."""
+    missing = [s.id for s in plan.steps if s.action != "analyze" and s.id not in pseudocode]
     if missing:
         raise ValidationError_("B", f"Pseudocódigo faltando para: {missing}")
 
@@ -110,9 +118,7 @@ def validate_physical_paths(plan: Plan, codebase_path: str) -> None:
     """Checa se os caminhos dos arquivos do plano são válidos e condizem com a ação."""
     import os
     for step in plan.steps:
-        # Garante que não está tentando acessar caminhos fora da base de código (traversal attack)
         file_path = step.file
-        # Resolve e sanitiza o caminho
         full_path = os.path.abspath(os.path.join(codebase_path, file_path))
         base_abs = os.path.abspath(codebase_path)
         if not full_path.startswith(base_abs):
@@ -121,4 +127,12 @@ def validate_physical_paths(plan: Plan, codebase_path: str) -> None:
         if step.action in ("modify", "delete"):
             if not os.path.exists(full_path):
                 raise ValidationError_("C", f"Arquivo não encontrado para {step.action}: {file_path}")
+
+        if step.action == "analyze":
+            # Dossiês de análise vivem em brain/ — convenção do projeto.
+            rel = os.path.relpath(full_path, base_abs).replace("\\", "/")
+            if not rel.startswith("brain/"):
+                raise ValidationError_("C", f"{step.id}: action=analyze requer file sob brain/, recebi: {rel}")
+            if not step.target_symbol or not step.target_symbol.strip():
+                raise ValidationError_("C", f"{step.id}: action=analyze requer target_symbol não-vazio")
 

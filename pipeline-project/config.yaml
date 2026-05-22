@@ -5,9 +5,11 @@ models:
 
 ollama:
   base_url: "http://localhost:11434"
-  planner_num_ctx: 8192
-  coder_num_ctx: 8192
-  implementer_num_ctx: 8192
+  planner_num_ctx: 16384
+  coder_num_ctx: 16384
+  coder_num_ctx_synthesis: 32768
+  implementer_num_ctx: 16384
+  request_timeout: 300
 
 retrieval:
   top_k: 5
@@ -30,3 +32,7 @@ validation:
 tool_whitelist:
   - apply_patch
   - write_file
+  - append_to_file
+  - delete_file
+  - move_file
+  - create_directory
