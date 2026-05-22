@@ -73,7 +73,14 @@ Hoje `validate_direct_content` só checa ≥50 chars. Para HTML, poderia validar
 ## 🛠️ Como rodar
 ```powershell
 .venv\Scripts\Activate.ps1
-python orchestrator\runner.py "<prompt>"            # estágio 3 (completo)
-python orchestrator\runner.py "<prompt>" --stage 1  # só Planner
-python orchestrator\runner.py "<prompt>" --stage 2  # até Coder
+python orchestrator\runner.py "<prompt>"                          # estágio 3, codebase=.
+python orchestrator\runner.py "<prompt>" --stage 1                # só Planner
+python orchestrator\runner.py "<prompt>" --stage 2                # até Coder
+python orchestrator\runner.py "<prompt>" -c ~/projetos/outro      # atua em outro repo
 ```
+
+### Operação em diretório externo
+- Flag `-c / --codebase` aponta o pipeline para qualquer caminho.
+- Requisito: diretório existe e é repo git (write_server confina escritas ao git root).
+- Diretório vazio (sem arquivos com extensão de código reconhecida) → modo **bootstrap**: pula indexação srclight, pula MCP retrieval, Planner trabalha só com o prompt. `brain/` e `.srclight/` são criadas no diretório alvo.
+- `_load_synthesis_chunks` foi generalizado: não tem mais nomes hardcoded (`agents/`, `orchestrator/`, `mcps/`). Varre genericamente extensões em `_SOURCE_EXTS` + arquivos doc/config no root, com cap de 60 arquivos / 300KB total.

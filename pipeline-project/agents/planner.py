@@ -29,8 +29,11 @@ def get_file_tree(root_dir: str) -> str:
     root_path = Path(root_dir).resolve()
     
     # Ignora pastas de cache, dependências e relatórios temporários
-    exclude_dirs = {".git", "__pycache__", ".venv", "runs", ".idea", ".vscode", ".srclight",
-                    "docx_to_pdf_converter", "karaoke", "youtube_music_playlist_organizer"}
+    # Excluídos por serem ruído universal (caches/dependências/artefatos de build).
+    # Não inclui nomes específicos a este repo — o pipeline atua em codebases arbitrárias.
+    exclude_dirs = {".git", "__pycache__", ".venv", "venv", "runs", ".idea", ".vscode",
+                    ".srclight", "node_modules", "dist", "build", "target", ".next",
+                    ".cache", "vendor", ".pytest_cache", ".mypy_cache", ".ruff_cache"}
     
     for root, dirs, files in os.walk(root_path):
         dirs[:] = [d for d in dirs if d not in exclude_dirs]

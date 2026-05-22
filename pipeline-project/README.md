@@ -248,6 +248,31 @@ O Planner decide o `mode` automaticamente (regra no `prompts/planner.system.md`)
 
 ---
 
+## 🎯 Operação em qualquer diretório
+
+Por padrão, o pipeline atua no diretório onde o `runner.py` foi invocado (`.`). Para apontar para outro projeto, use a flag **`--codebase` / `-c`**:
+
+```powershell
+python orchestrator\runner.py "adicione validação de email" --codebase C:\Users\me\meu-app
+python orchestrator\runner.py "resuma o projeto em HTML" -c ~/projetos/api-server
+```
+
+### Requisitos do diretório alvo
+- **Existe** e é um diretório (validação em `_validate_target_dir`).
+- É um **repositório git** (procura `.git` subindo). Necessário porque o `apply_patch` valida via `git apply --check` e o `write_server` confina todas as escritas ao git root. Se não for git, o runner aborta com a sugestão `git init && git add -A && git commit -m 'init'`.
+
+### Modo bootstrap (diretório vazio)
+Se o diretório alvo for um repo git **sem arquivos de código** (extensões `.py`/`.ts`/`.go`/`.rs`/etc.), o runner pula totalmente a indexação srclight e o MCP retrieval. O Planner recebe apenas o prompt + a árvore (vazia) e gera steps `create` para bootstrap inicial. Útil para começar um projeto do zero:
+
+```powershell
+mkdir meu-novo-projeto && cd meu-novo-projeto && git init
+python C:\path\to\pipeline-project\orchestrator\runner.py "crie um servidor Flask com endpoint /health" -c .
+```
+
+A `brain/` e `.srclight/` são criadas no diretório alvo, não no pipeline-project.
+
+---
+
 ## 🚀 Como executar o pipeline
 
 Certifique-se de que o **Ollama** esteja rodando localmente com os modelos especificados no `config.yaml` carregados.
@@ -259,8 +284,11 @@ Execute o arquivo `runner.py` passando o prompt desejado:
 # Ativar o ambiente virtual
 .venv\Scripts\Activate.ps1
 
-# Executar o runner (completo - estágio 3)
+# Executar o runner (completo - estágio 3) no diretório atual
 python orchestrator\runner.py "adicione um comentário na primeira linha de config.yaml"
+
+# Ou em outro diretório
+python orchestrator\runner.py "adicione um comentário" --codebase ~/projetos/outro
 ```
 
 ### Execução por Etapas (Interrupção Controlada)

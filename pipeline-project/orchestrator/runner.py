@@ -233,64 +233,161 @@ def _collect_brain_context(state: PipelineState, step) -> list[str]:
     return chunks
 
 
+# Extensões de fonte reconhecidas em qualquer projeto alvo.
+_SOURCE_EXTS = {
+    ".py", ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs",
+    ".go", ".rs", ".c", ".h", ".cpp", ".hpp", ".cc", ".cxx",
+    ".java", ".kt", ".kts", ".scala", ".rb", ".php", ".swift",
+    ".sh", ".bash", ".zsh", ".ps1", ".lua", ".dart", ".ex", ".exs",
+    ".vue", ".svelte", ".sql",
+}
+_DOC_EXTS = {".md", ".rst", ".txt"}
+_CONFIG_EXTS = {".yaml", ".yml", ".toml", ".json", ".cfg", ".ini", ".env.example"}
+_SKIP_DIRS = {
+    ".git", ".venv", ".srclight", "node_modules", "__pycache__", "runs",
+    "dist", "build", "target", ".next", ".cache", "vendor", ".idea", ".vscode",
+    "brain",  # nosso próprio diretório de dossiês — evita ruído
+}
+
+
+def _is_indexable_codebase(codebase: Path) -> bool:
+    """True se há ao menos um arquivo de código no target dir."""
+    for root, dirs, files in os.walk(codebase):
+        dirs[:] = [d for d in dirs if d not in _SKIP_DIRS and not d.startswith(".")]
+        for f in files:
+            if Path(f).suffix.lower() in _SOURCE_EXTS:
+                return True
+    return False
+
+
 def _load_synthesis_chunks(state: PipelineState, mcp_client) -> list[str]:
     """
-    Para tarefas de síntese, busca híbrida é ruim (prompt sem sinal semântico).
-    Em vez disso, carrega: codebase_map, README, config.yaml, prompts/*.md,
-    e todos os .py de agents/orchestrator/mcps inteiros (sem truncar).
+    Modo síntese: busca híbrida é ruim (sem sinal semântico). Carrega genericamente:
+      1. codebase_map() do srclight.
+      2. Arquivos descritivos no root (README*, CHANGELOG*, LICENSE*, *.md/yaml/toml/json/cfg/ini).
+      3. Arquivos de prompt em prompts/ (se existir).
+      4. Código-fonte do projeto (extensões em _SOURCE_EXTS), até um teto.
+    Funciona para qualquer projeto, não só este.
     """
     chunks: list[str] = []
     codebase = Path(state.codebase_path).resolve()
+    MAX_TOTAL_CHARS = 300_000
+    MAX_FILES = 60
+    MAX_FILE_BYTES = 50_000
+    total = 0
 
-    # 1) Codebase map via srclight (overview estrutural).
+    def _add(rel: str, content: str) -> bool:
+        nonlocal total
+        if total + len(content) > MAX_TOTAL_CHARS or len(chunks) >= MAX_FILES:
+            return False
+        chunks.append(f"# FILE: {rel}\n{content}")
+        total += len(content)
+        return True
+
+    # 1) codebase_map.
     try:
         raw_map = mcp_client.call_tool("codebase_map", {})
         if raw_map:
             chunks.append(f"# CODEBASE MAP\n{raw_map}")
+            total += len(raw_map)
     except Exception as e:
         print(f"  [retrieval-synth] codebase_map indisponível: {e}")
 
-    # 2) Arquivos-chave de descrição do projeto.
-    key_files = [
-        "README.md", "config.yaml", "PLANO.md",
-        "prompts/planner.system.md",
-        "prompts/coder.system.md",
-        "prompts/implementer.system.md",
-    ]
-    for rel in key_files:
-        fp = codebase / rel
-        if fp.exists() and fp.is_file():
+    # 2) Arquivos descritivos no root.
+    root_priority_names = {
+        "readme", "readme.md", "readme.rst", "readme.txt",
+        "changelog", "changelog.md", "contributing", "contributing.md",
+        "license", "license.md", "license.txt", "plano.md",
+    }
+    for entry in sorted(codebase.iterdir()):
+        if not entry.is_file():
+            continue
+        low = entry.name.lower()
+        suffix = entry.suffix.lower()
+        is_priority = low in root_priority_names or low.startswith("readme")
+        is_doc_or_config = suffix in _DOC_EXTS or suffix in _CONFIG_EXTS
+        if not (is_priority or is_doc_or_config):
+            continue
+        try:
+            content = entry.read_text(encoding="utf-8", errors="replace")
+            if len(content) > MAX_FILE_BYTES:
+                content = content[:MAX_FILE_BYTES] + "\n... (truncado)\n"
+            if not _add(entry.name, content):
+                return chunks
+        except Exception:
+            continue
+
+    # 3) prompts/ se existir.
+    prompts_dir = codebase / "prompts"
+    if prompts_dir.is_dir():
+        for p in sorted(prompts_dir.rglob("*")):
+            if p.is_file() and p.suffix.lower() in _DOC_EXTS:
+                try:
+                    content = p.read_text(encoding="utf-8", errors="replace")
+                    if len(content) > MAX_FILE_BYTES:
+                        content = content[:MAX_FILE_BYTES] + "\n... (truncado)\n"
+                    if not _add(p.relative_to(codebase).as_posix(), content):
+                        return chunks
+                except Exception:
+                    continue
+
+    # 4) Código-fonte (genérico via _SOURCE_EXTS).
+    for root, dirs, files in os.walk(codebase):
+        dirs[:] = [d for d in dirs if d not in _SKIP_DIRS and not d.startswith(".")]
+        for f in sorted(files):
+            if Path(f).suffix.lower() not in _SOURCE_EXTS:
+                continue
+            fp = Path(root) / f
+            if fp.name == "__init__.py":
+                try:
+                    if fp.stat().st_size == 0:
+                        continue
+                except OSError:
+                    continue
             try:
                 content = fp.read_text(encoding="utf-8", errors="replace")
-                chunks.append(f"# FILE: {rel}\n{content}")
+                if len(content) > MAX_FILE_BYTES:
+                    content = content[:MAX_FILE_BYTES] + "\n... (truncado)\n"
+                if not _add(fp.relative_to(codebase).as_posix(), content):
+                    return chunks
             except Exception:
-                pass
-
-    # 3) Fontes principais (sem truncar).
-    for folder in ("orchestrator", "agents", "mcps"):
-        folder_path = codebase / folder
-        if not folder_path.exists():
-            continue
-        for py_file in sorted(folder_path.rglob("*.py")):
-            if py_file.name == "__init__.py" and py_file.stat().st_size == 0:
                 continue
-            try:
-                content = py_file.read_text(encoding="utf-8", errors="replace")
-                rel = py_file.relative_to(codebase).as_posix()
-                chunks.append(f"# FILE: {rel}\n{content}")
-            except Exception:
-                pass
 
     return chunks
+
+
+def _validate_target_dir(path: str) -> Path:
+    """Valida o diretório alvo: existe, é dir, é repo git. Retorna Path absoluto resolvido."""
+    p = Path(path).expanduser().resolve()
+    if not p.exists():
+        raise ValidationError_("R", f"Codebase path não existe: {p}")
+    if not p.is_dir():
+        raise ValidationError_("R", f"Codebase path não é um diretório: {p}")
+    # Procura .git subindo até o root (write_server precisa de git root).
+    cur = p
+    while True:
+        if (cur / ".git").exists():
+            return p
+        if cur.parent == cur:
+            break
+        cur = cur.parent
+    raise ValidationError_(
+        "R",
+        f"Codebase path não é um repositório git: {p}\n"
+        f"  → Inicialize com: cd \"{p}\" && git init && git add -A && git commit -m 'init'"
+    )
 
 def run_pipeline(prompt: str, codebase_path: str = ".", stage: int = 3) -> PipelineState:
     if stage not in (1, 2, 3):
         raise ValueError("Estágio inválido. Escolha entre 1 (Planejamento), 2 (Pseudocódigo) ou 3 (Implementação).")
 
-    state = PipelineState(prompt=prompt, codebase_path=codebase_path)
+    # Valida e resolve o codebase ANTES de qualquer outra coisa.
+    target = _validate_target_dir(codebase_path)
+    state = PipelineState(prompt=prompt, codebase_path=str(target))
     state.synthesis_mode = _detect_synthesis_mode(prompt)
     run_date = datetime.now().strftime('%Y-%m-%d')
     state.run_dir = str(RUNS_DIR / f"{run_date}_{state.run_id}")
+    print(f"  [target] codebase: {target}")
     if state.synthesis_mode:
         print("  [intent] modo SÍNTESE detectado (descrever/documentar/HTML).")
 
@@ -302,96 +399,98 @@ def run_pipeline(prompt: str, codebase_path: str = ".", stage: int = 3) -> Pipel
     try:
         # --- Pré-pipeline: retrieval real via busca híbrida srclight ---
         print("\n[Retrieval]")
-        # Garante que outros modelos foram descarregados para liberar a GPU para o embedding
-        from orchestrator.utils import unload_ollama_models
-        unload_ollama_models(except_model=CONFIG["retrieval"]["embedding_model"])
 
         codebase_abs = Path(state.codebase_path).resolve()
         db_path = (codebase_abs / ".srclight" / "index.db").resolve()
+
+        # Diretórios vazios pulam totalmente indexação e retrieval — útil para bootstrap.
+        if not _is_indexable_codebase(codebase_abs):
+            print(f"  [retrieval] Codebase vazia em {codebase_abs} — pulando indexação e MCP retrieval.")
+            print("  [retrieval] O Planner trabalhará apenas com o prompt (modo bootstrap).")
+            server_cmd = None  # marker: sem srclight nesta run
+        else:
+            # Garante GPU livre para o embedding antes da indexação.
+            from orchestrator.utils import unload_ollama_models
+            unload_ollama_models(except_model=CONFIG["retrieval"]["embedding_model"])
+
+            print(f"  [retrieval] Garantindo indexação atualizada em: {codebase_abs}...")
+            cmd_index = [
+                sys.executable,
+                "-m", "srclight.cli",
+                "index",
+                "--db", str(db_path),
+                "--embed", CONFIG["retrieval"]["embedding_model"],
+                str(codebase_abs)
+            ]
+            print(f"  [index] Executando indexação: {' '.join(cmd_index)}")
+            try:
+                subprocess.run(cmd_index, capture_output=True, text=True, check=True)
+                print("  [index] Base de código indexada/atualizada com sucesso!")
+            except subprocess.CalledProcessError as e:
+                raise ValidationError_("R", f"Falha ao indexar a base de código: {e.stderr or e.stdout}")
         
-        # Indexa/reindexa a base de código a cada execução para garantir que as alterações mais recentes sejam capturadas
-        print(f"  [retrieval] Garantindo indexação atualizada da base de código em: {codebase_abs}...")
-        
-        cmd_index = [
-            sys.executable,
-            "-m", "srclight.cli",
-            "index",
-            "--db", str(db_path),
-            "--embed", CONFIG["retrieval"]["embedding_model"],
-            str(codebase_abs)
-        ]
-        print(f"  [index] Executando indexação: {' '.join(cmd_index)}")
-        try:
-            subprocess.run(cmd_index, capture_output=True, text=True, check=True)
-            print("  [index] Base de código indexada/atualizada com sucesso!")
-        except subprocess.CalledProcessError as e:
-            raise ValidationError_("R", f"Falha ao indexar a base de código: {e.stderr or e.stdout}")
-        
-        # Inicializa cliente MCP srclight
-        server_cmd = [
-            sys.executable,
-            "-m", "srclight.cli",
-            "serve",
-            "-t", "stdio",
-            "--db", str(db_path)
-        ]
-        print("  [retrieval] Inicializando cliente MCP srclight...")
-        client = MCPClient(server_cmd, cwd=str(codebase_abs))
-        try:
-            if state.synthesis_mode:
-                print("  [retrieval-synth] carregando codebase_map + arquivos-chave + fontes...")
-                state.retrieved_chunks = _load_synthesis_chunks(state, client)
-                print(f"  [OK] {len(state.retrieved_chunks)} chunks de síntese carregados.")
-            else:
-                print(f"  [retrieval] Executando busca híbrida (top {CONFIG['retrieval']['top_k']}) para o prompt...")
-                search_args = {
-                    "query": prompt,
-                    "limit": CONFIG["retrieval"]["top_k"]
-                }
-                raw_search = client.call_tool("hybrid_search", search_args)
-                search_res = json.loads(raw_search)
+        # Em modo bootstrap (codebase vazia), pula o cliente MCP e o retrieval inteiro.
+        if server_cmd is None:
+            print("  [retrieval] Sem chunks a recuperar (codebase vazia). Indo direto para o Planner.")
+            state.retrieved_chunks = []
+        else:
+            server_cmd = [
+                sys.executable,
+                "-m", "srclight.cli",
+                "serve",
+                "-t", "stdio",
+                "--db", str(db_path)
+            ]
+            print("  [retrieval] Inicializando cliente MCP srclight...")
+            client = MCPClient(server_cmd, cwd=str(codebase_abs))
+            try:
+                if state.synthesis_mode:
+                    print("  [retrieval-synth] carregando codebase_map + arquivos-chave + fontes...")
+                    state.retrieved_chunks = _load_synthesis_chunks(state, client)
+                    print(f"  [OK] {len(state.retrieved_chunks)} chunks de síntese carregados.")
+                else:
+                    print(f"  [retrieval] Executando busca híbrida (top {CONFIG['retrieval']['top_k']}) para o prompt...")
+                    search_args = {"query": prompt, "limit": CONFIG["retrieval"]["top_k"]}
+                    raw_search = client.call_tool("hybrid_search", search_args)
+                    search_res = json.loads(raw_search)
 
-                chunks = []
-                results = search_res.get("results", [])
-                for r in results:
-                    name = r.get("name")
-                    file_path = r.get("file")
-                    if not name:
-                        continue
+                    chunks = []
+                    results = search_res.get("results", [])
+                    for r in results:
+                        name = r.get("name")
+                        file_path = r.get("file")
+                        if not name:
+                            continue
+                        raw_symbol = client.call_tool("get_symbol", {"name": name})
+                        if not raw_symbol:
+                            continue
+                        symbol_data = json.loads(raw_symbol)
+                        symbol = None
+                        if "symbols" in symbol_data:
+                            r_file = Path(file_path).as_posix()
+                            for s in symbol_data["symbols"]:
+                                s_file = Path(s.get("file", "")).as_posix()
+                                if s_file == r_file:
+                                    symbol = s
+                                    break
+                            if not symbol and symbol_data["symbols"]:
+                                symbol = symbol_data["symbols"][0]
+                        else:
+                            symbol = symbol_data
 
-                    # Busca os detalhes do símbolo para obter o código-fonte real
-                    raw_symbol = client.call_tool("get_symbol", {"name": name})
-                    if not raw_symbol:
-                        continue
-                    symbol_data = json.loads(raw_symbol)
+                        if symbol and symbol.get("content"):
+                            chunk = (
+                                f"# Symbol: {symbol.get('name')} ({symbol.get('kind', 'unknown')})\n"
+                                f"# File: {symbol.get('file')} (Lines {symbol.get('start_line')}-{symbol.get('end_line')})\n"
+                                f"# Signature: {symbol.get('signature', '')}\n"
+                                f"{symbol.get('content')}"
+                            )
+                            chunks.append(chunk)
 
-                    # Trata múltiplas ocorrências do símbolo
-                    symbol = None
-                    if "symbols" in symbol_data:
-                        r_file = Path(file_path).as_posix()
-                        for s in symbol_data["symbols"]:
-                            s_file = Path(s.get("file", "")).as_posix()
-                            if s_file == r_file:
-                                symbol = s
-                                break
-                        if not symbol and symbol_data["symbols"]:
-                            symbol = symbol_data["symbols"][0]
-                    else:
-                        symbol = symbol_data
-
-                    if symbol and symbol.get("content"):
-                        chunk = (
-                            f"# Symbol: {symbol.get('name')} ({symbol.get('kind', 'unknown')})\n"
-                            f"# File: {symbol.get('file')} (Lines {symbol.get('start_line')}-{symbol.get('end_line')})\n"
-                            f"# Signature: {symbol.get('signature', '')}\n"
-                            f"{symbol.get('content')}"
-                        )
-                        chunks.append(chunk)
-
-                state.retrieved_chunks = chunks
-                print(f"  [OK] {len(state.retrieved_chunks)} chunks reais recuperados com sucesso via busca híbrida srclight!")
-        finally:
-            client.close()
+                    state.retrieved_chunks = chunks
+                    print(f"  [OK] {len(state.retrieved_chunks)} chunks reais recuperados via busca híbrida srclight!")
+            finally:
+                client.close()
 
         # --- Brain index: alimenta Planner com dossiês de análise pré-existentes ---
         brain_idx = _load_brain_index(state.codebase_path)
@@ -408,7 +507,15 @@ def run_pipeline(prompt: str, codebase_path: str = ".", stage: int = 3) -> Pipel
 
         # --- Execução dos steps action=analyze (sem LLM, dados do srclight) ---
         analyze_steps = [s for s in state.plan.steps if s.action == "analyze"]
-        if analyze_steps:
+        if analyze_steps and server_cmd is None:
+            print(f"\n[Analyze] {len(analyze_steps)} step(s) — pulando: codebase vazia, sem srclight.")
+            for s in analyze_steps:
+                # Materializa um stub pra não quebrar depends_on downstream.
+                out = Path(state.codebase_path) / s.file
+                out.parent.mkdir(parents=True, exist_ok=True)
+                out.write_text(f"# Analysis stub for `{s.target_symbol}`\n\n_(codebase vazia — sem dados do srclight)_\n", encoding="utf-8")
+                state.brain_artifacts[s.id] = out.relative_to(Path(state.codebase_path)).as_posix()
+        elif analyze_steps:
             print(f"\n[Analyze] {len(analyze_steps)} step(s) de análise — chamando srclight...")
             project_name = Path(state.codebase_path).resolve().name
             analyze_client = MCPClient(server_cmd, cwd=str(codebase_abs))
@@ -603,6 +710,15 @@ if __name__ == "__main__":
         default=None,
         help="Etapa limite (sobrescreve posicional)"
     )
+    parser.add_argument(
+        "--codebase",
+        "-c",
+        dest="codebase",
+        type=str,
+        default=".",
+        help="Diretório alvo da operação (default: '.'). Deve ser um repositório git. "
+             "Diretórios vazios ativam o modo bootstrap (sem indexação)."
+    )
 
     args = parser.parse_args()
 
@@ -621,4 +737,4 @@ if __name__ == "__main__":
     if args.stage_flag is not None:
         stage = args.stage_flag
 
-    run_pipeline(prompt, stage=stage)
+    run_pipeline(prompt, codebase_path=args.codebase, stage=stage)
