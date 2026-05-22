@@ -42,11 +42,11 @@ if sys.platform == "win32":
                         os.add_dll_directory(bin_dir)
                         registered_dirs += 1
             if registered_dirs == 0:
-                logger.warning("Nenhum diretório com DLLs do CUDA foi encontrado dentro de 'nvidia'.")
+                logger.debug("Nenhum diretório com DLLs do CUDA foi encontrado dentro de 'nvidia'.")
         else:
-            logger.warning(f"Diretório base 'nvidia' não encontrado em: {venv_site_packages}")
+            logger.debug(f"Diretório base 'nvidia' não encontrado em: {venv_site_packages}")
     else:
-        logger.warning("Não foi possível localizar o diretório venv site-packages para buscar as DLLs do CUDA.")
+        logger.debug("Não foi possível localizar o diretório venv site-packages para buscar as DLLs do CUDA.")
 
 # Importa faster_whisper após registrar as DLLs
 from faster_whisper import WhisperModel
