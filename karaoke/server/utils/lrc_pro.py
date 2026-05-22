@@ -95,11 +95,10 @@ def align_lyrics_forced(
     audio_duration_sec = waveform.size(1) / sample_rate
     
     # 4. Auto-detectar dispositivo
-    # Forçamos "cpu" para o MMS_FA pois torchaudio MMS_FA em CUDA/cuDNN causa falhas críticas no Windows (Error code 127).
-    # O alinhamento no CPU é rápido (~1-2s após carregamento do modelo) e 100% estável.
-    device = "cpu"
+    if device is None:
+        device = "cuda" if torch.cuda.is_available() else "cpu"
     device = torch.device(device)
-    logger.info(f"Executando Forced Alignment no dispositivo: {device} (MMS_FA forçado no CPU para estabilidade)")
+    logger.info(f"Executando Forced Alignment no dispositivo: {device}")
     
     # 5. Inicializar o pipeline MMS_FA
     bundle = torchaudio.pipelines.MMS_FA

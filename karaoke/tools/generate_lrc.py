@@ -15,6 +15,9 @@ from pathlib import Path
 # Adiciona o diretório `server/` ao path para importar utilitários compartilhados.
 sys.path.append(str(Path(__file__).resolve().parent.parent / "server"))
 
+# Limpa PATH e registra DLLs do CUDA para evitar conflitos no Windows
+import utils.cuda_bootstrap  # noqa: F401
+
 from stt_engine import get_stt_engine
 from utils.audio import load_audio_full
 from utils.whisper_params import TRANSCRIBE_KWARGS

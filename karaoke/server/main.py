@@ -15,6 +15,9 @@ server_dir = str(Path(__file__).resolve().parent)
 if server_dir not in sys.path:
     sys.path.insert(0, server_dir)
 
+# Limpa PATH e registra DLLs do CUDA para evitar conflitos no Windows antes de outras importações
+import utils.cuda_bootstrap  # noqa: F401
+
 # `state` importa `utils.ffmpeg_bootstrap.bootstrap()` no nível do módulo —
 # garantindo que o ffmpeg esteja no PATH **antes** de qualquer import de pydub
 # que aconteça nos routers abaixo.

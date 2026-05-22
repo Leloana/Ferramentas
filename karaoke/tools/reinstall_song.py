@@ -26,6 +26,9 @@ if str(PROJECT_ROOT) not in sys.path:
 if str(PROJECT_ROOT / "server") not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT / "server"))
 
+# Limpa PATH e registra DLLs do CUDA antes de qualquer importação de ML
+import utils.cuda_bootstrap  # noqa: F401
+
 from state import ffmpeg_bin_dir
 from utils.audio import vocal_to_float32_mono_16k
 from utils.meta import get_meta_field
@@ -318,8 +321,9 @@ async def reinstall_song(
             logger.info("plain_lyrics disponível e align_lyrics=True. Executando Forced Alignment (PRO) com MMS_FA...")
             try:
                 from utils.lrc_pro import align_lyrics_forced
+                import torch
                 
-                device = "cpu"
+                device = "cuda" if torch.cuda.is_available() else "cpu"
                 logger.info(f"Chamando Forced Alignment (PRO) no dispositivo: {device}")
                 corrected_segments, lrc_text = align_lyrics_forced(
                     str(song_dir / "vocal.mp3"),
