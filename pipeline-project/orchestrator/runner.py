@@ -35,11 +35,44 @@ def save_run(state: PipelineState):
     run_dir = Path(state.run_dir)
     run_dir.mkdir(parents=True, exist_ok=True)
 
-    with open(run_dir / "final_state.json", "w") as f:
+    with open(run_dir / "final_state.json", "w", encoding="utf-8") as f:
         f.write(state.model_dump_json(indent=2))
 
     print(f"\n  [runner] estado salvo em {run_dir}/final_state.json")
 
+def _inject_file_contents_if_needed(state: PipelineState):
+    """
+    Se o prompt envolve leitura/síntese de arquivos, injeta o conteúdo
+    real dos .py no retrieved_chunks antes do Agente 1.
+    """
+    READ_KEYWORDS = {"ler", "listar", "descrever", "sintetizar", "html",
+                     "documentar", "resumir", "conteúdo", "overview", "cards"}
+    
+    prompt_words = set(state.prompt.lower().split())
+    if not prompt_words & READ_KEYWORDS:
+        return
+
+    print("  [pre-planner] prompt de síntese detectado — injetando conteúdo dos arquivos...")
+    
+    folders = ["orchestrator", "agents", "mcps", "prompts", "retrieval"]
+    codebase = Path(state.codebase_path)
+    
+    for folder in folders:
+        folder_path = codebase / folder
+        if not folder_path.exists():
+            continue
+        for py_file in sorted(folder_path.glob("*.py")):
+            try:
+                content = py_file.read_text(encoding="utf-8")
+                chunk = (
+                    f"# FILE: {py_file.relative_to(codebase)}\n"
+                    f"{content[:1500]}"  # limita para não estourar contexto
+                )
+                state.retrieved_chunks.append(chunk)
+            except Exception:
+                pass
+    
+    print(f"  [pre-planner] {len(state.retrieved_chunks)} chunks após injeção")
 
 def run_pipeline(prompt: str, codebase_path: str = ".", stage: int = 3) -> PipelineState:
     if stage not in (1, 2, 3):
@@ -144,6 +177,7 @@ def run_pipeline(prompt: str, codebase_path: str = ".", stage: int = 3) -> Pipel
             client.close()
 
         # --- Agente 1: Planejamento ---
+        _inject_file_contents_if_needed(state)
         planner.run(state)
         if stage == 1:
             print("\n  [runner] Etapa 1 finalizada (Apenas Planejamento/Análise). Interrompendo fluxo.")
@@ -159,6 +193,9 @@ def run_pipeline(prompt: str, codebase_path: str = ".", stage: int = 3) -> Pipel
             print("\n  [runner] Etapa 2 finalizada (Até Pseudocódigo). Interrompendo fluxo.")
             state.set_status("done")
             return state
+
+        print("\n[Merge de Steps]")
+        merge_same_file_steps(state)
 
         # --- Agente 3: Implementação ---
         implementer.run(state)
@@ -218,6 +255,73 @@ def _print_summary(state: PipelineState):
         print(f"  Retries: {retries}")
     print(f"{'='*60}\n")
 
+def merge_same_file_steps(state: PipelineState) -> None:
+    """
+    Colapsa steps consecutivos que tocam o mesmo arquivo em um único step sintético.
+    O step colapsado usa action='write' (write_file completo) em vez de patches incrementais.
+    Modifica state.plan.steps e state.pseudocode in-place.
+    """
+    from orchestrator.state import PlanStep, PseudocodeStep
+
+    original_steps = state.plan.steps
+    merged_steps = []
+    merged_pseudocode = dict(state.pseudocode)
+    skip = set()
+
+    for i, step in enumerate(original_steps):
+        if step.id in skip:
+            continue
+
+        # Encontra steps consecutivos no mesmo arquivo
+        group = [step]
+        for j in range(i + 1, len(original_steps)):
+            next_step = original_steps[j]
+            if next_step.file == step.file:
+                group.append(next_step)
+                skip.add(next_step.id)
+            else:
+                break  # só agrupa consecutivos
+
+        if len(group) == 1:
+            merged_steps.append(step)
+            continue
+
+        # Cria step sintético
+        merged_id = f"{group[0].id}_merged"
+        merged_desc = "; ".join(s.description for s in group)
+        merged_pseudo = "\n\n".join(
+            f"# === {s.id}: {s.description} ===\n{state.pseudocode[s.id].pseudocode}"
+            for s in group
+            if s.id in state.pseudocode
+        )
+
+        synthetic_step = PlanStep(
+            id=merged_id,
+            description=merged_desc,
+            file=step.file,
+            location="arquivo completo",
+            action="create",  # força write_file
+            depends_on=group[0].depends_on
+        )
+
+        synthetic_pseudo = PseudocodeStep(
+            step_id=merged_id,
+            inputs=[],
+            outputs=["file_content: str"],
+            pseudocode=merged_pseudo,
+            external_calls=[]
+        )
+
+        # Remove pseudocódigos individuais, adiciona o merged
+        for s in group:
+            merged_pseudocode.pop(s.id, None)
+        merged_pseudocode[merged_id] = synthetic_pseudo
+
+        merged_steps.append(synthetic_step)
+        print(f"  [merge] {len(group)} steps colapsados em {merged_id} ({step.file})")
+
+    state.plan.steps = merged_steps
+    state.pseudocode = merged_pseudocode
 
 if __name__ == "__main__":
     import argparse

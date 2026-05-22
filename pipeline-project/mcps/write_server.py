@@ -168,7 +168,15 @@ def write_file(path: str, content: str) -> str:
 def apply_patch(path: str, unified_diff: str) -> str:
     if not os.path.isabs(path):
         path = os.path.abspath(path)
-        
+    
+    if "\n" not in unified_diff and any(m in unified_diff for m in ["@@", "---", "+++"]):
+        for marker in ["--- ", "+++ ", "@@ ", "\n+"]:
+            unified_diff = unified_diff.replace(marker, "\n" + marker)
+        # Garante que linhas +/- que ficaram grudadas também sejam separadas
+        import re
+        unified_diff = re.sub(r'(?<!\n)([\+\- ](?=[^\+\- \n]))', r'\n\1', unified_diff)
+        unified_diff = unified_diff.lstrip("\n")
+
     if not os.path.exists(path):
         raise FileNotFoundError(f"Arquivo para patch nao encontrado: {path}")
         

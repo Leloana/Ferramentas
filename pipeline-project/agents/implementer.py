@@ -33,7 +33,7 @@ TOOL_WHITELIST = CONFIG.get("tool_whitelist", ["apply_patch", "write_file"])
 
 
 def call_model(step_id: str, pseudocode: str, file_path: str, file_content: str,
-               location: str, attempt: int, last_error) -> str:
+               location: str, attempt: int, last_error, action: str = "modify") -> str:
     """
     POST para Ollama com a tool calling estruturada JSON.
     """
@@ -45,11 +45,19 @@ def call_model(step_id: str, pseudocode: str, file_path: str, file_content: str,
         system_prompt = f.read()
 
     # Monta a mensagem do usuário
+    tool_hint = (
+        "TOOL OBRIGATÓRIA: use write_file com o conteúdo completo do arquivo."
+        if action == "create"
+        else "Prefira apply_patch para modificações cirúrgicas. Use write_file só se necessário."
+    )
+
     user_content = (
         f"PASSO A SER EXECUTADO:\n"
         f"ID: {step_id}\n"
         f"Arquivo: {file_path}\n"
-        f"Localização: {location}\n\n"
+        f"Localização: {location}\n"
+        f"Action: {action}\n\n"
+        f"INSTRUÇÃO DE TOOL: {tool_hint}\n\n"
         f"PSEUDOCÓDIGO DO PASSO:\n"
         f"{pseudocode}\n\n"
         f"CONTEÚDO DO ARQUIVO ALVO:\n"
@@ -139,7 +147,8 @@ def run(state: PipelineState) -> list[str]:
 
             raw = call_model(
                 _step.id, _ps.pseudocode, _step.file,
-                file_content, _step.location, attempt, last_error
+                file_content, _step.location, attempt, last_error,
+                action=_step.action
             )
 
             # Salva o log bruto da saída

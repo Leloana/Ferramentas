@@ -55,7 +55,7 @@ def get_file_tree(root_dir: str) -> str:
     return "\n".join(lines)
 
 
-def call_model(prompt: str, chunks: list[str], file_tree: str) -> str:
+def call_model(prompt: str, chunks: list[str], file_tree: str, attempt: int = 0, last_error=None) -> str:
     """
     Faz requisição POST para o Ollama local usando o system prompt e os dados da run.
     """
@@ -71,6 +71,15 @@ def call_model(prompt: str, chunks: list[str], file_tree: str) -> str:
         f"SOLICITAÇÃO DO USUÁRIO:\n{prompt}\n\n"
         f"TRECHOS DE CÓDIGO RECUPERADOS (RETRIEVAL):\n"
     )
+
+    if last_error:
+        user_content += (
+            f"\n\nPREVIOUS ATTEMPT FAILED. Your last response was rejected.\n"
+            f"Error: {last_error.message}\n"
+            f"You MUST return ONLY a JSON object with a 'steps' array. "
+            f"No other keys. No prose. Example: {{\"steps\": [{{\"id\": \"step_1\", ...}}]}}"
+        )
+
     if chunks:
         for i, chunk in enumerate(chunks, 1):
             user_content += f"\n--- Chunk {i} ---\n{chunk}\n"
@@ -78,6 +87,8 @@ def call_model(prompt: str, chunks: list[str], file_tree: str) -> str:
         user_content += "Nenhum trecho de código recuperado.\n"
         
     user_content += f"\nESTRUTURA DE ARQUIVOS DA BASE DE CÓDIGO:\n{file_tree}\n"
+
+
 
     # Garante que outros modelos foram descarregados para liberar a GPU
     from orchestrator.utils import unload_ollama_models
@@ -117,7 +128,7 @@ def run(state: PipelineState) -> Plan:
         # Gera o file tree com base no codebase_path
         file_tree = get_file_tree(state.codebase_path)
         
-        raw = call_model(state.prompt, state.retrieved_chunks, file_tree)
+        raw = call_model(state.prompt, state.retrieved_chunks, file_tree, attempt, last_error)
 
         # Salva o log bruto da saída
         if state.run_dir:

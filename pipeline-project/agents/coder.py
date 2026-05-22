@@ -29,7 +29,7 @@ OLLAMA_URL = f"{CONFIG['ollama']['base_url']}/api/chat"
 MODEL = CONFIG['models']['coder']
 
 
-def call_model(step_id: str, description: str, file_content: str, attempt: int, last_error) -> str:
+def call_model(step_id: str, description: str, file_content: str, attempt: int, last_error, state_chunks=None) -> str:
     """
     Faz requisição POST para o Ollama local usando o system prompt do Coder.
     """
@@ -48,6 +48,11 @@ def call_model(step_id: str, description: str, file_content: str, attempt: int, 
         f"CONTEÚDO DO ARQUIVO ALVO:\n"
         f"{file_content if file_content else '(Arquivo vazio ou novo)'}\n"
     )
+
+    if state_chunks:
+        user_content += "\nCONTEXTO ADICIONAL (arquivos da codebase para síntese):\n"
+        for chunk in state_chunks:
+            user_content += f"\n{chunk}\n"
 
     # Garante que outros modelos foram descarregados para liberar a GPU
     from orchestrator.utils import unload_ollama_models
@@ -105,7 +110,8 @@ def run(state: PipelineState) -> dict[str, PseudocodeStep]:
             else:
                 file_content = ""
 
-            raw = call_model(_step.id, _step.description, file_content, attempt, last_error)
+            raw = call_model(_step.id, _step.description, file_content, attempt, last_error,
+                 state_chunks=state.retrieved_chunks)
 
             # Salva o log bruto da saída
             if state.run_dir:
