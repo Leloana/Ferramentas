@@ -315,40 +315,79 @@ async def reinstall_song(
             logger.info("lyrics.lrc já existe e plain_lyrics não foi fornecido. Mantendo lyrics.lrc existente.")
             has_lrc = True
         elif plain_lyrics and plain_lyrics.strip() and align_lyrics:
-            logger.info("plain_lyrics disponível e align_lyrics=True. Whisper percorrendo arquivo vocal para cruzar com lyrics.txt...")
-        
-        try:
-            from utils.lrc_align import align_plain_lyrics
-            from stt_engine import get_stt_engine
-            
-            stt = get_stt_engine()
-            raw_data = vocal_to_float32_mono_16k(vocal_audio)
-            segments, _info = stt.model.transcribe(
-                raw_data,
-                language=song_lang,
-                initial_prompt=plain_lyrics if plain_lyrics else None,
-                **TRANSCRIBE_KWARGS,
-            )
-            segments_list = list(segments)
-            total_duration = len(vocal_audio) / 1000.0
-            lrc_text, fallback_used = align_plain_lyrics(
-                plain_lyrics, segments_list, _get_field("meta", "title", ""), _get_field("meta", "artist", ""), total_duration
-            )
-            lrc_file.write_text(lrc_text, encoding="utf-8")
-            logger.info("Arquivo lyrics.lrc alinhado e gerado com sucesso a partir de plain_lyrics!")
-            has_lrc = True
-        except Exception as e:
-            logger.error(f"Erro ao alinhar plain_lyrics com Whisper: {e}")
-            if lrc_backup is not None:
-                logger.info("Tentando restaurar o backup das letras sincronizadas lyrics.lrc devido ao erro...")
-                lrc_file.write_text(lrc_backup, encoding="utf-8")
-                if txt_backup is not None:
-                    txt_file.write_text(txt_backup, encoding="utf-8")
+            logger.info("plain_lyrics disponível e align_lyrics=True. Executando Forced Alignment (PRO) com MMS_FA...")
+            try:
+                from utils.lrc_pro import align_lyrics_forced
+                
+                device = "cpu"
+                logger.info(f"Chamando Forced Alignment (PRO) no dispositivo: {device}")
+                corrected_segments, lrc_text = align_lyrics_forced(
+                    str(song_dir / "vocal.mp3"),
+                    plain_lyrics,
+                    language=song_lang,
+                    device=device
+                )
+                
+                # Salva o lyrics.lrc
+                lrc_file.write_text(lrc_text, encoding="utf-8")
+                
+                # Salva o segments.json
+                segments_path = song_dir / "segments.json"
+                with open(segments_path, "w", encoding="utf-8") as f:
+                    json.dump(corrected_segments, f, indent=2, ensure_ascii=False)
+                
                 has_lrc = True
-            else:
-                logger.info("Tentando fallback de geração automática de LRC puro...")
+                skip_prepare_song = True  # Já gerou o segments.json completo e com alinhamento perfeito!
+                logger.info("Arquivo lyrics.lrc e segments.json gerados com sucesso via Forced Alignment (PRO)!")
+            except Exception as e:
+                logger.error(f"Erro ao executar Forced Alignment (PRO) com MMS_FA: {e}")
+                logger.info("Tentando fallback de alinhamento com Whisper (lrc_align)...")
+                try:
+                    from utils.lrc_align import align_plain_lyrics
+                    from stt_engine import get_stt_engine
+                    
+                    stt = get_stt_engine()
+                    raw_data = vocal_to_float32_mono_16k(vocal_audio)
+                    segments, _info = stt.model.transcribe(
+                        raw_data,
+                        language=song_lang,
+                        initial_prompt=plain_lyrics if plain_lyrics else None,
+                        **TRANSCRIBE_KWARGS,
+                    )
+                    segments_list = list(segments)
+                    total_duration = len(vocal_audio) / 1000.0
+                    lrc_text, fallback_used = align_plain_lyrics(
+                        plain_lyrics, segments_list, _get_field("meta", "title", ""), _get_field("meta", "artist", ""), total_duration
+                    )
+                    lrc_file.write_text(lrc_text, encoding="utf-8")
+                    logger.info("Arquivo lyrics.lrc alinhado e gerado com sucesso via Whisper lrc_align!")
+                    has_lrc = True
+                except Exception as ex:
+                    logger.error(f"Erro no fallback do lrc_align: {ex}")
+                    if lrc_backup is not None:
+                        logger.info("Restaurando backup de letras sincronizadas lyrics.lrc devido ao erro...")
+                        lrc_file.write_text(lrc_backup, encoding="utf-8")
+                        if txt_backup is not None:
+                            txt_file.write_text(txt_backup, encoding="utf-8")
+                        has_lrc = True
+                    else:
+                        logger.info("Tentando fallback de geração automática de LRC puro...")
+                        generate_lrc(str(song_dir), language=song_lang, debug=False)
+                        has_lrc = True
+        else:
+            # Caso align_lyrics=False (FAST) ou plain_lyrics ausente
+            logger.info("Executando transcrição direta com Whisper (FAST)...")
+            try:
                 generate_lrc(str(song_dir), language=song_lang, debug=False)
                 has_lrc = True
+            except Exception as e:
+                logger.error(f"Erro ao gerar transcrição FAST com Whisper: {e}")
+                if lrc_backup is not None:
+                    logger.info("Restaurando backup de letras sincronizadas lyrics.lrc devido ao erro...")
+                    lrc_file.write_text(lrc_backup, encoding="utf-8")
+                    if txt_backup is not None:
+                        txt_file.write_text(txt_backup, encoding="utf-8")
+                    has_lrc = True
 
     
     # Se não geramos lyrics.lrc (ou se align_lyrics=False)

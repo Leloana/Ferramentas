@@ -69,6 +69,7 @@ def parse_and_normalize_lyrics(plain_lyrics: str) -> tuple[list[list[dict]], lis
 def align_lyrics_forced(
     vocal_audio_path: str,
     plain_lyrics: str,
+    language: str = "pt",
     device: str = None
 ) -> tuple[list[dict], str]:
     """
@@ -94,10 +95,11 @@ def align_lyrics_forced(
     audio_duration_sec = waveform.size(1) / sample_rate
     
     # 4. Auto-detectar dispositivo
-    if not device:
-        device = "cuda" if torch.cuda.is_available() else "cpu"
+    # Forçamos "cpu" para o MMS_FA pois torchaudio MMS_FA em CUDA/cuDNN causa falhas críticas no Windows (Error code 127).
+    # O alinhamento no CPU é rápido (~1-2s após carregamento do modelo) e 100% estável.
+    device = "cpu"
     device = torch.device(device)
-    logger.info(f"Executando Forced Alignment no dispositivo: {device}")
+    logger.info(f"Executando Forced Alignment no dispositivo: {device} (MMS_FA forçado no CPU para estabilidade)")
     
     # 5. Inicializar o pipeline MMS_FA
     bundle = torchaudio.pipelines.MMS_FA
@@ -176,25 +178,55 @@ def align_lyrics_forced(
                 
     # 11. Construir segmentos de versos (lines) para o frontend
     corrected_segments = []
+    num_lines = len(lines)
     for i, line_words in enumerate(lines):
         line_text = " ".join([w["raw"] for w in line_words])
         
-        # Tempos absolutos para delimitar o segmento inteiro
-        sing_start = line_words[0]["start"]
-        sing_end = line_words[-1]["end"]
+        # Tempos absolutos das palavras
+        first_word_start = line_words[0]["start"]
+        last_word_end = line_words[-1]["end"]
         
+        # Limite superior do final do canto (início da próxima linha de letra ou fim do áudio)
+        next_word_start = lines[i + 1][0]["start"] if i + 1 < num_lines else audio_duration_sec
+        
+        # sing_start com margem vocal de 400ms se possível (não menor que zero e não sobrepondo a palavra anterior)
+        # Se for o primeiro verso, pode ir até 0.
+        prev_word_end = lines[i - 1][-1]["end"] if i > 0 else 0.0
+        sing_start = max(prev_word_end, first_word_start - 0.4)
+        
+        # sing_end com margem de 400ms pós-nota se possível (não passando da primeira palavra do próximo verso)
+        sing_end = min(last_word_end + 0.4, next_word_start)
+        
+        # Corrige caso por algum motivo sing_start seja maior ou igual a sing_end
+        if sing_start >= sing_end:
+            sing_start = max(0.0, first_word_start - 0.05)
+            sing_end = min(last_word_end + 0.05, next_word_start)
+            
         sub_lyrics_timed = []
         for word in line_words:
             # O frontend espera tempos relativos ao início do segmento (sing_start)
             sub_lyrics_timed.append({
                 "word": word["raw"],
-                "expected_start": round(word["start"] - sing_start, 3),
-                "expected_end": round(word["end"] - sing_start, 3)
+                "expected_start": round(max(0.0, word["start"] - sing_start), 3),
+                "expected_end": round(max(0.0, word["end"] - sing_start), 3)
             })
             
+        # Garante as regras de monotonicidade, tempo mínimo inicial e duração mínima
+        if sub_lyrics_timed:
+            sub_lyrics_timed[0]["expected_start"] = max(0.05, sub_lyrics_timed[0]["expected_start"])
+            if sub_lyrics_timed[0]["expected_end"] < sub_lyrics_timed[0]["expected_start"] + 0.1:
+                sub_lyrics_timed[0]["expected_end"] = round(sub_lyrics_timed[0]["expected_start"] + 0.1, 3)
+                
+            for idx in range(1, len(sub_lyrics_timed)):
+                min_start = round(sub_lyrics_timed[idx - 1]["expected_start"] + 0.05, 3)
+                if sub_lyrics_timed[idx]["expected_start"] < min_start:
+                    sub_lyrics_timed[idx]["expected_start"] = min_start
+                if sub_lyrics_timed[idx]["expected_end"] < sub_lyrics_timed[idx]["expected_start"] + 0.1:
+                    sub_lyrics_timed[idx]["expected_end"] = round(sub_lyrics_timed[idx]["expected_start"] + 0.1, 3)
+                    
         # Pausa natural
         pause_start = sing_end
-        pause_end = sing_end + 0.1
+        pause_end = min(sing_end + 0.1, next_word_start)
         
         seg = {
             "id": i + 1,
@@ -203,6 +235,7 @@ def align_lyrics_forced(
             "sing_end": round(sing_end, 3),
             "pause_start": round(pause_start, 3),
             "pause_end": round(pause_end, 3),
+            "language": language,
             "lyrics": line_text,
             "lyrics_timed": sub_lyrics_timed
         }

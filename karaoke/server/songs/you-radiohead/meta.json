@@ -1,0 +1,20 @@
+{
+    "meta": {
+        "title": "You",
+        "artist": "Radiohead",
+        "language": "en",
+        "slug": "you-radiohead"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://youtu.be/OzL7u5teZhg?list=RDOzL7u5teZhg",
+        "youtube_backing_url": null
+    },
+    "lyrics": {
+        "plain_lyrics": "You are\nThe sun and Moon and stars are you\nAnd I\nCould never run away from you\n\nYou try\nAt working out chaotic things\nAnd why\nShould I believe myself, not you?\n\nIt's like\nThe world is gonna to end so soon\nAnd why\nShould I believe myself?\n\nAh\n\nYou, me and everything\nCaught in the fire\nI can see me drowning\nCaught in the fire\n\nYou, me and everything\nCaught in the fire\nI can see me drowning\nCaught in the fire"
+    },
+    "status": {
+        "has_vocal_file": false,
+        "has_backing_file": false,
+        "has_lrc_file": false
+    }
+}
