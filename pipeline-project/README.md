@@ -17,19 +17,26 @@ Antes do retrieval, o runner classifica o prompt em **`code-edit`** (default) ou
    - **Modo `code-edit`**: indexa a base via `srclight` e faz **busca híbrida** (FTS5 + vetorial) com `top_k` símbolos via `hybrid_search`, extraindo o código-fonte de cada um via `get_symbol`. Bom quando o prompt tem sinal semântico (nome de função, conceito técnico).
    - **Modo `synthesis`**: pula a busca híbrida (sinal fraco para prompts genéricos como "resuma o repo") e carrega diretamente: `codebase_map()` do srclight + `README.md` + `config.yaml` + `PLANO.md` + `prompts/*.md` + **todos os `.py` de `orchestrator/`, `agents/`, `mcps/` sem truncar**. É o que o Planner/Coder precisam para falar com precisão sobre o projeto.
 
-2. **Planejador (Agente 1)**: Analisa a árvore de arquivos e os chunks recuperados para gerar um plano JSON. Cada step inclui um campo **`mode`** (`patch` ou `direct` — ver abaixo). A **Camada C** previne path traversal e impede `modify`/`delete` em arquivos inexistentes.
+2. **Planejador (Agente 1)**: Analisa a árvore de arquivos e os chunks recuperados (incluindo o índice de `brain/` se existir) para gerar um plano JSON. Cada step inclui:
+   - **`action`** ∈ `create` / `modify` / `delete` / `analyze`
+   - **`mode`** ∈ `patch` / `direct` (ignorado para `analyze`)
+   - **`target_symbol`** (obrigatório quando `action=analyze`)
 
-3. **Coder (Agente 2)**: Comportamento depende do `mode` do step:
+   A **Camada C** previne path traversal, impede `modify`/`delete` em arquivos inexistentes, e exige que steps `analyze` apontem para `brain/<slug>.md`.
+
+3. **Execução de steps `analyze`** (entre Planner e Coder, **sem LLM**): para cada step `analyze`, o runner consulta o `srclight` (callers/callees/blame/imports/tests/dependents) e materializa um dossiê em `brain/<slug>.md`. Steps downstream que fazem `depends_on` recebem esse markdown como contexto extra. Detalhes na seção **🧠 `action: "analyze"` e brain/** abaixo.
+
+4. **Coder (Agente 2)**: Pula steps `analyze`. Para os demais, comportamento depende do `mode`:
    - **`mode: "patch"`** (default — edições de código): lê o arquivo alvo via MCP read-only e gera **pseudocódigo JSON** estruturado, que o Implementer traduzirá em diff/escrita.
    - **`mode: "direct"`** (síntese de artefato fechado — HTML, CSS, JS, MD, JSON): **produz o conteúdo final do arquivo inteiro** no campo `file_content`. Usa `coder_num_ctx_synthesis` (32K) para caber a saída.
 
-4. **Implementador (Agente 3)**: Também depende do `mode`:
+5. **Implementador (Agente 3)**: Pula steps `analyze` (já materializados). Para os demais, depende do `mode`:
    - **`mode: "patch"`**: chama o LLM para emitir `write_file` ou `apply_patch` a partir do pseudocódigo.
    - **`mode: "direct"`**: **passthrough puro, sem LLM** — embrulha `ps.file_content` num `write_file` e envia ao MCP de escrita. Elimina o "telefone sem fio" entre dois LLMs locais quantizados que destrói animações, CSS e JS em tarefas criativas.
 
-5. **Validação Git (MCP Write)**: O servidor de escrita aplica patches de forma tolerante a hunks, gera o diff em memória e roda `git apply --check` antes de gravar no disco.
+6. **Validação Git (MCP Write)**: O servidor de escrita aplica patches de forma tolerante a hunks, gera o diff em memória e roda `git apply --check` antes de gravar no disco.
 
-6. **Logging**: `runs/<data>_<id>/` guarda `final_state.json` + saídas brutas por agente (`planner/`, `coder/`, `implementer/`).
+7. **Logging**: `runs/<data>_<id>/` guarda `final_state.json` + saídas brutas por agente (`planner/`, `coder/`, `implementer/`, `analyze/`). O `final_state.json` inclui `brain_artifacts` mapeando step_id → path do dossiê gerado.
 
 ### Quando o Planner escolhe `direct` vs `patch`?
 Regra no system prompt: **`direct` para `create` de artefato auto-contido** (HTML page, doc MD, JSON config, CSS/JS standalone); **`patch` para edições incrementais** (modificar função, adicionar rota, corrigir bug). Em caso de dúvida em `create`, preferir `direct`.
@@ -106,6 +113,10 @@ validation:
 tool_whitelist:
   - apply_patch
   - write_file
+  - append_to_file
+  - delete_file
+  - move_file
+  - create_directory
 ```
 
 **Dicas de tuning** (modelo / VRAM):
@@ -297,3 +308,15 @@ Logs esperados: `[retrieval] Executando busca híbrida...` → Planner emite ste
 python orchestrator\runner.py "crie um site HTML com cards descrevendo cada arquivo Python, com hover animations e click para expandir"
 ```
 Logs esperados: `[intent] modo SÍNTESE detectado` → `[retrieval-synth] carregando codebase_map + arquivos-chave + fontes` → Planner emite 1+ steps com `mode: "direct"` → Coder produz `file_content` final → Implementer loga `[direct] docs/... escrito (N chars)` **sem chamar LLM**.
+
+**Análise de símbolo (action `analyze`):**
+```powershell
+python orchestrator\runner.py "analise a função apply_patch_tolerant — quem chama, dependentes, blame"
+```
+Logs esperados: `[brain] índice carregado` (se houver dossiês prévios) → Planner emite step com `action: "analyze"`, `target_symbol: "apply_patch_tolerant"`, `file: "brain/apply_patch_tolerant.md"` → `[Analyze] 1 step(s) — chamando srclight...` → `[analyze] brain/apply_patch_tolerant.md escrito (N chars)`. Sem LLM no caminho.
+
+**Refatoração com análise prévia (combo `analyze` + `modify`):**
+```powershell
+python orchestrator\runner.py "refatore run_pipeline para suportar HITL opcional via flag"
+```
+Logs esperados: Planner emite 2 steps — `step_1: analyze run_pipeline` e `step_2: modify orchestrator/runner.py` com `depends_on: ["step_1"]`. O runner materializa `brain/run_pipeline.md`, depois o Coder recebe o dossiê como chunk extra ao gerar o pseudocódigo do step_2.
