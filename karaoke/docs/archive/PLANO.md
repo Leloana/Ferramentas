@@ -1,3 +1,14 @@
+# ⚠️ DEPRECATED - Original MVP Plan
+
+> [!WARNING]
+> **ESTE DOCUMENTO ESTÁ DEPRECADO / DEPRECATED**
+> Este era o plano original para a criação do MVP do Karaokê. A estrutura descrita aqui (por exemplo, um arquivo `main.py` contendo toda a lógica) é obsoleta e foi substituída por uma arquitetura modularizada e de alta performance.
+> Para a documentação atual do sistema, consulte:
+> - [Guia do Projeto (PROJECT_GUIDE.md)](../guides/PROJECT_GUIDE.md)
+> - [Manual de Arquitetura (ARCHITECTURE.md)](../architecture/ARCHITECTURE.md)
+
+---
+
 # Karaoke MVP — Prompt de Implementação
 
 Crie um MVP de um sistema de karaoke local em Python onde o servidor roda no PC e o cliente é acessado via browser na mesma rede.
@@ -161,7 +172,7 @@ Fluxo:
 3. Usar os `expected_start` retornados pelo Whisper para popular o `lyrics_timed` de cada segmento
 4. Salvar o `segments.json` na pasta da música
 
-O `stt_engine.py` é o módulo compartilhado entre `prepare_song.py` e `main.py` — ambos passam numpy arrays float32 16kHz mono.
+O `stt_engine.py` é o módulo compartilhado entre `prepare_song.py` E `main.py` — ambos passam numpy arrays float32 16kHz mono.
 
 ---
 

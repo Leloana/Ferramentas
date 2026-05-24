@@ -1,13 +1,13 @@
-import { state } from './state.js';
+import { state, setAppState } from './state.js';
 import { dom } from './dom.js';
 import { myRoom } from './config.js';
 import { showToast } from './toast.js';
-import { getMicrophoneStream } from './mic-stream.js';
+import { AudioLifecycleManager } from './audio-lifecycle-manager.js';
 import { updateSyncDisplay, startTimeSync } from './sync.js';
 import { updateMicStatusPanel } from './mic-status.js';
 import { connectDisplayWebSocket } from './ws-display.js';
 
-export function resetGameState() {
+export async function resetGameState() {
     if (state.slideTransitionCleanup) {
         state.slideTransitionCleanup();
     }
@@ -19,11 +19,25 @@ export function resetGameState() {
         state.ws.close();
         state.ws = null;
     }
-    if (state.audioContext) {
-        if (state.audioContext.state !== 'closed') {
-            state.audioContext.close();
-        }
-        state.audioContext = null;
+    if (state.audioManager) {
+        await state.audioManager.destroy();
+        state.audioManager = null;
+    }
+    state.localStream = null;
+    state.micProcessorNode = null;
+    state.micSourceNode = null;
+    state.audioContext = null;
+    state.mediaElementSource = null;
+    state.jungleNode = null;
+
+    state.currentTranspose = 0;
+    state.currentSpeed = 1.0;
+    state.isUserDraggingProgress = false;
+    if (dom.pitchValue) dom.pitchValue.innerText = 'Normal';
+    if (dom.speedValue) dom.speedValue.innerText = '1.0x';
+    if (dom.songProgressSlider) {
+        dom.songProgressSlider.value = 0;
+        dom.songProgressSlider.style.background = 'rgba(255, 255, 255, 0.05)';
     }
     if (state.animationId) {
         cancelAnimationFrame(state.animationId);
@@ -31,19 +45,12 @@ export function resetGameState() {
     }
     state.isSingingActive = false;
     state.isOutroActive = false;
-    const outroOverlay = document.getElementById('outro-overlay');
-    if (outroOverlay) outroOverlay.style.display = 'none';
-    const silenceOverlay = document.getElementById('silence-overlay');
-    if (silenceOverlay) silenceOverlay.style.display = 'none';
     dom.audioPlayer.pause();
     dom.audioPlayer.src = '';
 
     document.getElementById('seg-score').innerText = '0%';
     const statsSyncVal = document.getElementById('stats-sync-value');
     if (statsSyncVal) statsSyncVal.innerText = '0ms';
-
-    const progFill = document.getElementById('song-progress-fill');
-    if (progFill) progFill.style.width = '0%';
     const timeCurrent = document.getElementById('song-time-current');
     if (timeCurrent) timeCurrent.innerText = '0:00';
     const timeRemaining = document.getElementById('song-time-remaining');
@@ -60,7 +67,6 @@ export function resetGameState() {
         scoreFill.style.width = '';
     }
     document.getElementById('score-percentage-text').innerText = '0%';
-    document.getElementById('instrumental-pause-container').style.display = 'none';
 
     const perfBorder = document.getElementById('perf-border-overlay');
     if (perfBorder) {
@@ -71,13 +77,16 @@ export function resetGameState() {
     const verseFill = document.getElementById('verse-progress-fill');
     if (verseContainer && verseFill) {
         verseFill.style.width = '0%';
-        verseContainer.style.opacity = '0';
+        verseContainer.removeAttribute('data-active');
     }
 
-    if (silenceOverlay) {
-        silenceOverlay.style.display = 'none';
-        document.getElementById('silence-progress-fill').style.width = '0%';
+    const app = document.getElementById('app');
+    if (app) {
+        app.removeAttribute('data-silence');
+        app.removeAttribute('data-players');
     }
+
+    document.getElementById('silence-progress-fill').style.width = '0%';
 
     const linePrev = document.getElementById('line-prev');
     if (linePrev) {
@@ -107,11 +116,14 @@ export function resetGameState() {
         carouselInner.classList.remove('no-transition');
     }
 
-    dom.btnStart.style.display = 'inline-block';
     dom.btnStart.disabled = false;
     dom.btnStart.innerText = 'INICIAR CANTO';
-    dom.btnExit.style.display = 'none';
-    document.getElementById('sync-controls').style.display = 'flex';
+    if (dom.btnPausePlay) {
+        dom.btnPausePlay.innerText = 'PAUSAR';
+        dom.btnPausePlay.removeAttribute('data-paused');
+    }
+
+    hideMpScoreBars();
 
     state.selectedSongId = null;
     state.currentSegments = null;
@@ -120,30 +132,74 @@ export function resetGameState() {
     state.syncOffset = 0;
     state.isFirstSegment = true;
     state.totalPauseDuration = 0;
+    state.activePlayers = null;
+    state.gameMode = null;
     updateSyncDisplay();
 
-    dom.gameArea.style.display = 'none';
-    dom.selectionArea.style.display = 'block';
+    setAppState('idle');
 
     showToast("Retornou à lista de músicas", "info");
     connectDisplayWebSocket();
 }
 
 export async function startKaraoke() {
-    state.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const sampleRate = state.audioContext.sampleRate;
+    const captureMic = !!(state.localStreamForced || !state.isMobileMicrophoneConnected);
 
-    let stream = null;
-    if (state.localStreamForced || !state.isMobileMicrophoneConnected) {
-        try {
-            stream = await getMicrophoneStream();
-        } catch (err) {
+    if (state.audioManager) {
+        await state.audioManager.destroy();
+        state.audioManager = null;
+    }
+
+    state.audioManager = new AudioLifecycleManager({
+        captureMic: captureMic,
+        mediaElement: dom.audioPlayer,
+        onAudioChunk: (data) => {
+            if (state.ws && state.ws.readyState === WebSocket.OPEN && state.isSingingActive) {
+                state.ws.send(data);
+            }
+        }
+    });
+    state.audioManager.currentTranspose = state.currentTranspose;
+
+    try {
+        await state.audioManager.init();
+        await state.audioManager.start();
+
+        state.audioContext = state.audioManager.audioContext;
+        state.localStream = state.audioManager.localStream;
+        state.micSourceNode = state.audioManager.micSourceNode;
+        state.micProcessorNode = state.audioManager.micProcessorNode;
+        state.mediaElementSource = state.audioManager.mediaElementSource;
+        state.jungleNode = state.audioManager.jungleNode;
+    } catch (err) {
+        if (captureMic) {
             console.warn("Sem microfone local detectado. Continuando apenas para reprodução...", err);
             if (!state.isMobileMicrophoneConnected) {
                 showToast("Modo som de fundo ativo (sem microfone local)", "warning");
             }
+            if (state.audioManager) {
+                await state.audioManager.destroy();
+            }
+            state.audioManager = new AudioLifecycleManager({
+                captureMic: false,
+                mediaElement: dom.audioPlayer
+            });
+            state.audioManager.currentTranspose = state.currentTranspose;
+            await state.audioManager.init();
+            await state.audioManager.start();
+
+            state.audioContext = state.audioManager.audioContext;
+            state.localStream = null;
+            state.micSourceNode = null;
+            state.micProcessorNode = null;
+            state.mediaElementSource = state.audioManager.mediaElementSource;
+            state.jungleNode = state.audioManager.jungleNode;
+        } else {
+            throw err;
         }
     }
+
+    const sampleRate = state.audioContext.sampleRate;
 
     if (state.ws) {
         try {
@@ -158,11 +214,44 @@ export async function startKaraoke() {
     state.ws.binaryType = 'arraybuffer';
 
     state.ws.onopen = () => {
+        // Coleta os jogadores ativos com base no modo de jogo
+        const mode = dom.mpGameMode.value;
+        const activeList = [];
+        const slots = [dom.slotP1, dom.slotP2, dom.slotP3, dom.slotP4];
+        const numSlots = (mode === 'solo') ? 1 : ((mode === '1v1') ? 2 : ((mode === '1v1v1') ? 3 : 4));
+        
+        for (let i = 0; i < numSlots; i++) {
+            if (slots[i] && slots[i].value) {
+                activeList.push(slots[i].value);
+            }
+        }
+        
+        state.activePlayers = activeList;
+        state.gameMode = mode;
+
+        const app = document.getElementById('app');
+        if (app) {
+            app.setAttribute('data-players', activeList.length > 1 ? 'multi' : 'solo');
+        }
+
+        if (activeList.length > 1) {
+            resetAndShowMpScoreBars(activeList, mode);
+        } else {
+            hideMpScoreBars();
+        }
+
         state.ws.send(JSON.stringify({ type: "client_info", sample_rate: sampleRate }));
+        state.ws.send(JSON.stringify({
+            type: "start_game",
+            game_mode: mode,
+            active_players: activeList
+        }));
+
         state.isFirstSegment = true;
         state.currentSegmentData = null;
         dom.audioPlayer.play();
         startTimeSync();
+        setAppState('singing');
     };
 
     state.ws.onmessage = (event) => {
@@ -170,28 +259,66 @@ export async function startKaraoke() {
         handleServerMessage(data);
     };
 
-    if (stream) {
-        await state.audioContext.audioWorklet.addModule('/js/worklets/audio-processor.js');
-        const source = state.audioContext.createMediaStreamSource(stream);
-        const processor = new AudioWorkletNode(state.audioContext, 'audio-processor');
-
-        processor.port.onmessage = (event) => {
-            if (state.ws && state.ws.readyState === WebSocket.OPEN && state.isSingingActive) {
-                state.ws.send(event.data);
-            }
-        };
-
-        source.connect(processor);
-        processor.connect(state.audioContext.destination);
-    }
-
-    dom.btnStart.style.display = 'none';
-    dom.btnExit.style.display = 'inline-block';
-    document.getElementById('sync-controls').style.display = 'flex';
+    dom.audioPlayer.playbackRate = state.currentSpeed;
 }
 
-export function handleServerMessage(data) {
-    if (data.type === 'pairing_status') {
+const DISPLAY_HANDLERS = {
+    players_update(data, context) {
+        const { dom } = context;
+        if (dom.mpConnectedCount) dom.mpConnectedCount.innerText = data.players.length;
+        if (dom.mpQueueCount) dom.mpQueueCount.innerText = data.queue_count;
+
+        // Repopula os slots
+        const selects = [dom.slotP1, dom.slotP2, dom.slotP3, dom.slotP4];
+        selects.forEach((select, idx) => {
+            if (!select) return;
+            const prevVal = select.value;
+            select.innerHTML = '';
+
+            // Se não for o primeiro slot, permite que fique vazio
+            if (idx > 0) {
+                const optEmpty = document.createElement('option');
+                optEmpty.value = '';
+                optEmpty.innerText = '-- Vazio --';
+                select.appendChild(optEmpty);
+            }
+
+            // Opção para o microfone local do PC
+            const optPC = document.createElement('option');
+            optPC.value = 'PC_Local';
+            optPC.innerText = '💻 PC Local Mic';
+            select.appendChild(optPC);
+
+            // Adiciona os jogadores conectados (celulares)
+            data.players.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p;
+                opt.innerText = p;
+                select.appendChild(opt);
+            });
+
+            // Tenta restaurar o valor selecionado anteriormente
+            if (prevVal === 'PC_Local' || data.players.includes(prevVal)) {
+                select.value = prevVal;
+            } else {
+                if (idx === 0) {
+                    if (data.players.length > 0) {
+                        select.value = data.players[0];
+                    } else {
+                        select.value = 'PC_Local';
+                    }
+                } else {
+                    if (idx < data.players.length) {
+                        select.value = data.players[idx];
+                    } else {
+                        select.value = '';
+                    }
+                }
+            }
+        });
+    },
+    pairing_status(data, context) {
+        const { state } = context;
         const pairingStatusText = document.getElementById('pairing-status-text');
         const pairingStatusDot = document.getElementById('pairing-status-dot');
 
@@ -201,9 +328,9 @@ export function handleServerMessage(data) {
             if (pairingStatusText) {
                 pairingStatusText.innerHTML = `✅ <span style="color: #10b981; font-weight: 800;">Celular conectado com sucesso!</span>`;
             }
-            if (pairingStatusDot) {
-                pairingStatusDot.style.background = '#10b981';
-                pairingStatusDot.style.boxShadow = '0 0 10px #10b981';
+            const statusBox = document.getElementById('pairing-status-box');
+            if (statusBox) {
+                statusBox.setAttribute('data-status', 'paired');
             }
             showToast("Microfone sem fio pareado e ativo!", "success");
         } else if (data.status === 'unpaired') {
@@ -212,36 +339,36 @@ export function handleServerMessage(data) {
             if (pairingStatusText) {
                 pairingStatusText.innerText = "Aguardando conexão do celular...";
             }
-            if (pairingStatusDot) {
-                pairingStatusDot.style.background = 'var(--dim)';
-                pairingStatusDot.style.boxShadow = 'none';
+            const statusBox = document.getElementById('pairing-status-box');
+            if (statusBox) {
+                statusBox.removeAttribute('data-status');
             }
             showToast("Microfone sem fio desconectado.", "warning");
         }
-    }
-    else if (data.type === 'singing_state') {
+    },
+    singing_state(data, context) {
+        const { state } = context;
         state.isSingingActive = data.active;
         const transText = document.getElementById('transcription-text');
         if (transText && !state.transcriptionActiveTimer) {
             transText.innerHTML = `<strong>Ouvi:</strong> <span style="color: var(--dim);">${state.isSingingActive ? '[Ouvindo...]' : '[Solo Instrumental...]'}</span>`;
         }
-    }
-    else if (data.type === 'outro_start') {
+    },
+    outro_start(data, context) {
+        const { state, dom } = context;
         state.isOutroActive = true;
         state.outroStartPlayerTime = dom.audioPlayer.currentTime;
         state.outroTotalDuration = Math.max(1, dom.audioPlayer.duration - state.outroStartPlayerTime);
 
-        const outroOverlay = document.getElementById('outro-overlay');
-        if (outroOverlay) outroOverlay.style.display = 'flex';
-        const silenceOverlay = document.getElementById('silence-overlay');
-        if (silenceOverlay) silenceOverlay.style.display = 'none';
+        setAppState('scoring');
 
         const transText = document.getElementById('transcription-text');
         if (transText) {
             transText.innerHTML = '<strong>Ouvi:</strong> <span style="color: var(--accent); font-weight: 700;">[Show Finalizado! 🎸]</span>';
         }
-    }
-    else if (data.type === 'segment_start') {
+    },
+    segment_start(data, context) {
+        const { state } = context;
         if (!state.transcriptionActiveTimer) {
             const transText = document.getElementById('transcription-text');
             if (transText) {
@@ -250,7 +377,9 @@ export function handleServerMessage(data) {
         }
         renderLyrics(data);
         startHighlightLoop();
-    } else if (data.type === 'segment_result') {
+    },
+    segment_result(data, context) {
+        const { state } = context;
         document.getElementById('seg-score').innerText = data.score + '%';
         const transText = document.getElementById('transcription-text');
 
@@ -282,7 +411,7 @@ export function handleServerMessage(data) {
             if (state.transcriptionActiveTimer) clearTimeout(state.transcriptionActiveTimer);
             state.transcriptionActiveTimer = setTimeout(() => {
                 state.transcriptionActiveTimer = null;
-                if (document.getElementById('game-area').style.display === 'block') {
+                if (state.currentAppState !== 'idle') {
                     transText.innerHTML = `<strong>Ouvi:</strong> <span style="color: var(--dim);">${state.isSingingActive ? '[Ouvindo...]' : '[Solo Instrumental...]'}</span>`;
                 }
             }, 3500);
@@ -291,7 +420,7 @@ export function handleServerMessage(data) {
             if (state.transcriptionActiveTimer) clearTimeout(state.transcriptionActiveTimer);
             state.transcriptionActiveTimer = setTimeout(() => {
                 state.transcriptionActiveTimer = null;
-                if (document.getElementById('game-area').style.display === 'block') {
+                if (state.currentAppState !== 'idle') {
                     transText.innerHTML = `<strong>Ouvi:</strong> <span style="color: var(--dim);">${state.isSingingActive ? '[Ouvindo...]' : '[Solo Instrumental...]'}</span>`;
                 }
             }, 3500);
@@ -317,13 +446,88 @@ export function handleServerMessage(data) {
                 perfBorder.className = 'perf-border-poor';
             }
         }
-    } else if (data.type === 'game_over') {
+
+        // Atualização de scores no modo Multiplayer
+        if (data.player_scores && state.activePlayers && state.activePlayers.length > 1) {
+            const activeList = state.activePlayers;
+            const mode = state.gameMode;
+            const slots = ['p1', 'p2', 'p3', 'p4'];
+            
+            if (mode === '2v2') {
+                const p1Val = (data.player_scores[activeList[0]]?.total_score || 0);
+                const p2Val = (data.player_scores[activeList[1]]?.total_score || 0);
+                const teamA = (p1Val + p2Val) / 2;
+                
+                const p3Val = (data.player_scores[activeList[2]]?.total_score || 0);
+                const p4Val = (data.player_scores[activeList[3]]?.total_score || 0);
+                const teamB = (p3Val + p4Val) / 2;
+                
+                const barA = document.getElementById('mp-score-bar-p1');
+                if (barA) {
+                    barA.querySelector('.mp-player-pct').innerText = teamA.toFixed(1) + "%";
+                    barA.querySelector('.mp-progress-fill').style.width = teamA + "%";
+                }
+                const barB = document.getElementById('mp-score-bar-p2');
+                if (barB) {
+                    barB.querySelector('.mp-player-pct').innerText = teamB.toFixed(1) + "%";
+                    barB.querySelector('.mp-progress-fill').style.width = teamB + "%";
+                }
+            } else {
+                activeList.forEach((name, idx) => {
+                    const key = slots[idx];
+                    const bar = document.getElementById(`mp-score-bar-${key}`);
+                    if (bar && data.player_scores[name]) {
+                        const pVal = data.player_scores[name].total_score;
+                        bar.querySelector('.mp-player-pct').innerText = pVal.toFixed(1) + "%";
+                        const fill = bar.querySelector('.mp-progress-fill') || bar.querySelector('.mp-progress-fill-vertical');
+                        if (fill) {
+                            if (fill.classList.contains('mp-progress-fill-vertical')) {
+                                fill.style.height = pVal + "%";
+                            } else {
+                                fill.style.width = pVal + "%";
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Atualiza quadrantes
+            activeList.forEach((name, idx) => {
+                const key = slots[idx];
+                const q = document.getElementById(`mp-quadrant-${key}`);
+                if (q && data.player_scores[name]) {
+                    const scoreVal = data.player_scores[name].score;
+                    q.className = `mp-quadrant q${idx + 1}`; // reseta classes
+                    if (scoreVal >= 85) {
+                        q.classList.add('mp-quadrant-good');
+                    } else if (scoreVal >= 70) {
+                        q.classList.add('mp-quadrant-ok');
+                    } else {
+                        q.classList.add('mp-quadrant-poor');
+                    }
+                }
+            });
+        }
+    },
+    game_over(data, context) {
+        const { dom } = context;
         dom.audioPlayer.pause();
-        showGameOverModal(parseFloat(data.total_score) || 0);
+        setAppState('game-over');
+        showGameOverModal(parseFloat(data.total_score) || 0, data.player_scores);
+    }
+};
+
+export function handleServerMessage(data) {
+    const handler = DISPLAY_HANDLERS[data.type];
+    if (handler) {
+        const context = { state, dom, myRoom };
+        handler(data, context);
+    } else {
+        console.warn(`Tipo de mensagem de display desconhecido recebido: ${data.type}`);
     }
 }
 
-export function showGameOverModal(finalScore) {
+export function showGameOverModal(finalScore, playerScores) {
     const modal = document.getElementById('game-over-modal');
     const rankBadge = document.getElementById('rank-badge');
     const rankTitle = document.getElementById('rank-title');
@@ -347,10 +551,35 @@ export function showGameOverModal(finalScore) {
     rankBadge.style.color = color;
     rankTitle.innerText = title;
 
-    modal.style.display = 'flex';
+    // Placar multiplayer no modal
+    let breakdownDiv = document.getElementById('modal-mp-breakdown');
+    if (!breakdownDiv) {
+        breakdownDiv = document.createElement('div');
+        breakdownDiv.id = 'modal-mp-breakdown';
+        breakdownDiv.style.cssText = "margin-top: 1.5rem; text-align: left; display: flex; flex-direction: column; gap: 0.6rem; max-height: 180px; overflow-y: auto; padding-right: 0.5rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1rem;";
+        modalScore.parentNode.appendChild(breakdownDiv);
+    }
+
+    breakdownDiv.innerHTML = '';
+    if (playerScores && Object.keys(playerScores).length > 0) {
+        breakdownDiv.style.display = 'flex';
+        const sortedPlayers = Object.entries(playerScores).sort((a, b) => b[1] - a[1]);
+        sortedPlayers.forEach(([name, score], idx) => {
+            const item = document.createElement('div');
+            item.style.cssText = "display: flex; justify-content: space-between; font-size: 0.95rem; font-weight: 700; color: #f8fafc; padding: 0.25rem 0;";
+            let medal = "🎤";
+            if (idx === 0) medal = "🥇";
+            else if (idx === 1) medal = "🥈";
+            else if (idx === 2) medal = "🥉";
+            const displayName = name === "PC_Local" ? "💻 PC Local" : name;
+            item.innerHTML = `<span>${medal} ${displayName}</span><span style="color: var(--highlight);">${score.toFixed(1)}%</span>`;
+            breakdownDiv.appendChild(item);
+        });
+    } else {
+        breakdownDiv.style.display = 'none';
+    }
 
     document.getElementById('btn-restart-game').onclick = () => {
-        document.getElementById('game-over-modal').style.display = 'none';
         resetGameState();
     };
 }
@@ -370,7 +599,7 @@ function getTranslationForLine(line) {
 
 // Window resize handler to maintain active line centering
 window.addEventListener('resize', () => {
-    if (state.isSingingActive || (state.currentSegmentData && dom.gameArea.style.display === 'block')) {
+    if (state.isSingingActive || (state.currentSegmentData && state.currentAppState !== 'idle')) {
         const carouselInner = document.getElementById('carousel-inner');
         if (carouselInner) {
             carouselInner.classList.add('no-transition');
@@ -527,7 +756,7 @@ export function startHighlightLoop() {
 
     function update() {
         const audioPlayer = dom.audioPlayer;
-        if (audioPlayer.duration) {
+        if (audioPlayer.duration && !state.isUserDraggingProgress) {
             const cur = audioPlayer.currentTime;
             const dur = audioPlayer.duration;
             const pct = Math.max(0, Math.min(100, (cur / dur) * 100));
@@ -538,8 +767,10 @@ export function startHighlightLoop() {
                 return `${m}:${s < 10 ? '0' : ''}${s}`;
             };
 
-            const progFill = document.getElementById('song-progress-fill');
-            if (progFill) progFill.style.width = pct + '%';
+            if (dom.songProgressSlider) {
+                dom.songProgressSlider.value = pct;
+                dom.songProgressSlider.style.background = `linear-gradient(to right, var(--accent) ${pct}%, rgba(255, 255, 255, 0.05) ${pct}%)`;
+            }
             const timeCurrent = document.getElementById('song-time-current');
             if (timeCurrent) timeCurrent.innerText = formatTime(cur);
             const timeRemaining = document.getElementById('song-time-remaining');
@@ -547,9 +778,6 @@ export function startHighlightLoop() {
         }
 
         if (state.isOutroActive && audioPlayer.duration) {
-            const outroOverlay = document.getElementById('outro-overlay');
-            if (outroOverlay) outroOverlay.style.display = 'flex';
-
             const cur = audioPlayer.currentTime;
             const elapsed = cur - state.outroStartPlayerTime;
             const remaining = Math.max(0, audioPlayer.duration - cur);
@@ -580,24 +808,23 @@ export function startHighlightLoop() {
         if (state.totalPauseDuration > 3.0) {
             const remainingTime = state.pauseStartTarget - virtualTime;
 
-            if (remainingTime > 0) {
-                if (pauseContainer) pauseContainer.style.display = 'none';
-                if (silenceOverlay) {
-                    silenceOverlay.style.display = 'flex';
-                    const fill = document.getElementById('silence-progress-fill');
-                    const text = document.getElementById('silence-timer-text');
-                    const pct = Math.max(0, Math.min(100, (remainingTime / state.totalPauseDuration) * 100));
-                    if (fill) fill.style.width = pct + '%';
-                    if (text) text.innerText = remainingTime.toFixed(1) + 's';
-                }
+            if (remainingTime > 1.0) {
+                const app = document.getElementById('app');
+                if (app) app.setAttribute('data-silence', 'true');
+                const fill = document.getElementById('silence-progress-fill');
+                const text = document.getElementById('silence-timer-text');
+                const pct = Math.max(0, Math.min(100, ((remainingTime - 1.0) / (state.totalPauseDuration - 1.0)) * 100));
+                if (fill) fill.style.width = pct + '%';
+                if (text) text.innerText = remainingTime.toFixed(1) + 's';
             } else {
-                if (silenceOverlay) silenceOverlay.style.display = 'none';
+                const app = document.getElementById('app');
+                if (app) app.removeAttribute('data-silence');
                 state.totalPauseDuration = 0;
                 state.pauseStartTarget = 0;
             }
         } else {
-            if (silenceOverlay) silenceOverlay.style.display = 'none';
-            if (pauseContainer) pauseContainer.style.display = 'none';
+            const app = document.getElementById('app');
+            if (app) app.removeAttribute('data-silence');
         }
 
         const verseContainer = document.getElementById('verse-progress-container');
@@ -610,13 +837,13 @@ export function startHighlightLoop() {
             if (virtualTime >= segStart && virtualTime <= segEnd && duration > 0) {
                 const pct = Math.max(0, Math.min(100, ((virtualTime - segStart) / duration) * 100));
                 verseFill.style.width = pct + '%';
-                verseContainer.style.opacity = '1';
+                verseContainer.setAttribute('data-active', 'true');
             } else if (virtualTime > segEnd) {
                 verseFill.style.width = '100%';
-                verseContainer.style.opacity = '0.5';
+                verseContainer.setAttribute('data-active', 'ended');
             } else {
                 verseFill.style.width = '0%';
-                verseContainer.style.opacity = '0';
+                verseContainer.removeAttribute('data-active');
             }
         }
 
@@ -643,4 +870,220 @@ export function startHighlightLoop() {
         state.animationId = requestAnimationFrame(update);
     }
     update();
+}
+
+export function updateAudioGraph(transpose) {
+    if (state.audioManager) {
+        state.audioManager.updateTranspose(transpose);
+        state.jungleNode = state.audioManager.jungleNode;
+    }
+}
+
+export function initGameControls() {
+    if (dom.mpGameMode) {
+        dom.mpGameMode.onchange = () => {
+            updatePlayerSlotsVisibility();
+        };
+        // Inicializa a exibição das slots
+        updatePlayerSlotsVisibility();
+    }
+
+    if (dom.btnPitchMinus) {
+        dom.btnPitchMinus.onclick = () => {
+            if (state.currentTranspose > -6) {
+                state.currentTranspose--;
+                updatePitchUI();
+                updateAudioGraph(state.currentTranspose);
+            }
+        };
+    }
+
+    if (dom.btnPitchPlus) {
+        dom.btnPitchPlus.onclick = () => {
+            if (state.currentTranspose < 6) {
+                state.currentTranspose++;
+                updatePitchUI();
+                updateAudioGraph(state.currentTranspose);
+            }
+        };
+    }
+
+    if (dom.btnSpeedMinus) {
+        dom.btnSpeedMinus.onclick = () => {
+            if (state.currentSpeed > 0.75) {
+                state.currentSpeed = Math.round((state.currentSpeed - 0.05) * 100) / 100;
+                updateSpeedUI();
+                dom.audioPlayer.playbackRate = state.currentSpeed;
+            }
+        };
+    }
+
+    if (dom.btnSpeedPlus) {
+        dom.btnSpeedPlus.onclick = () => {
+            if (state.currentSpeed < 1.5) {
+                state.currentSpeed = Math.round((state.currentSpeed + 0.05) * 100) / 100;
+                updateSpeedUI();
+                dom.audioPlayer.playbackRate = state.currentSpeed;
+            }
+        };
+    }
+
+    if (dom.btnPausePlay) {
+        dom.btnPausePlay.onclick = () => {
+            if (dom.audioPlayer.paused) {
+                dom.audioPlayer.play();
+                dom.btnPausePlay.innerText = 'PAUSAR';
+                dom.btnPausePlay.removeAttribute('data-paused');
+                if (state.audioContext && state.audioContext.state === 'suspended') {
+                    state.audioContext.resume();
+                }
+            } else {
+                dom.audioPlayer.pause();
+                dom.btnPausePlay.innerText = 'RETOMAR';
+                dom.btnPausePlay.setAttribute('data-paused', 'true');
+            }
+        };
+    }
+
+    if (dom.songProgressSlider) {
+        dom.songProgressSlider.oninput = (e) => {
+            state.isUserDraggingProgress = true;
+            const pct = parseFloat(e.target.value);
+            dom.songProgressSlider.style.background = `linear-gradient(to right, var(--accent) ${pct}%, rgba(255, 255, 255, 0.05) ${pct}%)`;
+
+            if (dom.audioPlayer.duration) {
+                const targetTime = (pct / 100) * dom.audioPlayer.duration;
+                const formatTime = (secs) => {
+                    const m = Math.floor(secs / 60);
+                    const s = Math.floor(secs % 60);
+                    return `${m}:${s < 10 ? '0' : ''}${s}`;
+                };
+
+                const timeCurrent = document.getElementById('song-time-current');
+                if (timeCurrent) timeCurrent.innerText = formatTime(targetTime);
+                const timeRemaining = document.getElementById('song-time-remaining');
+                if (timeRemaining) timeRemaining.innerText = '-' + formatTime(Math.max(0, dom.audioPlayer.duration - targetTime));
+            }
+        };
+
+        dom.songProgressSlider.onchange = (e) => {
+            state.isUserDraggingProgress = false;
+            if (dom.audioPlayer.duration) {
+                const pct = parseFloat(e.target.value);
+                const targetTime = (pct / 100) * dom.audioPlayer.duration;
+                dom.audioPlayer.currentTime = targetTime;
+
+                if (state.ws && state.ws.readyState === WebSocket.OPEN) {
+                    state.ws.send(JSON.stringify({
+                        type: 'playback_time',
+                        current_time: targetTime
+                    }));
+                }
+            }
+        };
+    }
+}
+
+function updatePitchUI() {
+    if (!dom.pitchValue) return;
+    if (state.currentTranspose === 0) {
+        dom.pitchValue.innerText = 'Normal';
+    } else {
+        dom.pitchValue.innerText = (state.currentTranspose > 0 ? '+' : '') + state.currentTranspose;
+    }
+}
+
+function updateSpeedUI() {
+    if (!dom.speedValue) return;
+    dom.speedValue.innerText = state.currentSpeed.toFixed(2) + 'x';
+}
+
+function updatePlayerSlotsVisibility() {
+    if (!dom.mpGameMode) return;
+    const mode = dom.mpGameMode.value;
+
+    const setupContainer = dom.mpSetupContainer;
+    if (setupContainer) {
+        setupContainer.setAttribute('data-game-mode', mode);
+    }
+
+    const labelP1 = dom.slotBoxP1 ? dom.slotBoxP1.querySelector('label') : null;
+    const labelP2 = dom.slotBoxP2 ? dom.slotBoxP2.querySelector('label') : null;
+    const labelP3 = dom.slotBoxP3 ? dom.slotBoxP3.querySelector('label') : null;
+    const labelP4 = dom.slotBoxP4 ? dom.slotBoxP4.querySelector('label') : null;
+
+    if (mode === '2v2') {
+        if (labelP1) labelP1.innerText = "Duo A - Jogador 1 (Bottom)";
+        if (labelP2) labelP2.innerText = "Duo A - Jogador 2 (Top)";
+        if (labelP3) labelP3.innerText = "Duo B - Jogador 3 (Left)";
+        if (labelP4) labelP4.innerText = "Duo B - Jogador 4 (Right)";
+    } else {
+        if (labelP1) labelP1.innerText = "Jogador 1 (Bottom)";
+        if (labelP2) labelP2.innerText = "Jogador 2 (Top)";
+        if (labelP3) labelP3.innerText = "Jogador 3 (Left)";
+        if (labelP4) labelP4.innerText = "Jogador 4 (Right)";
+    }
+}
+
+function resetAndShowMpScoreBars(activeList, mode) {
+    hideMpScoreBars();
+
+    const slots = ['p1', 'p2', 'p3', 'p4'];
+    const barMap = {
+        p1: document.getElementById('mp-score-bar-p1'),
+        p2: document.getElementById('mp-score-bar-p2'),
+        p3: document.getElementById('mp-score-bar-p3'),
+        p4: document.getElementById('mp-score-bar-p4')
+    };
+
+    if (mode === '2v2') {
+        const formatName = (n) => n === "PC_Local" ? "💻 PC Local" : (n || 'Jogador');
+        const nameA = formatName(activeList[0]) + " + " + formatName(activeList[1]);
+        const nameB = formatName(activeList[2]) + " + " + formatName(activeList[3]);
+
+        if (barMap.p1) {
+            barMap.p1.setAttribute('data-active', 'true');
+            barMap.p1.querySelector('.mp-player-name').innerText = "Duo A: " + nameA;
+            barMap.p1.querySelector('.mp-player-pct').innerText = "0%";
+            barMap.p1.querySelector('.mp-progress-fill').style.width = "0%";
+        }
+        if (barMap.p2) {
+            barMap.p2.setAttribute('data-active', 'true');
+            barMap.p2.querySelector('.mp-player-name').innerText = "Duo B: " + nameB;
+            barMap.p2.querySelector('.mp-player-pct').innerText = "0%";
+            barMap.p2.querySelector('.mp-progress-fill').style.width = "0%";
+        }
+    } else {
+        activeList.forEach((name, idx) => {
+            const key = slots[idx];
+            const el = barMap[key];
+            if (el) {
+                el.setAttribute('data-active', 'true');
+                const displayName = name === "PC_Local" ? "💻 PC Local" : name;
+                el.querySelector('.mp-player-name').innerText = displayName;
+                el.querySelector('.mp-player-pct').innerText = "0%";
+                const fill = el.querySelector('.mp-progress-fill') || el.querySelector('.mp-progress-fill-vertical');
+                if (fill) {
+                    if (fill.classList.contains('mp-progress-fill-vertical')) {
+                        fill.style.height = "0%";
+                    } else {
+                        fill.style.width = "0%";
+                    }
+                }
+            }
+        });
+    }
+}
+
+function hideMpScoreBars() {
+    ['p1', 'p2', 'p3', 'p4'].forEach(key => {
+        const el = document.getElementById(`mp-score-bar-${key}`);
+        if (el) {
+            el.removeAttribute('data-active');
+        }
+        const q = document.getElementById(`mp-quadrant-${key}`);
+        if (q) {
+            q.className = `mp-quadrant q${key.substring(1)}`;
+        }
+    });
 }

@@ -27,6 +27,34 @@ export const dom = {
     get lrcEditorForm() { return $('lrc-editor-form'); },
     get pairingModal() { return $('pairing-modal'); },
     get searchInput() { return $('search-input'); },
+    get songProgressSlider() { return $('song-progress-slider'); },
+    get btnPitchMinus() { return $('btn-pitch-minus'); },
+    get btnPitchPlus() { return $('btn-pitch-plus'); },
+    get pitchValue() { return $('pitch-value'); },
+    get btnSpeedMinus() { return $('btn-speed-minus'); },
+    get btnSpeedPlus() { return $('btn-speed-plus'); },
+    get speedValue() { return $('speed-value'); },
+    get btnPausePlay() { return $('btn-pause-play'); },
+    // Multiplayer TV Getters
+    get mpSetupContainer() { return $('multiplayer-setup-container'); },
+    get mpGameMode() { return $('mp-game-mode'); },
+    get mpConnectedCount() { return $('mp-connected-count'); },
+    get mpQueueCount() { return $('mp-queue-count'); },
+    get slotP1() { return $('slot-p1'); },
+    get slotP2() { return $('slot-p2'); },
+    get slotP3() { return $('slot-p3'); },
+    get slotP4() { return $('slot-p4'); },
+    get slotBoxP2() { return $('slot-box-p2'); },
+    get slotBoxP3() { return $('slot-box-p3'); },
+    get slotBoxP4() { return $('slot-box-p4'); },
+    // Multiplayer Mobile Getters
+    get mobileRegisterContainer() { return $('mobile-register-container'); },
+    get mobileNicknameInput() { return $('mobile-nickname-input'); },
+    get btnMobileRegister() { return $('btn-mobile-register'); },
+    get mobileRegisterError() { return $('mobile-register-error'); },
+    get mobileQueueContainer() { return $('mobile-queue-container'); },
+    get mobileQueuePosition() { return $('mobile-queue-position'); },
+    get mobileActiveMicContainer() { return $('mobile-active-mic-container'); },
 };
 
 export const $id = $;
@@ -91,7 +119,7 @@ export function startLoadingOverlay(title, initialDesc, autoProgress = false) {
         dom.loadingStatusDesc.innerText = initialDesc;
     }
     
-    dom.loadingOverlay.style.display = 'flex';
+    dom.loadingOverlay.setAttribute('data-open', 'true');
 }
 
 export function stopLoadingOverlay() {
@@ -99,5 +127,5 @@ export function stopLoadingOverlay() {
         clearInterval(loadingInterval);
         loadingInterval = null;
     }
-    dom.loadingOverlay.style.display = 'none';
+    dom.loadingOverlay.removeAttribute('data-open');
 }

@@ -9,9 +9,17 @@
 </head>
 
 <body>
+    <div id="app" data-state="idle" data-role="display">
+
 
     <!-- Overlay de Bordas de Desempenho -->
     <div id="perf-border-overlay" class="perf-border-idle"></div>
+
+    <!-- Overlay de Bordas de Desempenho Multiplayer -->
+    <div id="mp-quadrant-p1" class="mp-quadrant q1"></div>
+    <div id="mp-quadrant-p2" class="mp-quadrant q2"></div>
+    <div id="mp-quadrant-p3" class="mp-quadrant q3"></div>
+    <div id="mp-quadrant-p4" class="mp-quadrant q4"></div>
 
     <!-- Sistema de Toasts -->
     <div id="toast-container" class="toast-container"></div>
@@ -34,9 +42,9 @@
     </header>
 
     <!-- Modo Microfone Sem Fio (Celular) -->
-    <div id="mobile-mic-area"
-        style="display: none; min-height: 100vh; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; box-sizing: border-box; background: radial-gradient(circle at center, #0f172a 0%, #020617 100%); text-align: center;">
-        <div style="margin-bottom: 2rem;">
+    <!-- Modo Microfone Sem Fio (Celular) -->
+    <div id="mobile-mic-area">
+        <div style="margin-bottom: 1.5rem;">
             <span
                 style="font-size: 0.8rem; color: #a855f7; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase;">Microfone
                 Sem Fio</span>
@@ -47,42 +55,57 @@
             </p>
         </div>
 
-        <!-- Botão Ativar / Pulsar Mic -->
-        <div id="mobile-mic-trigger-container" style="margin: 2rem 0; position: relative;">
-            <button id="btn-mobile-activate"
-                style="width: 140px; height: 140px; border-radius: 50%; background: linear-gradient(135deg, #a855f7, #6366f1); border: none; color: #fff; font-size: 1rem; font-weight: 800; cursor: pointer; box-shadow: 0 0 30px rgba(168, 85, 247, 0.4); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; transition: transform 0.2s, box-shadow 0.2s;">
-                <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
-                    <path d="M19 10v1a7 7 0 0 1-14 0v-1"></path>
-                    <line x1="12" x2="12" y1="19" y2="22"></line>
-                </svg>
-                <span>LIGAR MIC</span>
-            </button>
+        <!-- Tela de Registro de Apelido (Mobile) -->
+        <div id="mobile-register-container">
+            <p style="color: var(--dim); font-size: 0.95rem; margin: 0;">Escolha um apelido único para cantar:</p>
+            <input type="text" id="mobile-nickname-input" placeholder="Seu apelido..." style="width: 100%; padding: 0.85rem 1.2rem; border-radius: 30px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); color: #fff; font-size: 1.1rem; text-align: center; outline: none; transition: border-color 0.2s; font-family: inherit;" maxlength="15">
+            <button id="btn-mobile-register" style="width: 100%; padding: 0.85rem; border-radius: 30px; background: var(--accent-gradient); color: #000; font-weight: 800; font-size: 1rem; border: none; cursor: pointer; box-shadow: var(--shadow-glow);">Confirmar Apelido</button>
+            <div id="mobile-register-error" style="color: var(--error); font-size: 0.9rem; font-weight: 700; margin-top: 0.25rem;"></div>
+        </div>
 
-            <div id="mobile-mic-vu"
-                style="display: none; width: 140px; height: 140px; border-radius: 50%; border: 3px solid #a855f7; position: absolute; top: 0px; left: 0px; transition: transform 0.1s ease-out, opacity 0.1s ease-out; pointer-events: none; opacity: 0; box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);">
+        <!-- Tela de Fila de Espera (Mobile) -->
+        <div id="mobile-queue-container">
+            <div style="width: 48px; height: 48px; border: 4px solid rgba(255, 255, 255, 0.05); border-top: 4px solid #a855f7; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+            <h3 style="color: #fff; margin: 0; font-size: 1.2rem; font-weight: 800;">Aguardando na Fila</h3>
+            <p style="color: var(--dim); font-size: 0.95rem; margin: 0; text-align: center;">Outro jogador está digitando o apelido. Sua vez na fila: <span id="mobile-queue-position" style="color: #a855f7; font-weight: 800;">1</span></p>
+        </div>
+
+        <!-- Controles do Microfone Ativo (Mobile) -->
+        <div id="mobile-active-mic-container">
+            <!-- Botão Ativar / Pulsar Mic -->
+            <div id="mobile-mic-trigger-container" style="margin: 1.5rem 0; position: relative;">
+                <button id="btn-mobile-activate"
+                    style="width: 140px; height: 140px; border-radius: 50%; background: linear-gradient(135deg, #a855f7, #6366f1); border: none; color: #fff; font-size: 1rem; font-weight: 800; cursor: pointer; box-shadow: 0 0 30px rgba(168, 85, 247, 0.4); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; transition: transform 0.2s, box-shadow 0.2s;">
+                    <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+                        <path d="M19 10v1a7 7 0 0 1-14 0v-1"></path>
+                        <line x1="12" x2="12" y1="19" y2="22"></line>
+                    </svg>
+                    <span>LIGAR MIC</span>
+                </button>
+
+                <div id="mobile-mic-vu">
+                </div>
+            </div>
+
+            <!-- Controles de Mudo / Desconexão -->
+            <div id="mobile-active-controls">
+                <button id="btn-mobile-mute"
+                    style="background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); color: #fff; width: 100%; padding: 0.8rem; border-radius: 30px; font-weight: 700; cursor: pointer; transition: all 0.2s; font-family: inherit;">🎙️
+                    Mutar Microfone</button>
+            </div>
+
+            <!-- Letra Espelhada Simplificada -->
+            <div id="mobile-lyrics-container">
+                <p id="mobile-lyrics-text"
+                    style="color: #fff; font-size: 1.15rem; font-weight: 800; line-height: 1.4; margin: 0; text-align: center;">
+                    Aguardando início do canto na TV...</p>
             </div>
         </div>
 
-        <!-- Controles de Mudo / Desconexão -->
-        <div id="mobile-active-controls"
-            style="display: none; flex-direction: column; gap: 1rem; width: 100%; max-width: 280px; margin-top: 1rem;">
-            <button id="btn-mobile-mute"
-                style="background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); color: #fff; width: 100%; padding: 0.8rem; border-radius: 30px; font-weight: 700; cursor: pointer; transition: all 0.2s; font-family: inherit;">🎙️
-                Mutar Microfone</button>
-        </div>
-
-        <!-- Letra Espelhada Simplificada -->
-        <div id="mobile-lyrics-container"
-            style="display: none; margin-top: 2rem; background: rgba(0, 0, 0, 0.25); border: 1px solid var(--card-border); padding: 1.5rem; border-radius: 16px; width: 100%; max-width: 320px; min-height: 120px; align-items: center; justify-content: center; box-sizing: border-box; display: flex;">
-            <p id="mobile-lyrics-text"
-                style="color: #fff; font-size: 1.15rem; font-weight: 800; line-height: 1.4; margin: 0; text-align: center;">
-                Aguardando início do canto na TV...</p>
-        </div>
-
         <!-- Botão de Sair do modo Mic Sem Fio e usar apenas o celular (Solo) -->
-        <div style="margin-top: 2.5rem;">
+        <div style="margin-top: 2rem;">
             <button id="btn-mobile-exit-mic"
                 style="background: transparent; border: 1px solid rgba(255,255,255,0.15); color: var(--dim); padding: 0.6rem 1.5rem; font-size: 0.85rem; font-weight: 700; border-radius: 30px; cursor: pointer; transition: all 0.2s ease;">
                 📱 Usar Apenas o Celular (Solo)
@@ -156,7 +179,7 @@
                 </div>
 
                 <!-- Container da Aba de Reinstalar Metas -->
-                <div id="reinstall-tab-content" style="display: none;">
+                <div id="reinstall-tab-content">
                     <div id="reinstall-list" class="song-list">Carregando músicas para reinstalação...</div>
                 </div>
             </div>
@@ -182,11 +205,8 @@
                         <span id="song-time-current">0:00</span>
                         <span id="song-time-remaining">-0:00</span>
                     </div>
-                    <div class="song-progress-bg"
-                        style="width: 100%; height: 6px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.02);">
-                        <div id="song-progress-fill"
-                            style="width: 0%; height: 100%; background: var(--accent); transition: width 0.1s linear;">
-                        </div>
+                    <div style="position: relative; width: 100%; display: flex; align-items: center;">
+                        <input type="range" id="song-progress-slider" min="0" max="100" step="0.1" value="0">
                     </div>
                 </div>
 
@@ -197,9 +217,99 @@
 
                 <div class="game-layout">
                     <div class="game-main-content">
-                        <!-- Painel de Contagem de Pausa Instrumental -->
-                        <div id="instrumental-pause-container"
-                            style="display: none; flex-direction: column; align-items: center; justify-content: center; margin: 1.5rem auto; animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); width: 100%; max-width: 320px;">
+                        <!-- Painel de Configuração Multiplayer -->
+                        <div id="multiplayer-setup-container">
+                            <h3 style="margin-top: 0; margin-bottom: 1rem; font-size: 1.1rem; font-weight: 800; color: var(--accent); display: flex; align-items: center; gap: 0.5rem;">
+                                👥 Configuração da Partida
+                            </h3>
+                            <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1rem; align-items: center;">
+                                <div style="display: flex; flex-direction: column; gap: 0.4rem; min-width: 150px;">
+                                    <label for="mp-game-mode" style="font-size: 0.75rem; font-weight: 800; color: var(--dim); text-transform: uppercase; letter-spacing: 0.05em;">Modo de Jogo</label>
+                                    <select id="mp-game-mode" style="background: #080d16; border: 1px solid var(--card-border); border-radius: 8px; color: #fff; padding: 0.5rem; font-family: inherit; font-size: 0.9rem; outline: none; cursor: pointer; height: 38px;">
+                                        <option value="solo">Solo (1 Jogador)</option>
+                                        <option value="1v1">1v1 (2 Jogadores)</option>
+                                        <option value="1v1v1">1v1v1 (3 Jogadores)</option>
+                                        <option value="1v1v1v1">1v1v1v1 (4 Jogadores)</option>
+                                        <option value="2v2">2v2 (Duo vs Duo)</option>
+                                    </select>
+                                </div>
+                                <div id="mp-queue-info" style="display: flex; align-items: center; gap: 0.75rem; color: var(--dim); font-size: 0.85rem; font-weight: 600; margin-top: 1.2rem;">
+                                    <span>Celulares conectados: <span id="mp-connected-count" style="color: var(--accent); font-weight: 800;">0</span></span>
+                                    <span style="opacity: 0.3;">|</span>
+                                    <span>Na fila: <span id="mp-queue-count" style="color: #a855f7; font-weight: 800;">0</span></span>
+                                </div>
+                            </div>
+                            <div id="mp-slots-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                                <div class="mp-slot-box" id="slot-box-p1" style="display: flex; flex-direction: column; gap: 0.4rem;">
+                                    <label for="slot-p1" style="font-size: 0.75rem; font-weight: 800; color: #60a5fa; text-transform: uppercase;">Jogador 1 (Bottom)</label>
+                                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                        <select id="slot-p1" class="mp-player-select" style="background: #080d16; border: 1px solid var(--card-border); border-radius: 8px; color: #fff; padding: 0.5rem; font-family: inherit; font-size: 0.9rem; outline: none; height: 38px; flex: 1;"></select>
+                                        <button type="button" class="btn-qr-pairing" title="Conectar celular por QR Code">
+                                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="3" y="3" width="7" height="7"></rect>
+                                                <rect x="14" y="3" width="7" height="7"></rect>
+                                                <rect x="14" y="14" width="7" height="7"></rect>
+                                                <rect x="3" y="14" width="7" height="7"></rect>
+                                                <rect x="7" y="7" width="1" height="1"></rect>
+                                                <rect x="18" y="7" width="1" height="1"></rect>
+                                                <rect x="7" y="18" width="1" height="1"></rect>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mp-slot-box" id="slot-box-p2">
+                                    <label for="slot-p2" style="font-size: 0.75rem; font-weight: 800; color: #f43f5e; text-transform: uppercase;">Jogador 2 (Top)</label>
+                                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                        <select id="slot-p2" class="mp-player-select" style="background: #080d16; border: 1px solid var(--card-border); border-radius: 8px; color: #fff; padding: 0.5rem; font-family: inherit; font-size: 0.9rem; outline: none; height: 38px; flex: 1;"></select>
+                                        <button type="button" class="btn-qr-pairing" title="Conectar celular por QR Code">
+                                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="3" y="3" width="7" height="7"></rect>
+                                                <rect x="14" y="3" width="7" height="7"></rect>
+                                                <rect x="14" y="14" width="7" height="7"></rect>
+                                                <rect x="3" y="14" width="7" height="7"></rect>
+                                                <rect x="7" y="7" width="1" height="1"></rect>
+                                                <rect x="18" y="7" width="1" height="1"></rect>
+                                                <rect x="7" y="18" width="1" height="1"></rect>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mp-slot-box" id="slot-box-p3">
+                                    <label for="slot-p3" style="font-size: 0.75rem; font-weight: 800; color: #10b981; text-transform: uppercase;">Jogador 3 (Left)</label>
+                                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                        <select id="slot-p3" class="mp-player-select" style="background: #080d16; border: 1px solid var(--card-border); border-radius: 8px; color: #fff; padding: 0.5rem; font-family: inherit; font-size: 0.9rem; outline: none; height: 38px; flex: 1;"></select>
+                                        <button type="button" class="btn-qr-pairing" title="Conectar celular por QR Code">
+                                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="3" y="3" width="7" height="7"></rect>
+                                                <rect x="14" y="3" width="7" height="7"></rect>
+                                                <rect x="14" y="14" width="7" height="7"></rect>
+                                                <rect x="3" y="14" width="7" height="7"></rect>
+                                                <rect x="7" y="7" width="1" height="1"></rect>
+                                                <rect x="18" y="7" width="1" height="1"></rect>
+                                                <rect x="7" y="18" width="1" height="1"></rect>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mp-slot-box" id="slot-box-p4">
+                                    <label for="slot-p4" style="font-size: 0.75rem; font-weight: 800; color: #f59e0b; text-transform: uppercase;">Jogador 4 (Right)</label>
+                                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                        <select id="slot-p4" class="mp-player-select" style="background: #080d16; border: 1px solid var(--card-border); border-radius: 8px; color: #fff; padding: 0.5rem; font-family: inherit; font-size: 0.9rem; outline: none; height: 38px; flex: 1;"></select>
+                                        <button type="button" class="btn-qr-pairing" title="Conectar celular por QR Code">
+                                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="3" y="3" width="7" height="7"></rect>
+                                                <rect x="14" y="3" width="7" height="7"></rect>
+                                                <rect x="14" y="14" width="7" height="7"></rect>
+                                                <rect x="3" y="14" width="7" height="7"></rect>
+                                                <rect x="7" y="7" width="1" height="1"></rect>
+                                                <rect x="18" y="7" width="1" height="1"></rect>
+                                                <rect x="7" y="18" width="1" height="1"></rect>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                      <!-- Painel de Contagem de Pausa Instrumental -->
+                        <div id="instrumental-pause-container">
                             <div
                                 style="font-size: 0.8rem; color: var(--accent); font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.5rem;">
                                 <span
@@ -219,8 +329,7 @@
 
                         <div class="carousel-container">
                             <!-- Overlay de Silêncio / Solo Instrumental (cobre a letra em silencios > 3s) -->
-                            <div id="silence-overlay"
-                                style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-radius: 20px; flex-direction: column; align-items: center; justify-content: center; z-index: 10; animation: fadeIn 0.3s ease; box-sizing: border-box; padding: 2rem;">
+                            <div id="silence-overlay">
                                 <div
                                     style="font-size: 0.9rem; color: #60a5fa; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; text-shadow: 0 0 10px rgba(96, 165, 250, 0.4);">
                                     <span
@@ -239,8 +348,7 @@
                             </div>
 
                             <!-- Overlay de Encerramento da Música (Outro Instrumental) -->
-                            <div id="outro-overlay"
-                                style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.97); backdrop-filter: blur(12px); border-radius: 20px; flex-direction: column; align-items: center; justify-content: center; z-index: 15; animation: fadeIn 0.5s ease; box-sizing: border-box; padding: 2rem; border: 2px solid rgba(56, 189, 248, 0.15); box-shadow: 0 0 30px rgba(56, 189, 248, 0.1);">
+                            <div id="outro-overlay">
                                 <div
                                     style="font-size: 1.1rem; color: var(--accent); font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.6rem; text-shadow: 0 0 15px rgba(56, 189, 248, 0.4); animation: pulse 0.8s infinite alternate;">
                                     🎸 FINALIZANDO APRESENTAÇÃO
@@ -273,34 +381,10 @@
 
                         <div class="controls">
                             <button id="btn-start">INICIAR CANTO</button>
-                            <button id="btn-exit" style="display: none; background: var(--error);">SAIR DA MÚSICA</button>
+                            <button id="btn-pause-play">PAUSAR</button>
+                            <button id="btn-exit">SAIR DA MÚSICA</button>
                         </div>
 
-                        <div id="sync-controls"
-                            style="display: flex; margin-top: 1.5rem; background: rgba(0, 0, 0, 0.2); padding: 1rem; border-radius: 12px; border: 1px solid var(--card-border); flex-direction: column; align-items: center; justify-content: center; gap: 1rem; width: 100%; box-sizing: border-box;">
-                            <div
-                                style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 1.5rem; width: 100%;">
-
-                                <!-- Bloco de Volume do Backing Track -->
-                                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                    <span
-                                        style="color: var(--dim); font-size: 0.85rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.35rem;">
-                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                            style="color: var(--accent);">
-                                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                                        </svg>
-                                        Volume do Playback:
-                                    </span>
-                                    <input type="range" id="backing-volume-slider" min="0" max="1" step="0.05" value="1"
-                                        style="width: 150px; accent-color: var(--accent); cursor: pointer; height: 6px; background: rgba(255,255,255,0.1); border-radius: 5px; outline: none; border: none; vertical-align: middle;">
-                                    <span id="backing-volume-value"
-                                        style="font-weight: 800; font-size: 1rem; min-width: 40px; text-align: center;">100%</span>
-                                </div>
-
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Coluna Lateral de Pontuação -->
@@ -321,13 +405,56 @@
                     </div>
                 </div>
 
+                <div id="sync-controls" class="sync-controls">
+                    <div class="sync-controls-inner">
+
+                        <!-- Bloco de Volume do Backing Track -->
+                        <div class="sync-control-block">
+                            <span class="sync-control-label">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                    style="color: var(--accent);">
+                                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                                </svg>
+                                Volume:
+                            </span>
+                            <div class="sync-control-group">
+                                <input type="range" id="backing-volume-slider" min="0" max="1" step="0.05" value="1">
+                                <span id="backing-volume-value" class="sync-control-value" style="min-width: 40px;">100%</span>
+                            </div>
+                        </div>
+
+                        <!-- Bloco de Tom (Pitch Shifting) -->
+                        <div class="sync-control-block">
+                            <span class="sync-control-label">Tom:</span>
+                            <div class="sync-control-group">
+                                <button id="btn-pitch-minus" class="btn-control-small">−</button>
+                                <span id="pitch-value" class="sync-control-value sync-control-value--highlight" style="min-width: 65px;">Normal</span>
+                                <button id="btn-pitch-plus" class="btn-control-small">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Bloco de Velocidade (Speed) -->
+                        <div class="sync-control-block">
+                            <span class="sync-control-label">Velocidade:</span>
+                            <div class="sync-control-group">
+                                <button id="btn-speed-minus" class="btn-control-small">−</button>
+                                <span id="speed-value" class="sync-control-value sync-control-value--highlight" style="min-width: 55px;">1.0x</span>
+                                <button id="btn-speed-plus" class="btn-control-small">+</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 
     <!-- Modal de Fim de Jogo Cinematográfico -->
-    <div id="game-over-modal"
-        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(8px); z-index: 1000; align-items: center; justify-content: center; box-sizing: border-box;">
+    <div id="game-over-modal" class="modal-overlay"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(8px); z-index: 1000; align-items: center; justify-content: center; box-sizing: border-box;">
         <div
             style="background: var(--card); border: 2px solid #334155; padding: 3rem 2.5rem; border-radius: 24px; text-align: center; max-width: 420px; width: 90%; box-shadow: 0 0 45px rgba(56, 189, 248, 0.15); animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); box-sizing: border-box;">
             <h2
@@ -364,10 +491,10 @@
     <audio id="audio-player"></audio>
 
     <!-- Modal Adicionar Música -->
-    <div id="add-song-modal" class="modal-overlay" style="display: none;">
+    <div id="add-song-modal" class="modal-overlay">
         <div class="modal-content admin-modal">
             <h2>Adicionar Nova Música 🎵</h2>
-            <form id="add-song-form" enctype="multipart/form-data">
+            <form id="add-song-form" enctype="multipart/form-data" data-step="1" data-upload-tab="youtube">
                 <!-- Passo 1: Informações de Origem (Links, Letras, etc) -->
                 <div id="upload-step-1">
                     <!-- Seletor de Abas Premium -->
@@ -402,14 +529,10 @@
                     </div>
 
                     <!-- Seção de Arquivos Locais (Oculto por Padrão) -->
-                    <div id="section-local-upload" style="display: none;">
+                    <div id="section-local-upload">
                         <div class="form-group">
                             <label for="vocal-file">📁 Enviar Arquivo de Áudio Vocal/Original (.mp3):</label>
                             <input type="file" id="vocal-file" name="vocal_file" accept="audio/*">
-                        </div>
-                        <div class="form-group" style="margin-top: 1rem;">
-                            <label for="lrc-file">📄 Arquivo LRC de Letras Sincronizadas (Opcional):</label>
-                            <input type="file" id="lrc-file" name="lrc_file" accept=".lrc">
                         </div>
                     </div>
 
@@ -432,8 +555,7 @@
                             <span id="advanced-toggle-icon">▼</span>
                         </button>
 
-                        <div id="advanced-options-container"
-                            style="display: none; margin-top: 1rem; animation: fadeIn 0.3s ease;">
+                        <div id="advanced-options-container">
                             <!-- Faixa Instrumental customizada (OPCIONAL) -->
                             <div
                                 style="border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 1rem; margin-bottom: 1rem;">
@@ -452,12 +574,25 @@
                                     <input type="file" id="backing-file" name="backing_file" accept="audio/*">
                                 </div>
                             </div>
+
+                            <!-- Letra LRC customizada (OPCIONAL) -->
+                            <div style="padding-top: 0.5rem;">
+                                <div class="form-group">
+                                    <label for="lrc-text">📄 Copiar & Colar Conteúdo LRC (Opcional):</label>
+                                    <textarea id="lrc-text" name="lrc_text" rows="5"
+                                        placeholder="Cole as letras com timestamps do arquivo .lrc aqui... Ex:&#10;[00:11.34] I do not understand&#10;[00:17.02] What it is I've done wrong"
+                                        style="width: 100%; min-height: 120px; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--card-border); border-radius: 8px; color: #fff; padding: 0.6rem; font-family: inherit; font-size: 0.85rem; resize: vertical; box-sizing: border-box; outline: none;"></textarea>
+                                    <span
+                                        style="font-size: 0.75rem; color: var(--dim); display: block; margin-top: 0.25rem;">Se
+                                        fornecido, a IA usará esta letra sincronizada em vez de gerar do zero.</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Passo 2: Confirmação e Edição de Metadados (Artista/Título) -->
-                <div id="upload-step-2" style="display: none;">
+                <div id="upload-step-2">
                     <p
                         style="font-size: 0.9rem; color: var(--dim); margin-top: 0; margin-bottom: 1.5rem; text-align: left; line-height: 1.5;">
                         🤖 <strong>Metadados do YouTube identificados!</strong><br>
@@ -480,7 +615,7 @@
                     <button type="button" id="btn-close-add-song" class="btn"
                         style="background: transparent; border: 1px solid #475569; color: var(--text); cursor: pointer;">Cancelar</button>
                     <button type="button" id="btn-back-step-1" class="btn"
-                        style="display: none; background: transparent; border: 1px solid #475569; color: var(--text); cursor: pointer;">Voltar</button>
+                        style="background: transparent; border: 1px solid #475569; color: var(--text); cursor: pointer;">Voltar</button>
                     <button type="submit" id="btn-submit-song" class="btn"
                         style="background: var(--accent); color: #000; font-weight: 800; border: none; cursor: pointer;">Avançar
                         ➡️</button>
@@ -490,7 +625,7 @@
     </div>
 
     <!-- Modal de Pareamento de Celular (Microfone) -->
-    <div id="pairing-modal" class="modal-overlay" style="display: none; z-index: 1000;">
+    <div id="pairing-modal" class="modal-overlay">
         <div class="modal-content admin-modal" style="max-width: 480px; text-align: center;">
             <h2
                 style="color: #a855f7; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
@@ -503,7 +638,7 @@
                 style="background: rgba(0, 0, 0, 0.3); border: 1px solid var(--card-border); padding: 1.5rem; border-radius: 16px; margin-bottom: 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 1rem;">
                 <!-- QR Code do IP do PC -->
                 <img id="pairing-qrcode" src="" alt="QR Code de Pareamento"
-                    style="width: 180px; height: 180px; border-radius: 12px; border: 4px solid #fff; background: #fff; display: none;">
+                    style="width: 180px; height: 180px; border-radius: 12px; border: 4px solid #fff; background: #fff;">
                 <div id="pairing-qrcode-loading"
                     style="font-size: 0.9rem; color: var(--dim); height: 180px; display: flex; align-items: center; justify-content: center;">
                     Gerando QR Code...
@@ -532,7 +667,7 @@
     </div>
 
     <!-- Modal de Instruções (Onboarding) -->
-    <div id="onboarding-modal" class="modal-overlay" style="display: none; z-index: 1050;">
+    <div id="onboarding-modal" class="modal-overlay">
         <div class="modal-content admin-modal" style="max-width: 480px; text-align: left; padding: 2.5rem 2rem;">
             <h2
                 style="color: var(--accent); margin-top: 0; margin-bottom: 1.5rem; text-align: center; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-weight: 800; font-size: 1.6rem;">
@@ -589,7 +724,7 @@
     </div>
 
     <!-- Modal Editor de Informações e Letras -->
-    <div id="lrc-editor-modal" class="modal-overlay" style="display: none; z-index: 1000;">
+    <div id="lrc-editor-modal" class="modal-overlay">
         <div class="modal-content admin-modal" style="max-width: 650px; width: 90%;">
             <h2
                 style="display: flex; align-items: center; gap: 0.5rem; font-weight: 800; font-size: 1.5rem; margin-top: 0; margin-bottom: 0.5rem;">
@@ -610,9 +745,13 @@
                     style="flex: 1; padding: 0.6rem; border: none; border-radius: 8px; background: transparent; color: var(--dim); font-weight: 800; cursor: pointer; transition: all 0.2s ease; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem;">
                     📄 Letras (.lrc)
                 </button>
+                <button type="button" id="btn-tab-paste-lyrics"
+                    style="flex: 1; padding: 0.6rem; border: none; border-radius: 8px; background: transparent; color: var(--dim); font-weight: 800; cursor: pointer; transition: all 0.2s ease; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem;">
+                    📝 Colar Letra Plana
+                </button>
             </div>
 
-            <form id="lrc-editor-form">
+            <form id="lrc-editor-form" data-editor-tab="meta">
                 <input type="hidden" id="editor-slug" name="slug">
                 <input type="hidden" id="editor-language" name="language">
 
@@ -626,12 +765,28 @@
                 </div>
 
                 <!-- Seção 2: lyrics.lrc -->
-                <div id="editor-section-lrc" class="form-group" style="display: none;">
+                <div id="editor-section-lrc" class="form-group">
                     <label for="editor-textarea"
                         style="font-weight: 700; color: #fff; margin-bottom: 0.4rem; display: block;">Letras
                         Sincronizadas (.lrc):</label>
                     <textarea id="editor-textarea" name="lyrics_lrc"
                         style="width: 100%; height: 320px; background: #0b0f19; border: 1px solid var(--card-border); border-radius: 8px; color: #e2e8f0; padding: 0.8rem; font-family: monospace; font-size: 0.85rem; line-height: 1.5; resize: vertical; box-sizing: border-box; outline: none; transition: border-color 0.2s;"></textarea>
+                </div>
+
+                <!-- Seção 3: Colar Letra Plana -->
+                <div id="editor-section-paste-lyrics" class="form-group">
+                    <label for="editor-paste-lyrics-textarea"
+                        style="font-weight: 700; color: #fff; margin-bottom: 0.4rem; display: block;">Colar Letra Plana:</label>
+                    <p style="font-size: 0.8rem; color: var(--dim); margin-top: 0; margin-bottom: 0.8rem; line-height: 1.4;">
+                        Cole a letra sem formatação. Ao clicar no botão abaixo, a letra será limpa, formatada (removendo linhas em branco duplicadas e espaços) e inserida no campo <code>plain_lyrics</code> do <code>meta.json</code>.
+                    </p>
+                    <textarea id="editor-paste-lyrics-textarea"
+                        placeholder="Cole a letra original da música aqui..."
+                        style="width: 100%; height: 220px; background: #0b0f19; border: 1px solid var(--card-border); border-radius: 8px; color: #e2e8f0; padding: 0.8rem; font-family: monospace; font-size: 0.85rem; line-height: 1.5; resize: vertical; box-sizing: border-box; outline: none; transition: border-color 0.2s; margin-bottom: 0.8rem;"></textarea>
+                    <button type="button" id="btn-format-paste-lyrics"
+                        style="width: 100%; padding: 0.7rem; border: none; border-radius: 8px; background: var(--accent); color: #000; font-weight: 800; cursor: pointer; transition: all 0.2s ease; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: var(--shadow-glow);">
+                        🪄 Formatar e Atualizar meta.json
+                    </button>
                 </div>
 
                 <div class="modal-buttons" style="margin-top: 1.5rem; display: flex; gap: 0.8rem; align-items: center;">
@@ -650,7 +805,7 @@
     </div>
 
     <!-- Modal Escolha do Método de Geração -->
-    <div id="generation-options-modal" class="modal-overlay" style="display: none; z-index: 1060;">
+    <div id="generation-options-modal" class="modal-overlay">
         <div class="modal-content admin-modal" style="max-width: 520px; width: 90%; padding: 2.5rem 2rem;">
             <h2 style="color: var(--accent); margin-top: 0; margin-bottom: 1.1rem; text-align: center; font-weight: 800; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
                 ⚙️ Opções de Geração
@@ -696,8 +851,7 @@
     </div>
 
     <!-- Overlay de Progresso/Aguardando IA -->
-    <div id="loading-overlay" class="modal-overlay"
-        style="display: none; z-index: 1100; background: rgba(2, 6, 23, 0.9);">
+    <div id="loading-overlay" class="modal-overlay">
         <div style="text-align: center; color: var(--text);">
             <div
                 style="width: 60px; height: 60px; border: 4px solid #1e293b; border-top: 4px solid var(--accent); border-radius: 50%; margin: 0 auto 1.5rem; animation: spin 1s linear infinite; box-shadow: 0 0 20px rgba(56,189,248,0.2);">
@@ -725,6 +879,45 @@
         </div>
     </template>
 
+    <!-- Barras de Pontuação Multiplayer (TV) -->
+    <div id="mp-score-bar-p1" class="mp-score-bar horizontal-bar bottom-bar">
+        <div class="mp-score-info">
+            <span class="mp-player-name">Jogador 1</span>
+            <span class="mp-player-pct">0%</span>
+        </div>
+        <div class="mp-progress-bg">
+            <div class="mp-progress-fill" style="width: 0%;"></div>
+        </div>
+    </div>
+    <div id="mp-score-bar-p2" class="mp-score-bar horizontal-bar top-bar">
+        <div class="mp-score-info">
+            <span class="mp-player-name">Jogador 2</span>
+            <span class="mp-player-pct">0%</span>
+        </div>
+        <div class="mp-progress-bg">
+            <div class="mp-progress-fill" style="width: 0%;"></div>
+        </div>
+    </div>
+    <div id="mp-score-bar-p3" class="mp-score-bar vertical-bar left-bar">
+        <div class="mp-score-info-vertical">
+            <span class="mp-player-name">Jogador 3</span>
+            <span class="mp-player-pct">0%</span>
+        </div>
+        <div class="mp-progress-bg-vertical">
+            <div class="mp-progress-fill-vertical" style="height: 0%;"></div>
+        </div>
+    </div>
+    <div id="mp-score-bar-p4" class="mp-score-bar vertical-bar right-bar">
+        <div class="mp-score-info-vertical">
+            <span class="mp-player-name">Jogador 4</span>
+            <span class="mp-player-pct">0%</span>
+        </div>
+        <div class="mp-progress-bg-vertical">
+            <div class="mp-progress-fill-vertical" style="height: 0%;"></div>
+        </div>
+    </div>
+
+    </div>
     <script type="module" src="/js/main.js"></script>
 </body>
 

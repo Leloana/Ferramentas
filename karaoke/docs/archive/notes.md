@@ -1,5 +1,16 @@
+# 🗄️ Archived Scratch Notes
+
+> [!NOTE]
+> **NOTAS DE RASCUNHO ARQUIVADAS / ARCHIVED SCRATCH NOTES**
+> Este arquivo contém anotações históricas, observações sobre VAD, APIs externas (Vagalume) e testes de alinhamento com a música Holiday que foram úteis durante a depuração.
+> Para o guia atualizado de calibração de alinhamento LRC, consulte:
+> - [LRC Alignment Tuning Guide](../guides/LRC_ALIGNMENT_TUNING.md)
+
+---
+
 1. Vagalume — melhor cobertura para música brasileira, tem API gratuita com cadastro:
-pythonimport requests
+```python
+import requests
 
 def fetch_vagalume(artist, title, api_key):
     url = f"https://api.vagalume.com.br/search.php"
@@ -9,6 +20,7 @@ def fetch_vagalume(artist, title, api_key):
     if data.get("type") == "exact":
         return data["mus"][0]["text"]
     return None
+```
 
 2. Problemas com a musica Holiday
  - [01:48.03]On holiday
@@ -38,5 +50,3 @@ Claramente um erro
 5. Tem diferenca no fluxo de baixar a musica a primeira vez e reinstalar? Por que parece que baixar a primeira vez tem um resultado melhor
 
 6. Pelo que eu percebi do audio vocal isolado é bem possível que o algoritmo que gera o .lrc fique melhor, o vocal.mp3 está com uma qualidade bem alta
-
-

@@ -1,4 +1,4 @@
-import { state } from './state.js';
+import { state, setAppState } from './state.js';
 import { dom } from './dom.js';
 import { myRole, myRoom, isSoloMobileMode } from './config.js';
 import { showToast } from './toast.js';
@@ -8,18 +8,17 @@ import { connectMobileMicrophoneWebSocket } from './ws-mic.js';
 import { connectDisplayWebSocket } from './ws-display.js';
 import { initMobileMicView } from './mobile-mic-view.js';
 import { fetchSongs, initSearch } from './selection-view.js';
-import { startKaraoke, resetGameState } from './game-view.js';
+import { startKaraoke, resetGameState, initGameControls } from './game-view.js';
 import { initModals } from './modals.js';
 
 function bootstrap() {
-    if (myRole === 'mic') {
-        const containerEl = document.querySelector('.container');
-        const headerEl = document.querySelector('.app-header');
-        if (containerEl) containerEl.style.display = 'none';
-        if (headerEl) headerEl.style.display = 'none';
+    const appEl = document.getElementById('app');
+    if (appEl) {
+        appEl.setAttribute('data-role', myRole);
+    }
 
-        const mobileMicArea = document.getElementById('mobile-mic-area');
-        if (mobileMicArea) mobileMicArea.style.display = 'flex';
+    if (myRole === 'mic') {
+        setAppState('registering');
 
         const roomIdEl = document.getElementById('mobile-room-id');
         if (roomIdEl) roomIdEl.innerText = myRoom;
@@ -67,6 +66,7 @@ function bootstrap() {
     }
 
     initSyncControls();
+    initGameControls();
     initModals();
     initSearch();
 
@@ -92,9 +92,9 @@ function bootstrap() {
             const onboardingModal = document.getElementById('onboarding-modal');
             const btnCloseOnboarding = document.getElementById('btn-close-onboarding');
             if (onboardingModal && btnCloseOnboarding) {
-                onboardingModal.style.display = 'flex';
+                onboardingModal.setAttribute('data-open', 'true');
                 btnCloseOnboarding.onclick = async () => {
-                    onboardingModal.style.display = 'none';
+                    onboardingModal.removeAttribute('data-open');
                     localStorage.setItem('karaoke_onboarding_seen', 'true');
                     await doStart();
                 };

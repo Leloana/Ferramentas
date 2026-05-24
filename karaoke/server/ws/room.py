@@ -5,7 +5,10 @@ import asyncio
 import json
 import logging
 import math
+import os
 import re
+from datetime import datetime
+from pathlib import Path
 
 import numpy as np
 import scipy.signal
@@ -34,8 +37,47 @@ SINGING_PRE_BUFFER_SEC = 1.0
 PAUSE_END_LEAD_SEC = 0.15
 PENDING_TASKS_TIMEOUT_SEC = 10.0
 
+# Pasta para perfis de jogadores
+PLAYERS_DIR = Path(__file__).resolve().parent.parent.parent / "players"
+
+
+def get_player_profile_path(name: str) -> Path:
+    # Sanitiza o nome para evitar Path Traversal
+    sanitized_name = "".join(c for c in name if c.isalnum() or c in ("-", "_")).strip()
+    if not sanitized_name:
+        sanitized_name = "default_player"
+    return PLAYERS_DIR / sanitized_name / "profile.json"
+
+
+def get_or_create_profile(name: str) -> dict:
+    path = get_player_profile_path(name)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if path.exists():
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    # Cria novo perfil
+    profile = {
+        "name": name,
+        "songs_sung": []
+    }
+    save_profile(name, profile)
+    return profile
+
+
+def save_profile(name: str, profile: dict) -> None:
+    path = get_player_profile_path(name)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(profile, f, indent=2, ensure_ascii=False)
+
 
 async def _send_segment_start(ws: WebSocket, segments: list, idx: int, song_title: str = "") -> None:
+    if not segments or idx < 0 or idx >= len(segments):
+        logger.warning(f"Tentativa de enviar segment_start com idx {idx} inválido ou sem segmentos carregados.")
+        return
     segment = segments[idx]
     prev_lyrics = segments[idx - 1]["lyrics"] if idx > 0 else ""
     next_lyrics = segments[idx + 1]["lyrics"] if idx < len(segments) - 1 else ""
@@ -57,8 +99,13 @@ async def _send_segment_start(ws: WebSocket, segments: list, idx: int, song_titl
 
 
 async def _broadcast_segment_start(room, idx: int) -> None:
+    if not room.segments or idx < 0 or idx >= len(room.segments):
+        logger.warning(f"Tentativa de broadcast_segment_start com idx {idx} inválido ou sem segmentos carregados na sala {room.song_id}.")
+        return
     if room.display:
         await _send_segment_start(room.display, room.segments, idx, room.song_title)
+    for ws in room.players.values():
+        await _send_segment_start(ws, room.segments, idx, room.song_title)
     if room.mic:
         await _send_segment_start(room.mic, room.segments, idx, room.song_title)
 
@@ -79,12 +126,149 @@ def _is_vocalize(seg_text: str) -> bool:
     return len(clean_words) > 0 and all(w in VOCALIZE_WORDS for w in clean_words if w)
 
 
+async def _notify_players_status(room) -> None:
+    status = "paired" if room.players else "unpaired"
+    if room.display:
+        try:
+            await room.display.send_json({"type": "pairing_status", "status": status, "role": "display"})
+        except Exception:
+            pass
+    await room.broadcast({
+        "type": "players_update",
+        "players": list(room.players.keys()),
+        "queue_count": len(room.unregistered_mics)
+    })
+
+
+async def _advance_registration_queue(room) -> None:
+    while room.unregistered_mics:
+        next_ws = room.unregistered_mics[0]
+        try:
+            await next_ws.send_json({"type": "register_request"})
+            break
+        except Exception:
+            room.unregistered_mics.pop(0)
+    
+    for idx, ws in enumerate(room.unregistered_mics[1:], start=1):
+        try:
+            await ws.send_json({"type": "register_wait", "position": idx})
+        except Exception:
+            pass
+
+
+async def process_segment_multiplayer(
+    room,
+    seg_idx: int,
+    active_buffers: dict[str, bytearray],
+    seg_lang: str,
+    seg_lyrics: list,
+    seg_text: str
+) -> None:
+    stt = get_stt_engine()
+    results = {}
+
+    async def process_player(player_name: str, seg_buffer: bytearray):
+        try:
+            audio_data = np.frombuffer(seg_buffer, dtype=np.float32).copy()
+            duration = len(audio_data) / room.client_sample_rate
+            rms_original = float(np.sqrt(np.mean(audio_data ** 2))) if len(audio_data) > 0 else 0.0
+
+            logger.info(
+                f"\n========================================\n"
+                f"🎤 [DEBUG MULTI {player_name}] Segmento {seg_idx + 1} - Sala {room.song_id}\n"
+                f"   - Letra Esperada: '{seg_text}'\n"
+                f"   - Duração do Áudio: {duration:.2f}s\n"
+                f"   - RMS: {rms_original:.6f}\n"
+                f"========================================"
+            )
+
+            if _is_vocalize(seg_text):
+                score, transcription_processed, matched_count, total = _score_vocalize(seg_text, rms_original)
+                transcribed_text = transcription_processed
+                result = {
+                    "score": score,
+                    "transcription": transcription_processed,
+                    "matched_words": matched_count,
+                    "total_expected": total,
+                }
+            else:
+                if rms_original < 0.0018:
+                    transcribed_text = ""
+                    result = {
+                        "score": 0.0,
+                        "transcription": "",
+                        "matched_words": 0,
+                        "total_expected": len(seg_lyrics),
+                    }
+                else:
+                    def compute():
+                        gcd = math.gcd(WHISPER_SR, room.client_sample_rate)
+                        up = WHISPER_SR // gcd
+                        down = room.client_sample_rate // gcd
+                        resampled = scipy.signal.resample_poly(audio_data, up, down).astype(np.float32)
+                        return stt.transcribe(resampled, language=seg_lang, initial_prompt=seg_text)
+
+                    transcribed_text, words = await asyncio.to_thread(compute)
+
+                    prev_lyrics = None
+                    if seg_idx > 0 and seg_idx - 1 < len(room.segments):
+                        prev_lyrics = room.segments[seg_idx - 1]["lyrics"].split()
+
+                    result = calculate_score(seg_lyrics, words, prev_expected_words=prev_lyrics, language=seg_lang)
+
+            if player_name not in room.player_segment_scores:
+                room.player_segment_scores[player_name] = {}
+            room.player_segment_scores[player_name][seg_idx] = result["score"]
+
+            running_avg = round(sum(room.player_segment_scores[player_name].values()) / len(room.player_segment_scores[player_name]), 1)
+
+            results[player_name] = {
+                "score": result["score"],
+                "total_score": running_avg,
+                "transcription": result.get("transcription", transcribed_text),
+            }
+
+        except Exception as e:
+            logger.error(f"Erro no processamento do player {player_name}: {e}", exc_info=True)
+            results[player_name] = {
+                "score": 0.0,
+                "total_score": 0.0,
+                "transcription": f"(erro: {str(e)})"
+            }
+
+    await asyncio.gather(*(process_player(name, buf) for name, buf in active_buffers.items()))
+
+    primary_name = "Solo"
+    if "Solo" not in results and results:
+        primary_name = list(results.keys())[0]
+
+    primary_res = results.get(primary_name, {"score": 0.0, "total_score": 0.0, "transcription": ""})
+
+    if primary_name == "Solo":
+        room.segment_scores[seg_idx] = primary_res["score"]
+        room.total_score = sum(room.segment_scores.values())
+        room.scored_count = len(room.segment_scores)
+    else:
+        room.segment_scores[seg_idx] = primary_res["score"]
+        room.total_score = sum(room.segment_scores.values())
+        room.scored_count = len(room.segment_scores)
+
+    await room.broadcast({
+        "type": "segment_result",
+        "score": primary_res["score"],
+        "transcription": primary_res["transcription"],
+        "total_score": primary_res["total_score"],
+        "player_scores": results
+    })
+
+
 @router.websocket("/ws/room/{room_id}")
 async def websocket_endpoint(websocket: WebSocket, room_id: str):
     await websocket.accept()
 
     role = websocket.query_params.get("role", "display")
     song_id = websocket.query_params.get("song_id")
+    player_name = None
 
     segments = []
     song_title = ""
@@ -109,24 +293,24 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
         room.segments = segments
         room.current_segment_idx = 0
         room.transcribed_segments = set()
+        room.segment_scores = {}
         room.total_score = 0.0
         room.scored_count = 0
         room.last_client_time = 0.0
         room.segment_buffers = {}
+        room.player_segment_buffers.clear()
+        room.player_segment_scores.clear()
         room.is_singing_active = False
 
     # Pareamento
     if role == "mic":
-        if room.mic:
-            try:
-                await room.mic.close(code=1000, reason="Novo microfone conectado")
-            except Exception as e:
-                logger.debug(f"Falha ao fechar mic anterior: {e}")
-        room.mic = websocket
-        logger.info(f"Microfone conectado para a sala: {room_id}")
-        await websocket.send_json({"type": "pairing_status", "status": "paired", "role": "mic"})
-        if room.display:
-            await room.display.send_json({"type": "pairing_status", "status": "paired", "role": "display"})
+        room.unregistered_mics.append(websocket)
+        logger.info(f"Microfone conectado na fila de registro. Fila total: {len(room.unregistered_mics)}")
+        
+        if len(room.unregistered_mics) == 1:
+            await websocket.send_json({"type": "register_request"})
+        else:
+            await websocket.send_json({"type": "register_wait", "position": len(room.unregistered_mics) - 1})
     else:
         if room.display:
             try:
@@ -135,101 +319,12 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                 logger.debug(f"Falha ao fechar display anterior: {e}")
         room.display = websocket
         logger.info(f"Display (TV) conectado para a sala: {room_id}")
-        if room.mic:
-            await websocket.send_json({"type": "pairing_status", "status": "paired", "role": "display"})
-            try:
-                await room.mic.send_json({"type": "pairing_status", "status": "paired", "role": "mic"})
-            except Exception as e:
-                logger.debug(f"Falha ao notificar mic do pareamento: {e}")
-        else:
-            await websocket.send_json({"type": "pairing_status", "status": "unpaired", "role": "display"})
+        await _notify_players_status(room)
 
     try:
         await websocket.send_json({"type": "singing_state", "active": room.is_singing_active})
     except Exception as e:
         logger.debug(f"Falha ao enviar estado inicial: {e}")
-
-    stt = get_stt_engine()
-
-    async def process_and_score(seg_idx: int, audio_data: np.ndarray, seg_lang: str, seg_lyrics, seg_text: str) -> None:
-        try:
-            duration = len(audio_data) / room.client_sample_rate
-            rms_original = float(np.sqrt(np.mean(audio_data ** 2))) if len(audio_data) > 0 else 0.0
-
-            logger.info(
-                f"\n========================================\n"
-                f"🎤 [DEBUG MICROFONE] Segmento {seg_idx + 1} - Sala {room_id}\n"
-                f"   - Letra Esperada: '{seg_text}'\n"
-                f"   - Duração do Áudio Recebido: {duration:.2f}s ({len(audio_data)} samples)\n"
-                f"   - RMS de Entrada: {rms_original:.6f}\n"
-                f"========================================"
-            )
-
-            if _is_vocalize(seg_text):
-                logger.info(f"⚡ [Bypass Vocalize] '{seg_text}' avaliado por energia (RMS: {rms_original:.6f})")
-                score, transcription_processed, matched_count, total = _score_vocalize(seg_text, rms_original)
-                transcribed_text = transcription_processed
-                room.total_score += score
-                result = {
-                    "score": score,
-                    "transcription": transcription_processed,
-                    "matched_words": matched_count,
-                    "total_expected": total,
-                }
-            else:
-                if rms_original < 0.0018:
-                    logger.info(f"🔇 [Silêncio Absoluto] Ignorando Whisper devido a RMS muito baixo ({rms_original:.6f})")
-                    transcribed_text = ""
-                    result = {
-                        "score": 0.0,
-                        "transcription": "",
-                        "matched_words": 0,
-                        "total_expected": len(seg_lyrics),
-                    }
-                else:
-                    # Resampling polifásico para 16 kHz com filtro FIR anti-aliasing
-                    def compute():
-                        gcd = math.gcd(WHISPER_SR, room.client_sample_rate)
-                        up = WHISPER_SR // gcd
-                        down = room.client_sample_rate // gcd
-                        resampled = scipy.signal.resample_poly(audio_data, up, down).astype(np.float32)
-                        return stt.transcribe(resampled, language=seg_lang, initial_prompt=seg_text)
-
-                    transcribed_text, words = await asyncio.to_thread(compute)
-
-                    prev_lyrics = None
-                    if seg_idx > 0 and seg_idx - 1 < len(room.segments):
-                        prev_lyrics = room.segments[seg_idx - 1]["lyrics"].split()
-
-                    result = calculate_score(seg_lyrics, words, prev_expected_words=prev_lyrics, language=seg_lang)
-                
-                room.total_score += result["score"]
-
-            room.scored_count += 1
-            running_avg = round(room.total_score / room.scored_count, 1)
-
-            words_detail = ", ".join([f"'{w['word']}' ({w['probability']:.2f})" for w in words]) if (not _is_vocalize(seg_text) and rms_original >= 0.0018 and 'words' in locals() and words) else "nenhuma"
-
-            logger.info(
-                f"\n========================================\n"
-                f"📝 [DEBUG TRANSCRIÇÃO] Segmento {seg_idx + 1} - Sala {room_id}\n"
-                f"   - Texto Transcrito (Whisper): '{transcribed_text}'\n"
-                f"   - Palavras Aceitas (prob): {words_detail}\n"
-                f"   - Palavras Mapeadas: {result['matched_words']}/{result['total_expected']}\n"
-                f"   - Transcrição acústica processada: '{result['transcription']}'\n"
-                f"   - Pontuação Deste Segmento: {result['score']}%\n"
-                f"   - Média de Pontuação Geral Atual: {running_avg}%\n"
-                f"========================================"
-            )
-
-            await room.broadcast({
-                "type": "segment_result",
-                "score": result["score"],
-                "transcription": result["transcription"],
-                "total_score": running_avg,
-            })
-        except Exception as e:
-            logger.error(f"Erro no processamento do segmento: {e}", exc_info=True)
 
     try:
         while True:
@@ -237,18 +332,73 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
 
             if "bytes" in message:
                 # Áudio PCM Float32 do microfone — distribui nos buffers dos segmentos ativos.
-                current_time = room.last_client_time
-                for seg_idx, seg in enumerate(room.segments):
-                    if (seg["sing_start"] - PRE_SING_BUFFER_SEC) <= current_time <= (seg["sing_end"] + POST_SING_BUFFER_SEC):
-                        if seg_idx not in room.segment_buffers:
-                            room.segment_buffers[seg_idx] = bytearray()
-                        room.segment_buffers[seg_idx].extend(message["bytes"])
+                effective_player = player_name
+                if role == "display" and "PC_Local" in room.active_players:
+                    effective_player = "PC_Local"
+
+                if effective_player and effective_player in room.active_players:
+                    current_time = room.last_client_time
+                    for seg_idx, seg in enumerate(room.segments):
+                        if (seg["sing_start"] - PRE_SING_BUFFER_SEC) <= current_time <= (seg["sing_end"] + POST_SING_BUFFER_SEC):
+                            if effective_player not in room.player_segment_buffers:
+                                room.player_segment_buffers[effective_player] = {}
+                            if seg_idx not in room.player_segment_buffers[effective_player]:
+                                room.player_segment_buffers[effective_player][seg_idx] = bytearray()
+                            room.player_segment_buffers[effective_player][seg_idx].extend(message["bytes"])
+                elif not room.active_players:
+                    current_time = room.last_client_time
+                    for seg_idx, seg in enumerate(room.segments):
+                        if (seg["sing_start"] - PRE_SING_BUFFER_SEC) <= current_time <= (seg["sing_end"] + POST_SING_BUFFER_SEC):
+                            if seg_idx not in room.segment_buffers:
+                                room.segment_buffers[seg_idx] = bytearray()
+                            room.segment_buffers[seg_idx].extend(message["bytes"])
 
             elif "text" in message:
                 data = json.loads(message["text"])
                 msg_type = data.get("type")
 
-                if msg_type == "client_info":
+                if msg_type == "register_name":
+                    name = data.get("name", "").strip()
+                    sanitized = "".join(c for c in name if c.isalnum() or c in ("-", "_")).strip()
+                    if not name:
+                        await websocket.send_json({"type": "registration_error", "message": "O apelido não pode ser vazio!"})
+                    elif not sanitized:
+                        await websocket.send_json({"type": "registration_error", "message": "O apelido deve conter pelo menos uma letra ou número!"})
+                    elif name in room.players or sanitized in room.players or name.lower() in ("solo", "local", "tv") or sanitized.lower() in ("solo", "local", "tv"):
+                        await websocket.send_json({"type": "registration_error", "message": "Este apelido já está em uso!"})
+                    else:
+                        player_name = name
+                        room.players[name] = websocket
+                        if websocket in room.unregistered_mics:
+                            room.unregistered_mics.remove(websocket)
+                        
+                        get_or_create_profile(name)
+                        await websocket.send_json({"type": "registration_success", "name": name})
+                        await _notify_players_status(room)
+                        await _advance_registration_queue(room)
+
+                elif msg_type == "start_game":
+                    room.game_mode = data.get("game_mode", "solo")
+                    room.active_players = data.get("active_players", [])
+                    logger.info(f"Jogo iniciado no modo {room.game_mode} com: {room.active_players}")
+                    
+                    room.player_segment_buffers.clear()
+                    room.player_segment_scores.clear()
+                    room.segment_buffers.clear()
+                    room.segment_scores.clear()
+                    room.total_score = 0.0
+                    room.scored_count = 0
+                    room.transcribed_segments.clear()
+                    room.current_segment_idx = 0
+                    room.is_singing_active = False
+
+                    await room.broadcast({
+                        "type": "game_started",
+                        "game_mode": room.game_mode,
+                        "active_players": room.active_players
+                    })
+
+                elif msg_type == "client_info":
                     room.client_sample_rate = data.get("sample_rate", 48000)
                     logger.info(f"Sample rate do cliente na sala {room_id}: {room.client_sample_rate}")
                     await _broadcast_segment_start(room, 0)
@@ -256,6 +406,69 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                 elif msg_type == "playback_time":
                     current_time = data.get("current_time", 0.0)
                     room.last_client_time = current_time
+
+                    new_idx = len(room.segments)
+                    for idx, seg in enumerate(room.segments):
+                        if current_time < seg["sing_end"]:
+                            new_idx = idx
+                            break
+
+                    if new_idx != room.current_segment_idx:
+                        # Se retrocedeu o player (seek para trás)
+                        if new_idx < room.current_segment_idx:
+                            logger.info(f"Retrocesso detectado: {room.current_segment_idx} -> {new_idx}")
+                            for idx in list(room.segment_buffers.keys()):
+                                if idx >= new_idx:
+                                    room.segment_buffers.pop(idx, None)
+                            
+                            for p in room.player_segment_buffers:
+                                for idx in list(room.player_segment_buffers[p].keys()):
+                                    if idx >= new_idx:
+                                        room.player_segment_buffers[p].pop(idx, None)
+
+                            room.transcribed_segments = {idx for idx in room.transcribed_segments if idx < new_idx}
+                            
+                            for idx in list(room.segment_scores.keys()):
+                                if idx >= new_idx:
+                                    room.segment_scores.pop(idx, None)
+
+                            for p in room.player_segment_scores:
+                                for idx in list(room.player_segment_scores[p].keys()):
+                                    if idx >= new_idx:
+                                        room.player_segment_scores[p].pop(idx, None)
+
+                            room.total_score = sum(room.segment_scores.values())
+                            room.scored_count = len(room.segment_scores)
+                            running_avg = round(room.total_score / room.scored_count, 1) if room.scored_count > 0 else 0.0
+
+                            # Envia as notas atualizadas para o display
+                            p_scores_recalc = {}
+                            for p in room.player_segment_scores:
+                                if room.player_segment_scores[p]:
+                                    p_avg = round(sum(room.player_segment_scores[p].values()) / len(room.player_segment_scores[p]), 1)
+                                else:
+                                    p_avg = 0.0
+                                p_scores_recalc[p] = {
+                                    "score": 0.0,
+                                    "total_score": p_avg,
+                                    "transcription": ""
+                                }
+
+                            await room.broadcast({
+                                "type": "segment_result",
+                                "score": 0.0,
+                                "transcription": "",
+                                "total_score": running_avg,
+                                "player_scores": p_scores_recalc
+                            })
+
+                        room.current_segment_idx = new_idx
+
+                        if room.current_segment_idx < len(room.segments):
+                            await _broadcast_segment_start(room, room.current_segment_idx)
+                        else:
+                            logger.info(f"Fim de segmentos alcançado. Transmitindo outro_start.")
+                            await room.broadcast({"type": "outro_start"})
 
                     is_singing = False
                     if room.current_segment_idx < len(room.segments):
@@ -270,43 +483,53 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         room.is_singing_active = is_singing
                         await room.broadcast({"type": "singing_state", "active": is_singing})
 
-                    if room.current_segment_idx < len(room.segments):
-                        current_seg = room.segments[room.current_segment_idx]
-                        should_transcribe = (
-                            current_time >= (current_seg["sing_end"] + POST_SING_BUFFER_SEC)
-                            or current_time >= current_seg["pause_end"] - PAUSE_END_LEAD_SEC
-                        )
-
-                        seg_buffer = room.segment_buffers.get(room.current_segment_idx)
-                        if should_transcribe and seg_buffer and room.current_segment_idx not in room.transcribed_segments:
-                            room.transcribed_segments.add(room.current_segment_idx)
-                            logger.info(f"Processando segmento {room.current_segment_idx + 1} para a sala {room_id}")
-
-                            raw_audio = np.frombuffer(seg_buffer, dtype=np.float32).copy()
-                            room.segment_buffers.pop(room.current_segment_idx, None)
-
-                            # Referência forte → evita GC prematuro da task.
-                            task = asyncio.create_task(process_and_score(
-                                room.current_segment_idx,
-                                raw_audio,
-                                current_seg["language"],
-                                current_seg["lyrics_timed"],
-                                current_seg["lyrics"],
-                            ))
-                            room.pending_tasks.add(task)
-                            task.add_done_callback(room.pending_tasks.discard)
-
-                        # Avança para o próximo segmento ao término do canto.
-                        if current_time >= current_seg["sing_end"]:
-                            room.current_segment_idx += 1
-                            if room.current_segment_idx < len(room.segments):
-                                await _broadcast_segment_start(room, room.current_segment_idx)
+                    # Verifica se o segmento passou do tempo de transcrição
+                    for idx, seg in enumerate(room.segments):
+                        if idx not in room.transcribed_segments:
+                            has_buffer = False
+                            if room.active_players:
+                                has_buffer = any(
+                                    p in room.player_segment_buffers and idx in room.player_segment_buffers[p]
+                                    for p in room.active_players
+                                )
                             else:
-                                logger.info(f"Último segmento cantado na sala {room_id}. Aguardando o backing track terminar...")
-                                await room.broadcast({"type": "outro_start"})
+                                has_buffer = (idx in room.segment_buffers)
+
+                            if has_buffer:
+                                should_transcribe = (
+                                    current_time >= (seg["sing_end"] + POST_SING_BUFFER_SEC)
+                                    or current_time >= (seg["pause_end"] - PAUSE_END_LEAD_SEC)
+                                )
+                                if should_transcribe:
+                                    room.transcribed_segments.add(idx)
+                                    logger.info(f"Processando segmento {idx + 1} para a sala {room_id}")
+
+                                    active_buffers = {}
+                                    if room.active_players:
+                                        for p in room.active_players:
+                                            if p in room.player_segment_buffers and idx in room.player_segment_buffers[p]:
+                                                buf = room.player_segment_buffers[p].pop(idx, None)
+                                                if buf:
+                                                    active_buffers[p] = buf
+                                    else:
+                                        buf = room.segment_buffers.pop(idx, None)
+                                        if buf:
+                                            active_buffers["Solo"] = buf
+
+                                    if active_buffers:
+                                        task = asyncio.create_task(process_segment_multiplayer(
+                                            room,
+                                            idx,
+                                            active_buffers,
+                                            seg["language"],
+                                            seg["lyrics_timed"],
+                                            seg["lyrics"]
+                                        ))
+                                        room.pending_tasks.add(task)
+                                        task.add_done_callback(room.pending_tasks.discard)
 
                 elif msg_type == "audio_ended":
-                    logger.info(f"Áudio finalizado pelo cliente na sala {room_id}. Finalizando jogo...")
+                    logger.info(f"Áudio finalizado na sala {room_id}. Finalizando jogo...")
                     if room.pending_tasks:
                         try:
                             await asyncio.wait_for(
@@ -315,27 +538,68 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                             )
                         except asyncio.TimeoutError:
                             logger.warning(f"Timeout aguardando transcrições pendentes na sala {room_id}")
+                    
                     total_score_avg = round(room.total_score / max(1, len(room.segments)), 1)
-                    await room.broadcast({"type": "game_over", "total_score": total_score_avg})
+
+                    player_final_scores = {}
+                    for p in room.active_players:
+                        if p in room.player_segment_scores:
+                            p_score = round(sum(room.player_segment_scores[p].values()) / max(1, len(room.segments)), 1)
+                            player_final_scores[p] = p_score
+                            
+                            # Salva perfil
+                            profile = get_or_create_profile(p)
+                            profile["songs_sung"].append({
+                                "name": room.song_title or room.song_id,
+                                "score": p_score,
+                                "date": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+                            })
+                            save_profile(p, profile)
+                            logger.info(f"Salvo perfil de {p} com nota {p_score}% na musica {room.song_title}")
+
+                    await room.broadcast({
+                        "type": "game_over",
+                        "total_score": total_score_avg,
+                        "player_scores": player_final_scores
+                    })
                     break
 
     except (WebSocketDisconnect, RuntimeError):
-        logger.info(f"Conexão do papel {role} desconectada na sala {room_id}.")
+        logger.info(f"Conexão do papel {role} desconectada.")
     except Exception as e:
         logger.error(f"Erro no WebSocket da sala {room_id}: {e}", exc_info=True)
     finally:
         if role == "mic":
-            room.mic = None
-            if room.display:
-                try:
-                    await room.display.send_json({"type": "pairing_status", "status": "unpaired", "role": "mic"})
-                except Exception as e:
-                    logger.debug(f"Falha ao notificar display do unpair: {e}")
+            if player_name:
+                room.players.pop(player_name, None)
+                if player_name in room.active_players:
+                    room.active_players.remove(player_name)
+                logger.info(f"Jogador {player_name} desconectado da sala.")
+            
+            if websocket in room.unregistered_mics:
+                is_front = (room.unregistered_mics[0] == websocket)
+                room.unregistered_mics.remove(websocket)
+                if is_front:
+                    await _advance_registration_queue(room)
+                else:
+                    for idx, ws in enumerate(room.unregistered_mics[1:], start=1):
+                        try:
+                            await ws.send_json({"type": "register_wait", "position": idx})
+                        except Exception:
+                            pass
+
+            await _notify_players_status(room)
+
+            if room.mic == websocket:
+                room.mic = None
         else:
             room.display = None
-            if room.mic:
+            targets = list(room.players.values()) + room.unregistered_mics
+            if room.mic and room.mic not in targets:
+                targets.append(room.mic)
+            for ws in targets:
                 try:
-                    await room.mic.send_json({"type": "pairing_status", "status": "unpaired", "role": "display"})
+                    await ws.send_json({"type": "pairing_status", "status": "unpaired", "role": "display"})
                 except Exception as e:
                     logger.debug(f"Falha ao notificar mic do unpair: {e}")
 
@@ -345,3 +609,4 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
             logger.debug(f"Falha ao fechar websocket: {e}")
 
         room_manager.clean_room(room_id)
+

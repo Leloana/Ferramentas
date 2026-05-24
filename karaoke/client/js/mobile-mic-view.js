@@ -1,6 +1,7 @@
 import { state } from './state.js';
-import { getMicrophoneStream } from './mic-stream.js';
+import { AudioLifecycleManager } from './audio-lifecycle-manager.js';
 import { showToast } from './toast.js';
+import { dom } from './dom.js';
 
 export function initMobileMicView() {
     const btnMobileActivate = document.getElementById('btn-mobile-activate');
@@ -9,44 +10,66 @@ export function initMobileMicView() {
     const btnMobileMute = document.getElementById('btn-mobile-mute');
     const mobileMicVu = document.getElementById('mobile-mic-vu');
 
+    const btnMobileRegister = dom.btnMobileRegister;
+    const mobileNicknameInput = dom.mobileNicknameInput;
+
+    if (btnMobileRegister) {
+        btnMobileRegister.onclick = () => {
+            const name = mobileNicknameInput.value.trim();
+            if (!name) {
+                showToast("Por favor, digite um apelido!", "warning");
+                return;
+            }
+            btnMobileRegister.disabled = true;
+            btnMobileRegister.innerText = "REGISTRANDO...";
+            if (state.mobileWs && state.mobileWs.readyState === WebSocket.OPEN) {
+                state.mobileWs.send(JSON.stringify({ type: "register_name", name: name }));
+            } else {
+                showToast("Conexão indisponível. Tente novamente em instantes.", "error");
+                btnMobileRegister.disabled = false;
+                btnMobileRegister.innerText = "Confirmar Apelido";
+            }
+        };
+    }
+
     if (btnMobileActivate) {
         btnMobileActivate.onclick = async () => {
             btnMobileActivate.disabled = true;
             btnMobileActivate.innerText = "ATIVANDO...";
 
             try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const stream = await getMicrophoneStream();
-
-                if (state.mobileWs && state.mobileWs.readyState === WebSocket.OPEN) {
-                    state.mobileWs.send(JSON.stringify({ type: "client_info", sample_rate: audioCtx.sampleRate }));
+                if (state.audioManager) {
+                    await state.audioManager.destroy();
+                    state.audioManager = null;
                 }
 
-                await audioCtx.audioWorklet.addModule('/js/worklets/audio-processor.js');
-                const source = audioCtx.createMediaStreamSource(stream);
-                const processor = new AudioWorkletNode(audioCtx, 'audio-processor');
+                state.audioManager = new AudioLifecycleManager({
+                    captureMic: true,
+                    onAudioChunk: (data) => {
+                        if (state.mobileWs && state.mobileWs.readyState === WebSocket.OPEN && !state.micMuted && state.isSingingActive) {
+                            state.mobileWs.send(data);
+                        }
+                    }
+                });
 
-                const analyser = audioCtx.createAnalyser();
-                analyser.fftSize = 256;
+                await state.audioManager.init();
+                await state.audioManager.start();
+
+                if (state.mobileWs && state.mobileWs.readyState === WebSocket.OPEN) {
+                    state.mobileWs.send(JSON.stringify({ type: "client_info", sample_rate: state.audioManager.audioContext.sampleRate }));
+                }
+
+                const analyser = state.audioManager.getAnalyser();
                 const bufferLength = analyser.frequencyBinCount;
                 const dataArray = new Uint8Array(bufferLength);
-                source.connect(analyser);
-
-                processor.port.onmessage = (event) => {
-                    if (state.mobileWs && state.mobileWs.readyState === WebSocket.OPEN && !state.micMuted && state.isSingingActive) {
-                        state.mobileWs.send(event.data);
-                    }
-                };
-
-                source.connect(processor);
-                processor.connect(audioCtx.destination);
 
                 btnMobileActivate.innerHTML = `<svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" x2="12" y1="19" y2="22"></line></svg><span>ATIVO</span>`;
                 btnMobileActivate.classList.add('btn-mobile-activate--active');
 
-                if (mobileActiveControls) mobileActiveControls.style.display = 'flex';
-                if (mobileLyricsContainer) mobileLyricsContainer.style.display = 'flex';
-                if (mobileMicVu) mobileMicVu.style.display = 'block';
+                const mobileActiveMicContainer = document.getElementById('mobile-active-mic-container');
+                if (mobileActiveMicContainer) {
+                    mobileActiveMicContainer.setAttribute('data-mic-active', 'true');
+                }
 
                 function drawVU() {
                     if (!analyser || state.micMuted) {
@@ -111,7 +134,11 @@ export function initMobileMicView() {
 
     const btnMobileExitMic = document.getElementById('btn-mobile-exit-mic');
     if (btnMobileExitMic) {
-        btnMobileExitMic.onclick = () => {
+        btnMobileExitMic.onclick = async () => {
+            if (state.audioManager) {
+                await state.audioManager.destroy();
+                state.audioManager = null;
+            }
             window.location.href = window.location.origin + window.location.pathname;
         };
     }

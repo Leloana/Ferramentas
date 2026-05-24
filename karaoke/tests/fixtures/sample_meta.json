@@ -1,0 +1,20 @@
+{
+    "meta": {
+        "title": "Escolta de Vagalumes",
+        "artist": "Rick & Renner",
+        "language": "pt",
+        "slug": "escolta-de-vagalumes-rick-renner"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://youtu.be/9eSuXTUyaZU",
+        "youtube_backing_url": null
+    },
+    "lyrics": {
+        "plain_lyrics": "Voltando pra minha terra eu renasci\nNos anos que fiquei distante acho que morri\nMorri de saudade dos pais, irmãos e companheiros\nQue ao cair da tarde num velho terreiro\nA gente cantava as mais lindas canções\nViola afinada e na voz dueto perfeito\nLonge eu não cantava, doía meu peito\nNa cidade grande só tive ilusões\nMas voltei, mas voltei, eu voltei\nE ao passar à porteira a mata e o perfume\nEu fui escoltado pelos vagalumes\nPois era uma linda noite de luar"
+    },
+    "status": {
+        "has_vocal_file": true,
+        "has_backing_file": true,
+        "has_lrc_file": true
+    }
+}

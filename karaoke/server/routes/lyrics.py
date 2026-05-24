@@ -105,7 +105,8 @@ async def save_lyrics(
         with open(lrc_path, "w", encoding="utf-8", newline="\n") as f:
             f.write("\n".join(clean_lines))
 
-        run_prepare_song(str(song_dir), language)
+        import asyncio
+        await asyncio.to_thread(run_prepare_song, str(song_dir), language)
         return {"success": True}
 
     except HTTPException:

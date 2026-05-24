@@ -174,7 +174,7 @@ async def reinstall_song(
                     "-o", str(demucs_out_dir),
                     str(song_dir / "vocal.mp3")
                 ]
-                process = subprocess.run(demucs_cmd, capture_output=False, text=True)
+                process = await asyncio.to_thread(subprocess.run, demucs_cmd, capture_output=False, text=True)
                 if process.returncode != 0:
                     logger.info(f"Demucs exe: {demucs_exe}")
                     logger.info(f"Demucs cmd: {demucs_cmd}")
@@ -250,7 +250,7 @@ async def reinstall_song(
                     "-o", str(demucs_out_dir),
                     str(original_audio_path)
                 ]
-                process = subprocess.run(demucs_cmd, capture_output=False, text=True)
+                process = await asyncio.to_thread(subprocess.run, demucs_cmd, capture_output=False, text=True)
                 if process.returncode != 0:
                     logger.info(f"Demucs exe: {demucs_exe}")
                     logger.info(f"Demucs cmd: {demucs_cmd}")
@@ -327,7 +327,8 @@ async def reinstall_song(
                 
                 device = "cuda" if torch.cuda.is_available() else "cpu"
                 logger.info(f"Chamando Forced Alignment (PRO) no dispositivo: {device}")
-                corrected_segments, lrc_text = align_lyrics_forced(
+                corrected_segments, lrc_text = await asyncio.to_thread(
+                    align_lyrics_forced,
                     str(song_dir / "vocal.mp3"),
                     plain_lyrics,
                     language=song_lang,
@@ -354,13 +355,15 @@ async def reinstall_song(
                     
                     stt = get_stt_engine()
                     raw_data = vocal_to_float32_mono_16k(vocal_audio)
-                    segments, _info = stt.model.transcribe(
-                        raw_data,
-                        language=song_lang,
-                        initial_prompt=plain_lyrics if plain_lyrics else None,
-                        **TRANSCRIBE_KWARGS,
-                    )
-                    segments_list = list(segments)
+                    def transcribe_trans():
+                        segments, _info = stt.model.transcribe(
+                            raw_data,
+                            language=song_lang,
+                            initial_prompt=plain_lyrics if plain_lyrics else None,
+                            **TRANSCRIBE_KWARGS,
+                        )
+                        return list(segments)
+                    segments_list = await asyncio.to_thread(transcribe_trans)
                     total_duration = len(vocal_audio) / 1000.0
                     lrc_text, fallback_used = align_plain_lyrics(
                         plain_lyrics, segments_list, _get_field("meta", "title", ""), _get_field("meta", "artist", ""), total_duration
@@ -378,13 +381,13 @@ async def reinstall_song(
                         has_lrc = True
                     else:
                         logger.info("Tentando fallback de geração automática de LRC puro...")
-                        generate_lrc(str(song_dir), language=song_lang, debug=False)
+                        await asyncio.to_thread(generate_lrc, str(song_dir), language=song_lang, debug=False)
                         has_lrc = True
         else:
             # Caso align_lyrics=False (FAST) ou plain_lyrics ausente
             logger.info("Executando transcrição direta com Whisper (FAST)...")
             try:
-                generate_lrc(str(song_dir), language=song_lang, debug=False)
+                await asyncio.to_thread(generate_lrc, str(song_dir), language=song_lang, debug=False)
                 has_lrc = True
             except Exception as e:
                 logger.error(f"Erro ao gerar transcrição FAST com Whisper: {e}")
@@ -403,7 +406,7 @@ async def reinstall_song(
         else:
             logger.info("Nenhuma letra disponível ou plain_lyrics ausente. Gerando resultado do Whisper direto para lyrics.lrc...")
         try:
-            generate_lrc(str(song_dir), language=song_lang, debug=False)
+            await asyncio.to_thread(generate_lrc, str(song_dir), language=song_lang, debug=False)
         except Exception as e:
             logger.error(f"Erro ao gerar transcrição direto com o Whisper: {e}")
             if lrc_backup is not None:
@@ -415,7 +418,7 @@ async def reinstall_song(
         # Se já alinhamos, opcionalmente geramos a versão debug pura como referência secundária
         logger.info("Gerando versão de referência de transcrição pura com Whisper (lyrics_debug.lrc)...")
         try:
-            generate_lrc(str(song_dir), language=song_lang, debug=True)
+            await asyncio.to_thread(generate_lrc, str(song_dir), language=song_lang, debug=True)
         except Exception as e:
             logger.error(f"Aviso: Erro ao gerar transcrição de debug com o Whisper: {e}")
 
@@ -430,8 +433,8 @@ async def reinstall_song(
 
     logger.info("Executando o alinhamento word-level (prepare_song)...")
     try:
-        prepare_song(str(song_dir), language=song_lang, debug=True)
-        prepare_song(str(song_dir), language=song_lang, debug=False)
+        await asyncio.to_thread(prepare_song, str(song_dir), language=song_lang, debug=True)
+        await asyncio.to_thread(prepare_song, str(song_dir), language=song_lang, debug=False)
 
         # Realinhamento de segmentos e LRC pós-processamento
         if align_lyrics and txt_file.exists():

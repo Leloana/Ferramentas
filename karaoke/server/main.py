@@ -54,5 +54,22 @@ app.include_router(ws_router)
 
 if __name__ == "__main__":
     import uvicorn
-    # Em produção, carregar caminhos de cert.pem e key.pem
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    server_path = Path(__file__).resolve().parent
+    ssl_key = server_path / "key.pem"
+    ssl_cert = server_path / "cert.pem"
+    
+    import os
+    force_http = os.environ.get("KARAOKE_HTTP", "").lower() in ("1", "true", "yes")
+    
+    if ssl_key.exists() and ssl_cert.exists() and not force_http:
+        logger.info(f"Iniciando servidor HTTPS com SSL nos arquivos: {ssl_key} e {ssl_cert}")
+        uvicorn.run(
+            app,
+            host="0.0.0.0",
+            port=8000,
+            ssl_keyfile=str(ssl_key),
+            ssl_certfile=str(ssl_cert)
+        )
+    else:
+        logger.info("Iniciando servidor em modo HTTP padrão (sem SSL).")
+        uvicorn.run(app, host="0.0.0.0", port=8000)

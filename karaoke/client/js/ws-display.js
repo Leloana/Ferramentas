@@ -23,8 +23,7 @@ export function connectDisplayWebSocket() {
 
     state.ws.onclose = () => {
         console.log("WebSocket do Display desconectado. Tentando reconectar...");
-        const selectionArea = document.getElementById('selection-area');
-        if (selectionArea && selectionArea.style.display !== 'none') {
+        if (state.currentAppState === 'idle') {
             setTimeout(connectDisplayWebSocket, 3000);
         }
     };

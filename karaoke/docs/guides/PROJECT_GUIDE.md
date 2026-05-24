@@ -72,10 +72,19 @@ karaoke/
 │   ├── prepare_song.py         # Alinhador word-level de áudio vocal com LRC para gerar segmentos
 │   └── generate_lrc.py         # Gerador de LRC via Whisper puro
 └── docs/                       # Documentação técnica e especificações do projeto
-    ├── ARCHITECTURE.md         # Manual de ES Modules e estado do client
-    ├── BACKEND_REFACTOR_NOTES.md # Histórico de refatoração do backend
-    ├── PLANO.md                # Planejamento original do projeto
-    └── PROJECT_GUIDE.md        # Este arquivo (guia principal)
+    ├── architecture/           # Documentos de arquitetura e fluxos de rede
+    │   ├── ARCHITECTURE.md     # Visão geral de componentes e dependências
+    │   ├── FLOW.md             # Fluxos de processamento de músicas e API
+    │   └── MULTIPLAYER_FLOW.md # Handshake e loops de multiplayer
+    ├── guides/                 # Manuais operacionais e de calibração
+    │   ├── PROJECT_GUIDE.md    # Este arquivo (guia principal / fonte da verdade)
+    │   └── LRC_ALIGNMENT_TUNING.md # Guia de solução e knobs de alinhamento
+    └── archive/                # Documentos arquivados/históricos ou deprecados
+        ├── PLANO.md            # [DEPRECADO] Planejamento original do MVP
+        ├── notes.md            # [DEPRECADO] Rascunho inicial e problemas Holiday
+        ├── BACKEND_REFACTOR_NOTES.md # [ARQUIVADO] Histórico de refatoração do server
+        ├── LRC_ALIGNMENT_FIX.md # [ARQUIVADO] Notas sobre transição para word-level
+        └── holiday-green-day/  # Pasta de áudios/JSONs de depuração do Holiday
 ```
 
 ---

@@ -18,6 +18,10 @@ router = APIRouter()
 
 def _build_meta(form: dict) -> dict:
     """Estrutura `meta.json` salvo junto da música para reprodução simples."""
+    has_lrc = (
+        (form.get("lrc_file") is not None and form["lrc_file"].filename != "") or
+        (form.get("lrc_text") is not None and form["lrc_text"].strip() != "")
+    )
     return {
         "meta": {
             "title": form["title"],
@@ -35,7 +39,7 @@ def _build_meta(form: dict) -> dict:
         "status": {
             "has_vocal_file": form["vocal_file"] is not None and form["vocal_file"].filename != "",
             "has_backing_file": form["backing_file"] is not None and form["backing_file"].filename != "",
-            "has_lrc_file": form["lrc_file"] is not None and form["lrc_file"].filename != "",
+            "has_lrc_file": has_lrc,
         }
     }
 
@@ -58,6 +62,7 @@ async def upload_song(
     vocal_file: Optional[UploadFile] = File(None),
     backing_file: Optional[UploadFile] = File(None),
     lrc_file: Optional[UploadFile] = File(None),
+    lrc_text: Optional[str] = Form(None),
     youtube_vocal_url: Optional[str] = Form(None),
     youtube_backing_url: Optional[str] = Form(None),
     plain_lyrics: Optional[str] = Form(None),
@@ -91,9 +96,13 @@ async def upload_song(
         if lrc_file and lrc_file.filename:
             lrc_content = await lrc_file.read()
             try:
-                lrc_text = lrc_content.decode("utf-8")
+                lrc_decoded = lrc_content.decode("utf-8")
             except UnicodeDecodeError:
-                lrc_text = lrc_content.decode("latin-1")
+                lrc_decoded = lrc_content.decode("latin-1")
+            clean_lines = [line.strip() for line in lrc_decoded.splitlines() if line.strip()]
+            with open(song_dir / "lyrics.lrc", "w", encoding="utf-8", newline="\n") as f:
+                f.write("\n".join(clean_lines))
+        elif lrc_text and lrc_text.strip():
             clean_lines = [line.strip() for line in lrc_text.splitlines() if line.strip()]
             with open(song_dir / "lyrics.lrc", "w", encoding="utf-8", newline="\n") as f:
                 f.write("\n".join(clean_lines))

@@ -1,4 +1,4 @@
-import { state } from './state.js';
+import { state, setAppState } from './state.js';
 import { dom, startLoadingOverlay, stopLoadingOverlay } from './dom.js';
 import { showToast } from './toast.js';
 
@@ -99,9 +99,7 @@ export function renderSongs(songsList) {
 export function selectSong(song) {
     state.selectedSongId = song.id;
     document.getElementById('current-song-title').innerText = song.title;
-    dom.selectionArea.style.display = 'none';
-    dom.gameArea.style.display = 'block';
-    document.getElementById('sync-controls').style.display = 'flex';
+    setAppState('waiting');
     dom.audioPlayer.src = `/songs/${song.id}/audio`;
 
     const savedVolume = localStorage.getItem('karaoke_backing_volume');
@@ -132,24 +130,22 @@ export async function loadAndOpenLrcEditor(slug) {
                 metaArea.value = data.meta_json || '';
             }
 
-            // Ativa aba meta por padrão ao abrir
-            const sectionMeta = document.getElementById('editor-section-meta');
-            const sectionLrc = document.getElementById('editor-section-lrc');
-            const btnTabMeta = document.getElementById('btn-tab-meta');
-            const btnTabLrc = document.getElementById('btn-tab-lrc');
-
-            if (sectionMeta) sectionMeta.style.display = 'block';
-            if (sectionLrc) sectionLrc.style.display = 'none';
-            if (btnTabMeta) {
-                btnTabMeta.style.background = 'var(--accent)';
-                btnTabMeta.style.color = '#000';
-            }
-            if (btnTabLrc) {
-                btnTabLrc.style.background = 'transparent';
-                btnTabLrc.style.color = 'var(--dim)';
+            if (dom.lrcEditorForm) {
+                dom.lrcEditorForm.setAttribute('data-editor-tab', 'meta');
             }
 
-            dom.lrcEditorModal.style.display = 'flex';
+            // Popula a área de texto de colar letra
+            const pasteArea = document.getElementById('editor-paste-lyrics-textarea');
+            if (pasteArea) {
+                try {
+                    const meta = JSON.parse(data.meta_json);
+                    pasteArea.value = meta?.lyrics?.plain_lyrics || '';
+                } catch (e) {
+                    pasteArea.value = '';
+                }
+            }
+
+            dom.lrcEditorModal.setAttribute('data-open', 'true');
         } else {
             showToast("Erro: Os arquivos da música não foram localizados no servidor.", "error");
         }
@@ -180,12 +176,12 @@ export function initSearch() {
 }
 
 export async function triggerReinstall(songId, songTitle) {
-    if (dom.lrcEditorModal) dom.lrcEditorModal.style.display = 'none';
+    if (dom.lrcEditorModal) dom.lrcEditorModal.removeAttribute('data-open');
 
     const choice = await promptGenerationOptions();
     if (!choice) {
         if (dom.lrcEditorModal && document.getElementById('editor-slug')?.value === songId) {
-            dom.lrcEditorModal.style.display = 'flex';
+            dom.lrcEditorModal.setAttribute('data-open', 'true');
         }
         return;
     }
@@ -213,7 +209,7 @@ export async function triggerReinstall(songId, songTitle) {
         stopLoadingOverlay();
         showToast("Erro ao reinstalar: " + error.message, "error");
         if (dom.lrcEditorModal && document.getElementById('editor-slug')?.value === songId) {
-            dom.lrcEditorModal.style.display = 'flex';
+            dom.lrcEditorModal.setAttribute('data-open', 'true');
         }
     }
 }
@@ -294,35 +290,17 @@ export function initSelectionTabs() {
 
     if (!tabSongs || !tabReinstall || !songsContent || !reinstallContent) return;
 
-    tabSongs.onclick = () => {
-        tabSongs.className = 'tab-btn tab-btn--active';
-        tabSongs.style.background = 'var(--accent-gradient)';
-        tabSongs.style.color = '#000';
-        tabSongs.style.fontWeight = '800';
-        
-        tabReinstall.className = 'tab-btn tab-btn--inactive';
-        tabReinstall.style.background = 'transparent';
-        tabReinstall.style.color = 'var(--dim)';
-        tabReinstall.style.fontWeight = '700';
+    const selectionArea = document.getElementById('selection-area');
+    if (selectionArea && !selectionArea.hasAttribute('data-active-tab')) {
+        selectionArea.setAttribute('data-active-tab', 'songs');
+    }
 
-        songsContent.style.display = 'block';
-        reinstallContent.style.display = 'none';
+    tabSongs.onclick = () => {
+        if (selectionArea) selectionArea.setAttribute('data-active-tab', 'songs');
     };
 
     tabReinstall.onclick = () => {
-        tabReinstall.className = 'tab-btn tab-btn--active';
-        tabReinstall.style.background = 'var(--accent-gradient)';
-        tabReinstall.style.color = '#000';
-        tabReinstall.style.fontWeight = '800';
-        
-        tabSongs.className = 'tab-btn tab-btn--inactive';
-        tabSongs.style.background = 'transparent';
-        tabSongs.style.color = 'var(--dim)';
-        tabSongs.style.fontWeight = '700';
-
-        songsContent.style.display = 'none';
-        reinstallContent.style.display = 'block';
-        
+        if (selectionArea) selectionArea.setAttribute('data-active-tab', 'reinstall');
         renderReinstallList(state.allSongs);
     };
 }
@@ -343,7 +321,7 @@ export function promptGenerationOptions() {
             btnPro.onclick = null;
             btnFlash.onclick = null;
             btnClose.onclick = null;
-            modal.style.display = 'none';
+            modal.removeAttribute('data-open');
             resolve(choice);
         };
 
@@ -351,6 +329,6 @@ export function promptGenerationOptions() {
         btnFlash.onclick = () => cleanupAndResolve('flash');
         btnClose.onclick = () => cleanupAndResolve(null);
 
-        modal.style.display = 'flex';
+        modal.setAttribute('data-open', 'true');
     });
 }

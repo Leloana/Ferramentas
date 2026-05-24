@@ -21,9 +21,18 @@ function initPairingModal() {
     if (!btnOpenPairing) return;
 
     btnOpenPairing.onclick = async () => {
-        pairingModal.style.display = 'flex';
-        pairingQrcode.style.display = 'none';
-        pairingQrcodeLoading.style.display = 'flex';
+        pairingModal.setAttribute('data-open', 'true');
+        pairingModal.setAttribute('data-qrcode-status', 'loading');
+
+        // Reset pairing status and dot indicator
+        const pairingStatusText = document.getElementById('pairing-status-text');
+        const statusBox = document.getElementById('pairing-status-box');
+        if (pairingStatusText) {
+            pairingStatusText.innerText = "Aguardando conexão do celular...";
+        }
+        if (statusBox) {
+            statusBox.removeAttribute('data-status');
+        }
 
         let targetHost = window.location.host;
         try {
@@ -46,14 +55,20 @@ function initPairingModal() {
         pairingQrcode.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(pairingUrl)}`;
 
         pairingQrcode.onload = () => {
-            pairingQrcodeLoading.style.display = 'none';
-            pairingQrcode.style.display = 'block';
+            pairingModal.setAttribute('data-qrcode-status', 'ready');
         };
     };
 
     btnClosePairing.onclick = () => {
-        pairingModal.style.display = 'none';
+        pairingModal.removeAttribute('data-open');
     };
+
+    // Abre o modal de pareamento ao clicar no QR Code ao lado de qualquer slot de jogador
+    document.querySelectorAll('.btn-qr-pairing').forEach(btn => {
+        btn.onclick = () => {
+            btnOpenPairing.click();
+        };
+    });
 }
 
 function initAddSongModal() {
@@ -70,21 +85,7 @@ function initAddSongModal() {
 
     const setTab = (which) => {
         state.activeUploadTab = which;
-        if (which === 'local') {
-            tabBtnLocal.classList.add('tab-btn--active');
-            tabBtnLocal.classList.remove('tab-btn--inactive');
-            tabBtnYoutube.classList.remove('tab-btn--active');
-            tabBtnYoutube.classList.add('tab-btn--inactive');
-            sectionLocalUpload.style.display = 'block';
-            sectionYoutubeImport.style.display = 'none';
-        } else {
-            tabBtnYoutube.classList.add('tab-btn--active');
-            tabBtnYoutube.classList.remove('tab-btn--inactive');
-            tabBtnLocal.classList.remove('tab-btn--active');
-            tabBtnLocal.classList.add('tab-btn--inactive');
-            sectionLocalUpload.style.display = 'none';
-            sectionYoutubeImport.style.display = 'block';
-        }
+        addSongForm.setAttribute('data-upload-tab', which);
     };
 
     tabBtnLocal.onclick = () => setTab('local');
@@ -94,21 +95,10 @@ function initAddSongModal() {
 
     const setStep = (step) => {
         currentStep = step;
-        const step1 = document.getElementById('upload-step-1');
-        const step2 = document.getElementById('upload-step-2');
-        const btnBack = document.getElementById('btn-back-step-1');
+        addSongForm.setAttribute('data-step', step);
         const btnSubmit = document.getElementById('btn-submit-song');
-
-        if (step === 1) {
-            step1.style.display = 'block';
-            step2.style.display = 'none';
-            btnBack.style.display = 'none';
-            btnSubmit.innerText = 'Avançar ➡️';
-        } else {
-            step1.style.display = 'none';
-            step2.style.display = 'block';
-            btnBack.style.display = 'inline-block';
-            btnSubmit.innerText = 'Confirmar e Criar 🎵';
+        if (btnSubmit) {
+            btnSubmit.innerText = (step === 1) ? 'Avançar ➡️' : 'Confirmar e Criar 🎵';
         }
     };
 
@@ -125,13 +115,13 @@ function initAddSongModal() {
         const advancedOptionsContainer = document.getElementById('advanced-options-container');
         const advancedToggleIcon = document.getElementById('advanced-toggle-icon');
         const btnToggleAdvanced = document.getElementById('btn-toggle-advanced');
-        if (advancedOptionsContainer) advancedOptionsContainer.style.display = 'none';
+        if (advancedOptionsContainer) advancedOptionsContainer.removeAttribute('data-open');
         if (advancedToggleIcon) advancedToggleIcon.innerText = '▼';
         if (btnToggleAdvanced) btnToggleAdvanced.classList.remove('advanced-toggle--open');
 
         setTab('youtube');
         setStep(1);
-        addSongModal.style.display = 'flex';
+        addSongModal.setAttribute('data-open', 'true');
     };
 
     const btnToggleAdvanced = document.getElementById('btn-toggle-advanced');
@@ -140,19 +130,19 @@ function initAddSongModal() {
 
     if (btnToggleAdvanced && advancedOptionsContainer) {
         btnToggleAdvanced.onclick = () => {
-            if (advancedOptionsContainer.style.display === 'none') {
-                advancedOptionsContainer.style.display = 'block';
+            if (!advancedOptionsContainer.hasAttribute('data-open')) {
+                advancedOptionsContainer.setAttribute('data-open', 'true');
                 advancedToggleIcon.innerText = '▲';
                 btnToggleAdvanced.classList.add('advanced-toggle--open');
             } else {
-                advancedOptionsContainer.style.display = 'none';
+                advancedOptionsContainer.removeAttribute('data-open');
                 advancedToggleIcon.innerText = '▼';
                 btnToggleAdvanced.classList.remove('advanced-toggle--open');
             }
         };
     }
     btnCloseAddSong.onclick = () => {
-        addSongModal.style.display = 'none';
+        addSongModal.removeAttribute('data-open');
     };
 
     addSongForm.onsubmit = async (e) => {
@@ -223,11 +213,11 @@ function initAddSongModal() {
         }
 
         // Prompt the user for the generation options (PRO vs Flash vs Cancel)
-        addSongModal.style.display = 'none';
+        addSongModal.removeAttribute('data-open');
         const choice = await promptGenerationOptions();
         if (!choice) {
             // Cancelled, show addSongModal again
-            addSongModal.style.display = 'flex';
+            addSongModal.setAttribute('data-open', 'true');
             return;
         }
 
@@ -270,7 +260,7 @@ function initAddSongModal() {
         } catch (error) {
             stopLoadingOverlay();
             showToast("Erro ao adicionar música: " + error.message, "error");
-            addSongModal.style.display = 'flex';
+            addSongModal.setAttribute('data-open', 'true');
             setStep(2);
         }
     };
@@ -284,31 +274,108 @@ function initLrcEditorModal() {
     // Inicializa a navegação por abas do editor
     const btnTabMeta = document.getElementById('btn-tab-meta');
     const btnTabLrc = document.getElementById('btn-tab-lrc');
+    const btnTabPaste = document.getElementById('btn-tab-paste-lyrics');
     const sectionMeta = document.getElementById('editor-section-meta');
     const sectionLrc = document.getElementById('editor-section-lrc');
+    const sectionPaste = document.getElementById('editor-section-paste-lyrics');
 
-    if (btnTabMeta && btnTabLrc && sectionMeta && sectionLrc) {
-        btnTabMeta.onclick = () => {
-            sectionMeta.style.display = 'block';
-            sectionLrc.style.display = 'none';
-            btnTabMeta.style.background = 'var(--accent)';
-            btnTabMeta.style.color = '#000';
-            btnTabLrc.style.background = 'transparent';
-            btnTabLrc.style.color = 'var(--dim)';
-        };
+    const switchTab = (tabName) => {
+        if (lrcEditorForm) {
+            lrcEditorForm.setAttribute('data-editor-tab', tabName);
+        }
+        if (tabName === 'paste') {
+            // Popula com o plain_lyrics atual do meta.json se houver
+            try {
+                const metaArea = document.getElementById('editor-meta-textarea');
+                const pasteArea = document.getElementById('editor-paste-lyrics-textarea');
+                if (metaArea && pasteArea) {
+                    const meta = JSON.parse(metaArea.value);
+                    if (meta && meta.lyrics && meta.lyrics.plain_lyrics) {
+                        pasteArea.value = meta.lyrics.plain_lyrics;
+                    }
+                }
+            } catch (e) {
+                // Ignore se o JSON for inválido no momento
+            }
+        }
+    };
 
-        btnTabLrc.onclick = () => {
-            sectionMeta.style.display = 'none';
-            sectionLrc.style.display = 'block';
-            btnTabMeta.style.background = 'transparent';
-            btnTabMeta.style.color = 'var(--dim)';
-            btnTabLrc.style.background = 'var(--accent)';
-            btnTabLrc.style.color = '#000';
+    if (btnTabMeta && btnTabLrc && btnTabPaste) {
+        btnTabMeta.onclick = () => switchTab('meta');
+        btnTabLrc.onclick = () => switchTab('lrc');
+        btnTabPaste.onclick = () => switchTab('paste');
+    }
+
+    const btnFormatPaste = document.getElementById('btn-format-paste-lyrics');
+    if (btnFormatPaste) {
+        btnFormatPaste.onclick = () => {
+            const pasteArea = document.getElementById('editor-paste-lyrics-textarea');
+            const metaArea = document.getElementById('editor-meta-textarea');
+            if (!pasteArea || !metaArea) return;
+
+            const rawLyrics = pasteArea.value;
+            if (!rawLyrics.trim()) {
+                showToast("Por favor, cole a letra da música antes de formatar.", "warning");
+                return;
+            }
+
+            // Normalização: substituir \r\n por \n
+            const normalized = rawLyrics.replace(/\r\n/g, '\n');
+            const lines = normalized.split('\n');
+
+            // Limpa espaços no início/fim de cada linha e colapsa linhas em branco consecutivas
+            const cleanedLines = [];
+            let consecutiveEmptyCount = 0;
+            for (let line of lines) {
+                const trimmed = line.trim();
+                if (trimmed === '') {
+                    consecutiveEmptyCount++;
+                    if (consecutiveEmptyCount === 1) {
+                        cleanedLines.push('');
+                    }
+                } else {
+                    consecutiveEmptyCount = 0;
+                    cleanedLines.push(trimmed);
+                }
+            }
+
+            // Remove linhas em branco no início e no fim
+            let startIndex = 0;
+            while (startIndex < cleanedLines.length && cleanedLines[startIndex] === '') {
+                startIndex++;
+            }
+            let endIndex = cleanedLines.length - 1;
+            while (endIndex >= startIndex && cleanedLines[endIndex] === '') {
+                endIndex--;
+            }
+
+            const finalLines = cleanedLines.slice(startIndex, endIndex + 1);
+            const formattedLyrics = finalLines.join('\n');
+
+            // Atualiza o JSON do meta.json
+            try {
+                const metaJsonStr = metaArea.value.trim() || '{}';
+                const meta = JSON.parse(metaJsonStr);
+                
+                if (!meta.lyrics) {
+                    meta.lyrics = {};
+                }
+                meta.lyrics.plain_lyrics = formattedLyrics;
+
+                metaArea.value = JSON.stringify(meta, null, 2);
+                showToast("Letra formatada e inserida no meta.json com sucesso! 🎉", "success");
+                
+                // Volta para a aba de Ajustes (meta.json)
+                switchTab('meta');
+            } catch (e) {
+                console.error("Erro ao analisar meta.json:", e);
+                showToast("Erro ao ler o meta.json. Certifique-se de que ele é um JSON válido antes de formatar a letra.", "error");
+            }
         };
     }
 
     btnCloseEditor.onclick = () => {
-        dom.lrcEditorModal.style.display = 'none';
+        dom.lrcEditorModal.removeAttribute('data-open');
     };
 
     const btnReinstallSong = document.getElementById('btn-reinstall-song');
@@ -337,7 +404,7 @@ function initLrcEditorModal() {
             formData.set('meta_json', metaArea.value);
         }
 
-        dom.lrcEditorModal.style.display = 'none';
+        dom.lrcEditorModal.removeAttribute('data-open');
         startLoadingOverlay("Alinhando Letras...", "Mapeando sílabas das palavras e calculando fonemas... 📝⚡");
 
         try {
@@ -357,7 +424,7 @@ function initLrcEditorModal() {
         } catch (error) {
             stopLoadingOverlay();
             showToast("Erro ao salvar dados da música: " + error.message, "error");
-            dom.lrcEditorModal.style.display = 'flex';
+            dom.lrcEditorModal.setAttribute('data-open', 'true');
         }
     };
 }

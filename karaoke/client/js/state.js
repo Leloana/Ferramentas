@@ -22,4 +22,26 @@ export const state = {
     outroTotalDuration: 0,
     micMuted: false,
     activeUploadTab: 'youtube',
+    currentTranspose: 0,
+    currentSpeed: 1.0,
+    isUserDraggingProgress: false,
+    mediaElementSource: null,
+    jungleNode: null,
+    localStream: null,
+    micSourceNode: null,
+    micProcessorNode: null,
+    mobileNickname: null,
+    isActiveInGame: false,
+    activePlayers: null,
+    gameMode: null,
+    currentAppState: 'idle',
+    audioManager: null,
 };
+
+export function setAppState(stateName) {
+    const appEl = document.getElementById('app');
+    if (appEl) {
+        appEl.setAttribute('data-state', stateName);
+    }
+    state.currentAppState = stateName;
+}
