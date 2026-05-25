@@ -84,6 +84,16 @@ export async function resetGameState() {
     if (app) {
         app.removeAttribute('data-silence');
         app.removeAttribute('data-players');
+        app.removeAttribute('data-player-count');
+    }
+
+    if (state.mpBorderTimers) {
+        state.mpBorderTimers.forEach(t => clearTimeout(t));
+        state.mpBorderTimers = null;
+    }
+    if (state.perfBorderTimer) {
+        clearTimeout(state.perfBorderTimer);
+        state.perfBorderTimer = null;
     }
 
     document.getElementById('silence-progress-fill').style.width = '0%';
@@ -117,7 +127,7 @@ export async function resetGameState() {
     }
 
     dom.btnStart.disabled = false;
-    dom.btnStart.innerText = 'INICIAR CANTO';
+    dom.btnStart.innerText = 'INICIAR';
     if (dom.btnPausePlay) {
         dom.btnPausePlay.innerText = 'PAUSAR';
         dom.btnPausePlay.removeAttribute('data-paused');
@@ -232,6 +242,7 @@ export async function startKaraoke() {
         const app = document.getElementById('app');
         if (app) {
             app.setAttribute('data-players', activeList.length > 1 ? 'multi' : 'solo');
+            app.setAttribute('data-player-count', activeList.length.toString());
         }
 
         if (activeList.length > 1) {
@@ -445,6 +456,14 @@ const DISPLAY_HANDLERS = {
             } else {
                 perfBorder.className = 'perf-border-poor';
             }
+
+            if (state.perfBorderTimer) {
+                clearTimeout(state.perfBorderTimer);
+            }
+            state.perfBorderTimer = setTimeout(() => {
+                perfBorder.className = 'perf-border-idle';
+                state.perfBorderTimer = null;
+            }, 2000);
         }
 
         // Atualização de scores no modo Multiplayer
@@ -453,6 +472,10 @@ const DISPLAY_HANDLERS = {
             const mode = state.gameMode;
             const slots = ['p1', 'p2', 'p3', 'p4'];
             
+            const expectedNormalized = state.lastSegmentLyricsTimed
+                ? state.lastSegmentLyricsTimed.map(w => w.word.toLowerCase().replace(/[^\w\s]/g, '').trim())
+                : [];
+
             if (mode === '2v2') {
                 const p1Val = (data.player_scores[activeList[0]]?.total_score || 0);
                 const p2Val = (data.player_scores[activeList[1]]?.total_score || 0);
@@ -466,11 +489,61 @@ const DISPLAY_HANDLERS = {
                 if (barA) {
                     barA.querySelector('.mp-player-pct').innerText = teamA.toFixed(1) + "%";
                     barA.querySelector('.mp-progress-fill').style.width = teamA + "%";
+                    
+                    const transDiv = barA.querySelector('.mp-player-transcription');
+                    if (transDiv) {
+                        transDiv.innerHTML = '';
+                        const p1Name = activeList[0];
+                        const p2Name = activeList[1];
+                        const t1 = data.player_scores[p1Name]?.transcription || '';
+                        const t2 = data.player_scores[p2Name]?.transcription || '';
+                        
+                        if (t1 || t2) {
+                            const d1 = document.createElement('div');
+                            d1.style.fontSize = '0.8rem';
+                            d1.innerHTML = `<strong>${p1Name}:</strong> `;
+                            renderTranscriptionInto(d1, t1, expectedNormalized, false);
+                            transDiv.appendChild(d1);
+
+                            const d2 = document.createElement('div');
+                            d2.style.fontSize = '0.8rem';
+                            d2.innerHTML = `<strong>${p2Name}:</strong> `;
+                            renderTranscriptionInto(d2, t2, expectedNormalized, false);
+                            transDiv.appendChild(d2);
+                        } else {
+                            transDiv.innerHTML = '<strong>Ouvi:</strong> <span style="color: var(--dim);">[Silêncio]</span>';
+                        }
+                    }
                 }
                 const barB = document.getElementById('mp-score-bar-p2');
                 if (barB) {
                     barB.querySelector('.mp-player-pct').innerText = teamB.toFixed(1) + "%";
                     barB.querySelector('.mp-progress-fill').style.width = teamB + "%";
+
+                    const transDiv = barB.querySelector('.mp-player-transcription');
+                    if (transDiv) {
+                        transDiv.innerHTML = '';
+                        const p3Name = activeList[2];
+                        const p4Name = activeList[3];
+                        const t3 = data.player_scores[p3Name]?.transcription || '';
+                        const t4 = data.player_scores[p4Name]?.transcription || '';
+                        
+                        if (t3 || t4) {
+                            const d3 = document.createElement('div');
+                            d3.style.fontSize = '0.8rem';
+                            d3.innerHTML = `<strong>${p3Name}:</strong> `;
+                            renderTranscriptionInto(d3, t3, expectedNormalized, false);
+                            transDiv.appendChild(d3);
+
+                            const d4 = document.createElement('div');
+                            d4.style.fontSize = '0.8rem';
+                            d4.innerHTML = `<strong>${p4Name}:</strong> `;
+                            renderTranscriptionInto(d4, t4, expectedNormalized, false);
+                            transDiv.appendChild(d4);
+                        } else {
+                            transDiv.innerHTML = '<strong>Ouvi:</strong> <span style="color: var(--dim);">[Silêncio]</span>';
+                        }
+                    }
                 }
             } else {
                 activeList.forEach((name, idx) => {
@@ -487,26 +560,53 @@ const DISPLAY_HANDLERS = {
                                 fill.style.width = pVal + "%";
                             }
                         }
+
+                        const transDiv = bar.querySelector('.mp-player-transcription');
+                        if (transDiv) {
+                            renderTranscriptionInto(transDiv, data.player_scores[name].transcription || '', expectedNormalized, true);
+                        }
                     }
                 });
             }
             
-            // Atualiza quadrantes
+            // Clear existing multiplayer border fade-out timers if any
+            if (state.mpBorderTimers) {
+                state.mpBorderTimers.forEach(t => clearTimeout(t));
+                state.mpBorderTimers = [];
+            } else {
+                state.mpBorderTimers = [];
+            }
+
+            // Atualiza bordas dos cards dos jogadores
             activeList.forEach((name, idx) => {
                 const key = slots[idx];
-                const q = document.getElementById(`mp-quadrant-${key}`);
-                if (q && data.player_scores[name]) {
+                const bar = document.getElementById(`mp-score-bar-${key}`);
+                if (bar && data.player_scores[name]) {
                     const scoreVal = data.player_scores[name].score;
-                    q.className = `mp-quadrant q${idx + 1}`; // reseta classes
+                    bar.classList.remove('mp-score-bar--good', 'mp-score-bar--ok', 'mp-score-bar--poor');
                     if (scoreVal >= 85) {
-                        q.classList.add('mp-quadrant-good');
+                        bar.classList.add('mp-score-bar--good');
                     } else if (scoreVal >= 70) {
-                        q.classList.add('mp-quadrant-ok');
+                        bar.classList.add('mp-score-bar--ok');
                     } else {
-                        q.classList.add('mp-quadrant-poor');
+                        bar.classList.add('mp-score-bar--poor');
                     }
                 }
             });
+
+            // Schedule fade out of borders and transcriptions after 2 seconds
+            const fadeTimer = setTimeout(() => {
+                activeList.forEach((name, idx) => {
+                    const key = slots[idx];
+                    const bar = document.getElementById(`mp-score-bar-${key}`);
+                    if (bar) {
+                        bar.classList.remove('mp-score-bar--good', 'mp-score-bar--ok', 'mp-score-bar--poor');
+                        const transDiv = bar.querySelector('.mp-player-transcription');
+                        if (transDiv) transDiv.innerHTML = '';
+                    }
+                });
+            }, 2000);
+            state.mpBorderTimers.push(fadeTimer);
         }
     },
     game_over(data, context) {
@@ -551,7 +651,95 @@ export function showGameOverModal(finalScore, playerScores) {
     rankBadge.style.color = color;
     rankTitle.innerText = title;
 
-    // Placar multiplayer no modal
+    const sortedPlayers = playerScores ? Object.entries(playerScores).sort((a, b) => b[1] - a[1]) : [];
+    const numPlayers = sortedPlayers.length;
+
+    // Remove any old podium if present
+    const oldPodium = document.getElementById('podium-area');
+    if (oldPodium) {
+        oldPodium.remove();
+    }
+
+    if (numPlayers > 1) {
+        // Multiplayer: Show podium & hide solo rank components
+        rankBadge.style.display = 'none';
+        rankTitle.style.display = 'none';
+
+        const podiumArea = document.createElement('div');
+        podiumArea.id = 'podium-area';
+        podiumArea.className = 'podium-container';
+        
+        // Insert podium before the average score box
+        const scoreBox = modalScore.parentNode;
+        scoreBox.parentNode.insertBefore(podiumArea, scoreBox);
+
+        const first = sortedPlayers[0];
+        const second = sortedPlayers[1];
+        const third = sortedPlayers[2];
+        const fourth = sortedPlayers[3];
+
+        const formatName = (n) => n === "PC_Local" ? "💻 PC Local" : n;
+
+        let columnsHtml = '';
+
+        // 2nd Place
+        if (second) {
+            columnsHtml += `
+                <div class="podium-col podium-2nd">
+                    <span class="podium-name" title="${formatName(second[0])}">${formatName(second[0])}</span>
+                    <span class="podium-score">${second[1].toFixed(1)}%</span>
+                    <div class="podium-pedestal">2</div>
+                </div>
+            `;
+        }
+
+        // 1st Place
+        if (first) {
+            columnsHtml += `
+                <div class="podium-col podium-1st">
+                    <span class="podium-crown">👑</span>
+                    <span class="podium-name" title="${formatName(first[0])}">${formatName(first[0])}</span>
+                    <span class="podium-score">${first[1].toFixed(1)}%</span>
+                    <div class="podium-pedestal">1</div>
+                </div>
+            `;
+        }
+
+        // 3rd Place
+        if (third) {
+            columnsHtml += `
+                <div class="podium-col podium-3rd">
+                    <span class="podium-name" title="${formatName(third[0])}">${formatName(third[0])}</span>
+                    <span class="podium-score">${third[1].toFixed(1)}%</span>
+                    <div class="podium-pedestal">3</div>
+                </div>
+            `;
+        } else if (second) {
+            // Spacer to keep 1st place centered when only 2 players are on the podium
+            columnsHtml += `<div class="podium-col" style="width: 95px; visibility: hidden;"></div>`;
+        }
+
+        podiumArea.innerHTML = `
+            <div class="podium-columns">
+                ${columnsHtml}
+            </div>
+            <div id="podium-extra-list" style="width: 100%; display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;"></div>
+        `;
+
+        const extraList = document.getElementById('podium-extra-list');
+        if (fourth && extraList) {
+            const item = document.createElement('div');
+            item.className = 'podium-extra-item';
+            item.innerHTML = `<span>4º Lugar: ${formatName(fourth[0])}</span><span style="color: var(--highlight);">${fourth[1].toFixed(1)}%</span>`;
+            extraList.appendChild(item);
+        }
+    } else {
+        // Solo: Show solo rank components & hide podium
+        rankBadge.style.display = 'block';
+        rankTitle.style.display = 'block';
+    }
+
+    // Placar multiplayer no modal (only shown in solo or fallback)
     let breakdownDiv = document.getElementById('modal-mp-breakdown');
     if (!breakdownDiv) {
         breakdownDiv = document.createElement('div');
@@ -561,9 +749,8 @@ export function showGameOverModal(finalScore, playerScores) {
     }
 
     breakdownDiv.innerHTML = '';
-    if (playerScores && Object.keys(playerScores).length > 0) {
+    if (playerScores && Object.keys(playerScores).length > 0 && numPlayers <= 1) {
         breakdownDiv.style.display = 'flex';
-        const sortedPlayers = Object.entries(playerScores).sort((a, b) => b[1] - a[1]);
         sortedPlayers.forEach(([name, score], idx) => {
             const item = document.createElement('div');
             item.style.cssText = "display: flex; justify-content: space-between; font-size: 0.95rem; font-weight: 700; color: #f8fafc; padding: 0.25rem 0;";
@@ -582,6 +769,37 @@ export function showGameOverModal(finalScore, playerScores) {
     document.getElementById('btn-restart-game').onclick = () => {
         resetGameState();
     };
+}
+
+export function renderTranscriptionInto(container, transcription, expectedNormalized, showHeader = true) {
+    if (!container) return;
+    container.innerHTML = '';
+    
+    if (!transcription || !transcription.trim()) {
+        container.innerHTML = showHeader ? '<strong>Ouvi:</strong> <span style="color: var(--dim);">[Silêncio]</span>' : '<span style="color: var(--dim);">[Silêncio]</span>';
+        return;
+    }
+
+    if (showHeader) {
+        container.innerHTML = '<strong>Ouvi:</strong> ';
+    }
+    const words = transcription.split(/\s+/);
+    words.forEach(word => {
+        const cleanWord = word.toLowerCase().replace(/[^\w\s]/g, '').trim();
+        const isMatch = expectedNormalized.includes(cleanWord);
+
+        const span = document.createElement('span');
+        span.innerText = word + ' ';
+        span.style.fontWeight = '700';
+        if (isMatch) {
+            span.style.color = '#22c55e';
+            span.style.textShadow = '0 0 10px rgba(34, 197, 94, 0.4)';
+        } else {
+            span.style.color = '#ef4444';
+            span.style.textShadow = '0 0 10px rgba(239, 68, 68, 0.4)';
+        }
+        container.appendChild(span);
+    });
 }
 
 function getTranslationForLine(line) {
@@ -1080,10 +1298,9 @@ function hideMpScoreBars() {
         const el = document.getElementById(`mp-score-bar-${key}`);
         if (el) {
             el.removeAttribute('data-active');
-        }
-        const q = document.getElementById(`mp-quadrant-${key}`);
-        if (q) {
-            q.className = `mp-quadrant q${key.substring(1)}`;
+            el.classList.remove('mp-score-bar--good', 'mp-score-bar--ok', 'mp-score-bar--poor');
+            const transDiv = el.querySelector('.mp-player-transcription');
+            if (transDiv) transDiv.innerHTML = '';
         }
     });
 }

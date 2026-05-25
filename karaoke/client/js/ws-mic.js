@@ -140,11 +140,36 @@ export function connectMobileMicrophoneWebSocket() {
                     myTotalScore = data.player_scores[state.mobileNickname];
                 }
                 
+                let html = `<div style="display: flex; flex-direction: column; gap: 0.75rem; width: 100%; align-items: center;">`;
+                html += `<span style="font-size: 1.25rem; font-weight: 900; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.2);">🎉 JOGO CONCLUÍDO!</span>`;
+                
                 if (state.isActiveInGame) {
-                    lyrText.innerHTML = `🎉 JOGO CONCLUÍDO!<br>Sua Média Final: <span style="color: #fde047; font-weight: 900; font-size: 1.4rem;">${myTotalScore}%</span>`;
-                } else {
-                    lyrText.innerHTML = `🎉 JOGO CONCLUÍDO!<br>Placar da rodada exibido na TV.`;
+                    html += `<span style="font-size: 0.95rem; color: var(--dim); font-weight: 700;">Sua Média: <span style="color: var(--highlight); font-weight: 900;">${myTotalScore.toFixed(1)}%</span></span>`;
                 }
+                
+                if (data.player_scores && Object.keys(data.player_scores).length > 0) {
+                    html += `<div style="width: 100%; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.75rem; margin-top: 0.25rem; display: flex; flex-direction: column; gap: 0.5rem; text-align: left; max-height: 150px; overflow-y: auto; box-sizing: border-box; padding-right: 4px;">`;
+                    const sortedPlayers = Object.entries(data.player_scores).sort((a, b) => b[1] - a[1]);
+                    sortedPlayers.forEach(([name, score], idx) => {
+                        let medal = "🎤";
+                        if (idx === 0) medal = "🥇";
+                        else if (idx === 1) medal = "🥈";
+                        else if (idx === 2) medal = "🥉";
+                        const displayName = name === "PC_Local" ? "💻 PC Local" : name;
+                        const isMe = name === state.mobileNickname;
+                        const weight = isMe ? "800" : "600";
+                        const bg = isMe ? "background: rgba(255,255,255,0.06); padding: 0.25rem 0.5rem; border-radius: 8px;" : "";
+                        html += `<div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: ${weight}; color: #f8fafc; ${bg}">`;
+                        html += `<span>${medal} ${displayName}</span>`;
+                        html += `<span style="color: var(--highlight); font-weight: 800;">${score.toFixed(1)}%</span>`;
+                        html += `</div>`;
+                    });
+                    html += `</div>`;
+                } else if (!state.isActiveInGame) {
+                    html += `<span style="font-size: 0.9rem; color: var(--dim); font-weight: 700;">Placar final exibido na TV.</span>`;
+                }
+                html += `</div>`;
+                lyrText.innerHTML = html;
             }
         }
     };

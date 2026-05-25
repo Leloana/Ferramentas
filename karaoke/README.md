@@ -86,37 +86,13 @@ O backend suporta as seguintes variáveis de ambiente:
 
 ## 🚀 Como Executar
 
-### 1. Inicialização Rápida via PowerShell (Windows)
-Se você estiver utilizando Windows (PowerShell), use o comando abaixo para realizar as 3 etapas de uma vez (encerrar processo na porta 8000 se já estiver rodando, ativar o ambiente virtual `venv` e iniciar o projeto no IP `192.168.15.6:8000` com hot-reload):
+No Windows (PowerShell), execute o comando único abaixo para rodar o projeto. Ele irá encerrar qualquer processo ativo na porta 8000, ativar a `venv` e iniciar o servidor em HTTPS no IP `192.168.15.6:8000`:
 
 ```powershell
-Get-NetTCPConnection -LocalPort 8000 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }; .\venv\Scripts\Activate.ps1; uvicorn server.main:app --host 192.168.15.6 --port 8000 --reload
+Get-NetTCPConnection -LocalPort 8000 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }; .\venv\Scripts\Activate.ps1; uvicorn server.main:app --host 192.168.15.6 --port 8000 --reload --ssl-keyfile "C:\Users\mf827\Documents\Ferramentas\karaoke\server\key.pem" --ssl-certfile "C:\Users\mf827\Documents\Ferramentas\karaoke\server\cert.pem"
 ```
 
-Ou em comandos separados:
-```powershell
-# 1. Encerrar caso o projeto já esteja rodando na porta 8000
-Get-NetTCPConnection -LocalPort 8000 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }
-
-# 2. Iniciar (ativar) o venv
-.\venv\Scripts\Activate.ps1
-
-# 3. Iniciar o projeto no IP 192.168.15.6:8000
-uvicorn server.main:app --host 192.168.15.6 --port 8000 --reload
-```
-
-### 2. Modo Desenvolvimento Geral (Outros OS)
-Com a venv ativada, execute:
-```bash
-uvicorn server.main:app --host 0.0.0.0 --port 8000 --reload
-```
-
-### 3. Modo Produção (HTTPS Auto-SSL)
-Para habilitar microfones móveis em conexões diretas de rede local, os navegadores exigem um contexto seguro (HTTPS). Coloque os certificados `cert.pem` e `key.pem` na pasta `server/` e execute:
-```bash
-python server/main.py
-```
-Acesse `https://localhost:8000` na TV e escaneie o QR Code no celular para conectar.
+Acesse `https://192.168.15.6:8000` nos dispositivos da rede para conectar.
 
 ---
 

@@ -44,5 +44,8 @@ pipeline-project/scratch/
 pipeline-project/.srclight/
 .srclight/
 
+# Player Profiles
+karaoke/players/
 
-
+# Notes
+karaoke/anotar.txt
