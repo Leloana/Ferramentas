@@ -19,6 +19,7 @@ async def queue_add_song(
     youtube_url: str = Form(""),
     plain_lyrics: str = Form(""),
     added_by: str = Form(""),
+    align_lyrics: bool = Form(False),
 ):
     """Adiciona música à fila de processamento em segundo plano.
 
@@ -54,6 +55,7 @@ async def queue_add_song(
             youtube_url=youtube_url.strip(),
             plain_lyrics=plain_lyrics.strip() or None,
             added_by=added_by.strip() or None,
+            align_lyrics=align_lyrics,
         )
         return {
             "success": True,

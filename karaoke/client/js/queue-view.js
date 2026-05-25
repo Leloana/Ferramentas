@@ -5,7 +5,7 @@
  * Funciona tanto no modo 'display' (TV) quanto no modo 'mic' (celular).
  */
 import { showToast } from './toast.js';
-import { fetchSongs } from './selection-view.js';
+import { fetchSongs, promptGenerationOptions } from './selection-view.js';
 
 // ── Status labels e ícones para cada estado da fila ──
 const STATUS_MAP = {
@@ -87,6 +87,17 @@ async function submitToQueue() {
         return;
     }
 
+    // Fecha a aba da fila para exibir o modal de opções de geração limpo na tela
+    closeSheet();
+    const choice = await promptGenerationOptions();
+    if (!choice) {
+        // Se o usuário fechar/cancelar, reabre a aba da fila e aborta
+        openSheet();
+        return;
+    }
+
+    const alignLyrics = (choice === 'pro');
+
     // Disable button
     if (submitBtn) {
         submitBtn.disabled = true;
@@ -99,6 +110,7 @@ async function submitToQueue() {
             language: langSelect?.value || 'en',
             plain_lyrics: lyricsInput?.value?.trim() || '',
             added_by: addedByInput?.value?.trim() || '',
+            align_lyrics: alignLyrics.toString(),
         });
 
         const resp = await fetch('/api/queue/add', {

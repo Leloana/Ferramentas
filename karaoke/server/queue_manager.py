@@ -44,6 +44,7 @@ class QueueItem:
     language: str
     youtube_url: str
     plain_lyrics: Optional[str] = None
+    align_lyrics: bool = False
     status: QueueStatus = QueueStatus.QUEUED
     progress_pct: int = 0
     error_msg: Optional[str] = None
@@ -61,6 +62,7 @@ class QueueItem:
             "progress_pct": self.progress_pct,
             "error_msg": self.error_msg,
             "added_by": self.added_by,
+            "align_lyrics": self.align_lyrics,
         }
 
 
@@ -83,6 +85,7 @@ class SongQueueManager:
         youtube_url: str,
         plain_lyrics: Optional[str] = None,
         added_by: Optional[str] = None,
+        align_lyrics: bool = False,
     ) -> QueueItem:
         """Adiciona música à fila e dispara Fase 1 imediatamente."""
         if len(self.queue) >= MAX_QUEUE_SIZE:
@@ -99,6 +102,7 @@ class SongQueueManager:
             language=language,
             youtube_url=youtube_url,
             plain_lyrics=plain_lyrics,
+            align_lyrics=align_lyrics,
             added_by=added_by,
         )
         self.queue.append(item)
@@ -210,9 +214,9 @@ class SongQueueManager:
             item.progress_pct = 75
             logger.info(f"[QUEUE:{item.id}] Fase 1 concluída! Aguardando GPU ociosa para alinhamento...")
 
-            # Tenta processar imediatamente se o jogo não está ativo
+            # Tenta processar o próximo pendente na fila se o jogo não está ativo
             if not self._gpu_game_active:
-                await self._process_phase2(item)
+                await self._try_process_pending()
 
         except asyncio.CancelledError:
             logger.info(f"[QUEUE:{item.id}] Processamento cancelado pelo usuário.")
@@ -228,13 +232,14 @@ class SongQueueManager:
         song_dir = self.songs_dir / item.slug
 
         try:
+            item.status = QueueStatus.ALIGNING
+            item.progress_pct = 78
             async with self.whisper_lock:
-                item.status = QueueStatus.ALIGNING
                 item.progress_pct = 80
                 logger.info(f"[QUEUE:{item.id}] Fase 2 — Whisper lock adquirido. Gerando LRC + alinhamento...")
 
                 # Determinar se usa PRO (forced alignment) ou FLASH
-                align_lyrics = bool(item.plain_lyrics and item.plain_lyrics.strip())
+                align_lyrics = item.align_lyrics
 
                 from utils.prepare import run_reinstall_song
 
@@ -257,6 +262,9 @@ class SongQueueManager:
             item.progress_pct = 100
             logger.info(f"[QUEUE:{item.id}] ✅ Música '{item.title}' pronta para cantar!")
 
+            # Agenda a remoção automática após 10 segundos
+            asyncio.create_task(self._delayed_remove(item.id, delay=10.0))
+
         except asyncio.CancelledError:
             logger.info(f"[QUEUE:{item.id}] Alinhamento cancelado.")
             item.status = QueueStatus.ERROR
@@ -265,14 +273,31 @@ class SongQueueManager:
             logger.error(f"[QUEUE:{item.id}] Erro na Fase 2: {e}", exc_info=True)
             item.status = QueueStatus.ERROR
             item.error_msg = str(e)
+        finally:
+            if not self._gpu_game_active:
+                await self._try_process_pending()
 
     async def _try_process_pending(self) -> None:
         """Processa o próximo item pendente na fila (um por vez)."""
+        if self._gpu_game_active:
+            return
+
+        # Garante que não há nenhuma outra música ativamente rodando a Fase 2
+        for item in self.queue:
+            if item.status in (QueueStatus.ALIGNING, QueueStatus.FINALIZING):
+                logger.info("[QUEUE] Fase 2 já está ativa para outro item. Aguardando.")
+                return
+
         for item in self.queue:
             if item.status == QueueStatus.AWAITING_ALIGNMENT:
                 logger.info(f"[QUEUE] Processando item pendente: {item.id} ({item.title})")
                 item._task = asyncio.create_task(self._process_phase2(item))
                 return  # Um por vez — o próximo será processado quando este terminar
+
+    async def _delayed_remove(self, item_id: str, delay: float) -> None:
+        """Remove o item da fila após um atraso (em segundos)."""
+        await asyncio.sleep(delay)
+        self.remove_item(item_id)
 
     async def _run_demucs(self, item: QueueItem, song_dir: Path, audio_path: Path) -> None:
         """Executa Demucs como subprocesso para separar vocal/instrumental."""
