@@ -10,6 +10,7 @@ export const dom = {
     get upcomingLyricsDisplay() { return $('line-upcoming'); },
     get btnStart() { return $('btn-start'); },
     get btnExit() { return $('btn-exit'); },
+    get btnExitSidebar() { return $('btn-exit-sidebar'); },
     get btnBack() { return $('btn-back'); },
     get audioPlayer() { return $('audio-player'); },
     get syncValueEl() { return $('sync-value'); },

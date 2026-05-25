@@ -2220,12 +2220,14 @@
 /* 14. PC Immersive Full Screen Layout for Karaoke Game View */
 @media (min-width: 601px) {
     #app[data-state="singing"] .app-header,
-    #app[data-state="scoring"] .app-header {
+    #app[data-state="scoring"] .app-header,
+    #app[data-state="game-over"] .app-header {
         display: none !important;
     }
 
     #app[data-state="singing"] > .container,
-    #app[data-state="scoring"] > .container {
+    #app[data-state="scoring"] > .container,
+    #app[data-state="game-over"] > .container {
         width: 100vw !important;
         max-width: 100vw !important;
         min-height: 100vh !important;
@@ -2237,7 +2239,8 @@
     }
 
     #app[data-state="singing"] .main-card,
-    #app[data-state="scoring"] .main-card {
+    #app[data-state="scoring"] .main-card,
+    #app[data-state="game-over"] .main-card {
         border-radius: 0 !important;
         border: none !important;
         padding: 2rem 3.5rem !important;
@@ -2250,7 +2253,8 @@
     }
 
     #app[data-state="singing"] #game-area,
-    #app[data-state="scoring"] #game-area {
+    #app[data-state="scoring"] #game-area,
+    #app[data-state="game-over"] #game-area {
         flex: 1 !important;
         display: flex !important;
         flex-direction: column !important;
@@ -2259,7 +2263,8 @@
     }
 
     #app[data-state="singing"] .game-layout,
-    #app[data-state="scoring"] .game-layout {
+    #app[data-state="scoring"] .game-layout,
+    #app[data-state="game-over"] .game-layout {
         flex: 1 !important;
         display: flex !important;
         gap: 3rem !important;
@@ -2268,7 +2273,8 @@
     }
 
     #app[data-state="singing"] .game-main-content,
-    #app[data-state="scoring"] .game-main-content {
+    #app[data-state="scoring"] .game-main-content,
+    #app[data-state="game-over"] .game-main-content {
         flex: 1 !important;
         display: flex !important;
         flex-direction: column !important;
@@ -2335,12 +2341,14 @@
     }
 
     #app[data-state="singing"] .game-score-sidebar,
-    #app[data-state="scoring"] .game-score-sidebar {
+    #app[data-state="scoring"] .game-score-sidebar,
+    #app[data-state="game-over"] .game-score-sidebar {
         width: 120px !important;
     }
 
     #app[data-state="singing"] .score-sidebar-container,
-    #app[data-state="scoring"] .score-sidebar-container {
+    #app[data-state="scoring"] .score-sidebar-container,
+    #app[data-state="game-over"] .score-sidebar-container {
         padding: 2.5rem 1rem !important;
         background: rgba(0, 0, 0, 0.3) !important;
         border-radius: 24px !important;
@@ -2348,12 +2356,14 @@
     }
 
     #app[data-state="singing"] .score-value-large,
-    #app[data-state="scoring"] .score-value-large {
+    #app[data-state="scoring"] .score-value-large,
+    #app[data-state="game-over"] .score-value-large {
         font-size: 1.8rem !important;
     }
 
     #app[data-state="singing"] .stat-value-compact,
-    #app[data-state="scoring"] .stat-value-compact {
+    #app[data-state="scoring"] .stat-value-compact,
+    #app[data-state="game-over"] .stat-value-compact {
         font-size: 1.4rem !important;
     }
 
@@ -2386,10 +2396,53 @@
     display: none !important;
 }
 
-/* 17. Hide start button during singing or scoring states */
+/* 17. Hide start button during singing, scoring or game-over states */
 #app[data-state="singing"] #btn-start,
-#app[data-state="scoring"] #btn-start {
+#app[data-state="scoring"] #btn-start,
+#app[data-state="game-over"] #btn-start {
     display: none !important;
+}
+
+/* Hide controls container during scoring and game-over states to hide bottom buttons completely */
+#app[data-state="scoring"] .controls,
+#app[data-state="game-over"] .controls {
+    display: none !important;
+}
+
+/* Sidebar exit button styling and visibility */
+.btn-exit-sidebar {
+    display: none !important; /* hidden by default */
+}
+
+#app[data-state="scoring"] #btn-exit-sidebar,
+#app[data-state="game-over"] #btn-exit-sidebar {
+    display: block !important;
+}
+
+.btn-exit-sidebar {
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 0.75rem 1rem !important;
+    font-size: 0.95rem !important;
+    font-weight: 800;
+    border-radius: 50px !important;
+    background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%) !important;
+    color: #fff !important;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3) !important;
+    transition: all 0.25s ease;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.btn-exit-sidebar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.45) !important;
+}
+
+.btn-exit-sidebar:active {
+    transform: translateY(0);
 }
 
 /* ============================================================

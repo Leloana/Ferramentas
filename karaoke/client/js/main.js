@@ -75,6 +75,9 @@ function bootstrap() {
 
     dom.btnBack.onclick = resetGameState;
     dom.btnExit.onclick = resetGameState;
+    if (dom.btnExitSidebar) {
+        dom.btnExitSidebar.onclick = resetGameState;
+    }
 
     dom.btnStart.onclick = async () => {
         const seen = localStorage.getItem('karaoke_onboarding_seen');
