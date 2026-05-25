@@ -987,58 +987,45 @@
 /* ============================================================
    Multiplayer Performance Quadrants
    ============================================================ */
-.mp-quadrant {
-    position: fixed;
-    width: 50vw;
-    height: 50vh;
+/* Individual Player Score Bar Performance feedback borders */
+.mp-score-bar--good {
+    border-color: #22c55e !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(34, 197, 94, 0.45) !important;
+}
+
+.mp-score-bar--ok {
+    border-color: #f59e0b !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(245, 158, 11, 0.45) !important;
+}
+
+.mp-score-bar--poor {
+    border-color: #ef4444 !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(239, 68, 68, 0.45) !important;
+}
+
+/* Individual Player Score Bar Transcription styling */
+.mp-player-transcription {
+    font-size: 0.8rem;
+    text-align: center;
+    color: var(--dim);
+    margin-top: 6px;
+    line-height: 1.35;
     pointer-events: none;
-    z-index: 9998;
-    box-sizing: border-box;
-    transition: border-color 0.6s cubic-bezier(0.25, 0.8, 0.25, 1), 
-                box-shadow 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: opacity 0.3s ease;
+    word-wrap: break-word;
+    word-break: break-word;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-#mp-quadrant-p1 {
-    bottom: 0;
-    left: 0;
-    border-bottom: 8px solid transparent;
-    border-left: 8px solid transparent;
-}
-#mp-quadrant-p2 {
-    top: 0;
-    left: 0;
-    border-top: 8px solid transparent;
-    border-left: 8px solid transparent;
-}
-#mp-quadrant-p3 {
-    top: 0;
-    right: 0;
-    border-top: 8px solid transparent;
-    border-right: 8px solid transparent;
-}
-#mp-quadrant-p4 {
-    bottom: 0;
-    right: 0;
-    border-bottom: 8px solid transparent;
-    border-right: 8px solid transparent;
+.mp-score-bar.vertical-bar .mp-player-transcription {
+    width: 160px;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 10px;
 }
 
-/* Good, Ok, Poor feedback states per quadrant */
-.mp-quadrant-good.q1 { border-color: rgba(34, 197, 94, 0.45) !important; box-shadow: inset 20px -20px 35px rgba(34, 197, 94, 0.25) !important; }
-.mp-quadrant-ok.q1   { border-color: rgba(245, 158, 11, 0.45) !important; box-shadow: inset 20px -20px 35px rgba(245, 158, 11, 0.25) !important; }
-.mp-quadrant-poor.q1 { border-color: rgba(239, 68, 68, 0.45) !important; box-shadow: inset 20px -20px 35px rgba(239, 68, 68, 0.25) !important; }
-
-.mp-quadrant-good.q2 { border-color: rgba(34, 197, 94, 0.45) !important; box-shadow: inset 20px 20px 35px rgba(34, 197, 94, 0.25) !important; }
-.mp-quadrant-ok.q2   { border-color: rgba(245, 158, 11, 0.45) !important; box-shadow: inset 20px 20px 35px rgba(245, 158, 11, 0.25) !important; }
-.mp-quadrant-poor.q2 { border-color: rgba(239, 68, 68, 0.45) !important; box-shadow: inset 20px 20px 35px rgba(239, 68, 68, 0.25) !important; }
-
-.mp-quadrant-good.q3 { border-color: rgba(34, 197, 94, 0.45) !important; box-shadow: inset -20px 20px 35px rgba(34, 197, 94, 0.25) !important; }
-.mp-quadrant-ok.q3   { border-color: rgba(245, 158, 11, 0.45) !important; box-shadow: inset -20px 20px 35px rgba(245, 158, 11, 0.25) !important; }
-.mp-quadrant-poor.q3 { border-color: rgba(239, 68, 68, 0.45) !important; box-shadow: inset -20px 20px 35px rgba(239, 68, 68, 0.25) !important; }
-
-.mp-quadrant-good.q4 { border-color: rgba(34, 197, 94, 0.45) !important; box-shadow: inset -20px -20px 35px rgba(34, 197, 94, 0.25) !important; }
-.mp-quadrant-ok.q4   { border-color: rgba(245, 158, 11, 0.45) !important; box-shadow: inset -20px -20px 35px rgba(245, 158, 11, 0.25) !important; }
-.mp-quadrant-poor.q4 { border-color: rgba(239, 68, 68, 0.45) !important; box-shadow: inset -20px -20px 35px rgba(239, 68, 68, 0.25) !important; }
 
 
 /* ============================================================
@@ -1052,6 +1039,7 @@
     gap: 6px;
     pointer-events: none;
     transition: all 0.3s ease;
+    box-sizing: border-box;
 }
 
 .mp-score-bar.horizontal-bar {
@@ -1061,7 +1049,7 @@
 
 .mp-score-bar.vertical-bar {
     height: 250px;
-    width: 80px;
+    width: 100px;
     align-items: center;
 }
 
@@ -1089,6 +1077,36 @@
     transform: translateY(-50%);
 }
 
+/* Individual Player Score Bar Card Styles (Opaque & Themed) */
+#mp-score-bar-p1 {
+    background: #091322 !important; /* Opaque dark blue */
+    border: 1.5px solid rgba(96, 165, 250, 0.6) !important;
+    border-radius: 16px !important;
+    padding: 12px 18px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 15px rgba(96, 165, 250, 0.15) !important;
+}
+#mp-score-bar-p2 {
+    background: #1e090f !important; /* Opaque dark red */
+    border: 1.5px solid rgba(244, 63, 94, 0.6) !important;
+    border-radius: 16px !important;
+    padding: 12px 18px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 15px rgba(244, 63, 94, 0.15) !important;
+}
+#mp-score-bar-p3 {
+    background: #061510 !important; /* Opaque dark green */
+    border: 1.5px solid rgba(16, 185, 129, 0.6) !important;
+    border-radius: 16px !important;
+    padding: 18px 12px !important; /* Vertical bar padding */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 15px rgba(16, 185, 129, 0.15) !important;
+}
+#mp-score-bar-p4 {
+    background: #1e1107 !important; /* Opaque dark orange */
+    border: 1.5px solid rgba(245, 158, 11, 0.6) !important;
+    border-radius: 16px !important;
+    padding: 18px 12px !important; /* Vertical bar padding */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 15px rgba(245, 158, 11, 0.15) !important;
+}
+
 /* Horizontal labels */
 .mp-score-info {
     display: flex;
@@ -1106,9 +1124,9 @@
 .mp-progress-bg {
     width: 100%;
     height: 12px;
-    background: rgba(8, 13, 22, 0.85);
+    background: #05070f !important; /* Fully opaque background */
     border-radius: 6px;
-    border: 1px solid var(--card-border);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     overflow: hidden;
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.6);
 }
@@ -1147,9 +1165,9 @@
 .mp-progress-bg-vertical {
     height: 100%;
     width: 12px;
-    background: rgba(8, 13, 22, 0.85);
+    background: #05070f !important; /* Fully opaque background */
     border-radius: 6px;
-    border: 1px solid var(--card-border);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     position: relative;
     overflow: hidden;
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.6);
@@ -1171,6 +1189,13 @@
 .right-bar .mp-progress-fill-vertical {
     background: linear-gradient(0deg, #d97706, #f59e0b);
     box-shadow: 0 0 12px rgba(245, 158, 11, 0.7);
+}
+
+.mp-player-pct {
+    color: var(--highlight) !important;
+    font-weight: 900 !important;
+    font-size: 1.1rem !important;
+    text-shadow: 0 0 12px rgba(253, 224, 71, 0.6), 0 0 4px var(--highlight) !important;
 }
 
 /* ============================================================
@@ -1591,6 +1616,292 @@
     display: none !important;
 }
 
+/* ============================================================
+   Wireless Mobile Microphone View (Vertical Portrait Optimized)
+   ============================================================ */
+#mobile-mic-area {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    background: radial-gradient(circle at 50% 25%, #1d1033 0%, #030408 100%) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 2.5rem 1.5rem !important;
+    box-sizing: border-box !important;
+    z-index: 99999 !important;
+    font-family: 'Outfit', sans-serif !important;
+}
+
+/* Header section / Room code / Song title */
+#mobile-mic-area > div:first-child {
+    text-align: center !important;
+    margin-bottom: 0 !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0.4rem !important;
+}
+
+#mobile-mic-area > div:first-child span {
+    font-size: 0.75rem !important;
+    color: #c084fc !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.25em !important;
+    text-transform: uppercase !important;
+}
+
+#mobile-song-title {
+    font-size: 1.6rem !important;
+    margin: 0.2rem 0 !important;
+    color: #ffffff !important;
+    font-weight: 900 !important;
+    line-height: 1.25 !important;
+    max-width: 90% !important;
+    text-align: center !important;
+}
+
+#mobile-status-text {
+    color: var(--dim) !important;
+    font-size: 0.85rem !important;
+    margin: 0 !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.02em !important;
+}
+
+#mobile-room-id {
+    color: #c084fc !important;
+    font-weight: 800 !important;
+}
+
+/* Middle container elements styling */
+#mobile-register-container,
+#mobile-queue-container,
+#mobile-active-mic-container {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    max-width: 320px !important;
+    gap: 1.5rem !important;
+    box-sizing: border-box !important;
+}
+
+/* Nickname registration card */
+#mobile-register-container p {
+    color: var(--dim) !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+    text-align: center !important;
+}
+
+#mobile-nickname-input {
+    width: 100% !important;
+    padding: 0.9rem 1.4rem !important;
+    border-radius: 50px !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1.5px solid var(--card-border) !important;
+    color: #fff !important;
+    font-size: 1.15rem !important;
+    text-align: center !important;
+    outline: none !important;
+    transition: all 0.2s ease !important;
+}
+
+#mobile-nickname-input:focus {
+    border-color: #a855f7 !important;
+    background: rgba(168, 85, 247, 0.05) !important;
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.2) !important;
+}
+
+#btn-mobile-register {
+    width: 100% !important;
+    padding: 0.9rem !important;
+    border-radius: 50px !important;
+    background: linear-gradient(135deg, #a855f7, #6366f1) !important;
+    color: #fff !important;
+    font-weight: 800 !important;
+    font-size: 1.05rem !important;
+    border: none !important;
+    cursor: pointer !important;
+    box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3) !important;
+    transition: all 0.2s ease !important;
+}
+
+#btn-mobile-register:active {
+    transform: scale(0.98) !important;
+    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.2) !important;
+}
+
+/* Waiting / Queue screen styling */
+#mobile-queue-container {
+    gap: 1.2rem !important;
+}
+
+#mobile-queue-container h3 {
+    color: #fff !important;
+    margin: 0 !important;
+    font-size: 1.4rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.01em !important;
+}
+
+#mobile-queue-container p {
+    color: var(--dim) !important;
+    font-size: 0.9rem !important;
+    line-height: 1.5 !important;
+    margin: 0 !important;
+    text-align: center !important;
+}
+
+/* Active mic area */
+#mobile-active-mic-container {
+    gap: 1.75rem !important;
+}
+
+#mobile-mic-trigger-container {
+    margin: 1rem 0 !important;
+    position: relative !important;
+    width: 180px !important;
+    height: 180px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+#btn-mobile-activate {
+    width: 150px !important;
+    height: 150px !important;
+    border-radius: 50% !important;
+    border: none !important;
+    color: #fff !important;
+    font-size: 0.9rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.05em !important;
+    cursor: pointer !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.4rem !important;
+    z-index: 2 !important;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+#btn-mobile-activate svg {
+    width: 32px !important;
+    height: 32px !important;
+    transition: transform 0.2s ease !important;
+}
+
+#btn-mobile-activate:active {
+    transform: scale(0.93) !important;
+}
+
+/* VU meter glowing background ring behind the button */
+#mobile-mic-vu {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    border-radius: 50% !important;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.45) 0%, transparent 70%) !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+    opacity: 0;
+    transform: scale(1);
+}
+
+/* Controls (Mute button) */
+#mobile-active-controls {
+    width: 100% !important;
+    display: flex !important;
+}
+
+#btn-mobile-mute {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #f8fafc !important;
+    width: 100% !important;
+    padding: 0.8rem 1.5rem !important;
+    border-radius: 50px !important;
+    font-weight: 800 !important;
+    font-size: 0.95rem !important;
+    cursor: pointer !important;
+    transition: all 0.25s ease !important;
+    letter-spacing: 0.02em !important;
+    text-transform: uppercase !important;
+}
+
+#btn-mobile-mute:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Lyrics mirror styling */
+#mobile-lyrics-container {
+    background: rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    border-radius: 20px !important;
+    padding: 1.25rem 1.5rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    min-height: 90px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.5) !important;
+}
+
+#mobile-lyrics-text {
+    color: var(--highlight) !important;
+    font-size: 1.2rem !important;
+    font-weight: 800 !important;
+    line-height: 1.4 !important;
+    margin: 0 !important;
+    text-align: center !important;
+    text-shadow: 0 0 10px rgba(253, 224, 71, 0.25) !important;
+}
+
+/* Exit button zone */
+#mobile-mic-area > div:last-child {
+    margin-top: 0 !important;
+    width: 100% !important;
+    text-align: center !important;
+}
+
+#btn-mobile-exit-mic {
+    background: transparent !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: var(--dim) !important;
+    padding: 0.65rem 1.8rem !important;
+    font-size: 0.8rem !important;
+    font-weight: 700 !important;
+    border-radius: 50px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    outline: none !important;
+}
+
+#btn-mobile-exit-mic:hover {
+    color: #fff !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+}
+
 /* 2. TV Client Data-State Visibility Rules (data-role="display") */
 #app[data-role="display"][data-state="idle"] #selection-area {
     display: block !important;
@@ -1615,6 +1926,15 @@
 #app[data-role="display"][data-state="waiting"] #sync-controls {
     display: flex !important;
 }
+#app[data-role="display"][data-state="waiting"] .song-progress-container,
+#app[data-role="display"][data-state="waiting"] .game-score-sidebar,
+#app[data-role="display"][data-state="waiting"] #btn-back {
+    display: none !important;
+}
+#app[data-players="multi"] #transcription-text {
+    display: none !important;
+}
+
 
 #app[data-role="display"][data-state="singing"] #selection-area {
     display: none !important;
@@ -1804,21 +2124,41 @@
 #selection-area[data-active-tab="songs"] #reinstall-tab-content {
     display: none !important;
 }
+#selection-area[data-active-tab="songs"] #queue-tab-content {
+    display: none !important;
+}
 #selection-area[data-active-tab="reinstall"] #songs-tab-content {
     display: none !important;
 }
 #selection-area[data-active-tab="reinstall"] #reinstall-tab-content {
     display: block !important;
 }
+#selection-area[data-active-tab="reinstall"] #queue-tab-content {
+    display: none !important;
+}
+#selection-area[data-active-tab="queue"] #songs-tab-content {
+    display: none !important;
+}
+#selection-area[data-active-tab="queue"] #reinstall-tab-content {
+    display: none !important;
+}
+#selection-area[data-active-tab="queue"] #queue-tab-content {
+    display: block !important;
+}
 
 #selection-area[data-active-tab="songs"] #tab-btn-songs,
-#selection-area[data-active-tab="reinstall"] #tab-btn-reinstall {
+#selection-area[data-active-tab="reinstall"] #tab-btn-reinstall,
+#selection-area[data-active-tab="queue"] #tab-btn-queue {
     background: var(--accent-gradient) !important;
     color: #000 !important;
     font-weight: 800 !important;
 }
 #selection-area[data-active-tab="songs"] #tab-btn-reinstall,
-#selection-area[data-active-tab="reinstall"] #tab-btn-songs {
+#selection-area[data-active-tab="songs"] #tab-btn-queue,
+#selection-area[data-active-tab="reinstall"] #tab-btn-songs,
+#selection-area[data-active-tab="reinstall"] #tab-btn-queue,
+#selection-area[data-active-tab="queue"] #tab-btn-songs,
+#selection-area[data-active-tab="queue"] #tab-btn-reinstall {
     background: transparent !important;
     color: var(--dim) !important;
     font-weight: 700 !important;
@@ -1877,4 +2217,714 @@
     display: block !important;
 }
 
+/* 14. PC Immersive Full Screen Layout for Karaoke Game View */
+@media (min-width: 601px) {
+    #app[data-state="singing"] .app-header,
+    #app[data-state="scoring"] .app-header {
+        display: none !important;
+    }
 
+    #app[data-state="singing"] > .container,
+    #app[data-state="scoring"] > .container {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        min-height: 100vh !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: stretch !important;
+    }
+
+    #app[data-state="singing"] .main-card,
+    #app[data-state="scoring"] .main-card {
+        border-radius: 0 !important;
+        border: none !important;
+        padding: 2rem 3.5rem !important;
+        min-height: 100vh !important;
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        background: radial-gradient(circle at center, rgba(15, 23, 42, 0.85) 0%, #05070f 100%) !important;
+    }
+
+    #app[data-state="singing"] #game-area,
+    #app[data-state="scoring"] #game-area {
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        height: 100% !important;
+    }
+
+    #app[data-state="singing"] .game-layout,
+    #app[data-state="scoring"] .game-layout {
+        flex: 1 !important;
+        display: flex !important;
+        gap: 3rem !important;
+        align-items: stretch !important;
+        margin-top: 1.5rem !important;
+    }
+
+    #app[data-state="singing"] .game-main-content,
+    #app[data-state="scoring"] .game-main-content {
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        height: 100% !important;
+        min-width: 0 !important;
+    }
+
+    #app[data-state="singing"] #canto-screen,
+    #app[data-state="scoring"] #canto-screen {
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        height: 100% !important;
+    }
+
+    #app[data-state="singing"] .carousel-container,
+    #app[data-state="scoring"] .carousel-container {
+        flex: 1 !important;
+        min-height: 480px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        background: rgba(0, 0, 0, 0.35) !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        border-radius: 24px !important;
+        box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.6) !important;
+        padding: 3rem !important;
+        margin: 1rem 0 !important;
+    }
+
+    /* Huge lyrics for reading on PC */
+    #app[data-state="singing"] .curr-line,
+    #app[data-state="scoring"] .curr-line {
+        font-size: clamp(3rem, 5.5vw, 4.8rem) !important;
+        line-height: 1.35 !important;
+        margin: 1.5rem 0 !important;
+        text-shadow: 0 0 35px rgba(56, 189, 248, 0.6), 0 0 15px rgba(56, 189, 248, 0.3) !important;
+    }
+
+    #app[data-state="singing"] .prev-line,
+    #app[data-state="singing"] .next-line,
+    #app[data-state="scoring"] .prev-line,
+    #app[data-state="scoring"] .next-line {
+        font-size: clamp(1.8rem, 3.2vw, 2.5rem) !important;
+        margin: 1rem 0 !important;
+        opacity: 0.35 !important;
+    }
+
+    #app[data-state="singing"] .upcoming-line,
+    #app[data-state="scoring"] .upcoming-line {
+        font-size: clamp(1.3rem, 2.4vw, 1.8rem) !important;
+    }
+
+    #app[data-state="singing"] .word.active {
+        transform: scale(1.15) !important;
+        text-shadow: 0 0 30px rgba(253, 224, 71, 0.8), 0 0 10px var(--highlight) !important;
+    }
+
+    /* Sidebar adjustments */
+    #app[data-players="multi"] .game-score-sidebar {
+        display: none !important;
+    }
+
+    #app[data-state="singing"] .game-score-sidebar,
+    #app[data-state="scoring"] .game-score-sidebar {
+        width: 120px !important;
+    }
+
+    #app[data-state="singing"] .score-sidebar-container,
+    #app[data-state="scoring"] .score-sidebar-container {
+        padding: 2.5rem 1rem !important;
+        background: rgba(0, 0, 0, 0.3) !important;
+        border-radius: 24px !important;
+        border: 1px solid var(--card-border) !important;
+    }
+
+    #app[data-state="singing"] .score-value-large,
+    #app[data-state="scoring"] .score-value-large {
+        font-size: 1.8rem !important;
+    }
+
+    #app[data-state="singing"] .stat-value-compact,
+    #app[data-state="scoring"] .stat-value-compact {
+        font-size: 1.4rem !important;
+    }
+
+    #app[data-state="singing"] .transcription-debug {
+        font-size: 1.1rem !important;
+        padding: 1rem 1.5rem !important;
+        border-radius: 12px !important;
+        margin-top: 1rem !important;
+    }
+}
+
+/* 15. Dynamic player slots display based on game-mode */
+#multiplayer-setup-container[data-game-mode="solo"] #slot-box-p2,
+#multiplayer-setup-container[data-game-mode="solo"] #slot-box-p3,
+#multiplayer-setup-container[data-game-mode="solo"] #slot-box-p4 {
+    display: none !important;
+}
+
+#multiplayer-setup-container[data-game-mode="1v1"] #slot-box-p3,
+#multiplayer-setup-container[data-game-mode="1v1"] #slot-box-p4 {
+    display: none !important;
+}
+
+#multiplayer-setup-container[data-game-mode="1v1v1"] #slot-box-p4 {
+    display: none !important;
+}
+
+/* 16. Hide pause/play controls specifically in waiting state (setup screen) */
+#app[data-state="waiting"] #btn-pause-play {
+    display: none !important;
+}
+
+/* 17. Hide start button during singing or scoring states */
+#app[data-state="singing"] #btn-start,
+#app[data-state="scoring"] #btn-start {
+    display: none !important;
+}
+
+/* ============================================================
+   Multiplayer Podium / Pedestal Styles (Game Over Modal)
+   ============================================================ */
+.podium-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1.5rem 0 2rem 0;
+    width: 100%;
+}
+
+.podium-columns {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    height: 180px;
+    margin-bottom: 1rem;
+}
+
+.podium-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 95px;
+}
+
+.podium-name {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #f8fafc;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    margin-bottom: 2px;
+}
+
+.podium-score {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--highlight);
+    margin-bottom: 6px;
+}
+
+.podium-pedestal {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    color: #fff;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    position: relative;
+}
+
+/* Pedestal Specific Styles */
+.podium-1st .podium-pedestal {
+    height: 100px;
+    background: linear-gradient(180deg, #fde047, #ca8a04);
+    font-size: 2.2rem;
+    color: #0f172a;
+    box-shadow: 0 4px 20px rgba(253, 224, 71, 0.25);
+}
+
+.podium-2nd .podium-pedestal {
+    height: 70px;
+    background: linear-gradient(180deg, #cbd5e1, #475569);
+    font-size: 1.8rem;
+}
+
+.podium-3rd .podium-pedestal {
+    height: 45px;
+    background: linear-gradient(180deg, #b45309, #78350f);
+    font-size: 1.5rem;
+}
+
+.podium-crown {
+    font-size: 1.4rem;
+    margin-bottom: 2px;
+    filter: drop-shadow(0 0 6px rgba(253, 224, 71, 0.6));
+    animation: crownFloat 2s ease-in-out infinite alternate;
+}
+
+@keyframes crownFloat {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-4px); }
+}
+
+.podium-extra-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #e2e8f0;
+    width: 100%;
+}
+
+/* ===================================================================
+   SONG QUEUE — Mobile FAB + Bottom Sheet + Queue Items
+   =================================================================== */
+
+/* Floating Action Button (Mobile) */
+.queue-fab {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    border: none;
+    color: #000;
+    font-size: 1.6rem;
+    font-weight: 900;
+    cursor: pointer;
+    z-index: 800;
+    box-shadow: 0 4px 20px rgba(56, 189, 248, 0.4), 0 0 30px rgba(168, 85, 247, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s;
+    animation: fabPulse 3s ease-in-out infinite;
+}
+
+.queue-fab:hover, .queue-fab:active {
+    transform: scale(1.1) !important;
+    box-shadow: 0 6px 28px rgba(56, 189, 248, 0.55), 0 0 40px rgba(168, 85, 247, 0.3) !important;
+}
+
+.queue-fab .queue-fab-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #ef4444;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #0b0f19;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+    transition: transform 0.2s;
+}
+
+.queue-fab .queue-fab-badge:empty,
+.queue-fab .queue-fab-badge[data-count="0"] {
+    display: none;
+}
+
+@keyframes fabPulse {
+    0%, 100% { box-shadow: 0 4px 20px rgba(56, 189, 248, 0.4), 0 0 30px rgba(168, 85, 247, 0.2); }
+    50% { box-shadow: 0 4px 25px rgba(56, 189, 248, 0.55), 0 0 40px rgba(168, 85, 247, 0.35); }
+}
+
+/* Bottom Sheet Overlay */
+.queue-sheet-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(2, 6, 23, 0.65);
+    backdrop-filter: blur(6px);
+    z-index: 850;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.queue-sheet-overlay[data-open="true"] {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Bottom Sheet Panel */
+.queue-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-height: 85vh;
+    background: rgba(11, 15, 25, 0.98);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 24px 24px 0 0;
+    z-index: 860;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6);
+}
+
+.queue-sheet[data-open="true"] {
+    transform: translateY(0);
+}
+
+.queue-sheet-handle {
+    width: 40px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    margin: 12px auto 0;
+    flex-shrink: 0;
+}
+
+.queue-sheet-header {
+    padding: 1rem 1.5rem 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.queue-sheet-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.queue-sheet-header .queue-close-btn {
+    background: transparent;
+    border: none;
+    color: var(--dim);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    box-shadow: none;
+    transition: color 0.2s;
+}
+
+.queue-sheet-header .queue-close-btn:hover {
+    color: var(--text);
+    transform: none;
+    box-shadow: none;
+}
+
+.queue-sheet-body {
+    padding: 0 1.5rem 1.5rem;
+    overflow-y: auto;
+    flex: 1;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Queue Add Form */
+.queue-add-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.queue-add-form input[type="text"],
+.queue-add-form textarea,
+.queue-add-form select {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid var(--card-border);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.queue-add-form input[type="text"]:focus,
+.queue-add-form textarea:focus,
+.queue-add-form select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+}
+
+.queue-add-form textarea {
+    min-height: 80px;
+    resize: vertical;
+    font-size: 0.85rem;
+}
+
+.queue-add-form .queue-submit-btn {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 14px;
+    background: var(--accent-gradient);
+    color: #000;
+    font-weight: 800;
+    font-size: 0.95rem;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: var(--shadow-glow);
+}
+
+.queue-add-form .queue-submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Queue Items List */
+.queue-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.queue-items-title {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.25rem;
+}
+
+.queue-item-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    padding: 0.85rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.25s ease;
+    animation: queueItemIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+@keyframes queueItemIn {
+    from { transform: translateY(12px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.queue-item-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: var(--accent-gradient);
+    border-radius: 0 0 14px 14px;
+    transition: width 0.5s ease;
+    width: var(--progress, 0%);
+}
+
+.queue-item-card[data-status="ready"] {
+    border-color: rgba(34, 197, 94, 0.3);
+}
+
+.queue-item-card[data-status="error"] {
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.queue-item-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.1rem;
+    transition: all 0.3s;
+}
+
+.queue-item-icon[data-status="queued"] { background: rgba(148, 163, 184, 0.15); }
+.queue-item-icon[data-status="downloading"] { background: rgba(56, 189, 248, 0.15); animation: spin 1.5s linear infinite; }
+.queue-item-icon[data-status="separating"] { background: rgba(168, 85, 247, 0.15); animation: spin 2s linear infinite; }
+.queue-item-icon[data-status="awaiting_alignment"] { background: rgba(245, 158, 11, 0.15); animation: pulse 1.5s infinite alternate; }
+.queue-item-icon[data-status="aligning"] { background: rgba(56, 189, 248, 0.15); animation: spin 1.5s linear infinite; }
+.queue-item-icon[data-status="finalizing"] { background: rgba(34, 197, 94, 0.15); animation: spin 1s linear infinite; }
+.queue-item-icon[data-status="ready"] { background: rgba(34, 197, 94, 0.15); }
+.queue-item-icon[data-status="error"] { background: rgba(239, 68, 68, 0.15); }
+
+.queue-item-info {
+    flex: 1;
+    min-width: 0;
+    text-align: left;
+}
+
+.queue-item-title {
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.queue-item-status {
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-top: 0.15rem;
+}
+
+.queue-item-status[data-status="queued"] { color: var(--dim); }
+.queue-item-status[data-status="downloading"] { color: var(--accent); }
+.queue-item-status[data-status="separating"] { color: #a855f7; }
+.queue-item-status[data-status="awaiting_alignment"] { color: var(--warning); }
+.queue-item-status[data-status="aligning"] { color: var(--accent); }
+.queue-item-status[data-status="finalizing"] { color: var(--success); }
+.queue-item-status[data-status="ready"] { color: var(--success); }
+.queue-item-status[data-status="error"] { color: var(--error); }
+
+.queue-item-remove {
+    background: transparent;
+    border: none;
+    color: var(--dim);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.25rem 0.4rem;
+    border-radius: 8px;
+    transition: all 0.2s;
+    box-shadow: none !important;
+    flex-shrink: 0;
+}
+
+.queue-item-remove:hover {
+    color: var(--error);
+    background: rgba(239, 68, 68, 0.1);
+    transform: none;
+    box-shadow: none !important;
+}
+
+/* Queue Tab on Display (TV) — default hidden, visibility controlled by tab system above */
+#queue-tab-content {
+    display: none;
+}
+
+
+/* Queue empty state */
+.queue-empty {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--dim);
+    font-size: 0.9rem;
+}
+
+.queue-empty-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+    opacity: 0.5;
+}
+
+/* GPU status badge in queue */
+.queue-gpu-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.2rem 0.55rem;
+    border-radius: 20px;
+    transition: all 0.3s;
+}
+
+.queue-gpu-badge[data-busy="true"] {
+    color: var(--warning);
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.queue-gpu-badge[data-busy="false"] {
+    color: var(--success);
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+.queue-gpu-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.queue-gpu-badge[data-busy="true"] .queue-gpu-dot {
+    background: var(--warning);
+    box-shadow: 0 0 6px var(--warning);
+    animation: pulse-dot 1.5s infinite alternate;
+}
+
+.queue-gpu-badge[data-busy="false"] .queue-gpu-dot {
+    background: var(--success);
+    box-shadow: 0 0 6px var(--success);
+}
+
+/* Mobile-specific queue optimizations */
+@media (max-width: 600px) {
+    .queue-fab {
+        bottom: 18px;
+        right: 18px;
+        width: 54px;
+        height: 54px;
+        font-size: 1.4rem;
+    }
+
+    .queue-sheet {
+        max-height: 90vh;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .queue-sheet-body {
+        padding: 0 1rem 1rem;
+    }
+
+    .queue-sheet-header {
+        padding: 0.75rem 1rem 0.5rem;
+    }
+
+    .queue-item-card {
+        padding: 0.7rem 0.75rem;
+    }
+}

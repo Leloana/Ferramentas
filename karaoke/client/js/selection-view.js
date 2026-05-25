@@ -285,6 +285,7 @@ export function renderReinstallList(songsList) {
 export function initSelectionTabs() {
     const tabSongs = document.getElementById('tab-btn-songs');
     const tabReinstall = document.getElementById('tab-btn-reinstall');
+    const tabQueue = document.getElementById('tab-btn-queue');
     const songsContent = document.getElementById('songs-tab-content');
     const reinstallContent = document.getElementById('reinstall-tab-content');
 
@@ -303,6 +304,12 @@ export function initSelectionTabs() {
         if (selectionArea) selectionArea.setAttribute('data-active-tab', 'reinstall');
         renderReinstallList(state.allSongs);
     };
+
+    if (tabQueue) {
+        tabQueue.onclick = () => {
+            if (selectionArea) selectionArea.setAttribute('data-active-tab', 'queue');
+        };
+    }
 }
 
 export function promptGenerationOptions() {

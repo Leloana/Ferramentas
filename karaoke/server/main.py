@@ -27,6 +27,7 @@ import torchaudio  # noqa: F401
 from state import ffmpeg_bin_dir  # noqa: F401  (lido para forçar o bootstrap)
 
 from routes.lyrics import router as lyrics_router
+from routes.queue import router as queue_router
 from routes.songs import router as songs_router
 from routes.upload import router as upload_router
 from ws.room import router as ws_router
@@ -49,6 +50,7 @@ app.mount("/js", StaticFiles(directory=str(CLIENT_DIR / "js")), name="js")
 app.include_router(songs_router)
 app.include_router(lyrics_router)
 app.include_router(upload_router)
+app.include_router(queue_router)
 app.include_router(ws_router)
 
 

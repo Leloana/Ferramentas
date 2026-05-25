@@ -15,12 +15,6 @@
     <!-- Overlay de Bordas de Desempenho -->
     <div id="perf-border-overlay" class="perf-border-idle"></div>
 
-    <!-- Overlay de Bordas de Desempenho Multiplayer -->
-    <div id="mp-quadrant-p1" class="mp-quadrant q1"></div>
-    <div id="mp-quadrant-p2" class="mp-quadrant q2"></div>
-    <div id="mp-quadrant-p3" class="mp-quadrant q3"></div>
-    <div id="mp-quadrant-p4" class="mp-quadrant q4"></div>
-
     <!-- Sistema de Toasts -->
     <div id="toast-container" class="toast-container"></div>
 
@@ -159,6 +153,10 @@
                         style="flex: 1; padding: 0.65rem; border: none; border-radius: 8px; background: transparent; color: var(--dim); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease;">
                         🔄 Reinstalar Metas
                     </button>
+                    <button type="button" id="tab-btn-queue" class="tab-btn tab-btn--inactive"
+                        style="flex: 1; padding: 0.65rem; border: none; border-radius: 8px; background: transparent; color: var(--dim); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease;">
+                        📋 Fila <span id="queue-tab-badge" style="display: none; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 800; padding: 0.1rem 0.35rem; border-radius: 10px; margin-left: 0.25rem;"></span>
+                    </button>
                 </div>
 
                 <!-- Container da Aba de Músicas -->
@@ -181,6 +179,23 @@
                 <!-- Container da Aba de Reinstalar Metas -->
                 <div id="reinstall-tab-content">
                     <div id="reinstall-list" class="song-list">Carregando músicas para reinstalação...</div>
+                </div>
+
+                <!-- Container da Aba de Fila -->
+                <div id="queue-tab-content">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <span class="queue-items-title">Músicas na Fila de Processamento</span>
+                        <span id="queue-display-gpu-badge" class="queue-gpu-badge" data-busy="false">
+                            <span class="queue-gpu-dot"></span>
+                            <span id="queue-display-gpu-text">GPU Livre</span>
+                        </span>
+                    </div>
+                    <div id="queue-display-list" class="queue-items-list">
+                        <div class="queue-empty">
+                            <div class="queue-empty-icon">📋</div>
+                            <p>Nenhuma música na fila.<br>Adicione pelo celular ou pelo botão "➕ Adicionar Música".</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -308,23 +323,14 @@
                                         </button>
                                     </div>
                                 </div>
-                                      <!-- Painel de Contagem de Pausa Instrumental -->
-                        <div id="instrumental-pause-container">
-                            <div
-                                style="font-size: 0.8rem; color: var(--accent); font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.5rem;">
-                                <span
-                                    style="display: inline-block; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 10px var(--accent); animation: pulse 0.8s infinite alternate;"></span>
-                                <span>INSTRUMENTAL (PREPARE-SE)</span>
                             </div>
-                            <div
-                                style="width: 100%; height: 8px; background: #080d16; border-radius: 4px; overflow: hidden; border: 1px solid var(--card-border); box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);">
-                                <div id="pause-bar-fill"
-                                    style="width: 100%; height: 100%; background: var(--accent); transition: width 0.1s linear; box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);">
-                                </div>
-                            </div>
-                            <div id="pause-timer-text"
-                                style="font-size: 1.6rem; font-weight: 800; color: var(--text); margin-top: 0.4rem; text-shadow: 0 0 10px rgba(255,255,255,0.1);">
-                                0.0s</div>
+                        </div>
+
+                        <!-- Tela de Canto -->
+                        <div id="canto-screen">
+                            <!-- Painel de Contagem de Pausa Instrumental -->
+                            <div id="instrumental-pause-container">
+                            
                         </div>
 
                         <div class="carousel-container">
@@ -379,11 +385,13 @@
                         <div id="transcription-text" class="transcription-debug"><strong>Ouvi:</strong> <span
                                 style="color: var(--dim);">[Aguardando canto...]</span></div>
 
-                        <div class="controls">
-                            <button id="btn-start">INICIAR CANTO</button>
-                            <button id="btn-pause-play">PAUSAR</button>
-                            <button id="btn-exit">SAIR DA MÚSICA</button>
-                        </div>
+                    </div><!-- #canto-screen -->
+
+                    <div class="controls">
+                        <button id="btn-start">INICIAR</button>
+                        <button id="btn-pause-play">PAUSAR</button>
+                        <button id="btn-exit">SAIR</button>
+                    </div>
 
                     </div>
 
@@ -888,6 +896,7 @@
         <div class="mp-progress-bg">
             <div class="mp-progress-fill" style="width: 0%;"></div>
         </div>
+        <div class="mp-player-transcription"></div>
     </div>
     <div id="mp-score-bar-p2" class="mp-score-bar horizontal-bar top-bar">
         <div class="mp-score-info">
@@ -897,6 +906,7 @@
         <div class="mp-progress-bg">
             <div class="mp-progress-fill" style="width: 0%;"></div>
         </div>
+        <div class="mp-player-transcription"></div>
     </div>
     <div id="mp-score-bar-p3" class="mp-score-bar vertical-bar left-bar">
         <div class="mp-score-info-vertical">
@@ -906,6 +916,7 @@
         <div class="mp-progress-bg-vertical">
             <div class="mp-progress-fill-vertical" style="height: 0%;"></div>
         </div>
+        <div class="mp-player-transcription"></div>
     </div>
     <div id="mp-score-bar-p4" class="mp-score-bar vertical-bar right-bar">
         <div class="mp-score-info-vertical">
@@ -915,9 +926,56 @@
         <div class="mp-progress-bg-vertical">
             <div class="mp-progress-fill-vertical" style="height: 0%;"></div>
         </div>
+        <div class="mp-player-transcription"></div>
     </div>
 
     </div>
+
+    <!-- Queue: FAB Button + Bottom Sheet (Mobile & Display) -->
+    <button id="queue-fab" class="queue-fab" title="Adicionar música à fila">
+        🎵
+        <span id="queue-fab-badge" class="queue-fab-badge" data-count="0"></span>
+    </button>
+
+    <div id="queue-sheet-overlay" class="queue-sheet-overlay"></div>
+    <div id="queue-sheet" class="queue-sheet">
+        <div class="queue-sheet-handle"></div>
+        <div class="queue-sheet-header">
+            <h3>📋 Fila de Músicas
+                <span id="queue-sheet-gpu-badge" class="queue-gpu-badge" data-busy="false">
+                    <span class="queue-gpu-dot"></span>
+                    <span id="queue-sheet-gpu-text">GPU Livre</span>
+                </span>
+            </h3>
+            <button id="queue-sheet-close" class="queue-close-btn">✕</button>
+        </div>
+        <div class="queue-sheet-body">
+            <!-- Formulário de Adição Rápida -->
+            <form id="queue-add-form" class="queue-add-form">
+                <input type="text" id="queue-yt-url" placeholder="🔗 Cole o link do YouTube aqui..." required>
+                <div style="display: flex; gap: 0.5rem;">
+                    <select id="queue-language" style="flex: 0 0 auto; min-width: 90px;">
+                        <option value="en">🇺🇸 EN</option>
+                        <option value="pt">🇧🇷 PT</option>
+                        <option value="es">🇪🇸 ES</option>
+                    </select>
+                    <input type="text" id="queue-added-by" placeholder="Seu nome (opcional)" style="flex: 1;">
+                </div>
+                <textarea id="queue-lyrics" placeholder="Cole a letra da música aqui (opcional — melhora a precisão do alinhamento)..."></textarea>
+                <button type="submit" class="queue-submit-btn" id="queue-submit-btn">➕ Adicionar à Fila</button>
+            </form>
+
+            <!-- Lista de Itens na Fila -->
+            <div class="queue-items-title">Na Fila</div>
+            <div id="queue-items-list" class="queue-items-list">
+                <div class="queue-empty">
+                    <div class="queue-empty-icon">🎶</div>
+                    <p>Nenhuma música na fila ainda.<br>Cole um link do YouTube acima!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script type="module" src="/js/main.js"></script>
 </body>
 

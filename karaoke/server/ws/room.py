@@ -15,7 +15,7 @@ import scipy.signal
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 from score_engine import calculate_score
-from state import room_manager, song_manager
+from state import room_manager, song_manager, queue_manager
 from stt_engine import get_stt_engine
 from utils.whisper_params import WHISPER_SR
 
@@ -208,7 +208,8 @@ async def process_segment_multiplayer(
                         resampled = scipy.signal.resample_poly(audio_data, up, down).astype(np.float32)
                         return stt.transcribe(resampled, language=seg_lang, initial_prompt=seg_text)
 
-                    transcribed_text, words = await asyncio.to_thread(compute)
+                    async with queue_manager.whisper_lock:
+                        transcribed_text, words = await asyncio.to_thread(compute)
 
                     prev_lyrics = None
                     if seg_idx > 0 and seg_idx - 1 < len(room.segments):
@@ -392,6 +393,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                     room.current_segment_idx = 0
                     room.is_singing_active = False
 
+                    queue_manager.notify_game_started()
+
                     await room.broadcast({
                         "type": "game_started",
                         "game_mode": room.game_mode,
@@ -562,6 +565,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         "total_score": total_score_avg,
                         "player_scores": player_final_scores
                     })
+
+                    queue_manager.notify_game_ended()
                     break
 
     except (WebSocketDisconnect, RuntimeError):

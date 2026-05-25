@@ -55,6 +55,20 @@ export const dom = {
     get mobileQueueContainer() { return $('mobile-queue-container'); },
     get mobileQueuePosition() { return $('mobile-queue-position'); },
     get mobileActiveMicContainer() { return $('mobile-active-mic-container'); },
+    // Queue Getters
+    get queueFab() { return $('queue-fab'); },
+    get queueFabBadge() { return $('queue-fab-badge'); },
+    get queueSheet() { return $('queue-sheet'); },
+    get queueSheetOverlay() { return $('queue-sheet-overlay'); },
+    get queueSheetClose() { return $('queue-sheet-close'); },
+    get queueAddForm() { return $('queue-add-form'); },
+    get queueYtUrl() { return $('queue-yt-url'); },
+    get queueLanguage() { return $('queue-language'); },
+    get queueLyrics() { return $('queue-lyrics'); },
+    get queueAddedBy() { return $('queue-added-by'); },
+    get queueSubmitBtn() { return $('queue-submit-btn'); },
+    get queueItemsList() { return $('queue-items-list'); },
+    get queueDisplayList() { return $('queue-display-list'); },
 };
 
 export const $id = $;

@@ -10,6 +10,7 @@ import { initMobileMicView } from './mobile-mic-view.js';
 import { fetchSongs, initSearch } from './selection-view.js';
 import { startKaraoke, resetGameState, initGameControls } from './game-view.js';
 import { initModals } from './modals.js';
+import { initQueueView } from './queue-view.js';
 
 function bootstrap() {
     const appEl = document.getElementById('app');
@@ -25,6 +26,7 @@ function bootstrap() {
 
         connectMobileMicrophoneWebSocket();
         initMobileMicView();
+        initQueueView();
         return;
     }
 
@@ -69,6 +71,7 @@ function bootstrap() {
     initGameControls();
     initModals();
     initSearch();
+    initQueueView();
 
     dom.btnBack.onclick = resetGameState;
     dom.btnExit.onclick = resetGameState;
@@ -84,7 +87,7 @@ function bootstrap() {
                 console.error(e);
                 showToast("Erro ao iniciar: " + e.message, "error");
                 dom.btnStart.disabled = false;
-                dom.btnStart.innerText = 'INICIAR CANTO';
+                dom.btnStart.innerText = 'INICIAR';
             }
         };
 
