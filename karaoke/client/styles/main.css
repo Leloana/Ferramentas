@@ -30,6 +30,10 @@
             overflow-x: hidden;
         }
 
+        #app {
+            width: 100%;
+        }
+
         /* Top Header Navbar */
         .app-header {
             width: 100%;
