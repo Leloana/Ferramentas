@@ -135,6 +135,14 @@ async def reinstall_song(
     else:
         logger.info("clean_existing=False. Preservando arquivos existentes na pasta para reaproveitamento inteligente.")
 
+    # Garante que o arquivo lyrics.txt local exista e esteja atualizado com o plain_lyrics do meta.json
+    if plain_lyrics and plain_lyrics.strip():
+        logger.info("Gerando/atualizando lyrics.txt com plain_lyrics do meta.json...")
+        try:
+            txt_file.write_text(plain_lyrics + "\n", encoding="utf-8")
+        except Exception as e:
+            logger.warning(f"Erro ao gravar lyrics.txt: {e}")
+
     # 4. Downloads frescos do YouTube (e separação opcional com Demucs)
     temp_vocal = song_dir / "temp_vocal.mp3"
     temp_backing = song_dir / "temp_backing.mp3"

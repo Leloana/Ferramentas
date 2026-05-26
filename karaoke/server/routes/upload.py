@@ -22,7 +22,8 @@ def _build_meta(form: dict) -> dict:
     """Estrutura `meta.json` salvo junto da música para reprodução simples."""
     has_lrc = (
         (form.get("lrc_file") is not None and form["lrc_file"].filename != "") or
-        (form.get("lrc_text") is not None and form["lrc_text"].strip() != "")
+        (form.get("lrc_text") is not None and form["lrc_text"].strip() != "") or
+        (form.get("synced_lrc") is not None and form["synced_lrc"].strip() != "")
     )
     return {
         "meta": {
@@ -114,6 +115,9 @@ async def upload_song(
                     logger.info("[Upload] Nenhuma letra encontrada nas APIs — Whisper fará transcrição pura.")
             except Exception as e:
                 logger.warning(f"[Upload] Falha ao buscar letra: {e} — Whisper fará transcrição pura.")
+
+        if synced_lrc or (lrc_file and lrc_file.filename) or (lrc_text and lrc_text.strip()):
+            align_lyrics = False
 
         # Se temos synced LRC (da API ou do frontend), salva diretamente.
         # O reinstall_song preserva lyrics.lrc existente quando align_lyrics=False,

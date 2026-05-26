@@ -67,6 +67,9 @@ async def queue_add_song(
         except Exception as e:
             logger.warning(f"[Queue] Falha ao buscar letra: {e}")
 
+    if synced_lrc:
+        align_lyrics = False
+
     try:
         item = await queue_manager.enqueue(
             title=title.strip(),

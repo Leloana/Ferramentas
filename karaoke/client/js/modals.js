@@ -370,8 +370,8 @@ function initAddSongModal() {
         if (fetchedLyrics && fetchedLyrics.success) {
             if (fetchedLyrics.syncedLyrics) {
                 formData.set('synced_lrc', fetchedLyrics.syncedLyrics);
-                // Não envia plain_lyrics quando tem synced — backend preserva o LRC
-            } else if (fetchedLyrics.plainLyrics) {
+            }
+            if (fetchedLyrics.plainLyrics) {
                 formData.set('plain_lyrics', fetchedLyrics.plainLyrics);
             }
         }
