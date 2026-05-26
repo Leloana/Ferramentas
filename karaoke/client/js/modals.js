@@ -136,6 +136,70 @@ function initAddSongModal() {
         }
     };
 
+    /**
+     * Abre o modal de verificação de letra para o usuário revisar/editar a letra
+     * antes de prosseguir com o upload. Retorna a letra confirmada ou null se cancelar.
+     */
+    const showLyricsReviewModal = (fetchedResult) => {
+        return new Promise((resolve) => {
+            const modal = document.getElementById('lyrics-review-modal');
+            const textarea = document.getElementById('lyrics-review-textarea');
+            const statusDiv = document.getElementById('lyrics-review-status');
+            const btnConfirm = document.getElementById('btn-confirm-lyrics-review');
+            const btnClose = document.getElementById('btn-close-lyrics-review');
+
+            if (!modal || !textarea) {
+                resolve(fetchedResult?.plainLyrics || null);
+                return;
+            }
+
+            // Configura status
+            if (statusDiv) {
+                if (fetchedResult?.syncedLyrics) {
+                    statusDiv.style.background = 'rgba(34, 197, 94, 0.1)';
+                    statusDiv.style.border = '1px solid rgba(34, 197, 94, 0.3)';
+                    statusDiv.style.color = '#86efac';
+                    statusDiv.innerHTML = '✅ <strong>LRC sincronizado encontrado!</strong> Revise a letra abaixo antes de continuar.';
+                } else if (fetchedResult?.plainLyrics) {
+                    statusDiv.style.background = 'rgba(59, 130, 246, 0.1)';
+                    statusDiv.style.border = '1px solid rgba(59, 130, 246, 0.3)';
+                    statusDiv.style.color = '#93c5fd';
+                    statusDiv.innerHTML = '📝 <strong>Letra encontrada.</strong> Confira se está correta e edite se necessário.';
+                } else {
+                    statusDiv.style.background = 'rgba(251, 191, 36, 0.1)';
+                    statusDiv.style.border = '1px solid rgba(251, 191, 36, 0.3)';
+                    statusDiv.style.color = '#fcd34d';
+                    statusDiv.innerHTML = '⚠️ <strong>Nenhuma letra encontrada online.</strong> Cole a letra correta abaixo ou deixe em branco para a IA transcrever.';
+                }
+            }
+
+            // Preenche textarea com plain lyrics (nunca LRC)
+            textarea.value = fetchedResult?.plainLyrics || '';
+
+            const cleanup = () => {
+                modal.removeAttribute('data-open');
+                if (btnConfirm) btnConfirm.removeEventListener('click', onConfirm);
+                if (btnClose) btnClose.removeEventListener('click', onCancel);
+            };
+
+            const onConfirm = () => {
+                const edited = textarea.value.trim();
+                cleanup();
+                resolve(edited || null);
+            };
+
+            const onCancel = () => {
+                cleanup();
+                resolve(null);
+            };
+
+            if (btnConfirm) btnConfirm.addEventListener('click', onConfirm);
+            if (btnClose) btnClose.addEventListener('click', onCancel);
+
+            modal.setAttribute('data-open', 'true');
+        });
+    };
+
     const btnBackStep1 = document.getElementById('btn-back-step-1');
     if (btnBackStep1) {
         btnBackStep1.onclick = () => {
@@ -267,6 +331,22 @@ function initAddSongModal() {
 
         btnSubmit.innerText = origText;
         btnSubmit.disabled = false;
+
+        // Mostra modal para o usuário revisar/editar a letra (sempre plain lyrics, nunca LRC)
+        const confirmedPlainLyrics = await showLyricsReviewModal(fetchedLyrics);
+        if (confirmedPlainLyrics === null) {
+            // Usuário cancelou — volta ao step 2
+            return;
+        }
+
+        // Atualiza plainLyrics com o texto confirmado/editado pelo usuário
+        if (fetchedLyrics && fetchedLyrics.success) {
+            fetchedLyrics.plainLyrics = confirmedPlainLyrics || fetchedLyrics.plainLyrics;
+        } else if (confirmedPlainLyrics) {
+            fetchedLyrics = { success: true, plainLyrics: confirmedPlainLyrics, syncedLyrics: null, source: 'user' };
+        }
+
+        updateLyricsStatus(fetchedLyrics);
 
         // Se temos LRC sincronizado, não precisa perguntar PRO vs FLASH
         const hasSyncedLrc = fetchedLyrics && fetchedLyrics.success && fetchedLyrics.syncedLyrics;

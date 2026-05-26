@@ -104,7 +104,8 @@ async def reinstall_song(
         txt_backup = normalize_lyrics_text(txt_file.read_text(encoding="utf-8"))
 
     # Se plain_lyrics não estiver no meta.json, mas tivermos um backup de lyrics.txt, usamos o backup!
-    if not plain_lyrics and txt_backup and txt_backup.strip():
+    # Só restaura do txt se NÃO existe LRC — quando o LRC veio de API (LRCLIB), preservamos ele.
+    if not plain_lyrics and txt_backup and txt_backup.strip() and lrc_backup is None:
         logger.info("plain_lyrics não encontrado no meta.json, mas backup de lyrics.txt está disponível. Utilizando para alinhamento!")
         plain_lyrics = normalize_lyrics_text(txt_backup)
         # Sincroniza de volta no meta.json para persistir (já normalizado)

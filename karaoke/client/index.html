@@ -640,6 +640,30 @@
         </div>
     </div>
 
+    <!-- Modal de Verificação de Letra -->
+    <div id="lyrics-review-modal" class="modal-overlay">
+        <div class="modal-content admin-modal" style="max-width: 560px;">
+            <h2>Revisar Letra da Música</h2>
+            <p style="font-size: 0.85rem; color: var(--dim); margin-top: 0; margin-bottom: 1rem;">
+                Confira se a letra encontrada está correta. Você pode editá-la antes de continuar.
+            </p>
+            <div id="lyrics-review-status"
+                style="padding: 0.5rem 0.75rem; border-radius: 8px; margin-bottom: 0.75rem; font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem;">
+            </div>
+            <div class="form-group">
+                <textarea id="lyrics-review-textarea" rows="12"
+                    style="width: 100%; min-height: 200px; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--card-border); border-radius: 8px; color: #fff; padding: 0.75rem; font-family: inherit; font-size: 0.85rem; resize: vertical; box-sizing: border-box; outline: none;"
+                    placeholder="Nenhuma letra encontrada. Cole a letra da música aqui (linha por linha)..."></textarea>
+            </div>
+            <div class="modal-buttons" style="margin-top: 1rem;">
+                <button type="button" id="btn-close-lyrics-review" class="btn"
+                    style="background: transparent; border: 1px solid #475569; color: var(--text); cursor: pointer;">Cancelar</button>
+                <button type="button" id="btn-confirm-lyrics-review" class="btn"
+                    style="background: var(--accent); color: #000; font-weight: 800; border: none; cursor: pointer;">Confirmar e Continuar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal de Pareamento de Celular (Microfone) -->
     <div id="pairing-modal" class="modal-overlay">
         <div class="modal-content admin-modal" style="max-width: 480px; text-align: center;">
