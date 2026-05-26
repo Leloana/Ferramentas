@@ -346,6 +346,12 @@ function initAddSongModal() {
         formData.set('artist', songArtist);
         formData.set('align_lyrics', alignLyrics);
 
+        const vocalUrlInput = document.getElementById('youtube-vocal-url');
+        if (vocalUrlInput && vocalUrlInput.value.trim()) {
+            formData.set('youtube_url', vocalUrlInput.value.trim());
+        }
+
+
         // Inclui letras (synced LRC e/ou plain lyrics)
         if (fetchedLyrics && fetchedLyrics.success) {
             if (fetchedLyrics.syncedLyrics) {

@@ -17,6 +17,7 @@ async def queue_add_song(
     artist: str = Form(""),
     language: str = Form("en"),
     youtube_url: str = Form(""),
+    youtube_vocal_url: Optional[str] = Form(None),
     plain_lyrics: Optional[str] = Form(None),
     synced_lrc: Optional[str] = Form(None),
     added_by: str = Form(""),
@@ -30,10 +31,14 @@ async def queue_add_song(
     O download + separação (Demucs) começam imediatamente.
     O alinhamento (Whisper) roda quando a GPU estiver ociosa.
     """
+    if youtube_vocal_url and youtube_vocal_url.strip() and not youtube_url.strip():
+        youtube_url = youtube_vocal_url
+
     if not youtube_url or not youtube_url.strip():
         # Se vocal_file foi fornecido, o youtube_url pode ser opcional ou vazio
         if not (vocal_file and vocal_file.filename):
             raise HTTPException(status_code=400, detail="URL do YouTube ou arquivo local é obrigatório.")
+
 
     # Auto-detecta metadados se título/artista estiverem vazios
     if not title.strip() or not artist.strip():
