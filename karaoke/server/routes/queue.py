@@ -1,12 +1,11 @@
-"""Rotas HTTP para a fila de músicas com processamento em segundo plano."""
-from __future__ import annotations
-
 import asyncio
 import logging
+import shutil
+from typing import Optional
 
-from fastapi import APIRouter, Form, HTTPException
+from fastapi import APIRouter, Form, HTTPException, UploadFile, File
 
-from state import queue_manager
+from state import queue_manager, SONGS_DIR
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -18,9 +17,12 @@ async def queue_add_song(
     artist: str = Form(""),
     language: str = Form("en"),
     youtube_url: str = Form(""),
-    plain_lyrics: str = Form(""),
+    plain_lyrics: Optional[str] = Form(None),
+    synced_lrc: Optional[str] = Form(None),
     added_by: str = Form(""),
     align_lyrics: bool = Form(False),
+    vocal_file: Optional[UploadFile] = File(None),
+    backing_file: Optional[UploadFile] = File(None),
 ):
     """Adiciona música à fila de processamento em segundo plano.
 
@@ -29,34 +31,59 @@ async def queue_add_song(
     O alinhamento (Whisper) roda quando a GPU estiver ociosa.
     """
     if not youtube_url or not youtube_url.strip():
-        raise HTTPException(status_code=400, detail="URL do YouTube é obrigatória.")
+        # Se vocal_file foi fornecido, o youtube_url pode ser opcional ou vazio
+        if not (vocal_file and vocal_file.filename):
+            raise HTTPException(status_code=400, detail="URL do YouTube ou arquivo local é obrigatório.")
 
     # Auto-detecta metadados se título/artista estiverem vazios
     if not title.strip() or not artist.strip():
-        try:
-            from utils.youtube import get_youtube_video_info
+        if youtube_url.strip():
+            try:
+                from utils.youtube import get_youtube_video_info
 
-            info = await get_youtube_video_info(youtube_url.strip())
-            if not title.strip():
-                title = info.get("title", "Música Desconhecida")
-            if not artist.strip():
-                artist = info.get("artist", "Artista Desconhecido")
-        except Exception as e:
-            logger.warning(f"Falha ao buscar metadados do YouTube: {e}")
-            if not title.strip():
-                title = "Música Desconhecida"
-            if not artist.strip():
-                artist = "Artista Desconhecido"
+                info = await get_youtube_video_info(youtube_url.strip())
+                if not title.strip():
+                    title = info.get("title", "Música Desconhecida")
+                if not artist.strip():
+                    artist = info.get("artist", "Artista Desconhecido")
+            except Exception as e:
+                logger.warning(f"Falha ao buscar metadados do YouTube: {e}")
+        
+        if not title.strip():
+            title = "Música Desconhecida"
+        if not artist.strip():
+            artist = "Artista Desconhecido"
 
-    # Auto-fetch lyrics se o usuário não forneceu letra
-    synced_lrc = None
-    if not plain_lyrics.strip():
+    # Salva arquivos locais antes de enfileirar se fornecidos
+    from utils.text import slugify
+    slug = slugify(f"{title}-{artist}")
+    song_dir = SONGS_DIR / slug
+    song_dir.mkdir(parents=True, exist_ok=True)
+
+    if vocal_file and vocal_file.filename:
+        # Se temos vocal e backing tracks locais, salva vocal.mp3 e backing_track.mp3
+        # Caso contrário, vocal_file é o áudio principal que precisa de Demucs (original.mp3)
+        if backing_file and backing_file.filename:
+            with open(song_dir / "vocal.mp3", "wb") as f:
+                shutil.copyfileobj(vocal_file.file, f)
+        else:
+            with open(song_dir / "original.mp3", "wb") as f:
+                shutil.copyfileobj(vocal_file.file, f)
+
+    if backing_file and backing_file.filename:
+        with open(song_dir / "backing_track.mp3", "wb") as f:
+            shutil.copyfileobj(backing_file.file, f)
+
+    # Se plain_lyrics e synced_lrc forem ambos None (omitidos do form), faz auto-fetch
+    if plain_lyrics is None and synced_lrc is None:
+        synced_lrc = None
+        plain_lyrics = ""
         try:
             from utils.lyrics_fetcher import fetch_lyrics
 
             fetched = await asyncio.to_thread(fetch_lyrics, artist.strip(), title.strip())
             if fetched:
-                plain_lyrics = fetched.get("plainLyrics") or plain_lyrics
+                plain_lyrics = fetched.get("plainLyrics") or ""
                 synced_lrc = fetched.get("syncedLyrics")
                 logger.info(
                     "[Queue] Letra encontrada via %s para '%s - %s': plain=%s, synced=%s",
@@ -66,6 +93,10 @@ async def queue_add_song(
                 logger.info("[Queue] Nenhuma letra encontrada nas APIs para '%s - %s'. Whisper fará transcrição.", artist, title)
         except Exception as e:
             logger.warning(f"[Queue] Falha ao buscar letra: {e}")
+    else:
+        # Usa o valor fornecido explicitamente pelo formulário do frontend
+        plain_lyrics = plain_lyrics or ""
+        synced_lrc = synced_lrc or None
 
     if synced_lrc:
         align_lyrics = False
@@ -84,7 +115,7 @@ async def queue_add_song(
         return {
             "success": True,
             "item": item.to_dict(),
-            "message": f"'{title}' adicionada à fila! Download iniciado.",
+            "message": f"'{title}' adicionada à fila! Processamento iniciado.",
         }
     except ValueError as e:
         raise HTTPException(status_code=429, detail=str(e))

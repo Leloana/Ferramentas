@@ -2119,10 +2119,17 @@
     display: block !important;
 }
 #add-song-form[data-step="1"] #upload-step-2,
+#add-song-form[data-step="1"] #upload-step-3,
 #add-song-form[data-step="1"] #btn-back-step-1 {
     display: none !important;
 }
-#add-song-form[data-step="2"] #upload-step-1 {
+#add-song-form[data-step="1"] #btn-close-add-song {
+    display: inline-block !important;
+}
+
+#add-song-form[data-step="2"] #upload-step-1,
+#add-song-form[data-step="2"] #upload-step-3,
+#add-song-form[data-step="2"] #btn-close-add-song {
     display: none !important;
 }
 #add-song-form[data-step="2"] #upload-step-2 {
@@ -2131,6 +2138,19 @@
 #add-song-form[data-step="2"] #btn-back-step-1 {
     display: inline-block !important;
 }
+
+#add-song-form[data-step="3"] #upload-step-1,
+#add-song-form[data-step="3"] #upload-step-2,
+#add-song-form[data-step="3"] #btn-close-add-song {
+    display: none !important;
+}
+#add-song-form[data-step="3"] #upload-step-3 {
+    display: block !important;
+}
+#add-song-form[data-step="3"] #btn-back-step-1 {
+    display: inline-block !important;
+}
+
 
 /* 7. Form Tab selector styling & Visibility */
 #add-song-form[data-upload-tab="youtube"] #section-youtube-import {

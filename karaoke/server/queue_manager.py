@@ -64,6 +64,8 @@ class QueueItem:
             "error_msg": self.error_msg,
             "added_by": self.added_by,
             "align_lyrics": self.align_lyrics,
+            "has_lrc": bool(self.synced_lrc),
+            "has_plain_lyrics": bool(self.plain_lyrics) and not bool(self.synced_lrc),
         }
 
 
@@ -191,25 +193,40 @@ class SongQueueManager:
                 if normalized:
                     (song_dir / "lyrics.txt").write_text(normalized + "\n", encoding="utf-8")
 
-            # 2. Download do YouTube
+            # 2. Download do YouTube (ou detecção de arquivos locais já carregados)
             item.progress_pct = 15
-            from state import ffmpeg_bin_dir
-            from utils.youtube import download_youtube_audio
-
             original_audio = song_dir / "original.mp3"
-            logger.info(f"[QUEUE:{item.id}] Baixando áudio do YouTube...")
-            success = await download_youtube_audio(item.youtube_url, original_audio, ffmpeg_bin_dir)
-            if not success or not original_audio.exists():
-                raise RuntimeError("Falha ao baixar áudio do YouTube.")
+            vocal_audio = song_dir / "vocal.mp3"
+            backing_audio = song_dir / "backing_track.mp3"
+
+            skip_download = False
+            if vocal_audio.exists() and backing_audio.exists():
+                logger.info(f"[QUEUE:{item.id}] Arquivos vocal e backing já existem. Pulando download e separação.")
+                skip_download = True
+            elif original_audio.exists():
+                logger.info(f"[QUEUE:{item.id}] Áudio original já existe. Pulando download.")
+                skip_download = True
+
+            if not skip_download:
+                from state import ffmpeg_bin_dir
+                from utils.youtube import download_youtube_audio
+                logger.info(f"[QUEUE:{item.id}] Baixando áudio do YouTube...")
+                success = await download_youtube_audio(item.youtube_url, original_audio, ffmpeg_bin_dir)
+                if not success or not original_audio.exists():
+                    raise RuntimeError("Falha ao baixar áudio do YouTube.")
 
             item.progress_pct = 35
 
             # 3. Demucs (separação vocal/instrumental) — roda na GPU, seguro em paralelo
             item.status = QueueStatus.SEPARATING
             item.progress_pct = 40
-            logger.info(f"[QUEUE:{item.id}] Executando Demucs (separação de áudio)...")
 
-            await self._run_demucs(item, song_dir, original_audio)
+            if vocal_audio.exists() and backing_audio.exists():
+                logger.info(f"[QUEUE:{item.id}] Vocal e backing já existem. Pulando Demucs.")
+            else:
+                logger.info(f"[QUEUE:{item.id}] Executando Demucs (separação de áudio)...")
+                target_audio = original_audio if original_audio.exists() else vocal_audio
+                await self._run_demucs(item, song_dir, target_audio)
 
             item.progress_pct = 70
 

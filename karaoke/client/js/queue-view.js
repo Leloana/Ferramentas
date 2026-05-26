@@ -235,6 +235,16 @@ function renderQueueItems(containerId, items) {
     }
 }
 
+function getLyricBadge(item) {
+    if (item.has_lrc) {
+        return `<span style="font-size: 0.7rem; font-weight: 700; color: #10b981; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25); padding: 0.15rem 0.4rem; border-radius: 4px; margin-left: 0.5rem; display: inline-block; vertical-align: middle;">LRC</span>`;
+    } else if (item.has_plain_lyrics) {
+        return `<span style="font-size: 0.7rem; font-weight: 700; color: #38bdf8; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.25); padding: 0.15rem 0.4rem; border-radius: 4px; margin-left: 0.5rem; display: inline-block; vertical-align: middle;">Com Letra</span>`;
+    } else {
+        return `<span style="font-size: 0.7rem; font-weight: 700; color: #f59e0b; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.25); padding: 0.15rem 0.4rem; border-radius: 4px; margin-left: 0.5rem; display: inline-block; vertical-align: middle;">Sem Letra (Whisper)</span>`;
+    }
+}
+
 function createQueueItemCard(item) {
     const info = STATUS_MAP[item.status] || STATUS_MAP.queued;
     const card = document.createElement('div');
@@ -246,7 +256,10 @@ function createQueueItemCard(item) {
     card.innerHTML = `
         <div class="queue-item-icon" data-status="${item.status}">${info.icon}</div>
         <div class="queue-item-info">
-            <div class="queue-item-title">${escapeHtml(item.title || 'Processando...')}</div>
+            <div class="queue-item-title">
+                ${escapeHtml(item.title || 'Processando...')}
+                ${getLyricBadge(item)}
+            </div>
             <div class="queue-item-status" data-status="${item.status}">
                 ${info.label}${item.error_msg ? ' — ' + escapeHtml(item.error_msg) : ''}
                 ${item.added_by ? ` <span style="opacity: 0.5;">• ${escapeHtml(item.added_by)}</span>` : ''}
@@ -283,7 +296,9 @@ function updateQueueItemCard(container, item) {
     }
 
     const titleEl = card.querySelector('.queue-item-title');
-    if (titleEl) titleEl.textContent = item.title || 'Processando...';
+    if (titleEl) {
+        titleEl.innerHTML = `${escapeHtml(item.title || 'Processando...')} ${getLyricBadge(item)}`;
+    }
 
     const statusEl = card.querySelector('.queue-item-status');
     if (statusEl) {
@@ -294,6 +309,7 @@ function updateQueueItemCard(container, item) {
         statusEl.textContent = text;
     }
 }
+
 
 // ── Remoção ──
 async function removeFromQueue(itemId) {

@@ -29,12 +29,31 @@ class TestSongQueueManager(unittest.IsolatedAsyncioTestCase):
             language="pt",
             youtube_url="https://youtube.com/watch?v=123",
             plain_lyrics="line 1\nline 2",
+            synced_lrc="[00:10.00] line 1\n[00:12.00] line 2",
             align_lyrics=True,
             added_by="user1"
         )
         self.assertEqual(item.align_lyrics, True)
         d = item.to_dict()
         self.assertEqual(d["align_lyrics"], True)
+        self.assertEqual(d["has_lrc"], True)
+        self.assertEqual(d["has_plain_lyrics"], False)
+
+        item2 = QueueItem(
+            id="test-id2",
+            slug="test-slug2",
+            title="Test Title 2",
+            artist="Test Artist 2",
+            language="en",
+            youtube_url="url2",
+            plain_lyrics="line 1\nline 2",
+            synced_lrc=None,
+            align_lyrics=False
+        )
+        d2 = item2.to_dict()
+        self.assertEqual(d2["has_lrc"], False)
+        self.assertEqual(d2["has_plain_lyrics"], True)
+
 
     @patch("asyncio.create_task")
     async def test_enqueue(self, mock_create_task):

@@ -90,8 +90,7 @@ function initAddSongModal() {
 
     tabBtnLocal.onclick = () => setTab('local');
     tabBtnYoutube.onclick = () => setTab('youtube');
-
-    let currentStep = 1;
+    let currentStep = 1;
     let fetchedLyrics = null;  // resultado do /api/fetch-lyrics
 
     const setStep = (step) => {
@@ -99,7 +98,11 @@ function initAddSongModal() {
         addSongForm.setAttribute('data-step', step);
         const btnSubmit = document.getElementById('btn-submit-song');
         if (btnSubmit) {
-            btnSubmit.innerText = (step === 1) ? 'Avançar ➡️' : 'Confirmar e Criar 🎵';
+            if (step === 1 || step === 2) {
+                btnSubmit.innerText = 'Avançar ➡️';
+            } else if (step === 3) {
+                btnSubmit.innerText = 'Fila 📋';
+            }
         }
     };
 
@@ -136,74 +139,14 @@ function initAddSongModal() {
         }
     };
 
-    /**
-     * Abre o modal de verificação de letra para o usuário revisar/editar a letra
-     * antes de prosseguir com o upload. Retorna a letra confirmada ou null se cancelar.
-     */
-    const showLyricsReviewModal = (fetchedResult) => {
-        return new Promise((resolve) => {
-            const modal = document.getElementById('lyrics-review-modal');
-            const textarea = document.getElementById('lyrics-review-textarea');
-            const statusDiv = document.getElementById('lyrics-review-status');
-            const btnConfirm = document.getElementById('btn-confirm-lyrics-review');
-            const btnClose = document.getElementById('btn-close-lyrics-review');
-
-            if (!modal || !textarea) {
-                resolve(fetchedResult?.plainLyrics || null);
-                return;
-            }
-
-            // Configura status
-            if (statusDiv) {
-                if (fetchedResult?.syncedLyrics) {
-                    statusDiv.style.background = 'rgba(34, 197, 94, 0.1)';
-                    statusDiv.style.border = '1px solid rgba(34, 197, 94, 0.3)';
-                    statusDiv.style.color = '#86efac';
-                    statusDiv.innerHTML = '✅ <strong>LRC sincronizado encontrado!</strong> Revise a letra abaixo antes de continuar.';
-                } else if (fetchedResult?.plainLyrics) {
-                    statusDiv.style.background = 'rgba(59, 130, 246, 0.1)';
-                    statusDiv.style.border = '1px solid rgba(59, 130, 246, 0.3)';
-                    statusDiv.style.color = '#93c5fd';
-                    statusDiv.innerHTML = '📝 <strong>Letra encontrada.</strong> Confira se está correta e edite se necessário.';
-                } else {
-                    statusDiv.style.background = 'rgba(251, 191, 36, 0.1)';
-                    statusDiv.style.border = '1px solid rgba(251, 191, 36, 0.3)';
-                    statusDiv.style.color = '#fcd34d';
-                    statusDiv.innerHTML = '⚠️ <strong>Nenhuma letra encontrada online.</strong> Cole a letra correta abaixo ou deixe em branco para a IA transcrever.';
-                }
-            }
-
-            // Preenche textarea com plain lyrics (nunca LRC)
-            textarea.value = fetchedResult?.plainLyrics || '';
-
-            const cleanup = () => {
-                modal.removeAttribute('data-open');
-                if (btnConfirm) btnConfirm.removeEventListener('click', onConfirm);
-                if (btnClose) btnClose.removeEventListener('click', onCancel);
-            };
-
-            const onConfirm = () => {
-                const edited = textarea.value.trim();
-                cleanup();
-                resolve(edited || null);
-            };
-
-            const onCancel = () => {
-                cleanup();
-                resolve(null);
-            };
-
-            if (btnConfirm) btnConfirm.addEventListener('click', onConfirm);
-            if (btnClose) btnClose.addEventListener('click', onCancel);
-
-            modal.setAttribute('data-open', 'true');
-        });
-    };
-
     const btnBackStep1 = document.getElementById('btn-back-step-1');
     if (btnBackStep1) {
         btnBackStep1.onclick = () => {
-            setStep(1);
+            if (currentStep === 2) {
+                setStep(1);
+            } else if (currentStep === 3) {
+                setStep(2);
+            }
         };
     }
 
@@ -307,46 +250,83 @@ function initAddSongModal() {
             return;
         }
 
+        if (currentStep === 2) {
+            const songTitle = document.getElementById('song-title').value.trim();
+            const songArtist = document.getElementById('song-artist').value.trim();
+            if (!songTitle || !songArtist) {
+                showToast("Por favor, preencha o Título da Música e o Artista / Banda.", "error");
+                return;
+            }
+
+            // Busca letra automaticamente com os nomes CONFIRMADOS pelo usuário
+            const btnSubmit = document.getElementById('btn-submit-song');
+            const origText = btnSubmit.innerText;
+            btnSubmit.innerText = "Buscando letra... 🔍";
+            btnSubmit.disabled = true;
+
+            try {
+                const lyricsRes = await fetch(`/api/fetch-lyrics?artist=${encodeURIComponent(songArtist)}&track=${encodeURIComponent(songTitle)}`);
+                fetchedLyrics = await lyricsRes.json();
+            } catch (err) {
+                console.error("Erro ao buscar letra:", err);
+                fetchedLyrics = { success: false };
+            }
+            updateLyricsStatus(fetchedLyrics);
+
+            btnSubmit.innerText = origText;
+            btnSubmit.disabled = false;
+
+            // Preenche Passo 3 e avança
+            const statusDiv = document.getElementById('lyrics-step3-status');
+            const icon = document.getElementById('lyrics-step3-icon');
+            const text = document.getElementById('lyrics-step3-text');
+            const textarea = document.getElementById('lyrics-step3-textarea');
+
+            if (statusDiv && icon && text && textarea) {
+                if (!fetchedLyrics || !fetchedLyrics.success) {
+                    statusDiv.style.background = 'rgba(251, 191, 36, 0.1)';
+                    statusDiv.style.borderColor = 'rgba(251, 191, 36, 0.3)';
+                    statusDiv.style.color = '#fcd34d';
+                    icon.textContent = '🤖';
+                    text.textContent = 'Nenhuma letra encontrada online — a IA vai transcrever diretamente do áudio.';
+                    textarea.value = '';
+                } else if (fetchedLyrics.syncedLyrics) {
+                    statusDiv.style.background = 'rgba(34, 197, 94, 0.1)';
+                    statusDiv.style.borderColor = 'rgba(34, 197, 94, 0.3)';
+                    statusDiv.style.color = '#86efac';
+                    icon.textContent = '✅';
+                    text.textContent = `Letra sincronizada encontrada via ${fetchedLyrics.source === 'lrclib' ? 'LRCLIB' : 'API'}! O LRC será usado diretamente.`;
+                    textarea.value = fetchedLyrics.plainLyrics || '';
+                } else if (fetchedLyrics.plainLyrics) {
+                    statusDiv.style.background = 'rgba(59, 130, 246, 0.1)';
+                    statusDiv.style.borderColor = 'rgba(59, 130, 246, 0.3)';
+                    statusDiv.style.color = '#93c5fd';
+                    icon.textContent = '📝';
+                    text.textContent = `Letra encontrada via ${fetchedLyrics.source === 'ovh' ? 'Lyrics.ovh' : 'LRCLIB'}! Será usada como guia para o alinhamento automático.`;
+                    textarea.value = fetchedLyrics.plainLyrics;
+                }
+            }
+
+            setStep(3);
+            return;
+        }
+
+        // Se chegamos no Passo 3
         const songTitle = document.getElementById('song-title').value.trim();
         const songArtist = document.getElementById('song-artist').value.trim();
-        if (!songTitle || !songArtist) {
-            showToast("Por favor, preencha o Título da Música e o Artista / Banda.", "error");
-            return;
-        }
+        const textarea = document.getElementById('lyrics-step3-textarea');
+        const confirmedPlainLyrics = textarea ? textarea.value.trim() : '';
 
-        // Busca letra automaticamente com os nomes CONFIRMADOS pelo usuário
-        const btnSubmit = document.getElementById('btn-submit-song');
-        const origText = btnSubmit.innerText;
-        btnSubmit.innerText = "Buscando letra... 🔍";
-        btnSubmit.disabled = true;
-
-        try {
-            const lyricsRes = await fetch(`/api/fetch-lyrics?artist=${encodeURIComponent(songArtist)}&track=${encodeURIComponent(songTitle)}`);
-            fetchedLyrics = await lyricsRes.json();
-        } catch (err) {
-            console.error("Erro ao buscar letra:", err);
-            fetchedLyrics = { success: false };
-        }
-        updateLyricsStatus(fetchedLyrics);
-
-        btnSubmit.innerText = origText;
-        btnSubmit.disabled = false;
-
-        // Mostra modal para o usuário revisar/editar a letra (sempre plain lyrics, nunca LRC)
-        const confirmedPlainLyrics = await showLyricsReviewModal(fetchedLyrics);
-        if (confirmedPlainLyrics === null) {
-            // Usuário cancelou — volta ao step 2
-            return;
-        }
-
-        // Atualiza plainLyrics com o texto confirmado/editado pelo usuário
+        // Atualiza plainLyrics/syncedLyrics com base na revisão
         if (fetchedLyrics && fetchedLyrics.success) {
-            fetchedLyrics.plainLyrics = confirmedPlainLyrics || fetchedLyrics.plainLyrics;
+            if (fetchedLyrics.plainLyrics !== confirmedPlainLyrics) {
+                // Se o usuário editou a letra plana, invalidamos o LRC sincronizado original
+                fetchedLyrics.syncedLyrics = null;
+                fetchedLyrics.plainLyrics = confirmedPlainLyrics || null;
+            }
         } else if (confirmedPlainLyrics) {
             fetchedLyrics = { success: true, plainLyrics: confirmedPlainLyrics, syncedLyrics: null, source: 'user' };
         }
-
-        updateLyricsStatus(fetchedLyrics);
 
         // Se temos LRC sincronizado, não precisa perguntar PRO vs FLASH
         const hasSyncedLrc = fetchedLyrics && fetchedLyrics.success && fetchedLyrics.syncedLyrics;
@@ -366,7 +346,7 @@ function initAddSongModal() {
         formData.set('artist', songArtist);
         formData.set('align_lyrics', alignLyrics);
 
-        // Inclui letras fetched (synced LRC e/ou plain lyrics)
+        // Inclui letras (synced LRC e/ou plain lyrics)
         if (fetchedLyrics && fetchedLyrics.success) {
             if (fetchedLyrics.syncedLyrics) {
                 formData.set('synced_lrc', fetchedLyrics.syncedLyrics);
@@ -374,14 +354,14 @@ function initAddSongModal() {
             if (fetchedLyrics.plainLyrics) {
                 formData.set('plain_lyrics', fetchedLyrics.plainLyrics);
             }
+        } else {
+            formData.set('plain_lyrics', '');
         }
 
-        const gen = state.activeUploadTab === 'youtube'
-            ? startLoadingOverlay("Preparando Música...", "Baixando áudio, separando vocal e gerando rascunho do LRC... 🎧 Pode levar 1-2min.", true)
-            : startLoadingOverlay("Processando Áudio...", "Separando vocal e gerando rascunho do LRC... 🎧 Pode levar 1-2min.", true);
+        const gen = startLoadingOverlay("Adicionando na Fila...", "Enfileirando música para processamento em segundo plano... ⚡🎧");
 
         try {
-            const response = await fetch('/api/upload-song', {
+            const response = await fetch('/api/queue/add', {
                 method: 'POST',
                 body: formData
             });
@@ -394,23 +374,24 @@ function initAddSongModal() {
             const data = await response.json();
             stopLoadingOverlay(gen);
 
-            // O backend sempre devolve um rascunho de LRC para o usuário aprovar
-            // antes de finalizar a música. O `segments.json` só é gerado quando
-            // o usuário salva o LRC editado (via /api/save-lyrics).
-            if (data.orphan_lines && data.orphan_lines > 0) {
-                showToast(`Rascunho gerado com ${data.orphan_lines} linha(s) marcadas [??:??.??] — ajuste os tempos manualmente no editor antes de salvar.`, "warning");
-            } else {
-                showToast("Rascunho de LRC pronto! Revise e clique em Salvar para finalizar.", "info");
-            }
-            loadAndOpenLrcEditor(data.slug);
+            showToast("Música adicionada à fila com sucesso! O processamento rodará em segundo plano.", "success");
+            
+            // Fecha modal
+            addSongModal.removeAttribute('data-open');
+
+            // Muda para a aba de Fila para o usuário acompanhar!
+            const tabQueue = document.getElementById('tab-btn-queue');
+            if (tabQueue) tabQueue.click();
+
         } catch (error) {
             stopLoadingOverlay(gen);
             showToast("Erro ao adicionar música: " + error.message, "error");
             addSongModal.setAttribute('data-open', 'true');
-            setStep(2);
+            setStep(3);
         }
     };
 }
+
 
 function initLrcEditorModal() {
     const btnCloseEditor = document.getElementById('btn-close-editor');
