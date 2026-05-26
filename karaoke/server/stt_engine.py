@@ -1,9 +1,11 @@
 import logging
 import os
 import re
+import string
 import sys
 
 import numpy as np
+from rapidfuzz import fuzz
 
 # Padrões de alucinação conhecidos do Whisper (legendas/agradecimentos genéricos
 # que vazam do dataset de treinamento). Compilado uma única vez.
@@ -51,18 +53,29 @@ if sys.platform == "win32":
 # Importa faster_whisper após registrar as DLLs
 from faster_whisper import WhisperModel
 
+# Limiar absoluto mínimo: palavras abaixo disso são quase certamente alucinações
+# mesmo em contexto de canto. Sobe em degraus com o no_speech_prob.
+_HARD_FLOOR = 0.05
+
+
 def _get_word_threshold(no_speech_prob: float) -> float:
-    """Retorna o limiar de probabilidade de palavra aceitável baseado no no_speech_prob do segmento."""
+    """Retorna o limiar de probabilidade de palavra aceitável baseado no no_speech_prob do segmento.
+
+    Calibrado para canto com acompanhamento instrumental, onde o Whisper produz
+    estruturalmente probabilidades por palavra mais baixas do que em fala limpa.
+    O no_speech_prob em canto tipicamente fica entre 0.10–0.30 mesmo com voz
+    presente, então os limiares precisam ser mais permissivos nessa faixa.
+    """
     if no_speech_prob > 0.60:
-        return 0.70  # Segmento quase certamente silencioso ou com ruído. Exige alta certeza.
+        return max(0.50, _HARD_FLOOR)  # Quase certo silêncio/ruído: exigente mas não intransponível
     elif no_speech_prob > 0.40:
-        return 0.55  # Alta probabilidade de silêncio/ruído.
+        return max(0.30, _HARD_FLOOR)  # Provável silêncio/ruído
     elif no_speech_prob > 0.25:
-        return 0.45  # Ruído moderado / possível silêncio.
+        return max(0.18, _HARD_FLOOR)  # Ruído moderado (faixa típica de canto com instrumental pesado)
     elif no_speech_prob > 0.15:
-        return 0.35  # Baixo ruído, provável voz.
+        return max(0.18, _HARD_FLOOR)  # Canto com instrumental (faixa mais comum: 0.15–0.25)
     else:
-        return 0.25  # Áudio limpo, permite palavras com pronúncia rápida.
+        return max(0.08, _HARD_FLOOR)  # Canto relativamente limpo
 
 class STTEngine:
     def __init__(self, model_size="medium", device="auto", compute_type="default"):
@@ -89,7 +102,7 @@ class STTEngine:
             logger.error(f"Erro fatal ao carregar Whisper: {e}")
             raise e
 
-    def transcribe(self, audio_data, language, initial_prompt=None, rms_threshold=0.001):
+    def transcribe(self, audio_data, language, initial_prompt=None, rms_threshold=0.001, expected_words=None):
         rms = np.sqrt(np.mean(audio_data ** 2)) if len(audio_data) > 0 else 0
         if rms < rms_threshold:
             logger.info(f"Trecho silencioso detectado (RMS: {rms:.5f}). Ignorando Whisper para prevenir alucinações.")
@@ -118,14 +131,39 @@ class STTEngine:
                 no_speech_prob = getattr(segment, "no_speech_prob", 0.0)
                 word_threshold = _get_word_threshold(no_speech_prob)
 
+                # Pré-limpa as palavras esperadas para o whitelist check
+                clean_expected = None
+                if expected_words:
+                    clean_expected = [
+                        w.lower().strip().translate(str.maketrans("", "", string.punctuation))
+                        for w in expected_words
+                    ]
+
                 if segment.words:
                     for word in segment.words:
                         word_clean = word.word.strip()
                         if _HALLUCINATION_RE.search(word_clean):
                             continue
-                        
+
+                        # Whitelist: palavras esperadas (ex.: neologismos, nomes próprios)
+                        # são aceitas mesmo com baixa confiança do Whisper
+                        whitelisted = False
+                        if clean_expected:
+                            word_key = word_clean.lower().translate(
+                                str.maketrans("", "", string.punctuation)
+                            )
+                            for exp in clean_expected:
+                                if fuzz.ratio(word_key, exp) >= 80:
+                                    whitelisted = True
+                                    logger.info(
+                                        f"✅ [Whitelist] Palavra '{word_clean}' aceita por match fuzzy "
+                                        f"com esperada '{exp}' (ratio={fuzz.ratio(word_key, exp)}, "
+                                        f"prob={word.probability:.3f} < limiar={word_threshold})"
+                                    )
+                                    break
+
                         # Filtro de confiança adaptativo baseando-se no ruído/silêncio do segmento
-                        if word.probability < word_threshold:
+                        if not whitelisted and word.probability < word_threshold:
                             logger.info(
                                 f"🚫 [Filtro Confiança] Descartando palavra incerta/alucinada '{word_clean}' "
                                 f"(prob={word.probability:.3f} < limiar={word_threshold} para no_speech_prob={no_speech_prob:.3f})"
@@ -145,7 +183,7 @@ class STTEngine:
             if "cublas" in str(e).lower() or "cudnn" in str(e).lower():
                 logger.warning("Erro de biblioteca CUDA detectado durante execução. Trocando para CPU...")
                 self.model = WhisperModel(self.model_size, device="cpu", compute_type="int8")
-                return self.transcribe(audio_data, language, initial_prompt=initial_prompt)
+                return self.transcribe(audio_data, language, initial_prompt=initial_prompt, expected_words=expected_words)
             raise e
 
 # Singleton para uso no servidor

@@ -107,6 +107,20 @@ class TestHttpApiFlow(unittest.TestCase):
         self.assertEqual(data[0]["title"], "Mock Song")
         self.assertEqual(data[0]["artist"], "Artist")
 
+    def test_get_song(self):
+        # Valid song ID
+        response = self.client.get(f"/api/songs/{self.song_slug}")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data["id"], self.song_slug)
+        self.assertEqual(data["title"], "Mock Song")
+        self.assertEqual(data["artist"], "Artist")
+        self.assertIsInstance(data["segments"], list)
+
+        # Invalid song ID
+        response_invalid = self.client.get("/api/songs/non-existent-song")
+        self.assertEqual(response_invalid.status_code, 404)
+
     def test_get_audio(self):
         # Valid song ID
         response = self.client.get(f"/songs/{self.song_slug}/audio")

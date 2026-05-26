@@ -206,7 +206,8 @@ async def process_segment_multiplayer(
                         up = WHISPER_SR // gcd
                         down = room.client_sample_rate // gcd
                         resampled = scipy.signal.resample_poly(audio_data, up, down).astype(np.float32)
-                        return stt.transcribe(resampled, language=seg_lang, initial_prompt=seg_text)
+                        expected = [w["word"] for w in seg_lyrics] if seg_lyrics else None
+                        return stt.transcribe(resampled, language=seg_lang, initial_prompt=seg_text, expected_words=expected)
 
                     async with queue_manager.whisper_lock:
                         transcribed_text, words = await asyncio.to_thread(compute)
@@ -599,6 +600,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                 room.mic = None
         else:
             room.display = None
+            queue_manager.notify_game_ended()
             targets = list(room.players.values()) + room.unregistered_mics
             if room.mic and room.mic not in targets:
                 targets.append(room.mic)

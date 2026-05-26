@@ -138,6 +138,13 @@ async def queue_status():
     }
 
 
+@router.post("/api/queue/clear_gpu_lock")
+async def queue_clear_gpu_lock():
+    """Libera manualmente o status da GPU, permitindo que a Fase 2 continue."""
+    queue_manager.notify_game_ended()
+    return {"success": True, "message": "Status da GPU redefinido para livre."}
+
+
 @router.delete("/api/queue/remove/{item_id}")
 async def queue_remove(item_id: str):
     """Remove um item da fila. Cancela o processamento se estiver em andamento."""

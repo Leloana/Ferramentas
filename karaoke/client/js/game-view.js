@@ -157,6 +157,21 @@ export async function resetGameState() {
 }
 
 export async function startKaraoke() {
+    const capturedSongId = state.selectedSongId;
+
+    // Carrega o segments.json inteiro no front antes de iniciar
+    try {
+        const resp = await fetch(`/api/songs/${capturedSongId}`);
+        if (!resp.ok) throw new Error("Falha ao carregar os segmentos da música");
+        const songData = await resp.json();
+        state.currentSegments = songData.segments;
+        console.log(`Carregados ${state.currentSegments.length} segmentos para a música localmente.`);
+    } catch (err) {
+        console.error("Erro ao pré-carregar os segmentos:", err);
+        showToast("Erro ao carregar os segmentos da música do servidor.", "error");
+        return;
+    }
+
     const captureMic = !!(state.localStreamForced || !state.isMobileMicrophoneConnected);
 
     if (state.audioManager) {
@@ -243,7 +258,6 @@ export async function startKaraoke() {
     state.activePlayers = activeList;
     state.gameMode = mode;
 
-    const capturedSongId = state.selectedSongId;
     let reconnectAttempts = 0;
     const maxReconnectAttempts = 5;
 
@@ -268,6 +282,7 @@ export async function startKaraoke() {
             dom.audioPlayer.play();
             startTimeSync();
             setAppState('singing');
+            startHighlightLoop();
         };
 
         state.ws.onmessage = (event) => {
@@ -385,6 +400,7 @@ const DISPLAY_HANDLERS = {
     },
     singing_state(data, context) {
         const { state } = context;
+        if (state.currentSegments) return;
         state.isSingingActive = data.active;
         const transText = document.getElementById('transcription-text');
         if (transText && !state.transcriptionActiveTimer) {
@@ -406,6 +422,7 @@ const DISPLAY_HANDLERS = {
     },
     segment_start(data, context) {
         const { state } = context;
+        if (state.currentSegments) return;
         if (!state.transcriptionActiveTimer) {
             const transText = document.getElementById('transcription-text');
             if (transText) {
@@ -1052,6 +1069,69 @@ export function startHighlightLoop() {
                 return;
             }
 
+            const virtualTime = audioPlayer.currentTime + state.syncOffset;
+
+            // Sincronia e transição local de segmentos
+            if (state.currentSegments) {
+                let new_idx = state.currentSegments.length;
+                for (let idx = 0; idx < state.currentSegments.length; idx++) {
+                    const seg = state.currentSegments[idx];
+                    if (virtualTime < seg.sing_end) {
+                        new_idx = idx;
+                        break;
+                    }
+                }
+
+                if (new_idx < state.currentSegments.length) {
+                    const currentSeg = state.currentSegments[new_idx];
+
+                    if (!state.currentSegmentData || state.currentSegmentData.id !== currentSeg.id) {
+                        const prev_lyrics = new_idx > 0 ? state.currentSegments[new_idx - 1].lyrics : "";
+                        const next_lyrics = new_idx < state.currentSegments.length - 1 ? state.currentSegments[new_idx + 1].lyrics : "";
+                        const upcoming_lyrics = new_idx < state.currentSegments.length - 2 ? state.currentSegments[new_idx + 2].lyrics : "";
+
+                        const segmentData = {
+                            ...currentSeg,
+                            prev_lyrics,
+                            next_lyrics,
+                            upcoming_lyrics
+                        };
+
+                        renderLyrics(segmentData);
+                    }
+
+                    // Determinação do estado de canto de forma local
+                    const SINGING_PRE_BUFFER_SEC = 1.0;
+                    const POST_SING_BUFFER_SEC = 0.5;
+                    const isSinging = (
+                        (currentSeg.sing_start - SINGING_PRE_BUFFER_SEC)
+                        <= virtualTime
+                        && virtualTime <= (currentSeg.sing_end + POST_SING_BUFFER_SEC)
+                    );
+
+                    if (isSinging !== state.isSingingActive) {
+                        state.isSingingActive = isSinging;
+                        const transText = document.getElementById('transcription-text');
+                        if (transText && !state.transcriptionActiveTimer) {
+                            transText.innerHTML = `<strong>Ouvi:</strong> <span style="color: var(--dim);">${state.isSingingActive ? '[Ouvindo...]' : '[Solo Instrumental...]'}</span>`;
+                        }
+                    }
+                } else {
+                    if (state.currentSegments.length > 0 && !state.isOutroActive) {
+                        const lastSeg = state.currentSegments[state.currentSegments.length - 1];
+                        if (virtualTime >= lastSeg.sing_end) {
+                            if (state.isSingingActive) {
+                                state.isSingingActive = false;
+                                const transText = document.getElementById('transcription-text');
+                                if (transText && !state.transcriptionActiveTimer) {
+                                    transText.innerHTML = `<strong>Ouvi:</strong> <span style="color: var(--dim);">[Solo Instrumental...]</span>`;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             if (!state.currentSegmentData) {
                 return;
             }
@@ -1059,7 +1139,6 @@ export function startHighlightLoop() {
             const segData = state.currentSegmentData;
             if (!segData || typeof segData.sing_start !== 'number') return;
 
-            const virtualTime = audioPlayer.currentTime + state.syncOffset;
             const relativeTime = virtualTime - segData.sing_start;
 
             if (state.totalPauseDuration > 3.0) {

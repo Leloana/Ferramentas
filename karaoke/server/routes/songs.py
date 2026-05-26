@@ -31,6 +31,16 @@ async def list_songs(response: Response):
     return song_manager.list_songs()
 
 
+@router.get("/api/songs/{song_id}")
+async def get_song(song_id: str, response: Response):
+    set_no_cache(response)
+    data = song_manager.get_song_data(song_id)
+    if not data:
+        raise HTTPException(status_code=404, detail="Música não encontrada")
+    return data
+
+
+
 @router.get("/songs/{song_id}/audio")
 async def get_audio(song_id: str):
     audio_path = song_manager.get_audio_path(song_id)

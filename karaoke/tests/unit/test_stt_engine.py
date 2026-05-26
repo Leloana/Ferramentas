@@ -16,16 +16,16 @@ class TestSttEngine(unittest.TestCase):
 
     def test_get_word_threshold(self):
         # Adaptive thresholds depending on no_speech_prob:
-        # no_speech_prob > 0.60 -> 0.70
-        self.assertEqual(_get_word_threshold(0.70), 0.70)
-        # no_speech_prob > 0.40 -> 0.55
-        self.assertEqual(_get_word_threshold(0.50), 0.55)
-        # no_speech_prob > 0.25 -> 0.45
-        self.assertEqual(_get_word_threshold(0.30), 0.45)
-        # no_speech_prob > 0.15 -> 0.35
-        self.assertEqual(_get_word_threshold(0.20), 0.35)
-        # clean audio (no_speech_prob <= 0.15) -> 0.25
-        self.assertEqual(_get_word_threshold(0.10), 0.25)
+        # no_speech_prob > 0.60 -> 0.50
+        self.assertEqual(_get_word_threshold(0.70), 0.50)
+        # no_speech_prob > 0.40 -> 0.30
+        self.assertEqual(_get_word_threshold(0.50), 0.30)
+        # no_speech_prob > 0.25 -> 0.18
+        self.assertEqual(_get_word_threshold(0.30), 0.18)
+        # no_speech_prob > 0.15 -> 0.18
+        self.assertEqual(_get_word_threshold(0.20), 0.18)
+        # clean audio (no_speech_prob <= 0.15) -> 0.08
+        self.assertEqual(_get_word_threshold(0.10), 0.08)
 
 if __name__ == "__main__":
     unittest.main()

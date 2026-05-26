@@ -47,8 +47,32 @@ export function initQueueView() {
         });
     }
 
+    // Botões de destravamento de GPU
+    const sheetResetBtn = document.getElementById('queue-sheet-gpu-reset');
+    const displayResetBtn = document.getElementById('queue-display-gpu-reset');
+    if (sheetResetBtn) {
+        sheetResetBtn.addEventListener('click', () => clearGpuLock());
+    }
+    if (displayResetBtn) {
+        displayResetBtn.addEventListener('click', () => clearGpuLock());
+    }
+
     // Inicia polling de status (a cada 3s)
     startPolling();
+}
+
+async function clearGpuLock() {
+    try {
+        const resp = await fetch('/api/queue/clear_gpu_lock', { method: 'POST' });
+        if (!resp.ok) {
+            const err = await resp.json();
+            throw new Error(err.detail || 'Erro ao liberar GPU.');
+        }
+        showToast('GPU redefinida para livre com sucesso!', 'success');
+        await pollQueueStatus();
+    } catch (err) {
+        showToast('Erro ao liberar GPU: ' + err.message, 'error');
+    }
 }
 
 // ── Sheet open/close ──
@@ -180,6 +204,11 @@ async function pollQueueStatus() {
         // Atualiza indicadores de GPU
         updateGpuBadge('queue-sheet-gpu-badge', 'queue-sheet-gpu-text', gpuBusy);
         updateGpuBadge('queue-display-gpu-badge', 'queue-display-gpu-text', gpuBusy);
+
+        const sheetResetBtn = document.getElementById('queue-sheet-gpu-reset');
+        const displayResetBtn = document.getElementById('queue-display-gpu-reset');
+        if (sheetResetBtn) sheetResetBtn.style.display = gpuBusy ? 'inline-block' : 'none';
+        if (displayResetBtn) displayResetBtn.style.display = gpuBusy ? 'inline-block' : 'none';
 
         // Notifica quando música ficou pronta
         const readyCount = items.filter(i => i.status === 'ready').length;

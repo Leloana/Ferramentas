@@ -70,8 +70,13 @@ class TestWebsocketGameFlow(unittest.TestCase):
         cls.patcher_mgr = patch("state.song_manager", cls.mock_song_manager)
         cls.patcher_mgr.start()
         
-        cls.patcher_room_songs = patch("server.ws.room.song_manager", cls.mock_song_manager)
+        cls.patcher_room_songs = patch("ws.room.song_manager", cls.mock_song_manager, create=True)
         cls.patcher_room_songs.start()
+        
+        import sys
+        for name in ["ws.room", "server.ws.room"]:
+            if name in sys.modules:
+                sys.modules[name].song_manager = cls.mock_song_manager
 
         from main import app
         cls.client = TestClient(app)

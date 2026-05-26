@@ -110,48 +110,54 @@ def calculate_score(expected_timed: list[dict], transcribed_words: list[dict], p
         return {"score": 0, "details": "Nenhuma letra esperada."}
 
     # A. Detecção e Remoção de Vazamento (Perdão Inteligente)
-    # A. Detecção e Remoção de Vazamento (Perdão Inteligente)
     if prev_expected_words and transcribed_words:
-        prev_clean = [clean_text(w, language) for w in prev_expected_words if w]
-        trans_clean = [clean_text(w["word"], language) for w in transcribed_words if w]
 
-        max_overlap = min(len(prev_clean), len(trans_clean), MAX_LEAKAGE_LOOKBACK)
-        overlap_found = 0
+        current_text = " ".join(w["word"] for w in expected_timed).lower()
+        prev_text = " ".join(prev_expected_words).lower()
 
-        # Checagem 1: sufixo exato do verso anterior (comportamento original)
-        for k in range(max_overlap, 0, -1):
-            prev_suffix = prev_clean[-k:]
-            trans_prefix = trans_clean[:k]
-            match_count = sum(
-                1 for idx in range(k)
-                if fuzz.token_sort_ratio(prev_suffix[idx], trans_prefix[idx]) >= LEAKAGE_PER_WORD_MATCH
-            )
-            if match_count / k >= LEAKAGE_GROUP_MATCH:
-                overlap_found = k
-                break
+        if fuzz.ratio(current_text, prev_text) > 80:
+            logger.info("⏭️ [Perdão de Vazamento] Ignorado: versos muito similares ao anterior")
+        else:
+            prev_clean = [clean_text(w, language) for w in prev_expected_words if w]
+            trans_clean = [clean_text(w["word"], language) for w in transcribed_words if w]
 
-        # Checagem 2: qualquer trecho do verso anterior no início da transcrição
-        if overlap_found == 0:
-            for start_idx in range(len(prev_clean) - 1):
-                for k in range(2, min(MAX_LEAKAGE_LOOKBACK, len(trans_clean) + 1)):
-                    prev_slice = prev_clean[start_idx:start_idx + k]
-                    trans_prefix = trans_clean[:k]
-                    if len(prev_slice) != k:
-                        break
-                    match_count = sum(
-                        1 for idx in range(k)
-                        if fuzz.token_sort_ratio(prev_slice[idx], trans_prefix[idx]) >= LEAKAGE_PER_WORD_MATCH
-                    )
-                    if match_count / k >= LEAKAGE_GROUP_MATCH:
-                        overlap_found = k
-                        break
-                if overlap_found > 0:
+            max_overlap = min(len(prev_clean), len(trans_clean), MAX_LEAKAGE_LOOKBACK)
+            overlap_found = 0
+
+            # Checagem 1: sufixo exato do verso anterior (comportamento original)
+            for k in range(max_overlap, 0, -1):
+                prev_suffix = prev_clean[-k:]
+                trans_prefix = trans_clean[:k]
+                match_count = sum(
+                    1 for idx in range(k)
+                    if fuzz.token_sort_ratio(prev_suffix[idx], trans_prefix[idx]) >= LEAKAGE_PER_WORD_MATCH
+                )
+                if match_count / k >= LEAKAGE_GROUP_MATCH:
+                    overlap_found = k
                     break
 
-        if overlap_found > 0:
-            leaked = [w['word'] for w in transcribed_words[:overlap_found]]
-            logger.info(f"🛡️ [Perdão de Vazamento] {overlap_found} palavras vazadas do verso anterior: {leaked}")
-            transcribed_words = transcribed_words[overlap_found:]
+            # Checagem 2: qualquer trecho do verso anterior no início da transcrição
+            if overlap_found == 0:
+                for start_idx in range(len(prev_clean) - 1):
+                    for k in range(2, min(MAX_LEAKAGE_LOOKBACK, len(trans_clean) + 1)):
+                        prev_slice = prev_clean[start_idx:start_idx + k]
+                        trans_prefix = trans_clean[:k]
+                        if len(prev_slice) != k:
+                            break
+                        match_count = sum(
+                            1 for idx in range(k)
+                            if fuzz.token_sort_ratio(prev_slice[idx], trans_prefix[idx]) >= LEAKAGE_PER_WORD_MATCH
+                        )
+                        if match_count / k >= LEAKAGE_GROUP_MATCH:
+                            overlap_found = k
+                            break
+                    if overlap_found > 0:
+                        break
+
+            if overlap_found > 0:
+                leaked = [w['word'] for w in transcribed_words[:overlap_found]]
+                logger.info(f"🛡️ [Perdão de Vazamento] {overlap_found} palavras vazadas do verso anterior: {leaked}")
+                transcribed_words = transcribed_words[overlap_found:]
 
     # B. Merge de fragmentos vocálicos
     transcribed_words = merge_vocal_fragments(transcribed_words)
