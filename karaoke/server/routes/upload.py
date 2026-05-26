@@ -116,8 +116,8 @@ async def upload_song(
                 logger.warning(f"[Upload] Falha ao buscar letra: {e} — Whisper fará transcrição pura.")
 
         # Se temos synced LRC (da API ou do frontend), salva diretamente.
-        # O reinstall_song preserva lyrics.lrc existente quando plain_lyrics
-        # está vazio (linha 319-321), pulando a geração Whisper/MMS-FA.
+        # O reinstall_song preserva lyrics.lrc existente quando align_lyrics=False,
+        # independente do plain_lyrics no meta.
         has_synced_lrc = False
         if synced_lrc:
             clean_lines = [line.strip() for line in synced_lrc.splitlines() if line.strip()]
@@ -128,12 +128,7 @@ async def upload_song(
                 logger.info("[Upload] lyrics.lrc salvo diretamente via synced LRC da API.")
 
         # 1. Build and save minimal meta.json
-        # Se temos LRC sincronizado, zera plain_lyrics no meta para que o
-        # reinstall_song preserve o lyrics.lrc em vez de gerar via Whisper.
-        meta_plain = plain_lyrics if not has_synced_lrc else ""
-        meta_context = locals()
-        meta_context["plain_lyrics"] = meta_plain
-        meta = _build_meta(meta_context)
+        meta = _build_meta(locals())
         with open(song_dir / "meta.json", "w", encoding="utf-8") as f:
             json.dump(meta, f, indent=4, ensure_ascii=False)
 

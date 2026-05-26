@@ -317,8 +317,10 @@ async def reinstall_song(
             logger.error(f"Erro ao restaurar backup premium: {e}")
             
     if not has_lrc:
-        if lrc_file.exists() and (not plain_lyrics or not plain_lyrics.strip()):
-            logger.info("lyrics.lrc já existe e plain_lyrics não foi fornecido. Mantendo lyrics.lrc existente.")
+        # Preserva LRC existente (ex: vindo de API LRCLIB) a menos que o
+        # usuário tenha pedido explicitamente alinhamento forçado (PRO).
+        if lrc_file.exists() and not align_lyrics:
+            logger.info("lyrics.lrc já existe e align_lyrics=False. Mantendo lyrics.lrc existente.")
             has_lrc = True
         elif plain_lyrics and plain_lyrics.strip() and align_lyrics:
             logger.info("plain_lyrics disponível e align_lyrics=True. Executando Forced Alignment (PRO) com MMS_FA...")

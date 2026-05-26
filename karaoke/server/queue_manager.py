@@ -156,8 +156,8 @@ class SongQueueManager:
             item.progress_pct = 5
             logger.info(f"[QUEUE:{item.id}] Fase 1 — Criando meta.json e iniciando download...")
 
-            # Se temos synced LRC (ex: LRCLIB), salva diretamente e zera plain_lyrics
-            # no meta para que o reinstall_song preserve o LRC existente (linha 319-321).
+            # Se temos synced LRC (ex: LRCLIB), salva diretamente.
+            # O reinstall_song preserva lyrics.lrc existente quando align_lyrics=False.
             if item.synced_lrc:
                 clean_lrc = [line.strip() for line in item.synced_lrc.splitlines() if line.strip()]
                 if clean_lrc:
@@ -176,7 +176,7 @@ class SongQueueManager:
                     "youtube_backing_url": "",
                 },
                 "lyrics": {
-                    "plain_lyrics": item.plain_lyrics if not item.synced_lrc else "",
+                    "plain_lyrics": item.plain_lyrics,
                 },
             }
             meta_path = song_dir / "meta.json"
