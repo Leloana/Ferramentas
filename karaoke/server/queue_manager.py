@@ -44,6 +44,7 @@ class QueueItem:
     language: str
     youtube_url: str
     plain_lyrics: Optional[str] = None
+    synced_lrc: Optional[str] = None
     align_lyrics: bool = False
     status: QueueStatus = QueueStatus.QUEUED
     progress_pct: int = 0
@@ -84,6 +85,7 @@ class SongQueueManager:
         language: str,
         youtube_url: str,
         plain_lyrics: Optional[str] = None,
+        synced_lrc: Optional[str] = None,
         added_by: Optional[str] = None,
         align_lyrics: bool = False,
     ) -> QueueItem:
@@ -102,6 +104,7 @@ class SongQueueManager:
             language=language,
             youtube_url=youtube_url,
             plain_lyrics=plain_lyrics,
+            synced_lrc=synced_lrc,
             align_lyrics=align_lyrics,
             added_by=added_by,
         )
@@ -153,6 +156,14 @@ class SongQueueManager:
             item.progress_pct = 5
             logger.info(f"[QUEUE:{item.id}] Fase 1 — Criando meta.json e iniciando download...")
 
+            # Se temos synced LRC (ex: LRCLIB), salva diretamente e zera plain_lyrics
+            # no meta para que o reinstall_song preserve o LRC existente (linha 319-321).
+            if item.synced_lrc:
+                clean_lrc = [line.strip() for line in item.synced_lrc.splitlines() if line.strip()]
+                if clean_lrc:
+                    (song_dir / "lyrics.lrc").write_text("\n".join(clean_lrc) + "\n", encoding="utf-8")
+                    logger.info(f"[QUEUE:{item.id}] lyrics.lrc salvo via synced LRC da API.")
+
             meta = {
                 "meta": {
                     "title": item.title,
@@ -165,14 +176,14 @@ class SongQueueManager:
                     "youtube_backing_url": "",
                 },
                 "lyrics": {
-                    "plain_lyrics": item.plain_lyrics,
+                    "plain_lyrics": item.plain_lyrics if not item.synced_lrc else "",
                 },
             }
             meta_path = song_dir / "meta.json"
             with open(meta_path, "w", encoding="utf-8") as f:
                 json.dump(meta, f, indent=4, ensure_ascii=False)
 
-            # Salvar lyrics.txt se fornecido
+            # Salvar lyrics.txt se fornecido (mesmo com synced LRC, para referência)
             if item.plain_lyrics and item.plain_lyrics.strip():
                 from utils.text import normalize_lyrics_text
 

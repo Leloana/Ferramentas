@@ -72,7 +72,6 @@ function closeSheet() {
 async function submitToQueue() {
     const urlInput = document.getElementById('queue-yt-url');
     const langSelect = document.getElementById('queue-language');
-    const lyricsInput = document.getElementById('queue-lyrics');
     const addedByInput = document.getElementById('queue-added-by');
     const submitBtn = document.getElementById('queue-submit-btn');
 
@@ -105,10 +104,11 @@ async function submitToQueue() {
     }
 
     try {
+        // plain_lyrics vazio = backend vai auto-fetch via LRCLIB/Lyrics.ovh
         const params = new URLSearchParams({
             youtube_url: ytUrl,
             language: langSelect?.value || 'en',
-            plain_lyrics: lyricsInput?.value?.trim() || '',
+            plain_lyrics: '',
             added_by: addedByInput?.value?.trim() || '',
             align_lyrics: alignLyrics.toString(),
         });
@@ -129,7 +129,6 @@ async function submitToQueue() {
 
         // Limpa formulário
         if (urlInput) urlInput.value = '';
-        if (lyricsInput) lyricsInput.value = '';
 
         // Atualiza imediatamente
         await pollQueueStatus();

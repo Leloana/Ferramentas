@@ -1,6 +1,7 @@
 """Rota POST /api/upload-song: download/upload, corte de áudio, geração de LRC."""
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 import shutil
@@ -9,6 +10,7 @@ from typing import Optional
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
 from state import SONGS_DIR
+from utils.lyrics_fetcher import fetch_lyrics
 from utils.prepare import run_reinstall_song
 from utils.text import normalize_lyrics_text, slugify
 from utils.youtube import get_youtube_video_info
@@ -54,6 +56,22 @@ async def get_youtube_metadata(url: str):
     return info
 
 
+@router.get("/api/fetch-lyrics")
+async def fetch_lyrics_endpoint(artist: str, track: str):
+    """Busca letra automaticamente via LRCLIB (primário) e Lyrics.ovh (fallback).
+
+    Retorna ``plainLyrics`` (sempre presente se encontrou) e ``syncedLyrics``
+    (apenas quando o LRCLIB devolve LRC sincronizado — pode ser null).
+    """
+    if not artist or not artist.strip() or not track or not track.strip():
+        return {"success": False, "message": "Artista e título são obrigatórios."}
+
+    result = await asyncio.to_thread(fetch_lyrics, artist.strip(), track.strip())
+    if result:
+        return {"success": True, **result}
+    return {"success": False, "message": "Nenhuma letra encontrada nas APIs."}
+
+
 @router.post("/api/upload-song")
 async def upload_song(
     title: str = Form(...),
@@ -66,6 +84,7 @@ async def upload_song(
     youtube_vocal_url: Optional[str] = Form(None),
     youtube_backing_url: Optional[str] = Form(None),
     plain_lyrics: Optional[str] = Form(None),
+    synced_lrc: Optional[str] = Form(None),
     align_lyrics: bool = Form(False),
 ):
     try:
@@ -77,9 +96,44 @@ async def upload_song(
         # Windows propague para meta.json e lyrics.txt e quebre a leitura
         # no Linux/Mac (gera ^M e duplica linhas vazias).
         plain_lyrics = normalize_lyrics_text(plain_lyrics) or None
+        synced_lrc = (synced_lrc or "").strip() or None
+
+        # Auto-fetch lyrics se o usuário não forneceu nem letra plana nem LRC
+        if not plain_lyrics and not synced_lrc:
+            logger.info(f"[Upload] Buscando letra automaticamente para '{artist} - {title}'...")
+            try:
+                fetched = await asyncio.to_thread(fetch_lyrics, artist, title)
+                if fetched:
+                    plain_lyrics = normalize_lyrics_text(fetched.get("plainLyrics")) or None
+                    synced_lrc = fetched.get("syncedLyrics")
+                    logger.info(
+                        "[Upload] Letra encontrada via %s: plain=%s, synced=%s",
+                        fetched.get("source"), bool(plain_lyrics), bool(synced_lrc),
+                    )
+                else:
+                    logger.info("[Upload] Nenhuma letra encontrada nas APIs — Whisper fará transcrição pura.")
+            except Exception as e:
+                logger.warning(f"[Upload] Falha ao buscar letra: {e} — Whisper fará transcrição pura.")
+
+        # Se temos synced LRC (da API ou do frontend), salva diretamente.
+        # O reinstall_song preserva lyrics.lrc existente quando plain_lyrics
+        # está vazio (linha 319-321), pulando a geração Whisper/MMS-FA.
+        has_synced_lrc = False
+        if synced_lrc:
+            clean_lines = [line.strip() for line in synced_lrc.splitlines() if line.strip()]
+            if clean_lines:
+                with open(song_dir / "lyrics.lrc", "w", encoding="utf-8", newline="\n") as f:
+                    f.write("\n".join(clean_lines))
+                has_synced_lrc = True
+                logger.info("[Upload] lyrics.lrc salvo diretamente via synced LRC da API.")
 
         # 1. Build and save minimal meta.json
-        meta = _build_meta(locals())
+        # Se temos LRC sincronizado, zera plain_lyrics no meta para que o
+        # reinstall_song preserve o lyrics.lrc em vez de gerar via Whisper.
+        meta_plain = plain_lyrics if not has_synced_lrc else ""
+        meta_context = locals()
+        meta_context["plain_lyrics"] = meta_plain
+        meta = _build_meta(meta_context)
         with open(song_dir / "meta.json", "w", encoding="utf-8") as f:
             json.dump(meta, f, indent=4, ensure_ascii=False)
 
@@ -93,6 +147,7 @@ async def upload_song(
             with open(song_dir / "backing_track.mp3", "wb") as f:
                 shutil.copyfileobj(backing_file.file, f)
 
+        # LRC file/text from user overrides synced LRC from API
         if lrc_file and lrc_file.filename:
             lrc_content = await lrc_file.read()
             try:
@@ -102,10 +157,12 @@ async def upload_song(
             clean_lines = [line.strip() for line in lrc_decoded.splitlines() if line.strip()]
             with open(song_dir / "lyrics.lrc", "w", encoding="utf-8", newline="\n") as f:
                 f.write("\n".join(clean_lines))
+            has_synced_lrc = True
         elif lrc_text and lrc_text.strip():
             clean_lines = [line.strip() for line in lrc_text.splitlines() if line.strip()]
             with open(song_dir / "lyrics.lrc", "w", encoding="utf-8", newline="\n") as f:
                 f.write("\n".join(clean_lines))
+            has_synced_lrc = True
 
         if plain_lyrics:
             # `plain_lyrics` já foi normalizado em normalize_lyrics_text acima.

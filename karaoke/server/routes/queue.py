@@ -1,6 +1,7 @@
 """Rotas HTTP para a fila de músicas com processamento em segundo plano."""
 from __future__ import annotations
 
+import asyncio
 import logging
 
 from fastapi import APIRouter, Form, HTTPException
@@ -47,6 +48,25 @@ async def queue_add_song(
             if not artist.strip():
                 artist = "Artista Desconhecido"
 
+    # Auto-fetch lyrics se o usuário não forneceu letra
+    synced_lrc = None
+    if not plain_lyrics.strip():
+        try:
+            from utils.lyrics_fetcher import fetch_lyrics
+
+            fetched = await asyncio.to_thread(fetch_lyrics, artist.strip(), title.strip())
+            if fetched:
+                plain_lyrics = fetched.get("plainLyrics") or plain_lyrics
+                synced_lrc = fetched.get("syncedLyrics")
+                logger.info(
+                    "[Queue] Letra encontrada via %s para '%s - %s': plain=%s, synced=%s",
+                    fetched.get("source"), artist, title, bool(plain_lyrics), bool(synced_lrc),
+                )
+            else:
+                logger.info("[Queue] Nenhuma letra encontrada nas APIs para '%s - %s'. Whisper fará transcrição.", artist, title)
+        except Exception as e:
+            logger.warning(f"[Queue] Falha ao buscar letra: {e}")
+
     try:
         item = await queue_manager.enqueue(
             title=title.strip(),
@@ -54,6 +74,7 @@ async def queue_add_song(
             language=language.strip(),
             youtube_url=youtube_url.strip(),
             plain_lyrics=plain_lyrics.strip() or None,
+            synced_lrc=synced_lrc,
             added_by=added_by.strip() or None,
             align_lyrics=align_lyrics,
         )

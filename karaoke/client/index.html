@@ -454,6 +454,14 @@
                             </div>
                         </div>
 
+                        <!-- Bloco de Modo de Sincronia -->
+                        <div class="sync-control-block">
+                            <span class="sync-control-label">Sincronia:</span>
+                            <div class="sync-control-group">
+                                <button id="btn-sync-mode" class="btn-control-small btn-sync-mode" title="Alternar entre sincronia por palavra ou por verso">🎯</button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -545,16 +553,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group" style="margin-top: 1rem;">
-                        <label for="plain-lyrics">Letra Completa da Música (Opcional - Ajuda a IA a alinhar sem
-                            erros):</label>
-                        <textarea id="plain-lyrics" name="plain_lyrics" rows="5"
-                            placeholder="Cole a letra original da música aqui (linha por linha, sem marcas de tempo)..."
-                            style="width: 100%; min-height: 120px; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--card-border); border-radius: 8px; color: #fff; padding: 0.6rem; font-family: inherit; font-size: 0.85rem; resize: vertical; box-sizing: border-box; outline: none;"></textarea>
-                        <span
-                            style="font-size: 0.75rem; color: var(--dim); text-align: left; display: block; margin-top: 0.25rem;">(A
-                            IA usará esta letra para mapear e sincronizar os tempos perfeitamente)</span>
-                    </div>
 
                     <!-- Configurações Avançadas Colapsáveis (Corte & Silêncio) -->
                     <div style="border-top: 1px solid #334155; margin-top: 1.5rem; padding-top: 1rem;">
@@ -608,6 +606,12 @@
                         Revisamos o link informado e extraímos o Artista e o Título. Você pode editá-los livremente
                         abaixo antes de confirmar o download definitivo.
                     </p>
+                    <!-- Status da busca automática de letra -->
+                    <div id="lyrics-fetch-status"
+                        style="padding: 0.75rem 1rem; border-radius: 10px; margin-bottom: 1.25rem; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: #93c5fd;">
+                        <span id="lyrics-fetch-icon">🔍</span>
+                        <span id="lyrics-fetch-text">Confirme o artista e título acima — a letra será buscada automaticamente.</span>
+                    </div>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                         <div class="form-group">
                             <label for="song-title">Título da Música:</label>
@@ -618,6 +622,9 @@
                             <input type="text" id="song-artist" name="artist" placeholder="Ex: My Chemical Romance">
                         </div>
                     </div>
+                    <!-- Campos hidden para letras fetched -->
+                    <input type="hidden" id="fetched-synced-lrc" name="synced_lrc" value="">
+                    <textarea id="fetched-plain-lyrics" name="plain_lyrics" style="display:none;"></textarea>
                 </div>
 
                 <div class="modal-buttons" style="margin-top: 1.5rem;">
@@ -733,7 +740,7 @@
     </div>
 
     <!-- Modal Editor de Informações e Letras -->
-    <div id="lrc-editor-modal" class="modal-overlay">
+    <div id="lrc-editor-modal" class="modal-overlay" data-editor-tab="meta">
         <div class="modal-content admin-modal" style="max-width: 650px; width: 90%;">
             <h2
                 style="display: flex; align-items: center; gap: 0.5rem; font-weight: 800; font-size: 1.5rem; margin-top: 0; margin-bottom: 0.5rem;">
@@ -756,11 +763,11 @@
                 </button>
                 <button type="button" id="btn-tab-paste-lyrics"
                     style="flex: 1; padding: 0.6rem; border: none; border-radius: 8px; background: transparent; color: var(--dim); font-weight: 800; cursor: pointer; transition: all 0.2s ease; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem;">
-                    📝 Colar Letra Plana
+                    📝 Letra
                 </button>
             </div>
 
-            <form id="lrc-editor-form" data-editor-tab="meta">
+            <form id="lrc-editor-form">
                 <input type="hidden" id="editor-slug" name="slug">
                 <input type="hidden" id="editor-language" name="language">
 
@@ -785,29 +792,25 @@
                 <!-- Seção 3: Colar Letra Plana -->
                 <div id="editor-section-paste-lyrics" class="form-group">
                     <label for="editor-paste-lyrics-textarea"
-                        style="font-weight: 700; color: #fff; margin-bottom: 0.4rem; display: block;">Colar Letra Plana:</label>
+                        style="font-weight: 700; color: #fff; margin-bottom: 0.4rem; display: block;">Letra:</label>
                     <p style="font-size: 0.8rem; color: var(--dim); margin-top: 0; margin-bottom: 0.8rem; line-height: 1.4;">
-                        Cole a letra sem formatação. Ao clicar no botão abaixo, a letra será limpa, formatada (removendo linhas em branco duplicadas e espaços) e inserida no campo <code>plain_lyrics</code> do <code>meta.json</code>.
+                        Cole a letra sem formatação. Ao clicar em <strong>Salvar Meta</strong>, a letra será limpa, formatada e inserida no campo <code>plain_lyrics</code> do <code>meta.json</code>.
                     </p>
                     <textarea id="editor-paste-lyrics-textarea"
                         placeholder="Cole a letra original da música aqui..."
                         style="width: 100%; height: 220px; background: #0b0f19; border: 1px solid var(--card-border); border-radius: 8px; color: #e2e8f0; padding: 0.8rem; font-family: monospace; font-size: 0.85rem; line-height: 1.5; resize: vertical; box-sizing: border-box; outline: none; transition: border-color 0.2s; margin-bottom: 0.8rem;"></textarea>
-                    <button type="button" id="btn-format-paste-lyrics"
-                        style="width: 100%; padding: 0.7rem; border: none; border-radius: 8px; background: var(--accent); color: #000; font-weight: 800; cursor: pointer; transition: all 0.2s ease; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: var(--shadow-glow);">
-                        🪄 Formatar e Atualizar meta.json
-                    </button>
                 </div>
 
                 <div class="modal-buttons" style="margin-top: 1.5rem; display: flex; gap: 0.8rem; align-items: center;">
-                    <button type="button" id="btn-reinstall-song" class="btn"
-                        style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35); color: #f87171; padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-right: auto; display: flex; align-items: center; gap: 0.4rem;">
-                        🔄 Reinstalar Música
-                    </button>
                     <button type="button" id="btn-close-editor" class="btn"
                         style="background: transparent; border: 1px solid var(--card-border); color: var(--text); padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Cancelar</button>
+                    <button type="button" id="btn-save-meta" class="btn"
+                        style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); color: #38bdf8; padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;">
+                        💾 Salvar Meta
+                    </button>
                     <button type="submit" class="btn"
-                        style="background: var(--accent); color: #000; font-weight: 800; border: none; padding: 0.6rem 1.5rem; border-radius: 8px; cursor: pointer; transition: all 0.2s;">Salvar
-                        Alterações</button>
+                        style="background: var(--accent); color: #000; font-weight: 800; border: none; padding: 0.6rem 1.5rem; border-radius: 8px; cursor: pointer; transition: all 0.2s;">Gerar
+                        SEGMENTS</button>
                 </div>
             </form>
         </div>
@@ -869,6 +872,12 @@
                 Fatiando Áudios...</h2>
             <p id="loading-status-desc" style="color: var(--dim); font-size: 0.9rem;">Por favor, aguarde enquanto
                 processamos e transcrevemos as faixas.</p>
+            <button type="button" id="btn-dismiss-loading"
+                style="margin-top: 1.5rem; padding: 0.55rem 1.4rem; border: 1px solid var(--card-border); border-radius: 8px; background: rgba(255,255,255,0.05); color: var(--dim); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.2s;"
+                onmouseover="this.style.borderColor='var(--accent)';this.style.color='#fff';"
+                onmouseout="this.style.borderColor='var(--card-border)';this.style.color='var(--dim)';">
+                Minimizar — Continuar em segundo plano
+            </button>
         </div>
     </div>
 
@@ -962,7 +971,7 @@
                     </select>
                     <input type="text" id="queue-added-by" placeholder="Seu nome (opcional)" style="flex: 1;">
                 </div>
-                <textarea id="queue-lyrics" placeholder="Cole a letra da música aqui (opcional — melhora a precisão do alinhamento)..."></textarea>
+                <textarea id="queue-lyrics" style="display:none;"></textarea>
                 <button type="submit" class="queue-submit-btn" id="queue-submit-btn">➕ Adicionar à Fila</button>
             </form>
 
