@@ -169,3 +169,11 @@ Armazena a nota histórica de cada sessão.
     *   O Whisper é sensível a ruído. Se o microfone capturar a caixa de som da TV (backing track), o Whisper transcreverá o segmento anterior ou alucinará. Use o `score_engine.py` com o mecanismo de remoção de vazamento de versos anteriores (`leakage removal`).
 *   **Hallucinações no Silêncio:**
     *   Trechos silenciosos longos fazem o Whisper gerar alucinações repetitivas. Garanta que o gate de áudio de RMS (`rms_threshold` em `stt_engine.py`) rejeite transcrição abaixo de `0.0018` de energia média.
+
+## Fluxo Git Obrigatório
+
+- Todo commit deve ser feito a partir da raiz do repositório (`Ferramentas/`)
+- Nunca rodar `git commit` de dentro de um subprojeto
+- Mensagem no formato: `feat(karaoke): descrição` / `fix(karaoke): descrição`
+- Sempre `git add` com path relativo à raiz: `git add karaoke/client/js/selection-view.js`
+- Push imediato após commit

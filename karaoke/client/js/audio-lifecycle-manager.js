@@ -53,8 +53,12 @@ export class AudioLifecycleManager {
         this.mediaElementSource = null;
         /** @type {Jungle|null} */
         this.jungleNode = null;
+        /** @type {GainNode|null} */
+        this.gainNode = null;
         /** @type {number} */
         this.currentTranspose = 0;
+        /** @type {number} */
+        this.currentVolume = 1.0;
 
         /**
          * Track all Web Audio nodes for explicit disconnection on cleanup.
@@ -171,6 +175,14 @@ export class AudioLifecycleManager {
             try {
                 this.mediaElementSource = this.audioContext.createMediaElementSource(this.mediaElement);
                 this.nodes.add(this.mediaElementSource);
+
+                // Create gain node for volume control (bypasses HTMLMediaElement.volume limitation)
+                if (!this.gainNode) {
+                    this.gainNode = this.audioContext.createGain();
+                    this.gainNode.gain.value = this.currentVolume;
+                    this.nodes.add(this.gainNode);
+                }
+
                 this.updateTranspose(this.currentTranspose);
             } catch (err) {
                 console.error("AudioLifecycleManager: Failed to capture MediaElement:", err);
@@ -297,17 +309,34 @@ export class AudioLifecycleManager {
         // Clean up previous Jungle node
         this._stopJungleBufferSources();
 
-        // Route media element source through Jungle or directly to destination
+        // Route media element source through gainNode, then Jungle or directly to destination
         if (transpose === 0) {
-            this.mediaElementSource.connect(this.audioContext.destination);
-            console.log("AudioLifecycleManager: Connected playback directly to destination (transpose=0).");
+            this.mediaElementSource.connect(this.gainNode);
+            this.gainNode.connect(this.audioContext.destination);
+            console.log("AudioLifecycleManager: Connected playback via gainNode -> destination (transpose=0).");
         } else {
             this.jungleNode = new Jungle(this.audioContext);
             this.jungleNode.setPitchOffset(getMultiplier(transpose));
-            
-            this.mediaElementSource.connect(this.jungleNode.input);
+
+            this.mediaElementSource.connect(this.gainNode);
+            this.gainNode.connect(this.jungleNode.input);
             this.jungleNode.output.connect(this.audioContext.destination);
-            console.log(`AudioLifecycleManager: Connected playback via Jungle node (transpose=${transpose}).`);
+            console.log(`AudioLifecycleManager: Connected playback via gainNode -> Jungle (transpose=${transpose}).`);
+        }
+    }
+
+    /**
+     * Sets the playback volume via the Web Audio API GainNode.
+     * Must be used instead of HTMLMediaElement.volume since the media element
+     * is routed through the Web Audio graph (createMediaElementSource bypasses
+     * the browser's native volume control in Chromium).
+     *
+     * @param {number} val - Volume level between 0.0 and 1.0.
+     */
+    setVolume(val) {
+        this.currentVolume = Math.max(0, Math.min(1, val));
+        if (this.gainNode) {
+            this.gainNode.gain.value = this.currentVolume;
         }
     }
 

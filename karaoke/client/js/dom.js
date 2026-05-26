@@ -35,6 +35,7 @@ export const dom = {
     get btnSpeedMinus() { return $('btn-speed-minus'); },
     get btnSpeedPlus() { return $('btn-speed-plus'); },
     get speedValue() { return $('speed-value'); },
+    get btnSyncMode() { return $('btn-sync-mode'); },
     get btnPausePlay() { return $('btn-pause-play'); },
     // Multiplayer TV Getters
     get mpSetupContainer() { return $('multiplayer-setup-container'); },
@@ -75,6 +76,7 @@ export const dom = {
 export const $id = $;
 
 let loadingInterval = null;
+let _loadingGen = 0;
 const funnyPhrases = [
     "Ensinando o Whisper a cantar no tom... 🎙️🤖",
     "Pedindo educadamente para a RTX 4070 ir mais rápido... ⚡",
@@ -96,7 +98,9 @@ export function startLoadingOverlay(title, initialDesc, autoProgress = false) {
         clearInterval(loadingInterval);
         loadingInterval = null;
     }
-    
+
+    _loadingGen++;
+
     dom.loadingStatusTitle.innerText = title;
     
     if (autoProgress) {
@@ -135,12 +139,35 @@ export function startLoadingOverlay(title, initialDesc, autoProgress = false) {
     }
     
     dom.loadingOverlay.setAttribute('data-open', 'true');
+    return _loadingGen;
 }
 
-export function stopLoadingOverlay() {
+export function dismissLoadingOverlay() {
+    // Esconde o overlay mas mantém o intervalo rodando (inofensivo em elementos ocultos).
+    // O processo continua em segundo plano e stopLoadingOverlay será chamado ao finalizar.
+    dom.loadingOverlay.removeAttribute('data-open');
+}
+
+export function stopLoadingOverlay(gen) {
+    // Se outra operação já iniciou, ignora chamada de operação anterior
+    if (gen !== undefined && gen !== _loadingGen) return;
+
     if (loadingInterval) {
         clearInterval(loadingInterval);
         loadingInterval = null;
     }
     dom.loadingOverlay.removeAttribute('data-open');
+}
+
+// Wire up dismiss button on the loading overlay
+function _initDismissButton() {
+    const btnDismiss = document.getElementById('btn-dismiss-loading');
+    if (btnDismiss) {
+        btnDismiss.addEventListener('click', dismissLoadingOverlay);
+    }
+}
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', _initDismissButton);
+} else {
+    _initDismissButton();
 }

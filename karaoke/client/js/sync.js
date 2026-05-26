@@ -17,7 +17,11 @@ export function initSyncControls() {
     if (backingVolumeSlider) {
         backingVolumeSlider.oninput = (e) => {
             const val = parseFloat(e.target.value);
-            audioPlayer.volume = val;
+            if (state.audioManager) {
+                state.audioManager.setVolume(val);
+            } else {
+                audioPlayer.volume = val;
+            }
             backingVolumeValue.innerText = Math.round(val * 100) + '%';
             localStorage.setItem('karaoke_backing_volume', val);
         };
@@ -25,11 +29,19 @@ export function initSyncControls() {
         const savedVolume = localStorage.getItem('karaoke_backing_volume');
         if (savedVolume !== null) {
             const vol = parseFloat(savedVolume);
-            audioPlayer.volume = vol;
+            if (state.audioManager) {
+                state.audioManager.setVolume(vol);
+            } else {
+                audioPlayer.volume = vol;
+            }
             backingVolumeSlider.value = vol;
             backingVolumeValue.innerText = Math.round(vol * 100) + '%';
         } else {
-            audioPlayer.volume = 1.0;
+            if (state.audioManager) {
+                state.audioManager.setVolume(1.0);
+            } else {
+                audioPlayer.volume = 1.0;
+            }
             backingVolumeSlider.value = 1.0;
             backingVolumeValue.innerText = '100%';
         }

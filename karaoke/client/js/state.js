@@ -36,6 +36,7 @@ export const state = {
     gameMode: null,
     currentAppState: 'idle',
     audioManager: null,
+    syncMode: 'word', // 'word' | 'verse'
 };
 
 export function setAppState(stateName) {

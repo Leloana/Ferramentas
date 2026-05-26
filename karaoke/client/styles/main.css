@@ -147,7 +147,7 @@
 
         .song-list {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-template-columns: 1fr;
             gap: 1rem;
             margin-bottom: 2rem;
             margin-top: 1rem;
@@ -176,6 +176,74 @@
         .song-card.active {
             border-color: var(--accent);
             background: rgba(56, 189, 248, 0.05);
+        }
+
+        /* ── Artist Group ──────────────────────────────────────── */
+
+        .artist-group {
+            margin-bottom: 0.5rem;
+        }
+
+        .artist-group__header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0.5rem;
+            cursor: pointer;
+            user-select: none;
+            border-radius: 10px;
+            transition: background 0.2s ease;
+        }
+
+        .artist-group__header:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .artist-group__chevron {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.25s ease;
+            flex-shrink: 0;
+            color: var(--dim);
+        }
+
+        .artist-group--open .artist-group__chevron {
+            transform: rotate(90deg);
+        }
+
+        .artist-group__name {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.01em;
+        }
+
+        .artist-group__count {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--dim);
+            margin-left: auto;
+        }
+
+        .artist-group__songs {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+            padding-left: 0.25rem;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.35s ease, margin 0.35s ease;
+            margin-top: 0;
+        }
+
+        .artist-group--open .artist-group__songs {
+            max-height: 4000px;
+            margin-top: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .artist-group .song-card__artist {
+            display: none;
         }
 
         .game-area {
@@ -242,7 +310,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            min-height: 320px;
+            height: 340px;
             width: 100%;
             margin: 1.5rem 0;
             background: rgba(0, 0, 0, 0.15);
@@ -269,7 +337,7 @@
         }
 
         .carousel-line {
-            min-height: 85px;
+            height: 85px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -285,6 +353,7 @@
             box-sizing: border-box;
             gap: 0.8rem;
             letter-spacing: 0.02em;
+            overflow: hidden;
         }
 
         .carousel-line.fading {
@@ -382,6 +451,12 @@
             transform: scale(1.15);
             text-shadow: 0 0 15px rgba(253, 224, 71, 0.6), 0 0 5px var(--highlight);
             font-weight: 800;
+        }
+
+        .curr-line.verse-active {
+            color: var(--highlight) !important;
+            text-shadow: 0 0 25px rgba(253, 224, 71, 0.7), 0 0 10px var(--highlight) !important;
+            transition: color 0.2s ease, text-shadow 0.2s ease;
         }
 
         .controls {
@@ -824,12 +899,12 @@
             }
 
             .carousel-line {
-                min-height: 65px;
+                height: 60px;
                 gap: 0.4rem;
             }
 
             .carousel-container {
-                min-height: 250px;
+                height: 250px;
                 padding: 1rem;
             }
 
@@ -1435,6 +1510,11 @@
 
 .btn-control-small:active {
     transform: scale(0.95);
+}
+
+.btn-sync-mode {
+    width: 36px !important;
+    font-size: 1rem !important;
 }
 
 /* Sync Controls Panel */
@@ -2080,41 +2160,43 @@
 }
 
 /* LRC Editor form tabs visibility & buttons */
-#lrc-editor-form[data-editor-tab="meta"] #editor-section-meta {
+#lrc-editor-modal[data-editor-tab="meta"] #editor-section-meta {
     display: block !important;
 }
-#lrc-editor-form[data-editor-tab="meta"] #editor-section-lrc,
-#lrc-editor-form[data-editor-tab="meta"] #editor-section-paste-lyrics {
+#lrc-editor-modal[data-editor-tab="meta"] #editor-section-lrc,
+#lrc-editor-modal[data-editor-tab="meta"] #editor-section-paste-lyrics {
     display: none !important;
 }
 
-#lrc-editor-form[data-editor-tab="lrc"] #editor-section-lrc {
+#lrc-editor-modal[data-editor-tab="lrc"] #editor-section-lrc {
     display: block !important;
 }
-#lrc-editor-form[data-editor-tab="lrc"] #editor-section-meta,
-#lrc-editor-form[data-editor-tab="lrc"] #editor-section-paste-lyrics {
+#lrc-editor-modal[data-editor-tab="lrc"] #editor-section-meta,
+#lrc-editor-modal[data-editor-tab="lrc"] #editor-section-paste-lyrics {
     display: none !important;
 }
 
-#lrc-editor-form[data-editor-tab="paste"] #editor-section-paste-lyrics {
+#lrc-editor-modal[data-editor-tab="paste"] #editor-section-paste-lyrics {
     display: block !important;
 }
-#lrc-editor-form[data-editor-tab="paste"] #editor-section-meta,
-#lrc-editor-form[data-editor-tab="paste"] #editor-section-lrc {
+#lrc-editor-modal[data-editor-tab="paste"] #editor-section-meta,
+#lrc-editor-modal[data-editor-tab="paste"] #editor-section-lrc {
     display: none !important;
 }
 
-#lrc-editor-form[data-editor-tab="meta"] #btn-tab-meta,
-#lrc-editor-form[data-editor-tab="lrc"] #btn-tab-lrc,
-#lrc-editor-form[data-editor-tab="paste"] #btn-tab-paste-lyrics {
-    background: var(--accent) !important;
+#lrc-editor-modal[data-editor-tab="meta"] #btn-tab-meta,
+#lrc-editor-modal[data-editor-tab="lrc"] #btn-tab-lrc,
+#lrc-editor-modal[data-editor-tab="paste"] #btn-tab-paste-lyrics {
+    background: var(--accent-gradient) !important;
     color: #000 !important;
+    font-weight: 800 !important;
 }
-#lrc-editor-form:not([data-editor-tab="meta"]) #btn-tab-meta,
-#lrc-editor-form:not([data-editor-tab="lrc"]) #btn-tab-lrc,
-#lrc-editor-form:not([data-editor-tab="paste"]) #btn-tab-paste-lyrics {
+#lrc-editor-modal:not([data-editor-tab="meta"]) #btn-tab-meta,
+#lrc-editor-modal:not([data-editor-tab="lrc"]) #btn-tab-lrc,
+#lrc-editor-modal:not([data-editor-tab="paste"]) #btn-tab-paste-lyrics {
     background: transparent !important;
     color: var(--dim) !important;
+    font-weight: 700 !important;
 }
 
 /* 8. Selection area active tab visibility & buttons */
@@ -2295,7 +2377,7 @@
     #app[data-state="singing"] .carousel-container,
     #app[data-state="scoring"] .carousel-container {
         flex: 1 !important;
-        min-height: 480px !important;
+        height: 480px !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: center !important;
@@ -2313,6 +2395,8 @@
         font-size: clamp(3rem, 5.5vw, 4.8rem) !important;
         line-height: 1.35 !important;
         margin: 1.5rem 0 !important;
+        height: auto !important;
+        min-height: 120px !important;
         text-shadow: 0 0 35px rgba(56, 189, 248, 0.6), 0 0 15px rgba(56, 189, 248, 0.3) !important;
     }
 

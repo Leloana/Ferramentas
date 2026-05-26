@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import logging
+import shutil
 from typing import Optional
 
 from fastapi import APIRouter, Form, HTTPException, Response
@@ -10,7 +11,7 @@ from fastapi import APIRouter, Form, HTTPException, Response
 from state import SONGS_DIR
 from utils.http import set_no_cache
 from utils.prepare import run_prepare_song
-from utils.text import normalize_lyrics_text
+from utils.text import normalize_lyrics_text, slugify
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -57,6 +58,61 @@ async def get_lyrics(slug: str, response: Response):
         return {"success": True, "lyrics": lrc_content, "language": language, "meta_json": meta_content}
     except Exception as e:
         logger.error(f"Erro ao obter letras: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/api/save-meta")
+async def save_meta(
+    slug: str = Form(...),
+    meta_json: str = Form(...),
+):
+    """Salva apenas o meta.json sem disparar o pipeline de alinhamento."""
+    try:
+        song_dir = SONGS_DIR / slug
+        if not song_dir.exists():
+            raise HTTPException(status_code=404, detail="Diretório da música não encontrado")
+
+        if not meta_json.strip():
+            raise HTTPException(status_code=400, detail="meta_json está vazio")
+
+        try:
+            meta_data = json.loads(meta_json)
+            if not isinstance(meta_data, dict):
+                raise ValueError("O JSON deve ser um objeto contendo chaves/valores.")
+        except Exception as je:
+            raise HTTPException(status_code=400, detail=f"Erro de sintaxe no meta.json: {je}")
+
+        if isinstance(meta_data.get("lyrics"), dict):
+            pl = meta_data["lyrics"].get("plain_lyrics")
+            if isinstance(pl, str):
+                meta_data["lyrics"]["plain_lyrics"] = normalize_lyrics_text(pl)
+
+        meta_path = song_dir / "meta.json"
+        with open(meta_path, "w", encoding="utf-8", newline="\n") as f:
+            json.dump(meta_data, f, indent=4, ensure_ascii=False)
+
+        # Renomeia a pasta se o título ou artista mudou
+        title = (meta_data.get("meta") or {}).get("title") or meta_data.get("title", "")
+        artist = (meta_data.get("meta") or {}).get("artist") or meta_data.get("artist", "")
+        new_slug = slugify(f"{title}-{artist}") if (title and artist) else None
+
+        if new_slug and new_slug != slug:
+            new_dir = SONGS_DIR / new_slug
+            if new_dir.exists():
+                # Conflito: apaga a pasta antiga e mantém a existente
+                shutil.rmtree(song_dir)
+                logger.info(f"Conflito de slug: pasta antiga '{slug}' removida, mantida '{new_slug}'")
+            else:
+                song_dir.rename(new_dir)
+                logger.info(f"Pasta renomeada de '{slug}' para '{new_slug}'")
+            return {"success": True, "slug": new_slug}
+
+        return {"success": True, "slug": slug}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Erro ao salvar meta.json: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))
 
 

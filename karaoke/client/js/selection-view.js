@@ -13,14 +13,14 @@ export async function fetchSongs() {
 
         const resp = await fetch('/api/songs');
         const songs = await resp.json();
-        
+
         // Ordena alfabeticamente pelo título respeitando acentos e ignorando maiúsculas/minúsculas
         songs.sort((a, b) => a.title.localeCompare(b.title, 'pt-BR', { sensitivity: 'base' }));
-        
+
         state.allSongs = songs;
 
         document.getElementById('search-input').value = '';
-        renderSongs(songs);
+        renderArtistGroups(songs);
         renderReinstallList(songs);
     } catch (e) {
         dom.songListEl.innerHTML = `
@@ -40,12 +40,74 @@ export async function fetchSongs() {
     }
 }
 
-export function renderSongs(songsList) {
+/* ── Fuzzy Artist Grouping ────────────────────────────────────── */
+
+function normalizeArtist(name) {
+    if (!name) return '';
+    return name
+        .normalize('NFD')
+        .replace(/[̀-ͯ]/g, '')
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, ' ');
+}
+
+function artistSimilarity(a, b) {
+    const na = normalizeArtist(a);
+    const nb = normalizeArtist(b);
+    if (na === nb) return true;
+
+    // Se um contém o outro completamente, considera similar
+    if (na.includes(nb) || nb.includes(na)) return true;
+
+    // Interseção de palavras > 50%
+    const wordsA = na.split(/\s+/);
+    const wordsB = nb.split(/\s+/);
+    const shorter = wordsA.length <= wordsB.length ? wordsA : wordsB;
+    const longer = wordsA.length <= wordsB.length ? wordsB : wordsA;
+    const intersection = shorter.filter(w => longer.includes(w));
+    if (intersection.length / shorter.length >= 0.5) return true;
+
+    return false;
+}
+
+function groupSongsByArtist(songs) {
+    const groups = [];
+
+    songs.forEach(song => {
+        const artist = song.artist || "Artista Desconhecido";
+        // Procura grupo existente por similaridade
+        let group = null;
+        for (const g of groups) {
+            if (artistSimilarity(artist, g.artist)) {
+                group = g;
+                break;
+            }
+        }
+        if (!group) {
+            group = { artist, songs: [] };
+            groups.push(group);
+        }
+        group.songs.push(song);
+    });
+
+    // Ordena artistas alfabeticamente (pelo primeiro nome normalizado)
+    groups.sort((a, b) => normalizeArtist(a.artist).localeCompare(normalizeArtist(b.artist)));
+
+    // Dentro de cada grupo, ordena músicas pelo título
+    groups.forEach(g =>
+        g.songs.sort((a, b) => a.title.localeCompare(b.title, 'pt-BR', { sensitivity: 'base' }))
+    );
+
+    return groups;
+}
+
+/* ── Artist-Grouped Rendering ─────────────────────────────────── */
+
+export function renderArtistGroups(songsList) {
     dom.songListEl.innerHTML = '';
 
-    const readySongs = songsList.filter(song => song.is_ready !== false);
-
-    if (readySongs.length === 0) {
+    if (songsList.length === 0) {
         dom.songListEl.innerHTML = `
             <div class="empty-state">
                 <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="var(--dim)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="empty-icon"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
@@ -56,43 +118,106 @@ export function renderSongs(songsList) {
         return;
     }
 
+    const groups = groupSongsByArtist(songsList);
     const tpl = document.getElementById('song-card-tpl');
-    readySongs.forEach(song => {
-        const frag = tpl.content.cloneNode(true);
-        const card = frag.querySelector('.song-card');
-        const titleEl = frag.querySelector('.song-card__title');
-        const artistEl = frag.querySelector('.song-card__artist');
-        const editBtn = frag.querySelector('.song-card__edit-btn');
-        const deleteBtn = frag.querySelector('.song-card__delete-btn');
 
-        titleEl.innerText = song.title;
-        artistEl.innerText = song.artist || "Artista Desconhecido";
+    groups.forEach(group => {
+        // Container do artista
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'artist-group';
 
-        card.addEventListener('click', () => selectSong(song));
-
-        editBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            loadAndOpenLrcEditor(song.id);
+        // Header do artista
+        const header = document.createElement('div');
+        header.className = 'artist-group__header';
+        header.innerHTML = `
+            <svg class="artist-group__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            <span class="artist-group__name">${group.artist}</span>
+            <span class="artist-group__count">${group.songs.length}</span>
+        `;
+        header.addEventListener('click', () => {
+            groupDiv.classList.toggle('artist-group--open');
         });
+        groupDiv.appendChild(header);
 
-        deleteBtn.addEventListener('click', async (e) => {
-            e.stopPropagation();
-            if (confirm(`Tem certeza que deseja excluir permanentemente a música "${song.title}"? Todos os arquivos de áudio, letras e segmentos serão apagados do servidor!`)) {
-                try {
-                    const resp = await fetch(`/api/delete-song/${song.id}`, { method: 'DELETE' });
-                    if (!resp.ok) {
-                        const err = await resp.json();
-                        throw new Error(err.detail || "Erro ao excluir música");
+        // Grid de músicas
+        const songsGrid = document.createElement('div');
+        songsGrid.className = 'artist-group__songs';
+
+        group.songs.forEach(song => {
+            const frag = tpl.content.cloneNode(true);
+            const card = frag.querySelector('.song-card');
+            const titleEl = frag.querySelector('.song-card__title');
+            const artistEl = frag.querySelector('.song-card__artist');
+            const editBtn = frag.querySelector('.song-card__edit-btn');
+            const deleteBtn = frag.querySelector('.song-card__delete-btn');
+
+            titleEl.innerText = song.title;
+            artistEl.innerText = song.artist || "Artista Desconhecido";
+
+            if (song.is_ready === false) {
+                // Música pendente: sem clique para jogar, com badge e botão reinstalar
+                card.style.cursor = 'default';
+                card.style.opacity = '0.7';
+
+                const badge = document.createElement('span');
+                badge.innerText = 'Pendente';
+                badge.style.cssText = 'font-size: 0.7rem; font-weight: 700; color: #f97316; background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.25); padding: 0.15rem 0.4rem; border-radius: 4px; margin-left: 0.5rem; display: inline-block; vertical-align: middle;';
+                artistEl.appendChild(badge);
+
+                // Remove edit/delete, adiciona reinstalar
+                if (editBtn) editBtn.remove();
+                if (deleteBtn) deleteBtn.remove();
+
+                const reinstallBtn = document.createElement('button');
+                reinstallBtn.type = 'button';
+                reinstallBtn.className = 'song-card__reinstall-btn';
+                reinstallBtn.title = 'Reinstalar Música';
+                reinstallBtn.innerHTML = '🔄';
+                reinstallBtn.style.cssText = 'background: transparent; border: none; font-size: 1.25rem; padding: 0.25rem 0.5rem; cursor: pointer; transition: transform 0.3s ease;';
+
+                reinstallBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    triggerReinstall(song.id, song.title);
+                });
+                reinstallBtn.addEventListener('mouseenter', () => { reinstallBtn.style.transform = 'rotate(180deg)'; });
+                reinstallBtn.addEventListener('mouseleave', () => { reinstallBtn.style.transform = 'rotate(0deg)'; });
+
+                const actionsDiv = document.createElement('div');
+                actionsDiv.style.cssText = 'display: flex; align-items: center; gap: 0.5rem;';
+                actionsDiv.appendChild(reinstallBtn);
+                card.appendChild(actionsDiv);
+            } else {
+                // Música pronta: comportamento normal
+                card.addEventListener('click', () => selectSong(song));
+
+                editBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    loadAndOpenLrcEditor(song.id);
+                });
+
+                deleteBtn.addEventListener('click', async (e) => {
+                    e.stopPropagation();
+                    if (confirm(`Tem certeza que deseja excluir permanentemente a música "${song.title}"? Todos os arquivos de áudio, letras e segmentos serão apagados do servidor!`)) {
+                        try {
+                            const resp = await fetch(`/api/delete-song/${song.id}`, { method: 'DELETE' });
+                            if (!resp.ok) {
+                                const err = await resp.json();
+                                throw new Error(err.detail || "Erro ao excluir música");
+                            }
+                            showToast(`Música "${song.title}" excluída com sucesso!`, "success");
+                            fetchSongs();
+                        } catch (err) {
+                            showToast(`Erro ao excluir música: ${err.message}`, "error");
+                        }
                     }
-                    showToast(`Música "${song.title}" excluída com sucesso!`, "success");
-                    fetchSongs();
-                } catch (err) {
-                    showToast(`Erro ao excluir música: ${err.message}`, "error");
-                }
+                });
             }
+
+            songsGrid.appendChild(frag);
         });
 
-        dom.songListEl.appendChild(frag);
+        groupDiv.appendChild(songsGrid);
+        dom.songListEl.appendChild(groupDiv);
     });
 }
 
@@ -104,12 +229,17 @@ export function selectSong(song) {
 
     const savedVolume = localStorage.getItem('karaoke_backing_volume');
     if (savedVolume !== null) {
-        dom.audioPlayer.volume = parseFloat(savedVolume);
+        const vol = parseFloat(savedVolume);
+        if (state.audioManager) {
+            state.audioManager.setVolume(vol);
+        } else {
+            dom.audioPlayer.volume = vol;
+        }
     }
 }
 
 export async function loadAndOpenLrcEditor(slug) {
-    startLoadingOverlay("Carregando Letras...", "Buscando informações no servidor...");
+    const gen = startLoadingOverlay("Carregando Letras...", "Buscando informações no servidor...");
 
     try {
         const resp = await fetch(`/api/get-lyrics?slug=${encodeURIComponent(slug)}&t=${Date.now()}`, {
@@ -118,7 +248,7 @@ export async function loadAndOpenLrcEditor(slug) {
         if (!resp.ok) throw new Error("Não foi possível carregar os dados");
         const data = await resp.json();
 
-        stopLoadingOverlay();
+        stopLoadingOverlay(gen);
 
         if (data.success) {
             document.getElementById('editor-slug').value = slug;
@@ -150,7 +280,7 @@ export async function loadAndOpenLrcEditor(slug) {
             showToast("Erro: Os arquivos da música não foram localizados no servidor.", "error");
         }
     } catch (e) {
-        stopLoadingOverlay();
+        stopLoadingOverlay(gen);
         showToast("Erro ao carregar os dados da música: " + e.message, "error");
     }
 }
@@ -169,7 +299,7 @@ export function initSearch() {
             normalizeText(song.title).includes(query) ||
             normalizeText(song.artist).includes(query)
         );
-        renderSongs(filtered);
+        renderArtistGroups(filtered);
     };
 
     initSelectionTabs();
@@ -188,7 +318,7 @@ export async function triggerReinstall(songId, songTitle) {
 
     const alignLyrics = (choice === 'pro');
 
-    startLoadingOverlay("Reinstalando...", "Executando processo de download, separação Demucs (GPU) e alinhamento Whisper... 🔄🎧", true);
+    const gen = startLoadingOverlay("Reinstalando...", "Executando processo de download, separação Demucs (GPU) e alinhamento Whisper... 🔄🎧", true);
 
     try {
         const response = await fetch(`/api/reinstall-song/${songId}?align_lyrics=${alignLyrics}`, {
@@ -201,12 +331,12 @@ export async function triggerReinstall(songId, songTitle) {
         }
 
         const data = await response.json();
-        stopLoadingOverlay();
+        stopLoadingOverlay(gen);
         showToast(data.message || "Música reinstalada com sucesso!", "success");
         if (typeof fetchSongs === 'function') fetchSongs();
 
     } catch (error) {
-        stopLoadingOverlay();
+        stopLoadingOverlay(gen);
         showToast("Erro ao reinstalar: " + error.message, "error");
         if (dom.lrcEditorModal && document.getElementById('editor-slug')?.value === songId) {
             dom.lrcEditorModal.setAttribute('data-open', 'true');

@@ -8,6 +8,9 @@ import { updateMicStatusPanel } from './mic-status.js';
 import { connectDisplayWebSocket } from './ws-display.js';
 
 export async function resetGameState() {
+    const gameOverModal = document.getElementById('game-over-modal');
+    if (gameOverModal) gameOverModal.removeAttribute('data-open');
+
     if (state.slideTransitionCleanup) {
         state.slideTransitionCleanup();
     }
@@ -16,6 +19,7 @@ export async function resetGameState() {
         state.transcriptionActiveTimer = null;
     }
     if (state.ws) {
+        state.ws.onclose = null;
         state.ws.close();
         state.ws = null;
     }
@@ -43,6 +47,8 @@ export async function resetGameState() {
         cancelAnimationFrame(state.animationId);
         state.animationId = null;
     }
+    setAppState('idle');
+
     state.isSingingActive = false;
     state.isOutroActive = false;
     dom.audioPlayer.pause();
@@ -146,8 +152,6 @@ export async function resetGameState() {
     state.gameMode = null;
     updateSyncDisplay();
 
-    setAppState('idle');
-
     showToast("Retornou à lista de músicas", "info");
     connectDisplayWebSocket();
 }
@@ -209,6 +213,12 @@ export async function startKaraoke() {
         }
     }
 
+    // Aplica o volume salvo ao GainNode do AudioLifecycleManager
+    const savedVolume = localStorage.getItem('karaoke_backing_volume');
+    if (savedVolume !== null && state.audioManager) {
+        state.audioManager.setVolume(parseFloat(savedVolume));
+    }
+
     const sampleRate = state.audioContext.sampleRate;
 
     if (state.ws) {
@@ -218,57 +228,73 @@ export async function startKaraoke() {
         } catch (e) { }
         state.ws = null;
     }
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${protocol}//${window.location.host}/ws/room/${myRoom}?role=display&song_id=${state.selectedSongId}`;
-    state.ws = new WebSocket(wsUrl);
-    state.ws.binaryType = 'arraybuffer';
 
-    state.ws.onopen = () => {
-        // Coleta os jogadores ativos com base no modo de jogo
-        const mode = dom.mpGameMode.value;
-        const activeList = [];
-        const slots = [dom.slotP1, dom.slotP2, dom.slotP3, dom.slotP4];
-        const numSlots = (mode === 'solo') ? 1 : ((mode === '1v1') ? 2 : ((mode === '1v1v1') ? 3 : 4));
-        
-        for (let i = 0; i < numSlots; i++) {
-            if (slots[i] && slots[i].value) {
-                activeList.push(slots[i].value);
+    const mode = dom.mpGameMode.value;
+    const activeList = [];
+    const slots = [dom.slotP1, dom.slotP2, dom.slotP3, dom.slotP4];
+    const numSlots = (mode === 'solo') ? 1 : ((mode === '1v1') ? 2 : ((mode === '1v1v1') ? 3 : 4));
+
+    for (let i = 0; i < numSlots; i++) {
+        if (slots[i] && slots[i].value) {
+            activeList.push(slots[i].value);
+        }
+    }
+
+    state.activePlayers = activeList;
+    state.gameMode = mode;
+
+    const capturedSongId = state.selectedSongId;
+    let reconnectAttempts = 0;
+    const maxReconnectAttempts = 5;
+
+    function connectGameWebSocket() {
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const wsUrl = `${protocol}//${window.location.host}/ws/room/${myRoom}?role=display&song_id=${capturedSongId}`;
+        state.ws = new WebSocket(wsUrl);
+        state.ws.binaryType = 'arraybuffer';
+
+        state.ws.onopen = () => {
+            reconnectAttempts = 0;
+
+            state.ws.send(JSON.stringify({ type: "client_info", sample_rate: sampleRate }));
+            state.ws.send(JSON.stringify({
+                type: "start_game",
+                game_mode: mode,
+                active_players: activeList
+            }));
+
+            state.isFirstSegment = true;
+            state.currentSegmentData = null;
+            dom.audioPlayer.play();
+            startTimeSync();
+            setAppState('singing');
+        };
+
+        state.ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            handleServerMessage(data);
+        };
+
+        state.ws.onclose = () => {
+            console.warn("Game WebSocket fechado. Tentando reconectar...");
+            if (state.currentAppState === 'idle' || state.currentAppState === 'game-over') return;
+            if (reconnectAttempts >= maxReconnectAttempts) {
+                console.error("Número máximo de tentativas de reconexão atingido. Abortando jogo.");
+                resetGameState();
+                return;
             }
-        }
-        
-        state.activePlayers = activeList;
-        state.gameMode = mode;
+            reconnectAttempts++;
+            const delay = Math.min(1000 * reconnectAttempts, 5000);
+            console.log(`Tentativa de reconexão ${reconnectAttempts}/${maxReconnectAttempts} em ${delay}ms...`);
+            setTimeout(connectGameWebSocket, delay);
+        };
 
-        const app = document.getElementById('app');
-        if (app) {
-            app.setAttribute('data-players', activeList.length > 1 ? 'multi' : 'solo');
-            app.setAttribute('data-player-count', activeList.length.toString());
-        }
+        state.ws.onerror = (err) => {
+            console.error("Erro no WebSocket do jogo:", err);
+        };
+    }
 
-        if (activeList.length > 1) {
-            resetAndShowMpScoreBars(activeList, mode);
-        } else {
-            hideMpScoreBars();
-        }
-
-        state.ws.send(JSON.stringify({ type: "client_info", sample_rate: sampleRate }));
-        state.ws.send(JSON.stringify({
-            type: "start_game",
-            game_mode: mode,
-            active_players: activeList
-        }));
-
-        state.isFirstSegment = true;
-        state.currentSegmentData = null;
-        dom.audioPlayer.play();
-        startTimeSync();
-        setAppState('singing');
-    };
-
-    state.ws.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        handleServerMessage(data);
-    };
+    connectGameWebSocket();
 
     dom.audioPlayer.playbackRate = state.currentSpeed;
 }
@@ -766,6 +792,8 @@ export function showGameOverModal(finalScore, playerScores) {
         breakdownDiv.style.display = 'none';
     }
 
+    modal.setAttribute('data-open', 'true');
+
     document.getElementById('btn-restart-game').onclick = () => {
         resetGameState();
     };
@@ -888,15 +916,19 @@ export function renderLyrics(data) {
     const currentSpans = lineCurr.querySelectorAll('.word');
     currentSpans.forEach(span => span.removeAttribute('id'));
 
-    // Populate line-next with new timed lyrics spans immediately, so they start highlighting as they slide up
-    lineNext.innerHTML = '';
-    data.lyrics_timed.forEach((item, idx) => {
-        const span = document.createElement('span');
-        span.className = 'word';
-        span.innerText = item.word + ' ';
-        span.id = `word-${idx}`;
-        lineNext.appendChild(span);
-    });
+    // Populate line-next with new lyrics
+    if (state.syncMode === 'verse') {
+        lineNext.textContent = data.lyrics || "";
+    } else {
+        lineNext.innerHTML = '';
+        data.lyrics_timed.forEach((item, idx) => {
+            const span = document.createElement('span');
+            span.className = 'word';
+            span.innerText = item.word + ' ';
+            span.id = `word-${idx}`;
+            lineNext.appendChild(span);
+        });
+    }
 
     // Set line-upcoming to show the incoming line next lyrics
     if (lineUpcoming) {
@@ -921,7 +953,11 @@ export function renderLyrics(data) {
 
         // Swap contents
         linePrev.innerText = data.prev_lyrics || "";
-        lineCurr.innerHTML = lineNext.innerHTML;
+        if (state.syncMode === 'verse') {
+            lineCurr.textContent = lineNext.textContent;
+        } else {
+            lineCurr.innerHTML = lineNext.innerHTML;
+        }
         lineNext.innerText = data.next_lyrics || "";
         if (lineUpcoming) {
             lineUpcoming.innerText = data.upcoming_lyrics || "";
@@ -959,133 +995,152 @@ export function updateLyricsDOM(data) {
         dom.upcomingLyricsDisplay.innerText = data.upcoming_lyrics || "";
     }
 
-    dom.lyricsDisplay.innerHTML = '';
-    data.lyrics_timed.forEach((item, idx) => {
-        const span = document.createElement('span');
-        span.className = 'word';
-        span.innerText = item.word + ' ';
-        span.id = `word-${idx}`;
-        dom.lyricsDisplay.appendChild(span);
-    });
+    if (state.syncMode === 'verse') {
+        dom.lyricsDisplay.textContent = data.lyrics || "";
+    } else {
+        dom.lyricsDisplay.innerHTML = '';
+        data.lyrics_timed.forEach((item, idx) => {
+            const span = document.createElement('span');
+            span.className = 'word';
+            span.innerText = item.word + ' ';
+            span.id = `word-${idx}`;
+            dom.lyricsDisplay.appendChild(span);
+        });
+    }
 }
 
 export function startHighlightLoop() {
     if (state.animationId) cancelAnimationFrame(state.animationId);
 
     function update() {
-        const audioPlayer = dom.audioPlayer;
-        if (audioPlayer.duration && !state.isUserDraggingProgress) {
-            const cur = audioPlayer.currentTime;
-            const dur = audioPlayer.duration;
-            const pct = Math.max(0, Math.min(100, (cur / dur) * 100));
+        try {
+            const audioPlayer = dom.audioPlayer;
+            if (audioPlayer.duration && !state.isUserDraggingProgress) {
+                const cur = audioPlayer.currentTime;
+                const dur = audioPlayer.duration;
+                const pct = Math.max(0, Math.min(100, (cur / dur) * 100));
 
-            const formatTime = (secs) => {
-                const m = Math.floor(secs / 60);
-                const s = Math.floor(secs % 60);
-                return `${m}:${s < 10 ? '0' : ''}${s}`;
-            };
+                const formatTime = (secs) => {
+                    const m = Math.floor(secs / 60);
+                    const s = Math.floor(secs % 60);
+                    return `${m}:${s < 10 ? '0' : ''}${s}`;
+                };
 
-            if (dom.songProgressSlider) {
-                dom.songProgressSlider.value = pct;
-                dom.songProgressSlider.style.background = `linear-gradient(to right, var(--accent) ${pct}%, rgba(255, 255, 255, 0.05) ${pct}%)`;
+                if (dom.songProgressSlider) {
+                    dom.songProgressSlider.value = pct;
+                    dom.songProgressSlider.style.background = `linear-gradient(to right, var(--accent) ${pct}%, rgba(255, 255, 255, 0.05) ${pct}%)`;
+                }
+                const timeCurrent = document.getElementById('song-time-current');
+                if (timeCurrent) timeCurrent.innerText = formatTime(cur);
+                const timeRemaining = document.getElementById('song-time-remaining');
+                if (timeRemaining) timeRemaining.innerText = '-' + formatTime(Math.max(0, dur - cur));
             }
-            const timeCurrent = document.getElementById('song-time-current');
-            if (timeCurrent) timeCurrent.innerText = formatTime(cur);
-            const timeRemaining = document.getElementById('song-time-remaining');
-            if (timeRemaining) timeRemaining.innerText = '-' + formatTime(Math.max(0, dur - cur));
-        }
 
-        if (state.isOutroActive && audioPlayer.duration) {
-            const cur = audioPlayer.currentTime;
-            const elapsed = cur - state.outroStartPlayerTime;
-            const remaining = Math.max(0, audioPlayer.duration - cur);
+            if (state.isOutroActive && audioPlayer.duration) {
+                const cur = audioPlayer.currentTime;
+                const elapsed = cur - state.outroStartPlayerTime;
+                const remaining = Math.max(0, audioPlayer.duration - cur);
 
-            const pct = Math.max(0, Math.min(100, (elapsed / state.outroTotalDuration) * 100));
+                const pct = Math.max(0, Math.min(100, (elapsed / state.outroTotalDuration) * 100));
 
-            const outroFill = document.getElementById('outro-progress-fill');
-            if (outroFill) outroFill.style.width = pct + '%';
+                const outroFill = document.getElementById('outro-progress-fill');
+                if (outroFill) outroFill.style.width = pct + '%';
 
-            const outroText = document.getElementById('outro-timer-text');
-            if (outroText) outroText.innerText = `Finalizando em ${remaining.toFixed(1)}s...`;
+                const outroText = document.getElementById('outro-timer-text');
+                if (outroText) outroText.innerText = `Finalizando em ${remaining.toFixed(1)}s...`;
 
-            state.animationId = requestAnimationFrame(update);
-            return;
-        }
+                return;
+            }
 
-        if (!state.currentSegmentData) {
-            state.animationId = requestAnimationFrame(update);
-            return;
-        }
+            if (!state.currentSegmentData) {
+                return;
+            }
 
-        const virtualTime = audioPlayer.currentTime + state.syncOffset;
-        const relativeTime = virtualTime - state.currentSegmentData.sing_start;
+            const segData = state.currentSegmentData;
+            if (!segData || typeof segData.sing_start !== 'number') return;
 
-        const silenceOverlay = document.getElementById('silence-overlay');
-        const pauseContainer = document.getElementById('instrumental-pause-container');
+            const virtualTime = audioPlayer.currentTime + state.syncOffset;
+            const relativeTime = virtualTime - segData.sing_start;
 
-        if (state.totalPauseDuration > 3.0) {
-            const remainingTime = state.pauseStartTarget - virtualTime;
+            if (state.totalPauseDuration > 3.0) {
+                const remainingTime = state.pauseStartTarget - virtualTime;
 
-            if (remainingTime > 1.0) {
-                const app = document.getElementById('app');
-                if (app) app.setAttribute('data-silence', 'true');
-                const fill = document.getElementById('silence-progress-fill');
-                const text = document.getElementById('silence-timer-text');
-                const pct = Math.max(0, Math.min(100, ((remainingTime - 1.0) / (state.totalPauseDuration - 1.0)) * 100));
-                if (fill) fill.style.width = pct + '%';
-                if (text) text.innerText = remainingTime.toFixed(1) + 's';
+                if (remainingTime > 1.0) {
+                    const app = document.getElementById('app');
+                    if (app) app.setAttribute('data-silence', 'true');
+                    const fill = document.getElementById('silence-progress-fill');
+                    const text = document.getElementById('silence-timer-text');
+                    const pct = Math.max(0, Math.min(100, ((remainingTime - 1.0) / (state.totalPauseDuration - 1.0)) * 100));
+                    if (fill) fill.style.width = pct + '%';
+                    if (text) text.innerText = remainingTime.toFixed(1) + 's';
+                } else {
+                    const app = document.getElementById('app');
+                    if (app) app.removeAttribute('data-silence');
+                    state.totalPauseDuration = 0;
+                    state.pauseStartTarget = 0;
+                }
             } else {
                 const app = document.getElementById('app');
                 if (app) app.removeAttribute('data-silence');
-                state.totalPauseDuration = 0;
-                state.pauseStartTarget = 0;
             }
-        } else {
-            const app = document.getElementById('app');
-            if (app) app.removeAttribute('data-silence');
+
+            const verseContainer = document.getElementById('verse-progress-container');
+            const verseFill = document.getElementById('verse-progress-fill');
+            if (verseContainer && verseFill) {
+                const segStart = segData.sing_start;
+                const segEnd = segData.sing_end;
+                const duration = segEnd - segStart;
+
+                if (virtualTime >= segStart && virtualTime <= segEnd && duration > 0) {
+                    const pct = Math.max(0, Math.min(100, ((virtualTime - segStart) / duration) * 100));
+                    verseFill.style.width = pct + '%';
+                    verseContainer.setAttribute('data-active', 'true');
+                } else if (virtualTime > segEnd) {
+                    verseFill.style.width = '100%';
+                    verseContainer.setAttribute('data-active', 'ended');
+                } else {
+                    verseFill.style.width = '0%';
+                    verseContainer.removeAttribute('data-active');
+                }
+            }
+
+            if (state.syncMode === 'verse') {
+                const lineCurr = document.getElementById('line-curr');
+                if (lineCurr) {
+                    if (relativeTime >= 0 && virtualTime <= segData.sing_end) {
+                        lineCurr.classList.add('verse-active');
+                    } else {
+                        lineCurr.classList.remove('verse-active');
+                    }
+                }
+            } else if (segData.lyrics_timed) {
+                segData.lyrics_timed.forEach((item, idx) => {
+                    const el = document.getElementById(`word-${idx}`);
+                    if (!el) return;
+
+                    if (relativeTime >= item.expected_start) {
+                        el.classList.add('passed');
+                        el.classList.remove('active');
+                    } else {
+                        el.classList.remove('passed');
+                    }
+
+                    const nextItem = segData.lyrics_timed[idx + 1];
+                    if (relativeTime >= item.expected_start && (!nextItem || relativeTime < nextItem.expected_start)) {
+                        el.classList.add('active');
+                        el.classList.remove('passed');
+                    } else {
+                        if (relativeTime < item.expected_start) el.classList.remove('active');
+                    }
+                });
+            }
+        } catch (err) {
+            console.error("Erro no loop de animação da letra:", err);
+        } finally {
+            if (state.currentAppState !== 'idle' && state.currentAppState !== 'game-over') {
+                state.animationId = requestAnimationFrame(update);
+            }
         }
-
-        const verseContainer = document.getElementById('verse-progress-container');
-        const verseFill = document.getElementById('verse-progress-fill');
-        if (verseContainer && verseFill) {
-            const segStart = state.currentSegmentData.sing_start;
-            const segEnd = state.currentSegmentData.sing_end;
-            const duration = segEnd - segStart;
-
-            if (virtualTime >= segStart && virtualTime <= segEnd && duration > 0) {
-                const pct = Math.max(0, Math.min(100, ((virtualTime - segStart) / duration) * 100));
-                verseFill.style.width = pct + '%';
-                verseContainer.setAttribute('data-active', 'true');
-            } else if (virtualTime > segEnd) {
-                verseFill.style.width = '100%';
-                verseContainer.setAttribute('data-active', 'ended');
-            } else {
-                verseFill.style.width = '0%';
-                verseContainer.removeAttribute('data-active');
-            }
-        }
-
-        state.currentSegmentData.lyrics_timed.forEach((item, idx) => {
-            const el = document.getElementById(`word-${idx}`);
-            if (!el) return;
-
-            if (relativeTime >= item.expected_start) {
-                el.classList.add('passed');
-                el.classList.remove('active');
-            } else {
-                el.classList.remove('passed');
-            }
-
-            const nextItem = state.currentSegmentData.lyrics_timed[idx + 1];
-            if (relativeTime >= item.expected_start && (!nextItem || relativeTime < nextItem.expected_start)) {
-                el.classList.add('active');
-                el.classList.remove('passed');
-            } else {
-                if (relativeTime < item.expected_start) el.classList.remove('active');
-            }
-        });
-
-        state.animationId = requestAnimationFrame(update);
     }
     update();
 }
@@ -1200,6 +1255,21 @@ export function initGameControls() {
             }
         };
     }
+
+    // Sync mode toggle (word vs verse)
+    if (dom.btnSyncMode) {
+        const savedSyncMode = localStorage.getItem('karaoke_sync_mode');
+        if (savedSyncMode === 'verse') {
+            state.syncMode = 'verse';
+        }
+        updateSyncModeButton();
+
+        dom.btnSyncMode.onclick = () => {
+            state.syncMode = state.syncMode === 'word' ? 'verse' : 'word';
+            localStorage.setItem('karaoke_sync_mode', state.syncMode);
+            updateSyncModeButton();
+        };
+    }
 }
 
 function updatePitchUI() {
@@ -1214,6 +1284,21 @@ function updatePitchUI() {
 function updateSpeedUI() {
     if (!dom.speedValue) return;
     dom.speedValue.innerText = state.currentSpeed.toFixed(2) + 'x';
+}
+
+function updateSyncModeButton() {
+    if (!dom.btnSyncMode) return;
+    if (state.syncMode === 'verse') {
+        dom.btnSyncMode.textContent = '📝';
+        dom.btnSyncMode.title = 'Sincronia por verso — Clique para alternar para palavras';
+        dom.btnSyncMode.style.background = 'rgba(56, 189, 248, 0.2)';
+        dom.btnSyncMode.style.borderColor = 'var(--accent)';
+    } else {
+        dom.btnSyncMode.textContent = '🎯';
+        dom.btnSyncMode.title = 'Sincronia por palavra — Clique para alternar para verso';
+        dom.btnSyncMode.style.background = '';
+        dom.btnSyncMode.style.borderColor = '';
+    }
 }
 
 function updatePlayerSlotsVisibility() {
