@@ -7,14 +7,9 @@
     },
     "audio": {
         "youtube_vocal_url": "https://youtu.be/DXP1KdZX4io?list=RDMM",
-        "youtube_backing_url": null
+        "youtube_backing_url": ""
     },
     "lyrics": {
-        "plain_lyrics": ""
-    },
-    "status": {
-        "has_vocal_file": false,
-        "has_backing_file": false,
-        "has_lrc_file": false
+        "plain_lyrics": "Drift all you like\nFrom ocean to ocean\nSearch the whole world\nBut drunken confessions\nAnd hijacked affairs\nWill just make you more alone\n\nWhen you come home\nI'll bake you a cake\nMade of all their eyes\nI wish you could see me\nDressed for the kill\nYou're my man of war\nYou're my man of war\n\nAnd the worms will come for you\nBig boots\nYeah, yeah, yeah\n\nSo unplug the phones\nStop all the taps\nIt all comes flooding back\nFrom poisoned cloud\nAnd poisoned dwarf\nYou're my man of war\nYou're my man of war\n\nAnd the worms will come for you\nBig boots\nYeah, the worms will come for you\nBig boots\nFor you\nBig boots"
     }
 }
