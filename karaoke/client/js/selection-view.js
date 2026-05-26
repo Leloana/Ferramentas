@@ -266,12 +266,29 @@ export async function loadAndOpenLrcEditor(slug) {
 
             // Popula a área de texto de colar letra
             const pasteArea = document.getElementById('editor-paste-lyrics-textarea');
+            let metaParsed = null;
             if (pasteArea) {
                 try {
-                    const meta = JSON.parse(data.meta_json);
-                    pasteArea.value = meta?.lyrics?.plain_lyrics || '';
+                    metaParsed = JSON.parse(data.meta_json);
+                    pasteArea.value = metaParsed?.lyrics?.plain_lyrics || '';
                 } catch (e) {
                     pasteArea.value = '';
+                }
+            }
+
+            // Popula link do YouTube
+            const ytLinksDiv = document.getElementById('editor-youtube-links');
+            const ytLink = document.getElementById('editor-youtube-vocal-link');
+            if (ytLinksDiv && ytLink) {
+                if (!metaParsed) {
+                    try { metaParsed = JSON.parse(data.meta_json || '{}'); } catch (e) { metaParsed = null; }
+                }
+                const ytUrl = metaParsed?.audio?.youtube_vocal_url || metaParsed?.audio?.youtube_backing_url || '';
+                if (ytUrl) {
+                    ytLink.href = ytUrl;
+                    ytLinksDiv.style.display = 'block';
+                } else {
+                    ytLinksDiv.style.display = 'none';
                 }
             }
 
