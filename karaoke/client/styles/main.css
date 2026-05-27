@@ -3002,6 +3002,9 @@
 .queue-item-icon[data-status="finalizing"] { background: rgba(34, 197, 94, 0.15); animation: spin 1s linear infinite; }
 .queue-item-icon[data-status="ready"] { background: rgba(34, 197, 94, 0.15); }
 .queue-item-icon[data-status="error"] { background: rgba(239, 68, 68, 0.15); }
+.queue-item-icon[data-status="searching"] { background: rgba(56, 189, 248, 0.15); animation: spin 1.2s linear infinite; }
+.queue-item-card[data-status="searching"] { border-color: rgba(56, 189, 248, 0.2); }
+.queue-item-card[data-status="lyrics-error"] { border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.04); }
 
 .queue-item-info {
     flex: 1;

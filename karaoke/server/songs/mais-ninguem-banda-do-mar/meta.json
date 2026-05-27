@@ -1,0 +1,20 @@
+{
+    "meta": {
+        "title": "Mais Ninguém",
+        "artist": "Banda do Mar",
+        "language": "pt",
+        "slug": "mais-ninguem-banda-do-mar"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://youtu.be/lVTYBwK6bO4?list=RDGMEM2VCIgaiSqOfVzBAjPJm-ag",
+        "youtube_backing_url": null
+    },
+    "lyrics": {
+        "plain_lyrics": "Mesmo que não venha mais ninguém\nFicamos só eu e você\nFazemos a festa, somos do mundo\nSempre fomos bons de conversar\n\nEu só espero que não venha mais ninguém\nAí eu tenho você só pra mim\nRoubo o teu sono, quero o teu tudo\nSe mais alguém vier não vou notar\n\nPreciso de você, pra me fazer feliz\nNão quero mais ficar aqui\nPreciso me ver só, pra me fazer maior\nMas quando você vem eu fico melhor\n\nMesmo que não venha mais ninguém\nFicamos só eu e você\nFazemos a festa, somos do mundo\nSempre fomos bons de conversar\n\nEu só espero que não venha mais ninguém\nAí eu tenho você só pra mim\nRoubo o teu sono, quero o teu tudo\nSe mais alguém vier não vou notar\n\nPreciso de você, pra me fazer feliz\nNão quero mais ficar aqui\nPreciso me ver só, pra me fazer maior\nMas quando você vem eu fico melhor\n\nMesmo que não venha mais ninguém\nFicamos só eu e você\nFazemos a festa, somos do mundo\nSempre fomos bons de conversar"
+    },
+    "status": {
+        "has_vocal_file": false,
+        "has_backing_file": false,
+        "has_lrc_file": true
+    }
+}

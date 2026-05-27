@@ -1,0 +1,20 @@
+{
+    "meta": {
+        "title": "Mais uma Canção",
+        "artist": "Los Hermanos",
+        "language": "pt",
+        "slug": "mais-uma-cancao-los-hermanos"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://youtu.be/07lnxe0pMPs?list=RDGMEM2VCIgaiSqOfVzBAjPJm-ag",
+        "youtube_backing_url": null
+    },
+    "lyrics": {
+        "plain_lyrics": "Nada vai mudar entre nós\nComo eu sei? Eu só sei.\nTudo vai permanecer igual\nAfinal,\nNão há nada a fazer.\n\nEu não nego\nEu me entrego\nVocê é meu grande amor\nE hoje eu vou te dizer \"eu te amo\"\n\nEu imploro\nEu te adoro\nVocê tem meu coração\nA bater pra você\nMais uma canção.\n\nComo pode alguém perder você\nComo eu fiz? Como eu quis não te ter?\nVivo iludido a acreditar\nQue o amor\nNão se pôs\nEm você.\n\nEu me entrego\nEu não nego\nEu errei, mas sou capaz\nDe fazer sua vida melhor.\nTô voltando, não sei quando\nPra roubar teu coração\nVou chegar\nNo final de mais uma canção."
+    },
+    "status": {
+        "has_vocal_file": false,
+        "has_backing_file": false,
+        "has_lrc_file": false
+    }
+}

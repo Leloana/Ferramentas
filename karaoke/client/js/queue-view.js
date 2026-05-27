@@ -5,7 +5,7 @@
  * Funciona tanto no modo 'display' (TV) quanto no modo 'mic' (celular).
  */
 import { showToast } from './toast.js';
-import { fetchSongs, promptGenerationOptions } from './selection-view.js';
+import { fetchSongs } from './selection-view.js';
 
 // ── Status labels e ícones para cada estado da fila ──
 const STATUS_MAP = {
@@ -17,7 +17,11 @@ const STATUS_MAP = {
     finalizing:          { icon: '✨', label: 'Finalizando segmentos...' },
     ready:               { icon: '✅', label: 'Pronta para cantar!' },
     error:               { icon: '❌', label: 'Erro no processamento' },
+    searching:           { icon: '🔍', label: 'Buscando letra...' },
+    'lyrics-error':      { icon: '❌', label: 'Letra não encontrada' },
 };
+
+let _tempIdCounter = 0;
 
 let pollInterval = null;
 let isSheetOpen = false;
@@ -92,16 +96,21 @@ function closeSheet() {
     isSheetOpen = false;
 }
 
-// ── Envio para a fila ──
+// ── Envio para a fila (fire-and-forget) ──
 async function submitToQueue() {
     const urlInput = document.getElementById('queue-yt-url');
     const langSelect = document.getElementById('queue-language');
-    const addedByInput = document.getElementById('queue-added-by');
+    const artistInput = document.getElementById('queue-artist');
+    const titleInput = document.getElementById('queue-title');
     const submitBtn = document.getElementById('queue-submit-btn');
 
+    // ── FASE 1: Validação ──
     const ytUrl = urlInput?.value?.trim();
-    if (!ytUrl) {
-        showToast('Cole o link do YouTube primeiro!', 'error');
+    const artist = artistInput?.value?.trim();
+    const title = titleInput?.value?.trim();
+
+    if (!ytUrl || !artist || !title) {
+        showToast('Preencha todos os campos obrigatórios.', 'error');
         return;
     }
 
@@ -110,60 +119,150 @@ async function submitToQueue() {
         return;
     }
 
-    // Fecha a aba da fila para exibir o modal de opções de geração limpo na tela
-    closeSheet();
-    const choice = await promptGenerationOptions();
-    if (!choice) {
-        // Se o usuário fechar/cancelar, reabre a aba da fila e aborta
-        openSheet();
-        return;
-    }
+    const language = langSelect?.value || 'en';
 
-    const alignLyrics = (choice === 'pro');
-
-    // Disable button
+    // ── FASE 2: Estado visual "Buscando" ──
     if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.textContent = '⏳ Adicionando...';
+        submitBtn.textContent = '🔍 Buscando letra...';
     }
 
+    const tempId = `temp-${++_tempIdCounter}`;
+    const provisionalCard = createProvisionalCard(tempId, title, artist);
+    const listContainer = document.getElementById('queue-items-list');
+    if (listContainer) {
+        // Remove empty state if present
+        const emptyState = listContainer.querySelector('.queue-empty');
+        if (emptyState) emptyState.remove();
+        listContainer.prepend(provisionalCard);
+    }
+
+    // ── FASE 3: Busca automática de letra ──
+    let plainLyrics = '';
+    let syncedLrc = '';
+    let lyricsFound = false;
+
     try {
-        // plain_lyrics vazio = backend vai auto-fetch via LRCLIB/Lyrics.ovh
-        const params = new URLSearchParams({
-            youtube_url: ytUrl,
-            language: langSelect?.value || 'en',
-            plain_lyrics: '',
-            added_by: addedByInput?.value?.trim() || '',
-            align_lyrics: alignLyrics.toString(),
-        });
+        const lyricsRes = await fetch(`/api/fetch-lyrics?artist=${encodeURIComponent(artist)}&track=${encodeURIComponent(title)}`);
+        const lyricsData = await lyricsRes.json();
 
-        const resp = await fetch('/api/queue/add', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: params.toString(),
-        });
-
-        if (!resp.ok) {
-            const err = await resp.json();
-            throw new Error(err.detail || 'Erro ao adicionar à fila.');
+        if (lyricsData.success) {
+            plainLyrics = lyricsData.plainLyrics || '';
+            syncedLrc = lyricsData.syncedLyrics || '';
+            if (plainLyrics.trim()) {
+                lyricsFound = true;
+            }
         }
-
-        const data = await resp.json();
-        showToast(data.message || 'Música adicionada à fila!', 'success');
-
-        // Limpa formulário
-        if (urlInput) urlInput.value = '';
-
-        // Atualiza imediatamente
-        await pollQueueStatus();
-
     } catch (err) {
-        showToast('Erro: ' + err.message, 'error');
-    } finally {
-        if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.textContent = '➕ Adicionar à Fila';
+        console.error('Erro ao buscar letra:', err);
+    }
+
+    // ── FASE 4A: Sucesso — letra encontrada ──
+    if (lyricsFound) {
+        try {
+            const body = new URLSearchParams({
+                youtube_url: ytUrl,
+                language,
+                title,
+                artist,
+                plain_lyrics: plainLyrics,
+                synced_lrc: syncedLrc,
+                align_lyrics: 'true',
+            });
+
+            const resp = await fetch('/api/queue/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: body.toString(),
+            });
+
+            if (!resp.ok) {
+                const err = await resp.json();
+                throw new Error(err.detail || 'Erro ao adicionar à fila.');
+            }
+
+            const data = await resp.json();
+
+            // Atualiza item provisório para estado normal
+            updateProvisionalCardToSuccess(provisionalCard, title, artist, !!syncedLrc);
+
+            showToast(`✅ "${title}" adicionada à fila!`, 'success');
+
+            // Limpa formulário
+            if (urlInput) urlInput.value = '';
+            if (artistInput) artistInput.value = '';
+            if (titleInput) titleInput.value = '';
+
+            // Atualiza fila — o item provisório será substituído pelo real no próximo poll
+            await pollQueueStatus();
+
+        } catch (err) {
+            updateProvisionalCardToError(provisionalCard, title, artist);
+            showToast(`❌ Erro ao enfileirar: ${err.message}`, 'error');
         }
+
+    // ── FASE 4B: Falha — letra não encontrada ──
+    } else {
+        updateProvisionalCardToError(provisionalCard, title, artist);
+        showToast(`❌ Letra não encontrada para "${title} - ${artist}". Use o botão "➕ Adicionar Música" para adicionar manualmente.`, 'error');
+    }
+
+    // Reabilita botão
+    if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '➕ Adicionar à Fila';
+    }
+}
+
+// ── Cards provisórios (busca de letra) ──
+function createProvisionalCard(tempId, title, artist) {
+    const card = document.createElement('div');
+    card.className = 'queue-item-card';
+    card.dataset.tempId = tempId;
+    card.dataset.status = 'searching';
+    card.innerHTML = `
+        <div class="queue-item-icon" data-status="searching">🔍</div>
+        <div class="queue-item-info">
+            <div class="queue-item-title">${escapeHtml(title)}</div>
+            <div class="queue-item-status" data-status="searching">
+                Buscando letra... <span style="opacity: 0.5;">• ${escapeHtml(artist)}</span>
+            </div>
+        </div>
+    `;
+    return card;
+}
+
+function updateProvisionalCardToSuccess(card, title, artist, hasLrc) {
+    card.dataset.status = 'queued';
+    const badgeHtml = hasLrc
+        ? `<span style="font-size: 0.7rem; font-weight: 700; color: #10b981; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25); padding: 0.15rem 0.4rem; border-radius: 4px; margin-left: 0.5rem; display: inline-block; vertical-align: middle;">LRC</span>`
+        : `<span style="font-size: 0.7rem; font-weight: 700; color: #38bdf8; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.25); padding: 0.15rem 0.4rem; border-radius: 4px; margin-left: 0.5rem; display: inline-block; vertical-align: middle;">Com Letra</span>`;
+    card.innerHTML = `
+        <div class="queue-item-icon" data-status="queued">⏳</div>
+        <div class="queue-item-info">
+            <div class="queue-item-title">${escapeHtml(title)}${badgeHtml}</div>
+            <div class="queue-item-status" data-status="queued">
+                Na fila... <span style="opacity: 0.5;">• ${escapeHtml(artist)}</span>
+            </div>
+        </div>
+    `;
+}
+
+function updateProvisionalCardToError(card, title, artist) {
+    card.dataset.status = 'lyrics-error';
+    card.innerHTML = `
+        <div class="queue-item-icon" data-status="error">❌</div>
+        <div class="queue-item-info">
+            <div class="queue-item-title">${escapeHtml(title)}</div>
+            <div class="queue-item-status" data-status="error">
+                Letra não encontrada <span style="opacity: 0.5;">• ${escapeHtml(artist)}</span>
+            </div>
+        </div>
+        <button class="queue-item-remove" title="Remover da fila">🗑️</button>
+    `;
+    const removeBtn = card.querySelector('.queue-item-remove');
+    if (removeBtn) {
+        removeBtn.addEventListener('click', () => card.remove());
     }
 }
 
@@ -235,7 +334,10 @@ function renderQueueItems(containerId, items) {
     // Filtra apenas itens que não estão "ready" (ou mostra ready por 30s)
     const activeItems = items.filter(i => i.status !== 'ready' || true);
 
-    if (activeItems.length === 0) {
+    // Preserve provisional items even when server list is empty
+    const provisionalCards = Array.from(container.querySelectorAll('[data-temp-id]'));
+
+    if (activeItems.length === 0 && provisionalCards.length === 0) {
         container.innerHTML = `
             <div class="queue-empty">
                 <div class="queue-empty-icon">🎶</div>
@@ -253,6 +355,7 @@ function renderQueueItems(containerId, items) {
 
     if (needsFullRender) {
         container.innerHTML = '';
+        provisionalCards.forEach(card => container.appendChild(card));
         activeItems.forEach(item => {
             container.appendChild(createQueueItemCard(item));
         });

@@ -9,7 +9,7 @@ from pathlib import Path
 from fastapi import APIRouter, HTTPException, Response
 from fastapi.responses import FileResponse
 
-from state import SONGS_DIR, song_manager
+from state import SONGS_DIR, song_manager, queue_manager
 from utils.http import set_no_cache
 
 logger = logging.getLogger(__name__)
@@ -77,7 +77,13 @@ async def api_reinstall_song(song_id: str, align_lyrics: bool = False):
             raise HTTPException(status_code=400, detail="Arquivo meta.json não encontrado na pasta da música")
 
         from tools.reinstall_song import reinstall_song
-        success = await reinstall_song(str(song_dir), align_lyrics=align_lyrics)
+
+        # Aguarda o whisper_lock antes de rodar — garante que não conflite com
+        # uma música em andamento no jogo (mesmo lock usado pelo room.py e queue_manager).
+        logger.info(f"[Reinstall] Aguardando whisper_lock para reinstalar '{song_id}'...")
+        async with queue_manager.whisper_lock:
+            logger.info(f"[Reinstall] Lock adquirido. Iniciando reinstalação de '{song_id}'...")
+            success = await reinstall_song(str(song_dir), align_lyrics=align_lyrics)
         
         if success:
             logger.info(f"Reinstalação concluída com sucesso para a música: {song_id}")

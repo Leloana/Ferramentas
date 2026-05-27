@@ -1,0 +1,20 @@
+{
+    "meta": {
+        "title": "Minas Gerais",
+        "artist": "O Terno",
+        "language": "pt",
+        "slug": "minas-gerais-o-terno"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://youtu.be/dNDhVWWfY2A?list=RDdNDhVWWfY2A",
+        "youtube_backing_url": null
+    },
+    "lyrics": {
+        "plain_lyrics": "Não tem nenhum lugar que eu goste mais\nDo que as montanhas de Minas Gerais\nQuando eu for velho, quando eu for avô\nÉ pra lá que eu vou\n\nDe uma colina poder avistar\nDiamantina e então me lembrar\nDe quando eu era um jovem rapaz\nNa estrada com meus amigos, no banco de trás\n\nOuvir de longe o sino tocar\nTomar cachaça sentado no bar\nUm vento frio, céu azul\n\nNo fim de tarde, um pão com café\nDe noite, um caldo num beco qualquer\nDe madrugada, beber e sair\nDe manhã cedo, a igreja e o sol a subir\n\nHoje voando em um avião\nSenti saudades e olhei para o chão\nVi as montanhas que eu nunca vi mais\nÓ, Minas Gerais"
+    },
+    "status": {
+        "has_vocal_file": false,
+        "has_backing_file": false,
+        "has_lrc_file": true
+    }
+}

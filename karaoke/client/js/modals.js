@@ -1,6 +1,6 @@
 import { state } from './state.js';
 import { dom, startLoadingOverlay, stopLoadingOverlay } from './dom.js';
-import { activeRoomId } from './config.js';
+import { activeRoomId, urlParams } from './config.js';
 import { showToast } from './toast.js';
 import { fetchSongs, loadAndOpenLrcEditor, promptGenerationOptions } from './selection-view.js';
 
@@ -8,6 +8,14 @@ export function initModals() {
     initPairingModal();
     initAddSongModal();
     initLrcEditorModal();
+
+    // Auto-open add-song modal when URL contains ?open=add-song (QR code scan)
+    if (urlParams.get('open') === 'add-song') {
+        const btnOpenAddSong = document.getElementById('btn-open-add-song');
+        if (btnOpenAddSong) {
+            setTimeout(() => btnOpenAddSong.click(), 300);
+        }
+    }
 }
 
 function initPairingModal() {
@@ -506,6 +514,22 @@ function initLrcEditorModal() {
                 showToast("Erro de sintaxe no meta.json. Corrija antes de salvar.", "error");
                 return;
             }
+
+            // Aplica os valores dos campos editáveis da aba Meta
+            const metaTitle = document.getElementById('editor-meta-title');
+            const metaArtist = document.getElementById('editor-meta-artist');
+            const metaLanguage = document.getElementById('editor-meta-language');
+            const metaYoutube = document.getElementById('editor-meta-youtube');
+
+            if (!metaJson.meta) metaJson.meta = {};
+            if (metaTitle) metaJson.meta.title = metaTitle.value.trim();
+            if (metaArtist) metaJson.meta.artist = metaArtist.value.trim();
+            if (metaLanguage) metaJson.meta.language = metaLanguage.value;
+
+            if (!metaJson.audio) metaJson.audio = {};
+            if (metaYoutube) metaJson.audio.youtube_vocal_url = metaYoutube.value.trim() || null;
+
+            metaArea.value = JSON.stringify(metaJson, null, 2);
 
             btnSaveMeta.disabled = true;
             const origText = btnSaveMeta.innerText;

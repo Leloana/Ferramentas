@@ -29,9 +29,15 @@
             </svg>
             <span>KARAOKE <span class="gradient-text">AI</span></span>
         </div>
-        <div class="header-status">
-            <span class="status-dot"></span>
-            <span class="status-text">Online</span>
+        <div class="header-right">
+            <div id="header-qrcode-panel" class="header-qrcode-panel">
+                <img id="header-qrcode" src="" alt="QR Code para Adicionar Música" />
+                <span class="header-qrcode-label">Adicionar<br>Música</span>
+            </div>
+            <div class="header-status">
+                <span class="status-dot"></span>
+                <span class="status-text">Online</span>
+            </div>
         </div>
     </header>
 
@@ -788,7 +794,7 @@
 
     <!-- Modal Editor de Informações e Letras -->
     <div id="lrc-editor-modal" class="modal-overlay" data-editor-tab="meta">
-        <div class="modal-content admin-modal" style="max-width: 650px; width: 90%;">
+        <div class="modal-content admin-modal" style="max-width: 900px; width: 95%; min-height: 750px; display: flex; flex-direction: column;">
             <h2
                 style="display: flex; align-items: center; gap: 0.5rem; font-weight: 800; font-size: 1.5rem; margin-top: 0; margin-bottom: 0.5rem;">
                 Informações e Letras ℹ️🎵</h2>
@@ -821,17 +827,48 @@
                 </button>
             </div>
 
-            <form id="lrc-editor-form">
+            <form id="lrc-editor-form" style="display: flex; flex-direction: column; flex: 1;">
                 <input type="hidden" id="editor-slug" name="slug">
                 <input type="hidden" id="editor-language" name="language">
 
-                <!-- Seção 1: meta.json -->
-                <div id="editor-section-meta" class="form-group">
-                    <label for="editor-meta-textarea"
-                        style="font-weight: 700; color: #fff; margin-bottom: 0.4rem; display: block;">Configurações
-                        (meta.json):</label>
-                    <textarea id="editor-meta-textarea" name="meta_json"
-                        style="width: 100%; height: 320px; background: #0b0f19; border: 1px solid var(--card-border); border-radius: 8px; color: #38bdf8; padding: 0.8rem; font-family: monospace; font-size: 0.85rem; line-height: 1.5; resize: vertical; box-sizing: border-box; outline: none; transition: border-color 0.2s;"></textarea>
+                <!-- Seção 1: meta.json (campos editáveis) -->
+                <div id="editor-section-meta" class="form-group" style="gap: 1rem;">
+                    <label style="font-weight: 700; color: #fff; display: block;">Configurações (meta.json):</label>
+                    <p style="font-size: 0.8rem; color: var(--dim); margin: 0.4rem 0 0.6rem 0; line-height: 1.4;">
+                        Edite os campos abaixo. Os dados serão salvos no <code>meta.json</code> da música.
+                    </p>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="editor-meta-title" style="font-weight: 600; color: var(--dim); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em;">Título</label>
+                            <input type="text" id="editor-meta-title" placeholder="Nome da música"
+                                style="width: 100%; box-sizing: border-box;">
+                        </div>
+                        <div class="form-group">
+                            <label for="editor-meta-artist" style="font-weight: 600; color: var(--dim); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em;">Artista / Banda</label>
+                            <input type="text" id="editor-meta-artist" placeholder="Nome do artista ou banda"
+                                style="width: 100%; box-sizing: border-box;">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="editor-meta-language" style="font-weight: 600; color: var(--dim); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em;">Idioma</label>
+                            <select id="editor-meta-language" style="width: 100%; box-sizing: border-box;">
+                                <option value="pt">Português (pt)</option>
+                                <option value="en">English (en)</option>
+                                <option value="es">Español (es)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="editor-meta-youtube" style="font-weight: 600; color: var(--dim); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em;">Link YouTube</label>
+                            <input type="text" id="editor-meta-youtube" placeholder="https://www.youtube.com/watch?v=..."
+                                style="width: 100%; box-sizing: border-box;">
+                        </div>
+                    </div>
+
+                    <!-- Campo oculto com o JSON completo para compatibilidade interna -->
+                    <textarea id="editor-meta-textarea" name="meta_json" style="display:none;"></textarea>
                 </div>
 
                 <!-- Seção 2: lyrics.lrc -->
@@ -840,22 +877,20 @@
                         style="font-weight: 700; color: #fff; margin-bottom: 0.4rem; display: block;">Letras
                         Sincronizadas (.lrc):</label>
                     <textarea id="editor-textarea" name="lyrics_lrc"
-                        style="width: 100%; height: 320px; background: #0b0f19; border: 1px solid var(--card-border); border-radius: 8px; color: #e2e8f0; padding: 0.8rem; font-family: monospace; font-size: 0.85rem; line-height: 1.5; resize: vertical; box-sizing: border-box; outline: none; transition: border-color 0.2s;"></textarea>
+                        style="width: 100%; height: 420px; background: #0b0f19; border: 1px solid var(--card-border); border-radius: 8px; color: #e2e8f0; padding: 0.8rem; font-family: monospace; font-size: 0.85rem; line-height: 1.5; resize: vertical; box-sizing: border-box; outline: none; transition: border-color 0.2s;"></textarea>
                 </div>
 
                 <!-- Seção 3: Colar Letra Plana -->
                 <div id="editor-section-paste-lyrics" class="form-group">
                     <label for="editor-paste-lyrics-textarea"
                         style="font-weight: 700; color: #fff; margin-bottom: 0.4rem; display: block;">Letra:</label>
-                    <p style="font-size: 0.8rem; color: var(--dim); margin-top: 0; margin-bottom: 0.8rem; line-height: 1.4;">
-                        Cole a letra sem formatação. Ao clicar em <strong>Salvar Meta</strong>, a letra será limpa, formatada e inserida no campo <code>plain_lyrics</code> do <code>meta.json</code>.
-                    </p>
+                   
                     <textarea id="editor-paste-lyrics-textarea"
                         placeholder="Cole a letra original da música aqui..."
-                        style="width: 100%; height: 220px; background: #0b0f19; border: 1px solid var(--card-border); border-radius: 8px; color: #e2e8f0; padding: 0.8rem; font-family: monospace; font-size: 0.85rem; line-height: 1.5; resize: vertical; box-sizing: border-box; outline: none; transition: border-color 0.2s; margin-bottom: 0.8rem;"></textarea>
+                        style="width: 100%; height: 420px; background: #0b0f19; border: 1px solid var(--card-border); border-radius: 8px; color: #e2e8f0; padding: 0.8rem; font-family: monospace; font-size: 0.85rem; line-height: 1.5; resize: vertical; box-sizing: border-box; outline: none; transition: border-color 0.2s;"></textarea>
                 </div>
 
-                <div class="modal-buttons" style="margin-top: 1.5rem; display: flex; gap: 0.8rem; align-items: center;">
+                <div class="modal-buttons" style="margin-top: auto; padding-top: 1.5rem; display: flex; gap: 0.8rem; align-items: center;">
                     <button type="button" id="btn-close-editor" class="btn"
                         style="background: transparent; border: 1px solid var(--card-border); color: var(--text); padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Cancelar</button>
                     <button type="button" id="btn-save-meta" class="btn"
@@ -1017,16 +1052,14 @@
         <div class="queue-sheet-body">
             <!-- Formulário de Adição Rápida -->
             <form id="queue-add-form" class="queue-add-form">
-                <input type="text" id="queue-yt-url" placeholder="🔗 Cole o link do YouTube aqui..." required>
-                <div style="display: flex; gap: 0.5rem;">
-                    <select id="queue-language" style="flex: 0 0 auto; min-width: 90px;">
-                        <option value="en">🇺🇸 EN</option>
-                        <option value="pt">🇧🇷 PT</option>
-                        <option value="es">🇪🇸 ES</option>
-                    </select>
-                    <input type="text" id="queue-added-by" placeholder="Seu nome (opcional)" style="flex: 1;">
-                </div>
-                <textarea id="queue-lyrics" style="display:none;"></textarea>
+                <input type="text" id="queue-yt-url" placeholder="🔗 Link do YouTube" required>
+                <select id="queue-language">
+                    <option value="en">🇺🇸 Inglês (en)</option>
+                    <option value="pt">🇧🇷 Português (pt)</option>
+                    <option value="es">🇪🇸 Espanhol (es)</option>
+                </select>
+                <input type="text" id="queue-artist" placeholder="🎤 Artista / Banda" required>
+                <input type="text" id="queue-title" placeholder="🎵 Nome da Música" required>
                 <button type="submit" class="queue-submit-btn" id="queue-submit-btn">➕ Adicionar à Fila</button>
             </form>
 

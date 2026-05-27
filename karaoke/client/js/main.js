@@ -72,6 +72,7 @@ function bootstrap() {
     initModals();
     initSearch();
     initQueueView();
+    initHomeQrcode();
 
     dom.btnBack.onclick = resetGameState;
     dom.btnExit.onclick = resetGameState;
@@ -121,6 +122,35 @@ function bootstrap() {
 
     fetchSongs();
     connectDisplayWebSocket();
+}
+
+async function initHomeQrcode() {
+    const qrcodePanel = document.getElementById('header-qrcode-panel');
+    const qrcodeImg = document.getElementById('header-qrcode');
+    if (!qrcodePanel || !qrcodeImg) return;
+
+    // Don't show QR on mobile devices acting as display
+    if (isSoloMobileMode) {
+        qrcodePanel.style.display = 'none';
+        return;
+    }
+
+    let targetHost = window.location.host;
+    try {
+        const ipRes = await fetch('/api/get-ip');
+        if (ipRes.ok) {
+            const ipData = await ipRes.json();
+            if (ipData.ip && ipData.ip !== '127.0.0.1') {
+                const port = window.location.port ? `:${window.location.port}` : '';
+                targetHost = `${ipData.ip}${port}`;
+            }
+        }
+    } catch (e) {
+        console.warn('Nao foi possivel obter o IP da rede local para o QR code:', e);
+    }
+
+    const homeUrl = `${window.location.protocol}//${targetHost}/?open=add-song`;
+    qrcodeImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(homeUrl)}`;
 }
 
 if (document.readyState === 'loading') {

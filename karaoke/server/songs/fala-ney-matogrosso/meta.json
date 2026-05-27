@@ -1,0 +1,15 @@
+{
+    "meta": {
+        "title": "Fala",
+        "artist": "Ney Matogrosso",
+        "language": "pt",
+        "slug": "fala-ney-matogrosso"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://youtu.be/pnWFGnyghrI?list=RDpnWFGnyghrI",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Eu não sei dizer nada por dizer\r\nEntão eu escuto\r\nSe você disser tudo o que quiser\r\nEntão eu escuto\r\n\r\nFala\r\nLalalalalalalalalá\r\nFala\r\n\r\nSe eu não entender, não vou responder\r\nEntão eu escuto\r\nEu só vou falar na hora de falar\r\nEntão eu escuto\r\n\r\nFala"
+    }
+}

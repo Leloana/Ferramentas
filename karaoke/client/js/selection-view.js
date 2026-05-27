@@ -255,9 +255,42 @@ export async function loadAndOpenLrcEditor(slug) {
             document.getElementById('editor-language').value = data.language;
             document.getElementById('editor-textarea').value = data.lyrics || '';
 
+            // Parse meta JSON para popular campos
+            let metaParsed = null;
+            try {
+                metaParsed = JSON.parse(data.meta_json || '{}');
+            } catch (e) {
+                metaParsed = null;
+            }
+
+            // Popula o textarea oculto com o JSON completo (compatibilidade interna)
             const metaArea = document.getElementById('editor-meta-textarea');
             if (metaArea) {
                 metaArea.value = data.meta_json || '';
+            }
+
+            // Popula os campos editáveis da aba Meta
+            const metaTitle = document.getElementById('editor-meta-title');
+            const metaArtist = document.getElementById('editor-meta-artist');
+            const metaLanguage = document.getElementById('editor-meta-language');
+            const metaYoutube = document.getElementById('editor-meta-youtube');
+            if (metaTitle) metaTitle.value = metaParsed?.meta?.title || '';
+            if (metaArtist) metaArtist.value = metaParsed?.meta?.artist || '';
+            if (metaYoutube) metaYoutube.value = metaParsed?.audio?.youtube_vocal_url || metaParsed?.audio?.youtube_backing_url || '';
+            if (metaLanguage) {
+                const lang = metaParsed?.meta?.language || 'pt';
+                // Tenta selecionar a opção correspondente; se não existir, adiciona dinamicamente
+                let found = false;
+                for (const opt of metaLanguage.options) {
+                    if (opt.value === lang) { opt.selected = true; found = true; break; }
+                }
+                if (!found && lang) {
+                    const newOpt = document.createElement('option');
+                    newOpt.value = lang;
+                    newOpt.textContent = lang;
+                    metaLanguage.insertBefore(newOpt, metaLanguage.lastElementChild);
+                    metaLanguage.value = lang;
+                }
             }
 
             if (dom.lrcEditorForm) {
@@ -266,23 +299,14 @@ export async function loadAndOpenLrcEditor(slug) {
 
             // Popula a área de texto de colar letra
             const pasteArea = document.getElementById('editor-paste-lyrics-textarea');
-            let metaParsed = null;
             if (pasteArea) {
-                try {
-                    metaParsed = JSON.parse(data.meta_json);
-                    pasteArea.value = metaParsed?.lyrics?.plain_lyrics || '';
-                } catch (e) {
-                    pasteArea.value = '';
-                }
+                pasteArea.value = metaParsed?.lyrics?.plain_lyrics || '';
             }
 
             // Popula link do YouTube
             const ytLinksDiv = document.getElementById('editor-youtube-links');
             const ytLink = document.getElementById('editor-youtube-vocal-link');
             if (ytLinksDiv && ytLink) {
-                if (!metaParsed) {
-                    try { metaParsed = JSON.parse(data.meta_json || '{}'); } catch (e) { metaParsed = null; }
-                }
                 const ytUrl = metaParsed?.audio?.youtube_vocal_url || metaParsed?.audio?.youtube_backing_url || '';
                 if (ytUrl) {
                     ytLink.href = ytUrl;

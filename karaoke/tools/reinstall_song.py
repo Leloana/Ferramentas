@@ -487,11 +487,112 @@ async def reinstall_song(
         logger.error(f"Erro ao alinhar canções no prepare_song: {e}")
         return False
 
+# ---------------------------------------------------------------------------
+# Helpers para delegação ao servidor HTTP (evita conflito de GPU)
+# ---------------------------------------------------------------------------
+
+SERVER_PORTS = [8000, 8001]  # Portas candidatas do servidor karaokê
+_SERVER_BASE_URL: str | None = None  # Cache: porta detectada
+
+
+def _detect_server_url() -> str | None:
+    """Tenta detectar se o servidor está rodando e retorna a URL base."""
+    import socket
+    for port in SERVER_PORTS:
+        try:
+            with socket.create_connection(("127.0.0.1", port), timeout=1.0):
+                return f"http://127.0.0.1:{port}"
+        except OSError:
+            pass
+    return None
+
+
+def _delegate_to_server(song_dir_path: str, align_lyrics: bool) -> bool:
+    """Delega o reinstall para a API HTTP do servidor.
+
+    O servidor já tem o modelo Whisper carregado como singleton e usa o
+    ``whisper_lock`` para serializar o acesso à GPU — evitando o conflito
+    que ocorre quando este script abre um segundo processo com outro modelo
+    na VRAM enquanto o jogo está em curso.
+
+    Retorna True se conseguiu delegar com sucesso, False caso contrário
+    (servidor sem a rota, erro HTTP, etc.).
+    """
+    try:
+        import urllib.request
+        import urllib.error
+    except ImportError:
+        return False
+
+    song_dir = Path(song_dir_path)
+    song_id = song_dir.name  # A rota usa o slug (nome da pasta)
+
+    global _SERVER_BASE_URL
+    if _SERVER_BASE_URL is None:
+        _SERVER_BASE_URL = _detect_server_url()
+    if _SERVER_BASE_URL is None:
+        return False
+
+    align_param = "true" if align_lyrics else "false"
+    url = f"{_SERVER_BASE_URL}/api/reinstall-song/{song_id}?align_lyrics={align_param}"
+
+    logger.info(f"Servidor karaokê detectado em {_SERVER_BASE_URL}!")
+    logger.info(f"Delegando reinstall para a API HTTP → {url}")
+    logger.info("Aguardando conclusão... (o servidor usa o modelo Whisper já carregado na GPU)")
+
+    try:
+        req = urllib.request.Request(url, method="POST")
+        req.add_header("Content-Length", "0")
+        with urllib.request.urlopen(req, timeout=1800) as resp:  # até 30 min
+            import json as _json
+            body = _json.loads(resp.read().decode("utf-8"))
+        if body.get("success"):
+            logger.info(f"[SUCCESS] API reportou sucesso: {body.get('message', 'ok')}")
+            return True
+        else:
+            logger.error(f"API reportou falha: {body}")
+            return False
+    except urllib.error.HTTPError as e:
+        logger.error(f"Erro HTTP da API: {e.code} {e.reason}")
+        try:
+            import json as _json
+            err_body = _json.loads(e.read().decode("utf-8"))
+            logger.error(f"Detalhe: {err_body.get('detail', '')}")
+        except Exception:
+            pass
+        return False
+    except Exception as e:
+        logger.error(f"Erro ao chamar API do servidor: {e}")
+        return False
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Algoritmo de Reinstalação de Música via meta.json")
     parser.add_argument("song_dir", help="Caminho da pasta da música")
     parser.add_argument("--lang", default=None, help="Idioma da música (opcional, sobrescreve meta.json)")
     parser.add_argument("--align-lyrics", action="store_true", help="Alinha plain_lyrics com os tempos do Whisper (default: False)")
+    parser.add_argument("--no-delegate", action="store_true", help="Desativa a delegação automática ao servidor (força execução local)")
     args = parser.parse_args()
-    
+
+    # Tenta delegar ao servidor se estiver rodando — evita conflito de GPU.
+    # Use --no-delegate para forçar execução local (ex: servidor desligado).
+    if not args.no_delegate:
+        server_url = _detect_server_url()
+        if server_url:
+            logger.info("=" * 60)
+            logger.info("ATENÇÃO: Servidor karaokê detectado rodando!")
+            logger.info("Para evitar conflito de GPU (dois modelos Whisper na VRAM),")
+            logger.info("o reinstall será delegado para a API HTTP do servidor.")
+            logger.info("Use --no-delegate para forçar execução local.")
+            logger.info("=" * 60)
+            _SERVER_BASE_URL = server_url
+            success = _delegate_to_server(args.song_dir, args.align_lyrics)
+            if success:
+                sys.exit(0)
+            else:
+                logger.warning("Delegação ao servidor falhou. Executando localmente...")
+                logger.warning("AVISO: Isso pode causar conflito de GPU se o jogo estiver ativo!")
+        else:
+            logger.info("Servidor karaokê não detectado. Executando reinstall localmente.")
+
     asyncio.run(reinstall_song(args.song_dir, args.lang, align_lyrics=args.align_lyrics))

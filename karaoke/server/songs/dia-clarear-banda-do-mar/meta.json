@@ -1,0 +1,20 @@
+{
+    "meta": {
+        "title": "Dia Clarear",
+        "artist": "Banda do Mar",
+        "language": "pt",
+        "slug": "dia-clarear-banda-do-mar"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://youtu.be/8lNz3x6K1uA?list=RDGMEM2VCIgaiSqOfVzBAjPJm-ag",
+        "youtube_backing_url": null
+    },
+    "lyrics": {
+        "plain_lyrics": "Onda da manhã, eu vi você sair do mar\nE todo sentimento que rodeia\nFoi a luz do Sol ou foi o vento que soprou\nO macio dessa areia\n\nEu sei lá, se eu vir você mais tarde\nEu vou até o dia clarear\nSei não, se eu vir você mais tarde\nEu vou até o dia clarear, vou até o dia clarear\n\nSe você jurar, eu posso até te acostumar\nNuma vida mais à toa\nÉ só você querer que tudo pode acontecer\nNo amor de outra pessoa, base de um descanso milenar\n\nEu sei lá, se eu vir você mais tarde\nEu vou até o dia clarear\nSei não, se eu vir você mais tarde\nEu vou até o dia clarear, vou até o dia clarear\n\nEu sei lá, se eu vir você mais tarde\nEu vou até o dia clarear\nSei não, se eu vir você mais tarde\nEu vou até o dia clarear, vou até o dia clarear"
+    },
+    "status": {
+        "has_vocal_file": false,
+        "has_backing_file": false,
+        "has_lrc_file": true
+    }
+}
