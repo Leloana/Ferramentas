@@ -3,6 +3,8 @@ import { dom, startLoadingOverlay, stopLoadingOverlay } from './dom.js';
 import { activeRoomId, urlParams } from './config.js';
 import { showToast } from './toast.js';
 import { fetchSongs, loadAndOpenLrcEditor, promptGenerationOptions } from './selection-view.js';
+import { openModal, closeModal } from './modal.js';
+import { initTabs } from './tabs.js';
 
 export function initModals() {
     initPairingModal();
@@ -18,18 +20,56 @@ export function initModals() {
     }
 }
 
+// --- Status de busca de letras (compartilhado entre os passos 2 e 3) ---
+
+const LYRICS_STATUS_TONES = {
+    blue: { background: 'rgba(59, 130, 246, 0.1)', borderColor: 'rgba(59, 130, 246, 0.3)', color: '#93c5fd' },
+    amber: { background: 'rgba(251, 191, 36, 0.1)', borderColor: 'rgba(251, 191, 36, 0.3)', color: '#fcd34d' },
+    green: { background: 'rgba(34, 197, 94, 0.1)', borderColor: 'rgba(34, 197, 94, 0.3)', color: '#86efac' },
+};
+
+// Aplica cor/ícone/texto a uma caixa de status, dado o tom desejado.
+function paintLyricsStatus(els, tone, icon, text) {
+    if (!els.box || !els.icon || !els.text) return;
+    Object.assign(els.box.style, LYRICS_STATUS_TONES[tone]);
+    els.icon.textContent = icon;
+    els.text.textContent = text;
+}
+
+// Resolve o resultado de /api/fetch-lyrics para uma classificação visual única,
+// usada tanto na pré-confirmação (passo 2) quanto na revisão final (passo 3).
+function describeLyricsResult(result, { step3 = false } = {}) {
+    if (result && result.pending) {
+        return { tone: 'blue', icon: '🔍', text: 'Confirme o artista e título acima — a letra será buscada automaticamente em seguida.' };
+    }
+    if (!result || !result.success) {
+        return { tone: 'amber', icon: '🤖', text: 'Nenhuma letra encontrada online — a IA vai transcrever diretamente do áudio.' };
+    }
+    const via = (name) => `via ${name}`;
+    if (result.syncedLyrics) {
+        const src = result.source === 'lrclib' ? 'LRCLIB' : 'API';
+        return {
+            tone: 'green', icon: '✅',
+            text: step3
+                ? `Letra sincronizada encontrada ${via(src)}! O LRC será usado diretamente.`
+                : `Letra sincronizada encontrada ${via(src)}! O LRC será usado diretamente — não será necessário gerar.`,
+        };
+    }
+    const src = result.source === 'ovh' ? 'Lyrics.ovh' : 'LRCLIB';
+    return { tone: 'blue', icon: '📝', text: `Letra encontrada ${via(src)}! Será usada como guia para o alinhamento automático.` };
+}
+
 function initPairingModal() {
     const pairingModal = document.getElementById('pairing-modal');
     const btnOpenPairing = document.getElementById('btn-open-pairing');
     const btnClosePairing = document.getElementById('btn-close-pairing');
     const pairingQrcode = document.getElementById('pairing-qrcode');
-    const pairingQrcodeLoading = document.getElementById('pairing-qrcode-loading');
     const pairingLink = document.getElementById('pairing-link');
 
     if (!btnOpenPairing) return;
 
     btnOpenPairing.onclick = async () => {
-        pairingModal.setAttribute('data-open', 'true');
+        openModal(pairingModal);
         pairingModal.setAttribute('data-qrcode-status', 'loading');
 
         // Reset pairing status and dot indicator
@@ -67,15 +107,11 @@ function initPairingModal() {
         };
     };
 
-    btnClosePairing.onclick = () => {
-        pairingModal.removeAttribute('data-open');
-    };
+    btnClosePairing.onclick = () => closeModal(pairingModal);
 
     // Abre o modal de pareamento ao clicar no QR Code ao lado de qualquer slot de jogador
     document.querySelectorAll('.btn-qr-pairing').forEach(btn => {
-        btn.onclick = () => {
-            btnOpenPairing.click();
-        };
+        btn.onclick = () => btnOpenPairing.click();
     });
 }
 
@@ -86,19 +122,9 @@ function initAddSongModal() {
     const addSongForm = dom.addSongForm;
     if (!btnOpenAddSong) return;
 
-    const tabBtnLocal = document.getElementById('tab-btn-local');
-    const tabBtnYoutube = document.getElementById('tab-btn-youtube');
-    const sectionLocalUpload = document.getElementById('section-local-upload');
-    const sectionYoutubeImport = document.getElementById('section-youtube-import');
+    initTabs(addSongForm, { onSelect: (tab) => { state.activeUploadTab = tab; } });
 
-    const setTab = (which) => {
-        state.activeUploadTab = which;
-        addSongForm.setAttribute('data-upload-tab', which);
-    };
-
-    tabBtnLocal.onclick = () => setTab('local');
-    tabBtnYoutube.onclick = () => setTab('youtube');
-    let currentStep = 1;
+    let currentStep = 1;
     let fetchedLyrics = null;  // resultado do /api/fetch-lyrics
 
     const setStep = (step) => {
@@ -106,55 +132,25 @@ function initAddSongModal() {
         addSongForm.setAttribute('data-step', step);
         const btnSubmit = document.getElementById('btn-submit-song');
         if (btnSubmit) {
-            if (step === 1 || step === 2) {
-                btnSubmit.innerText = 'Avançar ➡️';
-            } else if (step === 3) {
-                btnSubmit.innerText = 'Fila 📋';
-            }
+            btnSubmit.innerText = (step === 3) ? 'Fila 📋' : 'Avançar ➡️';
         }
     };
 
+    const step2StatusEls = {
+        box: document.getElementById('lyrics-fetch-status'),
+        icon: document.getElementById('lyrics-fetch-icon'),
+        text: document.getElementById('lyrics-fetch-text'),
+    };
     const updateLyricsStatus = (result) => {
-        const statusDiv = document.getElementById('lyrics-fetch-status');
-        const icon = document.getElementById('lyrics-fetch-icon');
-        const text = document.getElementById('lyrics-fetch-text');
-        if (!statusDiv || !icon || !text) return;
-
-        if (result && result.pending) {
-            statusDiv.style.background = 'rgba(59, 130, 246, 0.1)';
-            statusDiv.style.borderColor = 'rgba(59, 130, 246, 0.3)';
-            statusDiv.style.color = '#93c5fd';
-            icon.textContent = '🔍';
-            text.textContent = 'Confirme o artista e título acima — a letra será buscada automaticamente em seguida.';
-        } else if (!result || !result.success) {
-            statusDiv.style.background = 'rgba(251, 191, 36, 0.1)';
-            statusDiv.style.borderColor = 'rgba(251, 191, 36, 0.3)';
-            statusDiv.style.color = '#fcd34d';
-            icon.textContent = '🤖';
-            text.textContent = 'Nenhuma letra encontrada online — a IA vai transcrever diretamente do áudio.';
-        } else if (result.syncedLyrics) {
-            statusDiv.style.background = 'rgba(34, 197, 94, 0.1)';
-            statusDiv.style.borderColor = 'rgba(34, 197, 94, 0.3)';
-            statusDiv.style.color = '#86efac';
-            icon.textContent = '✅';
-            text.textContent = `Letra sincronizada encontrada via ${result.source === 'lrclib' ? 'LRCLIB' : 'API'}! O LRC será usado diretamente — não será necessário gerar.`;
-        } else if (result.plainLyrics) {
-            statusDiv.style.background = 'rgba(59, 130, 246, 0.1)';
-            statusDiv.style.borderColor = 'rgba(59, 130, 246, 0.3)';
-            statusDiv.style.color = '#93c5fd';
-            icon.textContent = '📝';
-            text.textContent = `Letra encontrada via ${result.source === 'ovh' ? 'Lyrics.ovh' : 'LRCLIB'}! Será usada como guia para o alinhamento automático.`;
-        }
+        const { tone, icon, text } = describeLyricsResult(result);
+        paintLyricsStatus(step2StatusEls, tone, icon, text);
     };
 
     const btnBackStep1 = document.getElementById('btn-back-step-1');
     if (btnBackStep1) {
         btnBackStep1.onclick = () => {
-            if (currentStep === 2) {
-                setStep(1);
-            } else if (currentStep === 3) {
-                setStep(2);
-            }
+            if (currentStep === 2) setStep(1);
+            else if (currentStep === 3) setStep(2);
         };
     }
 
@@ -170,9 +166,10 @@ function initAddSongModal() {
         if (advancedToggleIcon) advancedToggleIcon.innerText = '▼';
         if (btnToggleAdvanced) btnToggleAdvanced.classList.remove('advanced-toggle--open');
 
-        setTab('youtube');
+        addSongForm.setAttribute('data-upload-tab', 'youtube');
+        state.activeUploadTab = 'youtube';
         setStep(1);
-        addSongModal.setAttribute('data-open', 'true');
+        openModal(addSongModal);
     };
 
     const btnToggleAdvanced = document.getElementById('btn-toggle-advanced');
@@ -181,20 +178,14 @@ function initAddSongModal() {
 
     if (btnToggleAdvanced && advancedOptionsContainer) {
         btnToggleAdvanced.onclick = () => {
-            if (!advancedOptionsContainer.hasAttribute('data-open')) {
-                advancedOptionsContainer.setAttribute('data-open', 'true');
-                advancedToggleIcon.innerText = '▲';
-                btnToggleAdvanced.classList.add('advanced-toggle--open');
-            } else {
-                advancedOptionsContainer.removeAttribute('data-open');
-                advancedToggleIcon.innerText = '▼';
-                btnToggleAdvanced.classList.remove('advanced-toggle--open');
-            }
+            const willOpen = !advancedOptionsContainer.hasAttribute('data-open');
+            advancedOptionsContainer.toggleAttribute('data-open', willOpen);
+            advancedToggleIcon.innerText = willOpen ? '▲' : '▼';
+            btnToggleAdvanced.classList.toggle('advanced-toggle--open', willOpen);
         };
     }
-    btnCloseAddSong.onclick = () => {
-        addSongModal.removeAttribute('data-open');
-    };
+
+    btnCloseAddSong.onclick = () => closeModal(addSongModal);
 
     addSongForm.onsubmit = async (e) => {
         e.preventDefault();
@@ -285,33 +276,19 @@ function initAddSongModal() {
             btnSubmit.disabled = false;
 
             // Preenche Passo 3 e avança
-            const statusDiv = document.getElementById('lyrics-step3-status');
-            const icon = document.getElementById('lyrics-step3-icon');
-            const text = document.getElementById('lyrics-step3-text');
+            const step3StatusEls = {
+                box: document.getElementById('lyrics-step3-status'),
+                icon: document.getElementById('lyrics-step3-icon'),
+                text: document.getElementById('lyrics-step3-text'),
+            };
             const textarea = document.getElementById('lyrics-step3-textarea');
-
-            if (statusDiv && icon && text && textarea) {
+            if (step3StatusEls.box && textarea) {
+                const { tone, icon, text } = describeLyricsResult(fetchedLyrics, { step3: true });
+                paintLyricsStatus(step3StatusEls, tone, icon, text);
                 if (!fetchedLyrics || !fetchedLyrics.success) {
-                    statusDiv.style.background = 'rgba(251, 191, 36, 0.1)';
-                    statusDiv.style.borderColor = 'rgba(251, 191, 36, 0.3)';
-                    statusDiv.style.color = '#fcd34d';
-                    icon.textContent = '🤖';
-                    text.textContent = 'Nenhuma letra encontrada online — a IA vai transcrever diretamente do áudio.';
                     textarea.value = '';
-                } else if (fetchedLyrics.syncedLyrics) {
-                    statusDiv.style.background = 'rgba(34, 197, 94, 0.1)';
-                    statusDiv.style.borderColor = 'rgba(34, 197, 94, 0.3)';
-                    statusDiv.style.color = '#86efac';
-                    icon.textContent = '✅';
-                    text.textContent = `Letra sincronizada encontrada via ${fetchedLyrics.source === 'lrclib' ? 'LRCLIB' : 'API'}! O LRC será usado diretamente.`;
+                } else {
                     textarea.value = fetchedLyrics.plainLyrics || '';
-                } else if (fetchedLyrics.plainLyrics) {
-                    statusDiv.style.background = 'rgba(59, 130, 246, 0.1)';
-                    statusDiv.style.borderColor = 'rgba(59, 130, 246, 0.3)';
-                    statusDiv.style.color = '#93c5fd';
-                    icon.textContent = '📝';
-                    text.textContent = `Letra encontrada via ${fetchedLyrics.source === 'ovh' ? 'Lyrics.ovh' : 'LRCLIB'}! Será usada como guia para o alinhamento automático.`;
-                    textarea.value = fetchedLyrics.plainLyrics;
                 }
             }
 
@@ -340,10 +317,10 @@ function initAddSongModal() {
         const hasSyncedLrc = fetchedLyrics && fetchedLyrics.success && fetchedLyrics.syncedLyrics;
         let alignLyrics = false;
         if (!hasSyncedLrc) {
-            addSongModal.removeAttribute('data-open');
+            closeModal(addSongModal);
             const choice = await promptGenerationOptions();
             if (!choice) {
-                addSongModal.setAttribute('data-open', 'true');
+                openModal(addSongModal);
                 return;
             }
             alignLyrics = (choice === 'pro');
@@ -358,7 +335,6 @@ function initAddSongModal() {
         if (vocalUrlInput && vocalUrlInput.value.trim()) {
             formData.set('youtube_url', vocalUrlInput.value.trim());
         }
-
 
         // Inclui letras (synced LRC e/ou plain lyrics)
         if (fetchedLyrics && fetchedLyrics.success) {
@@ -385,13 +361,12 @@ function initAddSongModal() {
                 throw new Error(err.detail || "Erro desconhecido");
             }
 
-            const data = await response.json();
+            await response.json();
             stopLoadingOverlay(gen);
 
             showToast("Música adicionada à fila com sucesso! O processamento rodará em segundo plano.", "success");
-            
-            // Fecha modal
-            addSongModal.removeAttribute('data-open');
+
+            closeModal(addSongModal);
 
             // Muda para a aba de Fila para o usuário acompanhar!
             const tabQueue = document.getElementById('tab-btn-queue');
@@ -400,7 +375,7 @@ function initAddSongModal() {
         } catch (error) {
             stopLoadingOverlay(gen);
             showToast("Erro ao adicionar música: " + error.message, "error");
-            addSongModal.setAttribute('data-open', 'true');
+            openModal(addSongModal);
             setStep(3);
         }
     };
@@ -412,19 +387,10 @@ function initLrcEditorModal() {
     const lrcEditorForm = dom.lrcEditorForm;
     if (!btnCloseEditor) return;
 
-    // Inicializa a navegação por abas do editor
-    const btnTabMeta = document.getElementById('btn-tab-meta');
-    const btnTabLrc = document.getElementById('btn-tab-lrc');
-    const btnTabPaste = document.getElementById('btn-tab-paste-lyrics');
-    const sectionMeta = document.getElementById('editor-section-meta');
-    const sectionLrc = document.getElementById('editor-section-lrc');
-    const sectionPaste = document.getElementById('editor-section-paste-lyrics');
-
-    const switchTab = (tabName) => {
-        if (dom.lrcEditorModal) {
-            dom.lrcEditorModal.setAttribute('data-editor-tab', tabName);
-        }
-        if (tabName === 'paste') {
+    // Inicializa a navegação por abas do editor (meta / lrc / paste)
+    initTabs(dom.lrcEditorModal, {
+        onSelect: (tab) => {
+            if (tab !== 'paste') return;
             // Popula com o plain_lyrics atual do meta.json se houver
             try {
                 const metaArea = document.getElementById('editor-meta-textarea');
@@ -438,18 +404,10 @@ function initLrcEditorModal() {
             } catch (e) {
                 // Ignore se o JSON for inválido no momento
             }
-        }
-    };
+        },
+    });
 
-    if (btnTabMeta && btnTabLrc && btnTabPaste) {
-        btnTabMeta.onclick = () => switchTab('meta');
-        btnTabLrc.onclick = () => switchTab('lrc');
-        btnTabPaste.onclick = () => switchTab('paste');
-    }
-
-    btnCloseEditor.onclick = () => {
-        dom.lrcEditorModal.removeAttribute('data-open');
-    };
+    btnCloseEditor.onclick = () => closeModal(dom.lrcEditorModal);
 
     const btnSaveMeta = document.getElementById('btn-save-meta');
     if (btnSaveMeta) {
@@ -568,7 +526,7 @@ function initLrcEditorModal() {
 
     lrcEditorForm.onsubmit = async (e) => {
         e.preventDefault();
-        
+
         // Garante que o meta.json e o lyrics_lrc sejam enviados no FormData
         const formData = new FormData(lrcEditorForm);
         const metaArea = document.getElementById('editor-meta-textarea');
@@ -576,7 +534,7 @@ function initLrcEditorModal() {
             formData.set('meta_json', metaArea.value);
         }
 
-        dom.lrcEditorModal.removeAttribute('data-open');
+        closeModal(dom.lrcEditorModal);
         const gen = startLoadingOverlay("Alinhando Letras...", "Mapeando sílabas das palavras e calculando fonemas... 📝⚡");
 
         try {
@@ -596,7 +554,7 @@ function initLrcEditorModal() {
         } catch (error) {
             stopLoadingOverlay(gen);
             showToast("Erro ao salvar dados da música: " + error.message, "error");
-            dom.lrcEditorModal.setAttribute('data-open', 'true');
+            openModal(dom.lrcEditorModal);
         }
     };
 }

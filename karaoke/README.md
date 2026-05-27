@@ -119,6 +119,8 @@ karaoke/
 │   │   ├── config.js               # Constantes de configuração do cliente
 │   │   ├── dom.js                  # Helpers de manipulação do DOM
 │   │   ├── toast.js                # Notificações toast de UI
+│   │   ├── modal.js                # Gerenciador único de modais (abrir/fechar, ESC, clique fora, botão voltar)
+│   │   ├── tabs.js                 # Helper declarativo de abas (reaproveitado em todos os seletores)
 │   │   ├── modals.js               # Lógica de todos os modais da aplicação
 │   │   ├── selection-view.js       # Tela de seleção de músicas
 │   │   ├── game-view.js            # Renderização da letra e animações de gameplay

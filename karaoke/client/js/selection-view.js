@@ -1,6 +1,8 @@
 import { state, setAppState } from './state.js';
 import { dom, startLoadingOverlay, stopLoadingOverlay } from './dom.js';
 import { showToast } from './toast.js';
+import { openModal, closeModal } from './modal.js';
+import { initTabs } from './tabs.js';
 
 export async function fetchSongs() {
     try {
@@ -316,7 +318,7 @@ export async function loadAndOpenLrcEditor(slug) {
                 }
             }
 
-            dom.lrcEditorModal.setAttribute('data-open', 'true');
+            openModal(dom.lrcEditorModal);
         } else {
             showToast("Erro: Os arquivos da música não foram localizados no servidor.", "error");
         }
@@ -347,12 +349,12 @@ export function initSearch() {
 }
 
 export async function triggerReinstall(songId, songTitle) {
-    if (dom.lrcEditorModal) dom.lrcEditorModal.removeAttribute('data-open');
+    if (dom.lrcEditorModal) closeModal(dom.lrcEditorModal);
 
     const choice = await promptGenerationOptions();
     if (!choice) {
         if (dom.lrcEditorModal && document.getElementById('editor-slug')?.value === songId) {
-            dom.lrcEditorModal.setAttribute('data-open', 'true');
+            openModal(dom.lrcEditorModal);
         }
         return;
     }
@@ -380,7 +382,7 @@ export async function triggerReinstall(songId, songTitle) {
         stopLoadingOverlay(gen);
         showToast("Erro ao reinstalar: " + error.message, "error");
         if (dom.lrcEditorModal && document.getElementById('editor-slug')?.value === songId) {
-            dom.lrcEditorModal.setAttribute('data-open', 'true');
+            openModal(dom.lrcEditorModal);
         }
     }
 }
@@ -454,33 +456,11 @@ export function renderReinstallList(songsList) {
 }
 
 export function initSelectionTabs() {
-    const tabSongs = document.getElementById('tab-btn-songs');
-    const tabReinstall = document.getElementById('tab-btn-reinstall');
-    const tabQueue = document.getElementById('tab-btn-queue');
-    const songsContent = document.getElementById('songs-tab-content');
-    const reinstallContent = document.getElementById('reinstall-tab-content');
-
-    if (!tabSongs || !tabReinstall || !songsContent || !reinstallContent) return;
-
-    const selectionArea = document.getElementById('selection-area');
-    if (selectionArea && !selectionArea.hasAttribute('data-active-tab')) {
-        selectionArea.setAttribute('data-active-tab', 'songs');
-    }
-
-    tabSongs.onclick = () => {
-        if (selectionArea) selectionArea.setAttribute('data-active-tab', 'songs');
-    };
-
-    tabReinstall.onclick = () => {
-        if (selectionArea) selectionArea.setAttribute('data-active-tab', 'reinstall');
-        renderReinstallList(state.allSongs);
-    };
-
-    if (tabQueue) {
-        tabQueue.onclick = () => {
-            if (selectionArea) selectionArea.setAttribute('data-active-tab', 'queue');
-        };
-    }
+    initTabs('selection-area', {
+        onSelect: (tab) => {
+            if (tab === 'reinstall') renderReinstallList(state.allSongs);
+        },
+    });
 }
 
 export function promptGenerationOptions() {
@@ -495,18 +475,26 @@ export function promptGenerationOptions() {
             return;
         }
 
-        const cleanupAndResolve = (choice) => {
+        let settled = false;
+        const settle = (choice) => {
+            if (settled) return;
+            settled = true;
             btnPro.onclick = null;
             btnFlash.onclick = null;
             btnClose.onclick = null;
-            modal.removeAttribute('data-open');
             resolve(choice);
+        };
+
+        // Botões resolvem com a escolha; fechar (X, ESC, clique fora, voltar) resolve null.
+        const cleanupAndResolve = (choice) => {
+            settle(choice);
+            closeModal(modal);
         };
 
         btnPro.onclick = () => cleanupAndResolve('pro');
         btnFlash.onclick = () => cleanupAndResolve('flash');
         btnClose.onclick = () => cleanupAndResolve(null);
 
-        modal.setAttribute('data-open', 'true');
+        openModal(modal, { onClose: () => settle(null) });
     });
 }

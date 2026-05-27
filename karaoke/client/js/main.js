@@ -11,6 +11,7 @@ import { fetchSongs, initSearch } from './selection-view.js';
 import { startKaraoke, resetGameState, initGameControls } from './game-view.js';
 import { initModals } from './modals.js';
 import { initQueueView } from './queue-view.js';
+import { openModal, closeModal } from './modal.js';
 
 function bootstrap() {
     const appEl = document.getElementById('app');
@@ -99,12 +100,15 @@ function bootstrap() {
             const onboardingModal = document.getElementById('onboarding-modal');
             const btnCloseOnboarding = document.getElementById('btn-close-onboarding');
             if (onboardingModal && btnCloseOnboarding) {
-                onboardingModal.setAttribute('data-open', 'true');
-                btnCloseOnboarding.onclick = async () => {
-                    onboardingModal.removeAttribute('data-open');
-                    localStorage.setItem('karaoke_onboarding_seen', 'true');
-                    await doStart();
-                };
+                // Fechar de qualquer forma (botão, ESC, clique fora, voltar) marca como
+                // visto e inicia o karaokê — onClose centraliza esse comportamento.
+                openModal(onboardingModal, {
+                    onClose: () => {
+                        localStorage.setItem('karaoke_onboarding_seen', 'true');
+                        doStart();
+                    },
+                });
+                btnCloseOnboarding.onclick = () => closeModal(onboardingModal);
             } else {
                 await doStart();
             }

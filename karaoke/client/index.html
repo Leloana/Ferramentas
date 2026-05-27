@@ -115,7 +115,7 @@
 
     <div class="container">
         <div class="main-card">
-            <div id="selection-area">
+            <div id="selection-area" data-tabs="active-tab">
                 <div
                     style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.75rem;">
                     <h3
@@ -151,15 +151,15 @@
                 <!-- Seletor de Abas da Área de Seleção -->
                 <div class="tabs-container"
                     style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; background: rgba(0, 0, 0, 0.25); padding: 0.3rem; border-radius: 12px; border: 1px solid var(--card-border);">
-                    <button type="button" id="tab-btn-songs" class="tab-btn tab-btn--active"
+                    <button type="button" id="tab-btn-songs" data-tab="songs" class="tab-btn tab-btn--active"
                         style="flex: 1; padding: 0.65rem; border: none; border-radius: 8px; background: var(--accent-gradient); color: #000; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease;">
                         🎤 Músicas
                     </button>
-                    <button type="button" id="tab-btn-reinstall" class="tab-btn tab-btn--inactive"
+                    <button type="button" id="tab-btn-reinstall" data-tab="reinstall" class="tab-btn tab-btn--inactive"
                         style="flex: 1; padding: 0.65rem; border: none; border-radius: 8px; background: transparent; color: var(--dim); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease;">
                         🔄 Reinstalar Metas
                     </button>
-                    <button type="button" id="tab-btn-queue" class="tab-btn tab-btn--inactive"
+                    <button type="button" id="tab-btn-queue" data-tab="queue" class="tab-btn tab-btn--inactive"
                         style="flex: 1; padding: 0.65rem; border: none; border-radius: 8px; background: transparent; color: var(--dim); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease;">
                         📋 Fila <span id="queue-tab-badge" style="display: none; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 800; padding: 0.1rem 0.35rem; border-radius: 10px; margin-left: 0.25rem;"></span>
                     </button>
@@ -518,17 +518,17 @@
     <div id="add-song-modal" class="modal-overlay">
         <div class="modal-content admin-modal">
             <h2>Adicionar Nova Música 🎵</h2>
-            <form id="add-song-form" enctype="multipart/form-data" data-step="1" data-upload-tab="youtube">
+            <form id="add-song-form" enctype="multipart/form-data" data-step="1" data-upload-tab="youtube" data-tabs="upload-tab">
                 <!-- Passo 1: Informações de Origem (Links, Letras, etc) -->
                 <div id="upload-step-1">
                     <!-- Seletor de Abas Premium -->
                     <div class="tabs-container"
                         style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem; background: rgba(0, 0, 0, 0.25); padding: 0.3rem; border-radius: 12px; border: 1px solid var(--card-border);">
-                        <button type="button" id="tab-btn-youtube" class="tab-btn tab-btn--active"
+                        <button type="button" id="tab-btn-youtube" data-tab="youtube" class="tab-btn tab-btn--active"
                             style="flex: 1; padding: 0.65rem; border: none; border-radius: 8px; background: var(--accent-gradient); color: #000; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease;">
                             🎥 Importar do YouTube
                         </button>
-                        <button type="button" id="tab-btn-local" class="tab-btn tab-btn--inactive"
+                        <button type="button" id="tab-btn-local" data-tab="local" class="tab-btn tab-btn--inactive"
                             style="flex: 1; padding: 0.65rem; border: none; border-radius: 8px; background: transparent; color: var(--dim); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease;">
                             📁 Enviar Arquivos
                         </button>
@@ -793,7 +793,7 @@
     </div>
 
     <!-- Modal Editor de Informações e Letras -->
-    <div id="lrc-editor-modal" class="modal-overlay" data-editor-tab="meta">
+    <div id="lrc-editor-modal" class="modal-overlay" data-editor-tab="meta" data-tabs="editor-tab">
         <div class="modal-content admin-modal" style="max-width: 900px; width: 95%; min-height: 750px; display: flex; flex-direction: column;">
             <h2
                 style="display: flex; align-items: center; gap: 0.5rem; font-weight: 800; font-size: 1.5rem; margin-top: 0; margin-bottom: 0.5rem;">
@@ -813,15 +813,15 @@
             <!-- Toggles de Tab/Seção -->
             <div
                 style="display: flex; gap: 0.5rem; background: rgba(0, 0, 0, 0.3); padding: 0.3rem; border-radius: 10px; margin-bottom: 1.2rem; border: 1px solid var(--card-border);">
-                <button type="button" id="btn-tab-meta"
+                <button type="button" id="btn-tab-meta" data-tab="meta"
                     style="flex: 1; padding: 0.6rem; border: none; border-radius: 8px; background: var(--accent); color: #000; font-weight: 800; cursor: pointer; transition: all 0.2s ease; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem;">
                     ⚙️ Ajustes (meta.json)
                 </button>
-                <button type="button" id="btn-tab-lrc"
+                <button type="button" id="btn-tab-lrc" data-tab="lrc"
                     style="flex: 1; padding: 0.6rem; border: none; border-radius: 8px; background: transparent; color: var(--dim); font-weight: 800; cursor: pointer; transition: all 0.2s ease; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem;">
                     📄 Letras (.lrc)
                 </button>
-                <button type="button" id="btn-tab-paste-lyrics"
+                <button type="button" id="btn-tab-paste-lyrics" data-tab="paste"
                     style="flex: 1; padding: 0.6rem; border: none; border-radius: 8px; background: transparent; color: var(--dim); font-weight: 800; cursor: pointer; transition: all 0.2s ease; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem;">
                     📝 Letra
                 </button>
