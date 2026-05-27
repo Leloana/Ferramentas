@@ -89,10 +89,12 @@ O backend suporta as seguintes variáveis de ambiente:
 No Windows (PowerShell), execute o comando único abaixo para rodar o projeto. Ele irá encerrar qualquer processo ativo na porta 8000, ativar a `venv` e iniciar o servidor em HTTPS no IP `192.168.15.6:8000`:
 
 ```powershell
-Get-NetTCPConnection -LocalPort 8000 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }; .\venv\Scripts\Activate.ps1; uvicorn server.main:app --host 192.168.15.6 --port 8000 --reload --ssl-keyfile "C:\Users\mf827\Documents\Ferramentas\karaoke\server\key.pem" --ssl-certfile "C:\Users\mf827\Documents\Ferramentas\karaoke\server\cert.pem"
+Get-NetTCPConnection -LocalPort 8000 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }; .\venv\Scripts\Activate.ps1; uvicorn server.main:app --host 192.168.15.6 --port 8000 --reload --ssl-keyfile "server/key.pem" --ssl-certfile "server/cert.pem"
 ```
 
-Acesse `https://192.168.15.6:8000` nos dispositivos da rede para conectar.
+> Troque `192.168.15.6` pelo IP da sua máquina na rede Wi-Fi (use `ipconfig` no Windows ou `hostname -I` no Linux).
+
+Acesse `https://192.168.15.6:8000` nos dispositivos da rede para conectar. Para o guia operacional completo (Linux/macOS, modo HTTP, túnel e troubleshooting), veja [.claude/karaoke/Executar.md](.claude/karaoke/Executar.md).
 
 ---
 

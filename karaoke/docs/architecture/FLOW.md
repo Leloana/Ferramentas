@@ -106,7 +106,7 @@ This flow allows the user to manually edit a song's lyrics or metadata in the bu
 This flow drives the real-time multiplayer singing and scoring game loop.
 
 *For a detailed sequence diagram and analysis of player queueing, audio streaming, seeking, and game over persistence, please refer to the dedicated multiplayer flow document:*
-👉 **[MULTIPLAYER_FLOW.md](file:///c:/Users/mf827/Documents/Ferramentas/karaoke/docs/architecture/MULTIPLAYER_FLOW.md)**
+👉 **[MULTIPLAYER_FLOW.md](MULTIPLAYER_FLOW.md)**
 
 ### Key States & Transitions
 ```
