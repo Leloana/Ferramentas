@@ -7,16 +7,16 @@ Um ecossistema de alto desempenho para Karaokê projetado para rodar localmente 
 ## 🏛️ Visão Geral da Arquitetura
 
 O sistema é dividido em camadas perfeitamente desacopladas:
-- **Frontend (Console/Mobile):** Desenvolvido em HTML5/CSS3 e Vanilla JavaScript (ES Modules, Web Audio API, e AudioWorklet Processor).
-- **Backend (FastAPI):** Gerencia conexões WebSocket, roteamento de áudio PCM, transcrição Whisper, alinhamento forçado MMS_FA e pontuação.
+- **Frontend (Console/Mobile):** Desenvolvido em HTML5/CSS3 e Vanilla JavaScript (ES Modules, Web Audio API e AudioWorklet Processor). Sem build step — arquivos servidos diretamente pelo FastAPI.
+- **Backend (FastAPI):** Gerencia conexões WebSocket, roteamento de áudio PCM, transcrição Whisper, alinhamento forçado MMS_FA e pontuação. Inclui um sistema de fila de processamento de GPU para downloads e separação de stems.
 - **Armazenamento:** Músicas são salvas no disco local sob `server/songs/`, e perfis de cantores ficam salvos sob `players/`.
 
 Para especificações detalhadas, diagramas de componentes e contratos, consulte os guias em:
-- [docs/architecture/ARCHITECTURE.md](file:///c:/Users/mf827/Documents/Ferramentas/karaoke/docs/architecture/ARCHITECTURE.md) (Arquitetura Completa e Contratos do Sistema)
-- [docs/architecture/FLOW.md](file:///c:/Users/mf827/Documents/Ferramentas/karaoke/docs/architecture/FLOW.md) (Fluxos de Upload, Edição e Sincronização)
-- [docs/architecture/MULTIPLAYER_FLOW.md](file:///c:/Users/mf827/Documents/Ferramentas/karaoke/docs/architecture/MULTIPLAYER_FLOW.md) (Handshake Multi-player e WebSocket Game Loop)
-- [docs/guides/PROJECT_GUIDE.md](file:///c:/Users/mf827/Documents/Ferramentas/karaoke/docs/guides/PROJECT_GUIDE.md) (Guia do Projeto & Fonte da Verdade de Engenharia)
-- [docs/guides/LRC_ALIGNMENT_TUNING.md](file:///c:/Users/mf827/Documents/Ferramentas/karaoke/docs/guides/LRC_ALIGNMENT_TUNING.md) (Playbook de Solução de Timestamps e Ajuste LRC)
+- [docs/architecture/ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md) (Arquitetura Completa e Contratos do Sistema)
+- [docs/architecture/FLOW.md](docs/architecture/FLOW.md) (Fluxos de Upload, Edição e Sincronização)
+- [docs/architecture/MULTIPLAYER_FLOW.md](docs/architecture/MULTIPLAYER_FLOW.md) (Handshake Multi-player e WebSocket Game Loop)
+- [docs/guides/PROJECT_GUIDE.md](docs/guides/PROJECT_GUIDE.md) (Guia do Projeto & Fonte da Verdade de Engenharia)
+- [docs/guides/LRC_ALIGNMENT_TUNING.md](docs/guides/LRC_ALIGNMENT_TUNING.md) (Playbook de Solução de Timestamps e Ajuste LRC)
 
 ---
 
@@ -67,7 +67,7 @@ python3 -m venv venv
   ```bash
   # 1. Instala dependências do requirements.txt
   pip install -r requirements.txt
-  
+
   # 2. Força instalação do PyTorch e Torchaudio compilados com CUDA 12.4
   pip install --force-reinstall torch torchaudio --index-url https://download.pytorch.org/whl/cu124
   ```
@@ -109,31 +109,76 @@ Execute a suíte completa de testes unitários e de integração com o comando:
 
 ```
 karaoke/
-├── client/                     # Código estático do frontend
-│   ├── index.html              # Interface principal do Karaokê
-│   ├── js/                     # Scripts modulares Vanilla JS
-│   │   ├── main.js             # Ponto de entrada do cliente
-│   │   ├── ws-display.js       # WebSocket da TV
-│   │   ├── ws-mic.js           # WebSocket do Celular
+├── client/                         # Código estático do frontend (sem build step)
+│   ├── index.html                  # Interface principal (modais e templates HTML)
+│   ├── js/                         # Módulos ES Modules Vanilla JS
+│   │   ├── main.js                 # Bootstrap: identifica display vs microfone
+│   │   ├── state.js                # Objeto central de estado compartilhado
+│   │   ├── config.js               # Constantes de configuração do cliente
+│   │   ├── dom.js                  # Helpers de manipulação do DOM
+│   │   ├── toast.js                # Notificações toast de UI
+│   │   ├── modals.js               # Lógica de todos os modais da aplicação
+│   │   ├── selection-view.js       # Tela de seleção de músicas
+│   │   ├── game-view.js            # Renderização da letra e animações de gameplay
+│   │   ├── queue-view.js           # Interface da fila de processamento de músicas
+│   │   ├── mobile-mic-view.js      # Interface do microfone no celular
+│   │   ├── audio-lifecycle-manager.js # Gerenciamento do ciclo de vida do áudio
+│   │   ├── mic-stream.js           # Captura e streaming de áudio do microfone
+│   │   ├── mic-status.js           # Indicador de status do microfone
+│   │   ├── sync.js                 # Sincronização de tempo display ↔ microfone
+│   │   ├── jungle.js               # Pitch shifter (Web Audio API)
+│   │   ├── ws-display.js           # WebSocket do Display (TV)
+│   │   ├── ws-mic.js               # WebSocket do Microfone (Celular)
 │   │   └── worklets/
-│   │       └── audio-processor.js # Coleta de áudio do AudioWorklet
+│   │       └── audio-processor.js  # AudioWorklet: coleta PCM Float32 bruto
 │   └── styles/
-│       └── main.css            # Estilos visuais e Neon Glow
-├── docs/                       # Documentação técnica e operacional
-│   ├── architecture/           # Especificações de arquitetura e fluxos de rede
-│   ├── guides/                 # Manuais e playbooks (Guia do Projeto, LRC Tuning)
-│   └── archive/                # Documentos arquivados, históricos e rascunhos antigos
-├── players/                    # Perfis e histórico persistidos de cantores
-├── server/                     # Código do Backend FastAPI
-│   ├── routes/                 # Rotas REST HTTP (songs, lyrics, upload)
-│   ├── utils/                  # Utilitários (MMS_FA alignment, youtube, audio)
-│   ├── ws/
-│   │   └── room.py             # WebSocket das salas (handshake e game loop)
-│   ├── main.py                 # Ponto de entrada do Servidor
-│   └── state.py                # Singletons compartilhados
-├── tests/                      # Suíte de Testes
-└── requirements.txt            # Dependências Python
+│       └── main.css                # Estilos visuais (Neon Glow, BEM)
+├── docs/                           # Documentação técnica e operacional
+│   ├── architecture/               # Especificações de arquitetura e fluxos de rede
+│   ├── guides/                     # Manuais e playbooks (Guia do Projeto, LRC Tuning)
+│   └── archive/                    # Documentos arquivados, históricos e rascunhos antigos
+├── players/                        # Perfis e histórico persistidos de cantores
+├── server/                         # Código do Backend FastAPI
+│   ├── main.py                     # Ponto de entrada do Servidor (Uvicorn)
+│   ├── state.py                    # Singletons compartilhados (evita imports circulares)
+│   ├── rooms.py                    # Modelo da sala de canto (KaraokeRoom, buffers por jogador)
+│   ├── song_manager.py             # Gerenciador de músicas no disco
+│   ├── queue_manager.py            # Fila de downloads/processamento GPU (async)
+│   ├── score_engine.py             # Motor de pontuação (fuzzy, Double Metaphone, timing)
+│   ├── stt_engine.py               # Faster-Whisper (fallback CUDA → CPU, VAD)
+│   ├── routes/                     # Rotas REST HTTP
+│   │   ├── songs.py                # Listagem, deleção e reinstalação de músicas
+│   │   ├── lyrics.py               # Leitura e salvamento de letras LRC
+│   │   ├── upload.py               # Upload de arquivo ou URL YouTube
+│   │   └── queue.py                # Gerenciamento da fila de processamento
+│   ├── utils/                      # Helpers internos
+│   │   ├── audio.py                # Conversão de PCM Float32 para 16kHz Mono
+│   │   ├── lrc_align.py            # Alinhamento de letras via Whisper
+│   │   ├── lrc_pro.py              # Alinhamento forçado via MMS_FA (PyTorch)
+│   │   └── youtube.py              # Download e extração de metadados do YouTube
+│   └── ws/
+│       └── room.py                 # WebSocket bidirecional (handshake e game loop)
+├── tools/                          # Scripts CLI e ferramentas offline
+│   └── prepare_song.py             # Fatiador de áudio e alinhador word-level (gera segments.json)
+├── tests/                          # Suíte de Testes (unittest)
+└── requirements.txt                # Dependências Python
 ```
+
+---
+
+## 🎮 Funcionalidades Principais
+
+| Funcionalidade | Descrição |
+| :--- | :--- |
+| **Multi-dispositivo** | TV como display, celular como microfone sem fio via QR Code |
+| **Transcrição em Tempo Real** | Faster-Whisper com VAD, fallback automático CUDA → CPU |
+| **Pontuação IA** | Fuzzy matching + Double Metaphone + penalidades de timing por palavra |
+| **Alinhamento Word-Level** | MMS_FA (PyTorch) para sincronização precisa sílaba a sílaba |
+| **Fila de Processamento GPU** | Downloads e separação Demucs enfileirados, sem conflito de VRAM |
+| **Busca Automática de Letras** | Integração com LRCLIB e Lyrics.ovh para buscar LRC sincronizado |
+| **Gerenciamento de Músicas** | Upload por arquivo ou URL YouTube, reinstalação e edição de letras |
+| **Perfis de Cantores** | Histórico persistido de notas por música e sessão |
+| **HTTPS Automático** | Suporte a SSL local ou Cloudflare Tunnel para acesso seguro no mobile |
 
 ---
 
@@ -148,3 +193,9 @@ karaoke/
 - **`ModuleNotFoundError: No module named 'rapidfuzz'`:**
   - *Causa:* Execução de testes usando o Python global em vez do executável da venv.
   - *Solução:* Use sempre `.\venv\Scripts\python.exe` para rodar scripts e testes.
+- **Travamento da GPU / status preso em `busy`:**
+  - *Causa:* Processo de reinstalação de música rodando em paralelo com o servidor pode travar o lock da GPU.
+  - *Solução:* Use o botão "Destravar GPU" na interface de fila, ou reinicie o servidor.
+- **Hallucinações do Whisper em silêncio:**
+  - *Causa:* Trechos silenciosos longos fazem o Whisper gerar texto repetitivo.
+  - *Solução:* O gate de áudio RMS em `stt_engine.py` rejeita segmentos abaixo de `0.0018` de energia média.
