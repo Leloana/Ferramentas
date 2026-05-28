@@ -200,6 +200,8 @@ def _stream_generation(model, prompt):
     token_count = 0
     start_time = time.time()
     detected_tool = None
+    final_eval = 0
+    final_prompt = 0
 
     display = Text()
     display.append_text(Text.from_markup("[bold blue]Generating WINCLI.md with AI...[/bold blue]\n"))
@@ -225,6 +227,15 @@ def _stream_generation(model, prompt):
                 if token:
                     content_parts.append(token)
                     token_count += 1
+
+                if isinstance(chunk, dict):
+                    if chunk.get("done"):
+                        final_eval = chunk.get("done") and chunk.get("eval_count", 0) or 0
+                        final_prompt = chunk.get("done") and chunk.get("prompt_eval_count", 0) or 0
+                else:
+                    if getattr(chunk, "done", False):
+                        final_eval = getattr(chunk, "eval_count", 0) or 0
+                        final_prompt = getattr(chunk, "prompt_eval_count", 0) or 0
 
                 accumulated = "".join(content_parts)
                 elapsed = time.time() - start_time
@@ -261,11 +272,13 @@ def _stream_generation(model, prompt):
             return None, 0, 0, 0
 
     content = "".join(content_parts)
+    from agent import THINK_RE
+    content = THINK_RE.sub("", content)
     elapsed = time.time() - start_time
-    return content, token_count, elapsed, token_count / elapsed if elapsed > 0 else 0
+    return content, final_prompt, final_eval or token_count, elapsed
 
 
-def generate_wincli(working_dir, model):
+def generate_wincli(working_dir, model, session_log=None):
     """Main entry point: scan project, generate WINCLI.md via Ollama, write result."""
 
     console.print(Panel(
@@ -292,10 +305,11 @@ def generate_wincli(working_dir, model):
 
     # 3. Generate with streaming feedback
     console.print("")  # spacer
-    content, token_count, elapsed, tps = _stream_generation(model, prompt)
+    res = _stream_generation(model, prompt)
 
-    if content is None:
+    if res is None or res[0] is None:
         return False
+    content, prompt_tokens, gen_tokens, elapsed = res
 
     if not content.strip():
         console.print(Panel(
@@ -317,12 +331,23 @@ def generate_wincli(working_dir, model):
         ))
         return False
 
+    tps = gen_tokens / elapsed if elapsed > 0 else 0
+    if session_log:
+        session_log.log_step(
+            kind="assistant",
+            content="[Generated WINCLI.md]",
+            prompt_tokens=prompt_tokens,
+            gen_tokens=gen_tokens,
+            elapsed_s=elapsed
+        )
+
     # 5. Show final summary
     console.print(Panel(
         f"[green]WINCLI.md generated successfully![/green]\n"
         f"  Path: [cyan]{wincli_path}[/cyan]\n"
         f"  Size: [bold]{len(content):,}[/bold] chars | "
-        f"Generated: [bold]{token_count:,}[/bold] tokens @ [bold]{tps:.1f}[/bold] t/s | "
+        f"Generated: [bold]{gen_tokens:,}[/bold] tokens @ [bold]{tps:.1f}[/bold] t/s | "
+        f"Prompt: [bold]{prompt_tokens:,}[/bold] tokens | "
         f"Elapsed: [bold]{elapsed:.1f}s[/bold]\n\n"
         f"[dim]The agent will now load this file as base project context on future sessions.[/dim]",
         title="Init Complete",

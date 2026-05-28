@@ -374,6 +374,7 @@ def run(args, ctx):
     model = ctx["model"]
     working_dir = Path(ctx["working_dir"])
     wincli = (ctx.get("wincli_content") or "")[:3000]
+    session_log = ctx.get("session_log")
 
     # ----- 1. PLANNER -----
     console.print(Panel(
@@ -391,6 +392,15 @@ def run(args, ctx):
     if plan_result["status"] != "ok" or not plan_result["content"]:
         return {"error": f"planner failed: {plan_result['status']}"}
 
+    if session_log:
+        session_log.log_step(
+            kind="assistant",
+            content=f"[plan - planner subagent]: {plan_result.get('content', '')}",
+            prompt_tokens=plan_result.get("tokens", {}).get("prompt", 0),
+            gen_tokens=plan_result.get("tokens", {}).get("gen", 0),
+            elapsed_s=plan_result.get("elapsed_s", 0.0)
+        )
+
     raw_plan = plan_result["content"]
 
     # ----- 2. REVIEWER -----
@@ -400,6 +410,14 @@ def run(args, ctx):
         num_ctx=8192, label="reviewer", max_tool_calls=0,
     )
     review_result = reviewer.run(f"Plan to review:\n\n{raw_plan}")
+    if session_log:
+        session_log.log_step(
+            kind="assistant",
+            content=f"[plan - reviewer subagent]: {review_result.get('content', '')}",
+            prompt_tokens=review_result.get("tokens", {}).get("prompt", 0),
+            gen_tokens=review_result.get("tokens", {}).get("gen", 0),
+            elapsed_s=review_result.get("elapsed_s", 0.0)
+        )
     revised_plan = review_result["content"] if review_result["status"] == "ok" \
         and review_result["content"] else raw_plan
 
@@ -458,6 +476,14 @@ def run(args, ctx):
         )
         user_msg = _build_executor_user_msg(task, final_plan, goal, done_so_far)
         result = executor.run(user_msg)
+        if session_log:
+            session_log.log_step(
+                kind="assistant",
+                content=f"[plan - executor task {task.id} subagent]: {result.get('content', '')}",
+                prompt_tokens=result.get("tokens", {}).get("prompt", 0),
+                gen_tokens=result.get("tokens", {}).get("gen", 0),
+                elapsed_s=result.get("elapsed_s", 0.0)
+            )
 
         for fp in result["files_touched"]:
             all_files_touched.add(fp)
@@ -495,6 +521,14 @@ def run(args, ctx):
                  f"Files touched by executors:\n{files_msg}\n\n"
                  "Verify now. End with the JSON verdict block.")
     verif_result = verifier.run(verif_msg)
+    if session_log:
+        session_log.log_step(
+            kind="assistant",
+            content=f"[plan - verifier subagent]: {verif_result.get('content', '')}",
+            prompt_tokens=verif_result.get("tokens", {}).get("prompt", 0),
+            gen_tokens=verif_result.get("tokens", {}).get("gen", 0),
+            elapsed_s=verif_result.get("elapsed_s", 0.0)
+        )
 
     # ----- 6. FINAL REPORT -----
     table = Table(title="plan execution summary", border_style="cyan")

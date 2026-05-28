@@ -296,7 +296,7 @@ def main():
             if cmd == "init":
                 from init_skill import generate_wincli
                 try:
-                    if generate_wincli(working_dir, model):
+                    if generate_wincli(working_dir, model, session_log=session_log):
                         wincli_content, wincli_loaded = load_wincli_context(working_dir)
                         # rebuild system prompt
                         conversation_history[0] = {

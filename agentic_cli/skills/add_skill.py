@@ -57,13 +57,24 @@ def run(args, ctx):
         return {"error": "usage: /skill add_skill <describe the new skill>"}
 
     try:
+        start = time.time()
         resp = ollama.chat(
             model=ctx["model"],
             messages=[{"role": "user", "content": TEMPLATE_PROMPT.format(description=description)}],
             stream=False,
         )
+        if isinstance(resp, dict):
+            prompt_tokens = resp.get("prompt_eval_count", 0) or 0
+            gen_tokens = resp.get("eval_count", 0) or 0
+        else:
+            prompt_tokens = getattr(resp, "prompt_eval_count", 0) or 0
+            gen_tokens = getattr(resp, "eval_count", 0) or 0
+
+        elapsed = time.time() - start
         code = (resp.get("message", {}).get("content")
                 if isinstance(resp, dict) else resp.message.content) or ""
+        from agent import THINK_RE
+        code = THINK_RE.sub("", code)
     except Exception as e:
         return {"error": f"generation failed: {e}"}
 
@@ -85,6 +96,16 @@ def run(args, ctx):
     # Invalidate index so the new skill is discovered
     import skills as skills_pkg
     skills_pkg.invalidate()
+
+    session_log = ctx.get("session_log")
+    if session_log:
+        session_log.log_step(
+            kind="assistant",
+            content=f"[add_skill]: {name}",
+            prompt_tokens=prompt_tokens,
+            gen_tokens=gen_tokens,
+            elapsed_s=elapsed
+        )
 
     console.print(Panel(
         f"[green]created[/green] skills/{target.name}\n"

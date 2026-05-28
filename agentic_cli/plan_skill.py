@@ -326,6 +326,8 @@ def _stream_generation(model, prompt):
             return None, 0, 0, 0
 
     content = "".join(content_parts)
+    from agent import THINK_RE
+    content = THINK_RE.sub("", content)
     elapsed = time.time() - start_time
     return content, token_count, elapsed, token_count / elapsed if elapsed > 0 else 0
 

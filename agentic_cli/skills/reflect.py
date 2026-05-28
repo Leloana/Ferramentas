@@ -49,9 +49,28 @@ def run(args, ctx):
             ],
             stream=False,
         )
+        if isinstance(resp, dict):
+            prompt_tokens = resp.get("prompt_eval_count", 0) or 0
+            gen_tokens = resp.get("eval_count", 0) or 0
+        else:
+            prompt_tokens = getattr(resp, "prompt_eval_count", 0) or 0
+            gen_tokens = getattr(resp, "eval_count", 0) or 0
+
         elapsed = time.time() - start
         content = (resp.get("message", {}).get("content")
                    if isinstance(resp, dict) else resp.message.content) or ""
+        from agent import THINK_RE
+        content = THINK_RE.sub("", content)
+
+        session_log = ctx.get("session_log")
+        if session_log:
+            session_log.log_step(
+                kind="assistant",
+                content=f"[reflect]: {content.strip()}",
+                prompt_tokens=prompt_tokens,
+                gen_tokens=gen_tokens,
+                elapsed_s=elapsed
+            )
     except Exception as e:
         return {"error": f"reflect failed: {e}"}
 
