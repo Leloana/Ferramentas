@@ -202,11 +202,11 @@ def _stream_generation(model, prompt):
     detected_tool = None
 
     display = Text()
-    display.append("[bold blue]Generating WINCLI.md with AI...[/bold blue]\n")
-    display.append(f"  Model: [cyan]{model}[/cyan]\n")
-    display.append(f"  Prompt size: [dim]{len(prompt) // 1024} KB[/dim]\n")
+    display.append_text(Text.from_markup("[bold blue]Generating WINCLI.md with AI...[/bold blue]\n"))
+    display.append_text(Text.from_markup(f"  Model: [cyan]{escape(model)}[/cyan]\n"))
+    display.append_text(Text.from_markup(f"  Prompt size: [dim]{len(prompt) // 1024} KB[/dim]\n"))
     display.append("  " + "─" * 50 + "\n\n")
-    display.append("[dim]Waiting for response...[/dim]")
+    display.append_text(Text.from_markup("[dim]Waiting for response...[/dim]"))
 
     with Live(display, refresh_per_second=15, console=console) as live:
         try:
@@ -232,10 +232,10 @@ def _stream_generation(model, prompt):
 
                 # Rebuild display
                 new_display = Text()
-                new_display.append("[bold blue]Generating WINCLI.md with AI...[/bold blue]\n")
-                new_display.append(f"  Model: [cyan]{model}[/cyan] | ")
+                new_display.append_text(Text.from_markup("[bold blue]Generating WINCLI.md with AI...[/bold blue]\n"))
+                new_display.append_text(Text.from_markup(f"  Model: [cyan]{escape(model)}[/cyan] | "))
                 new_display.append(f"Tokens: {token_count} | ")
-                new_display.append(f"[dim]{tps:.1f} t/s | {elapsed:.1f}s[/dim]\n")
+                new_display.append_text(Text.from_markup(f"[dim]{tps:.1f} t/s | {elapsed:.1f}s[/dim]\n"))
                 new_display.append("  " + "─" * 50 + "\n\n")
 
                 # Show last N lines of generated content
@@ -245,10 +245,10 @@ def _stream_generation(model, prompt):
                     # Truncate long lines
                     if len(line) > 100:
                         line = line[:100] + "..."
-                    new_display.append(f"[yellow]{line}[/yellow]\n")
+                    new_display.append_text(Text.from_markup(f"[yellow]{escape(line)}[/yellow]\n"))
 
                 if len(preview_lines) > 20:
-                    new_display.append(f"\n[dim]... ({len(preview_lines) - 20} more lines above)[/dim]")
+                    new_display.append_text(Text.from_markup(f"\n[dim]... ({len(preview_lines) - 20} more lines above)[/dim]"))
 
                 live.update(new_display)
 

@@ -29,12 +29,12 @@ from modes import gate_tool
 console = Console()
 
 
-THINK_RE = re.compile(r"<think>(.*?)</think>", re.DOTALL)
+THINK_RE = re.compile(r"<think>.*?</think>", re.DOTALL)
 
 
 def _strip_thinking(content):
     """Return (thinking, visible). thinking may be empty string."""
-    thoughts = "\n".join(m.group(1).strip() for m in THINK_RE.finditer(content))
+    thoughts = "\n".join(m.group(1).strip() for m in re.finditer(r"<think>(.*?)</think>", content, re.DOTALL))
     visible = THINK_RE.sub("", content).strip()
     return thoughts, visible
 
@@ -349,6 +349,7 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
 
         elapsed = time.time() - start_time
         content = "".join(content_parts)
+        content = THINK_RE.sub("", content)
 
         # Separate thinking tag (if any) so it doesn't confuse parsing/persist
         thoughts, visible = _strip_thinking(content)
