@@ -49,3 +49,7 @@ karaoke/players/
 
 # Notes
 karaoke/anotar.txt
+
+# Agentic CLI persist and history
+.persist/
+.history

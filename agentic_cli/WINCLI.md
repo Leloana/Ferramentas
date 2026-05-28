@@ -1,109 +1,320 @@
-# WINCLI.md: Windows Agentic CLI Project Guidelines
+)
+   - Parse tool calls from JSON
+   - Gate via modes.gate_tool()
+   - Execute tool (tools.CORE_TOOLS or extra_tools)
+   - Log step to persist.SessionLog
+   - Display Rich Panel output
+4. Session persistence: JSON dump to .persist/*.json
+```
 
-This document defines the rules, architecture, conventions, and guidelines for working within the `agentic_cli` project. Adherence to these standards is mandatory for all development and modification tasks.
+### Core Loop Components (agent.py)
+- `strip_think_blocks()`: Remove `</think>` blocks from assistant responses
+- `parse_tool_call()`: Extract JSON tool calls from responses
+- `_dispatch_tool()`: Resolve tool from CORE_TOOLS or extra_tools.py
+- `execute_tool()`: Execute with circuit breaker (3 consecutive failures trigger reflect)
+- `_error_hint()`: Provide recovery suggestions based on error type
 
-***
+---
 
-## 📚 1. Project Overview
+## Conventions
 
-**Project Name:** Windows Agentic CLI (WINCLI)
-**Purpose:** To build a sophisticated, stateful, and highly constrained command-line interface that allows a Large Language Model (LLM), specifically connected to a local Ollama instance, to interact with the Windows filesystem and execute PowerShell commands programmatically.
+### Code Style
+- **Python**: Use 4-space indents, no trailing whitespace, black-compatible style
+- **PowerShell**: Commands use `Get-ChildItem`, `Read-Host`, etc.
+- **JSON**: Compact for tool calls, pretty-printed for logs
 
-**Goal:** The agent must act as a skilled, permission-aware, and contextual developer working within a limited, well-defined sandbox environment. The system must prioritize auditability, state management, and adherence to security boundaries.
+### Naming Patterns
+| Type | Pattern | Examples |
+|------|---------|----------|
+| Functions | `snake_case` | `strip_think_blocks`, `load_wincli_context` |
+| Classes | `PascalCase` | `SessionLog`, `SessionState` |
+| Modules | `module_name` | `agent`, `main`, `modes` |
+| Variables | `snake_case` | `wincli_content`, `session_id` |
+| Commands | `/command [args]` | `/init`, `/mode edit`, `/skill plan` |
 
-**Tech Stack:**
-*   **Language:** Python
-*   **CLI Framework:** Rich (for rich, modern terminal output)
-*   **LLM Backend:** Ollama
-*   **Operating System Target:** Windows (All command execution defaults to PowerShell).
+### File Organization
+- **Core logic**: `agent.py`, `main.py`, `modes.py`, `persist.py`
+- **Skills**: `init_skill.py`, `plan_skill.py`, `debug_skill.py`
+- **Tools**: `tools.py` (CORE_TOOLS dict), `extra_tools.py` (dynamic additions)
+- **Persistence**: All `.json` files in `.persist/` directory
+- **Context**: `WINCLI.md` at root for project-specific rules
 
-***
+### Permission Modes
+| Mode | Description | Default |
+|------|-------------|---------|
+| `normal` | Standard agent operation | — |
+| `plan` | Generate structured plans | — |
+| `debug` | Lower-level debugging | — |
 
-## 🏛️ 2. Architecture
+| Permission | Description | Default |
+|-----------|-------------|---------|
+| `bypass` | All tools allowed | — |
+| `ask_edits` | Only gating mutating tools (`write_file`, `patch_file`, `run_command`) | — |
+| `ask_all` | Require confirmation for all mutating tools | — |
 
-The system is designed around a tight feedback loop: **Agent $\rightarrow$ Tool $\rightarrow$ Result $\rightarrow$ Agent**. State and permissions are layered on top of this core loop.
+---
 
-### A. Core Components
-1.  **Agent Loop (`agent.py`):** The execution engine. This module controls the flow: receiving model output, parsing potential tool calls, enforcing state changes (circuit breakers, permission gating), executing the tool, and re-injecting the result back into the LLM context.
-2.  **State Management (`modes.py`):** Determines *if* an action is allowed and *how* the agent thinks. It enforces the `op_mode` (process/planning logic) and `perm_mode` (tool/file system access security).
-3.  **Persistence Layer (`persist.py`):** Provides session memory. Every interaction, tool call, and token count is logged to a unique JSON file (`.persist/`) to ensure complete auditability and the ability to resume work.
-4.  **Context Layer (`init_skill.py`):** Responsible for scanning the working directory. It reads file contents and directory structure, respecting `MAX_FILE_SIZE` and `MAX_TOTAL_CONTENT` limits, to build the comprehensive context given to the LLM.
-5.  **Interaction Layer (`tools`):** Houses all callable functions (`read_file`, `write_file`, `run_command`, etc.) that the LLM can invoke. These functions must handle potential errors gracefully and return structured output for the LLM.
-6.  **Entry Point (`main.py`):** Initializes the CLI, handles command arguments (`/init`, `/mode`), and coordinates the session setup before passing control to `agent.py`.
+## Commands
 
-### B. Data Flow
-1.  **Startup:** `main.py` calls `init_skill.py` $\rightarrow$ Scanner collects files $\rightarrow$ Context is built $\rightarrow$ System Prompt is created $\rightarrow$ `agent.py` starts the loop.
-2.  **Agent Action:** LLM outputs a tool call JSON block $\rightarrow$ `agent.py` intercepts and parses it $\rightarrow$ `agent.py` calls `modes.py` (for gating) $\rightarrow$ `agent.py` executes the function in `tools` $\rightarrow$ The result is returned to `agent.py` $\rightarrow$ Result is packaged and sent back to the LLM for the next turn.
-3.  **State Update:** In every step, `persist.py` updates the session log.
+### Available Slash Commands
+```
+/init                    # Regenerate WINCLI.md with project context
+/mode [normal|plan|debug] # Set operation mode
+/mode [bypass|ask_edits|ask_all] # Set permission mode
+/mode focus              # Enter focus mode (minimal UI)
+/context                 # Show session dashboard (tokens, turns, model)
+/skill <name> [args]     # Invoke a skill from skills/
+/skills                  # List available skills
+/plan <prompt>           # Shortcut for /skill plan <prompt>
+/debug <cmd> ||| <ok>    # Shortcut for /skill debug
+/reflect [hint]          # Shortcut for /skill reflect
+/exit / quit             # Exit the CLI
+```
 
-***
+### Example Usage
+```bash
+# Start a new session
+> /init
 
-## 📐 3. Conventions
+# Set read/write permissions (asks only for edits)
+> /mode ask_edits
 
-### A. Code Style
-*   **PEP 8 Compliance:** All Python code must adhere to standard PEP 8 conventions (naming, spacing, imports).
-*   **Type Hinting:** Use comprehensive type hinting for all function signatures (`def func(arg: Type) -> ReturnType:`).
-*   **Docstrings:** Every public function and class must have a docstring explaining its purpose, parameters (`:param:`), and return value (`:return:`).
+# Enter plan mode for structured planning
+> /mode plan
 
-### B. Naming Conventions
-*   **Files/Modules:** Use lowercase snake\_case (e.g., `plan_skill.py`, `session_log.py`).
-*   **Classes:** Use PascalCase (e.g., `SessionState`, `SessionLog`).
-*   **Functions/Variables:** Use snake\_case (e.g., `load_wincli_context`, `session_id`).
-*   **Constants:** Use `ALL_CAPS_SNAKE_CASE` (e.g., `MAX_FILE_SIZE`, `MUTATING_TOOLS`).
+# View current session state
+> /context
 
-### C. State Management Protocol
-*   **Atomic Updates:** State changes (e.g., mode change, granting "always allow" status) must be logged and handled via dedicated methods in the respective state class (`modes.py`).
-*   **Consistency:** The `SessionState` object in `modes.py` must be the single source of truth for permissions and operational mode throughout the session lifecycle.
+# Generate a plan file
+> /plan implement authentication system
 
-***
+# List available skills
+> /skills
+```
 
-## 🚀 4. Commands and Workflow
+---
 
-### A. CLI Commands (Handled by `main.py`)
+## Key Files
 
-| Command | Alias | Description | Functionality |
-| :--- | :--- | :--- | :--- |
-| `/init` | | Re-runs the project context scan and regenerates `WINCLI.md`. | Triggers `init_skill.py` scan. |
-| `/mode <cmd>` | | Sets or displays the operational mode (e.g., `/mode plan`). | Interacts with `modes.py`. |
-| `/context` | | Displays the session dashboard (tokens, time, etc.). | Displays data from `persist.py`. |
-| `/skill <name> [args]` | | Executes specialized project skills (e.g., `/skill plan ...`). | Dispatches to skills modules (e.g., `plan_skill`). |
-| `exit` / `quit` | | Closes the CLI session. | Ends the program execution gracefully. |
+### agent.py
+**Purpose**: Core agent loop implementation
+**Functions**:
+- `run_agent_loop()`: Main execution loop
+- `parse_tool_call()`: Extract JSON tool calls
+- `execute_tool()`: Execute with error handling
+- `_error_hint()`: Generate recovery suggestions
 
-### B. Agent Execution Flow
-1.  **The Prompt:** The system prompt provided to the LLM must be comprehensive, detailing the available tools, their JSON structure, and the overarching rules (e.g., "Output ONLY this JSON block").
-2.  **Tool Invocation:** The agent must output a JSON block matching the defined structure exactly:
-    ```json
-    {"tool": "<name>", "args": {"key": "<value>"}}
-    ```
-3.  **Tool Result Interpretation:** The agent must acknowledge the tool result *before* proceeding. The tool result must be treated as factual output to be summarized and analyzed by the LLM.
-4.  **Completion:** When the task is complete, the agent must write a final, concise summary *without* a JSON block.
+### main.py
+**Purpose**: CLI entry point and command routing
+**Key Features**:
+- Builds system prompt with WINCLI.md content
+- Handles Ctrl+C gracefully (no signal handler)
+- Renders Rich console with token counters
+- Manages session state via `SessionState`
 
-***
+### init_skill.py
+**Purpose**: Generate WINCLI.md and scan projects
+**Key Functions**:
+- `_scan_project_with_feedback()`: Live progress display during scanning
+- `_is_text_file()`: Check if file is readable text
+- `generate_wincli()`: Create WINCLI.md from project analysis
 
-## 📂 5. Key Files Reference
+### persist.py
+**Purpose**: Session logging to JSON
+**Class**: `SessionLog`
+- Tracks tokens, timing, tool calls
+- Supports session resumption
+- Files stored in `.persist/<id>.json`
 
-| File | Role | Description | Critical Logic |
-| :--- | :--- | :--- | :--- |
-| `main.py` | **Entry Point & UI** | Handles all command-line interaction, session startup, and building the initial system prompt (including `WINCLI.md` context). | Manages `prompt_toolkit` and delegates state to `modes.py`. |
-| `agent.py` | **Execution Engine** | Implements the main agent loop (send $\rightarrow$ parse $\rightarrow$ gate $\rightarrow$ execute $\rightarrow$ log $\rightarrow$ loop). | Contains the circuit breaker logic and tool dispatching (`_dispatch_tool`). |
-| `modes.py` | **Security & State** | Defines the operating constraints. Implements permission gating checks (`gate_tool`). | Manages `op_mode` (processing) and `perm_mode` (permissions). |
-| `persist.py` | **Memory/Auditing** | Manages the structured JSON persistence log in the `.persist/` directory. | Ensures all token usage, timings, and turn history are saved and accessible. |
-| `init_skill.py` | **Context Builder** | Scans the entire working directory, filtering binary/excluded files, and truncating the content to fit within LLM context limits. | Implements `_should_exclude` logic (must be robust). |
-| `tools/` | **Action Layer** | Contains all backend functions (`run_command`, `read_file`, etc.) that perform I/O or execution. | Must include rigorous error handling and return meaningful error messages for the LLM to interpret. |
-| `WINCLI.md` | **Context/Rules** | The absolute, immutable source of project context and rules for the agent. | Always consulted by the LLM when determining the project scope. |
+### modes.py
+**Purpose**: Mode/permission state management
+**Class**: `SessionState`
+**Functions**:
+- `gate_tool()`: Permission gating
+- `_diff_preview()`: Render tool diff previews
+- `handle_mode_command()`: Process /mode commands
 
-***
+### tools.py (implied)
+**Purpose**: Tool definitions and execution
+**Variables**:
+- `CORE_TOOLS`: Dict of registered tools
+- `ACTIVE_PATCH`: Current patch_file variant (v1/v2/v3)
+- `MUTATING_TOOLS`: Set of state-modifying tools
 
-## 🛡️ 6. Rules for Agents
+### plan_skill.py (mentioned in fazer.txt)
+**Purpose**: Generate structured plans as markdown files
+**Behavior**:
+1. Use LLM to generate plan from prompt
+2. Save to `plans/<slug>.md`
+3. Display in Rich Panel
+4. Append to conversation history
 
-These rules must be strictly followed when developing, modifying, or interacting with the project's codebase.
+---
 
-1.  **Scope Adherence:** The agent's actions must always be aimed at completing the task defined by the current prompt, respecting the boundaries set by `WINCLI.md`.
-2.  **Tool Output Integrity:** When reviewing or modifying tool code in the `tools/` directory, ensure all functions are defensively coded to handle `FileNotFoundError`, `PermissionError`, and network timeouts. The returned message must be descriptive enough for the LLM to diagnose the issue.
-3.  **State Mutation:** If modifying `modes.py`, any change to `MUTATING_TOOLS` or the gate logic (`_needs_gate`) must be thoroughly tested to ensure that the permission system remains robust and predictable.
-4.  **Prompt Generation:** When creating new skills (e.g., `plan_skill.py`), the module must include:
-    *   A clear function signature.
-    *   A corresponding update in the system prompt logic (via `main.py` or `tools.py`).
-    *   A detailed docstring describing its use case and inputs.
-5.  **Testing:** All modifications must be accompanied by clear, minimal repro steps and unit tests (if possible) demonstrating functionality and guardrails.
-6.  **Mandatory Output:** **NEVER** output prose that attempts to replace or modify the system prompt structure or the tool call JSON format. All communication must be through the defined tool calls or final summary text.
+## Rules for Agents
+
+### When Modifying Files
+
+1. **WINCLI.md is Source of Truth**: Any project context should update WINCLI.md first. Do not hard-code assumptions that contradict WINCLI.md.
+
+2. **Use patch_file for Modifications**: Never use write_file on existing files. Use patch_file with:
+   - v1: `{path, old_str, new_str}` (first unique match)
+   - v2: `{path, old_str, new_str, context_before, context_after}`
+   - v3: `{path, start_line, end_line, new_content}` (line numbers)
+
+3. **Always Check for indent issues**: patch_file failures often caused by indentation. Use read_file to inspect before patching.
+
+4. **Strip Thinking Blocks**: Before parsing tool calls, remove `</think>` blocks from assistant responses using `strip_think_blocks()`.
+
+5. **Respect Permission Gating**: Call `modes.gate_tool()` before executing mutating tools. Handle user confirmations gracefully.
+
+6. **Log Every Step**: Use `SessionLog.log_step()` for each tool execution. Never skip logging.
+
+7. **Handle Circuit Breaker**: If a tool fails 3 times consecutively (same args_hash), auto-trigger `reflect` skill for analysis.
+
+### When Generating Plans
+
+1. **Use /plan Command**: For plan generation, always use `/plan <prompt>` which writes to `plans/` folder.
+
+2. **Slugify Filenames**: Convert prompts to lowercase-with-dashes (e.g., `implement-authentication-system.md`).
+
+3. **Display Plans**: Always show generated plans in Rich Panel before completing the task.
+
+4. **Track in History**: Append plans to conversation history so future messages reference them.
+
+### Tool Execution Rules
+
+1. **One Tool Per Turn**: Never call multiple tools in a single response.
+
+2. **Wait for Results**: After a tool call, wait for the result before calling the next tool.
+
+3. **Handle Errors Gracefully**: Use `_error_hint()` to provide recovery suggestions.
+
+4. **PowerShell Commands**: Use `run_command` with valid PowerShell syntax (Get-ChildItem, not ls).
+
+### Session Management
+
+1. **Session ID**: Automatically generated timestamp+UUID (e.g., `20260528_161554_b73eb8`).
+
+2. **Model Info**: Track which model is being used (currently `qwen3.5:9b`).
+
+3. **Token Tracking**: Monitor `prompt_tokens` and `gen_tokens` for cost awareness.
+
+4. **Elapsed Time**: Track total session duration in `.persist/*.json`.
+
+### Best Practices
+
+1. **Start with /init**: Always regenerate WINCLI.md when starting fresh to ensure up-to-date context.
+
+2. **Use /mode**: Set operation and permission modes early in the session.
+
+3. **Check WINCLI.md**: Before any major change, verify WINCLI.md contains the relevant rules.
+
+4. **Small Payloads**: For large operations, break into smaller steps to avoid timeouts.
+
+5. **Respect Max File Size**: Don't try to read files >100KB in a single operation.
+
+6. **Binary Files**: Use `_is_text_file()` before attempting to read files.
+
+---
+
+## Session Persistence Format
+
+Each `.persist/<id>.json` follows this schema:
+
+```json
+{
+  "session_id": "20260528_161554_b73eb8",
+  "started_at": "2026-05-28T19:15:54.837793+00:00",
+  "model": "qwen3.5:9b",
+  "resumed_from": null,
+  "turns": [
+    {
+      "user": "<input>",
+      "chain": [
+        {
+          "kind": "assistant" | "tool",
+          "content": "assistant text or tool result",
+          "prompt_tokens": 123,
+          "gen_tokens": 456,
+          "elapsed_s": 12.3,
+          "tps": 35.0,
+          "tool_call": null | {"name": "read_file", "args": {...}},
+          "tool_result": null | { ... }
+        }
+      ],
+      "totals": {
+        "prompt_tokens": 234,
+        "gen_tokens": 789,
+        "elapsed_s": 25.0
+      }
+    }
+  ],
+  "session_totals": {
+    "prompt_tokens": 234,
+    "gen_tokens": 789,
+    "elapsed_s": 25.0
+  }
+}
+```
+
+---
+
+## Error Recovery Patterns
+
+1. **File Not Found**: Suggest using `list_dir` to verify path spelling.
+2. **Permission Denied**: Check file ownership or use different approach.
+3. **JSON Parse Errors**: Re-read the source and retry with exact strings.
+4. **Timeouts**: Break operation into smaller payloads.
+5. **Network Issues**: Retry or check the URL/host.
+
+When errors occur 3+ times:
+1. Extract error from `_error_hint()` suggestions
+2. Auto-trigger `reflect` skill for analysis
+3. Summarize to user and offer alternatives
+
+---
+
+## Extending the Project
+
+### Adding a New Tool
+
+1. Create `extra_tools.py`
+2. Export function with same name as tool (e.g., `my_new_tool`)
+3. Ensure it returns appropriate result structure
+4. Agent automatically discovers via `_dispatch_tool()`
+
+### Adding a New Skill
+
+1. Create `skills/<name>.py` or use `/skill <name>` in main.py
+2. Export function with clear docstring
+3. Wire up in `main.py` slash command routing
+
+### Adding a New Permission Mode
+
+1. Extend `MUTATING_TOOLS` set in modes.py
+2. Update `_needs_gate()` logic
+3. Add documentation to WINCLI.md
+
+---
+
+## Quick Reference
+
+| Task | Command | Notes |
+|------|---------|-------|
+| Start session | `/init` | Regenerates WINCLI.md |
+| Set permissions | `/mode ask_edits` | Asks only for edits |
+| Enter plan mode | `/mode plan` | Generates plans |
+| View context | `/context` | Tokens, turns, model |
+| Run PowerShell | `run_command` | Get-ChildItem, etc. |
+| Read file | `read_file` | Returns numbered lines |
+| Write new file | `write_file` | Create new |
+| Modify file | `patch_file` | Use line numbers |
+| List directory | `list_dir` | PowerShell Get-ChildItem |
+| Search file | `search_file` | Pattern matching |
+| Fetch URL | `http_get` | URL content fetch |
+
+---
+
+*Generated for: agentic_cli project*
+*WINCLI.md serves as the base project context, similar to CLAUDE.md for Claude Code.*
