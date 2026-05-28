@@ -203,8 +203,18 @@ def _live_status(token_count, elapsed, detected_tool, files, tail, done, *, tick
                      f"[yellow]{escape(detected_tool)}[/yellow]"
                      + (f" → {escape(', '.join(files))}" if files else ""))
     else:
+        is_thinking = False
+        if tail and "<think>" in tail:
+            last_think = tail.rfind("<think>")
+            last_unthink = tail.rfind("</think>")
+            if last_think > last_unthink:
+                is_thinking = True
+
         sp = _THINK_SPIN[tick % len(_THINK_SPIN)]
-        lines.append(f"[blue]{sp}[/blue] [blue]thinking[/blue]")
+        if is_thinking:
+            lines.append(f"[magenta]{sp}[/magenta] [magenta]thinking[/magenta] [dim](inside <think>)[/dim]")
+        else:
+            lines.append(f"[blue]{sp}[/blue] [blue]generating[/blue]")
     lines.append(f"   ⚡ [dim]{tps:.1f} t/s | {token_count} t | {elapsed:.1f}s[/dim]")
     if not done and tail:
         lines.append(f"   [dim]{escape(_wrap_tail(tail))}[/dim]")
@@ -349,13 +359,15 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
 
         elapsed = time.time() - start_time
         content = "".join(content_parts)
-        content = THINK_RE.sub("", content)
 
         # Separate thinking tag (if any) so it doesn't confuse parsing/persist
         thoughts, visible = _strip_thinking(content)
         if thoughts and not focus:
             console.print(Panel(thoughts[:1500], title="💭 thinking",
                                 border_style="dim magenta"))
+
+        # Strip all think tags from content immediately before tool parsing or logging
+        content = THINK_RE.sub("", content)
 
         # Stats subtitle (consumed / window)
         gen_tokens = final_eval or token_count
