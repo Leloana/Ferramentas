@@ -196,72 +196,132 @@ advice or placeholder text. Only output the WINCLI.md content, no preamble."""
 
 def _stream_generation(model, prompt):
     """Stream the model response with live display showing tokens and content preview."""
+    import queue
+    import threading
+
     content_parts = []
     token_count = 0
     start_time = time.time()
-    detected_tool = None
     final_eval = 0
     final_prompt = 0
+    in_reasoning = False
 
-    display = Text()
-    display.append_text(Text.from_markup("[bold blue]Generating WINCLI.md with AI...[/bold blue]\n"))
-    display.append_text(Text.from_markup(f"  Model: [cyan]{escape(model)}[/cyan]\n"))
-    display.append_text(Text.from_markup(f"  Prompt size: [dim]{len(prompt) // 1024} KB[/dim]\n"))
-    display.append("  " + "─" * 50 + "\n\n")
-    display.append_text(Text.from_markup("[dim]Waiting for response...[/dim]"))
-
-    with Live(display, refresh_per_second=15, console=console) as live:
+    q = queue.Queue()
+    def worker():
         try:
             stream = ollama.chat(
                 model=model,
                 messages=[{"role": "user", "content": prompt}],
                 stream=True,
             )
-
             for chunk in stream:
-                token = (
-                    chunk.get("message", {}).get("content", "")
-                    if isinstance(chunk, dict)
-                    else getattr(chunk.message, "content", "")
-                )
-                if token:
-                    content_parts.append(token)
-                    token_count += 1
+                q.put(("chunk", chunk))
+            q.put(("done", None))
+        except Exception as e:
+            q.put(("error", e))
 
-                if isinstance(chunk, dict):
-                    if chunk.get("done"):
-                        final_eval = chunk.get("done") and chunk.get("eval_count", 0) or 0
-                        final_prompt = chunk.get("done") and chunk.get("prompt_eval_count", 0) or 0
-                else:
-                    if getattr(chunk, "done", False):
-                        final_eval = getattr(chunk, "eval_count", 0) or 0
-                        final_prompt = getattr(chunk, "prompt_eval_count", 0) or 0
+    thread = threading.Thread(target=worker, daemon=True)
+    thread.start()
 
-                accumulated = "".join(content_parts)
+    tick = 0
+    SPIN = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
+
+    with Live(Text("Connecting..."), refresh_per_second=10, console=console) as live:
+        try:
+            running = True
+            while running:
+                # Drain queue
+                while True:
+                    try:
+                        msg_type, val = q.get_nowait()
+                        if msg_type == "error":
+                            raise val
+                        elif msg_type == "done":
+                            running = False
+                            if in_reasoning:
+                                content_parts.append("</think>\n")
+                                in_reasoning = False
+                            break
+                        elif msg_type == "chunk":
+                            reasoning = ""
+                            content = ""
+                            if isinstance(val, dict):
+                                msg = val.get("message", {})
+                                content = msg.get("content", "") or ""
+                                reasoning = msg.get("reasoning_content", "") or ""
+                            else:
+                                msg = getattr(val, "message", None)
+                                content = getattr(msg, "content", "") if msg else ""
+                                reasoning = getattr(msg, "reasoning_content", "") if msg and hasattr(msg, "reasoning_content") else ""
+
+                            token_parts = []
+                            if reasoning:
+                                if not in_reasoning:
+                                    token_parts.append("<think>")
+                                    in_reasoning = True
+                                token_parts.append(reasoning)
+                            elif content:
+                                if in_reasoning:
+                                    token_parts.append("</think>\n")
+                                    in_reasoning = False
+                                token_parts.append(content)
+
+                            token = "".join(token_parts)
+                            if token:
+                                content_parts.append(token)
+                                token_count += 1
+
+                            if isinstance(val, dict):
+                                if val.get("done"):
+                                    final_eval = val.get("done") and val.get("eval_count", 0) or 0
+                                    final_prompt = val.get("done") and val.get("prompt_eval_count", 0) or 0
+                            else:
+                                if getattr(val, "done", False):
+                                    final_eval = getattr(val, "eval_count", 0) or 0
+                                    final_prompt = getattr(val, "prompt_eval_count", 0) or 0
+                    except queue.Empty:
+                        break
+
+                # Rebuild display
                 elapsed = time.time() - start_time
                 tps = token_count / elapsed if elapsed > 0 else 0
 
-                # Rebuild display
                 new_display = Text()
                 new_display.append_text(Text.from_markup("[bold blue]Generating WINCLI.md with AI...[/bold blue]\n"))
                 new_display.append_text(Text.from_markup(f"  Model: [cyan]{escape(model)}[/cyan] | "))
-                new_display.append(f"Tokens: {token_count} | ")
-                new_display.append_text(Text.from_markup(f"[dim]{tps:.1f} t/s | {elapsed:.1f}s[/dim]\n"))
+
+                if token_count == 0:
+                    sp = SPIN[tick % len(SPIN)]
+                    new_display.append_text(Text.from_markup(f"[magenta]{sp}[/magenta] [magenta]processing prompt / thinking[/magenta] | "))
+                    new_display.append_text(Text.from_markup(f"[dim]{elapsed:.1f}s[/dim]\n"))
+                else:
+                    sp = SPIN[tick % len(SPIN)]
+                    phase = "[magenta]thinking[/magenta]" if in_reasoning else "[blue]generating[/blue]"
+                    new_display.append_text(Text.from_markup(f"{phase} | "))
+                    new_display.append(f"Tokens: {token_count} | ")
+                    new_display.append_text(Text.from_markup(f"[dim]{tps:.1f} t/s | {elapsed:.1f}s[/dim]\n"))
+
                 new_display.append("  " + "─" * 50 + "\n\n")
 
-                # Show last N lines of generated content
+                accumulated = "".join(content_parts)
                 preview_lines = accumulated.splitlines()
                 shown = preview_lines[-20:] if len(preview_lines) > 20 else preview_lines
-                for line in shown:
-                    # Truncate long lines
-                    if len(line) > 100:
-                        line = line[:100] + "..."
-                    new_display.append_text(Text.from_markup(f"[yellow]{escape(line)}[/yellow]\n"))
 
-                if len(preview_lines) > 20:
-                    new_display.append_text(Text.from_markup(f"\n[dim]... ({len(preview_lines) - 20} more lines above)[/dim]"))
+                if token_count == 0:
+                    new_display.append_text(Text.from_markup("[dim]Waiting for first token...[/dim]"))
+                else:
+                    for line in shown:
+                        # Truncate long lines
+                        if len(line) > 100:
+                            line = line[:100] + "..."
+                        new_display.append_text(Text.from_markup(f"[yellow]{escape(line)}[/yellow]\n"))
+
+                    if len(preview_lines) > 20:
+                        new_display.append_text(Text.from_markup(f"\n[dim]... ({len(preview_lines) - 20} more lines above)[/dim]"))
 
                 live.update(new_display)
+                time.sleep(0.1)
+                tick += 1
 
         except Exception as e:
             console.print(Panel(

@@ -336,12 +336,35 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
         final_eval = final_eval_dur = final_prompt = 0
 
         interrupted = False
+        in_reasoning = False
         with Live(Text("connecting..."), refresh_per_second=12, console=console) as live:
             try:
                 stream = ollama.chat(model=model, messages=escaped, stream=True)
                 for chunk in stream:
-                    tok = chunk.get("message", {}).get("content", "") if isinstance(chunk, dict) \
-                        else getattr(chunk.message, "content", "")
+                    reasoning = ""
+                    content = ""
+                    if isinstance(chunk, dict):
+                        msg = chunk.get("message", {})
+                        content = msg.get("content", "") or ""
+                        reasoning = msg.get("reasoning_content", "") or ""
+                    else:
+                        msg = getattr(chunk, "message", None)
+                        content = getattr(msg, "content", "") if msg else ""
+                        reasoning = getattr(msg, "reasoning_content", "") if msg and hasattr(msg, "reasoning_content") else ""
+
+                    token_parts = []
+                    if reasoning:
+                        if not in_reasoning:
+                            token_parts.append("<think>")
+                            in_reasoning = True
+                        token_parts.append(reasoning)
+                    elif content:
+                        if in_reasoning:
+                            token_parts.append("</think>\n")
+                            in_reasoning = False
+                        token_parts.append(content)
+
+                    tok = "".join(token_parts)
                     if tok:
                         content_parts.append(tok)
                         token_count += 1
@@ -357,6 +380,11 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
                     live.update(_live_status(token_count, time.time() - start_time,
                                              detected_tool, detected_files, acc, False,
                                              tick=tick))
+                
+                if in_reasoning:
+                    content_parts.append("</think>\n")
+                    in_reasoning = False
+
                 live.update(_live_status(token_count, time.time() - start_time,
                                          detected_tool, detected_files,
                                          "".join(content_parts), True, tick=tick))

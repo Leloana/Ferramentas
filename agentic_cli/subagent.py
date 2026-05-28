@@ -123,14 +123,22 @@ class SubAgent:
                     final_content = f"model call failed: {e}"
                     break
 
+                reasoning = ""
                 if isinstance(resp, dict):
-                    content = resp.get("message", {}).get("content", "") or ""
+                    msg = resp.get("message", {})
+                    content = msg.get("content", "") or ""
+                    reasoning = msg.get("reasoning_content", "") or ""
                     prompt_total += resp.get("prompt_eval_count", 0) or 0
                     gen_total += resp.get("eval_count", 0) or 0
                 else:
-                    content = getattr(resp.message, "content", "") or ""
+                    msg = getattr(resp, "message", None)
+                    content = getattr(msg, "content", "") if msg else ""
+                    reasoning = getattr(msg, "reasoning_content", "") if msg and hasattr(msg, "reasoning_content") else ""
                     prompt_total += getattr(resp, "prompt_eval_count", 0) or 0
                     gen_total += getattr(resp, "eval_count", 0) or 0
+
+                if reasoning:
+                    content = f"<think>{reasoning}</think>\n{content}"
 
                 thoughts, visible = _strip_thinking(content)
                 if thoughts:

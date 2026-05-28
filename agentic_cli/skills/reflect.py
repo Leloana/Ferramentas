@@ -49,16 +49,24 @@ def run(args, ctx):
             ],
             stream=False,
         )
+        reasoning = ""
         if isinstance(resp, dict):
+            msg = resp.get("message", {})
+            content = msg.get("content", "") or ""
+            reasoning = msg.get("reasoning_content", "") or ""
             prompt_tokens = resp.get("prompt_eval_count", 0) or 0
             gen_tokens = resp.get("eval_count", 0) or 0
         else:
+            msg = getattr(resp, "message", None)
+            content = getattr(msg, "content", "") if msg else ""
+            reasoning = getattr(msg, "reasoning_content", "") if msg and hasattr(msg, "reasoning_content") else ""
             prompt_tokens = getattr(resp, "prompt_eval_count", 0) or 0
             gen_tokens = getattr(resp, "eval_count", 0) or 0
 
+        if reasoning:
+            content = f"<think>{reasoning}</think>\n{content}"
+
         elapsed = time.time() - start
-        content = (resp.get("message", {}).get("content")
-                   if isinstance(resp, dict) else resp.message.content) or ""
         from agent import strip_think_blocks
         content = strip_think_blocks(content)
 
