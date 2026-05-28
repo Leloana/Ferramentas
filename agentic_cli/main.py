@@ -97,6 +97,9 @@ def render_prompt(working_dir, model, state, session_log):
     cwd = working_dir.name
     totals = session_log.session_totals()
     consumed = totals["prompt_tokens"] + totals["gen_tokens"]
+    if state.focus:
+        # focus mode: minimal prompt, keep only token cost (required)
+        return f"\n[{consumed:,} t] › "
     return f"\n[{cwd} | {model} | {state.mode_label()} | {consumed:,} t] > "
 
 
@@ -248,7 +251,7 @@ def main():
         f"persist: {session_log.path}\n"
         f"mode: {state.mode_label()}  (change via /mode)\n"
         f"skills: {len(skills_pkg.index())} discovered  (list via /skills)\n"
-        "commands: /init /mode /context /skills /skill /plan /debug /reflect "
+        "commands: /init /mode /focus /context /skills /skill /plan /debug /reflect "
         "/resume /undo  exit",
         title="ready", border_style="green"))
 
@@ -307,6 +310,20 @@ def main():
 
             if cmd == "mode":
                 handle_mode_command(state, rest)
+                continue
+
+            if cmd == "focus":
+                arg = rest.strip().lower()
+                if arg in ("on", "1", "true"):
+                    state.focus = True
+                elif arg in ("off", "0", "false"):
+                    state.focus = False
+                else:
+                    state.focus = not state.focus
+                if state.focus:
+                    console.print("[dim]focus on — only chat, tools, and tokens.[/dim]")
+                else:
+                    console.print("[green]focus off — full UI restored.[/green]")
                 continue
 
             if cmd == "context":

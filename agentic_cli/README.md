@@ -46,6 +46,7 @@ Inside the CLI, pick a model from the menu and you're in.
 |---------|---------|
 | `/init`            | scan project and (re)generate `WINCLI.md` |
 | `/mode [args]`     | show or change op/perm mode |
+| `/focus [on\|off]` | toggle minimal UI: only chat, tool feedback, and token cost |
 | `/context`         | session dashboard + diff stats |
 | `/skills`          | list available skills |
 | `/skill <name> …`  | invoke a skill by name |
@@ -100,11 +101,28 @@ In `ask_edits`, every `write_file`/`patch_file`/`run_command` shows a
 diff/preview panel and prompts:
 
 - `y` allow once
-- `n` deny
+- `n` deny (**default** — Enter is safe)
 - `a` always allow this tool this session
 - `p` always allow this tool for this specific path
 
 Change with `/mode bypass` etc. State visible in `/context`.
+
+## UI: focus mode and live feedback
+
+Streaming UI cues:
+
+- distinct spinners for *thinking* (braille) vs *tool-calling* (rotating circle)
+- live tail is word-bounded so long lines no longer cut mid-word
+- subtitle warns in yellow at 75% of the model context window and in
+  bold red at 90% — long sessions get an early heads-up before truncation
+- tool failures attach a `hint:` line (path not found, permission,
+  timeout, network, malformed patch) to help the agent recover without
+  another round-trip
+
+`/focus` strips everything non-essential: no banner panels, no thinking
+panel, no mode label in the prompt — just the chat output, tool calls,
+errors, and the token-cost subtitle. Run `/focus` again (or `/focus off`)
+to restore the full UI.
 
 ## Three `patch_file` variants
 

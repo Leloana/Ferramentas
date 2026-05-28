@@ -71,14 +71,37 @@ def _dispatch_tool(tool_name):
     return None
 
 
+def _error_hint(tool_name, args, exc):
+    """Best-effort suggestion to help the model recover."""
+    msg = str(exc).lower()
+    if isinstance(exc, FileNotFoundError) or "no such file" in msg or "cannot find" in msg:
+        p = args.get("path") or args.get("url") or ""
+        return f"path not found: '{p}'. check spelling / use list_dir to verify."
+    if isinstance(exc, PermissionError) or "permission denied" in msg:
+        return "permission denied. try a different path or check file ownership."
+    if "timeout" in msg or "timed out" in msg:
+        return "operation timed out. consider a smaller payload or retry."
+    if "json" in msg and tool_name == "patch_file":
+        return "malformed patch args. re-read the file and retry with exact strings."
+    if "connection" in msg or "network" in msg:
+        return "network/connection issue. retry or check the URL/host."
+    return None
+
+
 def execute_tool(tool_name, args):
     fn = _dispatch_tool(tool_name)
     if fn is None:
-        return {"error": f"unknown tool: {tool_name}"}
+        return {"error": f"unknown tool: {tool_name}",
+                "hint": "valid tools: run_command, read_file, write_file, "
+                        "patch_file, list_dir, search_file, http_get"}
     try:
         return fn(args)
     except Exception as e:
-        return {"error": str(e)}
+        out = {"error": str(e)}
+        hint = _error_hint(tool_name, args, e)
+        if hint:
+            out["hint"] = hint
+        return out
 
 
 def format_tool_result(result):
@@ -150,21 +173,55 @@ def _detect_partial_tool(text):
     return m.group(1), paths[:3]
 
 
-def _live_status(token_count, elapsed, detected_tool, files, tail, done):
+_THINK_SPIN = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
+_TOOL_SPIN = "◐◓◑◒"
+
+
+def _wrap_tail(tail, width=140):
+    """Take last ~width chars from tail, word-bounded, single line."""
+    if not tail:
+        return ""
+    flat = tail.replace("\n", " ⏎ ")
+    if len(flat) <= width:
+        return flat
+    snip = flat[-width:]
+    # try to start at a space so we don't cut mid-word
+    space = snip.find(" ")
+    if 0 < space < 20:
+        snip = snip[space + 1:]
+    return "…" + snip
+
+
+def _live_status(token_count, elapsed, detected_tool, files, tail, done, *, tick=0):
     tps = token_count / elapsed if elapsed > 0 else 0
     lines = []
     if done:
         lines.append("✓ [bold green]done[/bold green]")
     elif detected_tool:
-        lines.append(f"🔧 [cyan]calling[/cyan] [yellow]{escape(detected_tool)}[/yellow]"
+        sp = _TOOL_SPIN[tick % len(_TOOL_SPIN)]
+        lines.append(f"[cyan]{sp}[/cyan] [cyan]calling[/cyan] "
+                     f"[yellow]{escape(detected_tool)}[/yellow]"
                      + (f" → {escape(', '.join(files))}" if files else ""))
     else:
-        lines.append("💭 [blue]thinking[/blue]")
+        sp = _THINK_SPIN[tick % len(_THINK_SPIN)]
+        lines.append(f"[blue]{sp}[/blue] [blue]thinking[/blue]")
     lines.append(f"   ⚡ [dim]{tps:.1f} t/s | {token_count} t | {elapsed:.1f}s[/dim]")
     if not done and tail:
-        snippet = tail[-200:].replace("\n", " ⏎ ")
-        lines.append(f"   [dim]{escape(snippet)}[/dim]")
+        lines.append(f"   [dim]{escape(_wrap_tail(tail))}[/dim]")
     return Text.from_markup("\n".join(lines))
+
+
+def _ctx_warning_markup(consumed, limit):
+    """Return a colored fragment for the subtitle reflecting remaining context."""
+    if limit <= 0:
+        return None
+    pct = consumed / limit
+    remaining = max(0, limit - consumed)
+    if pct >= 0.9:
+        return f"[bold red]⚠ ctx {consumed}/{limit} ({remaining} left)[/bold red]"
+    if pct >= 0.75:
+        return f"[yellow]ctx {consumed}/{limit} ({remaining} left)[/yellow]"
+    return None
 
 
 TOOL_RESULT_PREFIXES = (
@@ -234,12 +291,14 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
     Ctrl+C during a turn cancels the turn cleanly (returns without exiting)."""
     context_limit = get_context_limit(model)
     consecutive_failures = {}  # args_hash → count
+    focus = bool(getattr(state, "focus", False)) if state is not None else False
 
     while True:
         escaped = _prepare_messages(messages)
 
         content_parts = []
         token_count = 0
+        tick = 0
         start_time = time.time()
         detected_tool, detected_files = None, []
         final_eval = final_eval_dur = final_prompt = 0
@@ -262,11 +321,13 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
                             final_eval = chunk.get("eval_count", 0) or 0
                             final_eval_dur = chunk.get("eval_duration", 0) or 0
                             final_prompt = chunk.get("prompt_eval_count", 0) or 0
+                    tick += 1
                     live.update(_live_status(token_count, time.time() - start_time,
-                                             detected_tool, detected_files, acc, False))
+                                             detected_tool, detected_files, acc, False,
+                                             tick=tick))
                 live.update(_live_status(token_count, time.time() - start_time,
                                          detected_tool, detected_files,
-                                         "".join(content_parts), True))
+                                         "".join(content_parts), True, tick=tick))
                 time.sleep(0.1)
             except KeyboardInterrupt:
                 interrupted = True
@@ -291,7 +352,7 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
 
         # Separate thinking tag (if any) so it doesn't confuse parsing/persist
         thoughts, visible = _strip_thinking(content)
-        if thoughts:
+        if thoughts and not focus:
             console.print(Panel(thoughts[:1500], title="💭 thinking",
                                 border_style="dim magenta"))
 
@@ -301,8 +362,11 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
         consumed = prompt_tokens + gen_tokens
         remaining = max(0, context_limit - consumed)
         tps = gen_tokens / elapsed if elapsed > 0 else 0
+        warn = _ctx_warning_markup(consumed, context_limit)
         subtitle = (f"⚡ {tps:.1f} t/s | prompt {prompt_tokens} | gen {gen_tokens} | "
                     f"window {consumed}/{context_limit} ({remaining} left)")
+        if warn:
+            subtitle = f"{subtitle}  {warn}"
 
         tool_call = parse_tool_call(visible)
 
@@ -378,8 +442,12 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
 
         # No tool call → final answer
         messages.append({"role": "assistant", "content": content})
-        console.print(Panel(visible, title="🤖 assistant", subtitle=subtitle,
-                            border_style="green"))
+        if focus:
+            console.print(visible)
+            console.print(Text.from_markup(f"[dim]{subtitle}[/dim]"))
+        else:
+            console.print(Panel(visible, title="🤖 assistant", subtitle=subtitle,
+                                border_style="green"))
         if session_log:
             session_log.log_step(kind="assistant", content=visible,
                                  prompt_tokens=prompt_tokens, gen_tokens=gen_tokens,

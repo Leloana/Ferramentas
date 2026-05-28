@@ -29,11 +29,13 @@ MUTATING_TOOLS = {"write_file", "patch_file", "run_command"}
 class SessionState:
     op_mode: str = "normal"          # normal | plan | debug
     perm_mode: str = "ask_edits"     # bypass | ask_edits | ask_all
+    focus: bool = False              # focus mode: hide non-essential UI
     always_allow_tools: Set[str] = field(default_factory=set)
     always_allow_paths: Dict[str, Set[str]] = field(default_factory=dict)
 
     def mode_label(self):
-        return f"{self.op_mode}/{self.perm_mode}"
+        f = "/focus" if self.focus else ""
+        return f"{self.op_mode}/{self.perm_mode}{f}"
 
 
 def _needs_gate(state: SessionState, tool_name: str) -> bool:
@@ -110,10 +112,16 @@ def gate_tool(state: SessionState, tool_name: str, args: dict):
         return True
 
     console.print(_diff_preview(tool_name, args))
+    legend = "[green]y[/green]=yes  [red]n[/red]=no  [cyan]a[/cyan]=always this tool"
+    if path_key:
+        legend += "  [cyan]p[/cyan]=always this path"
+    console.print(f"[dim]{legend}[/dim]")
     choice = Prompt.ask(
-        f"[yellow]Allow [bold]{tool_name}[/bold]?[/yellow]",
-        choices=["y", "n", "a", "p"],
-        default="y",
+        f"[yellow]Allow [bold]{tool_name}[/bold]"
+        + (f" on [bold]{path_key}[/bold]" if path_key else "")
+        + "?[/yellow]",
+        choices=["y", "n", "a", "p"] if path_key else ["y", "n", "a"],
+        default="n",
     ).lower()
     if choice == "n":
         return False
