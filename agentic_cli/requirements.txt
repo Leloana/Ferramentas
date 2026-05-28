@@ -1,0 +1,5 @@
+ollama==0.4.4
+rich==13.7.1
+prompt_toolkit==3.0.47
+pathlib2==2.3.7
+requests==2.32.3
