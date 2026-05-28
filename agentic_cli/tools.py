@@ -1,124 +1,385 @@
+"""Core tools available to the agent.
+
+Three patch_file variants are provided. Switch the active one by editing
+ACTIVE_PATCH below. The public `patch_file` symbol always points to the
+chosen variant so the agent loop doesn't need to know.
+
+Errors from every tool are returned as {"error": "...", "hint": "..."} so
+the model gets actionable feedback instead of bare exceptions.
+"""
+
+import difflib
 import os
+import subprocess
 from pathlib2 import Path
 
 
+ACTIVE_PATCH = "v1"  # "v1" | "v2" | "v3"
+
+
+def _err(message, hint=None):
+    out = {"error": message}
+    if hint:
+        out["hint"] = hint
+    return out
+
+
+READ_FILE_MAX_LINES = 300
+RUN_COMMAND_MAX_LINES = 100
+
+
+def _truncate_lines(text, max_lines, label):
+    lines = text.splitlines()
+    if len(lines) <= max_lines:
+        return text, False
+    keep = max_lines // 2
+    head = lines[:keep]
+    tail = lines[-keep:]
+    omitted = len(lines) - 2 * keep
+    middle = f"[... {omitted} lines of {label} omitted ...]"
+    return "\n".join(head + [middle] + tail), True
+
+
 def run_command(args):
-    """Execute a Windows PowerShell command and return stdout + stderr"""
-    import subprocess
-    command = args["command"]
-    result = subprocess.run(
-        ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", command],
-        capture_output=True,
-        text=True,
-        timeout=30
-    )
-    return {
-        "stdout": result.stdout,
-        "stderr": result.stderr,
-        "returncode": result.returncode
-    }
+    """Execute a Windows PowerShell command. stdout/stderr capped at
+    RUN_COMMAND_MAX_LINES each — long outputs get a head+tail with the
+    middle omitted."""
+    command = args.get("command")
+    if not command:
+        return _err("missing 'command' arg")
+    try:
+        result = subprocess.run(
+            ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", command],
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+    except subprocess.TimeoutExpired:
+        return _err("command timed out after 30s", "split into smaller commands")
+    except FileNotFoundError:
+        return _err("powershell.exe not found", "are you running on Windows?")
+    stdout, stdout_trunc = _truncate_lines(result.stdout or "", RUN_COMMAND_MAX_LINES, "stdout")
+    stderr, stderr_trunc = _truncate_lines(result.stderr or "", RUN_COMMAND_MAX_LINES, "stderr")
+    out = {"stdout": stdout, "stderr": stderr, "returncode": result.returncode}
+    if stdout_trunc or stderr_trunc:
+        out["truncated"] = True
+    return out
 
 
 def read_file(args):
-    """Read the full contents of a file"""
-    path = Path(args["path"])
-    content = path.read_text(encoding="utf-8")
-    return {"content": content}
+    """Read a file. Optional `offset` (1-indexed line) and `limit` (max
+    lines). Without them, caps at READ_FILE_MAX_LINES with head+tail.
+
+    Args:
+        path: file path (required)
+        offset: starting line (1-indexed, optional)
+        limit: max lines to return (optional)
+    """
+    raw = args.get("path")
+    if not raw:
+        return _err("missing 'path' arg")
+    path = Path(raw)
+    if not path.exists():
+        return _err(f"file not found: {raw}", _suggest_path(raw))
+    try:
+        content = path.read_text(encoding="utf-8")
+    except UnicodeDecodeError:
+        return _err(f"file is not utf-8 text: {raw}", "is this a binary file?")
+    except Exception as e:
+        return _err(f"could not read {raw}: {e}")
+
+    all_lines = content.splitlines()
+    total = len(all_lines)
+    offset = args.get("offset")
+    limit = args.get("limit")
+
+    if offset is not None or limit is not None:
+        try:
+            o = int(offset) if offset is not None else 1
+            l = int(limit) if limit is not None else READ_FILE_MAX_LINES
+        except (TypeError, ValueError):
+            return _err("offset/limit must be integers")
+        if o < 1:
+            o = 1
+        slice_ = all_lines[o - 1:o - 1 + l]
+        numbered = "\n".join(f"{o + i:>4}: {line}" for i, line in enumerate(slice_))
+        return {"numbered": numbered, "lines_returned": len(slice_),
+                "lines_total": total, "offset": o, "limit": l,
+                "content": "\n".join(slice_)}
+
+    if total <= READ_FILE_MAX_LINES:
+        numbered = "\n".join(f"{i+1:>4}: {line}" for i, line in enumerate(all_lines))
+        return {"content": content, "numbered": numbered, "lines": total}
+
+    # Default truncation: head + tail
+    keep = READ_FILE_MAX_LINES // 2
+    head = all_lines[:keep]
+    tail = all_lines[-keep:]
+    omitted = total - 2 * keep
+    head_n = "\n".join(f"{i+1:>4}: {line}" for i, line in enumerate(head))
+    tail_start = total - keep + 1
+    tail_n = "\n".join(f"{tail_start + i:>4}: {line}" for i, line in enumerate(tail))
+    notice = (f"\n[... lines {keep+1}..{total-keep} ({omitted}) omitted — "
+              f"call read_file again with offset/limit to see them ...]\n")
+    return {"numbered": head_n + notice + tail_n, "lines": total,
+            "truncated": True, "shown": f"1..{keep} + {tail_start}..{total}"}
 
 
 def write_file(args):
-    """Write or overwrite a file with given content"""
-    path = Path(args["path"])
-    path.write_text(args["content"], encoding="utf-8")
-    return {"status": "ok", "path": args["path"]}
+    """Write or overwrite a file with given content."""
+    raw = args.get("path")
+    if not raw:
+        return _err("missing 'path' arg")
+    if "content" not in args:
+        return _err("missing 'content' arg")
+    path = Path(raw)
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(args["content"], encoding="utf-8")
+    except Exception as e:
+        return _err(f"could not write {raw}: {e}")
+    return {"status": "ok", "path": raw}
+
+
+# ---------- patch variants ----------
+
+def patch_file_v1(args):
+    """Variant 1: replace first occurrence of old_str with new_str.
+
+    On failure (string not found) returns the 3 closest matches so the model
+    can correct itself instead of looping blind.
+    """
+    raw = args.get("path")
+    old = args.get("old_str")
+    new = args.get("new_str")
+    if not raw or old is None or new is None:
+        return _err("required args: path, old_str, new_str")
+    path = Path(raw)
+    if not path.exists():
+        return _err(f"file not found: {raw}")
+    try:
+        content = path.read_text(encoding="utf-8")
+    except Exception as e:
+        return _err(f"could not read {raw}: {e}")
+
+    if old not in content:
+        return _err(
+            f"old_str not found in {raw}",
+            _fuzzy_hint(content, old),
+        )
+    count = content.count(old)
+    if count > 1:
+        return _err(
+            f"old_str matches {count} times in {raw} (ambiguous)",
+            "add more surrounding context to make old_str unique",
+        )
+    patched = content.replace(old, new, 1)
+    path.write_text(patched, encoding="utf-8")
+    return {"status": "patched", "path": raw, "variant": "v1"}
+
+
+def patch_file_v2(args):
+    """Variant 2: anchor-based.
+
+    Requires `path`, `old_str`, plus optional `context_before` and
+    `context_after` that bracket old_str in the file. This kills whitespace
+    ambiguity because anchors don't need to match indentation exactly — they
+    just need to appear in order around old_str.
+    """
+    raw = args.get("path")
+    old = args.get("old_str")
+    new = args.get("new_str")
+    before = args.get("context_before", "")
+    after = args.get("context_after", "")
+    if not raw or old is None or new is None:
+        return _err("required args: path, old_str, new_str (+ optional context_before/after)")
+    path = Path(raw)
+    if not path.exists():
+        return _err(f"file not found: {raw}")
+    content = path.read_text(encoding="utf-8")
+
+    # Find all occurrences of old_str
+    occurrences = []
+    start = 0
+    while True:
+        idx = content.find(old, start)
+        if idx == -1:
+            break
+        occurrences.append(idx)
+        start = idx + 1
+
+    if not occurrences:
+        return _err(
+            f"old_str not found in {raw}",
+            _fuzzy_hint(content, old),
+        )
+
+    # If anchors provided, filter by them
+    if before or after:
+        filtered = []
+        for idx in occurrences:
+            window_start = max(0, idx - 400)
+            window_end = min(len(content), idx + len(old) + 400)
+            window = content[window_start:window_end]
+            if (not before or before in window[:idx - window_start]) and \
+               (not after or after in window[idx - window_start + len(old):]):
+                filtered.append(idx)
+        occurrences = filtered
+
+    if not occurrences:
+        return _err(
+            "old_str found but anchors didn't match",
+            "context_before/context_after must appear around old_str in the file",
+        )
+    if len(occurrences) > 1:
+        return _err(
+            f"still {len(occurrences)} matches after anchors",
+            "tighten context_before/context_after",
+        )
+
+    idx = occurrences[0]
+    patched = content[:idx] + new + content[idx + len(old):]
+    path.write_text(patched, encoding="utf-8")
+    return {"status": "patched", "path": raw, "variant": "v2"}
+
+
+def patch_file_v3(args):
+    """Variant 3: line-range replacement.
+
+    Requires `path`, `start_line`, `end_line` (1-indexed, inclusive), and
+    `new_content`. No string matching — the model just points at line
+    numbers (which it has from read_file's 'numbered' output).
+    """
+    raw = args.get("path")
+    start_line = args.get("start_line")
+    end_line = args.get("end_line")
+    new_content = args.get("new_content")
+    if not raw or start_line is None or end_line is None or new_content is None:
+        return _err("required args: path, start_line, end_line, new_content")
+    path = Path(raw)
+    if not path.exists():
+        return _err(f"file not found: {raw}")
+    try:
+        start_line = int(start_line)
+        end_line = int(end_line)
+    except (TypeError, ValueError):
+        return _err("start_line/end_line must be integers")
+
+    content = path.read_text(encoding="utf-8")
+    lines = content.splitlines(keepends=True)
+    n = len(lines)
+    if start_line < 1 or end_line > n or start_line > end_line:
+        return _err(
+            f"invalid range {start_line}-{end_line} for file with {n} lines",
+            "use read_file first to see line numbers",
+        )
+    # Ensure new_content ends with newline if replacing non-final lines
+    if not new_content.endswith("\n") and end_line < n:
+        new_content += "\n"
+    patched = "".join(lines[:start_line - 1]) + new_content + "".join(lines[end_line:])
+    path.write_text(patched, encoding="utf-8")
+    return {"status": "patched", "path": raw, "variant": "v3",
+            "replaced_lines": f"{start_line}-{end_line}"}
+
+
+_VARIANTS = {"v1": patch_file_v1, "v2": patch_file_v2, "v3": patch_file_v3}
 
 
 def patch_file(args):
-    """Replace the first occurrence of old_str with new_str in a file"""
-    path = Path(args["path"])
-    content = path.read_text(encoding="utf-8")
-    old_str = args["old_str"]
-    new_str = args["new_str"]
-    if old_str not in content:
-        return {"error": f"old_str not found in {args['path']}"}
-    patched = content.replace(old_str, new_str, 1)
-    path.write_text(patched, encoding="utf-8")
-    return {"status": "patched", "path": args["path"]}
+    """Active patch implementation (configurable via ACTIVE_PATCH)."""
+    impl = _VARIANTS.get(ACTIVE_PATCH, patch_file_v1)
+    return impl(args)
 
+
+# ---------- discovery / search ----------
 
 def list_dir(args):
-    """List files and folders in a directory"""
-    path = Path(args["path"])
-    entries = os.listdir(args["path"])
-    return {"entries": entries}
+    raw = args.get("path", ".")
+    path = Path(raw)
+    if not path.exists():
+        return _err(f"directory not found: {raw}")
+    if not path.is_dir():
+        return _err(f"not a directory: {raw}")
+    try:
+        entries = sorted(os.listdir(raw))
+    except Exception as e:
+        return _err(f"could not list {raw}: {e}")
+    # Mark dirs with trailing slash so the model knows
+    decorated = []
+    for e in entries:
+        p = path / e
+        decorated.append(e + "/" if p.is_dir() else e)
+    return {"entries": decorated}
 
 
 def search_file(args):
-    """Search for a string inside a file, return matching lines with line numbers"""
-    path = Path(args["path"]).read_text(encoding="utf-8")
-    lines = path.splitlines()
+    raw = args.get("path")
+    query = args.get("query")
+    if not raw or query is None:
+        return _err("required args: path, query")
+    path = Path(raw)
+    if not path.exists():
+        return _err(f"file not found: {raw}")
+    try:
+        text = path.read_text(encoding="utf-8")
+    except Exception as e:
+        return _err(f"could not read {raw}: {e}")
     matches = []
-    for i, line in enumerate(lines, start=1):
-        if args["query"] in line:
+    for i, line in enumerate(text.splitlines(), start=1):
+        if query in line:
             matches.append({"line": i, "content": line})
     return {"matches": matches}
 
 
 def http_get(args):
-    """Perform an HTTP GET request and return the response body (truncated to 3000 chars)"""
     import requests
-    response = requests.get(args["url"], timeout=10)
-    return {"body": response.text[:3000]}
+    url = args.get("url")
+    if not url:
+        return _err("missing 'url' arg")
+    try:
+        response = requests.get(url, timeout=10)
+    except Exception as e:
+        return _err(f"http_get failed: {e}")
+    return {"body": response.text[:3000], "status_code": response.status_code}
 
 
-def plan(args):
-    """Generate a plan of action based on a prompt and write it to a file.
-    
-    Args:
-        args: Dictionary with "prompt" key containing the prompt for plan generation.
-        
-    Returns:
-        Dictionary with status, plan_path, and plan_content
-    """
-    prompt = args.get("prompt", "")
-    working_dir = Path.cwd().resolve()
-    plans_dir = working_dir / "plans"
-    
-    # Create plans directory if it doesn't exist
-    plans_dir.mkdir(exist_ok=True)
-    
-    import time
-    import ollama
-    
-    start_time = time.time()
-    
-    # Generate plan using Ollama
+# ---------- helpers ----------
+
+def _fuzzy_hint(content, old):
+    """Return a hint with the 3 closest line matches to old_str's first line."""
+    if not old:
+        return None
+    first_line = old.splitlines()[0] if "\n" in old else old
+    candidates = content.splitlines()
+    close = difflib.get_close_matches(first_line, candidates, n=3, cutoff=0.5)
+    if not close:
+        return "no similar lines found — check the file path and re-read the file"
+    return "did you mean one of these lines?\n" + "\n".join(f"  • {c}" for c in close)
+
+
+def _suggest_path(raw):
+    """Suggest existing files when a path doesn't exist."""
     try:
-        stream = ollama.chat(
-            model="llama3.2",
-            messages=[{"role": "user", "content": prompt}],
-            stream=True,
-        )
-        
-        plan_content = ""
-        for chunk in stream:
-            token = chunk.get("message", {}).get("content", "") if isinstance(chunk, dict) else getattr(chunk.message, "content", "")
-            if token:
-                plan_content += token
-    except Exception as e:
-        plan_content = f"Error generating plan: {str(e)}"
-    
-    elapsed = time.time() - start_time
-    
-    # Write plan to file with timestamp
-    timestamp = time.strftime("%Y%m%d_%H%M%S")
-    plan_path = plans_dir / f"plan_{timestamp}.md"
-    
-    try:
-        # Write plan with preamble
-        full_content = f"# Plan Generated: {timestamp}\n\n{plan_content}\n\n---\n\n*Generated via /plan skill*\n"
-        plan_path.write_text(full_content, encoding="utf-8")
-        
-        return {"status": "ok", "path": str(plan_path), "content": full_content}
-    except Exception as e:
-        return {"error": f"Failed to write plan file: {str(e)}"}
+        parent = Path(raw).parent if Path(raw).parent != Path("") else Path(".")
+        if not parent.exists():
+            return None
+        siblings = [e for e in os.listdir(str(parent)) if not e.startswith(".")]
+        target = Path(raw).name
+        close = difflib.get_close_matches(target, siblings, n=3, cutoff=0.5)
+        if close:
+            return "did you mean: " + ", ".join(close)
+    except Exception:
+        pass
+    return None
+
+
+# Tool registry — used by skills system to know what's "core".
+CORE_TOOLS = {
+    "run_command": run_command,
+    "read_file": read_file,
+    "write_file": write_file,
+    "patch_file": patch_file,
+    "list_dir": list_dir,
+    "search_file": search_file,
+    "http_get": http_get,
+}

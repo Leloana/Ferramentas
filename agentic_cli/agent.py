@@ -1,356 +1,387 @@
+"""Agent loop: send → parse → gate → execute → log → loop.
+
+Features layered on top of the original loop:
+  - <think>...</think> tags are stripped from tool-parsing and rendered
+    separately so the user can see thinking without it polluting context.
+  - Circuit breaker: 3 consecutive failures of the same (tool, args_hash)
+    stop the loop and call the reflect skill automatically.
+  - Permission gating via modes.gate_tool (respects /mode setting).
+  - Per-step persistence via persist.SessionLog.
+  - Dispatch falls through to extra_tools.py if the tool isn't in CORE_TOOLS.
+"""
+
+import hashlib
+import importlib
 import json
 import re
 import time
+
 import ollama
 from rich.console import Console
+from rich.live import Live
 from rich.markup import escape
 from rich.panel import Panel
-from rich.live import Live
 from rich.text import Text
+
 import tools
+from modes import gate_tool
 
 console = Console()
 
 
+THINK_RE = re.compile(r"<think>(.*?)</think>", re.DOTALL)
+
+
+def _strip_thinking(content):
+    """Return (thinking, visible). thinking may be empty string."""
+    thoughts = "\n".join(m.group(1).strip() for m in THINK_RE.finditer(content))
+    visible = THINK_RE.sub("", content).strip()
+    return thoughts, visible
+
+
 def parse_tool_call(response_content):
-    """Parse tool call from model response"""
-    json_match = re.search(r'```json\s*(.*?)\s*```', response_content, re.DOTALL)
+    """Parse a tool call JSON block from the model response. Thinking
+    tags must be stripped before calling this."""
+    json_match = re.search(r"```json\s*(.*?)\s*```", response_content, re.DOTALL)
     if json_match:
-        json_str = json_match.group(1).strip()
         try:
-            return json.loads(json_str)
+            return json.loads(json_match.group(1).strip())
         except json.JSONDecodeError:
             return None
-
-    # Fallback to try parsing the entire response as JSON
     try:
         return json.loads(response_content.strip())
     except json.JSONDecodeError:
         return None
 
 
+def _dispatch_tool(tool_name):
+    """Return the callable for tool_name, looking at CORE_TOOLS first and
+    extra_tools.py second."""
+    if tool_name in tools.CORE_TOOLS:
+        return tools.CORE_TOOLS[tool_name]
+    # Try extra_tools.py (created by /skill add_tool)
+    try:
+        extra = importlib.import_module("extra_tools")
+        importlib.reload(extra)  # pick up additions made mid-session
+        fn = getattr(extra, tool_name, None)
+        if callable(fn):
+            return fn
+    except ModuleNotFoundError:
+        pass
+    return None
+
+
 def execute_tool(tool_name, args):
-    """Execute the requested tool and return result"""
-    tool_func = getattr(tools, tool_name, None)
-    if tool_func and callable(tool_func):
-        try:
-            return tool_func(args)
-        except Exception as e:
-            return {"error": str(e)}
-    return {"error": f"Unknown tool: {tool_name}"}
+    fn = _dispatch_tool(tool_name)
+    if fn is None:
+        return {"error": f"unknown tool: {tool_name}"}
+    try:
+        return fn(args)
+    except Exception as e:
+        return {"error": str(e)}
 
 
 def format_tool_result(result):
-    """Format tool result as a message for the model"""
     if "error" in result:
-        return f"Tool call failed: {result['error']}"
-
+        hint = f"\nHint: {result['hint']}" if result.get("hint") else ""
+        return f"Tool call failed: {result['error']}{hint}"
     if "stdout" in result or "stderr" in result:
         stdout = result.get("stdout", "")
         stderr = result.get("stderr", "")
-        ret = []
+        rc = result.get("returncode", 0)
+        parts = [f"returncode: {rc}"]
         if stdout:
-            ret.append(f"STDOUT:\n{stdout}")
+            parts.append(f"STDOUT:\n{stdout}")
         if stderr:
-            ret.append(f"STDERR:\n{stderr}")
-        if not stdout and not stderr:
-            ret.append("Command executed with no output.")
-        return "\n".join(ret)
-    elif "content" in result:
+            parts.append(f"STDERR:\n{stderr}")
+        return "\n".join(parts)
+    if "numbered" in result:
+        return f"File contents (with line numbers):\n{result['numbered']}"
+    if "content" in result:
         return f"File contents:\n{result['content']}"
-    elif result.get("status") == "patched":
-        return f"Patched file {result['path']} successfully"
-    elif result.get("status") == "ok":
-        return f"Wrote file {result['path']} successfully"
-    elif "entries" in result:
+    if result.get("status") == "patched":
+        return f"Patched {result['path']} (variant {result.get('variant','?')})"
+    if result.get("status") == "ok":
+        return f"Wrote file {result['path']}"
+    if "entries" in result:
         return f"Directory contents: {', '.join(result['entries'])}"
-    elif "matches" in result:
+    if "matches" in result:
         if result["matches"]:
             return f"Found {len(result['matches'])} matches:\n" + "\n".join(
-                f"Line {m['line']}: {m['content']}" for m in result["matches"]
-            )
+                f"Line {m['line']}: {m['content']}" for m in result["matches"])
         return "No matches found"
-    elif "body" in result:
-        return result["body"]
+    if "body" in result:
+        return f"HTTP {result.get('status_code','?')}\n{result['body']}"
     return str(result)
 
 
 def get_context_limit(model_name):
-    """Retrieve context limit for the model from Ollama API"""
     try:
         info = ollama.show(model_name)
-        parameters = info.get("parameters", "")
-        if isinstance(parameters, str):
-            for line in parameters.splitlines():
+        params = info.get("parameters", "")
+        if isinstance(params, str):
+            for line in params.splitlines():
                 parts = line.split()
                 if len(parts) >= 2 and parts[0] == "num_ctx":
                     return int(parts[1])
-
         modelinfo = info.get("modelinfo", {})
         if isinstance(modelinfo, dict):
-            for key, val in modelinfo.items():
-                if key.endswith(".context_length"):
-                    return int(val)
+            for k, v in modelinfo.items():
+                if k.endswith(".context_length"):
+                    return int(v)
     except Exception:
         pass
     return 2048
 
 
-def make_stats_subtitle(response, context_limit, color="cyan"):
-    """Create a formatted statistics subtitle showing token metrics and context window"""
-    eval_count = getattr(response, "eval_count", 0) or 0
-    eval_duration = getattr(response, "eval_duration", 0) or 0
-    prompt_eval_count = getattr(response, "prompt_eval_count", 0) or 0
-
-    tokens_per_sec = 0.0
-    if eval_duration > 0:
-        tokens_per_sec = eval_count / (eval_duration / 1e9)
-
-    consumed = prompt_eval_count + eval_count
-    remaining = max(0, context_limit - consumed)
-
-    return f"[dim {color}]⚡ {tokens_per_sec:.1f} t/s | Prompt: {prompt_eval_count} t | Gen: {eval_count} t | Janela: {consumed}/{context_limit} t ({remaining} rest.)[/dim {color}]"
+def _args_hash(tool_name, args):
+    try:
+        s = json.dumps(args, sort_keys=True, ensure_ascii=False)
+    except Exception:
+        s = str(args)
+    return hashlib.md5(f"{tool_name}|{s}".encode("utf-8")).hexdigest()[:10]
 
 
-def make_stats_subtitle_from_tracking(context_limit, token_count, elapsed, color="cyan"):
-    """Create a formatted statistics subtitle from client-side tracking data"""
-    tps = token_count / elapsed if elapsed > 0 else 0
-    return f"[dim {color}]⚡ {tps:.1f} t/s | Tokens: {token_count} | Elapsed: {elapsed:.1f}s[/dim {color}]"
-
-
-def _detect_context_kind(messages):
-    """Figure out what kind of context the model is working with."""
-    for msg in reversed(messages):
-        if msg.get("role") == "user":
-            content = msg.get("content", "")
-            if any(kw in content for kw in [
-                "File contents:", "STDOUT:", "STDERR:", "Directory contents:",
-                "Found ", "Wrote file", "Tool call failed:", "No matches",
-                "Command executed", "Matches found:",
-            ]):
-                return "consuming_file"
-            return "thinking"
-    return "thinking"
-
-
-def _detect_tool_and_files(accumulated_text):
-    """Try to detect tool name and file paths from a partial JSON tool call."""
-    tool_match = re.search(r'"tool"\s*:\s*"(\w+)"', accumulated_text)
-    if not tool_match:
+def _detect_partial_tool(text):
+    m = re.search(r'"tool"\s*:\s*"(\w+)"', text)
+    if not m:
         return None, []
-
-    tool_name = tool_match.group(1)
-    files = []
-
-    # path argument for file-based tools
-    path_matches = re.findall(r'"path"\s*:\s*"([^"]+)"', accumulated_text)
-    files.extend(path_matches)
-
-    # url argument for http_get
-    url_matches = re.findall(r'"url"\s*:\s*"([^"]+)"', accumulated_text)
-    files.extend(url_matches)
-
-    # command argument may contain paths
-    cmd_matches = re.findall(r'"command"\s*:\s*"([^"]+)"', accumulated_text)
-    for cmd in cmd_matches:
-        # Extract likely file paths from the command string
-        pathlike = re.findall(r'[A-Za-z]:\\[^\s"\']+|\\[^\s"\']+\.[a-zA-Z]{1,4}|\.?[/\\][^\s"\']+\.[a-zA-Z]{1,4}', cmd)
-        files.extend(pathlike)
-
-    return tool_name, files
+    paths = re.findall(r'"(?:path|url)"\s*:\s*"([^"]+)"', text)
+    return m.group(1), paths[:3]
 
 
-from rich.text import Text
-from rich.markup import escape
-
-def _build_live_display(context_kind, token_count, elapsed, detected_tool, detected_files, accumulated, is_done):
-    """Build the live display renderable."""
+def _live_status(token_count, elapsed, detected_tool, files, tail, done):
     tps = token_count / elapsed if elapsed > 0 else 0
     lines = []
-
-    if is_done:
-        lines.append("✓ [bold green]Done[/bold green]")
+    if done:
+        lines.append("✓ [bold green]done[/bold green]")
     elif detected_tool:
-        lines.append("🔧 [bold cyan]Calling tool...[/bold cyan]")
-        lines.append(f"   Tool: [bold yellow]{escape(detected_tool)}[/bold yellow]")
-        if detected_files:
-            lines.append(f"   Target: [dim yellow]{escape(', '.join(detected_files[:3]))}[/dim yellow]")
-    elif context_kind == "consuming_file":
-        lines.append("📄 [bold yellow]Processing file content...[/bold yellow]")
+        lines.append(f"🔧 [cyan]calling[/cyan] [yellow]{escape(detected_tool)}[/yellow]"
+                     + (f" → {escape(', '.join(files))}" if files else ""))
     else:
-        lines.append("💭 [bold blue]Thinking...[/bold blue]")
-
-    lines.append(f"   ⚡ [dim blue]{tps:.1f} t/s | Tokens: {token_count} | {elapsed:.1f}s[/dim blue]")
-
-    if not is_done:
-        lines.append("   " + "─" * 50)
-
-    preview_max = 300
-    preview = accumulated[-preview_max:] if len(accumulated) > preview_max else accumulated
-    if preview and not is_done:
-        preview_lines = preview.splitlines()
-        trimmed_lines = []
-        for line in preview_lines:
-            trimmed_lines.append((line[:100] + "...") if len(line) > 100 else line)
-        lines.append(f"   [dim white]{escape(chr(10).join(trimmed_lines))}[/dim white]")
-
-    from rich.text import Text
+        lines.append("💭 [blue]thinking[/blue]")
+    lines.append(f"   ⚡ [dim]{tps:.1f} t/s | {token_count} t | {elapsed:.1f}s[/dim]")
+    if not done and tail:
+        snippet = tail[-200:].replace("\n", " ⏎ ")
+        lines.append(f"   [dim]{escape(snippet)}[/dim]")
     return Text.from_markup("\n".join(lines))
 
 
-def _extract_display_path(tool_name, tool_args, result):
-    """Extract a display-friendly path from tool arguments or result."""
-    for key in ("path", "file_path", "directory", "dir", "url"):
-        if key in tool_args:
-            return str(tool_args[key])
-    if "command" in tool_args:
-        cmd = str(tool_args["command"])
-        return cmd[:80] + "..." if len(cmd) > 80 else cmd
-    if "path" in result:
-        return str(result["path"])
-    return "-"
+TOOL_RESULT_PREFIXES = (
+    "Tool call failed:",
+    "File contents",
+    "Directory contents:",
+    "Patched ", "Wrote file ",
+    "Found ", "No matches",
+    "returncode:",
+    "HTTP ",
+)
+
+OLD_TURNS_THRESHOLD = 5  # tool results from older than N user-turns get summarized
 
 
-def run_agent_loop(messages, model):
-    """Runs the agent loop: send → parse → execute → loop.
-    Mutates messages in-place to maintain the full conversation history.
-    """
+def _is_tool_result(content):
+    return any(content.startswith(p) for p in TOOL_RESULT_PREFIXES)
+
+
+def _summarize_tool_result(content):
+    """One-line replacement for an old tool result."""
+    first_line = content.splitlines()[0] if content else ""
+    # Take just the type marker + a brief hint
+    if first_line.startswith("File contents"):
+        return "[tool: file contents — summarized away]"
+    if first_line.startswith("returncode:"):
+        return f"[tool: command result — {first_line[:60]} — summarized away]"
+    if first_line.startswith("Patched") or first_line.startswith("Wrote file"):
+        return f"[tool: {first_line[:80]} — summarized away]"
+    if first_line.startswith("Tool call failed:"):
+        return f"[tool: {first_line[:80]} — summarized away]"
+    return "[tool result — summarized away]"
+
+
+def _prepare_messages(messages):
+    """Escape backslashes (Windows quirk) and summarize tool results
+    older than OLD_TURNS_THRESHOLD user turns."""
+    # First, count user-turn distance for each message
+    out = []
+    user_turns_after = []   # how many real user turns come after each msg
+    # Walk backwards counting "real" user messages (non-tool-result)
+    seen_real_user = 0
+    distances = [0] * len(messages)
+    for i in range(len(messages) - 1, -1, -1):
+        distances[i] = seen_real_user
+        m = messages[i]
+        if m.get("role") == "user" and not _is_tool_result(m.get("content", "")):
+            seen_real_user += 1
+
+    for i, m in enumerate(messages):
+        content = m.get("content", "")
+        if m.get("role") == "user" and _is_tool_result(content) \
+                and distances[i] > OLD_TURNS_THRESHOLD:
+            content = _summarize_tool_result(content)
+        if m.get("role") == "user":
+            content = content.replace("\\", "\\\\")
+        out.append({"role": m.get("role"), "content": content})
+    return out
+
+
+def run_agent_loop(messages, model, *, state=None, session_log=None,
+                   reflect_callback=None, snapshot_mgr=None):
+    """Mutates `messages` in-place. state and session_log are optional but
+    recommended; reflect_callback is called when the circuit breaker fires.
+    snapshot_mgr (if provided) snapshots files before write/patch.
+
+    Ctrl+C during a turn cancels the turn cleanly (returns without exiting)."""
     context_limit = get_context_limit(model)
+    consecutive_failures = {}  # args_hash → count
 
     while True:
-        # Prepare messages for Ollama by escaping backslashes in user messages
-        # to prevent Go/Jinja template rendering/tokenizer glitches with Windows paths.
-        escaped_messages = []
-        for msg in messages:
-            if msg.get("role") == "user":
-                escaped_messages.append({
-                    "role": "user",
-                    "content": msg.get("content", "").replace("\\", "\\\\")
-                })
-            else:
-                escaped_messages.append(msg)
+        escaped = _prepare_messages(messages)
 
-        # Detect what the model is working on: fresh thinking or processing tool output
-        context_kind = _detect_context_kind(messages)
-
-        # 1. Stream model response with live display showing real-time token stats
         content_parts = []
         token_count = 0
-        detected_tool = None
-        detected_files = []
         start_time = time.time()
-        stream_error = None
-        final_eval_count = 0
-        final_eval_duration = 0
-        final_prompt_eval_count = 0
+        detected_tool, detected_files = None, []
+        final_eval = final_eval_dur = final_prompt = 0
 
-        with Live(Text("Connecting..."), refresh_per_second=15, console=console) as live:
+        interrupted = False
+        with Live(Text("connecting..."), refresh_per_second=12, console=console) as live:
             try:
-                stream = ollama.chat(model=model, messages=escaped_messages, stream=True)
-
+                stream = ollama.chat(model=model, messages=escaped, stream=True)
                 for chunk in stream:
-                    token = chunk.get('message', {}).get('content', '') if isinstance(chunk, dict) else getattr(chunk.message, 'content', '')
-                    if token:
-                        content_parts.append(token)
+                    tok = chunk.get("message", {}).get("content", "") if isinstance(chunk, dict) \
+                        else getattr(chunk.message, "content", "")
+                    if tok:
+                        content_parts.append(tok)
                         token_count += 1
-
-                    accumulated = ''.join(content_parts)
-
-                    # Detect tool call in progress
+                    acc = "".join(content_parts)
                     if not detected_tool:
-                        detected_tool, detected_files = _detect_tool_and_files(accumulated)
-
-                    # Capture final stats if present
+                        detected_tool, detected_files = _detect_partial_tool(acc)
                     if isinstance(chunk, dict):
-                        if chunk.get('done'):
-                            final_eval_count = chunk.get('eval_count', 0) or 0
-                            final_eval_duration = chunk.get('eval_duration', 0) or 0
-                            final_prompt_eval_count = chunk.get('prompt_eval_count', 0) or 0
-                    elif getattr(chunk, 'done', False):
-                        final_eval_count = getattr(chunk, 'eval_count', 0) or 0
-                        final_eval_duration = getattr(chunk, 'eval_duration', 0) or 0
-                        final_prompt_eval_count = getattr(chunk, 'prompt_eval_count', 0) or 0
-
-                    elapsed = time.time() - start_time
-                    display = _build_live_display(
-                        context_kind, token_count, elapsed,
-                        detected_tool, detected_files, accumulated,
-                        is_done=False
-                    )
-                    live.update(display)
-
-                content = ''.join(content_parts)
-
-                # Brief "done" flash
-                elapsed = time.time() - start_time
-                display = _build_live_display(
-                    context_kind, token_count, elapsed,
-                    detected_tool, detected_files, content,
-                    is_done=True
-                )
-                live.update(display)
-                time.sleep(0.15)
-
+                        if chunk.get("done"):
+                            final_eval = chunk.get("eval_count", 0) or 0
+                            final_eval_dur = chunk.get("eval_duration", 0) or 0
+                            final_prompt = chunk.get("prompt_eval_count", 0) or 0
+                    live.update(_live_status(token_count, time.time() - start_time,
+                                             detected_tool, detected_files, acc, False))
+                live.update(_live_status(token_count, time.time() - start_time,
+                                         detected_tool, detected_files,
+                                         "".join(content_parts), True))
+                time.sleep(0.1)
+            except KeyboardInterrupt:
+                interrupted = True
             except Exception as e:
-                stream_error = e
+                console.print(Panel(f"[red]model call failed: {escape(str(e))}[/red]",
+                                    border_style="red"))
+                return
 
-        if stream_error:
-            console.print(Panel(f"[red]Error during model call: {escape(str(stream_error))}[/red]", title="Error", border_style="red"))
-            break
+        if interrupted:
+            console.print(Panel(
+                "[yellow]turn cancelled by user (Ctrl+C).[/yellow]\n"
+                "[dim]partial response discarded; session preserved.[/dim]",
+                border_style="yellow"))
+            # Append a marker so the agent knows on the next prompt that
+            # something was cut short.
+            messages.append({"role": "user",
+                             "content": "[USER INTERRUPTED THE PREVIOUS RESPONSE]"})
+            return
 
-        # Build a synthetic response object for make_stats_subtitle compatibility
-        class SyntheticResponse:
-            pass
-        synthetic = SyntheticResponse()
-        synthetic.eval_count = final_eval_count or token_count
-        synthetic.eval_duration = final_eval_duration or int((time.time() - start_time) * 1e9)
-        synthetic.prompt_eval_count = final_prompt_eval_count
-        stats_subtitle = make_stats_subtitle(synthetic, context_limit,
-            "cyan" if detected_tool else "green")
+        elapsed = time.time() - start_time
+        content = "".join(content_parts)
 
-        # 2. Parse model response for tool calls
-        tool_call = parse_tool_call(content)
+        # Separate thinking tag (if any) so it doesn't confuse parsing/persist
+        thoughts, visible = _strip_thinking(content)
+        if thoughts:
+            console.print(Panel(thoughts[:1500], title="💭 thinking",
+                                border_style="dim magenta"))
+
+        # Stats subtitle (consumed / window)
+        gen_tokens = final_eval or token_count
+        prompt_tokens = final_prompt
+        consumed = prompt_tokens + gen_tokens
+        remaining = max(0, context_limit - consumed)
+        tps = gen_tokens / elapsed if elapsed > 0 else 0
+        subtitle = (f"⚡ {tps:.1f} t/s | prompt {prompt_tokens} | gen {gen_tokens} | "
+                    f"window {consumed}/{context_limit} ({remaining} left)")
+
+        tool_call = parse_tool_call(visible)
 
         if tool_call and isinstance(tool_call, dict) and "tool" in tool_call:
             tool_name = tool_call.get("tool")
-            tool_args = tool_call.get("args", {})
+            tool_args = tool_call.get("args", {}) or {}
 
-            # 3. Execute the tool
-            result = execute_tool(tool_name, tool_args)
+            # Permission gate
+            if state is not None and not gate_tool(state, tool_name, tool_args):
+                console.print("[red]denied by user[/red]")
+                messages.append({"role": "assistant", "content": content})
+                messages.append({"role": "user",
+                                 "content": "Tool call denied by user. Adjust your approach or ask for guidance."})
+                if session_log:
+                    session_log.log_step(kind="assistant", content=visible,
+                                         prompt_tokens=prompt_tokens, gen_tokens=gen_tokens,
+                                         elapsed_s=elapsed,
+                                         tool_call={"name": tool_name, "args": tool_args},
+                                         tool_result={"error": "denied by user"})
+                continue
 
-            # 4. Minimal feedback
-            is_error = "error" in result or result.get("returncode", 0) != 0
+            # Snapshot file *before* mutating tools execute
+            if snapshot_mgr is not None and tool_name in ("write_file", "patch_file"):
+                p = tool_args.get("path")
+                if p:
+                    try:
+                        snapshot_mgr.take(p, "write" if tool_name == "write_file" else "patch")
+                    except Exception:
+                        pass
+
+            try:
+                result = execute_tool(tool_name, tool_args)
+            except KeyboardInterrupt:
+                console.print(Panel(
+                    "[yellow]turn cancelled during tool execution (Ctrl+C).[/yellow]",
+                    border_style="yellow"))
+                messages.append({"role": "assistant", "content": content})
+                messages.append({"role": "user",
+                                 "content": "[USER INTERRUPTED DURING TOOL EXECUTION]"})
+                return
+            is_error = "error" in result or result.get("returncode", 0) not in (0, None)
+
+            # Circuit breaker
+            h = _args_hash(tool_name, tool_args)
             if is_error:
-                console.print(f"[bold red]Tool:[/bold red] {tool_name} - error")
+                consecutive_failures[h] = consecutive_failures.get(h, 0) + 1
+                console.print(f"[bold red]tool[/bold red] {tool_name} - error "
+                              f"(strike {consecutive_failures[h]}/3)")
+                if consecutive_failures[h] >= 3:
+                    console.print(Panel(
+                        f"[red]circuit breaker tripped on {tool_name}.[/red]\n"
+                        "stopping the loop and triggering /reflect.",
+                        border_style="red"))
+                    if reflect_callback:
+                        reflect_callback()
+                    return
             else:
-                display_path = _extract_display_path(tool_name, tool_args, result)
-                console.print(f"[bold cyan]Tool:[/bold cyan] {tool_name} - {display_path}")
+                consecutive_failures.pop(h, None)
+                display_path = (tool_args.get("path") or tool_args.get("url")
+                                or (tool_args.get("command") or "")[:60] or "-")
+                console.print(f"[bold cyan]tool[/bold cyan] {tool_name} - {display_path}")
 
-            # 6. Feed the assistant response and tool result back to the messages list
-            messages.append({
-                "role": "assistant",
-                "content": content
-            })
+            messages.append({"role": "assistant", "content": content})
+            messages.append({"role": "user", "content": format_tool_result(result)})
 
-            messages.append({
-                "role": "user",
-                "content": format_tool_result(result)
-            })
+            if session_log:
+                session_log.log_step(kind="assistant", content=visible,
+                                     prompt_tokens=prompt_tokens, gen_tokens=gen_tokens,
+                                     elapsed_s=elapsed,
+                                     tool_call={"name": tool_name, "args": tool_args},
+                                     tool_result=result)
+            continue
 
-            # Repeat the loop
-        else:
-            # No tool call. This is the model's final answer.
-            messages.append({
-                "role": "assistant",
-                "content": content
-            })
-
-            # Print final answer to user with generation stats
-            console.print("\n[bold green]Response:[/bold green]")
-            console.print(Panel(
-                content,
-                border_style="green",
-                title="🤖 Assistant",
-                subtitle=stats_subtitle
-            ))
-            break
+        # No tool call → final answer
+        messages.append({"role": "assistant", "content": content})
+        console.print(Panel(visible, title="🤖 assistant", subtitle=subtitle,
+                            border_style="green"))
+        if session_log:
+            session_log.log_step(kind="assistant", content=visible,
+                                 prompt_tokens=prompt_tokens, gen_tokens=gen_tokens,
+                                 elapsed_s=elapsed)
+        return
