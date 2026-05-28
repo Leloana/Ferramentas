@@ -272,8 +272,8 @@ def _stream_generation(model, prompt):
             return None, 0, 0, 0
 
     content = "".join(content_parts)
-    from agent import THINK_RE
-    content = THINK_RE.sub("", content)
+    from agent import strip_think_blocks
+    content = strip_think_blocks(content)
     elapsed = time.time() - start_time
     return content, final_prompt, final_eval or token_count, elapsed
 

@@ -73,8 +73,8 @@ def run(args, ctx):
         elapsed = time.time() - start
         code = (resp.get("message", {}).get("content")
                 if isinstance(resp, dict) else resp.message.content) or ""
-        from agent import THINK_RE
-        code = THINK_RE.sub("", code)
+        from agent import strip_think_blocks
+        code = strip_think_blocks(code)
     except Exception as e:
         return {"error": f"generation failed: {e}"}
 

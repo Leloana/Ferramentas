@@ -32,10 +32,32 @@ console = Console()
 THINK_RE = re.compile(r"<think>.*?</think>", re.DOTALL)
 
 
+def strip_think_blocks(content):
+    """Strip all think blocks, including dangling ones starting without <think>."""
+    content = THINK_RE.sub("", content)
+    content = re.sub(r"^.*?</think>", "", content, flags=re.DOTALL)
+    return content
+
+
 def _strip_thinking(content):
     """Return (thinking, visible). thinking may be empty string."""
     thoughts = "\n".join(m.group(1).strip() for m in re.finditer(r"<think>(.*?)</think>", content, re.DOTALL))
-    visible = THINK_RE.sub("", content).strip()
+    if not content.strip().startswith("<think>") and "</think>" in content:
+        idx = 0
+        nesting = 1
+        while idx < len(content):
+            if content[idx:].startswith("<think>"):
+                nesting += 1
+                idx += 7
+            elif content[idx:].startswith("</think>"):
+                nesting -= 1
+                if nesting == 0:
+                    thoughts = content[:idx].strip()
+                    break
+                idx += 8
+            else:
+                idx += 1
+    visible = strip_think_blocks(content)
     return thoughts, visible
 
 
@@ -367,7 +389,7 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
                                 border_style="dim magenta"))
 
         # Strip all think tags from content immediately before tool parsing or logging
-        content = THINK_RE.sub("", content)
+        content = strip_think_blocks(content)
 
         # Stats subtitle (consumed / window)
         gen_tokens = final_eval or token_count

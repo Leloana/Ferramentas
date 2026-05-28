@@ -59,8 +59,8 @@ def run(args, ctx):
         elapsed = time.time() - start
         content = (resp.get("message", {}).get("content")
                    if isinstance(resp, dict) else resp.message.content) or ""
-        from agent import THINK_RE
-        content = THINK_RE.sub("", content)
+        from agent import strip_think_blocks
+        content = strip_think_blocks(content)
 
         session_log = ctx.get("session_log")
         if session_log:

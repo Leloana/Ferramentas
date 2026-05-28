@@ -265,6 +265,8 @@ def _stream_generation(model, prompt):
     content_parts = []
     token_count = 0
     start_time = time.time()
+    final_eval = 0
+    final_prompt = 0
 
     display = Text()
     display.append_text(Text.from_markup("[bold blue]Generating action plan with AI...[/bold blue]\n"))
@@ -290,6 +292,15 @@ def _stream_generation(model, prompt):
                 if token:
                     content_parts.append(token)
                     token_count += 1
+
+                if isinstance(chunk, dict):
+                    if chunk.get("done"):
+                        final_eval = chunk.get("done") and chunk.get("eval_count", 0) or 0
+                        final_prompt = chunk.get("done") and chunk.get("prompt_eval_count", 0) or 0
+                else:
+                    if getattr(chunk, "done", False):
+                        final_eval = getattr(chunk, "eval_count", 0) or 0
+                        final_prompt = getattr(chunk, "prompt_eval_count", 0) or 0
 
                 accumulated = "".join(content_parts)
                 elapsed = time.time() - start_time
@@ -326,13 +337,13 @@ def _stream_generation(model, prompt):
             return None, 0, 0, 0
 
     content = "".join(content_parts)
-    from agent import THINK_RE
-    content = THINK_RE.sub("", content)
+    from agent import strip_think_blocks
+    content = strip_think_blocks(content)
     elapsed = time.time() - start_time
-    return content, token_count, elapsed, token_count / elapsed if elapsed > 0 else 0
+    return content, final_prompt, final_eval or token_count, elapsed
 
 
-def generate_plan(prompt, model, working_dir, wincli_content=None):
+def generate_plan(prompt, model, working_dir, wincli_content=None, session_log=None):
     """Main entry point: generate an action plan based on a user prompt.
 
     Args:
@@ -380,10 +391,11 @@ def generate_plan(prompt, model, working_dir, wincli_content=None):
 
     # 3. Generate with streaming feedback
     console.print("")  # spacer
-    content, token_count, elapsed, tps = _stream_generation(model, plan_prompt)
+    res = _stream_generation(model, plan_prompt)
 
-    if content is None:
+    if res is None or res[0] is None:
         return False, None, None
+    content, prompt_tokens, gen_tokens, elapsed = res
 
     if not content.strip():
         console.print(Panel(
@@ -421,13 +433,24 @@ def generate_plan(prompt, model, working_dir, wincli_content=None):
         width=None
     ))
 
+    tps = gen_tokens / elapsed if elapsed > 0 else 0
+    if session_log:
+        session_log.log_step(
+            kind="assistant",
+            content=f"[Generated action plan: {prompt}]",
+            prompt_tokens=prompt_tokens,
+            gen_tokens=gen_tokens,
+            elapsed_s=elapsed
+        )
+
     # 6. Show summary
     console.print(Panel(
         f"[green]Plan generated and saved successfully![/green]\n"
         f"  Filename: [cyan]{filename}[/cyan]\n"
         f"  Path: [cyan]{plan_path.absolute()}[/cyan]\n"
         f"  Size: [bold]{len(content):,}[/bold] chars | "
-        f"Generated: [bold]{token_count:,}[/bold] tokens @ [bold]{tps:.1f}[/bold] t/s | "
+        f"Generated: [bold]{gen_tokens:,}[/bold] tokens @ [bold]{tps:.1f}[/bold] t/s | "
+        f"Prompt: [bold]{prompt_tokens:,}[/bold] tokens | "
         f"Elapsed: [bold]{elapsed:.1f}s[/bold]",
         title="Plan Complete",
         border_style="green"
