@@ -17,7 +17,6 @@ import re
 import time
 
 import ollama
-from rich.console import Console
 from rich.live import Live
 from rich.markup import escape
 from rich.panel import Panel
@@ -25,8 +24,7 @@ from rich.text import Text
 
 import tools
 from modes import gate_tool
-
-console = Console()
+from ui import console
 
 
 THINK_RE = re.compile(r"<think>.*?</think>", re.DOTALL)

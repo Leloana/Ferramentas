@@ -10,14 +10,13 @@ agent can still call it once we wire dispatch (done in agent.py).
 import re
 import ollama
 from pathlib import Path
-from rich.console import Console
 from rich.panel import Panel
 from rich.markup import escape
 
 NAME = "add_tool"
 DESCRIPTION = "Generate a new tool function from a description"
 
-console = Console()
+from ui import console
 
 
 TEMPLATE_PROMPT = """Write a new tool function for the agentic_cli project.

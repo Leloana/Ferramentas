@@ -1,6 +1,12 @@
-"""Agentic CLI entry point.
+"""WINCLI — the agent cli, windows native.
+
+Black & white interface. Every choice is made with the arrow keys + Enter
+(see ui.select); nothing in the UI requires typing a letter to pick an
+option. The chat opens straight into the last model you used (remembered in
+~/.wincli_config.json); switch models any time with /models.
 
 Slash commands:
+  /models                → switch model (arrow-key menu); remembered for next run
   /init                  → regenerate WINCLI.md
   /mode [args]           → show or change op/perm mode
   /context               → session dashboard
@@ -19,10 +25,8 @@ import sys
 from pathlib import Path
 
 import ollama
-from rich.console import Console
 from rich.markup import escape
 from rich.panel import Panel
-from rich.prompt import Prompt
 from rich.table import Table
 from prompt_toolkit import prompt as pt_prompt
 from prompt_toolkit.history import FileHistory
@@ -33,8 +37,9 @@ from persist import SessionLog, list_sessions, load_session, rebuild_history
 from snapshot import SnapshotManager
 import skills as skills_pkg
 import tools
+import ui
+from ui import console
 
-console = Console()
 # No signal handler: default KeyboardInterrupt raise lets each turn cancel
 # without killing the process. Top-level pt_prompt catches it to exit.
 
@@ -158,25 +163,19 @@ def handle_resume(arg, working_dir, model_default):
     if not arg:
         sessions = list_sessions(working_dir, limit=10)
         if not sessions:
-            console.print("[yellow]no sessions found in .persist/[/yellow]")
+            console.print("no sessions found in .persist/")
             return None, None
-        table = Table(title="recent sessions", border_style="cyan")
-        table.add_column("#", justify="right")
-        table.add_column("id")
-        table.add_column("model")
-        table.add_column("turns", justify="right")
-        table.add_column("started_at", style="dim")
-        for i, s in enumerate(sessions, start=1):
-            table.add_row(str(i), s["id"], s["model"], str(s["turns"]),
-                          s["started_at"][:19])
-        console.print(table)
-        choice = Prompt.ask("pick # (or [c]ancel)",
-                            choices=[str(i+1) for i in range(len(sessions))] + ["c"],
-                            default="1")
-        if choice == "c":
+        options = []
+        for s in sessions:
+            label = (f"{s['id']}  ·  {s['model']}  ·  {s['turns']} turns  ·  "
+                     f"{s['started_at'][:19]}")
+            options.append((label, s))
+        options.append(("cancel", None))
+        chosen = ui.select(options, title="resume which session?")
+        if chosen is None:
             return None, None
-        data = load_session(working_dir, sessions[int(choice) - 1]["id"])
-        return data, sessions[int(choice) - 1]["model"]
+        data = load_session(working_dir, chosen["id"])
+        return data, chosen["model"]
 
     data = load_session(working_dir, arg)
     if not data:
@@ -204,56 +203,81 @@ def handle_undo(arg, snapshot_mgr):
 
 
 def list_skills():
-    table = Table(title="skills", border_style="magenta")
-    table.add_column("name", style="magenta")
+    table = Table(title="skills", border_style="white")
+    table.add_column("name")
     table.add_column("description")
     for n, d in sorted(skills_pkg.index().items()):
         table.add_row(n, d)
     console.print(table)
 
 
-def main():
-    console.print(Panel.fit("[bold magenta]Agentic CLI — Ollama[/bold magenta]",
-                            style="bold magenta"))
-    working_dir = Path.cwd().resolve()
-    console.print(Panel(f"[cyan]{working_dir}[/cyan]", title="working directory",
-                        border_style="blue"))
-
-    # Ollama check + model selection
-    with console.status("connecting to ollama...", spinner="dots"):
+def fetch_models():
+    """Return the list of available ollama model names, or exit on failure."""
+    with console.status("connecting to ollama...", spinner="line"):
         try:
             models_data = ollama.list()
         except Exception as e:
-            console.print(Panel(f"[red]ollama not reachable: {escape(str(e))}[/red]",
-                                border_style="red"))
+            ui.panel(f"ollama not reachable: {escape(str(e))}", title="error")
+            ui.reset_background()
             sys.exit(1)
     available = [m.get("name", m.get("model", "")) for m in models_data.get("models", [])]
     available = [n for n in available if n]
     if not available:
-        console.print("[yellow]no models found. run `ollama pull <model>` first.[/yellow]")
+        console.print("no models found. run `ollama pull <model>` first.")
+        ui.reset_background()
         sys.exit(1)
+    return available
 
-    console.print("[bold]models:[/bold]")
-    for i, m in enumerate(available):
-        console.print(f"  [cyan]{i+1}[/cyan]. {m}")
-    sel = Prompt.ask("select model", choices=[str(i+1) for i in range(len(available))],
-                     default="1")
-    model = available[int(sel) - 1]
+
+def choose_model(available, *, current=None, force_menu=False):
+    """Pick a model via the arrow-key menu, remembering the choice.
+
+    If a remembered/last model is still available and force_menu is False, it
+    is used directly (the chat opens straight into it). Returns the model name.
+    """
+    last = current or ui.get_last_model()
+    if not force_menu and last in available:
+        return last
+
+    default = available.index(last) if last in available else 0
+    chosen = ui.select(
+        [(m, m) for m in available],
+        title="select model  (change later with /models)",
+        default=default,
+    )
+    if chosen is None:
+        # On first-run cancel we must still have a model.
+        chosen = last if last in available else available[0]
+    ui.set_last_model(chosen)
+    return chosen
+
+
+def main():
+    ui.paint_background()
+    ui.header()
+
+    working_dir = Path.cwd().resolve()
+    console.print(f"  working dir: {working_dir}", style="dim")
+
+    available = fetch_models()
+    # Opens straight into the last chosen model (config memory); only shows the
+    # arrow-key menu on first run or when the remembered model is gone.
+    model = choose_model(available)
 
     wincli_content, wincli_loaded = load_wincli_context(working_dir)
     state = SessionState()
     session_log = SessionLog(working_dir, model)
     snapshot_mgr = SnapshotManager(working_dir, session_log.session_id)
 
-    console.print(Panel(
-        f"model: [green]{model}[/green]\n"
-        f"WINCLI.md: {'loaded' if wincli_loaded else '[yellow]not found — run /init[/yellow]'}\n"
+    ui.panel(
+        f"model: {model}\n"
+        f"WINCLI.md: {'loaded' if wincli_loaded else 'not found — run /init'}\n"
         f"persist: {session_log.path}\n"
         f"mode: {state.mode_label()}  (change via /mode)\n"
         f"skills: {len(skills_pkg.index())} discovered  (list via /skills)\n"
-        "commands: /init /mode /focus /context /skills /skill /plan /debug /reflect "
-        "/resume /undo  exit",
-        title="ready", border_style="green"))
+        "commands: /models /init /mode /focus /context /skills /skill /plan "
+        "/debug /reflect /resume /undo  exit",
+        title="ready")
 
     system_prompt = build_system_prompt(working_dir, wincli_content)
     conversation_history = [{"role": "system", "content": system_prompt}]
@@ -278,14 +302,16 @@ def main():
             user_input = pt_prompt(render_prompt(working_dir, model, state, session_log),
                                    history=history)
         except (KeyboardInterrupt, EOFError):
-            console.print("\n[yellow]goodbye![/yellow]")
+            console.print("\ngoodbye!", style="dim")
+            ui.reset_background()
             sys.exit(0)
 
         user_input = user_input.strip()
         if not user_input:
             continue
         if user_input.lower() in ("exit", "quit"):
-            console.print("[yellow]goodbye![/yellow]")
+            console.print("goodbye!", style="dim")
+            ui.reset_background()
             sys.exit(0)
 
         # ---- slash commands ----
@@ -306,6 +332,20 @@ def main():
                 except Exception as e:
                     console.print(Panel(f"[red]init failed: {escape(str(e))}[/red]",
                                         border_style="red"))
+                continue
+
+            if cmd in ("models", "model"):
+                available = fetch_models()
+                new_model = choose_model(available, current=model, force_menu=True)
+                if new_model and new_model != model:
+                    model = new_model
+                    conversation_history[0] = {
+                        "role": "system",
+                        "content": build_system_prompt(working_dir, wincli_content),
+                    }
+                    console.print(f"model → {model}", style="bold")
+                else:
+                    console.print("model unchanged", style="dim")
                 continue
 
             if cmd == "mode":

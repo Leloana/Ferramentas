@@ -12,13 +12,12 @@ session.
 
 from dataclasses import dataclass, field
 from typing import Set, Dict
-from rich.console import Console
 from rich.panel import Panel
 from rich.syntax import Syntax
-from rich.prompt import Prompt
 from pathlib2 import Path
 
-console = Console()
+import ui
+from ui import console
 
 
 # Tools that modify state (anything that isn't pure read).
@@ -112,18 +111,20 @@ def gate_tool(state: SessionState, tool_name: str, args: dict):
         return True
 
     console.print(_diff_preview(tool_name, args))
-    legend = "[green]y[/green]=yes  [red]n[/red]=no  [cyan]a[/cyan]=always this tool"
+
+    options = [
+        ("allow once", "y"),
+        ("deny", "n"),
+        (f"always allow {tool_name}", "a"),
+    ]
     if path_key:
-        legend += "  [cyan]p[/cyan]=always this path"
-    console.print(f"[dim]{legend}[/dim]")
-    choice = Prompt.ask(
-        f"[yellow]Allow [bold]{tool_name}[/bold]"
-        + (f" on [bold]{path_key}[/bold]" if path_key else "")
-        + "?[/yellow]",
-        choices=["y", "n", "a", "p"] if path_key else ["y", "n", "a"],
-        default="n",
-    ).lower()
-    if choice == "n":
+        options.append((f"always allow {tool_name} on {path_key}", "p"))
+
+    title = f"Allow {tool_name}" + (f" on {path_key}" if path_key else "") + "?"
+    choice = ui.select(options, title=title, default=0,
+                       footer="↑/↓ move · enter choose")
+
+    if choice in (None, "n"):
         return False
     if choice == "a":
         state.always_allow_tools.add(tool_name)

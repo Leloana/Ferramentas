@@ -17,7 +17,6 @@ import time
 from typing import Optional, List, Dict, Any
 
 import ollama
-from rich.console import Console
 from rich.live import Live
 from rich.markup import escape
 from rich.text import Text
@@ -25,7 +24,7 @@ from rich.text import Text
 import tools as tools_mod
 from agent import parse_tool_call, format_tool_result, _strip_thinking, _dispatch_tool
 
-console = Console()
+from ui import console
 
 
 THINK_RE = re.compile(r"<think>(.*?)</think>", re.DOTALL)
