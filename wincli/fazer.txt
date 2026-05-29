@@ -1,0 +1,9 @@
+[CONCLUIDO] run_command agora é NON-BLOCKING:
+- tools.py: run_command lanca processos em background, retorna PID imediatamente
+- tools.py: _BACKGROUND_PROCESSES tracking + cleanup_background_processes() + atexit
+- main.py: cleanup explicito no Ctrl+C e exit
+- main.py: system prompt atualizado
+- agent.py: format_tool_result trata novo formato "started"
+- skills/debug.py: prompt atualizado para non-blocking
+- skills/plan.py: prompts atualizados para non-blocking
+- init_skill.py: WINCLI_TEMPLATE atualizado

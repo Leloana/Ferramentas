@@ -1,0 +1,11 @@
+table {
+  border-radius: 10px;
+}
+
+.ball {
+  border-radius: 50%;
+}
+
+canvas {
+  display: block;
+}

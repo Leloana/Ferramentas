@@ -137,74 +137,63 @@ async function submitToQueue() {
         listContainer.prepend(provisionalCard);
     }
 
-    // ── FASE 3: Busca automática de letra ──
-    let plainLyrics = '';
+    // ── FASE 3: Busca automática de letra (Preview apenas) ──
     let syncedLrc = '';
-    let lyricsFound = false;
+    let hasSyncedLrc = false;
 
     try {
         const lyricsRes = await fetch(`/api/fetch-lyrics?artist=${encodeURIComponent(artist)}&track=${encodeURIComponent(title)}`);
         const lyricsData = await lyricsRes.json();
 
         if (lyricsData.success) {
-            plainLyrics = lyricsData.plainLyrics || '';
             syncedLrc = lyricsData.syncedLyrics || '';
-            if (plainLyrics.trim()) {
-                lyricsFound = true;
+            if (syncedLrc.trim()) {
+                hasSyncedLrc = true;
             }
         }
     } catch (err) {
-        console.error('Erro ao buscar letra:', err);
+        console.error('Erro ao buscar letra (preview):', err);
     }
 
-    // ── FASE 4A: Sucesso — letra encontrada ──
-    if (lyricsFound) {
-        try {
-            const body = new URLSearchParams({
-                youtube_url: ytUrl,
-                language,
-                title,
-                artist,
-                plain_lyrics: plainLyrics,
-                synced_lrc: syncedLrc,
-                align_lyrics: 'true',
-            });
+    // ── FASE 4: Envio para o backend ──
+    try {
+        const body = new URLSearchParams({
+            youtube_url: ytUrl,
+            language,
+            title,
+            artist,
+            align_lyrics: 'true', // Centralizado: o backend fará MMS se tiver plain e sem synced
+        });
 
-            const resp = await fetch('/api/queue/add', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: body.toString(),
-            });
+        const resp = await fetch('/api/queue/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: body.toString(),
+        });
 
-            if (!resp.ok) {
-                const err = await resp.json();
-                throw new Error(err.detail || 'Erro ao adicionar à fila.');
-            }
-
-            const data = await resp.json();
-
-            // Atualiza item provisório para estado normal
-            updateProvisionalCardToSuccess(provisionalCard, title, artist, !!syncedLrc);
-
-            showToast(`✅ "${title}" adicionada à fila!`, 'success');
-
-            // Limpa formulário
-            if (urlInput) urlInput.value = '';
-            if (artistInput) artistInput.value = '';
-            if (titleInput) titleInput.value = '';
-
-            // Atualiza fila — o item provisório será substituído pelo real no próximo poll
-            await pollQueueStatus();
-
-        } catch (err) {
-            updateProvisionalCardToError(provisionalCard, title, artist);
-            showToast(`❌ Erro ao enfileirar: ${err.message}`, 'error');
+        if (!resp.ok) {
+            const err = await resp.json();
+            throw new Error(err.detail || 'Erro ao adicionar à fila.');
         }
 
-    // ── FASE 4B: Falha — letra não encontrada ──
-    } else {
+        const data = await resp.json();
+
+        // Atualiza item provisório para estado normal
+        updateProvisionalCardToSuccess(provisionalCard, title, artist, hasSyncedLrc);
+
+        showToast(`✅ "${title}" adicionada à fila!`, 'success');
+
+        // Limpa formulário
+        if (urlInput) urlInput.value = '';
+        if (artistInput) artistInput.value = '';
+        if (titleInput) titleInput.value = '';
+
+        // Atualiza fila — o item provisório será substituído pelo real no próximo poll
+        await pollQueueStatus();
+
+    } catch (err) {
         updateProvisionalCardToError(provisionalCard, title, artist);
-        showToast(`❌ Letra não encontrada para "${title} - ${artist}". Use o botão "➕ Adicionar Música" para adicionar manualmente.`, 'error');
+        showToast(`❌ Erro ao enfileirar: ${err.message}`, 'error');
     }
 
     // Reabilita botão

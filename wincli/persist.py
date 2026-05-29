@@ -37,10 +37,11 @@ from pathlib2 import Path
 class SessionLog:
     def __init__(self, working_dir: Path, model: str,
                  resumed_from: str = None):
-        self.dir = working_dir / ".persist"
-        self.dir.mkdir(exist_ok=True)
         self.session_id = datetime.now().strftime("%Y%m%d_%H%M%S") + "_" + uuid.uuid4().hex[:6]
-        self.path = self.dir / f"{self.session_id}.json"
+        # Each session lives in its own sub-folder: .persist/<session_id>/
+        self.dir = working_dir / ".persist" / self.session_id
+        self.dir.mkdir(parents=True, exist_ok=True)
+        self.path = self.dir / "session.json"
         self.data = {
             "session_id": self.session_id,
             "started_at": datetime.now(timezone.utc).isoformat(),
@@ -104,13 +105,18 @@ def list_sessions(working_dir: Path, limit: int = 20):
     pdir = working_dir / ".persist"
     if not pdir.exists():
         return []
-    files = sorted(pdir.glob("*.json"), key=lambda p: p.stat().st_mtime, reverse=True)
+    # Each session is stored as .persist/<session_id>/session.json
+    files = sorted(
+        pdir.glob("*/session.json"),
+        key=lambda p: p.stat().st_mtime,
+        reverse=True,
+    )
     out = []
     for p in files[:limit]:
         try:
             data = json.loads(p.read_text(encoding="utf-8"))
             out.append({
-                "id": data.get("session_id", p.stem),
+                "id": data.get("session_id", p.parent.name),
                 "model": data.get("model", "?"),
                 "turns": len(data.get("turns", [])),
                 "started_at": data.get("started_at", ""),
@@ -128,13 +134,17 @@ def load_session(working_dir: Path, session_id_or_prefix: str):
     if not pdir.exists():
         return None
     if session_id_or_prefix == "last":
-        files = sorted(pdir.glob("*.json"), key=lambda p: p.stat().st_mtime, reverse=True)
+        files = sorted(
+            pdir.glob("*/session.json"),
+            key=lambda p: p.stat().st_mtime,
+            reverse=True,
+        )
         if not files:
             return None
         return json.loads(files[0].read_text(encoding="utf-8"))
-    # Match by prefix
-    for p in pdir.glob("*.json"):
-        if p.stem.startswith(session_id_or_prefix):
+    # Match by prefix against the session folder name
+    for p in pdir.glob("*/session.json"):
+        if p.parent.name.startswith(session_id_or_prefix):
             return json.loads(p.read_text(encoding="utf-8"))
     return None
 

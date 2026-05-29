@@ -50,6 +50,7 @@ class QueueItem:
     progress_pct: int = 0
     error_msg: Optional[str] = None
     added_by: Optional[str] = None
+    clean_existing: bool = False
     _task: Optional[asyncio.Task] = field(default=None, repr=False)
 
     def to_dict(self) -> dict:
@@ -66,6 +67,7 @@ class QueueItem:
             "align_lyrics": self.align_lyrics,
             "has_lrc": bool(self.synced_lrc),
             "has_plain_lyrics": bool(self.plain_lyrics) and not bool(self.synced_lrc),
+            "clean_existing": self.clean_existing,
         }
 
 
@@ -90,6 +92,7 @@ class SongQueueManager:
         synced_lrc: Optional[str] = None,
         added_by: Optional[str] = None,
         align_lyrics: bool = False,
+        clean_existing: bool = False,
     ) -> QueueItem:
         """Adiciona música à fila e dispara Fase 1 imediatamente."""
         if len(self.queue) >= MAX_QUEUE_SIZE:
@@ -109,6 +112,7 @@ class SongQueueManager:
             synced_lrc=synced_lrc,
             align_lyrics=align_lyrics,
             added_by=added_by,
+            clean_existing=clean_existing,
         )
         self.queue.append(item)
         logger.info(f"[QUEUE] Música adicionada à fila: '{title}' por {added_by or 'anônimo'} (id={item.id})")
@@ -193,6 +197,20 @@ class SongQueueManager:
                 if normalized:
                     (song_dir / "lyrics.txt").write_text(normalized + "\n", encoding="utf-8")
 
+            # Se clean_existing for True, limpamos a pasta antes de começar a Fase 1!
+            if item.clean_existing:
+                logger.info(f"[QUEUE:{item.id}] Reinstalação solicitada. Limpando arquivos anteriores...")
+                for sub in song_dir.iterdir():
+                    if sub.name == "meta.json":
+                        continue
+                    try:
+                        if sub.is_dir():
+                            shutil.rmtree(sub)
+                        else:
+                            sub.unlink()
+                    except Exception as e:
+                        logger.warning(f"Não foi possível remover arquivo residual {sub.name} na limpeza da fila: {e}")
+
             # 2. Download do YouTube (ou detecção de arquivos locais já carregados)
             item.progress_pct = 15
             original_audio = song_dir / "original.mp3"
@@ -274,7 +292,7 @@ class SongQueueManager:
                 success = await run_reinstall_song(
                     str(song_dir),
                     language=item.language,
-                    clean_existing=False,
+                    clean_existing=item.clean_existing,
                     skip_prepare_song=False,  # Auto-aprovar: gera segments.json direto
                     align_lyrics=align_lyrics,
                 )

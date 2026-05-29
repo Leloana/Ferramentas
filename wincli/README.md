@@ -209,7 +209,7 @@ condensed knowledge without the inflated history.
 ## Project layout
 
 ```
-agentic_cli/
+wincli/
 ├── main.py             # entry, slash dispatch, REPL
 ├── agent.py            # main agent loop (stream, parse, gate, snapshot,
 │                       #   execute, persist, circuit-breaker, Ctrl+C)

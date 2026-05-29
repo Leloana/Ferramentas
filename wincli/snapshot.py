@@ -26,7 +26,8 @@ class SnapshotEntry:
 class SnapshotManager:
     def __init__(self, working_dir: Path, session_id: str):
         self.working_dir = working_dir
-        self.root = working_dir / ".persist" / "snapshots" / session_id
+        # Snapshots live inside the session's own folder: .persist/<session_id>/snapshots/
+        self.root = working_dir / ".persist" / session_id / "snapshots"
         self.root.mkdir(parents=True, exist_ok=True)
         self.stack: List[SnapshotEntry] = []
         self.first_snapshot: Dict[str, str] = {}  # path → first snapshot location
