@@ -1,4 +1,4 @@
-"""WINCLI — the agent cli, windows native.
+﻿"""WINCLI ÔÇö the agent cli, windows native.
 
 Black & white interface. Every choice is made with the arrow keys + Enter
 (see ui.select); nothing in the UI requires typing a letter to pick an
@@ -6,16 +6,16 @@ option. The chat opens straight into the last model you used (remembered in
 ~/.wincli_config.json); switch models any time with /models.
 
 Slash commands:
-  /models                → switch model (arrow-key menu); remembered for next run
-  /init                  → regenerate WINCLI.md
-  /mode [args]           → show or change op/perm mode
-  /context               → session dashboard
-  /skill <name> [args]   → invoke a skill from skills/
-  /skills                → list available skills
-  /plan <prompt>         → shortcut for /skill plan ...
-  /debug <cmd> ||| <ok>  → shortcut for /skill debug ...
-  /reflect [hint]        → shortcut for /skill reflect ...
-  exit / quit            → leave
+  /models                ÔåÆ switch model (arrow-key menu); remembered for next run
+  /init                  ÔåÆ regenerate WINCLI.md
+  /mode [args]           ÔåÆ show or change op/perm mode
+  /context               ÔåÆ session dashboard
+  /skill <name> [args]   ÔåÆ invoke a skill from skills/
+  /skills                ÔåÆ list available skills
+  /plan <prompt>         ÔåÆ shortcut for /skill plan ...
+  /debug <cmd> ||| <ok>  ÔåÆ shortcut for /skill debug ...
+  /reflect [hint]        ÔåÆ shortcut for /skill reflect ...
+  exit / quit            ÔåÆ leave
 
 The shell prompt is enriched as:
   [<cwd_basename> | <model> | <op>/<perm> | <session_tokens>] >
@@ -55,7 +55,7 @@ def load_wincli_context(working_dir):
 
 
 def build_system_prompt(working_dir, wincli_content):
-    """Core tools only — skills are surfaced lazily via /skill ..."""
+    """Core tools only ÔÇö skills are surfaced lazily via /skill ..."""
     wincli_section = ""
     if wincli_content:
         wincli_section = (f"\nBASE PROJECT CONTEXT (WINCLI.md):\n"
@@ -63,21 +63,21 @@ def build_system_prompt(working_dir, wincli_content):
     return f"""You are an agentic assistant with access to the following tools.
 
 WORKING DIRECTORY: {working_dir}
-All file paths MUST be absolute paths. Never use './', '../', or relative paths.
+All file paths are relative to this directory unless absolute.
 {wincli_section}
 Core tools:
-- run_command: {{"command": "<powershell>"}}   # ⚠ NON-BLOCKING — launches in background, returns PID
+- run_command: {{"command": "<powershell>"}}
 - read_file:   {{"path": "<file>"}}            # returns numbered lines
 - write_file:  {{"path": "<file>", "content": "<text>"}}
 - patch_file:  see active variant below
 - list_dir:    {{"path": "<dir>"}}
-- search_file: {{"path": "<file>", "query": "<str>"}}   # lists dir if file not found
+- search_file: {{"path": "<file>", "query": "<str>"}}
 - http_get:    {{"url": "<url>"}}
 
 patch_file active variant: {tools.ACTIVE_PATCH}
-  v1: {{"path","old_str","new_str"}}                   — first unique match
+  v1: {{"path","old_str","new_str"}}                   ÔÇö first unique match
   v2: {{"path","old_str","new_str","context_before","context_after"}}
-  v3: {{"path","start_line","end_line","new_content"}} — uses line numbers
+  v3: {{"path","start_line","end_line","new_content"}} ÔÇö uses line numbers
        from read_file's numbered output
 
 To call a tool, output ONLY this JSON block:
@@ -90,7 +90,7 @@ RULES:
 2. After a tool, wait for the result before calling the next.
 3. When you have the final answer, write it directly WITHOUT a JSON block.
 4. Commands are PowerShell (`Get-ChildItem`, not `ls`).
-5. Modifying an existing file → patch_file. Creating new → write_file.
+5. Modifying an existing file ÔåÆ patch_file. Creating new ÔåÆ write_file.
 6. If WINCLI.md is loaded, follow it.
 7. Final answer = short summary (created/modified/ran). No prose unless asked.
 8. Thinking is allowed inside <think>...</think>; the user sees it but it
@@ -104,7 +104,7 @@ def render_prompt(working_dir, model, state, session_log):
     consumed = totals["prompt_tokens"] + totals["gen_tokens"]
     if state.focus:
         # focus mode: minimal prompt, keep only token cost (required)
-        return f"\n[{consumed:,} t] › "
+        return f"\n[{consumed:,} t] ÔÇ║ "
     return f"\n[{cwd} | {model} | {state.mode_label()} | {consumed:,} t] > "
 
 
@@ -124,9 +124,9 @@ def show_context(state, session_log, model, working_dir, wincli_loaded,
     table.add_row("patch_file variant", tools.ACTIVE_PATCH)
     table.add_row("turns", str(session_log.turn_count()))
     table.add_row("messages in history", str(len(conversation_history)))
-    table.add_row("prompt tokens (Σ)", f"{totals['prompt_tokens']:,}")
-    table.add_row("gen tokens (Σ)", f"{totals['gen_tokens']:,}")
-    table.add_row("elapsed (Σ)", f"{totals['elapsed_s']:.1f}s")
+    table.add_row("prompt tokens (╬ú)", f"{totals['prompt_tokens']:,}")
+    table.add_row("gen tokens (╬ú)", f"{totals['gen_tokens']:,}")
+    table.add_row("elapsed (╬ú)", f"{totals['elapsed_s']:.1f}s")
     table.add_row("persist file", str(session_log.path))
     table.add_row("undo stack depth", str(len(snapshot_mgr.stack)))
     console.print(table)
@@ -167,7 +167,7 @@ def handle_resume(arg, working_dir, model_default):
             return None, None
         options = []
         for s in sessions:
-            label = (f"{s['id']}  ·  {s['model']}  ·  {s['turns']} turns  ·  "
+            label = (f"{s['id']}  ┬À  {s['model']}  ┬À  {s['turns']} turns  ┬À  "
                      f"{s['started_at'][:19]}")
             options.append((label, s))
         options.append(("cancel", None))
@@ -199,12 +199,12 @@ def handle_undo(arg, snapshot_mgr):
         return
     for e in reverted:
         verb = "deleted" if not e.existed_before else "restored"
-        console.print(f"[green]↶[/green] {verb} {e.path} (was {e.action} #{e.seq})")
+        console.print(f"[green]ÔåÂ[/green] {verb} {e.path} (was {e.action} #{e.seq})")
 
 
 def list_skills():
-    table = Table(title="skills", border_style="magenta")
-    table.add_column("name", style="magenta")
+    table = Table(title="skills", border_style="white")
+    table.add_column("name")
     table.add_column("description")
     for n, d in sorted(skills_pkg.index().items()):
         table.add_row(n, d)
@@ -271,7 +271,7 @@ def main():
 
     ui.panel(
         f"model: {model}\n"
-        f"WINCLI.md: {'loaded' if wincli_loaded else 'not found — run /init'}\n"
+        f"WINCLI.md: {'loaded' if wincli_loaded else 'not found ÔÇö run /init'}\n"
         f"persist: {session_log.path}\n"
         f"mode: {state.mode_label()}  (change via /mode)\n"
         f"skills: {len(skills_pkg.index())} discovered  (list via /skills)\n"
@@ -280,9 +280,8 @@ def main():
         title="ready")
 
     system_prompt = build_system_prompt(working_dir, wincli_content)
-    tools.set_working_dir(working_dir)
     conversation_history = [{"role": "system", "content": system_prompt}]
-    history = FileHistory(str(working_dir / ".persist" / ".history"))
+    history = FileHistory(str(working_dir / ".history"))
 
     def trigger_reflect():
         skills_pkg.run("reflect", "", ctx_dict())
@@ -304,7 +303,6 @@ def main():
                                    history=history)
         except (KeyboardInterrupt, EOFError):
             console.print("\ngoodbye!", style="dim")
-            tools.cleanup_background_processes()
             ui.reset_background()
             sys.exit(0)
 
@@ -313,7 +311,6 @@ def main():
             continue
         if user_input.lower() in ("exit", "quit"):
             console.print("goodbye!", style="dim")
-            tools.cleanup_background_processes()
             ui.reset_background()
             sys.exit(0)
 
@@ -346,7 +343,7 @@ def main():
                         "role": "system",
                         "content": build_system_prompt(working_dir, wincli_content),
                     }
-                    console.print(f"model → {model}", style="bold")
+                    console.print(f"model ÔåÆ {model}", style="bold")
                 else:
                     console.print("model unchanged", style="dim")
                 continue
@@ -364,9 +361,9 @@ def main():
                 else:
                     state.focus = not state.focus
                 if state.focus:
-                    console.print("[dim]focus on — only chat, tools, and tokens.[/dim]")
+                    console.print("[dim]focus on ÔÇö only chat, tools, and tokens.[/dim]")
                 else:
-                    console.print("[green]focus off — full UI restored.[/green]")
+                    console.print("[green]focus off ÔÇö full UI restored.[/green]")
                 continue
 
             if cmd == "context":
@@ -443,7 +440,7 @@ def main():
                            reflect_callback=trigger_reflect,
                            snapshot_mgr=snapshot_mgr)
         except KeyboardInterrupt:
-            console.print("[yellow]turn cancelled — session preserved[/yellow]")
+            console.print("[yellow]turn cancelled ÔÇö session preserved[/yellow]")
         except Exception as e:
             console.print(Panel(f"[red]agent error: {escape(str(e))}[/red]",
                                 border_style="red"))

@@ -8,14 +8,14 @@ propose a different approach.
 
 import time
 import ollama
-from rich.console import Console
 from rich.panel import Panel
 from rich.markup import escape
 
 NAME = "reflect"
 DESCRIPTION = "Step back, analyze stuck state, propose a different approach"
 
-console = Console()
+import ui
+from ui import console
 
 
 REFLECT_SYSTEM = """You are a debugging coach. You will be given the recent

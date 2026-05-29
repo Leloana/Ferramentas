@@ -21,18 +21,16 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional, Set
 
-from rich.console import Console
 from rich.panel import Panel
-from rich.prompt import Prompt
 from rich.markup import escape
 from rich.table import Table
 
 from subagent import SubAgent
+import ui
+from ui import console
 
 NAME = "plan"
 DESCRIPTION = "Multi-agent plan mode: planner → reviewer → approval → executors → verifier"
-
-console = Console()
 
 
 # ---------- prompts ----------
@@ -322,16 +320,18 @@ def _approval(plan_path: Path, content: str) -> Optional[str]:
     """Loop until user approves, edits, rejects, or cancels.
     Returns the final markdown string, or None if cancelled."""
     while True:
-        choice = Prompt.ask(
-            "[yellow]plan ready[/yellow] — [bold]a[/bold]pprove / "
-            "[bold]e[/bold]dit / [bold]r[/bold]eject (re-plan) / "
-            "[bold]c[/bold]ancel",
-            choices=["a", "e", "r", "c"], default="a",
-        ).lower()
+        options = [
+            ("approve", "a"),
+            ("edit in editor", "e"),
+            ("reject (re-plan)", "r"),
+            ("cancel", "c"),
+        ]
+        choice = ui.select(options, title="plan ready — what to do?", default=0,
+                           footer="↑/↓ move · enter select")
+        if choice in (None, "c"):
+            return None
         if choice == "a":
             return content
-        if choice == "c":
-            return None
         if choice == "e":
             if _open_editor(plan_path):
                 content = plan_path.read_text(encoding="utf-8")

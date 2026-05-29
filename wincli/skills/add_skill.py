@@ -9,14 +9,14 @@ import re
 import time
 import ollama
 from pathlib import Path
-from rich.console import Console
 from rich.panel import Panel
 from rich.markup import escape
 
 NAME = "add_skill"
 DESCRIPTION = "Generate a new skill file from a description"
 
-console = Console()
+import ui
+from ui import console
 
 
 TEMPLATE_PROMPT = """Write a new skill file for the wincli project.

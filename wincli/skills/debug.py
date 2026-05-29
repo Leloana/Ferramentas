@@ -13,7 +13,6 @@ Why this shape and not the full plan-style pipeline:
 
 import re
 
-from rich.console import Console
 from rich.panel import Panel
 from rich.markup import escape
 
@@ -22,7 +21,8 @@ from subagent import SubAgent
 NAME = "debug"
 DESCRIPTION = "Multi-round debug loop with context refresh between rounds"
 
-console = Console()
+import ui
+from ui import console
 
 
 ROUND_SYS = """You are debugging code. You have ONE goal: make the command
