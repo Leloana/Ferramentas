@@ -61,7 +61,7 @@ def set_working_dir(wd):
     _WORKING_DIR = Path(wd).resolve()
 
 
-ACTIVE_PATCH = "v1"  # "v1" | "v2" | "v3"
+ACTIVE_PATCH = "v3"  # "v1" | "v2" | "v3" — v3 (line-range) is most robust for small models
 
 # Paths the AI agent must never touch — its own config and session data.
 _GUARDED_DIRS = [".persist"]
@@ -463,6 +463,51 @@ def search_file(args):
     return {"matches": matches}
 
 
+def remove_file(args):
+    """Remove a file or directory using PowerShell Remove-Item.
+
+    Args:
+        path      : absolute path to file or directory (required)
+        recursive : true to remove a non-empty directory tree (optional, default false)
+    """
+    raw = args.get("path")
+    if not raw:
+        return _err("missing 'path' arg")
+    raw = _resolve_abs(raw)
+    if g := _guard_path(raw):
+        return g
+    path = Path(raw)
+    if not path.exists():
+        return _err(f"path not found: {raw}", "check spelling or use list_dir to verify")
+
+    recursive = str(args.get("recursive", "false")).lower() in ("true", "1", "yes")
+
+    if path.is_dir() and not recursive:
+        return _err(
+            f"'{raw}' is a directory",
+            "pass recursive: true to remove a directory and its contents",
+        )
+
+    ps_flags = "-Recurse -Force" if path.is_dir() else "-Force"
+    cmd = f"Remove-Item -LiteralPath '{raw}' {ps_flags}"
+    try:
+        result = subprocess.run(
+            ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", cmd],
+            capture_output=True, text=True, timeout=30,
+        )
+    except FileNotFoundError:
+        return _err("powershell.exe not found", "are you running on Windows?")
+    except subprocess.TimeoutExpired:
+        return _err("remove_file timed out after 30s")
+
+    if result.returncode != 0:
+        return _err(
+            f"Remove-Item failed (rc={result.returncode})",
+            (result.stderr or result.stdout or "").strip()[:400],
+        )
+    return {"status": "removed", "path": raw}
+
+
 def http_get(args):
     import requests
     url = args.get("url")
@@ -514,6 +559,7 @@ CORE_TOOLS = {
     "read_file": read_file,
     "write_file": write_file,
     "patch_file": patch_file,
+    "remove_file": remove_file,
     "list_dir": list_dir,
     "search_file": search_file,
     "http_get": http_get,

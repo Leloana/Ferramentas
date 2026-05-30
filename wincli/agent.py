@@ -28,6 +28,10 @@ import ui
 from ui import console
 
 
+# Low temperature keeps tool-call JSON deterministic. Small models (e.g. a 9B)
+# drift into malformed/invented tool calls at the model's default (~0.7-0.8).
+AGENT_OPTIONS = {"temperature": 0.15, "top_p": 0.9}
+
 THINK_RE = re.compile(r"<think>.*?</think>", re.DOTALL)
 
 
@@ -105,23 +109,71 @@ def _rescue_write_call(raw_json: str):
     return {"tool": "write_file", "args": {"path": path, "content": raw_content}}
 
 
+def _extract_embedded_json(text):
+    """Find the first {"tool": ...} object embedded anywhere in free text.
+
+    Returns (tool_call_dict, prose_before) or (None, None).
+    Uses a bracket counter so it handles nested objects correctly.
+    """
+    for m in re.finditer(r'\{"tool"\s*:', text):
+        start = m.start()
+        depth = 0
+        for i, ch in enumerate(text[start:]):
+            if ch == '{':
+                depth += 1
+            elif ch == '}':
+                depth -= 1
+                if depth == 0:
+                    candidate = text[start:start + i + 1]
+                    try:
+                        parsed = json.loads(candidate)
+                        if isinstance(parsed, dict) and "tool" in parsed:
+                            return parsed, text[:start].strip()
+                    except json.JSONDecodeError:
+                        rescued = _rescue_write_call(candidate)
+                        if rescued:
+                            return rescued, text[:start].strip()
+                    break
+    return None, None
+
+
 def parse_tool_call(response_content):
-    """Parse a tool call JSON block from the model response. Thinking
-    tags must be stripped before calling this."""
+    """Parse a tool call from the model response.
+
+    Returns (tool_call_dict | None, prose_prefix | "").
+    Prose prefix is non-empty when the tool call was embedded inside text
+    rather than sent as a standalone block — the caller should display it.
+
+    Priority:
+      1. ```json … ``` fenced block (the correct format)
+      2. Bare JSON at the start of the response
+      3. {"tool":…} object embedded anywhere inside prose
+    """
+    # 1. Fenced block (preferred / correct format)
     json_match = re.search(r"```json\s*(.*?)\s*```", response_content, re.DOTALL)
     if json_match:
         raw = json_match.group(1).strip()
         try:
-            return json.loads(raw)
+            return json.loads(raw), ""
         except json.JSONDecodeError:
-            # Fallback: rescue write_file whose content has unescaped quotes
             rescued = _rescue_write_call(raw)
             if rescued:
-                return rescued
+                return rescued, ""
+
+    # 2. Bare JSON covering the whole response
     try:
-        return json.loads(response_content.strip())
+        parsed = json.loads(response_content.strip())
+        if isinstance(parsed, dict) and "tool" in parsed:
+            return parsed, ""
     except json.JSONDecodeError:
-        return None
+        pass
+
+    # 3. JSON embedded inside prose — extract and surface the preceding text
+    embedded, prose = _extract_embedded_json(response_content)
+    if embedded:
+        return embedded, prose or ""
+
+    return None, ""
 
 
 def _dispatch_tool(tool_name):
@@ -195,9 +247,9 @@ def format_tool_result(result):
     if "content" in result:
         return f"File contents:\n{result['content']}"
     if result.get("status") == "patched":
-        return f"Patched {result['path']} (variant {result.get('variant','?')})"
+        return f"Patched {result['path'].replace(chr(92), '/')} (variant {result.get('variant','?')})"
     if result.get("status") == "ok":
-        return f"Wrote file {result['path']}"
+        return f"Wrote file {result['path'].replace(chr(92), '/')}"
     if "entries" in result:
         return f"Directory contents: {', '.join(result['entries'])}"
     if "matches" in result:
@@ -374,6 +426,9 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
     context_limit = get_context_limit(model)
     consecutive_failures = {}  # args_hash → count
     focus = bool(getattr(state, "focus", False)) if state is not None else False
+    listed_dirs: set = set()   # parent dirs confirmed via list_dir this turn
+
+    _MUTATING_TOOLS = {"write_file", "patch_file", "remove_file"}
 
     while True:
         escaped = _prepare_messages(messages)
@@ -389,7 +444,8 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
         in_reasoning = False
         with Live(Text("connecting..."), refresh_per_second=12, console=console) as live:
             try:
-                stream = ollama.chat(model=model, messages=escaped, stream=True)
+                stream = ollama.chat(model=model, messages=escaped, stream=True,
+                                     options=AGENT_OPTIONS)
                 for chunk in stream:
                     reasoning = ""
                     content = ""
@@ -481,28 +537,61 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
         if warn:
             subtitle = f"{subtitle}  {warn}"
 
-        tool_call = parse_tool_call(visible)
+        tool_call, embedded_prose = parse_tool_call(visible)
+
+        # Model sent prose + tool call in the same response: show the prose
+        # as an intermediate message before executing the tool.
+        if tool_call and embedded_prose:
+            console.print(Panel(embedded_prose, title="🤖 assistant (message)",
+                                subtitle=subtitle, border_style="green"))
+            console.print("[dim]↳ tool call detected inside message — executing it now[/dim]")
 
         if tool_call and isinstance(tool_call, dict) and "tool" in tool_call:
             tool_name = tool_call.get("tool")
             tool_args = tool_call.get("args", {}) or {}
 
+            # Track list_dir calls so we know which dirs have been verified
+            if tool_name == "list_dir":
+                p = tool_args.get("path", "")
+                if p:
+                    from pathlib import Path as _Path
+                    listed_dirs.add(str(_Path(p).resolve()))
+
+            # Pre-check: block mutating tools if parent dir wasn't listed first
+            if tool_name in _MUTATING_TOOLS:
+                file_path = tool_args.get("path", "")
+                if file_path:
+                    from pathlib import Path as _Path
+                    parent = str(_Path(file_path).resolve().parent)
+                    if parent not in listed_dirs:
+                        warn = (
+                            f"RULE VIOLATION: you called '{tool_name}' on '{file_path}' "
+                            f"without first calling list_dir on its parent directory "
+                            f"('{parent}'). You MUST call list_dir on that directory "
+                            f"first to confirm the file exists and its exact name is correct."
+                        )
+                        console.print(f"[yellow]pre-check: list_dir required before {tool_name}[/yellow]")
+                        messages.append({"role": "assistant", "content": content})
+                        messages.append({"role": "user", "content": warn})
+                        continue
+
             # Permission gate
             if state is not None and not gate_tool(state, tool_name, tool_args):
-                console.print("[red]denied by user[/red]")
+                console.print("[red]denied by user — stopping turn[/red]")
                 messages.append({"role": "assistant", "content": content})
                 messages.append({"role": "user",
-                                 "content": "Tool call denied by user. Adjust your approach or ask for guidance."})
+                                 "content": "The user didn't accept the request. "
+                                            "They may want to change the approach."})
                 if session_log:
                     session_log.log_step(kind="assistant", content=visible,
                                          prompt_tokens=prompt_tokens, gen_tokens=gen_tokens,
                                          elapsed_s=elapsed,
                                          tool_call={"name": tool_name, "args": tool_args},
                                          tool_result={"error": "denied by user"})
-                continue
+                return
 
             # Snapshot file *before* mutating tools execute
-            if snapshot_mgr is not None and tool_name in ("write_file", "patch_file"):
+            if snapshot_mgr is not None and tool_name in ("write_file", "patch_file", "remove_file"):
                 p = tool_args.get("path")
                 if p:
                     try:
@@ -526,7 +615,7 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
             h = _args_hash(tool_name, tool_args)
             if is_error:
                 consecutive_failures[h] = consecutive_failures.get(h, 0) + 1
-                console.print(f"[bold red]tool[/bold red] {tool_name} - error "
+                console.print(f"[bold red]✗ tool[/bold red] [red]{tool_name}[/red] - error "
                               f"(strike {consecutive_failures[h]}/3)")
                 if consecutive_failures[h] >= 3:
                     console.print(Panel(
@@ -540,7 +629,7 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
                 consecutive_failures.pop(h, None)
                 display_path = (tool_args.get("path") or tool_args.get("url")
                                 or (tool_args.get("command") or "")[:60] or "-")
-                console.print(f"[bold cyan]tool[/bold cyan] {tool_name} - {display_path}")
+                console.print(f"[bold green]✓ tool[/bold green] [green]{tool_name}[/green] - {display_path}")
 
             messages.append({"role": "assistant", "content": content})
             messages.append({"role": "user", "content": format_tool_result(result)})
