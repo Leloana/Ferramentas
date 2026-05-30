@@ -692,9 +692,19 @@ def run(args, ctx):
                 task.status = "done"
                 task.summary = summary
             else:
-                # ok but no marker → treat as done with raw tail
-                task.status = "done"
-                task.summary = (result["content"].splitlines() or [""])[-1][:200]
+                # ok but no SUMMARY/FAILED marker. If this task was supposed to
+                # write/patch a file but nothing was actually touched, the tool
+                # call never executed (e.g. a parse failure) — do NOT report it
+                # as done just because the model emitted some final text.
+                wants_write = any(t in ("write_file", "patch_file")
+                                  for t in (task.tools or []))
+                if wants_write and not result["files_touched"]:
+                    task.status = "failed"
+                    task.summary = ("no file was written/patched — the tool call "
+                                    "produced no file (likely failed to parse)")
+                else:
+                    task.status = "done"
+                    task.summary = (result["content"].splitlines() or [""])[-1][:200]
         else:
             task.status = "failed"
             task.summary = f"{result['status']}: {result['content'][:150]}"

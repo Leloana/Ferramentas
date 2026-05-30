@@ -175,13 +175,20 @@ def parse_tool_call(response_content):
             if rescued:
                 return rescued, ""
 
-    # 2. Bare JSON covering the whole response
+    # 2. Bare JSON covering the whole response (no fence)
     try:
         parsed = json.loads(response_content.strip())
         if isinstance(parsed, dict) and "tool" in parsed:
             return parsed, ""
     except json.JSONDecodeError:
-        pass
+        # Large write_file calls often fail json.loads because the model emits
+        # raw newlines / unescaped quotes inside a multi-line content value.
+        # The byte-level rescue handles exactly this — and the brace-counting
+        # _extract_embedded_json (step 3) can't, because CSS/JS braces in the
+        # content desync its depth counter. Try the rescue here before step 3.
+        rescued = _rescue_write_call(response_content.strip())
+        if rescued:
+            return rescued, ""
 
     # 3. JSON embedded inside prose — extract and surface the preceding text
     embedded, prose = _extract_embedded_json(response_content)
