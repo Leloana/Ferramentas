@@ -28,16 +28,21 @@ import ui
 from ui import console
 
 
-# Low temperature keeps tool-call JSON deterministic. Small models (e.g. a 9B)
-# drift into malformed/invented tool calls at the model's default (~0.7-0.8).
-AGENT_OPTIONS = {"temperature": 0.15, "top_p": 0.9}
+# Sampling tuned for deterministic tool-call JSON. Small models (e.g. a 9B)
+# drift into malformed/invented tool calls at typical chat defaults
+# (temperature ~0.7-1.0). presence_penalty is forced to 0 because a high value
+# (some modelfiles ship 1.5) penalizes the repeated tokens that structured JSON
+# inherently needs ("tool", "path", "args", quotes, braces) and corrupts calls.
+AGENT_OPTIONS = {"temperature": 0.15, "top_p": 0.9, "presence_penalty": 0.0}
 
-# Context window pinned explicitly. Ollama's modelfile default is often
-# 2048-4096, which silently truncates the ~3k-char system prompt and breaks
-# tool formatting. We honor a larger configured window but clamp to [floor, ceil]:
-#   floor → guarantees the prompt + a few turns always fit.
-#   ceil  → keeps VRAM predictable (get_context_limit may report the model's
-#           full architectural length, e.g. 32k, which would OOM if forced).
+# Context window floor/ceiling.
+#   floor → guarantees the ~3k-char system prompt + a few turns always fit;
+#           Ollama's bare default (2048-4096) silently truncates and breaks
+#           tool formatting.
+#   ceil  → only applied when we fall back to the model's *architectural*
+#           context length (which can be enormous, e.g. 262144) — forcing that
+#           as num_ctx would OOM the GPU. An explicit modelfile num_ctx is
+#           honored as-is (your tested value), never capped by the ceiling.
 # Bump these if your model and GPU allow.
 AGENT_NUM_CTX_FLOOR = 8192
 AGENT_NUM_CTX_CEIL = 16384
@@ -273,6 +278,14 @@ def format_tool_result(result):
 
 
 def get_context_limit(model_name):
+    """Return (context_window, configured).
+
+    configured=True → the modelfile explicitly set num_ctx; trust it as-is
+        (it's the value the user has actually tested on their hardware).
+    configured=False → we fell back to the model's architectural context_length
+        (which can be huge, e.g. 262144) or the 2048 default; callers should
+        clamp these to avoid OOM.
+    """
     try:
         info = ollama.show(model_name)
         params = info.get("parameters", "")
@@ -280,15 +293,15 @@ def get_context_limit(model_name):
             for line in params.splitlines():
                 parts = line.split()
                 if len(parts) >= 2 and parts[0] == "num_ctx":
-                    return int(parts[1])
+                    return int(parts[1]), True
         modelinfo = info.get("modelinfo", {})
         if isinstance(modelinfo, dict):
             for k, v in modelinfo.items():
                 if k.endswith(".context_length"):
-                    return int(v)
+                    return int(v), False
     except Exception:
         pass
-    return 2048
+    return 2048, False
 
 
 def _args_hash(tool_name, args):
@@ -433,8 +446,16 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
     snapshot_mgr (if provided) snapshots files before write/patch.
 
     Ctrl+C during a turn cancels the turn cleanly (returns without exiting)."""
-    context_limit = min(max(get_context_limit(model), AGENT_NUM_CTX_FLOOR),
-                        AGENT_NUM_CTX_CEIL)
+    detected_ctx, ctx_configured = get_context_limit(model)
+    if ctx_configured:
+        # Honor the modelfile's num_ctx (the user's tested value); only ensure
+        # it isn't so small it truncates the system prompt.
+        context_limit = max(detected_ctx, AGENT_NUM_CTX_FLOOR)
+    else:
+        # Architectural / default fallback — clamp so a huge arch length (e.g.
+        # 262144) doesn't OOM the GPU when forced as num_ctx.
+        context_limit = min(max(detected_ctx, AGENT_NUM_CTX_FLOOR),
+                            AGENT_NUM_CTX_CEIL)
     options = {**AGENT_OPTIONS, "num_ctx": context_limit}
     consecutive_failures = {}  # args_hash → count
     focus = bool(getattr(state, "focus", False)) if state is not None else False
