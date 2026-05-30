@@ -272,6 +272,8 @@ def format_tool_result(result):
         return f"Patched {result['path'].replace(chr(92), '/')} (variant {result.get('variant','?')})"
     if result.get("status") == "ok":
         return f"Wrote file {result['path'].replace(chr(92), '/')}"
+    if result.get("status") == "appended":
+        return f"Appended to {result['path'].replace(chr(92), '/')}"
     if "entries" in result:
         return f"Directory contents: {', '.join(result['entries'])}"
     if "matches" in result:
@@ -392,7 +394,7 @@ TOOL_RESULT_PREFIXES = (
     "Tool call failed:",
     "File contents",
     "Directory contents:",
-    "Patched ", "Wrote file ",
+    "Patched ", "Wrote file ", "Appended to ",
     "Found ", "No matches",
     "returncode:",
     "HTTP ",
@@ -469,7 +471,7 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
     listed_dirs: set = set()   # parent dirs confirmed via list_dir this turn
     verified_files: set = set()  # files read/written this turn (known to exist)
 
-    _MUTATING_TOOLS = {"write_file", "patch_file", "remove_file"}
+    _MUTATING_TOOLS = {"write_file", "append_file", "patch_file", "remove_file"}
 
     while True:
         escaped = _prepare_messages(messages)
@@ -637,7 +639,7 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
                 return
 
             # Snapshot file *before* mutating tools execute
-            if snapshot_mgr is not None and tool_name in ("write_file", "patch_file", "remove_file"):
+            if snapshot_mgr is not None and tool_name in ("write_file", "append_file", "patch_file", "remove_file"):
                 p = tool_args.get("path")
                 if p:
                     try:
@@ -675,7 +677,7 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
                 consecutive_failures.pop(h, None)
                 # Remember files we've now confirmed to exist this turn, so a
                 # follow-up patch/write doesn't trip the list_dir pre-check.
-                if tool_name in ("read_file", "write_file", "patch_file"):
+                if tool_name in ("read_file", "write_file", "append_file", "patch_file"):
                     rp = tool_args.get("path")
                     if rp:
                         from pathlib import Path as _Path

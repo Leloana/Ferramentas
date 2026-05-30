@@ -81,6 +81,7 @@ TOOLS — this is the COMPLETE list. Never invent another tool name or argument 
 - list_dir     {{"path": "<abs dir>"}}
 - search_file  {{"path": "<abs>", "query": "<text>"}}
 - write_file   {{"path": "<abs>", "content": "<full file text>"}}  → creates/overwrites the WHOLE file
+- append_file  {{"path": "<abs>", "content": "<text>"}}   → adds text to the END (creates if missing)
 - patch_file   {{"path": "<abs>", "start_line": <int>, "end_line": <int>, "new_content": "<text>"}}
                  → replaces lines start_line..end_line (inclusive). Get the numbers from read_file FIRST.
 - remove_file  {{"path": "<abs>", "recursive": true|false}}   → needs user confirmation
@@ -112,7 +113,7 @@ WORKED EXAMPLE — note: one tool per reply, read before patch, then stop.
 RULES:
 1. ONE tool call per reply. Then STOP and wait for the result before the next.
 2. Never repeat a tool call with identical args. If it failed, change the args or switch to FORM B and explain.
-3. New file → write_file. Editing part of an existing file → read_file first, then patch_file with the line numbers you saw.
+3. New file → write_file. Editing part of an existing file → read_file first, then patch_file with the line numbers you saw. A LARGE new file → write_file the first section, then append_file the rest in chunks (one small call each) — never write_file the same path twice (it overwrites).
 4. run_command is PowerShell (`Get-ChildItem`, not `ls`) and NON-BLOCKING. To check a result, read_file/search_file the output file — you will NOT get run_command's stdout.
 5. PRE-CHECK: before write_file / patch_file / remove_file, make sure you've seen the file THIS turn — either read_file it (best when editing) or list_dir its parent directory.
 6. Thinking goes inside <think>...</think>. Never put a tool call inside <think>.

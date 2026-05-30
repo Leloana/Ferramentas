@@ -229,6 +229,36 @@ def write_file(args):
     return {"status": "ok", "path": raw}
 
 
+def append_file(args):
+    """Append text to the end of a file, creating it if missing.
+
+    Built for segmenting large files: a write_file task creates the file with
+    its first section, then append_file tasks add each remaining chunk. Every
+    call carries only a small slice of content, so the tool-call JSON stays
+    well-formed even when the finished file is large.
+
+    Args:
+        path:    file path (required)
+        content: text to append (required)
+    """
+    raw = args.get("path")
+    if not raw:
+        return _err("missing 'path' arg")
+    raw = _resolve_abs(raw)
+    if g := _guard_path(raw):
+        return g
+    if "content" not in args:
+        return _err("missing 'content' arg")
+    path = Path(raw)
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with open(raw, "a", encoding="utf-8") as f:
+            f.write(args["content"])
+    except Exception as e:
+        return _err(f"could not append to {raw}: {e}")
+    return {"status": "appended", "path": raw}
+
+
 # ---------- patch variants ----------
 def patch_file_v1(args):
     raw = args.get("path")
@@ -558,6 +588,7 @@ CORE_TOOLS = {
     "run_command": run_command,
     "read_file": read_file,
     "write_file": write_file,
+    "append_file": append_file,
     "patch_file": patch_file,
     "remove_file": remove_file,
     "list_dir": list_dir,

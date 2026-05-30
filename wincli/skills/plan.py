@@ -107,11 +107,18 @@ SCOPE RULE:
 ANTI-PATTERNS — these are FORBIDDEN and will break execution:
 1. DO NOT create a task that just reads or checks if a file exists before writing it.
    Executors verify existence automatically. Jump straight to the write/patch task.
-2. DO NOT split a single file's content across multiple write_file tasks.
-   write_file OVERWRITES the whole file every time — writing a file in parts destroys
-   the previous parts. If one file needs to be created, use EXACTLY ONE task for it.
-   Wrong:  task2=write HTML structure, task3=write CSS to same file, task4=write JS to same file
-   Right:  task2=write complete index.html with HTML + CSS + JS in one call
+2. NEVER use write_file twice on the same path — write_file OVERWRITES the whole file,
+   so a second write erases the first.
+   - SMALL file → ONE write_file task with the complete content.
+   - LARGE file (a full app/page/game — anything likely > ~150 lines) → SEGMENT it so no
+     single tool call carries the whole file (huge inline content corrupts the JSON):
+       * Task A: write_file — create the file with its skeleton + first section.
+       * Tasks B, C...: append_file — add each remaining section in order.
+       * Chain them with deps (A -> B -> C) so they run sequentially.
+     Wrong:  task2 = write_file the whole 600-line index.html in one call
+     Right:  task2 = write_file index.html (HTML skeleton + CSS)
+             task3 = append_file the <script> game logic  (deps:2)
+             task4 = append_file the closing tags          (deps:3)
 
 STRICTLY FORBIDDEN:
 - No extra markdown sections beyond # Plan, ## Goal, ## Tasks, ## Verification.
@@ -130,9 +137,13 @@ Check every task in ## Tasks and ## Verification:
   - Does the description start with a verb? Rewrite if not.
 
 MANDATORY MERGES — you MUST apply these even if the planner didn't:
-  A) SAME-FILE WRITES: If multiple tasks all write_file to the same path, merge them
-     into ONE task. write_file overwrites the whole file — separate tasks destroy each
-     other's work. One file = one write_file task, containing all the content.
+  A) SAME-FILE WRITES: a path may have AT MOST ONE write_file task (the create).
+     If multiple tasks write_file the same path, keep the FIRST as write_file and convert
+     the rest to append_file (they add sections to the end), chained by deps. Never leave
+     two write_file tasks on one path — the second erases the first.
+     - Small file that was needlessly split → merge it all back into the single write_file.
+     - Large file → keep the write_file(create) + append_file(sections) chain; that split
+       is correct and prevents one oversized, JSON-corrupting tool call.
   B) EXISTENCE CHECKS: Remove any task whose only purpose is to read or check if a
      file exists (e.g. "read index.html to see current content", "check if file exists",
      "verify file was created"). Executors do this automatically. Delete these tasks
@@ -173,6 +184,7 @@ TOOLS — this is the COMPLETE list. Use these exact arg keys, no variations:
   list_dir:    {"path": "<abs dir>"}
   search_file: {"path": "<abs>", "query": "<text>"}
   write_file:  {"path": "<abs>", "content": "<full file text>"}   → overwrites the WHOLE file
+  append_file: {"path": "<abs>", "content": "<text>"}   → adds text to the END (creates if missing)
   patch_file:  {"path": "<abs>", "start_line": <int>, "end_line": <int>, "new_content": "<text>"}
                  → replaces lines start_line..end_line (inclusive); get numbers from read_file FIRST
   run_command: {"command": "<powershell>"}   ⚠ NON-BLOCKING: returns a PID only, never output
@@ -186,6 +198,7 @@ Rules:
 1. Use ONLY the tools listed above. ONE tool call per response, then wait for the result.
 2. Never repeat a tool call with identical args. If it failed, change something.
 3. Creating a new file → write_file. Editing part of an existing file → read_file first, then patch_file with the line numbers you saw.
+   If your task says to APPEND a section to a file another task created, use append_file (do NOT write_file — that would erase the earlier sections).
 4. run_command is NON-BLOCKING — fire-and-forget only; never rely on its output.
 5. When the task is complete, output EXACTLY these two lines and stop (no json block):
      SUMMARY: <one-line description of what you changed>
@@ -656,7 +669,7 @@ def run(args, ctx):
         whitelist = list(task.tools) if task.tools else None
         if whitelist is not None:
             # These read-only tools are always needed: navigation, verification, content search
-            for always in ("read_file", "list_dir", "search_file", "write_file"):
+            for always in ("read_file", "list_dir", "search_file", "write_file", "append_file"):
                 if always not in whitelist:
                     whitelist.append(always)
         # keep_alive="1m" releases VRAM 1 min after each executor finishes,

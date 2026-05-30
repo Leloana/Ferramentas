@@ -21,7 +21,7 @@ from ui import console
 
 
 # Tools that modify state (anything that isn't pure read).
-MUTATING_TOOLS = {"write_file", "patch_file", "run_command"}
+MUTATING_TOOLS = {"write_file", "append_file", "patch_file", "run_command", "remove_file"}
 
 
 @dataclass
@@ -72,6 +72,13 @@ def _diff_preview(tool_name, args):
             Syntax(content[:2000], "python", theme="ansi_dark"),
             title=f"NEW FILE: {path}", border_style="green")
 
+    if tool_name == "append_file":
+        path = args.get("path", "?")
+        content = args.get("content", "")
+        return Panel(
+            Syntax(content[:2000], "python", theme="ansi_dark"),
+            title=f"APPEND TO: {path}", border_style="green")
+
     if tool_name == "patch_file":
         path = args.get("path", "?")
         info = []
@@ -96,6 +103,14 @@ def _diff_preview(tool_name, args):
         wd = str(_WORKING_DIR) if _WORKING_DIR is not None else str(Path.cwd())
         return Panel(body, title=f"POWERSHELL  [dim]({wd})[/dim]",
                      border_style="red")
+
+    if tool_name == "remove_file":
+        path = args.get("path", "?")
+        recursive = args.get("recursive", False)
+        extra = "  [recursive=true — entire directory tree will be deleted]" if recursive else ""
+        return Panel(
+            f"[bold red]DELETE:[/bold red] {path}{extra}",
+            title="REMOVE FILE", border_style="red")
 
     return Panel(str(args)[:1000], title=tool_name, border_style="blue")
 
@@ -122,8 +137,7 @@ def gate_tool(state: SessionState, tool_name: str, args: dict):
         options.append((f"always allow {tool_name} on {path_key}", "p"))
 
     title = f"Allow {tool_name}" + (f" on {path_key}" if path_key else "") + "?"
-    choice = ui.select(options, title=title, default=0,
-                       footer="↑/↓ move · enter choose")
+    choice = ui.select(options, title=title, default=0)
 
     if choice in (None, "n"):
         return False
