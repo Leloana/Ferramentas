@@ -32,6 +32,16 @@ from ui import console
 # drift into malformed/invented tool calls at the model's default (~0.7-0.8).
 AGENT_OPTIONS = {"temperature": 0.15, "top_p": 0.9}
 
+# Context window pinned explicitly. Ollama's modelfile default is often
+# 2048-4096, which silently truncates the ~3k-char system prompt and breaks
+# tool formatting. We honor a larger configured window but clamp to [floor, ceil]:
+#   floor → guarantees the prompt + a few turns always fit.
+#   ceil  → keeps VRAM predictable (get_context_limit may report the model's
+#           full architectural length, e.g. 32k, which would OOM if forced).
+# Bump these if your model and GPU allow.
+AGENT_NUM_CTX_FLOOR = 8192
+AGENT_NUM_CTX_CEIL = 16384
+
 THINK_RE = re.compile(r"<think>.*?</think>", re.DOTALL)
 
 
@@ -423,10 +433,13 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
     snapshot_mgr (if provided) snapshots files before write/patch.
 
     Ctrl+C during a turn cancels the turn cleanly (returns without exiting)."""
-    context_limit = get_context_limit(model)
+    context_limit = min(max(get_context_limit(model), AGENT_NUM_CTX_FLOOR),
+                        AGENT_NUM_CTX_CEIL)
+    options = {**AGENT_OPTIONS, "num_ctx": context_limit}
     consecutive_failures = {}  # args_hash → count
     focus = bool(getattr(state, "focus", False)) if state is not None else False
     listed_dirs: set = set()   # parent dirs confirmed via list_dir this turn
+    verified_files: set = set()  # files read/written this turn (known to exist)
 
     _MUTATING_TOOLS = {"write_file", "patch_file", "remove_file"}
 
@@ -445,7 +458,7 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
         with Live(Text("connecting..."), refresh_per_second=12, console=console) as live:
             try:
                 stream = ollama.chat(model=model, messages=escaped, stream=True,
-                                     options=AGENT_OPTIONS)
+                                     options=options)
                 for chunk in stream:
                     reasoning = ""
                     content = ""
@@ -557,18 +570,23 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
                     from pathlib import Path as _Path
                     listed_dirs.add(str(_Path(p).resolve()))
 
-            # Pre-check: block mutating tools if parent dir wasn't listed first
+            # Pre-check: block mutating tools unless the file's location was
+            # verified this turn — either via list_dir on the parent, or because
+            # the file was already read/written this turn (so we know it exists
+            # and its exact name). This avoids a needless "list_dir wall" right
+            # after the agent has already read the file it wants to patch.
             if tool_name in _MUTATING_TOOLS:
                 file_path = tool_args.get("path", "")
                 if file_path:
                     from pathlib import Path as _Path
-                    parent = str(_Path(file_path).resolve().parent)
-                    if parent not in listed_dirs:
+                    resolved = str(_Path(file_path).resolve())
+                    parent = str(_Path(resolved).parent)
+                    if parent not in listed_dirs and resolved not in verified_files:
                         warn = (
                             f"RULE VIOLATION: you called '{tool_name}' on '{file_path}' "
-                            f"without first calling list_dir on its parent directory "
-                            f"('{parent}'). You MUST call list_dir on that directory "
-                            f"first to confirm the file exists and its exact name is correct."
+                            f"without first reading it or calling list_dir on its parent "
+                            f"directory ('{parent}'). You MUST read_file it or list_dir that "
+                            f"directory first to confirm the file exists and its exact name is correct."
                         )
                         console.print(f"[yellow]pre-check: list_dir required before {tool_name}[/yellow]")
                         messages.append({"role": "assistant", "content": content})
@@ -627,6 +645,13 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
                     return
             else:
                 consecutive_failures.pop(h, None)
+                # Remember files we've now confirmed to exist this turn, so a
+                # follow-up patch/write doesn't trip the list_dir pre-check.
+                if tool_name in ("read_file", "write_file", "patch_file"):
+                    rp = tool_args.get("path")
+                    if rp:
+                        from pathlib import Path as _Path
+                        verified_files.add(str(_Path(rp).resolve()))
                 display_path = (tool_args.get("path") or tool_args.get("url")
                                 or (tool_args.get("command") or "")[:60] or "-")
                 console.print(f"[bold green]✓ tool[/bold green] [green]{tool_name}[/green] - {display_path}")

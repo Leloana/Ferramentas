@@ -114,7 +114,7 @@ RULES:
 2. Never repeat a tool call with identical args. If it failed, change the args or switch to FORM B and explain.
 3. New file → write_file. Editing part of an existing file → read_file first, then patch_file with the line numbers you saw.
 4. run_command is PowerShell (`Get-ChildItem`, not `ls`) and NON-BLOCKING. To check a result, read_file/search_file the output file — you will NOT get run_command's stdout.
-5. PRE-CHECK: before write_file / patch_file / remove_file, call list_dir on the parent directory first (confirm it exists and see the current names).
+5. PRE-CHECK: before write_file / patch_file / remove_file, make sure you've seen the file THIS turn — either read_file it (best when editing) or list_dir its parent directory.
 6. Thinking goes inside <think>...</think>. Never put a tool call inside <think>.
 7. When the task is done, reply in FORM B with one short line (created/modified/ran). Do NOT keep calling tools after it is done.{wincli_rule}
 
