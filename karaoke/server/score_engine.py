@@ -17,6 +17,18 @@ TIMING_PENALTY_FAR = 0.65
 SANDWICH_THRESHOLD = 0.4
 MAX_LEAKAGE_LOOKBACK = 6
 
+# Penalidade de andamento global: pune comprimir/esticar a linha inteira
+# (ex.: ler todas as palavras correndo no início). Compara o "vão" de tempo
+# cantado com o esperado entre a primeira e a última palavra casada.
+TEMPO_MIN_EXPECTED_SPAN = 0.8   # vãos esperados menores que isso não punem tempo
+TEMPO_WEIGHT = 0.35             # peso do andamento no score final (até -35%)
+TEMPO_DEADZONE = 0.95           # acima disso considera-se andamento correto
+
+# Penalidade de precisão: pune excesso de palavras cantadas (repetir a mesma
+# frase várias vezes). Uma margem evita punir hesitações/variações pequenas.
+PRECISION_ALLOWANCE = 1.3       # margem de palavras extras sem punição
+PRECISION_MIN_FACTOR = 0.2      # piso da penalidade de precisão
+
 # Normalização acústica por idioma. Manter mapas separados evita colisões
 # entre línguas (ex.: "a"->"ah" só faz sentido em PT, "know"->"no" só em EN).
 _ACOUSTIC_EN = {
@@ -167,6 +179,7 @@ def calculate_score(expected_timed: list[dict], transcribed_words: list[dict], p
     transcribed_clean = [{"word": clean_text(w["word"], language), "start": w["start"]} for w in transcribed_words]
     word_scores = []
     consumed_indices = set()
+    timing_pairs = []  # (expected_start, actual_start) das palavras casadas
 
     for i, exp_word_data in enumerate(expected_timed):
         exp_word = expected_words[i]
@@ -194,7 +207,9 @@ def calculate_score(expected_timed: list[dict], transcribed_words: list[dict], p
             consumed_indices.add(best_match_idx)
 
         if word_points > 0 and best_match_idx != -1:
-            diff = abs(transcribed_clean[best_match_idx]["start"] - exp_word_data["expected_start"])
+            actual_start = transcribed_clean[best_match_idx]["start"]
+            timing_pairs.append((exp_word_data["expected_start"], actual_start))
+            diff = abs(actual_start - exp_word_data["expected_start"])
             if diff < TIMING_TOLERANT_SEC:
                 pass
             elif diff <= TIMING_LENIENT_SEC:
@@ -222,11 +237,41 @@ def calculate_score(expected_timed: list[dict], transcribed_words: list[dict], p
                 rescued_count += 2
 
     total_points = sum(word_scores)
-    final_score = (total_points / len(expected_words)) * 100
-    
+    base_score = (total_points / len(expected_words)) * 100
+
+    # Penalidade de andamento global: se o cantor comprime/estica a linha
+    # inteira, o "vão" entre a primeira e a última palavra casada diverge do
+    # esperado. Um offset constante (atraso parelho) não pune aqui — isso é
+    # tratado pela penalidade por palavra acima; aqui só conta o ritmo relativo.
+    tempo_factor = 1.0
+    if len(timing_pairs) >= 2:
+        exp_span = max(p[0] for p in timing_pairs) - min(p[0] for p in timing_pairs)
+        act_span = max(p[1] for p in timing_pairs) - min(p[1] for p in timing_pairs)
+        if exp_span >= TEMPO_MIN_EXPECTED_SPAN:
+            ratio = (act_span / exp_span) if exp_span > 0 else 1.0
+            closeness = min(ratio, 1.0 / ratio) if ratio > 0 else 0.0
+            closeness = max(0.0, min(1.0, closeness))
+            if closeness < TEMPO_DEADZONE:
+                tempo_factor = (1.0 - TEMPO_WEIGHT) + TEMPO_WEIGHT * closeness
+
+    # Penalidade de precisão: pune excesso de palavras cantadas (repetir a mesma
+    # frase). Até expected * PRECISION_ALLOWANCE palavras passam sem punição.
+    precision_factor = 1.0
+    n_expected = len(expected_words)
+    n_transcribed = len(transcribed_clean)
+    if n_expected > 0 and n_transcribed > n_expected * PRECISION_ALLOWANCE:
+        precision_factor = max(
+            PRECISION_MIN_FACTOR,
+            (n_expected * PRECISION_ALLOWANCE) / n_transcribed,
+        )
+
+    final_score = base_score * tempo_factor * precision_factor
+
     return {
         "score": round(final_score, 1),
         "transcription": " ".join([w["word"] for w in transcribed_clean]),
         "matched_words": len(consumed_indices) + rescued_count,
-        "total_expected": len(expected_words)
+        "total_expected": len(expected_words),
+        "tempo_factor": round(tempo_factor, 3),
+        "precision_factor": round(precision_factor, 3)
     }
