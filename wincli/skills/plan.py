@@ -200,10 +200,22 @@ Rules:
 3. Creating a new file → write_file. Editing part of an existing file → read_file first, then patch_file with the line numbers you saw.
    If your task says to APPEND a section to a file another task created, use append_file (do NOT write_file — that would erase the earlier sections).
 4. run_command is NON-BLOCKING — fire-and-forget only; never rely on its output.
-5. When the task is complete, output EXACTLY these two lines and stop (no json block):
+5. ALREADY-DONE CHECK (read this carefully): an EARLIER executor may have written MORE
+   than its own slice — including the exact code YOUR task describes. Before adding
+   anything, read the target file ONCE and check whether the functionality your task
+   describes is ALREADY present.
+   - If it IS already present: do NOT add it again (that duplicates/corrupts the file) and
+     do NOT keep re-reading to "find a spot". Immediately stop and report:
+       SUMMARY: already present — <what you found> was written by an earlier task
+       FILES: <the file you checked>
+   - If it is NOT present: do your task normally.
+6. DO NOT re-read the same file more than TWICE. One read gives you the full content with
+   line numbers — that is enough to decide. Re-reading in a loop wastes calls and will hit
+   the call limit (which is recorded as a FAILURE).
+7. When the task is complete, output EXACTLY these two lines and stop (no json block):
      SUMMARY: <one-line description of what you changed>
      FILES: <comma-separated absolute paths of every file you wrote or patched>
-6. If you cannot complete the task, output EXACTLY this line and stop:
+8. If you cannot complete the task, output EXACTLY this line and stop:
      FAILED: <reason>"""
 
 
@@ -503,6 +515,12 @@ PREVIOUSLY COMPLETED TASKS (for context):
 
 YOUR TASK (id={task.id}):
 {task.description}
+
+SCOPE: Do ONLY what YOUR TASK above describes — nothing more. The GOAL is context, NOT
+your to-do list. Other tasks handle the other parts. Do not build the whole thing.
+But also be aware: an earlier task may have already written your slice. If the content
+your task describes is ALREADY in the file, do not add it again — report it as already
+present (see rule 5) and stop.
 
 TOOLS YOU MAY USE: {", ".join(allowed)}
 
