@@ -608,7 +608,8 @@ def run(args, ctx):
             content=f"[plan - planner subagent]: {plan_result.get('content', '')}",
             prompt_tokens=plan_result.get("tokens", {}).get("prompt", 0),
             gen_tokens=plan_result.get("tokens", {}).get("gen", 0),
-            elapsed_s=plan_result.get("elapsed_s", 0.0)
+            elapsed_s=plan_result.get("elapsed_s", 0.0),
+            subagent=True,
         )
 
     raw_plan = raw_plan_content
@@ -707,7 +708,8 @@ def run(args, ctx):
                 content=f"[plan - executor task {task.id} subagent]: {result.get('content', '')}",
                 prompt_tokens=result.get("tokens", {}).get("prompt", 0),
                 gen_tokens=result.get("tokens", {}).get("gen", 0),
-                elapsed_s=result.get("elapsed_s", 0.0)
+                elapsed_s=result.get("elapsed_s", 0.0),
+                subagent=True,
             )
 
         for fp in result["files_touched"]:
@@ -774,7 +776,8 @@ def run(args, ctx):
             content=f"[plan - verifier subagent]: {verifier_result.get('content', '')}",
             prompt_tokens=verifier_result.get("tokens", {}).get("prompt", 0),
             gen_tokens=verifier_result.get("tokens", {}).get("gen", 0),
-            elapsed_s=verifier_result.get("elapsed_s", 0.0)
+            elapsed_s=verifier_result.get("elapsed_s", 0.0),
+            subagent=True,
         )
 
     # ----- 6. FINAL REPORT -----

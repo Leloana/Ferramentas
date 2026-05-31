@@ -456,7 +456,8 @@ def generate_wincli(working_dir, model, session_log=None):
             content="[Generated WINCLI.md]",
             prompt_tokens=prompt_tokens,
             gen_tokens=gen_tokens,
-            elapsed_s=elapsed
+            elapsed_s=elapsed,
+            subagent=True,
         )
 
     # 5. Show final summary

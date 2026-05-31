@@ -150,6 +150,11 @@ def show_context(state, session_log, model, working_dir, wincli_loaded,
     table.add_row("messages in history", str(len(conversation_history)))
     table.add_row("prompt tokens (Σ)", f"{totals['prompt_tokens']:,}")
     table.add_row("gen tokens (Σ)", f"{totals['gen_tokens']:,}")
+    sub = session_log.subagent_totals()
+    if sub["prompt_tokens"] or sub["gen_tokens"]:
+        table.add_row("subagent tokens (Σ)",
+                      f"{sub['prompt_tokens'] + sub['gen_tokens']:,} "
+                      f"(plan/skills, not in prompt counter)")
     table.add_row("elapsed (Σ)", f"{totals['elapsed_s']:.1f}s")
     table.add_row("persist file", str(session_log.path))
     table.add_row("undo stack depth", str(len(snapshot_mgr.stack)))

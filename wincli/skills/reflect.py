@@ -77,7 +77,8 @@ def run(args, ctx):
                 content=f"[reflect]: {content.strip()}",
                 prompt_tokens=prompt_tokens,
                 gen_tokens=gen_tokens,
-                elapsed_s=elapsed
+                elapsed_s=elapsed,
+                subagent=True,
             )
     except Exception as e:
         return {"error": f"reflect failed: {e}"}

@@ -502,7 +502,8 @@ def generate_plan(prompt, model, working_dir, wincli_content=None, session_log=N
             content=f"[Generated action plan: {prompt}]",
             prompt_tokens=prompt_tokens,
             gen_tokens=gen_tokens,
-            elapsed_s=elapsed
+            elapsed_s=elapsed,
+            subagent=True,
         )
 
     # 6. Show summary

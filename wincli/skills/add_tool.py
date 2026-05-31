@@ -105,7 +105,8 @@ def run(args, ctx):
             content=f"[add_tool]: {tool_name}",
             prompt_tokens=prompt_tokens,
             gen_tokens=gen_tokens,
-            elapsed_s=elapsed
+            elapsed_s=elapsed,
+            subagent=True,
         )
 
     console.print(Panel(

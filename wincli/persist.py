@@ -23,8 +23,13 @@ Schema:
       "totals": {"prompt_tokens": int, "gen_tokens": int, "elapsed_s": float}
     }
   ],
-  "session_totals": {"prompt_tokens": int, "gen_tokens": int, "elapsed_s": float}
+  "session_totals":  {"prompt_tokens": int, "gen_tokens": int, "elapsed_s": float},
+  "subagent_totals": {"prompt_tokens": int, "gen_tokens": int, "elapsed_s": float}
 }
+
+session_totals counts only main-conversation steps (what the prompt counter shows).
+subagent_totals counts /plan and skill subagent steps — logged but kept separate so
+nested contexts don't inflate the main counter.
 """
 
 import json
@@ -49,6 +54,10 @@ class SessionLog:
             "resumed_from": resumed_from,
             "turns": [],
             "session_totals": {"prompt_tokens": 0, "gen_tokens": 0, "elapsed_s": 0.0},
+            # tokens spent by /plan (and other) subagents — logged for the record
+            # but kept OUT of session_totals so the prompt counter reflects only
+            # the main conversation, not every nested subagent context.
+            "subagent_totals": {"prompt_tokens": 0, "gen_tokens": 0, "elapsed_s": 0.0},
         }
         self._current_turn = None
         self._flush()
@@ -62,7 +71,12 @@ class SessionLog:
         self.data["turns"].append(self._current_turn)
 
     def log_step(self, *, kind, content, prompt_tokens=0, gen_tokens=0,
-                 elapsed_s=0.0, tool_call=None, tool_result=None):
+                 elapsed_s=0.0, tool_call=None, tool_result=None,
+                 subagent=False):
+        """Record one step. If subagent=True the step is still written to the
+        chain (so the run is fully logged) but its tokens accumulate into
+        subagent_totals instead of session_totals — keeping the prompt counter
+        about the main conversation only."""
         if self._current_turn is None:
             self.start_turn("")
         tps = gen_tokens / elapsed_s if elapsed_s > 0 else 0
@@ -75,18 +89,25 @@ class SessionLog:
             "tps": tps,
             "tool_call": tool_call,
             "tool_result": tool_result,
+            "subagent": subagent,
         })
-        self._current_turn["totals"]["prompt_tokens"] += prompt_tokens
-        self._current_turn["totals"]["gen_tokens"] += gen_tokens
-        self._current_turn["totals"]["elapsed_s"] += elapsed_s
-        st = self.data["session_totals"]
+        bucket = "subagent_totals" if subagent else "session_totals"
+        st = self.data[bucket]
         st["prompt_tokens"] += prompt_tokens
         st["gen_tokens"] += gen_tokens
         st["elapsed_s"] += elapsed_s
+        if not subagent:
+            self._current_turn["totals"]["prompt_tokens"] += prompt_tokens
+            self._current_turn["totals"]["gen_tokens"] += gen_tokens
+            self._current_turn["totals"]["elapsed_s"] += elapsed_s
         self._flush()
 
     def session_totals(self):
         return dict(self.data["session_totals"])
+
+    def subagent_totals(self):
+        return dict(self.data.get("subagent_totals",
+                                  {"prompt_tokens": 0, "gen_tokens": 0, "elapsed_s": 0.0}))
 
     def turn_count(self):
         return len(self.data["turns"])
