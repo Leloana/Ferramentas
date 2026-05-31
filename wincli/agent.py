@@ -80,19 +80,21 @@ def _strip_thinking(content):
 
 
 def _rescue_write_call(raw_json: str):
-    """Rescue a write_file tool call when json.loads fails.
+    """Rescue a write_file / append_file tool call when json.loads fails.
 
     Models stream HTML/code inside JSON strings. Ollama pre-decodes escape
     sequences in message.content chunks, so the accumulated buffer ends up
     with literal '"' chars inside the content field (from HTML attributes
-    like class="btn") which breaks json.loads.
+    like class="btn") which breaks json.loads. append_file is covered too:
+    its section chunks carry the same quote/newline-heavy payload.
 
     Strategy: extract tool/path by regex, extract content by rfind-ing the
     closing '"}}' sentinel at the end of the JSON object.
     """
-    tool_m = re.search(r'"tool"\s*:\s*"(write_file)"', raw_json)
+    tool_m = re.search(r'"tool"\s*:\s*"(write_file|append_file)"', raw_json)
     if not tool_m:
         return None
+    tool_name = tool_m.group(1)
 
     # Path is short and usually well-escaped — use quoted-string regex
     path_m = re.search(r'"path"\s*:\s*"((?:[^"\\]|\\.)*)"', raw_json)
@@ -121,7 +123,7 @@ def _rescue_write_call(raw_json: str):
     raw_content = raw_content.replace('\\"', '"')
     raw_content = raw_content.replace('\\\\', '\\')
 
-    return {"tool": "write_file", "args": {"path": path, "content": raw_content}}
+    return {"tool": tool_name, "args": {"path": path, "content": raw_content}}
 
 
 def _extract_embedded_json(text):
