@@ -22,6 +22,7 @@ async def queue_add_song(
     synced_lrc: Optional[str] = Form(None),
     added_by: str = Form(""),
     align_lyrics: bool = Form(False),
+    clean_existing: bool = Form(False),
     vocal_file: Optional[UploadFile] = File(None),
     backing_file: Optional[UploadFile] = File(None),
 ):
@@ -31,6 +32,23 @@ async def queue_add_song(
     O download + separação (Demucs) começam imediatamente.
     O alinhamento (Whisper) roda quando a GPU estiver ociosa.
     """
+    # Se a URL do youtube não foi fornecida, mas a música já existe no disco, recupera do meta.json
+    if not youtube_url or not youtube_url.strip():
+        from utils.text import slugify
+        slug = slugify(f"{title}-{artist}")
+        song_dir = SONGS_DIR / slug
+        meta_path = song_dir / "meta.json"
+        if meta_path.exists():
+            import json as _json
+            try:
+                with open(meta_path, "r", encoding="utf-8") as f:
+                    meta_data = _json.load(f)
+                    youtube_url = meta_data.get("audio", {}).get("youtube_vocal_url", "")
+                    if "meta" in meta_data and "language" in meta_data["meta"]:
+                        language = meta_data["meta"]["language"]
+            except Exception as e:
+                logger.warning(f"Falha ao ler meta.json existente para enfileirar: {e}")
+
     if youtube_vocal_url and youtube_vocal_url.strip() and not youtube_url.strip():
         youtube_url = youtube_vocal_url
 
@@ -116,6 +134,7 @@ async def queue_add_song(
             synced_lrc=synced_lrc,
             added_by=added_by.strip() or None,
             align_lyrics=align_lyrics,
+            clean_existing=clean_existing,
         )
         return {
             "success": True,

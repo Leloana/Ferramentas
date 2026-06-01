@@ -15,6 +15,7 @@ Slash commands:
   /init                  → regenerate WINCLI.md
   /mode [args]           → show or change op/perm mode
   /context               → session dashboard
+  /clear                 → wipe conversation history (keeps session log, frees VRAM)
   /skill <name> [args]   → invoke a skill from skills/
   /skills                → list available skills
   /plan <prompt>         → shortcut for /skill plan ...
@@ -66,7 +67,8 @@ COMMANDS = {
     "reflect": "reflect on recent failures",
     "resume":  "resume a previous session",
     "undo":    "undo last file change(s):  /undo [N]",
-    "clear":   "clear the screen, keep the session",
+    "clear":   "reset the conversation (model memory); session log kept",
+    "redraw":  "repaint the screen + banner (session preserved)",
     "help":    "show this command list",
 }
 
@@ -113,42 +115,65 @@ def build_system_prompt(working_dir, wincli_content):
     if wincli_content:
         wincli_section = (f"\nBASE PROJECT CONTEXT (WINCLI.md):\n"
                           f"---\n{wincli_content}\n---\n")
-    return f"""You are an agentic assistant with access to the following tools.
+    wd = str(working_dir).replace("\\", "/")
+    wincli_rule = "\n8. WINCLI.md is loaded above — follow it." if wincli_content else ""
+    return f"""You are WINCLI, an agentic coding assistant on Windows.
+You act ONLY by calling tools. You cannot edit files or run anything except
+through the tools listed below.
 
-WORKING DIRECTORY: {working_dir}
-All file paths are relative to this directory unless absolute.
+WORKING DIRECTORY: {wd}
+
+PATHS — follow exactly:
+- Every path MUST be absolute.
+- ALWAYS write paths with forward slashes "/", NEVER backslashes.
+    Correct:  "{wd}/src/app.py"
+    Wrong:    "{wd}\\src\\app.py"   ← backslashes break the JSON
+- Never use "./", "../", or a bare filename.
 {wincli_section}
-Core tools:
-- run_command: {{"command": "<powershell>"}}
-- read_file:   {{"path": "<file>"}}            # returns numbered lines
-- write_file:  {{"path": "<file>", "content": "<text>"}}
-- patch_file:  see active variant below
-- list_dir:    {{"path": "<dir>"}}
-- search_file: {{"path": "<file>", "query": "<str>"}}
-- http_get:    {{"url": "<url>"}}
+TOOLS — this is the COMPLETE list. Never invent another tool name or argument key.
+- read_file    {{"path": "<abs>"}}                      → returns lines WITH line numbers
+- list_dir     {{"path": "<abs dir>"}}
+- search_file  {{"path": "<abs>", "query": "<text>"}}
+- write_file   {{"path": "<abs>", "content": "<full file text>"}}  → creates/overwrites the WHOLE file
+- append_file  {{"path": "<abs>", "content": "<text>"}}   → adds text to the END (creates if missing)
+- patch_file   {{"path": "<abs>", "start_line": <int>, "end_line": <int>, "new_content": "<text>"}}
+                 → replaces lines start_line..end_line (inclusive). Get the numbers from read_file FIRST.
+- remove_file  {{"path": "<abs>", "recursive": true|false}}   → needs user confirmation
+- run_command  {{"command": "<powershell>"}}   ⚠ NON-BLOCKING: returns a PID only, NEVER the output
+- http_get     {{"url": "<url>"}}
 
-patch_file active variant: {tools.ACTIVE_PATCH}
-  v1: {{"path","old_str","new_str"}}                   — first unique match
-  v2: {{"path","old_str","new_str","context_before","context_after"}}
-  v3: {{"path","start_line","end_line","new_content"}} — uses line numbers
-       from read_file's numbered output
+RESPONSE FORMAT — every reply is EXACTLY ONE of these, never both:
 
-To call a tool, output ONLY this JSON block:
-```json
-{{"tool": "<name>", "args": {{...}}}}
-```
+  FORM A (use a tool): output ONE ```json block and NOTHING else — no text around it.
+    ```json
+    {{"tool": "read_file", "args": {{"path": "{wd}/main.py"}}}}
+    ```
+
+  FORM B (talk to the user): plain text only, with NO ```json block anywhere.
+    Use FORM B to ask a question or to give the final answer.
+
+WORKED EXAMPLE — note: one tool per reply, read before patch, then stop.
+  user: add an import to main.py
+  you:  ```json
+        {{"tool": "read_file", "args": {{"path": "{wd}/main.py"}}}}
+        ```
+  result: (file shown with line numbers)
+  you:  ```json
+        {{"tool": "patch_file", "args": {{"path": "{wd}/main.py", "start_line": 3, "end_line": 3, "new_content": "import logging"}}}}
+        ```
+  result: Patched {wd}/main.py
+  you:  Added the logging import to main.py.
 
 RULES:
-1. One tool per turn.
-2. After a tool, wait for the result before calling the next.
-3. When you have the final answer, write it directly WITHOUT a JSON block.
-4. Commands are PowerShell (`Get-ChildItem`, not `ls`).
-5. Modifying an existing file → patch_file. Creating new → write_file.
-6. If WINCLI.md is loaded, follow it.
-7. Final answer = short summary (created/modified/ran). No prose unless asked.
-8. Thinking is allowed inside <think>...</think>; the user sees it but it
-   won't be parsed for tool calls.
-"""
+1. ONE tool call per reply. Then STOP and wait for the result before the next.
+2. Never repeat a tool call with identical args. If it failed, change the args or switch to FORM B and explain.
+3. New file → write_file. Editing part of an existing file → read_file first, then patch_file with the line numbers you saw. A LARGE new file → write_file the first section, then append_file the rest in chunks (one small call each) — never write_file the same path twice (it overwrites).
+4. run_command is PowerShell (`Get-ChildItem`, not `ls`) and NON-BLOCKING. To check a result, read_file/search_file the output file — you will NOT get run_command's stdout.
+5. PRE-CHECK: before write_file / patch_file / remove_file, make sure you've seen the file THIS turn — either read_file it (best when editing) or list_dir its parent directory.
+6. Thinking goes inside <think>...</think>. Never put a tool call inside <think>.
+7. When the task is done, reply in FORM B with one short line (created/modified/ran). Do NOT keep calling tools after it is done.{wincli_rule}
+
+REMEMBER: one ```json tool call per turn · absolute paths with forward slashes · nothing outside the fence."""
 
 
 def render_prompt(state):
@@ -190,6 +215,11 @@ def show_context(state, session_log, model, working_dir, wincli_loaded,
     table.add_row("messages in history", str(len(conversation_history)))
     table.add_row("prompt tokens (Σ)", f"{totals['prompt_tokens']:,}")
     table.add_row("gen tokens (Σ)", f"{totals['gen_tokens']:,}")
+    sub = session_log.subagent_totals()
+    if sub["prompt_tokens"] or sub["gen_tokens"]:
+        table.add_row("subagent tokens (Σ)",
+                      f"{sub['prompt_tokens'] + sub['gen_tokens']:,} "
+                      f"(plan/skills, not in prompt counter)")
     table.add_row("elapsed (Σ)", f"{totals['elapsed_s']:.1f}s")
     table.add_row("persist file", str(session_log.path))
     table.add_row("undo stack depth", str(len(snapshot_mgr.stack)))
@@ -267,8 +297,8 @@ def handle_undo(arg, snapshot_mgr):
 
 
 def list_skills():
-    table = Table(title="skills", border_style="white")
-    table.add_column("name")
+    table = Table(title="skills", border_style="magenta")
+    table.add_column("name", style="magenta")
     table.add_column("description")
     for n, d in sorted(skills_pkg.index().items()):
         table.add_row(n, d)
@@ -347,8 +377,9 @@ def main():
         title="ready")
 
     system_prompt = build_system_prompt(working_dir, wincli_content)
+    tools.set_working_dir(working_dir)
     conversation_history = [{"role": "system", "content": system_prompt}]
-    history = FileHistory(str(working_dir / ".history"))
+    history = FileHistory(str(working_dir / ".persist" / ".history"))
     completer = SlashCompleter()
 
     def bottom_toolbar():
@@ -385,6 +416,7 @@ def main():
                                    bottom_toolbar=bottom_toolbar)
         except (KeyboardInterrupt, EOFError):
             console.print("\ngoodbye!", style="dim")
+            tools.cleanup_background_processes()
             ui.reset_background()
             sys.exit(0)
 
@@ -393,6 +425,7 @@ def main():
             continue
         if user_input.lower() in ("exit", "quit"):
             console.print("goodbye!", style="dim")
+            tools.cleanup_background_processes()
             ui.reset_background()
             sys.exit(0)
 
@@ -434,7 +467,7 @@ def main():
                 show_help()
                 continue
 
-            if cmd == "clear":
+            if cmd == "redraw":
                 ui.paint_background()
                 ui.header()
                 continue
@@ -457,6 +490,16 @@ def main():
                 else:
                     console.print("focus off — full UI restored.", style="bold")
                 save_prefs()
+                continue
+
+            if cmd == "clear":
+                kept = len(conversation_history) - 1  # everything except system prompt
+                conversation_history.clear()
+                conversation_history.append({"role": "system",
+                                             "content": build_system_prompt(working_dir,
+                                                                             wincli_content)})
+                console.print(f"[green]context cleared[/green] [dim]({kept} messages removed — "
+                              f"model memory reset, session log preserved)[/dim]")
                 continue
 
             if cmd == "context":

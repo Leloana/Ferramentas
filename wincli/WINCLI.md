@@ -316,5 +316,5 @@ When errors occur 3+ times:
 
 ---
 
-*Generated for: agentic_cli project*
+*Generated for: wincli project*
 *WINCLI.md serves as the base project context, similar to CLAUDE.md for Claude Code.*

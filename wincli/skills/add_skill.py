@@ -15,10 +15,11 @@ from rich.markup import escape
 NAME = "add_skill"
 DESCRIPTION = "Generate a new skill file from a description"
 
+import ui
 from ui import console
 
 
-TEMPLATE_PROMPT = """Write a new skill file for the agentic_cli project.
+TEMPLATE_PROMPT = """Write a new skill file for the wincli project.
 
 Skill format (Python):
 
@@ -112,7 +113,8 @@ def run(args, ctx):
             content=f"[add_skill]: {name}",
             prompt_tokens=prompt_tokens,
             gen_tokens=gen_tokens,
-            elapsed_s=elapsed
+            elapsed_s=elapsed,
+            subagent=True,
         )
 
     console.print(Panel(

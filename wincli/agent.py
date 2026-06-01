@@ -24,8 +24,28 @@ from rich.text import Text
 
 import tools
 from modes import gate_tool
+import ui
 from ui import console
 
+
+# Sampling tuned for deterministic tool-call JSON. Small models (e.g. a 9B)
+# drift into malformed/invented tool calls at typical chat defaults
+# (temperature ~0.7-1.0). presence_penalty is forced to 0 because a high value
+# (some modelfiles ship 1.5) penalizes the repeated tokens that structured JSON
+# inherently needs ("tool", "path", "args", quotes, braces) and corrupts calls.
+AGENT_OPTIONS = {"temperature": 0.15, "top_p": 0.9, "presence_penalty": 0.0}
+
+# Context window floor/ceiling.
+#   floor → guarantees the ~3k-char system prompt + a few turns always fit;
+#           Ollama's bare default (2048-4096) silently truncates and breaks
+#           tool formatting.
+#   ceil  → only applied when we fall back to the model's *architectural*
+#           context length (which can be enormous, e.g. 262144) — forcing that
+#           as num_ctx would OOM the GPU. An explicit modelfile num_ctx is
+#           honored as-is (your tested value), never capped by the ceiling.
+# Bump these if your model and GPU allow.
+AGENT_NUM_CTX_FLOOR = 8192
+AGENT_NUM_CTX_CEIL = 16384
 
 THINK_RE = re.compile(r"<think>.*?</think>", re.DOTALL)
 
@@ -59,19 +79,125 @@ def _strip_thinking(content):
     return thoughts, visible
 
 
+def _rescue_write_call(raw_json: str):
+    """Rescue a write_file / append_file tool call when json.loads fails.
+
+    Models stream HTML/code inside JSON strings. Ollama pre-decodes escape
+    sequences in message.content chunks, so the accumulated buffer ends up
+    with literal '"' chars inside the content field (from HTML attributes
+    like class="btn") which breaks json.loads. append_file is covered too:
+    its section chunks carry the same quote/newline-heavy payload.
+
+    Strategy: extract tool/path by regex, extract content by rfind-ing the
+    closing '"}}' sentinel at the end of the JSON object.
+    """
+    tool_m = re.search(r'"tool"\s*:\s*"(write_file|append_file)"', raw_json)
+    if not tool_m:
+        return None
+    tool_name = tool_m.group(1)
+
+    # Path is short and usually well-escaped — use quoted-string regex
+    path_m = re.search(r'"path"\s*:\s*"((?:[^"\\]|\\.)*)"', raw_json)
+    if not path_m:
+        return None
+    path = path_m.group(1)
+
+    # Find where the content value starts
+    cm = re.search(r'"content"\s*:\s*"', raw_json)
+    if not cm:
+        return None
+
+    rest = raw_json[cm.end():]
+    # Content ends just before the closing "}} of the JSON object.
+    # rfind gives us the LAST occurrence, which is the JSON's own closing.
+    end = rest.rfind('"}}')
+    if end == -1:
+        end = rest.rfind('"}')
+    if end == -1:
+        return None
+
+    raw_content = rest[:end]
+    # Decode escape sequences the model did use correctly
+    raw_content = raw_content.replace('\\n', '\n')
+    raw_content = raw_content.replace('\\t', '\t')
+    raw_content = raw_content.replace('\\"', '"')
+    raw_content = raw_content.replace('\\\\', '\\')
+
+    return {"tool": tool_name, "args": {"path": path, "content": raw_content}}
+
+
+def _extract_embedded_json(text):
+    """Find the first {"tool": ...} object embedded anywhere in free text.
+
+    Returns (tool_call_dict, prose_before) or (None, None).
+    Uses a bracket counter so it handles nested objects correctly.
+    """
+    for m in re.finditer(r'\{"tool"\s*:', text):
+        start = m.start()
+        depth = 0
+        for i, ch in enumerate(text[start:]):
+            if ch == '{':
+                depth += 1
+            elif ch == '}':
+                depth -= 1
+                if depth == 0:
+                    candidate = text[start:start + i + 1]
+                    try:
+                        parsed = json.loads(candidate)
+                        if isinstance(parsed, dict) and "tool" in parsed:
+                            return parsed, text[:start].strip()
+                    except json.JSONDecodeError:
+                        rescued = _rescue_write_call(candidate)
+                        if rescued:
+                            return rescued, text[:start].strip()
+                    break
+    return None, None
+
+
 def parse_tool_call(response_content):
-    """Parse a tool call JSON block from the model response. Thinking
-    tags must be stripped before calling this."""
+    """Parse a tool call from the model response.
+
+    Returns (tool_call_dict | None, prose_prefix | "").
+    Prose prefix is non-empty when the tool call was embedded inside text
+    rather than sent as a standalone block — the caller should display it.
+
+    Priority:
+      1. ```json … ``` fenced block (the correct format)
+      2. Bare JSON at the start of the response
+      3. {"tool":…} object embedded anywhere inside prose
+    """
+    # 1. Fenced block (preferred / correct format)
     json_match = re.search(r"```json\s*(.*?)\s*```", response_content, re.DOTALL)
     if json_match:
+        raw = json_match.group(1).strip()
         try:
-            return json.loads(json_match.group(1).strip())
+            return json.loads(raw), ""
         except json.JSONDecodeError:
-            return None
+            rescued = _rescue_write_call(raw)
+            if rescued:
+                return rescued, ""
+
+    # 2. Bare JSON covering the whole response (no fence)
     try:
-        return json.loads(response_content.strip())
+        parsed = json.loads(response_content.strip())
+        if isinstance(parsed, dict) and "tool" in parsed:
+            return parsed, ""
     except json.JSONDecodeError:
-        return None
+        # Large write_file calls often fail json.loads because the model emits
+        # raw newlines / unescaped quotes inside a multi-line content value.
+        # The byte-level rescue handles exactly this — and the brace-counting
+        # _extract_embedded_json (step 3) can't, because CSS/JS braces in the
+        # content desync its depth counter. Try the rescue here before step 3.
+        rescued = _rescue_write_call(response_content.strip())
+        if rescued:
+            return rescued, ""
+
+    # 3. JSON embedded inside prose — extract and surface the preceding text
+    embedded, prose = _extract_embedded_json(response_content)
+    if embedded:
+        return embedded, prose or ""
+
+    return None, ""
 
 
 def _dispatch_tool(tool_name):
@@ -138,14 +264,18 @@ def format_tool_result(result):
         if stderr:
             parts.append(f"STDERR:\n{stderr}")
         return "\n".join(parts)
+    if result.get("status") == "started":
+        return f"[PID {result['pid']}] {result['message']}"
     if "numbered" in result:
         return f"File contents (with line numbers):\n{result['numbered']}"
     if "content" in result:
         return f"File contents:\n{result['content']}"
     if result.get("status") == "patched":
-        return f"Patched {result['path']} (variant {result.get('variant','?')})"
+        return f"Patched {result['path'].replace(chr(92), '/')} (variant {result.get('variant','?')})"
     if result.get("status") == "ok":
-        return f"Wrote file {result['path']}"
+        return f"Wrote file {result['path'].replace(chr(92), '/')}"
+    if result.get("status") == "appended":
+        return f"Appended to {result['path'].replace(chr(92), '/')}"
     if "entries" in result:
         return f"Directory contents: {', '.join(result['entries'])}"
     if "matches" in result:
@@ -159,6 +289,14 @@ def format_tool_result(result):
 
 
 def get_context_limit(model_name):
+    """Return (context_window, configured).
+
+    configured=True → the modelfile explicitly set num_ctx; trust it as-is
+        (it's the value the user has actually tested on their hardware).
+    configured=False → we fell back to the model's architectural context_length
+        (which can be huge, e.g. 262144) or the 2048 default; callers should
+        clamp these to avoid OOM.
+    """
     try:
         info = ollama.show(model_name)
         params = info.get("parameters", "")
@@ -166,15 +304,15 @@ def get_context_limit(model_name):
             for line in params.splitlines():
                 parts = line.split()
                 if len(parts) >= 2 and parts[0] == "num_ctx":
-                    return int(parts[1])
+                    return int(parts[1]), True
         modelinfo = info.get("modelinfo", {})
         if isinstance(modelinfo, dict):
             for k, v in modelinfo.items():
                 if k.endswith(".context_length"):
-                    return int(v)
+                    return int(v), False
     except Exception:
         pass
-    return 2048
+    return 2048, False
 
 
 def _args_hash(tool_name, args):
@@ -258,7 +396,7 @@ TOOL_RESULT_PREFIXES = (
     "Tool call failed:",
     "File contents",
     "Directory contents:",
-    "Patched ", "Wrote file ",
+    "Patched ", "Wrote file ", "Appended to ",
     "Found ", "No matches",
     "returncode:",
     "HTTP ",
@@ -319,9 +457,23 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
     snapshot_mgr (if provided) snapshots files before write/patch.
 
     Ctrl+C during a turn cancels the turn cleanly (returns without exiting)."""
-    context_limit = get_context_limit(model)
+    detected_ctx, ctx_configured = get_context_limit(model)
+    if ctx_configured:
+        # Honor the modelfile's num_ctx (the user's tested value); only ensure
+        # it isn't so small it truncates the system prompt.
+        context_limit = max(detected_ctx, AGENT_NUM_CTX_FLOOR)
+    else:
+        # Architectural / default fallback — clamp so a huge arch length (e.g.
+        # 262144) doesn't OOM the GPU when forced as num_ctx.
+        context_limit = min(max(detected_ctx, AGENT_NUM_CTX_FLOOR),
+                            AGENT_NUM_CTX_CEIL)
+    options = {**AGENT_OPTIONS, "num_ctx": context_limit}
     consecutive_failures = {}  # args_hash → count
     focus = bool(getattr(state, "focus", False)) if state is not None else False
+    listed_dirs: set = set()   # parent dirs confirmed via list_dir this turn
+    verified_files: set = set()  # files read/written this turn (known to exist)
+
+    _MUTATING_TOOLS = {"write_file", "append_file", "patch_file", "remove_file"}
 
     while True:
         escaped = _prepare_messages(messages)
@@ -337,7 +489,8 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
         in_reasoning = False
         with Live(Text("connecting..."), refresh_per_second=12, console=console) as live:
             try:
-                stream = ollama.chat(model=model, messages=escaped, stream=True)
+                stream = ollama.chat(model=model, messages=escaped, stream=True,
+                                     options=options)
                 for chunk in stream:
                     reasoning = ""
                     content = ""
@@ -429,28 +582,66 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
         if warn:
             subtitle = f"{subtitle}  {warn}"
 
-        tool_call = parse_tool_call(visible)
+        tool_call, embedded_prose = parse_tool_call(visible)
+
+        # Model sent prose + tool call in the same response: show the prose
+        # as an intermediate message before executing the tool.
+        if tool_call and embedded_prose:
+            console.print(Panel(embedded_prose, title="🤖 assistant (message)",
+                                subtitle=subtitle, border_style="green"))
+            console.print("[dim]↳ tool call detected inside message — executing it now[/dim]")
 
         if tool_call and isinstance(tool_call, dict) and "tool" in tool_call:
             tool_name = tool_call.get("tool")
             tool_args = tool_call.get("args", {}) or {}
 
+            # Track list_dir calls so we know which dirs have been verified
+            if tool_name == "list_dir":
+                p = tool_args.get("path", "")
+                if p:
+                    from pathlib import Path as _Path
+                    listed_dirs.add(str(_Path(p).resolve()))
+
+            # Pre-check: block mutating tools unless the file's location was
+            # verified this turn — either via list_dir on the parent, or because
+            # the file was already read/written this turn (so we know it exists
+            # and its exact name). This avoids a needless "list_dir wall" right
+            # after the agent has already read the file it wants to patch.
+            if tool_name in _MUTATING_TOOLS:
+                file_path = tool_args.get("path", "")
+                if file_path:
+                    from pathlib import Path as _Path
+                    resolved = str(_Path(file_path).resolve())
+                    parent = str(_Path(resolved).parent)
+                    if parent not in listed_dirs and resolved not in verified_files:
+                        warn = (
+                            f"RULE VIOLATION: you called '{tool_name}' on '{file_path}' "
+                            f"without first reading it or calling list_dir on its parent "
+                            f"directory ('{parent}'). You MUST read_file it or list_dir that "
+                            f"directory first to confirm the file exists and its exact name is correct."
+                        )
+                        console.print(f"[yellow]pre-check: list_dir required before {tool_name}[/yellow]")
+                        messages.append({"role": "assistant", "content": content})
+                        messages.append({"role": "user", "content": warn})
+                        continue
+
             # Permission gate
             if state is not None and not gate_tool(state, tool_name, tool_args):
-                console.print("[red]denied by user[/red]")
+                console.print("[red]denied by user — stopping turn[/red]")
                 messages.append({"role": "assistant", "content": content})
                 messages.append({"role": "user",
-                                 "content": "Tool call denied by user. Adjust your approach or ask for guidance."})
+                                 "content": "The user didn't accept the request. "
+                                            "They may want to change the approach."})
                 if session_log:
                     session_log.log_step(kind="assistant", content=visible,
                                          prompt_tokens=prompt_tokens, gen_tokens=gen_tokens,
                                          elapsed_s=elapsed,
                                          tool_call={"name": tool_name, "args": tool_args},
                                          tool_result={"error": "denied by user"})
-                continue
+                return
 
             # Snapshot file *before* mutating tools execute
-            if snapshot_mgr is not None and tool_name in ("write_file", "patch_file"):
+            if snapshot_mgr is not None and tool_name in ("write_file", "append_file", "patch_file", "remove_file"):
                 p = tool_args.get("path")
                 if p:
                     try:
@@ -474,7 +665,7 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
             h = _args_hash(tool_name, tool_args)
             if is_error:
                 consecutive_failures[h] = consecutive_failures.get(h, 0) + 1
-                console.print(f"[bold red]tool[/bold red] {tool_name} - error "
+                console.print(f"[bold red]✗ tool[/bold red] [red]{tool_name}[/red] - error "
                               f"(strike {consecutive_failures[h]}/3)")
                 if consecutive_failures[h] >= 3:
                     console.print(Panel(
@@ -486,9 +677,16 @@ def run_agent_loop(messages, model, *, state=None, session_log=None,
                     return
             else:
                 consecutive_failures.pop(h, None)
+                # Remember files we've now confirmed to exist this turn, so a
+                # follow-up patch/write doesn't trip the list_dir pre-check.
+                if tool_name in ("read_file", "write_file", "append_file", "patch_file"):
+                    rp = tool_args.get("path")
+                    if rp:
+                        from pathlib import Path as _Path
+                        verified_files.add(str(_Path(rp).resolve()))
                 display_path = (tool_args.get("path") or tool_args.get("url")
                                 or (tool_args.get("command") or "")[:60] or "-")
-                console.print(f"[bold cyan]tool[/bold cyan] {tool_name} - {display_path}")
+                console.print(f"[bold green]✓ tool[/bold green] [green]{tool_name}[/green] - {display_path}")
 
             messages.append({"role": "assistant", "content": content})
             messages.append({"role": "user", "content": format_tool_result(result)})

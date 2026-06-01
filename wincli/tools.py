@@ -6,15 +6,88 @@ chosen variant so the agent loop doesn't need to know.
 
 Errors from every tool are returned as {"error": "...", "hint": "..."} so
 the model gets actionable feedback instead of bare exceptions.
+
+BACKGROUND PROCESS POLICY:
+run_command ALWAYS launches processes in the background (non-blocking).
+All spawned processes are tracked in _BACKGROUND_PROCESSES and automatically
+killed when wincli exits via atexit.
 """
 
+import atexit
 import difflib
 import os
 import subprocess
 from pathlib2 import Path
 
 
-ACTIVE_PATCH = "v1"  # "v1" | "v2" | "v3"
+# ── Background process tracking ────────────────────────────────────────
+# Every process launched by run_command is registered here so it can be
+# killed when wincli exits.  Key = PID, value = Popen object.
+_BACKGROUND_PROCESSES: dict = {}
+
+
+def cleanup_background_processes():
+    """Kill every tracked background process (entire tree, forced).
+
+    Called automatically via atexit when wincli exits.  Safe to call
+    multiple times — already-dead PIDs are silently skipped.
+    """
+    for pid, proc in list(_BACKGROUND_PROCESSES.items()):
+        try:
+            subprocess.call(
+                ["taskkill", "/F", "/T", "/PID", str(pid)],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+        except Exception:
+            pass
+    _BACKGROUND_PROCESSES.clear()
+
+
+atexit.register(cleanup_background_processes)
+
+# ── ────────────────────────────────────────────────────────────────────
+
+# Working directory — set from main.py via set_working_dir() so all tools
+# resolve relative paths against the project root, not the OS CWD.
+_WORKING_DIR = None  # Path | None
+
+
+def set_working_dir(wd):
+    """Called once from main.py to capture the project root as an absolute
+    Path. Every tool that resolves paths uses this instead of Path.cwd()."""
+    global _WORKING_DIR
+    from pathlib import Path
+    _WORKING_DIR = Path(wd).resolve()
+
+
+ACTIVE_PATCH = "v3"  # "v1" | "v2" | "v3" — v3 (line-range) is most robust for small models
+
+# Paths the AI agent must never touch — its own config and session data.
+_GUARDED_DIRS = [".persist"]
+
+
+def _resolve_abs(raw: str) -> str:
+    """Return an absolute path string, resolving relative paths against
+    the project working_dir (set via set_working_dir). Falls back to CWD
+    if the working_dir hasn't been set yet."""
+    p = Path(raw)
+    if not p.is_absolute():
+        base = _WORKING_DIR if _WORKING_DIR is not None else Path.cwd()
+        p = base / p
+    return str(p.resolve())
+
+
+def _guard_path(raw, label="path"):
+    """Return an error dict if `raw` enters a guarded directory."""
+    if not raw:
+        return None
+    parts = Path(raw).parts
+    for g in _GUARDED_DIRS:
+        if g in parts:
+            return _err(f"{label} enters guarded directory '{g}'",
+                        "this directory contains session/config data — use a different path")
+    return None
 
 
 def _err(message, hint=None):
@@ -41,29 +114,38 @@ def _truncate_lines(text, max_lines, label):
 
 
 def run_command(args):
-    """Execute a Windows PowerShell command. stdout/stderr capped at
-    RUN_COMMAND_MAX_LINES each — long outputs get a head+tail with the
-    middle omitted."""
+    """Launch a Windows PowerShell command in the background (non-blocking).
+
+    The process starts immediately and control returns to the agent without
+    waiting for completion.  All spawned processes are tracked in
+    _BACKGROUND_PROCESSES and killed automatically when wincli exits.
+
+    The agent receives the PID so it can monitor or interact with the
+    process via subsequent commands (e.g. ``Get-Process -Id <PID>``).
+
+    Because stdout/stderr are discarded (the process runs detached), this
+    tool is NOT suitable for commands whose output the agent needs to
+    inspect.  Use it for servers, watchers, long-running tasks.
+    """
     command = args.get("command")
     if not command:
         return _err("missing 'command' arg")
     try:
-        result = subprocess.run(
+        proc = subprocess.Popen(
             ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", command],
-            capture_output=True,
-            text=True,
-            timeout=30,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NEW_PROCESS_GROUP,
         )
-    except subprocess.TimeoutExpired:
-        return _err("command timed out after 30s", "split into smaller commands")
+        _BACKGROUND_PROCESSES[proc.pid] = proc
+        return {
+            "status": "started",
+            "pid": proc.pid,
+            "message": f"command launched in background (PID {proc.pid}). "
+                       f"It will be terminated when wincli exits.",
+        }
     except FileNotFoundError:
         return _err("powershell.exe not found", "are you running on Windows?")
-    stdout, stdout_trunc = _truncate_lines(result.stdout or "", RUN_COMMAND_MAX_LINES, "stdout")
-    stderr, stderr_trunc = _truncate_lines(result.stderr or "", RUN_COMMAND_MAX_LINES, "stderr")
-    out = {"stdout": stdout, "stderr": stderr, "returncode": result.returncode}
-    if stdout_trunc or stderr_trunc:
-        out["truncated"] = True
-    return out
 
 
 def read_file(args):
@@ -78,6 +160,9 @@ def read_file(args):
     raw = args.get("path")
     if not raw:
         return _err("missing 'path' arg")
+    raw = _resolve_abs(raw)
+    if g := _guard_path(raw):
+        return g
     path = Path(raw)
     if not path.exists():
         return _err(f"file not found: {raw}", _suggest_path(raw))
@@ -130,6 +215,9 @@ def write_file(args):
     raw = args.get("path")
     if not raw:
         return _err("missing 'path' arg")
+    raw = _resolve_abs(raw)
+    if g := _guard_path(raw):
+        return g
     if "content" not in args:
         return _err("missing 'content' arg")
     path = Path(raw)
@@ -141,40 +229,79 @@ def write_file(args):
     return {"status": "ok", "path": raw}
 
 
-# ---------- patch variants ----------
+def append_file(args):
+    """Append text to the end of a file, creating it if missing.
 
-def patch_file_v1(args):
-    """Variant 1: replace first occurrence of old_str with new_str.
+    Built for segmenting large files: a write_file task creates the file with
+    its first section, then append_file tasks add each remaining chunk. Every
+    call carries only a small slice of content, so the tool-call JSON stays
+    well-formed even when the finished file is large.
 
-    On failure (string not found) returns the 3 closest matches so the model
-    can correct itself instead of looping blind.
+    Args:
+        path:    file path (required)
+        content: text to append (required)
     """
+    raw = args.get("path")
+    if not raw:
+        return _err("missing 'path' arg")
+    raw = _resolve_abs(raw)
+    if g := _guard_path(raw):
+        return g
+    if "content" not in args:
+        return _err("missing 'content' arg")
+    path = Path(raw)
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with open(raw, "a", encoding="utf-8") as f:
+            f.write(args["content"])
+    except Exception as e:
+        return _err(f"could not append to {raw}: {e}")
+    return {"status": "appended", "path": raw}
+
+
+# ---------- patch variants ----------
+def patch_file_v1(args):
     raw = args.get("path")
     old = args.get("old_str")
     new = args.get("new_str")
     if not raw or old is None or new is None:
         return _err("required args: path, old_str, new_str")
+    raw = _resolve_abs(raw)
+    if g := _guard_path(raw):
+        return g
     path = Path(raw)
     if not path.exists():
         return _err(f"file not found: {raw}")
     try:
-        content = path.read_text(encoding="utf-8")
+        original_bytes = path.read_bytes()
+        content_raw = original_bytes.decode("utf-8")
     except Exception as e:
         return _err(f"could not read {raw}: {e}")
 
-    if old not in content:
+    # Normaliza para LF para comparação e substituição
+    content_norm = content_raw.replace("\r\n", "\n")
+    old_norm = old.replace("\r\n", "\n")
+    new_norm = new.replace("\r\n", "\n")
+
+    if old_norm not in content_norm:
         return _err(
             f"old_str not found in {raw}",
-            _fuzzy_hint(content, old),
+            _fuzzy_hint(content_norm, old_norm),
         )
-    count = content.count(old)
+    count = content_norm.count(old_norm)
     if count > 1:
         return _err(
             f"old_str matches {count} times in {raw} (ambiguous)",
             "add more surrounding context to make old_str unique",
         )
-    patched = content.replace(old, new, 1)
-    path.write_text(patched, encoding="utf-8")
+
+    patched_norm = content_norm.replace(old_norm, new_norm, 1)
+
+    # Re-aplica o line ending original do arquivo
+    eol = "\r\n" if "\r\n" in content_raw else "\n"
+    patched_final = patched_norm.replace("\n", eol)
+
+    path.write_bytes(patched_final.encode("utf-8"))
     return {"status": "patched", "path": raw, "variant": "v1"}
 
 
@@ -193,6 +320,9 @@ def patch_file_v2(args):
     after = args.get("context_after", "")
     if not raw or old is None or new is None:
         return _err("required args: path, old_str, new_str (+ optional context_before/after)")
+    raw = _resolve_abs(raw)
+    if g := _guard_path(raw):
+        return g
     path = Path(raw)
     if not path.exists():
         return _err(f"file not found: {raw}")
@@ -256,6 +386,9 @@ def patch_file_v3(args):
     new_content = args.get("new_content")
     if not raw or start_line is None or end_line is None or new_content is None:
         return _err("required args: path, start_line, end_line, new_content")
+    raw = _resolve_abs(raw)
+    if g := _guard_path(raw):
+        return g
     path = Path(raw)
     if not path.exists():
         return _err(f"file not found: {raw}")
@@ -294,7 +427,10 @@ def patch_file(args):
 # ---------- discovery / search ----------
 
 def list_dir(args):
-    raw = args.get("path", ".")
+    raw = args.get("path", str(_WORKING_DIR) if _WORKING_DIR is not None else ".")
+    raw = _resolve_abs(raw)
+    if g := _guard_path(raw):
+        return g
     path = Path(raw)
     if not path.exists():
         return _err(f"directory not found: {raw}")
@@ -308,6 +444,8 @@ def list_dir(args):
     decorated = []
     for e in entries:
         p = path / e
+        if any(g in Path(p).parts for g in _GUARDED_DIRS):
+            continue
         decorated.append(e + "/" if p.is_dir() else e)
     return {"entries": decorated}
 
@@ -317,8 +455,32 @@ def search_file(args):
     query = args.get("query")
     if not raw or query is None:
         return _err("required args: path, query")
+    raw = _resolve_abs(raw)
+    if g := _guard_path(raw):
+        return g
     path = Path(raw)
     if not path.exists():
+        parent = path.parent
+        if parent.exists():
+            try:
+                entries = sorted(os.listdir(str(parent)))
+                decorated = []
+                for e in entries:
+                    p = parent / e
+                    decorated.append(e + "/" if p.is_dir() else e)
+                hint = (
+                    f"file not found: {raw}\n"
+                    f"available in {parent}:\n"
+                    + "\n".join(f"  {e}" for e in decorated)
+                )
+                close = difflib.get_close_matches(
+                    path.name, [e.rstrip("/") for e in decorated], n=5, cutoff=0.3
+                )
+                if close:
+                    hint += "\ndid you mean: " + ", ".join(close)
+                return _err("file not found", hint)
+            except Exception:
+                pass
         return _err(f"file not found: {raw}")
     try:
         text = path.read_text(encoding="utf-8")
@@ -329,6 +491,51 @@ def search_file(args):
         if query in line:
             matches.append({"line": i, "content": line})
     return {"matches": matches}
+
+
+def remove_file(args):
+    """Remove a file or directory using PowerShell Remove-Item.
+
+    Args:
+        path      : absolute path to file or directory (required)
+        recursive : true to remove a non-empty directory tree (optional, default false)
+    """
+    raw = args.get("path")
+    if not raw:
+        return _err("missing 'path' arg")
+    raw = _resolve_abs(raw)
+    if g := _guard_path(raw):
+        return g
+    path = Path(raw)
+    if not path.exists():
+        return _err(f"path not found: {raw}", "check spelling or use list_dir to verify")
+
+    recursive = str(args.get("recursive", "false")).lower() in ("true", "1", "yes")
+
+    if path.is_dir() and not recursive:
+        return _err(
+            f"'{raw}' is a directory",
+            "pass recursive: true to remove a directory and its contents",
+        )
+
+    ps_flags = "-Recurse -Force" if path.is_dir() else "-Force"
+    cmd = f"Remove-Item -LiteralPath '{raw}' {ps_flags}"
+    try:
+        result = subprocess.run(
+            ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", cmd],
+            capture_output=True, text=True, timeout=30,
+        )
+    except FileNotFoundError:
+        return _err("powershell.exe not found", "are you running on Windows?")
+    except subprocess.TimeoutExpired:
+        return _err("remove_file timed out after 30s")
+
+    if result.returncode != 0:
+        return _err(
+            f"Remove-Item failed (rc={result.returncode})",
+            (result.stderr or result.stdout or "").strip()[:400],
+        )
+    return {"status": "removed", "path": raw}
 
 
 def http_get(args):
@@ -360,9 +567,12 @@ def _fuzzy_hint(content, old):
 def _suggest_path(raw):
     """Suggest existing files when a path doesn't exist."""
     try:
-        parent = Path(raw).parent if Path(raw).parent != Path("") else Path(".")
+        parent = Path(raw).parent
         if not parent.exists():
-            return None
+            abs_parent = _resolve_abs(raw) if not Path(raw).is_absolute() else raw
+            parent = Path(abs_parent).parent
+            if not parent.exists():
+                return None
         siblings = [e for e in os.listdir(str(parent)) if not e.startswith(".")]
         target = Path(raw).name
         close = difflib.get_close_matches(target, siblings, n=3, cutoff=0.5)
@@ -378,7 +588,9 @@ CORE_TOOLS = {
     "run_command": run_command,
     "read_file": read_file,
     "write_file": write_file,
+    "append_file": append_file,
     "patch_file": patch_file,
+    "remove_file": remove_file,
     "list_dir": list_dir,
     "search_file": search_file,
     "http_get": http_get,

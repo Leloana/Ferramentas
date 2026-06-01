@@ -1,4 +1,4 @@
-"""Central UI layer for WINCLI.
+﻿"""Central UI layer for WINCLI.
 
 Everything visual goes through here so the look stays consistent:
 
@@ -8,7 +8,7 @@ Everything visual goes through here so the look stays consistent:
     ``no_color=True`` so every legacy ``[red]``/``[cyan]`` markup collapses
     to monochrome; only bold / dim / reverse survive to convey hierarchy.
 
-  - No typed choices. ``select()`` is an arrow-key menu (↑/↓ + Enter) used
+  - No typed choices. ``select()`` is an arrow-key menu (Ôåæ/Ôåô + Enter) used
     for every decision in the app (model pick, permissions, resume, plan
     approval, ...).
 
@@ -65,15 +65,15 @@ def reset_background():
 
 # --- header ---------------------------------------------------------------
 _BANNER = r"""
-██╗    ██╗██╗███╗   ██╗ ██████╗██╗     ██╗
-██║    ██║██║████╗  ██║██╔════╝██║     ██║
-██║ █╗ ██║██║██╔██╗ ██║██║     ██║     ██║
-██║███╗██║██║██║╚██╗██║██║     ██║     ██║
-╚███╔███╔╝██║██║ ╚████║╚██████╗███████╗██║
- ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝ ╚═════╝╚══════╝╚═╝
+ÔûêÔûêÔòù    ÔûêÔûêÔòùÔûêÔûêÔòùÔûêÔûêÔûêÔòù   ÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔûêÔòùÔûêÔûêÔòù     ÔûêÔûêÔòù
+ÔûêÔûêÔòæ    ÔûêÔûêÔòæÔûêÔûêÔòæÔûêÔûêÔûêÔûêÔòù  ÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔòÉÔòÉÔòØÔûêÔûêÔòæ     ÔûêÔûêÔòæ
+ÔûêÔûêÔòæ ÔûêÔòù ÔûêÔûêÔòæÔûêÔûêÔòæÔûêÔûêÔòöÔûêÔûêÔòù ÔûêÔûêÔòæÔûêÔûêÔòæ     ÔûêÔûêÔòæ     ÔûêÔûêÔòæ
+ÔûêÔûêÔòæÔûêÔûêÔûêÔòùÔûêÔûêÔòæÔûêÔûêÔòæÔûêÔûêÔòæÔòÜÔûêÔûêÔòùÔûêÔûêÔòæÔûêÔûêÔòæ     ÔûêÔûêÔòæ     ÔûêÔûêÔòæ
+ÔòÜÔûêÔûêÔûêÔòöÔûêÔûêÔûêÔòöÔòØÔûêÔûêÔòæÔûêÔûêÔòæ ÔòÜÔûêÔûêÔûêÔûêÔòæÔòÜÔûêÔûêÔûêÔûêÔûêÔûêÔòùÔûêÔûêÔûêÔûêÔûêÔûêÔûêÔòùÔûêÔûêÔòæ
+ ÔòÜÔòÉÔòÉÔòØÔòÜÔòÉÔòÉÔòØ ÔòÜÔòÉÔòØÔòÜÔòÉÔòØ  ÔòÜÔòÉÔòÉÔòÉÔòØ ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòØÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòØÔòÜÔòÉÔòØ
 """
 
-_SUBTITLE = "the agent cli — windows native"
+_SUBTITLE = "the agent cli ÔÇö windows native"
 
 
 def header():
@@ -82,11 +82,11 @@ def header():
     for line in _BANNER.strip("\n").splitlines():
         console.print(line, style="bold")
     console.print(_SUBTITLE.center(width), style="dim")
-    console.print("─" * width, style="dim")
+    console.print("ÔöÇ" * width, style="dim")
 
 
 def rule(text=""):
-    console.rule(text, style="dim", characters="─")
+    console.rule(text, style="dim", characters="ÔöÇ")
 
 
 def panel(body, title="", subtitle=""):
@@ -104,7 +104,7 @@ def dim(msg):
 
 # --- arrow-key selection menu --------------------------------------------
 def select(options, *, title=None, default=0,
-           footer="↑/↓ move · enter select · esc cancel"):
+           footer="Ôåæ/Ôåô move ┬À enter select ┬À esc cancel"):
     """Arrow-key menu. The ONLY way the app asks the user to choose.
 
     options : list of either ``label`` strings or ``(label, value)`` tuples.
@@ -153,7 +153,7 @@ def select(options, *, title=None, default=0,
             frags.append(("bold", title + "\n\n"))
         for i, lbl in enumerate(labels):
             if i == state["i"]:
-                frags.append(("reverse", f" ❯ {lbl} "))
+                frags.append(("reverse", f" ÔØ» {lbl} "))
                 frags.append(("", "\n"))
             else:
                 frags.append(("", f"   {lbl}\n"))
@@ -189,7 +189,7 @@ def confirm(question, *, default_yes=False):
         [("yes", True), ("no", False)],
         title=question,
         default=0 if default_yes else 1,
-        footer="↑/↓ move · enter confirm",
+        footer="Ôåæ/Ôåô move ┬À enter confirm",
     )
     return bool(res)
 

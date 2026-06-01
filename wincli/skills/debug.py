@@ -21,12 +21,27 @@ from subagent import SubAgent
 NAME = "debug"
 DESCRIPTION = "Multi-round debug loop with context refresh between rounds"
 
+import ui
 from ui import console
 
 
 ROUND_SYS = """You are debugging code. You have ONE goal: make the command
-succeed against the criterion. You have these tools: run_command,
+succeed against the criterion. You act ONLY by calling tools: run_command,
 read_file, write_file, patch_file, list_dir, search_file.
+
+To call a tool, output ONE ```json block and nothing else. Paths are absolute
+with forward slashes "/", never backslashes:
+```json
+{{"tool": "read_file", "args": {{"path": "C:/Users/me/proj/server.log"}}}}
+```
+
+patch_file replaces a line range (numbers come from read_file):
+  {{"tool": "patch_file", "args": {{"path": "<abs>", "start_line": <int>, "end_line": <int>, "new_content": "<text>"}}}}
+
+IMPORTANT: run_command is NON-BLOCKING — it launches in background and
+returns a PID immediately. You cannot read stdout/stderr from it. Use it
+only as a fire-and-forget trigger (e.g. restart a server after editing).
+To check results, use read_file or search_file on log/output files.
 
 Command to run:
 {command}
@@ -35,13 +50,12 @@ Success criterion (interpret strictly):
 {criterion}
 
 Protocol:
-1. Run the command with run_command.
-2. Inspect stdout / stderr / returncode.
+1. Run the command with run_command (fire-and-forget).
+2. Check success via file inspection (read_file / search_file on logs).
 3. If the criterion is MET → output exactly `DEBUG SUCCESS` on its own
    line and stop. No more tool calls.
-4. Otherwise diagnose, edit code (patch_file preferred), and go to 1.
-5. PowerShell syntax. patch_file uses the active variant declared in
-   tools.py — read_file output includes line numbers.
+4. Otherwise diagnose, edit code (read_file then patch_file), and go to 1.
+5. PowerShell syntax. One tool call per reply, then wait for the result.
 
 If you cannot succeed within your tool-call budget, end your final
 message with a single block exactly like this:

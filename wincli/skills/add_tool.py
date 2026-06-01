@@ -16,10 +16,11 @@ from rich.markup import escape
 NAME = "add_tool"
 DESCRIPTION = "Generate a new tool function from a description"
 
+import ui
 from ui import console
 
 
-TEMPLATE_PROMPT = """Write a new tool function for the agentic_cli project.
+TEMPLATE_PROMPT = """Write a new tool function for the wincli project.
 
 Tool format (Python):
 
@@ -86,7 +87,7 @@ def run(args, ctx):
 
     target = Path(ctx["working_dir"]) / "extra_tools.py"
     header = "" if target.exists() else (
-        "\"\"\"User-generated extra tools. Auto-loaded by agentic_cli.\"\"\"\n\n")
+        "\"\"\"User-generated extra tools. Auto-loaded by wincli.\"\"\"\n\n")
     with open(target, "a", encoding="utf-8") as f:
         if header:
             f.write(header)
@@ -104,7 +105,8 @@ def run(args, ctx):
             content=f"[add_tool]: {tool_name}",
             prompt_tokens=prompt_tokens,
             gen_tokens=gen_tokens,
-            elapsed_s=elapsed
+            elapsed_s=elapsed,
+            subagent=True,
         )
 
     console.print(Panel(

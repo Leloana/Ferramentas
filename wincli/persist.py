@@ -23,8 +23,13 @@ Schema:
       "totals": {"prompt_tokens": int, "gen_tokens": int, "elapsed_s": float}
     }
   ],
-  "session_totals": {"prompt_tokens": int, "gen_tokens": int, "elapsed_s": float}
+  "session_totals":  {"prompt_tokens": int, "gen_tokens": int, "elapsed_s": float},
+  "subagent_totals": {"prompt_tokens": int, "gen_tokens": int, "elapsed_s": float}
 }
+
+session_totals counts only main-conversation steps (what the prompt counter shows).
+subagent_totals counts /plan and skill subagent steps — logged but kept separate so
+nested contexts don't inflate the main counter.
 """
 
 import json
@@ -37,10 +42,11 @@ from pathlib2 import Path
 class SessionLog:
     def __init__(self, working_dir: Path, model: str,
                  resumed_from: str = None):
-        self.dir = working_dir / ".persist"
-        self.dir.mkdir(exist_ok=True)
         self.session_id = datetime.now().strftime("%Y%m%d_%H%M%S") + "_" + uuid.uuid4().hex[:6]
-        self.path = self.dir / f"{self.session_id}.json"
+        # Each session lives in its own sub-folder: .persist/<session_id>/
+        self.dir = working_dir / ".persist" / self.session_id
+        self.dir.mkdir(parents=True, exist_ok=True)
+        self.path = self.dir / "session.json"
         self.data = {
             "session_id": self.session_id,
             "started_at": datetime.now(timezone.utc).isoformat(),
@@ -48,6 +54,10 @@ class SessionLog:
             "resumed_from": resumed_from,
             "turns": [],
             "session_totals": {"prompt_tokens": 0, "gen_tokens": 0, "elapsed_s": 0.0},
+            # tokens spent by /plan (and other) subagents — logged for the record
+            # but kept OUT of session_totals so the prompt counter reflects only
+            # the main conversation, not every nested subagent context.
+            "subagent_totals": {"prompt_tokens": 0, "gen_tokens": 0, "elapsed_s": 0.0},
         }
         self._current_turn = None
         self._flush()
@@ -61,7 +71,12 @@ class SessionLog:
         self.data["turns"].append(self._current_turn)
 
     def log_step(self, *, kind, content, prompt_tokens=0, gen_tokens=0,
-                 elapsed_s=0.0, tool_call=None, tool_result=None):
+                 elapsed_s=0.0, tool_call=None, tool_result=None,
+                 subagent=False):
+        """Record one step. If subagent=True the step is still written to the
+        chain (so the run is fully logged) but its tokens accumulate into
+        subagent_totals instead of session_totals — keeping the prompt counter
+        about the main conversation only."""
         if self._current_turn is None:
             self.start_turn("")
         tps = gen_tokens / elapsed_s if elapsed_s > 0 else 0
@@ -74,18 +89,25 @@ class SessionLog:
             "tps": tps,
             "tool_call": tool_call,
             "tool_result": tool_result,
+            "subagent": subagent,
         })
-        self._current_turn["totals"]["prompt_tokens"] += prompt_tokens
-        self._current_turn["totals"]["gen_tokens"] += gen_tokens
-        self._current_turn["totals"]["elapsed_s"] += elapsed_s
-        st = self.data["session_totals"]
+        bucket = "subagent_totals" if subagent else "session_totals"
+        st = self.data[bucket]
         st["prompt_tokens"] += prompt_tokens
         st["gen_tokens"] += gen_tokens
         st["elapsed_s"] += elapsed_s
+        if not subagent:
+            self._current_turn["totals"]["prompt_tokens"] += prompt_tokens
+            self._current_turn["totals"]["gen_tokens"] += gen_tokens
+            self._current_turn["totals"]["elapsed_s"] += elapsed_s
         self._flush()
 
     def session_totals(self):
         return dict(self.data["session_totals"])
+
+    def subagent_totals(self):
+        return dict(self.data.get("subagent_totals",
+                                  {"prompt_tokens": 0, "gen_tokens": 0, "elapsed_s": 0.0}))
 
     def turn_count(self):
         return len(self.data["turns"])
@@ -104,13 +126,18 @@ def list_sessions(working_dir: Path, limit: int = 20):
     pdir = working_dir / ".persist"
     if not pdir.exists():
         return []
-    files = sorted(pdir.glob("*.json"), key=lambda p: p.stat().st_mtime, reverse=True)
+    # Each session is stored as .persist/<session_id>/session.json
+    files = sorted(
+        pdir.glob("*/session.json"),
+        key=lambda p: p.stat().st_mtime,
+        reverse=True,
+    )
     out = []
     for p in files[:limit]:
         try:
             data = json.loads(p.read_text(encoding="utf-8"))
             out.append({
-                "id": data.get("session_id", p.stem),
+                "id": data.get("session_id", p.parent.name),
                 "model": data.get("model", "?"),
                 "turns": len(data.get("turns", [])),
                 "started_at": data.get("started_at", ""),
@@ -128,13 +155,17 @@ def load_session(working_dir: Path, session_id_or_prefix: str):
     if not pdir.exists():
         return None
     if session_id_or_prefix == "last":
-        files = sorted(pdir.glob("*.json"), key=lambda p: p.stat().st_mtime, reverse=True)
+        files = sorted(
+            pdir.glob("*/session.json"),
+            key=lambda p: p.stat().st_mtime,
+            reverse=True,
+        )
         if not files:
             return None
         return json.loads(files[0].read_text(encoding="utf-8"))
-    # Match by prefix
-    for p in pdir.glob("*.json"):
-        if p.stem.startswith(session_id_or_prefix):
+    # Match by prefix against the session folder name
+    for p in pdir.glob("*/session.json"):
+        if p.parent.name.startswith(session_id_or_prefix):
             return json.loads(p.read_text(encoding="utf-8"))
     return None
 

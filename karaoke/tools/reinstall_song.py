@@ -83,6 +83,38 @@ async def reinstall_song(
     # o que gera `^M` e linhas duplicadas no lyrics.txt depois.
     plain_lyrics = normalize_lyrics_text(_get_field("lyrics", "plain_lyrics"))
     
+    # 1.1. Orquestra busca de letras na API (LRCLIB + fallback) se necessário ou para obter synced LRC
+    fetched_plain_lyrics = None
+    fetched_synced_lrc = None
+    
+    artist = _get_field("meta", "artist")
+    title = _get_field("meta", "title")
+    if artist and title:
+        try:
+            from utils.lyrics_fetcher import fetch_lyrics
+            logger.info(f"Buscando letras na API para: {artist} - {title}")
+            fetched = fetch_lyrics(artist, title)
+            if fetched:
+                fetched_plain_lyrics = fetched.get("plainLyrics")
+                fetched_synced_lrc = fetched.get("syncedLyrics")
+                logger.info(f"Letras da API encontradas. Synced LRC disponível: {bool(fetched_synced_lrc)}")
+        except Exception as e:
+            logger.warning(f"Erro ao buscar letras na API: {e}")
+            
+    # Se a música não tiver plain_lyrics no meta.json, mas encontramos na API, atualizamos no meta.json!
+    if not plain_lyrics and fetched_plain_lyrics:
+        logger.info("Adicionando letra plana encontrada via API ao meta.json...")
+        plain_lyrics = normalize_lyrics_text(fetched_plain_lyrics)
+        if "lyrics" not in meta or not isinstance(meta["lyrics"], dict):
+            meta["lyrics"] = {}
+        meta["lyrics"]["plain_lyrics"] = plain_lyrics
+        try:
+            with open(meta_path, "w", encoding="utf-8", newline="\n") as f:
+                json.dump(meta, f, indent=4, ensure_ascii=False)
+            logger.info("meta.json atualizado com plain_lyrics.")
+        except Exception as e:
+            logger.warning(f"Não foi possível salvar a atualização no meta.json: {e}")
+            
     vocal_exists = (song_dir / "vocal.mp3").exists()
     backing_exists = (song_dir / "backing_track.mp3").exists()
     
@@ -325,9 +357,25 @@ async def reinstall_song(
             logger.error(f"Erro ao restaurar backup premium: {e}")
             
     if not has_lrc:
-        # Preserva LRC existente (ex: vindo de API LRCLIB) a menos que o
+        # 1. Tenta usar o synced LRC obtido via API se align_lyrics=False
+        if fetched_synced_lrc and not align_lyrics:
+            logger.info("synced LRC obtido via API. Salvando como lyrics.lrc e pulando Whisper...")
+            try:
+                lrc_file.write_text(fetched_synced_lrc, encoding="utf-8")
+                has_lrc = True
+            except Exception as e:
+                logger.error(f"Erro ao salvar synced LRC da API: {e}")
+        # 2. Tenta restaurar o backup local se existia e align_lyrics=False
+        elif lrc_backup is not None and not align_lyrics:
+            logger.info("Restaurando backup local de letras sincronizadas (lyrics.lrc) já que align_lyrics=False...")
+            try:
+                lrc_file.write_text(lrc_backup, encoding="utf-8")
+                has_lrc = True
+            except Exception as e:
+                logger.error(f"Erro ao restaurar backup de lyrics.lrc: {e}")
+        # 3. Preserva LRC existente (ex: vindo de API LRCLIB) a menos que o
         # usuário tenha pedido explicitamente alinhamento forçado (PRO).
-        if lrc_file.exists() and not align_lyrics:
+        elif lrc_file.exists() and not align_lyrics:
             logger.info("lyrics.lrc já existe e align_lyrics=False. Mantendo lyrics.lrc existente.")
             has_lrc = True
         elif plain_lyrics and plain_lyrics.strip() and align_lyrics:

@@ -9,6 +9,7 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
+import ui
 from ui import console
 
 EXCLUDE_PATTERNS = [
@@ -16,6 +17,7 @@ EXCLUDE_PATTERNS = [
     ".git",
     "__pycache__",
     ".history",
+    ".persist",
     "node_modules",
     ".pytest_cache",
     ".mypy_cache",
@@ -337,6 +339,45 @@ def _stream_generation(model, prompt):
     return content, final_prompt, final_eval or token_count, elapsed
 
 
+WINCLI_TEMPLATE = """# WINCLI.md — Project Context for AI Agents
+
+## Project Overview
+This project uses **WinCLI** (Windows CLI agent) for AI-assisted development.
+WinCLI is an Ollama-powered agentic CLI that can read, write, patch, and run
+commands in this project. It is configured via WINCLI.md.
+
+## Tech Stack
+<!-- TODO: describe languages, frameworks, and tools used in this project -->
+
+## Architecture
+<!-- TODO: describe how the code is organized, main components, and data flow -->
+
+## Conventions
+- Follow existing code style and naming patterns in the project.
+- Use the tools provided by WinCLI: `read_file`, `write_file`, `patch_file`,
+  `run_command`, `list_dir`, `search_file`, `http_get`.
+- When modifying existing files, prefer `patch_file` over `write_file`.
+- When creating new files, use `write_file`.
+- `run_command` is NON-BLOCKING: commands launch in background and return a PID.
+  Do NOT use it for commands whose output you need to read synchronously.
+  All background processes are killed when wincli exits.
+- Commands are PowerShell (`Get-ChildItem`, not `ls`).
+
+## Commands
+<!-- TODO: how to run, build, and test this project -->
+
+## Key Files
+<!-- TODO: list and describe the most important files in the project -->
+
+## Rules for Agents
+- One tool call per turn.
+- After calling a tool, wait for the result before the next call.
+- When you have the final answer, output it directly without a JSON tool block.
+- If WINCLI.md exists, follow its conventions and rules.
+- Final answers should be short summaries unless asked for detail.
+"""
+
+
 def generate_wincli(working_dir, model, session_log=None):
     """Main entry point: scan project, generate WINCLI.md via Ollama, write result."""
 
@@ -352,12 +393,30 @@ def generate_wincli(working_dir, model, session_log=None):
     files = _scan_project_with_feedback(working_dir)
 
     if not files:
+        # Empty directory: write a pre-made template so the AI agent has
+        # a starting point. No LLM call needed.
+        wincli_path = working_dir / "WINCLI.md"
+        try:
+            wincli_path.write_text(WINCLI_TEMPLATE, encoding="utf-8")
+        except Exception as e:
+            console.print(Panel(
+                f"[red]Failed to write WINCLI.md: {escape(str(e))}[/red]",
+                title="Write Error",
+                border_style="red"
+            ))
+            return False
+
         console.print(Panel(
-            "[yellow]No readable files found in the project directory.[/yellow]",
-            title="Init Warning",
-            border_style="yellow"
+            f"[green]WINCLI.md created from template.[/green]\n"
+            f"  Path: [cyan]{wincli_path}[/cyan]\n"
+            f"  Size: [bold]{len(WINCLI_TEMPLATE):,}[/bold] chars\n\n"
+            f"[dim]The directory was empty — a starter template was written.\n"
+            f"Edit WINCLI.md to describe your project, then the agent will\n"
+            f"use it as base context on future sessions.[/dim]",
+            title="Init Complete",
+            border_style="green"
         ))
-        return False
+        return True
 
     # 2. Build prompt
     prompt = build_init_prompt(files, working_dir)
@@ -397,7 +456,8 @@ def generate_wincli(working_dir, model, session_log=None):
             content="[Generated WINCLI.md]",
             prompt_tokens=prompt_tokens,
             gen_tokens=gen_tokens,
-            elapsed_s=elapsed
+            elapsed_s=elapsed,
+            subagent=True,
         )
 
     # 5. Show final summary

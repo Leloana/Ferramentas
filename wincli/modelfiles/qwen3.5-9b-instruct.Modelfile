@@ -1,0 +1,21 @@
+# WINCLI tool-calling build of qwen3.5:9b
+# Build:  ollama create qwen3.5:9b-instruct -f modelfiles/qwen3.5-9b-instruct.Modelfile
+#
+# Inherits template / stop tokens / weights from qwen3.5:9b and only overrides
+# sampling so agentic tool calls stay deterministic and well-formed.
+
+FROM qwen3.5:9b
+
+# Low temperature + tight nucleus → deterministic JSON tool calls.
+PARAMETER temperature 0.15
+PARAMETER top_p 0.9
+PARAMETER top_k 20
+
+# IMPORTANT: presence_penalty MUST stay 0. A high value (the stock model ships
+# 1.5) penalizes the repeated tokens that structured JSON needs
+# ("tool", "path", "args", quotes, braces) and corrupts tool calls.
+PARAMETER presence_penalty 0.0
+
+# Context window: matches the tested 32k. The system prompt (~3k chars) plus
+# several turns fit comfortably without truncation. Lower it if VRAM is tight.
+PARAMETER num_ctx 32768

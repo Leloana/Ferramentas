@@ -351,12 +351,38 @@ export function initSearch() {
 export async function triggerReinstall(songId, songTitle) {
     if (dom.lrcEditorModal) closeModal(dom.lrcEditorModal);
 
-    const choice = await promptGenerationOptions();
-    if (!choice) {
-        if (dom.lrcEditorModal && document.getElementById('editor-slug')?.value === songId) {
-            openModal(dom.lrcEditorModal);
+    // Procura a música no state para pegar o artista correto
+    const song = state.allSongs?.find(s => s.id === songId);
+    const artist = song ? song.artist : '';
+    const title = song ? song.title : songTitle;
+
+    let hasSyncedLrc = false;
+
+    // Busca rápida de preview de letra
+    try {
+        const lyricsRes = await fetch(`/api/fetch-lyrics?artist=${encodeURIComponent(artist)}&track=${encodeURIComponent(title)}`);
+        const lyricsData = await lyricsRes.json();
+        if (lyricsData.success && lyricsData.syncedLyrics) {
+            hasSyncedLrc = true;
         }
-        return;
+    } catch (err) {
+        console.error('Erro ao verificar letras na API para reinstall:', err);
+    }
+
+    let choice = null;
+    if (hasSyncedLrc) {
+        // Se encontrou o .lrc via API, não abre o modal de escolha pro/flash!
+        // Segue direto para o reinstall (align_lyrics = false, pois usará o .lrc da API).
+        choice = 'flash'; 
+    } else {
+        // Caso contrário, abre o modal de escolha
+        choice = await promptGenerationOptions();
+        if (!choice) {
+            if (dom.lrcEditorModal && document.getElementById('editor-slug')?.value === songId) {
+                openModal(dom.lrcEditorModal);
+            }
+            return;
+        }
     }
 
     const alignLyrics = (choice === 'pro');
@@ -364,8 +390,17 @@ export async function triggerReinstall(songId, songTitle) {
     const gen = startLoadingOverlay("Reinstalando...", "Executando processo de download, separação Demucs (GPU) e alinhamento Whisper... 🔄🎧", true);
 
     try {
-        const response = await fetch(`/api/reinstall-song/${songId}?align_lyrics=${alignLyrics}`, {
-            method: 'POST'
+        const body = new URLSearchParams({
+            title,
+            artist,
+            align_lyrics: alignLyrics,
+            clean_existing: 'true',
+        });
+
+        const response = await fetch(`/api/queue/add`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: body.toString(),
         });
 
         if (!response.ok) {
@@ -375,8 +410,11 @@ export async function triggerReinstall(songId, songTitle) {
 
         const data = await response.json();
         stopLoadingOverlay(gen);
-        showToast(data.message || "Música reinstalada com sucesso!", "success");
-        if (typeof fetchSongs === 'function') fetchSongs();
+        showToast(data.message || "Música adicionada à fila para reinstalação!", "success");
+        
+        // Abre a aba da Fila para o usuário acompanhar o progresso
+        const queueTabBtn = document.getElementById('tab-btn-queue');
+        if (queueTabBtn) queueTabBtn.click();
 
     } catch (error) {
         stopLoadingOverlay(gen);
