@@ -19,6 +19,9 @@ class KaraokeRoom:
         self.unregistered_mics: list[WebSocket] = []
         self.active_players: list[str] = []
         self.game_mode: str = "solo"
+        # Estilo de pontuação escolhido no lobby: "timing" (palavras + tempo
+        # correto) ou "words" (somente palavras acertadas).
+        self.scoring_mode: str = "timing"
         self.player_segment_scores: dict[str, dict[int, float]] = {}
         self.player_segment_buffers: dict[str, dict[int, bytearray]] = {}
         # Buffers de áudio dedicados por índice de segmento. O `audio_buffer`

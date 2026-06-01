@@ -117,9 +117,20 @@ def clean_text(text, language=None):
     return _normalization_map(language).get(t, t)
 
 
-def calculate_score(expected_timed: list[dict], transcribed_words: list[dict], prev_expected_words: list[str] = None, language: str | None = None) -> dict:
+def calculate_score(expected_timed: list[dict], transcribed_words: list[dict], prev_expected_words: list[str] = None, language: str | None = None, scoring_mode: str = "timing") -> dict:
+    """Calcula a nota de um segmento cantado.
+
+    scoring_mode:
+        "timing" (padrão) — palavras acertadas + tempo correto. Aplica a
+            penalidade de tempo por palavra e a penalidade de andamento global.
+        "words" — somente palavras acertadas. Ignora qualquer penalidade de
+            tempo (por palavra e de andamento), pontuando apenas pelo acerto
+            das palavras.
+    """
     if not expected_timed:
         return {"score": 0, "details": "Nenhuma letra esperada."}
+
+    apply_timing = scoring_mode != "words"
 
     # A. Detecção e Remoção de Vazamento (Perdão Inteligente)
     if prev_expected_words and transcribed_words:
@@ -206,7 +217,7 @@ def calculate_score(expected_timed: list[dict], transcribed_words: list[dict], p
             word_points = 0.5
             consumed_indices.add(best_match_idx)
 
-        if word_points > 0 and best_match_idx != -1:
+        if word_points > 0 and best_match_idx != -1 and apply_timing:
             actual_start = transcribed_clean[best_match_idx]["start"]
             timing_pairs.append((exp_word_data["expected_start"], actual_start))
             diff = abs(actual_start - exp_word_data["expected_start"])
@@ -244,7 +255,7 @@ def calculate_score(expected_timed: list[dict], transcribed_words: list[dict], p
     # esperado. Um offset constante (atraso parelho) não pune aqui — isso é
     # tratado pela penalidade por palavra acima; aqui só conta o ritmo relativo.
     tempo_factor = 1.0
-    if len(timing_pairs) >= 2:
+    if apply_timing and len(timing_pairs) >= 2:
         exp_span = max(p[0] for p in timing_pairs) - min(p[0] for p in timing_pairs)
         act_span = max(p[1] for p in timing_pairs) - min(p[1] for p in timing_pairs)
         if exp_span >= TEMPO_MIN_EXPECTED_SPAN:
@@ -273,5 +284,6 @@ def calculate_score(expected_timed: list[dict], transcribed_words: list[dict], p
         "matched_words": len(consumed_indices) + rescued_count,
         "total_expected": len(expected_words),
         "tempo_factor": round(tempo_factor, 3),
-        "precision_factor": round(precision_factor, 3)
+        "precision_factor": round(precision_factor, 3),
+        "scoring_mode": scoring_mode
     }

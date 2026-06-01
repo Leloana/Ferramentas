@@ -255,8 +255,12 @@ export async function startKaraoke() {
         }
     }
 
+    const scoringMode = (dom.scoreMode && dom.scoreMode.value) || 'timing';
+    localStorage.setItem('karaoke_scoring_mode', scoringMode);
+
     state.activePlayers = activeList;
     state.gameMode = mode;
+    state.scoringMode = scoringMode;
 
     let reconnectAttempts = 0;
     const maxReconnectAttempts = 5;
@@ -274,7 +278,8 @@ export async function startKaraoke() {
             state.ws.send(JSON.stringify({
                 type: "start_game",
                 game_mode: mode,
-                active_players: activeList
+                active_players: activeList,
+                scoring_mode: scoringMode
             }));
 
             state.isFirstSegment = true;
@@ -1238,6 +1243,17 @@ export function initGameControls() {
         };
         // Inicializa a exibição das slots
         updatePlayerSlotsVisibility();
+    }
+
+    // Restaura o estilo de pontuação escolhido na última sessão
+    if (dom.scoreMode) {
+        const savedScoringMode = localStorage.getItem('karaoke_scoring_mode');
+        if (savedScoringMode) {
+            dom.scoreMode.value = savedScoringMode;
+        }
+        dom.scoreMode.onchange = () => {
+            localStorage.setItem('karaoke_scoring_mode', dom.scoreMode.value);
+        };
     }
 
     if (dom.btnPitchMinus) {

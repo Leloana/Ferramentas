@@ -162,7 +162,8 @@ async def process_segment_multiplayer(
     active_buffers: dict[str, bytearray],
     seg_lang: str,
     seg_lyrics: list,
-    seg_text: str
+    seg_text: str,
+    scoring_mode: str = "timing"
 ) -> None:
     stt = get_stt_engine()
     results = {}
@@ -216,7 +217,7 @@ async def process_segment_multiplayer(
                     if seg_idx > 0 and seg_idx - 1 < len(room.segments):
                         prev_lyrics = room.segments[seg_idx - 1]["lyrics"].split()
 
-                    result = calculate_score(seg_lyrics, words, prev_expected_words=prev_lyrics, language=seg_lang)
+                    result = calculate_score(seg_lyrics, words, prev_expected_words=prev_lyrics, language=seg_lang, scoring_mode=scoring_mode)
 
             if player_name not in room.player_segment_scores:
                 room.player_segment_scores[player_name] = {}
@@ -382,7 +383,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                 elif msg_type == "start_game":
                     room.game_mode = data.get("game_mode", "solo")
                     room.active_players = data.get("active_players", [])
-                    logger.info(f"Jogo iniciado no modo {room.game_mode} com: {room.active_players}")
+                    room.scoring_mode = data.get("scoring_mode", "timing")
+                    logger.info(f"Jogo iniciado no modo {room.game_mode} (pontuação: {room.scoring_mode}) com: {room.active_players}")
                     
                     room.player_segment_buffers.clear()
                     room.player_segment_scores.clear()
@@ -527,7 +529,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                                             active_buffers,
                                             seg["language"],
                                             seg["lyrics_timed"],
-                                            seg["lyrics"]
+                                            seg["lyrics"],
+                                            room.scoring_mode
                                         ))
                                         room.pending_tasks.add(task)
                                         task.add_done_callback(room.pending_tasks.discard)
