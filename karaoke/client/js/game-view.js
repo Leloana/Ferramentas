@@ -255,8 +255,7 @@ export async function startKaraoke() {
         }
     }
 
-    const scoringMode = (dom.scoreMode && dom.scoreMode.value) || 'timing';
-    localStorage.setItem('karaoke_scoring_mode', scoringMode);
+    const scoringMode = (dom.scoreModeToggle && dom.scoreModeToggle.getAttribute('data-mode')) || 'timing';
 
     state.activePlayers = activeList;
     state.gameMode = mode;
@@ -1245,15 +1244,13 @@ export function initGameControls() {
         updatePlayerSlotsVisibility();
     }
 
-    // Restaura o estilo de pontuação escolhido na última sessão
-    if (dom.scoreMode) {
-        const savedScoringMode = localStorage.getItem('karaoke_scoring_mode');
-        if (savedScoringMode) {
-            dom.scoreMode.value = savedScoringMode;
-        }
-        dom.scoreMode.onchange = () => {
-            localStorage.setItem('karaoke_scoring_mode', dom.scoreMode.value);
-        };
+    // Estilo de pontuação: toggle de dois ícones (tempo vs. palavras)
+    if (dom.scoreModeToggle) {
+        const savedScoringMode = localStorage.getItem('karaoke_scoring_mode') || 'timing';
+        setScoreMode(savedScoringMode);
+        dom.scoreModeToggle.querySelectorAll('.score-mode-btn').forEach(btn => {
+            btn.onclick = () => setScoreMode(btn.getAttribute('data-mode'));
+        });
     }
 
     if (dom.btnPitchMinus) {
@@ -1394,6 +1391,17 @@ function updateSyncModeButton() {
         dom.btnSyncMode.style.background = '';
         dom.btnSyncMode.style.borderColor = '';
     }
+}
+
+function setScoreMode(mode) {
+    const toggle = dom.scoreModeToggle;
+    if (!toggle) return;
+    const normalized = mode === 'words' ? 'words' : 'timing';
+    toggle.setAttribute('data-mode', normalized);
+    toggle.querySelectorAll('.score-mode-btn').forEach(btn => {
+        btn.classList.toggle('score-mode-btn--active', btn.getAttribute('data-mode') === normalized);
+    });
+    localStorage.setItem('karaoke_scoring_mode', normalized);
 }
 
 function updatePlayerSlotsVisibility() {

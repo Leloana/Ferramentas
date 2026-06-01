@@ -2276,6 +2276,39 @@
     font-weight: 700 !important;
 }
 
+/* Toggle de Estilo de Pontuação (dois ícones: tempo vs. palavras) */
+.score-mode-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    height: 38px;
+    padding: 0.25rem;
+    box-sizing: border-box;
+    background: #080d16;
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+}
+.score-mode-btn {
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 1.15rem;
+    line-height: 1;
+    padding: 0.25rem 0.6rem;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: all 0.2s ease;
+}
+.score-mode-btn:hover {
+    opacity: 0.8;
+}
+.score-mode-btn--active {
+    opacity: 1;
+    background: rgba(56, 189, 248, 0.2);
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+}
+
 /* 8. Selection area active tab visibility & buttons */
 #selection-area[data-active-tab="songs"] #songs-tab-content {
     display: block !important;
