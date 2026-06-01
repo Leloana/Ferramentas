@@ -1,1 +1,0 @@
-estava testando o cli, a IA pediu por informacoes, ela so deve pedir caso seja extremamente ambiguo, quando se tratar de buscar arquivos ou outras coisas nao relacionadas a logicas especificas de negocio/produto a IA deve primeiro exaurir tools e commands

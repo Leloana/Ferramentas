@@ -4,15 +4,704 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snooker Game</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #fff;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .game-container {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        #snookerCanvas {
+            border: 8px solid #8b4513;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background: #2d5016;
+        }
+
+        .sidebar {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            color: #fff;
+            min-width: 250px;
+        }
+
+        .score-board {
+            background: #1a1a2e;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid #8b4513;
+        }
+
+        .score-board h2 {
+            color: #ffd700;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .score-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .score-row:last-child {
+            border-bottom: none;
+        }
+
+        .score-value {
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .controls {
+            margin-top: 20px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin: 5px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .message {
+            background: rgba(0,0,0,0.3);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            text-align: center;
+            min-height: 40px;
+        }
+
+        .message.success {
+            color: #4ade80;
+        }
+
+        .message.info {
+            color: #60a5fa;
+        }
+
+        .message.error {
+            color: #f87171;
+        }
+
+        .ball-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .ball-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+        }
+
+        .ball-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+        }
+    </style>
 </head>
 <body>
-    <div id="scoreDisplay">
-        <span id="player1Score">Player 1: 0</span>
-        <span id="player2Score">Player 2: 0</span>
+    <h1>🎱 Snooker Game</h1>
+    
+    <div class="game-container">
+        <canvas id="snookerCanvas" width="900" height="450"></canvas>
+        
+        <div class="sidebar">
+            <div class="score-board">
+                <h2>Score</h2>
+                <div class="score-row">
+                    <span>White (1):</span>
+                    <span id="whiteScore" class="score-value">0</span>
+                </div>
+                <div class="score-row">
+                    <span>Red (3):</span>
+                    <span id="redScore" class="score-value">0</span>
+                </div>
+                <div class="score-row">
+                    <span>Yellow (2):</span>
+                    <span id="yellowScore" class="score-value">0</span>
+                </div>
+                <div class="score-row">
+                    <span>Green (5):</span>
+                    <span id="greenScore" class="score-value">0</span>
+                </div>
+                <div class="score-row">
+                    <span>Blue (6):</span>
+                    <span id="blueScore" class="score-value">0</span>
+                </div>
+                <div class="score-row">
+                    <span>Pink (7):</span>
+                    <span id="pinkScore" class="score-value">0</span>
+                </div>
+                <div class="score-row">
+                    <span>Black (8):</span>
+                    <span id="blackScore" class="score-value">0</span>
+                </div>
+                <div class="score-row">
+                    <span>Total:</span>
+                    <span id="totalScore" class="score-value">0</span>
+                </div>
+            </div>
+
+            <div class="ball-legend">
+                <div class="ball-legend-item"><div class="ball-dot" style="background: #fff;"></div>White</div>
+                <div class="ball-legend-item"><div class="ball-dot" style="background: #ff0000;"></div>Red</div>
+                <div class="ball-legend-item"><div class="ball-dot" style="background: #ffd700;"></div>Yellow</div>
+                <div class="ball-legend-item"><div class="ball-dot" style="background: #00ff00;"></div>Green</div>
+                <div class="ball-legend-item"><div class="ball-dot" style="background: #0000ff;"></div>Blue</div>
+                <div class="ball-legend-item"><div class="ball-dot" style="background: #ff69b4;"></div>Pink</div>
+                <div class="ball-legend-item"><div class="ball-dot" style="background: #000;"></div>Black</div>
+            </div>
+
+            <div class="controls">
+                <button id="resetBtn">Reset Game</button>
+                <button id="pauseBtn">Pause/Resume</button>
+            </div>
+
+            <div id="message" class="message">Click anywhere to aim and drag to shoot!</div>
+        </div>
     </div>
-    <canvas id="gameCanvas" width="800" height="400"></canvas>
-    <script src="game.js"></script>
-    <script src="scoring.js"></script>
+
+    <script>
+        const canvas = document.getElementById('snookerCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const ballColors = {
+            white: '#ffffff',
+            red: '#ff0000',
+            yellow: '#ffd700',
+            green: '#00ff00',
+            blue: '#0000ff',
+            pink: '#ff69b4',
+            black: '#000000'
+        };
+
+        const ballValues = {
+            white: 0,
+            red: 1,
+            yellow: 2,
+            green: 3,
+            blue: 4,
+            pink: 5,
+            black: 6
+        };
+
+        const ballRadius = 10;
+        const pocketRadius = 15;
+
+        let gameState = {
+            balls: [],
+            cueStick: null,
+            isPaused: false,
+            score: {
+                white: 0,
+                red: 0,
+                yellow: 0,
+                green: 0,
+                blue: 0,
+                pink: 0,
+                black: 0
+            },
+            totalScore: 0,
+            currentTurn: 'white',
+            redBalls: [],
+            coloredBalls: []
+        };
+
+        function initGame() {
+            gameState.balls = [];
+            gameState.redBalls = [];
+            gameState.coloredBalls = [];
+            gameState.score = {
+                white: 0,
+                red: 0,
+                yellow: 0,
+                green: 0,
+                blue: 0,
+                pink: 0,
+                black: 0
+            };
+            gameState.totalScore = 0;
+            gameState.cueStick = null;
+            gameState.isPaused = false;
+
+            // Place white ball
+            gameState.balls.push({
+                x: 100,
+                y: 225,
+                radius: ballRadius,
+                vx: 0,
+                vy: 0,
+                color: 'white',
+                value: 0
+            });
+
+            // Place colored balls in order
+            const coloredOrder = ['yellow', 'green', 'brown', 'blue', 'pink', 'black'];
+            const coloredPositions = [
+                { x: 800, y: 100 },
+                { x: 800, y: 150 },
+                { x: 800, y: 200 },
+                { x: 800, y: 250 },
+                { x: 800, y: 300 },
+                { x: 800, y: 350 }
+            ];
+
+            for (let i = 0; i < coloredOrder.length; i++) {
+                const color = coloredOrder[i];
+                const pos = coloredPositions[i];
+                gameState.balls.push({
+                    x: pos.x,
+                    y: pos.y,
+                    radius: ballRadius,
+                    vx: 0,
+                    vy: 0,
+                    color: color,
+                    value: ballValues[color]
+                });
+                gameState.coloredBalls.push({
+                    x: pos.x,
+                    y: pos.y,
+                    radius: ballRadius,
+                    color: color,
+                    value: ballValues[color]
+                });
+            }
+
+            // Place red balls in triangle formation
+            const trianglePositions = [];
+            const rows = 5;
+            const spacing = 28;
+            
+            for (let row = 0; row < rows; row++) {
+                for (let col = 0; col <= row; col++) {
+                    trianglePositions.push({
+                        x: 550 + col * spacing,
+                        y: 225 - row * spacing * 0.866
+                    });
+                }
+            }
+
+            for (const pos of trianglePositions) {
+                gameState.balls.push({
+                    x: pos.x,
+                    y: pos.y,
+                    radius: ballRadius,
+                    vx: 0,
+                    vy: 0,
+                    color: 'red',
+                    value: 1
+                });
+                gameState.redBalls.push({
+                    x: pos.x,
+                    y: pos.y,
+                    radius: ballRadius,
+                    color: 'red',
+                    value: 1
+                });
+            }
+
+            updateScore();
+        }
+
+        function updateScore() {
+            document.getElementById('whiteScore').textContent = gameState.score.white;
+            document.getElementById('redScore').textContent = gameState.score.red;
+            document.getElementById('yellowScore').textContent = gameState.score.yellow;
+            document.getElementById('greenScore').textContent = gameState.score.green;
+            document.getElementById('blueScore').textContent = gameState.score.blue;
+            document.getElementById('pinkScore').textContent = gameState.score.pink;
+            document.getElementById('blackScore').textContent = gameState.score.black;
+            document.getElementById('totalScore').textContent = gameState.totalScore;
+        }
+
+        function draw() {
+            // Clear canvas
+            ctx.fillStyle = '#2d5016';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw pockets
+            const pockets = [
+                { x: 0, y: 0 },
+                { x: canvas.width / 2, y: 0 },
+                { x: canvas.width, y: 0 },
+                { x: 0, y: canvas.height },
+                { x: canvas.width / 2, y: canvas.height },
+                { x: canvas.width, y: canvas.height }
+            ];
+
+            ctx.fillStyle = '#1a1a2e';
+            for (const pocket of pockets) {
+                ctx.beginPath();
+                ctx.arc(pocket.x, pocket.y, pocketRadius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Draw balls
+            for (const ball of gameState.balls) {
+                // Ball shadow
+                ctx.beginPath();
+                ctx.arc(ball.x + 2, ball.y + 2, ball.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(0,0,0,0.3)';
+                ctx.fill();
+                
+                // Ball body
+                ctx.beginPath();
+                ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+                ctx.fillStyle = ballColors[ball.color] || '#ffffff';
+                ctx.fill();
+                
+                // Ball highlight
+                ctx.beginPath();
+                ctx.arc(ball.x - 3, ball.y - 3, ball.radius * 0.3, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255,255,255,0.3)';
+                ctx.fill();
+            }
+
+            // Draw cue stick if dragging
+            if (gameState.cueStick) {
+                ctx.beginPath();
+                ctx.moveTo(gameState.cueStick.x, gameState.cueStick.y);
+                ctx.lineTo(gameState.cueBall.x, gameState.cueBall.y);
+                ctx.strokeStyle = '#8b4513';
+                ctx.lineWidth = 6;
+                ctx.stroke();
+                
+                // Draw power indicator
+                const powerPct = gameState.cueStick.power / 15;
+                ctx.beginPath();
+                ctx.arc(gameState.cueStick.x, gameState.cueStick.y, 10 + powerPct * 10, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, ${200 - powerPct * 150}, 0, 0.5)`;
+                ctx.fill();
+            }
+        }
+
+        function checkCollisions() {
+            for (let i = 0; i < gameState.balls.length; i++) {
+                for (let j = i + 1; j < gameState.balls.length; j++) {
+                    const b1 = gameState.balls[i];
+                    const b2 = gameState.balls[j];
+                    
+                    const dx = b2.x - b1.x;
+                    const dy = b2.y - b1.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (dist < b1.radius + b2.radius) {
+                        // Collision detected
+                        const angle = Math.atan2(dy, dx);
+                        const sin = Math.sin(angle);
+                        const cos = Math.cos(angle);
+                        
+                        // Rotate velocities
+                        const vx1 = b1.vx * cos + b1.vy * sin;
+                        const vy1 = b1.vy * cos - b1.vx * sin;
+                        const vx2 = b2.vx * cos + b2.vy * sin;
+                        const vy2 = b2.vy * cos - b2.vx * sin;
+                        
+                        // Swap velocities
+                        const tempVx = vx1;
+                        vx1 = vx2;
+                        vy1 = vy2;
+                        vx2 = tempVx;
+                        vy2 = vy1;
+                        
+                        // Rotate back
+                        b1.vx = vx1 * cos - vy1 * sin;
+                        b1.vy = vy1 * cos + vx1 * sin;
+                        b2.vx = vx2 * cos - vy2 * sin;
+                        b2.vy = vy2 * cos + vx2 * sin;
+                        
+                        // Separate balls
+                        const overlap = (b1.radius + b2.radius - dist) / 2;
+                        b1.x -= overlap * cos;
+                        b1.y -= overlap * sin;
+                        b2.x += overlap * cos;
+                        b2.y += overlap * sin;
+                    }
+                }
+            }
+        }
+
+        function checkPockets() {
+            const pockets = [
+                { x: 0, y: 0 },
+                { x: canvas.width / 2, y: 0 },
+                { x: canvas.width, y: 0 },
+                { x: 0, y: canvas.height },
+                { x: canvas.width / 2, y: canvas.height },
+                { x: canvas.width, y: canvas.height }
+            ];
+
+            for (const ball of gameState.balls) {
+                for (const pocket of pockets) {
+                    const dist = Math.sqrt(
+                        Math.pow(ball.x - pocket.x, 2) + 
+                        Math.pow(ball.y - pocket.y, 2)
+                    );
+                    
+                    if (dist < pocketRadius) {
+                        // Ball in pocket
+                        ball.vx = 0;
+                        ball.vy = 0;
+                        
+                        if (ball.color === 'red') {
+                            gameState.score.red++;
+                            gameState.totalScore += 1;
+                            gameState.redBalls.pop();
+                            
+                            // If no reds left, switch to colored balls
+                            if (gameState.redBalls.length === 0) {
+                                gameState.currentTurn = 'colored';
+                                showMessage('Reds cleared! Now pot colored balls in order.', 'info');
+                            }
+                        } else if (ball.color === 'white') {
+                            gameState.score.white++;
+                            gameState.totalScore += 0;
+                            showMessage('White ball potted! Penalty.', 'error');
+                        } else {
+                            // Colored ball potted
+                            const coloredIndex = gameState.coloredBalls.findIndex(b => b.x === ball.x && b.y === ball.y);
+                            if (coloredIndex !== -1) {
+                                const pottedBall = gameState.coloredBalls[coloredIndex];
+                                
+                                if (gameState.currentTurn === 'colored') {
+                                    // Correct color potted
+                                    gameState.score[pottedBall.color]++;
+                                    gameState.totalScore += pottedBall.value;
+                                    gameState.coloredBalls.splice(coloredIndex, 1);
+                                    
+                                    // Reposition colored balls
+                                    repositionColoredBalls();
+                                    
+                                    // If all colored balls potted, game over
+                                    if (gameState.coloredBalls.length === 0) {
+                                        showMessage('Game Over! Final score: ' + gameState.totalScore, 'success');
+                                    }
+                                } else {
+                                    // Wrong color potted
+                                    showMessage('Wrong color! ' + pottedBall.color + ' potted.', 'error');
+                                    gameState.score.white++;
+                                    gameState.totalScore += 0;
+                                }
+                            }
+                        }
+                        
+                        updateScore();
+                        break;
+                    }
+                }
+            }
+        }
+
+        function repositionColoredBalls() {
+            const coloredOrder = ['yellow', 'green', 'brown', 'blue', 'pink', 'black'];
+            const coloredPositions = [
+                { x: 800, y: 100 },
+                { x: 800, y: 150 },
+                { x: 800, y: 200 },
+                { x: 800, y: 250 },
+                { x: 800, y: 300 },
+                { x: 800, y: 350 }
+            ];
+
+            const availableSpots = [];
+            
+            for (let row = 0; row < 6; row++) {
+                for (let col = 0; col <= row; col++) {
+                    const x = 550 + col * spacing;
+                    const y = 225 - row * spacing * 0.866;
+                    
+                    let isOccupied = false;
+                    for (const ball of gameState.balls) {
+                        const dist = Math.sqrt(
+                            Math.pow(ball.x - x, 2) + 
+                            Math.pow(ball.y - y, 2)
+                        );
+                        if (dist < 30) {
+                            isOccupied = true;
+                            break;
+                        }
+                    }
+                    
+                    if (!isOccupied) {
+                        availableSpots.push({ x, y });
+                    }
+                }
+            }
+            
+            if (availableSpots.length > 0) {
+                const spot = availableSpots[Math.floor(Math.random() * availableSpots.length)];
+                const newYellow = {
+                    x: spot.x,
+                    y: spot.y,
+                    radius: ballRadius,
+                    vx: 0,
+                    vy: 0,
+                    color: 'yellow',
+                    value: 2
+                };
+                gameState.balls.push(newYellow);
+                gameState.coloredBalls.push(newYellow);
+                gameState.score.yellow++;
+                gameState.totalScore += 2;
+                updateScore();
+            }
+        }
+
+        function showMessage(text, type) {
+            const msgEl = document.getElementById('message');
+            msgEl.textContent = text;
+            msgEl.className = 'message ' + type;
+        }
+
+        // Button handlers
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            initGame();
+        });
+
+        document.getElementById('pauseBtn').addEventListener('click', () => {
+            gameState.isPaused = !gameState.isPaused;
+            showMessage(gameState.isPaused ? 'Game paused' : 'Game resumed', 'info');
+        });
+
+        // Mouse handlers for cue stick
+        canvas.addEventListener('mousedown', (e) => {
+            if (gameState.isPaused) return;
+            
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            
+            const cueBall = gameState.balls.find(b => b.color === 'white');
+            
+            // Allow clicking anywhere to aim
+            gameState.cueStick = {
+                x: mouseX,
+                y: mouseY,
+                power: 0
+            };
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (!gameState.cueStick) return;
+            
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            
+            const cueBall = gameState.balls.find(b => b.color === 'white');
+            
+            // Calculate distance for power
+            const dist = Math.sqrt(
+                Math.pow(mouseX - cueBall.x, 2) + 
+                Math.pow(mouseY - cueBall.y, 2)
+            );
+            
+            // Power increases as you drag away from the ball
+            gameState.cueStick.power = Math.min(dist, 200);
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            if (gameState.cueStick) {
+                const cueBall = gameState.balls.find(b => b.color === 'white');
+                const angle = Math.atan2(
+                    gameState.cueStick.y - cueBall.y,
+                    gameState.cueStick.x - cueBall.x
+                );
+                
+                const speed = gameState.cueStick.power * 0.15;
+                cueBall.vx = Math.cos(angle) * speed;
+                cueBall.vy = Math.sin(angle) * speed;
+                
+                gameState.cueStick = null;
+            }
+        });
+
+        // Game loop
+        function gameLoop() {
+            if (!gameState.isPaused) {
+                // Update ball positions
+                for (const ball of gameState.balls) {
+                    ball.x += ball.vx;
+                    ball.y += ball.vy;
+                    
+                    // Wall collisions
+                    if (ball.x - ball.radius < 0) {
+                        ball.x = ball.radius;
+                        ball.vx = -ball.vx;
+                    }
+                    if (ball.x + ball.radius > canvas.width) {
+                        ball.x = canvas.width - ball.radius;
+                        ball.vx = -ball.vx;
+                    }
+                    if (ball.y - ball.radius < 0) {
+                        ball.y = ball.radius;
+                        ball.vy = -ball.vy;
+                    }
+                    if (ball.y + ball.radius > canvas.height) {
+                        ball.y = canvas.height - ball.radius;
+                        ball.vy = -ball.vy;
+                    }
+                }
+                
+                checkCollisions();
+                checkPockets();
+            }
+            
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Start game
+        initGame();
+        gameLoop();
+    </script>
 </body>
 </html>

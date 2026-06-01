@@ -320,6 +320,11 @@ class SubAgent:
                 try:
                     resp = self._stream_response(messages, live, step,
                                                  len(tool_calls_log))
+                except KeyboardInterrupt:
+                    status = "error"
+                    final_content = "cancelled by user (Ctrl+C)"
+                    console.print(f"\n[yellow]⚠ {escape(self.label)} cancelled[/yellow]")
+                    break
                 except Exception as e:
                     status = "error"
                     final_content = f"model call failed: {e}"
@@ -333,7 +338,7 @@ class SubAgent:
                 if thoughts:
                     thinking_accum.append(thoughts)
 
-                tool_call = parse_tool_call(visible)
+                tool_call, _prose = parse_tool_call(visible)
 
                 # ---- no tool call → final answer ----
                 if not (tool_call and isinstance(tool_call, dict) and "tool" in tool_call):

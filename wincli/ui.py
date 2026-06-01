@@ -2,13 +2,13 @@
 
 Everything visual goes through here so the look stays consistent:
 
-  - Strict black & white. The terminal's *default* colors are switched to
-    white-on-black via OSC 10/11 escapes, so the whole window (including
-    empty areas and scrollback) is painted black. Rich runs with
-    ``no_color=True`` so every legacy ``[red]``/``[cyan]`` markup collapses
-    to monochrome; only bold / dim / reverse survive to convey hierarchy.
+  - Dark background with selective color. The terminal's *default* colors are
+    switched to white-on-black via OSC 10/11 escapes. Color is used sparingly
+    for semantics only: red for errors/failures, green for success/confirmations,
+    yellow for warnings. Plain text, borders of neutral panels, and the banner
+    remain white/dim on black.
 
-  - No typed choices. ``select()`` is an arrow-key menu (Ôåæ/Ôåô + Enter) used
+  - No typed choices. ``select()`` is an arrow-key menu (↑/↓ + Enter) used
     for every decision in the app (model pick, permissions, resume, plan
     approval, ...).
 
@@ -33,10 +33,10 @@ from prompt_toolkit.layout.controls import FormattedTextControl
 from prompt_toolkit.styles import Style as PTStyle
 
 
-# --- shared monochrome console -------------------------------------------
-# no_color=True strips every color the rest of the codebase emits, leaving a
-# clean black & white render. We keep markup like [bold]/[dim] working.
-console = Console(no_color=True, highlight=False)
+# --- shared console -------------------------------------------------------
+# highlight=False prevents Rich from auto-coloring numbers/strings/paths.
+# Colors are used sparingly: red for errors/failures, green for success.
+console = Console(highlight=False)
 
 
 # --- terminal background --------------------------------------------------
@@ -65,15 +65,15 @@ def reset_background():
 
 # --- header ---------------------------------------------------------------
 _BANNER = r"""
-ÔûêÔûêÔòù    ÔûêÔûêÔòùÔûêÔûêÔòùÔûêÔûêÔûêÔòù   ÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔûêÔòùÔûêÔûêÔòù     ÔûêÔûêÔòù
-ÔûêÔûêÔòæ    ÔûêÔûêÔòæÔûêÔûêÔòæÔûêÔûêÔûêÔûêÔòù  ÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔòÉÔòÉÔòØÔûêÔûêÔòæ     ÔûêÔûêÔòæ
-ÔûêÔûêÔòæ ÔûêÔòù ÔûêÔûêÔòæÔûêÔûêÔòæÔûêÔûêÔòöÔûêÔûêÔòù ÔûêÔûêÔòæÔûêÔûêÔòæ     ÔûêÔûêÔòæ     ÔûêÔûêÔòæ
-ÔûêÔûêÔòæÔûêÔûêÔûêÔòùÔûêÔûêÔòæÔûêÔûêÔòæÔûêÔûêÔòæÔòÜÔûêÔûêÔòùÔûêÔûêÔòæÔûêÔûêÔòæ     ÔûêÔûêÔòæ     ÔûêÔûêÔòæ
-ÔòÜÔûêÔûêÔûêÔòöÔûêÔûêÔûêÔòöÔòØÔûêÔûêÔòæÔûêÔûêÔòæ ÔòÜÔûêÔûêÔûêÔûêÔòæÔòÜÔûêÔûêÔûêÔûêÔûêÔûêÔòùÔûêÔûêÔûêÔûêÔûêÔûêÔûêÔòùÔûêÔûêÔòæ
- ÔòÜÔòÉÔòÉÔòØÔòÜÔòÉÔòÉÔòØ ÔòÜÔòÉÔòØÔòÜÔòÉÔòØ  ÔòÜÔòÉÔòÉÔòÉÔòØ ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòØÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòØÔòÜÔòÉÔòØ
+██╗    ██╗██╗███╗   ██╗ ██████╗██╗     ██╗
+██║    ██║██║████╗  ██║██╔════╝██║     ██║
+██║ █╗ ██║██║██╔██╗ ██║██║     ██║     ██║
+██║███╗██║██║██║╚██╗██║██║     ██║     ██║
+╚███╔███╔╝██║██║ ╚████║╚██████╗███████╗██║
+ ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝ ╚═════╝╚══════╝╚═╝
 """
 
-_SUBTITLE = "the agent cli ÔÇö windows native"
+_SUBTITLE = "the agent cli — windows native"
 
 
 def header():
@@ -82,11 +82,11 @@ def header():
     for line in _BANNER.strip("\n").splitlines():
         console.print(line, style="bold")
     console.print(_SUBTITLE.center(width), style="dim")
-    console.print("ÔöÇ" * width, style="dim")
+    console.print("─" * width, style="dim")
 
 
 def rule(text=""):
-    console.rule(text, style="dim", characters="ÔöÇ")
+    console.rule(text, style="dim", characters="─")
 
 
 def panel(body, title="", subtitle=""):
@@ -104,7 +104,7 @@ def dim(msg):
 
 # --- arrow-key selection menu --------------------------------------------
 def select(options, *, title=None, default=0,
-           footer="Ôåæ/Ôåô move ┬À enter select ┬À esc cancel"):
+           footer="↑/↓ move · enter select · esc cancel"):
     """Arrow-key menu. The ONLY way the app asks the user to choose.
 
     options : list of either ``label`` strings or ``(label, value)`` tuples.
@@ -153,7 +153,7 @@ def select(options, *, title=None, default=0,
             frags.append(("bold", title + "\n\n"))
         for i, lbl in enumerate(labels):
             if i == state["i"]:
-                frags.append(("reverse", f" ÔØ» {lbl} "))
+                frags.append(("reverse", f" ❯ {lbl} "))
                 frags.append(("", "\n"))
             else:
                 frags.append(("", f"   {lbl}\n"))
@@ -189,7 +189,7 @@ def confirm(question, *, default_yes=False):
         [("yes", True), ("no", False)],
         title=question,
         default=0 if default_yes else 1,
-        footer="Ôåæ/Ôåô move ┬À enter confirm",
+        footer="↑/↓ move · enter confirm",
     )
     return bool(res)
 
