@@ -5,7 +5,12 @@ Black & white interface. Every choice is made with the arrow keys + Enter
 option. The chat opens straight into the last model you used (remembered in
 ~/.wincli_config.json); switch models any time with /models.
 
+Type "/" to autocomplete commands; a persistent bottom bar shows
+model · mode · token cost. Mode/focus preferences are remembered across runs.
+
 Slash commands:
+  /help                  → list every command
+  /clear                 → clear the screen (session preserved)
   /models                → switch model (arrow-key menu); remembered for next run
   /init                  → regenerate WINCLI.md
   /mode [args]           → show or change op/perm mode
@@ -31,6 +36,8 @@ from rich.panel import Panel
 from rich.table import Table
 from prompt_toolkit import prompt as pt_prompt
 from prompt_toolkit.history import FileHistory
+from prompt_toolkit.completion import Completer, Completion
+from prompt_toolkit.formatted_text import ANSI
 
 from agent import run_agent_loop
 from modes import SessionState, handle_mode_command
@@ -43,6 +50,53 @@ from ui import console
 
 # No signal handler: default KeyboardInterrupt raise lets each turn cancel
 # without killing the process. Top-level pt_prompt catches it to exit.
+
+
+# Single source of truth for slash commands: drives autocompletion, /help,
+# the ready panel, and the unknown-command suggestion.
+COMMANDS = {
+    "models":  "switch model (remembered next run)",
+    "init":    "regenerate WINCLI.md for this project",
+    "mode":    "show / change op & permission mode",
+    "focus":   "toggle focus mode (chat + tools only)",
+    "context": "session dashboard",
+    "skills":  "list available skills",
+    "skill":   "invoke a skill:  /skill <name> [args]",
+    "plan":    "multi-agent plan mode:  /plan <goal>",
+    "debug":   "debug a failing command:  /debug <cmd> ||| <expected>",
+    "reflect": "reflect on recent failures",
+    "resume":  "resume a previous session",
+    "undo":    "undo last file change(s):  /undo [N]",
+    "clear":   "reset the conversation (model memory); session log kept",
+    "redraw":  "repaint the screen + banner (session preserved)",
+    "help":    "show this command list",
+}
+
+# Commands whose first argument is a skill name (for arg autocompletion).
+_SKILL_ARG_CMDS = {"skill"}
+
+
+class SlashCompleter(Completer):
+    """Autocomplete slash commands as you type, and skill names after them."""
+
+    def get_completions(self, document, complete_event):
+        text = document.text_before_cursor
+        if not text.startswith("/"):
+            return
+        if " " in text:
+            head, _, arg = text.partition(" ")
+            cmd = head[1:].lower()
+            if cmd in _SKILL_ARG_CMDS:
+                for name, desc in sorted(skills_pkg.index().items()):
+                    if name.startswith(arg):
+                        yield Completion(name, start_position=-len(arg),
+                                         display=name, display_meta=desc)
+            return
+        word = text[1:].lower()
+        for name, desc in COMMANDS.items():
+            if name.startswith(word):
+                yield Completion("/" + name, start_position=-len(text),
+                                 display="/" + name, display_meta=desc)
 
 
 def load_wincli_context(working_dir):
@@ -122,14 +176,25 @@ RULES:
 REMEMBER: one ```json tool call per turn · absolute paths with forward slashes · nothing outside the fence."""
 
 
-def render_prompt(working_dir, model, state, session_log):
-    cwd = working_dir.name
-    totals = session_log.session_totals()
-    consumed = totals["prompt_tokens"] + totals["gen_tokens"]
+def render_prompt(state):
+    # Status now lives in the persistent bottom toolbar, so the prompt itself
+    # stays clean. A tiny marker still flags focus / non-default perm modes.
+    flag = ""
     if state.focus:
-        # focus mode: minimal prompt, keep only token cost (required)
-        return f"\n[{consumed:,} t] › "
-    return f"\n[{cwd} | {model} | {state.mode_label()} | {consumed:,} t] > "
+        flag = "focus "
+    elif state.perm_mode == "bypass":
+        flag = "bypass "
+    return f"\n{flag}› "
+
+
+def show_help():
+    table = Table(title="commands", border_style="white", show_header=False)
+    table.add_column("cmd", no_wrap=True)
+    table.add_column("description")
+    for name, desc in COMMANDS.items():
+        table.add_row(f"/{name}", desc)
+    table.add_row("exit", "leave WINCLI")
+    console.print(table)
 
 
 def show_context(state, session_log, model, working_dir, wincli_loaded,
@@ -295,6 +360,10 @@ def main():
 
     wincli_content, wincli_loaded = load_wincli_context(working_dir)
     state = SessionState()
+    # Carry mode preferences across runs (model is already remembered).
+    state.perm_mode = ui.get_pref("perm_mode", state.perm_mode)
+    state.op_mode = ui.get_pref("op_mode", state.op_mode)
+    state.focus = ui.get_pref("focus", state.focus)
     session_log = SessionLog(working_dir, model)
     snapshot_mgr = SnapshotManager(working_dir, session_log.session_id)
 
@@ -304,14 +373,25 @@ def main():
         f"persist: {session_log.path}\n"
         f"mode: {state.mode_label()}  (change via /mode)\n"
         f"skills: {len(skills_pkg.index())} discovered  (list via /skills)\n"
-        "commands: /models /init /mode /focus /context /clear /skills /skill /plan "
-        "/debug /reflect /resume /undo  exit",
+        "type / for commands · /help for the full list · exit to leave",
         title="ready")
 
     system_prompt = build_system_prompt(working_dir, wincli_content)
     tools.set_working_dir(working_dir)
     conversation_history = [{"role": "system", "content": system_prompt}]
     history = FileHistory(str(working_dir / ".persist" / ".history"))
+    completer = SlashCompleter()
+
+    def bottom_toolbar():
+        totals = session_log.session_totals()
+        consumed = totals["prompt_tokens"] + totals["gen_tokens"]
+        # reverse-video bar (white on black) → stays within the B&W theme.
+        return ANSI(f"\x1b[7m {working_dir.name} │ {model} │ "
+                    f"{state.mode_label()} │ {consumed:,} tokens \x1b[0m")
+
+    def save_prefs():
+        ui.set_prefs(perm_mode=state.perm_mode, op_mode=state.op_mode,
+                     focus=state.focus)
 
     def trigger_reflect():
         skills_pkg.run("reflect", "", ctx_dict())
@@ -329,8 +409,11 @@ def main():
 
     while True:
         try:
-            user_input = pt_prompt(render_prompt(working_dir, model, state, session_log),
-                                   history=history)
+            user_input = pt_prompt(render_prompt(state),
+                                   history=history,
+                                   completer=completer,
+                                   complete_while_typing=True,
+                                   bottom_toolbar=bottom_toolbar)
         except (KeyboardInterrupt, EOFError):
             console.print("\ngoodbye!", style="dim")
             tools.cleanup_background_processes()
@@ -380,8 +463,18 @@ def main():
                     console.print("model unchanged", style="dim")
                 continue
 
+            if cmd == "help":
+                show_help()
+                continue
+
+            if cmd == "redraw":
+                ui.paint_background()
+                ui.header()
+                continue
+
             if cmd == "mode":
                 handle_mode_command(state, rest)
+                save_prefs()
                 continue
 
             if cmd == "focus":
@@ -393,9 +486,10 @@ def main():
                 else:
                     state.focus = not state.focus
                 if state.focus:
-                    console.print("[dim]focus on — only chat, tools, and tokens.[/dim]")
+                    console.print("focus on — only chat, tools, and tokens.", style="dim")
                 else:
-                    console.print("[green]focus off — full UI restored.[/green]")
+                    console.print("focus off — full UI restored.", style="bold")
+                save_prefs()
                 continue
 
             if cmd == "clear":
@@ -470,7 +564,10 @@ def main():
                                             border_style="red"))
                 continue
 
-            console.print(f"[yellow]unknown command: {head}[/yellow]")
+            import difflib
+            near = difflib.get_close_matches(cmd, COMMANDS.keys(), n=1)
+            hint = f"  did you mean /{near[0]}?" if near else "  (try /help)"
+            console.print(f"unknown command: {head}{hint}", style="bold")
             continue
 
         # ---- normal turn ----

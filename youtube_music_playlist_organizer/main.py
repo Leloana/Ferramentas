@@ -1,7 +1,6 @@
 import argparse
 import sys
 import random
-import time
 import logging
 from rich.console import Console
 from rich.panel import Panel
@@ -11,7 +10,10 @@ from rich import box
 import signal
 import atexit
 
-from core.config import OLLAMA_MODEL_DEFAULT, API_DAILY_LIMIT
+from core.config import (
+    OLLAMA_MODEL_DEFAULT, API_DAILY_LIMIT,
+    COST_INSERT_PLAYLIST_ITEM, COST_CREATE_PLAYLIST, COST_LIST,
+)
 from core.ytmusic_client import YTMusicClient
 from core.youtube_client import YouTubeClient
 from core.classifier import MusicClassifier
@@ -122,7 +124,7 @@ def show_error(e):
     error_msg = str(e)
     dica = ""
     if "cred" in error_msg.lower() or "token" in error_msg.lower():
-        dica = "\n\n💡 [bold yellow]DICA:[/bold yellow] Execute [cyan]python setup_oauth.py[/cyan] para criar ou renovar as chaves de acesso do Google."
+        dica = "\n\n💡 [bold yellow]DICA:[/bold yellow] Confira o [cyan].env[/cyan] (YOUTUBE_CLIENT_ID/SECRET) e apague o [cyan]token.json[/cyan] para refazer o login do Google na próxima execução."
     elif "quota" in error_msg.lower():
         dica = "\n\n💡 [bold yellow]DICA:[/bold yellow] A cota diária grátis da API do YouTube esgotou. Volte amanhã ou utilize uma conta/projeto diferente."
     elif "connection" in error_msg.lower() or "connect" in error_msg.lower() or "ollama" in error_msg.lower():
@@ -181,6 +183,7 @@ def main():
     parser.add_argument("--batch-size", type=int, default=15, help="Tamanho do lote para a IA")
     parser.add_argument("--force", action="store_true", help="Ignora bloqueio de cota excedida")
     parser.add_argument("--max-playlists", type=int, help="Número máximo de playlists criadas")
+    parser.add_argument("--auto", action="store_true", help="Aceita os merges sugeridos pela IA e aplica sem confirmação (uso periódico/agendado)")
     
     args = parser.parse_args()
 
@@ -285,12 +288,30 @@ def run_organizer(args):
     if args.limit: tracks = tracks[:args.limit]
     if not tracks: return console.print("[yellow]Nenhuma música encontrada.[/yellow]")
 
-    # Pre-flight check do Ollama
+    # Pre-flight check do Ollama: serviço no ar + modelo realmente instalado
     try:
         import ollama
-        ollama.list()
+        installed = ollama.list()
     except Exception:
         raise Exception("O motor de Inteligência Artificial (Ollama) não está respondendo.")
+
+    models_list = getattr(installed, 'models', None)
+    if models_list is None and isinstance(installed, dict):
+        models_list = installed.get('models', [])
+    names = []
+    for m in (models_list or []):
+        n = getattr(m, 'model', None) or getattr(m, 'name', None)
+        if n is None and isinstance(m, dict):
+            n = m.get('model') or m.get('name')
+        if n:
+            names.append(n)
+    base = args.model.split(':')[0]
+    if names and not any(n == args.model or n.split(':')[0] == base for n in names):
+        raise Exception(
+            f"Modelo '{args.model}' não encontrado no Ollama.\n"
+            f"Modelos instalados: {', '.join(names) or '(nenhum)'}\n"
+            f"Baixe com: ollama pull {args.model}  (ou use --model <nome instalado>)"
+        )
         
     classifier = MusicClassifier(args.model)
     
@@ -346,36 +367,9 @@ def run_organizer(args):
     musical_tracks = [t for t in tracks if isinstance(t['metadata'], dict)]
     discarded_count = len(tracks) - len(musical_tracks)
 
-    # 2. PANORAMA GLOBAL E ESTRATÉGIA (ANIMAÇÃO GRANDE)
-    from rich.live import Live
-    from rich.align import Align
-    from rich.console import Group
-    from rich.text import Text
-    from rich.spinner import Spinner
+    # 2. PANORAMA GLOBAL E ESTRATÉGIA
     from rich.prompt import Confirm
-    
-    thinking_messages = [
-        "🧠 MAPEANDO CONEXÕES NEURAIS...",
-        "🧩 SINTETIZANDO PADRÕES MUSICAIS...",
-        "🎨 ESCULPINDO PLAYLISTS TEMÁTICAS...",
-        "⚖️ EQUILIBRANDO FLUXO DE ENERGIA...",
-        "🚀 FINALIZANDO ARQUITETURA GLOBAL..."
-    ]
-    
-    def get_thinking_panel(msg_idx):
-        return Group(
-            "\n\n",
-            Align.center(
-                Panel(
-                    Group("\n", Align.center(Spinner("dots12", style="bold magenta", speed=1.5)), "\n",
-                          Align.center(Text(thinking_messages[msg_idx], style="bold cyan pulse")), "\n"),
-                    title="[bold magenta] CÉREBRO DIGITAL EM AÇÃO [/]",
-                    subtitle="[dim]Processando Panorama Global da sua Biblioteca[/dim]",
-                    border_style="magenta", width=60, padding=(1, 2)
-                ), vertical="middle"
-            ),
-            "\n\n"
-        )
+    logger = logging.getLogger("YTOrganizer")
 
     existing_playlists = yt_music_client.get_user_playlists()
 
@@ -385,33 +379,38 @@ def run_organizer(args):
     for k in keys_to_delete:
         del existing_playlists_for_ai[k]
 
-    with Live(get_thinking_panel(0), refresh_per_second=10) as live:
+    with console.status("[bold magenta]🧠 Gerando panorama global da sua biblioteca...", spinner="dots12"):
         all_metadata = [t['metadata'] for t in musical_tracks]
-        for i in range(3):
-            live.update(get_thinking_panel(i))
-            time.sleep(0.8)
         plano = classifier.generate_global_strategy(all_metadata, existing_playlists_for_ai, args.strategy, getattr(args, 'max_playlists', None))
-        live.update(get_thinking_panel(4))
-        time.sleep(0.5)
 
     if not plano: return console.print("[red]Falha ao gerar plano de organização.[/red]")
 
-    # 3. MAPEAMENTO INICIAL (Para filtrar alucinações da IA e mostrar panorama)
-    # Vinculamos as músicas aos grupos do plano ANTES de perguntar ao usuário
-    for track in musical_tracks:
-        m = track['metadata']
-        best_p = plano[0]
-        max_hits = -1
+    # 3. ATRIBUIÇÃO FAIXA→GRUPO (a IA coloca cada música no grupo ideal do plano)
+    def _fallback_group(m):
+        """Reserva por substring caso a IA não atribua a faixa. Retorna (grupo, hits)."""
+        best, max_hits = plano[0]['nome_grupo'], -1
         for p in plano:
-            hits = 0
-            criterios = [c.lower() for c in p['criterios']]
-            tags = [m['genero_base'].lower(), m['sub_genero'].lower(), m['vibe'].lower()]
-            for tag in tags:
-                if any(tag in crit for crit in criterios): hits += 1
+            criterios = [c.lower() for c in p.get('criterios', [])]
+            tags = [str(m.get('genero_base', '')).lower(), str(m.get('sub_genero', '')).lower(), str(m.get('vibe', '')).lower()]
+            hits = sum(1 for tag in tags if tag and any(tag in crit for crit in criterios))
             if hits > max_hits:
-                max_hits = hits
-                best_p = p
-        track['temp_group'] = best_p['nome_grupo']
+                max_hits, best = hits, p['nome_grupo']
+        return best, max_hits
+
+    with Progress(SpinnerColumn("bouncingBar", style="bold magenta"), TextColumn("[progress.description]{task.description}"), BarColumn(style="dim", complete_style="bold magenta"), TaskProgressColumn(), console=console) as progress:
+        atask = progress.add_task("[cyan]🎯 Encaixando cada faixa no grupo ideal...", total=len(musical_tracks))
+        assignments = classifier.assign_to_groups(musical_tracks, plano, args.strategy, progress_cb=lambda n: progress.advance(atask, n))
+
+    fallback_used = 0
+    for track in musical_tracks:
+        g = assignments.get(track['id'])
+        if not g:
+            g, hits = _fallback_group(track['metadata'])
+            fallback_used += 1
+            logger.warning(f"Faixa sem atribuição da IA, usando reserva (hits={hits}): {track['title']} → {g}")
+        track['temp_group'] = g
+    if fallback_used:
+        console.print(f"[dim]ℹ️ {fallback_used} faixa(s) atribuída(s) por heurística de reserva.[/dim]")
 
     # Filtrar apenas grupos que realmente possuem músicas
     used_groups = {t['temp_group'] for t in musical_tracks}
@@ -433,16 +432,20 @@ def run_organizer(args):
     
     console.print(summary_table)
 
-    # 4. VALIDAÇÃO DE MERGES (Perguntar um por um baseado na tabela acima)
+    # 4. VALIDAÇÃO DE MERGES (interativa; ou automática com --auto p/ uso periódico)
+    auto = getattr(args, 'auto', False)
     final_mapping = {} # nome_grupo -> playlist_final
-    console.print("\n[bold cyan]🤖 Validação de Mesclagens (Merges):[/bold cyan]")
-    
+    if not auto:
+        console.print("\n[bold cyan]🤖 Validação de Mesclagens (Merges):[/bold cyan]")
+
     for p in plano_filtrado:
-        # Proteção: Se a IA disser que é merge, mas inventou o nome da playlist, desativamos o merge.
+        # Proteção: merge para playlist inexistente (alucinação da IA) → vira NOVA
+        # com nome limpo (o próprio nome do grupo, já coerente com a estratégia).
         if p.get('is_merge') and p.get('target_playlist') not in existing_playlists:
             p['is_merge'] = False
+            p['target_playlist'] = p['nome_grupo']
 
-        if p.get('is_merge'):
+        if p.get('is_merge') and not auto:
             ans = questionary.select(
                 f"A IA sugere mesclar '{p['nome_grupo']}' em '{p['target_playlist']}'. O que deseja fazer?",
                 choices=[
@@ -452,19 +455,20 @@ def run_organizer(args):
                 ],
                 qmark="🎵", pointer="▶", style=custom_theme
             ).ask()
-            
-            if ans == "✅ Sim, aceitar mesclagem":
-                final_mapping[p['nome_grupo']] = p['target_playlist']
-            elif ans == "✨ Não, criar como NOVA playlist":
-                new_name = f"{p['nome_grupo'].capitalize()} (Auto)"
-                final_mapping[p['nome_grupo']] = new_name
-                p['target_playlist'] = new_name
+
+            if ans == "✨ Não, criar como NOVA playlist":
+                final_mapping[p['nome_grupo']] = p['nome_grupo']
+                p['target_playlist'] = p['nome_grupo']
                 p['is_merge'] = False
-            else:
+            elif ans == "🔄 Não, escolher OUTRA playlist existente":
                 outra = questionary.select("Escolha a playlist destino:", choices=list(existing_playlists.keys()), qmark="🎵", pointer="▶", style=custom_theme).ask()
                 final_mapping[p['nome_grupo']] = outra
                 p['target_playlist'] = outra
+            else:
+                # Default (inclui "aceitar"): mescla na sugestão da IA
+                final_mapping[p['nome_grupo']] = p['target_playlist']
         else:
+            # Não-merge, ou modo --auto (aceita a sugestão da IA como está)
             final_mapping[p['nome_grupo']] = p['target_playlist']
 
     console.print("\n[bold cyan]📊 Panorama Final (Após Validações):[/bold cyan]")
@@ -498,17 +502,25 @@ def run_organizer(args):
     num_novas = sum(1 for gen in final_counts if gen not in existing_playlists)
     num_totais = len(final_counts)
     
-    # Cálculo: (Músicas * 50) + (Novas Playlists * 50) + (Total Playlists * 1 para verificação)
-    total_quota_est = (len(musical_tracks) * 50) + (num_novas * 50) + (num_totais * 1)
+    # Estimativa de cota da fase de escrita (conservadora):
+    #  - cada música inserida custa COST_INSERT_PLAYLIST_ITEM
+    #  - cada playlist nova custa COST_CREATE_PLAYLIST
+    #  - 1 list por playlist para verificar duplicatas (COST_LIST)
+    # (a leitura/análise já foi debitada ao vivo no QuotaManager antes daqui)
+    total_quota_est = (
+        len(musical_tracks) * COST_INSERT_PLAYLIST_ITEM
+        + num_novas * COST_CREATE_PLAYLIST
+        + num_totais * COST_LIST
+    )
     
     console.print(f"\n[bold yellow]💰 Orçamento Estimado: ~{total_quota_est} unidades[/bold yellow]")
     if num_novas < num_totais:
-        poupanca = (num_totais - num_novas) * 50
+        poupanca = (num_totais - num_novas) * COST_CREATE_PLAYLIST
         console.print(f"[dim green]🍃 Economia por Merges: {poupanca} unidades salvas![/dim green]")
-        
+
     check_quota_limit(total_quota_est, args)
 
-    if not args.dry_run and not Confirm.ask("\n🚀 Deseja aplicar essa estratégia agora?"):
+    if not args.dry_run and not auto and not Confirm.ask("\n🚀 Deseja aplicar essa estratégia agora?"):
         args.dry_run = True
 
     # 4. EXECUÇÃO (Sincronização)
@@ -580,7 +592,7 @@ def run_organizer(args):
         console.print(f"\n[bold red]Erro Crítico Detectado:[/] {e}. [yellow]Iniciando Rollback...[/yellow]")
         for c_pid in reversed(created_pids_this_session):
             try:
-                youtube_client.youtube.playlists().delete(id=c_pid).execute()
+                youtube_client.delete_playlist(c_pid)
                 console.print(f"[green]Rollback: Playlist recém-criada (ID: {c_pid}) destruída.[/green]")
             except Exception as rb_e:
                 console.print(f"[red]Falha ao reverter playlist {c_pid}: {rb_e}[/red]")

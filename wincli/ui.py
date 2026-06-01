@@ -218,6 +218,20 @@ def get_last_model():
 
 
 def set_last_model(model):
+    set_pref("model", model)
+
+
+def get_pref(key, default=None):
+    return load_config().get(key, default)
+
+
+def set_pref(key, value):
     cfg = load_config()
-    cfg["model"] = model
+    cfg[key] = value
+    save_config(cfg)
+
+
+def set_prefs(**kwargs):
+    cfg = load_config()
+    cfg.update(kwargs)
     save_config(cfg)
