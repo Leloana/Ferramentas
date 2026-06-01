@@ -2280,25 +2280,10 @@
 #selection-area[data-active-tab="songs"] #songs-tab-content {
     display: block !important;
 }
-#selection-area[data-active-tab="songs"] #reinstall-tab-content {
-    display: none !important;
-}
 #selection-area[data-active-tab="songs"] #queue-tab-content {
     display: none !important;
 }
-#selection-area[data-active-tab="reinstall"] #songs-tab-content {
-    display: none !important;
-}
-#selection-area[data-active-tab="reinstall"] #reinstall-tab-content {
-    display: block !important;
-}
-#selection-area[data-active-tab="reinstall"] #queue-tab-content {
-    display: none !important;
-}
 #selection-area[data-active-tab="queue"] #songs-tab-content {
-    display: none !important;
-}
-#selection-area[data-active-tab="queue"] #reinstall-tab-content {
     display: none !important;
 }
 #selection-area[data-active-tab="queue"] #queue-tab-content {
@@ -2306,18 +2291,13 @@
 }
 
 #selection-area[data-active-tab="songs"] #tab-btn-songs,
-#selection-area[data-active-tab="reinstall"] #tab-btn-reinstall,
 #selection-area[data-active-tab="queue"] #tab-btn-queue {
     background: var(--accent-gradient) !important;
     color: #000 !important;
     font-weight: 800 !important;
 }
-#selection-area[data-active-tab="songs"] #tab-btn-reinstall,
 #selection-area[data-active-tab="songs"] #tab-btn-queue,
-#selection-area[data-active-tab="reinstall"] #tab-btn-songs,
-#selection-area[data-active-tab="reinstall"] #tab-btn-queue,
-#selection-area[data-active-tab="queue"] #tab-btn-songs,
-#selection-area[data-active-tab="queue"] #tab-btn-reinstall {
+#selection-area[data-active-tab="queue"] #tab-btn-songs {
     background: transparent !important;
     color: var(--dim) !important;
     font-weight: 700 !important;

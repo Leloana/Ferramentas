@@ -23,7 +23,6 @@ export async function fetchSongs() {
 
         document.getElementById('search-input').value = '';
         renderArtistGroups(songs);
-        renderReinstallList(songs);
     } catch (e) {
         dom.songListEl.innerHTML = `
             <div class="empty-state">
@@ -106,6 +105,17 @@ function groupSongsByArtist(songs) {
 
 /* ── Artist-Grouped Rendering ─────────────────────────────────── */
 
+// Fia o botão de reinstalar/regerar segmentos de um card (clique + hover).
+function wireReinstallButton(btn, song) {
+    if (!btn) return;
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        triggerReinstall(song.id, song.title);
+    });
+    btn.addEventListener('mouseenter', () => { btn.style.transform = 'rotate(180deg)'; });
+    btn.addEventListener('mouseleave', () => { btn.style.transform = 'rotate(0deg)'; });
+}
+
 export function renderArtistGroups(songsList) {
     dom.songListEl.innerHTML = '';
 
@@ -152,12 +162,16 @@ export function renderArtistGroups(songsList) {
             const artistEl = frag.querySelector('.song-card__artist');
             const editBtn = frag.querySelector('.song-card__edit-btn');
             const deleteBtn = frag.querySelector('.song-card__delete-btn');
+            const reinstallBtn = frag.querySelector('.song-card__reinstall-btn');
 
             titleEl.innerText = song.title;
             artistEl.innerText = song.artist || "Artista Desconhecido";
 
+            // Botão de reinstalar/regerar segmentos disponível em todos os cards
+            wireReinstallButton(reinstallBtn, song);
+
             if (song.is_ready === false) {
-                // Música pendente: sem clique para jogar, com badge e botão reinstalar
+                // Música pendente: sem clique para jogar, com badge. Mantém só o reinstalar.
                 card.style.cursor = 'default';
                 card.style.opacity = '0.7';
 
@@ -166,28 +180,9 @@ export function renderArtistGroups(songsList) {
                 badge.style.cssText = 'font-size: 0.7rem; font-weight: 700; color: #f97316; background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.25); padding: 0.15rem 0.4rem; border-radius: 4px; margin-left: 0.5rem; display: inline-block; vertical-align: middle;';
                 artistEl.appendChild(badge);
 
-                // Remove edit/delete, adiciona reinstalar
+                // Remove edit/delete; o reinstalar (template) permanece
                 if (editBtn) editBtn.remove();
                 if (deleteBtn) deleteBtn.remove();
-
-                const reinstallBtn = document.createElement('button');
-                reinstallBtn.type = 'button';
-                reinstallBtn.className = 'song-card__reinstall-btn';
-                reinstallBtn.title = 'Reinstalar Música';
-                reinstallBtn.innerHTML = '🔄';
-                reinstallBtn.style.cssText = 'background: transparent; border: none; font-size: 1.25rem; padding: 0.25rem 0.5rem; cursor: pointer; transition: transform 0.3s ease;';
-
-                reinstallBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    triggerReinstall(song.id, song.title);
-                });
-                reinstallBtn.addEventListener('mouseenter', () => { reinstallBtn.style.transform = 'rotate(180deg)'; });
-                reinstallBtn.addEventListener('mouseleave', () => { reinstallBtn.style.transform = 'rotate(0deg)'; });
-
-                const actionsDiv = document.createElement('div');
-                actionsDiv.style.cssText = 'display: flex; align-items: center; gap: 0.5rem;';
-                actionsDiv.appendChild(reinstallBtn);
-                card.appendChild(actionsDiv);
             } else {
                 // Música pronta: comportamento normal
                 card.addEventListener('click', () => selectSong(song));
@@ -425,80 +420,8 @@ export async function triggerReinstall(songId, songTitle) {
     }
 }
 
-export function renderReinstallList(songsList) {
-    const reinstallListEl = document.getElementById('reinstall-list');
-    if (!reinstallListEl) return;
-    reinstallListEl.innerHTML = '';
-
-    if (songsList.length === 0) {
-        reinstallListEl.innerHTML = `
-            <div class="empty-state">
-                <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="var(--dim)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="empty-icon"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
-                <h4>Nenhuma música encontrada</h4>
-            </div>
-        `;
-        return;
-    }
-
-    const tpl = document.getElementById('song-card-tpl');
-    songsList.forEach(song => {
-        const frag = tpl.content.cloneNode(true);
-        const card = frag.querySelector('.song-card');
-        const titleEl = frag.querySelector('.song-card__title');
-        const artistEl = frag.querySelector('.song-card__artist');
-        
-        const editBtn = frag.querySelector('.song-card__edit-btn');
-        const deleteBtn = frag.querySelector('.song-card__delete-btn');
-        if (editBtn) editBtn.remove();
-        if (deleteBtn) deleteBtn.remove();
-
-        titleEl.innerText = song.title;
-        artistEl.innerText = song.artist || "Artista Desconhecido";
-
-        if (song.is_ready === false) {
-            const badge = document.createElement('span');
-            badge.innerText = 'Pendente';
-            badge.style.cssText = 'font-size: 0.7rem; font-weight: 700; color: #f97316; background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.25); padding: 0.15rem 0.4rem; border-radius: 4px; margin-left: 0.5rem; display: inline-block; vertical-align: middle;';
-            artistEl.appendChild(badge);
-        }
-
-        // Desativa clique no card para não iniciar o jogo nesta aba
-        card.style.cursor = 'default';
-
-        const reinstallBtn = document.createElement('button');
-        reinstallBtn.type = 'button';
-        reinstallBtn.className = 'song-card__reinstall-btn';
-        reinstallBtn.title = 'Reinstalar Música';
-        reinstallBtn.innerHTML = '🔄';
-        reinstallBtn.style.cssText = 'background: transparent; border: none; font-size: 1.25rem; padding: 0.25rem 0.5rem; cursor: pointer; transition: transform 0.3s ease;';
-        
-        reinstallBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            triggerReinstall(song.id, song.title);
-        });
-
-        reinstallBtn.addEventListener('mouseenter', () => {
-            reinstallBtn.style.transform = 'rotate(180deg)';
-        });
-        reinstallBtn.addEventListener('mouseleave', () => {
-            reinstallBtn.style.transform = 'rotate(0deg)';
-        });
-
-        const actionsDiv = document.createElement('div');
-        actionsDiv.style.cssText = 'display: flex; align-items: center; gap: 0.5rem;';
-        actionsDiv.appendChild(reinstallBtn);
-        card.appendChild(actionsDiv);
-
-        reinstallListEl.appendChild(frag);
-    });
-}
-
 export function initSelectionTabs() {
-    initTabs('selection-area', {
-        onSelect: (tab) => {
-            if (tab === 'reinstall') renderReinstallList(state.allSongs);
-        },
-    });
+    initTabs('selection-area', {});
 }
 
 export function promptGenerationOptions() {
