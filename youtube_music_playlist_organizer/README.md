@@ -13,22 +13,21 @@ Um organizador inteligente e visualmente deslumbrante para sua biblioteca do You
 
 ## 🛠️ Pré-requisitos
 - Python 3.10+
-- [Ollama](https://ollama.com/) instalado e rodando com um modelo disponível (ex: `gemma4:e4b` configurável). **IMPORTANTE:** Certifique-se de que o aplicativo do Ollama está aberto no seu PC antes de rodar o projeto.
+- [Ollama](https://ollama.com/) instalado e rodando com um modelo disponível (padrão: `gemma3n:e4b`, configurável via `--model`). Baixe com `ollama pull gemma3n:e4b`. **IMPORTANTE:** Certifique-se de que o aplicativo do Ollama está aberto no seu PC antes de rodar o projeto.
 
-## 🚀 Como Obter as Credenciais do Google (`client-tv.json`)
+## 🚀 Como Obter as Credenciais do Google
 
-Para que o script funcione, você precisa autorizá-lo a editar suas playlists no YouTube Music:
+Para que o script funcione, você precisa autorizá-lo a ler e editar suas playlists via **YouTube Data API v3**:
 
 1. **Ative a API:** Acesse [Biblioteca de APIs - YouTube Data API v3](https://console.cloud.google.com/apis/library/youtube.googleapis.com) e clique em **Ativar**.
-2. **Crie a Credencial:** 
+2. **Crie a Credencial OAuth:**
    - Acesse a aba de [Credenciais](https://console.cloud.google.com/apis/credentials).
    - Clique em **+ CRIAR CREDENCIAIS** > **ID do cliente OAuth**.
-   - Tipo de Aplicativo: Selecione **TVs e dispositivos de entrada limitados**.
-   - Coloque o nome que desejar, clique em Criar e **baixe o arquivo JSON**.
-   - Renomeie o arquivo baixado exatamente para `client-tv.json` e coloque-o na raiz deste projeto.
-3. **Libere o Acesso ao seu Email:** 
+   - Tipo de Aplicativo: selecione **Aplicativo para computador (Desktop app)**.
+   - Clique em Criar e **anote o Client ID e o Client Secret** (ou baixe o JSON).
+3. **Libere o Acesso ao seu Email:**
    - Acesse a aba de [Tela de permissão OAuth (Audience)](https://console.cloud.google.com/auth/audience).
-   - Em "Test users" (Usuários de teste), adicione o **e-mail exato da sua conta** que será usada no YouTube Music.
+   - Em "Test users" (Usuários de teste), adicione o **e-mail exato da sua conta** do YouTube.
 
 ## 📦 Instalação Rápida
 
@@ -41,11 +40,17 @@ Para que o script funcione, você precisa autorizá-lo a editar suas playlists n
    pip install -r requirements.txt
    ```
 
-2. **Configuração Inicial de Acesso**:
-   Com o `client-tv.json` na raiz do projeto, rode o instalador:
-   ```powershell
-   python setup_oauth.py
+2. **Configure o `.env`**:
+   Crie um arquivo `.env` na raiz do projeto com o Client ID e Secret do passo anterior:
+   ```env
+   YOUTUBE_CLIENT_ID=seu_client_id
+   YOUTUBE_CLIENT_SECRET=seu_client_secret
    ```
+
+3. **Primeiro login (gera `token.json`)**:
+   Na primeira execução do `main.py`, um navegador abrirá automaticamente para você
+   autorizar o acesso. O token é salvo em `token.json` e renovado sozinho nas próximas
+   vezes — você só faz isso uma vez.
 
 ## 🎮 Como Usar
 
@@ -53,6 +58,14 @@ Para que o script funcione, você precisa autorizá-lo a editar suas playlists n
 Basta rodar o comando abaixo e você será guiado pela interface Neon do assistente:
 ```powershell
 python main.py
+```
+
+### Execução periódica / agendada (sem teclado)
+Para rodar de tempos em tempos sobre as Músicas Curtidas sem precisar confirmar nada,
+use `--auto` (aceita os merges sugeridos pela IA e aplica direto). Reexecutar é seguro:
+músicas já presentes nas playlists não são reenviadas (não gasta cota à toa).
+```powershell
+python main.py --source-playlist LM --strategy vibe --auto
 ```
 
 ### O Fluxo Completo:
@@ -67,8 +80,10 @@ python main.py
 - `main.py`: Ponto de entrada, interface gráfica (CLI) com biblioteca `rich` e `questionary`.
 - `core/`:
     - `classifier.py`: O cérebro local que instrui o Ollama (Lotes, Prompts abstratos).
-    - `ytmusic_client.py`: Leitura de bibliotecas gratuitas pelo YTMusic.
+    - `ytmusic_client.py`: Leitura das faixas e do pré-filtro (via YouTube Data API v3 oficial).
     - `youtube_client.py`: Escrita/Modificações oficiais autenticadas no YouTube.
+    - `auth.py`: Autenticação OAuth2 (gera/renova o `token.json` a partir do `.env`).
+    - `config.py`: Modelo do Ollama, custos de cota, pré-filtro e teto de leitura.
     - `quota_manager.py`: O cofre de contabilização da cota diária do YouTube.
     - `cache.py`: O armazenador temporal de análise para não sobrecarregar a IA nem a Cota.
 - `logs/`: Logs avançados para auditoria das respostas da IA e da API em tempo real.

@@ -1,10 +1,8 @@
 import os
-import json
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from dotenv import load_dotenv
-from ytmusicapi import YTMusic
 
 load_dotenv()
 
@@ -42,43 +40,5 @@ def get_youtube_credentials():
             
         with open(TOKEN_FILE, 'w') as token:
             token.write(creds.to_json())
-            
+
     return creds
-
-def get_ytmusic_client():
-    if not os.path.exists("oauth.json"):
-        raise FileNotFoundError(
-            "O arquivo [bold]oauth.json[/bold] não foi encontrado.\n\n"
-            "Por favor, rode o script de configuração para gerá-lo:\n"
-            "[bold cyan].\\venv\\Scripts\\python setup_oauth.py[/bold cyan]"
-        )
-    
-    try:
-        # 1. Lê o arquivo original
-        with open("oauth.json", "r", encoding="utf-8") as f:
-            data = json.load(f)
-        
-        # 2. Extrai credenciais para o refresh
-        from ytmusicapi.auth.oauth.credentials import OAuthCredentials
-        client_id = data.get('client_id')
-        client_secret = data.get('client_secret')
-        
-        if not client_id or not client_secret:
-             raise Exception("client_id ou client_secret não encontrados no oauth.json")
-             
-        creds = OAuthCredentials(client_id, client_secret)
-
-        # 3. Cria um dicionário limpo apenas com o que a biblioteca aceita
-        # Isso evita o erro de 'unexpected keyword argument'
-        valid_keys = ['access_token', 'refresh_token', 'expires_at', 'expires_in', 'token_type', 'scope']
-        clean_data = {k: v for k, v in data.items() if k in valid_keys}
-        
-        # 4. Salva um arquivo temporário limpo para a biblioteca ler
-        with open("oauth_managed.json", "w", encoding="utf-8") as f:
-            json.dump(clean_data, f)
-
-        # 5. Inicializa com o arquivo limpo e as credenciais explícitas
-        return YTMusic(auth="oauth_managed.json", oauth_credentials=creds)
-
-    except Exception as e:
-        raise Exception(f"Falha na autenticação do YT Music: {str(e)}")

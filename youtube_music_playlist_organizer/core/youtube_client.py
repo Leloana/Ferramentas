@@ -4,7 +4,10 @@ from functools import wraps
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from core.auth import get_youtube_credentials
-from core.config import COST_LIST_PLAYLIST_ITEMS, COST_CREATE_PLAYLIST, COST_INSERT_PLAYLIST_ITEM
+from core.config import (
+    COST_LIST_PLAYLIST_ITEMS, COST_CREATE_PLAYLIST,
+    COST_INSERT_PLAYLIST_ITEM, COST_DELETE_PLAYLIST,
+)
 from core.logger import get_logger
 from core.quota_manager import QuotaManager
 
@@ -34,11 +37,6 @@ def retry_with_backoff(max_attempts=4, base_delay=2.0):
     return decorator
 
 class YouTubeClient:
-    # Custos de cota da API v3
-    COST_CREATE_PLAYLIST = 50
-    COST_ADD_ITEM = 50
-    COST_LIST = 1
-
     def __init__(self):
         self.logger = get_logger()
         self.logger.info("Conectando ao YouTube Data API v3...")
@@ -135,3 +133,12 @@ class YouTubeClient:
         except Exception as e:
             self.logger.error(f"❌ Erro ao adicionar vídeo {video_id} na playlist {playlist_id}: {e}")
             return None
+
+    @retry_with_backoff(max_attempts=4, base_delay=2.0)
+    def delete_playlist(self, playlist_id):
+        self.logger.info(f"Removendo playlist: {playlist_id}")
+        # Conta a cota antes do envio: a chamada gasta unidades mesmo que falhe
+        # por erro de servidor, e é melhor superestimar do que estourar o limite.
+        QuotaManager.add_usage(COST_DELETE_PLAYLIST)
+        self.youtube.playlists().delete(id=playlist_id).execute()
+        return True
