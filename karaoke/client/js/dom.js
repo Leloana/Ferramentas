@@ -40,7 +40,7 @@ export const dom = {
     // Multiplayer TV Getters
     get mpSetupContainer() { return $('multiplayer-setup-container'); },
     get mpGameMode() { return $('mp-game-mode'); },
-    get scoreModeToggle() { return $('score-mode-toggle'); },
+    get btnScoreMode() { return $('btn-score-mode'); },
     get mpConnectedCount() { return $('mp-connected-count'); },
     get mpQueueCount() { return $('mp-queue-count'); },
     get slotP1() { return $('slot-p1'); },

@@ -255,7 +255,7 @@ export async function startKaraoke() {
         }
     }
 
-    const scoringMode = (dom.scoreModeToggle && dom.scoreModeToggle.getAttribute('data-mode')) || 'timing';
+    const scoringMode = (dom.btnScoreMode && dom.btnScoreMode.getAttribute('data-mode')) || 'timing';
 
     state.activePlayers = activeList;
     state.gameMode = mode;
@@ -1244,13 +1244,15 @@ export function initGameControls() {
         updatePlayerSlotsVisibility();
     }
 
-    // Estilo de pontuação: toggle de dois ícones (tempo vs. palavras)
-    if (dom.scoreModeToggle) {
+    // Estilo de pontuação: botão toggle único (tempo+palavras vs. só palavras),
+    // no mesmo padrão do botão de sincronia de letras.
+    if (dom.btnScoreMode) {
         const savedScoringMode = localStorage.getItem('karaoke_scoring_mode') || 'timing';
         setScoreMode(savedScoringMode);
-        dom.scoreModeToggle.querySelectorAll('.score-mode-btn').forEach(btn => {
-            btn.onclick = () => setScoreMode(btn.getAttribute('data-mode'));
-        });
+        dom.btnScoreMode.onclick = () => {
+            const current = dom.btnScoreMode.getAttribute('data-mode');
+            setScoreMode(current === 'words' ? 'timing' : 'words');
+        };
     }
 
     if (dom.btnPitchMinus) {
@@ -1394,13 +1396,18 @@ function updateSyncModeButton() {
 }
 
 function setScoreMode(mode) {
-    const toggle = dom.scoreModeToggle;
-    if (!toggle) return;
+    const btn = dom.btnScoreMode;
+    if (!btn) return;
     const normalized = mode === 'words' ? 'words' : 'timing';
-    toggle.setAttribute('data-mode', normalized);
-    toggle.querySelectorAll('.score-mode-btn').forEach(btn => {
-        btn.classList.toggle('score-mode-btn--active', btn.getAttribute('data-mode') === normalized);
-    });
+    btn.setAttribute('data-mode', normalized);
+    if (normalized === 'words') {
+        btn.textContent = '🔤';
+        btn.title = 'Pontuação: apenas palavras acertadas — Clique para incluir o tempo';
+    } else {
+        btn.textContent = '⏱️';
+        btn.title = 'Pontuação: palavras + tempo correto — Clique para pontuar só palavras';
+    }
+    btn.classList.toggle('btn-score-mode--active', normalized === 'words');
     localStorage.setItem('karaoke_scoring_mode', normalized);
 }
 
