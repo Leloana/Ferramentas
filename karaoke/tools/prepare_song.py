@@ -221,7 +221,48 @@ def prepare_song(song_dir, language="en", debug=False):
         else:
             sing_end = min(max_end, total_duration)
             pause_end = min(sing_end + 0.5, total_duration)
-            
+
+        # --- Correção de subestimação do Whisper (somente versos com gap explícito) ---
+        # Sintoma: o Whisper só "ouve" um fragmento da voz (ex.: nota sustentada longa),
+        # devolve menos palavras que a letra, e o alinhamento por proximidade colapsa todas
+        # as palavras no início, com sing_end curtíssimo — apesar de o LRC reservar muito
+        # mais tempo para o verso.
+        #
+        # Gates de segurança (os três precisam ser verdadeiros) para nunca interferir nos
+        # casos corretos:
+        #   1. line["end"] existe -> verso seguido de pausa instrumental. Versos com letra
+        #      logo em seguida têm line["end"] == None e jamais entram aqui.
+        #   2. A contagem do Whisper diverge da letra -> o ramo de match 1:1 perfeito
+        #      (alinhamento confiável) nunca é tocado.
+        #   3. O trecho de voz detectado cobre menos da metade do tempo do LRC e sobram
+        #      mais de 2s "perdidos" -> só subestimações grosseiras disparam.
+        lrc_end = line.get("end")
+        if (
+            lrc_end is not None
+            and words
+            and lyrics_timed
+            and len(words) != len(official_words)
+        ):
+            lrc_duration = lrc_end - line["start"]
+            detected_span = words[-1]["end"]  # relativo ao início do segmento
+            if detected_span < 0.5 * lrc_duration and (lrc_duration - detected_span) > 2.0:
+                n = len(lyrics_timed)
+                usable = max(0.0, lrc_duration - 0.2)  # margem de respiro no fim
+                slice_dur = usable / n if n else usable
+                for idx in range(n):
+                    w_start = round(0.05 + idx * slice_dur, 3)
+                    w_end = round(min(0.05 + (idx + 1) * slice_dur, usable), 3)
+                    lyrics_timed[idx]["expected_start"] = w_start
+                    lyrics_timed[idx]["expected_end"] = w_end
+                sing_end = lrc_end
+                pause_end = min(sing_end + 0.1, total_duration)
+                voice_delay = 0.0  # distribuímos a partir do início real do verso (LRC)
+                print(
+                    f"  -> Subestimacao do Whisper detectada: redistribuindo {n} "
+                    f"palavras em {lrc_duration:.2f}s do LRC (voz detectada: "
+                    f"{detected_span:.2f}s)"
+                )
+
         # Aplica o offset global (deslocamento) salvando com proteção de limite mínimo (0.0s)
         s_start = max(0.0, round(line["start"] + offset + voice_delay, 3))
         s_end = max(0.0, round(sing_end + offset, 3))
