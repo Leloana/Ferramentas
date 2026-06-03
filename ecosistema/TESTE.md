@@ -104,13 +104,17 @@ então se a Fase C passou, o lado PC já está provado.
 - [x] Correções de código aplicadas antes do build:
       - `net.i2p.crypto:eddsa` adicionado (sshj precisa p/ a chave **ed25519** — senão a auth falha em runtime).
       - Pedido de `POST_NOTIFICATIONS` em runtime na `MainActivity` (Android 13+, p/ a notificação persistente do FGS aparecer).
-- [ ] **BUILD BLOQUEADO no SDK (não no código):** o SDK em
-      `C:\Program Files (x86)\Android\android-sdk` é **read-only** (precisa admin) e
-      está com **licenças não aceitas** → Gradle não instala/atualiza componentes.
-      Caminhos p/ destravar: (a) abrir no **Android Studio** (resolve SDK+licenças
-      no GUI); ou (b) copiar o SDK p/ pasta gravável do usuário + `sdkmanager --licenses`
-      + fixar `buildToolsVersion = "35.0.0"`. O Kotlin ainda não chegou a compilar.
-- [ ] Instalar: `./gradlew installDebug` (ou arrastar o APK pro celular).
+- [x] **SDK destravado:** usado o SDK gravável `%LOCALAPPDATA%\Android\Sdk`
+      (licenças aceitas, tem `build-tools/34.0.0` que o AGP 8.7.3 pede). O antigo em
+      `Program Files (x86)` era read-only/sem licença → trocado via `local.properties`.
+- [x] **2 erros de compilação corrigidos** (scaffold nunca tinha compilado):
+      - `SshHandoffTransport`: import era `net.schmizz.sshj.transport.verify` (inexistente)
+        → correto é `...transport.verification.PromiscuousVerifier`.
+      - `mergeDebugJavaResource`: colisão `META-INF/versions/**/OSGI-INF/MANIFEST.MF`
+        entre bcprov/bcpkix/bcutil (via sshj) → adicionado ao `packaging.excludes`.
+- [x] **`assembleDebug` → BUILD SUCCESSFUL** (`app-debug.apk`, ~13,8 MB). (2026-06-03)
+- [x] Entregue no celular via scp (porta 8022): `/sdcard/Download/ecossistema-marco1.apk`.
+      *(adb sem device; instalar tocando no arquivo. `installDebug` se conectar USB.)*
 
 ### D2. Configuração no app (tela inicial)
 - [ ] **Conexão com o PC:** host (IP LAN ou `100.x`), usuário Windows, porta 22,
