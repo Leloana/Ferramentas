@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings as AndroidSettings
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -134,6 +135,7 @@ private fun HomeScreen(modifier: Modifier = Modifier) {
                             privateKeyPem = privateKey.trim(),
                         ),
                     )
+                    Toast.makeText(context, "Conexão salva", Toast.LENGTH_SHORT).show()
                 }
             },
             modifier = Modifier.fillMaxWidth(),

@@ -78,4 +78,6 @@ dependencies {
     implementation(libs.sshj)
     // Ed25519 (id_ed25519) para o sshj. Sem isso, a auth com a chave do celular falha.
     implementation(libs.eddsa)
+    // BouncyCastle completo p/ X25519/curve25519 (o "BC" do Android e reduzido).
+    implementation(libs.bcprov)
 }

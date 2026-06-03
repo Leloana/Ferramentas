@@ -9,6 +9,7 @@ datastore = "1.1.1"
 serialization = "1.7.3"
 sshj = "0.39.0"
 eddsa = "0.3.0"
+bouncycastle = "1.78.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -26,6 +27,8 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 sshj = { group = "com.hierynomus", name = "sshj", version.ref = "sshj" }
 # Necessario para chaves/auth Ed25519 (id_ed25519) no sshj — sem isso falha em runtime.
 eddsa = { group = "net.i2p.crypto", name = "eddsa", version.ref = "eddsa" }
+# BouncyCastle completo (substitui o "BC" reduzido do Android) p/ X25519/curve25519 no sshj.
+bcprov = { group = "org.bouncycastle", name = "bcprov-jdk18on", version.ref = "bouncycastle" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
