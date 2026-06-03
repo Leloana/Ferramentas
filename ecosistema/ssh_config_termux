@@ -1,0 +1,16 @@
+# Configuracao SSH para o Termux (lado celular)
+# Copie o bloco abaixo para  ~/.ssh/config  no Termux:
+#     mkdir -p ~/.ssh && chmod 700 ~/.ssh
+#     cat ssh_config_termux >> ~/.ssh/config
+#
+# Na MESMA Wi-Fi, use o IP local do PC (192.168.x.x).
+# Fora da Wi-Fi (4G/5G), instale o Tailscale nos dois e troque HostName
+# pelo IP 100.x.x.x do PC.
+
+Host pc-remoto
+    HostName 192.168.15.6
+    User mf827
+    Port 22
+    IdentityFile ~/.ssh/id_ed25519
+    ServerAliveInterval 30
+    ServerAliveCountMax 3
