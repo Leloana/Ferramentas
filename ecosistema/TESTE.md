@@ -13,27 +13,38 @@
 
 Prova que o cérebro (tabela de equivalentes) funciona, isolado do transporte.
 
-- [ ] **A1. Python presente:** `python --version` no PC (precisa estar no PATH).
-- [ ] **A2. Config:** `copy config.example.json config.json` e ajuste os
+- [x] **A1. Python presente:** `python --version` no PC (precisa estar no PATH).
+      → Python 3.12.10 no PATH. (validado 2026-06-03)
+- [x] **A2. Config:** `copy config.example.json config.json` e ajuste os
       `mapeamento_caminhos` para pastas reais (ex.: Download, DCIM).
-- [ ] **A3. Subir o daemon na sessão do usuário:**
+      → `config.json` criado mapeando para Documents/Pictures/Downloads reais.
+- [x] **A3. Subir o daemon na sessão do usuário:**
       `wscript start-agente.vbs` — ou, pra ver o log na hora:
       `python agente.py --daemon` (deixa esse terminal aberto).
-- [ ] **A4. Link (outro terminal):**
+      → validado via `python agente.py --daemon` (ouvindo em 127.0.0.1:8765).
+        A variante `wscript start-agente.vbs` ainda não foi testada (ver Fase B).
+- [x] **A4. Link (outro terminal):**
       `echo {"tipo":"url","app_origem":"teste","dados":{"url":"https://example.com"},"timestamp":0} | python agente.py --send`
       → deve abrir o navegador **na sua tela** (não invisível).
-- [ ] **A5. YouTube com timestamp:**
+      → `--send` → daemon → "URL aberta: https://example.com" (log confirma).
+- [x] **A5. YouTube com timestamp:**
       descritor `tipo":"midia"` com `"url":"https://youtu.be/dQw4w9WgXcQ","pos_segundos":42`
       → abre `youtu.be/dQw4w9WgXcQ?t=42`.
-- [ ] **A6. Pasta → Explorer:**
+      → alvo resolvido = `https://youtu.be/dQw4w9WgXcQ?t=42` (inclui forma `watch?v=`).
+- [x] **A6. Pasta → Explorer:**
       `tipo":"pasta"` com um `caminho` que case com o `mapeamento_caminhos`
       → o Explorer abre na pasta mapeada do Windows.
-- [ ] **A7. Texto → clipboard:** `tipo":"texto"` → cola (Ctrl+V) e confere.
-- [ ] **A8. Fallback:** descritor com `tipo` inexistente mas `dados.url` http
+      → `/storage/emulated/0/Download/` → `C:\Users\mf827\Downloads`; Explorer abriu.
+- [x] **A7. Texto → clipboard:** `tipo":"texto"` → cola (Ctrl+V) e confere.
+      → `Get-Clipboard` retornou o texto enviado (transporte completo).
+- [x] **A8. Fallback:** descritor com `tipo` inexistente mas `dados.url` http
       → ainda abre no navegador (regra automática).
-- [ ] **A9. Log:** confira `C:\Users\<voce>\.handoff\agente.log` (uma linha por evento).
+      → "Handoff: link (fallback)" disparou para tipo desconhecido.
+- [x] **A9. Log:** confira `C:\Users\<voce>\.handoff\agente.log` (uma linha por evento).
+      → log em `C:\Users\mf827\.handoff\agente.log`, uma linha por evento.
 - [ ] **A10. Toast:** veja se aparece a notificação do Windows em cada ação
       (se não aparecer, não trava nada — é best-effort).
+      → código executa sem erro; **falta confirmar visualmente** o toast na tela.
 
 > Dica p/ Windows: montar o JSON no `cmd` é chato pelas aspas. Salve o descritor
 > num arquivo `x.json` e use `type x.json | python agente.py --send`.
@@ -128,6 +139,10 @@ então se a Fase C passou, o lado PC já está provado.
 
 Os **3 casos** funcionando de forma **visível e confiável**, com o agente na
 sessão do usuário:
-- [ ] YouTube com timestamp
-- [ ] URL/aba no navegador
-- [ ] Pasta → Explorer
+- [x] YouTube com timestamp — *resolução + transporte ok; falta confirmar visualmente na sessão de Startup (Fase B)*
+- [x] URL/aba no navegador — *resolução + transporte ok; idem*
+- [x] Pasta → Explorer — *resolução + transporte ok; Explorer abriu nesta sessão*
+
+> Nota (2026-06-03): Fase A validada end-to-end nesta máquina via daemon em
+> primeiro plano (`python agente.py --daemon`) + `--send`. Falta apenas a
+> confirmação **visual na sessão interativa de Startup** (Fase B) e o toast (A10).
