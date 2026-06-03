@@ -68,15 +68,21 @@ Prova a lição da Sessão 0×1 (o app tem que abrir na tela visível).
 
 Prova o transporte SSH real, antes de mexer no APK.
 
-- [ ] **C1. SSH do PC já configurado:** rodou o `setup-windows.ps1` como admin
+- [x] **C1. SSH do PC já configurado:** rodou o `setup-windows.ps1` como admin
       com a `-PhonePubKey` do celular? (OpenSSH + firewall 22 + chave autorizada).
+      → sshd em `0.0.0.0:22`, firewall "Handoff SSH" (Any), chave do celular
+        autorizada em `administrators_authorized_keys`. (validado 2026-06-03)
 - [ ] **C2. Termux:** `~/.ssh/config` tem o alias `pc-remoto`
       (`cat ssh_config_termux >> ~/.ssh/config`) com o IP/HostName certo.
-- [ ] **C3. Conexão crua:** `ssh pc-remoto "echo ok"` → imprime `ok`.
+      → não usei o alias; testei com `ssh -i ~/.ssh/id_ed25519 mf827@192.168.15.6`.
+- [x] **C3. Conexão crua:** `ssh pc-remoto "echo ok"` → imprime `ok`.
+      → de dentro do celular, `ssh mf827@192.168.15.6 "echo ..."` → `PC_OK_FROM_PHONE`.
 - [ ] **C4. Instalar scripts:**
       `cp termux-url-opener termux-handoff ~/bin/ && chmod +x ~/bin/termux-*`
+      → não instalados (o transporte que eles usam já está provado por `ssh` cru).
 - [ ] **C5. Ajuste o `PC_AGENTE`** nos dois scripts (caminho do `agente.py` no PC).
-- [ ] **C6. Daemon rodando no PC** (Fase A/B).
+      → não precisa: o default já é o caminho real (`...\ecosistema\agente.py`).
+- [x] **C6. Daemon rodando no PC** (Fase A/B).
 - [ ] **C7. Link genérico:** `termux-handoff --url "https://example.com"`
       → abre no PC.
 - [ ] **C8. Share Sheet:** num app qualquer → Compartilhar → **Termux** →
@@ -94,9 +100,16 @@ Substitui o Termux pelo gesto. Mesmo transporte (SSH → `agente.py --send`),
 então se a Fase C passou, o lado PC já está provado.
 
 ### D1. Build
-- [ ] Abrir a pasta `android/` no **Android Studio** (ele gera o `gradle-wrapper.jar`).
-- [ ] Ou via CLI: `cd android && gradle wrapper --gradle-version 8.11.1 && ./gradlew assembleDebug`.
-- [ ] Corrigir o que o **Lint/compilador** apontar (scaffold não foi compilado).
+- [x] Wrapper gerado (`gradle-wrapper.jar` 8.11.1 baixado; `gradlew`/`.bat` presentes).
+- [x] Correções de código aplicadas antes do build:
+      - `net.i2p.crypto:eddsa` adicionado (sshj precisa p/ a chave **ed25519** — senão a auth falha em runtime).
+      - Pedido de `POST_NOTIFICATIONS` em runtime na `MainActivity` (Android 13+, p/ a notificação persistente do FGS aparecer).
+- [ ] **BUILD BLOQUEADO no SDK (não no código):** o SDK em
+      `C:\Program Files (x86)\Android\android-sdk` é **read-only** (precisa admin) e
+      está com **licenças não aceitas** → Gradle não instala/atualiza componentes.
+      Caminhos p/ destravar: (a) abrir no **Android Studio** (resolve SDK+licenças
+      no GUI); ou (b) copiar o SDK p/ pasta gravável do usuário + `sdkmanager --licenses`
+      + fixar `buildToolsVersion = "35.0.0"`. O Kotlin ainda não chegou a compilar.
 - [ ] Instalar: `./gradlew installDebug` (ou arrastar o APK pro celular).
 
 ### D2. Configuração no app (tela inicial)
@@ -139,10 +152,17 @@ então se a Fase C passou, o lado PC já está provado.
 
 Os **3 casos** funcionando de forma **visível e confiável**, com o agente na
 sessão do usuário:
-- [x] YouTube com timestamp — *resolução + transporte ok; falta confirmar visualmente na sessão de Startup (Fase B)*
-- [x] URL/aba no navegador — *resolução + transporte ok; idem*
-- [x] Pasta → Explorer — *resolução + transporte ok; Explorer abriu nesta sessão*
+- [x] YouTube com timestamp — *celular → PC real: `youtu.be/dQw4w9WgXcQ?t=42` abriu na tela*
+- [x] URL/aba no navegador — *celular → PC real: link abriu na tela*
+- [x] Pasta → Explorer — *celular → PC real: Explorer abriu em `C:\Users\mf827\Downloads`*
 
-> Nota (2026-06-03): Fase A validada end-to-end nesta máquina via daemon em
-> primeiro plano (`python agente.py --daemon`) + `--send`. Falta apenas a
-> confirmação **visual na sessão interativa de Startup** (Fase B) e o toast (A10).
+> **MARCO 1 PROVADO ponta a ponta (2026-06-03).** Loop real validado:
+> PC →(ssh:8022)→ celular (Termux) →(ssh:22, chave ed25519 do celular)→ sshd do PC
+> → `agente.py --send` → daemon(8765) → app abre **na tela visível** do usuário.
+> O usuário confirmou visualmente as janelas abrindo (navegador + Explorer).
+> Não precisou dos scripts Termux nem do APK: o `ssh` cru já exercita o mesmo
+> transporte que o `SshHandoffTransport` do app usará.
+>
+> Pendências: **APK (Fase D)** travado no provisionamento do SDK (licenças/
+> read-only), não no código — ver Fase D. Toast do Windows (A10) não conferido
+> visualmente. Pinning de host key (PromiscuousVerifier) segue TODO.

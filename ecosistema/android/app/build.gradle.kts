@@ -73,4 +73,6 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.sshj)
+    // Ed25519 (id_ed25519) para o sshj. Sem isso, a auth com a chave do celular falha.
+    implementation(libs.eddsa)
 }

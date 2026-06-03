@@ -8,6 +8,7 @@ composeBom = "2024.12.01"
 datastore = "1.1.1"
 serialization = "1.7.3"
 sshj = "0.39.0"
+eddsa = "0.3.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -23,6 +24,8 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 sshj = { group = "com.hierynomus", name = "sshj", version.ref = "sshj" }
+# Necessario para chaves/auth Ed25519 (id_ed25519) no sshj — sem isso falha em runtime.
+eddsa = { group = "net.i2p.crypto", name = "eddsa", version.ref = "eddsa" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

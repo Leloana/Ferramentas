@@ -1,7 +1,9 @@
 package com.firepot.ecossistema
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -42,6 +44,7 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        maybeRequestNotifications()
         setContent {
             EcossistemaTheme {
                 Scaffold { padding ->
@@ -49,6 +52,20 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    /** Pede POST_NOTIFICATIONS (Android 13+) p/ a notificacao persistente do FGS aparecer. */
+    private fun maybeRequestNotifications() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) !=
+            PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), REQ_NOTIF)
+        }
+    }
+
+    private companion object {
+        const val REQ_NOTIF = 1001
     }
 }
 
