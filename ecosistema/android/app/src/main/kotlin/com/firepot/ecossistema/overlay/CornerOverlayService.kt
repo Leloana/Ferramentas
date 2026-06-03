@@ -1,15 +1,13 @@
 package com.firepot.ecossistema.overlay
 
 import android.app.Service
-import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.IBinder
-import android.provider.Settings
+import android.provider.Settings as AndroidSettings
 import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
@@ -21,34 +19,37 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.firepot.ecossistema.R
+import com.firepot.ecossistema.data.Settings
 import com.firepot.ecossistema.handoff.HandoffManager
-import com.firepot.ecossistema.model.Descriptor
-import com.firepot.ecossistema.service.HandoffAccessibilityService
+import com.firepot.ecossistema.tools.HandoffTool
+import com.firepot.ecossistema.tools.ToolRunner
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 /**
  * Overlay "AssistiveTouch": uma bolha flutuante sempre sobre os outros apps.
- *  - TOCAR a bolha  -> abre/fecha o leque de atalhos.
+ *  - TOCAR a bolha  -> abre/fecha a LISTA de ferramentas (cada uma só com ícone).
  *  - ARRASTAR        -> reposiciona; ao soltar, gruda na borda esquerda/direita.
- *  - tocar FORA       -> recolhe o leque (FLAG_WATCH_OUTSIDE_TOUCH).
+ *  - tocar FORA       -> recolhe a lista (FLAG_WATCH_OUTSIDE_TOUCH).
  *
- * Atalhos: "Link da tela" (URL em foco lida pela Acessibilidade) e
- * "Texto copiado" (clipboard do Android). Cada um monta o descritor e envia ao
- * PC via [HandoffManager]. Requer SYSTEM_ALERT_WINDOW concedido.
+ * As ferramentas exibidas são as habilitadas na aba "Ferramentas" do app
+ * (persistidas em [Settings.enabledTools]). Requer SYSTEM_ALERT_WINDOW.
  */
 class CornerOverlayService : Service() {
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private lateinit var windowManager: WindowManager
     private lateinit var params: WindowManager.LayoutParams
+    private lateinit var settings: Settings
     private var root: LinearLayout? = null
     private var menu: LinearLayout? = null
     private var expanded = false
+    private var enabledIds: List<String> = HandoffTool.ALL.map { it.id }
 
     override fun onBind(intent: Intent?): IBinder? = null
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int = START_STICKY
@@ -56,7 +57,8 @@ class CornerOverlayService : Service() {
     override fun onCreate() {
         super.onCreate()
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+        settings = Settings(this)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !AndroidSettings.canDrawOverlays(this)) {
             Toast.makeText(
                 this,
                 "Conceda a permissão de sobreposição (overlay) para a bolha aparecer.",
@@ -66,6 +68,13 @@ class CornerOverlayService : Service() {
             return
         }
         addOverlay()
+        // Mantém a lista de ferramentas em sincronia com o que o app habilitou.
+        scope.launch {
+            settings.enabledTools.collectLatest { ids ->
+                enabledIds = HandoffTool.ALL.map { it.id }.filter { it in ids }
+                rebuildMenu()
+            }
+        }
     }
 
     private fun dp(v: Int): Int = (v * resources.displayMetrics.density).toInt()
@@ -94,7 +103,8 @@ class CornerOverlayService : Service() {
 
         val container = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            // Capta toques FORA da janela (ACTION_OUTSIDE) para recolher o leque.
+            gravity = Gravity.CENTER_HORIZONTAL
+            // Capta toques FORA da janela (ACTION_OUTSIDE) para recolher a lista.
             setOnTouchListener { _, e ->
                 if (e.actionMasked == MotionEvent.ACTION_OUTSIDE) collapse()
                 false
@@ -108,7 +118,11 @@ class CornerOverlayService : Service() {
             setOnTouchListener(BubbleTouch())
         }
 
-        val menuView = buildMenu().apply { visibility = View.GONE }
+        val menuView = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            gravity = Gravity.CENTER_HORIZONTAL
+            visibility = View.GONE
+        }
 
         container.addView(bubble)
         container.addView(menuView)
@@ -124,41 +138,40 @@ class CornerOverlayService : Service() {
             }
     }
 
-    private fun buildMenu(): LinearLayout {
-        val pad = dp(8)
-        return LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(pad, pad, pad, pad)
-            background = GradientDrawable().apply {
-                cornerRadius = dp(16).toFloat()
-                setColor(Color.parseColor("#EE222222"))
-            }
-            addView(actionButton("🔗  Link da tela") { sendCurrentLink() })
-            addView(actionButton("📋  Texto copiado") { sendClipboard() })
+    /** Recria os botões (só ícone) a partir das ferramentas habilitadas. */
+    private fun rebuildMenu() {
+        val m = menu ?: return
+        m.removeAllViews()
+        for (id in enabledIds) {
+            val tool = HandoffTool.byId(id) ?: continue
+            m.addView(iconButton(tool))
         }
     }
 
-    private fun actionButton(label: String, onClick: () -> Unit): TextView =
+    private fun iconButton(tool: HandoffTool): TextView =
         TextView(this).apply {
-            text = label
-            setTextColor(Color.WHITE)
-            textSize = 15f
-            setPadding(dp(14), dp(12), dp(14), dp(12))
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-            ).apply { topMargin = dp(6) }
+            text = tool.icon
+            textSize = 22f
+            gravity = Gravity.CENTER
+            val s = dp(52)
+            layoutParams = LinearLayout.LayoutParams(s, s).apply { topMargin = dp(8) }
             background = GradientDrawable().apply {
-                cornerRadius = dp(12).toFloat()
-                setColor(Color.parseColor("#1565C0"))
+                shape = GradientDrawable.OVAL
+                setColor(Color.parseColor("#EE1565C0"))
+                setStroke(dp(2), Color.WHITE)
             }
             setOnClickListener {
                 collapse()
-                onClick()
+                runTool(tool.id)
             }
         }
 
-    /** Distingue toque (abre o menu) de arrasto (move + gruda na borda). */
+    private fun runTool(toolId: String) {
+        val descriptor = ToolRunner.buildDescriptor(this, toolId) ?: return
+        scope.launch { HandoffManager.send(applicationContext, descriptor) }
+    }
+
+    /** Distingue toque (abre a lista) de arrasto (move + gruda na borda). */
     private inner class BubbleTouch : View.OnTouchListener {
         private var startX = 0
         private var startY = 0
@@ -201,7 +214,6 @@ class CornerOverlayService : Service() {
         menu?.visibility = View.VISIBLE
         expanded = true
         runCatching { windowManager.updateViewLayout(root, params) }
-        // Depois do layout, garante que o leque caiba na tela.
         root?.post {
             val r = root ?: return@post
             val dm = resources.displayMetrics
@@ -230,34 +242,6 @@ class CornerOverlayService : Service() {
         params.y = params.y.coerceIn(0, (dm.heightPixels - r.height).coerceAtLeast(0))
         runCatching { windowManager.updateViewLayout(r, params) }
     }
-
-    // ---- Ações dos atalhos ----
-    private fun sendCurrentLink() {
-        val url = HandoffAccessibilityService.lastUrl
-        if (url.isNullOrBlank()) {
-            toast("Nenhuma URL em foco. Abra uma página no navegador e ative a Acessibilidade.")
-            return
-        }
-        val descriptor = HandoffManager.fromSharedText(url)
-        scope.launch { HandoffManager.send(applicationContext, descriptor) }
-    }
-
-    private fun sendClipboard() {
-        val cm = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = cm.primaryClip
-        val text = if (clip != null && clip.itemCount > 0) {
-            clip.getItemAt(0).coerceToText(this).toString()
-        } else {
-            ""
-        }
-        if (text.isBlank()) {
-            toast("Clipboard vazio ou sem acesso em segundo plano (limite do Android 10+).")
-            return
-        }
-        scope.launch { HandoffManager.send(applicationContext, Descriptor.texto(text)) }
-    }
-
-    private fun toast(msg: String) = Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 
     override fun onDestroy() {
         root?.let { runCatching { windowManager.removeView(it) } }

@@ -5,7 +5,9 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.firepot.ecossistema.tools.HandoffTool
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -45,6 +47,19 @@ class Settings(private val context: Context) {
 
     suspend fun current(): PcConfig = pcConfig.first()
 
+    /** Conjunto de IDs de ferramentas habilitadas no overlay (default: todas). */
+    val enabledTools: Flow<Set<String>> = context.dataStore.data.map { prefs ->
+        prefs[KEY_TOOLS] ?: HandoffTool.DEFAULT_ENABLED
+    }
+
+    suspend fun setToolEnabled(id: String, enabled: Boolean) {
+        context.dataStore.edit { prefs ->
+            val cur = (prefs[KEY_TOOLS] ?: HandoffTool.DEFAULT_ENABLED).toMutableSet()
+            if (enabled) cur.add(id) else cur.remove(id)
+            prefs[KEY_TOOLS] = cur
+        }
+    }
+
     suspend fun save(config: PcConfig) {
         context.dataStore.edit { prefs ->
             prefs[KEY_HOST] = config.host
@@ -61,5 +76,6 @@ class Settings(private val context: Context) {
         val KEY_PORT = stringPreferencesKey("pc_port")
         val KEY_AGENT_PATH = stringPreferencesKey("pc_agent_path")
         val KEY_KEY = stringPreferencesKey("pc_private_key")
+        val KEY_TOOLS = stringSetPreferencesKey("enabled_tools")
     }
 }

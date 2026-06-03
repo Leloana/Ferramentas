@@ -21,6 +21,7 @@ class HandoffForegroundService : Service() {
     override fun onCreate() {
         super.onCreate()
         startAsForeground()
+        isRunning = true
         // Inicia o overlay junto (depende de SYSTEM_ALERT_WINDOW concedido).
         startService(Intent(this, CornerOverlayService::class.java))
     }
@@ -30,6 +31,7 @@ class HandoffForegroundService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onDestroy() {
+        isRunning = false
         stopService(Intent(this, CornerOverlayService::class.java))
         super.onDestroy()
     }
@@ -54,6 +56,10 @@ class HandoffForegroundService : Service() {
     }
 
     companion object {
+        /** Estado do serviço (para o toggle do app refletir ligado/desligado). */
+        @Volatile var isRunning: Boolean = false
+            private set
+
         private const val CHANNEL_ID = "handoff_fg"
         private const val NOTIF_ID = 1001
 

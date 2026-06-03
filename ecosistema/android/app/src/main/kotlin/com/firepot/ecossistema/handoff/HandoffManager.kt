@@ -30,6 +30,12 @@ object HandoffManager {
         }
     }
 
+    /** Testa conexão+auth com o PC (sem enviar handoff). Para o indicador de status. */
+    suspend fun checkConnection(context: Context): Result<Unit> {
+        val config = Settings(context).current()
+        return transport.check(config)
+    }
+
     suspend fun send(context: Context, descriptor: Descriptor): Result<Unit> {
         val config = Settings(context).current()
         val result = transport.send(descriptor, config)

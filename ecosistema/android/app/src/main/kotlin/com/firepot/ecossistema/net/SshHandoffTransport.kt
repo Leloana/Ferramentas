@@ -60,6 +60,29 @@ class SshHandoffTransport : HandoffTransport {
             }
         }
 
+    override suspend fun check(config: PcConfig): Result<Unit> =
+        withContext(Dispatchers.IO) {
+            if (!config.isComplete) {
+                return@withContext Result.failure(
+                    IllegalStateException("Configuracao do PC incompleta (host/user/chave)."),
+                )
+            }
+            val ssh = SSHClient()
+            ssh.connectTimeout = 5000
+            ssh.timeout = 5000
+            try {
+                ssh.addHostKeyVerifier(PromiscuousVerifier())
+                ssh.connect(config.host, config.port)
+                val keys = ssh.loadKeys(config.privateKeyPem, null, null)
+                ssh.authPublickey(config.user, keys)
+                Result.success(Unit)
+            } catch (e: Exception) {
+                Result.failure(e)
+            } finally {
+                runCatching { ssh.disconnect() }
+            }
+        }
+
     private companion object {
         const val TAG = "SshHandoff"
     }

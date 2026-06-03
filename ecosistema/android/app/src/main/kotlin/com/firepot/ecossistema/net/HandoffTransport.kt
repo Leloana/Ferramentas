@@ -10,4 +10,7 @@ import com.firepot.ecossistema.model.Descriptor
  */
 interface HandoffTransport {
     suspend fun send(descriptor: Descriptor, config: PcConfig): Result<Unit>
+
+    /** Conecta + autentica (sem enviar nada) só para checar se o PC está acessível. */
+    suspend fun check(config: PcConfig): Result<Unit>
 }
