@@ -15,6 +15,8 @@
         tools:ignore="ProtectedPermissions" />
     <!-- Descoberta mDNS/NSD na LAN. -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <!-- Religar o serviço/overlay após reiniciar o celular. -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".EcossistemaApp"
@@ -72,10 +74,19 @@
                 android:resource="@xml/accessibility_service_config" />
         </service>
 
-        <!-- Overlay "arrastar pro canto". -->
+        <!-- Overlay "AssistiveTouch" (bolha + leque de atalhos). -->
         <service
             android:name=".overlay.CornerOverlayService"
             android:exported="false" />
+
+        <!-- Religa o serviço/overlay no boot. -->
+        <receiver
+            android:name=".service.BootReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
     </application>
 </manifest>
