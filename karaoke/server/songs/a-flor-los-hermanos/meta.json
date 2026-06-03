@@ -6,15 +6,10 @@
         "slug": "a-flor-los-hermanos"
     },
     "audio": {
-        "youtube_vocal_url": "https://youtu.be/W_r7p1YVYt4?list=RDW_r7p1YVYt4",
-        "youtube_backing_url": null
+        "youtube_vocal_url": "https://youtu.be/iQmBK3Qv13Y?list=RDiQmBK3Qv13Y",
+        "youtube_backing_url": ""
     },
     "lyrics": {
         "plain_lyrics": "Um, dois, três, vai!\n\nOuvi dizer\nDo teu olhar ao ver a flor\nNão sei por que\nAchou ser de um outro rapaz\n\nFoi capaz de se entregar\nEu fiz de tudo pra ganhar você pra mim\nMas mesmo assim\n\nMinha flor serviu\nPra que você achasse alguém\nUm outro alguém\nQue me tomou o seu amor\nEu fiz de tudo pra você perceber\nQue era eu\n\nTua flor me deu alguém pra amar\nE quanto a mim?\nVocê assim e eu por final sem meu lugar\n\nEu tive tudo sem saber que era eu\nE eu que nunca amei ninguém\nPude então, enfim, amar\nVai!"
-    },
-    "status": {
-        "has_vocal_file": false,
-        "has_backing_file": false,
-        "has_lrc_file": true
     }
 }

@@ -2276,6 +2276,18 @@
     font-weight: 700 !important;
 }
 
+/* Ícones Lucide — escalam com o contexto (font-size) e herdam a cor do texto */
+.lucide-icon {
+    width: 1.15em;
+    height: 1.15em;
+    vertical-align: -0.18em;
+    flex-shrink: 0;
+}
+/* Tamanhos fixos opcionais para contextos específicos */
+.lucide-icon--sm { width: 16px; height: 16px; }
+.lucide-icon--lg { width: 28px; height: 28px; }
+.lucide-icon--xl { width: 40px; height: 40px; }
+
 /* Estado ativo do toggle de Estilo de Pontuação (modo "apenas palavras") */
 .btn-score-mode--active {
     background: rgba(56, 189, 248, 0.2) !important;
