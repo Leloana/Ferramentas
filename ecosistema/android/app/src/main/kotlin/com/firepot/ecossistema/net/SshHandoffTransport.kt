@@ -6,7 +6,7 @@ import com.firepot.ecossistema.model.Descriptor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.schmizz.sshj.SSHClient
-import net.schmizz.sshj.transport.verify.PromiscuousVerifier
+import net.schmizz.sshj.transport.verification.PromiscuousVerifier
 
 /**
  * Entrega o descritor rodando, por SSH, `python "<agentPath>" --send` no PC e

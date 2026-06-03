@@ -52,6 +52,9 @@ android {
                 "META-INF/*.SF",
                 "META-INF/*.DSA",
                 "META-INF/*.RSA",
+                // bcprov/bcpkix/bcutil (via sshj) colidem neste metadado OSGi multi-release.
+                "META-INF/versions/**/OSGI-INF/MANIFEST.MF",
+                "META-INF/versions/9/OSGI-INF/MANIFEST.MF",
             )
         }
     }
