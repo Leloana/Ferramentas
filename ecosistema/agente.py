@@ -53,6 +53,11 @@ DAEMON_PORT = int(os.environ.get("HANDOFF_PORT", "8765"))
 
 IS_WINDOWS = os.name == "nt"
 
+# Roda como daemon sob pythonw (sem console). Spawnar apps de console (powershell
+# do toast, clip.exe, explorer) faria o Windows ALOCAR um console novo -> uma
+# janela de terminal pisca na tela. CREATE_NO_WINDOW impede isso.
+CREATE_NO_WINDOW = 0x08000000 if IS_WINDOWS else 0
+
 
 # --------------------------------------------------------------------------- #
 # Infra: logging, config, feedback                                            #
@@ -102,6 +107,7 @@ def notify(titulo: str, msg: str):
             ["powershell", "-NoProfile", "-WindowStyle", "Hidden", "-Command", ps],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
+            creationflags=CREATE_NO_WINDOW,
         )
     except Exception as e:
         logging.debug(f"Toast falhou (ignorado): {e}")
@@ -143,7 +149,7 @@ def open_path(win_path: str) -> bool:
             p = Path(win_path)
             if p.is_dir():
                 # explorer.exe sempre retorna codigo != 0; nao usar check.
-                subprocess.Popen(["explorer.exe", str(p)])
+                subprocess.Popen(["explorer.exe", str(p)], creationflags=CREATE_NO_WINDOW)
             else:
                 os.startfile(str(p))  # type: ignore[attr-defined]
         else:
@@ -168,7 +174,10 @@ def set_clipboard(texto: str) -> bool:
             cmd = ["pbcopy"]
         else:
             cmd = ["xclip", "-selection", "clipboard"]
-        proc = subprocess.run(cmd, input=texto.encode("utf-8"), check=False)
+        proc = subprocess.run(
+            cmd, input=texto.encode("utf-8"), check=False,
+            creationflags=CREATE_NO_WINDOW,
+        )
         ok = proc.returncode == 0
         logging.info(f"Clipboard {'OK' if ok else 'FAIL'} ({len(texto)} chars)")
         return ok
