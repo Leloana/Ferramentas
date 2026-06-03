@@ -1,22 +1,31 @@
 #!/data/data/com.termux/files/usr/bin/bash
 # termux-url-opener  --  Recebe uma URL compartilhada de qualquer app Android
-# e a encaminha por SSH para o PC (Windows), que a abre no navegador padrao.
+# e a encaminha como DESCRITOR DE HANDOFF (PLANO.md secao 4) ao Agente Windows,
+# que escolhe o app equivalente (YouTube com timestamp, link no navegador, etc.).
+#
+# Ponte interina: substitui o app nativo (APK) ate ele existir. O Android nao
+# expoe o timestamp do video via Share Sheet, entao midia vai sem pos_segundos
+# (o agente abre no inicio); o app nativo levara o estado completo depois.
 #
 # Instalacao no Termux:
 #   mkdir -p ~/bin && cp termux-url-opener ~/bin/ && chmod +x ~/bin/termux-url-opener
-# (precisa do app Termux:API instalado + 'pkg install termux-api' para notificacoes)
+# (notificacoes opcionais: app Termux:API + 'pkg install termux-api')
 
 URL="$1"
 
-# Caminho do receiver.py no PC (Windows). Ajuste se mover a pasta.
-PC_RECEIVER='C:\Users\mf827\Documents\Ferramentas\ecosistema\receiver.py'
+# Caminho do agente.py no PC (Windows). Ajuste se mover a pasta.
+PC_AGENTE='C:\Users\mf827\Documents\Ferramentas\ecosistema\agente.py'
 
 notify() {
-    # Notificacao opcional: so dispara se o Termux:API estiver instalado.
     if command -v termux-notification >/dev/null 2>&1; then
         termux-notification --title "Handoff" --content "$1" --alert-once
     fi
     echo "$1"
+}
+
+# Escapa para string JSON (barra invertida e aspas duplas).
+json_escape() {
+    printf '%s' "$1" | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g'
 }
 
 if [ -z "$URL" ]; then
@@ -24,12 +33,22 @@ if [ -z "$URL" ]; then
     exit 1
 fi
 
-# Passa a URL ao receiver em modo --send: ele encaminha ao daemon que roda
-# na sessao interativa do PC (assim a aba abre na tela visivel, nao em sessao
-# 0 do servico sshd). Aspas evitam expansao de caracteres da URL.
-if ssh pc-remoto "python \"$PC_RECEIVER\" --send \"$URL\""; then
-    notify "Link enviado para o PC"
+# Classifica: YouTube -> tipo "midia"; demais http(s) -> tipo "url".
+case "$URL" in
+    *youtube.com/*|*youtu.be/*) TIPO="midia" ;;
+    *) TIPO="url" ;;
+esac
+
+URL_ESC="$(json_escape "$URL")"
+TS="$(date +%s)"
+DESC="{\"tipo\":\"$TIPO\",\"app_origem\":\"android.share\",\"dados\":{\"url\":\"$URL_ESC\"},\"timestamp\":$TS}"
+
+# Entrega o descritor ao daemon (modo --send) pela STDIN do SSH -- evita o
+# inferno de aspas e mantem o descritor numa unica linha. O daemon roda na
+# sessao interativa do PC e abre o app na tela visivel (PLANO.md secao 3).
+if printf '%s' "$DESC" | ssh pc-remoto "python \"$PC_AGENTE\" --send"; then
+    notify "Enviado para o PC ($TIPO)"
 else
-    notify "Erro ao enviar link (PC ligado? sshd ativo?)"
+    notify "Erro ao enviar (PC ligado? sshd ativo? agente rodando?)"
     exit 1
 fi

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tema base do app (a UI real e Compose; este e o tema do manifest/splash). -->
+    <style name="Theme.Ecossistema" parent="android:Theme.Material.NoActionBar" />
+</resources>

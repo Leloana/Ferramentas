@@ -1,0 +1,67 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# termux-handoff  --  Disparo generico de handoff a partir do Termux (ponte
+# interina ate o app nativo). Monta um descritor (PLANO.md secao 4) para
+# pasta/arquivo/texto/url/mapa e o entrega ao Agente Windows.
+#
+# Uso:
+#   termux-handoff --pasta   /storage/emulated/0/DCIM
+#   termux-handoff --arquivo /storage/emulated/0/Download/relatorio.pdf
+#   termux-handoff --url     "https://exemplo.com"
+#   termux-handoff --texto   "qualquer texto para o clipboard do PC"
+#   termux-handoff --mapa    "Av Paulista, Sao Paulo"
+#   echo "texto via pipe" | termux-handoff --texto
+#
+# Instalacao:
+#   cp termux-handoff ~/bin/ && chmod +x ~/bin/termux-handoff
+
+PC_AGENTE='C:\Users\mf827\Documents\Ferramentas\ecosistema\agente.py'
+
+notify() {
+    if command -v termux-notification >/dev/null 2>&1; then
+        termux-notification --title "Handoff" --content "$1" --alert-once
+    fi
+    echo "$1"
+}
+
+json_escape() {
+    printf '%s' "$1" | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g'
+}
+
+MODO="$1"
+VALOR="$2"
+
+# Permite valor via stdin (util para --texto).
+if [ -z "$VALOR" ] && [ ! -t 0 ]; then
+    VALOR="$(cat)"
+fi
+
+if [ -z "$MODO" ]; then
+    notify "Uso: termux-handoff --pasta|--arquivo|--url|--texto|--mapa <valor>"
+    exit 1
+fi
+
+TS="$(date +%s)"
+VAL_ESC="$(json_escape "$VALOR")"
+
+case "$MODO" in
+    --pasta)
+        DESC="{\"tipo\":\"pasta\",\"app_origem\":\"termux\",\"dados\":{\"caminho\":\"$VAL_ESC\"},\"timestamp\":$TS}" ;;
+    --arquivo)
+        DESC="{\"tipo\":\"arquivo\",\"app_origem\":\"termux\",\"dados\":{\"caminho\":\"$VAL_ESC\"},\"timestamp\":$TS}" ;;
+    --url)
+        DESC="{\"tipo\":\"url\",\"app_origem\":\"termux\",\"dados\":{\"url\":\"$VAL_ESC\"},\"timestamp\":$TS}" ;;
+    --texto)
+        DESC="{\"tipo\":\"texto\",\"app_origem\":\"termux\",\"dados\":{\"conteudo\":\"$VAL_ESC\"},\"timestamp\":$TS}" ;;
+    --mapa)
+        DESC="{\"tipo\":\"mapa\",\"app_origem\":\"termux\",\"dados\":{\"query\":\"$VAL_ESC\"},\"timestamp\":$TS}" ;;
+    *)
+        notify "Modo desconhecido: $MODO"
+        exit 1 ;;
+esac
+
+if printf '%s' "$DESC" | ssh pc-remoto "python \"$PC_AGENTE\" --send"; then
+    notify "Handoff enviado (${MODO#--})"
+else
+    notify "Erro ao enviar (PC ligado? sshd? agente rodando?)"
+    exit 1
+fi

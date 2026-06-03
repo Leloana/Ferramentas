@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ecossistema</string>
+    <string name="channel_handoff">Handoff</string>
+    <string name="fg_running">Ecossistema ativo</string>
+    <string name="fg_desc">Canal de handoff e gestos prontos</string>
+    <string name="accessibility_label">Ecossistema — leitura do app em foco</string>
+    <string name="accessibility_desc">Permite levar o estado (URL, app atual) no handoff para o PC.</string>
+</resources>

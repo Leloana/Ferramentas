@@ -1,0 +1,27 @@
+{
+  "_comentario": "Copie para config.json e ajuste. O agente.py le config.json (este .example nao e lido).",
+
+  "mapeamento_caminhos": [
+    {
+      "_comentario": "Pasta sincronizada/SSHFS: raiz do armazenamento do Android <-> pasta no PC.",
+      "android": "/storage/emulated/0/",
+      "windows": "C:\\Users\\mf827\\Android"
+    },
+    {
+      "android": "/storage/emulated/0/DCIM/",
+      "windows": "C:\\Users\\mf827\\Android\\DCIM"
+    },
+    {
+      "android": "/storage/emulated/0/Download/",
+      "windows": "C:\\Users\\mf827\\Downloads"
+    }
+  ],
+
+  "dispositivos_confiaveis": [
+    {
+      "nome": "Samsung S24 FE",
+      "id": "termux-s24fe",
+      "_comentario": "Reservado para o emparelhamento por chave (fases seguintes)."
+    }
+  ]
+}
