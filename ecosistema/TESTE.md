@@ -114,15 +114,19 @@ Prova que o app mantém **uma** sessão SSH viva e que cada handoff é instantâ
         ociosos (1º heartbeat só aos 20 s). Fix `sock.settimeout(None)` (commit
         do canal). Pós-fix o canal passou a viver ~20 s (limite do heartbeat) —
         validando A4/estabilidade em andamento.
-- [~] **A2. Presença no daemon:** o dispositivo fica registrado como `online`
+- [x] **A2. Presença no daemon:** o dispositivo fica registrado como `online`
       (visível depois pela UI do PC; por ora confirmável no log/estado).
-      → parcial (hw 2026-06-04): `presenca_marcar(online=True)` dispara junto do
-        `Canal persistente ON`; falta confirmar estabilidade contínua (depende A4).
+      → OK (hw 2026-06-04): `presenca_marcar(online=True)` no `hello`; ficou
+        `online` de forma contínua (1 conexao established na 8765).
 - [ ] **A3. Latência (o ponto-chave):** dispare um handoff de link **com o canal
       já aberto**. Deve abrir **quase instantâneo** (sem o ~1–3 s de antes).
       Compare com o fallback (A6).
-- [ ] **A4. Heartbeat:** deixe o app ocioso > 20 s; o canal continua `online`
+- [x] **A4. Heartbeat:** deixe o app ocioso > 20 s; o canal continua `online`
       (pings periódicos no log). Sem desconexões espúrias.
+      → OK (hw 2026-06-04): canal ON por ~1min44s contínuos, atravessando ~5
+        ciclos de heartbeat (20 s) sem cair. Confirma que a queda anterior aos
+        ~20 s era a Samsung matando o Foreground Service (ver R4), não bug do
+        heartbeat — com o serviço vivo o canal fica estável.
 - [ ] **A5. Reconnect + backoff:** desligue o Wi-Fi do celular por ~30 s e religue
       → o canal volta sozinho (log: OFF e depois ON). Backoff cresce até religar.
 - [ ] **A6. Fallback `--send`:** **pare** a bolha (canal cai) e dispare um handoff
@@ -173,7 +177,12 @@ Prova o "parear e pronto" e a remoção da dívida de segurança.
 - [ ] **R1. `--send` puro** (sem canal): handoff via share sheet ainda abre no PC.
 - [ ] **R2. `--list-apps`** continua retornando o JSON de apps do PC.
 - [ ] **R3. SFTP** (enviar arquivo) abre na pasta `Ecossistema` e no app padrão.
-- [ ] **R4. App morto pela Samsung** → Foreground Service volta e o canal religa.
+- [~] **R4. App morto pela Samsung** → Foreground Service volta e o canal religa.
+      → CONFIRMADO o problema (hw 2026-06-04): a Samsung **matou** o Foreground
+        Service (a bolha sumiu sozinha) e o canal NÃO religou sozinho — ficou
+        offline até religar manualmente. **Ação pendente:** isentar o app da
+        otimização de bateria (whitelist) e/ou reforçar o serviço (START_STICKY +
+        REQUEST_IGNORE_BATTERY_OPTIMIZATIONS) para sobreviver/religar sozinho.
 - [ ] **R5. PC suspenso/desligado** → handoff não trava o app (erro tratado);
       ao voltar, o canal reconecta.
 - [ ] **R6. Tailscale (fora da Wi-Fi):** parear/usar com host `100.x` (o QR já traz
