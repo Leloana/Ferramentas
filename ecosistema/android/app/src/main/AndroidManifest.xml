@@ -49,7 +49,21 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
+            <!-- Compartilhar QUALQUER arquivo -> sobe por SFTP pro PC. -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="*/*" />
+            </intent-filter>
         </activity>
+
+        <!-- Seletor de arquivos disparado pela ferramenta "Enviar arquivo" da bolha. -->
+        <activity
+            android:name=".share.FilePickerActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <!-- Servico em foreground: canal + hospeda o overlay. -->
         <service

@@ -115,6 +115,38 @@ class SshHandoffTransport : HandoffTransport {
             }
         }
 
+    override suspend fun uploadFile(
+        config: PcConfig,
+        localPath: String,
+        remoteName: String,
+        remoteDir: String,
+    ): Result<String> = withContext(Dispatchers.IO) {
+        if (!config.isComplete) {
+            return@withContext Result.failure(
+                IllegalStateException("Configuracao do PC incompleta (host/user/chave)."),
+            )
+        }
+        val safeName = remoteName.replace('/', '_').replace('\\', '_')
+        val dest = "$remoteDir/$safeName"
+        val ssh = SSHClient()
+        ssh.connectTimeout = 8000
+        try {
+            ssh.addHostKeyVerifier(PromiscuousVerifier())
+            ssh.connect(config.host, config.port)
+            val keys = ssh.loadKeys(config.privateKeyPem, null, null)
+            ssh.authPublickey(config.user, keys)
+            ssh.newSFTPClient().use { sftp ->
+                sftp.put(localPath, dest)  // sobe; raiz SFTP do Windows = home do usuario
+            }
+            Result.success(dest)
+        } catch (e: Exception) {
+            Log.e(TAG, "Falha no upload SFTP", e)
+            Result.failure(e)
+        } finally {
+            runCatching { ssh.disconnect() }
+        }
+    }
+
     /**
      * Monta o comando remoto. Se o caminho do agente for um .exe (instalado via
      * MSI/Inno), roda direto; senão usa `python "<script.py>"` (modo dev).

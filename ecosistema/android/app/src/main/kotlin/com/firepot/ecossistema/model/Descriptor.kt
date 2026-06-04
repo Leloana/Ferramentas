@@ -68,5 +68,9 @@ data class Descriptor(
                 obj("caminho" to JsonPrimitive(caminho), "nome" to JsonPrimitive(nome)),
                 nowSeconds(),
             )
+
+        /** Revela no PC um arquivo recebido via SFTP (rel = caminho relativo ao home). */
+        fun revelar(rel: String, appOrigem: String = "android"): Descriptor =
+            Descriptor("revelar", appOrigem, obj("rel" to JsonPrimitive(rel)), nowSeconds())
     }
 }

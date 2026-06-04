@@ -22,6 +22,7 @@ import com.firepot.ecossistema.R
 import com.firepot.ecossistema.data.Settings
 import com.firepot.ecossistema.handoff.HandoffManager
 import com.firepot.ecossistema.model.Descriptor
+import com.firepot.ecossistema.share.FilePickerActivity
 import com.firepot.ecossistema.tools.CustomTool
 import com.firepot.ecossistema.tools.HandoffTool
 import com.firepot.ecossistema.tools.ToolRunner
@@ -178,6 +179,14 @@ class CornerOverlayService : Service() {
         }
 
     private fun runTool(toolId: String) {
+        // "Enviar arquivo" abre o seletor do sistema (precisa de uma Activity).
+        if (toolId == "file") {
+            startActivity(
+                Intent(this, FilePickerActivity::class.java)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+            )
+            return
+        }
         val custom = customTools.firstOrNull { it.id == toolId }
         val descriptor = if (custom != null) {
             Descriptor.app(custom.caminho, custom.nome)

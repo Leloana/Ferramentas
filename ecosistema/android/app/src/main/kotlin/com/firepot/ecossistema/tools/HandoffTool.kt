@@ -57,6 +57,15 @@ data class HandoffTool(
                     "para a pasta local correspondente.",
             ),
             HandoffTool(
+                id = "file",
+                icon = "📎",
+                title = "Enviar arquivo",
+                description = "Escolhe um arquivo no celular e copia para o PC (Downloads).",
+                howItWorks = "Abre o seletor de arquivos; sobe o arquivo por SFTP para a " +
+                    "pasta Downloads do PC e o revela no Explorer. Dica: também dá pra " +
+                    "Compartilhar qualquer arquivo → Ecossistema.",
+            ),
+            HandoffTool(
                 id = "test",
                 icon = "🧪",
                 title = "Testar conexão",

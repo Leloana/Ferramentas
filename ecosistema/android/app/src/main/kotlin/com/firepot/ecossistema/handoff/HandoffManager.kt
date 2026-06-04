@@ -1,6 +1,8 @@
 package com.firepot.ecossistema.handoff
 
 import android.content.Context
+import android.net.Uri
+import android.provider.OpenableColumns
 import android.util.Log
 import android.widget.Toast
 import com.firepot.ecossistema.data.Settings
@@ -9,6 +11,7 @@ import com.firepot.ecossistema.net.HandoffTransport
 import com.firepot.ecossistema.net.SshHandoffTransport
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.File
 
 /**
  * Orquestra um handoff: classifica o conteudo, monta o [Descriptor] e o envia
@@ -40,6 +43,57 @@ object HandoffManager {
     suspend fun listApps(context: Context): Result<List<com.firepot.ecossistema.model.PcApp>> {
         val config = Settings(context).current()
         return transport.listApps(config)
+    }
+
+    /**
+     * Envia um arquivo (content:// Uri) para o PC via SFTP e o revela no Explorer.
+     * Copia para um arquivo temporário (necessário p/ ler o stream do provider).
+     */
+    suspend fun sendFile(context: Context, uri: Uri): Result<Unit> = withContext(Dispatchers.IO) {
+        val config = Settings(context).current()
+        val name = queryDisplayName(context, uri)
+        val temp = File.createTempFile("handoff_", "_$name", context.cacheDir)
+        try {
+            context.contentResolver.openInputStream(uri)?.use { input ->
+                temp.outputStream().use { input.copyTo(it) }
+            } ?: run {
+                toastMain(context, "Não consegui ler o arquivo.")
+                return@withContext Result.failure(IllegalStateException("stream nulo"))
+            }
+            val up = transport.uploadFile(config, temp.absolutePath, name)
+            up.fold(
+                onSuccess = { rel ->
+                    transport.send(Descriptor.revelar(rel), config) // mostra no PC
+                    toastMain(context, "Arquivo enviado ao PC: $name")
+                    Result.success(Unit)
+                },
+                onFailure = {
+                    toastMain(context, "Falha ao enviar arquivo: ${it.message ?: "erro"}")
+                    Result.failure(it)
+                },
+            )
+        } catch (e: Exception) {
+            Log.e(TAG, "sendFile falhou", e)
+            toastMain(context, "Falha ao enviar arquivo: ${e.message ?: "erro"}")
+            Result.failure(e)
+        } finally {
+            runCatching { temp.delete() }
+        }
+    }
+
+    private fun queryDisplayName(context: Context, uri: Uri): String {
+        runCatching {
+            context.contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)
+                ?.use { c ->
+                    val i = c.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                    if (i >= 0 && c.moveToFirst()) return c.getString(i)
+                }
+        }
+        return uri.lastPathSegment?.substringAfterLast('/') ?: "arquivo"
+    }
+
+    private suspend fun toastMain(context: Context, msg: String) = withContext(Dispatchers.Main) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
     suspend fun send(context: Context, descriptor: Descriptor): Result<Unit> {

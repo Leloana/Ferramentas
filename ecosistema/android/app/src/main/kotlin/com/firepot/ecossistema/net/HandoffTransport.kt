@@ -17,4 +17,15 @@ interface HandoffTransport {
 
     /** Lista os apps do PC (via `agente.py --list-apps`). */
     suspend fun listApps(config: PcConfig): Result<List<PcApp>>
+
+    /**
+     * Sobe um arquivo para o PC via SFTP. Destino = `<remoteDir>/<remoteName>`
+     * relativo ao home do usuário no PC. Retorna esse caminho relativo.
+     */
+    suspend fun uploadFile(
+        config: PcConfig,
+        localPath: String,
+        remoteName: String,
+        remoteDir: String = "Downloads",
+    ): Result<String>
 }

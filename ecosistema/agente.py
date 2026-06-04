@@ -356,6 +356,32 @@ def handle_app(dados: dict, config: dict) -> bool:
     return ok
 
 
+def handle_revelar(dados: dict, config: dict) -> bool:
+    """revelar: mostra no Explorer um arquivo recebido por SFTP (seleciona-o).
+
+    `rel` e um caminho relativo ao HOME do usuario (ex.: "Downloads/foto.jpg"),
+    que e exatamente onde o app sobe o arquivo via SFTP (raiz = home no Windows).
+    """
+    rel = (dados.get("rel") or dados.get("caminho") or "").strip()
+    if not rel:
+        return False
+    p = Path(rel)
+    if not p.is_absolute():
+        p = Path.home() / rel.replace("/", os.sep)
+    try:
+        if IS_WINDOWS:
+            subprocess.Popen(["explorer.exe", f"/select,{p}"], creationflags=CREATE_NO_WINDOW)
+        else:
+            opener = "open" if sys.platform == "darwin" else "xdg-open"
+            subprocess.Popen([opener, str(p.parent)])
+        logging.info(f"Arquivo recebido, revelado: {p}")
+        notify("Handoff: arquivo recebido", p.name)
+        return True
+    except Exception as e:
+        logging.error(f"FAIL revelar {p} -> {e}")
+        return False
+
+
 def list_apps() -> list:
     """Lista apps do PC pelos atalhos do Menu Iniciar (.lnk/.url), sem duplicar."""
     if not IS_WINDOWS:
@@ -395,6 +421,7 @@ HANDLERS = {
     "mapa": handle_mapa,
     "contato": handle_contato,
     "app": handle_app,
+    "revelar": handle_revelar,
 }
 
 
