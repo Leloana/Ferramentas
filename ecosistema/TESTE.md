@@ -142,10 +142,18 @@ Prova que o app mantém **uma** sessão SSH viva e que cada handoff é instantâ
         offline se a conexão ainda for a vigente. Validado: log mostra
         `Canal anterior derrubado na reconexao` + `Canal antigo descartado` e
         fica **1 só** established, presença estável.
-- [ ] **A6. Fallback `--send`:** **pare** a bolha (canal cai) e dispare um handoff
+- [x] **A6. Fallback `--send`:** **pare** a bolha (canal cai) e dispare um handoff
       pela share sheet → deve **funcionar mesmo assim** (abre via `--send`).
-- [ ] **A7. Fila offline:** com o canal caindo no meio, o evento enfileirado deve
+      → OK (hw 2026-06-04): bolha off (`Canal persistente OFF`, `established=0`),
+        Compartilhar → o link abriu via fallback — log mostra `SEND -> daemon`
+        (assinatura do `--send`, que o canal nunca emite) seguido de `URL aberta`.
+- [~] **A7. Fila offline:** com o canal caindo no meio, o evento enfileirado deve
       ser entregue ao reconectar (não some).
+      → por design (não testado à mão): `outbox` é `Channel.UNLIMITED` criado uma
+        vez pela vida do processo e drenado no reconnect. Porém `send()` só
+        enfileira quando `isOnline()`; offline conhecido cai no `--send`. A fila
+        só retém itens enfileirados online que não drenaram antes da queda
+        (janela estreita) — difícil disparar deterministicamente no hardware.
 - [x] **A8. Sessão 0×1 preservada:** confirme que as janelas abrem na **tela
       visível** (o `--serve` roda no sshd/sessão 0, mas só repassa ao daemon).
       → OK (hw 2026-06-04): o handoff pelo canal abriu a janela do YT Music na
