@@ -118,9 +118,14 @@ Prova que o app mantém **uma** sessão SSH viva e que cada handoff é instantâ
       (visível depois pela UI do PC; por ora confirmável no log/estado).
       → OK (hw 2026-06-04): `presenca_marcar(online=True)` no `hello`; ficou
         `online` de forma contínua (1 conexao established na 8765).
-- [ ] **A3. Latência (o ponto-chave):** dispare um handoff de link **com o canal
+- [x] **A3. Latência (o ponto-chave):** dispare um handoff de link **com o canal
       já aberto**. Deve abrir **quase instantâneo** (sem o ~1–3 s de antes).
       Compare com o fallback (A6).
+      → OK (hw 2026-06-04): atalho da bolha (app YT Music) **pelo canal** —
+        log `Descritor tipo='app'` 13:30:23,666 → `Caminho aberto` 13:30:23,755
+        = **89 ms** no PC, sem nenhum `SEND -> daemon` antes (confirma que NÃO
+        foi o fallback). Instantâneo. (Nota: a ferramenta 🔗 "Link da tela"
+        falhou — Chrome não expõe a URL pela Acessibilidade; ver achado abaixo.)
 - [x] **A4. Heartbeat:** deixe o app ocioso > 20 s; o canal continua `online`
       (pings periódicos no log). Sem desconexões espúrias.
       → OK (hw 2026-06-04): canal ON por ~1min44s contínuos, atravessando ~5
@@ -133,8 +138,18 @@ Prova que o app mantém **uma** sessão SSH viva e que cada handoff é instantâ
       pela share sheet → deve **funcionar mesmo assim** (abre via `--send`).
 - [ ] **A7. Fila offline:** com o canal caindo no meio, o evento enfileirado deve
       ser entregue ao reconectar (não some).
-- [ ] **A8. Sessão 0×1 preservada:** confirme que as janelas abrem na **tela
+- [x] **A8. Sessão 0×1 preservada:** confirme que as janelas abrem na **tela
       visível** (o `--serve` roda no sshd/sessão 0, mas só repassa ao daemon).
+      → OK (hw 2026-06-04): o handoff pelo canal abriu a janela do YT Music na
+        tela do usuário (o `--serve` só repassou ao daemon na sessão interativa).
+
+> **Achado (fora do escopo A, mas registrado):** a ferramenta da bolha
+> 🔗 "Link da tela" não envia nada — `HandoffAccessibilityService.lastUrl` vem
+> vazio porque o Chrome atual não expõe o texto do `url_bar` pela Acessibilidade
+> (`ToolRunner` mostra toast "Nenhuma URL em foco" e retorna null). O caminho
+> robusto de URL é **"Compartilhar → Ecossistema"** (lê `EXTRA_TEXT`, sem
+> depender da Acessibilidade). A validar e, se preciso, melhorar a captura
+> (ler `text`/`contentDescription` do nó, fallback a outros ids do Chrome).
 
 ---
 
