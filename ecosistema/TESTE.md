@@ -105,10 +105,19 @@ Prova que o app mantém **uma** sessão SSH viva e que cada handoff é instantâ
 - [ ] **A-pre3.** App configurado (por QR — Fase B — ou conexão manual legada).
 
 ### Testes
-- [ ] **A1. Canal sobe:** ligue a "Bolha de atalhos" (Foreground Service). No
+- [x] **A1. Canal sobe:** ligue a "Bolha de atalhos" (Foreground Service). No
       `agente.log` do PC deve aparecer **`Canal persistente ON: <device>`**.
-- [ ] **A2. Presença no daemon:** o dispositivo fica registrado como `online`
+      → OK (hw 2026-06-04): `Canal persistente ON: samsung-SM-S721B`. **Bug
+        achado+corrigido:** o canal caía a cada **3 s** (ON/OFF perfeito). Causa:
+        `create_connection(timeout=3)` deixava o timeout do connect grudado no
+        socket; a leitura do daemon no `--serve` estourava `socket.timeout` aos 3 s
+        ociosos (1º heartbeat só aos 20 s). Fix `sock.settimeout(None)` (commit
+        do canal). Pós-fix o canal passou a viver ~20 s (limite do heartbeat) —
+        validando A4/estabilidade em andamento.
+- [~] **A2. Presença no daemon:** o dispositivo fica registrado como `online`
       (visível depois pela UI do PC; por ora confirmável no log/estado).
+      → parcial (hw 2026-06-04): `presenca_marcar(online=True)` dispara junto do
+        `Canal persistente ON`; falta confirmar estabilidade contínua (depende A4).
 - [ ] **A3. Latência (o ponto-chave):** dispare um handoff de link **com o canal
       já aberto**. Deve abrir **quase instantâneo** (sem o ~1–3 s de antes).
       Compare com o fallback (A6).
