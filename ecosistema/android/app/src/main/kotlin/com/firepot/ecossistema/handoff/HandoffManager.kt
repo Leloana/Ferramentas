@@ -36,6 +36,12 @@ object HandoffManager {
         return transport.check(config)
     }
 
+    /** Lista os apps do PC (para o usuário escolher ao criar uma ferramenta). */
+    suspend fun listApps(context: Context): Result<List<com.firepot.ecossistema.model.PcApp>> {
+        val config = Settings(context).current()
+        return transport.listApps(config)
+    }
+
     suspend fun send(context: Context, descriptor: Descriptor): Result<Unit> {
         val config = Settings(context).current()
         val result = transport.send(descriptor, config)

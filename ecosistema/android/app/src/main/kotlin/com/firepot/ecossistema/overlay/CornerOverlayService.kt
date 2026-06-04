@@ -21,6 +21,8 @@ import android.widget.Toast
 import com.firepot.ecossistema.R
 import com.firepot.ecossistema.data.Settings
 import com.firepot.ecossistema.handoff.HandoffManager
+import com.firepot.ecossistema.model.Descriptor
+import com.firepot.ecossistema.tools.CustomTool
 import com.firepot.ecossistema.tools.HandoffTool
 import com.firepot.ecossistema.tools.ToolRunner
 import kotlinx.coroutines.CoroutineScope
@@ -49,7 +51,8 @@ class CornerOverlayService : Service() {
     private var root: LinearLayout? = null
     private var menu: LinearLayout? = null
     private var expanded = false
-    private var enabledIds: List<String> = HandoffTool.ALL.map { it.id }
+    private var enabledSet: Set<String> = HandoffTool.DEFAULT_ENABLED
+    private var customTools: List<CustomTool> = emptyList()
 
     override fun onBind(intent: Intent?): IBinder? = null
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int = START_STICKY
@@ -71,7 +74,13 @@ class CornerOverlayService : Service() {
         // Mantém a lista de ferramentas em sincronia com o que o app habilitou.
         scope.launch {
             settings.enabledTools.collectLatest { ids ->
-                enabledIds = HandoffTool.ALL.map { it.id }.filter { it in ids }
+                enabledSet = ids
+                rebuildMenu()
+            }
+        }
+        scope.launch {
+            settings.customTools.collectLatest { list ->
+                customTools = list
                 rebuildMenu()
             }
         }
@@ -91,9 +100,9 @@ class CornerOverlayService : Service() {
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT,
             type,
+            // Sem FLAG_WATCH_OUTSIDE_TOUCH: o leque fecha só ao tocar a bolha de novo.
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
-                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
-                WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
             PixelFormat.TRANSLUCENT,
         ).apply {
             gravity = Gravity.TOP or Gravity.START
@@ -104,11 +113,6 @@ class CornerOverlayService : Service() {
         val container = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER_HORIZONTAL
-            // Capta toques FORA da janela (ACTION_OUTSIDE) para recolher a lista.
-            setOnTouchListener { _, e ->
-                if (e.actionMasked == MotionEvent.ACTION_OUTSIDE) collapse()
-                false
-            }
         }
 
         val bubble = ImageView(this).apply {
@@ -142,16 +146,23 @@ class CornerOverlayService : Service() {
     private fun rebuildMenu() {
         val m = menu ?: return
         m.removeAllViews()
-        for (id in enabledIds) {
-            val tool = HandoffTool.byId(id) ?: continue
-            m.addView(iconButton(tool))
+        // Built-in (na ordem do catálogo).
+        for (tool in HandoffTool.ALL) {
+            if (tool.id in enabledSet) m.addView(iconButton(tool.icon, tool.id))
+        }
+        // Personalizadas (abrir app do PC) — ícone = inicial do nome.
+        for (custom in customTools) {
+            if (custom.id in enabledSet) {
+                m.addView(iconButton(custom.nome.take(1).uppercase(), custom.id))
+            }
         }
     }
 
-    private fun iconButton(tool: HandoffTool): TextView =
+    private fun iconButton(icon: String, toolId: String): TextView =
         TextView(this).apply {
-            text = tool.icon
-            textSize = 22f
+            text = icon
+            textSize = 20f
+            setTextColor(Color.WHITE)
             gravity = Gravity.CENTER
             val s = dp(52)
             layoutParams = LinearLayout.LayoutParams(s, s).apply { topMargin = dp(8) }
@@ -162,12 +173,17 @@ class CornerOverlayService : Service() {
             }
             setOnClickListener {
                 collapse()
-                runTool(tool.id)
+                runTool(toolId)
             }
         }
 
     private fun runTool(toolId: String) {
-        val descriptor = ToolRunner.buildDescriptor(this, toolId) ?: return
+        val custom = customTools.firstOrNull { it.id == toolId }
+        val descriptor = if (custom != null) {
+            Descriptor.app(custom.caminho, custom.nome)
+        } else {
+            ToolRunner.buildDescriptor(this, toolId) ?: return
+        }
         scope.launch { HandoffManager.send(applicationContext, descriptor) }
     }
 

@@ -311,6 +311,44 @@ def handle_contato(dados: dict, config: dict) -> bool:
     return ok
 
 
+def handle_app(dados: dict, config: dict) -> bool:
+    """app: abre um programa do PC (atalho .lnk/.url do Menu Iniciar)."""
+    caminho = dados.get("caminho", "")
+    nome = dados.get("nome") or caminho
+    ok = open_path(caminho)
+    notify("Handoff: app", str(nome))
+    return ok
+
+
+def list_apps() -> list:
+    """Lista apps do PC pelos atalhos do Menu Iniciar (.lnk/.url), sem duplicar."""
+    if not IS_WINDOWS:
+        return []
+    bases = []
+    pd = os.environ.get("ProgramData")
+    ad = os.environ.get("APPDATA")
+    if pd:
+        bases.append(os.path.join(pd, "Microsoft", "Windows", "Start Menu", "Programs"))
+    if ad:
+        bases.append(os.path.join(ad, "Microsoft", "Windows", "Start Menu", "Programs"))
+    vistos = {}
+    for base in bases:
+        if not os.path.isdir(base):
+            continue
+        for raiz, _dirs, arquivos in os.walk(base):
+            for arq in arquivos:
+                low = arq.lower()
+                if not (low.endswith(".lnk") or low.endswith(".url")):
+                    continue
+                nome = os.path.splitext(arq)[0]
+                if "uninstall" in nome.lower() or "desinstal" in nome.lower():
+                    continue
+                chave = nome.lower()
+                if chave not in vistos:
+                    vistos[chave] = {"nome": nome, "caminho": os.path.join(raiz, arq)}
+    return sorted(vistos.values(), key=lambda a: a["nome"].lower())
+
+
 # Tabela curada tipo -> handler.
 HANDLERS = {
     "midia": handle_midia,
@@ -320,6 +358,7 @@ HANDLERS = {
     "texto": handle_texto,
     "mapa": handle_mapa,
     "contato": handle_contato,
+    "app": handle_app,
 }
 
 
@@ -448,6 +487,10 @@ def daemon_loop(config: dict):
 def main() -> int:
     setup_logging()
     config = load_config()
+    if "--list-apps" in sys.argv:
+        # Lista os apps do PC em JSON no stdout (o celular le isso via SSH).
+        print(json.dumps(list_apps(), ensure_ascii=False))
+        return 0
     if "--daemon" in sys.argv:
         logging.info("Daemon iniciado")
         daemon_loop(config)

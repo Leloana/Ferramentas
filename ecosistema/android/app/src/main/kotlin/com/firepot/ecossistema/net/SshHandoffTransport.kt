@@ -3,8 +3,11 @@ package com.firepot.ecossistema.net
 import android.util.Log
 import com.firepot.ecossistema.data.PcConfig
 import com.firepot.ecossistema.model.Descriptor
+import com.firepot.ecossistema.model.PcApp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import net.schmizz.sshj.SSHClient
 import net.schmizz.sshj.transport.verification.PromiscuousVerifier
 
@@ -83,7 +86,38 @@ class SshHandoffTransport : HandoffTransport {
             }
         }
 
+    override suspend fun listApps(config: PcConfig): Result<List<PcApp>> =
+        withContext(Dispatchers.IO) {
+            if (!config.isComplete) {
+                return@withContext Result.failure(
+                    IllegalStateException("Configuracao do PC incompleta (host/user/chave)."),
+                )
+            }
+            val ssh = SSHClient()
+            ssh.connectTimeout = 8000
+            ssh.timeout = 8000
+            try {
+                ssh.addHostKeyVerifier(PromiscuousVerifier())
+                ssh.connect(config.host, config.port)
+                val keys = ssh.loadKeys(config.privateKeyPem, null, null)
+                ssh.authPublickey(config.user, keys)
+                ssh.startSession().use { session ->
+                    val cmd = session.exec("python \"${config.agentPath}\" --list-apps")
+                    val out = cmd.inputStream.readBytes().toString(Charsets.UTF_8)
+                    cmd.join()
+                    val apps = JSON.decodeFromString<List<PcApp>>(out.trim())
+                    Result.success(apps)
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Falha ao listar apps do PC", e)
+                Result.failure(e)
+            } finally {
+                runCatching { ssh.disconnect() }
+            }
+        }
+
     private companion object {
         const val TAG = "SshHandoff"
+        val JSON = Json { ignoreUnknownKeys = true }
     }
 }

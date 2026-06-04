@@ -1,12 +1,16 @@
 package com.firepot.ecossistema
 
 import android.Manifest
+import android.app.AppOpsManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.PowerManager
+import android.os.Process
 import android.provider.Settings as AndroidSettings
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -20,12 +24,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
@@ -37,6 +45,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -53,13 +62,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import com.firepot.ecossistema.data.PcConfig
 import com.firepot.ecossistema.data.Settings
 import com.firepot.ecossistema.handoff.HandoffManager
+import com.firepot.ecossistema.model.PcApp
+import com.firepot.ecossistema.service.HandoffAccessibilityService
 import com.firepot.ecossistema.service.HandoffForegroundService
+import com.firepot.ecossistema.tools.CustomTool
 import com.firepot.ecossistema.tools.HandoffTool
 import com.firepot.ecossistema.ui.theme.EcossistemaTheme
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,12 +127,22 @@ private fun HomeScreen() {
     var agentPath by remember { mutableStateOf("") }
     var privateKey by remember { mutableStateOf("") }
     var loaded by remember { mutableStateOf(false) }
+    var configExpanded by remember { mutableStateOf(false) }
 
     var serviceOn by remember { mutableStateOf(HandoffForegroundService.isRunning) }
     var recheck by remember { mutableIntStateOf(0) }
     var status by remember { mutableStateOf(ConnStatus.UNCONFIGURED) }
     var stHost by remember { mutableStateOf("") }
     var stUser by remember { mutableStateOf("") }
+
+    // Recalcula o estado das permissões toda vez que o usuário volta pro app.
+    var permsTick by remember { mutableIntStateOf(0) }
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { permsTick++ }
+    val overlayOk = remember(permsTick) { canOverlay(context) }
+    val accOk = remember(permsTick) { accessibilityEnabled(context) }
+    val notifOk = remember(permsTick) { notificationsGranted(context) }
+    val usageOk = remember(permsTick) { usageAccessGranted(context) }
+    val batteryOk = remember(permsTick) { batteryIgnored(context) }
 
     if (!loaded) {
         scope.launch {
@@ -181,64 +206,65 @@ private fun HomeScreen() {
             }
         }
 
+        // 3) Conexão com o PC — colapsada por padrão
         HorizontalDivider()
-        Text("Conexão com o PC", style = MaterialTheme.typography.titleMedium)
-        OutlinedTextField(host, { host = it }, label = { Text("Host (IP LAN ou 100.x Tailscale)") },
-            modifier = Modifier.fillMaxWidth())
-        OutlinedTextField(user, { user = it }, label = { Text("Usuário do Windows") },
-            modifier = Modifier.fillMaxWidth())
-        OutlinedTextField(port, { port = it }, label = { Text("Porta SSH") },
-            modifier = Modifier.fillMaxWidth())
-        OutlinedTextField(agentPath, { agentPath = it }, label = { Text("Caminho do agente.py") },
-            modifier = Modifier.fillMaxWidth())
-        OutlinedTextField(privateKey, { privateKey = it },
-            label = { Text("Chave privada (PEM) — id_ed25519") },
-            modifier = Modifier.fillMaxWidth())
-        Button(
-            onClick = {
-                scope.launch {
-                    settings.save(
-                        PcConfig(
-                            host = host.trim(), user = user.trim(),
-                            port = port.trim().toIntOrNull() ?: 22,
-                            agentPath = agentPath.trim(), privateKeyPem = privateKey.trim(),
-                        ),
-                    )
-                    Toast.makeText(context, "Conexão salva", Toast.LENGTH_SHORT).show()
-                    recheck++
-                }
-            },
-            modifier = Modifier.fillMaxWidth(),
-        ) { Text("Salvar conexão") }
+        Row(
+            Modifier.fillMaxWidth().clickable { configExpanded = !configExpanded },
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text("Conexão com o PC", style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.weight(1f))
+            Text(if (configExpanded) "▾" else "▸", style = MaterialTheme.typography.titleMedium)
+        }
+        if (configExpanded) {
+            OutlinedTextField(host, { host = it }, label = { Text("Host (IP LAN ou 100.x)") },
+                modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(user, { user = it }, label = { Text("Usuário do Windows") },
+                modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(port, { port = it }, label = { Text("Porta SSH") },
+                modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(agentPath, { agentPath = it }, label = { Text("Caminho do agente.py") },
+                modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(privateKey, { privateKey = it },
+                label = { Text("Chave privada (PEM) — id_ed25519") },
+                modifier = Modifier.fillMaxWidth())
+            Button(
+                onClick = {
+                    scope.launch {
+                        settings.save(
+                            PcConfig(
+                                host = host.trim(), user = user.trim(),
+                                port = port.trim().toIntOrNull() ?: 22,
+                                agentPath = agentPath.trim(), privateKeyPem = privateKey.trim(),
+                            ),
+                        )
+                        Toast.makeText(context, "Conexão salva", Toast.LENGTH_SHORT).show()
+                        recheck++
+                    }
+                },
+                modifier = Modifier.fillMaxWidth(),
+            ) { Text("Salvar conexão") }
+        }
 
         // 4) Permissões no rodapé
         HorizontalDivider()
         Text("Permissões", style = MaterialTheme.typography.titleMedium)
-        Text(
-            "Para a bolha funcionar você precisa das OBRIGATÓRIAS abaixo.",
-            style = MaterialTheme.typography.bodySmall,
-        )
-        PermissionRow(
-            "Sobreposição (overlay)", obrigatoria = true,
-            granted = canOverlay(context),
-            detail = "Faz a bolha aparecer sobre os outros apps.",
-        ) { openOverlaySettings(context) }
-        PermissionRow(
-            "Acessibilidade", obrigatoria = true, granted = null,
-            detail = "Necessária para a ferramenta \"Link da tela\" ler a URL aberta.",
-        ) { openAccessibilitySettings(context) }
-        PermissionRow(
-            "Notificações", obrigatoria = false, granted = notificationsGranted(context),
-            detail = "Mostra a notificação fixa do serviço (recomendado).",
-        ) { openAppNotificationSettings(context) }
-        PermissionRow(
-            "Acesso de uso", obrigatoria = false, granted = null,
-            detail = "Opcional: ajuda a inferir o app em foco.",
-        ) { openUsageAccessSettings(context) }
-        PermissionRow(
-            "Ignorar otimização de bateria", obrigatoria = false, granted = null,
-            detail = "Opcional: evita o sistema matar o serviço.",
-        ) { openBatterySettings(context) }
+        Text("❗ = obrigatória para a bolha   ·   ✅ concedida   ·   ❌ falta",
+            style = MaterialTheme.typography.bodySmall)
+        PermissionRow("Sobreposição (overlay)", obrigatoria = true, granted = overlayOk,
+            detail = "Faz a bolha aparecer sobre os outros apps.") { openOverlaySettings(context) }
+        PermissionRow("Acessibilidade", obrigatoria = true, granted = accOk,
+            detail = "Necessária para a ferramenta \"Link da tela\" ler a URL aberta.") {
+            openAccessibilitySettings(context)
+        }
+        PermissionRow("Notificações", obrigatoria = false, granted = notifOk,
+            detail = "Mostra a notificação fixa do serviço (recomendado).") {
+            openAppNotificationSettings(context)
+        }
+        PermissionRow("Acesso de uso", obrigatoria = false, granted = usageOk,
+            detail = "Opcional: ajuda a inferir o app em foco.") { openUsageAccessSettings(context) }
+        PermissionRow("Ignorar otimização de bateria", obrigatoria = false, granted = batteryOk,
+            detail = "Opcional: evita o sistema matar o serviço.") { openBatterySettings(context) }
     }
 }
 
@@ -279,18 +305,17 @@ private fun PermissionRow(
 ) {
     Card(Modifier.fillMaxWidth()) {
         Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                when (granted) { true -> "✅"; false -> "❌"; else -> "•" },
+                style = MaterialTheme.typography.titleMedium,
+            )
+            Spacer(Modifier.width(10.dp))
             Column(Modifier.weight(1f)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(nome, style = MaterialTheme.typography.titleSmall)
-                    Spacer(Modifier.width(8.dp))
-                    val tag = if (obrigatoria) "OBRIGATÓRIA" else "opcional"
-                    val tagColor = if (obrigatoria) Color(0xFFC62828) else Color(0xFF9E9E9E)
-                    Text(tag, color = tagColor, style = MaterialTheme.typography.labelSmall)
-                    if (granted != null) {
-                        Spacer(Modifier.width(8.dp))
-                        Text(if (granted) "✓ concedida" else "✗ falta",
-                            color = if (granted) Color(0xFF2E7D32) else Color(0xFFC62828),
-                            style = MaterialTheme.typography.labelSmall)
+                    if (obrigatoria) {
+                        Spacer(Modifier.width(6.dp))
+                        Text("❗", style = MaterialTheme.typography.titleSmall)
                     }
                 }
                 Text(detail, style = MaterialTheme.typography.bodySmall)
@@ -306,6 +331,11 @@ private fun ToolsScreen() {
     val scope = rememberCoroutineScope()
     val settings = remember { Settings(context) }
     val enabled by settings.enabledTools.collectAsState(initial = HandoffTool.DEFAULT_ENABLED)
+    val customTools by settings.customTools.collectAsState(initial = emptyList())
+
+    var apps by remember { mutableStateOf<List<PcApp>>(emptyList()) }
+    var showPicker by remember { mutableStateOf(false) }
+    var loadingApps by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),
@@ -318,27 +348,108 @@ private fun ToolsScreen() {
             style = MaterialTheme.typography.bodyMedium,
         )
         HandoffTool.ALL.forEach { tool ->
+            ToolCard(tool.icon, tool.title, tool.description, "Como funciona: ${tool.howItWorks}",
+                checked = tool.id in enabled,
+                onToggle = { scope.launch { settings.setToolEnabled(tool.id, it) } })
+        }
+
+        HorizontalDivider()
+        Text("Apps do PC (personalizadas)", style = MaterialTheme.typography.titleLarge)
+        Text("Crie um atalho que abre um app específico do seu PC pelo celular.",
+            style = MaterialTheme.typography.bodyMedium)
+        customTools.forEach { ct ->
             Card(Modifier.fillMaxWidth()) {
                 Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Text(tool.icon, style = MaterialTheme.typography.headlineMedium)
+                    Text(ct.nome.take(1).uppercase(), style = MaterialTheme.typography.headlineSmall)
                     Spacer(Modifier.width(12.dp))
                     Column(Modifier.weight(1f)) {
-                        Text(tool.title, fontWeight = FontWeight.Bold,
+                        Text(ct.nome, fontWeight = FontWeight.Bold,
                             style = MaterialTheme.typography.titleMedium)
-                        Text(tool.description, style = MaterialTheme.typography.bodyMedium)
-                        Spacer(Modifier.size(4.dp))
-                        Text("Como funciona: ${tool.howItWorks}",
-                            style = MaterialTheme.typography.bodySmall)
+                        Text("Abre este app no PC.", style = MaterialTheme.typography.bodySmall)
                     }
-                    Spacer(Modifier.width(8.dp))
+                    Text("🗑", style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.clickable { scope.launch { settings.removeCustomTool(ct.id) } })
+                    Spacer(Modifier.width(12.dp))
                     Switch(
-                        checked = tool.id in enabled,
-                        onCheckedChange = { scope.launch { settings.setToolEnabled(tool.id, it) } },
+                        checked = ct.id in enabled,
+                        onCheckedChange = { scope.launch { settings.setToolEnabled(ct.id, it) } },
                     )
                 }
             }
         }
+        Button(
+            onClick = {
+                loadingApps = true
+                scope.launch {
+                    HandoffManager.listApps(context)
+                        .onSuccess { apps = it; showPicker = true }
+                        .onFailure {
+                            Toast.makeText(context, "Falha ao listar apps: ${it.message}", Toast.LENGTH_LONG).show()
+                        }
+                    loadingApps = false
+                }
+            },
+            modifier = Modifier.fillMaxWidth(),
+        ) { Text(if (loadingApps) "Buscando apps do PC…" else "➕ Adicionar app do PC") }
     }
+
+    if (showPicker) {
+        AppPickerDialog(apps, onDismiss = { showPicker = false }) { app ->
+            scope.launch {
+                settings.addCustomTool(CustomTool("app:${UUID.randomUUID()}", app.nome, app.caminho))
+                Toast.makeText(context, "Adicionado: ${app.nome}", Toast.LENGTH_SHORT).show()
+            }
+            showPicker = false
+        }
+    }
+}
+
+@Composable
+private fun ToolCard(
+    icon: String, title: String, description: String, how: String,
+    checked: Boolean, onToggle: (Boolean) -> Unit,
+) {
+    Card(Modifier.fillMaxWidth()) {
+        Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text(icon, style = MaterialTheme.typography.headlineMedium)
+            Spacer(Modifier.width(12.dp))
+            Column(Modifier.weight(1f)) {
+                Text(title, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
+                Text(description, style = MaterialTheme.typography.bodyMedium)
+                Spacer(Modifier.size(4.dp))
+                Text(how, style = MaterialTheme.typography.bodySmall)
+            }
+            Spacer(Modifier.width(8.dp))
+            Switch(checked = checked, onCheckedChange = onToggle)
+        }
+    }
+}
+
+@Composable
+private fun AppPickerDialog(apps: List<PcApp>, onDismiss: () -> Unit, onPick: (PcApp) -> Unit) {
+    var query by remember { mutableStateOf("") }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = { TextButton(onClick = onDismiss) { Text("Fechar") } },
+        title = { Text("Escolha um app do PC") },
+        text = {
+            Column {
+                OutlinedTextField(query, { query = it }, label = { Text("Filtrar") },
+                    modifier = Modifier.fillMaxWidth())
+                Spacer(Modifier.size(8.dp))
+                val filtered = apps.filter { it.nome.contains(query, ignoreCase = true) }
+                LazyColumn(Modifier.heightIn(max = 380.dp)) {
+                    items(filtered) { app ->
+                        Text(
+                            app.nome,
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.fillMaxWidth().clickable { onPick(app) }.padding(vertical = 10.dp),
+                        )
+                    }
+                }
+            }
+        },
+    )
 }
 
 // ---- Helpers ----
@@ -349,6 +460,35 @@ private fun notificationsGranted(context: Context): Boolean =
     Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
         context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) ==
         PackageManager.PERMISSION_GRANTED
+
+private fun accessibilityEnabled(context: Context): Boolean {
+    val cn = ComponentName(context, HandoffAccessibilityService::class.java)
+    val flat = cn.flattenToString()
+    val short = cn.flattenToShortString()
+    val s = AndroidSettings.Secure.getString(
+        context.contentResolver, AndroidSettings.Secure.ENABLED_ACCESSIBILITY_SERVICES,
+    ) ?: return false
+    return s.split(':').any { it.equals(flat, true) || it.equals(short, true) }
+}
+
+private fun usageAccessGranted(context: Context): Boolean = try {
+    val aom = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+    val mode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        aom.unsafeCheckOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), context.packageName)
+    } else {
+        @Suppress("DEPRECATION")
+        aom.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), context.packageName)
+    }
+    mode == AppOpsManager.MODE_ALLOWED
+} catch (_: Exception) {
+    false
+}
+
+private fun batteryIgnored(context: Context): Boolean {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true
+    val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+    return pm.isIgnoringBatteryOptimizations(context.packageName)
+}
 
 private fun openOverlaySettings(context: Context) {
     context.startActivity(

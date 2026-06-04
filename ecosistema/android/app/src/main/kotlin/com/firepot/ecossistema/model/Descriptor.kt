@@ -30,6 +30,7 @@ data class Descriptor(
         const val TIPO_TEXTO = "texto"
         const val TIPO_MAPA = "mapa"
         const val TIPO_CONTATO = "contato"
+        const val TIPO_APP = "app"
 
         private val JSON = Json { encodeDefaults = true }
 
@@ -60,5 +61,12 @@ data class Descriptor(
 
         fun mapa(query: String, appOrigem: String = "android"): Descriptor =
             Descriptor(TIPO_MAPA, appOrigem, obj("query" to JsonPrimitive(query)), nowSeconds())
+
+        fun app(caminho: String, nome: String, appOrigem: String = "android"): Descriptor =
+            Descriptor(
+                TIPO_APP, appOrigem,
+                obj("caminho" to JsonPrimitive(caminho), "nome" to JsonPrimitive(nome)),
+                nowSeconds(),
+            )
     }
 }

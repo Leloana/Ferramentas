@@ -2,6 +2,7 @@ package com.firepot.ecossistema.net
 
 import com.firepot.ecossistema.data.PcConfig
 import com.firepot.ecossistema.model.Descriptor
+import com.firepot.ecossistema.model.PcApp
 
 /**
  * Abstrai o envio de um descritor ao Agente Windows. Implementacao atual:
@@ -13,4 +14,7 @@ interface HandoffTransport {
 
     /** Conecta + autentica (sem enviar nada) só para checar se o PC está acessível. */
     suspend fun check(config: PcConfig): Result<Unit>
+
+    /** Lista os apps do PC (via `agente.py --list-apps`). */
+    suspend fun listApps(config: PcConfig): Result<List<PcApp>>
 }
