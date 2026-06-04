@@ -39,8 +39,7 @@ class SshHandoffTransport : HandoffTransport {
                 ssh.authPublickey(config.user, keys)
 
                 ssh.startSession().use { session ->
-                    // Aspas no path para caminhos do Windows com espacos.
-                    val cmd = session.exec("python \"${config.agentPath}\" --send")
+                    val cmd = session.exec(remoteCmd(config.agentPath, "--send"))
                     cmd.outputStream.use { out ->
                         out.write(descriptor.toJsonLine().toByteArray(Charsets.UTF_8))
                         out.write('\n'.code)
@@ -102,7 +101,7 @@ class SshHandoffTransport : HandoffTransport {
                 val keys = ssh.loadKeys(config.privateKeyPem, null, null)
                 ssh.authPublickey(config.user, keys)
                 ssh.startSession().use { session ->
-                    val cmd = session.exec("python \"${config.agentPath}\" --list-apps")
+                    val cmd = session.exec(remoteCmd(config.agentPath, "--list-apps"))
                     val out = cmd.inputStream.readBytes().toString(Charsets.UTF_8)
                     cmd.join()
                     val apps = JSON.decodeFromString<List<PcApp>>(out.trim())
@@ -114,6 +113,17 @@ class SshHandoffTransport : HandoffTransport {
             } finally {
                 runCatching { ssh.disconnect() }
             }
+        }
+
+    /**
+     * Monta o comando remoto. Se o caminho do agente for um .exe (instalado via
+     * MSI/Inno), roda direto; senão usa `python "<script.py>"` (modo dev).
+     */
+    private fun remoteCmd(agentPath: String, arg: String): String =
+        if (agentPath.trim().endsWith(".exe", ignoreCase = true)) {
+            "\"${agentPath.trim()}\" $arg"
+        } else {
+            "python \"$agentPath\" $arg"
         }
 
     private companion object {

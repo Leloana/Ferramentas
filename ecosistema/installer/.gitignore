@@ -1,0 +1,4 @@
+# Artefatos do PyInstaller / build do instalador (regeneraveis)
+build/
+dist/
+*.spec

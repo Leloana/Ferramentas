@@ -45,13 +45,49 @@ from urllib.parse import urlparse, parse_qs, quote
 
 HANDOFF_DIR = Path.home() / ".handoff"
 LOG_FILE = HANDOFF_DIR / "agente.log"
-SCRIPT_DIR = Path(__file__).resolve().parent
-CONFIG_FILE = SCRIPT_DIR / "config.json"
+
+# FROZEN = rodando como .exe empacotado (PyInstaller). Nesse caso __file__ aponta
+# para uma pasta temporaria; a base estavel e a pasta do proprio executavel.
+FROZEN = getattr(sys, "frozen", False)
+APP_DIR = (
+    Path(sys.executable).resolve().parent if FROZEN
+    else Path(__file__).resolve().parent
+)
 
 DAEMON_HOST = os.environ.get("HANDOFF_HOST", "127.0.0.1")
 DAEMON_PORT = int(os.environ.get("HANDOFF_PORT", "8765"))
 
 IS_WINDOWS = os.name == "nt"
+
+
+def resolve_config_file() -> Path:
+    """Acha o config.json num local estavel (funciona tambem empacotado).
+
+    Ordem: ao lado do exe/script -> %APPDATA%/Ecossistema/config.json (so frozen).
+    Em dev (nao empacotado) usa sempre a pasta do script.
+    """
+    local = APP_DIR / "config.json"
+    if local.exists() or not FROZEN:
+        return local
+    appdata = os.environ.get("APPDATA")
+    if appdata:
+        return Path(appdata) / "Ecossistema" / "config.json"
+    return local
+
+
+def hide_console_window():
+    """No exe empacotado (console), esconde a janela ao virar daemon — assim o
+    auto-start nao deixa um terminal aberto, mas --send/--list-apps continuam
+    com stdout/stdin normais (necessario para o SSH)."""
+    if not (IS_WINDOWS and FROZEN):
+        return
+    try:
+        import ctypes
+        hwnd = ctypes.windll.kernel32.GetConsoleWindow()
+        if hwnd:
+            ctypes.windll.user32.ShowWindow(hwnd, 0)  # SW_HIDE
+    except Exception:
+        pass
 
 # Roda como daemon sob pythonw (sem console). Spawnar apps de console (powershell
 # do toast, clip.exe, explorer) faria o Windows ALOCAR um console novo -> uma
@@ -74,7 +110,7 @@ def setup_logging():
 def load_config() -> dict:
     """Le config.json (path mapping, dispositivos confiaveis). Degrada p/ {}."""
     try:
-        with open(CONFIG_FILE, "r", encoding="utf-8") as fh:
+        with open(resolve_config_file(), "r", encoding="utf-8") as fh:
             return json.load(fh)
     except FileNotFoundError:
         return {}
@@ -493,6 +529,7 @@ def main() -> int:
         return 0
     if "--daemon" in sys.argv:
         logging.info("Daemon iniciado")
+        hide_console_window()
         daemon_loop(config)
         return 0
     if "--send" in sys.argv:
