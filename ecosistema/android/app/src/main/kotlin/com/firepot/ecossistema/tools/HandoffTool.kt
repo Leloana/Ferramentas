@@ -60,10 +60,10 @@ data class HandoffTool(
                 id = "file",
                 icon = "📎",
                 title = "Enviar arquivo",
-                description = "Escolhe um arquivo no celular e copia para o PC (Downloads).",
+                description = "Escolhe um arquivo no celular; ele vai pra pasta Ecossistema do PC e abre.",
                 howItWorks = "Abre o seletor de arquivos; sobe o arquivo por SFTP para a " +
-                    "pasta Downloads do PC e o revela no Explorer. Dica: também dá pra " +
-                    "Compartilhar qualquer arquivo → Ecossistema.",
+                    "pasta \"Ecossistema\" no PC e o abre no app padrão. Dica: também dá " +
+                    "pra Compartilhar qualquer arquivo → Ecossistema.",
             ),
             HandoffTool(
                 id = "test",

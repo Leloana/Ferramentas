@@ -136,6 +136,7 @@ class SshHandoffTransport : HandoffTransport {
             val keys = ssh.loadKeys(config.privateKeyPem, null, null)
             ssh.authPublickey(config.user, keys)
             ssh.newSFTPClient().use { sftp ->
+                runCatching { sftp.mkdirs(remoteDir) }  // garante a pasta de recebidos
                 sftp.put(localPath, dest)  // sobe; raiz SFTP do Windows = home do usuario
             }
             Result.success(dest)

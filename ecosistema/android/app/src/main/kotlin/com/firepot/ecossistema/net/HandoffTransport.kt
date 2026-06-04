@@ -26,6 +26,6 @@ interface HandoffTransport {
         config: PcConfig,
         localPath: String,
         remoteName: String,
-        remoteDir: String = "Downloads",
+        remoteDir: String = "Ecossistema",
     ): Result<String>
 }

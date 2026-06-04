@@ -63,7 +63,7 @@ object HandoffManager {
             val up = transport.uploadFile(config, temp.absolutePath, name)
             up.fold(
                 onSuccess = { rel ->
-                    transport.send(Descriptor.revelar(rel), config) // mostra no PC
+                    transport.send(Descriptor.abrirArquivo(rel), config) // abre no PC
                     toastMain(context, "Arquivo enviado ao PC: $name")
                     Result.success(Unit)
                 },
