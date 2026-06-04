@@ -174,22 +174,41 @@ Prova que o app mantém **uma** sessão SSH viva e que cada handoff é instantâ
 Prova o "parear e pronto" e a remoção da dívida de segurança.
 
 ### Pré-requisitos
-- [ ] **B-pre1.** sshd no PC já rodando (host key ed25519 existente em
+- [x] **B-pre1.** sshd no PC já rodando (host key ed25519 existente em
       `C:\ProgramData\ssh\ssh_host_ed25519_key.pub`).
-- [ ] **B-pre2.** `qrcode` instalado no PC se for usar o QR pelo CLI
+      → OK (hw 2026-06-04): fingerprint resolve via ssh-keyscan apesar da ACL
+        (`SHA256:jvsIKkg41q+...`).
+- [x] **B-pre2.** `qrcode` instalado no PC se for usar o QR pelo CLI
       (`pip install qrcode[pil]`); ou usar a UI do PC quando existir.
+      → OK (hw 2026-06-04): `qrcode` + `PIL` presentes. Helper `pair_hw.py`
+        mostra o QR em **PNG** (mais fácil de escanear que o ASCII). **Bug de
+        setup achado+corrigido:** o firewall não tinha regra p/ a porta **8766**
+        (o `setup-windows.ps1` só abria a 22) → o celular não alcançava o
+        pareamento. Regra `Handoff-Pair-In-TCP` adicionada ao script e criada no
+        PC; alcançabilidade celular→8766 validada.
 
 ### Testes
-- [ ] **B1. Mostrar o QR:** `python agente.py --pair` no PC → mostra host, porta,
+- [x] **B1. Mostrar o QR:** `python agente.py --pair` no PC → mostra host, porta,
       user, fingerprint, token e o QR (ASCII no CLI).
-- [ ] **B2. Escanear no app:** tocar **"Parear com QR"** → câmera abre → ler o QR.
-- [ ] **B3. Permissão de câmera:** na 1ª vez o Android pede CAMERA → conceder.
-- [ ] **B4. Geração da chave:** o app gera o par ed25519 (1ª vez) sem pedir nada
+      → OK (hw 2026-06-04): via `pair_hw.py` (PNG). host/port/user/fp/token/
+        pair_port corretos no conteúdo do QR.
+- [x] **B2. Escanear no app:** tocar **"Parear com QR"** → câmera abre → ler o QR.
+      → OK (hw 2026-06-04): leitura do QR na tela do PC.
+- [x] **B3. Permissão de câmera:** na 1ª vez o Android pede CAMERA → conceder.
+      → OK (hw 2026-06-04): permissão concedida; câmera abriu e leu.
+- [x] **B4. Geração da chave:** o app gera o par ed25519 (1ª vez) sem pedir nada
       ao usuário (nada de colar PEM).
-- [ ] **B5. Elevação (UAC):** no PC aparece **um** prompt de UAC para autorizar a
+      → OK (hw 2026-06-04): pubkey recebida `ssh-ed25519 AAAA...Xqe ecossistema`
+        — **RISCO-1 (BouncyCastle↔sshj)** e **RISCO-2 (EncryptedSharedPreferences)**
+        confirmados OK (chave gerada/guardada e usada).
+- [x] **B5. Elevação (UAC):** no PC aparece **um** prompt de UAC para autorizar a
       chave → aceitar. A pública entra no `administrators_authorized_keys`.
-- [ ] **B6. Sucesso:** o app mostra "Pareado com <host>!" e o card de status vira
+      → OK (hw 2026-06-04): `autorizar_chave` retornou sucesso (só ocorre se o
+        `add-authorized-key.ps1` elevado gravou a chave) → `_resp ok:true`.
+- [x] **B6. Sucesso:** o app mostra "Pareado com <host>!" e o card de status vira
       **Conectado** (sem digitar IP nem chave).
+      → OK (hw 2026-06-04): `PAREADO_OK name='SM-S721B'` no PC (confirmar visual
+        no app + status Conectado).
 - [ ] **B7. Pinning ativo:** depois de pareado, um handoff conecta normalmente
       (fingerprint confere). Para provar o pinning, troque a host key do PC
       (`ssh-keygen -A` forçado/renomear) → a conexão deve **falhar** (host key não
