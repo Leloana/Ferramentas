@@ -773,6 +773,14 @@ def pair_mode() -> int:
 
 
 def main() -> int:
+    # stdout/err em UTF-8: o console do Windows e cp1252 e quebraria ao imprimir
+    # o QR (blocos unicode) ou JSON com acentos/emoji (UnicodeEncodeError). Tambem
+    # garante que --list-apps saia correto pelo SSH.
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding="utf-8")
+        except Exception:
+            pass
     setup_logging()
     config = load_config()
     if "--list-apps" in sys.argv:

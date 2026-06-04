@@ -36,12 +36,12 @@ grava em `~/.ssh/authorized_keys` (em vez do `administrators_authorized_keys`).
       hello→ack+online, ping→pong, activity→atualiza, descritor url→resolve,
       `push_para_dispositivo`→chega na stdout do serve, desconexão→offline.
       → OK (dev 2026-06-04, via `socketpair`).
-- [ ] **DEV-A4. Compat `--send` intacto:** com o daemon de pé,
+- [x] **DEV-A4. Compat `--send` intacto:** com o daemon de pé,
       `echo '{"tipo":"url","app_origem":"t","dados":{"url":"https://example.com"},"timestamp":0}' | HANDOFF_PORT=8799 python3 agente.py --send`
-      → daemon resolve (log) e `--send` retorna 0.
-- [ ] **DEV-A5. Linha não-JSON = URL pura (compat antiga):**
+      → daemon resolve (log) e `--send` retorna 0. → OK (2026-06-04, Windows).
+- [x] **DEV-A5. Linha não-JSON = URL pura (compat antiga):**
       `echo 'https://example.com' | HANDOFF_PORT=8799 python3 agente.py --send`
-      → tratado como URL.
+      → tratado como URL. → OK (2026-06-04, Windows).
 
 ### DEV-B — Emparelhamento por QR (proposta B)
 
@@ -58,10 +58,17 @@ grava em `~/.ssh/authorized_keys` (em vez do `administrators_authorized_keys`).
 - [x] **DEV-B4. Formato da chave OpenSSH:** o PEM que o `KeyManager` embrulha tem
       `-----BEGIN/END OPENSSH PRIVATE KEY-----`; a linha pública é
       `ssh-ed25519 <b64> ecossistema`. → conferido contra `ssh-keygen` (dev 2026-06-04).
-- [ ] **DEV-B5. `--pair-info` (para a UI):** `python3 agente.py --pair-info`
+- [x] **DEV-B5. `--pair-info` (para a UI):** `python3 agente.py --pair-info`
       imprime JSON `{v,host,...,fp,token,pair_port}` válido (1 linha).
-- [ ] **DEV-B6. `--pair` (CLI):** `python3 agente.py --pair` mostra host/fp/token
+      → OK (2026-06-04). **Bug achado+corrigido:** `fp` vinha `None` no Windows
+        porque a ACL de `ProgramData\ssh` nega leitura da `.pub` ao não-admin.
+        Fix: fallback via `ssh-keyscan` (pega a host key pela rede). O `fp` agora
+        bate com `ssh-keygen -lf`.
+- [x] **DEV-B6. `--pair` (CLI):** `python3 agente.py --pair` mostra host/fp/token
       e (se `pip install qrcode`) o QR em ASCII; fica aguardando o pareamento.
+      → OK (2026-06-04). **Bug achado+corrigido:** `print(ascii_qr)` quebrava com
+        `UnicodeEncodeError` (console cp1252 × blocos do QR). Fix: stdout/err em
+        UTF-8 no início do `main()` (também deixa `--list-apps` robusto a acentos).
 
 > **Atalho:** os snippets exatos de DEV-A2/A3/B1/B2/B3 estão no `README.md`
 > (seções "Canal persistente" e "Emparelhamento por QR").

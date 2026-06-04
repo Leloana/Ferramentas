@@ -57,8 +57,36 @@ def _fingerprint_de_pub(linha_pub: str):
     return "SHA256:" + b64
 
 
-def host_key_fingerprint(ssh_dir: Path = None):
-    """Fingerprint da host key do sshd (prefere ed25519). None se nao achar."""
+def _fingerprint_via_keyscan(port: int = 22, host: str = "127.0.0.1"):
+    """Fingerprint da host key via 'ssh-keyscan' — pega a chave pela REDE, sem
+    ler arquivo nem admin. No Windows a ACL de ProgramData\\ssh nega a leitura da
+    .pub ao usuario, entao este e o caminho confiavel quando o agente roda sem
+    elevacao."""
+    try:
+        out = subprocess.run(
+            ["ssh-keyscan", "-t", "ed25519", "-p", str(port), host],
+            capture_output=True, text=True, timeout=6,
+        )
+    except Exception as e:
+        logging.debug(f"ssh-keyscan falhou: {e}")
+        return None
+    for linha in (out.stdout or "").splitlines():
+        linha = linha.strip()
+        if not linha or linha.startswith("#"):
+            continue
+        partes = linha.split()  # "<host> <tipo> <base64>"
+        if len(partes) >= 3 and partes[1].startswith("ssh-"):
+            fp = _fingerprint_de_pub(partes[1] + " " + partes[2])
+            if fp:
+                return fp
+    return None
+
+
+def host_key_fingerprint(ssh_dir: Path = None, port: int = 22):
+    """Fingerprint da host key do sshd (prefere ed25519). None se nao achar.
+
+    1) tenta ler a .pub localmente; 2) se nao der (ACL/arquivo), cai para o
+    ssh-keyscan na porta do sshd (funciona sem admin)."""
     ssh_dir = ssh_dir or SSH_DATA_DIR
     for nome in ("ssh_host_ed25519_key.pub", "ssh_host_ecdsa_key.pub", "ssh_host_rsa_key.pub"):
         p = ssh_dir / nome
@@ -69,7 +97,10 @@ def host_key_fingerprint(ssh_dir: Path = None):
                     return fp
             except Exception as e:
                 logging.debug(f"falha lendo host key {p}: {e}")
-    logging.warning(f"Nenhuma host key encontrada em {ssh_dir}")
+    fp = _fingerprint_via_keyscan(port)
+    if fp:
+        return fp
+    logging.warning(f"Host key nao encontrada (arquivos em {ssh_dir} nem via ssh-keyscan)")
     return None
 
 
@@ -116,7 +147,7 @@ def monta_info(port: int = 22, user: str = None, ssh_dir: Path = None) -> dict:
         "tshost": tailscale_ip(),    # IP Tailscale (pode ser None)
         "port": int(port),
         "user": user,
-        "fp": host_key_fingerprint(ssh_dir),
+        "fp": host_key_fingerprint(ssh_dir, int(port)),
         "token": gerar_token(),
         "pair_port": PAIR_PORT_PADRAO,
     }
