@@ -9,7 +9,6 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import net.schmizz.sshj.SSHClient
-import net.schmizz.sshj.transport.verification.PromiscuousVerifier
 
 /**
  * Entrega o descritor rodando, por SSH, `python "<agentPath>" --send` no PC e
@@ -17,9 +16,9 @@ import net.schmizz.sshj.transport.verification.PromiscuousVerifier
  * Termux (termux-url-opener). O `--send` do agente repassa ao daemon que roda
  * na sessao interativa do usuario (lecao da Sessao 0/1, PLANO.md secao 3).
  *
- * NOTA de seguranca: usamos PromiscuousVerifier (aceita qualquer host key) por
- * praticidade no Marco 1. Em produção, fixar a host key do PC (pinning) ou
- * confiar via Tailscale. TODO: emparelhamento + known_hosts.
+ * Seguranca: a verificacao da host key vem de [HostKeyVerifiers.forFingerprint]
+ * — com fingerprint fixado no pareamento (proposta B) faz PINNING; sem ele
+ * (config legada, chave colada) cai no verificador promiscuo de fallback.
  */
 class SshHandoffTransport : HandoffTransport {
 
@@ -32,7 +31,7 @@ class SshHandoffTransport : HandoffTransport {
             }
             val ssh = SSHClient()
             try {
-                ssh.addHostKeyVerifier(PromiscuousVerifier())
+                ssh.addHostKeyVerifier(HostKeyVerifiers.forFingerprint(config.hostKeyFingerprint))
                 ssh.connect(config.host, config.port)
 
                 val keys = ssh.loadKeys(config.privateKeyPem, null, null)
@@ -73,7 +72,7 @@ class SshHandoffTransport : HandoffTransport {
             ssh.connectTimeout = 5000
             ssh.timeout = 5000
             try {
-                ssh.addHostKeyVerifier(PromiscuousVerifier())
+                ssh.addHostKeyVerifier(HostKeyVerifiers.forFingerprint(config.hostKeyFingerprint))
                 ssh.connect(config.host, config.port)
                 val keys = ssh.loadKeys(config.privateKeyPem, null, null)
                 ssh.authPublickey(config.user, keys)
@@ -96,7 +95,7 @@ class SshHandoffTransport : HandoffTransport {
             ssh.connectTimeout = 8000
             ssh.timeout = 8000
             try {
-                ssh.addHostKeyVerifier(PromiscuousVerifier())
+                ssh.addHostKeyVerifier(HostKeyVerifiers.forFingerprint(config.hostKeyFingerprint))
                 ssh.connect(config.host, config.port)
                 val keys = ssh.loadKeys(config.privateKeyPem, null, null)
                 ssh.authPublickey(config.user, keys)
@@ -131,7 +130,7 @@ class SshHandoffTransport : HandoffTransport {
         val ssh = SSHClient()
         ssh.connectTimeout = 8000
         try {
-            ssh.addHostKeyVerifier(PromiscuousVerifier())
+            ssh.addHostKeyVerifier(HostKeyVerifiers.forFingerprint(config.hostKeyFingerprint))
             ssh.connect(config.host, config.port)
             val keys = ssh.loadKeys(config.privateKeyPem, null, null)
             ssh.authPublickey(config.user, keys)

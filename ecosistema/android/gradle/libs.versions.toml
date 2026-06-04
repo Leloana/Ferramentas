@@ -10,6 +10,8 @@ serialization = "1.7.3"
 sshj = "0.39.0"
 eddsa = "0.3.0"
 bouncycastle = "1.78.1"
+zxing = "4.3.0"
+securityCrypto = "1.1.0-alpha06"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -30,6 +32,10 @@ sshj = { group = "com.hierynomus", name = "sshj", version.ref = "sshj" }
 eddsa = { group = "net.i2p.crypto", name = "eddsa", version.ref = "eddsa" }
 # BouncyCastle completo (substitui o "BC" reduzido do Android) p/ X25519/curve25519 no sshj.
 bcprov = { group = "org.bouncycastle", name = "bcprov-jdk18on", version.ref = "bouncycastle" }
+# Scanner de QR embutido (camera + UI) para o pareamento (proposta B).
+zxing-embedded = { group = "com.journeyapps", name = "zxing-android-embedded", version.ref = "zxing" }
+# EncryptedSharedPreferences para guardar a chave privada gerada no celular.
+security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "securityCrypto" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

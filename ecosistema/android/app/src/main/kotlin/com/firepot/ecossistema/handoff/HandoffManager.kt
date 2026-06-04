@@ -8,7 +8,7 @@ import android.widget.Toast
 import com.firepot.ecossistema.data.Settings
 import com.firepot.ecossistema.model.Descriptor
 import com.firepot.ecossistema.net.HandoffTransport
-import com.firepot.ecossistema.net.SshHandoffTransport
+import com.firepot.ecossistema.net.PersistentSshTransport
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -21,7 +21,8 @@ import java.io.File
 object HandoffManager {
 
     private const val TAG = "HandoffManager"
-    private val transport: HandoffTransport = SshHandoffTransport()
+    // Usa o canal persistente (instantaneo) quando vivo; cai para --send senao.
+    private val transport: HandoffTransport = PersistentSshTransport()
 
     /** Classifica um texto compartilhado (link vs. texto) e monta o descritor. */
     fun fromSharedText(text: String, appOrigem: String = "android.share"): Descriptor {

@@ -59,11 +59,116 @@ Uma linha JSON por evento:
 Explorer/app padrão. Linha não-JSON é tratada como **URL pura** (compat. com o
 protótipo antigo).
 
+## Canal persistente (`--serve`) — baixa latência
+
+Em vez de abrir **uma sessão SSH por evento** (`--send`), o app mantém **uma
+sessão SSH viva** rodando `agente.py --serve` e escreve os descritores como
+linhas JSON nela. Isso mata a espera (connect + handshake + auth + cold start a
+cada handoff) — é o que troca a sensação de "ferramenta" por "instantâneo"
+(MELHORIAS_APPLE.md proposta A).
+
+```
+[App Android]  --SSH (UMA sessão viva)-->  python agente.py --serve   (sessão 0/sshd)
+   |  escreve descritores + controle na stdin        |  RELAY burro: stdin -> daemon
+   |  lê acks/heartbeat/PC->Android da stdout         |  stdout <- daemon
+   v                                                  v
+                                  [Daemon na SESSÃO DO USUÁRIO]  agente.py --daemon
+                                    - abre UI/apps (lição Sessão 0×1)
+                                    - guarda presença por dispositivo
+                                    - empurra eventos PC->Android de volta
+```
+
+O `--serve` **não abre UI** — só repassa ao daemon (sessão do usuário), igual ao
+`--send`. Toda a lógica fica no daemon. O `--send` continua existindo como
+**fallback** automático (quando o canal está caído).
+
+**Protocolo de controle** (linhas JSON com a chave `_ctrl`, para não colidir com
+os descritores, que usam `tipo`):
+
+| Direção | Linha | Efeito |
+|---|---|---|
+| celular → daemon | `{"_ctrl":"hello","device":"...","name":"..."}` | registra presença + canal |
+| celular → daemon | `{"_ctrl":"ping"}` | heartbeat → responde `pong` |
+| celular → daemon | `{"_ctrl":"activity","texto":"..."}` | última atividade (para a UI) |
+| daemon → celular | `{"_ctrl":"ack","ok":true}` | confirma o `hello` |
+| daemon → celular | `{"_ctrl":"pong"}` | resposta do heartbeat |
+| daemon → celular | `{"_ctrl":"push","desc":{...}}` | descritor **PC→Android** (proposta E) |
+
+### Como testar sem o PC de casa
+
+O núcleo é testável com **dois processos locais** (sem Windows, sem SSH):
+
+```bash
+# Terminal 1 — daemon (sessão do usuário simulada):
+HANDOFF_PORT=8799 python3 agente.py --daemon
+
+# Terminal 2 — relay --serve, alimentado como se fosse o celular via SSH:
+printf '%s\n' '{"_ctrl":"hello","device":"s24fe","name":"S24 FE"}' \
+              '{"_ctrl":"ping"}' \
+              '{"tipo":"url","app_origem":"t","dados":{"url":"https://example.com"},"timestamp":1}' \
+  | HANDOFF_PORT=8799 python3 agente.py --serve
+# stdout do --serve deve mostrar: {"_ctrl":"ack","ok":true} e {"_ctrl":"pong"}
+```
+
+## Emparelhamento por QR (`--pair`) — zero IP/chave colada
+
+Em vez de digitar IP/porta e **colar a chave PEM**, o PC mostra um QR e o celular
+escaneia (MELHORIAS_APPLE.md proposta B). Bônus de segurança: o QR carrega o
+**fingerprint da host key** → o app **fixa (pinning)** e elimina o
+`PromiscuousVerifier` (que aceitava qualquer host = MITM na LAN).
+
+```
+[PC]  python agente.py --pair
+   |  monta {host, porta, user, fingerprint SHA256, token, pair_port} -> QR
+   |  abre um canal de pareamento TCP token-gated por ~3 min
+   v
+[Android]  toca "Parear com QR" -> escaneia
+   |  gera o par ed25519 no app (cifrado em EncryptedSharedPreferences)
+   |  conecta em host:pair_port e manda {token, pubkey, name, device}
+   v
+[PC]  valida o token -> autoriza a pública (administrators_authorized_keys, 1 UAC)
+      -> app salva host/user/porta + fingerprint (pinning). Pronto.
+```
+
+**Conteúdo do QR** (JSON 1 linha): `{"v":1,"host":"192.168.x.x","tshost":"100.x..",
+"port":22,"user":"mf827","fp":"SHA256:...","token":"...","pair_port":8766}`.
+
+**Fingerprint:** `SHA256:<base64 sem '='>` sobre os bytes de fio da host key —
+idêntico ao `ssh-keygen -lf`. Calculado no PC ([pareamento.py](pareamento.py)) e
+conferido no app ([PinnedHostKeyVerifier](android/app/src/main/kotlin/com/firepot/ecossistema/net/HostKeyVerifiers.kt)).
+
+**Segurança:** o canal de pareamento é texto puro, mas **efêmero**, protegido por
+**token de uso único** e restrito à LAN; o pinning do fingerprint protege todas as
+conexões SSH seguintes. A chave privada é **gerada no celular** (nunca colada) e
+guardada cifrada. Config legada (chave colada) segue funcionando: sem fingerprint
+fixado, cai no verificador promíscuo de fallback.
+
+### Como testar o pareamento sem o PC de casa
+
+`pareamento.py` roda em Linux para dev (grava em `~/.ssh/authorized_keys` em vez
+do `administrators_authorized_keys`):
+
+```bash
+# Terminal 1 — abre o canal e mostra o QR/JSON (instale 'qrcode' p/ o QR ASCII):
+python3 agente.py --pair
+
+# Terminal 2 — simula o celular (token vem do terminal 1):
+python3 - <<'PY'
+import socket, json
+s = socket.create_connection(("127.0.0.1", 8766), timeout=3)
+s.sendall((json.dumps({"token":"<COLE_O_TOKEN>","pubkey":"ssh-ed25519 AAAA... ecossistema",
+                       "name":"S24 FE","device":"samsung-s24"})+"\n").encode())
+print(s.makefile("rb").readline().decode())   # {"ok": true, "user": "..."}
+PY
+```
+
 ## Arquivos
 
 | Arquivo | Onde roda | Função |
 |---|---|---|
-| `agente.py` | PC (Windows, sessão do usuário) | Agente: resolve descritores → app equivalente |
+| `agente.py` | PC (Windows, sessão do usuário) | Agente: resolve descritores → app equivalente; modos `--daemon`/`--serve`/`--send`/`--pair` |
+| `pareamento.py` | PC | Emparelhamento por QR: fingerprint, token, canal de pareamento, autoriza a chave |
+| `add-authorized-key.ps1` | PC (elevado) | Anexa 1 chave ao `administrators_authorized_keys` com ACL (usado pelo `--pair`) |
 | `config.json` | PC | Mapeamento de caminhos Android↔Windows (ver `config.example.json`) |
 | `start-agente.vbs` | PC (pasta Startup) | Sobe o agente em daemon, oculto, no login |
 | `setup-windows.ps1` | PC (admin) | Instala/config. OpenSSH Server + autoriza a chave do celular |

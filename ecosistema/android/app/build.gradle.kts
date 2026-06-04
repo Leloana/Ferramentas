@@ -81,4 +81,7 @@ dependencies {
     implementation(libs.eddsa)
     // BouncyCastle completo p/ X25519/curve25519 (o "BC" do Android e reduzido).
     implementation(libs.bcprov)
+    // Pareamento por QR (proposta B): scanner embutido + chave cifrada.
+    implementation(libs.zxing.embedded)
+    implementation(libs.security.crypto)
 }

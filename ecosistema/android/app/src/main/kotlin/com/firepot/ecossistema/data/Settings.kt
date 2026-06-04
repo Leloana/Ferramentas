@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.firepot.ecossistema.crypto.KeyManager
 import com.firepot.ecossistema.tools.CustomTool
 import com.firepot.ecossistema.tools.HandoffTool
 import kotlinx.coroutines.flow.Flow
@@ -31,6 +32,9 @@ data class PcConfig(
     val port: Int = 22,
     val agentPath: String = """C:\Users\mf827\Documents\Ferramentas\ecosistema\agente.py""",
     val privateKeyPem: String = "",
+    // Fingerprint "SHA256:..." da host key, fixado no pareamento (proposta B).
+    // Vazio = config legada (chave colada) -> verificacao promiscua de fallback.
+    val hostKeyFingerprint: String = "",
 ) {
     val isComplete: Boolean
         get() = host.isNotBlank() && user.isNotBlank() && privateKeyPem.isNotBlank()
@@ -39,13 +43,18 @@ data class PcConfig(
 class Settings(private val context: Context) {
 
     val pcConfig: Flow<PcConfig> = context.dataStore.data.map { prefs ->
+        // Prefere a chave GERADA no pareamento (cifrada via KeyManager); cai para
+        // a chave colada na mao (config legada) se ainda nao houver chave gerada.
+        val pem = if (KeyManager.hasKey(context)) KeyManager.privateKeyPem(context)
+                  else prefs[KEY_KEY] ?: ""
         PcConfig(
             host = prefs[KEY_HOST] ?: "",
             user = prefs[KEY_USER] ?: "",
             port = prefs[KEY_PORT]?.toIntOrNull() ?: 22,
             agentPath = prefs[KEY_AGENT_PATH]
                 ?: """C:\Users\mf827\Documents\Ferramentas\ecosistema\agente.py""",
-            privateKeyPem = prefs[KEY_KEY] ?: "",
+            privateKeyPem = pem,
+            hostKeyFingerprint = prefs[KEY_FINGERPRINT] ?: "",
         )
     }
 
@@ -101,6 +110,21 @@ class Settings(private val context: Context) {
             prefs[KEY_PORT] = config.port.toString()
             prefs[KEY_AGENT_PATH] = config.agentPath
             prefs[KEY_KEY] = config.privateKeyPem
+            prefs[KEY_FINGERPRINT] = config.hostKeyFingerprint
+        }
+    }
+
+    /**
+     * Salva o resultado do pareamento por QR (proposta B): host/user/porta +
+     * fingerprint fixado. A chave privada NAO entra aqui — fica cifrada no
+     * KeyManager e e lida em [pcConfig]. Preserva o caminho do agente atual.
+     */
+    suspend fun savePairing(host: String, user: String, port: Int, fingerprint: String) {
+        context.dataStore.edit { prefs ->
+            prefs[KEY_HOST] = host
+            prefs[KEY_USER] = user
+            prefs[KEY_PORT] = port.toString()
+            prefs[KEY_FINGERPRINT] = fingerprint
         }
     }
 
@@ -110,6 +134,7 @@ class Settings(private val context: Context) {
         val KEY_PORT = stringPreferencesKey("pc_port")
         val KEY_AGENT_PATH = stringPreferencesKey("pc_agent_path")
         val KEY_KEY = stringPreferencesKey("pc_private_key")
+        val KEY_FINGERPRINT = stringPreferencesKey("pc_host_fingerprint")
         val KEY_TOOLS = stringSetPreferencesKey("enabled_tools")
         val KEY_CUSTOM = stringPreferencesKey("custom_tools")
         val JSON = Json { ignoreUnknownKeys = true }

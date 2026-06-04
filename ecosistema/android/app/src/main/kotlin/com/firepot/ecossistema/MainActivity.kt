@@ -14,6 +14,7 @@ import android.os.Process
 import android.provider.Settings as AndroidSettings
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -68,11 +69,14 @@ import com.firepot.ecossistema.data.PcConfig
 import com.firepot.ecossistema.data.Settings
 import com.firepot.ecossistema.handoff.HandoffManager
 import com.firepot.ecossistema.model.PcApp
+import com.firepot.ecossistema.pairing.PairingManager
 import com.firepot.ecossistema.service.HandoffAccessibilityService
 import com.firepot.ecossistema.service.HandoffForegroundService
 import com.firepot.ecossistema.tools.CustomTool
 import com.firepot.ecossistema.tools.HandoffTool
 import com.firepot.ecossistema.ui.theme.EcossistemaTheme
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanOptions
 import kotlinx.coroutines.launch
 import java.util.UUID
 
@@ -131,6 +135,34 @@ private fun HomeScreen() {
 
     var serviceOn by remember { mutableStateOf(HandoffForegroundService.isRunning) }
     var recheck by remember { mutableIntStateOf(0) }
+    var pareando by remember { mutableStateOf(false) }
+
+    // Scanner de QR (proposta B): le o QR do painel do PC e fecha o pareamento.
+    val scanLauncher = rememberLauncherForActivityResult(ScanContract()) { result ->
+        val conteudo = result.contents
+        if (conteudo == null) {
+            Toast.makeText(context, "Pareamento cancelado", Toast.LENGTH_SHORT).show()
+            return@rememberLauncherForActivityResult
+        }
+        val info = PairingManager.parse(conteudo)
+        if (info == null) {
+            Toast.makeText(context, "QR invalido (nao parece do Ecossistema)", Toast.LENGTH_LONG).show()
+            return@rememberLauncherForActivityResult
+        }
+        pareando = true
+        scope.launch {
+            val r = PairingManager.pair(context, info)
+            pareando = false
+            if (r.isSuccess) {
+                Toast.makeText(context, "Pareado com ${info.host}!", Toast.LENGTH_LONG).show()
+                recheck++
+            } else {
+                Toast.makeText(
+                    context, "Falha: ${r.exceptionOrNull()?.message ?: "erro"}", Toast.LENGTH_LONG,
+                ).show()
+            }
+        }
+    }
     var status by remember { mutableStateOf(ConnStatus.UNCONFIGURED) }
     var stHost by remember { mutableStateOf("") }
     var stUser by remember { mutableStateOf("") }
@@ -167,6 +199,21 @@ private fun HomeScreen() {
     ) {
         // 1) Status do PC no topo
         ConnectionStatusCard(status, stHost, stUser) { recheck++ }
+
+        // 1b) Parear por QR (recomendado) — zero IP/chave colada (proposta B).
+        Button(
+            onClick = {
+                scanLauncher.launch(
+                    ScanOptions().apply {
+                        setPrompt("Aponte para o QR no painel do PC")
+                        setBeepEnabled(false)
+                        setOrientationLocked(false)
+                    },
+                )
+            },
+            enabled = !pareando,
+            modifier = Modifier.fillMaxWidth(),
+        ) { Text(if (pareando) "Pareando…" else "Parear com QR") }
 
         // 2) Toggle do serviço (primeira coisa acionável)
         Card {

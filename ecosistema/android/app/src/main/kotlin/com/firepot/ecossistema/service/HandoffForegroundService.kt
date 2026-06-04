@@ -9,6 +9,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import com.firepot.ecossistema.R
+import com.firepot.ecossistema.net.PersistentChannel
 import com.firepot.ecossistema.overlay.CornerOverlayService
 
 /**
@@ -24,6 +25,9 @@ class HandoffForegroundService : Service() {
         isRunning = true
         // Inicia o overlay junto (depende de SYSTEM_ALERT_WINDOW concedido).
         startService(Intent(this, CornerOverlayService::class.java))
+        // Sobe o canal persistente (proposta A): mantem a sessao SSH viva
+        // enquanto o servico existir, reconectando sozinho com backoff.
+        PersistentChannel.start(applicationContext)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int = START_STICKY
@@ -33,6 +37,7 @@ class HandoffForegroundService : Service() {
     override fun onDestroy() {
         isRunning = false
         stopService(Intent(this, CornerOverlayService::class.java))
+        PersistentChannel.stop()
         super.onDestroy()
     }
 

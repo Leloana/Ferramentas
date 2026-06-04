@@ -23,12 +23,29 @@ O daemon -- na sessao do usuario -- e quem abre navegador/Explorer/apps.
 
 Modos:
     python agente.py --daemon          # escuta em 127.0.0.1:8765 (sessao do usuario)
+    python agente.py --serve           # CANAL PERSISTENTE: relay stdin<->daemon (sessao 0/sshd)
     python agente.py --send            # le 1 descritor (JSON) do stdin e envia ao daemon
     python agente.py --send '<json>'   # idem, descritor como argumento
     python agente.py --once '<json>'   # executa direto neste processo (debug; ver aviso)
 
+CANAL PERSISTENTE (MELHORIAS_APPLE.md proposta A): em vez de abrir uma sessao SSH
+por evento (--send), o app mantem UMA sessao viva rodando `agente.py --serve`. O
+--serve e um RELAY burro: tudo que chega na stdin (do celular, via SSH) e repassado
+ao daemon local; tudo que o daemon devolve volta pela stdout (ao celular). Toda a
+logica (abrir UI, presenca, PC->Android) fica no daemon -- na sessao do usuario --,
+preservando a licao da Sessao 0/1: o --serve (sessao 0) NUNCA abre UI.
+
+Protocolo de controle (linhas JSON com a chave "_ctrl", para nao colidir com os
+descritores que usam "tipo"):
+    celular->daemon: {"_ctrl":"hello","device":"s24fe","name":"S24 FE"}
+                     {"_ctrl":"ping"}
+                     {"_ctrl":"activity","texto":"YouTube"}
+    daemon->celular: {"_ctrl":"pong"}
+                     {"_ctrl":"ack","ok":true}
+                     {"_ctrl":"push","desc":{...descritor PC->Android...}}
+
 Compatibilidade: se a linha recebida NAO for JSON, e tratada como URL pura
-(comportamento antigo do receiver.py).
+(comportamento antigo do receiver.py). O --send segue funcionando (fallback).
 
 Config: <pasta-do-script>/config.json (ver config.example.json).
 Log:    <home>/.handoff/agente.log
@@ -36,8 +53,10 @@ Log:    <home>/.handoff/agente.log
 import sys
 import os
 import json
+import time
 import socket
 import logging
+import threading
 import webbrowser
 import subprocess
 from pathlib import Path
@@ -58,6 +77,60 @@ DAEMON_HOST = os.environ.get("HANDOFF_HOST", "127.0.0.1")
 DAEMON_PORT = int(os.environ.get("HANDOFF_PORT", "8765"))
 
 IS_WINDOWS = os.name == "nt"
+
+# --------------------------------------------------------------------------- #
+# Estado compartilhado do canal persistente (proposta A)                       #
+#                                                                              #
+# Vive no processo do DAEMON (sessao do usuario). A UI do PC (painel.py) roda  #
+# no mesmo processo, entao le este estado direto (sem IPC). PRESENCA = quem    #
+# esta online; SERVE_CONNS = sockets dos relays --serve ativos, usados para    #
+# EMPURRAR eventos PC->Android (proposta E) de volta ao celular certo.         #
+# --------------------------------------------------------------------------- #
+_STATE_LOCK = threading.Lock()
+PRESENCA: dict = {}      # device_id -> {"name", "online", "last_seen", "atividade"}
+SERVE_CONNS: dict = {}   # device_id -> socket (relay --serve vivo)
+
+
+def _agora() -> float:
+    return time.time()
+
+
+def presenca_marcar(device_id: str, **campos):
+    """Atualiza o estado de presenca de um dispositivo (thread-safe)."""
+    if not device_id:
+        return
+    with _STATE_LOCK:
+        dev = PRESENCA.setdefault(
+            device_id, {"name": device_id, "online": False, "last_seen": 0.0, "atividade": ""}
+        )
+        dev.update(campos)
+        dev["last_seen"] = _agora()
+
+
+def presenca_snapshot() -> list:
+    """Lista de dispositivos para a UI (copia segura)."""
+    with _STATE_LOCK:
+        return [dict(id=k, **v) for k, v in PRESENCA.items()]
+
+
+def push_para_dispositivo(device_id: str, descritor: dict) -> bool:
+    """Empurra um descritor PC->Android pelo relay --serve do dispositivo.
+
+    Usado pela aba 'Acoes rapidas' da UI (proposta E). Retorna False se o
+    dispositivo nao tiver um canal persistente vivo agora.
+    """
+    with _STATE_LOCK:
+        conn = SERVE_CONNS.get(device_id)
+    if conn is None:
+        logging.info(f"push falhou: {device_id!r} sem canal persistente vivo.")
+        return False
+    try:
+        linha = json.dumps({"_ctrl": "push", "desc": descritor}, ensure_ascii=False) + "\n"
+        conn.sendall(linha.encode("utf-8"))
+        return True
+    except OSError as e:
+        logging.warning(f"push erro p/ {device_id!r}: {e}")
+        return False
 
 
 def resolve_config_file() -> Path:
@@ -506,8 +579,80 @@ def send_mode() -> int:
     return 0
 
 
+def _handle_ctrl(msg: dict, conn: socket.socket, device_box: list) -> None:
+    """Trata uma mensagem de controle (_ctrl) vinda de um relay --serve.
+
+    device_box e uma lista de 1 posicao usada como referencia mutavel para o
+    id do dispositivo desta conexao (descoberto no 'hello'), de modo que a
+    limpeza no fim consiga desregistrar o socket.
+    """
+    ctrl = msg.get("_ctrl")
+    if ctrl == "hello":
+        device_id = str(msg.get("device") or "desconhecido")
+        device_box[0] = device_id
+        with _STATE_LOCK:
+            SERVE_CONNS[device_id] = conn
+        presenca_marcar(device_id, name=str(msg.get("name") or device_id), online=True)
+        logging.info(f"Canal persistente ON: {device_id}")
+        _responder(conn, {"_ctrl": "ack", "ok": True})
+    elif ctrl == "ping":
+        if device_box[0]:
+            presenca_marcar(device_box[0], online=True)
+        _responder(conn, {"_ctrl": "pong"})
+    elif ctrl == "activity":
+        if device_box[0]:
+            presenca_marcar(device_box[0], online=True, atividade=str(msg.get("texto") or ""))
+    else:
+        logging.debug(f"_ctrl desconhecido ignorado: {ctrl!r}")
+
+
+def _responder(conn: socket.socket, msg: dict) -> None:
+    try:
+        conn.sendall((json.dumps(msg, ensure_ascii=False) + "\n").encode("utf-8"))
+    except OSError as e:
+        logging.debug(f"resposta ao canal falhou (ignorado): {e}")
+
+
+def _handle_connection(conn: socket.socket, config: dict) -> None:
+    """Atende UMA conexao local. Funciona tanto para o --send (envia 1 linha e
+    fecha) quanto para o --serve (fica vivo, bidirecional). Le linha-a-linha
+    ate o outro lado fechar."""
+    device_box = [None]
+    try:
+        f = conn.makefile("rb")
+        for raw in f:
+            line = raw.decode("utf-8", "replace").strip()
+            if not line:
+                continue
+            if line[0] == "{":
+                try:
+                    obj = json.loads(line)
+                except json.JSONDecodeError as e:
+                    logging.error(f"JSON invalido no canal: {e} -- {line[:120]!r}")
+                    continue
+                if isinstance(obj, dict) and "_ctrl" in obj:
+                    _handle_ctrl(obj, conn, device_box)
+                    continue
+            # Descritor normal (ou URL pura): resolve e abre a UI nesta sessao.
+            process_line(line, config)
+    except Exception as e:
+        logging.error(f"Erro na conexao: {e}")
+    finally:
+        dev = device_box[0]
+        if dev:
+            with _STATE_LOCK:
+                if SERVE_CONNS.get(dev) is conn:
+                    SERVE_CONNS.pop(dev, None)
+            presenca_marcar(dev, online=False)
+            logging.info(f"Canal persistente OFF: {dev}")
+        try:
+            conn.close()
+        except OSError:
+            pass
+
+
 def daemon_loop(config: dict):
-    """Escuta TCP local e resolve cada descritor recebido (1 por linha)."""
+    """Escuta TCP local; uma thread por conexao (suporta --send e --serve)."""
     srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     try:
@@ -516,7 +661,7 @@ def daemon_loop(config: dict):
         logging.info(f"Bind falhou ({e}); daemon provavelmente ja ativo. Saindo.")
         print(f"Agente ja parece estar rodando em {DAEMON_HOST}:{DAEMON_PORT}.")
         return
-    srv.listen(5)
+    srv.listen(8)
     logging.info(f"Agente ouvindo em {DAEMON_HOST}:{DAEMON_PORT}")
     print(f"Agente Ecossistema ouvindo em {DAEMON_HOST}:{DAEMON_PORT}", flush=True)
     notify("Ecossistema", "Agente ativo na sua sessao")
@@ -524,16 +669,107 @@ def daemon_loop(config: dict):
         while True:
             try:
                 conn, _ = srv.accept()
-                with conn:
-                    data = conn.recv(65536).decode("utf-8", "replace")
-                    for line in data.splitlines():
-                        process_line(line, config)
+                threading.Thread(
+                    target=_handle_connection, args=(conn, config), daemon=True
+                ).start()
             except KeyboardInterrupt:
                 break
             except Exception as e:
-                logging.error(f"Erro no daemon: {e}")
+                logging.error(f"Erro ao aceitar conexao: {e}")
     finally:
         srv.close()
+
+
+def serve_mode() -> int:
+    """CANAL PERSISTENTE (proposta A): relay bidirecional stdin<->daemon.
+
+    Roda na sessao do sshd (sessao 0). NAO abre UI -- so encaminha. Tudo da
+    stdin (celular) vai ao daemon; tudo do daemon volta pela stdout (celular).
+    Sai quando qualquer lado fecha, para o app reconectar com backoff.
+    """
+    try:
+        sock = socket.create_connection((DAEMON_HOST, DAEMON_PORT), timeout=3)
+    except OSError as e:
+        msg = (f"Daemon nao esta rodando em {DAEMON_HOST}:{DAEMON_PORT} ({e}). "
+               f"Inicie-o com: pythonw agente.py --daemon (ou start-agente.vbs).")
+        logging.error(msg)
+        print(msg, file=sys.stderr)
+        return 1
+
+    parar = threading.Event()
+
+    def bombeia_entrada():
+        """celular (stdin) -> daemon. Ao acabar a stdin (EOF), faz meio-fecho do
+        socket (SHUT_WR) mas NAO encerra o relay: continua drenando a saida ate o
+        daemon encerrar — assim respostas em transito (ack/pong/push) nao se perdem."""
+        try:
+            for raw in sys.stdin.buffer:
+                if not raw.endswith(b"\n"):
+                    raw += b"\n"
+                sock.sendall(raw)
+        except Exception as e:
+            logging.debug(f"serve entrada encerrada: {e}")
+        finally:
+            try:
+                sock.shutdown(socket.SHUT_WR)
+            except OSError:
+                pass
+
+    def bombeia_saida():
+        """daemon -> celular (stdout). O fim DESTA bomba (daemon/SSH fechou) e o
+        que encerra o relay."""
+        try:
+            f = sock.makefile("rb")
+            for raw in f:
+                sys.stdout.buffer.write(raw)
+                sys.stdout.buffer.flush()
+        except Exception as e:
+            logging.debug(f"serve saida encerrada: {e}")
+        finally:
+            parar.set()
+
+    t_in = threading.Thread(target=bombeia_entrada, daemon=True)
+    t_out = threading.Thread(target=bombeia_saida, daemon=True)
+    t_in.start()
+    t_out.start()
+    parar.wait()
+    try:
+        sock.close()
+    except OSError:
+        pass
+    return 0
+
+
+def pair_info_mode() -> int:
+    """Imprime a info do QR (JSON) no stdout. Usado pela UI do PC (painel.py)."""
+    import pareamento
+    info = pareamento.monta_info(port=int(os.environ.get("HANDOFF_SSH_PORT", "22")))
+    print(json.dumps(info, ensure_ascii=False))
+    return 0
+
+
+def pair_mode() -> int:
+    """Modo CLI de pareamento: mostra a info + QR (ASCII) e abre o canal."""
+    import pareamento
+    info = pareamento.monta_info(port=int(os.environ.get("HANDOFF_SSH_PORT", "22")))
+    texto = pareamento.info_para_qr_texto(info)
+    print("==> Emparelhamento por QR")
+    print(f"    host={info.get('host')} port={info.get('port')} user={info.get('user')}")
+    print(f"    fingerprint={info.get('fp')}")
+    print(f"    token={info.get('token')} pair_port={info.get('pair_port')}")
+    ascii_qr = pareamento.render_qr_ascii(texto)
+    if ascii_qr:
+        print(ascii_qr)
+    else:
+        print("    (instale 'qrcode' para ver o QR; conteudo abaixo)")
+        print("   ", texto)
+    print("    Escaneie no app do celular. Aguardando...")
+    res = pareamento.servir_pareamento(info)
+    if res:
+        print(f"    OK: pareado com {res.get('name')}.")
+        return 0
+    print("    Pareamento expirou sem dispositivo.", file=sys.stderr)
+    return 1
 
 
 def main() -> int:
@@ -543,11 +779,17 @@ def main() -> int:
         # Lista os apps do PC em JSON no stdout (o celular le isso via SSH).
         print(json.dumps(list_apps(), ensure_ascii=False))
         return 0
+    if "--pair-info" in sys.argv:
+        return pair_info_mode()
+    if "--pair" in sys.argv:
+        return pair_mode()
     if "--daemon" in sys.argv:
         logging.info("Daemon iniciado")
         hide_console_window()
         daemon_loop(config)
         return 0
+    if "--serve" in sys.argv:
+        return serve_mode()
     if "--send" in sys.argv:
         return send_mode()
     if "--once" in sys.argv:
