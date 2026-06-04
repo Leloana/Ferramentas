@@ -5,8 +5,12 @@ Compartilhe (ou "arraste pro canto") algo no **Android** e ele continua no
 link no navegador, pasta no Explorer, arquivo no app padrão, texto no clipboard.
 Estilo "Handoff" da Apple, sobre **SSH** na LAN (e **Tailscale** fora de casa).
 
+> 📖 **Quer só usar?** Veja o **[Guia de Uso completo (passo a passo)](GUIA_DE_USO.md)** —
+> do zero: servidor SSH no PC, Termux + chave no celular, instalar o agente,
+> instalar e configurar o app, permissões, bolha de atalhos e personalização.
+
 Visão completa, princípios e roadmap: ver [`PLANO.md`](PLANO.md). Este README
-cobre o **Marco 1** (seção 5 do plano).
+cobre o **Marco 1** (seção 5 do plano) e a **arquitetura/protocolo**.
 
 ## Como funciona
 
