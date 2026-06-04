@@ -77,6 +77,14 @@ New-NetFirewallRule -Name "Handoff-SSH-In-TCP" -DisplayName "Handoff SSH (sshd 2
     -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22 -Profile Any | Out-Null
 Write-Host "    Regra de porta 22 (Any) criada/atualizada." -ForegroundColor Green
 
+# Porta de pareamento por QR (proposta B): o celular conecta no PC em 8766 para
+# entregar a chave publica. Sem esta regra o pareamento pela rede expira (o
+# Windows bloqueia inbound por padrao). So a janela de --pair usa a porta.
+Remove-NetFirewallRule -Name "Handoff-Pair-In-TCP" -ErrorAction SilentlyContinue
+New-NetFirewallRule -Name "Handoff-Pair-In-TCP" -DisplayName "Handoff Pareamento (QR 8766)" `
+    -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 8766 -Profile Any | Out-Null
+Write-Host "    Regra de porta 8766 (pareamento, Any) criada/atualizada." -ForegroundColor Green
+
 Write-Host "==> Autorizando chave publica do celular..." -ForegroundColor Cyan
 # Conta admin: o sshd_config padrao do Windows aponta para administrators_authorized_keys.
 $adminKeys = Join-Path $env:ProgramData "ssh\administrators_authorized_keys"
