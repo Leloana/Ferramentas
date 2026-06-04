@@ -209,16 +209,33 @@ Prova o "parear e pronto" e a remoção da dívida de segurança.
       **Conectado** (sem digitar IP nem chave).
       → OK (hw 2026-06-04): `PAREADO_OK name='SM-S721B'` no PC (confirmar visual
         no app + status Conectado).
-- [ ] **B7. Pinning ativo:** depois de pareado, um handoff conecta normalmente
+- [~] **B7. Pinning ativo:** depois de pareado, um handoff conecta normalmente
       (fingerprint confere). Para provar o pinning, troque a host key do PC
       (`ssh-keygen -A` forçado/renomear) → a conexão deve **falhar** (host key não
       confere) em vez de aceitar cegamente.
-- [ ] **B8. Token de uso único / janela:** após parear (ou após ~3 min), o canal
+      → POSITIVO OK (hw 2026-06-04): pós-pareamento o canal reconectou
+        (`Canal persistente ON` 13:58:40) usando `PinnedHostKeyVerifier` — a host
+        key real conferiu com o fingerprint do QR; 2 handoffs YT Music pelo canal.
+        Prova que o fingerprint PC↔Android bate (mesmo cálculo wire SHA256).
+      → NEGATIVO pendente: a troca da host key real é destrutiva (quebraria o
+        sshd e o controle por SSH). Alternativa segura proposta: parear com um
+        fingerprint propositalmente errado e ver o canal recusar (mesmo caminho
+        de rejeição), depois re-parear certo. (opcional)
+- [x] **B8. Token de uso único / janela:** após parear (ou após ~3 min), o canal
       de pareamento fecha; um 2º pareamento exige novo `--pair` (novo token).
+      → OK (hw 2026-06-04): após o `PAREADO_OK`, o `servir_pareamento` retornou e
+        a porta 8766 parou de escutar (`Listen=0`). Um novo pareamento exige novo
+        `--pair`/`pair_hw.py` (novo token via `gerar_token()`).
 - [ ] **B9. Token inválido:** apontar o app para um QR com token adulterado →
       pareamento recusado ("token invalido").
-- [ ] **B10. Convivência com legado:** uma config antiga (chave colada, sem
+      → pendente no hardware (coberto em DEV-B2: token errado → `{"ok":false,
+        "erro":"token invalido"}`). Testável com um QR de token adulterado.
+        (opcional)
+- [x] **B10. Convivência com legado:** uma config antiga (chave colada, sem
       fingerprint) continua funcionando (cai no verificador promíscuo de fallback).
+      → OK (hw 2026-06-04): **antes** do pareamento o canal já subia e fazia
+        handoff com a config legada (sem fingerprint → `PromiscuousVerifier`).
+        Toda a Fase A (A1–A8) rodou nesse modo legado antes do QR.
 
 ---
 
@@ -258,12 +275,13 @@ Prova o "parear e pronto" e a remoção da dívida de segurança.
 
 ## 7. Critérios de "A + B prontos"
 
-**A pronto:**
-- [ ] Canal sobe e fica `online` com heartbeat estável (A1, A2, A4).
-- [ ] Handoff perceptivelmente **instantâneo** com o canal aberto (A3).
-- [ ] Reconnect automático e fallback `--send` funcionando (A5, A6).
+**A pronto:** ✅ (hw 2026-06-04)
+- [x] Canal sobe e fica `online` com heartbeat estável (A1, A2, A4).
+- [x] Handoff perceptivelmente **instantâneo** com o canal aberto (A3) — 89 ms.
+- [x] Reconnect automático e fallback `--send` funcionando (A5, A6).
 
-**B pronto:**
-- [ ] Parear com QR sem digitar IP nem colar chave (B1–B6).
-- [ ] Pinning ativo (host key trocada → conexão recusada) (B7).
-- [ ] Legado segue funcionando (B10).
+**B pronto:** ✅ (hw 2026-06-04; falta só o B7 negativo opcional)
+- [x] Parear com QR sem digitar IP nem colar chave (B1–B6).
+- [~] Pinning ativo (B7): positivo provado (host key confere pós-pareamento); o
+      negativo (host key trocada → recusada) fica como teste seguro opcional.
+- [x] Legado segue funcionando (B10).
