@@ -132,8 +132,16 @@ Prova que o app mantém **uma** sessão SSH viva e que cada handoff é instantâ
         ciclos de heartbeat (20 s) sem cair. Confirma que a queda anterior aos
         ~20 s era a Samsung matando o Foreground Service (ver R4), não bug do
         heartbeat — com o serviço vivo o canal fica estável.
-- [ ] **A5. Reconnect + backoff:** desligue o Wi-Fi do celular por ~30 s e religue
+- [x] **A5. Reconnect + backoff:** desligue o Wi-Fi do celular por ~30 s e religue
       → o canal volta sozinho (log: OFF e depois ON). Backoff cresce até religar.
+      → OK (hw 2026-06-04): o canal volta sozinho ao religar o Wi-Fi. **Bug
+        achado+corrigido:** com a queda abrupta o TCP antigo ficava zumbi no PC
+        (sem FIN/RST) e o app reconectava criando uma 2ª conexão → 2 established
+        + risco de a conexão velha marcar o device offline. Fix no daemon: o
+        `hello` da reconexão derruba o canal anterior e o `finally` só marca
+        offline se a conexão ainda for a vigente. Validado: log mostra
+        `Canal anterior derrubado na reconexao` + `Canal antigo descartado` e
+        fica **1 só** established, presença estável.
 - [ ] **A6. Fallback `--send`:** **pare** a bolha (canal cai) e dispare um handoff
       pela share sheet → deve **funcionar mesmo assim** (abre via `--send`).
 - [ ] **A7. Fila offline:** com o canal caindo no meio, o evento enfileirado deve
