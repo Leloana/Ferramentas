@@ -29,8 +29,9 @@ data class HandoffTool(
                 title = "Link da tela",
                 description = "Manda a página aberta no navegador para abrir no PC.",
                 howItWorks = "Lê a URL da barra de endereço via Acessibilidade. " +
-                    "Precisa do navegador (Chrome/Samsung Internet) em foco e da " +
-                    "permissão de Acessibilidade. Links do YouTube vão com o tempo (t=).",
+                    "Funciona melhor no Samsung Internet; o Chrome recente costuma " +
+                    "esconder a URL — nesse caso use Compartilhar → Ecossistema. " +
+                    "Links do YouTube vão com o tempo (t=).",
             ),
             HandoffTool(
                 id = "clipboard",
@@ -87,7 +88,9 @@ object ToolRunner {
         "link" -> {
             val url = HandoffAccessibilityService.lastUrl
             if (url.isNullOrBlank()) {
-                toast(context, "Nenhuma URL em foco. Abra uma página no navegador (e ative a Acessibilidade).")
+                // O Chrome recente costuma nao expor a URL pela Acessibilidade.
+                // Orienta o caminho robusto: Compartilhar -> Ecossistema.
+                toast(context, "Não consegui ler a URL (o Chrome esconde). Use Compartilhar → Ecossistema.")
                 null
             } else {
                 HandoffManager.fromSharedText(url)

@@ -17,6 +17,9 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <!-- Religar o serviço/overlay após reiniciar o celular. -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Pedir isenção da otimização de bateria (diálogo direto): sem isso a
+         Samsung mata o Foreground Service (a bolha some e o canal cai). -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <!-- Camera: ler o QR de pareamento mostrado pelo PC (proposta B). -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />

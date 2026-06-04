@@ -243,6 +243,16 @@ private fun HomeScreen() {
                             } else {
                                 HandoffForegroundService.start(context)
                                 serviceOn = true
+                                // Sem a isenção de bateria a Samsung mata o serviço
+                                // (a bolha some e o canal cai). Nudge na 1ª vez.
+                                if (!batteryIgnored(context)) {
+                                    Toast.makeText(
+                                        context,
+                                        "Para a bolha não ser desligada pelo sistema, permita ignorar a otimização de bateria.",
+                                        Toast.LENGTH_LONG,
+                                    ).show()
+                                    openBatterySettings(context)
+                                }
                             }
                         } else {
                             HandoffForegroundService.stop(context)
@@ -311,7 +321,9 @@ private fun HomeScreen() {
         PermissionRow("Acesso de uso", obrigatoria = false, granted = usageOk,
             detail = "Opcional: ajuda a inferir o app em foco.") { openUsageAccessSettings(context) }
         PermissionRow("Ignorar otimização de bateria", obrigatoria = false, granted = batteryOk,
-            detail = "Opcional: evita o sistema matar o serviço.") { openBatterySettings(context) }
+            detail = "Recomendado na Samsung: sem isso o sistema mata a bolha e o canal cai.") {
+            openBatterySettings(context)
+        }
     }
 }
 
