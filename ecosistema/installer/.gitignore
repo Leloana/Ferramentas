@@ -2,3 +2,7 @@
 build/
 dist/
 *.spec
+# ...exceto este: e a config de build canonica (hiddenimports do painel:
+# painel/pareamento/tkinter/PIL/qrcode/pystray sao importados sob demanda e
+# nao seriam descobertos pela analise estatica). Versionado de proposito.
+!ecossistema-agente.spec

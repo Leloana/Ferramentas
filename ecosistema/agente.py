@@ -22,6 +22,7 @@ na sessao 0 do servico) apenas ENTREGA o descritor ao daemon pelo modo --send.
 O daemon -- na sessao do usuario -- e quem abre navegador/Explorer/apps.
 
 Modos:
+    python agente.py --panel           # painel grafico + HOSPEDA o daemon (sessao do usuario)
     python agente.py --daemon          # escuta em 127.0.0.1:8765 (sessao do usuario)
     python agente.py --serve           # CANAL PERSISTENTE: relay stdin<->daemon (sessao 0/sshd)
     python agente.py --send            # le 1 descritor (JSON) do stdin e envia ao daemon
@@ -617,6 +618,16 @@ def _handle_ctrl(msg: dict, conn: socket.socket, device_box: list) -> None:
     elif ctrl == "activity":
         if device_box[0]:
             presenca_marcar(device_box[0], online=True, atividade=str(msg.get("texto") or ""))
+    elif ctrl == "shutdown":
+        # Pedido de "takeover": o painel (painel.py) vai HOSPEDAR o proprio daemon
+        # e precisa da porta 8765 livre. Como so pode haver UM daemon (o bind e
+        # exclusivo), o daemon headless que estava rodando se encerra aqui para o
+        # painel assumir. os._exit encerra ESTE processo (headless) na hora,
+        # liberando o socket; o painel entao faz o bind. Inofensivo se o pedido
+        # vier do proprio painel para um daemon de outra origem.
+        logging.info("Recebido _ctrl=shutdown; encerrando este daemon para o painel assumir.")
+        _responder(conn, {"_ctrl": "bye"})
+        os._exit(0)
     else:
         logging.debug(f"_ctrl desconhecido ignorado: {ctrl!r}")
 
@@ -675,8 +686,12 @@ def _handle_connection(conn: socket.socket, config: dict) -> None:
             pass
 
 
-def daemon_loop(config: dict):
-    """Escuta TCP local; uma thread por conexao (suporta --send e --serve)."""
+def daemon_loop(config: dict, parar: "threading.Event" = None):
+    """Escuta TCP local; uma thread por conexao (suporta --send e --serve).
+
+    `parar` (opcional) e um threading.Event: quando setado, o loop encerra e
+    LIBERA a porta 8765. Usado pelo painel (painel.py) para devolver a porta a um
+    daemon headless ao 'Sair'. O CLI --daemon chama sem `parar` (roda para sempre)."""
     srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     try:
@@ -686,22 +701,34 @@ def daemon_loop(config: dict):
         print(f"Agente ja parece estar rodando em {DAEMON_HOST}:{DAEMON_PORT}.")
         return
     srv.listen(8)
+    # Timeout curto no accept para o loop poder checar `parar` periodicamente.
+    # Negligenciavel para o CLI --daemon (so acorda 1x/s). IMPORTANTE: o socket
+    # ACEITO herda esse timeout; o --send e o canal persistente --serve precisam
+    # ser BLOQUEANTES, entao restauramos com settimeout(None) logo apos o accept.
+    srv.settimeout(1.0)
     logging.info(f"Agente ouvindo em {DAEMON_HOST}:{DAEMON_PORT}")
     print(f"Agente Ecossistema ouvindo em {DAEMON_HOST}:{DAEMON_PORT}", flush=True)
     notify("Ecossistema", "Agente ativo na sua sessao")
     try:
-        while True:
+        while parar is None or not parar.is_set():
             try:
                 conn, _ = srv.accept()
-                threading.Thread(
-                    target=_handle_connection, args=(conn, config), daemon=True
-                ).start()
+            except socket.timeout:
+                continue
             except KeyboardInterrupt:
                 break
-            except Exception as e:
+            except OSError as e:
+                if parar is not None and parar.is_set():
+                    break
                 logging.error(f"Erro ao aceitar conexao: {e}")
+                continue
+            conn.settimeout(None)  # restaura modo bloqueante (--serve/--send)
+            threading.Thread(
+                target=_handle_connection, args=(conn, config), daemon=True
+            ).start()
     finally:
         srv.close()
+        logging.info("daemon_loop encerrado (porta 8765 liberada).")
 
 
 def serve_mode() -> int:
@@ -825,6 +852,12 @@ def main() -> int:
         hide_console_window()
         daemon_loop(config)
         return 0
+    if "--panel" in sys.argv:
+        # Painel grafico (mesma sessao do usuario). HOSPEDA o daemon no proprio
+        # processo (le presenca_snapshot() direto, sem IPC) e mostra o QR sempre.
+        # Importado sob demanda para nao puxar tkinter nos modos CLI/SSH.
+        import painel
+        return painel.main()
     if "--serve" in sys.argv:
         return serve_mode()
     if "--send" in sys.argv:

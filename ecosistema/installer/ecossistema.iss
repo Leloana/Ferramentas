@@ -58,7 +58,10 @@ Root: HKCU; Subkey: "Software\Ecossistema"; ValueType: string; \
   ValueName: "InstallPath"; ValueData: "{app}"; Flags: uninsdeletekey
 
 [Icons]
-Name: "{group}\Agente Ecossistema (daemon)"; Filename: "{app}\{#AgentExe}"; Parameters: "--daemon"
+; Painel grafico (HOSPEDA o daemon; assume a porta se o daemon headless ja roda).
+Name: "{group}\Painel Ecossistema"; Filename: "{app}\{#AgentExe}"; Parameters: "--panel"
+Name: "{autoprograms}\Painel Ecossistema"; Filename: "{app}\{#AgentExe}"; Parameters: "--panel"
+Name: "{group}\Agente Ecossistema (daemon headless)"; Filename: "{app}\{#AgentExe}"; Parameters: "--daemon"
 Name: "{group}\Pasta de instalação"; Filename: "{app}"
 Name: "{group}\Configurar SSH (Admin) — setup-windows.ps1"; Filename: "powershell.exe"; \
   Parameters: "-NoProfile -ExecutionPolicy Bypass -File ""{app}\setup-windows.ps1"""
@@ -67,7 +70,10 @@ Name: "{group}\Desinstalar Ecossistema"; Filename: "{uninstallexe}"
 [Run]
 ; Sobe o agente logo após instalar (oculto: o exe esconde a própria janela em --daemon).
 Filename: "{app}\{#AgentExe}"; Parameters: "--daemon"; \
-  Description: "Iniciar o agente agora"; Flags: nowait postinstall skipifsilent
+  Description: "Iniciar o agente (daemon headless) agora"; Flags: nowait postinstall skipifsilent
+; Ou abrir o painel grafico (assume a porta do daemon headless automaticamente).
+Filename: "{app}\{#AgentExe}"; Parameters: "--panel"; \
+  Description: "Abrir o painel agora"; Flags: nowait postinstall skipifsilent unchecked
 
 [UninstallRun]
 Filename: "{sys}\taskkill.exe"; Parameters: "/im {#AgentExe} /f"; Flags: runhidden; RunOnceId: "KillAgente"
