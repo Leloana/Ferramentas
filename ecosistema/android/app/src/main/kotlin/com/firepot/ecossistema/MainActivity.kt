@@ -248,7 +248,8 @@ private fun HomeScreen() {
                                 if (!batteryIgnored(context)) {
                                     Toast.makeText(
                                         context,
-                                        "Para a bolha não ser desligada pelo sistema, permita ignorar a otimização de bateria.",
+                                        "Vai abrir \"Otimizar bateria?\" — toque em NÃO (não otimizar) " +
+                                            "para o sistema não desligar a bolha.",
                                         Toast.LENGTH_LONG,
                                     ).show()
                                     openBatterySettings(context)
