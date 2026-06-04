@@ -689,6 +689,11 @@ def serve_mode() -> int:
     """
     try:
         sock = socket.create_connection((DAEMON_HOST, DAEMON_PORT), timeout=3)
+        # create_connection deixa o timeout do connect (3s) GRUDADO no socket.
+        # O relay precisa ser BLOQUEANTE: sem isso, a leitura do daemon estoura
+        # socket.timeout apos 3s ociosos, a bomba morre e o canal cai a cada 3s
+        # (o 1o heartbeat so vem aos 20s, nunca a tempo). settimeout(None) = blocking.
+        sock.settimeout(None)
     except OSError as e:
         msg = (f"Daemon nao esta rodando em {DAEMON_HOST}:{DAEMON_PORT} ({e}). "
                f"Inicie-o com: pythonw agente.py --daemon (ou start-agente.vbs).")
