@@ -591,7 +591,22 @@ def _handle_ctrl(msg: dict, conn: socket.socket, device_box: list) -> None:
         device_id = str(msg.get("device") or "desconhecido")
         device_box[0] = device_id
         with _STATE_LOCK:
+            anterior = SERVE_CONNS.get(device_id)
             SERVE_CONNS[device_id] = conn
+        # Se ja existia um canal para este device (reconexao apos o Wi-Fi cair,
+        # com o TCP antigo ainda "vivo" no PC por nao ter recebido FIN/RST),
+        # derruba o zumbi agora para nao acumular conexao/thread orfas. O finally
+        # daquela conexao vera que ela nao e mais a vigente e nao marcara offline.
+        if anterior is not None and anterior is not conn:
+            try:
+                anterior.shutdown(socket.SHUT_RDWR)
+            except OSError:
+                pass
+            try:
+                anterior.close()
+            except OSError:
+                pass
+            logging.info(f"Canal anterior derrubado na reconexao: {device_id}")
         presenca_marcar(device_id, name=str(msg.get("name") or device_id), online=True)
         logging.info(f"Canal persistente ON: {device_id}")
         _responder(conn, {"_ctrl": "ack", "ok": True})
@@ -640,11 +655,20 @@ def _handle_connection(conn: socket.socket, config: dict) -> None:
     finally:
         dev = device_box[0]
         if dev:
+            ainda_atual = False
             with _STATE_LOCK:
                 if SERVE_CONNS.get(dev) is conn:
                     SERVE_CONNS.pop(dev, None)
-            presenca_marcar(dev, online=False)
-            logging.info(f"Canal persistente OFF: {dev}")
+                    ainda_atual = True
+            # So marca offline/loga OFF se ESTA conexao ainda era a vigente do
+            # device. Uma conexao antiga (substituida por uma reconexao, ex.: o
+            # Wi-Fi caiu e o TCP velho ficou zumbi) NAO deve marcar o device
+            # offline — ele segue online pela conexao nova.
+            if ainda_atual:
+                presenca_marcar(dev, online=False)
+                logging.info(f"Canal persistente OFF: {dev}")
+            else:
+                logging.info(f"Canal antigo descartado (reconexao): {dev}")
         try:
             conn.close()
         except OSError:
