@@ -1,0 +1,11 @@
+--index-url https://download.pytorch.org/whl/cu124
+--extra-index-url https://pypi.org/simple
+torch==2.6.0+cu124
+torchaudio==2.6.0+cu124
+coqui-tts>=0.26
+transformers>=4.57,<5.0
+fastapi==0.136.1
+uvicorn==0.47.0
+python-multipart
+ollama==0.6.2
+soundfile

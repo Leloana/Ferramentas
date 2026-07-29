@@ -25,6 +25,10 @@ Este repositório (`Ferramentas`) agrupa scripts, automações e ecossistemas in
 * **Descrição:** Conversor em lote ou individual de documentos Microsoft Word (`.docx`) para PDF utilizando a API nativa do Word no Windows.
 * **Stack:** Python (`pywin32`).
 
+### 5. 🗣️ Plataforma de TTS em Português (`/tts_platform_pt`)
+* **Descrição:** Servidor web local que sintetiza fala em português com o modelo **XTTS-v2** (Coqui, Hugging Face — multilíngue, clonagem de voz zero-shot), com normalização opcional de texto (siglas, abreviações, números, pontuação) via **Ollama** local antes da síntese.
+* **Stack:** FastAPI (Python), Vanilla JS, PyTorch (CUDA), Coqui TTS, Ollama.
+
 ---
 
 ## 🚀 Comandos Frequentes por Projeto
@@ -72,6 +76,13 @@ Este repositório (`Ferramentas`) agrupa scripts, automações e ecossistemas in
 * **Converter pasta inteira:**
   ```powershell
   python converter.py "caminho/da/pasta"
+  ```
+
+### Plataforma de TTS em Português
+* **Ambiente:** `cd tts_platform_pt; .\venv\Scripts\Activate.ps1`
+* **Executar Servidor:**
+  ```powershell
+  uvicorn server.main:app --reload --port 8010
   ```
 
 ---

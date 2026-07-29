@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TTS em Português</title>
+  <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+  <main class="container">
+    <h1>🗣️ TTS em Português</h1>
+    <p class="subtitulo">XTTS-v2 (Coqui) + normalização de texto via Ollama</p>
+
+    <label for="texto">Texto</label>
+    <textarea id="texto" rows="6" placeholder="Digite o texto a ser narrado..."></textarea>
+
+    <div class="linha">
+      <div class="campo">
+        <label for="voz">Voz</label>
+        <select id="voz"></select>
+      </div>
+
+      <div class="campo">
+        <label for="upload-voz">Clonar nova voz (.wav)</label>
+        <input type="file" id="upload-voz" accept=".wav">
+      </div>
+    </div>
+
+    <label class="checkbox">
+      <input type="checkbox" id="normalizar" checked>
+      Normalizar texto com IA (Ollama) antes de sintetizar
+    </label>
+
+    <button id="gerar">Gerar áudio</button>
+
+    <p id="status"></p>
+
+    <div id="resultado" class="resultado" hidden>
+      <audio id="player" controls></audio>
+      <a id="baixar" download="audio.wav">Baixar .wav</a>
+      <details id="texto-usado-wrap">
+        <summary>Texto usado na síntese</summary>
+        <p id="texto-usado"></p>
+      </details>
+    </div>
+  </main>
+
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>

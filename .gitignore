@@ -47,6 +47,12 @@ pipeline-project/.srclight/
 # Player Profiles
 karaoke/players/
 
+# TTS Platform: áudio gerado e vozes clonadas enviadas pelo usuário
+tts_platform_pt/server/output/*
+!tts_platform_pt/server/output/.gitkeep
+tts_platform_pt/server/voices/custom/*
+!tts_platform_pt/server/voices/custom/.gitkeep
+
 # Notes
 karaoke/anotar.txt
 
