@@ -13,16 +13,19 @@
 
     <label for="texto">Texto</label>
     <textarea id="texto" rows="6" placeholder="Digite o texto a ser narrado..."></textarea>
+    <p id="contador-tokens" class="contador-tokens" hidden></p>
 
     <div class="linha">
       <div class="campo">
         <label for="voz">Voz</label>
-        <select id="voz"></select>
+        <select id="voz" disabled>
+          <option>Carregando vozes...</option>
+        </select>
       </div>
 
       <div class="campo">
         <label for="upload-voz">Clonar nova voz (.wav)</label>
-        <input type="file" id="upload-voz" accept=".wav">
+        <input type="file" id="upload-voz" accept=".wav" disabled>
       </div>
     </div>
 
@@ -31,11 +34,15 @@
       Normalizar texto com IA (Ollama) antes de sintetizar
     </label>
 
-    <button id="gerar">Gerar áudio</button>
+    <button id="gerar" disabled>Gerar áudio</button>
 
-    <p id="status"></p>
+    <div class="status-linha">
+      <span id="spinner" class="spinner" hidden></span>
+      <p id="status">Carregando vozes... (na primeira vez, baixa o modelo XTTS-v2 do Hugging Face, ~1.8GB — pode levar alguns minutos)</p>
+    </div>
 
     <div id="resultado" class="resultado" hidden>
+      <p id="aviso-normalizacao" class="aviso" hidden></p>
       <audio id="player" controls></audio>
       <a id="baixar" download="audio.wav">Baixar .wav</a>
       <details id="texto-usado-wrap">

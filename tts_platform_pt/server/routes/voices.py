@@ -5,6 +5,7 @@ import re
 
 from fastapi import APIRouter, File, HTTPException, UploadFile
 
+import config
 from state import CUSTOM_VOICES_DIR, get_tts_engine
 
 router = APIRouter(prefix="/api/voices", tags=["voices"])
@@ -17,7 +18,11 @@ def list_voices():
     engine = get_tts_engine()
     embutidas = engine.list_builtin_speakers()
     personalizadas = sorted(p.name for p in CUSTOM_VOICES_DIR.glob("*.wav"))
-    return {"embutidas": embutidas, "personalizadas": personalizadas}
+    return {
+        "embutidas": embutidas,
+        "personalizadas": personalizadas,
+        "ollama_num_ctx": config.OLLAMA_NUM_CTX,
+    }
 
 
 @router.post("")

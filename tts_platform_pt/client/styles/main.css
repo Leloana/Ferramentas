@@ -48,6 +48,15 @@ textarea, select, input[type="file"] {
   font-family: inherit;
 }
 
+.contador-tokens {
+  margin: 0.35rem 0 0;
+  font-size: 0.8rem;
+  color: #9aa4b8;
+}
+
+.contador-tokens.atencao { color: #e8b339; }
+.contador-tokens.estourado { color: #e85d5d; }
+
 .linha {
   display: flex;
   gap: 1rem;
@@ -84,10 +93,33 @@ button:disabled {
   cursor: not-allowed;
 }
 
+.status-linha {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+}
+
 #status {
+  margin: 0;
   min-height: 1.2rem;
   color: #9aa4b8;
   font-size: 0.9rem;
+}
+
+.spinner {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.15rem;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: girar 0.7s linear infinite;
+}
+
+@keyframes girar {
+  to { transform: rotate(360deg); }
 }
 
 .resultado {
@@ -96,6 +128,16 @@ button:disabled {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 8px;
+}
+
+.aviso {
+  margin: 0 0 0.75rem;
+  padding: 0.5rem 0.7rem;
+  background: rgba(232, 179, 57, 0.12);
+  border: 1px solid #e8b339;
+  border-radius: 6px;
+  color: #e8b339;
+  font-size: 0.85rem;
 }
 
 .resultado audio { width: 100%; }

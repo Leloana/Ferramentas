@@ -29,7 +29,11 @@ def synthesize(req: SynthesizeRequest):
     if not texto:
         raise HTTPException(status_code=400, detail="Texto vazio.")
 
-    texto_usado = normalize(texto) if req.normalizar else texto
+    aviso_normalizacao = None
+    if req.normalizar:
+        texto_usado, aviso_normalizacao = normalize(texto)
+    else:
+        texto_usado = texto
 
     speaker = None
     speaker_wav = None
@@ -57,4 +61,8 @@ def synthesize(req: SynthesizeRequest):
         logger.error(f"Falha ao sintetizar áudio: {e}")
         raise HTTPException(status_code=500, detail="Falha ao gerar áudio.") from e
 
-    return {"audio_url": f"/audio/{output_path.name}", "texto_usado": texto_usado}
+    return {
+        "audio_url": f"/audio/{output_path.name}",
+        "texto_usado": texto_usado,
+        "aviso_normalizacao": aviso_normalizacao,
+    }
