@@ -4,8 +4,11 @@ torch==2.6.0+cu124
 torchaudio==2.6.0+cu124
 coqui-tts>=0.26
 transformers>=4.57,<5.0
+numpy
 fastapi==0.136.1
 uvicorn==0.47.0
 python-multipart
 ollama==0.6.2
 soundfile
+requests
+pysbd
