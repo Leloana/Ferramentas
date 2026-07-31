@@ -74,6 +74,12 @@ original); GPU CUDA recomendada (fallback automático para CPU, mais lento).
   também usado como LLM de refino de prompt) + `qwen_image_vae`. Reexportar
   aqui sempre que o workflow for alterado na UI do ComfyUI, senão o script
   roda contra uma versão desatualizada do grafo.
+- `scripts/montar_video.py` — monta o `.mp4` final de uma parte curta
+  (imagem com pan + áudio + legenda queimada) via `ffmpeg`, lido do CLI, não
+  de nenhuma API HTTP. Único dos scripts de automação que não depende do
+  servidor da plataforma nem do ComfyUI estarem rodando — só precisa que
+  `gerar_video.py` e `gerar_imagens.py` já tenham gerado os arquivos daquela
+  parte.
 
 ## Automação: `scripts/gerar_video.py`
 
@@ -146,6 +152,53 @@ Gera uma imagem de fundo por parte curta, usando o texto já agrupado por
   investigar, rode várias gerações seguidas com o mesmo prompt/seed e
   compare os tempos antes de mexer em configuração.
 
+## Automação: `scripts/montar_video.py`
+
+Junta imagem + áudio + legenda de uma parte curta num `.mp4` final, via
+`ffmpeg` (precisa estar no PATH — não é dependência Python).
+
+```powershell
+python scripts\montar_video.py Projetos\video-curto\humanidade_manifesto.json --parte 1
+```
+
+- Lê `frases` (timestamps por frase) do manifesto de `gerar_video.py` e a
+  imagem correspondente de `gerar_imagens.py`. Se a parte não tiver
+  `frases` no manifesto (gerada antes dessa timing existir), o script pede
+  pra rodar `gerar_video.py` de novo em vez de tentar adivinhar.
+- Saída em `<projeto>/montagem/<nome>_NN_<proporção>.mp4`.
+- **Efeito de movimento**: a imagem é gerada em 16:9 (mais larga que o
+  formato vertical de shorts); em vez de gerar mais imagens por parte, o
+  script escala a imagem pra bater a altura do vídeo final e desliza uma
+  janela do tamanho do formato-alvo da esquerda pra direita (`--efeito
+  pan-direita`, padrão) ou o inverso (`pan-esquerda`) ao longo da duração
+  do áudio — dá dinamismo reaproveitando a mesma imagem. Não tem efeito de
+  zoom implementado ainda (ficaria melhor pra quando a proporção pedida já
+  bate com a da imagem, onde não sobra largura pra pan).
+- **Legendas são subdivididas, não uma por frase**: uma frase inteira como
+  legenda única fica grande demais/lenta demais num vídeo vertical (chegou
+  a ocupar a tela toda em frases de 20+ palavras). `dividir_em_legendas()`
+  quebra cada frase em pedaços de ~6 palavras, interpolando o tempo de cada
+  pedaço proporcionalmente à contagem de palavras dentro do intervalo
+  conhecido da frase (não é medição real — o motor só dá timestamp por
+  frase, não por palavra; aproximação assume ritmo de fala ~constante
+  dentro da frase).
+- **Gotcha do ffmpeg que custou caro pra debugar**: o filtro `subtitles`
+  (`force_style=...:original_size=WxH`) espera em `original_size` o
+  tamanho do frame de **entrada do filtergraph** (a imagem original, antes
+  de qualquer `scale`/`crop`) — não o tamanho final pós-crop, apesar do
+  nome e da posição do parâmetro sugerirem isso. Passar o tamanho final ali
+  faz o libass calcular a escala errada: a legenda sai gigante (cobrindo a
+  tela inteira) e mal posicionada, mesmo com `FontSize` pequeno no
+  `force_style` — e o pior, isso acontece *silenciosamente*, sem warning
+  no log do ffmpeg (`-loglevel verbose` mostra o "Setting force_style to
+  value..." confirmando que a opção foi lida, então o instinto de "será que
+  não tá sendo aplicada" é um beco sem saída). Só ficou claro isolando com
+  fontes sintéticas (`color=`) em cadeias `scale,crop,subtitles` cada vez
+  mais simples até comparar `original_size` = tamanho pós-crop (quebrado)
+  vs tamanho da imagem de entrada (correto). Por isso `montar()` mede as
+  dimensões reais do PNG de entrada via `ffprobe` (`dimensoes_imagem()`) em
+  vez de reusar `largura`/`altura` do formato de saída.
+
 ## Gotchas
 
 - O checkpoint do XTTS-v2 (~1.8GB) baixa do Hugging Face no primeiro uso —
@@ -154,6 +207,23 @@ Gera uma imagem de fundo por parte curta, usando o texto já agrupado por
 - `voice_id` no formato `"custom:<arquivo>.wav"` usa clonagem via
   `speaker_wav`; qualquer outro valor é tratado como nome de locutor embutido
   do XTTS-v2 (`speaker=`). Ver `TTSEngine.synthesize` em `tts_engine.py`.
+- `TTSEngine.synthesize()` retorna `(output_path, frases)` — `frases` é uma
+  lista de `{texto, inicio_s, fim_s}` por sentença, calculada durante a
+  própria concatenação do áudio (a gente já sabe onde cada frase começa e
+  termina porque foi a gente quem montou o clipe, frase por frase — não
+  precisa de um passo de transcrição/alinhamento à parte pra gerar
+  legenda). `POST /api/synthesize` expõe isso no campo `frases` da
+  resposta; `gerar_video.py` persiste no manifesto. Ver `montar_video.py`
+  pra como isso vira `.srt`.
+- **Race condition no singleton do engine** (já corrigida, mas fácil de
+  reintroduzir se mexer em `get_tts_engine()`): rotas síncronas do FastAPI
+  (como `GET /api/voices`) rodam numa thread pool; sem lock, requests
+  concorrentes que chegam antes de `_engine` ser setado disparam múltiplas
+  construções de `TTSEngine()` em paralelo. Reproduzido na prática por um
+  client fazendo poll agressivo em `/api/voices` durante a subida do
+  servidor — gerou ~40 tentativas concorrentes de carregar o XTTS-v2.
+  `get_tts_engine()` agora usa double-checked locking (`_engine_lock`) pra
+  evitar isso.
 - Sem HTTPS/SSL (diferente do karaoke) — este servidor não captura microfone,
   então não precisa de contexto seguro; HTTP simples em `127.0.0.1:8011` basta.
 - **Bug conhecido do XTTS-v2 em português**: o modelo às vezes verbaliza "."

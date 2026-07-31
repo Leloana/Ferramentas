@@ -13,10 +13,57 @@
   "video_curto": [
     {
       "arquivo": "humanidade_01.wav",
-      "duracao_s": 64.1,
+      "duracao_s": 59.1,
       "texto": "Há trezentos mil anos, sob o sol implacável das savanas africanas, surgia o Homo sapiens. Fisicamente, não éramos a espécie mais forte, nem a mais rápida. Mas carregávamos uma anomalia evolutiva: um cérebro capaz de imaginar o que ainda não existia. Durante a maior parte da nossa história, a evolução caminhou a passos lentos, ditada puramente pela biologia. Nosso primeiro grande ato de rebelião contra as regras da natureza foi o domínio do fogo. Com ele, conquistamos a noite, aquecemos o frio e externalizamos a digestão, dando ao nosso cérebro a energia necessária para crescer. Por centenas de milênios, fomos nômades. Até que, há cerca de dez mil anos, decidimos parar. Ao longo de grandes rios — na Ásia, no Oriente Médio, na África e nas Américas —, a invenção da agricultura nos prendeu à terra, mas libertou o nosso tempo.",
       "texto_usado": "Há trezentos mil anos, sob o sol implacável das savanas africanas, surgia o Homo sapiens. Fisicamente, não éramos a espécie mais forte, nem a mais rápida. Mas carregávamos uma anomalia evolutiva: um cérebro capaz de imaginar o que ainda não existia. Durante a maior parte da nossa história, a evolução caminhou a passos lentos, ditada puramente pela biologia. Nosso primeiro grande ato de rebelião contra as regras da natureza foi o domínio do fogo. Com ele, conquistamos a noite, aquecemos o frio e externalizamos a digestão, dando ao nosso cérebro a energia necessária para crescer. Por centenas de milênios, fomos nômades. Até que, há cerca de dez mil anos, decidimos parar. Ao longo de grandes rios — na Ásia, no Oriente Médio, na África e nas Américas —, a invenção da agricultura nos prendeu à terra, mas libertou o nosso tempo.",
-      "aviso_normalizacao": null
+      "aviso_normalizacao": null,
+      "frases": [
+        {
+          "texto": "Há trezentos mil anos, sob o sol implacável das savanas africanas, surgia o Homo sapiens.",
+          "inicio_s": 0.0,
+          "fim_s": 6.18
+        },
+        {
+          "texto": "Fisicamente, não éramos a espécie mais forte, nem a mais rápida.",
+          "inicio_s": 6.53,
+          "fim_s": 10.99
+        },
+        {
+          "texto": "Mas carregávamos uma anomalia evolutiva: um cérebro capaz de imaginar o que ainda não existia.",
+          "inicio_s": 11.34,
+          "fim_s": 18.2
+        },
+        {
+          "texto": "Durante a maior parte da nossa história, a evolução caminhou a passos lentos, ditada puramente pela biologia.",
+          "inicio_s": 18.55,
+          "fim_s": 25.47
+        },
+        {
+          "texto": "Nosso primeiro grande ato de rebelião contra as regras da natureza foi o domínio do fogo.",
+          "inicio_s": 25.82,
+          "fim_s": 30.92
+        },
+        {
+          "texto": "Com ele, conquistamos a noite, aquecemos o frio e externalizamos a digestão, dando ao nosso cérebro a energia necessária para crescer.",
+          "inicio_s": 31.27,
+          "fim_s": 40.39
+        },
+        {
+          "texto": "Por centenas de milênios, fomos nômades.",
+          "inicio_s": 40.74,
+          "fim_s": 43.12
+        },
+        {
+          "texto": "Até que, há cerca de dez mil anos, decidimos parar.",
+          "inicio_s": 43.47,
+          "fim_s": 47.83
+        },
+        {
+          "texto": "Ao longo de grandes rios — na Ásia, no Oriente Médio, na África e nas Américas —, a invenção da agricultura nos prendeu à terra, mas libertou o nosso tempo.",
+          "inicio_s": 48.18,
+          "fim_s": 59.08
+        }
+      ]
     },
     {
       "arquivo": "humanidade_02.wav",

@@ -139,6 +139,7 @@ def main():
             "texto": bloco_texto,
             "texto_usado": info["texto_usado"],
             "aviso_normalizacao": info["aviso_normalizacao"],
+            "frases": info["frases"],
         })
 
     manifesto = {
@@ -152,6 +153,7 @@ def main():
             "duracao_s": round(duracao_longo, 1),
             "texto_usado": info_longo["texto_usado"],
             "aviso_normalizacao": info_longo["aviso_normalizacao"],
+            "frases": info_longo["frases"],
         },
         "video_curto": manifesto_partes,
     }

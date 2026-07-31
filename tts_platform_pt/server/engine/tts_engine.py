@@ -1,9 +1,11 @@
 import logging
 import os
 import re
+import threading
 
 os.environ.setdefault("COQUI_TOS_AGREED", "1")
 
+import numpy as np
 import torch
 from TTS.api import TTS
 
@@ -17,9 +19,62 @@ logger = logging.getLogger("TTSPlatform")
 # ainda produz a pausa esperada. Preserva pontos de números decimais (ex: "3.14").
 _PONTO_FINAL_RE = re.compile(r"(?<!\d)\.|\.(?!\d)")
 
+# Gap inserido manualmente entre frases sintetizadas separadamente. Medido
+# empiricamente: cada frase sintetizada isolada já vem com silêncio próprio
+# de abertura/fechamento; sem cortar isso primeiro, esse gap SOMA em cima
+# desse silêncio nativo e a pausa final fica bem mais longa que uma pausa
+# natural de "." (cheguei a medir 0.82s vs os ~0.55-0.6s de uma pausa natural
+# dentro de uma única chamada contínua). Por isso `synthesize` apara o
+# silêncio de cada frase (`_trim_silencio`) antes de somar este gap.
+_GAP_ENTRE_FRASES_S = 0.35
+_LIMIAR_SILENCIO_RMS = 0.01
+_JANELA_TRIM_S = 0.02
+# Margem mantida além do ponto onde o RMS cruza o limiar, pra não cortar
+# rente em cima de consoantes finais/decaimento natural mais baixo (ex.: "s"
+# no fim de uma palavra pode cair abaixo do limiar antes do som acabar de
+# verdade). Fade curto pra suavizar a transição pro silêncio em vez de um
+# corte abrupto (que soa como um "clique"/frase cortada mesmo quando nenhum
+# fonema é removido).
+_MARGEM_TRIM_S = 0.08
+_FADE_S = 0.03
+
 
 def _sanitizar_pontuacao_pt(text: str) -> str:
     return _PONTO_FINAL_RE.sub("|", text)
+
+
+def _trim_silencio(wav: np.ndarray, sample_rate: int) -> np.ndarray:
+    """Remove o silêncio nas bordas de um clipe sintetizado isoladamente.
+
+    Necessário porque cada frase é sintetizada com sua própria chamada (ver
+    `synthesize`), e o XTTS-v2 tende a incluir um silêncio de abertura/
+    fechamento natural do próprio clipe — sem isso, concatenar vários clipes
+    empilha esse silêncio nativo em cima do gap que inserimos entre eles.
+    Mantém uma margem além do limiar de RMS e aplica um fade-out curto no
+    final, pra não soar como a frase foi cortada bruscamente.
+    """
+    janela = int(sample_rate * _JANELA_TRIM_S)
+    n_janelas = len(wav) // janela
+    if n_janelas == 0:
+        return wav
+    rms = np.array([
+        np.sqrt(np.mean(wav[i * janela:(i + 1) * janela] ** 2))
+        for i in range(n_janelas)
+    ])
+    acima = np.where(rms >= _LIMIAR_SILENCIO_RMS)[0]
+    if len(acima) == 0:
+        return wav
+
+    margem = int(sample_rate * _MARGEM_TRIM_S)
+    inicio = max(0, acima[0] * janela - margem)
+    fim = min((acima[-1] + 1) * janela + margem, len(wav))
+    trecho = wav[inicio:fim].copy()
+
+    fade_amostras = min(int(sample_rate * _FADE_S), len(trecho) // 2)
+    if fade_amostras > 0:
+        trecho[:fade_amostras] *= np.linspace(0.0, 1.0, fade_amostras)
+        trecho[-fade_amostras:] *= np.linspace(1.0, 0.0, fade_amostras)
+    return trecho
 
 
 class TTSEngine:
@@ -37,23 +92,68 @@ class TTSEngine:
         return list(self.tts.speakers or [])
 
     def synthesize(self, text, output_path, language=config.DEFAULT_LANGUAGE, speaker=None, speaker_wav=None):
-        if language.startswith("pt"):
-            text = _sanitizar_pontuacao_pt(text)
-        kwargs = {"text": text, "file_path": str(output_path), "language": language}
+        kwargs = {"language": language}
         if speaker_wav:
             kwargs["speaker_wav"] = str(speaker_wav)
         else:
             builtin = self.list_builtin_speakers()
             kwargs["speaker"] = speaker or (builtin[0] if builtin else None)
-        self.tts.tts_to_file(**kwargs)
-        return output_path
+
+        # A troca de "." por "|" (bug do "ponto") precisa acontecer DEPOIS que
+        # o texto já foi dividido em frases pelo segmentador da própria
+        # biblioteca (`split_into_sentences`, baseado em pysbd) — esse
+        # segmentador usa o ponto final pra achar os limites de frase. Se a
+        # troca acontecesse antes, o texto inteiro vira uma "frase" só (sem
+        # pontos pra dividir) e pode estourar o limite de 400 tokens do XTTS-v2
+        # em textos longos. Por isso sintetizamos frase por frase e
+        # concatenamos o áudio manualmente.
+        frases = [f for f in self.tts.synthesizer.split_into_sentences(text) if f.strip()]
+
+        sample_rate = self.tts.synthesizer.output_sample_rate
+        gap = np.zeros(int(sample_rate * _GAP_ENTRE_FRASES_S))
+
+        clipes = []
+        for frase in frases:
+            frase_tts = _sanitizar_pontuacao_pt(frase) if language.startswith("pt") else frase
+            wav = self.tts.tts(text=frase_tts, split_sentences=False, **kwargs)
+            clipes.append(_trim_silencio(np.asarray(wav), sample_rate))
+
+        # Timestamps por frase (pro texto original, sem a troca "." -> "|"
+        # que é só um workaround de pronúncia) — usados pra gerar legendas
+        # sincronizadas sem precisar de um passo de transcrição/alinhamento
+        # à parte: a gente já sabe exatamente onde cada frase começa/termina
+        # porque foi a gente quem montou o áudio, frase por frase.
+        partes = []
+        timings = []
+        cursor_s = 0.0
+        for i, (frase, clipe) in enumerate(zip(frases, clipes)):
+            duracao_s = len(clipe) / sample_rate
+            timings.append({"texto": frase, "inicio_s": round(cursor_s, 3), "fim_s": round(cursor_s + duracao_s, 3)})
+            partes.append(clipe)
+            cursor_s += duracao_s
+            if i < len(clipes) - 1:
+                partes.append(gap)
+                cursor_s += _GAP_ENTRE_FRASES_S
+
+        wav_final = np.concatenate(partes) if partes else np.zeros(1)
+        self.tts.synthesizer.save_wav(wav=wav_final, path=str(output_path))
+        return output_path, timings
 
 
 _engine = None
+_engine_lock = threading.Lock()
 
 
 def get_tts_engine():
+    # FastAPI roda rotas síncronas (como GET /api/voices) numa thread pool,
+    # então requests concorrentes podem cair aqui ao mesmo tempo antes de
+    # `_engine` ser setado. Sem lock, cada uma instancia seu próprio
+    # TTSEngine (carregando o checkpoint do zero) em paralelo — reproduzido
+    # na prática com um client fazendo poll agressivo em /api/voices durante
+    # a subida do servidor, gerando dezenas de cargas concorrentes do XTTS-v2.
     global _engine
     if _engine is None:
-        _engine = TTSEngine()
+        with _engine_lock:
+            if _engine is None:
+                _engine = TTSEngine()
     return _engine

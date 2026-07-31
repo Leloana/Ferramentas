@@ -50,7 +50,7 @@ def synthesize(req: SynthesizeRequest):
 
     try:
         engine = get_tts_engine()
-        engine.synthesize(
+        _, frases = engine.synthesize(
             text=texto_usado,
             output_path=output_path,
             language=req.language,
@@ -65,4 +65,5 @@ def synthesize(req: SynthesizeRequest):
         "audio_url": f"/audio/{output_path.name}",
         "texto_usado": texto_usado,
         "aviso_normalizacao": aviso_normalizacao,
+        "frases": frases,
     }

@@ -53,9 +53,10 @@ tts_platform_pt/server/output/*
 tts_platform_pt/server/voices/custom/*
 !tts_platform_pt/server/voices/custom/.gitkeep
 tts_platform_pt/exemplos/
-# TTS Platform: áudio e imagens gerados em Projetos/ (roteiros e manifestos ficam versionados)
+# TTS Platform: áudio, imagens e vídeos gerados em Projetos/ (roteiros e manifestos ficam versionados)
 tts_platform_pt/Projetos/**/*.wav
 tts_platform_pt/Projetos/**/*.png
+tts_platform_pt/Projetos/**/*.mp4
 
 # Notes
 karaoke/anotar.txt
