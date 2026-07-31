@@ -64,6 +64,16 @@ original); GPU CUDA recomendada (fallback automático para CPU, mais lento).
   hardcodar uma taxa de fala fixa. Cliente HTTP do próprio `/api/synthesize`
   — requer o servidor rodando. Ver `Projetos/<nome>/` para convenção de
   pastas de entrada/saída.
+- `scripts/gerar_imagens.py` — gera as imagens de fundo (uma por parte
+  curta) via ComfyUI local, a partir do manifesto que `gerar_video.py` já
+  produziu. Cliente HTTP da API do ComfyUI (`127.0.0.1:8188`), não da
+  plataforma de TTS.
+- `comfy/image_krea2_turbo_t2i.json` — workflow do ComfyUI (formato API,
+  exportado via Workflow → Export (API)) usado por `gerar_imagens.py`.
+  Modelo: `krea2_turbo_fp8_scaled` (UNET) + `qwen3vl_4b_fp8_scaled` (CLIP,
+  também usado como LLM de refino de prompt) + `qwen_image_vae`. Reexportar
+  aqui sempre que o workflow for alterado na UI do ComfyUI, senão o script
+  roda contra uma versão desatualizada do grafo.
 
 ## Automação: `scripts/gerar_video.py`
 
@@ -90,6 +100,51 @@ partes curtas para redes sociais, usando o servidor local via HTTP.
   `TTS/utils/synthesizer.py` usa por baixo dos panos pra qualquer idioma
   (pysbd não tem regras próprias de português), então o corte do script
   reflete exatamente onde o motor já corta ao sintetizar.
+
+## Automação: `scripts/gerar_imagens.py`
+
+Gera uma imagem de fundo por parte curta, usando o texto já agrupado por
+`gerar_video.py` (lê o `<nome>_manifesto.json`, não o roteiro bruto).
+
+```powershell
+# com o ComfyUI Desktop aberto (API em 127.0.0.1:8188)
+.\venv\Scripts\python.exe scripts\gerar_imagens.py Projetos\video-curto\humanidade_manifesto.json
+```
+
+- Saída em `<projeto>/imagens/<nome>_NN.png`, mesma numeração de
+  `<projeto>/video-curto/<nome>_NN.wav`, mais um
+  `<nome>_imagens_manifesto.json` com o prompt final usado em cada uma.
+- Formato `16:9 (Widescreen)` por padrão (`--aspect-ratio`); pro formato dos
+  shorts (9:16) a ideia é recortar essa mesma imagem via ffmpeg na etapa de
+  montagem do vídeo, em vez de gerar duas vezes.
+- Sempre liga `Refine Prompt` (node `30:24`) no workflow: deixa o
+  `TextGenerate` do próprio ComfyUI (usa o `qwen3vl_4b` já carregado como
+  LLM) expandir o parágrafo numa descrição visual mais rica. Testado
+  mandando o parágrafo em português puro — o refino manteve o idioma e
+  ficou coerente, então não precisa de um passo de tradução via Ollama à
+  parte.
+- **Guarda-corpo de nudez (`_SUFIXO_SEGURANCA`)**: por padrão o
+  `krea2_turbo` desenha figuras humanas nuas quando o prompt não menciona
+  vestimenta — mesmo a regra 8 do system prompt do workflow ("assuma roupa
+  cobrindo anatomia íntima") não evita isso sozinha, porque a regra 5 do
+  mesmo system prompt instrui o refino a não inventar detalhe de vestuário
+  que o input não sustenta. Testei desconectar o node
+  `ConditioningKrea2Rebalance` da saída positiva do `KSampler` (achando que
+  fosse um parâmetro de "descensura") e não resolveu — só reduziu o quão
+  explícita a nudez saía. A correção que funciona é declarar vestimenta
+  explicitamente no prompt (`_SUFIXO_SEGURANCA`, aplicado a toda geração em
+  `montar_prompt()`), o que aciona a regra 1 (preservar o que o input já diz)
+  em vez de esbarrar na regra 5. Mesmo com isso, trate a saída como
+  rascunho — revise as imagens antes de usar no vídeo final.
+- Timing observado é bem instável: 60s numa geração, 362s noutra com o
+  mesmo workflow/config (só o `KSampler`+`VAEDecode` reexecutaram, o resto
+  veio do cache do ComfyUI) — GPU a 7-8% de uso o tempo todo, não
+  parece ser gargalo de computação. Não isolei a causa raiz; confirmei que
+  não é disputa de VRAM com o XTTS-v2 (checar processos com `nvidia-smi
+  --query-compute-apps=pid,process_name,used_memory --format=csv` — só o
+  `python.exe` do ComfyUI aparecia como processo de cômputo). Se for
+  investigar, rode várias gerações seguidas com o mesmo prompt/seed e
+  compare os tempos antes de mexer em configuração.
 
 ## Gotchas
 
