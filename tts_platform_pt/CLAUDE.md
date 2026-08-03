@@ -74,9 +74,16 @@ original); GPU CUDA recomendada (fallback automático para CPU, mais lento).
   também usado como LLM de refino de prompt) + `qwen_image_vae`. Reexportar
   aqui sempre que o workflow for alterado na UI do ComfyUI, senão o script
   roda contra uma versão desatualizada do grafo.
+- **[comfy/GOTCHAS.md](comfy/GOTCHAS.md)** — leia antes de mexer em
+  `gerar_imagens.py`, `montar_video.py` ou no workflow acima. Reúne os
+  achados de depuração real da geração de imagem (nudez, texto borrado
+  desenhado na cena, formato vertical menos confiável, zoom tremendo) —
+  cada um custou uma ou mais rodadas de geração pra isolar, não repita o
+  trabalho.
 - `scripts/montar_video.py` — monta o `.mp4` final de uma parte curta
-  (imagem com pan + áudio + legenda queimada) via `ffmpeg`, lido do CLI, não
-  de nenhuma API HTTP. Único dos scripts de automação que não depende do
+  (uma imagem por frase, cada uma com zoom próprio, + áudio + legenda
+  queimada) via `ffmpeg`, lido do CLI, não de nenhuma API HTTP. Único dos
+  scripts de automação que não depende do
   servidor da plataforma nem do ComfyUI estarem rodando — só precisa que
   `gerar_video.py` e `gerar_imagens.py` já tenham gerado os arquivos daquela
   parte.
@@ -234,6 +241,19 @@ python scripts\montar_video.py Projetos\video-curto\humanidade_manifesto.json --
   integrar no pipeline — validar visualmente qualquer filtro novo do
   ffmpeg assim antes de confiar nele, ver gotcha do `original_size` abaixo
   pra um exemplo de quanto um filtro pode enganar sem gerar nenhum erro.
+  **Tremor no zoom**: com a imagem de entrada perto do tamanho final
+  (768x1368 do ComfyUI pra uma saída de 1080x1920), o `zoompan` recalcula a
+  janela de corte em pixels inteiros a cada frame, e esse arredondamento é
+  uma fração grande do deslocamento entre frames — o zoom sai visivelmente
+  tremido. Fix padrão (bem documentado, não é invenção nossa): escalar a
+  imagem pra bem maior que o final ANTES do `zoompan` (`_SUPERSAMPLE = 4`,
+  ou seja 4320x7680 pra uma saída de 1080x1920), deixando o `s=` do próprio
+  `zoompan` reamostrar pra baixo no final — o mesmo arredondamento de pixel
+  inteiro vira uma fração desprezível numa imagem 4x maior. Não tem como
+  validar "tremor" olhando frames extraídos isolados (é um efeito de
+  movimento, só aparece reproduzindo o vídeo) — se voltar a acontecer
+  depois de alguma mudança, aumentar `_SUPERSAMPLE` é o primeiro lugar pra
+  mexer.
 - **Legendas são subdivididas, não uma por frase**: uma frase inteira como
   legenda única fica grande demais/lenta demais num vídeo vertical (chegou
   a ocupar a tela toda em frases de 20+ palavras). `dividir_em_legendas()`

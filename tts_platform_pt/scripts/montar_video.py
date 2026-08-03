@@ -95,6 +95,7 @@ def gerar_srt(frases: list[dict], destino: Path) -> None:
 
 _ZOOM_MAX = 1.3
 _FPS_CLIPE = 30
+_SUPERSAMPLE = 4  # ver nota de tremor em renderizar_clipe_imagem
 
 
 def _direcao_zoom(indice: int, efeito: str) -> str:
@@ -110,14 +111,24 @@ def renderizar_clipe_imagem(imagem: Path, duracao: float, destino: Path, largura
     por pan. `zoom-in` começa em 1.0x e termina em `_ZOOM_MAX`; `zoom-out`
     é o inverso. Interpolação linear em função do frame (`on`), não do
     incremento recursivo padrão do zoompan, pra bater exatamente com a
-    duração pedida (que varia por frase)."""
+    duração pedida (que varia por frase).
+
+    Escala pra `_SUPERSAMPLE`x a resolução final ANTES do zoompan — as
+    imagens do ComfyUI nascem perto do tamanho final (768x1368 pra um
+    vídeo de 1080x1920), e o zoompan recalcula a janela de corte em
+    pixels inteiros a cada frame; numa imagem só um pouco maior que a
+    saída, esse arredondamento é uma fração grande do deslocamento entre
+    frames e o zoom sai tremido. Com a imagem de entrada bem maior, o
+    mesmo arredondamento vira uma fração desprezível, e o `s=` final do
+    zoompan reamostra pra baixo suavizando o resto.
+    """
     frames = max(1, round(duracao * _FPS_CLIPE))
     if direcao == "zoom-in":
         z_expr = f"1.0+{_ZOOM_MAX - 1.0}*on/{frames}"
     else:
         z_expr = f"{_ZOOM_MAX}-{_ZOOM_MAX - 1.0}*on/{frames}"
     vf = (
-        f"scale={largura}:{altura},"
+        f"scale={largura * _SUPERSAMPLE}:{altura * _SUPERSAMPLE},"
         f"zoompan=z='{z_expr}':d={frames}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':"
         f"s={largura}x{altura}:fps={_FPS_CLIPE}"
     )
