@@ -64,10 +64,10 @@ original); GPU CUDA recomendada (fallback automático para CPU, mais lento).
   hardcodar uma taxa de fala fixa. Cliente HTTP do próprio `/api/synthesize`
   — requer o servidor rodando. Ver `Projetos/<nome>/` para convenção de
   pastas de entrada/saída.
-- `scripts/gerar_imagens.py` — gera as imagens de fundo (uma por parte
-  curta) via ComfyUI local, a partir do manifesto que `gerar_video.py` já
-  produziu. Cliente HTTP da API do ComfyUI (`127.0.0.1:8188`), não da
-  plataforma de TTS.
+- `scripts/gerar_imagens.py` — gera as imagens de fundo (uma por FRASE, não
+  por parte inteira) via ComfyUI local, a partir do manifesto que
+  `gerar_video.py` já produziu. Cliente HTTP da API do ComfyUI
+  (`127.0.0.1:8188`), não da plataforma de TTS.
 - `comfy/image_krea2_turbo_t2i.json` — workflow do ComfyUI (formato API,
   exportado via Workflow → Export (API)) usado por `gerar_imagens.py`.
   Modelo: `krea2_turbo_fp8_scaled` (UNET) + `qwen3vl_4b_fp8_scaled` (CLIP,
@@ -109,26 +109,30 @@ partes curtas para redes sociais, usando o servidor local via HTTP.
 
 ## Automação: `scripts/gerar_imagens.py`
 
-Gera uma imagem de fundo por parte curta, usando o texto já agrupado por
-`gerar_video.py` (lê o `<nome>_manifesto.json`, não o roteiro bruto).
+Gera uma imagem de fundo por FRASE (não por parte inteira — muito mais
+dinâmico no vídeo final), usando os timestamps por frase que
+`gerar_video.py` já calculou (lê o `<nome>_manifesto.json`, não o roteiro
+bruto).
 
 ```powershell
 # com o ComfyUI Desktop aberto (API em 127.0.0.1:8188)
-.\venv\Scripts\python.exe scripts\gerar_imagens.py Projetos\video-curto\humanidade_manifesto.json
+.\venv\Scripts\python.exe scripts\gerar_imagens.py Projetos\video-curto\humanidade_manifesto.json --parte 1
+# regerar só frases específicas (ex.: depois de revisar e achar 2 ruins)
+.\venv\Scripts\python.exe scripts\gerar_imagens.py Projetos\video-curto\humanidade_manifesto.json --parte 1 --frases 2,6
 ```
 
-- Saída em `<projeto>/imagens/<nome>_NN.png`, mesma numeração de
-  `<projeto>/video-curto/<nome>_NN.wav`, mais um
-  `<nome>_imagens_manifesto.json` com o prompt final usado em cada uma.
-- Formato `16:9 (Widescreen)` por padrão (`--aspect-ratio`); pro formato dos
-  shorts (9:16) a ideia é recortar essa mesma imagem via ffmpeg na etapa de
-  montagem do vídeo, em vez de gerar duas vezes.
+- Saída em `<projeto>/imagens/<nome>_PP_FF.png` (PP = parte, FF = frase
+  dentro da parte), mais um `<nome>_imagens_manifesto.json` (mescla com o
+  que já existia — regerar só algumas frases com `--frases` não apaga o
+  registro das outras).
+- Formato `9:16 (Portrait Widescreen)` por padrão (`--aspect-ratio`) — vídeo
+  curto é pensado pra celular; ver gotcha abaixo sobre confiabilidade desse
+  formato nesse modelo.
 - Sempre liga `Refine Prompt` (node `30:24`) no workflow: deixa o
   `TextGenerate` do próprio ComfyUI (usa o `qwen3vl_4b` já carregado como
-  LLM) expandir o parágrafo numa descrição visual mais rica. Testado
-  mandando o parágrafo em português puro — o refino manteve o idioma e
-  ficou coerente, então não precisa de um passo de tradução via Ollama à
-  parte.
+  LLM) expandir a frase numa descrição visual mais rica. Testado mandando a
+  frase em português puro — o refino manteve o idioma e ficou coerente,
+  então não precisa de um passo de tradução via Ollama à parte.
 - **Guarda-corpo de nudez (`_SUFIXO_SEGURANCA`)**: por padrão o
   `krea2_turbo` desenha figuras humanas nuas quando o prompt não menciona
   vestimenta — mesmo a regra 8 do system prompt do workflow ("assuma roupa
@@ -142,38 +146,94 @@ Gera uma imagem de fundo por parte curta, usando o texto já agrupado por
   `montar_prompt()`), o que aciona a regra 1 (preservar o que o input já diz)
   em vez de esbarrar na regra 5. Mesmo com isso, trate a saída como
   rascunho — revise as imagens antes de usar no vídeo final.
+- **Formato vertical nativo (9:16) é bem menos confiável que 16:9 nesse
+  modelo/LoRA**: gerando as 9 frases de um teste direto em
+  `9:16 (Portrait Widescreen)`, 6 de 9 saíram com defeito (4 rotacionadas
+  90°, 1 tríptico de 3 painéis, 1 com texto borrado) — bem mais que a taxa
+  vista em 16:9. Se for reconsiderar voltar pra gerar em 16:9 + recorte no
+  ffmpeg (jeito antigo, mais confiável, ver histórico do
+  `montar_video.py`), essa é a razão.
+- **Texto borrado na imagem (causa raiz e correção, `_REGRA_SEM_TEXTO`)**:
+  o `TextGenerate` (refino de prompt) tem seu próprio system prompt com uma
+  regra 4 ("se o usuário pedir texto visível, coloque entre aspas") — pra
+  frases de narração que soam como uma citação fechada (tom declarativo,
+  termina em ponto), o refino decide sozinho que aquilo é "texto pra
+  mostrar na tela" e cita a frase (às vezes até o nosso próprio
+  `_SUFIXO_SEGURANCA`) como legenda; o modelo de difusão então tenta
+  desenhar essas letras e sai borrado/ilegível (confirmado lendo o texto
+  borrado — em várias imagens reproduzia a frase de entrada quase
+  literalmente, incluindo nosso sufixo). **O que NÃO resolveu sozinho**:
+  regenerar só com seed novo do `KSampler` (`30:3`) — o node de refino
+  (`30:16`) tem `sampling_mode.seed` fixo em `0` no workflow, então pra uma
+  mesma frase de entrada ele produz sempre a mesma descrição (e o mesmo
+  defeito) não importa quantas vezes troquemos o seed da difusão; testei
+  isso explicitamente (regenerei 6 imagens quebradas só com seed novo, só
+  1 saiu corrigida). Encurtar `_SUFIXO_SEGURANCA` (de uma frase inteira pra
+  um fragmento curto) ajudou em alguns casos mas não em todos. **O que
+  resolveu**: apensar uma regra extra ao system prompt do refino
+  (`_REGRA_SEM_TEXTO`, aplicada só na cópia do workflow que enviamos —
+  não mexe no arquivo salvo em `comfy/`) proibindo explicitamente renderizar
+  o input (ou paráfrase/citação dele) como texto visível. Depois dessa
+  regra, todas as frases que ainda estavam quebradas saíram limpas.
 - Timing observado é bem instável: 60s numa geração, 362s noutra com o
   mesmo workflow/config (só o `KSampler`+`VAEDecode` reexecutaram, o resto
   veio do cache do ComfyUI) — GPU a 7-8% de uso o tempo todo, não
   parece ser gargalo de computação. Não isolei a causa raiz; confirmei que
   não é disputa de VRAM com o XTTS-v2 (checar processos com `nvidia-smi
   --query-compute-apps=pid,process_name,used_memory --format=csv` — só o
-  `python.exe` do ComfyUI aparecia como processo de cômputo). Se for
-  investigar, rode várias gerações seguidas com o mesmo prompt/seed e
+  `python.exe` do ComfyUI aparecia como processo de cômputo). Reinstâncias
+  do ComfyUI Desktop parecem "curar" períodos de lentidão (o timing voltou
+  a ficar consistente em ~60-90s/imagem depois de reiniciar o app no meio
+  de uma sessão de testes), mas não confirmei causalidade. Se for
+  investigar mais, rode várias gerações seguidas com o mesmo prompt/seed e
   compare os tempos antes de mexer em configuração.
+- Ao cancelar o script no meio de uma geração, o job que já estava
+  `queue_running` no ComfyUI pode continuar rodando (não é abortado
+  automaticamente) — chamar `POST /interrupt` na API do ComfyUI ajuda, mas
+  não é imediato se o job estiver preso numa etapa do `TextGenerate` (LLM),
+  que parece não checar o cancelamento tão granularmente quanto o
+  `KSampler`. Na pior hipótese ele só termina sozinho gerando uma imagem
+  que ninguém usa — sem problema, só não espere um cancelamento instantâneo.
 
 ## Automação: `scripts/montar_video.py`
 
-Junta imagem + áudio + legenda de uma parte curta num `.mp4` final, via
-`ffmpeg` (precisa estar no PATH — não é dependência Python).
+Junta uma imagem por frase (cada uma com seu próprio zoom) + áudio +
+legenda de uma parte curta num `.mp4` final, via `ffmpeg` (precisa estar no
+PATH — não é dependência Python).
 
 ```powershell
 python scripts\montar_video.py Projetos\video-curto\humanidade_manifesto.json --parte 1
 ```
 
-- Lê `frases` (timestamps por frase) do manifesto de `gerar_video.py` e a
-  imagem correspondente de `gerar_imagens.py`. Se a parte não tiver
-  `frases` no manifesto (gerada antes dessa timing existir), o script pede
-  pra rodar `gerar_video.py` de novo em vez de tentar adivinhar.
+- Lê `frases` (timestamps por frase) do manifesto de `gerar_video.py` e as
+  imagens de cada frase de `gerar_imagens.py` (`imagens/<nome>_PP_FF.png`,
+  uma por frase — precisa ter sido gerada uma pra cada frase da parte, o
+  script erra com uma mensagem clara e o comando pra completar se faltar
+  alguma). Se a parte não tiver `frases` no manifesto (gerada antes dessa
+  timing existir), o script pede pra rodar `gerar_video.py` de novo em vez
+  de tentar adivinhar.
 - Saída em `<projeto>/montagem/<nome>_NN_<proporção>.mp4`.
-- **Efeito de movimento**: a imagem é gerada em 16:9 (mais larga que o
-  formato vertical de shorts); em vez de gerar mais imagens por parte, o
-  script escala a imagem pra bater a altura do vídeo final e desliza uma
-  janela do tamanho do formato-alvo da esquerda pra direita (`--efeito
-  pan-direita`, padrão) ou o inverso (`pan-esquerda`) ao longo da duração
-  do áudio — dá dinamismo reaproveitando a mesma imagem. Não tem efeito de
-  zoom implementado ainda (ficaria melhor pra quando a proporção pedida já
-  bate com a da imagem, onde não sobra largura pra pan).
+- **Um clipe por frase, concatenados**: como cada frase já tem sua própria
+  imagem (gerada por `gerar_imagens.py`, ver acima), `montar()` renderiza
+  um clipe mudo por frase (`renderizar_clipe_imagem()`) e concatena tudo
+  via `ffmpeg -f concat` (stream copy, sem recodificar) antes de somar
+  áudio+legenda numa segunda passada. Cada clipe cobre do início da sua
+  frase até o início da próxima (não só a duração da fala) — inclui a
+  pausa entre frases, senão a soma das durações dos clipes fica menor que
+  o áudio e desalinha tudo.
+- **Efeito de movimento é zoom, não pan**: como as imagens já nascem no
+  formato vertical final (sem folga lateral), o `pan` usado numa versão
+  anterior (quando as imagens eram geradas em 16:9) não faz mais sentido —
+  não sobra largura pra deslizar. `renderizar_clipe_imagem()` usa
+  `zoompan` do ffmpeg com interpolação linear em função do frame (`on`),
+  não o incremento recursivo padrão (`zoom+0.001` etc.) — isso é o que
+  permite bater exatamente a duração pedida por frase, que varia. Direção
+  (`zoom-in`/`zoom-out`) alterna a cada frase por padrão (`--efeito
+  alternar`) pra variar o movimento entre uma imagem e outra. Testado
+  isoladamente com frames extraídos do início/fim do clipe antes de
+  integrar no pipeline — validar visualmente qualquer filtro novo do
+  ffmpeg assim antes de confiar nele, ver gotcha do `original_size` abaixo
+  pra um exemplo de quanto um filtro pode enganar sem gerar nenhum erro.
 - **Legendas são subdivididas, não uma por frase**: uma frase inteira como
   legenda única fica grande demais/lenta demais num vídeo vertical (chegou
   a ocupar a tela toda em frases de 20+ palavras). `dividir_em_legendas()`
@@ -184,20 +244,24 @@ python scripts\montar_video.py Projetos\video-curto\humanidade_manifesto.json --
   dentro da frase).
 - **Gotcha do ffmpeg que custou caro pra debugar**: o filtro `subtitles`
   (`force_style=...:original_size=WxH`) espera em `original_size` o
-  tamanho do frame de **entrada do filtergraph** (a imagem original, antes
-  de qualquer `scale`/`crop`) — não o tamanho final pós-crop, apesar do
-  nome e da posição do parâmetro sugerirem isso. Passar o tamanho final ali
-  faz o libass calcular a escala errada: a legenda sai gigante (cobrindo a
-  tela inteira) e mal posicionada, mesmo com `FontSize` pequeno no
-  `force_style` — e o pior, isso acontece *silenciosamente*, sem warning
-  no log do ffmpeg (`-loglevel verbose` mostra o "Setting force_style to
-  value..." confirmando que a opção foi lida, então o instinto de "será que
-  não tá sendo aplicada" é um beco sem saída). Só ficou claro isolando com
-  fontes sintéticas (`color=`) em cadeias `scale,crop,subtitles` cada vez
-  mais simples até comparar `original_size` = tamanho pós-crop (quebrado)
-  vs tamanho da imagem de entrada (correto). Por isso `montar()` mede as
-  dimensões reais do PNG de entrada via `ffprobe` (`dimensoes_imagem()`) em
-  vez de reusar `largura`/`altura` do formato de saída.
+  tamanho do frame de **entrada do filtergraph** (o vídeo antes de
+  qualquer `scale`/`crop` que rode ANTES do `subtitles` na mesma cadeia)
+  — não o tamanho final pós-crop, apesar do nome e da posição do parâmetro
+  sugerirem isso. Passar o tamanho errado ali faz o libass calcular a
+  escala errada: a legenda sai gigante (cobrindo a tela inteira) e mal
+  posicionada, mesmo com `FontSize` pequeno no `force_style` — e o pior,
+  isso acontece *silenciosamente*, sem warning no log do ffmpeg
+  (`-loglevel verbose` mostra o "Setting force_style to value..."
+  confirmando que a opção foi lida, então o instinto de "será que não tá
+  sendo aplicada" é um beco sem saída). Só ficou claro isolando com fontes
+  sintéticas (`color=`) em cadeias `scale,crop,subtitles` cada vez mais
+  simples até comparar `original_size` = tamanho pós-crop (quebrado) vs
+  tamanho do frame de entrada (correto). Na versão atual (um clipe por
+  frase já vem pronto na resolução final, sem scale/crop antes do
+  `subtitles` na passada final) `original_size` = `largura x altura` de
+  saída é suficiente; se algum dia reintroduzir scale/crop antes do
+  `subtitles` na mesma cadeia, meça o tamanho de entrada real (`ffprobe`)
+  em vez de assumir.
 
 ## Gotchas
 

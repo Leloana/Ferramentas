@@ -1,17 +1,21 @@
-"""Monta um vídeo curto (imagem de fundo animada + áudio + legenda) a partir
-de uma parte já gerada por `gerar_video.py` + `gerar_imagens.py`.
+"""Monta um vídeo curto (uma imagem de fundo animada por frase + áudio +
+legenda) a partir de uma parte já gerada por `gerar_video.py` +
+`gerar_imagens.py`.
 
 Uso:
     python scripts/montar_video.py Projetos/video-curto/humanidade_manifesto.json --parte 1
 
 Fluxo:
 1. Lê o áudio e o timestamp por frase daquela parte (do manifesto de
-   `gerar_video.py`) e a imagem de fundo correspondente (de
-   `gerar_imagens.py`, mesma numeração).
-2. Gera um `.srt` com as legendas sincronizadas.
-3. Monta o vídeo com ffmpeg: a imagem (16:9, gerada mais larga que o alvo)
-   desliza lateralmente ("efeito Ken Burns" de pan) atrás do formato vertical
-   pedido, com a legenda queimada por cima.
+   `gerar_video.py`) e a imagem de fundo de cada frase (de
+   `gerar_imagens.py`, uma por frase, mesma numeração, já no formato
+   vertical final — sem folga lateral pra pan).
+2. Renderiza um clipe mudo por frase: zoom lento (`zoompan`) sobre a
+   imagem durante o tempo daquela frase — alternando entre zoom-in e
+   zoom-out a cada frase pra variar o movimento entre uma imagem e outra.
+3. Concatena os clipes (mesmo codec/resolução, concat por stream copy) e,
+   numa segunda passada, junta o áudio original inteiro e queima a legenda
+   sincronizada por cima.
 
 Requer `ffmpeg` no PATH.
 """
@@ -19,6 +23,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shutil
 import subprocess
 import wave
 from pathlib import Path
@@ -70,16 +75,6 @@ def duracao_wav(caminho: Path) -> float:
         return f.getnframes() / float(f.getframerate())
 
 
-def dimensoes_imagem(caminho: Path) -> tuple[int, int]:
-    saida = subprocess.run(
-        ["ffprobe", "-v", "error", "-select_streams", "v:0",
-         "-show_entries", "stream=width,height", "-of", "csv=p=0", str(caminho)],
-        capture_output=True, text=True, check=True,
-    )
-    largura, altura = saida.stdout.strip().split(",")
-    return int(largura), int(altura)
-
-
 def _formatar_tempo_srt(segundos: float) -> str:
     ms_total = round(segundos * 1000)
     h, ms_total = divmod(ms_total, 3_600_000)
@@ -98,53 +93,111 @@ def gerar_srt(frases: list[dict], destino: Path) -> None:
     destino.write_text("\n".join(linhas), encoding="utf-8")
 
 
-def montar(
-    imagem: Path, audio: Path, frases: list[dict], destino: Path, proporcao: str = "9:16", efeito: str = "pan-direita"
-) -> Path:
-    largura, altura = _RESOLUCOES[proporcao]
-    duracao = duracao_wav(audio)
-    img_largura, img_altura = dimensoes_imagem(imagem)
+_ZOOM_MAX = 1.3
+_FPS_CLIPE = 30
 
-    destino.parent.mkdir(parents=True, exist_ok=True)
-    caminho_srt = destino.parent / f"_legenda_{destino.stem}.srt"
-    gerar_srt(dividir_em_legendas(frases), caminho_srt)
 
-    # A imagem é gerada em 16:9 (mais larga que o alvo vertical); escalamos
-    # pra bater a altura do vídeo e deslizamos uma janela do tamanho final
-    # da esquerda pra direita (ou o inverso) ao longo da duração do áudio —
-    # dá movimento sem precisar de várias imagens por parte.
-    progresso = "t/{:.3f}".format(duracao) if efeito == "pan-direita" else "(1-t/{:.3f})".format(duracao)
-    expr_x = f"min(max((iw-{largura})*({progresso}),0),iw-{largura})"
-    # original_size do filtro subtitles é o tamanho do frame de ENTRADA do
-    # filtergraph (a imagem original, antes do scale/crop) — não o tamanho
-    # final pós-crop, apesar do nome sugerir isso e de ser fácil supor o
-    # contrário. Passar o tamanho final ali (testado) faz o libass calcular
-    # a escala errada e o texto sai gigante e mal posicionado, mesmo com
-    # FontSize pequeno no force_style. Confirmado isolando o problema:
-    # comparei renderizações com original_size = tamanho pós-crop (quebrado)
-    # vs tamanho da imagem de entrada (correto) usando a mesma cadeia de
-    # filtros — só a segunda opção posiciona e dimensiona certo.
+def _direcao_zoom(indice: int, efeito: str) -> str:
+    if efeito == "alternar":
+        return "zoom-in" if indice % 2 == 0 else "zoom-out"
+    return efeito
+
+
+def renderizar_clipe_imagem(imagem: Path, duracao: float, destino: Path, largura: int, altura: int, direcao: str) -> None:
+    """Renderiza a imagem parada num clipe de `duracao` segundos com um zoom
+    lento sobre ela (`zoompan`) — como as imagens já nascem no formato
+    vertical final (sem folga lateral), o movimento aqui é por zoom, não
+    por pan. `zoom-in` começa em 1.0x e termina em `_ZOOM_MAX`; `zoom-out`
+    é o inverso. Interpolação linear em função do frame (`on`), não do
+    incremento recursivo padrão do zoompan, pra bater exatamente com a
+    duração pedida (que varia por frase)."""
+    frames = max(1, round(duracao * _FPS_CLIPE))
+    if direcao == "zoom-in":
+        z_expr = f"1.0+{_ZOOM_MAX - 1.0}*on/{frames}"
+    else:
+        z_expr = f"{_ZOOM_MAX}-{_ZOOM_MAX - 1.0}*on/{frames}"
     vf = (
-        f"scale=-2:{altura},"
-        f"crop={largura}:{altura}:x='{expr_x}':y=0,"
-        f"subtitles={caminho_srt.name}:original_size={img_largura}x{img_altura}:force_style='{_ESTILO_LEGENDA}'"
+        f"scale={largura}:{altura},"
+        f"zoompan=z='{z_expr}':d={frames}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':"
+        f"s={largura}x{altura}:fps={_FPS_CLIPE}"
     )
-
     comando = [
         "ffmpeg", "-y",
         "-loop", "1", "-i", str(imagem.resolve()),
-        "-i", str(audio.resolve()),
-        "-vf", vf,
-        "-map", "0:v:0", "-map", "1:a:0",
-        "-c:v", "libx264", "-pix_fmt", "yuv420p", "-r", "30",
-        "-c:a", "aac", "-b:a", "192k",
-        "-shortest",
+        "-t", f"{duracao:.3f}",
+        "-vf", vf, "-frames:v", str(frames), "-pix_fmt", "yuv420p", "-an",
         str(destino.resolve()),
     ]
-    resultado = subprocess.run(comando, cwd=destino.parent, capture_output=True, text=True)
-    caminho_srt.unlink(missing_ok=True)
+    resultado = subprocess.run(comando, capture_output=True, text=True)
     if resultado.returncode != 0:
-        raise RuntimeError(f"ffmpeg falhou:\n{resultado.stderr[-4000:]}")
+        raise RuntimeError(f"ffmpeg falhou ao renderizar {destino.name}:\n{resultado.stderr[-3000:]}")
+
+
+def montar(
+    imagens: list[Path], frases: list[dict], audio: Path, destino: Path,
+    proporcao: str = "9:16", efeito: str = "alternar",
+) -> Path:
+    if len(imagens) != len(frases):
+        raise ValueError(f"{len(imagens)} imagem(ns) para {len(frases)} frase(s) — precisa ser 1 pra 1")
+
+    largura, altura = _RESOLUCOES[proporcao]
+    duracao_total = duracao_wav(audio)
+
+    destino.parent.mkdir(parents=True, exist_ok=True)
+    pasta_tmp = destino.parent / f"_tmp_{destino.stem}"
+    pasta_tmp.mkdir(parents=True, exist_ok=True)
+    try:
+        # Cada imagem fica visível do início da sua frase até o início da
+        # próxima (cobrindo também a pausa entre frases); a última cobre até
+        # o fim real do áudio. Assim a soma das durações dos clipes bate
+        # exatamente com a duração do áudio, sem precisar cortar nada com
+        # -shortest na junção final.
+        inicios = [f["inicio_s"] for f in frases]
+        duracoes = [inicios[i + 1] - inicios[i] for i in range(len(inicios) - 1)]
+        duracoes.append(duracao_total - inicios[-1])
+
+        linhas_concat = []
+        for i, (imagem, dur) in enumerate(zip(imagens, duracoes)):
+            clipe = pasta_tmp / f"clipe_{i:02d}.mp4"
+            renderizar_clipe_imagem(imagem, dur, clipe, largura, altura, _direcao_zoom(i, efeito))
+            linhas_concat.append(f"file '{clipe.name}'")
+        lista_concat = pasta_tmp / "lista.txt"
+        lista_concat.write_text("\n".join(linhas_concat), encoding="utf-8")
+
+        video_concat = pasta_tmp / "concat.mp4"
+        resultado = subprocess.run(
+            ["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", "lista.txt", "-c", "copy", "concat.mp4"],
+            cwd=pasta_tmp, capture_output=True, text=True,
+        )
+        if resultado.returncode != 0:
+            raise RuntimeError(f"ffmpeg falhou ao concatenar os clipes:\n{resultado.stderr[-3000:]}")
+
+        caminho_srt = pasta_tmp / "legenda.srt"
+        gerar_srt(dividir_em_legendas(frases), caminho_srt)
+
+        # Aqui original_size = tamanho real do vídeo (largura x altura),
+        # porque o concat.mp4 já chega no filtergraph nessa resolução — sem
+        # scale/crop antes do subtitles nesta passada (ver gotcha no
+        # CLAUDE.md: original_size é sempre o tamanho de entrada do
+        # filtergraph naquele ponto, não o tamanho "final" em si).
+        vf = f"subtitles=legenda.srt:original_size={largura}x{altura}:force_style='{_ESTILO_LEGENDA}'"
+        comando = [
+            "ffmpeg", "-y",
+            "-i", str(video_concat.resolve()),
+            "-i", str(audio.resolve()),
+            "-vf", vf,
+            "-map", "0:v:0", "-map", "1:a:0",
+            "-c:v", "libx264", "-pix_fmt", "yuv420p",
+            "-c:a", "aac", "-b:a", "192k",
+            "-shortest",
+            str(destino.resolve()),
+        ]
+        resultado = subprocess.run(comando, cwd=pasta_tmp, capture_output=True, text=True)
+        if resultado.returncode != 0:
+            raise RuntimeError(f"ffmpeg falhou na montagem final:\n{resultado.stderr[-4000:]}")
+    finally:
+        shutil.rmtree(pasta_tmp, ignore_errors=True)
+
     return destino
 
 
@@ -153,7 +206,8 @@ def main():
     ap.add_argument("manifesto", type=Path, help="Caminho do <nome>_manifesto.json gerado por gerar_video.py")
     ap.add_argument("--parte", type=int, default=1, help="Número da parte curta (1-based)")
     ap.add_argument("--proporcao", choices=sorted(_RESOLUCOES), default="9:16")
-    ap.add_argument("--efeito", choices=["pan-direita", "pan-esquerda"], default="pan-direita")
+    ap.add_argument("--efeito", choices=["alternar", "zoom-in", "zoom-out"], default="alternar",
+                     help="Zoom por imagem: alterna in/out a cada frase (padrão) ou fixa num só")
     ap.add_argument("--saida", type=Path, default=None)
     args = ap.parse_args()
 
@@ -173,16 +227,21 @@ def main():
         )
 
     audio = projeto / "video-curto" / parte["arquivo"]
-    imagem = projeto / "imagens" / f"{nome_base}_{args.parte:02d}.png"
     if not audio.exists():
         raise SystemExit(f"Áudio não encontrado: {audio}")
-    if not imagem.exists():
-        raise SystemExit(f"Imagem não encontrada: {imagem}")
+
+    frases = parte["frases"]
+    imagens = [projeto / "imagens" / f"{nome_base}_{args.parte:02d}_{j:02d}.png" for j in range(1, len(frases) + 1)]
+    faltando = [str(p) for p in imagens if not p.exists()]
+    if faltando:
+        raise SystemExit(
+            "Imagem(ns) não encontrada(s):\n" + "\n".join(faltando) +
+            f"\nRode: python scripts/gerar_imagens.py {args.manifesto} --parte {args.parte}"
+        )
 
     destino = args.saida or projeto / "montagem" / f"{nome_base}_{args.parte:02d}_{args.proporcao.replace(':', 'x')}.mp4"
-    n_legendas = len(dividir_em_legendas(parte["frases"]))
-    print(f"Montando {destino.name} ({args.proporcao}, efeito {args.efeito}, {n_legendas} legenda(s))...")
-    montar(imagem, audio, parte["frases"], destino, proporcao=args.proporcao, efeito=args.efeito)
+    print(f"Montando {destino.name} ({args.proporcao}, {len(imagens)} imagem(ns), efeito {args.efeito})...")
+    montar(imagens, frases, audio, destino, proporcao=args.proporcao, efeito=args.efeito)
     print(f"Pronto: {destino}")
 
 

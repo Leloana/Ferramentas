@@ -1,7 +1,65 @@
 [
   {
-    "arquivo": "humanidade_01.png",
-    "prompt_final": "Há trezentos mil anos, sob o sol implacável das savanas africanas, surgia o Homo sapiens. Fisicamente, não éramos a espécie mais forte, nem a mais rápida. Mas carregávamos uma anomalia evolutiva: um cérebro capaz de imaginar o que ainda não existia. Durante a maior parte da nossa história, a evolução caminhou a passos lentos, ditada puramente pela biologia. Nosso primeiro grande ato de rebelião contra as regras da natureza foi o domínio do fogo. Com ele, conquistamos a noite, aquecemos o frio e externalizamos a digestão, dando ao nosso cérebro a energia necessária para crescer. Por centenas de milênios, fomos nômades. Até que, há cerca de dez mil anos, decidimos parar. Ao longo de grandes rios — na Ásia, no Oriente Médio, na África e nas Américas —, a invenção da agricultura nos prendeu à terra, mas libertou o nosso tempo., todas as pessoas retratadas devem estar completamente vestidas com roupas apropriadas ao contexto e à época da cena, sem nudez",
-    "arquivo_comfy": "Krea2_turbo_00013_.png"
+    "parte": 1,
+    "frase": 1,
+    "arquivo": "humanidade_01_01.png",
+    "prompt_final": "Há trezentos mil anos, sob o sol implacável das savanas africanas, surgia o Homo sapiens., todas as pessoas retratadas devem estar completamente vestidas com roupas apropriadas ao contexto e à época da cena, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00025_.png"
+  },
+  {
+    "parte": 1,
+    "frase": 2,
+    "arquivo": "humanidade_01_02.png",
+    "prompt_final": "Fisicamente, não éramos a espécie mais forte, nem a mais rápida., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00040_.png"
+  },
+  {
+    "parte": 1,
+    "frase": 3,
+    "arquivo": "humanidade_01_03.png",
+    "prompt_final": "Mas carregávamos uma anomalia evolutiva: um cérebro capaz de imaginar o que ainda não existia., todas as pessoas retratadas devem estar completamente vestidas com roupas apropriadas ao contexto e à época da cena, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00017_.png"
+  },
+  {
+    "parte": 1,
+    "frase": 4,
+    "arquivo": "humanidade_01_04.png",
+    "prompt_final": "Durante a maior parte da nossa história, a evolução caminhou a passos lentos, ditada puramente pela biologia., todas as pessoas retratadas devem estar completamente vestidas com roupas apropriadas ao contexto e à época da cena, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00018_.png"
+  },
+  {
+    "parte": 1,
+    "frase": 5,
+    "arquivo": "humanidade_01_05.png",
+    "prompt_final": "Nosso primeiro grande ato de rebelião contra as regras da natureza foi o domínio do fogo., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00031_.png"
+  },
+  {
+    "parte": 1,
+    "frase": 6,
+    "arquivo": "humanidade_01_06.png",
+    "prompt_final": "Com ele, conquistamos a noite, aquecemos o frio e externalizamos a digestão, dando ao nosso cérebro a energia necessária para crescer., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00038_.png"
+  },
+  {
+    "parte": 1,
+    "frase": 7,
+    "arquivo": "humanidade_01_07.png",
+    "prompt_final": "Por centenas de milênios, fomos nômades., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00039_.png"
+  },
+  {
+    "parte": 1,
+    "frase": 8,
+    "arquivo": "humanidade_01_08.png",
+    "prompt_final": "Até que, há cerca de dez mil anos, decidimos parar., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00036_.png"
+  },
+  {
+    "parte": 1,
+    "frase": 9,
+    "arquivo": "humanidade_01_09.png",
+    "prompt_final": "Ao longo de grandes rios — na Ásia, no Oriente Médio, na África e nas Américas —, a invenção da agricultura nos prendeu à terra, mas libertou o nosso tempo., todas as pessoas retratadas devem estar completamente vestidas com roupas apropriadas ao contexto e à época da cena, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00023_.png"
   }
 ]
