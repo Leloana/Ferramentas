@@ -40,6 +40,11 @@ original); GPU CUDA recomendada (fallback automático para CPU, mais lento).
 - `server/engine/tts_engine.py` — wrapper do XTTS-v2 (`TTS.api.TTS`). Aceita a
   licença CPML programaticamente (`COQUI_TOS_AGREED=1`). Fallback CUDA → CPU
   automático no carregamento, igual ao `stt_engine.py` do karaoke.
+  `synthesize(..., speed=1.0)` expõe o `speed` nativo do XTTS-v2 (ajusta o
+  `length_scale` na própria geração, sem stretch de pós-processamento nem
+  mudança de pitch) — faixa segura ~0.7-1.3, fora disso a voz degrada
+  (artefatos, cadência robótica). `scripts/gerar_video.py` usa 1.20 como
+  padrão (ver abaixo); `POST /api/synthesize` aceita `speed` no corpo.
 - `server/engine/text_preprocessor.py` — `normalize(texto)` via
   `ollama.generate(..., format="json")`, no mesmo estilo de
   `youtube_music_playlist_organizer/core/classifier.py`. Retorna
@@ -220,6 +225,11 @@ cortar em blocos) usando o servidor local via HTTP.
 - **Voz padrão é `"Dionisio Schuyler"` (masculina)** — `--voz` só precisa
   ser passado pra gerar a versão feminina (`"Ana Florence"`) ou testar outro
   locutor embutido/clonado (`"custom:<arquivo>.wav"`).
+- **Velocidade padrão é `1.20`** (`--velocidade`, speed nativo do XTTS-v2,
+  ver `tts_engine.py` acima) — escolhida ouvindo amostras de 0.85 a 1.30 lado
+  a lado no mesmo texto/voz (ver `Projetos/testes_velocidade/`); `--velocidade
+  1.0` volta pro ritmo "neutro" do modelo. Gravado no manifesto (`velocidade`)
+  pra saber depois com que cadência cada áudio foi gerado.
 - Por padrão `--normalizar` fica desligado (mesmo padrão do checkbox do
   front): a normalização via Ollama é opt-in.
 - Não agrupa/corta o texto em blocos de ~1 min — isso é responsabilidade de
