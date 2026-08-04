@@ -94,16 +94,23 @@ original); GPU CUDA recomendada (fallback automático para CPU, mais lento).
   `gerar_video.py` e `gerar_imagens.py` já tenham gerado os arquivos daquele
   projeto.
 - `scripts/gerar_capa.py` — **passo final obrigatório de todo vídeo**: gera a
-  imagem de capa/thumbnail reaproveitando uma das imagens de fundo já geradas
-  por `gerar_imagens.py` (padrão: a da frase 1) e desenhando o título por
-  cima com Pillow — texto real, desenhado aqui, não pedido ao modelo de
-  difusão (mesmo motivo do `_REGRA_SEM_TEXTO` em `gerar_imagens.py`: o Krea2
-  não sabe renderizar texto legível). Sem `--titulo`, usa a 1ª linha de
-  `descricao.md` (sem o "👇" final). Saída em `<projeto>/capa.png` — um único
-  arquivo por projeto, não depende de voz/manifesto, mesma lógica de
-  `_imagens_manifesto.json` único por projeto (ver convenção de pastas
-  abaixo). Não depende do servidor da plataforma nem do ComfyUI estarem
-  rodando, só que `gerar_imagens.py` já tenha gerado a imagem escolhida.
+  imagem de capa/thumbnail e desenha o título por cima com Pillow — texto
+  real, desenhado aqui, não pedido ao modelo de difusão (mesmo motivo do
+  `_REGRA_SEM_TEXTO` em `gerar_imagens.py`: o Krea2 não sabe renderizar
+  texto legível). **A capa não reaproveita nenhuma imagem do corpo do
+  vídeo** — o fundo é uma cena nova gerada no ComfyUI a partir de um
+  `--prompt` escrito à mão (reusa `gerar_imagem()` de `gerar_imagens.py`),
+  pensada pra ser chamativa o bastante pra fazer alguém parar de rolar o
+  feed e clicar, não pra ilustrar uma frase específica da narração (esse é
+  o papel das imagens de `imagens/`). `--imagem` pula a geração e usa um
+  fundo já pronto (ex.: pra só reajustar o texto do título). Sem
+  `--titulo`, usa a 1ª linha de `descricao.md` (sem o "👇" final). Saída em
+  `<projeto>/capa.png` (com título) + `<projeto>/capa_fundo.png` (cena sem
+  texto, reaproveitável) + `<projeto>/capa_manifesto.json`
+  (`prompt_final`/`arquivo_comfy`, mesma lógica de rastreabilidade do
+  `_imagens_manifesto.json` — ver convenção de pastas abaixo). Só depende
+  do ComfyUI estar rodando quando `--prompt` é usado (i.e., quando não há
+  `--imagem`).
 
 ## Convenção de pastas: `Projetos/Video_N/<nome-do-projeto>/`
 
@@ -136,7 +143,9 @@ Projetos/Video_N/<nome-do-projeto>/
   <nome>_feminino_manifesto.json    # sufixo de voz no nome quando houver mais de uma
   <nome>_imagens_manifesto.json     # 1 só — imagens não dependem de voz, ver abaixo
   imagens/<nome>_FF.png             # imagens de fundo (FF = frase), compartilhadas entre as vozes
-  capa.png                          # imagem de capa/thumbnail, ver gerar_capa.py — não depende de voz
+  capa_fundo.png                    # cena chamativa gerada pro thumbnail, distinta de imagens/ — ver gerar_capa.py
+  capa_manifesto.json               # prompt_final/arquivo_comfy da capa_fundo.png, mesma lógica do manifesto de imagens
+  capa.png                          # capa_fundo.png + título desenhado — não depende de voz
   audio/<nome>.wav                  # áudio intermediário (gerar_video.py), descartável depois do vídeo final
   video/<nome>_9x16.mp4             # vídeo final, um por voz
 ```
@@ -488,35 +497,53 @@ python scripts\montar_video.py Projetos\Video_1\historia_humanidade\texto_femini
 ## Automação: `scripts/gerar_capa.py`
 
 **Passo final de todo vídeo** — sem capa, o projeto não está pronto pra
-postar. Gera a imagem de capa/thumbnail reaproveitando uma das imagens de
-fundo já geradas por `gerar_imagens.py` e desenhando o título por cima como
-texto real (Pillow), não pedindo pro modelo de difusão desenhar o texto —
-mesmo raciocínio do `_REGRA_SEM_TEXTO` em `gerar_imagens.py`: diffusion
-model é ruim em texto, sai borrado/ilegível.
+postar. Gera uma cena NOVA e chamativa no ComfyUI a partir de um `--prompt`
+escrito à mão e desenha o título por cima como texto real (Pillow), não
+pedindo pro modelo de difusão desenhar o texto — mesmo raciocínio do
+`_REGRA_SEM_TEXTO` em `gerar_imagens.py`: diffusion model é ruim em texto,
+sai borrado/ilegível.
+
+**A capa nunca reaproveita uma imagem de `imagens/`** (as usadas no corpo
+do vídeo): aquelas são pensadas pra ilustrar a frase que está sendo narrada
+naquele momento, não pra vender o vídeo pra quem está rolando o feed. O
+`--prompt` da capa deve ser escrito com esse objetivo em mente — uma cena
+mais dramática/impactante que qualquer frase isolada do roteiro, seguindo a
+mesma lógica de "escrever à mão em inglês" de `texto_prompts.json` (ver
+`gerar_imagens.py` acima e seus gotchas de prompt).
 
 ```powershell
-python scripts\gerar_capa.py Projetos\Video_1\historia_humanidade_parte2\texto_manifesto.json
+python scripts\gerar_capa.py Projetos\Video_1\historia_humanidade_parte2\texto_manifesto.json --prompt "dramatic wide shot of a meteor impact lighting up a prehistoric sky, cinematic, high contrast"
 # título explícito em vez de ler a 1a linha de descricao.md
-python scripts\gerar_capa.py Projetos\Video_1\historia_humanidade_parte2\texto_manifesto.json --titulo "História da Humanidade — Parte 2/5"
-# outra imagem de fundo como base (padrão: a da frase 1)
-python scripts\gerar_capa.py Projetos\Video_1\historia_humanidade_parte2\texto_manifesto.json --frase 4
+python scripts\gerar_capa.py Projetos\Video_1\historia_humanidade_parte2\texto_manifesto.json --prompt "..." --titulo "História da Humanidade — Parte 2/5"
+# reaproveitando um capa_fundo.png já gerado antes (só reajusta o título, não chama o ComfyUI de novo)
+python scripts\gerar_capa.py Projetos\Video_1\historia_humanidade_parte2\texto_manifesto.json --imagem Projetos\Video_1\historia_humanidade_parte2\capa_fundo.png
 ```
 
+- `--prompt` é obrigatório a menos que `--imagem` seja passado — o script
+  falha com uma mensagem clara em vez de silenciosamente cair de volta pra
+  reaproveitar uma imagem de `imagens/` (essa era a lógica antiga; foi
+  removida de propósito, ver acima).
+- Geração do fundo reusa `gerar_imagem()` de `gerar_imagens.py` (mesmo
+  workflow Krea2, mesmo `_SUFIXO_SEGURANCA`/`_REGRA_SEM_TEXTO` aplicados
+  automaticamente) — precisa do ComfyUI Desktop aberto (API em
+  `127.0.0.1:8188`), exceto quando `--imagem` é usado.
 - Sem `--titulo`, usa a 1ª linha de `<projeto>/descricao.md` (sem o "👇"
   final) — já é exatamente o título+indicador de parte que a legenda usa,
   então não precisa digitar de novo.
-- Fundo: cobre (`background-size: cover`, sem esticar) a imagem de fundo
-  escolhida pro tamanho final, escurece a parte de baixo em gradiente (fica
-  legível em cima de qualquer imagem, não só pelo contorno preto do texto) e
-  desenha o título em branco com contorno preto, mesma família (Arial
-  Bold) usada na legenda do vídeo. Fonte reduz automaticamente até caber na
-  largura/altura reservadas — título longo quebra em mais linhas ou encolhe,
-  não estoura o quadro.
-- Saída em `<projeto>/capa.png` — não depende de voz/manifesto (mesma lógica
-  do `_imagens_manifesto.json` único por projeto), então testar outra voz do
-  mesmo roteiro não precisa gerar capa de novo.
-- Não depende do servidor da plataforma nem do ComfyUI estarem rodando — só
-  precisa que a imagem de fundo escolhida já exista.
+- Composição do texto: cobre (`background-size: cover`, sem esticar) o
+  fundo gerado pro tamanho final, escurece a parte de baixo em gradiente
+  (fica legível em cima de qualquer imagem, não só pelo contorno preto do
+  texto) e desenha o título em branco com contorno preto, mesma família
+  (Arial Bold) usada na legenda do vídeo. Fonte reduz automaticamente até
+  caber na largura/altura reservadas — título longo quebra em mais linhas
+  ou encolhe, não estoura o quadro.
+- Saída: `<projeto>/capa_fundo.png` (cena gerada, sem texto — reaproveitável
+  via `--imagem` se só o título mudar), `<projeto>/capa_manifesto.json`
+  (`prompt_final`/`arquivo_comfy`, mesma lógica de rastreabilidade do
+  `_imagens_manifesto.json`: é o único jeito de saber depois qual prompt
+  gerou a capa) e `<projeto>/capa.png` (resultado final, com título). Não
+  depende de voz/manifesto de áudio — testar outra voz do mesmo roteiro não
+  precisa gerar capa de novo.
 
 ## Gotchas
 
@@ -602,3 +629,21 @@ python scripts\gerar_capa.py Projetos\Video_1\historia_humanidade_parte2\texto_m
   `ollama_num_ctx` retornado por `/api/voices` como referência, e é uma
   estimativa grosseira (~4 caracteres/token) — não reflete o `num_ctx`
   real escolhido no momento da síntese, que é recalculado a cada chamada.
+- **Pontuação sozinha NÃO alonga a frase final de forma confiável** (testado
+  ao investigar um pedido de "entonação final" mais alongada na última frase
+  do vídeo/série): sintetizei a mesma frase de fechamento variando só a
+  pontuação final (`.` vs `...` vs `!` vs `—`), 5 repetições por variante,
+  medindo a duração pós-`_trim_silencio` (script isolado direto em
+  `TTSEngine`, fora do pipeline HTTP). Resultado: `ponto_normal` média
+  8.400s (desvio padrão 0.927s), `exclamacao` média 8.788s (desvio padrão
+  0.940s), `reticencias` média 8.400s (desvio padrão 0.458s) — a diferença
+  entre pontuações (~0.4s) é bem menor que a variância natural do próprio
+  XTTS-v2 de uma síntese pra outra (o modelo não usa seed fixa, ver gotcha
+  de `.wav` intermediários acima). Ou seja, o "efeito" que aparece rodando
+  uma síntese só por variante é ruído de amostragem, não um sinal real de
+  pontuação controlando cadência/entonação. **Se essa entonação final for
+  retomada no futuro**, pontuação não é o caminho — a única alavanca real
+  que já existe no motor é o `speed` nativo do XTTS-v2 (`tts_engine.py`),
+  que hoje só é aplicado uniformemente pra frase inteira sintetizada por
+  chamada; alongar só a última frase exigiria sintetizá-la separadamente
+  com um `speed` menor que o resto (mudança de código, não testada ainda).

@@ -1,20 +1,32 @@
-"""Gera a imagem de capa (thumbnail) de um vídeo: reaproveita uma das imagens
-de fundo já geradas por `gerar_imagens.py` e desenha o título por cima como
-texto real — não pede pro modelo de difusão gerar o texto na imagem, porque
-esse é justamente o bug conhecido do Krea2/ComfyUI usado aqui (texto
+"""Gera a imagem de capa (thumbnail) de um vídeo: gera uma cena NOVA e
+chamativa via ComfyUI (mesmo workflow Krea2 de `gerar_imagens.py`, a partir
+de um `--prompt` escrito à mão) e desenha o título por cima como texto real
+— não pede pro modelo de difusão gerar o texto na imagem, porque esse é
+justamente o bug conhecido do Krea2/ComfyUI usado aqui (texto
 borrado/ilegível, ver `comfy/GOTCHAS.md` e `_REGRA_SEM_TEXTO` em
 `gerar_imagens.py`). O texto é desenhado com Pillow (já é dependência
 transitiva do projeto, via coqui-tts).
 
-Uso:
-    python scripts/gerar_capa.py Projetos/Video_1/historia_humanidade_parte2/texto_manifesto.json
-    # sem --titulo, usa a 1a linha de descricao.md (sem o "👇" final)
-    python scripts/gerar_capa.py Projetos/Video_1/historia_humanidade_parte2/texto_manifesto.json --titulo "História da Humanidade — Parte 2/5"
-    # escolhendo outra imagem de fundo (padrão: a da frase 1)
-    python scripts/gerar_capa.py Projetos/Video_1/historia_humanidade_parte2/texto_manifesto.json --frase 4
+**A capa não deve reaproveitar nenhuma das imagens do corpo do vídeo**: o
+objetivo é fazer quem estiver rolando o feed parar e clicar, o que pede uma
+cena mais chamativa/dramática do que as imagens narrativas de cada frase
+(essas são pensadas pra ilustrar o que está sendo narrado naquele momento,
+não pra vender o vídeo). Por isso `--prompt` é obrigatório (a menos que
+`--imagem` aponte pra um fundo já pronto): escreva a cena em inglês, do
+jeito mais visualmente impactante que fizer sentido pro tema do vídeo,
+mesma lógica de `texto_prompts.json` em `gerar_imagens.py`.
 
-Saída: <projeto>/capa.png — um arquivo só por projeto, igual às imagens de
-fundo (não depende de voz/manifesto, só do texto e da imagem escolhida).
+Uso:
+    python scripts/gerar_capa.py Projetos/Video_1/historia_humanidade_parte2/texto_manifesto.json --prompt "dramatic close-up of ancient Roman ruins at golden hour, cinematic lighting"
+    # sem --titulo, usa a 1a linha de descricao.md (sem o "👇" final)
+    python scripts/gerar_capa.py Projetos/Video_1/historia_humanidade_parte2/texto_manifesto.json --prompt "..." --titulo "História da Humanidade — Parte 2/5"
+    # reaproveitando um fundo de capa já gerado antes (só reajusta o título, não chama o ComfyUI de novo)
+    python scripts/gerar_capa.py Projetos/Video_1/historia_humanidade_parte2/texto_manifesto.json --imagem Projetos/Video_1/historia_humanidade_parte2/capa_fundo.png
+
+Saída: <projeto>/capa.png (título desenhado) + <projeto>/capa_fundo.png (cena
+gerada, sem texto, reaproveitável se só o título mudar) + <projeto>/capa_manifesto.json
+(prompt_final/arquivo_comfy, mesma lógica de rastreabilidade do
+`<nome>_imagens_manifesto.json` — ver CLAUDE.md).
 """
 from __future__ import annotations
 
@@ -23,7 +35,10 @@ import json
 from pathlib import Path
 
 import numpy as np
+import requests
 from PIL import Image, ImageDraw, ImageFont
+
+from gerar_imagens import WORKFLOW_PADRAO, gerar_imagem
 
 _RESOLUCOES = {
     "9:16": (1080, 1920),
@@ -181,29 +196,27 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("manifesto", type=Path, help="Caminho do <nome>_manifesto.json gerado por gerar_video.py")
     ap.add_argument("--titulo", default=None, help="Padrão: 1a linha de <projeto>/descricao.md, sem o 👇 final")
-    ap.add_argument("--frase", type=int, default=1, help="Qual imagem de fundo usar (1-based). Padrão: 1")
-    ap.add_argument("--imagem", type=Path, default=None, help="Caminho direto de uma imagem, sobrepõe --frase")
-    ap.add_argument("--imagens-nome", default=None, help=(
-        "Prefixo dos arquivos de imagem, se diferente do nome do roteiro deste manifesto "
-        "(mesma flag/motivo de montar_video.py)."
+    ap.add_argument("--prompt", default=None, help=(
+        "Descrição visual em inglês, escrita à mão, de uma cena NOVA e chamativa pra capa "
+        "(não reaproveita as imagens do corpo do vídeo) — mesma lógica de texto_prompts.json "
+        "em gerar_imagens.py, mas pensada pra fazer alguém parar de rolar e clicar, não pra "
+        "ilustrar uma frase específica da narração. Obrigatório, a menos que --imagem seja "
+        "passado."
     ))
-    ap.add_argument("--proporcao", choices=sorted(_RESOLUCOES), default="9:16")
+    ap.add_argument("--imagem", type=Path, default=None, help=(
+        "Usa esse fundo já pronto em vez de gerar um novo no ComfyUI (pula --prompt). Útil "
+        "pra só reajustar o texto do título em cima de um capa_fundo.png gerado antes."
+    ))
+    ap.add_argument("--workflow", type=Path, default=None, help="Padrão: mesmo workflow de gerar_imagens.py")
+    ap.add_argument("--aspect-ratio", default="9:16 (Portrait Widescreen)", help="Formato do ResolutionSelector do workflow (ComfyUI)")
+    ap.add_argument("--server", default="http://127.0.0.1:8188")
+    ap.add_argument("--proporcao", choices=sorted(_RESOLUCOES), default="9:16", help="Resolução final da capa (canvas do Pillow)")
     ap.add_argument("--saida", type=Path, default=None)
     args = ap.parse_args()
 
     if not args.manifesto.exists():
         raise SystemExit(f"Manifesto não encontrado: {args.manifesto}")
-    manifesto = json.loads(args.manifesto.read_text(encoding="utf-8"))
     projeto = args.manifesto.parent
-    nome_base = Path(manifesto["roteiro"]).stem
-    nome_imagens = args.imagens_nome or nome_base
-
-    imagem_fundo = args.imagem or (projeto / "imagens" / f"{nome_imagens}_{args.frase:02d}.png")
-    if not imagem_fundo.exists():
-        raise SystemExit(
-            f"Imagem não encontrada: {imagem_fundo}\n"
-            f"Rode: python scripts/gerar_imagens.py {args.manifesto}"
-        )
 
     titulo = args.titulo or _titulo_da_descricao(projeto)
     if not titulo:
@@ -212,8 +225,35 @@ def main():
             "Passe --titulo \"...\" explicitamente."
         )
 
+    if args.imagem:
+        imagem_fundo = args.imagem
+        if not imagem_fundo.exists():
+            raise SystemExit(f"Imagem não encontrada: {imagem_fundo}")
+    else:
+        if not args.prompt:
+            raise SystemExit(
+                "Sem --prompt e sem --imagem. A capa precisa de uma cena própria e chamativa "
+                "(não reaproveita as imagens do corpo do vídeo) — escreva um --prompt em "
+                "inglês descrevendo essa cena, ou passe --imagem apontando pra um "
+                "capa_fundo.png já gerado antes."
+            )
+        workflow_path = args.workflow or WORKFLOW_PADRAO
+        if not workflow_path.exists():
+            raise SystemExit(f"Workflow do ComfyUI não encontrado: {workflow_path}")
+        workflow = json.loads(workflow_path.read_text(encoding="utf-8"))
+        imagem_fundo = projeto / "capa_fundo.png"
+        print("Gerando fundo de capa no ComfyUI...")
+        try:
+            info = gerar_imagem(args.server, workflow, args.prompt, args.aspect_ratio, imagem_fundo)
+        except requests.exceptions.ConnectionError as e:
+            raise SystemExit(f"Não consegui falar com o ComfyUI em {args.server}. Ele está aberto?") from e
+        (projeto / "capa_manifesto.json").write_text(
+            json.dumps({"titulo": titulo, **info}, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+        print(f"Fundo gerado: {imagem_fundo.name} (prompt: {info['prompt_final'][:100]}...)")
+
     destino = args.saida or projeto / "capa.png"
-    print(f'Gerando capa com título "{titulo}" sobre {imagem_fundo.name}...')
+    print(f'Desenhando título "{titulo}" sobre {imagem_fundo.name}...')
     gerar_capa(imagem_fundo, titulo, destino, proporcao=args.proporcao)
     print(f"Pronto: {destino}")
 
