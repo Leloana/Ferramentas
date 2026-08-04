@@ -91,8 +91,14 @@ class TTSEngine:
     def list_builtin_speakers(self):
         return list(self.tts.speakers or [])
 
-    def synthesize(self, text, output_path, language=config.DEFAULT_LANGUAGE, speaker=None, speaker_wav=None):
-        kwargs = {"language": language}
+    def synthesize(self, text, output_path, language=config.DEFAULT_LANGUAGE, speaker=None, speaker_wav=None, speed=1.0):
+        # `speed` é nativo do XTTS-v2 (Xtts.inference), não um ajuste de
+        # velocidade de reprodução: ele escala o length_scale usado pelo
+        # próprio decoder durante a geração, então o áudio já sai mais rápido/
+        # lento na fonte, sem stretch de pós-processamento nem mudança de
+        # pitch. Faixa recomendada pela Coqui é ~0.5-2.0; fora de ~0.7-1.3 a
+        # voz costuma degradar (artefatos, cadência robótica).
+        kwargs = {"language": language, "speed": speed}
         if speaker_wav:
             kwargs["speaker_wav"] = str(speaker_wav)
         else:

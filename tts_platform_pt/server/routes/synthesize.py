@@ -21,6 +21,7 @@ class SynthesizeRequest(BaseModel):
     voice_id: str | None = None
     language: str = config.DEFAULT_LANGUAGE
     normalizar: bool = True
+    speed: float = 1.0
 
 
 @router.post("")
@@ -56,6 +57,7 @@ def synthesize(req: SynthesizeRequest):
             language=req.language,
             speaker=speaker,
             speaker_wav=speaker_wav,
+            speed=req.speed,
         )
     except Exception as e:
         logger.error(f"Falha ao sintetizar áudio: {e}")
