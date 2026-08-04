@@ -68,7 +68,7 @@ original); GPU CUDA recomendada (fallback automático para CPU, mais lento).
   parte, ver convenção de pastas abaixo). Voz padrão é a masculina (Dionisio
   Schuyler) — a feminina só é gerada se pedida explicitamente com `--voz`.
   Cliente HTTP do próprio `/api/synthesize` — requer o servidor rodando. Ver
-  `Projetos/<nome>/` para convenção de pastas de entrada/saída.
+  `Projetos/Video_N/<nome>/` para convenção de pastas de entrada/saída.
 - `scripts/gerar_imagens.py` — gera as imagens de fundo (uma por FRASE, não
   por parte inteira) via ComfyUI local, a partir do manifesto que
   `gerar_video.py` já produziu. Cliente HTTP da API do ComfyUI
@@ -105,20 +105,29 @@ original); GPU CUDA recomendada (fallback automático para CPU, mais lento).
   abaixo). Não depende do servidor da plataforma nem do ComfyUI estarem
   rodando, só que `gerar_imagens.py` já tenha gerado a imagem escolhida.
 
-## Convenção de pastas: `Projetos/<nome-do-projeto>/`
+## Convenção de pastas: `Projetos/Video_N/<nome-do-projeto>/`
 
-Cada vídeo/roteiro vive na sua própria pasta dentro de `Projetos/`, plana por
-padrão — `audio/` e `samples_vozes/` só existem enquanto os `.wav`
+Cada **produção** (uma ideia de vídeo, tenha ela 1 parte ou vire série de
+várias) vive dentro de uma pasta numerada `Projetos/Video_N/` — `Video_1` foi
+a primeira produção feita (`historia_humanidade`, 5 partes), `Video_2` é a
+próxima, e por aí vai. O número é sequencial por **produção**, não por parte:
+uma série de 5 partes consome um `Video_N` só, com as 5 pastas de parte
+dentro dele. Dentro de cada `Video_N/`, cada parte vive na sua própria pasta,
+plana por padrão — `audio/` e `samples_vozes/` só existem enquanto os `.wav`
 intermediários ainda são úteis (ver gotcha abaixo) e somem depois.
 **Atenção**: `audio/` é nome fixo no código de `gerar_video.py`
 (`projeto / "audio"`, e `manifesto["arquivo"]` sempre começa com
 `"audio/"`) e `video/` é nome fixo no código de `montar_video.py`
 (`projeto / "video" / ...`) — não são preferência de organização, se
 restaurar um `.wav` pra retomar edição o nome da subpasta tem que ser
-exatamente esse. Padrão adotado a partir do projeto `historia_humanidade/`:
+exatamente esse. Os scripts (`gerar_video.py`, `gerar_imagens.py`,
+`montar_video.py`, `gerar_capa.py`) resolvem tudo a partir de
+`args.manifesto.parent` — não têm ideia de que existe um `Video_N/` por
+cima, então mover uma pasta de parte pra dentro/fora de um `Video_N/` nunca
+quebra nada neles. Padrão adotado a partir do projeto `historia_humanidade/`:
 
 ```
-Projetos/<nome-do-projeto>/
+Projetos/Video_N/<nome-do-projeto>/
   texto.md                          # roteiro fonte (só o texto puro da narração)
   vozes.md                          # registro manual: "Mulher: <voz>" / "Homem: <voz>"
   descricao.md                      # legenda + hashtags pra postar (ver abaixo)
@@ -175,10 +184,11 @@ Projetos/<nome-do-projeto>/
   nomear arquivo, e o texto completo já fica salvo em `texto_usado` dentro
   do próprio manifesto. Depois de gerado, o roteiro fonte pode ser
   arquivado/renomeado pra `texto.md` sem precisar regerar nada.
-- **Roteiro longo (> ~1min de fala) vira série, uma pasta por parte**:
-  `Projetos/<nome-do-projeto>_parte2/`, `_parte3/`, ... (a primeira parte
-  fica na pasta sem sufixo, ex.: `historia_humanidade/` = parte 1). Cada
-  pasta de parte é um projeto completo e independente nessa convenção (seu
+- **Roteiro longo (> ~1min de fala) vira série, uma pasta por parte, todas
+  dentro do mesmo `Video_N/`**: `Projetos/Video_N/<nome-do-projeto>_parte2/`,
+  `_parte3/`, ... (a primeira parte fica na pasta sem sufixo, ex.:
+  `Video_1/historia_humanidade/` = parte 1). Cada pasta de parte é um
+  projeto completo e independente nessa convenção (seu
   próprio `texto.md`/`vozes.md`/manifestos/`imagens/`/`video/`), não uma
   subpasta. `gerar_video.py` não corta/agrupa nada — sintetiza o `texto.md`
   de cada pasta exatamente como está; por isso o roteiro precisa ser
@@ -214,9 +224,9 @@ cortar em blocos) usando o servidor local via HTTP.
 
 ```powershell
 # com o servidor já rodando (uvicorn server.main:app --port 8011)
-.\venv\Scripts\python.exe scripts\gerar_video.py Projetos\historia_humanidade\texto.md
+.\venv\Scripts\python.exe scripts\gerar_video.py Projetos\Video_1\historia_humanidade\texto.md
 # voz feminina só se pedida explicitamente:
-.\venv\Scripts\python.exe scripts\gerar_video.py Projetos\historia_humanidade\texto.md --voz "Ana Florence"
+.\venv\Scripts\python.exe scripts\gerar_video.py Projetos\Video_1\historia_humanidade\texto.md --voz "Ana Florence"
 ```
 
 - Saída em `<pasta-do-roteiro>/audio/<nome>.wav`, mais um
@@ -245,9 +255,9 @@ bruto).
 
 ```powershell
 # com o ComfyUI Desktop aberto (API em 127.0.0.1:8188)
-.\venv\Scripts\python.exe scripts\gerar_imagens.py Projetos\historia_humanidade\texto_manifesto.json --prompts Projetos\historia_humanidade\texto_prompts.json
+.\venv\Scripts\python.exe scripts\gerar_imagens.py Projetos\Video_1\historia_humanidade\texto_manifesto.json --prompts Projetos\Video_1\historia_humanidade\texto_prompts.json
 # regerar só frases específicas (ex.: depois de revisar e achar 2 ruins)
-.\venv\Scripts\python.exe scripts\gerar_imagens.py Projetos\historia_humanidade\texto_manifesto.json --prompts Projetos\historia_humanidade\texto_prompts.json --frases 2,6
+.\venv\Scripts\python.exe scripts\gerar_imagens.py Projetos\Video_1\historia_humanidade\texto_manifesto.json --prompts Projetos\Video_1\historia_humanidade\texto_prompts.json --frases 2,6
 ```
 
 - Saída em `<projeto>/imagens/<nome>_FF.png` (FF = frase), mais um
@@ -374,9 +384,9 @@ legenda num `.mp4` final, via `ffmpeg` (precisa estar no PATH — não é
 dependência Python).
 
 ```powershell
-python scripts\montar_video.py Projetos\historia_humanidade\texto_manifesto.json
+python scripts\montar_video.py Projetos\Video_1\historia_humanidade\texto_manifesto.json
 # reaproveitando as imagens de outra voz do mesmo roteiro (sem duplicar .png)
-python scripts\montar_video.py Projetos\historia_humanidade\texto_feminino_manifesto.json --imagens-nome texto
+python scripts\montar_video.py Projetos\Video_1\historia_humanidade\texto_feminino_manifesto.json --imagens-nome texto
 ```
 
 - Lê `frases` (timestamps por frase) do manifesto de `gerar_video.py` e as
@@ -485,11 +495,11 @@ mesmo raciocínio do `_REGRA_SEM_TEXTO` em `gerar_imagens.py`: diffusion
 model é ruim em texto, sai borrado/ilegível.
 
 ```powershell
-python scripts\gerar_capa.py Projetos\historia_humanidade_parte2\texto_manifesto.json
+python scripts\gerar_capa.py Projetos\Video_1\historia_humanidade_parte2\texto_manifesto.json
 # título explícito em vez de ler a 1a linha de descricao.md
-python scripts\gerar_capa.py Projetos\historia_humanidade_parte2\texto_manifesto.json --titulo "História da Humanidade — Parte 2/5"
+python scripts\gerar_capa.py Projetos\Video_1\historia_humanidade_parte2\texto_manifesto.json --titulo "História da Humanidade — Parte 2/5"
 # outra imagem de fundo como base (padrão: a da frase 1)
-python scripts\gerar_capa.py Projetos\historia_humanidade_parte2\texto_manifesto.json --frase 4
+python scripts\gerar_capa.py Projetos\Video_1\historia_humanidade_parte2\texto_manifesto.json --frase 4
 ```
 
 - Sem `--titulo`, usa a 1ª linha de `<projeto>/descricao.md` (sem o "👇"

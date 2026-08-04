@@ -7,11 +7,11 @@ borrado/ilegível, ver `comfy/GOTCHAS.md` e `_REGRA_SEM_TEXTO` em
 transitiva do projeto, via coqui-tts).
 
 Uso:
-    python scripts/gerar_capa.py Projetos/historia_humanidade_parte2/texto_manifesto.json
+    python scripts/gerar_capa.py Projetos/Video_1/historia_humanidade_parte2/texto_manifesto.json
     # sem --titulo, usa a 1a linha de descricao.md (sem o "👇" final)
-    python scripts/gerar_capa.py Projetos/historia_humanidade_parte2/texto_manifesto.json --titulo "História da Humanidade — Parte 2/5"
+    python scripts/gerar_capa.py Projetos/Video_1/historia_humanidade_parte2/texto_manifesto.json --titulo "História da Humanidade — Parte 2/5"
     # escolhendo outra imagem de fundo (padrão: a da frase 1)
-    python scripts/gerar_capa.py Projetos/historia_humanidade_parte2/texto_manifesto.json --frase 4
+    python scripts/gerar_capa.py Projetos/Video_1/historia_humanidade_parte2/texto_manifesto.json --frase 4
 
 Saída: <projeto>/capa.png — um arquivo só por projeto, igual às imagens de
 fundo (não depende de voz/manifesto, só do texto e da imagem escolhida).

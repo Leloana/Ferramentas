@@ -2,7 +2,7 @@
 Plataforma de TTS local (POST /api/synthesize).
 
 Uso:
-    python scripts/gerar_video.py Projetos/historia_humanidade/texto.md
+    python scripts/gerar_video.py Projetos/Video_1/historia_humanidade/texto.md
 
 Fluxo:
 1. Sintetiza o roteiro inteiro, exatamente como está no arquivo (sem

@@ -3,11 +3,11 @@ name: gerar-texto
 description: |
   Gera roteiro(s) de narração (texto.md) e legenda/hashtags (descricao.md) para um novo vídeo curto
   ou série de vídeos da tts_platform_pt, no mesmo estilo e formato da série "História da Humanidade"
-  (Projetos/historia_humanidade*). Use quando o usuário invocar `/gerar-texto <tema> <partes>` (ex.:
-  "/gerar-texto dinossauros 4") ou pedir em linguagem natural pra criar/gerar textos, roteiro(s) ou um
-  novo projeto de vídeo sobre um tema. Cria rascunhos em Projetos/ideias/<nome>/ com texto.md,
+  (Projetos/Video_1/historia_humanidade*). Use quando o usuário invocar `/gerar-texto <tema> <partes>`
+  (ex.: "/gerar-texto dinossauros 4") ou pedir em linguagem natural pra criar/gerar textos, roteiro(s)
+  ou um novo projeto de vídeo sobre um tema. Cria rascunhos em Projetos/ideias/<nome>/ com texto.md,
   descricao.md e vozes.md por parte — prontos pra revisar e, quando aprovados, promover pra
-  Projetos/<nome>[_parteN]/ e alimentar scripts/gerar_video.py.
+  Projetos/Video_N/<nome>[_parteN]/ e alimentar scripts/gerar_video.py.
 ---
 
 # Gerar Texto — Roteiros para Vídeos Curtos
@@ -24,8 +24,8 @@ Para o pipeline completo (áudio, imagens, montagem), ver
 - Sem número de partes: pergunte quantas partes antes de escrever qualquer coisa.
 - N alto (mais de ~8): confirme com o usuário antes de gerar tudo — é bastante texto/vídeo pra revisar
   de uma vez.
-- Confira `Projetos/ideias/` e `Projetos/` antes de escrever: se já existir uma pasta com o slug que
-  você pretende usar (passo 5), avise o usuário em vez de sobrescrever.
+- Confira `Projetos/ideias/` e `Projetos/Video_*/` antes de escrever: se já existir uma pasta com o
+  slug que você pretende usar (passo 5), avise o usuário em vez de sobrescrever.
 
 ## 2. Avaliar se o tema já tem um recorte claro
 
@@ -59,7 +59,7 @@ mostrar ao usuário) o sub-tema/foco de cada uma das N partes, na ordem que far�
 
 ## 4. Escrever cada `texto.md`
 
-Regras de estilo extraídas da série de referência (`Projetos/historia_humanidade*/texto.md`):
+Regras de estilo extraídas da série de referência (`Projetos/Video_1/historia_humanidade*/texto.md`):
 
 - **~130-150 palavras por parte** (faixa medida nos 5 textos existentes: 106-155, média ~135) — é o
   que rende ~1 minuto de fala no XTTS-v2. Conte as palavras antes de fechar cada parte e ajuste.
@@ -80,7 +80,7 @@ Regras de estilo extraídas da série de referência (`Projetos/historia_humanid
 ## 5. Criar a estrutura de pastas — sempre dentro de `Projetos/ideias/`
 
 Texto gerado por esta skill é **rascunho**, não produção: não crie diretamente
-`Projetos/<nome>[_parteN]/` (essa convenção, documentada no
+`Projetos/Video_N/<nome>[_parteN]/` (essa convenção, documentada no
 [CLAUDE.md](../../../CLAUDE.md), é pra projetos já em produção — com `audio/`, `imagens/`, `video/`
 associados). Em vez disso, tudo entra em `Projetos/ideias/<slug>/`:
 
@@ -131,10 +131,19 @@ Resuma pro usuário o que foi criado (pasta em `Projetos/ideias/` + contagem de 
 
 Só quando o usuário confirmar que quer seguir com aquela ideia (não automaticamente após gerar):
 
+- Cada **produção** (a ideia inteira, não cada parte) ganha uma pasta numerada
+  `Projetos/Video_N/` — `Video_1` foi a primeira produção feita
+  (`historia_humanidade`, 5 partes), o número é sequencial por produção, não
+  por parte. Determine N: liste `Projetos/Video_*/` e use o próximo inteiro
+  livre — a menos que o usuário já tenha reservado/criado uma pasta
+  `Video_N` vazia pra essa ideia especificamente (confirme com ele se não
+  tiver certeza de qual N usar).
 - Mova cada `Projetos/ideias/<slug>/parteN/` pro destino real da convenção —
-  `Projetos/<slug>/` pra parte 1, `Projetos/<slug>_parte2/` pra parte 2, e assim por diante (pra N = 1
-  sem subpastas, mova `Projetos/ideias/<slug>/` inteira pra `Projetos/<slug>/`). Confira antes que não
-  exista já uma pasta com esse nome em `Projetos/` pra não sobrescrever produção existente.
+  `Projetos/Video_N/<slug>/` pra parte 1, `Projetos/Video_N/<slug>_parte2/`
+  pra parte 2, e assim por diante (pra N = 1 parte sem subpastas, mova
+  `Projetos/ideias/<slug>/` inteira pra `Projetos/Video_N/<slug>/`). Confira
+  antes que não exista já uma pasta com esse nome dentro desse `Video_N/`
+  pra não sobrescrever produção existente.
 - Depois de mover, oriente os próximos passos manuais fora do escopo desta skill:
   - Revisar os textos de novo, principalmente frases com números/datas (regra do passo 4).
   - Rodar `scripts/gerar_video.py` em cada pasta promovida pra sintetizar o áudio (servidor precisa
