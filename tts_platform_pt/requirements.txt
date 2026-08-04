@@ -12,3 +12,4 @@ ollama==0.6.2
 soundfile
 requests
 pysbd
+Pillow

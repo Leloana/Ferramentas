@@ -58,12 +58,12 @@ original); GPU CUDA recomendada (fallback automático para CPU, mais lento).
 - `server/output/` — `.wav` gerados, servidos via `StaticFiles` em `/audio`
   (gitignored).
 - `scripts/gerar_video.py` — automatiza a produção de áudio a partir de um
-  roteiro: sintetiza o texto inteiro (vídeo longo) e, a partir da duração
-  medida desse áudio, calcula a taxa de palavras/minuto real daquela voz
-  para agrupar as mesmas frases em blocos de ~1 min (vídeo curto), sem
-  hardcodar uma taxa de fala fixa. Cliente HTTP do próprio `/api/synthesize`
-  — requer o servidor rodando. Ver `Projetos/<nome>/` para convenção de
-  pastas de entrada/saída.
+  roteiro: sintetiza o texto exatamente como está no arquivo, sem cortar em
+  blocos (isso já é responsabilidade de quem escreve o `texto.md` de cada
+  parte, ver convenção de pastas abaixo). Voz padrão é a masculina (Dionisio
+  Schuyler) — a feminina só é gerada se pedida explicitamente com `--voz`.
+  Cliente HTTP do próprio `/api/synthesize` — requer o servidor rodando. Ver
+  `Projetos/<nome>/` para convenção de pastas de entrada/saída.
 - `scripts/gerar_imagens.py` — gera as imagens de fundo (uma por FRASE, não
   por parte inteira) via ComfyUI local, a partir do manifesto que
   `gerar_video.py` já produziu. Cliente HTTP da API do ComfyUI
@@ -77,42 +77,154 @@ original); GPU CUDA recomendada (fallback automático para CPU, mais lento).
 - **[comfy/GOTCHAS.md](comfy/GOTCHAS.md)** — leia antes de mexer em
   `gerar_imagens.py`, `montar_video.py` ou no workflow acima. Reúne os
   achados de depuração real da geração de imagem (nudez, texto borrado
-  desenhado na cena, formato vertical menos confiável, zoom tremendo) —
-  cada um custou uma ou mais rodadas de geração pra isolar, não repita o
-  trabalho.
-- `scripts/montar_video.py` — monta o `.mp4` final de uma parte curta
+  desenhado na cena, formato vertical menos confiável, zoom tremendo,
+  prompt bilíngue engasgando o refino, modelo desviando pra conteúdo fora
+  do tema/impróprio sem gatilho óbvio no prompt) — cada um custou uma ou
+  mais rodadas de geração pra isolar, não repita o trabalho.
+- `scripts/montar_video.py` — monta o `.mp4` final de um projeto/parte
   (uma imagem por frase, cada uma com zoom próprio, + áudio + legenda
   queimada) via `ffmpeg`, lido do CLI, não de nenhuma API HTTP. Único dos
   scripts de automação que não depende do
   servidor da plataforma nem do ComfyUI estarem rodando — só precisa que
-  `gerar_video.py` e `gerar_imagens.py` já tenham gerado os arquivos daquela
-  parte.
+  `gerar_video.py` e `gerar_imagens.py` já tenham gerado os arquivos daquele
+  projeto.
+- `scripts/gerar_capa.py` — **passo final obrigatório de todo vídeo**: gera a
+  imagem de capa/thumbnail reaproveitando uma das imagens de fundo já geradas
+  por `gerar_imagens.py` (padrão: a da frase 1) e desenhando o título por
+  cima com Pillow — texto real, desenhado aqui, não pedido ao modelo de
+  difusão (mesmo motivo do `_REGRA_SEM_TEXTO` em `gerar_imagens.py`: o Krea2
+  não sabe renderizar texto legível). Sem `--titulo`, usa a 1ª linha de
+  `descricao.md` (sem o "👇" final). Saída em `<projeto>/capa.png` — um único
+  arquivo por projeto, não depende de voz/manifesto, mesma lógica de
+  `_imagens_manifesto.json` único por projeto (ver convenção de pastas
+  abaixo). Não depende do servidor da plataforma nem do ComfyUI estarem
+  rodando, só que `gerar_imagens.py` já tenha gerado a imagem escolhida.
+
+## Convenção de pastas: `Projetos/<nome-do-projeto>/`
+
+Cada vídeo/roteiro vive na sua própria pasta dentro de `Projetos/`, plana por
+padrão — `audio/` e `samples_vozes/` só existem enquanto os `.wav`
+intermediários ainda são úteis (ver gotcha abaixo) e somem depois.
+**Atenção**: `audio/` é nome fixo no código de `gerar_video.py`
+(`projeto / "audio"`, e `manifesto["arquivo"]` sempre começa com
+`"audio/"`) e `video/` é nome fixo no código de `montar_video.py`
+(`projeto / "video" / ...`) — não são preferência de organização, se
+restaurar um `.wav` pra retomar edição o nome da subpasta tem que ser
+exatamente esse. Padrão adotado a partir do projeto `historia_humanidade/`:
+
+```
+Projetos/<nome-do-projeto>/
+  texto.md                          # roteiro fonte (só o texto puro da narração)
+  vozes.md                          # registro manual: "Mulher: <voz>" / "Homem: <voz>"
+  descricao.md                      # legenda + hashtags pra postar (ver abaixo)
+  texto_prompts.json                # prompts de imagem reescritos à mão, ver gerar_imagens.py
+  <nome>_manifesto.json             # 1 por voz testada (gerar_video.py) — sem sufixo = voz padrão (masculina)
+  <nome>_feminino_manifesto.json    # sufixo de voz no nome quando houver mais de uma
+  <nome>_imagens_manifesto.json     # 1 só — imagens não dependem de voz, ver abaixo
+  imagens/<nome>_FF.png             # imagens de fundo (FF = frase), compartilhadas entre as vozes
+  capa.png                          # imagem de capa/thumbnail, ver gerar_capa.py — não depende de voz
+  audio/<nome>.wav                  # áudio intermediário (gerar_video.py), descartável depois do vídeo final
+  video/<nome>_9x16.mp4             # vídeo final, um por voz
+```
+
+- **`descricao.md`**: legenda + hashtags prontas pra copiar e colar direto
+  na hora de postar (Reels/Shorts/TikTok) — texto puro, sem cabeçalho
+  markdown (nada de `# Legenda`/`# Hashtags`, é pra colar como está).
+  Escrito à mão a partir do `texto.md` daquela parte, não é gerado por
+  nenhum script: **indicador de parte primeiro** (tipo "Parte 2/5", é a
+  primeira linha do arquivo — quem abre o vídeo precisa saber de cara em
+  que ponto da série está; na última parte da série vira "Parte N/N
+  (final)"), depois gancho de 1-2 frases terminando num emoji temático,
+  linha em branco, e um segundo parágrafo de resumo do que a parte cobre.
+  Termina com as hashtags. **Hashtags = mesmo bloco-base em toda a série +
+  3-5 específicas da parte**: `#historia #humanidade #curiosidades
+  #documentario #fatoshistoricos #linhadotempo #conhecimento #shorts
+  #reels` sempre presentes (são o "franchise" da série, é o que faz
+  alguém que curtiu a parte 1 achar a parte 2), mais umas 3-5 hashtags só
+  daquele assunto (ex.: `#escrita #roma #maias` na parte sobre
+  civilizações antigas) — não trocar/remover as fixas de uma parte pra
+  outra, senão a série para de ficar linkada nas buscas por hashtag.
+  Criar junto com o `texto.md` de cada parte, mesmo antes de gerar
+  áudio/vídeo — só depende do texto da narração, não
+  do resultado final.
+
+- **`texto_prompts.json`**: `{"<frase>": "descrição visual em inglês"}`,
+  escrito à mão (por quem estiver rodando o pipeline, não gerado por script)
+  pra alimentar `gerar_imagens.py --prompts`. **Por quê não usar o texto
+  literal da narração como prompt de imagem**: frases de narração costumam
+  ser abstratas ("a nossa evolução deixou de ser genética e passou a ser
+  cultural") — difíceis de visualizar diretamente, e frases de tom
+  declarativo/citável alimentam o bug de texto borrado (ver gotcha em
+  `gerar_imagens.py` abaixo). Reescrever cada frase numa cena concreta
+  (sujeito, ação, cenário, iluminação) antes de mandar pro ComfyUI dá
+  imagem melhor e evita esse gatilho. Escrever uma entrada por frase do
+  `<nome>_manifesto.json` (mesma numeração 1-based); frase sem entrada cai
+  no texto literal.
+
+- **`<nome>` nos arquivos gerados vem do nome do roteiro usado NA GERAÇÃO**
+  (`Path(manifesto["roteiro"]).stem`), não precisa bater com `texto.md` —
+  o campo `roteiro` de um manifesto antigo pode inclusive apontar pra um
+  caminho que não existe mais (ex.: uma cópia temporária tipo
+  `humanidade_masculino.md` usada só pra gerar_video.py não sobrescrever o
+  áudio de outra voz); isso não quebra nada porque só o `.stem` importa pra
+  nomear arquivo, e o texto completo já fica salvo em `texto_usado` dentro
+  do próprio manifesto. Depois de gerado, o roteiro fonte pode ser
+  arquivado/renomeado pra `texto.md` sem precisar regerar nada.
+- **Roteiro longo (> ~1min de fala) vira série, uma pasta por parte**:
+  `Projetos/<nome-do-projeto>_parte2/`, `_parte3/`, ... (a primeira parte
+  fica na pasta sem sufixo, ex.: `historia_humanidade/` = parte 1). Cada
+  pasta de parte é um projeto completo e independente nessa convenção (seu
+  próprio `texto.md`/`vozes.md`/manifestos/`imagens/`/`video/`), não uma
+  subpasta. `gerar_video.py` não corta/agrupa nada — sintetiza o `texto.md`
+  de cada pasta exatamente como está; por isso o roteiro precisa ser
+  pré-dividido à mão em blocos de ~130-140 palavras (mesma faixa de taxa de
+  fala já medida no projeto) ANTES de gerar áudio, um `texto.md` por pasta
+  de parte. Isso também garante que todas as vozes usem exatamente o mesmo
+  texto por parte (testar uma voz mais rápida ou mais lenta não muda onde o
+  texto é cortado, porque o corte não depende mais de taxa medida).
+- **Um só `_imagens_manifesto.json` por projeto, não um por voz**: como as
+  imagens são geradas a partir do texto de cada frase (não da voz),
+  manifestos de imagem de vozes diferentes do mesmo roteiro saem idênticos
+  — gerar mais de um é puro desperdício. Ao testar uma voz nova do mesmo
+  texto, aponte `montar_video.py --imagens-nome <nome-original>` pro
+  prefixo das imagens já existentes em vez de duplicar `.png` ou o
+  manifesto de imagens (ver flag em `montar_video.py` abaixo).
+- **Os `.wav` intermediários (`audio/`, `samples_vozes/`) não precisam
+  sobreviver depois do `.mp4` final** — o áudio já fica embutido em
+  `video/*.mp4`. Isso economiza bastante espaço (WAV não comprimido é
+  grande, e um teste de vozes pode gerar dezenas de samples), mas tem uma
+  pegadinha: **sem o `.wav`, não dá pra re-rodar só `montar_video.py`** pra
+  ajustar legenda/zoom/proporção — teria que rodar `gerar_video.py` de novo
+  primeiro. E como o XTTS-v2 não usa seed fixa, resintetizar não reproduz o
+  mesmo áudio nem os mesmos timestamps por frase (ficam parecidos, não
+  idênticos) — na prática isso gera um manifesto novo, não uma continuação
+  do antigo. Se ainda estiver iterando na legenda/zoom de uma parte (como
+  fizemos nesta sessão, várias rodadas só de `montar_video.py`), segure a
+  limpeza dos `.wav` até fechar esse ajuste.
 
 ## Automação: `scripts/gerar_video.py`
 
-Gera, a partir de um roteiro de texto único, tanto o vídeo longo quanto as
-partes curtas para redes sociais, usando o servidor local via HTTP.
+Sintetiza um roteiro de texto único (exatamente como está no arquivo, sem
+cortar em blocos) usando o servidor local via HTTP.
 
 ```powershell
 # com o servidor já rodando (uvicorn server.main:app --port 8011)
-.\venv\Scripts\python.exe scripts\gerar_video.py Projetos\video-curto\humanidade.md --voz "Ana Florence"
+.\venv\Scripts\python.exe scripts\gerar_video.py Projetos\historia_humanidade\texto.md
+# voz feminina só se pedida explicitamente:
+.\venv\Scripts\python.exe scripts\gerar_video.py Projetos\historia_humanidade\texto.md --voz "Ana Florence"
 ```
 
-- Saída em `<pasta-do-roteiro>/video-longo/<nome>.wav` (roteiro inteiro) e
-  `<pasta-do-roteiro>/video-curto/<nome>_01.wav`, `_02.wav`, ... (blocos de
-  ~1 min, configurável com `--minutos-por-parte`), mais um
-  `<nome>_manifesto.json` com texto, avisos de normalização e duração de
-  cada parte.
+- Saída em `<pasta-do-roteiro>/audio/<nome>.wav`, mais um
+  `<nome>_manifesto.json` com texto, aviso de normalização, duração e
+  timestamps por frase.
+- **Voz padrão é `"Dionisio Schuyler"` (masculina)** — `--voz` só precisa
+  ser passado pra gerar a versão feminina (`"Ana Florence"`) ou testar outro
+  locutor embutido/clonado (`"custom:<arquivo>.wav"`).
 - Por padrão `--normalizar` fica desligado (mesmo padrão do checkbox do
   front): a normalização via Ollama é opt-in.
-- O corte dos blocos curtos respeita limites de frase (nunca corta uma frase
-  ao meio); por isso a duração de cada parte varia um pouco em torno do alvo
-  em vez de bater exatamente no minuto.
-- Usa `pysbd.Segmenter(language="en", ...)` para achar os limites de frase —
-  não é erro de digitação: é o mesmo idioma hardcoded que
-  `TTS/utils/synthesizer.py` usa por baixo dos panos pra qualquer idioma
-  (pysbd não tem regras próprias de português), então o corte do script
-  reflete exatamente onde o motor já corta ao sintetizar.
+- Não agrupa/corta o texto em blocos de ~1 min — isso é responsabilidade de
+  quem escreve o `texto.md` de cada parte (ver "Roteiro longo vira série"
+  na convenção de pastas acima). Um roteiro `.md` = um `.wav`.
 
 ## Automação: `scripts/gerar_imagens.py`
 
@@ -123,15 +235,47 @@ bruto).
 
 ```powershell
 # com o ComfyUI Desktop aberto (API em 127.0.0.1:8188)
-.\venv\Scripts\python.exe scripts\gerar_imagens.py Projetos\video-curto\humanidade_manifesto.json --parte 1
+.\venv\Scripts\python.exe scripts\gerar_imagens.py Projetos\historia_humanidade\texto_manifesto.json --prompts Projetos\historia_humanidade\texto_prompts.json
 # regerar só frases específicas (ex.: depois de revisar e achar 2 ruins)
-.\venv\Scripts\python.exe scripts\gerar_imagens.py Projetos\video-curto\humanidade_manifesto.json --parte 1 --frases 2,6
+.\venv\Scripts\python.exe scripts\gerar_imagens.py Projetos\historia_humanidade\texto_manifesto.json --prompts Projetos\historia_humanidade\texto_prompts.json --frases 2,6
 ```
 
-- Saída em `<projeto>/imagens/<nome>_PP_FF.png` (PP = parte, FF = frase
-  dentro da parte), mais um `<nome>_imagens_manifesto.json` (mescla com o
-  que já existia — regerar só algumas frases com `--frases` não apaga o
-  registro das outras).
+- Saída em `<projeto>/imagens/<nome>_FF.png` (FF = frase), mais um
+  `<nome>_imagens_manifesto.json` (mescla com o que já existia — regerar só
+  algumas frases com `--frases` não apaga o registro das outras).
+- **`--prompts <arquivo>.json`**: usa `{"<frase>": "descrição visual"}`
+  (ver `texto_prompts.json` na convenção de pastas acima) como prompt em
+  vez do texto literal da narração daquela frase — frase sem entrada no
+  arquivo cai no texto literal. **Sempre escreva esse arquivo à mão antes
+  de gerar imagens** (reescrevendo cada frase numa cena concreta em
+  inglês, não traduzindo/parafraseando frase por frase mecanicamente): o
+  texto literal da narração costuma ser abstrato demais pra virar uma boa
+  cena visual direto, e frases de tom declarativo/citável disparam o bug
+  de texto borrado (ver logo abaixo).
+  **Escreva sempre em inglês, nunca misture idioma dentro do mesmo
+  prompt**: `_SUFIXO_SEGURANCA` é apensado em inglês a qualquer seed —
+  um seed em português (ou qualquer mistura de idiomas) desestabiliza o
+  refino (`qwen3vl_4b`, modelo pequeno) e pode fazer ele ecoar fragmentos
+  garranchados das próprias regras do system prompt como texto visível na
+  imagem (ver GOTCHAS.md item 7).
+- **Depois de gerar, abra e confira CADA imagem antes de rodar
+  `montar_video.py`** — não é opcional. Além do texto garranchado acima,
+  o modelo de difusão às vezes ignora o prompt inteiro e desenha algo
+  completamente fora do tema (já reproduzido: personagem estilo anime em
+  roupa reveladora, sem qualquer gatilho óbvio no prompt) — o script
+  termina sem erro nos dois casos, "rodou sem erro" não é sinal de "saiu
+  certo". Se uma frase quebrar 2x seguidas com o mesmo prompt, pare de só
+  regenerar (seed novo nem sempre resolve) e reescreva o texto do prompt
+  daquela frase — ver GOTCHAS.md item 8.
+- **Sempre grava o prompt de cada imagem gerada no Krea**: cada entrada do
+  `<nome>_imagens_manifesto.json` inclui `prompt_final` (o texto exato
+  enviado pro node de prompt do ComfyUI — frase + `_SUFIXO_SEGURANCA`, sem o
+  refino do `TextGenerate`) e `arquivo_comfy` (o nome que o próprio ComfyUI
+  deu ao arquivo, útil pra cruzar com o histórico da UI). Não é log
+  incidental: é o único jeito de saber depois qual prompt gerou qual
+  imagem — essencial pra revisar, reproduzir ou ajustar uma imagem
+  específica sem ter que re-deduzir o prompt a partir da frase. Preserve
+  esses dois campos em qualquer refactor de `gerar_imagens.py`.
 - Formato `9:16 (Portrait Widescreen)` por padrão (`--aspect-ratio`) — vídeo
   curto é pensado pra celular; ver gotcha abaixo sobre confiabilidade desse
   formato nesse modelo.
@@ -140,6 +284,17 @@ bruto).
   LLM) expandir a frase numa descrição visual mais rica. Testado mandando a
   frase em português puro — o refino manteve o idioma e ficou coerente,
   então não precisa de um passo de tradução via Ollama à parte.
+- **Prompt final curto (`_REGRA_PROMPT_CURTO`)**: a regra 2 do system
+  prompt original do refino ("Practical T2I Structure") incentiva um
+  parágrafo rico com vários detalhes simultâneos — observado que isso
+  aumenta a taxa de alucinação (painéis duplicados, enquadramento
+  rotacionado, membros extras) especificamente em formatos
+  verticais/retrato (os usados pra celular, ver gotcha logo abaixo). Regra
+  extra apensada (mesmo mecanismo de `_REGRA_SEM_TEXTO`) pedindo um prompt
+  final de no máximo ~40 palavras. Combina bem com `--prompts` (acima): um
+  seed já curto e concreto tende a só ser "polido" pela regra 7 do system
+  prompt original (que pede pra não expandir demais um input já detalhado)
+  em vez de virar um parágrafo longo.
 - **Guarda-corpo de nudez (`_SUFIXO_SEGURANCA`)**: por padrão o
   `krea2_turbo` desenha figuras humanas nuas quando o prompt não menciona
   vestimenta — mesmo a regra 8 do system prompt do workflow ("assuma roupa
@@ -205,21 +360,32 @@ bruto).
 ## Automação: `scripts/montar_video.py`
 
 Junta uma imagem por frase (cada uma com seu próprio zoom) + áudio +
-legenda de uma parte curta num `.mp4` final, via `ffmpeg` (precisa estar no
-PATH — não é dependência Python).
+legenda num `.mp4` final, via `ffmpeg` (precisa estar no PATH — não é
+dependência Python).
 
 ```powershell
-python scripts\montar_video.py Projetos\video-curto\humanidade_manifesto.json --parte 1
+python scripts\montar_video.py Projetos\historia_humanidade\texto_manifesto.json
+# reaproveitando as imagens de outra voz do mesmo roteiro (sem duplicar .png)
+python scripts\montar_video.py Projetos\historia_humanidade\texto_feminino_manifesto.json --imagens-nome texto
 ```
 
 - Lê `frases` (timestamps por frase) do manifesto de `gerar_video.py` e as
-  imagens de cada frase de `gerar_imagens.py` (`imagens/<nome>_PP_FF.png`,
-  uma por frase — precisa ter sido gerada uma pra cada frase da parte, o
-  script erra com uma mensagem clara e o comando pra completar se faltar
-  alguma). Se a parte não tiver `frases` no manifesto (gerada antes dessa
-  timing existir), o script pede pra rodar `gerar_video.py` de novo em vez
-  de tentar adivinhar.
-- Saída em `<projeto>/montagem/<nome>_NN_<proporção>.mp4`.
+  imagens de cada frase de `gerar_imagens.py` (`imagens/<nome>_FF.png`,
+  uma por frase — precisa ter sido gerada uma pra cada frase, o script erra
+  com uma mensagem clara e o comando pra completar se faltar alguma). Se o
+  manifesto não tiver `frases` (gerado antes dessa timing existir), o
+  script pede pra rodar `gerar_video.py` de novo em vez de tentar adivinhar.
+- Saída em `<projeto>/video/<nome>_<proporção>.mp4`.
+- **`--imagens-nome`**: por padrão o prefixo das imagens é derivado do
+  `roteiro` gravado no manifesto (`Path(manifesto["roteiro"]).stem`) — o
+  mesmo prefixo que `gerar_imagens.py` usa ao salvar. Testar o mesmo roteiro
+  com vozes diferentes normalmente exige gerar um manifesto próprio pra cada
+  voz (pra não sobrescrever o áudio de uma versão anterior), o que muda esse
+  prefixo mesmo as frases/imagens sendo idênticas — sem essa flag, a saída
+  seria duplicar os `.png` só pra bater o nome esperado. Com
+  `--imagens-nome <prefixo-original>`, aponta pra reaproveitar os arquivos
+  de imagem já existentes de outra voz/manifesto do mesmo roteiro, sem
+  copiar nada.
 - **Um clipe por frase, concatenados**: como cada frase já tem sua própria
   imagem (gerada por `gerar_imagens.py`, ver acima), `montar()` renderiza
   um clipe mudo por frase (`renderizar_clipe_imagem()`) e concatena tudo
@@ -257,31 +423,80 @@ python scripts\montar_video.py Projetos\video-curto\humanidade_manifesto.json --
 - **Legendas são subdivididas, não uma por frase**: uma frase inteira como
   legenda única fica grande demais/lenta demais num vídeo vertical (chegou
   a ocupar a tela toda em frases de 20+ palavras). `dividir_em_legendas()`
-  quebra cada frase em pedaços de ~6 palavras, interpolando o tempo de cada
-  pedaço proporcionalmente à contagem de palavras dentro do intervalo
-  conhecido da frase (não é medição real — o motor só dá timestamp por
-  frase, não por palavra; aproximação assume ritmo de fala ~constante
-  dentro da frase).
-- **Gotcha do ffmpeg que custou caro pra debugar**: o filtro `subtitles`
-  (`force_style=...:original_size=WxH`) espera em `original_size` o
-  tamanho do frame de **entrada do filtergraph** (o vídeo antes de
-  qualquer `scale`/`crop` que rode ANTES do `subtitles` na mesma cadeia)
-  — não o tamanho final pós-crop, apesar do nome e da posição do parâmetro
-  sugerirem isso. Passar o tamanho errado ali faz o libass calcular a
-  escala errada: a legenda sai gigante (cobrindo a tela inteira) e mal
-  posicionada, mesmo com `FontSize` pequeno no `force_style` — e o pior,
-  isso acontece *silenciosamente*, sem warning no log do ffmpeg
-  (`-loglevel verbose` mostra o "Setting force_style to value..."
-  confirmando que a opção foi lida, então o instinto de "será que não tá
-  sendo aplicada" é um beco sem saída). Só ficou claro isolando com fontes
-  sintéticas (`color=`) em cadeias `scale,crop,subtitles` cada vez mais
-  simples até comparar `original_size` = tamanho pós-crop (quebrado) vs
-  tamanho do frame de entrada (correto). Na versão atual (um clipe por
-  frase já vem pronto na resolução final, sem scale/crop antes do
-  `subtitles` na passada final) `original_size` = `largura x altura` de
-  saída é suficiente; se algum dia reintroduzir scale/crop antes do
-  `subtitles` na mesma cadeia, meça o tamanho de entrada real (`ffprobe`)
-  em vez de assumir.
+  quebra cada frase em pedaços de até 4 palavras (`_PALAVRAS_POR_LEGENDA`,
+  no padrão de legenda curta de conteúdo pra celular — sem quebra de linha,
+  centralizada no meio do vídeo em vez de perto do rodapé), interpolando o
+  tempo de cada pedaço proporcionalmente à contagem de palavras dentro do
+  intervalo conhecido da frase (não é medição real — o motor só dá
+  timestamp por frase, não por palavra; aproximação assume ritmo de fala
+  ~constante dentro da frase).
+- **Legenda é `.ass` escrito à mão (`gerar_ass()`), não `.srt` + filtro
+  `subtitles`**: a primeira versão gerava um `.srt` e usava
+  `subtitles=legenda.srt:original_size=WxH:force_style='...'`. Na conversão
+  interna que o filtro `subtitles` faz de SRT pra ASS, o tamanho de fonte e
+  o alinhamento do `force_style` saíram completamente errados — texto ~6x
+  maior que o `FontSize` pedido e grudado no topo mesmo com
+  `Alignment=5` (meio-centro), mesmo com `original_size` batendo
+  corretamente com a resolução do vídeo (ver gotcha de `original_size`
+  logo abaixo — aquele problema é outro, já resolvido antes, e não foi a
+  causa desse). Confirmado extraindo frame do `.mp4` renderizado e
+  comparando visualmente (`ffmpeg -ss <t> -frames:v 1 saida.png`) — o
+  tamanho/posição real não tinha relação óbvia com os valores pedidos, sinal
+  de que o `PlayResY` assumido pela conversão SRT→ASS não estava batendo
+  com a resolução real do vídeo. A correção foi abandonar `subtitles` +
+  `force_style` e escrever o `.ass` diretamente com `PlayResX`/`PlayResY`
+  = `largura`/`altura` de saída (elimina qualquer fator de escala
+  implícito) e `WrapStyle: 2` no `[Script Info]` (desliga quebra de linha
+  automática — junto com o limite de 4 palavras por legenda, garante uma
+  linha só). O filtro final é só `ass=legenda.ass`, sem `force_style` nem
+  `original_size`.
+- **Gotcha do ffmpeg (histórico, filtro `subtitles`, não mais usado
+  aqui)**: o filtro `subtitles` (`force_style=...:original_size=WxH`)
+  espera em `original_size` o tamanho do frame de **entrada do
+  filtergraph** (o vídeo antes de qualquer `scale`/`crop` que rode ANTES do
+  `subtitles` na mesma cadeia) — não o tamanho final pós-crop, apesar do
+  nome e da posição do parâmetro sugerirem isso. Passar o tamanho errado
+  ali faz o libass calcular a escala errada, e isso acontece
+  *silenciosamente*, sem warning no log do ffmpeg (`-loglevel verbose`
+  mostra o "Setting force_style to value..." confirmando que a opção foi
+  lida, então o instinto de "será que não tá sendo aplicada" é um beco sem
+  saída). Deixou de ser relevante pra `montar_video.py` depois da mudança
+  pra `.ass` escrito à mão (ponto acima), mas fica registrado caso
+  `subtitles`+`force_style` seja usado em outro lugar do repositório: meça
+  o tamanho de entrada real (`ffprobe`) em vez de assumir.
+
+## Automação: `scripts/gerar_capa.py`
+
+**Passo final de todo vídeo** — sem capa, o projeto não está pronto pra
+postar. Gera a imagem de capa/thumbnail reaproveitando uma das imagens de
+fundo já geradas por `gerar_imagens.py` e desenhando o título por cima como
+texto real (Pillow), não pedindo pro modelo de difusão desenhar o texto —
+mesmo raciocínio do `_REGRA_SEM_TEXTO` em `gerar_imagens.py`: diffusion
+model é ruim em texto, sai borrado/ilegível.
+
+```powershell
+python scripts\gerar_capa.py Projetos\historia_humanidade_parte2\texto_manifesto.json
+# título explícito em vez de ler a 1a linha de descricao.md
+python scripts\gerar_capa.py Projetos\historia_humanidade_parte2\texto_manifesto.json --titulo "História da Humanidade — Parte 2/5"
+# outra imagem de fundo como base (padrão: a da frase 1)
+python scripts\gerar_capa.py Projetos\historia_humanidade_parte2\texto_manifesto.json --frase 4
+```
+
+- Sem `--titulo`, usa a 1ª linha de `<projeto>/descricao.md` (sem o "👇"
+  final) — já é exatamente o título+indicador de parte que a legenda usa,
+  então não precisa digitar de novo.
+- Fundo: cobre (`background-size: cover`, sem esticar) a imagem de fundo
+  escolhida pro tamanho final, escurece a parte de baixo em gradiente (fica
+  legível em cima de qualquer imagem, não só pelo contorno preto do texto) e
+  desenha o título em branco com contorno preto, mesma família (Arial
+  Bold) usada na legenda do vídeo. Fonte reduz automaticamente até caber na
+  largura/altura reservadas — título longo quebra em mais linhas ou encolhe,
+  não estoura o quadro.
+- Saída em `<projeto>/capa.png` — não depende de voz/manifesto (mesma lógica
+  do `_imagens_manifesto.json` único por projeto), então testar outra voz do
+  mesmo roteiro não precisa gerar capa de novo.
+- Não depende do servidor da plataforma nem do ComfyUI estarem rodando — só
+  precisa que a imagem de fundo escolhida já exista.
 
 ## Gotchas
 
