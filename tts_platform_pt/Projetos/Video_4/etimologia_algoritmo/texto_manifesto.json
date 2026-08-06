@@ -1,0 +1,89 @@
+{
+  "gerado_em": "2026-08-05T21:26:04",
+  "roteiro": "Projetos\\Video_4\\etimologia_algoritmo\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 156.6,
+  "texto_usado": "Toda vez que você abre uma rede social, um algoritmo decide o que aparece na sua tela. Mas essa palavra nasceu bem longe de qualquer computador — na verdade, ela nasceu de um nome próprio. No século nove, em Bagdá, o matemático persa Al-Khwarizmi trabalhava na Casa da Sabedoria, o centro de estudos do califa Al-Mamun, um dos maiores acervos de conhecimento do mundo medieval, movimento que também traduzia obras gregas de Euclides e Ptolomeu pro árabe. Lá ele escreveu um livro explicando como calcular usando os números indo-arábicos — o sistema que a Índia já usava havia séculos, com casas decimais e o zero incluído, bem diferente de contar nos dedos ou mover contas num ábaco. Anos depois, escreveu outro tratado sobre como resolver equações reorganizando termos de um lado pro outro; o título desse segundo livro, \"Al-Jabr\", deu origem à palavra álgebra. Al-Khwarizmi também compilou mapas e tabelas astronômicas, mas foi essa dupla de livros que viajou mais longe, junto com o próprio nome do autor. Traduzido pro latim, Al-Khwarizmi virou algorismus, e o termo deixou de nomear o homem pra nomear o método: calcular usando aqueles números novos, no lugar dos algarismos romanos que a Europa já conhecia. A chegada desse novo sistema não foi pacífica: por gerações, escolas medievais se dividiram entre algoristas, que defendiam os números indo-arábicos, e abacistas, fiéis ao ábaco e aos numerais romanos — uma rivalidade que só terminou quando comerciantes e banqueiros perceberam o quanto era mais rápido calcular no papel. Alguns desses manuais de algorismo eram escritos até em verso, pra ajudar estudantes a decorar as regras de cálculo. Por séculos, \"algorismo\" significou só isso — contar com números indo-arábicos, nada além disso. A palavra atravessou o francês antigo, chegou ao inglês, e só ganhou um h a mais bem mais tarde, puxada pelo grego arithmos, que significa número — pura coincidência de som que colou de vez na escrita, mesmo sem nenhuma relação real de origem com o grego. Só no século vinte, com o nascimento da computação, algoritmo abandonou de vez a conta manual e passou a nomear qualquer sequência de passos pra resolver um problema — dos primeiros programas de Turing até o código que decide, agora mesmo, o que aparece no seu feed. E o mais curioso: em português, o parente mais próximo dessa palavra sobreviveu com outro sentido. \"Algarismo\" continua significando só o número que você escreve, o dígito — enquanto \"algoritmo\" virou o processo inteiro. A mesma raiz, mil e duzentos anos depois, apontando pra dois lugares diferentes.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Toda vez que você abre uma rede social, um algoritmo decide o que aparece na sua tela.",
+      "inicio_s": 0.0,
+      "fim_s": 4.86
+    },
+    {
+      "texto": "Mas essa palavra nasceu bem longe de qualquer computador — na verdade, ela nasceu de um nome próprio.",
+      "inicio_s": 5.21,
+      "fim_s": 10.67
+    },
+    {
+      "texto": "No século nove, em Bagdá, o matemático persa Al-Khwarizmi trabalhava na Casa da Sabedoria, o centro de estudos do califa Al-Mamun, um dos maiores acervos de conhecimento do mundo medieval, movimento que também traduzia obras gregas de Euclides e Ptolomeu pro árabe.",
+      "inicio_s": 11.02,
+      "fim_s": 26.52
+    },
+    {
+      "texto": "Lá ele escreveu um livro explicando como calcular usando os números indo-arábicos — o sistema que a Índia já usava havia séculos, com casas decimais e o zero incluído, bem diferente de contar nos dedos ou mover contas num ábaco.",
+      "inicio_s": 26.87,
+      "fim_s": 39.95
+    },
+    {
+      "texto": "Anos depois, escreveu outro tratado sobre como resolver equações reorganizando termos de um lado pro outro; o título desse segundo livro, \"Al-Jabr\", deu origem à palavra álgebra.",
+      "inicio_s": 40.3,
+      "fim_s": 50.44
+    },
+    {
+      "texto": "Al-Khwarizmi também compilou mapas e tabelas astronômicas, mas foi essa dupla de livros que viajou mais longe, junto com o próprio nome do autor.",
+      "inicio_s": 50.79,
+      "fim_s": 58.79
+    },
+    {
+      "texto": "Traduzido pro latim, Al-Khwarizmi virou algorismus, e o termo deixou de nomear o homem pra nomear o método: calcular usando aqueles números novos, no lugar dos algarismos romanos que a Europa já conhecia.",
+      "inicio_s": 59.14,
+      "fim_s": 73.7
+    },
+    {
+      "texto": "A chegada desse novo sistema não foi pacífica: por gerações, escolas medievais se dividiram entre algoristas, que defendiam os números indo-arábicos, e abacistas, fiéis ao ábaco e aos numerais romanos — uma rivalidade que só terminou quando comerciantes e banqueiros perceberam o quanto era mais rápido calcular no papel.",
+      "inicio_s": 74.05,
+      "fim_s": 91.97
+    },
+    {
+      "texto": "Alguns desses manuais de algorismo eram escritos até em verso, pra ajudar estudantes a decorar as regras de cálculo.",
+      "inicio_s": 92.32,
+      "fim_s": 98.46
+    },
+    {
+      "texto": "Por séculos, \"algorismo\" significou só isso — contar com números indo-arábicos, nada além disso.",
+      "inicio_s": 98.81,
+      "fim_s": 104.51
+    },
+    {
+      "texto": "A palavra atravessou o francês antigo, chegou ao inglês, e só ganhou um h a mais bem mais tarde, puxada pelo grego arithmos, que significa número — pura coincidência de som que colou de vez na escrita, mesmo sem nenhuma relação real de origem com o grego.",
+      "inicio_s": 104.86,
+      "fim_s": 120.02
+    },
+    {
+      "texto": "Só no século vinte, com o nascimento da computação, algoritmo abandonou de vez a conta manual e passou a nomear qualquer sequência de passos pra resolver um problema — dos primeiros programas de Turing até o código que decide, agora mesmo, o que aparece no seu feed.",
+      "inicio_s": 120.37,
+      "fim_s": 136.09
+    },
+    {
+      "texto": "E o mais curioso: em português, o parente mais próximo dessa palavra sobreviveu com outro sentido.",
+      "inicio_s": 136.44,
+      "fim_s": 144.14
+    },
+    {
+      "texto": "\"Algarismo\" continua significando só o número que você escreve, o dígito — enquanto \"algoritmo\" virou o processo inteiro.",
+      "inicio_s": 144.49,
+      "fim_s": 151.01
+    },
+    {
+      "texto": "A mesma raiz, mil e duzentos anos depois, apontando pra dois lugares diferentes.",
+      "inicio_s": 151.36,
+      "fim_s": 156.58
+    }
+  ]
+}
