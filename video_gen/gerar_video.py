@@ -105,6 +105,7 @@ def montar_workflow(args) -> dict:
         altura_base = arredondar_32(args.altura // 2)
         workflow["21"]["inputs"]["width"] = largura_base
         workflow["21"]["inputs"]["height"] = altura_base
+        workflow["21"]["inputs"]["length"] = args.frames
 
     return workflow
 

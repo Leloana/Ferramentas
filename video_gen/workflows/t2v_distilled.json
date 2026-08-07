@@ -105,7 +105,7 @@
     "inputs": {
       "samples": ["35", 0],
       "upscale_model": ["39", 0],
-      "vae": ["63", 0]
+      "vae": ["44", 2]
     },
     "class_type": "LTXVLatentUpsampler",
     "_meta": {

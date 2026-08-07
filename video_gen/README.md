@@ -9,6 +9,26 @@ Este projeto **não instala o ComfyUI** — ele assume que o ComfyUI Desktop já
 está presente e apenas baixa os pesos do modelo para dentro dele e envia jobs
 de geração pela API HTTP.
 
+## Aviso sobre o conteúdo gerado (importante)
+
+Em teste real feito durante o desenvolvimento desta ferramenta, um prompt
+totalmente neutro ("um farol na costa ao entardecer, ondas quebrando
+suavemente, céu alaranjado" — sem nenhuma menção a pessoas) gerou por padrão
+uma figura humana fotorrealista sem roupa. Ou seja: **este modelo "uncensored"
+tende a gerar nudez/conteúdo adulto mesmo quando o prompt não pede isso**, não
+é algo que só acontece se você pedir explicitamente.
+
+Coisas a ter em mente:
+- Não assuma que um prompt inocente vai gerar um resultado inocente — confira
+  o vídeo antes de reaproveitar, exibir ou compartilhar.
+- Para reduzir a chance disso, adicione termos ao `--negativo` (ex.: "nudity,
+  naked, nsfw") — mas dado que o modelo foi ajustado justamente para remover
+  esse tipo de filtro, isso não é garantia.
+- A pasta `output/` não é versionada no git (está no `.gitignore`) exatamente
+  por isso.
+- A responsabilidade pelo conteúdo gerado e por como ele é usado é de quem
+  roda a ferramenta.
+
 ## Aviso sobre hardware
 
 O LTX-2.3 é um modelo de 22 bilhões de parâmetros. Numa GPU de 12GB de VRAM
@@ -16,9 +36,6 @@ O LTX-2.3 é um modelo de 22 bilhões de parâmetros. Numa GPU de 12GB de VRAM
 RAM, então a geração funciona, mas é **bem mais lenta** do que em placas de
 16GB+. Espere alguns minutos por vídeo. Feche outros programas que usem a GPU
 antes de gerar.
-
-Este é um modelo "uncensored" de uso local — a responsabilidade pelo conteúdo
-gerado é de quem o utiliza.
 
 ## Pré-requisitos
 
