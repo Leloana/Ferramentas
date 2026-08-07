@@ -603,6 +603,19 @@ python scripts\gerar_capa.py Projetos\Video_1\historia_humanidade_parte2\texto_m
   números, meça com RMS por janela (script usado: gerar o clipe, calcular RMS
   em janelas de 20ms, olhar os valores perto do ponto de corte) em vez de
   julgar de ouvido.
+  **Início da primeira frase do áudio saía cortado**: o fade-in de
+  `_trim_silencio` (mesma lógica acima, só que na borda de abertura) parte do
+  princípio de que sobra alguma margem de silêncio nativo antes da fala pra
+  rampar sem tocar em fonema nenhum — verdade pras frases 2+ (sempre
+  precedidas por `_GAP_ENTRE_FRASES_S`, silêncio puro), mas nem sempre pra
+  frase 1: quando essa chamada específica ao XTTS-v2 sai com pouco/nenhum
+  silêncio de abertura, `inicio` em `_trim_silencio` fica em 0 e o fade-in de
+  30ms rampa em cima do começo real da primeira palavra do vídeo, cortando
+  perceptivelmente o início dela — só notável na frase 1 porque é a única sem
+  silêncio de verdade antes pra mascarar isso. Corrigido inserindo
+  `_LEAD_IN_S` (150ms de silêncio puro) antes da primeira frase em
+  `synthesize()`, dando ao fade-in um colchão real pra rampar, igual ao que o
+  gap já garante pras frases seguintes.
 - **XTTS-v2 "trava"/alonga demais em frases com datas compostas** (ex.: "Roma,
   26 de abril de 121 – Vindobona, 17 de março de 180"): uma frase que deveria
   durar ~5s saiu com 14-17s (repetição/alucinação do decoder autoregressivo).

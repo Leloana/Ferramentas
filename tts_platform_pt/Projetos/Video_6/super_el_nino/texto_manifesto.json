@@ -1,0 +1,89 @@
+{
+  "gerado_em": "2026-08-06T22:10:13",
+  "roteiro": "Projetos\\Video_6\\super_el_nino\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 94.0,
+  "texto_usado": "Existe uma versão do El Niño capaz de bater recorde de temperatura no planeta inteiro — e o que separa ela do El Niño comum é só um número.\n\nO El Niño normal acontece quando as águas do Pacífico tropical esquentam acima da média, mudando ventos e chuvas ao redor do mundo. É cíclico, natural, e volta a cada poucos anos.\n\nPra virar \"super\", a água numa faixa específica do oceano precisa subir pelo menos dois graus Celsius acima do normal. Passou dessa marca, os cientistas mudam a classificação — e os efeitos deixam de ser regionais pra virar globais.\n\nEsse grau a mais parece pouco, mas reorganiza a circulação do ar inteira. Correntes que normalmente ficam sobre a Ásia se deslocam pro meio do oceano Pacífico, levando chuva pra onde antes era seco e seca pra onde antes chovia. Na Austrália, a estação chuvosa vira seca. No sul dos Estados Unidos, o inverno fica mais úmido que o normal.\n\nNos últimos trinta anos, essa marca só foi ultrapassada três vezes: em 1997, em 2015 e em 2023. Em cada uma delas, o planeta bateu recorde de temperatura média logo depois — o calor extra liberado pelo oceano se soma ao aquecimento que já vinha acontecendo.\n\nO nome \"El Niño\" vem do espanhol, batizado por pescadores no Peru que notavam o mar mais quente perto do Natal. Eles não sabiam, mas estavam descrevendo o início de um sistema capaz de mudar o clima do planeta inteiro por meses.\n\nNão é exagero de manchete. É um número exato — e ele vem cruzando essa linha com mais frequência.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Existe uma versão do El Niño capaz de bater recorde de temperatura no planeta inteiro — e o que separa ela do El Niño comum é só um número.",
+      "inicio_s": 0.15,
+      "fim_s": 6.85
+    },
+    {
+      "texto": "O El Niño normal acontece quando as águas do Pacífico tropical esquentam acima da média, mudando ventos e chuvas ao redor do mundo.",
+      "inicio_s": 7.2,
+      "fim_s": 14.92
+    },
+    {
+      "texto": "É cíclico, natural, e volta a cada poucos anos.",
+      "inicio_s": 15.27,
+      "fim_s": 19.17
+    },
+    {
+      "texto": "Pra virar \"super\", a água numa faixa específica do oceano precisa subir pelo menos dois graus Celsius acima do normal.",
+      "inicio_s": 19.52,
+      "fim_s": 26.22
+    },
+    {
+      "texto": "Passou dessa marca, os cientistas mudam a classificação — e os efeitos deixam de ser regionais pra virar globais.",
+      "inicio_s": 26.57,
+      "fim_s": 33.71
+    },
+    {
+      "texto": "Esse grau a mais parece pouco, mas reorganiza a circulação do ar inteira.",
+      "inicio_s": 34.06,
+      "fim_s": 38.22
+    },
+    {
+      "texto": "Correntes que normalmente ficam sobre a Ásia se deslocam pro meio do oceano Pacífico, levando chuva pra onde antes era seco e seca pra onde antes chovia.",
+      "inicio_s": 38.57,
+      "fim_s": 47.75
+    },
+    {
+      "texto": "Na Austrália, a estação chuvosa vira seca.",
+      "inicio_s": 48.1,
+      "fim_s": 51.06
+    },
+    {
+      "texto": "No sul dos Estados Unidos, o inverno fica mais úmido que o normal.",
+      "inicio_s": 51.41,
+      "fim_s": 54.99
+    },
+    {
+      "texto": "Nos últimos trinta anos, essa marca só foi ultrapassada três vezes: em 1997, em 2015 e em 2023.",
+      "inicio_s": 55.34,
+      "fim_s": 64.46
+    },
+    {
+      "texto": "Em cada uma delas, o planeta bateu recorde de temperatura média logo depois — o calor extra liberado pelo oceano se soma ao aquecimento que já vinha acontecendo.",
+      "inicio_s": 64.81,
+      "fim_s": 75.07
+    },
+    {
+      "texto": "O nome \"El Niño\" vem do espanhol, batizado por pescadores no Peru que notavam o mar mais quente perto do Natal.",
+      "inicio_s": 75.42,
+      "fim_s": 82.04
+    },
+    {
+      "texto": "Eles não sabiam, mas estavam descrevendo o início de um sistema capaz de mudar o clima do planeta inteiro por meses.",
+      "inicio_s": 82.39,
+      "fim_s": 88.59
+    },
+    {
+      "texto": "Não é exagero de manchete.",
+      "inicio_s": 88.94,
+      "fim_s": 90.3
+    },
+    {
+      "texto": "É um número exato — e ele vem cruzando essa linha com mais frequência.",
+      "inicio_s": 90.65,
+      "fim_s": 93.99
+    }
+  ]
+}

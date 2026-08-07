@@ -5,7 +5,7 @@ import re
 
 from fastapi import APIRouter, File, HTTPException, UploadFile
 
-import config
+from engine.text_preprocessor import pick_num_ctx
 from state import CUSTOM_VOICES_DIR, get_tts_engine
 
 router = APIRouter(prefix="/api/voices", tags=["voices"])
@@ -21,7 +21,10 @@ def list_voices():
     return {
         "embutidas": embutidas,
         "personalizadas": personalizadas,
-        "ollama_num_ctx": config.OLLAMA_NUM_CTX,
+        # Foto do num_ctx que seria escolhido agora, dado o estado atual da
+        # VRAM (o valor real é recalculado a cada /api/synthesize). None
+        # significa que o Ollama seria pulado se você sintetizasse agora.
+        "ollama_num_ctx": pick_num_ctx(),
     }
 
 

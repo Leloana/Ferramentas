@@ -1,0 +1,68 @@
+{
+  "gerado_em": "2026-08-03T21:00:44",
+  "roteiro": "Projetos\\historia_humanidade_parte4\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "arquivo": "video/texto.wav",
+  "duracao_s": 69.8,
+  "texto_usado": "Não demorou para que a eletricidade iluminasse o globo, aniquilando a escuridão de forma definitiva e pulsando energia pelas veias das nossas cidades. A aceleração tornou-se vertiginosa. Em um piscar de olhos cósmico, abandonamos as engrenagens pesadas e entramos na Era do Silício. Transformamos areia em microchips. Se a escrita externalizou a memória, os computadores externalizaram o cálculo. A internet conectou bilhões de mentes em uma única rede neural global, onde a informação viaja na velocidade da luz. E hoje, alcançamos o limiar da Inteligência Artificial. Pela primeira vez na história do universo, estamos ensinando uma ferramenta a pensar, a aprender e a criar por conta própria. Mas, ao olharmos para toda essa jornada — da primeira fogueira ao algoritmo quântico —, percebemos que um padrão se manteve inalterado. Nossas ferramentas sempre foram externas. Elas exigem que nossos olhos leiam a tela, que nossos ouvidos escutem, que nossos dedos lentos e biológicos toquem um teclado.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Não demorou para que a eletricidade iluminasse o globo, aniquilando a escuridão de forma definitiva e pulsando energia pelas veias das nossas cidades.",
+      "inicio_s": 0.0,
+      "fim_s": 8.62
+    },
+    {
+      "texto": "A aceleração tornou-se vertiginosa.",
+      "inicio_s": 8.97,
+      "fim_s": 11.85
+    },
+    {
+      "texto": "Em um piscar de olhos cósmico, abandonamos as engrenagens pesadas e entramos na Era do Silício.",
+      "inicio_s": 12.2,
+      "fim_s": 19.26
+    },
+    {
+      "texto": "Transformamos areia em microchips.",
+      "inicio_s": 19.61,
+      "fim_s": 21.65
+    },
+    {
+      "texto": "Se a escrita externalizou a memória, os computadores externalizaram o cálculo.",
+      "inicio_s": 22.0,
+      "fim_s": 26.28
+    },
+    {
+      "texto": "A internet conectou bilhões de mentes em uma única rede neural global, onde a informação viaja na velocidade da luz.",
+      "inicio_s": 26.63,
+      "fim_s": 35.11
+    },
+    {
+      "texto": "E hoje, alcançamos o limiar da Inteligência Artificial.",
+      "inicio_s": 35.46,
+      "fim_s": 39.62
+    },
+    {
+      "texto": "Pela primeira vez na história do universo, estamos ensinando uma ferramenta a pensar, a aprender e a criar por conta própria.",
+      "inicio_s": 39.97,
+      "fim_s": 47.31
+    },
+    {
+      "texto": "Mas, ao olharmos para toda essa jornada — da primeira fogueira ao algoritmo quântico —, percebemos que um padrão se manteve inalterado.",
+      "inicio_s": 47.66,
+      "fim_s": 58.4
+    },
+    {
+      "texto": "Nossas ferramentas sempre foram externas.",
+      "inicio_s": 58.75,
+      "fim_s": 61.29
+    },
+    {
+      "texto": "Elas exigem que nossos olhos leiam a tela, que nossos ouvidos escutem, que nossos dedos lentos e biológicos toquem um teclado.",
+      "inicio_s": 61.64,
+      "fim_s": 69.78
+    }
+  ]
+}

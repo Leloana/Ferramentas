@@ -1,0 +1,68 @@
+{
+  "gerado_em": "2026-08-03T20:59:33",
+  "roteiro": "Projetos\\historia_humanidade_parte3\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "arquivo": "video/texto.wav",
+  "duracao_s": 63.1,
+  "texto_usado": "Enquanto a Europa se fragmentava na Idade Média, o eixo do progresso humano continuava a girar. O mundo islâmico vivia sua Era de Ouro, dando saltos gigantescos na álgebra, na óptica e na medicina. No Oriente, o papel, a bússola e a pólvora eram inventados. O intelecto humano nunca adormeceu; ele apenas viajava por novas rotas. A curva do nosso progresso ganhava fôlego. E com o início das Grandes Navegações, continentes isolados por milênios finalmente colidiram. Os oceanos deixaram de ser fronteiras para se tornarem pontes. Pela primeira vez, a troca de tecnologia e de ideias passou a acontecer em escala planetária. A matemática do nosso desenvolvimento deixou de ser linear... e se tornou exponencial. No século dezoito, a Revolução Industrial substituiu o músculo pelo motor. O carvão e o vapor forjaram um mundo de ferro e engrenagens.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Enquanto a Europa se fragmentava na Idade Média, o eixo do progresso humano continuava a girar.",
+      "inicio_s": 0.0,
+      "fim_s": 6.14
+    },
+    {
+      "texto": "O mundo islâmico vivia sua Era de Ouro, dando saltos gigantescos na álgebra, na óptica e na medicina.",
+      "inicio_s": 6.49,
+      "fim_s": 14.17
+    },
+    {
+      "texto": "No Oriente, o papel, a bússola e a pólvora eram inventados.",
+      "inicio_s": 14.52,
+      "fim_s": 20.3
+    },
+    {
+      "texto": "O intelecto humano nunca adormeceu; ele apenas viajava por novas rotas.",
+      "inicio_s": 20.65,
+      "fim_s": 27.09
+    },
+    {
+      "texto": "A curva do nosso progresso ganhava fôlego.",
+      "inicio_s": 27.44,
+      "fim_s": 30.16
+    },
+    {
+      "texto": "E com o início das Grandes Navegações, continentes isolados por milênios finalmente colidiram.",
+      "inicio_s": 30.51,
+      "fim_s": 36.69
+    },
+    {
+      "texto": "Os oceanos deixaram de ser fronteiras para se tornarem pontes.",
+      "inicio_s": 37.04,
+      "fim_s": 40.7
+    },
+    {
+      "texto": "Pela primeira vez, a troca de tecnologia e de ideias passou a acontecer em escala planetária.",
+      "inicio_s": 41.05,
+      "fim_s": 47.13
+    },
+    {
+      "texto": "A matemática do nosso desenvolvimento deixou de ser linear... e se tornou exponencial.",
+      "inicio_s": 47.48,
+      "fim_s": 53.62
+    },
+    {
+      "texto": "No século dezoito, a Revolução Industrial substituiu o músculo pelo motor.",
+      "inicio_s": 53.97,
+      "fim_s": 59.15
+    },
+    {
+      "texto": "O carvão e o vapor forjaram um mundo de ferro e engrenagens.",
+      "inicio_s": 59.5,
+      "fim_s": 63.12
+    }
+  ]
+}

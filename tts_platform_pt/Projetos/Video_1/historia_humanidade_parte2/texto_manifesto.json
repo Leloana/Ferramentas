@@ -1,0 +1,63 @@
+{
+  "gerado_em": "2026-08-03T20:54:45",
+  "roteiro": "Projetos\\historia_humanidade_parte2\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "arquivo": "video/texto.wav",
+  "duracao_s": 62.7,
+  "texto_usado": "As populações explodiram. E para contabilizar o que plantávamos, criamos algo que mudaria tudo: a escrita. A partir daquele momento, a memória humana deixou de morrer com o indivíduo. A nossa evolução deixou de ser genética... e passou a ser cultural. Com a mente livre da busca constante por sobrevivência, passamos a observar as estrelas e a formular lógicas e filosofias. Grandes civilizações se ergueram quase simultaneamente. Das estradas pavimentadas e aquedutos de Roma, passando pelos cálculos astronômicos dos Maias, até a burocracia e as inovações da Dinastia Han, na China. A engenharia e o pensamento complexo não nasceram em um só continente; eles foram um impulso coletivo da nossa espécie. A história, no entanto, não é uma linha reta. Mas o que o Ocidente muitas vezes chamou de \"Idade das Trevas\" foi apenas uma ilusão geográfica.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "As populações explodiram.",
+      "inicio_s": 0.0,
+      "fim_s": 1.74
+    },
+    {
+      "texto": "E para contabilizar o que plantávamos, criamos algo que mudaria tudo: a escrita.",
+      "inicio_s": 2.09,
+      "fim_s": 7.95
+    },
+    {
+      "texto": "A partir daquele momento, a memória humana deixou de morrer com o indivíduo.",
+      "inicio_s": 8.3,
+      "fim_s": 12.94
+    },
+    {
+      "texto": "A nossa evolução deixou de ser genética... e passou a ser cultural.",
+      "inicio_s": 13.29,
+      "fim_s": 18.07
+    },
+    {
+      "texto": "Com a mente livre da busca constante por sobrevivência, passamos a observar as estrelas e a formular lógicas e filosofias.",
+      "inicio_s": 18.42,
+      "fim_s": 26.44
+    },
+    {
+      "texto": "Grandes civilizações se ergueram quase simultaneamente.",
+      "inicio_s": 26.79,
+      "fim_s": 30.57
+    },
+    {
+      "texto": "Das estradas pavimentadas e aquedutos de Roma, passando pelos cálculos astronômicos dos Maias, até a burocracia e as inovações da Dinastia Han, na China.",
+      "inicio_s": 30.92,
+      "fim_s": 41.08
+    },
+    {
+      "texto": "A engenharia e o pensamento complexo não nasceram em um só continente; eles foram um impulso coletivo da nossa espécie.",
+      "inicio_s": 41.43,
+      "fim_s": 50.15
+    },
+    {
+      "texto": "A história, no entanto, não é uma linha reta.",
+      "inicio_s": 50.5,
+      "fim_s": 54.12
+    },
+    {
+      "texto": "Mas o que o Ocidente muitas vezes chamou de \"Idade das Trevas\" foi apenas uma ilusão geográfica.",
+      "inicio_s": 54.47,
+      "fim_s": 62.69
+    }
+  ]
+}

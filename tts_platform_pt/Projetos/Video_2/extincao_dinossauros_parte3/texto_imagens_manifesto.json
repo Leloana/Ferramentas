@@ -1,0 +1,44 @@
+[
+  {
+    "frase": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "A weakened dinosaur standing in a frozen dead forest under a permanently grey ash-covered sky, withered leafless trees, dim cold light, no humans, no people, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00129_.png"
+  },
+  {
+    "frase": 2,
+    "arquivo": "texto_02.png",
+    "prompt_final": "Empty desolate barren prehistoric landscape with withered dead plants, dry cracked ground and a single dying dinosaur lying in the distance, wasteland devoid of any human presence, prehistoric Earth long before humans existed, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00139_.png"
+  },
+  {
+    "frase": 3,
+    "arquivo": "texto_03.png",
+    "prompt_final": "A fossilized dinosaur skeleton half-buried in barren cracked earth, somber grey lighting, no humans, no people, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00131_.png"
+  },
+  {
+    "frase": 4,
+    "arquivo": "texto_04.png",
+    "prompt_final": "A small ray of warm sunlight breaking through dark clouds over a barren survivor landscape, empty of any creature, no humans, no people, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00132_.png"
+  },
+  {
+    "frase": 5,
+    "arquivo": "texto_05.png",
+    "prompt_final": "An ordinary small furry Cretaceous mammal, shrew-like, not wearing clothes, no anthropomorphic features, emerging from a burrow into a sunlit forest clearing, wildlife documentary nature photography, no humans, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00140_.png"
+  },
+  {
+    "frase": 6,
+    "arquivo": "texto_06.png",
+    "prompt_final": "A feathered dinosaur mid-transformation into a modern bird, perched on a branch in a green garden, soft daylight, no humans, no people, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00134_.png"
+  },
+  {
+    "frase": 7,
+    "arquivo": "texto_07.png",
+    "prompt_final": "Close-up of a small bird perched on a sunny windowsill, warm natural light, peaceful morning, no humans, no people, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00135_.png"
+  }
+]

@@ -38,6 +38,15 @@ _JANELA_TRIM_S = 0.02
 _MARGEM_TRIM_S = 0.08
 _FADE_S = 0.03
 
+# Silêncio inserido antes da primeira frase do áudio final. Diferente das
+# frases seguintes (que já ganham `_GAP_ENTRE_FRASES_S` de silêncio puro na
+# frente), a primeira frase vai direto pro início do arquivo — se o XTTS-v2
+# gerar pouco ou nenhum silêncio nativo de abertura nessa chamada específica,
+# `_trim_silencio` não tem margem sobrando pra recuar e o fade-in de
+# `_FADE_S` acaba rampando em cima do início real da primeira palavra em vez
+# de silêncio, cortando o começo dela perceptivelmente.
+_LEAD_IN_S = 0.15
+
 
 def _sanitizar_pontuacao_pt(text: str) -> str:
     return _PONTO_FINAL_RE.sub("|", text)
@@ -129,9 +138,9 @@ class TTSEngine:
         # sincronizadas sem precisar de um passo de transcrição/alinhamento
         # à parte: a gente já sabe exatamente onde cada frase começa/termina
         # porque foi a gente quem montou o áudio, frase por frase.
-        partes = []
+        partes = [np.zeros(int(sample_rate * _LEAD_IN_S))]
         timings = []
-        cursor_s = 0.0
+        cursor_s = _LEAD_IN_S
         for i, (frase, clipe) in enumerate(zip(frases, clipes)):
             duracao_s = len(clipe) / sample_rate
             timings.append({"texto": frase, "inicio_s": round(cursor_s, 3), "fim_s": round(cursor_s + duracao_s, 3)})

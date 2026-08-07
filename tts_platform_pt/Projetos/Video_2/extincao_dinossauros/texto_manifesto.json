@@ -1,0 +1,49 @@
+{
+  "gerado_em": "2026-08-04T01:09:25",
+  "roteiro": "Projetos\\Video_2\\extincao_dinossauros\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 50.6,
+  "texto_usado": "Por cento e sessenta e cinco milhões de anos, os dinossauros reinaram sobre cada continente da Terra. Não eram um único tipo de criatura, mas uma explosão de formas: predadores do tamanho de um ônibus, herbívoros de pescoço mais alto que um prédio de cinco andares, e espécies emplumadas do tamanho de um pombo. Eles sobreviveram a eras glaciais, a erupções vulcânicas colossais e a mudanças drásticas no nível dos oceanos. Dominavam terra, mar e ar — o topo absoluto da cadeia alimentar, sem nenhum predador capaz de os ameaçar. Enquanto isso, os primeiros mamíferos viviam à sombra desse império, pequenos e noturnos, escondidos entre raízes e tocas. Nada nesse equilíbrio sugeria um fim próximo. Mas a sessenta e seis milhões de anos do presente, um objeto de dez quilômetros de largura, vindo do espaço, já estava em rota de colisão com o planeta.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Por cento e sessenta e cinco milhões de anos, os dinossauros reinaram sobre cada continente da Terra.",
+      "inicio_s": 0.0,
+      "fim_s": 4.74
+    },
+    {
+      "texto": "Não eram um único tipo de criatura, mas uma explosão de formas: predadores do tamanho de um ônibus, herbívoros de pescoço mais alto que um prédio de cinco andares, e espécies emplumadas do tamanho de um pombo.",
+      "inicio_s": 5.09,
+      "fim_s": 16.83
+    },
+    {
+      "texto": "Eles sobreviveram a eras glaciais, a erupções vulcânicas colossais e a mudanças drásticas no nível dos oceanos.",
+      "inicio_s": 17.18,
+      "fim_s": 24.06
+    },
+    {
+      "texto": "Dominavam terra, mar e ar — o topo absoluto da cadeia alimentar, sem nenhum predador capaz de os ameaçar.",
+      "inicio_s": 24.41,
+      "fim_s": 32.43
+    },
+    {
+      "texto": "Enquanto isso, os primeiros mamíferos viviam à sombra desse império, pequenos e noturnos, escondidos entre raízes e tocas.",
+      "inicio_s": 32.78,
+      "fim_s": 40.06
+    },
+    {
+      "texto": "Nada nesse equilíbrio sugeria um fim próximo.",
+      "inicio_s": 40.41,
+      "fim_s": 42.75
+    },
+    {
+      "texto": "Mas a sessenta e seis milhões de anos do presente, um objeto de dez quilômetros de largura, vindo do espaço, já estava em rota de colisão com o planeta.",
+      "inicio_s": 43.1,
+      "fim_s": 50.64
+    }
+  ]
+}

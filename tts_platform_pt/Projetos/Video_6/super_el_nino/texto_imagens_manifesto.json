@@ -1,0 +1,92 @@
+[
+  {
+    "frase": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "Satellite view of Earth's curvature at night, a massive swirling band of glowing orange-red heat spreading across the tropical Pacific Ocean, dramatic high-contrast lighting, cinematic wide shot, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00195_.png"
+  },
+  {
+    "frase": 2,
+    "arquivo": "texto_02.png",
+    "prompt_final": "Aerial shot of the tropical Pacific Ocean at sunset, warm orange thermal shimmer rising off the water, distant storm clouds forming on the horizon, cinematic wide shot, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00196_.png"
+  },
+  {
+    "frase": 3,
+    "arquivo": "texto_03.png",
+    "prompt_final": "Time-lapse style wide shot of ocean currents swirling slowly beneath drifting clouds, soft cyclical motion, calm blue-gold light, symbolic natural rhythm, cinematic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00197_.png"
+  },
+  {
+    "frase": 4,
+    "arquivo": "texto_04.png",
+    "prompt_final": "Wide shot of a large glass thermometer standing upright in dark blue ocean water, glowing red mercury column rising, sunlight rays filtering down from above, no people, empty scene, symbolic scientific instrument, cinematic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00214_.png"
+  },
+  {
+    "frase": 5,
+    "arquivo": "texto_05.png",
+    "prompt_final": "Wide symbolic shot of a world map glowing on dark water, one side calm blue, the other side spreading in glowing orange-red heat across the continents, cinematic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00199_.png"
+  },
+  {
+    "frase": 6,
+    "arquivo": "texto_06.png",
+    "prompt_final": "Aerial view of massive swirling storm clouds from above, glowing jet-stream lines bending across a darkening sky, dramatic atmospheric motion, cinematic wide shot, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00200_.png"
+  },
+  {
+    "frase": 7,
+    "arquivo": "texto_07.png",
+    "prompt_final": "Split wide landscape, one half a cracked drought-stricken desert under harsh sun, the other half a flooded river overflowing through a dense forest, dramatic contrast, cinematic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00201_.png"
+  },
+  {
+    "frase": 8,
+    "arquivo": "texto_08.png",
+    "prompt_final": "Wide shot of the Australian outback, dry cracked red earth stretching to the horizon under a harsh sun, dust drifting in the air, cinematic drought atmosphere, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00202_.png"
+  },
+  {
+    "frase": 9,
+    "arquivo": "texto_09.png",
+    "prompt_final": "Empty rain-soaked street in a small town at night, no people, storm clouds and lightning overhead, streetlights reflecting on wet pavement, dramatic cinematic wide shot, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00215_.png"
+  },
+  {
+    "frase": 10,
+    "arquivo": "texto_10.png",
+    "prompt_final": "Wide shot from behind of a group of scientists facing a giant wall of glowing screens showing world ocean temperature maps, dim control room, blue and orange light, backs to camera, fully clothed, cinematic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00216_.png"
+  },
+  {
+    "frase": 11,
+    "arquivo": "texto_11.png",
+    "prompt_final": "A sunlit city skyline shimmering with heat haze rising from rooftops and streets, warm golden sunbeams breaking through smog, dramatic wide aerial view, no text, no caption, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00217_.png"
+  },
+  {
+    "frase": 12,
+    "arquivo": "texto_12.png",
+    "prompt_final": "Peruvian fishermen in a wooden boat pulling nets at golden sunrise over a warm ocean, historical coastal atmosphere, warm light, fully clothed, cinematic wide shot, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00206_.png"
+  },
+  {
+    "frase": 13,
+    "arquivo": "texto_13.png",
+    "prompt_final": "Small wooden fishing boat on a vast ocean with a massive glowing storm system forming on the horizon, symbolic scale contrast, cinematic wide shot, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00207_.png"
+  },
+  {
+    "frase": 14,
+    "arquivo": "texto_14.png",
+    "prompt_final": "Scientist calmly reviewing glowing data charts on a monitor while a dramatic storm rages outside a large window behind them, contrast of calm and chaos, fully clothed, cinematic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00208_.png"
+  },
+  {
+    "frase": 15,
+    "arquivo": "texto_15.png",
+    "prompt_final": "Abstract glowing red line rising and crossing a bright threshold marker repeatedly against a dark background, data visualization style, symbolic, cinematic macro shot, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00209_.png"
+  }
+]

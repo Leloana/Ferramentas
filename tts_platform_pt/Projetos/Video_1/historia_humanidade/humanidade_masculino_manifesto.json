@@ -1,0 +1,542 @@
+{
+  "gerado_em": "2026-08-03T20:16:39",
+  "roteiro": "Projetos\\video-curto\\humanidade_masculino.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "video_longo": {
+    "arquivo": "video-longo/humanidade_masculino.wav",
+    "duracao_s": 309.3,
+    "texto_usado": "Há trezentos mil anos, sob o sol implacável das savanas africanas, surgia o Homo sapiens. Fisicamente, não éramos a espécie mais forte, nem a mais rápida. Mas carregávamos uma anomalia evolutiva: um cérebro capaz de imaginar o que ainda não existia. Durante a maior parte da nossa história, a evolução caminhou a passos lentos, ditada puramente pela biologia. Nosso primeiro grande ato de rebelião contra as regras da natureza foi o domínio do fogo. Com ele, conquistamos a noite, aquecemos o frio e externalizamos a digestão, dando ao nosso cérebro a energia necessária para crescer. Por centenas de milênios, fomos nômades. Até que, há cerca de dez mil anos, decidimos parar. Ao longo de grandes rios — na Ásia, no Oriente Médio, na África e nas Américas —, a invenção da agricultura nos prendeu à terra, mas libertou o nosso tempo. As populações explodiram. E para contabilizar o que plantávamos, criamos algo que mudaria tudo: a escrita. A partir daquele momento, a memória humana deixou de morrer com o indivíduo. A nossa evolução deixou de ser genética... e passou a ser cultural. Com a mente livre da busca constante por sobrevivência, passamos a observar as estrelas e a formular lógicas e filosofias. Grandes civilizações se ergueram quase simultaneamente. Das estradas pavimentadas e aquedutos de Roma, passando pelos cálculos astronômicos dos Maias, até a burocracia e as inovações da Dinastia Han, na China. A engenharia e o pensamento complexo não nasceram em um só continente; eles foram um impulso coletivo da nossa espécie. A história, no entanto, não é uma linha reta. Mas o que o Ocidente muitas vezes chamou de \"Idade das Trevas\" foi apenas uma ilusão geográfica. Enquanto a Europa se fragmentava na Idade Média, o eixo do progresso humano continuava a girar. O mundo islâmico vivia sua Era de Ouro, dando saltos gigantescos na álgebra, na óptica e na medicina. No Oriente, o papel, a bússola e a pólvora eram inventados. O intelecto humano nunca adormeceu; ele apenas viajava por novas rotas. A curva do nosso progresso ganhava fôlego. E com o início das Grandes Navegações, continentes isolados por milênios finalmente colidiram. Os oceanos deixaram de ser fronteiras para se tornarem pontes. Pela primeira vez, a troca de tecnologia e de ideias passou a acontecer em escala planetária. A matemática do nosso desenvolvimento deixou de ser linear... e se tornou exponencial. No século dezoito, a Revolução Industrial substituiu o músculo pelo motor. O carvão e o vapor forjaram um mundo de ferro e engrenagens. Não demorou para que a eletricidade iluminasse o globo, aniquilando a escuridão de forma definitiva e pulsando energia pelas veias das nossas cidades. A aceleração tornou-se vertiginosa. Em um piscar de olhos cósmico, abandonamos as engrenagens pesadas e entramos na Era do Silício. Transformamos areia em microchips. Se a escrita externalizou a memória, os computadores externalizaram o cálculo. A internet conectou bilhões de mentes em uma única rede neural global, onde a informação viaja na velocidade da luz. E hoje, alcançamos o limiar da Inteligência Artificial. Pela primeira vez na história do universo, estamos ensinando uma ferramenta a pensar, a aprender e a criar por conta própria. Mas, ao olharmos para toda essa jornada — da primeira fogueira ao algoritmo quântico —, percebemos que um padrão se manteve inalterado. Nossas ferramentas sempre foram externas. Elas exigem que nossos olhos leiam a tela, que nossos ouvidos escutem, que nossos dedos lentos e biológicos toquem um teclado. E este é o grande dilema filosófico do nosso tempo: a ferramenta tornou-se infinitamente mais rápida do que a carne que a controla. O limite da nossa evolução tecnológica é, agora, a largura de banda do nosso próprio corpo. Qual é, então, o próximo passo? Para que a curva exponencial continue sua ascensão, o criador precisará derrubar a última fronteira. O futuro não será ditado por dispositivos que carregamos no bolso, mas pela convergência. A fusão inevitável entre o tecido biológico e o sintético. A integração total entre homem e máquina... onde, pela primeira vez desde as savanas africanas, nós mesmos seremos a nossa maior invenção.",
+    "aviso_normalizacao": null,
+    "frases": [
+      {
+        "texto": "Há trezentos mil anos, sob o sol implacável das savanas africanas, surgia o Homo sapiens.",
+        "inicio_s": 0.0,
+        "fim_s": 6.2
+      },
+      {
+        "texto": "Fisicamente, não éramos a espécie mais forte, nem a mais rápida.",
+        "inicio_s": 6.55,
+        "fim_s": 11.71
+      },
+      {
+        "texto": "Mas carregávamos uma anomalia evolutiva: um cérebro capaz de imaginar o que ainda não existia.",
+        "inicio_s": 12.06,
+        "fim_s": 20.04
+      },
+      {
+        "texto": "Durante a maior parte da nossa história, a evolução caminhou a passos lentos, ditada puramente pela biologia.",
+        "inicio_s": 20.39,
+        "fim_s": 27.69
+      },
+      {
+        "texto": "Nosso primeiro grande ato de rebelião contra as regras da natureza foi o domínio do fogo.",
+        "inicio_s": 28.04,
+        "fim_s": 33.86
+      },
+      {
+        "texto": "Com ele, conquistamos a noite, aquecemos o frio e externalizamos a digestão, dando ao nosso cérebro a energia necessária para crescer.",
+        "inicio_s": 34.21,
+        "fim_s": 44.27
+      },
+      {
+        "texto": "Por centenas de milênios, fomos nômades.",
+        "inicio_s": 44.62,
+        "fim_s": 47.86
+      },
+      {
+        "texto": "Até que, há cerca de dez mil anos, decidimos parar.",
+        "inicio_s": 48.21,
+        "fim_s": 52.81
+      },
+      {
+        "texto": "Ao longo de grandes rios — na Ásia, no Oriente Médio, na África e nas Américas —, a invenção da agricultura nos prendeu à terra, mas libertou o nosso tempo.",
+        "inicio_s": 53.16,
+        "fim_s": 65.32
+      },
+      {
+        "texto": "As populações explodiram.",
+        "inicio_s": 65.67,
+        "fim_s": 67.15
+      },
+      {
+        "texto": "E para contabilizar o que plantávamos, criamos algo que mudaria tudo: a escrita.",
+        "inicio_s": 67.5,
+        "fim_s": 73.08
+      },
+      {
+        "texto": "A partir daquele momento, a memória humana deixou de morrer com o indivíduo.",
+        "inicio_s": 73.43,
+        "fim_s": 78.39
+      },
+      {
+        "texto": "A nossa evolução deixou de ser genética... e passou a ser cultural.",
+        "inicio_s": 78.74,
+        "fim_s": 83.24
+      },
+      {
+        "texto": "Com a mente livre da busca constante por sobrevivência, passamos a observar as estrelas e a formular lógicas e filosofias.",
+        "inicio_s": 83.59,
+        "fim_s": 91.15
+      },
+      {
+        "texto": "Grandes civilizações se ergueram quase simultaneamente.",
+        "inicio_s": 91.5,
+        "fim_s": 95.52
+      },
+      {
+        "texto": "Das estradas pavimentadas e aquedutos de Roma, passando pelos cálculos astronômicos dos Maias, até a burocracia e as inovações da Dinastia Han, na China.",
+        "inicio_s": 95.87,
+        "fim_s": 106.89
+      },
+      {
+        "texto": "A engenharia e o pensamento complexo não nasceram em um só continente; eles foram um impulso coletivo da nossa espécie.",
+        "inicio_s": 107.24,
+        "fim_s": 116.18
+      },
+      {
+        "texto": "A história, no entanto, não é uma linha reta.",
+        "inicio_s": 116.53,
+        "fim_s": 119.93
+      },
+      {
+        "texto": "Mas o que o Ocidente muitas vezes chamou de \"Idade das Trevas\" foi apenas uma ilusão geográfica.",
+        "inicio_s": 120.28,
+        "fim_s": 126.9
+      },
+      {
+        "texto": "Enquanto a Europa se fragmentava na Idade Média, o eixo do progresso humano continuava a girar.",
+        "inicio_s": 127.25,
+        "fim_s": 132.93
+      },
+      {
+        "texto": "O mundo islâmico vivia sua Era de Ouro, dando saltos gigantescos na álgebra, na óptica e na medicina.",
+        "inicio_s": 133.28,
+        "fim_s": 141.52
+      },
+      {
+        "texto": "No Oriente, o papel, a bússola e a pólvora eram inventados.",
+        "inicio_s": 141.87,
+        "fim_s": 146.73
+      },
+      {
+        "texto": "O intelecto humano nunca adormeceu; ele apenas viajava por novas rotas.",
+        "inicio_s": 147.08,
+        "fim_s": 152.08
+      },
+      {
+        "texto": "A curva do nosso progresso ganhava fôlego.",
+        "inicio_s": 152.43,
+        "fim_s": 154.81
+      },
+      {
+        "texto": "E com o início das Grandes Navegações, continentes isolados por milênios finalmente colidiram.",
+        "inicio_s": 155.16,
+        "fim_s": 161.78
+      },
+      {
+        "texto": "Os oceanos deixaram de ser fronteiras para se tornarem pontes.",
+        "inicio_s": 162.13,
+        "fim_s": 165.73
+      },
+      {
+        "texto": "Pela primeira vez, a troca de tecnologia e de ideias passou a acontecer em escala planetária.",
+        "inicio_s": 166.08,
+        "fim_s": 171.72
+      },
+      {
+        "texto": "A matemática do nosso desenvolvimento deixou de ser linear... e se tornou exponencial.",
+        "inicio_s": 172.07,
+        "fim_s": 178.71
+      },
+      {
+        "texto": "No século dezoito, a Revolução Industrial substituiu o músculo pelo motor.",
+        "inicio_s": 179.06,
+        "fim_s": 184.66
+      },
+      {
+        "texto": "O carvão e o vapor forjaram um mundo de ferro e engrenagens.",
+        "inicio_s": 185.01,
+        "fim_s": 189.69
+      },
+      {
+        "texto": "Não demorou para que a eletricidade iluminasse o globo, aniquilando a escuridão de forma definitiva e pulsando energia pelas veias das nossas cidades.",
+        "inicio_s": 190.04,
+        "fim_s": 199.26
+      },
+      {
+        "texto": "A aceleração tornou-se vertiginosa.",
+        "inicio_s": 199.61,
+        "fim_s": 202.19
+      },
+      {
+        "texto": "Em um piscar de olhos cósmico, abandonamos as engrenagens pesadas e entramos na Era do Silício.",
+        "inicio_s": 202.54,
+        "fim_s": 209.74
+      },
+      {
+        "texto": "Transformamos areia em microchips.",
+        "inicio_s": 210.09,
+        "fim_s": 212.29
+      },
+      {
+        "texto": "Se a escrita externalizou a memória, os computadores externalizaram o cálculo.",
+        "inicio_s": 212.64,
+        "fim_s": 217.58
+      },
+      {
+        "texto": "A internet conectou bilhões de mentes em uma única rede neural global, onde a informação viaja na velocidade da luz.",
+        "inicio_s": 217.93,
+        "fim_s": 225.21
+      },
+      {
+        "texto": "E hoje, alcançamos o limiar da Inteligência Artificial.",
+        "inicio_s": 225.56,
+        "fim_s": 229.66
+      },
+      {
+        "texto": "Pela primeira vez na história do universo, estamos ensinando uma ferramenta a pensar, a aprender e a criar por conta própria.",
+        "inicio_s": 230.01,
+        "fim_s": 238.93
+      },
+      {
+        "texto": "Mas, ao olharmos para toda essa jornada — da primeira fogueira ao algoritmo quântico —, percebemos que um padrão se manteve inalterado.",
+        "inicio_s": 239.28,
+        "fim_s": 249.78
+      },
+      {
+        "texto": "Nossas ferramentas sempre foram externas.",
+        "inicio_s": 250.13,
+        "fim_s": 252.85
+      },
+      {
+        "texto": "Elas exigem que nossos olhos leiam a tela, que nossos ouvidos escutem, que nossos dedos lentos e biológicos toquem um teclado.",
+        "inicio_s": 253.2,
+        "fim_s": 261.86
+      },
+      {
+        "texto": "E este é o grande dilema filosófico do nosso tempo: a ferramenta tornou-se infinitamente mais rápida do que a carne que a controla.",
+        "inicio_s": 262.21,
+        "fim_s": 271.31
+      },
+      {
+        "texto": "O limite da nossa evolução tecnológica é, agora, a largura de banda do nosso próprio corpo.",
+        "inicio_s": 271.66,
+        "fim_s": 279.28
+      },
+      {
+        "texto": "Qual é, então, o próximo passo?",
+        "inicio_s": 279.63,
+        "fim_s": 281.81
+      },
+      {
+        "texto": "Para que a curva exponencial continue sua ascensão, o criador precisará derrubar a última fronteira.",
+        "inicio_s": 282.16,
+        "fim_s": 288.94
+      },
+      {
+        "texto": "O futuro não será ditado por dispositivos que carregamos no bolso, mas pela convergência.",
+        "inicio_s": 289.29,
+        "fim_s": 294.83
+      },
+      {
+        "texto": "A fusão inevitável entre o tecido biológico e o sintético.",
+        "inicio_s": 295.18,
+        "fim_s": 299.38
+      },
+      {
+        "texto": "A integração total entre homem e máquina... onde, pela primeira vez desde as savanas africanas, nós mesmos seremos a nossa maior invenção.",
+        "inicio_s": 299.73,
+        "fim_s": 309.27
+      }
+    ]
+  },
+  "video_curto": [
+    {
+      "arquivo": "humanidade_masculino_01.wav",
+      "duracao_s": 65.7,
+      "texto": "Há trezentos mil anos, sob o sol implacável das savanas africanas, surgia o Homo sapiens. Fisicamente, não éramos a espécie mais forte, nem a mais rápida. Mas carregávamos uma anomalia evolutiva: um cérebro capaz de imaginar o que ainda não existia. Durante a maior parte da nossa história, a evolução caminhou a passos lentos, ditada puramente pela biologia. Nosso primeiro grande ato de rebelião contra as regras da natureza foi o domínio do fogo. Com ele, conquistamos a noite, aquecemos o frio e externalizamos a digestão, dando ao nosso cérebro a energia necessária para crescer. Por centenas de milênios, fomos nômades. Até que, há cerca de dez mil anos, decidimos parar. Ao longo de grandes rios — na Ásia, no Oriente Médio, na África e nas Américas —, a invenção da agricultura nos prendeu à terra, mas libertou o nosso tempo.",
+      "texto_usado": "Há trezentos mil anos, sob o sol implacável das savanas africanas, surgia o Homo sapiens. Fisicamente, não éramos a espécie mais forte, nem a mais rápida. Mas carregávamos uma anomalia evolutiva: um cérebro capaz de imaginar o que ainda não existia. Durante a maior parte da nossa história, a evolução caminhou a passos lentos, ditada puramente pela biologia. Nosso primeiro grande ato de rebelião contra as regras da natureza foi o domínio do fogo. Com ele, conquistamos a noite, aquecemos o frio e externalizamos a digestão, dando ao nosso cérebro a energia necessária para crescer. Por centenas de milênios, fomos nômades. Até que, há cerca de dez mil anos, decidimos parar. Ao longo de grandes rios — na Ásia, no Oriente Médio, na África e nas Américas —, a invenção da agricultura nos prendeu à terra, mas libertou o nosso tempo.",
+      "aviso_normalizacao": null,
+      "frases": [
+        {
+          "texto": "Há trezentos mil anos, sob o sol implacável das savanas africanas, surgia o Homo sapiens.",
+          "inicio_s": 0.0,
+          "fim_s": 7.6
+        },
+        {
+          "texto": "Fisicamente, não éramos a espécie mais forte, nem a mais rápida.",
+          "inicio_s": 7.95,
+          "fim_s": 12.83
+        },
+        {
+          "texto": "Mas carregávamos uma anomalia evolutiva: um cérebro capaz de imaginar o que ainda não existia.",
+          "inicio_s": 13.18,
+          "fim_s": 19.92
+        },
+        {
+          "texto": "Durante a maior parte da nossa história, a evolução caminhou a passos lentos, ditada puramente pela biologia.",
+          "inicio_s": 20.27,
+          "fim_s": 27.41
+        },
+        {
+          "texto": "Nosso primeiro grande ato de rebelião contra as regras da natureza foi o domínio do fogo.",
+          "inicio_s": 27.76,
+          "fim_s": 34.08
+        },
+        {
+          "texto": "Com ele, conquistamos a noite, aquecemos o frio e externalizamos a digestão, dando ao nosso cérebro a energia necessária para crescer.",
+          "inicio_s": 34.43,
+          "fim_s": 44.95
+        },
+        {
+          "texto": "Por centenas de milênios, fomos nômades.",
+          "inicio_s": 45.3,
+          "fim_s": 48.68
+        },
+        {
+          "texto": "Até que, há cerca de dez mil anos, decidimos parar.",
+          "inicio_s": 49.03,
+          "fim_s": 53.37
+        },
+        {
+          "texto": "Ao longo de grandes rios — na Ásia, no Oriente Médio, na África e nas Américas —, a invenção da agricultura nos prendeu à terra, mas libertou o nosso tempo.",
+          "inicio_s": 53.72,
+          "fim_s": 65.7
+        }
+      ]
+    },
+    {
+      "arquivo": "humanidade_masculino_02.wav",
+      "duracao_s": 61.5,
+      "texto": "As populações explodiram. E para contabilizar o que plantávamos, criamos algo que mudaria tudo: a escrita. A partir daquele momento, a memória humana deixou de morrer com o indivíduo. A nossa evolução deixou de ser genética... e passou a ser cultural. Com a mente livre da busca constante por sobrevivência, passamos a observar as estrelas e a formular lógicas e filosofias. Grandes civilizações se ergueram quase simultaneamente. Das estradas pavimentadas e aquedutos de Roma, passando pelos cálculos astronômicos dos Maias, até a burocracia e as inovações da Dinastia Han, na China. A engenharia e o pensamento complexo não nasceram em um só continente; eles foram um impulso coletivo da nossa espécie. A história, no entanto, não é uma linha reta. Mas o que o Ocidente muitas vezes chamou de \"Idade das Trevas\" foi apenas uma ilusão geográfica.",
+      "texto_usado": "As populações explodiram. E para contabilizar o que plantávamos, criamos algo que mudaria tudo: a escrita. A partir daquele momento, a memória humana deixou de morrer com o indivíduo. A nossa evolução deixou de ser genética... e passou a ser cultural. Com a mente livre da busca constante por sobrevivência, passamos a observar as estrelas e a formular lógicas e filosofias. Grandes civilizações se ergueram quase simultaneamente. Das estradas pavimentadas e aquedutos de Roma, passando pelos cálculos astronômicos dos Maias, até a burocracia e as inovações da Dinastia Han, na China. A engenharia e o pensamento complexo não nasceram em um só continente; eles foram um impulso coletivo da nossa espécie. A história, no entanto, não é uma linha reta. Mas o que o Ocidente muitas vezes chamou de \"Idade das Trevas\" foi apenas uma ilusão geográfica.",
+      "aviso_normalizacao": null,
+      "frases": [
+        {
+          "texto": "As populações explodiram.",
+          "inicio_s": 0.0,
+          "fim_s": 1.82
+        },
+        {
+          "texto": "E para contabilizar o que plantávamos, criamos algo que mudaria tudo: a escrita.",
+          "inicio_s": 2.17,
+          "fim_s": 8.67
+        },
+        {
+          "texto": "A partir daquele momento, a memória humana deixou de morrer com o indivíduo.",
+          "inicio_s": 9.02,
+          "fim_s": 13.68
+        },
+        {
+          "texto": "A nossa evolução deixou de ser genética... e passou a ser cultural.",
+          "inicio_s": 14.03,
+          "fim_s": 19.45
+        },
+        {
+          "texto": "Com a mente livre da busca constante por sobrevivência, passamos a observar as estrelas e a formular lógicas e filosofias.",
+          "inicio_s": 19.8,
+          "fim_s": 27.86
+        },
+        {
+          "texto": "Grandes civilizações se ergueram quase simultaneamente.",
+          "inicio_s": 28.21,
+          "fim_s": 31.83
+        },
+        {
+          "texto": "Das estradas pavimentadas e aquedutos de Roma, passando pelos cálculos astronômicos dos Maias, até a burocracia e as inovações da Dinastia Han, na China.",
+          "inicio_s": 32.18,
+          "fim_s": 42.74
+        },
+        {
+          "texto": "A engenharia e o pensamento complexo não nasceram em um só continente; eles foram um impulso coletivo da nossa espécie.",
+          "inicio_s": 43.09,
+          "fim_s": 51.43
+        },
+        {
+          "texto": "A história, no entanto, não é uma linha reta.",
+          "inicio_s": 51.78,
+          "fim_s": 55.12
+        },
+        {
+          "texto": "Mas o que o Ocidente muitas vezes chamou de \"Idade das Trevas\" foi apenas uma ilusão geográfica.",
+          "inicio_s": 55.47,
+          "fim_s": 61.49
+        }
+      ]
+    },
+    {
+      "arquivo": "humanidade_masculino_03.wav",
+      "duracao_s": 62.0,
+      "texto": "Enquanto a Europa se fragmentava na Idade Média, o eixo do progresso humano continuava a girar. O mundo islâmico vivia sua Era de Ouro, dando saltos gigantescos na álgebra, na óptica e na medicina. No Oriente, o papel, a bússola e a pólvora eram inventados. O intelecto humano nunca adormeceu; ele apenas viajava por novas rotas. A curva do nosso progresso ganhava fôlego. E com o início das Grandes Navegações, continentes isolados por milênios finalmente colidiram. Os oceanos deixaram de ser fronteiras para se tornarem pontes. Pela primeira vez, a troca de tecnologia e de ideias passou a acontecer em escala planetária. A matemática do nosso desenvolvimento deixou de ser linear... e se tornou exponencial. No século dezoito, a Revolução Industrial substituiu o músculo pelo motor. O carvão e o vapor forjaram um mundo de ferro e engrenagens.",
+      "texto_usado": "Enquanto a Europa se fragmentava na Idade Média, o eixo do progresso humano continuava a girar. O mundo islâmico vivia sua Era de Ouro, dando saltos gigantescos na álgebra, na óptica e na medicina. No Oriente, o papel, a bússola e a pólvora eram inventados. O intelecto humano nunca adormeceu; ele apenas viajava por novas rotas. A curva do nosso progresso ganhava fôlego. E com o início das Grandes Navegações, continentes isolados por milênios finalmente colidiram. Os oceanos deixaram de ser fronteiras para se tornarem pontes. Pela primeira vez, a troca de tecnologia e de ideias passou a acontecer em escala planetária. A matemática do nosso desenvolvimento deixou de ser linear... e se tornou exponencial. No século dezoito, a Revolução Industrial substituiu o músculo pelo motor. O carvão e o vapor forjaram um mundo de ferro e engrenagens.",
+      "aviso_normalizacao": null,
+      "frases": [
+        {
+          "texto": "Enquanto a Europa se fragmentava na Idade Média, o eixo do progresso humano continuava a girar.",
+          "inicio_s": 0.0,
+          "fim_s": 5.5
+        },
+        {
+          "texto": "O mundo islâmico vivia sua Era de Ouro, dando saltos gigantescos na álgebra, na óptica e na medicina.",
+          "inicio_s": 5.85,
+          "fim_s": 13.35
+        },
+        {
+          "texto": "No Oriente, o papel, a bússola e a pólvora eram inventados.",
+          "inicio_s": 13.7,
+          "fim_s": 18.4
+        },
+        {
+          "texto": "O intelecto humano nunca adormeceu; ele apenas viajava por novas rotas.",
+          "inicio_s": 18.75,
+          "fim_s": 24.23
+        },
+        {
+          "texto": "A curva do nosso progresso ganhava fôlego.",
+          "inicio_s": 24.58,
+          "fim_s": 26.96
+        },
+        {
+          "texto": "E com o início das Grandes Navegações, continentes isolados por milênios finalmente colidiram.",
+          "inicio_s": 27.31,
+          "fim_s": 33.69
+        },
+        {
+          "texto": "Os oceanos deixaram de ser fronteiras para se tornarem pontes.",
+          "inicio_s": 34.04,
+          "fim_s": 38.04
+        },
+        {
+          "texto": "Pela primeira vez, a troca de tecnologia e de ideias passou a acontecer em escala planetária.",
+          "inicio_s": 38.39,
+          "fim_s": 44.65
+        },
+        {
+          "texto": "A matemática do nosso desenvolvimento deixou de ser linear... e se tornou exponencial.",
+          "inicio_s": 45.0,
+          "fim_s": 51.24
+        },
+        {
+          "texto": "No século dezoito, a Revolução Industrial substituiu o músculo pelo motor.",
+          "inicio_s": 51.59,
+          "fim_s": 56.81
+        },
+        {
+          "texto": "O carvão e o vapor forjaram um mundo de ferro e engrenagens.",
+          "inicio_s": 57.16,
+          "fim_s": 62.0
+        }
+      ]
+    },
+    {
+      "arquivo": "humanidade_masculino_04.wav",
+      "duracao_s": 61.9,
+      "texto": "Não demorou para que a eletricidade iluminasse o globo, aniquilando a escuridão de forma definitiva e pulsando energia pelas veias das nossas cidades. A aceleração tornou-se vertiginosa. Em um piscar de olhos cósmico, abandonamos as engrenagens pesadas e entramos na Era do Silício. Transformamos areia em microchips. Se a escrita externalizou a memória, os computadores externalizaram o cálculo. A internet conectou bilhões de mentes em uma única rede neural global, onde a informação viaja na velocidade da luz. E hoje, alcançamos o limiar da Inteligência Artificial. Pela primeira vez na história do universo, estamos ensinando uma ferramenta a pensar, a aprender e a criar por conta própria. Mas, ao olharmos para toda essa jornada — da primeira fogueira ao algoritmo quântico —, percebemos que um padrão se manteve inalterado. Nossas ferramentas sempre foram externas.",
+      "texto_usado": "Não demorou para que a eletricidade iluminasse o globo, aniquilando a escuridão de forma definitiva e pulsando energia pelas veias das nossas cidades. A aceleração tornou-se vertiginosa. Em um piscar de olhos cósmico, abandonamos as engrenagens pesadas e entramos na Era do Silício. Transformamos areia em microchips. Se a escrita externalizou a memória, os computadores externalizaram o cálculo. A internet conectou bilhões de mentes em uma única rede neural global, onde a informação viaja na velocidade da luz. E hoje, alcançamos o limiar da Inteligência Artificial. Pela primeira vez na história do universo, estamos ensinando uma ferramenta a pensar, a aprender e a criar por conta própria. Mas, ao olharmos para toda essa jornada — da primeira fogueira ao algoritmo quântico —, percebemos que um padrão se manteve inalterado. Nossas ferramentas sempre foram externas.",
+      "aviso_normalizacao": null,
+      "frases": [
+        {
+          "texto": "Não demorou para que a eletricidade iluminasse o globo, aniquilando a escuridão de forma definitiva e pulsando energia pelas veias das nossas cidades.",
+          "inicio_s": 0.0,
+          "fim_s": 8.2
+        },
+        {
+          "texto": "A aceleração tornou-se vertiginosa.",
+          "inicio_s": 8.55,
+          "fim_s": 11.61
+        },
+        {
+          "texto": "Em um piscar de olhos cósmico, abandonamos as engrenagens pesadas e entramos na Era do Silício.",
+          "inicio_s": 11.96,
+          "fim_s": 18.68
+        },
+        {
+          "texto": "Transformamos areia em microchips.",
+          "inicio_s": 19.03,
+          "fim_s": 21.41
+        },
+        {
+          "texto": "Se a escrita externalizou a memória, os computadores externalizaram o cálculo.",
+          "inicio_s": 21.76,
+          "fim_s": 27.62
+        },
+        {
+          "texto": "A internet conectou bilhões de mentes em uma única rede neural global, onde a informação viaja na velocidade da luz.",
+          "inicio_s": 27.97,
+          "fim_s": 36.25
+        },
+        {
+          "texto": "E hoje, alcançamos o limiar da Inteligência Artificial.",
+          "inicio_s": 36.6,
+          "fim_s": 40.34
+        },
+        {
+          "texto": "Pela primeira vez na história do universo, estamos ensinando uma ferramenta a pensar, a aprender e a criar por conta própria.",
+          "inicio_s": 40.69,
+          "fim_s": 48.49
+        },
+        {
+          "texto": "Mas, ao olharmos para toda essa jornada — da primeira fogueira ao algoritmo quântico —, percebemos que um padrão se manteve inalterado.",
+          "inicio_s": 48.84,
+          "fim_s": 58.88
+        },
+        {
+          "texto": "Nossas ferramentas sempre foram externas.",
+          "inicio_s": 59.23,
+          "fim_s": 61.85
+        }
+      ]
+    },
+    {
+      "arquivo": "humanidade_masculino_05.wav",
+      "duracao_s": 55.0,
+      "texto": "Elas exigem que nossos olhos leiam a tela, que nossos ouvidos escutem, que nossos dedos lentos e biológicos toquem um teclado. E este é o grande dilema filosófico do nosso tempo: a ferramenta tornou-se infinitamente mais rápida do que a carne que a controla. O limite da nossa evolução tecnológica é, agora, a largura de banda do nosso próprio corpo. Qual é, então, o próximo passo? Para que a curva exponencial continue sua ascensão, o criador precisará derrubar a última fronteira. O futuro não será ditado por dispositivos que carregamos no bolso, mas pela convergência. A fusão inevitável entre o tecido biológico e o sintético. A integração total entre homem e máquina... onde, pela primeira vez desde as savanas africanas, nós mesmos seremos a nossa maior invenção.",
+      "texto_usado": "Elas exigem que nossos olhos leiam a tela, que nossos ouvidos escutem, que nossos dedos lentos e biológicos toquem um teclado. E este é o grande dilema filosófico do nosso tempo: a ferramenta tornou-se infinitamente mais rápida do que a carne que a controla. O limite da nossa evolução tecnológica é, agora, a largura de banda do nosso próprio corpo. Qual é, então, o próximo passo? Para que a curva exponencial continue sua ascensão, o criador precisará derrubar a última fronteira. O futuro não será ditado por dispositivos que carregamos no bolso, mas pela convergência. A fusão inevitável entre o tecido biológico e o sintético. A integração total entre homem e máquina... onde, pela primeira vez desde as savanas africanas, nós mesmos seremos a nossa maior invenção.",
+      "aviso_normalizacao": null,
+      "frases": [
+        {
+          "texto": "Elas exigem que nossos olhos leiam a tela, que nossos ouvidos escutem, que nossos dedos lentos e biológicos toquem um teclado.",
+          "inicio_s": 0.0,
+          "fim_s": 8.08
+        },
+        {
+          "texto": "E este é o grande dilema filosófico do nosso tempo: a ferramenta tornou-se infinitamente mais rápida do que a carne que a controla.",
+          "inicio_s": 8.43,
+          "fim_s": 16.93
+        },
+        {
+          "texto": "O limite da nossa evolução tecnológica é, agora, a largura de banda do nosso próprio corpo.",
+          "inicio_s": 17.28,
+          "fim_s": 23.72
+        },
+        {
+          "texto": "Qual é, então, o próximo passo?",
+          "inicio_s": 24.07,
+          "fim_s": 26.15
+        },
+        {
+          "texto": "Para que a curva exponencial continue sua ascensão, o criador precisará derrubar a última fronteira.",
+          "inicio_s": 26.5,
+          "fim_s": 33.26
+        },
+        {
+          "texto": "O futuro não será ditado por dispositivos que carregamos no bolso, mas pela convergência.",
+          "inicio_s": 33.61,
+          "fim_s": 39.29
+        },
+        {
+          "texto": "A fusão inevitável entre o tecido biológico e o sintético.",
+          "inicio_s": 39.64,
+          "fim_s": 44.32
+        },
+        {
+          "texto": "A integração total entre homem e máquina... onde, pela primeira vez desde as savanas africanas, nós mesmos seremos a nossa maior invenção.",
+          "inicio_s": 44.67,
+          "fim_s": 55.05
+        }
+      ]
+    }
+  ]
+}

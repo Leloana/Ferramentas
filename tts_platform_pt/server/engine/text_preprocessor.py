@@ -36,7 +36,7 @@ def _free_vram_mb():
         return None
 
 
-def _pick_num_ctx():
+def pick_num_ctx():
     """Escolhe o maior patamar de num_ctx que cabe na VRAM livre, reservando
     espaço pro XTTS-v2. Retorna None se não sobrar nem o mínimo (ou se não foi
     possível medir a VRAM com confiança) — nesse caso o Ollama não deve ser
@@ -70,7 +70,7 @@ def normalize(text: str, model: str = config.OLLAMA_MODEL) -> tuple[str, str | N
     retorna o texto original e um aviso explicando o motivo — a síntese nunca
     deve quebrar por causa desse pré-processamento opcional.
     """
-    num_ctx = _pick_num_ctx()
+    num_ctx = pick_num_ctx()
     if num_ctx is None:
         aviso = (
             "Normalização pulada: não há VRAM livre suficiente para rodar o "

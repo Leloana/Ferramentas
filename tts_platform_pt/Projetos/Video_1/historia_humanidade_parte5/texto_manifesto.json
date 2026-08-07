@@ -1,0 +1,48 @@
+{
+  "gerado_em": "2026-08-03T21:02:19",
+  "roteiro": "Projetos\\historia_humanidade_parte5\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "arquivo": "video/texto.wav",
+  "duracao_s": 44.8,
+  "texto_usado": "E este é o grande dilema filosófico do nosso tempo: a ferramenta tornou-se infinitamente mais rápida do que a carne que a controla. O limite da nossa evolução tecnológica é, agora, a largura de banda do nosso próprio corpo. Qual é, então, o próximo passo? Para que a curva exponencial continue sua ascensão, o criador precisará derrubar a última fronteira. O futuro não será ditado por dispositivos que carregamos no bolso, mas pela convergência. A fusão inevitável entre o tecido biológico e o sintético. A integração total entre homem e máquina... onde, pela primeira vez desde as savanas africanas, nós mesmos seremos a nossa maior invenção.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "E este é o grande dilema filosófico do nosso tempo: a ferramenta tornou-se infinitamente mais rápida do que a carne que a controla.",
+      "inicio_s": 0.0,
+      "fim_s": 7.54
+    },
+    {
+      "texto": "O limite da nossa evolução tecnológica é, agora, a largura de banda do nosso próprio corpo.",
+      "inicio_s": 7.89,
+      "fim_s": 14.27
+    },
+    {
+      "texto": "Qual é, então, o próximo passo?",
+      "inicio_s": 14.62,
+      "fim_s": 16.68
+    },
+    {
+      "texto": "Para que a curva exponencial continue sua ascensão, o criador precisará derrubar a última fronteira.",
+      "inicio_s": 17.03,
+      "fim_s": 23.73
+    },
+    {
+      "texto": "O futuro não será ditado por dispositivos que carregamos no bolso, mas pela convergência.",
+      "inicio_s": 24.08,
+      "fim_s": 29.52
+    },
+    {
+      "texto": "A fusão inevitável entre o tecido biológico e o sintético.",
+      "inicio_s": 29.87,
+      "fim_s": 34.45
+    },
+    {
+      "texto": "A integração total entre homem e máquina... onde, pela primeira vez desde as savanas africanas, nós mesmos seremos a nossa maior invenção.",
+      "inicio_s": 34.8,
+      "fim_s": 44.82
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "frase": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "A herd of dinosaurs looking up in alarm as a blinding flash of light erupts on the horizon at the instant of asteroid impact, silhouettes against the shockwave, no humans, no people, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00123_.png"
+  },
+  {
+    "frase": 2,
+    "arquivo": "texto_02.png",
+    "prompt_final": "Herd of dinosaurs fleeing across a coastal cliff as a massive fireball explosion erupts in the background, colossal shockwave and smoke, prehistoric Earth 66 million years ago, long before humans existed, wildlife only, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00136_.png"
+  },
+  {
+    "frase": 3,
+    "arquivo": "texto_03.png",
+    "prompt_final": "Dinosaurs running through burning forests as fiery meteor debris rains from the sky, glowing molten rock streaking down, wildfire spreading, no humans, no people, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00125_.png"
+  },
+  {
+    "frase": 4,
+    "arquivo": "texto_04.png",
+    "prompt_final": "A single dinosaur silhouetted on a rocky cliff as a giant tsunami wave over a hundred meters tall crashes onto an empty prehistoric coastline, dark stormy sky, prehistoric Earth long before humans existed, wildlife only, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00137_.png"
+  },
+  {
+    "frase": 5,
+    "arquivo": "texto_05.png",
+    "prompt_final": "A small group of dinosaurs walking across a barren plain beneath a thick dark cloud of dust and ash, sun reduced to a dim red disk in the sky, prehistoric Earth long before humans existed, wildlife documentary style, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00138_.png"
+  },
+  {
+    "frase": 6,
+    "arquivo": "texto_06.png",
+    "prompt_final": "A gaunt starving dinosaur wandering a barren ash-covered landscape under a dim sky, scarce vegetation, no humans, no people, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00128_.png"
+  }
+]

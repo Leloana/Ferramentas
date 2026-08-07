@@ -1,0 +1,62 @@
+[
+  {
+    "frase": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "Aerial view of a dense ancient farming village, mudbrick houses packed together, cultivated fields stretching to the horizon, tiny figures working the land, warm dusk light., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00047_.png"
+  },
+  {
+    "frase": 2,
+    "arquivo": "texto_02.png",
+    "prompt_final": "Close-up of a scribe's hand pressing a stylus into a wet clay tablet, rows of ancient symbols, grain baskets blurred in the background, warm torchlight., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00086_.png"
+  },
+  {
+    "frase": 3,
+    "arquivo": "texto_03.png",
+    "prompt_final": "Dim stone archive room lined with shelves of clay tablets and scrolls, dust motes floating in a shaft of light, an elder's hand reaching for one., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00049_.png"
+  },
+  {
+    "frase": 4,
+    "arquivo": "texto_04.png",
+    "prompt_final": "An elder teaching a child by firelight, gesturing at symbols carved into a stone wall, passing knowledge to the next generation., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00050_.png"
+  },
+  {
+    "frase": 5,
+    "arquivo": "texto_05.png",
+    "prompt_final": "Silhouette of an ancient astronomer standing on a hilltop at night, gazing up at a vast starry sky, holding a simple wooden instrument., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00051_.png"
+  },
+  {
+    "frase": 6,
+    "arquivo": "texto_06.png",
+    "prompt_final": "Sweeping view of a grand ancient city under construction, stone temples and pyramids rising amid wooden scaffolding, small figures of workers, golden late-afternoon light., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00052_.png"
+  },
+  {
+    "frase": 7,
+    "arquivo": "texto_07.png",
+    "prompt_final": "A monumental Roman stone aqueduct stretching across a green valley under a clear sky, a paved road leading toward it, warm midday light., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00053_.png"
+  },
+  {
+    "frase": 8,
+    "arquivo": "texto_08.png",
+    "prompt_final": "Wide shot of ancient builders from different cultures working together on a massive stone structure, ropes and wooden scaffolding, diverse traditional clothing., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00054_.png"
+  },
+  {
+    "frase": 9,
+    "arquivo": "texto_09.png",
+    "prompt_final": "A winding stone road through misty hills, forking in different directions, disappearing into fog, dramatic overcast light., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00055_.png"
+  },
+  {
+    "frase": 10,
+    "arquivo": "texto_10.png",
+    "prompt_final": "Ancient stone world map relief, half shrouded in cold shadow, the other half glowing in warm golden light, symbolizing contrast between regions., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00056_.png"
+  }
+]

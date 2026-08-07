@@ -1,0 +1,44 @@
+[
+  {
+    "frase": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "A blur of glowing digital light streaking past a human hand reaching slowly through darkness, dramatic contrast between speed and stillness., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00079_.png"
+  },
+  {
+    "frase": 2,
+    "arquivo": "texto_02.png",
+    "prompt_final": "Silhouette of a person's head with streams of glowing light converging and bottlenecking at the temple, symbolizing a narrow limit., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00080_.png"
+  },
+  {
+    "frase": 3,
+    "arquivo": "texto_03.png",
+    "prompt_final": "A lone silhouette standing at the edge of a cliff, gazing into a vast glowing unknown horizon at twilight., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00081_.png"
+  },
+  {
+    "frase": 4,
+    "arquivo": "texto_04.png",
+    "prompt_final": "A glowing barrier of light cracking and shattering, dramatic rays bursting through the fracture into darkness., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00082_.png"
+  },
+  {
+    "frase": 5,
+    "arquivo": "texto_05.png",
+    "prompt_final": "A hand releasing a smartphone that dissolves into glowing particles merging into the skin of an outstretched arm., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00083_.png"
+  },
+  {
+    "frase": 6,
+    "arquivo": "texto_06.png",
+    "prompt_final": "Extreme close-up of human skin gradually transitioning into glowing circuit-like patterns, biomechanical fusion, soft blue light., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00084_.png"
+  },
+  {
+    "frase": 7,
+    "arquivo": "texto_07.png",
+    "prompt_final": "A figure standing tall with one half of the body organic flesh and the other glowing bio-mechanical circuitry, silhouetted against a vast African savanna sunrise., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00085_.png"
+  }
+]

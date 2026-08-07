@@ -17,6 +17,7 @@ const avisoNormalizacaoEl = document.getElementById("aviso-normalizacao");
 const PROMPT_OVERHEAD_TOKENS = 200;
 
 let ollamaNumCtx = null;
+let ollamaInfoCarregada = false;
 
 function definirCarregando(carregando, mensagem) {
   spinnerEl.hidden = !carregando;
@@ -26,7 +27,7 @@ function definirCarregando(carregando, mensagem) {
 // Estimativa grosseira (~4 caracteres por token) só para dar uma noção de
 // espaço; o Ollama só entra em jogo se "normalizar" estiver marcado.
 function atualizarContadorTokens() {
-  if (!normalizarEl.checked || !ollamaNumCtx) {
+  if (!normalizarEl.checked || !ollamaInfoCarregada) {
     contadorEl.hidden = true;
     return;
   }
@@ -34,6 +35,15 @@ function atualizarContadorTokens() {
   const texto = textoEl.value;
   if (!texto.trim()) {
     contadorEl.hidden = true;
+    return;
+  }
+
+  if (!ollamaNumCtx) {
+    contadorEl.hidden = false;
+    contadorEl.textContent =
+      "Ollama indisponível agora (VRAM livre insuficiente) — o áudio sairá sem normalização.";
+    contadorEl.classList.remove("atencao");
+    contadorEl.classList.add("estourado");
     return;
   }
 
@@ -79,6 +89,7 @@ async function carregarVozes() {
     }
 
     ollamaNumCtx = data.ollama_num_ctx || null;
+    ollamaInfoCarregada = true;
     atualizarContadorTokens();
 
     vozEl.disabled = false;

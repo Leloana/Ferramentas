@@ -1,0 +1,68 @@
+[
+  {
+    "frase": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "A crumbling medieval European stone castle under a grey overcast sky, abandoned fields, a single distant rider on a muddy road, somber cold light., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00057_.png"
+  },
+  {
+    "frase": 2,
+    "arquivo": "texto_02.png",
+    "prompt_final": "An Islamic Golden Age scholar in an ornate library, surrounded by geometric manuscripts and an astrolabe, warm lamplight, intricate tilework in the background., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00058_.png"
+  },
+  {
+    "frase": 3,
+    "arquivo": "texto_03.png",
+    "prompt_final": "Ancient Chinese workshop, an artisan pressing sheets of paper, a magnetic compass and firework sparks on a wooden table, warm candlelight., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00059_.png"
+  },
+  {
+    "frase": 4,
+    "arquivo": "texto_04.png",
+    "prompt_final": "A caravan of travelers with lanterns crossing a vast desert at night under a sky full of stars, a winding trail visible behind them., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00060_.png"
+  },
+  {
+    "frase": 5,
+    "arquivo": "texto_05.png",
+    "prompt_final": "A large sailing ship with wind-filled sails cutting through ocean waves, dynamic spray, dramatic sky, sense of gathering speed., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00061_.png"
+  },
+  {
+    "frase": 6,
+    "arquivo": "texto_06.png",
+    "prompt_final": "Tall wooden sailing ships anchored off an unfamiliar coastline, small boats rowing toward shore, dense green jungle in the background, golden sunset light., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00062_.png"
+  },
+  {
+    "frase": 7,
+    "arquivo": "texto_07.png",
+    "prompt_final": "Aerial view of the open ocean at dawn, a wooden sailing ship cutting a long wake toward a distant horizon, calm golden light., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00063_.png"
+  },
+  {
+    "frase": 8,
+    "arquivo": "texto_08.png",
+    "prompt_final": "A bustling old harbor market at sunset, merchants of different cultures trading spices, maps, and instruments among ships and crates., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00064_.png"
+  },
+  {
+    "frase": 9,
+    "arquivo": "texto_09.png",
+    "prompt_final": "Candlelit wooden desk with hand-drawn charts and diagrams showing a steeply rising curve, a quill pen resting beside inked calculations., fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00091_.png"
+  },
+  {
+    "frase": 10,
+    "arquivo": "texto_10.png",
+    "prompt_final": "Interior of an 18th-century industrial factory, a massive steam engine with iron gears, workers in period clothing, dim light through dusty windows., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00066_.png"
+  },
+  {
+    "frase": 11,
+    "arquivo": "texto_11.png",
+    "prompt_final": "A glowing iron foundry at night, molten metal pouring, steam rising, giant gears and machinery silhouetted against the fire., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00067_.png"
+  }
+]

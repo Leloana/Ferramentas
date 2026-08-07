@@ -1,0 +1,56 @@
+[
+  {
+    "frase": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "Dramatic night sky ablaze with dozens of streaking meteors converging toward one bright point among the stars, deep blue and gold tones, cinematic wide shot, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00141_.png"
+  },
+  {
+    "frase": 2,
+    "arquivo": "texto_02.png",
+    "prompt_final": "Silhouette of a Greek mythological hero warrior holding a sword and the severed head of Medusa, standing against a starry night sky with constellation lines connecting bright stars, epic cinematic lighting, fully clothed in ancient Greek armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00142_.png"
+  },
+  {
+    "frase": 3,
+    "arquivo": "texto_03.png",
+    "prompt_final": "A shower of glowing golden light raining down through a stone tower window onto a woman in flowing ancient Greek robes, mythological golden rain scene, dramatic warm lighting, fully clothed, appropriate attire, no nudity, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00143_.png"
+  },
+  {
+    "frase": 4,
+    "arquivo": "texto_04.png",
+    "prompt_final": "Ancient people in simple robes gathered outdoors at night, looking up in awe at a sky full of shooting stars, torchlight glow, wide cinematic shot, fully clothed, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00144_.png"
+  },
+  {
+    "frase": 5,
+    "arquivo": "texto_05.png",
+    "prompt_final": "Ancient Chinese astronomer in traditional Han dynasty robes writing on a scroll by candlelight, night sky full of streaking meteors visible through a window, historical atmosphere, fully clothed, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00145_.png"
+  },
+  {
+    "frase": 6,
+    "arquivo": "texto_06.png",
+    "prompt_final": "Medieval stained glass window style illustration of a robed saint with a golden halo standing near stylized flames, warm candlelit church interior, religious iconography art style, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00146_.png"
+  },
+  {
+    "frase": 7,
+    "arquivo": "texto_07.png",
+    "prompt_final": "Medieval European peasants in simple wool clothing standing in a field at night, looking up at bright streaks of light falling from the sky like tears, warm candle lanterns, painterly historical style, fully clothed, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00147_.png"
+  },
+  {
+    "frase": 8,
+    "arquivo": "texto_08.png",
+    "prompt_final": "Nineteenth century astronomer in a formal suit looking through a large brass telescope in an observatory at night, a bright comet with a long tail visible through the dome opening, vintage scientific atmosphere, fully clothed, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00148_.png"
+  },
+  {
+    "frase": 9,
+    "arquivo": "texto_09.png",
+    "prompt_final": "Photorealistic NASA style space photograph of Earth, blue oceans and white clouds, thin glowing trail of dust particles crossing the dark background, tiny bright streaks where meteors burn in the upper atmosphere, stars behind, no illustration, no anime, no people, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00151_.png"
+  }
+]

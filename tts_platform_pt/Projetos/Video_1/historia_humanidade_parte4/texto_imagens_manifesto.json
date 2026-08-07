@@ -1,0 +1,68 @@
+[
+  {
+    "frase": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "A sprawling city skyline at night suddenly illuminated by electric lights, glowing streets and windows, dark countryside fading into the horizon beyond., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00068_.png"
+  },
+  {
+    "frase": 2,
+    "arquivo": "texto_02.png",
+    "prompt_final": "A speeding steam train at night, long motion-blurred light trails, a dizzying sense of acceleration., fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00092_.png"
+  },
+  {
+    "frase": 3,
+    "arquivo": "texto_03.png",
+    "prompt_final": "Close-up of a hand holding a glowing silicon microchip, blurred heavy iron gears and pistons fading into shadow behind it., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00070_.png"
+  },
+  {
+    "frase": 4,
+    "arquivo": "texto_04.png",
+    "prompt_final": "Extreme macro close-up of a modern microchip on a circuit board, glowing blue circuit traces, tiny golden solder points, shallow depth of field., fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00096_.png"
+  },
+  {
+    "frase": 5,
+    "arquivo": "texto_05.png",
+    "prompt_final": "A weathered ancient clay tablet with carved symbols sitting beside a glowing modern computer circuit board, split lighting between old and new., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00072_.png"
+  },
+  {
+    "frase": 6,
+    "arquivo": "texto_06.png",
+    "prompt_final": "View of Earth from space at night, a glowing web of light trails connecting cities across continents, deep blue and gold tones., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00073_.png"
+  },
+  {
+    "frase": 7,
+    "arquivo": "texto_07.png",
+    "prompt_final": "A glowing abstract neural network silhouette taking humanoid shape, emerging from darkness into soft blue light, threshold of creation., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00074_.png"
+  },
+  {
+    "frase": 8,
+    "arquivo": "texto_08.png",
+    "prompt_final": "A human hand reaching toward a glowing robotic hand made of light circuits, fingertips almost touching, soft blue ambient glow., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00075_.png"
+  },
+  {
+    "frase": 9,
+    "arquivo": "texto_09.png",
+    "prompt_final": "Double exposure blending a warm ancient campfire with a glowing futuristic quantum computer chip, bridging old and new in one frame., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00076_.png"
+  },
+  {
+    "frase": 10,
+    "arquivo": "texto_10.png",
+    "prompt_final": "A museum display case with tools spanning history side by side: a stone axe, an iron hammer, and a computer keyboard, soft spotlight., com roupas apropriadas, sem nudez",
+    "arquivo_comfy": "Krea2_turbo_00077_.png"
+  },
+  {
+    "frase": 11,
+    "arquivo": "texto_11.png",
+    "prompt_final": "Close-up of human fingers typing on a keyboard, glowing screen light reflected in tired eyes, shallow depth of field, blue ambient light., fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00094_.png"
+  }
+]

@@ -1,0 +1,44 @@
+{
+  "gerado_em": "2026-08-04T01:09:59",
+  "roteiro": "Projetos\\Video_2\\extincao_dinossauros_parte2\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 49.9,
+  "texto_usado": "O impacto durou menos de um segundo, mas mudou a história da vida na Terra para sempre. O asteroide atingiu o que hoje é a península de Yucatán, na velocidade de vinte quilômetros por segundo, liberando uma energia bilhões de vezes maior que a da bomba de Hiroshima. Uma bola de fogo consumiu tudo em centenas de quilômetros ao redor, e o impacto lançou rocha derretida tão alto que reentrou na atmosfera como uma chuva de meteoros, incendiando florestas ao redor do globo em questão de horas. Terremotos de magnitude nunca vista sacudiram o continente, e um tsunami de mais de cem metros de altura varreu as costas próximas. Uma nuvem densa de poeira e enxofre começou a subir, prestes a bloquear o sol por anos. Os dinossauros que não morreram nas primeiras horas enfrentariam algo ainda pior: a fome.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "O impacto durou menos de um segundo, mas mudou a história da vida na Terra para sempre.",
+      "inicio_s": 0.0,
+      "fim_s": 4.9
+    },
+    {
+      "texto": "O asteroide atingiu o que hoje é a península de Yucatán, na velocidade de vinte quilômetros por segundo, liberando uma energia bilhões de vezes maior que a da bomba de Hiroshima.",
+      "inicio_s": 5.25,
+      "fim_s": 16.81
+    },
+    {
+      "texto": "Uma bola de fogo consumiu tudo em centenas de quilômetros ao redor, e o impacto lançou rocha derretida tão alto que reentrou na atmosfera como uma chuva de meteoros, incendiando florestas ao redor do globo em questão de horas.",
+      "inicio_s": 17.16,
+      "fim_s": 31.08
+    },
+    {
+      "texto": "Terremotos de magnitude nunca vista sacudiram o continente, e um tsunami de mais de cem metros de altura varreu as costas próximas.",
+      "inicio_s": 31.43,
+      "fim_s": 38.49
+    },
+    {
+      "texto": "Uma nuvem densa de poeira e enxofre começou a subir, prestes a bloquear o sol por anos.",
+      "inicio_s": 38.84,
+      "fim_s": 43.8
+    },
+    {
+      "texto": "Os dinossauros que não morreram nas primeiras horas enfrentariam algo ainda pior: a fome.",
+      "inicio_s": 44.15,
+      "fim_s": 49.89
+    }
+  ]
+}

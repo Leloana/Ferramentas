@@ -134,3 +134,65 @@ meio de uma geração não aborta automaticamente o job que já estava
 `queue_running` no ComfyUI; `POST /interrupt` ajuda mas não é imediato se
 o job estiver preso no `TextGenerate` (LLM), que parece não checar
 cancelamento tão granularmente quanto o `KSampler`.
+
+## 7. Prompt bilíngue (seed em inglês + sufixo em português) engasga o refino
+
+Sintoma: a imagem sai com um bloco de texto garranchado colado por cima ou
+abaixo da cena, ecoando fragmentos das PRÓPRIAS regras que a gente apensa
+ao system prompt do refino — variações de "Step 1: ... roupas
+apropriadas, sem ..." / "Step 2: No On-Screen Text ...". Não é o bug do
+item 2 (a narração sendo citada) — aqui o texto garranchado vem das minhas
+regras extras (`_REGRA_SEM_TEXTO`, `_REGRA_PROMPT_CURTO`, `_SUFIXO_SEGURANCA`),
+não da frase do usuário.
+
+**Causa provável**: depois que `--prompts` passou a existir em
+`gerar_imagens.py`, o seed enviado pro refino virou bilíngue — a descrição
+reescrita à mão em inglês + `_SUFIXO_SEGURANCA` ainda em português
+(", com roupas apropriadas, sem nudez") grudado no fim da mesma string.
+Esse code-switching no meio de um prompt só apareceu depois de introduzir
+`--prompts`; antes disso o seed inteiro (frase da narração) era sempre
+português, sem mistura. O `qwen3vl_4b` (modelo pequeno, 4B) parece
+"engasgar" com prompts bilíngues às vezes, produzindo uma saída que mistura
+fragmentos das regras do próprio system prompt em vez de uma descrição
+visual limpa — e o texto degenerado então é desenhado na cena pelo
+`KSampler`.
+
+**Correção aplicada**: traduzir `_SUFIXO_SEGURANCA` pro inglês
+(`", fully clothed, appropriate attire, no nudity"`) — mesmo idioma do
+seed que `--prompts` usa. Reduziu bastante a taxa de defeito, mas **não
+eliminou**: numa auditoria de 39 imagens (4 partes) depois da correção,
+ainda apareceu 1 caso novo na mesma frase que já tinha quebrado antes da
+correção (ver item abaixo sobre reescrever o prompt).
+
+**Regenerar com o mesmo prompt pode resolver, mas não é garantido**: numa
+imagem, regenerar (mesmo prompt, seed novo do `KSampler`) corrigiu de
+primeira. Noutra (frase sobre "areia virando microchip", frase que usava
+"transitioning into"), o mesmo prompt quebrou **3 vezes seguidas** —
+reescrever o prompt (tirar a construção "X transitioning into Y", ir direto
+pra uma descrição de cena estática) corrigiu na primeira tentativa depois
+disso. Ou seja: se uma frase quebrar 2x seguidas com o mesmo prompt,
+pare de tentar seed novo e reescreva o texto do prompt — há frases/
+construções que parecem ser gatilho confiável, não apenas azar de
+amostragem.
+
+## 8. O modelo pode ignorar o prompt inteiro e desenhar personagem de anime
+
+Sintoma mais grave que os anteriores: a imagem sai limpa (sem texto
+garranchado), bem renderizada, mas **completamente fora do prompt** — em
+vez da cena pedida (ex.: "trem a vapor acelerando de noite", "grãos de
+areia virando microchip", "dedos digitando teclado"), saiu uma
+ilustração estilo anime de uma mulher jovem em roupa justa/reveladora.
+Nenhum dos três prompts tinha qualquer menção a pessoa, anime, ou o
+estilo saído — não é um problema de conteúdo do prompt, é o modelo de
+difusão (`krea2_turbo`) desviando pra um cluster completamente diferente
+do dataset de treino, aparentemente sem gatilho identificável no input.
+
+Reproduzido 3 vezes na mesma leva de geração (frases 2, 4 e 11 de uma
+parte de 11 frases, nenhuma relação temática entre elas). Regenerar (seed
+novo) resolveu nas 3 — mas como não há como prever quais frases vão sofrer
+esse desvio, **isso não é opcional de revisar**: depois de qualquer geração
+em lote, abra e confira visualmente CADA imagem antes de rodar
+`montar_video.py`, mesmo que o script termine sem nenhum erro. "Rodou sem
+erro" não é sinal de "saiu certo" aqui — mesmo tema do item 5 deste
+arquivo, mas o resultado errado aqui é mais grave (conteúdo impróprio
+possível) do que um zoom tremido.

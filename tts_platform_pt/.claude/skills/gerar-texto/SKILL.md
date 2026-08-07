@@ -66,8 +66,40 @@ Regras de estilo extraídas da série de referência (`Projetos/Video_1/historia
 - **Texto puro da narração**: só o parágrafo corrido, sem título markdown, sem numeração, sem marcação
   de frase — `gerar_video.py` sintetiza o arquivo exatamente como está (a divisão em frases pro TTS é
   automática, via pontuação).
-- **Gancho forte na primeira frase** — é o que prende alguém nos primeiros 2-3 segundos de vídeo. Evite
-  abrir com preâmbulo/contexto.
+- **O gancho tem que estar nas primeiras palavras, não só "na primeira frase"** — em vídeo curto, quem
+  assiste decide ficar ou passar pro próximo nos primeiros ~2 segundos de fala (poucas palavras). Uma
+  frase inteira pode "ser um gancho" no papel e ainda assim falhar se as primeiras palavras forem uma
+  oração de contexto/preâmbulo antes do fato em si (ex.: "Antes de virar sinônimo de computador, a
+  palavra inteligência já foi reinventada..." atrasa a reviravolta atrás de 6 palavras de contexto —
+  ficou "muito direto"/fraco em revisão humana mesmo depois de já ter sido reescrito uma vez). Corrija
+  cortando o preâmbulo e abrindo direto na reviravolta: "Roubaram a inteligência artificial. Mentira:
+  roubaram uma palavra.". Evite também abrir só com uma afirmação neutra sobre o tema, tipo verbete de
+  dicionário (ex. ruim: "A palavra inteligência não nasceu falando sobre cérebros."). Táticas que
+  funcionam, sempre com o gatilho já nas primeiras 3-5 palavras:
+  - Dirigir-se direto a quem assiste ("Toda vez que você...", "Você já...") ligando o tema à rotina de
+    quem está vendo — ex. bom já usado: "Toda vez que você abre uma rede social, um algoritmo decide o
+    que aparece na sua tela.".
+  - Abrir com uma claim exagerada/chocante e desmentir na frase seguinte, sem oração de contexto na
+    frente de nenhuma das duas — ex. bom já usado: "Roubaram a inteligência artificial. Mentira:
+    roubaram uma palavra.".
+  - Uma afirmação contra-intuitiva/surpreendente sobre o próprio tema, não só um fato correto qualquer.
+- **Gancho sensacionalista funciona, mas só se a reviravolta vier rápido e sem construção estranha** —
+  abrir com uma claim exagerada/enganosa de propósito (clickbait) e desmentir em seguida é uma tática
+  válida (ex.: "Roubaram a inteligência artificial. Mentira: roubaram uma palavra..."), mas escreva a
+  correção em ordem sujeito-verbo-objeto normal. Evite construções de foco tipo "roubaram foi a
+  palavra" — soam bem faladas em voz alta, mas confundem na leitura (usuário não entendeu o texto com
+  essa construção; reescrito pra "roubaram uma palavra").
+- **Roteiro que cobre vários sub-tópicos/épocas precisa de sinalização explícita amarrando as partes**
+  (aprendido revisando um roteiro de ~2,5min sobre 3 reinvenções históricas de um termo, que o usuário
+  não conseguiu entender de primeira: os blocos pulavam de assunto sem nunca dizer em qual "capítulo"
+  o vídeo estava). Se o gancho promete um número ("pelo menos três vezes", "dois motivos", etc.), cada
+  bloco correspondente tem que abrir retomando a contagem — "A primeira foi...", "A segunda vez veio...",
+  "A terceira foi em..." — e o fechamento deve fazer o callback explícito pra esse mesmo número (ex.:
+  "Três vezes, a mesma palavra foi usada pra descrever coisas bem diferentes: uma alma, uma nota
+  escolar, um cálculo estatístico."). Sem esse fio condutor repetido, cada bloco vira um fato solto e
+  quem assiste perde o porquê de estar ali. Vale tanto pra roteiros de ~1min quanto, com mais razão
+  ainda, pros mais longos (>2min) que o usuário pedir com mais aprofundamento — mais conteúdo por texto
+  aumenta a chance de confundir se não houver sinalização.
 - **Frases médias, tom documentário/expositivo, português claro** — sujeito+ação, sem empilhar muitas
   orações subordinadas. Releia em voz alta pra sentir a cadência.
 - **Evite duas datas completas ("dia de mês de ano") na mesma frase** — bug conhecido do XTTS-v2 em

@@ -1,0 +1,59 @@
+{
+  "gerado_em": "2026-08-04T20:24:34",
+  "roteiro": "Projetos\\Video_3\\perseidas_origem_e_historia\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 85.0,
+  "texto_usado": "O nome parece saído de mito grego, e não é força de expressão. As Perseidas ganham esse nome porque, vistas da Terra, os meteoros parecem sair de um ponto na constelação de Perseu, o herói que decapitou a Medusa. E há uma coincidência e tanto: na mitologia, Perseu nasceu quando Zeus desceu até sua mãe, Danaé, em forma de chuva de ouro. Séculos antes de qualquer telescópio, humanos já registravam esse espetáculo no céu. Em 36 depois de Cristo, astrônomos chineses anotaram meteoros correndo como um rio, bem na época em que as Perseidas atingem o pico todo mês de agosto, um dos primeiros registros escritos de chuva de meteoros da história. Na Europa medieval, a explicação foi outra: o pico das Perseidas cai perto do dia de São Lourenço, mártir queimado vivo numa grelha no século terceiro. Por isso, durante séculos, camponeses europeus chamaram esses rastros de luz de Lágrimas de São Lourenço, as fagulhas do próprio martírio caindo do céu. Só no século dezenove a ciência alcançou o mito: astrônomos descobriram que as Perseidas são, na verdade, destroços deixados pelo cometa Swift-Tuttle, que passa perto do Sol a cada cento e trinta e três anos. Toda vez que a Terra cruza esse rastro de poeira e gelo, o céu volta a pegar fogo, e a mesma chuva que os chineses anotaram há quase dois mil anos continua caindo, agosto após agosto.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "O nome parece saído de mito grego, e não é força de expressão.",
+      "inicio_s": 0.0,
+      "fim_s": 3.6
+    },
+    {
+      "texto": "As Perseidas ganham esse nome porque, vistas da Terra, os meteoros parecem sair de um ponto na constelação de Perseu, o herói que decapitou a Medusa.",
+      "inicio_s": 3.95,
+      "fim_s": 13.43
+    },
+    {
+      "texto": "E há uma coincidência e tanto: na mitologia, Perseu nasceu quando Zeus desceu até sua mãe, Danaé, em forma de chuva de ouro.",
+      "inicio_s": 13.78,
+      "fim_s": 22.64
+    },
+    {
+      "texto": "Séculos antes de qualquer telescópio, humanos já registravam esse espetáculo no céu.",
+      "inicio_s": 22.99,
+      "fim_s": 27.57
+    },
+    {
+      "texto": "Em 36 depois de Cristo, astrônomos chineses anotaram meteoros correndo como um rio, bem na época em que as Perseidas atingem o pico todo mês de agosto, um dos primeiros registros escritos de chuva de meteoros da história.",
+      "inicio_s": 27.92,
+      "fim_s": 40.9
+    },
+    {
+      "texto": "Na Europa medieval, a explicação foi outra: o pico das Perseidas cai perto do dia de São Lourenço, mártir queimado vivo numa grelha no século terceiro.",
+      "inicio_s": 41.25,
+      "fim_s": 50.67
+    },
+    {
+      "texto": "Por isso, durante séculos, camponeses europeus chamaram esses rastros de luz de Lágrimas de São Lourenço, as fagulhas do próprio martírio caindo do céu.",
+      "inicio_s": 51.02,
+      "fim_s": 60.04
+    },
+    {
+      "texto": "Só no século dezenove a ciência alcançou o mito: astrônomos descobriram que as Perseidas são, na verdade, destroços deixados pelo cometa Swift-Tuttle, que passa perto do Sol a cada cento e trinta e três anos.",
+      "inicio_s": 60.39,
+      "fim_s": 73.93
+    },
+    {
+      "texto": "Toda vez que a Terra cruza esse rastro de poeira e gelo, o céu volta a pegar fogo, e a mesma chuva que os chineses anotaram há quase dois mil anos continua caindo, agosto após agosto.",
+      "inicio_s": 74.28,
+      "fim_s": 84.96
+    }
+  ]
+}

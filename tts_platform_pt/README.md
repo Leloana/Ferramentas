@@ -8,16 +8,22 @@ pontuação para soar mais natural).
 
 ## Como rodar
 
+### Setup inicial (só na primeira vez)
+
 ```powershell
 cd C:\Users\mf827\Documents\Ferramentas\tts_platform_pt
 python -m venv venv
 C:\Users\mf827\Documents\Ferramentas\tts_platform_pt\venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-
-uvicorn server.main:app --reload --port 8010
 ```
 
-Abra `http://127.0.0.1:8010/` no navegador.
+### Rodar o servidor (dia a dia)
+
+```powershell
+C:\Users\mf827\Documents\Ferramentas\tts_platform_pt\venv\Scripts\uvicorn.exe server.main:app --app-dir C:\Users\mf827\Documents\Ferramentas\tts_platform_pt --reload --port 8011
+```
+
+Abra `http://127.0.0.1:8011/` no navegador.
 
 ### Pré-requisitos
 

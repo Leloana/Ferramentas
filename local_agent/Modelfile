@@ -1,0 +1,10 @@
+FROM qwen3.5:9b-instruct
+
+# PLANO.md secão 5: num_ctx explícito, nunca deixar o runtime pré-alocar o máximo.
+# 24576 é suficiente para cadeias curtas com 3-6 ferramentas e sobra VRAM
+# (orçamento: 12GB - ~6GB pesos - 1,5GB overhead ≈ 4,5GB para KV cache em Q8_0).
+PARAMETER num_ctx 24576
+
+# Temperatura baixa: tool calling e output estruturado exigem determinismo.
+PARAMETER temperature 0.3
+PARAMETER top_p 0.9

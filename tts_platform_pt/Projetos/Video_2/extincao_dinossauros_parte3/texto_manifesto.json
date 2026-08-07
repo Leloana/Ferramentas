@@ -1,0 +1,49 @@
+{
+  "gerado_em": "2026-08-04T01:10:23",
+  "roteiro": "Projetos\\Video_2\\extincao_dinossauros_parte3\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 51.1,
+  "texto_usado": "Com o sol bloqueado, as temperaturas despencaram e as plantas pararam de fazer fotossíntese em escala global. A base da cadeia alimentar simplesmente colapsou. Em poucos anos, cerca de setenta e cinco por cento de todas as espécies do planeta desapareceram, incluindo todos os dinossauros não-emplumados que haviam dominado a terra por mais de cento e sessenta milhões de anos. Mas nem tudo morreu. Pequenos mamíferos, que sobreviviam à sombra dos gigantes, encontraram um mundo repentinamente livre de predadores e começaram a se diversificar, dando origem, milhões de anos depois, aos primatas e a nós. E, tecnicamente, os dinossauros nunca desapareceram de verdade: um ramo emplumado sobreviveu ao inverno de poeira e evoluiu até as aves que hoje cantam nos quintais do mundo inteiro. Cada pássaro na janela é, ainda hoje, um dinossauro vivo.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Com o sol bloqueado, as temperaturas despencaram e as plantas pararam de fazer fotossíntese em escala global.",
+      "inicio_s": 0.0,
+      "fim_s": 6.06
+    },
+    {
+      "texto": "A base da cadeia alimentar simplesmente colapsou.",
+      "inicio_s": 6.41,
+      "fim_s": 8.99
+    },
+    {
+      "texto": "Em poucos anos, cerca de setenta e cinco por cento de todas as espécies do planeta desapareceram, incluindo todos os dinossauros não-emplumados que haviam dominado a terra por mais de cento e sessenta milhões de anos.",
+      "inicio_s": 9.34,
+      "fim_s": 21.6
+    },
+    {
+      "texto": "Mas nem tudo morreu.",
+      "inicio_s": 21.95,
+      "fim_s": 23.05
+    },
+    {
+      "texto": "Pequenos mamíferos, que sobreviviam à sombra dos gigantes, encontraram um mundo repentinamente livre de predadores e começaram a se diversificar, dando origem, milhões de anos depois, aos primatas e a nós.",
+      "inicio_s": 23.4,
+      "fim_s": 35.16
+    },
+    {
+      "texto": "E, tecnicamente, os dinossauros nunca desapareceram de verdade: um ramo emplumado sobreviveu ao inverno de poeira e evoluiu até as aves que hoje cantam nos quintais do mundo inteiro.",
+      "inicio_s": 35.51,
+      "fim_s": 47.05
+    },
+    {
+      "texto": "Cada pássaro na janela é, ainda hoje, um dinossauro vivo.",
+      "inicio_s": 47.4,
+      "fim_s": 51.12
+    }
+  ]
+}
