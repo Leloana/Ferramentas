@@ -92,6 +92,11 @@ def main():
         if baixado_em != dest_path and baixado_em.exists():
             dest_path.parent.mkdir(parents=True, exist_ok=True)
             baixado_em.replace(dest_path)
+            # limpa as subpastas intermediarias que ficaram vazias
+            pasta = baixado_em.parent
+            while pasta != dest_dir and not any(pasta.iterdir()):
+                pasta.rmdir()
+                pasta = pasta.parent
 
     print("\nPronto. Modelos instalados em:", models_dir)
 
