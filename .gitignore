@@ -61,6 +61,10 @@ tts_platform_pt/Projetos/**/*.mp4
 # Notes
 karaoke/anotar.txt
 
+# Video Gen: videos gerados
+video_gen/output/*
+!video_gen/output/.gitkeep
+
 # Agentic CLI persist and history
 .persist/
 .history
