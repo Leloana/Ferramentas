@@ -6,6 +6,7 @@ modelos precisam ter sido baixados antes com `python setup_models.py`.
 Exemplos:
     python gerar_video.py --prompt "um gato astronauta flutuando no espaco"
     python gerar_video.py --modo i2v --imagem foto.png --prompt "a cena ganha vida, camera lenta"
+    python gerar_video.py --qualidade --prompt "mesmo prompt, mais nitido e bem mais lento"
 """
 import argparse
 import json
@@ -22,7 +23,10 @@ DEFAULT_OUTPUT_DIR = Path(__file__).parent / "output"
 DEFAULT_COMFYUI_OUTPUT = (
     Path.home() / "AppData" / "Local" / "Comfy-Desktop" / "ComfyUI-Shared" / "output"
 )
-NEGATIVO_PADRAO = "pc game, console game, video game, cartoon, childish, ugly"
+NEGATIVO_PADRAO = (
+    "pc game, console game, video game, cartoon, childish, ugly, "
+    "voiceover, narration, narrator reading, spoken text, person talking, speech, subtitles"
+)
 
 
 def arredondar_32(valor: int) -> int:
@@ -83,7 +87,8 @@ def enviar_imagem(host: str, caminho_imagem: Path) -> str:
 
 
 def montar_workflow(args) -> dict:
-    nome_arquivo = "i2v_distilled.json" if args.modo == "i2v" else "t2v_distilled.json"
+    sufixo = "qualidade" if args.qualidade else "distilled"
+    nome_arquivo = f"{args.modo}_{sufixo}.json"
     workflow = json.loads((WORKFLOWS_DIR / nome_arquivo).read_text(encoding="utf-8"))
 
     workflow["29"]["inputs"]["value"] = args.prompt
@@ -140,6 +145,11 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--prompt", required=True, help="Descricao do video a gerar")
     parser.add_argument("--modo", choices=["t2v", "i2v"], default="t2v")
+    parser.add_argument(
+        "--qualidade",
+        action="store_true",
+        help="Usa a receita de sampling completa (CFG real + 50 passos na primeira fase) em vez da distilled. Mais nitido, bem mais lento.",
+    )
     parser.add_argument("--imagem", type=Path, help="Imagem inicial (obrigatorio para --modo i2v)")
     parser.add_argument("--negativo", default=None, help="Prompt negativo (padrao interno se omitido)")
     parser.add_argument("--frames", type=int, default=241, help="Numero de frames (padrao 241, ~10s a 24fps)")

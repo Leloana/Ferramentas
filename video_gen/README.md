@@ -89,6 +89,34 @@ Opções úteis: `--frames` (padrão 241 ≈ 10s a 24fps), `--largura`/`--altura
 O vídeo gerado é copiado para `video_gen/output/` e o caminho final é impresso
 no terminal ao concluir.
 
+### Modo rápido vs. `--qualidade`
+
+Por padrão a geração usa a receita "distilled": poucos passos de sampling e
+CFG praticamente desligado, feita pra ser rápida. Isso deixa o vídeo com
+blur/pouco detalhe. Use `--qualidade` para trocar a primeira fase da geração
+por CFG real (3.6) e 50 passos — o mesmo checkpoint uncensored, só que com a
+receita de sampling completa. Fica bem mais nítido, mas cada vídeo demora
+consideravelmente mais no hardware de 12GB VRAM.
+
+```powershell
+python gerar_video.py --qualidade --prompt "um farol na costa ao entardecer"
+```
+
+### Dica de prompt: áudio
+
+O LTX-2.3 gera vídeo com áudio sincronizado, mas o mesmo texto do prompt
+alimenta tanto o vídeo quanto o áudio. Se o prompt só descrever a cena
+visualmente, o modelo às vezes "narra" o próprio prompt em voz alta em vez de
+gerar som ambiente. Para reduzir isso, descreva também o som desejado:
+
+```
+--prompt "um farol na costa ao entardecer, ondas quebrando suavemente. Audio: som de ondas quebrando, gaivotas ao longe, vento leve"
+```
+
+O negativo padrão já inclui termos contra narração/voz
+(`voiceover, narration, spoken text, person talking, speech, ...`), mas isso
+não é garantido — é uma tendência do modelo, não um filtro que se desliga.
+
 ## Solução de problemas
 
 - **"Nao foi possivel falar com o ComfyUI"**: abra o ComfyUI Desktop antes de

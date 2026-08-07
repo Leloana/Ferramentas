@@ -320,7 +320,7 @@
   },
   "41": {
     "inputs": {
-      "text": "pc game, console game, video game, cartoon, childish, ugly",
+      "text": "pc game, console game, video game, cartoon, childish, ugly, voiceover, narration, narrator reading, spoken text, person talking, speech, subtitles",
       "clip": ["5", 0]
     },
     "class_type": "CLIPTextEncode",
