@@ -1,0 +1,74 @@
+[
+  {
+    "frase": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "satellite view of a massive spiral hurricane cloud system over a dark blue ocean, seen from space, dramatic swirling white clouds, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00234_.png"
+  },
+  {
+    "frase": 2,
+    "arquivo": "texto_02.png",
+    "prompt_final": "aerial view of warm turquoise ocean water under bright sun, heat shimmer rising from the surface, small tropical clouds beginning to form above, cinematic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00235_.png"
+  },
+  {
+    "frase": 3,
+    "arquivo": "texto_03.png",
+    "prompt_final": "close-up of an empty ocean wave with visible mist and vapor rising into the sky, no people, no boats, water vapor curling upward, warm golden light, weather photography, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00246_.png"
+  },
+  {
+    "frase": 4,
+    "arquivo": "texto_04.png",
+    "prompt_final": "towering cumulus storm cloud building upward against a darkening sky, sunlight breaking through the top, dramatic vertical cloud tower, cinematic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00237_.png"
+  },
+  {
+    "frase": 5,
+    "arquivo": "texto_05.png",
+    "prompt_final": "aerial top-down view of an empty ocean surface with a swirling spiral wind pattern, no people, no boats, wispy clouds curving inward toward a center, cinematic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00247_.png"
+  },
+  {
+    "frase": 6,
+    "arquivo": "texto_06.png",
+    "prompt_final": "wide shot of a calm empty tropical ocean horizon near the equator, no people, no boats, no beach, flat still clouds, serene atmosphere, cinematic daylight, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00248_.png"
+  },
+  {
+    "frase": 7,
+    "arquivo": "texto_07.png",
+    "prompt_final": "dramatic sky shot of an organizing tropical storm cloud spiral over open empty ocean, no people, no boats, no beach, dark storm clouds swirling tightly together, cinematic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00249_.png"
+  },
+  {
+    "frase": 8,
+    "arquivo": "texto_08.png",
+    "prompt_final": "satellite-style view of a developing tropical storm with a visible curved cloud band and a faint eye forming, dark ocean beneath, cinematic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00241_.png"
+  },
+  {
+    "frase": 9,
+    "arquivo": "texto_09.png",
+    "prompt_final": "aerial satellite view directly above an empty hurricane eye, no people, no objects, calm clear circular opening surrounded by a thick wall of dark storm clouds, cinematic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00250_.png"
+  },
+  {
+    "frase": 10,
+    "arquivo": "texto_10.png",
+    "prompt_final": "powerful category five hurricane seen from space, no people, no objects, massive tightly wound spiral with a sharp clear empty eye, dark ocean below, satellite view, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00251_.png"
+  },
+  {
+    "frase": 11,
+    "arquivo": "texto_11.png",
+    "prompt_final": "wide aerial view of the Atlantic Ocean with multiple swirling tropical storm systems scattered across dark blue water, dramatic stormy sky, cinematic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00244_.png"
+  },
+  {
+    "frase": 12,
+    "arquivo": "texto_12.png",
+    "prompt_final": "powerful hurricane fully formed over open empty ocean at dusk, no people, no beach, no coastline, dramatic swirling clouds lit by golden light, cinematic wide shot, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00252_.png"
+  }
+]

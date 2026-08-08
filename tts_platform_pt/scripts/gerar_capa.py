@@ -32,6 +32,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -39,6 +40,14 @@ import requests
 from PIL import Image, ImageDraw, ImageFont
 
 from gerar_imagens import WORKFLOW_PADRAO, gerar_imagem
+
+# O título vem de descricao.md e pode conter emoji (ver convenção do gancho em
+# CLAUDE.md); o console do Windows usa cp1252 por padrão, que não codifica
+# esses caracteres e derruba o script com UnicodeEncodeError num print()
+# puramente informativo.
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(errors="replace")
 
 _RESOLUCOES = {
     "9:16": (1080, 1920),

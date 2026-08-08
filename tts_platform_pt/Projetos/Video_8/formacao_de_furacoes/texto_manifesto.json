@@ -1,0 +1,1563 @@
+{
+  "gerado_em": "2026-08-07T23:52:10",
+  "roteiro": "Projetos\\Video_8\\formacao_de_furacoes\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 109.8,
+  "texto_usado": "Um furacão pode liberar mais energia em um único dia do que centenas de bombas atômicas — e tudo começa com um simples aglomerado de nuvens sobre o oceano. Pra esse aglomerado virar um furacão, o mar precisa estar quente: pelo menos 26 graus, e não só na superfície, até uns 50 metros de profundidade. Esse calor evapora água em grande quantidade, e o vapor sobe carregando energia. Conforme o ar quente e úmido sobe, ele esfria, condensa em nuvens e libera ainda mais calor, alimentando a si mesmo. Perto da superfície, o ar rarefeito no centro puxa mais ar de fora pra dentro, e a rotação da Terra faz esse fluxo girar em espiral. É por isso que furacões praticamente não se formam perto do equador: ali esse efeito é fraco demais pra iniciar o giro. Se não houver ventos fortes cortando a estrutura em diferentes altitudes, a espiral se organiza sem se desmontar. Primeiro vira uma perturbação tropical, depois uma depressão, e quando os ventos ultrapassam 119 quilômetros por hora, ganha o nome de furacão. No centro, forma-se o olho: uma área calma, quase sem nuvens, cercada pela parede do olho, onde estão os ventos mais violentos de toda a tempestade. Quanto mais tempo passa sobre água quente, mais forte o furacão fica: a escala vai da categoria 1, logo acima de 119 quilômetros por hora, até a categoria 5, passando dos 252. Na bacia do Atlântico, a temporada oficial vai de junho a novembro, e produz em média catorze tempestades batizadas por ano — só uma parte delas chega a virar furacão de verdade. Basta oceano quente, umidade em abundância e ausência de vento cortando o topo — e em poucos dias a natureza monta sozinha uma das máquinas mais poderosas do planeta.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Um furacão pode liberar mais energia em um único dia do que centenas de bombas atômicas — e tudo começa com um simples aglomerado de nuvens sobre o oceano.",
+      "inicio_s": 0.15,
+      "fim_s": 9.75,
+      "palavras": [
+        {
+          "texto": "Um",
+          "inicio_s": 0.17,
+          "fim_s": 0.23
+        },
+        {
+          "texto": "furacão",
+          "inicio_s": 0.29,
+          "fim_s": 0.731
+        },
+        {
+          "texto": "pode",
+          "inicio_s": 0.791,
+          "fim_s": 0.992
+        },
+        {
+          "texto": "liberar",
+          "inicio_s": 1.032,
+          "fim_s": 1.373
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 1.433,
+          "fim_s": 1.613
+        },
+        {
+          "texto": "energia",
+          "inicio_s": 1.673,
+          "fim_s": 2.134
+        },
+        {
+          "texto": "em",
+          "inicio_s": 2.294,
+          "fim_s": 2.375
+        },
+        {
+          "texto": "um",
+          "inicio_s": 2.415,
+          "fim_s": 2.495
+        },
+        {
+          "texto": "único",
+          "inicio_s": 2.595,
+          "fim_s": 2.856
+        },
+        {
+          "texto": "dia",
+          "inicio_s": 2.936,
+          "fim_s": 3.156
+        },
+        {
+          "texto": "do",
+          "inicio_s": 3.256,
+          "fim_s": 3.337
+        },
+        {
+          "texto": "que",
+          "inicio_s": 3.377,
+          "fim_s": 3.457
+        },
+        {
+          "texto": "centenas",
+          "inicio_s": 3.497,
+          "fim_s": 3.978
+        },
+        {
+          "texto": "de",
+          "inicio_s": 4.018,
+          "fim_s": 4.098
+        },
+        {
+          "texto": "bombas",
+          "inicio_s": 4.178,
+          "fim_s": 4.459
+        },
+        {
+          "texto": "atômicas",
+          "inicio_s": 4.499,
+          "fim_s": 5.04
+        },
+        {
+          "texto": "e",
+          "inicio_s": 6.062,
+          "fim_s": 6.082
+        },
+        {
+          "texto": "tudo",
+          "inicio_s": 6.183,
+          "fim_s": 6.403
+        },
+        {
+          "texto": "começa",
+          "inicio_s": 6.443,
+          "fim_s": 6.864
+        },
+        {
+          "texto": "com",
+          "inicio_s": 6.904,
+          "fim_s": 7.024
+        },
+        {
+          "texto": "um",
+          "inicio_s": 7.044,
+          "fim_s": 7.104
+        },
+        {
+          "texto": "simples",
+          "inicio_s": 7.185,
+          "fim_s": 7.505
+        },
+        {
+          "texto": "aglomerado",
+          "inicio_s": 7.545,
+          "fim_s": 8.006
+        },
+        {
+          "texto": "de",
+          "inicio_s": 8.046,
+          "fim_s": 8.107
+        },
+        {
+          "texto": "nuvens",
+          "inicio_s": 8.167,
+          "fim_s": 8.507
+        },
+        {
+          "texto": "sobre",
+          "inicio_s": 8.788,
+          "fim_s": 9.008
+        },
+        {
+          "texto": "o",
+          "inicio_s": 9.069,
+          "fim_s": 9.089
+        },
+        {
+          "texto": "oceano",
+          "inicio_s": 9.189,
+          "fim_s": 9.59
+        }
+      ]
+    },
+    {
+      "texto": "Pra esse aglomerado virar um furacão, o mar precisa estar quente: pelo menos 26 graus, e não só na superfície, até uns 50 metros de profundidade.",
+      "inicio_s": 10.1,
+      "fim_s": 19.82,
+      "palavras": [
+        {
+          "texto": "Pra",
+          "inicio_s": 10.1,
+          "fim_s": 10.2
+        },
+        {
+          "texto": "esse",
+          "inicio_s": 10.3,
+          "fim_s": 10.501
+        },
+        {
+          "texto": "aglomerado",
+          "inicio_s": 10.541,
+          "fim_s": 11.122
+        },
+        {
+          "texto": "virar",
+          "inicio_s": 11.162,
+          "fim_s": 11.423
+        },
+        {
+          "texto": "um",
+          "inicio_s": 11.443,
+          "fim_s": 11.503
+        },
+        {
+          "texto": "furacão",
+          "inicio_s": 11.563,
+          "fim_s": 12.024
+        },
+        {
+          "texto": "o",
+          "inicio_s": 12.365,
+          "fim_s": 12.385
+        },
+        {
+          "texto": "mar",
+          "inicio_s": 12.465,
+          "fim_s": 12.625
+        },
+        {
+          "texto": "precisa",
+          "inicio_s": 12.685,
+          "fim_s": 13.066
+        },
+        {
+          "texto": "estar",
+          "inicio_s": 13.106,
+          "fim_s": 13.367
+        },
+        {
+          "texto": "quente",
+          "inicio_s": 13.427,
+          "fim_s": 13.788
+        },
+        {
+          "texto": "pelo",
+          "inicio_s": 14.088,
+          "fim_s": 14.269
+        },
+        {
+          "texto": "menos",
+          "inicio_s": 14.329,
+          "fim_s": 14.609
+        },
+        {
+          "texto": "26",
+          "inicio_s": 14.609,
+          "fim_s": 15.271
+        },
+        {
+          "texto": "graus",
+          "inicio_s": 15.271,
+          "fim_s": 15.651
+        },
+        {
+          "texto": "e",
+          "inicio_s": 15.952,
+          "fim_s": 15.972
+        },
+        {
+          "texto": "não",
+          "inicio_s": 16.072,
+          "fim_s": 16.233
+        },
+        {
+          "texto": "só",
+          "inicio_s": 16.313,
+          "fim_s": 16.413
+        },
+        {
+          "texto": "na",
+          "inicio_s": 16.473,
+          "fim_s": 16.533
+        },
+        {
+          "texto": "superfície",
+          "inicio_s": 16.593,
+          "fim_s": 17.215
+        },
+        {
+          "texto": "até",
+          "inicio_s": 17.676,
+          "fim_s": 17.876
+        },
+        {
+          "texto": "uns",
+          "inicio_s": 17.936,
+          "fim_s": 18.036
+        },
+        {
+          "texto": "50",
+          "inicio_s": 18.036,
+          "fim_s": 18.597
+        },
+        {
+          "texto": "metros",
+          "inicio_s": 18.597,
+          "fim_s": 18.938
+        },
+        {
+          "texto": "de",
+          "inicio_s": 18.958,
+          "fim_s": 19.018
+        },
+        {
+          "texto": "profundidade",
+          "inicio_s": 19.038,
+          "fim_s": 19.72
+        }
+      ]
+    },
+    {
+      "texto": "Esse calor evapora água em grande quantidade, e o vapor sobe carregando energia.",
+      "inicio_s": 20.17,
+      "fim_s": 25.07,
+      "palavras": [
+        {
+          "texto": "Esse",
+          "inicio_s": 20.19,
+          "fim_s": 20.351
+        },
+        {
+          "texto": "calor",
+          "inicio_s": 20.411,
+          "fim_s": 20.752
+        },
+        {
+          "texto": "evapora",
+          "inicio_s": 21.154,
+          "fim_s": 21.596
+        },
+        {
+          "texto": "água",
+          "inicio_s": 21.676,
+          "fim_s": 21.857
+        },
+        {
+          "texto": "em",
+          "inicio_s": 21.877,
+          "fim_s": 21.937
+        },
+        {
+          "texto": "grande",
+          "inicio_s": 21.977,
+          "fim_s": 22.198
+        },
+        {
+          "texto": "quantidade",
+          "inicio_s": 22.218,
+          "fim_s": 22.72
+        },
+        {
+          "texto": "e",
+          "inicio_s": 23.062,
+          "fim_s": 23.082
+        },
+        {
+          "texto": "o",
+          "inicio_s": 23.162,
+          "fim_s": 23.182
+        },
+        {
+          "texto": "vapor",
+          "inicio_s": 23.243,
+          "fim_s": 23.584
+        },
+        {
+          "texto": "sobe",
+          "inicio_s": 23.704,
+          "fim_s": 23.945
+        },
+        {
+          "texto": "carregando",
+          "inicio_s": 23.986,
+          "fim_s": 24.488
+        },
+        {
+          "texto": "energia",
+          "inicio_s": 24.528,
+          "fim_s": 24.95
+        }
+      ]
+    },
+    {
+      "texto": "Conforme o ar quente e úmido sobe, ele esfria, condensa em nuvens e libera ainda mais calor, alimentando a si mesmo.",
+      "inicio_s": 25.42,
+      "fim_s": 32.86,
+      "palavras": [
+        {
+          "texto": "Conforme",
+          "inicio_s": 25.42,
+          "fim_s": 25.841
+        },
+        {
+          "texto": "o",
+          "inicio_s": 25.901,
+          "fim_s": 25.921
+        },
+        {
+          "texto": "ar",
+          "inicio_s": 26.002,
+          "fim_s": 26.102
+        },
+        {
+          "texto": "quente",
+          "inicio_s": 26.202,
+          "fim_s": 26.543
+        },
+        {
+          "texto": "e",
+          "inicio_s": 26.603,
+          "fim_s": 26.623
+        },
+        {
+          "texto": "úmido",
+          "inicio_s": 26.724,
+          "fim_s": 26.984
+        },
+        {
+          "texto": "sobe",
+          "inicio_s": 27.064,
+          "fim_s": 27.345
+        },
+        {
+          "texto": "ele",
+          "inicio_s": 27.806,
+          "fim_s": 27.947
+        },
+        {
+          "texto": "esfria",
+          "inicio_s": 27.987,
+          "fim_s": 28.468
+        },
+        {
+          "texto": "condensa",
+          "inicio_s": 28.949,
+          "fim_s": 29.531
+        },
+        {
+          "texto": "em",
+          "inicio_s": 29.571,
+          "fim_s": 29.631
+        },
+        {
+          "texto": "nuvens",
+          "inicio_s": 29.691,
+          "fim_s": 30.052
+        },
+        {
+          "texto": "e",
+          "inicio_s": 30.093,
+          "fim_s": 30.113
+        },
+        {
+          "texto": "libera",
+          "inicio_s": 30.153,
+          "fim_s": 30.474
+        },
+        {
+          "texto": "ainda",
+          "inicio_s": 30.514,
+          "fim_s": 30.714
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 30.794,
+          "fim_s": 30.975
+        },
+        {
+          "texto": "calor",
+          "inicio_s": 31.015,
+          "fim_s": 31.336
+        },
+        {
+          "texto": "alimentando",
+          "inicio_s": 31.677,
+          "fim_s": 32.238
+        },
+        {
+          "texto": "a",
+          "inicio_s": 32.278,
+          "fim_s": 32.298
+        },
+        {
+          "texto": "si",
+          "inicio_s": 32.359,
+          "fim_s": 32.439
+        },
+        {
+          "texto": "mesmo",
+          "inicio_s": 32.499,
+          "fim_s": 32.78
+        }
+      ]
+    },
+    {
+      "texto": "Perto da superfície, o ar rarefeito no centro puxa mais ar de fora pra dentro, e a rotação da Terra faz esse fluxo girar em espiral.",
+      "inicio_s": 33.21,
+      "fim_s": 40.03,
+      "palavras": [
+        {
+          "texto": "Perto",
+          "inicio_s": 33.21,
+          "fim_s": 33.471
+        },
+        {
+          "texto": "da",
+          "inicio_s": 33.491,
+          "fim_s": 33.551
+        },
+        {
+          "texto": "superfície",
+          "inicio_s": 33.611,
+          "fim_s": 34.213
+        },
+        {
+          "texto": "o",
+          "inicio_s": 34.514,
+          "fim_s": 34.534
+        },
+        {
+          "texto": "ar",
+          "inicio_s": 34.654,
+          "fim_s": 34.734
+        },
+        {
+          "texto": "rarefeito",
+          "inicio_s": 34.755,
+          "fim_s": 35.196
+        },
+        {
+          "texto": "no",
+          "inicio_s": 35.236,
+          "fim_s": 35.296
+        },
+        {
+          "texto": "centro",
+          "inicio_s": 35.356,
+          "fim_s": 35.677
+        },
+        {
+          "texto": "puxa",
+          "inicio_s": 35.737,
+          "fim_s": 36.018
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 36.078,
+          "fim_s": 36.279
+        },
+        {
+          "texto": "ar",
+          "inicio_s": 36.359,
+          "fim_s": 36.419
+        },
+        {
+          "texto": "de",
+          "inicio_s": 36.46,
+          "fim_s": 36.52
+        },
+        {
+          "texto": "fora",
+          "inicio_s": 36.58,
+          "fim_s": 36.78
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 36.801,
+          "fim_s": 36.901
+        },
+        {
+          "texto": "dentro",
+          "inicio_s": 36.961,
+          "fim_s": 37.242
+        },
+        {
+          "texto": "e",
+          "inicio_s": 37.462,
+          "fim_s": 37.483
+        },
+        {
+          "texto": "a",
+          "inicio_s": 37.563,
+          "fim_s": 37.583
+        },
+        {
+          "texto": "rotação",
+          "inicio_s": 37.643,
+          "fim_s": 38.024
+        },
+        {
+          "texto": "da",
+          "inicio_s": 38.044,
+          "fim_s": 38.124
+        },
+        {
+          "texto": "Terra",
+          "inicio_s": 38.185,
+          "fim_s": 38.425
+        },
+        {
+          "texto": "faz",
+          "inicio_s": 38.485,
+          "fim_s": 38.646
+        },
+        {
+          "texto": "esse",
+          "inicio_s": 38.666,
+          "fim_s": 38.826
+        },
+        {
+          "texto": "fluxo",
+          "inicio_s": 38.867,
+          "fim_s": 39.167
+        },
+        {
+          "texto": "girar",
+          "inicio_s": 39.208,
+          "fim_s": 39.488
+        },
+        {
+          "texto": "em",
+          "inicio_s": 39.508,
+          "fim_s": 39.569
+        },
+        {
+          "texto": "espiral",
+          "inicio_s": 39.589,
+          "fim_s": 39.95
+        }
+      ]
+    },
+    {
+      "texto": "É por isso que furacões praticamente não se formam perto do equador: ali esse efeito é fraco demais pra iniciar o giro.",
+      "inicio_s": 40.38,
+      "fim_s": 46.88,
+      "palavras": [
+        {
+          "texto": "É",
+          "inicio_s": 40.4,
+          "fim_s": 40.42
+        },
+        {
+          "texto": "por",
+          "inicio_s": 40.48,
+          "fim_s": 40.601
+        },
+        {
+          "texto": "isso",
+          "inicio_s": 40.641,
+          "fim_s": 40.821
+        },
+        {
+          "texto": "que",
+          "inicio_s": 40.882,
+          "fim_s": 40.942
+        },
+        {
+          "texto": "furacões",
+          "inicio_s": 40.982,
+          "fim_s": 41.423
+        },
+        {
+          "texto": "praticamente",
+          "inicio_s": 41.443,
+          "fim_s": 42.005
+        },
+        {
+          "texto": "não",
+          "inicio_s": 42.045,
+          "fim_s": 42.125
+        },
+        {
+          "texto": "se",
+          "inicio_s": 42.145,
+          "fim_s": 42.226
+        },
+        {
+          "texto": "formam",
+          "inicio_s": 42.266,
+          "fim_s": 42.567
+        },
+        {
+          "texto": "perto",
+          "inicio_s": 42.627,
+          "fim_s": 42.888
+        },
+        {
+          "texto": "do",
+          "inicio_s": 42.908,
+          "fim_s": 42.968
+        },
+        {
+          "texto": "equador",
+          "inicio_s": 42.988,
+          "fim_s": 43.349
+        },
+        {
+          "texto": "ali",
+          "inicio_s": 43.831,
+          "fim_s": 44.011
+        },
+        {
+          "texto": "esse",
+          "inicio_s": 44.091,
+          "fim_s": 44.232
+        },
+        {
+          "texto": "efeito",
+          "inicio_s": 44.292,
+          "fim_s": 44.653
+        },
+        {
+          "texto": "é",
+          "inicio_s": 44.954,
+          "fim_s": 44.974
+        },
+        {
+          "texto": "fraco",
+          "inicio_s": 45.115,
+          "fim_s": 45.436
+        },
+        {
+          "texto": "demais",
+          "inicio_s": 45.476,
+          "fim_s": 45.857
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 45.897,
+          "fim_s": 46.037
+        },
+        {
+          "texto": "iniciar",
+          "inicio_s": 46.078,
+          "fim_s": 46.499
+        },
+        {
+          "texto": "o",
+          "inicio_s": 46.539,
+          "fim_s": 46.559
+        },
+        {
+          "texto": "giro",
+          "inicio_s": 46.599,
+          "fim_s": 46.82
+        }
+      ]
+    },
+    {
+      "texto": "Se não houver ventos fortes cortando a estrutura em diferentes altitudes, a espiral se organiza sem se desmontar.",
+      "inicio_s": 47.23,
+      "fim_s": 53.29,
+      "palavras": [
+        {
+          "texto": "Se",
+          "inicio_s": 47.25,
+          "fim_s": 47.33
+        },
+        {
+          "texto": "não",
+          "inicio_s": 47.37,
+          "fim_s": 47.491
+        },
+        {
+          "texto": "houver",
+          "inicio_s": 47.511,
+          "fim_s": 47.772
+        },
+        {
+          "texto": "ventos",
+          "inicio_s": 47.812,
+          "fim_s": 48.093
+        },
+        {
+          "texto": "fortes",
+          "inicio_s": 48.153,
+          "fim_s": 48.474
+        },
+        {
+          "texto": "cortando",
+          "inicio_s": 48.514,
+          "fim_s": 48.916
+        },
+        {
+          "texto": "a",
+          "inicio_s": 48.916,
+          "fim_s": 48.956
+        },
+        {
+          "texto": "estrutura",
+          "inicio_s": 48.956,
+          "fim_s": 49.397
+        },
+        {
+          "texto": "em",
+          "inicio_s": 49.417,
+          "fim_s": 49.457
+        },
+        {
+          "texto": "diferentes",
+          "inicio_s": 49.477,
+          "fim_s": 49.939
+        },
+        {
+          "texto": "altitudes",
+          "inicio_s": 49.979,
+          "fim_s": 50.521
+        },
+        {
+          "texto": "a",
+          "inicio_s": 51.103,
+          "fim_s": 51.123
+        },
+        {
+          "texto": "espiral",
+          "inicio_s": 51.203,
+          "fim_s": 51.645
+        },
+        {
+          "texto": "se",
+          "inicio_s": 51.705,
+          "fim_s": 51.765
+        },
+        {
+          "texto": "organiza",
+          "inicio_s": 51.825,
+          "fim_s": 52.267
+        },
+        {
+          "texto": "sem",
+          "inicio_s": 52.407,
+          "fim_s": 52.548
+        },
+        {
+          "texto": "se",
+          "inicio_s": 52.608,
+          "fim_s": 52.668
+        },
+        {
+          "texto": "desmontar",
+          "inicio_s": 52.708,
+          "fim_s": 53.21
+        }
+      ]
+    },
+    {
+      "texto": "Primeiro vira uma perturbação tropical, depois uma depressão, e quando os ventos ultrapassam 119 quilômetros por hora, ganha o nome de furacão.",
+      "inicio_s": 53.64,
+      "fim_s": 62.6,
+      "palavras": [
+        {
+          "texto": "Primeiro",
+          "inicio_s": 53.64,
+          "fim_s": 53.981
+        },
+        {
+          "texto": "vira",
+          "inicio_s": 54.061,
+          "fim_s": 54.201
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 54.221,
+          "fim_s": 54.301
+        },
+        {
+          "texto": "perturbação",
+          "inicio_s": 54.362,
+          "fim_s": 54.923
+        },
+        {
+          "texto": "tropical",
+          "inicio_s": 54.963,
+          "fim_s": 55.424
+        },
+        {
+          "texto": "depois",
+          "inicio_s": 55.825,
+          "fim_s": 56.106
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 56.146,
+          "fim_s": 56.246
+        },
+        {
+          "texto": "depressão",
+          "inicio_s": 56.286,
+          "fim_s": 56.727
+        },
+        {
+          "texto": "e",
+          "inicio_s": 57.649,
+          "fim_s": 57.669
+        },
+        {
+          "texto": "quando",
+          "inicio_s": 57.749,
+          "fim_s": 57.95
+        },
+        {
+          "texto": "os",
+          "inicio_s": 57.99,
+          "fim_s": 58.05
+        },
+        {
+          "texto": "ventos",
+          "inicio_s": 58.11,
+          "fim_s": 58.451
+        },
+        {
+          "texto": "ultrapassam",
+          "inicio_s": 58.591,
+          "fim_s": 59.172
+        },
+        {
+          "texto": "119",
+          "inicio_s": 59.172,
+          "fim_s": 59.974
+        },
+        {
+          "texto": "quilômetros",
+          "inicio_s": 59.974,
+          "fim_s": 60.415
+        },
+        {
+          "texto": "por",
+          "inicio_s": 60.435,
+          "fim_s": 60.555
+        },
+        {
+          "texto": "hora",
+          "inicio_s": 60.596,
+          "fim_s": 60.776
+        },
+        {
+          "texto": "ganha",
+          "inicio_s": 61.337,
+          "fim_s": 61.538
+        },
+        {
+          "texto": "o",
+          "inicio_s": 61.598,
+          "fim_s": 61.618
+        },
+        {
+          "texto": "nome",
+          "inicio_s": 61.698,
+          "fim_s": 61.898
+        },
+        {
+          "texto": "de",
+          "inicio_s": 61.939,
+          "fim_s": 62.019
+        },
+        {
+          "texto": "furacão",
+          "inicio_s": 62.079,
+          "fim_s": 62.5
+        }
+      ]
+    },
+    {
+      "texto": "No centro, forma-se o olho: uma área calma, quase sem nuvens, cercada pela parede do olho, onde estão os ventos mais violentos de toda a tempestade.",
+      "inicio_s": 62.95,
+      "fim_s": 72.41,
+      "palavras": [
+        {
+          "texto": "No",
+          "inicio_s": 62.97,
+          "fim_s": 63.03
+        },
+        {
+          "texto": "centro",
+          "inicio_s": 63.11,
+          "fim_s": 63.431
+        },
+        {
+          "texto": "forma-se",
+          "inicio_s": 63.772,
+          "fim_s": 64.213
+        },
+        {
+          "texto": "o",
+          "inicio_s": 64.273,
+          "fim_s": 64.293
+        },
+        {
+          "texto": "olho",
+          "inicio_s": 64.373,
+          "fim_s": 64.553
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 65.175,
+          "fim_s": 65.315
+        },
+        {
+          "texto": "área",
+          "inicio_s": 65.395,
+          "fim_s": 65.576
+        },
+        {
+          "texto": "calma",
+          "inicio_s": 65.676,
+          "fim_s": 65.976
+        },
+        {
+          "texto": "quase",
+          "inicio_s": 66.518,
+          "fim_s": 66.778
+        },
+        {
+          "texto": "sem",
+          "inicio_s": 66.838,
+          "fim_s": 66.979
+        },
+        {
+          "texto": "nuvens",
+          "inicio_s": 67.039,
+          "fim_s": 67.399
+        },
+        {
+          "texto": "cercada",
+          "inicio_s": 67.88,
+          "fim_s": 68.241
+        },
+        {
+          "texto": "pela",
+          "inicio_s": 68.281,
+          "fim_s": 68.442
+        },
+        {
+          "texto": "parede",
+          "inicio_s": 68.482,
+          "fim_s": 68.802
+        },
+        {
+          "texto": "do",
+          "inicio_s": 68.822,
+          "fim_s": 68.903
+        },
+        {
+          "texto": "olho",
+          "inicio_s": 69.023,
+          "fim_s": 69.203
+        },
+        {
+          "texto": "onde",
+          "inicio_s": 69.604,
+          "fim_s": 69.744
+        },
+        {
+          "texto": "estão",
+          "inicio_s": 69.784,
+          "fim_s": 69.985
+        },
+        {
+          "texto": "os",
+          "inicio_s": 70.025,
+          "fim_s": 70.105
+        },
+        {
+          "texto": "ventos",
+          "inicio_s": 70.165,
+          "fim_s": 70.466
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 70.546,
+          "fim_s": 70.746
+        },
+        {
+          "texto": "violentos",
+          "inicio_s": 70.787,
+          "fim_s": 71.308
+        },
+        {
+          "texto": "de",
+          "inicio_s": 71.328,
+          "fim_s": 71.408
+        },
+        {
+          "texto": "toda",
+          "inicio_s": 71.488,
+          "fim_s": 71.668
+        },
+        {
+          "texto": "a",
+          "inicio_s": 71.709,
+          "fim_s": 71.749
+        },
+        {
+          "texto": "tempestade",
+          "inicio_s": 71.749,
+          "fim_s": 72.33
+        }
+      ]
+    },
+    {
+      "texto": "Quanto mais tempo passa sobre água quente, mais forte o furacão fica: a escala vai da categoria 1, logo acima de 119 quilômetros por hora, até a categoria 5, passando dos 252.",
+      "inicio_s": 72.76,
+      "fim_s": 87.34,
+      "palavras": [
+        {
+          "texto": "Quanto",
+          "inicio_s": 72.76,
+          "fim_s": 72.94
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 73.0,
+          "fim_s": 73.201
+        },
+        {
+          "texto": "tempo",
+          "inicio_s": 73.261,
+          "fim_s": 73.521
+        },
+        {
+          "texto": "passa",
+          "inicio_s": 73.801,
+          "fim_s": 74.022
+        },
+        {
+          "texto": "sobre",
+          "inicio_s": 74.082,
+          "fim_s": 74.282
+        },
+        {
+          "texto": "água",
+          "inicio_s": 74.402,
+          "fim_s": 74.562
+        },
+        {
+          "texto": "quente",
+          "inicio_s": 74.623,
+          "fim_s": 74.943
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 75.564,
+          "fim_s": 75.764
+        },
+        {
+          "texto": "forte",
+          "inicio_s": 75.844,
+          "fim_s": 76.185
+        },
+        {
+          "texto": "o",
+          "inicio_s": 76.205,
+          "fim_s": 76.225
+        },
+        {
+          "texto": "furacão",
+          "inicio_s": 76.245,
+          "fim_s": 76.605
+        },
+        {
+          "texto": "fica",
+          "inicio_s": 76.645,
+          "fim_s": 76.906
+        },
+        {
+          "texto": "a",
+          "inicio_s": 77.967,
+          "fim_s": 77.987
+        },
+        {
+          "texto": "escala",
+          "inicio_s": 78.047,
+          "fim_s": 78.368
+        },
+        {
+          "texto": "vai",
+          "inicio_s": 78.428,
+          "fim_s": 78.588
+        },
+        {
+          "texto": "da",
+          "inicio_s": 78.608,
+          "fim_s": 78.668
+        },
+        {
+          "texto": "categoria",
+          "inicio_s": 78.708,
+          "fim_s": 79.209
+        },
+        {
+          "texto": "1",
+          "inicio_s": 79.209,
+          "fim_s": 80.671
+        },
+        {
+          "texto": "logo",
+          "inicio_s": 80.671,
+          "fim_s": 80.871
+        },
+        {
+          "texto": "acima",
+          "inicio_s": 80.911,
+          "fim_s": 81.192
+        },
+        {
+          "texto": "de",
+          "inicio_s": 81.212,
+          "fim_s": 81.292
+        },
+        {
+          "texto": "119",
+          "inicio_s": 81.292,
+          "fim_s": 82.213
+        },
+        {
+          "texto": "quilômetros",
+          "inicio_s": 82.213,
+          "fim_s": 82.714
+        },
+        {
+          "texto": "por",
+          "inicio_s": 82.774,
+          "fim_s": 82.874
+        },
+        {
+          "texto": "hora",
+          "inicio_s": 82.914,
+          "fim_s": 83.134
+        },
+        {
+          "texto": "até",
+          "inicio_s": 83.635,
+          "fim_s": 83.815
+        },
+        {
+          "texto": "a",
+          "inicio_s": 83.875,
+          "fim_s": 83.895
+        },
+        {
+          "texto": "categoria",
+          "inicio_s": 83.935,
+          "fim_s": 84.356
+        },
+        {
+          "texto": "5",
+          "inicio_s": 84.356,
+          "fim_s": 85.277
+        },
+        {
+          "texto": "passando",
+          "inicio_s": 85.277,
+          "fim_s": 85.738
+        },
+        {
+          "texto": "dos",
+          "inicio_s": 85.798,
+          "fim_s": 85.978
+        },
+        {
+          "texto": "252",
+          "inicio_s": 85.978,
+          "fim_s": 87.34
+        }
+      ]
+    },
+    {
+      "texto": "Na bacia do Atlântico, a temporada oficial vai de junho a novembro, e produz em média catorze tempestades batizadas por ano — só uma parte delas chega a virar furacão de verdade.",
+      "inicio_s": 87.69,
+      "fim_s": 98.03,
+      "palavras": [
+        {
+          "texto": "Na",
+          "inicio_s": 87.71,
+          "fim_s": 87.77
+        },
+        {
+          "texto": "bacia",
+          "inicio_s": 87.81,
+          "fim_s": 88.171
+        },
+        {
+          "texto": "do",
+          "inicio_s": 88.191,
+          "fim_s": 88.251
+        },
+        {
+          "texto": "Atlântico",
+          "inicio_s": 88.291,
+          "fim_s": 88.792
+        },
+        {
+          "texto": "a",
+          "inicio_s": 89.173,
+          "fim_s": 89.193
+        },
+        {
+          "texto": "temporada",
+          "inicio_s": 89.273,
+          "fim_s": 89.714
+        },
+        {
+          "texto": "oficial",
+          "inicio_s": 89.754,
+          "fim_s": 90.195
+        },
+        {
+          "texto": "vai",
+          "inicio_s": 90.235,
+          "fim_s": 90.335
+        },
+        {
+          "texto": "de",
+          "inicio_s": 90.375,
+          "fim_s": 90.435
+        },
+        {
+          "texto": "junho",
+          "inicio_s": 90.515,
+          "fim_s": 90.756
+        },
+        {
+          "texto": "a",
+          "inicio_s": 90.796,
+          "fim_s": 90.816
+        },
+        {
+          "texto": "novembro",
+          "inicio_s": 90.836,
+          "fim_s": 91.257
+        },
+        {
+          "texto": "e",
+          "inicio_s": 91.758,
+          "fim_s": 91.778
+        },
+        {
+          "texto": "produz",
+          "inicio_s": 91.838,
+          "fim_s": 92.199
+        },
+        {
+          "texto": "em",
+          "inicio_s": 92.239,
+          "fim_s": 92.299
+        },
+        {
+          "texto": "média",
+          "inicio_s": 92.359,
+          "fim_s": 92.62
+        },
+        {
+          "texto": "catorze",
+          "inicio_s": 92.66,
+          "fim_s": 93.121
+        },
+        {
+          "texto": "tempestades",
+          "inicio_s": 93.161,
+          "fim_s": 93.742
+        },
+        {
+          "texto": "batizadas",
+          "inicio_s": 93.782,
+          "fim_s": 94.343
+        },
+        {
+          "texto": "por",
+          "inicio_s": 94.383,
+          "fim_s": 94.523
+        },
+        {
+          "texto": "ano",
+          "inicio_s": 94.583,
+          "fim_s": 94.744
+        },
+        {
+          "texto": "só",
+          "inicio_s": 95.385,
+          "fim_s": 95.465
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 95.565,
+          "fim_s": 95.665
+        },
+        {
+          "texto": "parte",
+          "inicio_s": 95.726,
+          "fim_s": 95.966
+        },
+        {
+          "texto": "delas",
+          "inicio_s": 96.006,
+          "fim_s": 96.247
+        },
+        {
+          "texto": "chega",
+          "inicio_s": 96.307,
+          "fim_s": 96.487
+        },
+        {
+          "texto": "a",
+          "inicio_s": 96.527,
+          "fim_s": 96.567
+        },
+        {
+          "texto": "virar",
+          "inicio_s": 96.587,
+          "fim_s": 96.828
+        },
+        {
+          "texto": "furacão",
+          "inicio_s": 96.888,
+          "fim_s": 97.329
+        },
+        {
+          "texto": "de",
+          "inicio_s": 97.369,
+          "fim_s": 97.429
+        },
+        {
+          "texto": "verdade",
+          "inicio_s": 97.469,
+          "fim_s": 97.95
+        }
+      ]
+    },
+    {
+      "texto": "Basta oceano quente, umidade em abundância e ausência de vento cortando o topo — e em poucos dias a natureza monta sozinha uma das máquinas mais poderosas do planeta.",
+      "inicio_s": 98.38,
+      "fim_s": 109.84,
+      "palavras": [
+        {
+          "texto": "Basta",
+          "inicio_s": 98.44,
+          "fim_s": 98.801
+        },
+        {
+          "texto": "oceano",
+          "inicio_s": 98.901,
+          "fim_s": 99.362
+        },
+        {
+          "texto": "quente",
+          "inicio_s": 99.442,
+          "fim_s": 99.802
+        },
+        {
+          "texto": "umidade",
+          "inicio_s": 100.203,
+          "fim_s": 100.724
+        },
+        {
+          "texto": "em",
+          "inicio_s": 100.784,
+          "fim_s": 100.864
+        },
+        {
+          "texto": "abundância",
+          "inicio_s": 100.944,
+          "fim_s": 101.606
+        },
+        {
+          "texto": "e",
+          "inicio_s": 101.886,
+          "fim_s": 101.906
+        },
+        {
+          "texto": "ausência",
+          "inicio_s": 101.986,
+          "fim_s": 102.387
+        },
+        {
+          "texto": "de",
+          "inicio_s": 102.427,
+          "fim_s": 102.487
+        },
+        {
+          "texto": "vento",
+          "inicio_s": 102.547,
+          "fim_s": 102.848
+        },
+        {
+          "texto": "cortando",
+          "inicio_s": 102.908,
+          "fim_s": 103.289
+        },
+        {
+          "texto": "o",
+          "inicio_s": 103.349,
+          "fim_s": 103.369
+        },
+        {
+          "texto": "topo",
+          "inicio_s": 103.409,
+          "fim_s": 103.709
+        },
+        {
+          "texto": "e",
+          "inicio_s": 104.11,
+          "fim_s": 104.13
+        },
+        {
+          "texto": "em",
+          "inicio_s": 104.19,
+          "fim_s": 104.27
+        },
+        {
+          "texto": "poucos",
+          "inicio_s": 104.31,
+          "fim_s": 104.651
+        },
+        {
+          "texto": "dias",
+          "inicio_s": 104.711,
+          "fim_s": 105.032
+        },
+        {
+          "texto": "a",
+          "inicio_s": 105.312,
+          "fim_s": 105.332
+        },
+        {
+          "texto": "natureza",
+          "inicio_s": 105.392,
+          "fim_s": 105.873
+        },
+        {
+          "texto": "monta",
+          "inicio_s": 105.933,
+          "fim_s": 106.214
+        },
+        {
+          "texto": "sozinha",
+          "inicio_s": 106.314,
+          "fim_s": 106.815
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 107.296,
+          "fim_s": 107.436
+        },
+        {
+          "texto": "das",
+          "inicio_s": 107.496,
+          "fim_s": 107.636
+        },
+        {
+          "texto": "máquinas",
+          "inicio_s": 107.716,
+          "fim_s": 108.177
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 108.337,
+          "fim_s": 108.538
+        },
+        {
+          "texto": "poderosas",
+          "inicio_s": 108.598,
+          "fim_s": 109.179
+        },
+        {
+          "texto": "do",
+          "inicio_s": 109.219,
+          "fim_s": 109.299
+        },
+        {
+          "texto": "planeta",
+          "inicio_s": 109.339,
+          "fim_s": 109.76
+        }
+      ]
+    }
+  ]
+}
