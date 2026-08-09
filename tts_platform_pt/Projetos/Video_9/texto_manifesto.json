@@ -1,0 +1,1643 @@
+{
+  "gerado_em": "2026-08-09T10:40:58",
+  "roteiro": "Projetos\\Video_9\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 109.8,
+  "texto_usado": "Toda vez que você carrega o celular, está repetindo o crime de um titã grego. Prometeu roubou o fogo do Olimpo e entregou pra humanidade, um poder que os deuses queriam guardar só pra si. Em algumas versões do mito, foi o próprio Prometeu quem moldou os primeiros humanos com barro, e o fogo era o presente final de um criador que não suportava ver a própria criação viver no escuro. Antes disso, os humanos não tinham calor, ferramentas, nem nada que os diferenciasse dos outros animais. O fogo virou cozinha, virou metalurgia, virou civilização inteira nascendo de uma chama roubada.\n\nZeus não perdoou. Mandou acorrentar Prometeu num penhasco no Cáucaso e soltou uma águia pra devorar seu fígado, todo dia, pra sempre. O órgão se regenerava durante a noite, só pra ser comido de novo na manhã seguinte. Não era só castigo, era um aviso: ninguém rouba o conhecimento dos deuses sem pagar um preço eterno por isso.\n\nMilênios depois, o fogo mudou de forma, mas a história se repete. A energia nuclear ilumina cidades inteiras e já apagou duas em segundos. A internet conectou o planeta inteiro e também virou a maior máquina de desinformação já criada. A inteligência artificial promete curar doenças e, ao mesmo tempo, ameaça substituir milhões de empregos. Cada avanço decisivo nasce do mesmo impulso: pegar um poder guardado a sete chaves e colocar nas mãos de todo mundo. E cada um deles também tem seus próprios Prometeus, cientistas que alertam sobre os riscos e são ignorados, engenheiros que expõem falhas e perdem o emprego, pesquisadores que pagam caro por revelar a verdade sobre aquilo que ajudaram a criar.\n\nTalvez a lição do mito não seja sobre fogo nenhum. Talvez seja sobre o preço eterno de trazer luz pra um lugar que preferia continuar no escuro.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Toda vez que você carrega o celular, está repetindo o crime de um titã grego.",
+      "inicio_s": 0.15,
+      "fim_s": 4.83,
+      "palavras": [
+        {
+          "texto": "Toda",
+          "inicio_s": 0.15,
+          "fim_s": 0.451
+        },
+        {
+          "texto": "vez",
+          "inicio_s": 0.512,
+          "fim_s": 0.773
+        },
+        {
+          "texto": "que",
+          "inicio_s": 0.813,
+          "fim_s": 0.893
+        },
+        {
+          "texto": "você",
+          "inicio_s": 0.933,
+          "fim_s": 1.154
+        },
+        {
+          "texto": "carrega",
+          "inicio_s": 1.215,
+          "fim_s": 1.616
+        },
+        {
+          "texto": "o",
+          "inicio_s": 1.656,
+          "fim_s": 1.677
+        },
+        {
+          "texto": "celular",
+          "inicio_s": 1.717,
+          "fim_s": 2.199
+        },
+        {
+          "texto": "está",
+          "inicio_s": 2.54,
+          "fim_s": 2.741
+        },
+        {
+          "texto": "repetindo",
+          "inicio_s": 2.801,
+          "fim_s": 3.324
+        },
+        {
+          "texto": "o",
+          "inicio_s": 3.364,
+          "fim_s": 3.384
+        },
+        {
+          "texto": "crime",
+          "inicio_s": 3.424,
+          "fim_s": 3.725
+        },
+        {
+          "texto": "de",
+          "inicio_s": 3.786,
+          "fim_s": 3.846
+        },
+        {
+          "texto": "um",
+          "inicio_s": 3.886,
+          "fim_s": 3.946
+        },
+        {
+          "texto": "titã",
+          "inicio_s": 3.986,
+          "fim_s": 4.227
+        },
+        {
+          "texto": "grego",
+          "inicio_s": 4.368,
+          "fim_s": 4.709
+        }
+      ]
+    },
+    {
+      "texto": "Prometeu roubou o fogo do Olimpo e entregou pra humanidade, um poder que os deuses queriam guardar só pra si.",
+      "inicio_s": 5.18,
+      "fim_s": 11.48,
+      "palavras": [
+        {
+          "texto": "Prometeu",
+          "inicio_s": 5.18,
+          "fim_s": 5.541
+        },
+        {
+          "texto": "roubou",
+          "inicio_s": 5.601,
+          "fim_s": 5.902
+        },
+        {
+          "texto": "o",
+          "inicio_s": 5.942,
+          "fim_s": 5.962
+        },
+        {
+          "texto": "fogo",
+          "inicio_s": 6.043,
+          "fim_s": 6.284
+        },
+        {
+          "texto": "do",
+          "inicio_s": 6.324,
+          "fim_s": 6.384
+        },
+        {
+          "texto": "Olimpo",
+          "inicio_s": 6.444,
+          "fim_s": 6.805
+        },
+        {
+          "texto": "e",
+          "inicio_s": 6.926,
+          "fim_s": 6.946
+        },
+        {
+          "texto": "entregou",
+          "inicio_s": 7.026,
+          "fim_s": 7.387
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 7.407,
+          "fim_s": 7.507
+        },
+        {
+          "texto": "humanidade",
+          "inicio_s": 7.527,
+          "fim_s": 8.049
+        },
+        {
+          "texto": "um",
+          "inicio_s": 8.491,
+          "fim_s": 8.551
+        },
+        {
+          "texto": "poder",
+          "inicio_s": 8.591,
+          "fim_s": 8.952
+        },
+        {
+          "texto": "que",
+          "inicio_s": 9.373,
+          "fim_s": 9.454
+        },
+        {
+          "texto": "os",
+          "inicio_s": 9.494,
+          "fim_s": 9.574
+        },
+        {
+          "texto": "deuses",
+          "inicio_s": 9.634,
+          "fim_s": 9.975
+        },
+        {
+          "texto": "queriam",
+          "inicio_s": 9.995,
+          "fim_s": 10.256
+        },
+        {
+          "texto": "guardar",
+          "inicio_s": 10.296,
+          "fim_s": 10.657
+        },
+        {
+          "texto": "só",
+          "inicio_s": 10.838,
+          "fim_s": 10.938
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 11.039,
+          "fim_s": 11.139
+        },
+        {
+          "texto": "si",
+          "inicio_s": 11.259,
+          "fim_s": 11.36
+        }
+      ]
+    },
+    {
+      "texto": "Em algumas versões do mito, foi o próprio Prometeu quem moldou os primeiros humanos com barro, e o fogo era o presente final de um criador que não suportava ver a própria criação viver no escuro.",
+      "inicio_s": 11.83,
+      "fim_s": 22.69,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 11.85,
+          "fim_s": 11.91
+        },
+        {
+          "texto": "algumas",
+          "inicio_s": 11.95,
+          "fim_s": 12.251
+        },
+        {
+          "texto": "versões",
+          "inicio_s": 12.271,
+          "fim_s": 12.631
+        },
+        {
+          "texto": "do",
+          "inicio_s": 12.652,
+          "fim_s": 12.712
+        },
+        {
+          "texto": "mito",
+          "inicio_s": 12.772,
+          "fim_s": 13.012
+        },
+        {
+          "texto": "foi",
+          "inicio_s": 13.373,
+          "fim_s": 13.513
+        },
+        {
+          "texto": "o",
+          "inicio_s": 13.553,
+          "fim_s": 13.573
+        },
+        {
+          "texto": "próprio",
+          "inicio_s": 13.633,
+          "fim_s": 13.934
+        },
+        {
+          "texto": "Prometeu",
+          "inicio_s": 13.954,
+          "fim_s": 14.375
+        },
+        {
+          "texto": "quem",
+          "inicio_s": 14.415,
+          "fim_s": 14.555
+        },
+        {
+          "texto": "moldou",
+          "inicio_s": 14.575,
+          "fim_s": 14.936
+        },
+        {
+          "texto": "os",
+          "inicio_s": 15.156,
+          "fim_s": 15.236
+        },
+        {
+          "texto": "primeiros",
+          "inicio_s": 15.256,
+          "fim_s": 15.657
+        },
+        {
+          "texto": "humanos",
+          "inicio_s": 15.677,
+          "fim_s": 16.058
+        },
+        {
+          "texto": "com",
+          "inicio_s": 16.098,
+          "fim_s": 16.218
+        },
+        {
+          "texto": "barro",
+          "inicio_s": 16.258,
+          "fim_s": 16.579
+        },
+        {
+          "texto": "e",
+          "inicio_s": 17.34,
+          "fim_s": 17.36
+        },
+        {
+          "texto": "o",
+          "inicio_s": 17.42,
+          "fim_s": 17.44
+        },
+        {
+          "texto": "fogo",
+          "inicio_s": 17.5,
+          "fim_s": 17.781
+        },
+        {
+          "texto": "era",
+          "inicio_s": 18.182,
+          "fim_s": 18.282
+        },
+        {
+          "texto": "o",
+          "inicio_s": 18.322,
+          "fim_s": 18.342
+        },
+        {
+          "texto": "presente",
+          "inicio_s": 18.362,
+          "fim_s": 18.783
+        },
+        {
+          "texto": "final",
+          "inicio_s": 18.823,
+          "fim_s": 19.123
+        },
+        {
+          "texto": "de",
+          "inicio_s": 19.143,
+          "fim_s": 19.224
+        },
+        {
+          "texto": "um",
+          "inicio_s": 19.244,
+          "fim_s": 19.284
+        },
+        {
+          "texto": "criador",
+          "inicio_s": 19.304,
+          "fim_s": 19.684
+        },
+        {
+          "texto": "que",
+          "inicio_s": 19.745,
+          "fim_s": 19.825
+        },
+        {
+          "texto": "não",
+          "inicio_s": 19.845,
+          "fim_s": 19.945
+        },
+        {
+          "texto": "suportava",
+          "inicio_s": 19.965,
+          "fim_s": 20.446
+        },
+        {
+          "texto": "ver",
+          "inicio_s": 20.506,
+          "fim_s": 20.646
+        },
+        {
+          "texto": "a",
+          "inicio_s": 20.686,
+          "fim_s": 20.706
+        },
+        {
+          "texto": "própria",
+          "inicio_s": 20.766,
+          "fim_s": 21.067
+        },
+        {
+          "texto": "criação",
+          "inicio_s": 21.087,
+          "fim_s": 21.488
+        },
+        {
+          "texto": "viver",
+          "inicio_s": 21.868,
+          "fim_s": 22.169
+        },
+        {
+          "texto": "no",
+          "inicio_s": 22.209,
+          "fim_s": 22.249
+        },
+        {
+          "texto": "escuro",
+          "inicio_s": 22.269,
+          "fim_s": 22.63
+        }
+      ]
+    },
+    {
+      "texto": "Antes disso, os humanos não tinham calor, ferramentas, nem nada que os diferenciasse dos outros animais.",
+      "inicio_s": 23.04,
+      "fim_s": 29.56,
+      "palavras": [
+        {
+          "texto": "Antes",
+          "inicio_s": 23.08,
+          "fim_s": 23.301
+        },
+        {
+          "texto": "disso",
+          "inicio_s": 23.341,
+          "fim_s": 23.622
+        },
+        {
+          "texto": "os",
+          "inicio_s": 24.063,
+          "fim_s": 24.143
+        },
+        {
+          "texto": "humanos",
+          "inicio_s": 24.163,
+          "fim_s": 24.504
+        },
+        {
+          "texto": "não",
+          "inicio_s": 24.545,
+          "fim_s": 24.665
+        },
+        {
+          "texto": "tinham",
+          "inicio_s": 24.725,
+          "fim_s": 24.966
+        },
+        {
+          "texto": "calor",
+          "inicio_s": 24.986,
+          "fim_s": 25.287
+        },
+        {
+          "texto": "ferramentas",
+          "inicio_s": 25.849,
+          "fim_s": 26.491
+        },
+        {
+          "texto": "nem",
+          "inicio_s": 27.032,
+          "fim_s": 27.173
+        },
+        {
+          "texto": "nada",
+          "inicio_s": 27.253,
+          "fim_s": 27.514
+        },
+        {
+          "texto": "que",
+          "inicio_s": 27.554,
+          "fim_s": 27.634
+        },
+        {
+          "texto": "os",
+          "inicio_s": 27.674,
+          "fim_s": 27.734
+        },
+        {
+          "texto": "diferenciasse",
+          "inicio_s": 27.754,
+          "fim_s": 28.457
+        },
+        {
+          "texto": "dos",
+          "inicio_s": 28.497,
+          "fim_s": 28.657
+        },
+        {
+          "texto": "outros",
+          "inicio_s": 28.737,
+          "fim_s": 28.978
+        },
+        {
+          "texto": "animais",
+          "inicio_s": 29.018,
+          "fim_s": 29.42
+        }
+      ]
+    },
+    {
+      "texto": "O fogo virou cozinha, virou metalurgia, virou civilização inteira nascendo de uma chama roubada.",
+      "inicio_s": 29.91,
+      "fim_s": 36.85,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 29.95,
+          "fim_s": 29.97
+        },
+        {
+          "texto": "fogo",
+          "inicio_s": 30.05,
+          "fim_s": 30.351
+        },
+        {
+          "texto": "virou",
+          "inicio_s": 30.411,
+          "fim_s": 30.672
+        },
+        {
+          "texto": "cozinha",
+          "inicio_s": 30.712,
+          "fim_s": 31.154
+        },
+        {
+          "texto": "virou",
+          "inicio_s": 31.936,
+          "fim_s": 32.217
+        },
+        {
+          "texto": "metalurgia",
+          "inicio_s": 32.257,
+          "fim_s": 32.879
+        },
+        {
+          "texto": "virou",
+          "inicio_s": 33.861,
+          "fim_s": 34.162
+        },
+        {
+          "texto": "civilização",
+          "inicio_s": 34.242,
+          "fim_s": 34.884
+        },
+        {
+          "texto": "inteira",
+          "inicio_s": 34.924,
+          "fim_s": 35.285
+        },
+        {
+          "texto": "nascendo",
+          "inicio_s": 35.326,
+          "fim_s": 35.707
+        },
+        {
+          "texto": "de",
+          "inicio_s": 35.747,
+          "fim_s": 35.807
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 35.827,
+          "fim_s": 35.927
+        },
+        {
+          "texto": "chama",
+          "inicio_s": 36.048,
+          "fim_s": 36.288
+        },
+        {
+          "texto": "roubada",
+          "inicio_s": 36.349,
+          "fim_s": 36.77
+        }
+      ]
+    },
+    {
+      "texto": "Zeus não perdoou.",
+      "inicio_s": 37.2,
+      "fim_s": 38.22,
+      "palavras": [
+        {
+          "texto": "Zeus",
+          "inicio_s": 37.282,
+          "fim_s": 37.506
+        },
+        {
+          "texto": "não",
+          "inicio_s": 37.526,
+          "fim_s": 37.649
+        },
+        {
+          "texto": "perdoou",
+          "inicio_s": 37.71,
+          "fim_s": 38.077
+        }
+      ]
+    },
+    {
+      "texto": "Mandou acorrentar Prometeu num penhasco no Cáucaso e soltou uma águia pra devorar seu fígado, todo dia, pra sempre.",
+      "inicio_s": 38.57,
+      "fim_s": 45.57,
+      "palavras": [
+        {
+          "texto": "Mandou",
+          "inicio_s": 38.59,
+          "fim_s": 38.871
+        },
+        {
+          "texto": "acorrentar",
+          "inicio_s": 38.891,
+          "fim_s": 39.392
+        },
+        {
+          "texto": "Prometeu",
+          "inicio_s": 39.934,
+          "fim_s": 40.335
+        },
+        {
+          "texto": "num",
+          "inicio_s": 40.355,
+          "fim_s": 40.455
+        },
+        {
+          "texto": "penhasco",
+          "inicio_s": 40.496,
+          "fim_s": 40.937
+        },
+        {
+          "texto": "no",
+          "inicio_s": 40.957,
+          "fim_s": 41.017
+        },
+        {
+          "texto": "Cáucaso",
+          "inicio_s": 41.057,
+          "fim_s": 41.458
+        },
+        {
+          "texto": "e",
+          "inicio_s": 41.859,
+          "fim_s": 41.879
+        },
+        {
+          "texto": "soltou",
+          "inicio_s": 41.94,
+          "fim_s": 42.261
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 42.281,
+          "fim_s": 42.401
+        },
+        {
+          "texto": "águia",
+          "inicio_s": 42.541,
+          "fim_s": 42.742
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 42.782,
+          "fim_s": 42.882
+        },
+        {
+          "texto": "devorar",
+          "inicio_s": 42.922,
+          "fim_s": 43.283
+        },
+        {
+          "texto": "seu",
+          "inicio_s": 43.324,
+          "fim_s": 43.444
+        },
+        {
+          "texto": "fígado",
+          "inicio_s": 43.524,
+          "fim_s": 43.865
+        },
+        {
+          "texto": "todo",
+          "inicio_s": 44.186,
+          "fim_s": 44.367
+        },
+        {
+          "texto": "dia",
+          "inicio_s": 44.467,
+          "fim_s": 44.708
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 44.968,
+          "fim_s": 45.109
+        },
+        {
+          "texto": "sempre",
+          "inicio_s": 45.189,
+          "fim_s": 45.49
+        }
+      ]
+    },
+    {
+      "texto": "O órgão se regenerava durante a noite, só pra ser comido de novo na manhã seguinte.",
+      "inicio_s": 45.92,
+      "fim_s": 50.9,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 45.96,
+          "fim_s": 45.98
+        },
+        {
+          "texto": "órgão",
+          "inicio_s": 46.121,
+          "fim_s": 46.402
+        },
+        {
+          "texto": "se",
+          "inicio_s": 46.904,
+          "fim_s": 46.984
+        },
+        {
+          "texto": "regenerava",
+          "inicio_s": 47.024,
+          "fim_s": 47.547
+        },
+        {
+          "texto": "durante",
+          "inicio_s": 47.607,
+          "fim_s": 47.848
+        },
+        {
+          "texto": "a",
+          "inicio_s": 47.888,
+          "fim_s": 47.908
+        },
+        {
+          "texto": "noite",
+          "inicio_s": 47.928,
+          "fim_s": 48.229
+        },
+        {
+          "texto": "só",
+          "inicio_s": 49.033,
+          "fim_s": 49.113
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 49.153,
+          "fim_s": 49.273
+        },
+        {
+          "texto": "ser",
+          "inicio_s": 49.294,
+          "fim_s": 49.414
+        },
+        {
+          "texto": "comido",
+          "inicio_s": 49.434,
+          "fim_s": 49.715
+        },
+        {
+          "texto": "de",
+          "inicio_s": 49.755,
+          "fim_s": 49.816
+        },
+        {
+          "texto": "novo",
+          "inicio_s": 49.876,
+          "fim_s": 50.077
+        },
+        {
+          "texto": "na",
+          "inicio_s": 50.097,
+          "fim_s": 50.157
+        },
+        {
+          "texto": "manhã",
+          "inicio_s": 50.197,
+          "fim_s": 50.358
+        },
+        {
+          "texto": "seguinte",
+          "inicio_s": 50.418,
+          "fim_s": 50.8
+        }
+      ]
+    },
+    {
+      "texto": "Não era só castigo, era um aviso: ninguém rouba o conhecimento dos deuses sem pagar um preço eterno por isso.",
+      "inicio_s": 51.25,
+      "fim_s": 57.69,
+      "palavras": [
+        {
+          "texto": "Não",
+          "inicio_s": 51.27,
+          "fim_s": 51.37
+        },
+        {
+          "texto": "era",
+          "inicio_s": 51.39,
+          "fim_s": 51.491
+        },
+        {
+          "texto": "só",
+          "inicio_s": 51.551,
+          "fim_s": 51.611
+        },
+        {
+          "texto": "castigo",
+          "inicio_s": 51.671,
+          "fim_s": 52.113
+        },
+        {
+          "texto": "era",
+          "inicio_s": 52.614,
+          "fim_s": 52.715
+        },
+        {
+          "texto": "um",
+          "inicio_s": 52.735,
+          "fim_s": 52.795
+        },
+        {
+          "texto": "aviso",
+          "inicio_s": 52.815,
+          "fim_s": 53.176
+        },
+        {
+          "texto": "ninguém",
+          "inicio_s": 53.637,
+          "fim_s": 53.999
+        },
+        {
+          "texto": "rouba",
+          "inicio_s": 54.099,
+          "fim_s": 54.36
+        },
+        {
+          "texto": "o",
+          "inicio_s": 54.42,
+          "fim_s": 54.44
+        },
+        {
+          "texto": "conhecimento",
+          "inicio_s": 54.48,
+          "fim_s": 55.002
+        },
+        {
+          "texto": "dos",
+          "inicio_s": 55.042,
+          "fim_s": 55.162
+        },
+        {
+          "texto": "deuses",
+          "inicio_s": 55.222,
+          "fim_s": 55.563
+        },
+        {
+          "texto": "sem",
+          "inicio_s": 55.925,
+          "fim_s": 56.065
+        },
+        {
+          "texto": "pagar",
+          "inicio_s": 56.125,
+          "fim_s": 56.406
+        },
+        {
+          "texto": "um",
+          "inicio_s": 56.426,
+          "fim_s": 56.486
+        },
+        {
+          "texto": "preço",
+          "inicio_s": 56.526,
+          "fim_s": 56.787
+        },
+        {
+          "texto": "eterno",
+          "inicio_s": 56.827,
+          "fim_s": 57.209
+        },
+        {
+          "texto": "por",
+          "inicio_s": 57.249,
+          "fim_s": 57.369
+        },
+        {
+          "texto": "isso",
+          "inicio_s": 57.429,
+          "fim_s": 57.61
+        }
+      ]
+    },
+    {
+      "texto": "Milênios depois, o fogo mudou de forma, mas a história se repete.",
+      "inicio_s": 58.04,
+      "fim_s": 62.16,
+      "palavras": [
+        {
+          "texto": "Milênios",
+          "inicio_s": 58.06,
+          "fim_s": 58.502
+        },
+        {
+          "texto": "depois",
+          "inicio_s": 58.522,
+          "fim_s": 58.884
+        },
+        {
+          "texto": "o",
+          "inicio_s": 59.165,
+          "fim_s": 59.186
+        },
+        {
+          "texto": "fogo",
+          "inicio_s": 59.266,
+          "fim_s": 59.507
+        },
+        {
+          "texto": "mudou",
+          "inicio_s": 59.547,
+          "fim_s": 59.809
+        },
+        {
+          "texto": "de",
+          "inicio_s": 59.849,
+          "fim_s": 59.929
+        },
+        {
+          "texto": "forma",
+          "inicio_s": 59.969,
+          "fim_s": 60.291
+        },
+        {
+          "texto": "mas",
+          "inicio_s": 60.934,
+          "fim_s": 61.095
+        },
+        {
+          "texto": "a",
+          "inicio_s": 61.115,
+          "fim_s": 61.135
+        },
+        {
+          "texto": "história",
+          "inicio_s": 61.155,
+          "fim_s": 61.557
+        },
+        {
+          "texto": "se",
+          "inicio_s": 61.577,
+          "fim_s": 61.637
+        },
+        {
+          "texto": "repete",
+          "inicio_s": 61.698,
+          "fim_s": 62.08
+        }
+      ]
+    },
+    {
+      "texto": "A energia nuclear ilumina cidades inteiras e já apagou duas em segundos.",
+      "inicio_s": 62.51,
+      "fim_s": 67.15,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 62.55,
+          "fim_s": 62.57
+        },
+        {
+          "texto": "energia",
+          "inicio_s": 62.631,
+          "fim_s": 63.012
+        },
+        {
+          "texto": "nuclear",
+          "inicio_s": 63.032,
+          "fim_s": 63.454
+        },
+        {
+          "texto": "ilumina",
+          "inicio_s": 63.816,
+          "fim_s": 64.177
+        },
+        {
+          "texto": "cidades",
+          "inicio_s": 64.237,
+          "fim_s": 64.639
+        },
+        {
+          "texto": "inteiras",
+          "inicio_s": 64.679,
+          "fim_s": 65.121
+        },
+        {
+          "texto": "e",
+          "inicio_s": 65.543,
+          "fim_s": 65.563
+        },
+        {
+          "texto": "já",
+          "inicio_s": 65.623,
+          "fim_s": 65.724
+        },
+        {
+          "texto": "apagou",
+          "inicio_s": 65.784,
+          "fim_s": 66.085
+        },
+        {
+          "texto": "duas",
+          "inicio_s": 66.186,
+          "fim_s": 66.427
+        },
+        {
+          "texto": "em",
+          "inicio_s": 66.467,
+          "fim_s": 66.527
+        },
+        {
+          "texto": "segundos",
+          "inicio_s": 66.567,
+          "fim_s": 67.029
+        }
+      ]
+    },
+    {
+      "texto": "A internet conectou o planeta inteiro e também virou a maior máquina de desinformação já criada.",
+      "inicio_s": 67.5,
+      "fim_s": 72.82,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 67.52,
+          "fim_s": 67.54
+        },
+        {
+          "texto": "internet",
+          "inicio_s": 67.6,
+          "fim_s": 68.022
+        },
+        {
+          "texto": "conectou",
+          "inicio_s": 68.102,
+          "fim_s": 68.544
+        },
+        {
+          "texto": "o",
+          "inicio_s": 68.584,
+          "fim_s": 68.604
+        },
+        {
+          "texto": "planeta",
+          "inicio_s": 68.644,
+          "fim_s": 68.966
+        },
+        {
+          "texto": "inteiro",
+          "inicio_s": 69.006,
+          "fim_s": 69.387
+        },
+        {
+          "texto": "e",
+          "inicio_s": 69.909,
+          "fim_s": 69.929
+        },
+        {
+          "texto": "também",
+          "inicio_s": 69.989,
+          "fim_s": 70.21
+        },
+        {
+          "texto": "virou",
+          "inicio_s": 70.25,
+          "fim_s": 70.471
+        },
+        {
+          "texto": "a",
+          "inicio_s": 70.511,
+          "fim_s": 70.531
+        },
+        {
+          "texto": "maior",
+          "inicio_s": 70.572,
+          "fim_s": 70.893
+        },
+        {
+          "texto": "máquina",
+          "inicio_s": 70.953,
+          "fim_s": 71.294
+        },
+        {
+          "texto": "de",
+          "inicio_s": 71.314,
+          "fim_s": 71.395
+        },
+        {
+          "texto": "desinformação",
+          "inicio_s": 71.455,
+          "fim_s": 72.178
+        },
+        {
+          "texto": "já",
+          "inicio_s": 72.238,
+          "fim_s": 72.318
+        },
+        {
+          "texto": "criada",
+          "inicio_s": 72.378,
+          "fim_s": 72.72
+        }
+      ]
+    },
+    {
+      "texto": "A inteligência artificial promete curar doenças e, ao mesmo tempo, ameaça substituir milhões de empregos.",
+      "inicio_s": 73.17,
+      "fim_s": 79.01,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 73.19,
+          "fim_s": 73.21
+        },
+        {
+          "texto": "inteligência",
+          "inicio_s": 73.27,
+          "fim_s": 73.752
+        },
+        {
+          "texto": "artificial",
+          "inicio_s": 73.792,
+          "fim_s": 74.274
+        },
+        {
+          "texto": "promete",
+          "inicio_s": 74.515,
+          "fim_s": 74.836
+        },
+        {
+          "texto": "curar",
+          "inicio_s": 74.896,
+          "fim_s": 75.117
+        },
+        {
+          "texto": "doenças",
+          "inicio_s": 75.157,
+          "fim_s": 75.618
+        },
+        {
+          "texto": "e",
+          "inicio_s": 75.98,
+          "fim_s": 76.0
+        },
+        {
+          "texto": "ao",
+          "inicio_s": 76.06,
+          "fim_s": 76.12
+        },
+        {
+          "texto": "mesmo",
+          "inicio_s": 76.14,
+          "fim_s": 76.341
+        },
+        {
+          "texto": "tempo",
+          "inicio_s": 76.401,
+          "fim_s": 76.642
+        },
+        {
+          "texto": "ameaça",
+          "inicio_s": 77.164,
+          "fim_s": 77.545
+        },
+        {
+          "texto": "substituir",
+          "inicio_s": 77.605,
+          "fim_s": 78.087
+        },
+        {
+          "texto": "milhões",
+          "inicio_s": 78.127,
+          "fim_s": 78.428
+        },
+        {
+          "texto": "de",
+          "inicio_s": 78.448,
+          "fim_s": 78.488
+        },
+        {
+          "texto": "empregos",
+          "inicio_s": 78.508,
+          "fim_s": 78.89
+        }
+      ]
+    },
+    {
+      "texto": "Cada avanço decisivo nasce do mesmo impulso: pegar um poder guardado a sete chaves e colocar nas mãos de todo mundo.",
+      "inicio_s": 79.36,
+      "fim_s": 85.76,
+      "palavras": [
+        {
+          "texto": "Cada",
+          "inicio_s": 79.36,
+          "fim_s": 79.581
+        },
+        {
+          "texto": "avanço",
+          "inicio_s": 79.641,
+          "fim_s": 79.982
+        },
+        {
+          "texto": "decisivo",
+          "inicio_s": 80.022,
+          "fim_s": 80.524
+        },
+        {
+          "texto": "nasce",
+          "inicio_s": 80.604,
+          "fim_s": 80.825
+        },
+        {
+          "texto": "do",
+          "inicio_s": 80.845,
+          "fim_s": 80.905
+        },
+        {
+          "texto": "mesmo",
+          "inicio_s": 80.965,
+          "fim_s": 81.146
+        },
+        {
+          "texto": "impulso",
+          "inicio_s": 81.186,
+          "fim_s": 81.587
+        },
+        {
+          "texto": "pegar",
+          "inicio_s": 81.888,
+          "fim_s": 82.189
+        },
+        {
+          "texto": "um",
+          "inicio_s": 82.209,
+          "fim_s": 82.269
+        },
+        {
+          "texto": "poder",
+          "inicio_s": 82.309,
+          "fim_s": 82.59
+        },
+        {
+          "texto": "guardado",
+          "inicio_s": 82.65,
+          "fim_s": 83.031
+        },
+        {
+          "texto": "a",
+          "inicio_s": 83.072,
+          "fim_s": 83.092
+        },
+        {
+          "texto": "sete",
+          "inicio_s": 83.172,
+          "fim_s": 83.373
+        },
+        {
+          "texto": "chaves",
+          "inicio_s": 83.453,
+          "fim_s": 83.794
+        },
+        {
+          "texto": "e",
+          "inicio_s": 83.914,
+          "fim_s": 83.934
+        },
+        {
+          "texto": "colocar",
+          "inicio_s": 83.994,
+          "fim_s": 84.356
+        },
+        {
+          "texto": "nas",
+          "inicio_s": 84.396,
+          "fim_s": 84.536
+        },
+        {
+          "texto": "mãos",
+          "inicio_s": 84.596,
+          "fim_s": 84.777
+        },
+        {
+          "texto": "de",
+          "inicio_s": 84.857,
+          "fim_s": 84.957
+        },
+        {
+          "texto": "todo",
+          "inicio_s": 85.058,
+          "fim_s": 85.299
+        },
+        {
+          "texto": "mundo",
+          "inicio_s": 85.399,
+          "fim_s": 85.68
+        }
+      ]
+    },
+    {
+      "texto": "E cada um deles também tem seus próprios Prometeus, cientistas que alertam sobre os riscos e são ignorados, engenheiros que expõem falhas e perdem o emprego, pesquisadores que pagam caro por revelar a verdade sobre aquilo que ajudaram a criar.",
+      "inicio_s": 86.11,
+      "fim_s": 101.75,
+      "palavras": [
+        {
+          "texto": "E",
+          "inicio_s": 86.13,
+          "fim_s": 86.15
+        },
+        {
+          "texto": "cada",
+          "inicio_s": 86.21,
+          "fim_s": 86.41
+        },
+        {
+          "texto": "um",
+          "inicio_s": 86.49,
+          "fim_s": 86.551
+        },
+        {
+          "texto": "deles",
+          "inicio_s": 86.611,
+          "fim_s": 86.911
+        },
+        {
+          "texto": "também",
+          "inicio_s": 86.951,
+          "fim_s": 87.271
+        },
+        {
+          "texto": "tem",
+          "inicio_s": 87.352,
+          "fim_s": 87.512
+        },
+        {
+          "texto": "seus",
+          "inicio_s": 87.612,
+          "fim_s": 87.772
+        },
+        {
+          "texto": "próprios",
+          "inicio_s": 87.832,
+          "fim_s": 88.173
+        },
+        {
+          "texto": "Prometeus",
+          "inicio_s": 88.213,
+          "fim_s": 88.733
+        },
+        {
+          "texto": "cientistas",
+          "inicio_s": 90.395,
+          "fim_s": 90.936
+        },
+        {
+          "texto": "que",
+          "inicio_s": 90.976,
+          "fim_s": 91.036
+        },
+        {
+          "texto": "alertam",
+          "inicio_s": 91.076,
+          "fim_s": 91.497
+        },
+        {
+          "texto": "sobre",
+          "inicio_s": 91.557,
+          "fim_s": 91.737
+        },
+        {
+          "texto": "os",
+          "inicio_s": 91.777,
+          "fim_s": 91.837
+        },
+        {
+          "texto": "riscos",
+          "inicio_s": 91.877,
+          "fim_s": 92.258
+        },
+        {
+          "texto": "e",
+          "inicio_s": 92.298,
+          "fim_s": 92.318
+        },
+        {
+          "texto": "são",
+          "inicio_s": 92.398,
+          "fim_s": 92.538
+        },
+        {
+          "texto": "ignorados",
+          "inicio_s": 92.738,
+          "fim_s": 93.319
+        },
+        {
+          "texto": "engenheiros",
+          "inicio_s": 94.14,
+          "fim_s": 94.601
+        },
+        {
+          "texto": "que",
+          "inicio_s": 94.621,
+          "fim_s": 94.701
+        },
+        {
+          "texto": "expõem",
+          "inicio_s": 94.741,
+          "fim_s": 95.122
+        },
+        {
+          "texto": "falhas",
+          "inicio_s": 95.222,
+          "fim_s": 95.702
+        },
+        {
+          "texto": "e",
+          "inicio_s": 95.983,
+          "fim_s": 96.003
+        },
+        {
+          "texto": "perdem",
+          "inicio_s": 96.083,
+          "fim_s": 96.383
+        },
+        {
+          "texto": "o",
+          "inicio_s": 96.423,
+          "fim_s": 96.443
+        },
+        {
+          "texto": "emprego",
+          "inicio_s": 96.523,
+          "fim_s": 96.904
+        },
+        {
+          "texto": "pesquisadores",
+          "inicio_s": 97.404,
+          "fim_s": 98.085
+        },
+        {
+          "texto": "que",
+          "inicio_s": 98.105,
+          "fim_s": 98.185
+        },
+        {
+          "texto": "pagam",
+          "inicio_s": 98.266,
+          "fim_s": 98.546
+        },
+        {
+          "texto": "caro",
+          "inicio_s": 98.666,
+          "fim_s": 98.946
+        },
+        {
+          "texto": "por",
+          "inicio_s": 98.986,
+          "fim_s": 99.107
+        },
+        {
+          "texto": "revelar",
+          "inicio_s": 99.147,
+          "fim_s": 99.527
+        },
+        {
+          "texto": "a",
+          "inicio_s": 99.547,
+          "fim_s": 99.567
+        },
+        {
+          "texto": "verdade",
+          "inicio_s": 99.607,
+          "fim_s": 100.068
+        },
+        {
+          "texto": "sobre",
+          "inicio_s": 100.128,
+          "fim_s": 100.308
+        },
+        {
+          "texto": "aquilo",
+          "inicio_s": 100.348,
+          "fim_s": 100.629
+        },
+        {
+          "texto": "que",
+          "inicio_s": 100.649,
+          "fim_s": 100.729
+        },
+        {
+          "texto": "ajudaram",
+          "inicio_s": 100.769,
+          "fim_s": 101.209
+        },
+        {
+          "texto": "a",
+          "inicio_s": 101.249,
+          "fim_s": 101.269
+        },
+        {
+          "texto": "criar",
+          "inicio_s": 101.309,
+          "fim_s": 101.61
+        }
+      ]
+    },
+    {
+      "texto": "Talvez a lição do mito não seja sobre fogo nenhum.",
+      "inicio_s": 102.1,
+      "fim_s": 104.98,
+      "palavras": [
+        {
+          "texto": "Talvez",
+          "inicio_s": 102.1,
+          "fim_s": 102.402
+        },
+        {
+          "texto": "a",
+          "inicio_s": 102.442,
+          "fim_s": 102.463
+        },
+        {
+          "texto": "lição",
+          "inicio_s": 102.503,
+          "fim_s": 102.744
+        },
+        {
+          "texto": "do",
+          "inicio_s": 102.765,
+          "fim_s": 102.825
+        },
+        {
+          "texto": "mito",
+          "inicio_s": 102.865,
+          "fim_s": 103.107
+        },
+        {
+          "texto": "não",
+          "inicio_s": 103.147,
+          "fim_s": 103.248
+        },
+        {
+          "texto": "seja",
+          "inicio_s": 103.329,
+          "fim_s": 103.57
+        },
+        {
+          "texto": "sobre",
+          "inicio_s": 103.651,
+          "fim_s": 103.872
+        },
+        {
+          "texto": "fogo",
+          "inicio_s": 103.913,
+          "fim_s": 104.154
+        },
+        {
+          "texto": "nenhum",
+          "inicio_s": 104.577,
+          "fim_s": 104.859
+        }
+      ]
+    },
+    {
+      "texto": "Talvez seja sobre o preço eterno de trazer luz pra um lugar que preferia continuar no escuro.",
+      "inicio_s": 105.33,
+      "fim_s": 109.79,
+      "palavras": [
+        {
+          "texto": "Talvez",
+          "inicio_s": 105.33,
+          "fim_s": 105.651
+        },
+        {
+          "texto": "seja",
+          "inicio_s": 105.712,
+          "fim_s": 105.953
+        },
+        {
+          "texto": "sobre",
+          "inicio_s": 106.033,
+          "fim_s": 106.214
+        },
+        {
+          "texto": "o",
+          "inicio_s": 106.234,
+          "fim_s": 106.274
+        },
+        {
+          "texto": "preço",
+          "inicio_s": 106.294,
+          "fim_s": 106.515
+        },
+        {
+          "texto": "eterno",
+          "inicio_s": 106.555,
+          "fim_s": 106.977
+        },
+        {
+          "texto": "de",
+          "inicio_s": 107.018,
+          "fim_s": 107.078
+        },
+        {
+          "texto": "trazer",
+          "inicio_s": 107.118,
+          "fim_s": 107.419
+        },
+        {
+          "texto": "luz",
+          "inicio_s": 107.5,
+          "fim_s": 107.701
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 107.741,
+          "fim_s": 107.841
+        },
+        {
+          "texto": "um",
+          "inicio_s": 107.881,
+          "fim_s": 107.942
+        },
+        {
+          "texto": "lugar",
+          "inicio_s": 107.962,
+          "fim_s": 108.263
+        },
+        {
+          "texto": "que",
+          "inicio_s": 108.303,
+          "fim_s": 108.384
+        },
+        {
+          "texto": "preferia",
+          "inicio_s": 108.404,
+          "fim_s": 108.765
+        },
+        {
+          "texto": "continuar",
+          "inicio_s": 108.806,
+          "fim_s": 109.248
+        },
+        {
+          "texto": "no",
+          "inicio_s": 109.288,
+          "fim_s": 109.348
+        },
+        {
+          "texto": "escuro",
+          "inicio_s": 109.368,
+          "fim_s": 109.71
+        }
+      ]
+    }
+  ]
+}
