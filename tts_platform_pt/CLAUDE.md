@@ -442,24 +442,27 @@ img2img com denoise parcial, por que não LoRA por ora) em
   ComfyUI (`/upload/image`) e cacheia por caminho dentro de `main()`, então
   várias frases apontando pro mesmo arquivo de referência (o caso comum:
   mesmo personagem em várias frases) só enviam a imagem uma vez.
-- **Achado do sweep de denoise (0.35/0.5/0.65/0.8), caso real `Video_9`
-  frase 7→8**: a estrutura espacial da referência (pose, objetos em cena —
-  no caso, a águia sobrevoando) fica presa com muito mais força do que o
-  esperado. Em 0.35/0.5/0.65 a composição inteira da frase 7 (personagem de
-  pé encarando a águia, céu de tempestade diurno) atravessou quase
-  intacta pra frase 8, mesmo a frase 8 sendo sobre uma cena diferente
-  (regeneração à noite, sem águia em cena) — nenhum dos três honrou a cena
-  nova. Só em 0.8 a composição finalmente se soltou da referência, mas
-  nesse ponto a identidade também se perdeu (personagem saiu de camisa
-  social e gravata, sem a capa). **Não existe um meio-termo limpo nessa
-  faixa quando a cena-alvo difere de verdade da referência** — o mecanismo
-  funciona bem pra manter identidade quando a pose/cena já é parecida (ver
-  "Fluxo de uso" no plano), mas uma referência de pose/contexto muito
-  diferente da frase-alvo tende a produzir uma composição híbrida forçada
-  em vez de honrar a cena nova, em qualquer denoise testado até aqui — pra
-  esses casos, o fix manual (reescrever o prompt repetindo os descritores
-  físicos já estabelecidos, sem passar imagem de referência) continua mais
-  confiável. Ver também `comfy/GOTCHAS.md`.
+- **Achado do sweep de denoise (0.35/0.5/0.65/0.72/0.8), casos reais
+  `Video_9` frase 7→8 e `Video_10` frase 8→17/22**: a estrutura espacial da
+  referência (pose, objetos em cena) fica presa com muito mais força do
+  que o esperado, e **mudança de POSE/AÇÃO é ainda mais resistente que
+  mudança de ELEMENTO DE CENA**. No `Video_9` (referência com uma águia em
+  cena → alvo sem a águia, de noite), 0.35/0.5/0.65 mantiveram a
+  composição inteira da referência (incluindo a águia) e só 0.8 soltou a
+  cena — mas perdendo a identidade junto. No `Video_10` (referência de
+  Heitor **de pé** → alvo "Heitor **caindo** no chão"), nem 0.5 nem 0.72
+  (testando o intervalo que tinha ficado sem cobrir) conseguiram sair da
+  pose de pé da referência — a queda simplesmente não aconteceu em nenhum
+  denoise testado. **Regra de uso**: `--referencia` vale a pena só quando a
+  cena-alvo já tem pose/enquadramento parecido com a referência (ex.:
+  vários planos "de pé, olhando pra X") — pra qualquer frase que precise
+  de uma ação diferente (cair, correr, lutar, deitar), pule direto pro fix
+  manual (reescrever o prompt da frase repetindo os descritores físicos já
+  estabelecidos, sem imagem de referência) — é mais barato (uma geração em
+  vez de um sweep) e mais confiável nesses casos. Ver `comfy/GOTCHAS.md`
+  itens 9 e 10 (o item 10 também documenta um caso novo de texto
+  garranchado em arquitetura, reproduzido no Z-Image-Turbo mesmo sem
+  nenhum passo de refino de prompt envolvido).
 - Novos campos no `<nome>_imagens_manifesto.json`, só nas entradas que
   passaram pelo branch i2i: `referencia` (caminho local usado) e
   `referencia_denoise` (float) — mesma lógica de rastreabilidade de

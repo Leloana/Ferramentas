@@ -234,3 +234,63 @@ mecanismo existir (ver `analise.md`, seção 2).
 Não testei a faixa entre 0.65 e 0.8 (ex.: 0.7, 0.75) — se for retomar esse
 ajuste, esse é o intervalo mais provável de conter algum ponto de
 equilíbrio, se é que existe um.
+
+**Atualização — testado em `Video_10` (mito da morte de Heitor), confirma e
+piora o quadro acima**: usando uma imagem de Heitor de pé (frase 8, lança
+na mão, parado) como referência pras frases 17 ("Heitor olha ao redor,
+confuso, sozinho") e 22 ("Heitor cai no chão, a lança solta ao lado") —
+ambas cenas de AÇÃO/POSE diferente da referência, não só elemento de cena
+diferente como no caso do `Video_9`. Resultado:
+
+- **Frase 17** (pose parecida — continua de pé, só olhando pro lado): saiu
+  bem em denoise `0.5`, praticamente a mesma pose da referência mas com a
+  cabeça virada — identidade perfeita, cena aceitável.
+- **Frase 22** (pose bem diferente — cair no chão): em denoise `0.5` **e**
+  em `0.72` (justo o intervalo não testado acima) o resultado ficou de pé,
+  segurando a lança, **igual à referência** — a queda simplesmente não
+  aconteceu em nenhum dos dois valores. Nem o intervalo 0.65-0.8 que
+  faltava testar resolveu.
+
+**Conclusão mais forte que a do `Video_9`**: mudança de POSE/AÇÃO (de pé →
+caindo) é mais resistente ao denoise parcial do que mudança de ELEMENTO DE
+CENA (presença/ausência de um objeto, dia/noite) — plausível de ser um
+efeito do `steps=8` fixo do Z-Image-Turbo (Turbo = poucos passos de
+sampling; com denoise<1 sobram ainda menos passos reais pro sampler
+"repintar" a estrutura grossa do latent, e a silhueta de um corpo inteiro
+em pé é uma estrutura espacial bem mais dominante que um objeto secundário
+tipo uma águia). **Regra de uso revisada**: `--referencia` serve bem pra
+reaproveitar identidade em cenas de pose/enquadramento JÁ PARECIDO com a
+referência (ex.: vários planos "de pé, olhando para X") — para qualquer
+frase que precise de uma AÇÃO/POSE diferente da referência (cair, correr,
+lutar, deitar), não vale a pena gastar uma geração com `--referencia`: vá
+direto pro fix manual (repetir os descritores físicos do personagem no
+prompt daquela frase, sem imagem de referência) — foi o que resolveu a
+frase 22 do `Video_10` de primeira, com a pose certa E a identidade
+consistente.
+
+## 10. Texto garranchado em arquitetura/sinalização também acontece no Z-Image-Turbo, sem nenhum passo de refino envolvido
+
+O item 2 deste arquivo atribui o bug de texto borrado ao node `TextGenerate`
+(refino de prompt, exclusivo do workflow Krea2) citando a narração como
+"texto pra mostrar na tela". O workflow Z-Image-Turbo **não tem esse passo**
+— o texto do prompt vai direto pro `CLIPTextEncode`, sem LLM no meio — então
+a hipótese seria que esse workflow estivesse imune ao bug.
+
+**Não está.** Testado em `Video_10`, frase 6 (`--prompts`: "elderly King
+Priam... pleading with his son Hector at the gates of Troy..."): saiu uma
+placa/inscrição gravada no arco do portão com letras garranchadas
+formando algo como "CHARA" — sem que o prompt mencionasse texto, placa ou
+inscrição em nenhum momento. Ou seja, o `KSampler` do Z-Image-Turbo pode
+alucinar texto em superfícies arquitetônicas (arcos, portões, estandartes)
+por conta própria, associando "cena antiga/monumental" a "tem inscrição
+gravada", independente de qualquer refino de prompt.
+
+**O que resolveu**: reescrever o prompt adicionando explicitamente `plain
+stone wall background, no signage, no text, no writing` — regenerado uma
+vez, saiu limpo. Não testei se `seed` novo sozinho já teria resolvido (fui
+direto pra correção de prompt, seguindo a lição do item 2 de que regenerar
+sem mudar o texto costuma repetir o mesmo defeito). Se esse padrão voltar a
+aparecer em outras frases com cenário arquitetônico/monumental, considere
+adicionar essa negação como parte do sufixo padrão do prompt em vez de
+corrigir caso a caso — ainda não fiz essa mudança porque só apareceu uma
+vez em ~56 gerações entre os dois projetos testados.
