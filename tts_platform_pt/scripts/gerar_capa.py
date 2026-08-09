@@ -37,7 +37,7 @@ from pathlib import Path
 
 import numpy as np
 import requests
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from PIL import Image, ImageDraw, ImageFont
 
 from gerar_imagens import WORKFLOW_PADRAO, gerar_imagem
 
@@ -78,16 +78,6 @@ _STROKE_WIDTH = 6
 _Y_INICIO_ESCURECIMENTO_FRAC = 0.42
 _OPACIDADE_MAX_ESCURECIMENTO = 0.80
 
-# Zona segura: faixa central do canvas onde cena + título inteiro precisam
-# caber. Topo e base fora dela são sacrificáveis — o seletor de capa do
-# TikTok ("Selecionar capa" > "Carregar do dispositivo") usa uma caixa de
-# recorte mais curta que 9:16, e sem essa folga não dá pra enquadrar o
-# assunto (águia/personagem) e o título ao mesmo tempo (ver CLAUDE.md).
-# Primeira tentativa por trial-and-error — ajustar depois de testar no app.
-_SAFE_TOP_FRAC = 0.14
-_SAFE_BOTTOM_FRAC = 0.18
-_BLUR_PREENCHIMENTO = 40  # raio do blur que preenche topo/base sacrificáveis
-
 
 def _fonte_disponivel() -> Path:
     for caminho in _FONTES_CANDIDATAS:
@@ -118,23 +108,9 @@ def _cobrir_redimensionar(imagem: Image.Image, largura: int, altura: int) -> Ima
     return imagem.crop((x, y, x + largura, y + altura))
 
 
-def _compor_fundo_seguro(origem: Image.Image, largura: int, altura: int, y0: int, y1: int) -> Image.Image:
-    """Mantém a cena principal (cover-crop normal) dentro da zona segura
-    [y0, y1) e preenche o topo/base sacrificáveis com uma extensão desfocada
-    da mesma imagem — evita barra preta de letterbox e garante que um corte
-    do TikTok fora da zona segura nunca leve embora o assunto principal."""
-    cena = _cobrir_redimensionar(origem, largura, y1 - y0)
-    fundo = _cobrir_redimensionar(origem, largura, altura).filter(ImageFilter.GaussianBlur(_BLUR_PREENCHIMENTO))
-    fundo.paste(cena, (0, y0))
-    return fundo
-
-
-def _aplicar_escurecimento(imagem: Image.Image, y1: int) -> Image.Image:
-    """Gradiente iniciado como fração de `y1` (base da zona segura), não da
-    altura total do canvas — mas segue rampando até a base real do canvas,
-    pra não deixar costura visível onde a zona segura termina."""
+def _aplicar_escurecimento(imagem: Image.Image) -> Image.Image:
     largura, altura = imagem.size
-    y_inicio = int(y1 * _Y_INICIO_ESCURECIMENTO_FRAC)
+    y_inicio = int(altura * _Y_INICIO_ESCURECIMENTO_FRAC)
     col = np.zeros(altura, dtype=np.uint8)
     ys = np.arange(y_inicio, altura)
     if len(ys) > 0:
@@ -186,18 +162,14 @@ def _ajustar_fonte_e_quebras(
 
 def gerar_capa(imagem_fundo: Path, titulo: str, destino: Path, proporcao: str = "9:16") -> Path:
     largura, altura = _RESOLUCOES[proporcao]
-    origem = Image.open(imagem_fundo)
-    y0 = int(altura * _SAFE_TOP_FRAC)
-    y1 = int(altura * (1 - _SAFE_BOTTOM_FRAC))
-    altura_zona_segura = y1 - y0
-
-    base = _compor_fundo_seguro(origem, largura, altura, y0, y1)
-    base = _aplicar_escurecimento(base, y1)
+    base = Image.open(imagem_fundo)
+    base = _cobrir_redimensionar(base, largura, altura)
+    base = _aplicar_escurecimento(base)
 
     draw = ImageDraw.Draw(base)
     caminho_fonte = _fonte_disponivel()
     largura_max_texto = largura - 2 * _MARGEM_LR
-    altura_max_texto = int(altura_zona_segura * _ALTURA_MAX_TEXTO_FRAC)
+    altura_max_texto = int(altura * _ALTURA_MAX_TEXTO_FRAC)
     tamanho_inicial = int(largura * _TAMANHO_FONTE_INICIAL_FRAC)
 
     fonte, linhas = _ajustar_fonte_e_quebras(
@@ -206,7 +178,7 @@ def gerar_capa(imagem_fundo: Path, titulo: str, destino: Path, proporcao: str = 
 
     altura_linha = (fonte.getbbox("Ág")[3] - fonte.getbbox("Ág")[1]) * _ESPACAMENTO_LINHA
     altura_total = altura_linha * len(linhas)
-    y = y1 - _MARGEM_INFERIOR - altura_total
+    y = altura - _MARGEM_INFERIOR - altura_total
     for linha in linhas:
         largura_linha = draw.textlength(linha, font=fonte)
         x = (largura - largura_linha) / 2
