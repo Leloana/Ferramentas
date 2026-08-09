@@ -45,6 +45,17 @@ original); GPU CUDA recomendada (fallback automático para CPU, mais lento).
   mudança de pitch) — faixa segura ~0.7-1.3, fora disso a voz degrada
   (artefatos, cadência robótica). `scripts/gerar_video.py` usa 1.20 como
   padrão (ver abaixo); `POST /api/synthesize` aceita `speed` no corpo.
+- `server/engine/forced_aligner.py` — `ForcedAligner.align(wav, sample_rate,
+  palavras)`, alinhamento forçado por palavra via `torchaudio.pipelines.MMS_FA`,
+  sempre em CPU (ver Gotchas). Chamado por `TTSEngine.synthesize` uma vez por
+  frase, em cima do clipe já sintetizado/trimado daquela frase — não em cima
+  do roteiro inteiro. Portado do núcleo de alinhamento do `karaoke`
+  (`karaoke/server/utils/lrc_pro.py`), simplificado porque aqui o clipe é
+  curto e o texto de referência é exato (sem ruído de fundo tipo vocal
+  isolado, sem precisar da lógica de pauta/linha pra exibição em tempo real
+  que o karaoke tem). Palavra sem correspondência ganha timestamp por
+  interpolação proporcional a nº de caracteres (`_preencher_faltantes`),
+  fallback raro em áudio sintético limpo.
 - `server/engine/text_preprocessor.py` — `normalize(texto)` via
   `ollama.generate(..., format="json")`, no mesmo estilo de
   `youtube_music_playlist_organizer/core/classifier.py`. Retorna
@@ -454,11 +465,15 @@ python scripts\montar_video.py Projetos\Video_1\historia_humanidade\texto_femini
   a ocupar a tela toda em frases de 20+ palavras). `dividir_em_legendas()`
   quebra cada frase em pedaços de até 4 palavras (`_PALAVRAS_POR_LEGENDA`,
   no padrão de legenda curta de conteúdo pra celular — sem quebra de linha,
-  centralizada no meio do vídeo em vez de perto do rodapé), interpolando o
-  tempo de cada pedaço proporcionalmente à contagem de palavras dentro do
-  intervalo conhecido da frase (não é medição real — o motor só dá
-  timestamp por frase, não por palavra; aproximação assume ritmo de fala
-  ~constante dentro da frase).
+  centralizada no meio do vídeo em vez de perto do rodapé), usando o
+  timestamp REAL de início da primeira palavra e fim da última palavra do
+  pedaço (`frase["palavras"]`, ver alinhador forçado nos Gotchas abaixo) —
+  não é mais interpolação. **Histórico**: antes desse alinhador existir, a
+  duração de cada pedaço era interpolada proporcionalmente à contagem de
+  palavras dentro do intervalo da frase (assumindo ritmo de fala
+  ~constante); frases com pausa real no meio (vírgula, travessão)
+  desalinhavam progressivamente a legenda ao longo da frase — foi o motivo
+  de trocar pra timestamp real por palavra.
 - **Legenda é `.ass` escrito à mão (`gerar_ass()`), não `.srt` + filtro
   `subtitles`**: a primeira versão gerava um `.srt` e usava
   `subtitles=legenda.srt:original_size=WxH:force_style='...'`. Na conversão
@@ -554,13 +569,34 @@ python scripts\gerar_capa.py Projetos\Video_1\historia_humanidade_parte2\texto_m
   `speaker_wav`; qualquer outro valor é tratado como nome de locutor embutido
   do XTTS-v2 (`speaker=`). Ver `TTSEngine.synthesize` em `tts_engine.py`.
 - `TTSEngine.synthesize()` retorna `(output_path, frases)` — `frases` é uma
-  lista de `{texto, inicio_s, fim_s}` por sentença, calculada durante a
-  própria concatenação do áudio (a gente já sabe onde cada frase começa e
-  termina porque foi a gente quem montou o clipe, frase por frase — não
-  precisa de um passo de transcrição/alinhamento à parte pra gerar
-  legenda). `POST /api/synthesize` expõe isso no campo `frases` da
-  resposta; `gerar_video.py` persiste no manifesto. Ver `montar_video.py`
-  pra como isso vira `.srt`.
+  lista de `{texto, inicio_s, fim_s, palavras}` por sentença. `inicio_s`/
+  `fim_s` da frase vêm de graça da própria concatenação do áudio (a gente já
+  sabe onde cada frase começa e termina porque foi a gente quem montou o
+  clipe, frase por frase). `palavras` é uma lista de `{texto, inicio_s,
+  fim_s}` por PALAVRA, vinda de alinhamento forçado real (MMS_FA via
+  `torchaudio`, ver `engine/forced_aligner.py`) rodado em cima do clipe já
+  trimado de cada frase — não é interpolação. `POST /api/synthesize` expõe
+  tudo isso no campo `frases` da resposta; `gerar_video.py` persiste no
+  manifesto. Ver `montar_video.py` pra como isso vira o `.ass` da legenda.
+- **Alinhador de palavras (MMS_FA) roda sempre em CPU**, nunca GPU — decisão
+  deliberada, não limitação técnica do `torchaudio.pipelines.MMS_FA` (que
+  suporta CUDA normalmente). Nesta máquina, com o servidor TTS e o ComfyUI
+  Desktop abertos ao mesmo tempo (uso comum: gerar áudio e depois imagens do
+  mesmo projeto), a RTX 4070 de 12GB chega a ter só ~417MB livres — pouca
+  margem pra um segundo modelo em VRAM sem arriscar OOM. Diferente do
+  `pick_num_ctx()` do Ollama (que mede VRAM livre via `nvidia-smi` a cada
+  chamada e pula a etapa se não sobrar espaço), aqui não tem checagem de
+  VRAM nem fallback dinâmico — é fixo em CPU. Alinhar um clipe curto (uma
+  frase, poucos segundos de áudio) em CPU é rápido o bastante pra não
+  incomodar num script de geração em lote. Se um dia a VRAM parar de ser
+  gargalo (GPU maior, ou rodando sem ComfyUI junto), dá pra revisitar essa
+  decisão e reaproveitar o mesmo padrão de VRAM-check do Ollama.
+- **Manifestos antigos não têm `palavras`** (gerados antes desse alinhador
+  existir, ex.: tudo até `Video_7/primeiros_humanos_no_brasil`): têm só
+  `frases[i].texto/inicio_s/fim_s`, sem a chave `palavras`. `montar_video.py`
+  detecta isso e recusa rodar com uma mensagem pedindo pra regerar via
+  `gerar_video.py` — sem fallback silencioso pra interpolação (essa era
+  exatamente a fonte do desalinhamento que motivou a troca).
 - **Race condition no singleton do engine** (já corrigida, mas fácil de
   reintroduzir se mexer em `get_tts_engine()`): rotas síncronas do FastAPI
   (como `GET /api/voices`) rodam numa thread pool; sem lock, requests

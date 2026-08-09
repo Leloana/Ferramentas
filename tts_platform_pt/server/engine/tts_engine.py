@@ -10,6 +10,7 @@ import torch
 from TTS.api import TTS
 
 import config
+from engine.forced_aligner import ForcedAligner
 
 logger = logging.getLogger("TTSPlatform")
 
@@ -46,6 +47,17 @@ _FADE_S = 0.03
 # `_FADE_S` acaba rampando em cima do início real da primeira palavra em vez
 # de silêncio, cortando o começo dela perceptivelmente.
 _LEAD_IN_S = 0.15
+
+# Mesma regra de `scripts/montar_video.py:_limpar_pontuacao` — precisa ficar
+# em sincronia com aquele arquivo: é o que garante que a lista de palavras
+# passada pro alinhador (`ForcedAligner.align`) bate 1:1 com as palavras que
+# `montar_video.py` vai agrupar em chunk de legenda depois.
+_PONTUACAO_PALAVRA_RE = re.compile(r"[^\w\s-]", re.UNICODE)
+
+
+def _limpar_pontuacao(texto: str) -> str:
+    sem_pontuacao = _PONTUACAO_PALAVRA_RE.sub(" ", texto)
+    return re.sub(r"\s+", " ", sem_pontuacao).strip()
 
 
 def _sanitizar_pontuacao_pt(text: str) -> str:
@@ -96,6 +108,10 @@ class TTSEngine:
             self.device = "cpu"
             self.tts = TTS(config.XTTS_MODEL_NAME).to("cpu")
         logger.info(f"XTTS-v2 carregado no dispositivo: {self.device}")
+        # Alinhador de palavras roda sempre em CPU, independente de `self.device`
+        # (ver `engine/forced_aligner.py`) — a VRAM já fica apertada só com o
+        # XTTS-v2 quando o ComfyUI Desktop está aberto junto.
+        self.aligner = ForcedAligner()
 
     def list_builtin_speakers(self):
         return list(self.tts.speakers or [])
@@ -137,13 +153,32 @@ class TTSEngine:
         # que é só um workaround de pronúncia) — usados pra gerar legendas
         # sincronizadas sem precisar de um passo de transcrição/alinhamento
         # à parte: a gente já sabe exatamente onde cada frase começa/termina
-        # porque foi a gente quem montou o áudio, frase por frase.
+        # porque foi a gente quem montou o áudio, frase por frase. Timestamp
+        # por PALAVRA vem do alinhador forçado (`self.aligner`), rodado em
+        # cima do próprio `clipe` já trimado — o resultado vem relativo ao
+        # início do clipe, por isso soma `cursor_s` (que aqui ainda é o
+        # início desta frase) pra virar timestamp absoluto na faixa final.
         partes = [np.zeros(int(sample_rate * _LEAD_IN_S))]
         timings = []
         cursor_s = _LEAD_IN_S
         for i, (frase, clipe) in enumerate(zip(frases, clipes)):
             duracao_s = len(clipe) / sample_rate
-            timings.append({"texto": frase, "inicio_s": round(cursor_s, 3), "fim_s": round(cursor_s + duracao_s, 3)})
+            palavras_frase = _limpar_pontuacao(frase).split()
+            palavras_alinhadas = self.aligner.align(clipe, sample_rate, palavras_frase)
+            palavras = [
+                {
+                    "texto": p["texto"],
+                    "inicio_s": round(cursor_s + p["inicio_s"], 3),
+                    "fim_s": round(cursor_s + p["fim_s"], 3),
+                }
+                for p in palavras_alinhadas
+            ]
+            timings.append({
+                "texto": frase,
+                "inicio_s": round(cursor_s, 3),
+                "fim_s": round(cursor_s + duracao_s, 3),
+                "palavras": palavras,
+            })
             partes.append(clipe)
             cursor_s += duracao_s
             if i < len(clipes) - 1:

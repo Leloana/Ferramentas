@@ -23,7 +23,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 import shutil
 import subprocess
 import wave
@@ -42,44 +41,31 @@ _MARGEM_LR_LEGENDA = 140
 
 _PALAVRAS_POR_LEGENDA = 4
 
-# Mantém letras/dígitos/espaço/hífen (hífen interno de palavra composta, ex.
-# "pós-guerra"), remove o resto (ponto, vírgula, aspas, dois-pontos,
-# ponto-e-vírgula, travessão, reticências, parênteses...) — a legenda
-# queimada no vídeo mostra só as palavras faladas, sem pontuação.
-_PONTUACAO_LEGENDA_RE = re.compile(r"[^\w\s-]", re.UNICODE)
-
-
-def _limpar_pontuacao(texto: str) -> str:
-    sem_pontuacao = _PONTUACAO_LEGENDA_RE.sub(" ", texto)
-    return re.sub(r"\s+", " ", sem_pontuacao).strip()
-
 
 def dividir_em_legendas(frases: list[dict], max_palavras: int = _PALAVRAS_POR_LEGENDA) -> list[dict]:
     """Quebra cada frase (uma entrada por sentença) em pedaços menores pra
     legenda de vídeo curto — uma frase inteira como cue única fica grande
-    demais na tela e some devagar. Não temos timestamp por palavra (só por
-    frase, vindo do motor), então a duração de cada pedaço é interpolada
-    proporcionalmente à contagem de palavras dentro do intervalo conhecido
-    da frase — aproximação razoável assumindo ritmo de fala ~constante
-    dentro da frase, não uma medição real. Pontuação é removida antes de
-    dividir em palavras (`_limpar_pontuacao`), senão um travessão solo
-    entre espaços vira uma "palavra" falsa e desalinha a contagem."""
+    demais na tela e some devagar. Usa o timestamp REAL por palavra
+    (`frase["palavras"]`, do alinhamento forçado em
+    `server/engine/forced_aligner.py`, MMS_FA) — cada chunk usa o início da
+    sua primeira palavra e o fim da última, sem interpolação. Palavras já
+    vêm limpas de pontuação (mesma limpeza aplicada em `tts_engine.py` antes
+    de alinhar), não precisa reprocessar o texto aqui."""
     legendas = []
     for frase in frases:
-        palavras = _limpar_pontuacao(frase["texto"]).split()
-        duracao_total = frase["fim_s"] - frase["inicio_s"]
-        n_chunks = max(1, -(-len(palavras) // max_palavras))
-        tam_chunk = -(-len(palavras) // n_chunks)
-        cursor = frase["inicio_s"]
-        for i in range(0, len(palavras), tam_chunk):
-            chunk = palavras[i:i + tam_chunk]
-            duracao_chunk = duracao_total * (len(chunk) / len(palavras))
+        palavras = frase.get("palavras")
+        if not palavras:
+            raise SystemExit(
+                "O manifesto não tem timestamp por palavra "
+                "(rode gerar_video.py de novo pra regerar com a versão atual do motor)."
+            )
+        for i in range(0, len(palavras), max_palavras):
+            chunk = palavras[i:i + max_palavras]
             legendas.append({
-                "texto": " ".join(chunk),
-                "inicio_s": cursor,
-                "fim_s": cursor + duracao_chunk,
+                "texto": " ".join(p["texto"] for p in chunk),
+                "inicio_s": chunk[0]["inicio_s"],
+                "fim_s": chunk[-1]["fim_s"],
             })
-            cursor += duracao_chunk
     return legendas
 
 

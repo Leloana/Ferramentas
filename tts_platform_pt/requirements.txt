@@ -13,3 +13,4 @@ soundfile
 requests
 pysbd
 Pillow
+Unidecode==1.4.0
