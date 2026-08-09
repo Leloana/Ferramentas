@@ -1,0 +1,125 @@
+{
+  "1": {
+    "inputs": {
+      "unet_name": "z_image_turbo_bf16.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": { "title": "Carregar Modelo de Difusão" }
+  },
+  "2": {
+    "inputs": {
+      "clip_name": "qwen_3_4b_fp8_mixed.safetensors",
+      "type": "lumina2",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": { "title": "Carregar CLIP" }
+  },
+  "3": {
+    "inputs": {
+      "vae_name": "ae.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": { "title": "Carregar VAE" }
+  },
+  "4": {
+    "inputs": {
+      "shift": 3,
+      "model": ["1", 0]
+    },
+    "class_type": "ModelSamplingAuraFlow",
+    "_meta": { "title": "ModelSamplingAuraFlow" }
+  },
+  "5": {
+    "inputs": {
+      "text": "",
+      "clip": ["2", 0]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": { "title": "Codificação de Texto CLIP (Prompt)" }
+  },
+  "6": {
+    "inputs": {
+      "conditioning": ["5", 0]
+    },
+    "class_type": "ConditioningZeroOut",
+    "_meta": { "title": "CondicionamentoZerar" }
+  },
+  "7": {
+    "inputs": {
+      "aspect_ratio": "9:16 (Portrait Widescreen)",
+      "megapixels": 1,
+      "multiple": 8
+    },
+    "class_type": "ResolutionSelector",
+    "_meta": { "title": "Seletor de Resolução" }
+  },
+  "8": {
+    "inputs": {
+      "width": ["7", 0],
+      "height": ["7", 1],
+      "batch_size": 1
+    },
+    "class_type": "EmptySD3LatentImage",
+    "_meta": { "title": "Imagem Latente Vazia (SD3)" }
+  },
+  "9": {
+    "inputs": {
+      "seed": 0,
+      "steps": 8,
+      "cfg": 1,
+      "sampler_name": "res_multistep",
+      "scheduler": "simple",
+      "denoise": 1,
+      "model": ["4", 0],
+      "positive": ["5", 0],
+      "negative": ["6", 0],
+      "latent_image": ["14", 0]
+    },
+    "class_type": "KSampler",
+    "_meta": { "title": "KSampler" }
+  },
+  "10": {
+    "inputs": {
+      "samples": ["9", 0],
+      "vae": ["3", 0]
+    },
+    "class_type": "VAEDecode",
+    "_meta": { "title": "VAE Decodificar" }
+  },
+  "11": {
+    "inputs": {
+      "filename_prefix": "ZImageTurbo",
+      "images": ["10", 0]
+    },
+    "class_type": "SaveImage",
+    "_meta": { "title": "Salvar Imagem" }
+  },
+  "12": {
+    "inputs": {
+      "image": ""
+    },
+    "class_type": "LoadImage",
+    "_meta": { "title": "Carregar Imagem de Referência" }
+  },
+  "13": {
+    "inputs": {
+      "image": ["12", 0],
+      "width": ["7", 0],
+      "height": ["7", 1],
+      "upscale_method": "lanczos",
+      "crop": "center"
+    },
+    "class_type": "ImageScale",
+    "_meta": { "title": "Redimensionar Referência" }
+  },
+  "14": {
+    "inputs": {
+      "pixels": ["13", 0],
+      "vae": ["3", 0]
+    },
+    "class_type": "VAEEncode",
+    "_meta": { "title": "Codificar Referência (VAE)" }
+  }
+}

@@ -29,6 +29,7 @@ from __future__ import annotations
 import argparse
 import copy
 import json
+import mimetypes
 import random
 import time
 from pathlib import Path
@@ -37,6 +38,7 @@ import requests
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 WORKFLOW_PADRAO = SCRIPT_DIR.parent / "comfy" / "image_krea2_turbo_t2i.json"
+WORKFLOW_I2I_PADRAO = SCRIPT_DIR.parent / "comfy" / "image_zimage_turbo_i2i.json"
 
 # O modelo tende a desenhar figuras humanas nuas quando o prompt não
 # menciona vestimenta, mesmo com a regra 8 do system prompt do próprio
@@ -108,13 +110,44 @@ _ZIMAGE_NODE_RESOLUCAO = "7"
 _ZIMAGE_NODE_SAMPLER = "9"
 _ZIMAGE_NODE_SAVE = "11"
 
+# Nós extras do workflow `image_zimage_turbo_i2i.json` (continuidade de
+# personagem via img2img, ver plano_continuidade_personagem.md) — carrega a
+# imagem de referência já enviada ao ComfyUI e redimensiona pro aspect_ratio
+# pedido antes de virar o latent inicial do KSampler (que nesse workflow usa
+# denoise<1 em vez do denoise=1 do t2i puro).
+_ZIMAGE_NODE_REF_IMAGEM = "12"
+
 
 def montar_prompt(texto: str) -> str:
     return texto.strip() + _SUFIXO_SEGURANCA
 
 
+def enviar_imagem_referencia(server: str, caminho: Path) -> str:
+    """Envia uma imagem de referência local pro ComfyUI e retorna o
+    identificador pronto pra LoadImage.inputs.image. Usa sempre o
+    name/subfolder da resposta do /upload/image (que já faz dedup por hash),
+    não o nome do arquivo local."""
+    mimetype = mimetypes.guess_type(caminho.name)[0] or "application/octet-stream"
+    resp = requests.post(
+        f"{server}/upload/image",
+        files={"image": (caminho.name, caminho.read_bytes(), mimetype)},
+        timeout=60,
+    )
+    resp.raise_for_status()
+    info = resp.json()
+    subfolder = info.get("subfolder", "")
+    return f"{subfolder}/{info['name']}" if subfolder else info["name"]
+
+
 def gerar_imagem(
-    server: str, workflow: dict, texto: str, aspect_ratio: str, destino: Path, timeout_s: float = 600
+    server: str,
+    workflow: dict,
+    texto: str,
+    aspect_ratio: str,
+    destino: Path,
+    timeout_s: float = 600,
+    referencia_imagem: str | None = None,
+    referencia_denoise: float = 0.5,
 ) -> dict:
     wf = copy.deepcopy(workflow)
     prompt_final = montar_prompt(texto)
@@ -126,6 +159,13 @@ def gerar_imagem(
         wf[_NODE_RESOLUCAO]["inputs"]["aspect_ratio"] = aspect_ratio
         wf[_NODE_SAMPLER]["inputs"]["seed"] = random.randint(0, 2**32 - 1)
         node_save = _NODE_SAVE
+    elif referencia_imagem:
+        wf[_ZIMAGE_NODE_PROMPT]["inputs"]["text"] = prompt_final
+        wf[_ZIMAGE_NODE_RESOLUCAO]["inputs"]["aspect_ratio"] = aspect_ratio
+        wf[_ZIMAGE_NODE_SAMPLER]["inputs"]["seed"] = random.randint(0, 2**32 - 1)
+        wf[_ZIMAGE_NODE_SAMPLER]["inputs"]["denoise"] = referencia_denoise
+        wf[_ZIMAGE_NODE_REF_IMAGEM]["inputs"]["image"] = referencia_imagem
+        node_save = _ZIMAGE_NODE_SAVE
     else:
         wf[_ZIMAGE_NODE_PROMPT]["inputs"]["text"] = prompt_final
         wf[_ZIMAGE_NODE_RESOLUCAO]["inputs"]["aspect_ratio"] = aspect_ratio
@@ -183,6 +223,20 @@ def main():
     ap.add_argument("--workflow", type=Path, default=WORKFLOW_PADRAO)
     ap.add_argument("--aspect-ratio", default="9:16 (Portrait Widescreen)", help="Formato do ResolutionSelector do workflow")
     ap.add_argument("--server", default="http://127.0.0.1:8188")
+    ap.add_argument("--referencia", type=Path, default=None, help=(
+        'JSON {"<frase>": "<caminho da imagem de referência>"} pra gerar aquela frase via '
+        "img2img (denoise parcial) em cima da imagem indicada, em vez de txt2img puro — "
+        "mecanismo opcional de continuidade de personagem entre frases (ver "
+        "plano_continuidade_personagem.md). Frases sem entrada no arquivo caem no txt2img normal."
+    ))
+    ap.add_argument("--referencia-denoise", type=float, default=0.5, help=(
+        "Denoise do img2img pras frases com --referencia (0-1, quanto menor mais fiel à "
+        "imagem de referência). Só tem efeito se --referencia for passado."
+    ))
+    ap.add_argument("--referencia-workflow", type=Path, default=WORKFLOW_I2I_PADRAO, help=(
+        "Workflow do ComfyUI usado pras frases com --referencia. Só é lido do disco se "
+        "--referencia for passado."
+    ))
     args = ap.parse_args()
 
     if not args.manifesto.exists():
@@ -214,21 +268,54 @@ def main():
             raise SystemExit(f"Arquivo de prompts não encontrado: {args.prompts}")
         prompts_custom = {int(k): v for k, v in json.loads(args.prompts.read_text(encoding="utf-8")).items()}
 
+    referencias = {}
+    workflow_i2i = None
+    if args.referencia:
+        if not args.referencia.exists():
+            raise SystemExit(f"Arquivo de referências não encontrado: {args.referencia}")
+        if not args.referencia_workflow.exists():
+            raise SystemExit(f"Workflow i2i do ComfyUI não encontrado: {args.referencia_workflow}")
+        referencias_raw = {int(k): v for k, v in json.loads(args.referencia.read_text(encoding="utf-8")).items()}
+        for j, caminho in referencias_raw.items():
+            caminho = Path(caminho)
+            if not caminho.exists():
+                raise SystemExit(f"Imagem de referência da frase {j} não encontrada: {caminho}")
+            referencias[j] = caminho
+        workflow_i2i = json.loads(args.referencia_workflow.read_text(encoding="utf-8"))
+
     tarefas = [
         (j, prompts_custom.get(j, frase["texto"]))
         for j, frase in enumerate(manifesto["frases"], start=1)
         if indices_frases is None or j in indices_frases
     ]
 
+    sobras_referencia = set(referencias) - {j for j, _ in tarefas}
+    if sobras_referencia:
+        print(f"Aviso: --referencia tem frase(s) fora desta execução, ignorada(s): {sorted(sobras_referencia)}")
+
     print(f"Gerando {len(tarefas)} imagem(ns) de fundo (uma por frase) em {dir_imagens}...")
     resultado = []
+    cache_upload = {}
     try:
         for n, (j, texto) in enumerate(tarefas, start=1):
             destino = dir_imagens / f"{nome_base}_{j:02d}.png"
             print(f"  [{n}/{len(tarefas)}] frase {j} -> {destino.name}")
-            info = gerar_imagem(args.server, workflow, texto, args.aspect_ratio, destino)
+            caminho_ref = referencias.get(j)
+            if caminho_ref is None:
+                info = gerar_imagem(args.server, workflow, texto, args.aspect_ratio, destino)
+                resultado.append({"frase": j, "arquivo": destino.name, **info})
+            else:
+                if caminho_ref not in cache_upload:
+                    cache_upload[caminho_ref] = enviar_imagem_referencia(args.server, caminho_ref)
+                info = gerar_imagem(
+                    args.server, workflow_i2i, texto, args.aspect_ratio, destino,
+                    referencia_imagem=cache_upload[caminho_ref], referencia_denoise=args.referencia_denoise,
+                )
+                resultado.append({
+                    "frase": j, "arquivo": destino.name, **info,
+                    "referencia": str(caminho_ref), "referencia_denoise": args.referencia_denoise,
+                })
             print(f"      prompt: {info['prompt_final'][:100]}...")
-            resultado.append({"frase": j, "arquivo": destino.name, **info})
     except requests.exceptions.ConnectionError as e:
         raise SystemExit(f"Não consegui falar com o ComfyUI em {args.server}. Ele está aberto?") from e
 

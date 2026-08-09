@@ -196,3 +196,41 @@ em lote, abra e confira visualmente CADA imagem antes de rodar
 erro" não é sinal de "saiu certo" aqui — mesmo tema do item 5 deste
 arquivo, mas o resultado errado aqui é mais grave (conteúdo impróprio
 possível) do que um zoom tremido.
+
+## 9. img2img de continuidade de personagem (`--referencia`): denoise não solta a composição da referência de forma gradual
+
+Contexto: `gerar_imagens.py --referencia` (Z-Image-Turbo, ver
+`plano_continuidade_personagem.md` e a subseção "Continuidade de
+personagem" no `CLAUDE.md`) usa `LoadImage`→`ImageScale`→`VAEEncode` como
+latent inicial do `KSampler` com `denoise<1`, esperando que valores mais
+altos de denoise deixem a cena nova (do prompt da frase-alvo) prevalecer
+sobre a estrutura espacial da imagem de referência.
+
+**Testado no caso real do `Video_9`** (referência = frase 7, Prometeu
+acorrentado encarando a águia em pleno dia; alvo = frase 8, o fígado se
+regenerando à noite, sem águia em cena), sweep em 0.35/0.5/0.65/0.8:
+
+- Em **0.35, 0.5 e 0.65** a composição inteira da referência (pose de pé,
+  a própria águia sobrevoando, céu de tempestade diurno) atravessou quase
+  intacta pras três gerações — nenhuma honrou a cena nova da frase 8
+  (nem a noite, nem a ausência da águia, nem o ferimento brilhando).
+  0.65 ainda trouxe uns artefatos de rabisco branco espalhados pela rocha.
+- Só em **0.8** a composição finalmente escapou da referência — mas nesse
+  ponto a identidade também se perdeu (o personagem saiu de camisa social
+  e gravata, sem a capa, num cenário de ferro-velho sem relação com a
+  cena).
+
+**Não existe um meio-termo limpo nessa faixa** (testada até 0.8) quando a
+cena-alvo difere de verdade da referência em elementos concretos (objeto
+em cena, hora do dia, ação) — ou a composição fica presa à referência, ou
+a identidade se solta junto com ela. O mecanismo funciona bem pra manter
+identidade quando a pose/cena já é parecida (mesmo ângulo, mesmo cenário
+geral); pra cenas que precisam divergir de verdade, o fix manual
+(reescrever o prompt da frase repetindo os descritores físicos já
+estabelecidos, sem passar imagem de referência) continua mais confiável —
+foi o que já resolveu esse caso específico do `Video_9` antes desse
+mecanismo existir (ver `analise.md`, seção 2).
+
+Não testei a faixa entre 0.65 e 0.8 (ex.: 0.7, 0.75) — se for retomar esse
+ajuste, esse é o intervalo mais provável de conter algum ponto de
+equilíbrio, se é que existe um.

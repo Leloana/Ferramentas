@@ -90,6 +90,11 @@ original); GPU CUDA recomendada (fallback automático para CPU, mais lento).
   também usado como LLM de refino de prompt) + `qwen_image_vae`. Reexportar
   aqui sempre que o workflow for alterado na UI do ComfyUI, senão o script
   roda contra uma versão desatualizada do grafo.
+- `comfy/image_zimage_turbo_i2i.json` — variante do workflow Z-Image-Turbo
+  com entrada de imagem de referência (`LoadImage`→`ImageScale`→`VAEEncode`
+  no lugar do `EmptySD3LatentImage`), usada só quando `--referencia` é
+  passado pra `gerar_imagens.py` — ver subseção "Continuidade de
+  personagem" mais abaixo.
 - **[comfy/GOTCHAS.md](comfy/GOTCHAS.md)** — leia antes de mexer em
   `gerar_imagens.py`, `montar_video.py` ou no workflow acima. Reúne os
   achados de depuração real da geração de imagem (nudez, texto borrado
@@ -401,6 +406,64 @@ bruto).
   que parece não checar o cancelamento tão granularmente quanto o
   `KSampler`. Na pior hipótese ele só termina sozinho gerando uma imagem
   que ninguém usa — sem problema, só não espere um cancelamento instantâneo.
+
+### Continuidade de personagem (opcional, `--referencia`)
+
+Mecanismo **100% opt-in** pra reduzir a deriva de identidade de um
+personagem recorrente entre frases (documentado ao vivo em `analise.md`,
+seção 2 — no `Video_9`, o mesmo Prometeu saiu loiro de capa verde na frase
+7 e virou uma pessoa de trajes tradicionais asiáticos na frase 8, zero
+relação visual). Sem `--referencia`, o comportamento é idêntico ao de
+sempre (txt2img puro) — nenhum custo/complexidade extra no caminho padrão.
+Design completo e investigação (por que não IPAdapter/InstantID, por que
+img2img com denoise parcial, por que não LoRA por ora) em
+[plano_continuidade_personagem.md](plano_continuidade_personagem.md).
+
+```powershell
+# gera as frases 6-9 usando texto_07.png como referência de identidade
+.\venv\Scripts\python.exe scripts\gerar_imagens.py Projetos\Video_9\texto_manifesto.json --frases 6,7,8,9 --referencia Projetos\Video_9\texto_referencia.json --referencia-denoise 0.5
+```
+
+- **`--referencia <arquivo>.json`**: `{"<frase>": "<caminho da imagem de
+  referência>"}`, mesma convenção 1-based de `--prompts`. Frase sem entrada
+  no arquivo cai no txt2img normal — pode misturar frases com e sem
+  referência na mesma execução. Cada caminho é validado no disco antes de
+  qualquer chamada de rede (`SystemExit` citando frase + caminho na
+  primeira falha); chave que não corresponde a nenhuma frase desta execução
+  só gera aviso (`print`), não trava o script.
+- **`--referencia-denoise <float>`** (padrão `0.5`): denoise parcial do
+  `KSampler` no branch i2i — quanto menor, mais fiel à imagem de
+  referência (estrutura espacial inteira, não só identidade).
+- Usa o workflow `comfy/image_zimage_turbo_i2i.json` (variante de
+  `image_zimage_turbo_t2i.json` com `LoadImage` → `ImageScale`
+  (`crop=center`) → `VAEEncode` alimentando o `latent_image` do `KSampler`
+  em vez do `EmptySD3LatentImage`) — só funciona com o workflow Z-Image-Turbo,
+  não com Krea2. `enviar_imagem_referencia()` faz upload da imagem local pro
+  ComfyUI (`/upload/image`) e cacheia por caminho dentro de `main()`, então
+  várias frases apontando pro mesmo arquivo de referência (o caso comum:
+  mesmo personagem em várias frases) só enviam a imagem uma vez.
+- **Achado do sweep de denoise (0.35/0.5/0.65/0.8), caso real `Video_9`
+  frase 7→8**: a estrutura espacial da referência (pose, objetos em cena —
+  no caso, a águia sobrevoando) fica presa com muito mais força do que o
+  esperado. Em 0.35/0.5/0.65 a composição inteira da frase 7 (personagem de
+  pé encarando a águia, céu de tempestade diurno) atravessou quase
+  intacta pra frase 8, mesmo a frase 8 sendo sobre uma cena diferente
+  (regeneração à noite, sem águia em cena) — nenhum dos três honrou a cena
+  nova. Só em 0.8 a composição finalmente se soltou da referência, mas
+  nesse ponto a identidade também se perdeu (personagem saiu de camisa
+  social e gravata, sem a capa). **Não existe um meio-termo limpo nessa
+  faixa quando a cena-alvo difere de verdade da referência** — o mecanismo
+  funciona bem pra manter identidade quando a pose/cena já é parecida (ver
+  "Fluxo de uso" no plano), mas uma referência de pose/contexto muito
+  diferente da frase-alvo tende a produzir uma composição híbrida forçada
+  em vez de honrar a cena nova, em qualquer denoise testado até aqui — pra
+  esses casos, o fix manual (reescrever o prompt repetindo os descritores
+  físicos já estabelecidos, sem passar imagem de referência) continua mais
+  confiável. Ver também `comfy/GOTCHAS.md`.
+- Novos campos no `<nome>_imagens_manifesto.json`, só nas entradas que
+  passaram pelo branch i2i: `referencia` (caminho local usado) e
+  `referencia_denoise` (float) — mesma lógica de rastreabilidade de
+  `prompt_final`/`arquivo_comfy`.
 
 ## Automação: `scripts/montar_video.py`
 
