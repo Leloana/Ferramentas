@@ -1,0 +1,1895 @@
+{
+  "gerado_em": "2026-08-09T12:51:42",
+  "roteiro": "Projetos\\Video_10\\morte_de_heitor\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 122.8,
+  "texto_usado": "Aquiles não perdoou. Heitor tinha matado Patroclo, seu melhor amigo, vestindo a própria armadura de Aquiles, roubada em batalha. A partir daquele dia, só existia uma coisa na cabeça do maior guerreiro grego: vingança. Ele vestiu uma armadura nova, forjada pelo deus Hefesto só pra ele, e voltou pro campo de batalha como uma força que nada conseguia deter.\n\nDo lado de dentro dos muros de Troia, Heitor sabia o que vinha. Seu pai, o rei Príamo, implorou pra ele entrar. Sua mãe chorou nas muralhas. Heitor ficou. Um exército inteiro já tinha se refugiado atrás dos portões — só ele continuou do lado de fora, esperando o inimigo chegar.\n\nQuando Aquiles finalmente apareceu, Heitor hesitou e correu. Os dois deram três voltas completas ao redor da cidade, um perseguindo o outro debaixo do sol, diante dos olhos de todo o exército grego e de toda Troia. No alto do Olimpo, Zeus pesou o destino dos dois guerreiros numa balança de ouro. O prato de Heitor afundou: estava decidido, ele não sairia vivo daquele dia.\n\nFoi aí que os deuses entraram de vez na história. Atena desceu disfarçada de Deífobo, irmão de Heitor, e prometeu ajudá-lo na luta. Enganado, Heitor parou de fugir e virou de frente pra Aquiles. Quando procurou o irmão ao seu lado, não havia ninguém. Estava sozinho.\n\nA luta foi rápida. Aquiles conhecia bem aquela armadura — era a mesma que Patroclo vestia quando morreu — e sabia exatamente onde a proteção falhava: um pequeno vão entre o ombro e o pescoço. Foi ali que a lança entrou.\n\nHeitor caiu. Antes de morrer, pediu que seu corpo fosse devolvido à família, pra um enterro digno. Aquiles recusou. Amarrou o cadáver pelos calcanhares atrás do próprio carro de guerra e arrastou Heitor até o acampamento grego, diante dos olhos da cidade que ele tinha defendido sozinho.\n\nEm Troia, o choro de Andrômaca e Príamo ecoou pelas muralhas. A guerra ainda não tinha terminado. Mas, com a morte de Heitor, Troia já tinha perdido o seu maior herói.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Aquiles não perdoou.",
+      "inicio_s": 0.15,
+      "fim_s": 1.37,
+      "palavras": [
+        {
+          "texto": "Aquiles",
+          "inicio_s": 0.17,
+          "fim_s": 0.618
+        },
+        {
+          "texto": "não",
+          "inicio_s": 0.699,
+          "fim_s": 0.821
+        },
+        {
+          "texto": "perdoou",
+          "inicio_s": 0.862,
+          "fim_s": 1.228
+        }
+      ]
+    },
+    {
+      "texto": "Heitor tinha matado Patroclo, seu melhor amigo, vestindo a própria armadura de Aquiles, roubada em batalha.",
+      "inicio_s": 1.72,
+      "fim_s": 8.36,
+      "palavras": [
+        {
+          "texto": "Heitor",
+          "inicio_s": 1.74,
+          "fim_s": 1.981
+        },
+        {
+          "texto": "tinha",
+          "inicio_s": 2.021,
+          "fim_s": 2.181
+        },
+        {
+          "texto": "matado",
+          "inicio_s": 2.201,
+          "fim_s": 2.502
+        },
+        {
+          "texto": "Patroclo",
+          "inicio_s": 2.522,
+          "fim_s": 2.964
+        },
+        {
+          "texto": "seu",
+          "inicio_s": 4.007,
+          "fim_s": 4.127
+        },
+        {
+          "texto": "melhor",
+          "inicio_s": 4.167,
+          "fim_s": 4.428
+        },
+        {
+          "texto": "amigo",
+          "inicio_s": 4.468,
+          "fim_s": 4.749
+        },
+        {
+          "texto": "vestindo",
+          "inicio_s": 5.231,
+          "fim_s": 5.612
+        },
+        {
+          "texto": "a",
+          "inicio_s": 5.652,
+          "fim_s": 5.672
+        },
+        {
+          "texto": "própria",
+          "inicio_s": 5.732,
+          "fim_s": 6.073
+        },
+        {
+          "texto": "armadura",
+          "inicio_s": 6.113,
+          "fim_s": 6.494
+        },
+        {
+          "texto": "de",
+          "inicio_s": 6.535,
+          "fim_s": 6.575
+        },
+        {
+          "texto": "Aquiles",
+          "inicio_s": 6.635,
+          "fim_s": 7.016
+        },
+        {
+          "texto": "roubada",
+          "inicio_s": 7.337,
+          "fim_s": 7.778
+        },
+        {
+          "texto": "em",
+          "inicio_s": 7.818,
+          "fim_s": 7.858
+        },
+        {
+          "texto": "batalha",
+          "inicio_s": 7.899,
+          "fim_s": 8.26
+        }
+      ]
+    },
+    {
+      "texto": "A partir daquele dia, só existia uma coisa na cabeça do maior guerreiro grego: vingança.",
+      "inicio_s": 8.71,
+      "fim_s": 13.81,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 8.73,
+          "fim_s": 8.75
+        },
+        {
+          "texto": "partir",
+          "inicio_s": 8.79,
+          "fim_s": 9.132
+        },
+        {
+          "texto": "daquele",
+          "inicio_s": 9.192,
+          "fim_s": 9.473
+        },
+        {
+          "texto": "dia",
+          "inicio_s": 9.513,
+          "fim_s": 9.694
+        },
+        {
+          "texto": "só",
+          "inicio_s": 10.176,
+          "fim_s": 10.256
+        },
+        {
+          "texto": "existia",
+          "inicio_s": 10.336,
+          "fim_s": 10.738
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 10.758,
+          "fim_s": 10.858
+        },
+        {
+          "texto": "coisa",
+          "inicio_s": 10.939,
+          "fim_s": 11.18
+        },
+        {
+          "texto": "na",
+          "inicio_s": 11.22,
+          "fim_s": 11.28
+        },
+        {
+          "texto": "cabeça",
+          "inicio_s": 11.32,
+          "fim_s": 11.662
+        },
+        {
+          "texto": "do",
+          "inicio_s": 11.682,
+          "fim_s": 11.742
+        },
+        {
+          "texto": "maior",
+          "inicio_s": 11.782,
+          "fim_s": 12.043
+        },
+        {
+          "texto": "guerreiro",
+          "inicio_s": 12.063,
+          "fim_s": 12.344
+        },
+        {
+          "texto": "grego",
+          "inicio_s": 12.384,
+          "fim_s": 12.666
+        },
+        {
+          "texto": "vingança",
+          "inicio_s": 13.208,
+          "fim_s": 13.71
+        }
+      ]
+    },
+    {
+      "texto": "Ele vestiu uma armadura nova, forjada pelo deus Hefesto só pra ele, e voltou pro campo de batalha como uma força que nada conseguia deter.",
+      "inicio_s": 14.16,
+      "fim_s": 22.5,
+      "palavras": [
+        {
+          "texto": "Ele",
+          "inicio_s": 14.18,
+          "fim_s": 14.32
+        },
+        {
+          "texto": "vestiu",
+          "inicio_s": 14.36,
+          "fim_s": 14.741
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 14.781,
+          "fim_s": 14.862
+        },
+        {
+          "texto": "armadura",
+          "inicio_s": 14.922,
+          "fim_s": 15.303
+        },
+        {
+          "texto": "nova",
+          "inicio_s": 15.363,
+          "fim_s": 15.644
+        },
+        {
+          "texto": "forjada",
+          "inicio_s": 16.065,
+          "fim_s": 16.506
+        },
+        {
+          "texto": "pelo",
+          "inicio_s": 16.546,
+          "fim_s": 16.706
+        },
+        {
+          "texto": "deus",
+          "inicio_s": 16.746,
+          "fim_s": 16.947
+        },
+        {
+          "texto": "Hefesto",
+          "inicio_s": 16.987,
+          "fim_s": 17.408
+        },
+        {
+          "texto": "só",
+          "inicio_s": 17.468,
+          "fim_s": 17.568
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 17.628,
+          "fim_s": 17.749
+        },
+        {
+          "texto": "ele",
+          "inicio_s": 17.829,
+          "fim_s": 18.009
+        },
+        {
+          "texto": "e",
+          "inicio_s": 18.731,
+          "fim_s": 18.751
+        },
+        {
+          "texto": "voltou",
+          "inicio_s": 18.811,
+          "fim_s": 19.172
+        },
+        {
+          "texto": "pro",
+          "inicio_s": 19.212,
+          "fim_s": 19.332
+        },
+        {
+          "texto": "campo",
+          "inicio_s": 19.372,
+          "fim_s": 19.573
+        },
+        {
+          "texto": "de",
+          "inicio_s": 19.593,
+          "fim_s": 19.653
+        },
+        {
+          "texto": "batalha",
+          "inicio_s": 19.693,
+          "fim_s": 20.114
+        },
+        {
+          "texto": "como",
+          "inicio_s": 20.555,
+          "fim_s": 20.696
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 20.736,
+          "fim_s": 20.836
+        },
+        {
+          "texto": "força",
+          "inicio_s": 20.916,
+          "fim_s": 21.217
+        },
+        {
+          "texto": "que",
+          "inicio_s": 21.257,
+          "fim_s": 21.337
+        },
+        {
+          "texto": "nada",
+          "inicio_s": 21.417,
+          "fim_s": 21.638
+        },
+        {
+          "texto": "conseguia",
+          "inicio_s": 21.658,
+          "fim_s": 22.079
+        },
+        {
+          "texto": "deter",
+          "inicio_s": 22.099,
+          "fim_s": 22.42
+        }
+      ]
+    },
+    {
+      "texto": "Do lado de dentro dos muros de Troia, Heitor sabia o que vinha.",
+      "inicio_s": 22.85,
+      "fim_s": 26.35,
+      "palavras": [
+        {
+          "texto": "Do",
+          "inicio_s": 22.87,
+          "fim_s": 22.951
+        },
+        {
+          "texto": "lado",
+          "inicio_s": 23.011,
+          "fim_s": 23.232
+        },
+        {
+          "texto": "de",
+          "inicio_s": 23.272,
+          "fim_s": 23.333
+        },
+        {
+          "texto": "dentro",
+          "inicio_s": 23.393,
+          "fim_s": 23.655
+        },
+        {
+          "texto": "dos",
+          "inicio_s": 23.695,
+          "fim_s": 23.836
+        },
+        {
+          "texto": "muros",
+          "inicio_s": 23.916,
+          "fim_s": 24.198
+        },
+        {
+          "texto": "de",
+          "inicio_s": 24.218,
+          "fim_s": 24.298
+        },
+        {
+          "texto": "Troia",
+          "inicio_s": 24.339,
+          "fim_s": 24.64
+        },
+        {
+          "texto": "Heitor",
+          "inicio_s": 25.043,
+          "fim_s": 25.384
+        },
+        {
+          "texto": "sabia",
+          "inicio_s": 25.425,
+          "fim_s": 25.767
+        },
+        {
+          "texto": "o",
+          "inicio_s": 25.827,
+          "fim_s": 25.847
+        },
+        {
+          "texto": "que",
+          "inicio_s": 25.867,
+          "fim_s": 25.968
+        },
+        {
+          "texto": "vinha",
+          "inicio_s": 26.028,
+          "fim_s": 26.249
+        }
+      ]
+    },
+    {
+      "texto": "Seu pai, o rei Príamo, implorou pra ele entrar.",
+      "inicio_s": 26.7,
+      "fim_s": 30.18,
+      "palavras": [
+        {
+          "texto": "Seu",
+          "inicio_s": 26.74,
+          "fim_s": 26.881
+        },
+        {
+          "texto": "pai",
+          "inicio_s": 26.941,
+          "fim_s": 27.163
+        },
+        {
+          "texto": "o",
+          "inicio_s": 27.625,
+          "fim_s": 27.645
+        },
+        {
+          "texto": "rei",
+          "inicio_s": 27.726,
+          "fim_s": 27.887
+        },
+        {
+          "texto": "Príamo",
+          "inicio_s": 27.967,
+          "fim_s": 28.37
+        },
+        {
+          "texto": "implorou",
+          "inicio_s": 28.913,
+          "fim_s": 29.375
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 29.436,
+          "fim_s": 29.556
+        },
+        {
+          "texto": "ele",
+          "inicio_s": 29.637,
+          "fim_s": 29.737
+        },
+        {
+          "texto": "entrar",
+          "inicio_s": 29.798,
+          "fim_s": 30.12
+        }
+      ]
+    },
+    {
+      "texto": "Sua mãe chorou nas muralhas.",
+      "inicio_s": 30.53,
+      "fim_s": 32.57,
+      "palavras": [
+        {
+          "texto": "Sua",
+          "inicio_s": 30.57,
+          "fim_s": 30.752
+        },
+        {
+          "texto": "mãe",
+          "inicio_s": 30.833,
+          "fim_s": 31.015
+        },
+        {
+          "texto": "chorou",
+          "inicio_s": 31.439,
+          "fim_s": 31.762
+        },
+        {
+          "texto": "nas",
+          "inicio_s": 31.782,
+          "fim_s": 31.924
+        },
+        {
+          "texto": "muralhas",
+          "inicio_s": 31.984,
+          "fim_s": 32.449
+        }
+      ]
+    },
+    {
+      "texto": "Heitor ficou.",
+      "inicio_s": 32.92,
+      "fim_s": 33.76,
+      "palavras": [
+        {
+          "texto": "Heitor",
+          "inicio_s": 32.94,
+          "fim_s": 33.248
+        },
+        {
+          "texto": "ficou",
+          "inicio_s": 33.309,
+          "fim_s": 33.658
+        }
+      ]
+    },
+    {
+      "texto": "Um exército inteiro já tinha se refugiado atrás dos portões — só ele continuou do lado de fora, esperando o inimigo chegar.",
+      "inicio_s": 34.11,
+      "fim_s": 40.55,
+      "palavras": [
+        {
+          "texto": "Um",
+          "inicio_s": 34.13,
+          "fim_s": 34.21
+        },
+        {
+          "texto": "exército",
+          "inicio_s": 34.25,
+          "fim_s": 34.732
+        },
+        {
+          "texto": "inteiro",
+          "inicio_s": 34.772,
+          "fim_s": 35.073
+        },
+        {
+          "texto": "já",
+          "inicio_s": 35.093,
+          "fim_s": 35.173
+        },
+        {
+          "texto": "tinha",
+          "inicio_s": 35.254,
+          "fim_s": 35.434
+        },
+        {
+          "texto": "se",
+          "inicio_s": 35.474,
+          "fim_s": 35.554
+        },
+        {
+          "texto": "refugiado",
+          "inicio_s": 35.595,
+          "fim_s": 36.096
+        },
+        {
+          "texto": "atrás",
+          "inicio_s": 36.136,
+          "fim_s": 36.357
+        },
+        {
+          "texto": "dos",
+          "inicio_s": 36.377,
+          "fim_s": 36.477
+        },
+        {
+          "texto": "portões",
+          "inicio_s": 36.517,
+          "fim_s": 36.959
+        },
+        {
+          "texto": "só",
+          "inicio_s": 37.42,
+          "fim_s": 37.521
+        },
+        {
+          "texto": "ele",
+          "inicio_s": 37.641,
+          "fim_s": 37.801
+        },
+        {
+          "texto": "continuou",
+          "inicio_s": 37.842,
+          "fim_s": 38.283
+        },
+        {
+          "texto": "do",
+          "inicio_s": 38.323,
+          "fim_s": 38.383
+        },
+        {
+          "texto": "lado",
+          "inicio_s": 38.423,
+          "fim_s": 38.604
+        },
+        {
+          "texto": "de",
+          "inicio_s": 38.624,
+          "fim_s": 38.684
+        },
+        {
+          "texto": "fora",
+          "inicio_s": 38.744,
+          "fim_s": 39.005
+        },
+        {
+          "texto": "esperando",
+          "inicio_s": 39.246,
+          "fim_s": 39.707
+        },
+        {
+          "texto": "o",
+          "inicio_s": 39.727,
+          "fim_s": 39.768
+        },
+        {
+          "texto": "inimigo",
+          "inicio_s": 39.808,
+          "fim_s": 40.109
+        },
+        {
+          "texto": "chegar",
+          "inicio_s": 40.169,
+          "fim_s": 40.47
+        }
+      ]
+    },
+    {
+      "texto": "Quando Aquiles finalmente apareceu, Heitor hesitou e correu.",
+      "inicio_s": 40.9,
+      "fim_s": 44.78,
+      "palavras": [
+        {
+          "texto": "Quando",
+          "inicio_s": 40.9,
+          "fim_s": 41.061
+        },
+        {
+          "texto": "Aquiles",
+          "inicio_s": 41.101,
+          "fim_s": 41.483
+        },
+        {
+          "texto": "finalmente",
+          "inicio_s": 41.543,
+          "fim_s": 42.066
+        },
+        {
+          "texto": "apareceu",
+          "inicio_s": 42.106,
+          "fim_s": 42.629
+        },
+        {
+          "texto": "Heitor",
+          "inicio_s": 43.252,
+          "fim_s": 43.594
+        },
+        {
+          "texto": "hesitou",
+          "inicio_s": 43.614,
+          "fim_s": 44.056
+        },
+        {
+          "texto": "e",
+          "inicio_s": 44.277,
+          "fim_s": 44.298
+        },
+        {
+          "texto": "correu",
+          "inicio_s": 44.378,
+          "fim_s": 44.7
+        }
+      ]
+    },
+    {
+      "texto": "Os dois deram três voltas completas ao redor da cidade, um perseguindo o outro debaixo do sol, diante dos olhos de todo o exército grego e de toda Troia.",
+      "inicio_s": 45.13,
+      "fim_s": 53.59,
+      "palavras": [
+        {
+          "texto": "Os",
+          "inicio_s": 45.15,
+          "fim_s": 45.25
+        },
+        {
+          "texto": "dois",
+          "inicio_s": 45.29,
+          "fim_s": 45.511
+        },
+        {
+          "texto": "deram",
+          "inicio_s": 45.551,
+          "fim_s": 45.772
+        },
+        {
+          "texto": "três",
+          "inicio_s": 45.872,
+          "fim_s": 46.092
+        },
+        {
+          "texto": "voltas",
+          "inicio_s": 46.152,
+          "fim_s": 46.453
+        },
+        {
+          "texto": "completas",
+          "inicio_s": 46.493,
+          "fim_s": 46.974
+        },
+        {
+          "texto": "ao",
+          "inicio_s": 47.014,
+          "fim_s": 47.075
+        },
+        {
+          "texto": "redor",
+          "inicio_s": 47.095,
+          "fim_s": 47.335
+        },
+        {
+          "texto": "da",
+          "inicio_s": 47.375,
+          "fim_s": 47.415
+        },
+        {
+          "texto": "cidade",
+          "inicio_s": 47.476,
+          "fim_s": 47.876
+        },
+        {
+          "texto": "um",
+          "inicio_s": 48.418,
+          "fim_s": 48.458
+        },
+        {
+          "texto": "perseguindo",
+          "inicio_s": 48.498,
+          "fim_s": 49.039
+        },
+        {
+          "texto": "o",
+          "inicio_s": 49.099,
+          "fim_s": 49.119
+        },
+        {
+          "texto": "outro",
+          "inicio_s": 49.2,
+          "fim_s": 49.44
+        },
+        {
+          "texto": "debaixo",
+          "inicio_s": 49.48,
+          "fim_s": 49.781
+        },
+        {
+          "texto": "do",
+          "inicio_s": 49.801,
+          "fim_s": 49.861
+        },
+        {
+          "texto": "sol",
+          "inicio_s": 49.921,
+          "fim_s": 50.122
+        },
+        {
+          "texto": "diante",
+          "inicio_s": 50.623,
+          "fim_s": 50.924
+        },
+        {
+          "texto": "dos",
+          "inicio_s": 50.964,
+          "fim_s": 51.084
+        },
+        {
+          "texto": "olhos",
+          "inicio_s": 51.164,
+          "fim_s": 51.345
+        },
+        {
+          "texto": "de",
+          "inicio_s": 51.385,
+          "fim_s": 51.445
+        },
+        {
+          "texto": "todo",
+          "inicio_s": 51.525,
+          "fim_s": 51.726
+        },
+        {
+          "texto": "o",
+          "inicio_s": 51.766,
+          "fim_s": 51.786
+        },
+        {
+          "texto": "exército",
+          "inicio_s": 51.826,
+          "fim_s": 52.267
+        },
+        {
+          "texto": "grego",
+          "inicio_s": 52.307,
+          "fim_s": 52.568
+        },
+        {
+          "texto": "e",
+          "inicio_s": 52.648,
+          "fim_s": 52.668
+        },
+        {
+          "texto": "de",
+          "inicio_s": 52.728,
+          "fim_s": 52.788
+        },
+        {
+          "texto": "toda",
+          "inicio_s": 52.888,
+          "fim_s": 53.089
+        },
+        {
+          "texto": "Troia",
+          "inicio_s": 53.189,
+          "fim_s": 53.47
+        }
+      ]
+    },
+    {
+      "texto": "No alto do Olimpo, Zeus pesou o destino dos dois guerreiros numa balança de ouro.",
+      "inicio_s": 53.94,
+      "fim_s": 59.04,
+      "palavras": [
+        {
+          "texto": "No",
+          "inicio_s": 53.98,
+          "fim_s": 54.04
+        },
+        {
+          "texto": "alto",
+          "inicio_s": 54.161,
+          "fim_s": 54.402
+        },
+        {
+          "texto": "do",
+          "inicio_s": 54.442,
+          "fim_s": 54.502
+        },
+        {
+          "texto": "Olimpo",
+          "inicio_s": 54.562,
+          "fim_s": 54.944
+        },
+        {
+          "texto": "Zeus",
+          "inicio_s": 55.466,
+          "fim_s": 55.687
+        },
+        {
+          "texto": "pesou",
+          "inicio_s": 55.727,
+          "fim_s": 56.048
+        },
+        {
+          "texto": "o",
+          "inicio_s": 56.109,
+          "fim_s": 56.129
+        },
+        {
+          "texto": "destino",
+          "inicio_s": 56.169,
+          "fim_s": 56.631
+        },
+        {
+          "texto": "dos",
+          "inicio_s": 56.671,
+          "fim_s": 56.791
+        },
+        {
+          "texto": "dois",
+          "inicio_s": 56.811,
+          "fim_s": 56.992
+        },
+        {
+          "texto": "guerreiros",
+          "inicio_s": 57.032,
+          "fim_s": 57.534
+        },
+        {
+          "texto": "numa",
+          "inicio_s": 57.875,
+          "fim_s": 58.056
+        },
+        {
+          "texto": "balança",
+          "inicio_s": 58.116,
+          "fim_s": 58.538
+        },
+        {
+          "texto": "de",
+          "inicio_s": 58.578,
+          "fim_s": 58.679
+        },
+        {
+          "texto": "ouro",
+          "inicio_s": 58.779,
+          "fim_s": 58.96
+        }
+      ]
+    },
+    {
+      "texto": "O prato de Heitor afundou: estava decidido, ele não sairia vivo daquele dia.",
+      "inicio_s": 59.39,
+      "fim_s": 63.95,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 59.43,
+          "fim_s": 59.45
+        },
+        {
+          "texto": "prato",
+          "inicio_s": 59.511,
+          "fim_s": 59.772
+        },
+        {
+          "texto": "de",
+          "inicio_s": 59.792,
+          "fim_s": 59.852
+        },
+        {
+          "texto": "Heitor",
+          "inicio_s": 59.872,
+          "fim_s": 60.173
+        },
+        {
+          "texto": "afundou",
+          "inicio_s": 60.214,
+          "fim_s": 60.615
+        },
+        {
+          "texto": "estava",
+          "inicio_s": 61.097,
+          "fim_s": 61.359
+        },
+        {
+          "texto": "decidido",
+          "inicio_s": 61.419,
+          "fim_s": 61.881
+        },
+        {
+          "texto": "ele",
+          "inicio_s": 62.202,
+          "fim_s": 62.343
+        },
+        {
+          "texto": "não",
+          "inicio_s": 62.383,
+          "fim_s": 62.504
+        },
+        {
+          "texto": "sairia",
+          "inicio_s": 62.564,
+          "fim_s": 62.986
+        },
+        {
+          "texto": "vivo",
+          "inicio_s": 63.086,
+          "fim_s": 63.347
+        },
+        {
+          "texto": "daquele",
+          "inicio_s": 63.388,
+          "fim_s": 63.669
+        },
+        {
+          "texto": "dia",
+          "inicio_s": 63.689,
+          "fim_s": 63.87
+        }
+      ]
+    },
+    {
+      "texto": "Foi aí que os deuses entraram de vez na história.",
+      "inicio_s": 64.3,
+      "fim_s": 66.3,
+      "palavras": [
+        {
+          "texto": "Foi",
+          "inicio_s": 64.3,
+          "fim_s": 64.401
+        },
+        {
+          "texto": "aí",
+          "inicio_s": 64.441,
+          "fim_s": 64.522
+        },
+        {
+          "texto": "que",
+          "inicio_s": 64.603,
+          "fim_s": 64.684
+        },
+        {
+          "texto": "os",
+          "inicio_s": 64.724,
+          "fim_s": 64.785
+        },
+        {
+          "texto": "deuses",
+          "inicio_s": 64.825,
+          "fim_s": 65.128
+        },
+        {
+          "texto": "entraram",
+          "inicio_s": 65.169,
+          "fim_s": 65.492
+        },
+        {
+          "texto": "de",
+          "inicio_s": 65.512,
+          "fim_s": 65.573
+        },
+        {
+          "texto": "vez",
+          "inicio_s": 65.613,
+          "fim_s": 65.775
+        },
+        {
+          "texto": "na",
+          "inicio_s": 65.795,
+          "fim_s": 65.856
+        },
+        {
+          "texto": "história",
+          "inicio_s": 65.876,
+          "fim_s": 66.219
+        }
+      ]
+    },
+    {
+      "texto": "Atena desceu disfarçada de Deífobo, irmão de Heitor, e prometeu ajudá-lo na luta.",
+      "inicio_s": 66.65,
+      "fim_s": 72.09,
+      "palavras": [
+        {
+          "texto": "Atena",
+          "inicio_s": 66.69,
+          "fim_s": 67.051
+        },
+        {
+          "texto": "desceu",
+          "inicio_s": 67.132,
+          "fim_s": 67.513
+        },
+        {
+          "texto": "disfarçada",
+          "inicio_s": 67.573,
+          "fim_s": 68.236
+        },
+        {
+          "texto": "de",
+          "inicio_s": 68.276,
+          "fim_s": 68.336
+        },
+        {
+          "texto": "Deífobo",
+          "inicio_s": 68.376,
+          "fim_s": 68.838
+        },
+        {
+          "texto": "irmão",
+          "inicio_s": 69.3,
+          "fim_s": 69.581
+        },
+        {
+          "texto": "de",
+          "inicio_s": 69.641,
+          "fim_s": 69.701
+        },
+        {
+          "texto": "Heitor",
+          "inicio_s": 69.701,
+          "fim_s": 70.042
+        },
+        {
+          "texto": "e",
+          "inicio_s": 70.625,
+          "fim_s": 70.645
+        },
+        {
+          "texto": "prometeu",
+          "inicio_s": 70.705,
+          "fim_s": 71.086
+        },
+        {
+          "texto": "ajudá-lo",
+          "inicio_s": 71.126,
+          "fim_s": 71.548
+        },
+        {
+          "texto": "na",
+          "inicio_s": 71.588,
+          "fim_s": 71.648
+        },
+        {
+          "texto": "luta",
+          "inicio_s": 71.709,
+          "fim_s": 71.97
+        }
+      ]
+    },
+    {
+      "texto": "Enganado, Heitor parou de fugir e virou de frente pra Aquiles.",
+      "inicio_s": 72.44,
+      "fim_s": 76.3,
+      "palavras": [
+        {
+          "texto": "Enganado",
+          "inicio_s": 72.46,
+          "fim_s": 72.983
+        },
+        {
+          "texto": "Heitor",
+          "inicio_s": 73.365,
+          "fim_s": 73.646
+        },
+        {
+          "texto": "parou",
+          "inicio_s": 73.686,
+          "fim_s": 73.948
+        },
+        {
+          "texto": "de",
+          "inicio_s": 73.988,
+          "fim_s": 74.048
+        },
+        {
+          "texto": "fugir",
+          "inicio_s": 74.089,
+          "fim_s": 74.45
+        },
+        {
+          "texto": "e",
+          "inicio_s": 74.853,
+          "fim_s": 74.873
+        },
+        {
+          "texto": "virou",
+          "inicio_s": 74.933,
+          "fim_s": 75.154
+        },
+        {
+          "texto": "de",
+          "inicio_s": 75.194,
+          "fim_s": 75.255
+        },
+        {
+          "texto": "frente",
+          "inicio_s": 75.335,
+          "fim_s": 75.637
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 75.657,
+          "fim_s": 75.757
+        },
+        {
+          "texto": "Aquiles",
+          "inicio_s": 75.797,
+          "fim_s": 76.199
+        }
+      ]
+    },
+    {
+      "texto": "Quando procurou o irmão ao seu lado, não havia ninguém.",
+      "inicio_s": 76.65,
+      "fim_s": 79.03,
+      "palavras": [
+        {
+          "texto": "Quando",
+          "inicio_s": 76.65,
+          "fim_s": 76.811
+        },
+        {
+          "texto": "procurou",
+          "inicio_s": 76.832,
+          "fim_s": 77.195
+        },
+        {
+          "texto": "o",
+          "inicio_s": 77.235,
+          "fim_s": 77.255
+        },
+        {
+          "texto": "irmão",
+          "inicio_s": 77.275,
+          "fim_s": 77.497
+        },
+        {
+          "texto": "ao",
+          "inicio_s": 77.517,
+          "fim_s": 77.578
+        },
+        {
+          "texto": "seu",
+          "inicio_s": 77.598,
+          "fim_s": 77.719
+        },
+        {
+          "texto": "lado",
+          "inicio_s": 77.759,
+          "fim_s": 77.981
+        },
+        {
+          "texto": "não",
+          "inicio_s": 78.243,
+          "fim_s": 78.344
+        },
+        {
+          "texto": "havia",
+          "inicio_s": 78.364,
+          "fim_s": 78.566
+        },
+        {
+          "texto": "ninguém",
+          "inicio_s": 78.606,
+          "fim_s": 78.909
+        }
+      ]
+    },
+    {
+      "texto": "Estava sozinho.",
+      "inicio_s": 79.38,
+      "fim_s": 80.3,
+      "palavras": [
+        {
+          "texto": "Estava",
+          "inicio_s": 79.421,
+          "fim_s": 79.728
+        },
+        {
+          "texto": "sozinho",
+          "inicio_s": 79.789,
+          "fim_s": 80.218
+        }
+      ]
+    },
+    {
+      "texto": "A luta foi rápida.",
+      "inicio_s": 80.65,
+      "fim_s": 81.69,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 80.67,
+          "fim_s": 80.691
+        },
+        {
+          "texto": "luta",
+          "inicio_s": 80.772,
+          "fim_s": 80.997
+        },
+        {
+          "texto": "foi",
+          "inicio_s": 81.037,
+          "fim_s": 81.16
+        },
+        {
+          "texto": "rápida",
+          "inicio_s": 81.221,
+          "fim_s": 81.608
+        }
+      ]
+    },
+    {
+      "texto": "Aquiles conhecia bem aquela armadura — era a mesma que Patroclo vestia quando morreu — e sabia exatamente onde a proteção falhava: um pequeno vão entre o ombro e o pescoço.",
+      "inicio_s": 82.04,
+      "fim_s": 92.44,
+      "palavras": [
+        {
+          "texto": "Aquiles",
+          "inicio_s": 82.06,
+          "fim_s": 82.441
+        },
+        {
+          "texto": "conhecia",
+          "inicio_s": 82.481,
+          "fim_s": 82.942
+        },
+        {
+          "texto": "bem",
+          "inicio_s": 83.002,
+          "fim_s": 83.142
+        },
+        {
+          "texto": "aquela",
+          "inicio_s": 83.202,
+          "fim_s": 83.383
+        },
+        {
+          "texto": "armadura",
+          "inicio_s": 83.403,
+          "fim_s": 83.823
+        },
+        {
+          "texto": "era",
+          "inicio_s": 84.545,
+          "fim_s": 84.665
+        },
+        {
+          "texto": "a",
+          "inicio_s": 84.705,
+          "fim_s": 84.725
+        },
+        {
+          "texto": "mesma",
+          "inicio_s": 84.745,
+          "fim_s": 85.006
+        },
+        {
+          "texto": "que",
+          "inicio_s": 85.046,
+          "fim_s": 85.126
+        },
+        {
+          "texto": "Patroclo",
+          "inicio_s": 85.186,
+          "fim_s": 85.587
+        },
+        {
+          "texto": "vestia",
+          "inicio_s": 85.627,
+          "fim_s": 86.068
+        },
+        {
+          "texto": "quando",
+          "inicio_s": 86.108,
+          "fim_s": 86.308
+        },
+        {
+          "texto": "morreu",
+          "inicio_s": 86.348,
+          "fim_s": 86.629
+        },
+        {
+          "texto": "e",
+          "inicio_s": 87.29,
+          "fim_s": 87.31
+        },
+        {
+          "texto": "sabia",
+          "inicio_s": 87.39,
+          "fim_s": 87.731
+        },
+        {
+          "texto": "exatamente",
+          "inicio_s": 87.791,
+          "fim_s": 88.372
+        },
+        {
+          "texto": "onde",
+          "inicio_s": 88.412,
+          "fim_s": 88.553
+        },
+        {
+          "texto": "a",
+          "inicio_s": 88.573,
+          "fim_s": 88.593
+        },
+        {
+          "texto": "proteção",
+          "inicio_s": 88.613,
+          "fim_s": 88.993
+        },
+        {
+          "texto": "falhava",
+          "inicio_s": 89.033,
+          "fim_s": 89.434
+        },
+        {
+          "texto": "um",
+          "inicio_s": 90.236,
+          "fim_s": 90.296
+        },
+        {
+          "texto": "pequeno",
+          "inicio_s": 90.336,
+          "fim_s": 90.697
+        },
+        {
+          "texto": "vão",
+          "inicio_s": 90.757,
+          "fim_s": 90.957
+        },
+        {
+          "texto": "entre",
+          "inicio_s": 91.057,
+          "fim_s": 91.238
+        },
+        {
+          "texto": "o",
+          "inicio_s": 91.298,
+          "fim_s": 91.318
+        },
+        {
+          "texto": "ombro",
+          "inicio_s": 91.458,
+          "fim_s": 91.679
+        },
+        {
+          "texto": "e",
+          "inicio_s": 91.799,
+          "fim_s": 91.819
+        },
+        {
+          "texto": "o",
+          "inicio_s": 91.859,
+          "fim_s": 91.879
+        },
+        {
+          "texto": "pescoço",
+          "inicio_s": 91.919,
+          "fim_s": 92.4
+        }
+      ]
+    },
+    {
+      "texto": "Foi ali que a lança entrou.",
+      "inicio_s": 92.79,
+      "fim_s": 94.69,
+      "palavras": [
+        {
+          "texto": "Foi",
+          "inicio_s": 92.81,
+          "fim_s": 92.952
+        },
+        {
+          "texto": "ali",
+          "inicio_s": 93.012,
+          "fim_s": 93.194
+        },
+        {
+          "texto": "que",
+          "inicio_s": 93.78,
+          "fim_s": 93.861
+        },
+        {
+          "texto": "a",
+          "inicio_s": 93.922,
+          "fim_s": 93.942
+        },
+        {
+          "texto": "lança",
+          "inicio_s": 94.003,
+          "fim_s": 94.245
+        },
+        {
+          "texto": "entrou",
+          "inicio_s": 94.306,
+          "fim_s": 94.589
+        }
+      ]
+    },
+    {
+      "texto": "Heitor caiu.",
+      "inicio_s": 95.04,
+      "fim_s": 95.98,
+      "palavras": [
+        {
+          "texto": "Heitor",
+          "inicio_s": 95.04,
+          "fim_s": 95.469
+        },
+        {
+          "texto": "caiu",
+          "inicio_s": 95.551,
+          "fim_s": 95.837
+        }
+      ]
+    },
+    {
+      "texto": "Antes de morrer, pediu que seu corpo fosse devolvido à família, pra um enterro digno.",
+      "inicio_s": 96.33,
+      "fim_s": 100.83,
+      "palavras": [
+        {
+          "texto": "Antes",
+          "inicio_s": 96.37,
+          "fim_s": 96.571
+        },
+        {
+          "texto": "de",
+          "inicio_s": 96.591,
+          "fim_s": 96.631
+        },
+        {
+          "texto": "morrer",
+          "inicio_s": 96.672,
+          "fim_s": 96.973
+        },
+        {
+          "texto": "pediu",
+          "inicio_s": 97.475,
+          "fim_s": 97.716
+        },
+        {
+          "texto": "que",
+          "inicio_s": 97.736,
+          "fim_s": 97.797
+        },
+        {
+          "texto": "seu",
+          "inicio_s": 97.837,
+          "fim_s": 97.937
+        },
+        {
+          "texto": "corpo",
+          "inicio_s": 97.997,
+          "fim_s": 98.238
+        },
+        {
+          "texto": "fosse",
+          "inicio_s": 98.279,
+          "fim_s": 98.5
+        },
+        {
+          "texto": "devolvido",
+          "inicio_s": 98.52,
+          "fim_s": 98.901
+        },
+        {
+          "texto": "à",
+          "inicio_s": 98.942,
+          "fim_s": 98.962
+        },
+        {
+          "texto": "família",
+          "inicio_s": 98.982,
+          "fim_s": 99.343
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 99.846,
+          "fim_s": 99.966
+        },
+        {
+          "texto": "um",
+          "inicio_s": 99.986,
+          "fim_s": 100.026
+        },
+        {
+          "texto": "enterro",
+          "inicio_s": 100.047,
+          "fim_s": 100.348
+        },
+        {
+          "texto": "digno",
+          "inicio_s": 100.408,
+          "fim_s": 100.73
+        }
+      ]
+    },
+    {
+      "texto": "Aquiles recusou.",
+      "inicio_s": 101.18,
+      "fim_s": 102.2,
+      "palavras": [
+        {
+          "texto": "Aquiles",
+          "inicio_s": 101.221,
+          "fim_s": 101.629
+        },
+        {
+          "texto": "recusou",
+          "inicio_s": 101.67,
+          "fim_s": 102.078
+        }
+      ]
+    },
+    {
+      "texto": "Amarrou o cadáver pelos calcanhares atrás do próprio carro de guerra e arrastou Heitor até o acampamento grego, diante dos olhos da cidade que ele tinha defendido sozinho.",
+      "inicio_s": 102.55,
+      "fim_s": 111.45,
+      "palavras": [
+        {
+          "texto": "Amarrou",
+          "inicio_s": 102.57,
+          "fim_s": 102.971
+        },
+        {
+          "texto": "o",
+          "inicio_s": 103.031,
+          "fim_s": 103.051
+        },
+        {
+          "texto": "cadáver",
+          "inicio_s": 103.091,
+          "fim_s": 103.532
+        },
+        {
+          "texto": "pelos",
+          "inicio_s": 103.552,
+          "fim_s": 103.773
+        },
+        {
+          "texto": "calcanhares",
+          "inicio_s": 103.793,
+          "fim_s": 104.314
+        },
+        {
+          "texto": "atrás",
+          "inicio_s": 104.374,
+          "fim_s": 104.615
+        },
+        {
+          "texto": "do",
+          "inicio_s": 104.655,
+          "fim_s": 104.695
+        },
+        {
+          "texto": "próprio",
+          "inicio_s": 104.735,
+          "fim_s": 105.036
+        },
+        {
+          "texto": "carro",
+          "inicio_s": 105.096,
+          "fim_s": 105.336
+        },
+        {
+          "texto": "de",
+          "inicio_s": 105.376,
+          "fim_s": 105.436
+        },
+        {
+          "texto": "guerra",
+          "inicio_s": 105.477,
+          "fim_s": 105.757
+        },
+        {
+          "texto": "e",
+          "inicio_s": 106.339,
+          "fim_s": 106.359
+        },
+        {
+          "texto": "arrastou",
+          "inicio_s": 106.439,
+          "fim_s": 106.84
+        },
+        {
+          "texto": "Heitor",
+          "inicio_s": 106.86,
+          "fim_s": 107.18
+        },
+        {
+          "texto": "até",
+          "inicio_s": 107.241,
+          "fim_s": 107.361
+        },
+        {
+          "texto": "o",
+          "inicio_s": 107.421,
+          "fim_s": 107.441
+        },
+        {
+          "texto": "acampamento",
+          "inicio_s": 107.481,
+          "fim_s": 107.982
+        },
+        {
+          "texto": "grego",
+          "inicio_s": 108.002,
+          "fim_s": 108.303
+        },
+        {
+          "texto": "diante",
+          "inicio_s": 108.804,
+          "fim_s": 109.105
+        },
+        {
+          "texto": "dos",
+          "inicio_s": 109.125,
+          "fim_s": 109.265
+        },
+        {
+          "texto": "olhos",
+          "inicio_s": 109.345,
+          "fim_s": 109.526
+        },
+        {
+          "texto": "da",
+          "inicio_s": 109.566,
+          "fim_s": 109.606
+        },
+        {
+          "texto": "cidade",
+          "inicio_s": 109.666,
+          "fim_s": 110.027
+        },
+        {
+          "texto": "que",
+          "inicio_s": 110.047,
+          "fim_s": 110.107
+        },
+        {
+          "texto": "ele",
+          "inicio_s": 110.127,
+          "fim_s": 110.227
+        },
+        {
+          "texto": "tinha",
+          "inicio_s": 110.267,
+          "fim_s": 110.468
+        },
+        {
+          "texto": "defendido",
+          "inicio_s": 110.488,
+          "fim_s": 110.949
+        },
+        {
+          "texto": "sozinho",
+          "inicio_s": 111.029,
+          "fim_s": 111.39
+        }
+      ]
+    },
+    {
+      "texto": "Em Troia, o choro de Andrômaca e Príamo ecoou pelas muralhas.",
+      "inicio_s": 111.8,
+      "fim_s": 116.1,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 111.82,
+          "fim_s": 111.9
+        },
+        {
+          "texto": "Troia",
+          "inicio_s": 111.981,
+          "fim_s": 112.302
+        },
+        {
+          "texto": "o",
+          "inicio_s": 112.825,
+          "fim_s": 112.845
+        },
+        {
+          "texto": "choro",
+          "inicio_s": 112.965,
+          "fim_s": 113.227
+        },
+        {
+          "texto": "de",
+          "inicio_s": 113.267,
+          "fim_s": 113.327
+        },
+        {
+          "texto": "Andrômaca",
+          "inicio_s": 113.367,
+          "fim_s": 113.809
+        },
+        {
+          "texto": "e",
+          "inicio_s": 113.85,
+          "fim_s": 113.87
+        },
+        {
+          "texto": "Príamo",
+          "inicio_s": 113.97,
+          "fim_s": 114.332
+        },
+        {
+          "texto": "ecoou",
+          "inicio_s": 114.894,
+          "fim_s": 115.236
+        },
+        {
+          "texto": "pelas",
+          "inicio_s": 115.296,
+          "fim_s": 115.497
+        },
+        {
+          "texto": "muralhas",
+          "inicio_s": 115.517,
+          "fim_s": 115.959
+        }
+      ]
+    },
+    {
+      "texto": "A guerra ainda não tinha terminado.",
+      "inicio_s": 116.45,
+      "fim_s": 118.69,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 116.49,
+          "fim_s": 116.511
+        },
+        {
+          "texto": "guerra",
+          "inicio_s": 116.571,
+          "fim_s": 116.854
+        },
+        {
+          "texto": "ainda",
+          "inicio_s": 117.54,
+          "fim_s": 117.762
+        },
+        {
+          "texto": "não",
+          "inicio_s": 117.822,
+          "fim_s": 117.923
+        },
+        {
+          "texto": "tinha",
+          "inicio_s": 117.964,
+          "fim_s": 118.145
+        },
+        {
+          "texto": "terminado",
+          "inicio_s": 118.185,
+          "fim_s": 118.65
+        }
+      ]
+    },
+    {
+      "texto": "Mas, com a morte de Heitor, Troia já tinha perdido o seu maior herói.",
+      "inicio_s": 119.04,
+      "fim_s": 122.76,
+      "palavras": [
+        {
+          "texto": "Mas",
+          "inicio_s": 119.06,
+          "fim_s": 119.221
+        },
+        {
+          "texto": "com",
+          "inicio_s": 119.281,
+          "fim_s": 119.402
+        },
+        {
+          "texto": "a",
+          "inicio_s": 119.442,
+          "fim_s": 119.462
+        },
+        {
+          "texto": "morte",
+          "inicio_s": 119.543,
+          "fim_s": 119.844
+        },
+        {
+          "texto": "de",
+          "inicio_s": 119.885,
+          "fim_s": 119.925
+        },
+        {
+          "texto": "Heitor",
+          "inicio_s": 119.945,
+          "fim_s": 120.287
+        },
+        {
+          "texto": "Troia",
+          "inicio_s": 120.689,
+          "fim_s": 120.97
+        },
+        {
+          "texto": "já",
+          "inicio_s": 121.031,
+          "fim_s": 121.111
+        },
+        {
+          "texto": "tinha",
+          "inicio_s": 121.192,
+          "fim_s": 121.393
+        },
+        {
+          "texto": "perdido",
+          "inicio_s": 121.433,
+          "fim_s": 121.835
+        },
+        {
+          "texto": "o",
+          "inicio_s": 121.855,
+          "fim_s": 121.895
+        },
+        {
+          "texto": "seu",
+          "inicio_s": 121.915,
+          "fim_s": 122.036
+        },
+        {
+          "texto": "maior",
+          "inicio_s": 122.076,
+          "fim_s": 122.358
+        },
+        {
+          "texto": "herói",
+          "inicio_s": 122.398,
+          "fim_s": 122.659
+        }
+      ]
+    }
+  ]
+}
