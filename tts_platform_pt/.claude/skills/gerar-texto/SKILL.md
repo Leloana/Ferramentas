@@ -3,11 +3,13 @@ name: gerar-texto
 description: |
   Gera roteiro(s) de narração (texto.md) e legenda/hashtags (descricao.md) para um novo vídeo curto
   ou série de vídeos da tts_platform_pt, no mesmo estilo e formato da série "História da Humanidade"
-  (Projetos/Video_1/historia_humanidade*). Use quando o usuário invocar `/gerar-texto <tema> <partes>`
-  (ex.: "/gerar-texto dinossauros 4") ou pedir em linguagem natural pra criar/gerar textos, roteiro(s)
-  ou um novo projeto de vídeo sobre um tema. Cria rascunhos em Projetos/ideias/<nome>/ com texto.md,
-  descricao.md e vozes.md por parte — prontos pra revisar e, quando aprovados, promover pra
-  Projetos/Video_N/<nome>[_parteN]/ e alimentar scripts/gerar_video.py.
+  (Projetos/Video_1/historia_humanidade*). Padrão (opção principal): 1 vídeo avulso de ~120 segundos —
+  só vira série de N partes, ou usa outra duração, se o usuário pedir isso explicitamente no prompt
+  (ex.: "/gerar-texto dinossauros 4" ou "roteiro de 60 segundos sobre polvos"). Use quando o usuário
+  invocar `/gerar-texto <tema>` (com ou sem número de partes/duração) ou pedir em linguagem natural
+  pra criar/gerar textos, roteiro(s) ou um novo projeto de vídeo sobre um tema. Cria rascunhos em
+  Projetos/ideias/<nome>/ com texto.md, descricao.md e vozes.md — prontos pra revisar e, quando
+  aprovados, promover pra Projetos/Video_N/<nome>[_parteN]/ e alimentar scripts/gerar_video.py.
 ---
 
 # Gerar Texto — Roteiros para Vídeos Curtos
@@ -19,11 +21,18 @@ Para o pipeline completo (áudio, imagens, montagem), ver
 
 ## 1. Interpretar os argumentos
 
-- Formato esperado: `/gerar-texto <tema> <número de partes>` — o último token dos args que for um
-  número inteiro é N (partes); o resto é o `<tema>`.
-- Sem número de partes: pergunte quantas partes antes de escrever qualquer coisa.
-- N alto (mais de ~8): confirme com o usuário antes de gerar tudo — é bastante texto/vídeo pra revisar
-  de uma vez.
+- **Padrão (opção principal): 1 vídeo avulso de ~120 segundos** — sem série, sem perguntar quantas
+  partes. Use isso sempre que o prompt não especificar duração nem número de partes.
+- Só fuja do padrão se o prompt pedir isso explicitamente:
+  - **Número de partes/série**: `/gerar-texto <tema> <N>` (ex.: "/gerar-texto dinossauros 4") — o
+    último token dos args que for um número inteiro é N; o resto é o `<tema>`. Vale também pedido em
+    linguagem natural ("série de N partes", "quero isso em N vídeos"). Cada parte segue a duração-alvo
+    do passo 4 (120s, a menos que uma duração diferente também tenha sido pedida).
+  - **Duração diferente de 120s**: pedido explícito tipo "um vídeo de 60 segundos", "faz mais curto",
+    "uns 3 minutos". Ajuste a contagem de palavras-alvo proporcionalmente (ver passo 4), mantendo N=1
+    a menos que série também tenha sido pedida.
+- N alto (mais de ~8 partes): confirme com o usuário antes de gerar tudo — é bastante texto/vídeo pra
+  revisar de uma vez.
 - Confira `Projetos/ideias/` e `Projetos/Video_*/` antes de escrever: se já existir uma pasta com o
   slug que você pretende usar (passo 5), avise o usuário em vez de sobrescrever.
 
@@ -48,8 +57,12 @@ os vikings navegavam sem bússola" já têm ângulo definido — vá direto pro 
 
 ## 3. Planejar o arco das N partes
 
-Antes de escrever o texto final de cada parte, decida (mentalmente ou em rascunho curto, não precisa
-mostrar ao usuário) o sub-tema/foco de cada uma das N partes, na ordem que fará elas se encaixarem.
+Se N=1 (padrão), pule direto pro passo 4 — não há arco entre partes, só o sub-tema/ângulo já definido
+no passo 2.
+
+Se N>1 (série pedida explicitamente), antes de escrever o texto final de cada parte, decida (mentalmente
+ou em rascunho curto, não precisa mostrar ao usuário) o sub-tema/foco de cada uma das N partes, na ordem
+que fará elas se encaixarem.
 
 - **Série narrativa/cronológica**: cada parte emenda na anterior sem recapitular — a referência nunca
   reexplica o que já foi dito (a parte 2 de "História da Humanidade" começa em "As populações
@@ -61,8 +74,14 @@ mostrar ao usuário) o sub-tema/foco de cada uma das N partes, na ordem que far�
 
 Regras de estilo extraídas da série de referência (`Projetos/Video_1/historia_humanidade*/texto.md`):
 
-- **~130-150 palavras por parte** (faixa medida nos 5 textos existentes: 106-155, média ~135) — é o
-  que rende ~1 minuto de fala no XTTS-v2. Conte as palavras antes de fechar cada parte e ajuste.
+- **Taxa de fala medida no XTTS-v2: ~130-150 palavras por minuto** (faixa medida nos 5 textos de
+  "História da Humanidade": 106-155 palavras cada, ~1 minuto de fala cada, média ~135 palavras/min).
+- **Padrão desta skill — vídeo de 120s: ~260-300 palavras por parte** (o dobro da faixa acima, escalado
+  linearmente; ainda não medido diretamente num texto de 120s — se ao sintetizar a duração real destoar
+  bastante de 120s, ajuste essa faixa pra próxima vez). Conte as palavras antes de fechar cada parte e
+  ajuste.
+- **Duração diferente pedida explicitamente** (passo 1): escale pela mesma taxa (~135 palavras/minuto)
+  antes de escrever — ex.: "60 segundos" ≈ 130-150 palavras; "3 minutos" ≈ 390-450 palavras.
 - **Texto puro da narração**: só o parágrafo corrido, sem título markdown, sem numeração, sem marcação
   de frase — `gerar_video.py` sintetiza o arquivo exatamente como está (a divisão em frases pro TTS é
   automática, via pontuação).
@@ -97,9 +116,9 @@ Regras de estilo extraídas da série de referência (`Projetos/Video_1/historia
   "A terceira foi em..." — e o fechamento deve fazer o callback explícito pra esse mesmo número (ex.:
   "Três vezes, a mesma palavra foi usada pra descrever coisas bem diferentes: uma alma, uma nota
   escolar, um cálculo estatístico."). Sem esse fio condutor repetido, cada bloco vira um fato solto e
-  quem assiste perde o porquê de estar ali. Vale tanto pra roteiros de ~1min quanto, com mais razão
-  ainda, pros mais longos (>2min) que o usuário pedir com mais aprofundamento — mais conteúdo por texto
-  aumenta a chance de confundir se não houver sinalização.
+  quem assiste perde o porquê de estar ali. Vale já no padrão desta skill (~120s/260-300 palavras
+  costuma cobrir 2-3 sub-tópicos), com mais razão ainda pra durações maiores (>2min) pedidas
+  explicitamente — mais conteúdo por texto aumenta a chance de confundir se não houver sinalização.
 - **Frases médias, tom documentário/expositivo, português claro** — sujeito+ação, sem empilhar muitas
   orações subordinadas. Releia em voz alta pra sentir a cadência.
 - **Evite duas datas completas ("dia de mês de ano") na mesma frase** — bug conhecido do XTTS-v2 em
@@ -117,10 +136,11 @@ Texto gerado por esta skill é **rascunho**, não produção: não crie diretame
 associados). Em vez disso, tudo entra em `Projetos/ideias/<slug>/`:
 
 - Gere um slug do tema+ângulo (minúsculo, sem acento, `_` no lugar de espaço).
-- **N = 1** (vídeo avulso): os arquivos vão direto em `Projetos/ideias/<slug>/`.
-- **N > 1** (série): uma subpasta por parte, `Projetos/ideias/<slug>/parte1/`,
-  `Projetos/ideias/<slug>/parte2/`, ... — os nomes espelham exatamente o que cada parte vai virar
-  depois de promovida (ver passo 7), só que agrupadas dentro de uma pasta só pra facilitar review.
+- **N = 1** (padrão, vídeo avulso de ~120s): os arquivos vão direto em `Projetos/ideias/<slug>/`.
+- **N > 1** (série, só quando pedida explicitamente): uma subpasta por parte,
+  `Projetos/ideias/<slug>/parte1/`, `Projetos/ideias/<slug>/parte2/`, ... — os nomes espelham
+  exatamente o que cada parte vai virar depois de promovida (ver passo 7), só que agrupadas dentro de
+  uma pasta só pra facilitar review.
 - Se N = 1, não inclua indicador de parte no `descricao.md`.
 
 Em cada pasta (ou subpasta de parte), crie três arquivos:

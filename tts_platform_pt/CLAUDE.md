@@ -204,7 +204,7 @@ Projetos/Video_N/<nome-do-projeto>/
   nomear arquivo, e o texto completo já fica salvo em `texto_usado` dentro
   do próprio manifesto. Depois de gerado, o roteiro fonte pode ser
   arquivado/renomeado pra `texto.md` sem precisar regerar nada.
-- **Roteiro longo (> ~1min de fala) vira série, uma pasta por parte, todas
+- **Roteiro longo (> ~2min de fala) vira série, uma pasta por parte, todas
   dentro do mesmo `Video_N/`**: `Projetos/Video_N/<nome-do-projeto>_parte2/`,
   `_parte3/`, ... (a primeira parte fica na pasta sem sufixo, ex.:
   `Video_1/historia_humanidade/` = parte 1). Cada pasta de parte é um
@@ -212,11 +212,16 @@ Projetos/Video_N/<nome-do-projeto>/
   próprio `texto.md`/`vozes.md`/manifestos/`imagens/`/`video/`), não uma
   subpasta. `gerar_video.py` não corta/agrupa nada — sintetiza o `texto.md`
   de cada pasta exatamente como está; por isso o roteiro precisa ser
-  pré-dividido à mão em blocos de ~130-140 palavras (mesma faixa de taxa de
-  fala já medida no projeto) ANTES de gerar áudio, um `texto.md` por pasta
-  de parte. Isso também garante que todas as vozes usem exatamente o mesmo
-  texto por parte (testar uma voz mais rápida ou mais lenta não muda onde o
-  texto é cortado, porque o corte não depende mais de taxa medida).
+  pré-dividido à mão em blocos de ~260-300 palavras (mesma faixa de taxa de
+  fala já medida no projeto, ~2min por bloco) ANTES de gerar áudio, um
+  `texto.md` por pasta de parte. Isso também garante que todas as vozes
+  usem exatamente o mesmo texto por parte (testar uma voz mais rápida ou
+  mais lenta não muda onde o texto é cortado, porque o corte não depende
+  mais de taxa medida). **Padrão atual: vídeo avulso de ~120s (~260-300
+  palavras) num `texto.md` só** — ver skill `gerar-texto`
+  (`.claude/skills/gerar-texto/SKILL.md`); só vira série de fato quando o
+  roteiro passa dessa duração (pedido explícito de mais aprofundamento) ou
+  quando o usuário pede uma série de N partes.
 - **Um só `_imagens_manifesto.json` por projeto, não um por voz**: como as
   imagens são geradas a partir do texto de cada frase (não da voz),
   manifestos de imagem de vozes diferentes do mesmo roteiro saem idênticos
@@ -262,7 +267,7 @@ cortar em blocos) usando o servidor local via HTTP.
   pra saber depois com que cadência cada áudio foi gerado.
 - Por padrão `--normalizar` fica desligado (mesmo padrão do checkbox do
   front): a normalização via Ollama é opt-in.
-- Não agrupa/corta o texto em blocos de ~1 min — isso é responsabilidade de
+- Não agrupa/corta o texto em blocos de ~2 min — isso é responsabilidade de
   quem escreve o `texto.md` de cada parte (ver "Roteiro longo vira série"
   na convenção de pastas acima). Um roteiro `.md` = um `.wav`.
 
