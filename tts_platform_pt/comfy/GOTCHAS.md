@@ -294,3 +294,59 @@ aparecer em outras frases com cenário arquitetônico/monumental, considere
 adicionar essa negação como parte do sufixo padrão do prompt em vez de
 corrigir caso a caso — ainda não fiz essa mudança porque só apareceu uma
 vez em ~56 gerações entre os dois projetos testados.
+
+## 11. Deriva de armadura pra estilo medieval europeu: o fix é ancorar o período/cultura no prompt POSITIVO, não negative prompt/cfg
+
+Sintoma (`Video_10`): frases sobre Heitor/Aquiles com prompt tipo "wearing
+bronze armor and a blue cloak" saíam como cavaleiro medieval europeu de
+armadura de placas cinza — nada de bronze, nada de estética grega/troiana,
+mesmo o prompt dizendo "bronze armor" explicitamente.
+
+**Hipótese testada e descartada**: que desse pra corrigir isso ligando um
+negative prompt de verdade (o workflow padrão usa `ConditioningZeroOut`,
+sem negative real) e subindo o `cfg` um pouco acima de `1` (`KSampler.cfg`
+vem fixo em `1` no workflow t2i — nesse valor a fórmula de classifier-free
+guidance colapsa pro puro positivo, `negativo + cfg*(positivo-negativo)`
+com `cfg=1` = `positivo`; o negative literalmente não tem efeito nenhum
+matematicamente). Testei `cfg=1.3` e `cfg=1.6` com um `CLIPTextEncode`
+negativo de verdade citando "medieval European plate armor, full-face
+closed helmet" explicitamente — **usando o mesmo prompt fraco que já tinha
+derivado**, o resultado saiu igualzinho ao de antes: armadura medieval de
+placas, mesmo com o negative dizendo pra evitar exatamente isso. Ou seja,
+`cfg=1.3`/`1.6` ainda é fraco demais pra dar peso real ao negative nesse
+modelo/scheduler (não testei valores mais altos por risco de degradar a
+qualidade — Z-Image-Turbo foi destilado especificamente pra rodar bem em
+`cfg=1`/poucos steps, e esse é justamente o motivo do
+`ConditioningZeroOut` no workflow original).
+
+**O que resolveu de verdade**: ancorar cultura/período explicitamente no
+prompt POSITIVO — trocar "bronze armor" por "ancient Greek-style bronze
+cuirass"/"bronze Corinthian-style helmet"/"bronze spear", e apensar "no
+medieval armor" no final do próprio positivo (não como negative prompt
+separado, só mais uma cláusula do texto que já vai pro `CLIPTextEncode`).
+Testado isolando a variável: MESMO seed, MESMO cfg=1, SEM negative — só
+trocando "bronze armor" por "ancient Greek bronze armor" no positivo já
+foi suficiente pra sair com armadura de bronze grega correta,
+consistentemente. **Conclusão prática**: pra esse modelo, a alavanca real
+de estilo/período é a especificidade do prompt positivo, não
+negative/cfg — se um elemento (arquitetura, vestimenta, armadura) sair
+com o "estilo errado", primeiro tente nomear a cultura/período
+explicitamente no prompt antes de mexer em cfg ou negative prompt (que
+exigiria reescrever o workflow e, por esse teste, nem resolveu o
+problema).
+
+**Efeito colateral do reforço de "bronze" — cuidado pra não virar estátua**:
+depois de aplicar a correção acima em todas as 28 frases do `Video_10`
+(reforçando "bronze" em toda armadura/arma), duas frases especificamente
+("Achilles... in bronze armor" e "an ancient Greek bronze war chariot...")
+saíram com a PELE do personagem e a PELAGEM dos cavalos também com
+aparência de bronze/metal (como uma estátua), não só a armadura/os
+arreios. O gatilho parece ser a palavra "bronze" aparecendo perto demais
+de "warrior"/"horses" sem deixar claro que só o equipamento é de bronze, a
+pessoa/animal continua de carne e osso. **Corrigido** especificando
+separadamente ("a man with tanned skin, wearing a bronze cuirass..."/"two
+brown horses... with bronze fittings") e apensando `natural human skin
+tone, not a statue` / `natural horse coats, not statues`. Ou seja, o
+reforço de material tem que ser aplicado ao objeto certo (armadura, arma,
+arreio) e não ao sujeito (pessoa, animal) — reforçar demais em cima do
+sujeito também tende a "vazar" pra pele/pelo.

@@ -2,171 +2,169 @@
   {
     "frase": 1,
     "arquivo": "texto_01.png",
-    "prompt_final": "Achilles the Greek warrior, young man with short curly golden hair, clean-shaven, bronze armor with an eagle relief on the chest and a red horsehair-crested bronze helmet, standing alone on a battlefield at dusk, fists clenched, burning city in the distance, cinematic, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00036_.png"
+    "prompt_final": "Achilles, ancient Greek warrior, young man with short curly golden hair, clean-shaven, wearing a bronze Greek cuirass with an eagle relief and a bronze Corinthian-style helmet with a red horsehair crest, bronze greaves, standing alone on a battlefield at dusk, fists clenched, burning city in the distance, cinematic, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00075_.png"
   },
   {
     "frase": 2,
     "arquivo": "texto_02.png",
-    "prompt_final": "Hector the Trojan prince, bearded man with dark wavy hair, bronze armor and a blue cloak, standing over a fallen Greek warrior in golden armor on a dusty battlefield at dusk, grim expression, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00037_.png"
+    "prompt_final": "Hector, ancient Trojan prince, bearded man with dark wavy hair, wearing an ancient Greek-style bronze cuirass and a blue cloak, standing over a fallen Greek warrior in bronze armor on a dusty battlefield at dusk, grim expression, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00076_.png"
   },
   {
     "frase": 3,
     "arquivo": "texto_03.png",
-    "prompt_final": "close-up of Achilles, young golden-haired Greek warrior in bronze armor with red-crested helmet, furious expression, war camp tents blurred in the background, dramatic lighting, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00038_.png"
+    "prompt_final": "close-up of Achilles, young golden-haired Greek warrior wearing a bronze Corinthian-style helmet with a red horsehair crest and a bronze cuirass, furious expression, ancient Greek war camp tents blurred in the background, dramatic lighting, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00077_.png"
   },
   {
     "frase": 4,
     "arquivo": "texto_04.png",
-    "prompt_final": "Achilles putting on ornate bronze armor that glows with divine light, forge sparks flying, other Greek warriors watching in awe, dramatic mythological scene, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00039_.png"
+    "prompt_final": "Achilles, ancient Greek warrior with golden curly hair, putting on an ornate bronze Greek cuirass that glows with divine light, forge sparks flying, other Greek warriors in bronze armor watching in awe, dramatic mythological scene, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00078_.png"
   },
   {
     "frase": 5,
     "arquivo": "texto_05.png",
-    "prompt_final": "Hector, bearded Trojan prince in bronze armor and blue cloak, standing on the stone walls of Troy looking out over a distant battlefield, worried expression, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00040_.png"
+    "prompt_final": "Hector, bearded Trojan prince, wearing an ancient Greek-style bronze cuirass and a blue cloak, standing on the stone walls of Troy looking out over a distant battlefield, worried expression, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00079_.png"
   },
   {
     "frase": 6,
     "arquivo": "texto_06.png",
     "prompt_final": "elderly King Priam in white robes pleading with his son Hector, hands outstretched, dramatic evening light, plain stone wall background, no signage, no text, no writing, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00064_.png"
+    "arquivo_comfy": "ZImageTurbo_00080_.png"
   },
   {
     "frase": 7,
     "arquivo": "texto_07.png",
     "prompt_final": "Queen Hecuba, an older woman in flowing robes, weeping on the stone walls of Troy, looking down toward the plain below, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00042_.png"
+    "arquivo_comfy": "ZImageTurbo_00081_.png"
   },
   {
     "frase": 8,
     "arquivo": "texto_08.png",
-    "prompt_final": "Hector, bearded Trojan prince in bronze armor and blue cloak, standing alone before the closed gates of Troy, spear in hand, resolute expression, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00043_.png"
+    "prompt_final": "Hector, bearded Trojan prince, wearing an ancient Greek-style bronze cuirass, a blue cloak and a bronze Corinthian-style helmet with a red horsehair crest, standing alone before the closed gates of Troy, bronze spear in hand, resolute expression, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00082_.png"
   },
   {
     "frase": 9,
     "arquivo": "texto_09.png",
-    "prompt_final": "Trojan soldiers retreating through the city gates in a hurry, while Hector stands alone outside facing the empty plain, dust in the air, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00044_.png"
+    "prompt_final": "Trojan soldiers in ancient Greek-style bronze armor retreating through the city gates in a hurry, while Hector stands alone outside facing the empty plain, dust in the air, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00083_.png"
   },
   {
     "frase": 10,
     "arquivo": "texto_10.png",
-    "prompt_final": "Hector the bearded Trojan prince running in fear across a dusty plain, Achilles the golden-haired Greek warrior chasing him in the distance, dramatic action scene, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00045_.png"
+    "prompt_final": "Hector, bearded Trojan prince in ancient Greek-style bronze armor, running in fear across a dusty plain, Achilles the golden-haired Greek warrior in bronze armor chasing him in the distance, dramatic action scene, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00084_.png"
   },
   {
     "frase": 11,
     "arquivo": "texto_11.png",
-    "prompt_final": "aerial cinematic view of two armored warriors running around the massive stone walls of a besieged ancient city, dust clouds trailing, armies watching from below, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00046_.png"
+    "prompt_final": "aerial cinematic view of two warriors in ancient Greek bronze armor running around the massive stone walls of a besieged ancient city, dust clouds trailing, armies watching from below, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00085_.png"
   },
   {
     "frase": 12,
     "arquivo": "texto_12.png",
     "prompt_final": "the god Zeus on Mount Olympus among clouds, holding golden scales with two tiny warrior figures balanced on them, dramatic divine scene, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00047_.png"
+    "arquivo_comfy": "ZImageTurbo_00086_.png"
   },
   {
     "frase": 13,
     "arquivo": "texto_13.png",
     "prompt_final": "a golden balance scale (justice scale) with two hanging pans, floating among dark storm clouds, one pan sinking lower than the other, dramatic lightning in the sky, mythological object, not a creature, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00065_.png"
+    "arquivo_comfy": "ZImageTurbo_00087_.png"
   },
   {
     "frase": 14,
     "arquivo": "texto_14.png",
-    "prompt_final": "the goddess Athena descending from bright clouds in golden light, spear in hand, divine armor, dramatic mythological scene, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00049_.png"
+    "prompt_final": "the goddess Athena descending from bright clouds in golden light, ancient Greek bronze armor, spear in hand, divine radiance, dramatic mythological scene, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00088_.png"
   },
   {
     "frase": 15,
     "arquivo": "texto_15.png",
-    "prompt_final": "Athena disguised as a Trojan warrior in bronze armor standing beside Hector on a dusty battlefield, subtle deceptive smile, Hector unaware, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00050_.png"
+    "prompt_final": "Athena disguised as a male Trojan warrior in ancient Greek-style bronze armor, standing beside Hector on a dusty battlefield, subtle deceptive smile, Hector unaware, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00089_.png"
   },
   {
     "frase": 16,
     "arquivo": "texto_16.png",
-    "prompt_final": "Hector, bearded Trojan prince in bronze armor, turning around to face Achilles with spear raised, determined expression, dusty battlefield, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00051_.png"
+    "prompt_final": "Hector, bearded Trojan prince in ancient Greek-style bronze armor, turning around to face Achilles with a bronze spear raised, determined expression, dusty battlefield, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00090_.png"
   },
   {
     "frase": 17,
     "arquivo": "texto_17.png",
-    "prompt_final": "Hector looking around confused on an empty battlefield, no one beside him, dust settling, bronze armor and blue cloak, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00066_.png",
-    "referencia": "Projetos\\Video_10\\morte_de_heitor\\imagens\\texto_08.png",
-    "referencia_denoise": 0.5
+    "prompt_final": "Hector, bearded Trojan prince wearing an ancient Greek-style bronze cuirass, a blue cloak and a bronze Corinthian-style helmet with a red horsehair crest, looking around confused on an empty battlefield, no one beside him, dust settling, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00091_.png"
   },
   {
     "frase": 18,
     "arquivo": "texto_18.png",
-    "prompt_final": "wide shot of Hector standing alone facing Achilles across a dusty battlefield, both warriors in bronze armor, tension in the air, cinematic, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00053_.png"
+    "prompt_final": "wide shot of Hector facing Achilles across a dusty battlefield, both warriors wearing ancient Greek-style bronze armor and bronze helmets with horsehair crests, tension in the air, cinematic, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00092_.png"
   },
   {
     "frase": 19,
     "arquivo": "texto_19.png",
-    "prompt_final": "two armored warriors clashing with spears in violent combat, dust and motion blur, dramatic ancient battle scene, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00054_.png"
+    "prompt_final": "two ancient Greek warriors in bronze cuirasses and bronze Corinthian-style helmets clashing with bronze spears in violent combat, dust and motion blur, dramatic ancient battle scene, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00093_.png"
   },
   {
     "frase": 20,
     "arquivo": "texto_20.png",
-    "prompt_final": "close-up of Achilles aiming his spear at a small gap in Hector's bronze armor near the neck, intense focused expression, dust in the air, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00055_.png"
+    "prompt_final": "close-up of Achilles, golden-haired Greek warrior in bronze armor, aiming his bronze spear at a small gap in Hector's bronze cuirass near the neck, intense focused expression, dust in the air, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00094_.png"
   },
   {
     "frase": 21,
     "arquivo": "texto_21.png",
-    "prompt_final": "a bronze spear striking through armor at the neck, Hector staggering backward, dramatic and intense battle moment, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00056_.png"
+    "prompt_final": "a bronze Greek spear striking through bronze armor at the neck, Hector staggering backward, dramatic and intense battle moment, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00095_.png"
   },
   {
     "frase": 22,
     "arquivo": "texto_22.png",
-    "prompt_final": "Hector the bearded Trojan prince with dark wavy hair, wearing bronze armor with a blue cloak and a red-crested bronze helmet, falling backward onto the dusty ground, spear dropped beside him, dramatic battlefield scene, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00069_.png"
+    "prompt_final": "Hector, bearded Trojan prince with dark wavy hair, wearing an ancient Greek-style bronze cuirass, a blue cloak and a bronze Corinthian-style helmet with a red horsehair crest, falling backward onto the dusty ground, bronze spear dropped beside him, dramatic battlefield scene, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00096_.png"
   },
   {
     "frase": 23,
     "arquivo": "texto_23.png",
-    "prompt_final": "Hector lying on the ground, reaching a hand weakly toward Achilles standing over him, pleading expression, dusty battlefield, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00058_.png"
+    "prompt_final": "Hector lying on the ground in bronze Greek armor, reaching a hand weakly toward Achilles standing over him, pleading expression, dusty battlefield, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00097_.png"
   },
   {
     "frase": 24,
     "arquivo": "texto_24.png",
-    "prompt_final": "Achilles standing over the fallen Hector, arms crossed, cold and unmoved expression, dusty battlefield at dusk, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00059_.png"
+    "prompt_final": "Achilles, a man with golden curly hair and tanned skin, wearing a bronze Greek cuirass and bronze greaves, standing over the fallen Hector, arms crossed, cold and unmoved expression, dusty battlefield at dusk, no medieval armor, natural human skin tone, not a statue, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00103_.png"
   },
   {
     "frase": 25,
     "arquivo": "texto_25.png",
-    "prompt_final": "an ancient bronze war chariot pulled by galloping horses dragging a body across a dusty plain, dramatic and somber cinematic scene, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00060_.png"
+    "prompt_final": "an ancient Greek-style wooden war chariot with bronze fittings, pulled by two brown horses at a gallop, dragging a body across a dusty plain, dramatic and somber cinematic scene, natural horse coats, not statues, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00104_.png"
   },
   {
     "frase": 26,
     "arquivo": "texto_26.png",
     "prompt_final": "Andromache and King Priam weeping together atop the stone walls of Troy, grief-stricken expressions, evening light, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00061_.png"
+    "arquivo_comfy": "ZImageTurbo_00100_.png"
   },
   {
     "frase": 27,
     "arquivo": "texto_27.png",
-    "prompt_final": "wide shot of the walled city of Troy at dusk, war camp fires glowing in the distance, tense atmosphere, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00062_.png"
+    "prompt_final": "wide shot of the walled city of Troy at dusk, ancient Greek war camp fires glowing in the distance, tense atmosphere, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00101_.png"
   },
   {
     "frase": 28,
     "arquivo": "texto_28.png",
-    "prompt_final": "an empty battlefield at sunset, a fallen bronze shield and spear lying in the foreground, somber and quiet mood, cinematic wide shot, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00063_.png"
+    "prompt_final": "an empty battlefield at sunset, a fallen bronze Greek shield and bronze spear lying in the foreground, somber and quiet mood, cinematic wide shot, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00102_.png"
   }
 ]
