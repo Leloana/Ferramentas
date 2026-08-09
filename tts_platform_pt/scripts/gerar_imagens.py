@@ -95,6 +95,19 @@ _NODE_SAMPLER = "30:3"
 _NODE_RESOLUCAO = "49"
 _NODE_SAVE = "29"
 
+# Nós do workflow alternativo `image_zimage_turbo_t2i.json` (Z-Image-Turbo,
+# ver comfy/GOTCHAS.md item 8 — trocado pra evitar o desvio pra anime do
+# krea2_turbo). Esse workflow não tem passo de refino (o CLIPTextEncode do
+# Z-Image não é multimodal/LLM como o qwen3vl_4b do krea2, então não dá pra
+# reaproveitar o node TextGenerate) — o texto vai direto pro CLIPTextEncode,
+# o que é seguro aqui porque `--prompts` já pede pra escrever a cena concreta
+# à mão (ver texto_prompts.json em CLAUDE.md), não a frase abstrata da
+# narração.
+_ZIMAGE_NODE_PROMPT = "5"
+_ZIMAGE_NODE_RESOLUCAO = "7"
+_ZIMAGE_NODE_SAMPLER = "9"
+_ZIMAGE_NODE_SAVE = "11"
+
 
 def montar_prompt(texto: str) -> str:
     return texto.strip() + _SUFIXO_SEGURANCA
@@ -104,11 +117,20 @@ def gerar_imagem(
     server: str, workflow: dict, texto: str, aspect_ratio: str, destino: Path, timeout_s: float = 600
 ) -> dict:
     wf = copy.deepcopy(workflow)
-    wf[_NODE_PROMPT]["inputs"]["value"] = montar_prompt(texto)
-    wf[_NODE_REFINAR]["inputs"]["value"] = True
-    wf[_NODE_SISTEMA_REFINO]["inputs"]["value"] += _REGRA_SEM_TEXTO + _REGRA_PROMPT_CURTO
-    wf[_NODE_RESOLUCAO]["inputs"]["aspect_ratio"] = aspect_ratio
-    wf[_NODE_SAMPLER]["inputs"]["seed"] = random.randint(0, 2**32 - 1)
+    prompt_final = montar_prompt(texto)
+    eh_krea2 = _NODE_REFINAR in wf
+    if eh_krea2:
+        wf[_NODE_PROMPT]["inputs"]["value"] = prompt_final
+        wf[_NODE_REFINAR]["inputs"]["value"] = True
+        wf[_NODE_SISTEMA_REFINO]["inputs"]["value"] += _REGRA_SEM_TEXTO + _REGRA_PROMPT_CURTO
+        wf[_NODE_RESOLUCAO]["inputs"]["aspect_ratio"] = aspect_ratio
+        wf[_NODE_SAMPLER]["inputs"]["seed"] = random.randint(0, 2**32 - 1)
+        node_save = _NODE_SAVE
+    else:
+        wf[_ZIMAGE_NODE_PROMPT]["inputs"]["text"] = prompt_final
+        wf[_ZIMAGE_NODE_RESOLUCAO]["inputs"]["aspect_ratio"] = aspect_ratio
+        wf[_ZIMAGE_NODE_SAMPLER]["inputs"]["seed"] = random.randint(0, 2**32 - 1)
+        node_save = _ZIMAGE_NODE_SAVE
 
     resp = requests.post(f"{server}/prompt", json={"prompt": wf}, timeout=30)
     resp.raise_for_status()
@@ -122,13 +144,17 @@ def gerar_imagem(
     while time.monotonic() - inicio < timeout_s:
         hist = requests.get(f"{server}/history/{prompt_id}", timeout=30).json()
         entrada = hist.get(prompt_id)
-        if entrada and entrada.get("status", {}).get("completed"):
-            break
+        if entrada:
+            status = entrada.get("status", {})
+            if status.get("status_str") == "error":
+                raise RuntimeError(f"ComfyUI falhou ao gerar a imagem (prompt_id={prompt_id}): {status.get('messages')}")
+            if status.get("completed"):
+                break
         time.sleep(2)
     else:
         raise TimeoutError(f"ComfyUI não terminou a imagem em {timeout_s}s (prompt_id={prompt_id})")
 
-    imagem = entrada["outputs"][_NODE_SAVE]["images"][0]
+    imagem = entrada["outputs"][node_save]["images"][0]
     resp_img = requests.get(
         f"{server}/view",
         params={
@@ -140,7 +166,7 @@ def gerar_imagem(
     )
     resp_img.raise_for_status()
     destino.write_bytes(resp_img.content)
-    return {"prompt_final": wf[_NODE_PROMPT]["inputs"]["value"], "arquivo_comfy": imagem["filename"]}
+    return {"prompt_final": prompt_final, "arquivo_comfy": imagem["filename"]}
 
 
 def main():
