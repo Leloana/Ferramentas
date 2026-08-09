@@ -48,13 +48,28 @@ combinação specific de "grupo humano primitivo" + "desespero" que o modelo
 associou a pouca cobertura e traços jovens, mesmo com "fully clothed" no
 prompt.
 
-**Correção aplicada**: reescrevi o prompt sendo explícito sobre idade e
-cobertura — *"a small group of **adult** Stone Age men and women, **wrapped
-head to toe in thick heavy fur cloaks covering their entire bodies**,
-huddled together for warmth in a dark cold cave, moonlight only, no fire,
-worried **adult** faces, wide cinematic shot"*. Regenerado
-(`--frases 4`), saiu limpo — rostos claramente adultos, corpo inteiro
-coberto por peles. Essa é a versão usada no vídeo final.
+**Correção aplicada (1ª rodada)**: reescrevi o prompt sendo explícito sobre
+idade e cobertura — *"a small group of **adult** Stone Age men and women,
+**wrapped head to toe in thick heavy fur cloaks covering their entire
+bodies**, huddled together for warmth in a dark cold cave, moonlight only,
+no fire, worried **adult** faces, wide cinematic shot"*. Resolveu o
+problema de segurança (rostos claramente adultos, corpo inteiro coberto),
+mas o ambiente saiu ambíguo — mais um alto rochoso pouco legível como
+caverna do que um interior de caverna de fato (revisão humana apontou
+isso).
+
+**Correção aplicada (2ª rodada)**: reforcei o ambiente no início do prompt
+em vez de deixá-lo como detalhe secundário — *"wide shot **deep inside a
+dark damp stone cave** at night, **rocky cave walls and ceiling
+surrounding the scene**, ... huddled together for warmth **near the cave
+entrance**, faint moonlight coming through **the cave opening** in the
+background, ..."*. Regenerado (`--frases 4`), agora com teto/paredes
+rochosas visíveis e a abertura da caverna com a lua ao fundo — lê como
+caverna sem ambiguidade. Essa é a versão usada no vídeo final.
+
+**Lição**: mencionar o ambiente uma vez não bastou — ele precisou virar o
+sujeito da primeira cláusula do prompt (não só um detalhe no meio da
+frase) pra o modelo priorizar renderizá-lo de forma legível.
 
 **Recomendação pro projeto**: ao escrever `texto_prompts.json` pra cenas
 com múltiplos humanos em contexto de vulnerabilidade/desespero/frio, ser
@@ -64,22 +79,38 @@ melhor entendido. Continua valendo (com mais razão ainda) a regra já
 existente de revisar visualmente cada imagem antes de rodar
 `montar_video.py`.
 
-### 2. Moderado — deriva de identidade/estilo entre imagens da mesma "personagem"
+### 2. Moderado — deriva de identidade/estilo entre imagens da mesma "personagem" (corrigido)
 
 Frase 8 (Prometeu acorrentado, cena de continuidade da frase 7): o prompt
-pedia uma figura acorrentada num penhasco à luz da lua. Na frase 7 saiu um
-homem loiro em trajes gregos (coerente com a frase 2); na frase 8, a
-"mesma" cena saiu como uma mulher em trajes de estilo asiático (tipo
-hanfu/wuxia), sem relação com o titã grego estabelecido nas imagens
-anteriores.
+pedia uma figura acorrentada num penhasco à luz da lua, sem descrever a
+aparência física. Na frase 7 saiu um homem loiro em trajes gregos (coerente
+com a frase 2); na frase 8, a "mesma" cena saiu como uma mulher em trajes
+de estilo asiático (tipo hanfu/wuxia), sem relação com o titã grego
+estabelecido nas imagens anteriores.
 
 Não é bem uma alucinação de conteúdo impróprio, é falta de continuidade de
-personagem — mas nem o workflow do Z-Image nem o do Krea2 têm mecanismo de
+personagem — nem o workflow do Z-Image nem o do Krea2 têm mecanismo de
 referência de personagem entre gerações (cada frase é uma chamada
 independente ao sampler, sem imagem-base), então isso é esperado dos dois
-modelos igualmente; não é uma regressão do Z-Image. Registrado aqui só
-porque ficou visualmente perceptível nesta sequência específica. Imagem
-mantida no vídeo (sem conteúdo impróprio, só inconsistência estética).
+modelos igualmente; não é uma regressão do Z-Image.
+
+**Correção aplicada**: reescrevi o prompt repetindo os traços físicos já
+estabelecidos na frase 7 — *"**a young man with long blond hair and an open
+dark green cloak exposing his bare chest**, chained by the ankle to a rocky
+mountain cliff, alone at night under moonlight, a faint warm glow over his
+bare torso where a wound is healing, ..."* — em vez de descrever só a pose
+("a chained figure...") e deixar o modelo reinventar quem é essa figura.
+Regenerado (`--frases 8`), saiu visualmente consistente com a frase 7
+(mesmo cabelo loiro, mesma capa verde-escura aberta). Essa é a versão usada
+no vídeo final.
+
+Esse fix manual (repetir descritores físicos no prompt) resolve o caso
+pontual, mas não escala bem pra roteiros com um personagem recorrente em
+muitas frases, nem garante identidade pixel-a-pixel. Ficou combinado com o
+usuário planejar, à parte deste documento, um mecanismo mais robusto de
+continuidade de personagem (ex.: IPAdapter/InstantID no ComfyUI) — como
+melhoria opcional pra projetos futuros que dependam disso, já que a maioria
+dos vídeos desta plataforma não tem um personagem único recorrente.
 
 ### 3. Leve — inversão de escala/composição
 
