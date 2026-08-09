@@ -93,7 +93,7 @@
     "frase": 16,
     "arquivo": "texto_16.png",
     "prompt_final": "Hector, a bearded Trojan prince with dark wavy brown hair, wearing a blue cloak, a bronze Corinthian-style helmet with a red horsehair crest and a bronze Greek cuirass, turning around to face Achilles with a bronze spear raised, determined expression, dusty battlefield, no medieval armor, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00108_.png",
+    "arquivo_comfy": "Krea2_turbo_00270_.png",
     "referencia": "Projetos\\Video_10\\morte_de_heitor\\imagens\\texto_08.png",
     "referencia_denoise": 0.5
   },
@@ -143,7 +143,7 @@
     "frase": 24,
     "arquivo": "texto_24.png",
     "prompt_final": "Achilles, a clean-shaven Greek warrior with short curly golden hair and tanned natural human skin (not a statue, not golden metallic skin), wearing a bronze Greek cuirass and bronze greaves, standing over the fallen Hector (a bearded man with dark wavy brown hair, blue cloak), arms crossed, cold and unmoved expression, dusty battlefield at dusk, no medieval armor, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00109_.png",
+    "arquivo_comfy": "Krea2_turbo_00271_.png",
     "referencia": "Projetos\\Video_10\\morte_de_heitor\\imagens\\texto_01.png",
     "referencia_denoise": 0.5
   },

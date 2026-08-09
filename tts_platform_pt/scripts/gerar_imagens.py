@@ -38,7 +38,13 @@ import requests
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 WORKFLOW_PADRAO = SCRIPT_DIR.parent / "comfy" / "image_krea2_turbo_t2i.json"
-WORKFLOW_I2I_PADRAO = SCRIPT_DIR.parent / "comfy" / "image_zimage_turbo_i2i.json"
+# Krea2 é o motor padrão de txt2img desta plataforma (melhor qualidade
+# fotorrealista que o Z-Image-Turbo, comparado lado a lado num caso real do
+# Video_10) — por isso também é o padrão pra continuidade de personagem
+# (img2img), não só pra geração comum. O workflow i2i do Z-Image
+# (`image_zimage_turbo_i2i.json`) continua existindo e pode ser escolhido via
+# `--referencia-workflow` se for necessário no futuro.
+WORKFLOW_I2I_PADRAO = SCRIPT_DIR.parent / "comfy" / "image_krea2_turbo_i2i.json"
 
 # O modelo tende a desenhar figuras humanas nuas quando o prompt não
 # menciona vestimenta, mesmo com a regra 8 do system prompt do próprio
@@ -117,6 +123,16 @@ _ZIMAGE_NODE_SAVE = "11"
 # denoise<1 em vez do denoise=1 do t2i puro).
 _ZIMAGE_NODE_REF_IMAGEM = "12"
 
+# Nó extra equivalente no workflow `image_krea2_turbo_i2i.json` (mesmo
+# mecanismo acima, cabeado em cima do grafo Krea2 em vez do Z-Image — ver
+# `_NODE_SAMPLER`/`_NODE_RESOLUCAO` acima pros nós que esse workflow
+# compartilha com `image_krea2_turbo_t2i.json`). `LoadImage` (`30:60`) →
+# `ImageScale` (`30:61`, `crop=center`) → `VAEEncode` (`30:62`) alimentando
+# o `latent_image` do `KSampler` (`30:3`) no lugar do `EmptyLatentImage`
+# (`30:5`, que fica órfão no grafo mas não custa nada — ComfyUI só executa
+# nós alcançáveis a partir do `SaveImage`).
+_KREA2_NODE_REF_IMAGEM = "30:60"
+
 
 def montar_prompt(texto: str) -> str:
     return texto.strip() + _SUFIXO_SEGURANCA
@@ -158,6 +174,9 @@ def gerar_imagem(
         wf[_NODE_SISTEMA_REFINO]["inputs"]["value"] += _REGRA_SEM_TEXTO + _REGRA_PROMPT_CURTO
         wf[_NODE_RESOLUCAO]["inputs"]["aspect_ratio"] = aspect_ratio
         wf[_NODE_SAMPLER]["inputs"]["seed"] = random.randint(0, 2**32 - 1)
+        if referencia_imagem:
+            wf[_NODE_SAMPLER]["inputs"]["denoise"] = referencia_denoise
+            wf[_KREA2_NODE_REF_IMAGEM]["inputs"]["image"] = referencia_imagem
         node_save = _NODE_SAVE
     elif referencia_imagem:
         wf[_ZIMAGE_NODE_PROMPT]["inputs"]["text"] = prompt_final

@@ -90,11 +90,21 @@ original); GPU CUDA recomendada (fallback automático para CPU, mais lento).
   também usado como LLM de refino de prompt) + `qwen_image_vae`. Reexportar
   aqui sempre que o workflow for alterado na UI do ComfyUI, senão o script
   roda contra uma versão desatualizada do grafo.
-- `comfy/image_zimage_turbo_i2i.json` — variante do workflow Z-Image-Turbo
-  com entrada de imagem de referência (`LoadImage`→`ImageScale`→`VAEEncode`
-  no lugar do `EmptySD3LatentImage`), usada só quando `--referencia` é
-  passado pra `gerar_imagens.py` — ver subseção "Continuidade de
-  personagem" mais abaixo.
+- `comfy/image_krea2_turbo_i2i.json` — variante do workflow Krea2 com
+  entrada de imagem de referência (`LoadImage`→`ImageScale`→`VAEEncode`
+  alimentando o `latent_image` do `KSampler` no lugar do
+  `EmptyLatentImage`), usada só quando `--referencia` é passado pra
+  `gerar_imagens.py` — ver subseção "Continuidade de personagem" mais
+  abaixo. É o workflow i2i **padrão** (`WORKFLOW_I2I_PADRAO`) desde que um
+  teste lado a lado no `Video_10` mostrou Krea2 com qualidade
+  fotorrealista nitidamente melhor que o Z-Image-Turbo pro mesmo par
+  prompt/referência/denoise.
+- `comfy/image_zimage_turbo_i2i.json` — mesma ideia, cabeada em cima do
+  workflow Z-Image-Turbo em vez do Krea2. Não é mais o padrão (motivo
+  acima), mas continua no repo e pode ser escolhido via
+  `--referencia-workflow` se precisar no futuro (ex.: Z-Image não tem o
+  passo de refino de prompt do Krea2, o que pode ser desejável em algum
+  caso específico).
 - **[comfy/GOTCHAS.md](comfy/GOTCHAS.md)** — leia antes de mexer em
   `gerar_imagens.py`, `montar_video.py` ou no workflow acima. Reúne os
   achados de depuração real da geração de imagem (nudez, texto borrado
@@ -434,16 +444,36 @@ img2img com denoise parcial, por que não LoRA por ora) em
 - **`--referencia-denoise <float>`** (padrão `0.5`): denoise parcial do
   `KSampler` no branch i2i — quanto menor, mais fiel à imagem de
   referência (estrutura espacial inteira, não só identidade).
-- Usa o workflow `comfy/image_zimage_turbo_i2i.json` (variante de
-  `image_zimage_turbo_t2i.json` com `LoadImage` → `ImageScale`
-  (`crop=center`) → `VAEEncode` alimentando o `latent_image` do `KSampler`
-  em vez do `EmptySD3LatentImage`) — só funciona com o workflow Z-Image-Turbo,
-  não com Krea2. `enviar_imagem_referencia()` faz upload da imagem local pro
-  ComfyUI (`/upload/image`) e cacheia por caminho dentro de `main()`, então
-  várias frases apontando pro mesmo arquivo de referência (o caso comum:
-  mesmo personagem em várias frases) só enviam a imagem uma vez.
-- **Achado do sweep de denoise (0.35/0.5/0.65/0.72/0.8), casos reais
-  `Video_9` frase 7→8 e `Video_10` frase 8→17/22**: a estrutura espacial da
+- Usa por padrão o workflow `comfy/image_krea2_turbo_i2i.json` (variante de
+  `image_krea2_turbo_t2i.json` com `LoadImage` (`30:60`) → `ImageScale`
+  (`30:61`, `crop=center`) → `VAEEncode` (`30:62`) alimentando o
+  `latent_image` do `KSampler` (`30:3`) em vez do `EmptyLatentImage`
+  (`30:5`, que fica órfão no grafo) — `--referencia-workflow` troca pra
+  `image_zimage_turbo_i2i.json` (equivalente, cabeado em cima do Z-Image-Turbo)
+  se precisar por algum motivo específico (ver comparação de qualidade
+  logo abaixo). Em `gerar_imagens.py`, `gerar_imagem()` detecta Krea2 pela
+  presença do nó `30:24` no workflow carregado (`eh_krea2`) — dentro desse
+  branch, se `referencia_imagem` foi passado, também seta `denoise` e o nó
+  `LoadImage`; senão segue t2i puro como sempre. `enviar_imagem_referencia()`
+  faz upload da imagem local pro ComfyUI (`/upload/image`) e cacheia por
+  caminho dentro de `main()`, então várias frases apontando pro mesmo
+  arquivo de referência (o caso comum: mesmo personagem em várias frases)
+  só enviam a imagem uma vez.
+- **Krea2 i2i > Z-Image-Turbo i2i em qualidade**: comparação lado a lado no
+  `Video_10` (mesma referência `texto_08.png`, mesmo prompt, mesmo
+  `denoise=0.5`) — a versão Krea2 saiu nitidamente mais fotorrealista
+  (textura de pele/metal, iluminação) que a versão Z-Image, mesma
+  diferença de qualidade já percebida entre os dois motores no t2i comum.
+  Por isso `WORKFLOW_I2I_PADRAO` em `gerar_imagens.py` aponta pro workflow
+  Krea2 desde então — o Z-Image i2i (`image_zimage_turbo_i2i.json`)
+  continua no repo como alternativa via `--referencia-workflow`, não foi
+  removido.
+- **Achado do sweep de denoise (0.35/0.5/0.65/0.72/0.8, medido com
+  Z-Image-Turbo — não repetido com Krea2 i2i, ver item acima; a hipótese é
+  que o mecanismo é estrutural (quanto do cronograma de sigmas sobra pro
+  sampler "repintar") e não específico de um checkpoint, mas isso não foi
+  confirmado com Krea2), casos reais `Video_9` frase 7→8 e `Video_10` frase
+  8→17/22**: a estrutura espacial da
   referência (pose, objetos em cena) fica presa com muito mais força do
   que o esperado, e **mudança de POSE/AÇÃO é ainda mais resistente que
   mudança de ELEMENTO DE CENA**. No `Video_9` (referência com uma águia em
