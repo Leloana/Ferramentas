@@ -20,8 +20,8 @@
   {
     "frase": 4,
     "arquivo": "texto_04.png",
-    "prompt_final": "Achilles, ancient Greek warrior with golden curly hair, putting on an ornate bronze Greek cuirass that glows with divine light, forge sparks flying, other Greek warriors in bronze armor watching in awe, dramatic mythological scene, no medieval armor, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00078_.png"
+    "prompt_final": "Achilles, a clean-shaven Greek warrior with short curly golden hair and tanned natural human skin (not a statue), putting on a bronze Greek cuirass with an eagle relief, holding a bronze Corinthian-style helmet with a red horsehair crest, forge sparks flying around him, other Greek warriors in ancient Greek-style bronze armor watching in awe, dramatic mythological scene, no medieval armor, no Roman armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00257_.png"
   },
   {
     "frase": 5,
@@ -50,20 +50,20 @@
   {
     "frase": 9,
     "arquivo": "texto_09.png",
-    "prompt_final": "Trojan soldiers in ancient Greek-style bronze armor retreating through the city gates in a hurry, while Hector stands alone outside facing the empty plain, dust in the air, no medieval armor, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00083_.png"
+    "prompt_final": "Hector, a bearded Trojan prince with dark wavy brown hair, wearing a blue cloak, a bronze Corinthian-style helmet with a red horsehair crest and a bronze cuirass, standing alone at the open city gate facing the empty plain, behind him Trojan soldiers in ancient Greek-style bronze armor hurrying inside through the gate, dust in the air, photorealistic, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00264_.png"
   },
   {
     "frase": 10,
     "arquivo": "texto_10.png",
-    "prompt_final": "Hector, bearded Trojan prince in ancient Greek-style bronze armor, running in fear across a dusty plain, Achilles the golden-haired Greek warrior in bronze armor chasing him in the distance, dramatic action scene, no medieval armor, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00084_.png"
+    "prompt_final": "Hector, a bearded Trojan prince with dark wavy brown hair, wearing a blue cloak and ancient Greek-style bronze armor, running in fear across a dusty plain, behind him Achilles, a clean-shaven Greek warrior with short curly golden hair and tanned natural human skin (not a statue, not golden metallic skin), in bronze armor, chasing him, dramatic action scene, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00259_.png"
   },
   {
     "frase": 11,
     "arquivo": "texto_11.png",
-    "prompt_final": "aerial cinematic view of two warriors in ancient Greek bronze armor running around the massive stone walls of a besieged ancient city, dust clouds trailing, armies watching from below, no medieval armor, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00085_.png"
+    "prompt_final": "low wide-angle shot along the stone walls of Troy: Hector, a bearded Trojan prince with dark wavy brown hair, blue cloak and bronze armor, running desperately in the foreground; Achilles, a clean-shaven Greek warrior with short curly golden hair and tanned natural skin, in bronze armor, chasing close behind; dust trailing, both warriors clearly visible, cinematic, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00260_.png"
   },
   {
     "frase": 12,
@@ -92,8 +92,10 @@
   {
     "frase": 16,
     "arquivo": "texto_16.png",
-    "prompt_final": "Hector, bearded Trojan prince in ancient Greek-style bronze armor, turning around to face Achilles with a bronze spear raised, determined expression, dusty battlefield, no medieval armor, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00090_.png"
+    "prompt_final": "Hector, a bearded Trojan prince with dark wavy brown hair, wearing a blue cloak, a bronze Corinthian-style helmet with a red horsehair crest and a bronze Greek cuirass, turning around to face Achilles with a bronze spear raised, determined expression, dusty battlefield, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00108_.png",
+    "referencia": "Projetos\\Video_10\\morte_de_heitor\\imagens\\texto_08.png",
+    "referencia_denoise": 0.5
   },
   {
     "frase": 17,
@@ -104,14 +106,14 @@
   {
     "frase": 18,
     "arquivo": "texto_18.png",
-    "prompt_final": "wide shot of Hector facing Achilles across a dusty battlefield, both warriors wearing ancient Greek-style bronze armor and bronze helmets with horsehair crests, tension in the air, cinematic, no medieval armor, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00092_.png"
+    "prompt_final": "wide shot of Hector and Achilles facing each other on a dusty battlefield. Hector is a bearded Trojan prince with dark wavy brown hair, wearing a blue cloak and a bronze Corinthian-style helmet with a red horsehair crest. Achilles is a clean-shaven Greek warrior with short curly golden hair, no cloak, wearing a bronze Corinthian-style helmet with a red horsehair crest. Both wear matching bronze cuirasses, tense standoff, cinematic lighting, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00267_.png"
   },
   {
     "frase": 19,
     "arquivo": "texto_19.png",
-    "prompt_final": "two ancient Greek warriors in bronze cuirasses and bronze Corinthian-style helmets clashing with bronze spears in violent combat, dust and motion blur, dramatic ancient battle scene, no medieval armor, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00093_.png"
+    "prompt_final": "two warriors clashing with bronze spears in violent combat: Hector, a bearded Trojan prince with dark wavy brown hair and a blue cloak, fighting Achilles, a clean-shaven Greek warrior with short curly golden hair and no cloak; both wearing bronze cuirasses and bronze Corinthian-style helmets, dust and motion blur, dramatic ancient battle scene, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00262_.png"
   },
   {
     "frase": 20,
@@ -134,14 +136,16 @@
   {
     "frase": 23,
     "arquivo": "texto_23.png",
-    "prompt_final": "Hector lying on the ground in bronze Greek armor, reaching a hand weakly toward Achilles standing over him, pleading expression, dusty battlefield, no medieval armor, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00097_.png"
+    "prompt_final": "Hector, a bearded Trojan prince with dark wavy brown hair wearing a blue cloak, lying wounded on the ground in bronze Greek armor, reaching a hand weakly toward Achilles, a clean-shaven Greek warrior with short curly golden hair and no cloak, standing over him, pleading expression, dusty battlefield, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00263_.png"
   },
   {
     "frase": 24,
     "arquivo": "texto_24.png",
-    "prompt_final": "Achilles, a man with golden curly hair and tanned skin, wearing a bronze Greek cuirass and bronze greaves, standing over the fallen Hector, arms crossed, cold and unmoved expression, dusty battlefield at dusk, no medieval armor, natural human skin tone, not a statue, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00103_.png"
+    "prompt_final": "Achilles, a clean-shaven Greek warrior with short curly golden hair and tanned natural human skin (not a statue, not golden metallic skin), wearing a bronze Greek cuirass and bronze greaves, standing over the fallen Hector (a bearded man with dark wavy brown hair, blue cloak), arms crossed, cold and unmoved expression, dusty battlefield at dusk, no medieval armor, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "ZImageTurbo_00109_.png",
+    "referencia": "Projetos\\Video_10\\morte_de_heitor\\imagens\\texto_01.png",
+    "referencia_denoise": 0.5
   },
   {
     "frase": 25,
@@ -152,8 +156,8 @@
   {
     "frase": 26,
     "arquivo": "texto_26.png",
-    "prompt_final": "Andromache and King Priam weeping together atop the stone walls of Troy, grief-stricken expressions, evening light, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00100_.png"
+    "prompt_final": "elderly King Priam, white-haired and bearded, wearing white robes, and Andromache, an adult woman in flowing robes with a headscarf, standing together atop the stone ramparts of Troy, looking down at the battlefield below, grief-stricken expressions, weeping, evening light, no signage, no text, no writing, no artist signature, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00268_.png"
   },
   {
     "frase": 27,
