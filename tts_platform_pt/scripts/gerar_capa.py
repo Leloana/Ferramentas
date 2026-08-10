@@ -64,7 +64,6 @@ _FONTES_CANDIDATAS = [
 ]
 
 _MARGEM_LR = 90
-_MARGEM_INFERIOR = 130
 _ALTURA_MAX_TEXTO_FRAC = 0.38  # fração da altura do canvas reservada pro bloco de título
 _TAMANHO_FONTE_INICIAL_FRAC = 0.10  # fração da largura do canvas
 _TAMANHO_FONTE_MINIMO = 44
@@ -72,11 +71,21 @@ _PASSO_REDUCAO_FONTE = 4
 _ESPACAMENTO_LINHA = 1.18
 _STROKE_WIDTH = 6
 
-# Escurece a parte de baixo da imagem em gradiente (0 = topo do escurecimento,
-# 1 = base do canvas) pra o título ficar legível em cima de qualquer fundo,
-# sem depender só do contorno preto do texto.
-_Y_INICIO_ESCURECIMENTO_FRAC = 0.42
-_OPACIDADE_MAX_ESCURECIMENTO = 0.80
+# Título fica com o centro vertical nesta fração da altura do canvas — não
+# mais grudado na base. Motivo: ao subir a capa no TikTok, a prévia de capa
+# corta uma faixa do topo e (principalmente) da base do PNG de 1080x1920
+# original pra caber no recorte que o app usa — título e o enquadramento do
+# personagem colados na borda inferior saíam cortados. Centralizar afasta o
+# texto dessa faixa insegura.
+_Y_CENTRO_TEXTO_FRAC = 0.52
+
+# Escurece uma faixa em volta do texto (gaussiana, centrada em
+# `_Y_CENTRO_TEXTO_FRAC`) pra ficar legível em cima de qualquer fundo, sem
+# depender só do contorno preto — substitui o gradiente fixo na base de
+# antes, porque agora o texto pode acabar em qualquer altura (depende do
+# número de linhas após a quebra).
+_LARGURA_FAIXA_ESCURECIMENTO = 0.60  # desvio padrão da gaussiana, em frações da altura do bloco de texto
+_OPACIDADE_MAX_ESCURECIMENTO = 0.75
 
 
 def _fonte_disponivel() -> Path:
@@ -108,14 +117,16 @@ def _cobrir_redimensionar(imagem: Image.Image, largura: int, altura: int) -> Ima
     return imagem.crop((x, y, x + largura, y + altura))
 
 
-def _aplicar_escurecimento(imagem: Image.Image) -> Image.Image:
+def _aplicar_escurecimento(imagem: Image.Image, y_centro: float, altura_bloco: float) -> Image.Image:
+    """Escurece uma faixa horizontal centrada em `y_centro` (gaussiana, desvio
+    padrão proporcional a `altura_bloco`) — mesma ideia do gradiente fixo na
+    base que existia antes, só que agora acompanha onde o texto realmente cai
+    (ver `_Y_CENTRO_TEXTO_FRAC`), em vez de assumir que é sempre no rodapé."""
     largura, altura = imagem.size
-    y_inicio = int(altura * _Y_INICIO_ESCURECIMENTO_FRAC)
-    col = np.zeros(altura, dtype=np.uint8)
-    ys = np.arange(y_inicio, altura)
-    if len(ys) > 0:
-        t = (ys - y_inicio) / max(1, altura - y_inicio)
-        col[y_inicio:] = (255 * _OPACIDADE_MAX_ESCURECIMENTO * t).astype(np.uint8)
+    sigma = max(altura_bloco * _LARGURA_FAIXA_ESCURECIMENTO, 1.0)
+    ys = np.arange(altura)
+    pesos = np.exp(-0.5 * ((ys - y_centro) / sigma) ** 2)
+    col = (255 * _OPACIDADE_MAX_ESCURECIMENTO * pesos).astype(np.uint8)
     mascara = Image.fromarray(np.tile(col[:, None], (1, largura)), mode="L")
     preto = Image.new("RGB", (largura, altura), (0, 0, 0))
     resultado = imagem.convert("RGB").copy()
@@ -164,7 +175,6 @@ def gerar_capa(imagem_fundo: Path, titulo: str, destino: Path, proporcao: str = 
     largura, altura = _RESOLUCOES[proporcao]
     base = Image.open(imagem_fundo)
     base = _cobrir_redimensionar(base, largura, altura)
-    base = _aplicar_escurecimento(base)
 
     draw = ImageDraw.Draw(base)
     caminho_fonte = _fonte_disponivel()
@@ -178,7 +188,11 @@ def gerar_capa(imagem_fundo: Path, titulo: str, destino: Path, proporcao: str = 
 
     altura_linha = (fonte.getbbox("Ág")[3] - fonte.getbbox("Ág")[1]) * _ESPACAMENTO_LINHA
     altura_total = altura_linha * len(linhas)
-    y = altura - _MARGEM_INFERIOR - altura_total
+    y_centro = altura * _Y_CENTRO_TEXTO_FRAC
+    y = y_centro - altura_total / 2
+
+    base = _aplicar_escurecimento(base, y_centro, altura_total)
+    draw = ImageDraw.Draw(base)
     for linha in linhas:
         largura_linha = draw.textlength(linha, font=fonte)
         x = (largura - largura_linha) / 2

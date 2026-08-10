@@ -647,12 +647,33 @@ python scripts\gerar_capa.py Projetos\Video_1\historia_humanidade_parte2\texto_m
   final) — já é exatamente o título+indicador de parte que a legenda usa,
   então não precisa digitar de novo.
 - Composição do texto: cobre (`background-size: cover`, sem esticar) o
-  fundo gerado pro tamanho final, escurece a parte de baixo em gradiente
-  (fica legível em cima de qualquer imagem, não só pelo contorno preto do
-  texto) e desenha o título em branco com contorno preto, mesma família
-  (Arial Bold) usada na legenda do vídeo. Fonte reduz automaticamente até
-  caber na largura/altura reservadas — título longo quebra em mais linhas
-  ou encolhe, não estoura o quadro.
+  fundo gerado pro tamanho final, e desenha o título em branco com contorno
+  preto, mesma família (Arial Bold) usada na legenda do vídeo, com o centro
+  vertical do bloco de título fixo em `_Y_CENTRO_TEXTO_FRAC` (padrão `0.52`
+  — meio da imagem, não mais grudado na base) e uma faixa escurecida
+  (gaussiana, acompanha a altura real do bloco de título após a quebra de
+  linha) atrás pra ficar legível em cima de qualquer fundo, não só pelo
+  contorno preto. Fonte reduz automaticamente até caber na largura/altura
+  reservadas — título longo quebra em mais linhas ou encolhe, não estoura o
+  quadro. **Por quê centralizado**: subindo uma capa assim pro TikTok, a
+  prévia/recorte de capa que o app usa corta uma faixa do topo e
+  principalmente da base do PNG 1080x1920 original — com o título (e o
+  enquadramento do personagem) colados na borda inferior, ambos saíam
+  cortados na prática. Ver também a recomendação de prompt logo abaixo pra
+  dar margem de segurança ao enquadramento do personagem em si.
+- **Prompt da capa precisa pedir margem de enquadramento e ancorar
+  fotorrealismo explicitamente**: mesma deriva de estilo (pictórico/render
+  de videogame em vez de foto) já vista em `gerar_imagens.py` acontece aqui
+  se o prompt não terminar com algo como `photorealistic cinematic
+  photography, not a painting, not an illustration, not a video game
+  render` — sem isso, uma cena "epic dramatic... cinematic, high contrast"
+  tende a sair com acabamento de renderização de jogo. Pra evitar que
+  cabeça/corpo do personagem principal fiquem colados nas bordas (que é
+  justamente a faixa que o recorte de capa do TikTok corta), inclua no
+  prompt algo como "generous margin at the very top and very bottom of the
+  frame, nothing touching the edges" — não é garantido (é só um pedido pro
+  modelo, mesma limitação de todo prompt de enquadramento neste projeto),
+  então confira visualmente antes de considerar a capa pronta.
 - Saída: `<projeto>/capa_fundo.png` (cena gerada, sem texto — reaproveitável
   via `--imagem` se só o título mudar), `<projeto>/capa_manifesto.json`
   (`prompt_final`/`arquivo_comfy`, mesma lógica de rastreabilidade do
