@@ -136,8 +136,8 @@
   {
     "frase": 23,
     "arquivo": "texto_23.png",
-    "prompt_final": "Hector, a bearded Trojan prince with dark wavy brown hair wearing a blue cloak, lying wounded on the ground in bronze Greek armor, reaching a hand weakly toward Achilles, a clean-shaven Greek warrior with short curly golden hair and no cloak, standing over him, pleading expression, dusty battlefield, no medieval armor, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "Krea2_turbo_00263_.png"
+    "prompt_final": "Hector, a bearded Trojan prince with dark wavy brown hair wearing a blue cloak, lying wounded on the ground in bronze Greek armor, reaching a hand weakly toward Achilles, a clean-shaven Greek warrior with short curly golden hair and no cloak, standing over him, pleading expression, dusty battlefield, no medieval armor, photorealistic cinematic photography, not a painting, not an illustration, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00272_.png"
   },
   {
     "frase": 24,
@@ -150,8 +150,8 @@
   {
     "frase": 25,
     "arquivo": "texto_25.png",
-    "prompt_final": "an ancient Greek-style wooden war chariot with bronze fittings, pulled by two brown horses at a gallop, dragging a body across a dusty plain, dramatic and somber cinematic scene, natural horse coats, not statues, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00104_.png"
+    "prompt_final": "an ancient Greek war chariot galloping across a dusty battlefield at sunset, a dead warrior's body tied by the ankles and dragging behind it in the dust, two brown horses pulling the chariot, dramatic somber mood, photorealistic photography, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00278_.png"
   },
   {
     "frase": 26,
@@ -162,13 +162,13 @@
   {
     "frase": 27,
     "arquivo": "texto_27.png",
-    "prompt_final": "wide shot of the walled city of Troy at dusk, ancient Greek war camp fires glowing in the distance, tense atmosphere, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00101_.png"
+    "prompt_final": "wide aerial shot of the ancient walled city of Troy at dusk, stone ramparts and towers, ancient Greek war camp fires glowing on the plain below, tense atmosphere, no modern buildings, no modern structures, no cars, no swimming pools, ancient desert setting only, photorealistic cinematic photography, not a painting, not an illustration, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00274_.png"
   },
   {
     "frase": 28,
     "arquivo": "texto_28.png",
-    "prompt_final": "an empty battlefield at sunset, a fallen bronze Greek shield and bronze spear lying in the foreground, somber and quiet mood, cinematic wide shot, no medieval armor, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "ZImageTurbo_00102_.png"
+    "prompt_final": "an empty battlefield at sunset, a fallen bronze Greek shield and bronze spear lying in the foreground, somber and quiet mood, cinematic wide shot, no medieval armor, photorealistic cinematic photography, not a painting, not an illustration, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00275_.png"
   }
 ]
