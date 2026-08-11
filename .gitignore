@@ -65,6 +65,10 @@ karaoke/anotar.txt
 video_gen/output/*
 !video_gen/output/.gitkeep
 
+# Image Gen: imagens geradas
+image_gen/resultados/*
+!image_gen/resultados/.gitkeep
+
 # Agentic CLI persist and history
 .persist/
 .history

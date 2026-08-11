@@ -10,6 +10,10 @@ pule etapas, não invente endpoints diferentes dos listados aqui.
 (não é a interface gráfica — é um JSON que você manda por HTTP). Ele recebe um
 texto e devolve uma imagem gerada pelo modelo de difusão `krea2_turbo`.
 
+Toda imagem gerada deve ser salva na pasta `resultados/` (mesma pasta deste
+guia). Essa pasta já existe e está no `.gitignore` — não crie outra pasta de
+saída.
+
 ## Pré-requisito (obrigatório, confira antes de tudo)
 
 O ComfyUI precisa estar aberto e rodando localmente. Confirme com:
@@ -78,7 +82,11 @@ ou servidor por conta própria.
    GET http://127.0.0.1:8188/view?filename=<filename>&subfolder=<subfolder>&type=<type>
    ```
 
-   Salve o conteúdo binário da resposta como `.png`.
+   Salve o conteúdo binário da resposta como `.png` dentro da pasta
+   `resultados/` (mesma pasta deste guia). **Todas as imagens geradas devem
+   ir para `resultados/`** — não salve na raiz de `image_gen/` nem em outra
+   pasta. `resultados/` está no `.gitignore` do repositório (não é
+   versionado), então pode gerar à vontade sem sujar o git.
 
 ## Script Python pronto (copie, troque só o PROMPT e rode)
 
@@ -90,7 +98,7 @@ WORKFLOW_PATH = "image_krea2_turbo_t2i.json"  # este arquivo, mesma pasta
 
 PROMPT = "a red fox sitting in the snow, forest background"  # <-- troque aqui
 ASPECT_RATIO = "16:9 (Widescreen)"  # veja lista de opções válidas no guia
-OUTPUT_FILE = "saida.png"
+OUTPUT_FILE = "resultados/saida.png"  # sempre dentro de resultados/
 
 with open(WORKFLOW_PATH, encoding="utf-8") as f:
     workflow = json.load(f)
