@@ -1,28 +1,41 @@
 import asyncio
 import errno
-import fcntl
 import os
-import struct
 import subprocess
 import sys
+import threading
 from pathlib import Path
-from typing import Dict, Optional, Set
+from typing import Any, Dict, Optional, Set
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
+IS_WINDOWS = sys.platform == "win32"
 
-# Tenta importar módulos PTY disponíveis no Linux/macOS
-try:
-    import pty
-    import termios
-    HAS_PTY = True
-except ImportError:
-    HAS_PTY = False
+# Detecção de recursos PTY por plataforma
+HAS_POSIX_PTY = False
+HAS_WINPTY = False
+
+if IS_WINDOWS:
+    try:
+        from winpty import PtyProcess
+        HAS_WINPTY = True
+    except ImportError:
+        HAS_WINPTY = False
+else:
+    try:
+        import pty
+        import termios
+        import fcntl
+        import struct
+        HAS_POSIX_PTY = True
+    except ImportError:
+        HAS_POSIX_PTY = False
 
 
 class PtySession:
     """
-    Representa uma sessão interativa de terminal (PTY) no host.
-    Mantém o processo shell (bash) vivo mesmo se a conexão cair temporariamente.
+    Representa uma sessão interativa de terminal.
+    - No Linux/macOS: Utiliza o módulo nativo pty (openpty).
+    - No Windows: Utiliza ConPTY (via pywinpty) ou fallback com pipes assíncronos.
     """
 
     def __init__(self, session_id: str, cols: int = 80, rows: int = 24, cwd: Optional[str] = None):
@@ -32,6 +45,7 @@ class PtySession:
         self.cwd = cwd or str(REPO_ROOT)
         self.master_fd: Optional[int] = None
         self.proc: Optional[subprocess.Popen] = None
+        self.winpty_proc: Optional[Any] = None  # Se rodando no Windows com pywinpty
         self.subscribers: Set[asyncio.Queue] = set()
         self.history = bytearray()
         self.max_history = 100_000  # ~100KB de buffer circular para reconexão
@@ -40,55 +54,115 @@ class PtySession:
 
     @property
     def is_alive(self) -> bool:
-        if self._closed or self.proc is None:
+        if self._closed:
             return False
-        return self.proc.poll() is None
+        if IS_WINDOWS and HAS_WINPTY and self.winpty_proc:
+            return self.winpty_proc.isalive()
+        if self.proc is not None:
+            return self.proc.poll() is None
+        return False
 
     def start(self, loop: Optional[asyncio.AbstractEventLoop] = None) -> bool:
-        if not HAS_PTY:
-            return False
-
         self._loop = loop or asyncio.get_event_loop()
-        master, slave = pty.openpty()
-        self.master_fd = master
+        work_dir = self.cwd if os.path.isdir(self.cwd) else str(Path.home())
 
-        # Configura tamanho da janela no PTY
-        try:
-            fcntl.ioctl(master, termios.TIOCSWINSZ, struct.pack("HHHH", self.rows, self.cols, 0, 0))
-        except Exception:
-            pass
-
-        # Modo não-bloqueante no master fd
-        try:
-            fcntl.fcntl(master, fcntl.F_SETFL, os.O_NONBLOCK)
-        except Exception:
-            pass
-
-        # Prepara variáveis de ambiente garantindo que ferramentas (agy, node, claude) estejam no PATH
         env = os.environ.copy()
         env["TERM"] = "xterm-256color"
         env["COLORTERM"] = "truecolor"
         env["LANG"] = env.get("LANG", "en_US.UTF-8")
 
-        extra_paths = [
-            "/home/marcelo/.local/lib/antigravity",
-            "/home/marcelo/.local/opt/node-v22.23.2-linux-x64/bin",
-            "/home/marcelo/.local/bin",
-            "/home/marcelo/.npm-global/bin",
-            str(Path.home() / ".local" / "bin")
-        ]
+        # Caminhos padrão do usuário no Linux e Windows
+        if IS_WINDOWS:
+            extra_paths = [
+                str(Path.home() / "AppData" / "Roaming" / "npm"),
+                str(Path.home() / ".local" / "bin"),
+                str(Path.home() / "bin")
+            ]
+        else:
+            extra_paths = [
+                "/home/marcelo/.local/lib/antigravity",
+                "/home/marcelo/.local/opt/node-v22.23.2-linux-x64/bin",
+                "/home/marcelo/.local/bin",
+                "/home/marcelo/.npm-global/bin",
+                str(Path.home() / ".local" / "bin")
+            ]
+
         curr_path = env.get("PATH", "")
         for p in extra_paths:
             if os.path.isdir(p) and p not in curr_path:
-                curr_path = f"{p}:{curr_path}"
+                curr_path = f"{p}{os.pathsep}{curr_path}"
         env["PATH"] = curr_path
 
-        # Escolhe o shell padrão
+        # 1. Modo Windows
+        if IS_WINDOWS:
+            shell = "powershell.exe"
+            if not os.path.exists(r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"):
+                shell = "cmd.exe"
+
+            if HAS_WINPTY:
+                # Windows com suporte completo a ConPTY (pywinpty)
+                try:
+                    from winpty import PtyProcess
+                    self.winpty_proc = PtyProcess.spawn(
+                        argv=[shell, "-NoLogo"],
+                        dimensions=(self.rows, self.cols),
+                        cwd=work_dir,
+                        env=env
+                    )
+                    threading.Thread(target=self._winpty_read_loop, daemon=True).start()
+                    return True
+                except Exception as e:
+                    print(f"[agent-remote] Erro ao iniciar winpty: {e}, usando fallback.")
+
+            # Fallback Windows: Subprocess com Pipes
+            try:
+                self.proc = subprocess.Popen(
+                    [shell, "-NoLogo"],
+                    stdin=subprocess.PIPE,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    cwd=work_dir,
+                    env=env,
+                    bufsize=0
+                )
+                # Envia dica amigável
+                banner = (
+                    b"\r\n\x1b[36m[Agent-Remote Windows]\x1b[0m Sessao iniciada em "
+                    + work_dir.encode("utf-8")
+                    + b"\r\n\x1b[33m[Dica]\x1b[0m Execute \x1b[1mpip install pywinpty\x1b[0m no PC para suporte completo a emulador de terminal no Windows.\r\n\r\n"
+                )
+                self.history.extend(banner)
+                threading.Thread(target=self._pipe_read_loop, daemon=True).start()
+                return True
+            except Exception as e:
+                print(f"[agent-remote] Erro ao iniciar subprocess no Windows: {e}")
+                return False
+
+        # 2. Modo Linux / macOS (Nativo)
+        if not HAS_POSIX_PTY:
+            return False
+
+        import fcntl
+        import pty
+        import struct
+        import termios
+
+        master, slave = pty.openpty()
+        self.master_fd = master
+
+        try:
+            fcntl.ioctl(master, termios.TIOCSWINSZ, struct.pack("HHHH", self.rows, self.cols, 0, 0))
+        except Exception:
+            pass
+
+        try:
+            fcntl.fcntl(master, fcntl.F_SETFL, os.O_NONBLOCK)
+        except Exception:
+            pass
+
         shell = os.environ.get("SHELL", "/bin/bash")
         if not os.path.exists(shell):
             shell = "/bin/sh"
-
-        work_dir = self.cwd if os.path.isdir(self.cwd) else str(Path.home())
 
         try:
             self.proc = subprocess.Popen(
@@ -102,14 +176,38 @@ class PtySession:
                 preexec_fn=os.setsid
             )
         finally:
-            # O slave deve sempre ser fechado no processo pai
             os.close(slave)
 
-        # Adiciona leitor assíncrono no loop
-        self._loop.add_reader(self.master_fd, self._handle_read)
+        self._loop.add_reader(self.master_fd, self._posix_handle_read)
         return True
 
-    def _handle_read(self) -> None:
+    def _winpty_read_loop(self) -> None:
+        """Loop de leitura em thread para o ConPTY do Windows."""
+        while self.is_alive and not self._closed:
+            try:
+                data = self.winpty_proc.read(4096)
+                if not data:
+                    break
+                chunk = data.encode("utf-8", errors="replace") if isinstance(data, str) else data
+                self._dispatch_chunk(chunk)
+            except Exception:
+                break
+        self.close()
+
+    def _pipe_read_loop(self) -> None:
+        """Loop de leitura para fallback no Windows."""
+        while self.is_alive and not self._closed:
+            try:
+                chunk = self.proc.stdout.read(1024)
+                if not chunk:
+                    break
+                self._dispatch_chunk(chunk)
+            except Exception:
+                break
+        self.close()
+
+    def _posix_handle_read(self) -> None:
+        """Manipulador não-bloqueante para Linux/macOS."""
         if self.master_fd is None or self._closed:
             return
 
@@ -118,47 +216,74 @@ class PtySession:
             if not chunk:
                 self.close()
                 return
-
-            # Adiciona ao buffer de histórico para reconexões
-            self.history.extend(chunk)
-            if len(self.history) > self.max_history:
-                self.history = self.history[-self.max_history:]
-
-            # Despacha para todos os WebSockets inscritos
-            for q in list(self.subscribers):
-                try:
-                    q.put_nowait(chunk)
-                except Exception:
-                    pass
-
+            self._dispatch_chunk(chunk)
         except OSError as e:
-            # EIO indica EOF no PTY Linux quando o shell fecha
             if e.errno in (errno.EIO, errno.EBADF):
                 self.close()
-            # EAGAIN / EWOULDBLOCK apenas significa que não há mais dados agora
             elif e.errno not in (errno.EAGAIN, errno.EWOULDBLOCK):
                 self.close()
 
-    def write(self, data: bytes) -> None:
-        if self.master_fd is not None and not self._closed:
+    def _dispatch_chunk(self, chunk: bytes) -> None:
+        self.history.extend(chunk)
+        if len(self.history) > self.max_history:
+            self.history = self.history[-self.max_history:]
+
+        for q in list(self.subscribers):
             try:
-                os.write(self.master_fd, data)
+                if self._loop and self._loop.is_running():
+                    self._loop.call_soon_threadsafe(q.put_nowait, chunk)
+                else:
+                    q.put_nowait(chunk)
             except Exception:
                 pass
 
+    def write(self, data: bytes) -> None:
+        if self._closed:
+            return
+
+        if IS_WINDOWS:
+            if HAS_WINPTY and self.winpty_proc:
+                try:
+                    self.winpty_proc.write(data.decode("utf-8", errors="replace"))
+                except Exception:
+                    pass
+            elif self.proc and self.proc.stdin:
+                try:
+                    self.proc.stdin.write(data)
+                    self.proc.stdin.flush()
+                except Exception:
+                    pass
+        else:
+            if self.master_fd is not None:
+                try:
+                    os.write(self.master_fd, data)
+                except Exception:
+                    pass
+
     def resize(self, cols: int, rows: int) -> None:
-        if self.master_fd is None or self._closed or not HAS_PTY:
+        if self._closed:
             return
         self.cols = max(10, cols)
         self.rows = max(4, rows)
-        try:
-            fcntl.ioctl(self.master_fd, termios.TIOCSWINSZ, struct.pack("HHHH", self.rows, self.cols, 0, 0))
-        except Exception:
-            pass
+
+        if IS_WINDOWS:
+            if HAS_WINPTY and self.winpty_proc:
+                try:
+                    self.winpty_proc.set_winsize(self.rows, self.cols)
+                except Exception:
+                    pass
+        else:
+            if self.master_fd is not None and HAS_POSIX_PTY:
+                import fcntl
+                import struct
+                import termios
+                try:
+                    fcntl.ioctl(self.master_fd, termios.TIOCSWINSZ, struct.pack("HHHH", self.rows, self.cols, 0, 0))
+                except Exception:
+                    pass
 
     def subscribe(self, queue: asyncio.Queue) -> None:
         self.subscribers.add(queue)
-        # Se já tiver histórico, envia para catch-up imediato
         if self.history:
             queue.put_nowait(bytes(self.history))
 
@@ -170,16 +295,24 @@ class PtySession:
             return
         self._closed = True
 
-        if self.master_fd is not None and self._loop is not None:
-            try:
-                self._loop.remove_reader(self.master_fd)
-            except Exception:
-                pass
-            try:
-                os.close(self.master_fd)
-            except Exception:
-                pass
-            self.master_fd = None
+        if IS_WINDOWS:
+            if self.winpty_proc is not None:
+                try:
+                    self.winpty_proc.terminate(force=True)
+                except Exception:
+                    pass
+                self.winpty_proc = None
+        else:
+            if self.master_fd is not None and self._loop is not None:
+                try:
+                    self._loop.remove_reader(self.master_fd)
+                except Exception:
+                    pass
+                try:
+                    os.close(self.master_fd)
+                except Exception:
+                    pass
+                self.master_fd = None
 
         if self.proc is not None:
             try:
@@ -192,10 +325,13 @@ class PtySession:
                     pass
             self.proc = None
 
-        # Notifica inscritos sobre encerramento
         for q in list(self.subscribers):
             try:
-                q.put_nowait(b"\r\n\x1b[33m[Sess\xc3\xa3o de terminal encerrada]\x1b[0m\r\n")
+                msg = b"\r\n\x1b[33m[Sessao de terminal encerrada]\x1b[0m\r\n"
+                if self._loop and self._loop.is_running():
+                    self._loop.call_soon_threadsafe(q.put_nowait, msg)
+                else:
+                    q.put_nowait(msg)
             except Exception:
                 pass
         self.subscribers.clear()
@@ -222,7 +358,6 @@ class PtyManager:
             session.start(loop=loop)
             self._sessions[session_id] = session
         else:
-            # Se já existe e os tamanhos mudaram, atualiza
             session.resize(cols, rows)
         return session
 
