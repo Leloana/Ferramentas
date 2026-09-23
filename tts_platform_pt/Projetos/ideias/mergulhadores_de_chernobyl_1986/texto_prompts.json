@@ -1,8 +1,26 @@
 {
-  "1": "A cinematic macro photograph of black murky water rippling inside a dark industrial concrete basement, illuminated by a single trembling waterproof flashlight beam cutting through floating radioactive debris in atmospheric haze, 35mm film photography.",
-  "2": "A wide dramatic exterior photograph of the ruins of Reactor Number Four at Chernobyl in May 1986, thick smoke and steam rising from the fractured graphite core into an overcast somber sky, surrounded by military cranes and rescue vehicles in sharp documentary realism.",
-  "3": "A dramatic conceptual wide shot beneath the damaged reactor: glowing molten radioactive corium lava slowly burning through a thick cracked concrete slab directly above dark submerged reservoirs of stagnant water, ominous deep red and orange glow reflecting on water.",
-  "4": "A medium portrait shot of Alexei Ananenko, a courageous 26-year-old Soviet mechanical engineer with determined pale face and focused dark eyes. He is wearing a heavy vintage black rubber diving suit with a rubber respirator mask resting around his neck, holding a heavy metal waterproof underwater flashlight, standing in a dimly lit concrete corridor under Chernobyl, 35mm film still.",
-  "5": "An intense visceral photograph: the engineer from <image1> submerged chest-deep in dark murky water inside the flooded subterranean pipe corridors, feeling along enormous rusted iron pipe valves with heavy black rubber gloves while holding a fading flashlight between his teeth under extreme psychological tension.",
-  "6": "A heroic cinematic low-angle photograph: the engineer from <image1> and his companions forcefully turning a massive iron valve wheel, turbulent black water draining rapidly through opened sluice gates around their boots, exhausted triumph and relief etched into their pale faces, cinematic lighting."
+  "1": [
+    "A cinematic macro photograph of black murky water rippling inside a dark industrial concrete basement, a single trembling flashlight beam cutting through floating debris in the haze, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A tense photograph of the boots of the soviet engineer from <image1>, preserving his exact pale face and focused dark eyes, in a heavy black rubber diving suit with a respirator mask, stepping down a submerged concrete stair into the black water, ripples spreading into the dark, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "2": [
+    "A wide dramatic exterior photograph of the ruins of reactor number four at Chernobyl in May 1986, thick smoke rising from the fractured core into an overcast sky, military cranes and rescue vehicles around the rubble, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A documentary photograph of a dosimeter needle pinned at the end of its scale in a gloved hand, the ruined reactor blurred behind it, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "3": [
+    "A conceptual wide photograph beneath a damaged reactor, glowing molten radioactive corium burning through a cracked concrete slab above dark submerged reservoirs of stagnant water, ominous red glow, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A cross section style photograph of flooded basement corridors under the reactor, still black water reflecting dim emergency lamps, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "4": [
+    "A medium portrait photograph of Alexei Ananenko, a courageous 26 year old soviet mechanical engineer with a determined pale face and focused dark eyes, wearing a heavy vintage black rubber diving suit with a respirator mask resting on his chest, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of three volunteers in rubber diving suits checking each other's straps in a concrete corridor lit by a single caged bulb, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "5": [
+    "An intense visceral photograph of the soviet engineer from <image1>, preserving his exact pale face and focused dark eyes, in a heavy black rubber diving suit with a respirator mask, submerged chest deep in dark murky water inside a flooded pipe corridor, feeling along enormous rusted valves with heavy rubber gloves as his flashlight flickers, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A claustrophobic photograph of a failing flashlight beam sweeping across submerged pipes and dripping concrete in total darkness, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "6": [
+    "A heroic low angle photograph of the soviet engineer from <image1>, preserving his exact pale face and focused dark eyes, in a heavy black rubber diving suit with a respirator mask, and his companions forcing a massive iron valve wheel open while black water drains rapidly around their boots, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A quiet photograph of an emptied reservoir chamber, wet concrete floor steaming faintly under emergency lights after the water is gone, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ]
 }

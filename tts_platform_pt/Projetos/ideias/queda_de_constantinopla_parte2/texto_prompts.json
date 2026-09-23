@@ -1,11 +1,38 @@
 {
-  "1": "A close-up portrait of the emperor from <image1>, his rugged face smeared with gray stone dust and soot, his dark eyes burning with unshakable defiance as he firmly shakes his head against suggestions of surrender.",
-  "2": "A dramatic medium shot on the crumbling battlements: elderly Byzantine senators and Venetian captains urgently pleading on their knees with the emperor from <image1>, pointing toward waiting ships in the harbor while sparks and smoke swirl around them.",
-  "3": "An over-the-shoulder shot looking past the emperor from <image1> toward the distant silhouette of the Hagia Sophia, its grand dome bathed in the soft early light of dawn beneath a heavy shroud of rising war smoke.",
-  "4": "A close-up of the emperor from <image1>, deep grief turning into fierce soldierly resolve as morning sunlight illuminates the crimson cloth of his tunic and weathered cheekbones in dramatic rim lighting.",
-  "5": "A macro close-up shot of the soot-stained hands of the emperor from <image1> unclasping the imperial gold brooch and unfastening his jeweled crown, casting the symbols of imperial authority into the stone dust of the wall.",
-  "6": "A symbolic close-up of the discarded imperial gold crown resting in the dirt among stone rubble and broken arrow shafts, with the blurry silhouettes of fighting soldiers in the smoky background.",
-  "7": "A heroic low-angle action photograph: the emperor from <image1>, now appearing as a common frontline soldier in battle-worn lamellar armor, raising his gleaming steel longsword high into the morning air alongside a battered brotherhood of spearmen.",
-  "8": "A visceral close-quarters combat photograph: the emperor from <image1> charging forward into a wall of enemy spears and flashing blades in the chaotic center of the breach, engulfed in dense war dust and flying sparks.",
-  "9": "A wide sweeping panoramic photograph of the Bosporus at sunset: thin trails of smoke gently rising from the historic ramparts of Constantinople, peaceful golden waters reflecting the twilight sky as a thousand years of Roman history come to a close."
+  "1": [
+    "A close-up portrait photograph of the byzantine emperor from <image1>, preserving his exact face, trimmed graying beard and fierce dark eyes, in ornate lamellar armor over a crimson tunic, his face smeared with stone dust and soot, dark eyes burning with defiance as he refuses to flee, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of a waiting galley at the harbour steps, oars ready, nobody coming down to board it, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "2": [
+    "A dramatic medium photograph on crumbling battlements of elderly senators and venetian captains pleading on their knees with the byzantine emperor from <image1>, preserving his exact face, trimmed graying beard and fierce dark eyes, in ornate lamellar armor over a crimson tunic, pointing toward the ships in the harbour, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of frightened courtiers carrying chests and icons down a stair toward the docks as embers fall around them, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "3": [
+    "An over the shoulder photograph past the byzantine emperor from <image1>, preserving his exact face, trimmed graying beard and fierce dark eyes, in ornate lamellar armor over a crimson tunic, toward the distant dome of the Hagia Sophia bathed in dawn light beneath rising war smoke, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of the great dome catching the first sun above the burning city skyline, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "4": [
+    "A close-up photograph of the byzantine emperor from <image1>, preserving his exact face, trimmed graying beard and fierce dark eyes, in ornate lamellar armor over a crimson tunic, grief hardening into soldierly resolve as morning light rims his weathered cheekbones, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of a tattered imperial banner still flying over a shattered tower against the pale dawn, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "5": [
+    "A macro photograph of the soot stained hands of the byzantine emperor from <image1>, preserving his exact face, trimmed graying beard and fierce dark eyes, in ornate lamellar armor over a crimson tunic, unclasping the imperial gold brooch from his cloak, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of a jeweled crown striking the stone dust of the rampart and rolling among broken arrow shafts, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "6": [
+    "A symbolic close-up photograph of a discarded imperial crown resting in the dirt among rubble, blurred fighting figures in the smoke behind it, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of the byzantine emperor from <image1>, preserving his exact face, trimmed graying beard and fierce dark eyes, in ornate lamellar armor over a crimson tunic, tightening the straps of a common soldier's armor over his crimson tunic, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "7": [
+    "A heroic low angle photograph of the byzantine emperor from <image1>, preserving his exact face, trimmed graying beard and fierce dark eyes, in ornate lamellar armor over a crimson tunic, now dressed as a frontline soldier, raising his steel longsword into the morning air beside a battered handful of defenders, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of a small knot of exhausted soldiers lifting their swords in answer amid dust and falling ash, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "8": [
+    "A visceral close quarters photograph of the byzantine emperor from <image1>, preserving his exact face, trimmed graying beard and fierce dark eyes, in ornate lamellar armor over a crimson tunic, charging alone into a wall of enemy spears in the chaotic center of the breach, dust and sparks flying, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of the melee closing over a crimson cloak, blades and shields filling the frame in the smoke, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "9": [
+    "A wide panoramic photograph of the Bosporus at sunset, thin trails of smoke rising from historic ramparts while golden water reflects the twilight sky, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A quiet photograph of an empty rampart at dusk, a broken double headed eagle shield leaning against the stone, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ]
 }

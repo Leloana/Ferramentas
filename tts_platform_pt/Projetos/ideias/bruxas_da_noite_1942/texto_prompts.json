@@ -1,10 +1,34 @@
 {
-  "1": "A cinematic anime screenshot of a wooden biplane gliding through the pitch-black night sky among stars, its propeller coming to a complete stop against the silver moonlight, beautiful digital anime background art in the style of The Wind Rises and Wit Studio, full-color single frame animation still.",
-  "2": "A wide anime establishing shot of a snowy Soviet front-line airfield at dusk in the freezing winter of 1942: young female aviators in heavy sheepskin coats and fur hats gathered around vintage green Polikarpov Po-2 biplanes on the snow, breath misting in the cold air, atmospheric anime lighting.",
-  "3": "A medium anime portrait of Nadia Popova, a brave 20-year-old Soviet female pilot with determined green eyes and a short dark bob haircut. She sits in the open wooden cockpit of her biplane wearing a brown leather flying helmet with clear goggles resting on her forehead and a thick fur-collared winter flight jacket, clean anime cel shading, full-color single frame animation still.",
-  "4": "A dynamic aerial anime shot: the female aviator from <image1> calmly switching off the engine ignition lever in the open cockpit, her plane banking smoothly as it enters a silent glide high above snow-covered forests under a moonless starry sky.",
-  "5": "A poetic close-up anime shot of the fabric biplane wing slicing quietly through the midnight clouds, wind whistling gently through taut wire struts, the pilot from <image1> peering over the cockpit rim with sharp laser focus, luminous starlight reflecting in her eyes.",
-  "6": "A dramatic wide action anime shot: small aerial bombs detaching from beneath the wooden wings and falling silently toward a dimly lit enemy camp in the snowy valley below, followed by massive orange explosive shockwaves illuminating the snowy pine forest.",
-  "7": "A medium anime shot inside an enemy snow-covered military camp: terrified soldiers staring up into the dark cloudy sky in panic, searching in vain with bright white antiaircraft searchlights as shadows flit through the clouds like legendary witches.",
-  "8": "A beautiful cinematic anime portrait of the young female pilot from <image1> climbing down from her wooden biplane at sunrise, her cheeks flushed with cold, removing her leather flying helmet as golden morning sunlight illuminates her exhausted yet triumphant face, Makoto Shinkai dawn sky, full-color single frame animation still."
+  "1": [
+    "A cinematic anime screenshot of a small wooden biplane gliding through the pitch black night sky among cold stars, its propeller completely stopped against the silver moonlight, beautiful digital anime background art in the style of Wit Studio, full-color single frame anime movie still, cinematic lighting",
+    "A tense anime close-up of the gloved hand of the young soviet female pilot from <image1>, preserving her exact face, determined green eyes, short dark bob haircut, brown leather flying helmet and fur-collared winter flight jacket, pulling the engine ignition lever to off inside the open cockpit, dim instrument glow on her sleeve, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "2": [
+    "A wide anime establishing shot of a snowy soviet front line airfield at dusk in the freezing winter of 1942, young female aviators in heavy sheepskin coats and fur hats gathered around vintage green Polikarpov biplanes, breath misting in the cold air, full-color single frame anime movie still, cinematic lighting",
+    "A medium anime shot of a row of young soviet airwomen in fur hats standing at attention in the snow beside their biplanes while an officer reads the night orders, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "3": [
+    "A medium anime portrait of Nadia Popova, a brave 20 year old soviet female pilot with determined green eyes and a short dark bob haircut, sitting in the open wooden cockpit of her biplane wearing a brown leather flying helmet with clear goggles on her forehead and a thick fur collared winter flight jacket, clean anime cel shading, full-color single frame anime movie still, cinematic lighting",
+    "A detailed anime close-up of the fragile wooden and canvas fuselage of a Polikarpov biplane, taut bracing wires and patched fabric wing, no parachute in the empty rear seat, snow falling around it, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "4": [
+    "A dynamic aerial anime shot of the young soviet female pilot from <image1>, preserving her exact face, determined green eyes, short dark bob haircut, brown leather flying helmet and fur-collared winter flight jacket, banking her biplane into a silent glide high above snow covered forests under a moonless starry sky, propeller frozen mid turn, full-color single frame anime movie still, cinematic lighting",
+    "A wide aerial anime shot from behind of a tiny biplane silhouette gliding without engine noise toward the faint orange campfires of an enemy camp far below, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "5": [
+    "A poetic anime close-up of a fabric biplane wing slicing quietly through midnight clouds, wind whistling through taut wire struts under the starlight, full-color single frame anime movie still, cinematic lighting",
+    "An intimate anime close-up of the face of the young soviet female pilot from <image1>, preserving her exact face, determined green eyes, short dark bob haircut, brown leather flying helmet and fur-collared winter flight jacket, peering over the cockpit rim with sharp focus, starlight reflected in her eyes and frost on her goggles, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "6": [
+    "A dramatic wide action anime shot of small aerial bombs detaching from beneath wooden biplane wings and falling silently toward a dimly lit enemy camp in a snowy valley, full-color single frame anime movie still, cinematic lighting",
+    "An explosive anime impact frame of orange fireballs blooming across a snowy pine forest camp, shockwave throwing snow and sparks into the black sky, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "7": [
+    "A medium anime shot inside an enemy snow covered military camp, terrified soldiers staring up into the dark cloudy sky while white antiaircraft searchlights sweep in vain, full-color single frame anime movie still, cinematic lighting",
+    "A chilling low angle anime shot of searchlight beams crossing over black clouds, the faint shadow of a biplane flitting between them like a legend, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "8": [
+    "A beautiful cinematic anime portrait of the young soviet female pilot from <image1>, preserving her exact face, determined green eyes, short dark bob haircut, brown leather flying helmet and fur-collared winter flight jacket, climbing down from her wooden biplane at sunrise and removing her leather flying helmet, cheeks flushed with cold, golden morning light on her exhausted triumphant face, full-color single frame anime movie still, cinematic lighting",
+    "A warm wide anime shot of the young soviet female pilot from <image1>, preserving her exact face, determined green eyes, short dark bob haircut, brown leather flying helmet and fur-collared winter flight jacket, walking away across the snowy airfield with her helmet in hand while the dawn sun rises behind the line of parked biplanes, full-color single frame anime movie still, cinematic lighting"
+  ]
 }

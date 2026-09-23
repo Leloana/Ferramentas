@@ -1,11 +1,38 @@
 {
-  "1": "A high-budget cinematic anime movie screenshot of a lone samurai standing on an ocean cliff edge at sunrise, dark silhouette against a fiery morning sky with cherry blossom petals and sea spray swirling in the wind, beautiful digital anime background art in the style of Ufotable, full-color single frame animation still.",
-  "2": "A wide cinematic anime establishing shot showing hundreds of Edo-period samurai spectators gathered on the sandy beaches of Ganryu Island, crystal-clear turquoise ocean waves breaking on the shore under a radiant Makoto Shinkai sky with fluffy cumulus clouds, full-color single frame animation still.",
-  "3": "A medium anime portrait of Sasaki Kojiro, an elegant master samurai with long silky dark hair tied in a high ponytail, dressed in a crimson and gold embroidered silk kimono, resting his hand on the hilt of a long nodachi katana at his waist with an aristocratic and haughty expression, clean anime cel shading, full-color single frame animation still.",
-  "4": "A wide cinematic anime vista across the deserted sandy shore of the island, lonely wooden mooring posts standing in the surf under a blazing midday sun, waves gently lapping at the shore in quiet suspense, detailed digital anime background painting.",
-  "5": "An intense close-up anime shot of Sasaki Kojiro under the scorching afternoon sun, sweat glistening on his sharp cheekbone as his eyes narrow in rising frustration, heat waves shimmering across the beach, vibrant anime colors, full-color single frame animation still.",
-  "6": "A cinematic anime screenshot of Miyamoto Musashi, a rugged 28-year-old Japanese samurai with wild messy black hair in a high topknot, intense calm dark eyes, and a light stubble on his jawline. He sits relaxed in a weathered wooden rowboat floating on the turquoise sea, wearing a faded dark blue linen kimono, a warm sea breeze rustling his garments, clean sharp lineart and rich cel shading, full-color single frame animation still.",
-  "7": "A detailed close-up anime shot of Musashi's muscular, calloused hands using a small steel knife to whittle down a heavy wooden boat oar into a formidable wooden sword, golden wood shavings flying into the air under bright sunlight, beautiful anime craftsmanship.",
-  "8": "A dynamic wide action anime screenshot: the wooden rowboat slides onto the pebble shore, while Sasaki Kojiro furiously draws his massive gleaming steel nodachi katana in an arc of blinding silver light, hurling the scabbard into the crashing ocean surf, high-energy animation framing.",
-  "9": "A cinematic medium close-up anime shot of the samurai from <image1>, preserving his exact facial features, messy topknot, and blue kimono. He steps calmly off the boat onto the shore with the heavy carved wooden oar resting on his shoulder, his lips curling into a quiet confident smile as he locks eyes with his opponent."
+  "1": [
+    "An extreme close-up anime shot of the calm dark eyes of the ronin samurai from <image1>, preserving his exact face, light stubble, wild messy black hair in a high topknot and worn indigo blue linen kimono over dark hakama, reflecting the orange sunrise over the sea, absolute stillness before a duel, full-color single frame anime movie still in the style of Ufotable, cinematic lighting",
+    "A dramatic anime close-up of a long sheathed katana in the hand of an elegant duelist standing against a fiery sunrise sky over the ocean, seen from behind at low angle, cherry blossom petals drifting in the salty wind, full-color single frame anime movie still in the style of Ufotable, cinematic lighting"
+  ],
+  "2": [
+    "A wide cinematic anime establishing shot of hundreds of Edo period spectators gathered on the white sandy beach of a small island, turquoise waves breaking on the shore under a radiant morning sky with towering cumulus clouds, full-color single frame anime movie still in the style of Ufotable, cinematic lighting",
+    "A low angle anime shot across the crowd of Edo period villagers and samurai retainers waiting on the beach, straw sandals and hems of kimonos in the foreground sand, fishing boats moored in the shallows behind them, full-color single frame anime movie still in the style of Ufotable, cinematic lighting"
+  ],
+  "3": [
+    "A medium anime portrait of Sasaki Kojiro, an elegant tall japanese master swordsman with long silky black hair tied in a high ponytail, wearing a crimson and gold silk kimono, holding an extremely long nodachi katana at his side, standing confident on the sunlit beach, full-color single frame anime movie still in the style of Ufotable, cinematic lighting",
+    "A detailed anime close-up of the pale hand of the swordsman from <image1>, preserving his exact face, long silky black hair in a high ponytail and crimson and gold silk kimono closing around the long wrapped hilt of his nodachi, his sharp profile out of focus behind it, full-color single frame anime movie still in the style of Ufotable, cinematic lighting"
+  ],
+  "4": [
+    "A wide desolate anime vista of an empty sandy shore with weathered wooden mooring posts standing in the surf, no people at all, blazing midday sun and a hard black shadow on the sand, full-color single frame anime movie still in the style of Ufotable, cinematic lighting",
+    "An over the shoulder anime shot of the swordsman from <image1>, preserving his exact face, long silky black hair in a high ponytail and crimson and gold silk kimono, seen from behind as he stares at the empty ocean horizon waiting for an opponent who has not arrived, full-color single frame anime movie still in the style of Ufotable, cinematic lighting"
+  ],
+  "5": [
+    "An intense anime close-up of the face of the swordsman from <image1>, preserving his exact face, long silky black hair in a high ponytail and crimson and gold silk kimono under the scorching afternoon sun, sweat glistening on his cheekbone as his eyes narrow with rising fury, full-color single frame anime movie still in the style of Ufotable, cinematic lighting",
+    "A wide anime shot of the swordsman from <image1>, preserving his exact face, long silky black hair in a high ponytail and crimson and gold silk kimono standing alone on the burning beach, heat haze rippling the air around him, his long shadow stretching across the sand, full-color single frame anime movie still in the style of Ufotable, cinematic lighting"
+  ],
+  "6": [
+    "A cinematic anime screenshot of Miyamoto Musashi, a rugged 28 year old japanese ronin with wild messy black hair in a high topknot and light stubble, wearing a worn indigo blue linen kimono over dark hakama, sitting calmly in a small wooden fishing boat on the open turquoise sea, full-color single frame anime movie still in the style of Ufotable, cinematic lighting",
+    "A wide cinematic anime shot of a small wooden fishing boat drifting unhurried on the glittering open sea, the ronin samurai from <image1>, preserving his exact face, light stubble, wild messy black hair in a high topknot and worn indigo blue linen kimono over dark hakama, seated at the stern with the coastline far behind him, full-color single frame anime movie still in the style of Ufotable, cinematic lighting"
+  ],
+  "7": [
+    "A detailed anime close-up of muscular calloused hands using a small steel knife to whittle a heavy broken wooden boat oar into the shape of a sword, curled wood shavings falling into the bottom of a fishing boat, full-color single frame anime movie still in the style of Ufotable, cinematic lighting",
+    "A medium anime shot of the ronin samurai from <image1>, preserving his exact face, light stubble, wild messy black hair in a high topknot and worn indigo blue linen kimono over dark hakama, carving the wooden oar with total concentration while the boat rocks, afternoon sunlight cutting across his face, full-color single frame anime movie still in the style of Ufotable, cinematic lighting"
+  ],
+  "8": [
+    "A dynamic anime action shot of the swordsman from <image1>, preserving his exact face, long silky black hair in a high ponytail and crimson and gold silk kimono, drawing his enormous gleaming nodachi in a wide arc and hurling the lacquered scabbard away toward the water, rage on his face, sea spray and speed lines, full-color single frame anime movie still in the style of Ufotable, cinematic lighting",
+    "A detailed anime close-up of a black lacquered sword scabbard splashing into the foaming ocean surf and spinning away on the waves under the afternoon sun, full-color single frame anime movie still in the style of Ufotable, cinematic lighting"
+  ],
+  "9": [
+    "A cinematic anime close-up of the ronin samurai from <image1>, preserving his exact face, light stubble, wild messy black hair in a high topknot and worn indigo blue linen kimono over dark hakama, a faint confident smile on his lips as he steps from the boat into the shallow water with the heavy carved wooden oar resting on his shoulder, full-color single frame anime movie still in the style of Ufotable, cinematic lighting",
+    "A low angle wide anime shot of the ronin samurai from <image1>, preserving his exact face, light stubble, wild messy black hair in a high topknot and worn indigo blue linen kimono over dark hakama, standing ankle deep in the shallows holding the carved wooden oar, the blurred crowd and the island cliffs behind him, full-color single frame anime movie still in the style of Ufotable, cinematic lighting"
+  ]
 }

@@ -1,11 +1,38 @@
 {
-  "1": "A cinematic moody shot inside a dimly lit stone cellar in ancient Rome: conspiratorial senators in dark wool cloaks huddle around a rough wooden table illuminated by flickering clay oil lamps, whispering in deadly secrecy.",
-  "2": "A commanding medium portrait shot of Julius Caesar, an authoritative 55-year-old Roman statesman with sharp patrician facial features, piercing brown eyes, and short receding silver-gray hair. He stands proudly in the Roman Forum wearing an immaculate white Roman wool toga bordered with rich Tyrian purple and a delicate gold laurel wreath, surrounded by towering sunlit marble columns in sharp 35mm film photography.",
-  "3": "An intense close-up portrait of young Marcus Junius Brutus, a 30-year-old noble Roman senator with dark curly hair and clean-shaven pale face, his conflicted and haunted eyes staring through deep shadows in dramatic chiaroscuro lighting.",
-  "4": "A wide cinematic vista of Rome at early dawn on the 15th of March: blood-orange sunrise glowing ominously over the ancient monuments, temples, and aqueducts, with cool morning fog hanging over the Tiber River.",
-  "5": "An emotional medium shot in a Roman villa bedchamber: Calpurnia, a noble Roman woman with dark braided hair and tear-stained cheeks, desperately pleading with the Roman leader from <image1>, clutching his arm in front of tall sunlit Corinthian marble columns.",
-  "6": "A dramatic street scene in ancient Rome: an elderly blind soothsayer with a ragged gray beard reaches out to touch the purple-bordered toga of the leader from <image1>, warning him as crowds of Roman citizens look on in silence.",
-  "7": "A cinematic medium close-up of the leader from <image1>, preserving his exact patrician features, receding silver hair, and purple-bordered toga. He smiles with confident arrogance and enters the grand stone colonnade of the Theatre of Pompey under bright morning sunlight.",
-  "8": "A wide interior shot inside the grand Curia of Pompey: sixty Roman senators in matching white togas rise to their feet simultaneously from marble tiers as the heavy bronze entrance doors close shut in the background.",
-  "9": "A tense macro close-up focused on the draped folds of a Roman senator's white toga, revealing a trembling hand clutching a sharp concealed iron pugio dagger in deep shadow."
+  "1": [
+    "A moody cinematic shot inside a dimly lit stone cellar in ancient Rome, conspiratorial senators in dark wool cloaks huddled around a rough wooden table lit by clay oil lamps, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting",
+    "A tight shot of pale hands sliding an iron dagger across a wooden table toward a circle of shadowed faces, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting"
+  ],
+  "2": [
+    "A commanding medium portrait of Julius Caesar, an authoritative 55 year old roman statesman with sharp patrician features, piercing brown eyes and short receding silver gray hair, standing in the roman forum in a purple bordered white toga, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting",
+    "A low angle shot of a gilded laurel wreath being lowered toward the head of the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, before a crowd of watching senators, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting"
+  ],
+  "3": [
+    "An intense close-up portrait of young Marcus Brutus, a 30 year old noble roman senator with dark curly hair and a pale clean shaven face, conflicted haunted eyes staring through deep shadow, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting",
+    "A quiet shot of the young roman senator from <image1>, preserving his exact pale clean shaven face and dark curly hair, in a white senatorial toga, reading an anonymous note urging him to act, oil lamp trembling beside his hand, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting"
+  ],
+  "4": [
+    "A wide cinematic vista of Rome at early dawn on the fifteenth of March, blood orange sunrise over ancient temples and aqueducts with fog on the Tiber, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting",
+    "A close-up of a sacrificial bull liver on a stone altar, priests recoiling at the omen in the pale morning light, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting"
+  ],
+  "5": [
+    "An emotional medium shot in a roman villa bedchamber of Calpurnia, a noble roman woman with dark braided hair and tear stained cheeks, clutching the arm of the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga and begging him to stay home, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting",
+    "A tender close-up of the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, gently removing his wife's hands from his arm, resolve and affection on his face, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting"
+  ],
+  "6": [
+    "A dramatic street scene in ancient Rome where an elderly blind soothsayer with a ragged gray beard reaches out to touch the toga of the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, whispering a warning as citizens watch in silence, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting",
+    "A close-up of a gnarled hand closing on the hem of a purple bordered toga in a crowded roman street, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting"
+  ],
+  "7": [
+    "A cinematic medium close-up of the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, smiling with confident arrogance as he walks into the grand stone colonnade of the Theatre of Pompey, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting",
+    "A wide shot of the marble portico swallowing a lone figure in a purple bordered toga, long morning shadows between the columns, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting"
+  ],
+  "8": [
+    "A wide interior shot inside the grand curia of Pompey as sixty roman senators in white togas rise to their feet from marble tiers while heavy bronze doors close behind, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting",
+    "A tense reverse shot of the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, pausing mid step as he registers the silence and the standing rows of senators, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting"
+  ],
+  "9": [
+    "A tense macro close-up of the draped folds of a white toga revealing a trembling hand clutching a concealed iron dagger in deep shadow, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting",
+    "A close-up of the young roman senator from <image1>, preserving his exact pale clean shaven face and dark curly hair, in a white senatorial toga, swallowing hard among the rising senators, his hand hidden inside his toga, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting"
+  ]
 }

@@ -1,8 +1,26 @@
 {
-  "1": "A cinematic high-budget anime screenshot of an enormous muscular African warrior towering over ancient Japanese crowds in the bustling wooden streets of 1581 Kyoto, cherry blossom petals swirling in the air, beautiful digital anime background art in the style of MAPPA and Demon Slayer, full-color single frame animation still.",
-  "2": "A wide dynamic anime establishing shot of traditional tiled roofs and streets of Kyoto packed with thousands of astonished Japanese citizens, climbing wooden shop awnings and temples in excitement to catch a glimpse of the legendary traveler from abroad.",
-  "3": "An intense anime scene inside the grand tatami audience hall of Lord Oda Nobunaga: Nobunaga sitting on an elevated dais in a black-and-gold silk kimono watching intently as attendants scrub the muscular dark shoulder of the tall visitor with damp white towels, realizing in astonishment that his deep obsidian skin is completely natural.",
-  "4": "A magnificent medium anime portrait of Yasuke, an imposing 6-foot-2 African samurai in his late twenties with chiseled athletic features, intense and noble dark eyes, and short-cropped braided hair. He stands proudly in the golden light of Azuchi Castle, wearing custom black-lacquered Sengoku samurai armor with gold accents over a deep purple jinbaori vest, two gleaming katana swords tucked into his sash, clean anime cel shading, full-color single frame animation still.",
-  "5": "A prestigious medium anime shot: Lord Oda Nobunaga smiling with genuine admiration and respect, formally presenting a pair of mastercrafted forged katanas with gold-inlaid dragon hilts to the samurai from <image1>, who receives them on one knee with solemn dignity in a grand sunlit temple courtyard.",
-  "6": "An epic action anime battle climax: the samurai from <image1> fighting alongside Oda Nobunaga during the burning assault on Honno-ji Temple, swinging his massive katana in dynamic arcs through flying embers and smoke, back-to-back with his warlord in legendary brotherhood, Ufotable lighting effects, full-color single frame animation still."
+  "1": [
+    "A cinematic anime screenshot of an enormous muscular african warrior towering over a crowd in the wooden streets of 1581 Kyoto, cherry blossom petals swirling in the air, full-color single frame anime movie still, cinematic lighting",
+    "A low angle anime shot of astonished townspeople looking up, the tall shadow of a foreign warrior falling across the street stones, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "2": [
+    "A wide dynamic anime establishing shot of tiled roofs and packed streets of Kyoto, thousands of citizens climbing shop awnings and temple stairs to catch a glimpse of a foreign visitor, full-color single frame anime movie still, cinematic lighting",
+    "An anime shot of children running along a canal wall pointing excitedly toward a procession entering the city gate, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "3": [
+    "An intense anime scene inside a grand tatami audience hall, attendants scrubbing the muscular dark shoulder of a kneeling foreign warrior with wet cloths while retainers watch in silence, full-color single frame anime movie still, cinematic lighting",
+    "A commanding medium anime portrait of Oda Nobunaga, a sharp featured japanese warlord in his late forties with a thin mustache and piercing eyes, seated on an elevated dais in a black and gold silk kimono, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "4": [
+    "A magnificent medium anime portrait of Yasuke, an imposing african samurai in his late twenties with chiseled athletic features, noble dark eyes and short cropped braided hair, standing proudly in dark lacquered samurai armor, full-color single frame anime movie still, cinematic lighting",
+    "An anime close-up of the japanese warlord from <image1>, preserving his exact face, thin mustache and black and gold silk kimono, leaning forward with open fascination, studying the strength and bearing of the foreign warrior before him, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "5": [
+    "A prestigious medium anime shot of the japanese warlord from <image1>, preserving his exact face, thin mustache and black and gold silk kimono, smiling with genuine respect as he formally presents a pair of mastercrafted katanas with gold inlaid hilts, full-color single frame anime movie still, cinematic lighting",
+    "A reverent anime shot of the tall african samurai from <image1>, preserving his exact face, noble dark eyes, short cropped braided hair and powerful athletic build, receiving the two swords with both hands and bowing deeply on the tatami floor, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "6": [
+    "An epic anime battle climax of the tall african samurai from <image1>, preserving his exact face, noble dark eyes, short cropped braided hair and powerful athletic build, fighting through flying embers and smoke during the burning assault on a temple compound, swinging a massive katana in dynamic arcs, full-color single frame anime movie still, cinematic lighting",
+    "A final anime shot of the tall african samurai from <image1>, preserving his exact face, noble dark eyes, short cropped braided hair and powerful athletic build, standing alone among burning timbers at dawn, blade lowered, his name carved into samurai history, full-color single frame anime movie still, cinematic lighting"
+  ]
 }

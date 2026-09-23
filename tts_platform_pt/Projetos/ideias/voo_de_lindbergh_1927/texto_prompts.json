@@ -1,8 +1,30 @@
 {
-  "1": "A cinematic wide exterior photograph of a silver high-wing monoplane flying alone through dark freezing storm clouds over the stormy black Atlantic Ocean at midnight, navigation lights blinking in the vast lonely void, 35mm film still in the style of The Aviator.",
-  "2": "A historic documentary photograph of Charles Lindbergh taking off from a rainy mud-soaked airfield in Roosevelt Field Long Island in May 1927, silver Spirit of St. Louis airplane struggling into the misty morning sky, crowds watching in awe.",
-  "3": "An interior shot inside the extremely cramped, dark fabric cockpit of the Spirit of St. Louis: no front windscreen, only a massive silver fuel tank occupying the entire forward view, an improvised optical periscope mirror sticking out the side window, glowing radium dials on the aluminum dash.",
-  "4": "A medium portrait shot of Charles Lindbergh, a 25-year-old American aviator with gaunt exhausted features, sunken sleep-deprived blue eyes, and messy brown hair under a brown leather flight cap with fur trim and aviation goggles, shivering in a thick wool flying jacket inside the icy dark cockpit.",
-  "5": "An extreme close-up of the pilot from <image1>, his fingers forcefully propping his heavy eyelids open in desperation against overwhelming sleep, his breath condensing in white clouds of frost on the vibrating cockpit instruments.",
-  "6": "A magnificent wide cinematic shot of the Spirit of St. Louis descending through night fog over the glittering city lights of Paris, the illuminated Eiffel Tower glowing in the distance, touching down at Le Bourget airfield before tens of thousands of cheering French spectators."
+  "1": [
+    "A cinematic wide exterior photograph of a silver high wing monoplane flying alone through freezing storm clouds over the black Atlantic at midnight, navigation lights blinking, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of the young american aviator from <image1>, preserving his exact gaunt face, sleep deprived blue eyes and brown leather flight cap, hunched in the dark cockpit, instrument glow on his exhausted face after a day without sleep, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "2": [
+    "A historic documentary photograph of a silver monoplane struggling off a rain soaked airfield in May 1927, crowds watching from the muddy grass, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of newspaper reporters and mechanics waving their hats as the overloaded plane clears the telephone wires, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "3": [
+    "An interior photograph of an extremely cramped fabric cockpit with no front windscreen, a huge silver fuel tank filling the forward view and an improvised periscope mirror, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of a paper navigation chart spread across an aviator's knees beside a magnetic compass in the cockpit gloom, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "4": [
+    "A medium portrait photograph of Charles Lindbergh, a 25 year old american aviator with gaunt exhausted features, sunken blue eyes and messy brown hair under a fur trimmed brown leather flight cap with goggles, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of the young american aviator from <image1>, preserving his exact gaunt face, sleep deprived blue eyes and brown leather flight cap, checking the periscope mirror to see ahead past the fuel tank, one hand steady on the control stick, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "5": [
+    "A haunting photograph of ice forming along a fabric covered wing in dense freezing fog, the engine exhaust glowing faintly in the night, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of the young american aviator from <image1>, preserving his exact gaunt face, sleep deprived blue eyes and brown leather flight cap, leaning toward the side window to judge the ice on the strut, frost on his breath, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "6": [
+    "An extreme close-up photograph of the young american aviator from <image1>, preserving his exact gaunt face, sleep deprived blue eyes and brown leather flight cap, propping his heavy eyelids open with his fingers against overwhelming sleep, breath condensing in the vibrating cockpit, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A macro photograph of a shaking hand slapping a bare cheek to stay awake beside a trembling altimeter dial, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "7": [
+    "A magnificent wide cinematic photograph of a silver monoplane descending through night fog over the glittering lights of Paris toward an airfield, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of a vast cheering crowd flooding the floodlit airfield around a small silver plane, hats thrown into the night air, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ]
 }

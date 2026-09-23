@@ -1,8 +1,26 @@
 {
-  "1": "A cinematic wide establishing photograph on the beaches of Dunkirk in June 1940: dense black oil smoke billowing across the gray English Channel sky, thousands of British soldiers queued in disciplined lines extending into the shallow waves, 35mm anamorphic film photography in the style of Christopher Nolan.",
-  "2": "A dramatic panoramic view of the wide sandy beaches of Dunkirk under air attack: German Stuka dive bombers plunging through cloudy skies, water geysers erupting from near-miss bomb explosions around long wooden temporary rescue piers.",
-  "3": "A low-angle maritime photograph of a massive British Royal Navy destroyer stranded out in deep water, unable to navigate the treacherous shallow shoals near the coastline as soldiers wade chest-deep in coastal surf.",
-  "4": "A medium portrait shot of Charles Lightoller, a determined 66-year-old British maritime veteran with weathered skin, steely gray eyes, and a neat white mustache. Standing firmly at the wooden ship wheel of his 58-foot private motor yacht Sundowner, wearing a dark navy wool fisherman sweater and tweed flat cap, salt spray splashing across the mahogany deck, cinematic realism.",
-  "5": "An action-packed photograph from the open deck of the small wooden yacht: the skipper from <image1> calmly steering through explosive water geysers and whistling machine-gun fire, as dozens of exhausted, oil-stained British soldiers in wet wool battle dress are pulled safely over the wooden gunwales.",
-  "6": "A magnificent wide cinematic shot of the Little Ships of Dunkirk: hundreds of small civilian fishing smacks, paddle steamers, and wooden yachts sailing together across the white-capped English Channel toward the white cliffs of Dover, carrying an army of rescued men home to safety."
+  "1": [
+    "A cinematic wide establishing photograph of the beaches of Dunkirk in 1940, dense black oil smoke across the gray channel sky and thousands of british soldiers queued in disciplined lines into the shallows, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of a small wooden fishing boat crossing choppy gray water toward a smoke darkened coastline, its civilian skipper hunched at the tiller, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "2": [
+    "A dramatic panoramic photograph of the wide sandy beaches under air attack, dive bombers plunging through cloudy skies and water geysers erupting around improvised wooden piers, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of soldiers throwing themselves flat on wet sand as a bomb blast lifts a column of water and debris behind them, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "3": [
+    "A low angle maritime photograph of a massive royal navy destroyer stranded in deep water, unable to reach the shallow shoals while soldiers wade chest deep in the surf, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph from the destroyer deck of sailors watching the distant beach through binoculars, helpless in the swell, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "4": [
+    "A medium portrait photograph of Charles Lightoller, a determined 66 year old british maritime veteran with weathered skin, steely gray eyes and a neat white mustache, standing firmly at the wooden wheel of his small private motor yacht, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of hundreds of little ships, fishing smacks, tugs and pleasure yachts, gathering in an english harbour at dawn before the crossing, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "5": [
+    "An action packed photograph from the open deck of a small wooden yacht where the elderly british skipper from <image1>, preserving his exact weathered face, steely gray eyes and neat white mustache, in a dark peacoat at the wooden ship wheel, steers calmly through exploding water geysers and machine gun fire while exhausted oil stained soldiers climb aboard, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A tight photograph of the hands of the elderly british skipper from <image1>, preserving his exact weathered face, steely gray eyes and neat white mustache, in a dark peacoat at the wooden ship wheel, gripping the spokes of the wheel, knuckles white, sea spray across the windscreen, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "6": [
+    "A magnificent wide photograph of hundreds of little ships sailing together across the white capped english channel toward the chalk cliffs of Dover, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A warm photograph of rescued soldiers crowded shoulder to shoulder on a small deck, blankets over their shoulders, coastline of home ahead, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ]
 }

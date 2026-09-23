@@ -1,8 +1,26 @@
 {
-  "1": "A cinematic low-angle photograph on the slanting wooden boat deck of RMS Titanic at night, showing polished wooden deck chairs sliding into rising seawater under the warm glow of electric sconces, cold ocean mist swirling in 35mm film photography.",
-  "2": "A wide dramatic exterior photograph of the massive ocean liner Titanic listing heavily forward in the pitch-black North Atlantic ocean, thousands of illuminated yellow portholes reflecting in freezing black water beneath brilliant icy constellations, icebergs looming faintly in the distance.",
-  "3": "A poignant medium photograph of bandmaster Wallace Hartley, a 33-year-old English gentleman with a neatly groomed brown mustache and dignified posture. Standing on the tilted wooden deck in formal Edwardian tuxedo and wool overcoat, he plays his wooden violin with closed eyes, surrounded by cellists and bass players performing with stoic British grace.",
-  "4": "A solemn medium portrait of Captain Edward John Smith inside the wheelhouse: a distinguished 62-year-old naval commander with a full white beard and solemn sorrowful blue eyes, standing motionless in his brass-buttoned navy officer uniform and captain peaked cap as icy Atlantic seawater slowly floods across the floorboards of the bridge.",
-  "5": "An emotional master photograph: desperate Edwardian passengers in lifejackets huddled together in awe and tears on the sloping wooden deck, listening in quiet reverence to the violin melodies of the musicians from <image1> as the dark bow dips beneath the freezing ocean surface.",
-  "6": "A haunting panoramic photograph of the calm black ocean surface at 2:20 AM under a canopy of millions of cold diamond stars, a solitary wooden violin case floating quietly in the ripples, capturing the eternal dignified farewell of the lost ship."
+  "1": [
+    "A cinematic low angle photograph on the slanting wooden boat deck of an ocean liner at night, polished deck chairs sliding into rising seawater under warm electric sconces, cold mist swirling, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A close-up photograph of the violin bow of the english bandmaster from <image1>, preserving his exact face, neatly groomed brown mustache, formal edwardian tuxedo and wool overcoat, drawing a steady note while the deck tilts beneath his polished shoes, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "2": [
+    "A wide dramatic exterior photograph of a massive ocean liner listing heavily forward in the pitch black north atlantic, thousands of yellow portholes reflected in freezing water under brilliant stars, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of a half empty wooden lifeboat being lowered on ropes past rows of lit portholes toward the black sea, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "3": [
+    "A poignant medium photograph of bandmaster Wallace Hartley, a 33 year old english gentleman with a neatly groomed brown mustache and dignified posture, standing on the tilted wooden deck in a formal edwardian tuxedo and wool overcoat holding a violin, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of the eight musicians around the english bandmaster from <image1>, preserving his exact face, neatly groomed brown mustache, formal edwardian tuxedo and wool overcoat, keeping their footing on the sloping deck, instruments raised as the ship groans, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "4": [
+    "A solemn medium portrait photograph of Captain Edward John Smith inside the wheelhouse, a distinguished 62 year old naval commander with a full white beard and sorrowful blue eyes in a brass buttoned navy uniform, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A quiet photograph of the ship captain from <image1>, preserving his exact face, full white beard and brass buttoned navy officer uniform, alone at the flooding bridge, one hand resting on the polished wooden helm as water climbs the windows, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "5": [
+    "An emotional master photograph of edwardian passengers in lifejackets huddled together in tears on the sloping deck, listening in reverence to the musicians, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A close-up photograph of the calm face of the english bandmaster from <image1>, preserving his exact face, neatly groomed brown mustache, formal edwardian tuxedo and wool overcoat, eyes closed as he plays the final hymn, breath misting in the freezing air, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "6": [
+    "A haunting panoramic photograph of the calm black ocean surface at night under millions of cold stars, a solitary wooden violin case floating quietly in the ripples, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A final photograph of empty wooden lifeboats drifting far apart on a glassy dark sea as the first gray light touches the horizon, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ]
 }
