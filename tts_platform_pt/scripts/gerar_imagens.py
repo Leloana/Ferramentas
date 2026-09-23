@@ -142,6 +142,18 @@ _QWEN_NODE_SAVE = "10"
 _QWEN_NODE_REF_IMAGEM = "11"
 
 
+def _como_lista(valor) -> list:
+    """Aceita tanto o formato antigo (uma string = um plano) quanto o novo
+    (lista de strings = vários planos/cortes pra mesma frase)."""
+    return list(valor) if isinstance(valor, list) else [valor]
+
+
+def _sufixo_plano(indice: int) -> str:
+    """Plano 1 fica com o nome histórico (`texto_03.png`); do segundo em diante
+    entra sufixo de letra (`texto_03b.png`, `texto_03c.png`, ...)."""
+    return "" if indice == 0 else chr(ord("a") + indice)
+
+
 def montar_prompt(texto: str) -> str:
     return texto.strip() + _SUFIXO_SEGURANCA
 
@@ -256,7 +268,15 @@ def gerar_imagem(
     )
     resp_img.raise_for_status()
     destino.write_bytes(resp_img.content)
-    return {"prompt_final": prompt_final, "arquivo_comfy": imagem["filename"]}
+    info = {"prompt_final": prompt_final, "arquivo_comfy": imagem["filename"]}
+    if referencia_imagem:
+        # No Qwen-Image-2.1 a referência entra como condicionamento do
+        # TextEncodeQwenImageEdit (via tag <image1>) e a amostragem continua em
+        # denoise 1.0 — o `--referencia-denoise` do img2img do Krea2/Z-Image não
+        # tem efeito nenhum aqui, e registrar ele no manifesto dava a impressão
+        # errada de que a imagem tinha saído de um denoise parcial.
+        info["referencia_modo"] = "edicao_condicionamento" if eh_qwen else "denoise"
+    return info
 
 
 def main():
@@ -274,14 +294,16 @@ def main():
     ap.add_argument("--aspect-ratio", default="9:16 (Portrait Widescreen)", help="Formato do ResolutionSelector do workflow")
     ap.add_argument("--server", default="http://127.0.0.1:8188")
     ap.add_argument("--referencia", type=Path, default=None, help=(
-        'JSON {"<frase>": "<caminho da imagem de referência>"} pra gerar aquela frase via '
-        "img2img (denoise parcial) em cima da imagem indicada, em vez de txt2img puro — "
-        "mecanismo opcional de continuidade de personagem entre frases (ver "
-        "plano_continuidade_personagem.md). Frases sem entrada no arquivo caem no txt2img normal."
+        'JSON {"<frase>": "<imagem âncora>"} (ou {"<frase>": ["<âncora do plano 1>", null, ...]} '
+        "quando a frase tem vários planos) com a imagem que define a aparência do personagem "
+        "daquele plano — cada personagem recorrente tem a sua âncora. No Qwen-Image-2.1 ela "
+        "entra como condicionamento de edição e o prompt PRECISA citar <image1>; no Krea2/"
+        "Z-Image vira img2img por denoise parcial. Planos sem entrada caem no txt2img normal."
     ))
     ap.add_argument("--referencia-denoise", type=float, default=0.5, help=(
         "Denoise do img2img pras frases com --referencia (0-1, quanto menor mais fiel à "
-        "imagem de referência). Só tem efeito se --referencia for passado."
+        "imagem de referência). Só vale pro i2i do Krea2/Z-Image — no Qwen-Image-2.1 a "
+        "referência entra por condicionamento e este valor é ignorado."
     ))
     ap.add_argument("--referencia-workflow", type=Path, default=WORKFLOW_I2I_PADRAO, help=(
         "Workflow do ComfyUI usado pras frases com --referencia. Só é lido do disco se "
@@ -327,40 +349,92 @@ def main():
             raise SystemExit(f"Workflow i2i do ComfyUI não encontrado: {args.referencia_workflow}")
         referencias_raw = {int(k): v for k, v in json.loads(args.referencia.read_text(encoding="utf-8")).items()}
         # A existência do arquivo é checada só na hora de usar (mais abaixo), e não
-        # aqui: a imagem âncora costuma ser gerada pela própria execução (ex.: a
-        # frase 6 é a âncora do personagem e a frase 9 a usa como <image1>), então
-        # exigir que ela já esteja no disco no começo quebraria a rodada inteira.
-        for j, caminho in referencias_raw.items():
-            referencias[j] = Path(caminho)
+        # aqui: a imagem âncora costuma ser gerada pela própria execução (o primeiro
+        # plano em que o personagem aparece de perto), então exigir que ela já
+        # esteja no disco no começo quebraria a rodada inteira.
+        for j, valor in referencias_raw.items():
+            referencias[j] = [Path(c) if c else None for c in _como_lista(valor)]
         workflow_i2i = json.loads(args.referencia_workflow.read_text(encoding="utf-8"))
 
-    tarefas = [
-        (j, prompts_custom.get(j, frase["texto"]))
-        for j, frase in enumerate(manifesto["frases"], start=1)
-        if indices_frases is None or j in indices_frases
-    ]
+    # Cada frase pode render mais de um plano (corte): o valor no --prompts pode ser
+    # uma string (1 plano, formato antigo) ou uma lista de strings (N planos). O
+    # primeiro plano mantém o nome histórico `<nome>_FF.png` e os seguintes ganham
+    # sufixo de letra (`_FFb.png`, `_FFc.png`, ...), então projeto antigo continua
+    # funcionando sem mexer em nada. O mesmo vale pro --referencia: string vale pra
+    # todos os planos da frase, lista escolhe por plano (null = sem referência).
+    tarefas = []
+    for j, frase in enumerate(manifesto["frases"], start=1):
+        if indices_frases is not None and j not in indices_frases:
+            continue
+        planos = _como_lista(prompts_custom.get(j, frase["texto"]))
+        refs_frase = referencias.get(j, [])
+        for k, texto in enumerate(planos):
+            if len(refs_frase) == 1:
+                ref = refs_frase[0]
+            else:
+                ref = refs_frase[k] if k < len(refs_frase) else None
+            tarefas.append({
+                "frase": j, "plano": k + 1, "texto": texto,
+                "destino": dir_imagens / f"{nome_base}_{j:02d}{_sufixo_plano(k)}.png",
+                "referencia": ref,
+            })
 
-    sobras_referencia = set(referencias) - {j for j, _ in tarefas}
+    # Gera primeiro os planos que servem de referência pra outros nesta mesma
+    # rodada (as âncoras de personagem), pra a ordem no roteiro não importar: uma
+    # frase do começo pode reusar o rosto definido num plano do meio.
+    alvos_referencia = {t["referencia"].resolve() for t in tarefas if t["referencia"] is not None}
+    tarefas.sort(key=lambda t: 0 if t["destino"].resolve() in alvos_referencia else 1)
+
+    sobras_referencia = set(referencias) - {t["frase"] for t in tarefas}
     if sobras_referencia:
         print(f"Aviso: --referencia tem frase(s) fora desta execução, ignorada(s): {sorted(sobras_referencia)}")
 
-    print(f"Gerando {len(tarefas)} imagem(ns) de fundo (uma por frase) em {dir_imagens}...")
+    # No workflow de edição do Qwen, a imagem só entra no condicionamento se o
+    # prompt citar a tag <image1> — imagem sem tag é ignorada (ou mistura a cena
+    # de forma caótica), e tag sem imagem faz o modelo inventar o personagem do
+    # zero, que é justamente o que a continuidade quer evitar. Os dois casos são
+    # erro de autoria do JSON, então falham cedo em vez de sair imagem ruim.
+    # A checagem vale só pro caminho Qwen: o i2i do Krea2/Z-Image é img2img por
+    # denoise, sem tag nenhuma.
+    if workflow_i2i is not None and "TextEncodeQwenImageEdit" in json.dumps(workflow_i2i):
+        problemas = []
+        for t in tarefas:
+            tem_tag = "<image1>" in t["texto"]
+            tem_ref = t["referencia"] is not None
+            if tem_tag and not tem_ref:
+                problemas.append(
+                    f"  frase {t['frase']} plano {t['plano']}: o prompt cita <image1> mas não há "
+                    f"referência pra essa frase no {args.referencia.name}"
+                )
+            elif tem_ref and not tem_tag:
+                problemas.append(
+                    f"  frase {t['frase']} plano {t['plano']}: tem referência "
+                    f"({t['referencia'].name}) mas o prompt não cita <image1>"
+                )
+        if problemas:
+            raise SystemExit(
+                "Prompts e referências não batem (o Qwen só usa a imagem se o prompt "
+                "citar <image1>):\n" + "\n".join(problemas)
+            )
+
+    print(f"Gerando {len(tarefas)} imagem(ns) de fundo em {dir_imagens}...")
     resultado = []
     cache_upload = {}
     try:
-        for n, (j, texto) in enumerate(tarefas, start=1):
-            destino = dir_imagens / f"{nome_base}_{j:02d}.png"
-            print(f"  [{n}/{len(tarefas)}] frase {j} -> {destino.name}")
-            caminho_ref = referencias.get(j)
+        for n, tarefa in enumerate(tarefas, start=1):
+            j, texto, destino = tarefa["frase"], tarefa["texto"], tarefa["destino"]
+            print(f"  [{n}/{len(tarefas)}] frase {j} plano {tarefa['plano']} -> {destino.name}")
+            caminho_ref = tarefa["referencia"]
             if caminho_ref is None:
                 info = gerar_imagem(args.server, workflow, texto, args.aspect_ratio, destino)
-                resultado.append({"frase": j, "arquivo": destino.name, **info})
+                resultado.append({"frase": j, "plano": tarefa["plano"], "arquivo": destino.name, **info})
             else:
                 if not caminho_ref.exists():
                     raise SystemExit(
                         f"Imagem de referência da frase {j} não encontrada: {caminho_ref}. "
-                        "Gere a frase âncora antes (ela precisa ter um índice menor "
-                        "que o desta frase, ou vir de um projeto já produzido)."
+                        "A âncora precisa ser gerada nesta mesma rodada (qualquer frase "
+                        "serve, a ordem é resolvida automaticamente) ou vir de um "
+                        "projeto já produzido."
                     )
                 if caminho_ref not in cache_upload:
                     cache_upload[caminho_ref] = enviar_imagem_referencia(args.server, caminho_ref)
@@ -368,10 +442,13 @@ def main():
                     args.server, workflow_i2i, texto, args.aspect_ratio, destino,
                     referencia_imagem=cache_upload[caminho_ref], referencia_denoise=args.referencia_denoise,
                 )
-                resultado.append({
-                    "frase": j, "arquivo": destino.name, **info,
-                    "referencia": str(caminho_ref), "referencia_denoise": args.referencia_denoise,
-                })
+                registro = {
+                    "frase": j, "plano": tarefa["plano"], "arquivo": destino.name, **info,
+                    "referencia": str(caminho_ref),
+                }
+                if info.get("referencia_modo") == "denoise":
+                    registro["referencia_denoise"] = args.referencia_denoise
+                resultado.append(registro)
             print(f"      prompt: {info['prompt_final'][:100]}...")
     except requests.exceptions.ConnectionError as e:
         raise SystemExit(f"Não consegui falar com o ComfyUI em {args.server}. Ele está aberto?") from e
@@ -381,10 +458,12 @@ def main():
     # das outras que já estavam boas.
     caminho_manifesto_img = projeto / f"{nome_base}_imagens_manifesto.json"
     existentes = json.loads(caminho_manifesto_img.read_text(encoding="utf-8")) if caminho_manifesto_img.exists() else []
-    por_chave = {e["frase"]: e for e in existentes}
+    # A chave é o arquivo, não a frase: com vários planos por frase, `frase` deixou
+    # de ser único (a frase 3 pode ter texto_03.png e texto_03b.png).
+    por_chave = {e["arquivo"]: e for e in existentes}
     for novo in resultado:
-        por_chave[novo["frase"]] = novo
-    final = [por_chave[k] for k in sorted(por_chave)]
+        por_chave[novo["arquivo"]] = novo
+    final = sorted(por_chave.values(), key=lambda e: (e["frase"], e.get("plano", 1)))
     caminho_manifesto_img.write_text(json.dumps(final, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"Manifesto de imagens salvo em {caminho_manifesto_img}")
 
