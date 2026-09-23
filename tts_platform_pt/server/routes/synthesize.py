@@ -46,6 +46,21 @@ def synthesize(req: SynthesizeRequest):
         speaker_wav = caminho
     else:
         speaker = req.voice_id
+        if speaker:
+            # Voz embutida que não existe explodia lá dentro do XTTS como 500 sem
+            # explicação (aconteceu com "Tais Galante", que nunca existiu e estava
+            # em 22 arquivos vozes.md). Aqui vira 400 dizendo o que foi pedido.
+            disponiveis = get_tts_engine().list_builtin_speakers()
+            if speaker not in disponiveis:
+                parecidas = [v for v in disponiveis if v.split()[0].lower() == speaker.split()[0].lower()]
+                raise HTTPException(
+                    status_code=400,
+                    detail=(
+                        f"Voz embutida '{speaker}' não existe. "
+                        + (f"Parecidas: {', '.join(parecidas)}. " if parecidas else "")
+                        + "Veja a lista completa em GET /api/voices."
+                    ),
+                )
 
     output_path = OUTPUT_DIR / f"{uuid.uuid4().hex}.wav"
 
