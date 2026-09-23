@@ -90,3 +90,42 @@ Você pode personalizar a lista de comandos permitidos editando o arquivo `confi
 ```
 
 > 💡 **Dica de Usabilidade:** No frontend do Agent-Remote, os comandos mais comuns aparecem como **botões de atalho** no topo do terminal. No smartphone, basta tocar em `[git status]` ou `[nvidia-smi]` para executar instantaneamente sem digitar nada.
+
+---
+
+## 🔒 Proteção Adicional: Whitelist de IPs (Apenas seu Celular)
+
+Além da senha de acesso e da whitelist de comandos, você pode ativar a **Whitelist de Endereços IP**:
+
+### Como funciona no Cloudflare Tunnel
+Quando você acessa o Agent-Remote pelo celular através do túnel Cloudflare, a rede da Cloudflare repassa o IP público real da sua operadora (4G/5G ou Wi-Fi) no cabeçalho seguro `CF-Connecting-IP`. 
+
+O servidor inspeciona este cabeçalho e rejeita imediatamente com **HTTP 403 Forbidden** qualquer conexão de IPs não autorizados.
+
+### Configuração em `config.json`:
+```json
+{
+  "server": {
+    "ip_whitelist_enabled": true,
+    "ip_whitelist": [
+      "127.0.0.1",
+      "::1",
+      "192.168.0.0/16",
+      "201.86.12.34",
+      "2804:14d:5c82::/48"
+    ]
+  }
+}
+```
+
+* **IP Único IPv4:** ex: `"201.86.12.34"`
+* **Faixa/Sub-rede CIDR IPv4:** ex: `"201.86.12.0/24"` (recomendado para operadoras móveis com IPs dinâmicos dentro do mesmo bloco)
+* **Bloco IPv6:** ex: `"2804:14d:5c82::/48"`
+* **Rede Local (LAN):** `"192.168.0.0/16"`, `"10.0.0.0/8"`, `"127.0.0.1"` (sempre mantidos para você não se trancar fora no próprio PC)
+
+### Descobrindo seu IP do Celular
+Se você acessar pelo celular com a whitelist ativada e seu IP ainda não estiver cadastrado, a tela exibirá uma mensagem clara:
+> `🛑 Acesso Bloqueado por IP: Seu endereço detectado é 201.86.12.34. Adicione-o na whitelist do servidor.`
+
+Basta copiar esse IP e adicioná-lo na lista ou pedir ao agente via ferramenta MCP:
+`add_whitelisted_ip(ip="201.86.12.34", enable_whitelist=true)`

@@ -134,6 +134,33 @@ MCP_TOOLS = [
             "properties": {},
             "required": []
         }
+    },
+    {
+        "name": "list_whitelisted_ips",
+        "description": "Lista os endereços IP e sub-redes autorizados a acessar o Agent-Remote.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "required": []
+        }
+    },
+    {
+        "name": "add_whitelisted_ip",
+        "description": "Adiciona um endereço IP ou sub-rede CIDR (ex: '189.40.23.11' ou '192.168.1.0/24') à whitelist autorizada e pode ativar a proteção.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "ip": {
+                    "type": "string",
+                    "description": "O IP ou sub-rede a autorizar (ex: 201.86.12.34 ou 2804:...)"
+                },
+                "enable_whitelist": {
+                    "type": "boolean",
+                    "description": "Se verdadeiro, ativa imediatamente a checagem restrita de IPs"
+                }
+            },
+            "required": ["ip"]
+        }
     }
 ]
 
@@ -181,6 +208,26 @@ async def handle_tool_call(name: str, arguments: Dict[str, Any]) -> str:
             result = f"URL pública ativa: {url}"
         else:
             result = "Nenhum Cloudflare Tunnel público detectado no momento (rodando localmente em http://127.0.0.1:8765)."
+
+    elif name == "list_whitelisted_ips":
+        server_cfg = cfg.get("server", {})
+        enabled = server_cfg.get("ip_whitelist_enabled", False)
+        ips = server_cfg.get("ip_whitelist", [])
+        status_str = "ATIVADA (restrita)" if enabled else "DESATIVADA (livre)"
+        result = f"IP Whitelist está {status_str}.\nIPs autorizados: {', '.join(ips) if ips else 'nenhum'}"
+
+    elif name == "add_whitelisted_ip":
+        new_ip = arguments.get("ip", "").strip()
+        enable = arguments.get("enable_whitelist")
+        server_cfg = cfg.setdefault("server", {})
+        whitelist = server_cfg.setdefault("ip_whitelist", [])
+        if new_ip and new_ip not in whitelist:
+            whitelist.append(new_ip)
+        if enable is not None:
+            server_cfg["ip_whitelist_enabled"] = bool(enable)
+        save_config(cfg)
+        status_str = "ativada" if server_cfg.get("ip_whitelist_enabled") else "desativada"
+        result = f"IP '{new_ip}' adicionado à whitelist com sucesso! Proteção por IP está {status_str}."
     else:
         result = f"Ferramenta desconhecida: {name}"
 

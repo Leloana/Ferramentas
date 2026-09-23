@@ -12,7 +12,14 @@ DEFAULT_CONFIG: Dict[str, Any] = {
         "host": "127.0.0.1",
         "port": 8765,
         "password": "change_me_123",
-        "session_secret": "session_secret_change_me_super_secret"
+        "session_secret": "session_secret_change_me_super_secret",
+        "ip_whitelist_enabled": False,
+        "ip_whitelist": [
+            "127.0.0.1",
+            "::1",
+            "192.168.0.0/16",
+            "10.0.0.0/8"
+        ]
     },
     "llm": {
         "provider": "ollama",  # ollama | openai | gemini | anthropic | openrouter | groq | custom
@@ -113,6 +120,12 @@ def load_config() -> Dict[str, Any]:
         cfg["llm"]["model"] = os.getenv("LLM_MODEL")
     if os.getenv("LLM_BASE_URL"):
         cfg["llm"]["base_url"] = os.getenv("LLM_BASE_URL")
+    if os.getenv("AGENT_REMOTE_IP_WHITELIST"):
+        ips = [ip.strip() for ip in os.getenv("AGENT_REMOTE_IP_WHITELIST").split(",") if ip.strip()]
+        cfg["server"]["ip_whitelist"] = ips
+        cfg["server"]["ip_whitelist_enabled"] = True
+    if os.getenv("AGENT_REMOTE_IP_WHITELIST_ENABLED"):
+        cfg["server"]["ip_whitelist_enabled"] = os.getenv("AGENT_REMOTE_IP_WHITELIST_ENABLED").lower() in ("1", "true", "yes")
 
     return cfg
 

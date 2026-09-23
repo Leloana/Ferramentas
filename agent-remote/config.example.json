@@ -3,7 +3,14 @@
     "host": "127.0.0.1",
     "port": 8765,
     "password": "sua_senha_secreta_aqui",
-    "session_secret": "chave_aleatoria_para_assinar_cookies_hmac_12345"
+    "session_secret": "chave_aleatoria_para_assinar_cookies_hmac_12345",
+    "ip_whitelist_enabled": false,
+    "ip_whitelist": [
+      "127.0.0.1",
+      "::1",
+      "192.168.0.0/16",
+      "189.40.23.11"
+    ]
   },
   "ollama": {
     "base_url": "http://127.0.0.1:11434",

@@ -16,7 +16,11 @@ from auth import (
     create_session_token,
     verify_session_token,
     is_authenticated,
-    verify_ws_auth
+    verify_ws_auth,
+    get_client_ip,
+    is_ip_allowed,
+    check_ip_whitelist,
+    require_auth
 )
 from llm import stream_chat_response
 from terminal import execute_whitelisted_command, validate_command
@@ -29,6 +33,43 @@ STATIC_DIR.mkdir(parents=True, exist_ok=True)
 
 # Armazenamento de sessões SSE do MCP
 _MCP_SESSIONS: Dict[str, asyncio.Queue] = {}
+
+
+# --- Middleware de IP Whitelist ---
+@app.middleware("http")
+async def ip_whitelist_middleware(request: Request, call_next):
+    """Bloqueia requisições de IPs não autorizados quando a whitelist estiver ativada."""
+    path = request.url.path
+    if not path.startswith("/static"):
+        client_ip = get_client_ip(request)
+        if not is_ip_allowed(client_ip):
+            if "text/html" in request.headers.get("accept", ""):
+                html = f"""<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>403 - Acesso Negado</title>
+<style>
+body{{font-family:sans-serif;background:#090d16;color:#f8fafc;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;}}
+.card{{background:#111827;border:1px solid #243048;border-radius:12px;padding:2rem;max-width:480px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,0.5);}}
+h1{{color:#ef4444;font-size:1.5rem;margin-bottom:1rem;}}
+code{{background:#1e293b;padding:0.25rem 0.6rem;border-radius:6px;color:#38bdf8;font-size:1.05rem;font-weight:bold;}}
+p{{color:#94a3b8;line-height:1.6;margin:0.8rem 0;}}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>🛑 Acesso Bloqueado por IP</h1>
+  <p>A proteção por IP Whitelist está <strong>ativada</strong> no servidor.</p>
+  <p>Seu endereço IP detectado é: <br><br><code>{client_ip}</code></p>
+  <p>Para autorizar o acesso do seu celular, adicione este IP à lista <code>server.ip_whitelist</code> no arquivo <code>config.json</code>.</p>
+</div>
+</body>
+</html>"""
+                return HTMLResponse(content=html, status_code=403)
+            return JSONResponse(
+                status_code=403,
+                content={"ok": False, "error": f"Acesso bloqueado: seu IP ({client_ip}) não está na whitelist."}
+            )
+    return await call_next(request)
 
 
 # --- Middleware simples para autenticação na raiz ---
@@ -115,7 +156,49 @@ async def api_add_app(request: Request):
 
     cfg["apps"] = apps
     save_config(cfg)
-    return {"ok": True, "apps": apps}
+# --- Gerenciamento de IP Whitelist ---
+@app.get("/api/ip/status")
+async def api_ip_status(request: Request):
+    """Retorna o IP detectado do cliente e a lista de IPs autorizados."""
+    client_ip = get_client_ip(request)
+    cfg = load_config()
+    server_cfg = cfg.get("server", {})
+    return {
+        "client_ip": client_ip,
+        "is_allowed": is_ip_allowed(client_ip),
+        "ip_whitelist_enabled": server_cfg.get("ip_whitelist_enabled", False),
+        "allowed_ips": server_cfg.get("ip_whitelist", [])
+    }
+
+
+@app.post("/api/ip/whitelist")
+async def api_update_ip_whitelist(request: Request):
+    """Adiciona ou remove um IP da whitelist e permite ligar/desligar."""
+    require_auth(request)
+    data = await request.json()
+    new_ip = data.get("ip", "").strip()
+    enable = data.get("enabled")
+    remove_ip = data.get("remove_ip", "").strip()
+
+    cfg = load_config()
+    server_cfg = cfg.setdefault("server", {})
+    whitelist = server_cfg.setdefault("ip_whitelist", [])
+
+    if new_ip and new_ip not in whitelist:
+        whitelist.append(new_ip)
+
+    if remove_ip and remove_ip in whitelist:
+        whitelist.remove(remove_ip)
+
+    if enable is not None:
+        server_cfg["ip_whitelist_enabled"] = bool(enable)
+
+    save_config(cfg)
+    return {
+        "ok": True,
+        "ip_whitelist_enabled": server_cfg.get("ip_whitelist_enabled"),
+        "ip_whitelist": whitelist
+    }
 
 
 # --- Endpoints da Aba MCP ---
