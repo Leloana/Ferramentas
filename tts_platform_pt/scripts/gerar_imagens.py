@@ -326,11 +326,12 @@ def main():
         if not args.referencia_workflow.exists():
             raise SystemExit(f"Workflow i2i do ComfyUI não encontrado: {args.referencia_workflow}")
         referencias_raw = {int(k): v for k, v in json.loads(args.referencia.read_text(encoding="utf-8")).items()}
+        # A existência do arquivo é checada só na hora de usar (mais abaixo), e não
+        # aqui: a imagem âncora costuma ser gerada pela própria execução (ex.: a
+        # frase 6 é a âncora do personagem e a frase 9 a usa como <image1>), então
+        # exigir que ela já esteja no disco no começo quebraria a rodada inteira.
         for j, caminho in referencias_raw.items():
-            caminho = Path(caminho)
-            if not caminho.exists():
-                raise SystemExit(f"Imagem de referência da frase {j} não encontrada: {caminho}")
-            referencias[j] = caminho
+            referencias[j] = Path(caminho)
         workflow_i2i = json.loads(args.referencia_workflow.read_text(encoding="utf-8"))
 
     tarefas = [
@@ -355,6 +356,12 @@ def main():
                 info = gerar_imagem(args.server, workflow, texto, args.aspect_ratio, destino)
                 resultado.append({"frase": j, "arquivo": destino.name, **info})
             else:
+                if not caminho_ref.exists():
+                    raise SystemExit(
+                        f"Imagem de referência da frase {j} não encontrada: {caminho_ref}. "
+                        "Gere a frase âncora antes (ela precisa ter um índice menor "
+                        "que o desta frase, ou vir de um projeto já produzido)."
+                    )
                 if caminho_ref not in cache_upload:
                     cache_upload[caminho_ref] = enviar_imagem_referencia(args.server, caminho_ref)
                 info = gerar_imagem(
