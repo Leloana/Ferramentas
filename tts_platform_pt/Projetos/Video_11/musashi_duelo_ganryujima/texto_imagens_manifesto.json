@@ -20,14 +20,14 @@
     "plano": 1,
     "arquivo": "texto_02.png",
     "prompt_final": "A wide cinematic anime establishing shot of hundreds of Edo period spectators gathered on the white sandy beach of a small island, turquoise waves breaking on the shore under a radiant morning sky with towering cumulus clouds, full-color single frame anime movie still in the style of Ufotable, cinematic lighting, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "QwenImage2_1_t2i_00020_.png"
+    "arquivo_comfy": "QwenImage2_1_t2i_00027_.png"
   },
   {
     "frase": 2,
     "plano": 2,
     "arquivo": "texto_02b.png",
-    "prompt_final": "A low angle anime shot across the crowd of Edo period villagers and samurai retainers waiting on the beach, straw sandals and hems of kimonos in the foreground sand, fishing boats moored in the shallows behind them, full-color single frame anime movie still in the style of Ufotable, cinematic lighting, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "QwenImage2_1_t2i_00021_.png"
+    "prompt_final": "A lively medium anime shot of the crowd on the beach, edo period villagers and samurai retainers craning their necks and murmuring to each other as they wait for the duel, straw hats and fishing boats behind them, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00028_.png"
   },
   {
     "frase": 3,
