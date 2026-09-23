@@ -1,5 +1,9 @@
 # video_gen — Gerador de vídeo local (Sulphur-2 / LTX-2.3 via ComfyUI)
 
+> [!WARNING]
+> **PROJETO DESCONTINUADO / PAUSADO**
+> Este projeto foi pausado e marcado como descontinuado porque a qualidade do modelo gerador (Sulphur-2 / LTX-2.3) se mostrou insatisfatória em testes práticos. Vale a pena retomar este pipeline apenas no futuro quando surgir um novo modelo de geração de vídeo open-source de alta fidelidade e viável para GPUs de 12GB de VRAM. Todo o código permanece intacto para referência.
+
 Gera vídeos (texto→vídeo e imagem→vídeo, com áudio sincronizado) usando o
 [Sulphur-2-base](https://huggingface.co/SulphurAI/Sulphur-2-base), um fine-tune
 "uncensored" do modelo **LTX-2.3** (Lightricks, 22B parâmetros), rodando

@@ -1,5 +1,9 @@
 # Agentic CLI
 
+> [!NOTE]
+> **PROJETO DESCONTINUADO / ARQUIVADO**
+> Este projeto foi descontinuado e substituído pelo uso do **Antigravity CLI (`agy`)**. O código e histórico de skills/ferramentas permanecem aqui para referência técnica e consulta.
+
 A Windows-native agentic CLI in Python that drives a local Ollama model
 through a tool-calling loop. Built around two pillars:
 

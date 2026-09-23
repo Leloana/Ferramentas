@@ -1,5 +1,9 @@
 # Ecossistema Híbrido — Marco 1: Handoff com Apps-Equivalentes (Android → Windows)
 
+> [!CAUTION]
+> **PROJETO DESCONTINUADO / ARQUIVADO**
+> Este projeto foi descontinuado porque a sua implementação no Android dependia de remover/modificar permissões no sistema que quebravam tokens NFC e serviços essenciais do celular. O código permanece arquivado e intacto para consulta e referência técnica.
+
 Compartilhe (ou "arraste pro canto") algo no **Android** e ele continua no
 **PC Windows** no *app equivalente*, no estado certo: YouTube no ponto do vídeo,
 link no navegador, pasta no Explorer, arquivo no app padrão, texto no clipboard.

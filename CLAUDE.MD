@@ -8,30 +8,55 @@ Este documento serve como guia rápido para desenvolvedores e agentes de IA sobr
 
 Este repositório (`Ferramentas`) agrupa scripts, automações e ecossistemas independentes voltados à produtividade, automação local e uso de Inteligência Artificial.
 
-### 1. 🎤 Karaoke AI Premium (`/karaoke`)
+### 🟢 Projetos Ativos
+
+#### 1. 🗣️🎬 Plataforma de TTS e Vídeos (`/tts_platform_pt`)
+* **Descrição:** Plataforma de síntese de voz em português com **XTTS-v2** (Coqui, clonagem zero-shot) com normalização via Ollama, geração de imagens com consistência de personagem no ComfyUI (**Qwen-Image-2.1 INT8**) e pipeline orquestrador completo ([`scripts/executar_projeto.py`](tts_platform_pt/scripts/executar_projeto.py)) para produção em lote de vídeos verticais (9:16) para TikTok, Reels e Shorts.
+* **Stack:** FastAPI, Vanilla JS, PyTorch (CUDA), Coqui XTTS-v2, ComfyUI API, FFmpeg.
+* **Guia de Execução:** [`tts_platform_pt/FLUXO_RECOMENDADO.md`](tts_platform_pt/FLUXO_RECOMENDADO.md).
+
+#### 2. 🎤 Karaoke AI Premium (`/karaoke`)
 * **Descrição:** Ecossistema de karaokê de alta performance rodando localmente com separação de faixas (Demucs), transcrição e alinhamento fonético em tempo real (Whisper GPU/CPU + MMS_FA), e suporte multi-dispositivo (TV como tela principal e celulares como microfones via WebSockets).
 * **Stack:** FastAPI (Python), Vanilla JS (ES Modules, Web Audio API, AudioWorklets), WebSockets, PyTorch (CUDA).
 * **Documentação:** Copiada em `.claude/karaoke/` (dividida entre `onboarding/` para guias e arquitetura, e `resolucoes/` para resoluções de problemas, históricos e notas).
 
-### 2. 🤖 Pipeline de Agentes Automatizados (`/pipeline-project`)
-* **Descrição:** Pipeline de desenvolvimento composto por 3 agentes autônomos (Planner, Coder e Implementer) que colaboram para propor, validar e escrever código localmente. Integra com **Ollama** e utiliza o **Model Context Protocol (MCP)** para I/O e a ferramenta **Srclight** para busca híbrida e geração de dossiês semânticos.
-* **Stack:** Python, SQLite, Ollama, MCP.
-
-### 3. ▶️ YouTube Music Playlist Organizer (`/youtube_music_playlist_organizer`)
+#### 3. ▶️ YouTube Music Playlist Organizer (`/youtube_music_playlist_organizer`)
 * **Descrição:** Classificador inteligente de playlists do YouTube Music por vibe, gênero ou clima usando IA local (Ollama). Possui interface CLI retrô-cyberpunk com equalizadores ASCII, cache de faixas e gerenciamento inteligente da cota da API oficial do YouTube.
 * **Stack:** Python (Rich, Questionary), YouTube Data API v3, Ollama.
 
-### 4. 📄 DOCX to PDF Converter (`/docx_to_pdf_converter`)
+#### 4. 📄 DOCX to PDF Converter (`/docx_to_pdf_converter`)
 * **Descrição:** Conversor em lote ou individual de documentos Microsoft Word (`.docx`) para PDF utilizando a API nativa do Word no Windows.
 * **Stack:** Python (`pywin32`).
 
-### 5. 🗣️ Plataforma de TTS em Português (`/tts_platform_pt`)
-* **Descrição:** Servidor web local que sintetiza fala em português com o modelo **XTTS-v2** (Coqui, Hugging Face — multilíngue, clonagem de voz zero-shot), com normalização opcional de texto (siglas, abreviações, números, pontuação) via **Ollama** local antes da síntese.
-* **Stack:** FastAPI (Python), Vanilla JS, PyTorch (CUDA), Coqui TTS, Ollama.
+#### 5. 🤖 Local Agent (`/local_agent`)
+* **Descrição:** Implementação de agente ReAct minimalista local com tool calling (Ollama, `qwen3.5:9b`), guardrails rígidos e orçamento controlado de VRAM para GPUs de 12GB (RTX 4070).
+* **Stack:** Python, Ollama (OpenAI-compatible client), pytest.
+
+#### 6. 🎨 Image Gen (`/image_gen`)
+* **Descrição:** Workflows ComfyUI (ex: Krea2 turbo t2i) e documentação de geração de imagens.
+
+---
+
+### 🔴 Projetos Descontinuados / Arquivados (Mantidos para Referência)
+
+* **Ecossistema Híbrido (`/ecosistema`):** *Descontinuado*. Dependia de alterar/remover permissões de sistema no Android que acabavam quebrando tokens NFC e serviços essenciais do celular.
+* **Agentic CLI (`/wincli`):** *Descontinuado*. Substituído pelo uso do **Antigravity CLI (`agy`)**.
+* **Video Gen (`/video_gen`):** *Descontinuado / Pausado*. A qualidade do modelo LTX-2.3/Sulphur-2 se mostrou insatisfatória em testes práticos. Pausado aguardando novos modelos de vídeo open-source viáveis para 12GB de VRAM.
 
 ---
 
 ## 🚀 Comandos Frequentes por Projeto
+
+### Plataforma de TTS e Vídeos (tts_platform_pt)
+* **Ambiente:** `cd tts_platform_pt; .\venv\Scripts\Activate.ps1` (Windows) ou `source venv/bin/activate` (Linux)
+* **Executar Servidor XTTS-v2:**
+  ```bash
+  uvicorn server.main:app --port 8011
+  ```
+* **Executar Produção de Vídeo em Lote:**
+  ```bash
+  python scripts/executar_projeto.py Projetos/Video_11/musashi_duelo_ganryujima
+  ```
 
 ### Karaoke AI Premium
 * **Ambiente:** `cd karaoke; .\venv\Scripts\Activate.ps1`
@@ -42,18 +67,6 @@ Este repositório (`Ferramentas`) agrupa scripts, automações e ecossistemas in
 * **Executar Testes Unitários:**
   ```powershell
   .\venv\Scripts\python.exe -m unittest discover -s tests -p "test_*.py"
-  ```
-
-### Pipeline de Agentes
-* **Ambiente:** `cd pipeline-project; .venv\Scripts\Activate.ps1`
-* **Executar Pipeline (Modo Completo):**
-  ```powershell
-  python orchestrator/runner.py "sua solicitação de desenvolvimento aqui"
-  ```
-* **Executar Pipeline por Etapas (Fase 1 - Planejamento / Fase 2 - Pseudocódigo):**
-  ```powershell
-  python orchestrator/runner.py "solicitação" --stage 1
-  python orchestrator/runner.py "solicitação" --stage 2
   ```
 
 ### YouTube Music Playlist Organizer
