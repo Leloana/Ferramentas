@@ -1,0 +1,775 @@
+{
+  "gerado_em": "2026-09-23T18:33:51",
+  "roteiro": "C:\\Users\\mf827\\Documents\\Ferramentas\\tts_platform_pt\\Projetos\\Video_11\\musashi_duelo_ganryujima_parte2\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 47.1,
+  "texto_usado": "Kojiro cometeu seu primeiro e último erro. Ao ver a bainha da espada ser atirada nas ondas, Musashi olhou nos olhos do rival e disse: você acabou de perder a luta, porque ninguém joga fora a bainha se pretende voltar vivo.\n\nFurioso, Kojiro saltou com sua famosa técnica da andorinha, desferindo um corte descendente ultrarrápido que cortou a faixa da cabeça de Musashi por milímetros. Mas o golpe de Musashi já estava no ar. Em um único movimento avassalador, o pesado remo de madeira quebrou o vento e atingiu o peito de Kojiro com a força de um raio.\n\nO mestre caiu de costas nas areias molhadas, sem nunca mais se levantar. Musashi fez uma reverência respeitosa ao adversário caído, guardou o remo nos ombros e retornou sozinho para o barco. O lendário guerreiro das duas espadas havia se tornado imortal.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Kojiro cometeu seu primeiro e último erro.",
+      "inicio_s": 0.15,
+      "fim_s": 2.33,
+      "palavras": [
+        {
+          "texto": "Kojiro",
+          "inicio_s": 0.15,
+          "fim_s": 0.513
+        },
+        {
+          "texto": "cometeu",
+          "inicio_s": 0.594,
+          "fim_s": 0.978
+        },
+        {
+          "texto": "seu",
+          "inicio_s": 1.018,
+          "fim_s": 1.119
+        },
+        {
+          "texto": "primeiro",
+          "inicio_s": 1.139,
+          "fim_s": 1.523
+        },
+        {
+          "texto": "e",
+          "inicio_s": 1.583,
+          "fim_s": 1.603
+        },
+        {
+          "texto": "último",
+          "inicio_s": 1.684,
+          "fim_s": 1.967
+        },
+        {
+          "texto": "erro",
+          "inicio_s": 2.088,
+          "fim_s": 2.249
+        }
+      ]
+    },
+    {
+      "texto": "Ao ver a bainha da espada ser atirada nas ondas, Musashi olhou nos olhos do rival e disse: você acabou de perder a luta, porque ninguém joga fora a bainha se pretende voltar vivo.",
+      "inicio_s": 2.68,
+      "fim_s": 13.2,
+      "palavras": [
+        {
+          "texto": "Ao",
+          "inicio_s": 2.7,
+          "fim_s": 2.78
+        },
+        {
+          "texto": "ver",
+          "inicio_s": 2.8,
+          "fim_s": 2.94
+        },
+        {
+          "texto": "a",
+          "inicio_s": 2.981,
+          "fim_s": 3.001
+        },
+        {
+          "texto": "bainha",
+          "inicio_s": 3.021,
+          "fim_s": 3.301
+        },
+        {
+          "texto": "da",
+          "inicio_s": 3.341,
+          "fim_s": 3.381
+        },
+        {
+          "texto": "espada",
+          "inicio_s": 3.441,
+          "fim_s": 3.762
+        },
+        {
+          "texto": "ser",
+          "inicio_s": 3.842,
+          "fim_s": 3.942
+        },
+        {
+          "texto": "atirada",
+          "inicio_s": 3.962,
+          "fim_s": 4.343
+        },
+        {
+          "texto": "nas",
+          "inicio_s": 4.383,
+          "fim_s": 4.503
+        },
+        {
+          "texto": "ondas",
+          "inicio_s": 4.604,
+          "fim_s": 4.844
+        },
+        {
+          "texto": "Musashi",
+          "inicio_s": 5.365,
+          "fim_s": 5.786
+        },
+        {
+          "texto": "olhou",
+          "inicio_s": 5.826,
+          "fim_s": 6.026
+        },
+        {
+          "texto": "nos",
+          "inicio_s": 6.046,
+          "fim_s": 6.187
+        },
+        {
+          "texto": "olhos",
+          "inicio_s": 6.247,
+          "fim_s": 6.447
+        },
+        {
+          "texto": "do",
+          "inicio_s": 6.447,
+          "fim_s": 6.507
+        },
+        {
+          "texto": "rival",
+          "inicio_s": 6.547,
+          "fim_s": 6.808
+        },
+        {
+          "texto": "e",
+          "inicio_s": 6.868,
+          "fim_s": 6.888
+        },
+        {
+          "texto": "disse",
+          "inicio_s": 6.928,
+          "fim_s": 7.189
+        },
+        {
+          "texto": "você",
+          "inicio_s": 8.09,
+          "fim_s": 8.351
+        },
+        {
+          "texto": "acabou",
+          "inicio_s": 8.411,
+          "fim_s": 8.772
+        },
+        {
+          "texto": "de",
+          "inicio_s": 8.812,
+          "fim_s": 8.892
+        },
+        {
+          "texto": "perder",
+          "inicio_s": 8.932,
+          "fim_s": 9.252
+        },
+        {
+          "texto": "a",
+          "inicio_s": 9.293,
+          "fim_s": 9.313
+        },
+        {
+          "texto": "luta",
+          "inicio_s": 9.353,
+          "fim_s": 9.613
+        },
+        {
+          "texto": "porque",
+          "inicio_s": 10.074,
+          "fim_s": 10.335
+        },
+        {
+          "texto": "ninguém",
+          "inicio_s": 10.395,
+          "fim_s": 10.715
+        },
+        {
+          "texto": "joga",
+          "inicio_s": 10.795,
+          "fim_s": 11.056
+        },
+        {
+          "texto": "fora",
+          "inicio_s": 11.156,
+          "fim_s": 11.397
+        },
+        {
+          "texto": "a",
+          "inicio_s": 11.437,
+          "fim_s": 11.457
+        },
+        {
+          "texto": "bainha",
+          "inicio_s": 11.517,
+          "fim_s": 11.837
+        },
+        {
+          "texto": "se",
+          "inicio_s": 11.898,
+          "fim_s": 11.978
+        },
+        {
+          "texto": "pretende",
+          "inicio_s": 12.038,
+          "fim_s": 12.419
+        },
+        {
+          "texto": "voltar",
+          "inicio_s": 12.459,
+          "fim_s": 12.779
+        },
+        {
+          "texto": "vivo",
+          "inicio_s": 12.839,
+          "fim_s": 13.1
+        }
+      ]
+    },
+    {
+      "texto": "Furioso, Kojiro saltou com sua famosa técnica da andorinha, desferindo um corte descendente ultrarrápido que cortou a faixa da cabeça de Musashi por milímetros.",
+      "inicio_s": 13.55,
+      "fim_s": 23.03,
+      "palavras": [
+        {
+          "texto": "Furioso",
+          "inicio_s": 13.57,
+          "fim_s": 13.991
+        },
+        {
+          "texto": "Kojiro",
+          "inicio_s": 14.592,
+          "fim_s": 14.953
+        },
+        {
+          "texto": "saltou",
+          "inicio_s": 15.013,
+          "fim_s": 15.374
+        },
+        {
+          "texto": "com",
+          "inicio_s": 15.414,
+          "fim_s": 15.514
+        },
+        {
+          "texto": "sua",
+          "inicio_s": 15.574,
+          "fim_s": 15.715
+        },
+        {
+          "texto": "famosa",
+          "inicio_s": 15.775,
+          "fim_s": 16.196
+        },
+        {
+          "texto": "técnica",
+          "inicio_s": 16.296,
+          "fim_s": 16.657
+        },
+        {
+          "texto": "da",
+          "inicio_s": 16.697,
+          "fim_s": 16.737
+        },
+        {
+          "texto": "andorinha",
+          "inicio_s": 16.777,
+          "fim_s": 17.178
+        },
+        {
+          "texto": "desferindo",
+          "inicio_s": 17.578,
+          "fim_s": 18.08
+        },
+        {
+          "texto": "um",
+          "inicio_s": 18.12,
+          "fim_s": 18.18
+        },
+        {
+          "texto": "corte",
+          "inicio_s": 18.24,
+          "fim_s": 18.52
+        },
+        {
+          "texto": "descendente",
+          "inicio_s": 18.561,
+          "fim_s": 19.122
+        },
+        {
+          "texto": "ultrarrápido",
+          "inicio_s": 19.162,
+          "fim_s": 19.803
+        },
+        {
+          "texto": "que",
+          "inicio_s": 19.843,
+          "fim_s": 19.903
+        },
+        {
+          "texto": "cortou",
+          "inicio_s": 19.943,
+          "fim_s": 20.264
+        },
+        {
+          "texto": "a",
+          "inicio_s": 20.304,
+          "fim_s": 20.324
+        },
+        {
+          "texto": "faixa",
+          "inicio_s": 20.404,
+          "fim_s": 20.665
+        },
+        {
+          "texto": "da",
+          "inicio_s": 20.705,
+          "fim_s": 20.765
+        },
+        {
+          "texto": "cabeça",
+          "inicio_s": 20.805,
+          "fim_s": 21.146
+        },
+        {
+          "texto": "de",
+          "inicio_s": 21.186,
+          "fim_s": 21.246
+        },
+        {
+          "texto": "Musashi",
+          "inicio_s": 21.286,
+          "fim_s": 21.647
+        },
+        {
+          "texto": "por",
+          "inicio_s": 22.168,
+          "fim_s": 22.308
+        },
+        {
+          "texto": "milímetros",
+          "inicio_s": 22.349,
+          "fim_s": 22.89
+        }
+      ]
+    },
+    {
+      "texto": "Mas o golpe de Musashi já estava no ar.",
+      "inicio_s": 23.38,
+      "fim_s": 25.4,
+      "palavras": [
+        {
+          "texto": "Mas",
+          "inicio_s": 23.4,
+          "fim_s": 23.562
+        },
+        {
+          "texto": "o",
+          "inicio_s": 23.602,
+          "fim_s": 23.622
+        },
+        {
+          "texto": "golpe",
+          "inicio_s": 23.683,
+          "fim_s": 23.925
+        },
+        {
+          "texto": "de",
+          "inicio_s": 23.946,
+          "fim_s": 24.006
+        },
+        {
+          "texto": "Musashi",
+          "inicio_s": 24.047,
+          "fim_s": 24.451
+        },
+        {
+          "texto": "já",
+          "inicio_s": 24.552,
+          "fim_s": 24.632
+        },
+        {
+          "texto": "estava",
+          "inicio_s": 24.673,
+          "fim_s": 24.956
+        },
+        {
+          "texto": "no",
+          "inicio_s": 24.996,
+          "fim_s": 25.077
+        },
+        {
+          "texto": "ar",
+          "inicio_s": 25.178,
+          "fim_s": 25.299
+        }
+      ]
+    },
+    {
+      "texto": "Em um único movimento avassalador, o pesado remo de madeira quebrou o vento e atingiu o peito de Kojiro com a força de um raio.",
+      "inicio_s": 25.75,
+      "fim_s": 32.15,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 25.79,
+          "fim_s": 25.85
+        },
+        {
+          "texto": "um",
+          "inicio_s": 25.911,
+          "fim_s": 25.991
+        },
+        {
+          "texto": "único",
+          "inicio_s": 26.051,
+          "fim_s": 26.272
+        },
+        {
+          "texto": "movimento",
+          "inicio_s": 26.312,
+          "fim_s": 26.773
+        },
+        {
+          "texto": "avassalador",
+          "inicio_s": 26.793,
+          "fim_s": 27.375
+        },
+        {
+          "texto": "o",
+          "inicio_s": 27.796,
+          "fim_s": 27.816
+        },
+        {
+          "texto": "pesado",
+          "inicio_s": 27.857,
+          "fim_s": 28.238
+        },
+        {
+          "texto": "remo",
+          "inicio_s": 28.278,
+          "fim_s": 28.479
+        },
+        {
+          "texto": "de",
+          "inicio_s": 28.519,
+          "fim_s": 28.579
+        },
+        {
+          "texto": "madeira",
+          "inicio_s": 28.599,
+          "fim_s": 28.96
+        },
+        {
+          "texto": "quebrou",
+          "inicio_s": 29.221,
+          "fim_s": 29.522
+        },
+        {
+          "texto": "o",
+          "inicio_s": 29.542,
+          "fim_s": 29.582
+        },
+        {
+          "texto": "vento",
+          "inicio_s": 29.622,
+          "fim_s": 29.883
+        },
+        {
+          "texto": "e",
+          "inicio_s": 29.923,
+          "fim_s": 29.943
+        },
+        {
+          "texto": "atingiu",
+          "inicio_s": 29.983,
+          "fim_s": 30.344
+        },
+        {
+          "texto": "o",
+          "inicio_s": 30.384,
+          "fim_s": 30.405
+        },
+        {
+          "texto": "peito",
+          "inicio_s": 30.465,
+          "fim_s": 30.685
+        },
+        {
+          "texto": "de",
+          "inicio_s": 30.726,
+          "fim_s": 30.786
+        },
+        {
+          "texto": "Kojiro",
+          "inicio_s": 30.826,
+          "fim_s": 31.187
+        },
+        {
+          "texto": "com",
+          "inicio_s": 31.207,
+          "fim_s": 31.307
+        },
+        {
+          "texto": "a",
+          "inicio_s": 31.347,
+          "fim_s": 31.368
+        },
+        {
+          "texto": "força",
+          "inicio_s": 31.448,
+          "fim_s": 31.689
+        },
+        {
+          "texto": "de",
+          "inicio_s": 31.709,
+          "fim_s": 31.749
+        },
+        {
+          "texto": "um",
+          "inicio_s": 31.789,
+          "fim_s": 31.829
+        },
+        {
+          "texto": "raio",
+          "inicio_s": 31.869,
+          "fim_s": 32.09
+        }
+      ]
+    },
+    {
+      "texto": "O mestre caiu de costas nas areias molhadas, sem nunca mais se levantar.",
+      "inicio_s": 32.5,
+      "fim_s": 36.14,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 32.52,
+          "fim_s": 32.54
+        },
+        {
+          "texto": "mestre",
+          "inicio_s": 32.58,
+          "fim_s": 32.882
+        },
+        {
+          "texto": "caiu",
+          "inicio_s": 32.922,
+          "fim_s": 33.123
+        },
+        {
+          "texto": "de",
+          "inicio_s": 33.144,
+          "fim_s": 33.204
+        },
+        {
+          "texto": "costas",
+          "inicio_s": 33.244,
+          "fim_s": 33.606
+        },
+        {
+          "texto": "nas",
+          "inicio_s": 33.646,
+          "fim_s": 33.767
+        },
+        {
+          "texto": "areias",
+          "inicio_s": 33.807,
+          "fim_s": 34.069
+        },
+        {
+          "texto": "molhadas",
+          "inicio_s": 34.109,
+          "fim_s": 34.551
+        },
+        {
+          "texto": "sem",
+          "inicio_s": 34.893,
+          "fim_s": 35.034
+        },
+        {
+          "texto": "nunca",
+          "inicio_s": 35.114,
+          "fim_s": 35.356
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 35.396,
+          "fim_s": 35.557
+        },
+        {
+          "texto": "se",
+          "inicio_s": 35.597,
+          "fim_s": 35.657
+        },
+        {
+          "texto": "levantar",
+          "inicio_s": 35.677,
+          "fim_s": 36.06
+        }
+      ]
+    },
+    {
+      "texto": "Musashi fez uma reverência respeitosa ao adversário caído, guardou o remo nos ombros e retornou sozinho para o barco.",
+      "inicio_s": 36.49,
+      "fim_s": 42.87,
+      "palavras": [
+        {
+          "texto": "Musashi",
+          "inicio_s": 36.51,
+          "fim_s": 36.891
+        },
+        {
+          "texto": "fez",
+          "inicio_s": 36.972,
+          "fim_s": 37.132
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 37.152,
+          "fim_s": 37.252
+        },
+        {
+          "texto": "reverência",
+          "inicio_s": 37.293,
+          "fim_s": 37.734
+        },
+        {
+          "texto": "respeitosa",
+          "inicio_s": 37.794,
+          "fim_s": 38.376
+        },
+        {
+          "texto": "ao",
+          "inicio_s": 38.416,
+          "fim_s": 38.456
+        },
+        {
+          "texto": "adversário",
+          "inicio_s": 38.476,
+          "fim_s": 38.958
+        },
+        {
+          "texto": "caído",
+          "inicio_s": 38.978,
+          "fim_s": 39.299
+        },
+        {
+          "texto": "guardou",
+          "inicio_s": 39.82,
+          "fim_s": 40.162
+        },
+        {
+          "texto": "o",
+          "inicio_s": 40.182,
+          "fim_s": 40.202
+        },
+        {
+          "texto": "remo",
+          "inicio_s": 40.242,
+          "fim_s": 40.442
+        },
+        {
+          "texto": "nos",
+          "inicio_s": 40.483,
+          "fim_s": 40.623
+        },
+        {
+          "texto": "ombros",
+          "inicio_s": 40.703,
+          "fim_s": 40.944
+        },
+        {
+          "texto": "e",
+          "inicio_s": 41.225,
+          "fim_s": 41.245
+        },
+        {
+          "texto": "retornou",
+          "inicio_s": 41.305,
+          "fim_s": 41.726
+        },
+        {
+          "texto": "sozinho",
+          "inicio_s": 41.827,
+          "fim_s": 42.268
+        },
+        {
+          "texto": "para",
+          "inicio_s": 42.308,
+          "fim_s": 42.429
+        },
+        {
+          "texto": "o",
+          "inicio_s": 42.449,
+          "fim_s": 42.489
+        },
+        {
+          "texto": "barco",
+          "inicio_s": 42.489,
+          "fim_s": 42.79
+        }
+      ]
+    },
+    {
+      "texto": "O lendário guerreiro das duas espadas havia se tornado imortal.",
+      "inicio_s": 43.22,
+      "fim_s": 47.06,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 43.24,
+          "fim_s": 43.26
+        },
+        {
+          "texto": "lendário",
+          "inicio_s": 43.3,
+          "fim_s": 43.743
+        },
+        {
+          "texto": "guerreiro",
+          "inicio_s": 43.763,
+          "fim_s": 44.185
+        },
+        {
+          "texto": "das",
+          "inicio_s": 44.205,
+          "fim_s": 44.346
+        },
+        {
+          "texto": "duas",
+          "inicio_s": 44.406,
+          "fim_s": 44.607
+        },
+        {
+          "texto": "espadas",
+          "inicio_s": 44.647,
+          "fim_s": 45.13
+        },
+        {
+          "texto": "havia",
+          "inicio_s": 45.452,
+          "fim_s": 45.733
+        },
+        {
+          "texto": "se",
+          "inicio_s": 45.793,
+          "fim_s": 45.854
+        },
+        {
+          "texto": "tornado",
+          "inicio_s": 45.914,
+          "fim_s": 46.276
+        },
+        {
+          "texto": "imortal",
+          "inicio_s": 46.437,
+          "fim_s": 46.98
+        }
+      ]
+    }
+  ]
+}

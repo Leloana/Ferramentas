@@ -1,0 +1,56 @@
+[
+  {
+    "frase": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "A detailed close-up anime shot of the lacquered katana scabbard bobbing and spinning away in the foaming ocean surf, water splashing around it under the afternoon sun, symbolizing the reckless overconfidence of the duelist, vibrant digital anime painting, full-color single frame animation still., fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00009_.png"
+  },
+  {
+    "frase": 2,
+    "arquivo": "texto_02.png",
+    "prompt_final": "A dynamic medium anime shot: the samurai from <image1>, maintaining his exact facial features, messy topknot, and indigo kimono, stands composed on the wet beach sand with his wooden oar held ready, speaking calmly to the enraged silhouette of Kojiro in the foreground., fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_i2i_00002_.png",
+    "referencia": "Projetos\\Video_11\\musashi_duelo_ganryujima\\imagens\\texto_06.png",
+    "referencia_denoise": 0.5
+  },
+  {
+    "frase": 3,
+    "arquivo": "texto_03.png",
+    "prompt_final": "A high-octane action anime climax: Sasaki Kojiro leaping high into the air with superhuman grace, his long nodachi katana flashing with blinding silver arcs in a lethal downward swallow slash, slicing Musashi's cloth headband in two, dynamic speed lines in Ufotable animation style, full-color single frame animation still., fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00010_.png"
+  },
+  {
+    "frase": 4,
+    "arquivo": "texto_04.png",
+    "prompt_final": "An extreme close-up anime shot of the eyes of the samurai from <image1> narrowing with absolute precision, the carved wooden oar already moving in an explosive upward counter-strike surrounded by visible circular wind shockwaves and motion blur., fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_i2i_00003_.png",
+    "referencia": "Projetos\\Video_11\\musashi_duelo_ganryujima\\imagens\\texto_06.png",
+    "referencia_denoise": 0.5
+  },
+  {
+    "frase": 5,
+    "arquivo": "texto_05.png",
+    "prompt_final": "An epic anime impact frame: the heavy wooden oar smashing with crushing physical force into Kojiro's chest, a massive shockwave of displaced air and flying sand exploding outwards, brilliant cinematic anime visual effects, full-color single frame animation still., fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00011_.png"
+  },
+  {
+    "frase": 6,
+    "arquivo": "texto_06.png",
+    "prompt_final": "A peaceful and tragic wide anime shot: Sasaki Kojiro lying unconscious on the wet shore sand with his sword resting beside him, gentle foamy ocean waves washing over his silk robes as the golden sun sinks toward the horizon, detailed background art., fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00012_.png"
+  },
+  {
+    "frase": 7,
+    "arquivo": "texto_07.png",
+    "prompt_final": "A poetic medium anime shot of the samurai from <image1>, preserving his exact appearance and indigo robes, bowing respectfully with hands together toward his fallen rival, the wooden oar resting across his broad shoulders as the golden twilight illuminates the calm sea., fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_i2i_00004_.png",
+    "referencia": "Projetos\\Video_11\\musashi_duelo_ganryujima\\imagens\\texto_06.png",
+    "referencia_denoise": 0.5
+  },
+  {
+    "frase": 8,
+    "arquivo": "texto_08.png",
+    "prompt_final": "A magnificent wide cinematic anime final frame: the samurai from <image1> rowing his small wooden boat away into the radiant crimson sunset over the open ocean, ripples trailing in the golden water, cementing the legend of the greatest swordsman of Japan, Makoto Shinkai sky, full-color single frame animation still., fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00013_.png"
+  }
+]

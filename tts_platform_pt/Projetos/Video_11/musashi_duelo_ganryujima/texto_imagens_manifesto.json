@@ -1,0 +1,58 @@
+[
+  {
+    "frase": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "A high-budget cinematic anime movie screenshot of a lone samurai standing on an ocean cliff edge at sunrise, dark silhouette against a fiery morning sky with cherry blossom petals and sea spray swirling in the wind, beautiful digital anime background art in the style of Ufotable, full-color single frame animation still., fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00001_.png"
+  },
+  {
+    "frase": 2,
+    "arquivo": "texto_02.png",
+    "prompt_final": "A wide cinematic anime establishing shot showing hundreds of Edo-period samurai spectators gathered on the sandy beaches of Ganryu Island, crystal-clear turquoise ocean waves breaking on the shore under a radiant Makoto Shinkai sky with fluffy cumulus clouds, full-color single frame animation still., fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00002_.png"
+  },
+  {
+    "frase": 3,
+    "arquivo": "texto_03.png",
+    "prompt_final": "A medium anime portrait of Sasaki Kojiro, an elegant master samurai with long silky dark hair tied in a high ponytail, dressed in a crimson and gold embroidered silk kimono, resting his hand on the hilt of a long nodachi katana at his waist with an aristocratic and haughty expression, clean anime cel shading, full-color single frame animation still., fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00003_.png"
+  },
+  {
+    "frase": 4,
+    "arquivo": "texto_04.png",
+    "prompt_final": "A wide cinematic anime vista across the deserted sandy shore of the island, lonely wooden mooring posts standing in the surf under a blazing midday sun, waves gently lapping at the shore in quiet suspense, detailed digital anime background painting., fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00004_.png"
+  },
+  {
+    "frase": 5,
+    "arquivo": "texto_05.png",
+    "prompt_final": "An intense close-up anime shot of Sasaki Kojiro under the scorching afternoon sun, sweat glistening on his sharp cheekbone as his eyes narrow in rising frustration, heat waves shimmering across the beach, vibrant anime colors, full-color single frame animation still., fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00005_.png"
+  },
+  {
+    "frase": 6,
+    "arquivo": "texto_06.png",
+    "prompt_final": "A cinematic anime screenshot of Miyamoto Musashi, a rugged 28-year-old Japanese samurai with wild messy black hair in a high topknot, intense calm dark eyes, and a light stubble on his jawline. He sits relaxed in a weathered wooden rowboat floating on the turquoise sea, wearing a faded dark blue linen kimono, a warm sea breeze rustling his garments, clean sharp lineart and rich cel shading, full-color single frame animation still., fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00006_.png"
+  },
+  {
+    "frase": 7,
+    "arquivo": "texto_07.png",
+    "prompt_final": "A detailed close-up anime shot of Musashi's muscular, calloused hands using a small steel knife to whittle down a heavy wooden boat oar into a formidable wooden sword, golden wood shavings flying into the air under bright sunlight, beautiful anime craftsmanship., fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00007_.png"
+  },
+  {
+    "frase": 8,
+    "arquivo": "texto_08.png",
+    "prompt_final": "A dynamic wide action anime screenshot: the wooden rowboat slides onto the pebble shore, while Sasaki Kojiro furiously draws his massive gleaming steel nodachi katana in an arc of blinding silver light, hurling the scabbard into the crashing ocean surf, high-energy animation framing., fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00008_.png"
+  },
+  {
+    "frase": 9,
+    "arquivo": "texto_09.png",
+    "prompt_final": "A cinematic medium close-up anime shot of the samurai from <image1>, preserving his exact facial features, messy topknot, and blue kimono. He steps calmly off the boat onto the shore with the heavy carved wooden oar resting on his shoulder, his lips curling into a quiet confident smile as he locks eyes with his opponent., fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_i2i_00001_.png",
+    "referencia": "Projetos\\Video_11\\musashi_duelo_ganryujima\\imagens\\texto_06.png",
+    "referencia_denoise": 0.5
+  }
+]
