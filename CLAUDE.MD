@@ -10,29 +10,34 @@ Este repositório (`Ferramentas`) agrupa scripts, automações e ecossistemas in
 
 ### 🟢 Projetos Ativos
 
-#### 1. 🗣️🎬 Plataforma de TTS e Vídeos (`/tts_platform_pt`)
+#### 1. 🌐 Agent-Remote (`/agent-remote`)
+* **Descrição:** Central web minimalista para controle remoto do agente (Ollama) e visualização de aplicações locais em tela dividida (duas abas: Chat + Live Preview), com terminal seguro embutido (whitelist rígida) e túnel criptografado Cloudflare Tunnel (`cloudflared`).
+* **Stack:** FastAPI, Uvicorn, WebSockets, Vanilla JS/CSS, Cloudflare Tunnel.
+* **Documentação:** [`agent-remote/README.md`](agent-remote/README.md), [`agent-remote/ARQUITETURA.md`](agent-remote/ARQUITETURA.md), [`agent-remote/GUIA_CLOUDFLARE.md`](agent-remote/GUIA_CLOUDFLARE.md).
+
+#### 2. 🗣️🎬 Plataforma de TTS e Vídeos (`/tts_platform_pt`)
 * **Descrição:** Plataforma de síntese de voz em português com **XTTS-v2** (Coqui, clonagem zero-shot) com normalização via Ollama, geração de imagens com consistência de personagem no ComfyUI (**Qwen-Image-2.1 INT8**) e pipeline orquestrador completo ([`scripts/executar_projeto.py`](tts_platform_pt/scripts/executar_projeto.py)) para produção em lote de vídeos verticais (9:16) para TikTok, Reels e Shorts.
 * **Stack:** FastAPI, Vanilla JS, PyTorch (CUDA), Coqui XTTS-v2, ComfyUI API, FFmpeg.
 * **Guia de Execução:** [`tts_platform_pt/FLUXO_RECOMENDADO.md`](tts_platform_pt/FLUXO_RECOMENDADO.md).
 
-#### 2. 🎤 Karaoke AI Premium (`/karaoke`)
+#### 3. 🎤 Karaoke AI Premium (`/karaoke`)
 * **Descrição:** Ecossistema de karaokê de alta performance rodando localmente com separação de faixas (Demucs), transcrição e alinhamento fonético em tempo real (Whisper GPU/CPU + MMS_FA), e suporte multi-dispositivo (TV como tela principal e celulares como microfones via WebSockets).
 * **Stack:** FastAPI (Python), Vanilla JS (ES Modules, Web Audio API, AudioWorklets), WebSockets, PyTorch (CUDA).
 * **Documentação:** Copiada em `.claude/karaoke/` (dividida entre `onboarding/` para guias e arquitetura, e `resolucoes/` para resoluções de problemas, históricos e notas).
 
-#### 3. ▶️ YouTube Music Playlist Organizer (`/youtube_music_playlist_organizer`)
+#### 4. ▶️ YouTube Music Playlist Organizer (`/youtube_music_playlist_organizer`)
 * **Descrição:** Classificador inteligente de playlists do YouTube Music por vibe, gênero ou clima usando IA local (Ollama). Possui interface CLI retrô-cyberpunk com equalizadores ASCII, cache de faixas e gerenciamento inteligente da cota da API oficial do YouTube.
 * **Stack:** Python (Rich, Questionary), YouTube Data API v3, Ollama.
 
-#### 4. 📄 DOCX to PDF Converter (`/docx_to_pdf_converter`)
+#### 5. 📄 DOCX to PDF Converter (`/docx_to_pdf_converter`)
 * **Descrição:** Conversor em lote ou individual de documentos Microsoft Word (`.docx`) para PDF utilizando a API nativa do Word no Windows.
 * **Stack:** Python (`pywin32`).
 
-#### 5. 🤖 Local Agent (`/local_agent`)
+#### 6. 🤖 Local Agent (`/local_agent`)
 * **Descrição:** Implementação de agente ReAct minimalista local com tool calling (Ollama, `qwen3.5:9b`), guardrails rígidos e orçamento controlado de VRAM para GPUs de 12GB (RTX 4070).
 * **Stack:** Python, Ollama (OpenAI-compatible client), pytest.
 
-#### 6. 🎨 Image Gen (`/image_gen`)
+#### 7. 🎨 Image Gen (`/image_gen`)
 * **Descrição:** Workflows ComfyUI (ex: Krea2 turbo t2i) e documentação de geração de imagens.
 
 ---
@@ -46,6 +51,13 @@ Este repositório (`Ferramentas`) agrupa scripts, automações e ecossistemas in
 ---
 
 ## 🚀 Comandos Frequentes por Projeto
+
+### Agent-Remote (agent-remote)
+* **Ambiente:** `cd agent-remote; .\venv\Scripts\Activate.ps1` (Windows) ou `source venv/bin/activate` (Linux)
+* **Executar Servidor + Cloudflare Tunnel:**
+  ```bash
+  python run.py
+  ```
 
 ### Plataforma de TTS e Vídeos (tts_platform_pt)
 * **Ambiente:** `cd tts_platform_pt; .\venv\Scripts\Activate.ps1` (Windows) ou `source venv/bin/activate` (Linux)

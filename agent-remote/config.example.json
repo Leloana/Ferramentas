@@ -1,0 +1,68 @@
+{
+  "server": {
+    "host": "127.0.0.1",
+    "port": 8765,
+    "password": "sua_senha_secreta_aqui",
+    "session_secret": "chave_aleatoria_para_assinar_cookies_hmac_12345"
+  },
+  "ollama": {
+    "base_url": "http://127.0.0.1:11434",
+    "model": "qwen3.5:9b",
+    "temperature": 0.4
+  },
+  "apps": [
+    {
+      "id": "tts_platform_pt",
+      "name": "Plataforma de TTS & Vídeos",
+      "port": 8011,
+      "url": "http://127.0.0.1:8011",
+      "desc": "Síntese XTTS-v2 e Produção de Vídeos 9:16"
+    },
+    {
+      "id": "comfyui",
+      "name": "ComfyUI Desktop",
+      "port": 8188,
+      "url": "http://127.0.0.1:8188",
+      "desc": "Workflows de Imagem e Qwen-Image-2.1"
+    },
+    {
+      "id": "karaoke",
+      "name": "Karaoke AI Premium",
+      "port": 8000,
+      "url": "http://127.0.0.1:8000",
+      "desc": "Separação de faixas e console de karaokê"
+    },
+    {
+      "id": "testing_space",
+      "name": "Testing Space (Snooker)",
+      "port": 8080,
+      "url": "http://127.0.0.1:8080",
+      "desc": "Espaço de experimentos web"
+    }
+  ],
+  "terminal": {
+    "allowed_commands": [
+      "git",
+      "nvidia-smi",
+      "ollama",
+      "python",
+      "python3",
+      "uvicorn",
+      "ls",
+      "dir",
+      "pwd"
+    ],
+    "quick_actions": [
+      {"label": "VRAM Status", "cmd": "nvidia-smi"},
+      {"label": "Ollama Models", "cmd": "ollama ps"},
+      {"label": "Git Status", "cmd": "git status"},
+      {"label": "Git Log", "cmd": "git log -n 5 --oneline"},
+      {"label": "Git Pull", "cmd": "git pull"}
+    ]
+  },
+  "cloudflare": {
+    "enabled": true,
+    "mode": "quick",
+    "tunnel_token": ""
+  }
+}
