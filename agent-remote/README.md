@@ -50,16 +50,24 @@ A interface é focada em **fazer apenas uma coisa por vez**, otimizada para toqu
 ## 🚀 Como Executar
 
 ### 1. Iniciar no PC
-No diretório `agent-remote`, execute:
+
+#### 🪟 No Windows Nativo (2 Cliques):
+Dê dois cliques no arquivo:
+```cmd
+run.bat
+```
+*(ou execute no PowerShell: `.\run.bat` ou `python run.py`). Veja o [**GUIA_WINDOWS.md**](./GUIA_WINDOWS.md) para detalhes.*
+
+#### 🐧 No Linux / WSL:
 ```bash
 ./run.py
 ```
-*(ou `run.bat` no Windows)*
 
-O script:
-* Inicia o servidor FastAPI local na porta `8765`.
-* Cria automaticamente o **Cloudflare Quick Tunnel** seguro HTTPS (`https://...trycloudflare.com`).
-* Exibe no terminal o **QR Code ASCII** para escanear com o celular.
+O inicializador automático:
+* Configura a `venv` e instala dependências (`pywinpty` no Windows, `FastAPI`, etc.).
+* Sincroniza o arquivo `.mcp.json` com os caminhos nativos do SO.
+* Localiza ou baixa o executável oficial do **Cloudflare Tunnel**.
+* Inicia o servidor e exibe no terminal o **QR Code ASCII** para escanear com a câmera do celular.
 
 ### 2. No Celular
 1. Escaneie o QR Code ou acerte a URL gerada pelo Cloudflare Tunnel.

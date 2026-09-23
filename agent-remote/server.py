@@ -1,6 +1,8 @@
 import asyncio
 import json
 import os
+import shutil
+import sys
 import time
 import uuid
 from pathlib import Path
@@ -247,11 +249,23 @@ async def api_get_mcp_history():
 # --- Telemetria e Hardware (VRAM) ---
 @app.get("/api/vram")
 async def api_get_vram():
-    """Lê telemetria da GPU via nvidia-smi de forma assíncrona."""
-    output = []
+    """Lê telemetria da GPU via nvidia-smi de forma assíncrona (compatível com Linux e Windows)."""
+    # Detecta localização do executável nvidia-smi
+    nvidia_bin = "nvidia-smi"
+    if sys.platform == "win32":
+        candidates = [
+            "nvidia-smi",
+            r"C:\Windows\System32\nvidia-smi.exe",
+            r"C:\Program Files\NVIDIA Corporation\NVSMI\nvidia-smi.exe"
+        ]
+        for c in candidates:
+            if shutil.which(c) or os.path.exists(c):
+                nvidia_bin = c
+                break
+
     try:
         proc = await asyncio.create_subprocess_exec(
-            "nvidia-smi", "--query-gpu=memory.used,memory.total,temperature.gpu,utilization.gpu",
+            nvidia_bin, "--query-gpu=memory.used,memory.total,temperature.gpu,utilization.gpu",
             "--format=csv,noheader,nounits",
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE

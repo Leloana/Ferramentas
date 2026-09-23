@@ -1,11 +1,13 @@
 import asyncio
 import errno
 import os
+import shutil
 import subprocess
 import sys
 import threading
 from pathlib import Path
-from typing import Any, Dict, Optional, Set
+from typing import Any, Dict, List, Optional, Set
+from config import load_config
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 IS_WINDOWS = sys.platform == "win32"
@@ -29,6 +31,39 @@ else:
         HAS_POSIX_PTY = True
     except ImportError:
         HAS_POSIX_PTY = False
+
+
+def get_default_windows_shell() -> List[str]:
+    """Retorna os argumentos para lançar a melhor shell do Windows disponível."""
+    cfg = load_config()
+    configured = cfg.get("terminal", {}).get("windows_shell", "").lower()
+
+    if configured == "cmd":
+        return ["cmd.exe"]
+
+    if configured in ("bash", "git-bash"):
+        git_bash = r"C:\Program Files\Git\bin\bash.exe"
+        if os.path.exists(git_bash):
+            return [git_bash, "--login", "-i"]
+        sh = shutil.which("bash.exe") or shutil.which("bash")
+        if sh:
+            return [sh, "--login", "-i"]
+
+    # 1. PowerShell 7 (pwsh)
+    pwsh = shutil.which("pwsh.exe") or shutil.which("pwsh")
+    if pwsh:
+        return [pwsh, "-ExecutionPolicy", "Bypass", "-NoLogo"]
+
+    # 2. Windows PowerShell 5.1
+    ps = shutil.which("powershell.exe")
+    if ps:
+        return [ps, "-ExecutionPolicy", "Bypass", "-NoLogo"]
+    sys_ps = r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
+    if os.path.exists(sys_ps):
+        return [sys_ps, "-ExecutionPolicy", "Bypass", "-NoLogo"]
+
+    # 3. cmd.exe
+    return ["cmd.exe"]
 
 
 class PtySession:
@@ -95,16 +130,14 @@ class PtySession:
 
         # 1. Modo Windows
         if IS_WINDOWS:
-            shell = "powershell.exe"
-            if not os.path.exists(r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"):
-                shell = "cmd.exe"
+            shell_argv = get_default_windows_shell()
 
             if HAS_WINPTY:
                 # Windows com suporte completo a ConPTY (pywinpty)
                 try:
                     from winpty import PtyProcess
                     self.winpty_proc = PtyProcess.spawn(
-                        argv=[shell, "-NoLogo"],
+                        argv=shell_argv,
                         dimensions=(self.rows, self.cols),
                         cwd=work_dir,
                         env=env
@@ -117,7 +150,7 @@ class PtySession:
             # Fallback Windows: Subprocess com Pipes
             try:
                 self.proc = subprocess.Popen(
-                    [shell, "-NoLogo"],
+                    shell_argv,
                     stdin=subprocess.PIPE,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT,
