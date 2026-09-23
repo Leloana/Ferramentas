@@ -350,3 +350,69 @@ tone, not a statue` / `natural horse coats, not statues`. Ou seja, o
 reforço de material tem que ser aplicado ao objeto certo (armadura, arma,
 arreio) e não ao sujeito (pessoa, animal) — reforçar demais em cima do
 sujeito também tende a "vazar" pra pele/pelo.
+
+## 12. Qwen-Image-2.1 exige ComfyUI >= v0.37 — em versão antiga o peso nem é reconhecido
+
+Descoberto ao migrar a máquina da 4070 pro Qwen-Image-2.1 (o ComfyUI Desktop
+estava em **v0.26.0**, de junho/2026). Dois requisitos são novos e só aparecem na
+v0.37:
+
+* `comfy/supported_models.py` precisa ter a classe **`QwenImage21`** (a `QwenImage`
+  antiga é o Qwen-Image 1.x e não serve);
+* o `comfy-kitchen` empacotado precisa expor **`dequantize_int8_convrot_weight`**
+  (aparece no log de boot, na linha `Found comfy_kitchen backend cuda: {...}`), se
+  não os pesos `int8_convrot` não carregam.
+
+O app Desktop é só um invólucro de um clone git comum, então a atualização é
+`git fetch --tags` + `git checkout` da tag + `pip install -r requirements.txt` no
+`.venv` de `ComfyUI-Installs\ComfyUI\ComfyUI`. Comandos exatos no
+[`guia_execucao_qwen.md`](guia_execucao_qwen.md).
+
+## 13. `pip install -r requirements.txt` no ComfyUI derruba a GPU (instala `torch+cpu`)
+
+O `requirements.txt` do ComfyUI lista `torch` **sem pin e sem `--index-url`**. No
+Windows a wheel correspondente no PyPI é CPU-only, então atualizar as dependências
+desinstala o `torch==2.10.0+cu130` e põe um `torch==2.14.0+cpu` no lugar — o
+ComfyUI sobe normalmente, só que sem CUDA (`torch.cuda.is_available() == False`) e
+tudo vira lentidão inexplicável.
+
+Sempre conferir depois de mexer nas dependências:
+
+```powershell
+& "$C\.venv\Scripts\python.exe" -c "import torch; print(torch.__version__, torch.cuda.is_available())"
+```
+
+Se tiver voltado pro CPU, reinstale pelo índice do PyTorch (`--index-url
+https://download.pytorch.org/whl/cu130`). Reabrir o app Desktop também conserta:
+ele valida o ambiente contra o `manifest.json` (que fixa `torch_version`) e
+restaura a wheel CUDA sozinho.
+
+## 14. A frase-âncora não pode se referenciar no `texto_referencia.json`
+
+O `Video_11/musashi_duelo_ganryujima` veio com `{"6": ".../texto_06.png", "9":
+".../texto_06.png"}`: a frase 6 é justamente a âncora (prompt t2i puro que
+apresenta o Musashi) e estava listada como referência de si mesma. Resultado:
+`gerar_imagens.py` abortava a rodada inteira antes de gerar qualquer coisa, com
+`Imagem de referência da frase 6 não encontrada`.
+
+Regra: entram no `texto_referencia.json` **apenas** as frases cujo prompt usa
+`<image1>`, e sempre com índice maior que o da âncora (ou apontando pra imagem de
+um projeto já produzido, como faz a Parte 2 ao reusar o Musashi da Parte 1).
+
+Junto disso, `gerar_imagens.py` passou a checar a existência do arquivo de
+referência **na hora de usar**, e não mais toda de uma vez no começo — assim a
+âncora gerada na própria rodada (frase 6) serve de `<image1>` pras frases
+seguintes (frase 9) sem precisar de duas passadas.
+
+## 15. `POST /free` devolve a VRAM sem fechar o ComfyUI
+
+Com o Qwen-Image-2.1 int8 o ComfyUI fica com ~9,6 GB de VRAM ocupados mesmo
+ocioso (pesos em cache), e o pico durante a geração é ~10,4 GB dos 12 GB da 4070 —
+não sobra espaço pro XTTS-v2. Pra alternar entre as etapas sem matar o processo:
+
+```powershell
+curl.exe -X POST http://127.0.0.1:8188/free -H "Content-Type: application/json" -d '{\"unload_models\":true,\"free_memory\":true}'
+```
+
+Medido nesta máquina: 9,6 GB → 1,1 GB em ~3 s. O custo é a próxima imagem recarregar
+os pesos (~27 s em vez de ~15 s).
