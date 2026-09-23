@@ -1,5 +1,9 @@
 # App Android — Ecossistema (Marco 1)
 
+> [!CAUTION]
+> **PROJETO DESCONTINUADO / ARQUIVADO**
+> Este projeto foi descontinuado porque a sua implementação no Android dependia de remover/modificar permissões no sistema que quebravam tokens NFC e serviços essenciais do celular. Os arquivos permanecem arquivados e intactos para consulta e referência técnica histórica.
+
 App nativo (Kotlin + Jetpack Compose) que substitui a ponte Termux: leva o
 **gesto** "arrastar pro canto" e o **estado** do app em foco no handoff para o
 PC. Espelha o protocolo do [`agente.py`](../agente.py) (descritor JSON, 1 por

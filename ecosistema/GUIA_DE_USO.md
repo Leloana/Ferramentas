@@ -1,5 +1,9 @@
 # Guia de Uso — Ecossistema Híbrido (Android → PC)
 
+> [!CAUTION]
+> **PROJETO DESCONTINUADO / ARQUIVADO**
+> Este projeto foi descontinuado porque a sua implementação no Android dependia de remover/modificar permissões no sistema que quebravam tokens NFC e serviços essenciais do celular. Os arquivos permanecem arquivados e intactos para consulta e referência técnica histórica.
+
 Guia **completo e do zero** para colocar o ecossistema funcionando: configurar o
 PC (servidor SSH + agente), preparar o celular (Termux + chave SSH), instalar e
 configurar o app Android, e usar a **bolha de atalhos** para mandar coisas do

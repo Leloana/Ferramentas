@@ -1,3 +1,7 @@
+> [!NOTE]
+> **PROJETO DESCONTINUADO / ARQUIVADO**
+> Este projeto foi descontinuado e substituído pelo uso do **Antigravity CLI (`agy`)**. O código e histórico de skills/ferramentas permanecem aqui para referência técnica e consulta.
+
 Build a Windows-native agentic CLI in Python that connects exclusively to a local Ollama instance. Follow every requirement below exactly.
 
 1. VIRTUAL ENVIRONMENT

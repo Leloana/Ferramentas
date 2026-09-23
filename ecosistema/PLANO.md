@@ -1,5 +1,9 @@
 # Ecossistema Híbrido Android ↔ Windows
 
+> [!CAUTION]
+> **PROJETO DESCONTINUADO / ARQUIVADO**
+> Este projeto foi descontinuado porque a sua implementação no Android dependia de remover/modificar permissões no sistema que quebravam tokens NFC e serviços essenciais do celular. Os arquivos permanecem arquivados e intactos para consulta e referência técnica histórica.
+
 > Objetivo: replicar — e superar — o **Apple Continuity** entre um Android
 > (Samsung S24 FE) e um PC Windows, com fluidez parecida com a da Apple.
 > Onde o Windows não tem o app equivalente do Android (ou vice-versa), o
