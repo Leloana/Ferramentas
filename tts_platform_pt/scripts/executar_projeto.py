@@ -65,8 +65,13 @@ def main():
     parser.add_argument(
         "--workflow-i2i",
         type=Path,
-        default=Path("comfy/image_qwen_image_2_1_i2i.json"),
-        help="Workflow de referência/continuidade (padrão: comfy/image_qwen_image_2_1_i2i.json)",
+        default=Path("comfy/image_qwen_image_2_1_lora_i2i.json"),
+        help=(
+            "Workflow de referência/continuidade (padrão: "
+            "comfy/image_qwen_image_2_1_lora_i2i.json — o i2i com o LoRA de "
+            "consistência facial de anime; use image_qwen_image_2_1_i2i.json pra "
+            "rodar sem o LoRA)"
+        ),
     )
     parser.add_argument(
         "--pular-audio",
