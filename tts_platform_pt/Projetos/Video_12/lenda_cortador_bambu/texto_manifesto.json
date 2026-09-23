@@ -1,0 +1,1482 @@
+{
+  "gerado_em": "2026-08-11T18:28:14",
+  "roteiro": "Projetos\\Video_12\\lenda_cortador_bambu\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 96.2,
+  "texto_usado": "O Monte Fuji leva esse nome por causa de uma lenda sobre imortalidade, e ela começa dentro de um talo de bambu. Há mais de mil anos, um velho cortador de bambu avistou um talo brilhando no meio da floresta. Ele cortou o talo e, lá dentro, encontrou uma menina do tamanho do seu dedo. Sem filhos, ele e a esposa a criaram como se fosse deles. Em poucos meses, o bebê virou uma jovem, crescendo rápido demais para ser normal. Chamaram-na de Kaguya-hime, a princesa da luz cintilante. A beleza dela atraiu pretendentes do país inteiro, entre eles nobres poderosos e até o próprio imperador. Kaguya-hime não recusava ninguém na cara: propunha um desafio impossível para cada pretendente. Um precisava trazer um galho de joias de uma árvore lendária. Outro, o manto de fogo de um rato mítico. Outro ainda, uma joia guardada no pescoço de um dragão. Um por um, todos fracassaram, alguns quase morrendo na tentativa. Só depois de anos o segredo dela veio à tona: Kaguya-hime não era deste mundo. Ela tinha vindo da Lua, e sua família celestial estava a caminho para buscá-la de volta. Na noite da lua cheia marcada, guardas cercaram a casa para impedir a partida, mas não adiantou nada. Seres luminosos desceram do céu, e Kaguya-hime partiu chorando, deixando para trás uma carta e um elixir da imortalidade para o imperador. Ele recusou o presente: sem ela, viver para sempre não fazia sentido nenhum. Mandou queimar o elixir no topo da montanha mais próxima da Lua que encontrou. E é dali, dizem, que vem o nome Fuji: imortal.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "O Monte Fuji leva esse nome por causa de uma lenda sobre imortalidade, e ela começa dentro de um talo de bambu.",
+      "inicio_s": 0.15,
+      "fim_s": 7.03,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 0.19,
+          "fim_s": 0.21
+        },
+        {
+          "texto": "Monte",
+          "inicio_s": 0.25,
+          "fim_s": 0.471
+        },
+        {
+          "texto": "Fuji",
+          "inicio_s": 0.551,
+          "fim_s": 0.852
+        },
+        {
+          "texto": "leva",
+          "inicio_s": 0.932,
+          "fim_s": 1.153
+        },
+        {
+          "texto": "esse",
+          "inicio_s": 1.213,
+          "fim_s": 1.374
+        },
+        {
+          "texto": "nome",
+          "inicio_s": 1.434,
+          "fim_s": 1.694
+        },
+        {
+          "texto": "por",
+          "inicio_s": 2.035,
+          "fim_s": 2.156
+        },
+        {
+          "texto": "causa",
+          "inicio_s": 2.176,
+          "fim_s": 2.376
+        },
+        {
+          "texto": "de",
+          "inicio_s": 2.397,
+          "fim_s": 2.457
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 2.477,
+          "fim_s": 2.577
+        },
+        {
+          "texto": "lenda",
+          "inicio_s": 2.677,
+          "fim_s": 2.918
+        },
+        {
+          "texto": "sobre",
+          "inicio_s": 2.998,
+          "fim_s": 3.219
+        },
+        {
+          "texto": "imortalidade",
+          "inicio_s": 3.319,
+          "fim_s": 4.081
+        },
+        {
+          "texto": "e",
+          "inicio_s": 4.603,
+          "fim_s": 4.623
+        },
+        {
+          "texto": "ela",
+          "inicio_s": 4.683,
+          "fim_s": 4.824
+        },
+        {
+          "texto": "começa",
+          "inicio_s": 4.864,
+          "fim_s": 5.145
+        },
+        {
+          "texto": "dentro",
+          "inicio_s": 5.245,
+          "fim_s": 5.526
+        },
+        {
+          "texto": "de",
+          "inicio_s": 5.566,
+          "fim_s": 5.626
+        },
+        {
+          "texto": "um",
+          "inicio_s": 5.666,
+          "fim_s": 5.726
+        },
+        {
+          "texto": "talo",
+          "inicio_s": 5.786,
+          "fim_s": 6.027
+        },
+        {
+          "texto": "de",
+          "inicio_s": 6.067,
+          "fim_s": 6.167
+        },
+        {
+          "texto": "bambu",
+          "inicio_s": 6.589,
+          "fim_s": 6.89
+        }
+      ]
+    },
+    {
+      "texto": "Há mais de mil anos, um velho cortador de bambu avistou um talo brilhando no meio da floresta.",
+      "inicio_s": 7.38,
+      "fim_s": 12.34,
+      "palavras": [
+        {
+          "texto": "Há",
+          "inicio_s": 7.38,
+          "fim_s": 7.44
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 7.521,
+          "fim_s": 7.721
+        },
+        {
+          "texto": "de",
+          "inicio_s": 7.762,
+          "fim_s": 7.822
+        },
+        {
+          "texto": "mil",
+          "inicio_s": 7.882,
+          "fim_s": 8.023
+        },
+        {
+          "texto": "anos",
+          "inicio_s": 8.123,
+          "fim_s": 8.384
+        },
+        {
+          "texto": "um",
+          "inicio_s": 8.705,
+          "fim_s": 8.786
+        },
+        {
+          "texto": "velho",
+          "inicio_s": 8.866,
+          "fim_s": 9.127
+        },
+        {
+          "texto": "cortador",
+          "inicio_s": 9.167,
+          "fim_s": 9.649
+        },
+        {
+          "texto": "de",
+          "inicio_s": 9.709,
+          "fim_s": 9.77
+        },
+        {
+          "texto": "bambu",
+          "inicio_s": 9.81,
+          "fim_s": 10.071
+        },
+        {
+          "texto": "avistou",
+          "inicio_s": 10.171,
+          "fim_s": 10.493
+        },
+        {
+          "texto": "um",
+          "inicio_s": 10.513,
+          "fim_s": 10.573
+        },
+        {
+          "texto": "talo",
+          "inicio_s": 10.633,
+          "fim_s": 10.914
+        },
+        {
+          "texto": "brilhando",
+          "inicio_s": 10.954,
+          "fim_s": 11.376
+        },
+        {
+          "texto": "no",
+          "inicio_s": 11.416,
+          "fim_s": 11.477
+        },
+        {
+          "texto": "meio",
+          "inicio_s": 11.537,
+          "fim_s": 11.717
+        },
+        {
+          "texto": "da",
+          "inicio_s": 11.738,
+          "fim_s": 11.798
+        },
+        {
+          "texto": "floresta",
+          "inicio_s": 11.838,
+          "fim_s": 12.24
+        }
+      ]
+    },
+    {
+      "texto": "Ele cortou o talo e, lá dentro, encontrou uma menina do tamanho do seu dedo.",
+      "inicio_s": 12.69,
+      "fim_s": 17.31,
+      "palavras": [
+        {
+          "texto": "Ele",
+          "inicio_s": 12.71,
+          "fim_s": 12.831
+        },
+        {
+          "texto": "cortou",
+          "inicio_s": 12.851,
+          "fim_s": 13.152
+        },
+        {
+          "texto": "o",
+          "inicio_s": 13.192,
+          "fim_s": 13.212
+        },
+        {
+          "texto": "talo",
+          "inicio_s": 13.293,
+          "fim_s": 13.574
+        },
+        {
+          "texto": "e",
+          "inicio_s": 13.976,
+          "fim_s": 13.996
+        },
+        {
+          "texto": "lá",
+          "inicio_s": 14.096,
+          "fim_s": 14.176
+        },
+        {
+          "texto": "dentro",
+          "inicio_s": 14.277,
+          "fim_s": 14.598
+        },
+        {
+          "texto": "encontrou",
+          "inicio_s": 15.04,
+          "fim_s": 15.502
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 15.522,
+          "fim_s": 15.623
+        },
+        {
+          "texto": "menina",
+          "inicio_s": 15.643,
+          "fim_s": 15.984
+        },
+        {
+          "texto": "do",
+          "inicio_s": 16.024,
+          "fim_s": 16.085
+        },
+        {
+          "texto": "tamanho",
+          "inicio_s": 16.165,
+          "fim_s": 16.567
+        },
+        {
+          "texto": "do",
+          "inicio_s": 16.607,
+          "fim_s": 16.667
+        },
+        {
+          "texto": "seu",
+          "inicio_s": 16.748,
+          "fim_s": 16.908
+        },
+        {
+          "texto": "dedo",
+          "inicio_s": 16.948,
+          "fim_s": 17.21
+        }
+      ]
+    },
+    {
+      "texto": "Sem filhos, ele e a esposa a criaram como se fosse deles.",
+      "inicio_s": 17.66,
+      "fim_s": 21.24,
+      "palavras": [
+        {
+          "texto": "Sem",
+          "inicio_s": 17.72,
+          "fim_s": 17.841
+        },
+        {
+          "texto": "filhos",
+          "inicio_s": 17.901,
+          "fim_s": 18.263
+        },
+        {
+          "texto": "ele",
+          "inicio_s": 18.786,
+          "fim_s": 18.967
+        },
+        {
+          "texto": "e",
+          "inicio_s": 19.008,
+          "fim_s": 19.028
+        },
+        {
+          "texto": "a",
+          "inicio_s": 19.068,
+          "fim_s": 19.088
+        },
+        {
+          "texto": "esposa",
+          "inicio_s": 19.148,
+          "fim_s": 19.571
+        },
+        {
+          "texto": "a",
+          "inicio_s": 19.611,
+          "fim_s": 19.631
+        },
+        {
+          "texto": "criaram",
+          "inicio_s": 19.671,
+          "fim_s": 20.134
+        },
+        {
+          "texto": "como",
+          "inicio_s": 20.174,
+          "fim_s": 20.335
+        },
+        {
+          "texto": "se",
+          "inicio_s": 20.375,
+          "fim_s": 20.456
+        },
+        {
+          "texto": "fosse",
+          "inicio_s": 20.496,
+          "fim_s": 20.757
+        },
+        {
+          "texto": "deles",
+          "inicio_s": 20.798,
+          "fim_s": 21.119
+        }
+      ]
+    },
+    {
+      "texto": "Em poucos meses, o bebê virou uma jovem, crescendo rápido demais para ser normal.",
+      "inicio_s": 21.59,
+      "fim_s": 26.63,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 21.63,
+          "fim_s": 21.71
+        },
+        {
+          "texto": "poucos",
+          "inicio_s": 21.811,
+          "fim_s": 22.152
+        },
+        {
+          "texto": "meses",
+          "inicio_s": 22.192,
+          "fim_s": 22.514
+        },
+        {
+          "texto": "o",
+          "inicio_s": 22.955,
+          "fim_s": 22.975
+        },
+        {
+          "texto": "bebê",
+          "inicio_s": 23.036,
+          "fim_s": 23.277
+        },
+        {
+          "texto": "virou",
+          "inicio_s": 23.337,
+          "fim_s": 23.558
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 23.578,
+          "fim_s": 23.678
+        },
+        {
+          "texto": "jovem",
+          "inicio_s": 23.739,
+          "fim_s": 24.08
+        },
+        {
+          "texto": "crescendo",
+          "inicio_s": 24.481,
+          "fim_s": 24.923
+        },
+        {
+          "texto": "rápido",
+          "inicio_s": 25.004,
+          "fim_s": 25.365
+        },
+        {
+          "texto": "demais",
+          "inicio_s": 25.405,
+          "fim_s": 25.787
+        },
+        {
+          "texto": "para",
+          "inicio_s": 25.827,
+          "fim_s": 25.967
+        },
+        {
+          "texto": "ser",
+          "inicio_s": 26.028,
+          "fim_s": 26.148
+        },
+        {
+          "texto": "normal",
+          "inicio_s": 26.188,
+          "fim_s": 26.53
+        }
+      ]
+    },
+    {
+      "texto": "Chamaram-na de Kaguya-hime, a princesa da luz cintilante.",
+      "inicio_s": 26.98,
+      "fim_s": 30.28,
+      "palavras": [
+        {
+          "texto": "Chamaram-na",
+          "inicio_s": 27.0,
+          "fim_s": 27.443
+        },
+        {
+          "texto": "de",
+          "inicio_s": 27.503,
+          "fim_s": 27.584
+        },
+        {
+          "texto": "Kaguya-hime",
+          "inicio_s": 27.765,
+          "fim_s": 28.489
+        },
+        {
+          "texto": "a",
+          "inicio_s": 28.972,
+          "fim_s": 28.992
+        },
+        {
+          "texto": "princesa",
+          "inicio_s": 29.032,
+          "fim_s": 29.435
+        },
+        {
+          "texto": "da",
+          "inicio_s": 29.475,
+          "fim_s": 29.535
+        },
+        {
+          "texto": "luz",
+          "inicio_s": 29.616,
+          "fim_s": 29.757
+        },
+        {
+          "texto": "cintilante",
+          "inicio_s": 29.777,
+          "fim_s": 30.22
+        }
+      ]
+    },
+    {
+      "texto": "A beleza dela atraiu pretendentes do país inteiro, entre eles nobres poderosos e até o próprio imperador.",
+      "inicio_s": 30.63,
+      "fim_s": 36.23,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 30.65,
+          "fim_s": 30.67
+        },
+        {
+          "texto": "beleza",
+          "inicio_s": 30.71,
+          "fim_s": 30.991
+        },
+        {
+          "texto": "dela",
+          "inicio_s": 31.052,
+          "fim_s": 31.232
+        },
+        {
+          "texto": "atraiu",
+          "inicio_s": 31.272,
+          "fim_s": 31.573
+        },
+        {
+          "texto": "pretendentes",
+          "inicio_s": 31.614,
+          "fim_s": 32.135
+        },
+        {
+          "texto": "do",
+          "inicio_s": 32.155,
+          "fim_s": 32.236
+        },
+        {
+          "texto": "país",
+          "inicio_s": 32.276,
+          "fim_s": 32.477
+        },
+        {
+          "texto": "inteiro",
+          "inicio_s": 32.517,
+          "fim_s": 32.858
+        },
+        {
+          "texto": "entre",
+          "inicio_s": 33.721,
+          "fim_s": 33.922
+        },
+        {
+          "texto": "eles",
+          "inicio_s": 33.982,
+          "fim_s": 34.163
+        },
+        {
+          "texto": "nobres",
+          "inicio_s": 34.203,
+          "fim_s": 34.464
+        },
+        {
+          "texto": "poderosos",
+          "inicio_s": 34.504,
+          "fim_s": 35.046
+        },
+        {
+          "texto": "e",
+          "inicio_s": 35.086,
+          "fim_s": 35.106
+        },
+        {
+          "texto": "até",
+          "inicio_s": 35.166,
+          "fim_s": 35.307
+        },
+        {
+          "texto": "o",
+          "inicio_s": 35.347,
+          "fim_s": 35.367
+        },
+        {
+          "texto": "próprio",
+          "inicio_s": 35.407,
+          "fim_s": 35.688
+        },
+        {
+          "texto": "imperador",
+          "inicio_s": 35.708,
+          "fim_s": 36.13
+        }
+      ]
+    },
+    {
+      "texto": "Kaguya-hime não recusava ninguém na cara: propunha um desafio impossível para cada pretendente.",
+      "inicio_s": 36.58,
+      "fim_s": 41.82,
+      "palavras": [
+        {
+          "texto": "Kaguya-hime",
+          "inicio_s": 36.58,
+          "fim_s": 37.202
+        },
+        {
+          "texto": "não",
+          "inicio_s": 37.263,
+          "fim_s": 37.363
+        },
+        {
+          "texto": "recusava",
+          "inicio_s": 37.403,
+          "fim_s": 37.845
+        },
+        {
+          "texto": "ninguém",
+          "inicio_s": 37.885,
+          "fim_s": 38.166
+        },
+        {
+          "texto": "na",
+          "inicio_s": 38.206,
+          "fim_s": 38.266
+        },
+        {
+          "texto": "cara",
+          "inicio_s": 38.327,
+          "fim_s": 38.568
+        },
+        {
+          "texto": "propunha",
+          "inicio_s": 38.989,
+          "fim_s": 39.431
+        },
+        {
+          "texto": "um",
+          "inicio_s": 39.471,
+          "fim_s": 39.511
+        },
+        {
+          "texto": "desafio",
+          "inicio_s": 39.551,
+          "fim_s": 40.013
+        },
+        {
+          "texto": "impossível",
+          "inicio_s": 40.053,
+          "fim_s": 40.696
+        },
+        {
+          "texto": "para",
+          "inicio_s": 40.756,
+          "fim_s": 40.896
+        },
+        {
+          "texto": "cada",
+          "inicio_s": 40.977,
+          "fim_s": 41.157
+        },
+        {
+          "texto": "pretendente",
+          "inicio_s": 41.198,
+          "fim_s": 41.74
+        }
+      ]
+    },
+    {
+      "texto": "Um precisava trazer um galho de joias de uma árvore lendária.",
+      "inicio_s": 42.17,
+      "fim_s": 45.75,
+      "palavras": [
+        {
+          "texto": "Um",
+          "inicio_s": 42.21,
+          "fim_s": 42.271
+        },
+        {
+          "texto": "precisava",
+          "inicio_s": 42.291,
+          "fim_s": 42.814
+        },
+        {
+          "texto": "trazer",
+          "inicio_s": 42.894,
+          "fim_s": 43.176
+        },
+        {
+          "texto": "um",
+          "inicio_s": 43.216,
+          "fim_s": 43.276
+        },
+        {
+          "texto": "galho",
+          "inicio_s": 43.357,
+          "fim_s": 43.638
+        },
+        {
+          "texto": "de",
+          "inicio_s": 43.658,
+          "fim_s": 43.739
+        },
+        {
+          "texto": "joias",
+          "inicio_s": 43.799,
+          "fim_s": 44.181
+        },
+        {
+          "texto": "de",
+          "inicio_s": 44.443,
+          "fim_s": 44.503
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 44.543,
+          "fim_s": 44.664
+        },
+        {
+          "texto": "árvore",
+          "inicio_s": 44.785,
+          "fim_s": 45.086
+        },
+        {
+          "texto": "lendária",
+          "inicio_s": 45.167,
+          "fim_s": 45.649
+        }
+      ]
+    },
+    {
+      "texto": "Outro, o manto de fogo de um rato mítico.",
+      "inicio_s": 46.1,
+      "fim_s": 48.7,
+      "palavras": [
+        {
+          "texto": "Outro",
+          "inicio_s": 46.16,
+          "fim_s": 46.422
+        },
+        {
+          "texto": "o",
+          "inicio_s": 46.987,
+          "fim_s": 47.007
+        },
+        {
+          "texto": "manto",
+          "inicio_s": 47.088,
+          "fim_s": 47.37
+        },
+        {
+          "texto": "de",
+          "inicio_s": 47.39,
+          "fim_s": 47.471
+        },
+        {
+          "texto": "fogo",
+          "inicio_s": 47.531,
+          "fim_s": 47.773
+        },
+        {
+          "texto": "de",
+          "inicio_s": 47.813,
+          "fim_s": 47.853
+        },
+        {
+          "texto": "um",
+          "inicio_s": 47.894,
+          "fim_s": 47.934
+        },
+        {
+          "texto": "rato",
+          "inicio_s": 47.974,
+          "fim_s": 48.196
+        },
+        {
+          "texto": "mítico",
+          "inicio_s": 48.236,
+          "fim_s": 48.579
+        }
+      ]
+    },
+    {
+      "texto": "Outro ainda, uma joia guardada no pescoço de um dragão.",
+      "inicio_s": 49.05,
+      "fim_s": 52.37,
+      "palavras": [
+        {
+          "texto": "Outro",
+          "inicio_s": 49.11,
+          "fim_s": 49.392
+        },
+        {
+          "texto": "ainda",
+          "inicio_s": 49.432,
+          "fim_s": 49.734
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 50.157,
+          "fim_s": 50.298
+        },
+        {
+          "texto": "joia",
+          "inicio_s": 50.398,
+          "fim_s": 50.619
+        },
+        {
+          "texto": "guardada",
+          "inicio_s": 50.68,
+          "fim_s": 51.102
+        },
+        {
+          "texto": "no",
+          "inicio_s": 51.143,
+          "fim_s": 51.203
+        },
+        {
+          "texto": "pescoço",
+          "inicio_s": 51.243,
+          "fim_s": 51.726
+        },
+        {
+          "texto": "de",
+          "inicio_s": 51.766,
+          "fim_s": 51.827
+        },
+        {
+          "texto": "um",
+          "inicio_s": 51.867,
+          "fim_s": 51.907
+        },
+        {
+          "texto": "dragão",
+          "inicio_s": 51.947,
+          "fim_s": 52.249
+        }
+      ]
+    },
+    {
+      "texto": "Um por um, todos fracassaram, alguns quase morrendo na tentativa.",
+      "inicio_s": 52.72,
+      "fim_s": 57.1,
+      "palavras": [
+        {
+          "texto": "Um",
+          "inicio_s": 52.76,
+          "fim_s": 52.861
+        },
+        {
+          "texto": "por",
+          "inicio_s": 52.941,
+          "fim_s": 53.082
+        },
+        {
+          "texto": "um",
+          "inicio_s": 53.142,
+          "fim_s": 53.222
+        },
+        {
+          "texto": "todos",
+          "inicio_s": 53.684,
+          "fim_s": 54.026
+        },
+        {
+          "texto": "fracassaram",
+          "inicio_s": 54.066,
+          "fim_s": 54.649
+        },
+        {
+          "texto": "alguns",
+          "inicio_s": 55.272,
+          "fim_s": 55.593
+        },
+        {
+          "texto": "quase",
+          "inicio_s": 55.673,
+          "fim_s": 55.975
+        },
+        {
+          "texto": "morrendo",
+          "inicio_s": 56.035,
+          "fim_s": 56.357
+        },
+        {
+          "texto": "na",
+          "inicio_s": 56.397,
+          "fim_s": 56.457
+        },
+        {
+          "texto": "tentativa",
+          "inicio_s": 56.497,
+          "fim_s": 57.0
+        }
+      ]
+    },
+    {
+      "texto": "Só depois de anos o segredo dela veio à tona: Kaguya-hime não era deste mundo.",
+      "inicio_s": 57.45,
+      "fim_s": 61.99,
+      "palavras": [
+        {
+          "texto": "Só",
+          "inicio_s": 57.49,
+          "fim_s": 57.571
+        },
+        {
+          "texto": "depois",
+          "inicio_s": 57.651,
+          "fim_s": 57.972
+        },
+        {
+          "texto": "de",
+          "inicio_s": 57.992,
+          "fim_s": 58.073
+        },
+        {
+          "texto": "anos",
+          "inicio_s": 58.173,
+          "fim_s": 58.414
+        },
+        {
+          "texto": "o",
+          "inicio_s": 58.454,
+          "fim_s": 58.475
+        },
+        {
+          "texto": "segredo",
+          "inicio_s": 58.535,
+          "fim_s": 58.916
+        },
+        {
+          "texto": "dela",
+          "inicio_s": 58.977,
+          "fim_s": 59.218
+        },
+        {
+          "texto": "veio",
+          "inicio_s": 59.278,
+          "fim_s": 59.459
+        },
+        {
+          "texto": "à",
+          "inicio_s": 59.499,
+          "fim_s": 59.539
+        },
+        {
+          "texto": "tona",
+          "inicio_s": 59.599,
+          "fim_s": 59.861
+        },
+        {
+          "texto": "Kaguya-hime",
+          "inicio_s": 60.423,
+          "fim_s": 61.106
+        },
+        {
+          "texto": "não",
+          "inicio_s": 61.166,
+          "fim_s": 61.267
+        },
+        {
+          "texto": "era",
+          "inicio_s": 61.327,
+          "fim_s": 61.428
+        },
+        {
+          "texto": "deste",
+          "inicio_s": 61.468,
+          "fim_s": 61.669
+        },
+        {
+          "texto": "mundo",
+          "inicio_s": 61.709,
+          "fim_s": 61.93
+        }
+      ]
+    },
+    {
+      "texto": "Ela tinha vindo da Lua, e sua família celestial estava a caminho para buscá-la de volta.",
+      "inicio_s": 62.34,
+      "fim_s": 67.04,
+      "palavras": [
+        {
+          "texto": "Ela",
+          "inicio_s": 62.36,
+          "fim_s": 62.481
+        },
+        {
+          "texto": "tinha",
+          "inicio_s": 62.521,
+          "fim_s": 62.722
+        },
+        {
+          "texto": "vindo",
+          "inicio_s": 62.782,
+          "fim_s": 63.003
+        },
+        {
+          "texto": "da",
+          "inicio_s": 63.043,
+          "fim_s": 63.123
+        },
+        {
+          "texto": "Lua",
+          "inicio_s": 63.184,
+          "fim_s": 63.405
+        },
+        {
+          "texto": "e",
+          "inicio_s": 63.706,
+          "fim_s": 63.726
+        },
+        {
+          "texto": "sua",
+          "inicio_s": 63.786,
+          "fim_s": 63.907
+        },
+        {
+          "texto": "família",
+          "inicio_s": 63.947,
+          "fim_s": 64.308
+        },
+        {
+          "texto": "celestial",
+          "inicio_s": 64.349,
+          "fim_s": 64.851
+        },
+        {
+          "texto": "estava",
+          "inicio_s": 65.272,
+          "fim_s": 65.554
+        },
+        {
+          "texto": "a",
+          "inicio_s": 65.574,
+          "fim_s": 65.594
+        },
+        {
+          "texto": "caminho",
+          "inicio_s": 65.634,
+          "fim_s": 65.935
+        },
+        {
+          "texto": "para",
+          "inicio_s": 65.955,
+          "fim_s": 66.116
+        },
+        {
+          "texto": "buscá-la",
+          "inicio_s": 66.136,
+          "fim_s": 66.518
+        },
+        {
+          "texto": "de",
+          "inicio_s": 66.558,
+          "fim_s": 66.618
+        },
+        {
+          "texto": "volta",
+          "inicio_s": 66.658,
+          "fim_s": 66.94
+        }
+      ]
+    },
+    {
+      "texto": "Na noite da lua cheia marcada, guardas cercaram a casa para impedir a partida, mas não adiantou nada.",
+      "inicio_s": 67.39,
+      "fim_s": 73.37,
+      "palavras": [
+        {
+          "texto": "Na",
+          "inicio_s": 67.41,
+          "fim_s": 67.47
+        },
+        {
+          "texto": "noite",
+          "inicio_s": 67.551,
+          "fim_s": 67.811
+        },
+        {
+          "texto": "da",
+          "inicio_s": 67.852,
+          "fim_s": 67.912
+        },
+        {
+          "texto": "lua",
+          "inicio_s": 67.972,
+          "fim_s": 68.132
+        },
+        {
+          "texto": "cheia",
+          "inicio_s": 68.213,
+          "fim_s": 68.413
+        },
+        {
+          "texto": "marcada",
+          "inicio_s": 68.454,
+          "fim_s": 68.895
+        },
+        {
+          "texto": "guardas",
+          "inicio_s": 69.477,
+          "fim_s": 69.838
+        },
+        {
+          "texto": "cercaram",
+          "inicio_s": 69.858,
+          "fim_s": 70.28
+        },
+        {
+          "texto": "a",
+          "inicio_s": 70.32,
+          "fim_s": 70.34
+        },
+        {
+          "texto": "casa",
+          "inicio_s": 70.4,
+          "fim_s": 70.621
+        },
+        {
+          "texto": "para",
+          "inicio_s": 70.681,
+          "fim_s": 70.801
+        },
+        {
+          "texto": "impedir",
+          "inicio_s": 70.821,
+          "fim_s": 71.183
+        },
+        {
+          "texto": "a",
+          "inicio_s": 71.203,
+          "fim_s": 71.223
+        },
+        {
+          "texto": "partida",
+          "inicio_s": 71.263,
+          "fim_s": 71.704
+        },
+        {
+          "texto": "mas",
+          "inicio_s": 72.066,
+          "fim_s": 72.246
+        },
+        {
+          "texto": "não",
+          "inicio_s": 72.347,
+          "fim_s": 72.507
+        },
+        {
+          "texto": "adiantou",
+          "inicio_s": 72.567,
+          "fim_s": 72.969
+        },
+        {
+          "texto": "nada",
+          "inicio_s": 73.029,
+          "fim_s": 73.29
+        }
+      ]
+    },
+    {
+      "texto": "Seres luminosos desceram do céu, e Kaguya-hime partiu chorando, deixando para trás uma carta e um elixir da imortalidade para o imperador.",
+      "inicio_s": 73.72,
+      "fim_s": 81.6,
+      "palavras": [
+        {
+          "texto": "Seres",
+          "inicio_s": 73.76,
+          "fim_s": 74.001
+        },
+        {
+          "texto": "luminosos",
+          "inicio_s": 74.021,
+          "fim_s": 74.522
+        },
+        {
+          "texto": "desceram",
+          "inicio_s": 74.542,
+          "fim_s": 74.903
+        },
+        {
+          "texto": "do",
+          "inicio_s": 74.923,
+          "fim_s": 75.003
+        },
+        {
+          "texto": "céu",
+          "inicio_s": 75.063,
+          "fim_s": 75.244
+        },
+        {
+          "texto": "e",
+          "inicio_s": 75.805,
+          "fim_s": 75.825
+        },
+        {
+          "texto": "Kaguya-hime",
+          "inicio_s": 75.906,
+          "fim_s": 76.567
+        },
+        {
+          "texto": "partiu",
+          "inicio_s": 76.627,
+          "fim_s": 76.988
+        },
+        {
+          "texto": "chorando",
+          "inicio_s": 77.028,
+          "fim_s": 77.409
+        },
+        {
+          "texto": "deixando",
+          "inicio_s": 77.85,
+          "fim_s": 78.191
+        },
+        {
+          "texto": "para",
+          "inicio_s": 78.231,
+          "fim_s": 78.392
+        },
+        {
+          "texto": "trás",
+          "inicio_s": 78.452,
+          "fim_s": 78.673
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 78.713,
+          "fim_s": 78.813
+        },
+        {
+          "texto": "carta",
+          "inicio_s": 78.893,
+          "fim_s": 79.214
+        },
+        {
+          "texto": "e",
+          "inicio_s": 79.535,
+          "fim_s": 79.555
+        },
+        {
+          "texto": "um",
+          "inicio_s": 79.615,
+          "fim_s": 79.675
+        },
+        {
+          "texto": "elixir",
+          "inicio_s": 79.715,
+          "fim_s": 80.116
+        },
+        {
+          "texto": "da",
+          "inicio_s": 80.136,
+          "fim_s": 80.216
+        },
+        {
+          "texto": "imortalidade",
+          "inicio_s": 80.237,
+          "fim_s": 80.858
+        },
+        {
+          "texto": "para",
+          "inicio_s": 80.898,
+          "fim_s": 81.019
+        },
+        {
+          "texto": "o",
+          "inicio_s": 81.039,
+          "fim_s": 81.059
+        },
+        {
+          "texto": "imperador",
+          "inicio_s": 81.079,
+          "fim_s": 81.54
+        }
+      ]
+    },
+    {
+      "texto": "Ele recusou o presente: sem ela, viver para sempre não fazia sentido nenhum.",
+      "inicio_s": 81.95,
+      "fim_s": 86.99,
+      "palavras": [
+        {
+          "texto": "Ele",
+          "inicio_s": 81.97,
+          "fim_s": 82.091
+        },
+        {
+          "texto": "recusou",
+          "inicio_s": 82.131,
+          "fim_s": 82.532
+        },
+        {
+          "texto": "o",
+          "inicio_s": 82.572,
+          "fim_s": 82.593
+        },
+        {
+          "texto": "presente",
+          "inicio_s": 82.633,
+          "fim_s": 83.155
+        },
+        {
+          "texto": "sem",
+          "inicio_s": 83.737,
+          "fim_s": 83.898
+        },
+        {
+          "texto": "ela",
+          "inicio_s": 84.038,
+          "fim_s": 84.219
+        },
+        {
+          "texto": "viver",
+          "inicio_s": 84.681,
+          "fim_s": 84.982
+        },
+        {
+          "texto": "para",
+          "inicio_s": 85.042,
+          "fim_s": 85.183
+        },
+        {
+          "texto": "sempre",
+          "inicio_s": 85.283,
+          "fim_s": 85.564
+        },
+        {
+          "texto": "não",
+          "inicio_s": 85.605,
+          "fim_s": 85.725
+        },
+        {
+          "texto": "fazia",
+          "inicio_s": 85.745,
+          "fim_s": 86.046
+        },
+        {
+          "texto": "sentido",
+          "inicio_s": 86.106,
+          "fim_s": 86.488
+        },
+        {
+          "texto": "nenhum",
+          "inicio_s": 86.548,
+          "fim_s": 86.87
+        }
+      ]
+    },
+    {
+      "texto": "Mandou queimar o elixir no topo da montanha mais próxima da Lua que encontrou.",
+      "inicio_s": 87.34,
+      "fim_s": 91.7,
+      "palavras": [
+        {
+          "texto": "Mandou",
+          "inicio_s": 87.36,
+          "fim_s": 87.641
+        },
+        {
+          "texto": "queimar",
+          "inicio_s": 87.682,
+          "fim_s": 88.083
+        },
+        {
+          "texto": "o",
+          "inicio_s": 88.104,
+          "fim_s": 88.124
+        },
+        {
+          "texto": "elixir",
+          "inicio_s": 88.164,
+          "fim_s": 88.546
+        },
+        {
+          "texto": "no",
+          "inicio_s": 88.606,
+          "fim_s": 88.666
+        },
+        {
+          "texto": "topo",
+          "inicio_s": 88.746,
+          "fim_s": 88.967
+        },
+        {
+          "texto": "da",
+          "inicio_s": 88.988,
+          "fim_s": 89.048
+        },
+        {
+          "texto": "montanha",
+          "inicio_s": 89.088,
+          "fim_s": 89.47
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 89.53,
+          "fim_s": 89.771
+        },
+        {
+          "texto": "próxima",
+          "inicio_s": 89.852,
+          "fim_s": 90.193
+        },
+        {
+          "texto": "da",
+          "inicio_s": 90.233,
+          "fim_s": 90.314
+        },
+        {
+          "texto": "Lua",
+          "inicio_s": 90.374,
+          "fim_s": 90.575
+        },
+        {
+          "texto": "que",
+          "inicio_s": 90.977,
+          "fim_s": 91.057
+        },
+        {
+          "texto": "encontrou",
+          "inicio_s": 91.137,
+          "fim_s": 91.62
+        }
+      ]
+    },
+    {
+      "texto": "E é dali, dizem, que vem o nome Fuji: imortal.",
+      "inicio_s": 92.05,
+      "fim_s": 96.21,
+      "palavras": [
+        {
+          "texto": "E",
+          "inicio_s": 92.09,
+          "fim_s": 92.11
+        },
+        {
+          "texto": "é",
+          "inicio_s": 92.171,
+          "fim_s": 92.191
+        },
+        {
+          "texto": "dali",
+          "inicio_s": 92.271,
+          "fim_s": 92.492
+        },
+        {
+          "texto": "dizem",
+          "inicio_s": 92.834,
+          "fim_s": 93.155
+        },
+        {
+          "texto": "que",
+          "inicio_s": 93.437,
+          "fim_s": 93.537
+        },
+        {
+          "texto": "vem",
+          "inicio_s": 93.597,
+          "fim_s": 93.758
+        },
+        {
+          "texto": "o",
+          "inicio_s": 93.819,
+          "fim_s": 93.839
+        },
+        {
+          "texto": "nome",
+          "inicio_s": 93.879,
+          "fim_s": 94.12
+        },
+        {
+          "texto": "Fuji",
+          "inicio_s": 94.602,
+          "fim_s": 95.064
+        },
+        {
+          "texto": "imortal",
+          "inicio_s": 95.647,
+          "fim_s": 96.13
+        }
+      ]
+    }
+  ]
+}

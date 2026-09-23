@@ -1,0 +1,92 @@
+[
+  {
+    "frase": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "hungry crowd of 18th century French peasants marching toward a distant royal palace at dawn, torches, determined faces, wide shot, photorealistic cinematic photography, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00063_.png"
+  },
+  {
+    "frase": 2,
+    "arquivo": "texto_02.png",
+    "prompt_final": "a tax collector in a formal coat presenting a bill to a poor peasant family in a small cottage, a well-dressed nobleman watching indifferently from the doorway, candlelight, photorealistic cinematic photography, not a painting, not an illustration, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00078_.png"
+  },
+  {
+    "frase": 3,
+    "arquivo": "texto_03.png",
+    "prompt_final": "King Louis XVI in royal robes seated on a throne addressing a large assembly hall packed with delegates in 18th century French clothing, grand chandeliers, wide shot, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00065_.png"
+  },
+  {
+    "frase": 4,
+    "arquivo": "texto_04.png",
+    "prompt_final": "revolutionary crowd storming a massive stone fortress with muskets and pikes, smoke and chaos, the Bastille under siege, dramatic low angle, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00066_.png"
+  },
+  {
+    "frase": 5,
+    "arquivo": "texto_05.png",
+    "prompt_final": "three revolutionaries in 18th century clothing standing on a pile of stone rubble beside a half-ruined fortress tower, one man raising a single tricolor flag, warm sunset light, photorealistic cinematic photography, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00085_.png"
+  },
+  {
+    "frase": 6,
+    "arquivo": "texto_06.png",
+    "prompt_final": "a group of revolutionary men in 18th century coats holding up a large rolled parchment document above their heads to a cheering crowd in a Paris square at dawn, tricolor flags, photorealistic cinematic photography, not a painting, not an illustration, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00080_.png"
+  },
+  {
+    "frase": 7,
+    "arquivo": "texto_07.png",
+    "prompt_final": "torch-lit crowd of revolutionaries marching through narrow Paris streets at night, flags waving, tense determined mood, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00069_.png"
+  },
+  {
+    "frase": 8,
+    "arquivo": "texto_08.png",
+    "prompt_final": "an ornate empty royal throne overturned in a grand palace hall, revolutionary tricolor flag draped nearby, dust in the air, somber light, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00070_.png"
+  },
+  {
+    "frase": 9,
+    "arquivo": "texto_09.png",
+    "prompt_final": "a guillotine silhouette on a wooden platform in a packed Paris square at dawn, crowd watching in silence, dramatic fog, distant framing, no visible faces, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00071_.png"
+  },
+  {
+    "frase": 10,
+    "arquivo": "texto_10.png",
+    "prompt_final": "a red-lit guillotine platform standing alone in an empty cobblestone Paris square at night under dark stormy clouds, distant candlelit windows, ominous mood, photorealistic cinematic photography, no modern rooftop objects, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00081_.png"
+  },
+  {
+    "frase": 11,
+    "arquivo": "texto_11.png",
+    "prompt_final": "Robespierre in a dark green coat standing before a tribunal table with stern judges seated behind stacks of papers, candlelight, dramatic shadows, photorealistic cinematic photography, not a painting, not an illustration, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00082_.png"
+  },
+  {
+    "frase": 12,
+    "arquivo": "texto_12.png",
+    "prompt_final": "long row of prison cell doors in a dim stone corridor, a single guard with a lantern walking past, heavy shadows, somber mood, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00074_.png"
+  },
+  {
+    "frase": 13,
+    "arquivo": "texto_13.png",
+    "prompt_final": "a condemned man in a torn shirt being led up guillotine steps by French revolutionary national guard soldiers in blue coats and bicorne hats, foggy dawn square, distant framing, no visible faces, photorealistic cinematic photography, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00083_.png"
+  },
+  {
+    "frase": 14,
+    "arquivo": "texto_14.png",
+    "prompt_final": "Napoleon Bonaparte in military uniform on horseback leading soldiers through a smoky courtyard at dawn, determined expression, cinematic wide shot, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00076_.png"
+  },
+  {
+    "frase": 15,
+    "arquivo": "texto_15.png",
+    "prompt_final": "a tricolor French flag flying high over a sunlit Paris skyline at dawn, golden light, wide symbolic establishing shot, photorealistic cinematic photography, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00077_.png"
+  }
+]

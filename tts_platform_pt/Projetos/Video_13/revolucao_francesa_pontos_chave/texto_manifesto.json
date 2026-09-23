@@ -1,0 +1,1504 @@
+{
+  "gerado_em": "2026-08-12T21:47:54",
+  "roteiro": "Projetos\\Video_13\\revolucao_francesa_pontos_chave\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 110.6,
+  "texto_usado": "Em poucos anos, um povo faminto derrubou uma das monarquias mais poderosas da Europa. A França do fim do século dezoito vivia uma crise: cofres vazios, impostos pesados sobre o povo comum e uma nobreza que quase não pagava nada. Em 1789, o rei Luís XVI convocou os Estados Gerais pra resolver a crise financeira, mas o Terceiro Estado, formado pelo povo comum, virou as costas e se declarou Assembleia Nacional. A tensão explodiu em 14 de julho, quando o povo de Paris invadiu a Bastilha, símbolo do poder absoluto do rei. A queda da Bastilha virou símbolo tão forte que até hoje a data é comemorada como feriado nacional na França. Meses depois, a Assembleia aprovou a Declaração dos Direitos do Homem e do Cidadão, prometendo liberdade e igualdade pra todos. Mas a revolução não parou por aí. Em 1792, a monarquia foi abolida e a França virou república. No ano seguinte, o rei Luís XVI foi guilhotinado em praça pública. O que veio depois ficou conhecido como o Terror. Robespierre e o Comitê de Salvação Pública mandaram milhares de pessoas pra guilhotina, sob a desculpa de proteger a revolução de seus inimigos. Em pouco mais de um ano, o Terror matou dezenas de milhares de pessoas, a maioria sem julgamento justo. O próprio Robespierre acabou executado em 1794, quando seus aliados se voltaram contra ele. Nos anos seguintes, a França viveu numa instabilidade constante, até que um general chamado Napoleão Bonaparte deu um golpe e assumiu o poder em 1799. A Revolução Francesa mudou pra sempre a forma como o mundo pensa poder, liberdade e igualdade, e ainda ecoa em toda revolução que veio depois.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Em poucos anos, um povo faminto derrubou uma das monarquias mais poderosas da Europa.",
+      "inicio_s": 0.15,
+      "fim_s": 5.27,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 0.19,
+          "fim_s": 0.25
+        },
+        {
+          "texto": "poucos",
+          "inicio_s": 0.331,
+          "fim_s": 0.652
+        },
+        {
+          "texto": "anos",
+          "inicio_s": 0.732,
+          "fim_s": 0.953
+        },
+        {
+          "texto": "um",
+          "inicio_s": 1.335,
+          "fim_s": 1.415
+        },
+        {
+          "texto": "povo",
+          "inicio_s": 1.515,
+          "fim_s": 1.716
+        },
+        {
+          "texto": "faminto",
+          "inicio_s": 1.776,
+          "fim_s": 2.258
+        },
+        {
+          "texto": "derrubou",
+          "inicio_s": 2.318,
+          "fim_s": 2.72
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 2.881,
+          "fim_s": 3.061
+        },
+        {
+          "texto": "das",
+          "inicio_s": 3.102,
+          "fim_s": 3.242
+        },
+        {
+          "texto": "monarquias",
+          "inicio_s": 3.282,
+          "fim_s": 3.824
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 3.885,
+          "fim_s": 4.085
+        },
+        {
+          "texto": "poderosas",
+          "inicio_s": 4.126,
+          "fim_s": 4.668
+        },
+        {
+          "texto": "da",
+          "inicio_s": 4.688,
+          "fim_s": 4.748
+        },
+        {
+          "texto": "Europa",
+          "inicio_s": 4.808,
+          "fim_s": 5.129
+        }
+      ]
+    },
+    {
+      "texto": "A França do fim do século dezoito vivia uma crise: cofres vazios, impostos pesados sobre o povo comum e uma nobreza que quase não pagava nada.",
+      "inicio_s": 5.62,
+      "fim_s": 15.22,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 5.64,
+          "fim_s": 5.66
+        },
+        {
+          "texto": "França",
+          "inicio_s": 5.74,
+          "fim_s": 6.041
+        },
+        {
+          "texto": "do",
+          "inicio_s": 6.081,
+          "fim_s": 6.141
+        },
+        {
+          "texto": "fim",
+          "inicio_s": 6.201,
+          "fim_s": 6.321
+        },
+        {
+          "texto": "do",
+          "inicio_s": 6.362,
+          "fim_s": 6.422
+        },
+        {
+          "texto": "século",
+          "inicio_s": 6.462,
+          "fim_s": 6.742
+        },
+        {
+          "texto": "dezoito",
+          "inicio_s": 6.762,
+          "fim_s": 7.183
+        },
+        {
+          "texto": "vivia",
+          "inicio_s": 7.484,
+          "fim_s": 7.684
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 7.704,
+          "fim_s": 7.805
+        },
+        {
+          "texto": "crise",
+          "inicio_s": 7.865,
+          "fim_s": 8.165
+        },
+        {
+          "texto": "cofres",
+          "inicio_s": 9.668,
+          "fim_s": 10.029
+        },
+        {
+          "texto": "vazios",
+          "inicio_s": 10.069,
+          "fim_s": 10.55
+        },
+        {
+          "texto": "impostos",
+          "inicio_s": 10.831,
+          "fim_s": 11.332
+        },
+        {
+          "texto": "pesados",
+          "inicio_s": 11.372,
+          "fim_s": 11.853
+        },
+        {
+          "texto": "sobre",
+          "inicio_s": 11.913,
+          "fim_s": 12.093
+        },
+        {
+          "texto": "o",
+          "inicio_s": 12.134,
+          "fim_s": 12.154
+        },
+        {
+          "texto": "povo",
+          "inicio_s": 12.174,
+          "fim_s": 12.374
+        },
+        {
+          "texto": "comum",
+          "inicio_s": 12.434,
+          "fim_s": 12.735
+        },
+        {
+          "texto": "e",
+          "inicio_s": 13.216,
+          "fim_s": 13.236
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 13.296,
+          "fim_s": 13.396
+        },
+        {
+          "texto": "nobreza",
+          "inicio_s": 13.456,
+          "fim_s": 13.917
+        },
+        {
+          "texto": "que",
+          "inicio_s": 13.957,
+          "fim_s": 14.038
+        },
+        {
+          "texto": "quase",
+          "inicio_s": 14.098,
+          "fim_s": 14.358
+        },
+        {
+          "texto": "não",
+          "inicio_s": 14.378,
+          "fim_s": 14.478
+        },
+        {
+          "texto": "pagava",
+          "inicio_s": 14.498,
+          "fim_s": 14.839
+        },
+        {
+          "texto": "nada",
+          "inicio_s": 14.899,
+          "fim_s": 15.14
+        }
+      ]
+    },
+    {
+      "texto": "Em 1789, o rei Luís XVI convocou os Estados Gerais pra resolver a crise financeira, mas o Terceiro Estado, formado pelo povo comum, virou as costas e se declarou Assembleia Nacional.",
+      "inicio_s": 15.57,
+      "fim_s": 29.07,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 15.61,
+          "fim_s": 15.67
+        },
+        {
+          "texto": "1789",
+          "inicio_s": 15.67,
+          "fim_s": 17.633
+        },
+        {
+          "texto": "o",
+          "inicio_s": 17.633,
+          "fim_s": 17.653
+        },
+        {
+          "texto": "rei",
+          "inicio_s": 17.733,
+          "fim_s": 17.913
+        },
+        {
+          "texto": "Luís",
+          "inicio_s": 17.974,
+          "fim_s": 18.194
+        },
+        {
+          "texto": "XVI",
+          "inicio_s": 18.354,
+          "fim_s": 18.695
+        },
+        {
+          "texto": "convocou",
+          "inicio_s": 19.135,
+          "fim_s": 19.576
+        },
+        {
+          "texto": "os",
+          "inicio_s": 19.616,
+          "fim_s": 19.696
+        },
+        {
+          "texto": "Estados",
+          "inicio_s": 19.736,
+          "fim_s": 20.117
+        },
+        {
+          "texto": "Gerais",
+          "inicio_s": 20.157,
+          "fim_s": 20.517
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 20.557,
+          "fim_s": 20.698
+        },
+        {
+          "texto": "resolver",
+          "inicio_s": 20.738,
+          "fim_s": 21.098
+        },
+        {
+          "texto": "a",
+          "inicio_s": 21.138,
+          "fim_s": 21.158
+        },
+        {
+          "texto": "crise",
+          "inicio_s": 21.218,
+          "fim_s": 21.459
+        },
+        {
+          "texto": "financeira",
+          "inicio_s": 21.499,
+          "fim_s": 22.0
+        },
+        {
+          "texto": "mas",
+          "inicio_s": 22.6,
+          "fim_s": 22.821
+        },
+        {
+          "texto": "o",
+          "inicio_s": 22.881,
+          "fim_s": 22.901
+        },
+        {
+          "texto": "Terceiro",
+          "inicio_s": 22.941,
+          "fim_s": 23.402
+        },
+        {
+          "texto": "Estado",
+          "inicio_s": 23.422,
+          "fim_s": 23.842
+        },
+        {
+          "texto": "formado",
+          "inicio_s": 24.323,
+          "fim_s": 24.864
+        },
+        {
+          "texto": "pelo",
+          "inicio_s": 24.904,
+          "fim_s": 25.084
+        },
+        {
+          "texto": "povo",
+          "inicio_s": 25.124,
+          "fim_s": 25.344
+        },
+        {
+          "texto": "comum",
+          "inicio_s": 25.385,
+          "fim_s": 25.645
+        },
+        {
+          "texto": "virou",
+          "inicio_s": 26.166,
+          "fim_s": 26.386
+        },
+        {
+          "texto": "as",
+          "inicio_s": 26.426,
+          "fim_s": 26.506
+        },
+        {
+          "texto": "costas",
+          "inicio_s": 26.566,
+          "fim_s": 26.987
+        },
+        {
+          "texto": "e",
+          "inicio_s": 27.267,
+          "fim_s": 27.287
+        },
+        {
+          "texto": "se",
+          "inicio_s": 27.408,
+          "fim_s": 27.488
+        },
+        {
+          "texto": "declarou",
+          "inicio_s": 27.548,
+          "fim_s": 27.968
+        },
+        {
+          "texto": "Assembleia",
+          "inicio_s": 27.988,
+          "fim_s": 28.509
+        },
+        {
+          "texto": "Nacional",
+          "inicio_s": 28.569,
+          "fim_s": 29.01
+        }
+      ]
+    },
+    {
+      "texto": "A tensão explodiu em 14 de julho, quando o povo de Paris invadiu a Bastilha, símbolo do poder absoluto do rei.",
+      "inicio_s": 29.42,
+      "fim_s": 36.56,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 29.46,
+          "fim_s": 29.48
+        },
+        {
+          "texto": "tensão",
+          "inicio_s": 29.52,
+          "fim_s": 29.881
+        },
+        {
+          "texto": "explodiu",
+          "inicio_s": 29.941,
+          "fim_s": 30.383
+        },
+        {
+          "texto": "em",
+          "inicio_s": 30.423,
+          "fim_s": 30.463
+        },
+        {
+          "texto": "14",
+          "inicio_s": 30.463,
+          "fim_s": 30.904
+        },
+        {
+          "texto": "de",
+          "inicio_s": 30.904,
+          "fim_s": 30.984
+        },
+        {
+          "texto": "julho",
+          "inicio_s": 31.045,
+          "fim_s": 31.305
+        },
+        {
+          "texto": "quando",
+          "inicio_s": 31.787,
+          "fim_s": 31.967
+        },
+        {
+          "texto": "o",
+          "inicio_s": 32.007,
+          "fim_s": 32.027
+        },
+        {
+          "texto": "povo",
+          "inicio_s": 32.087,
+          "fim_s": 32.328
+        },
+        {
+          "texto": "de",
+          "inicio_s": 32.368,
+          "fim_s": 32.428
+        },
+        {
+          "texto": "Paris",
+          "inicio_s": 32.469,
+          "fim_s": 32.85
+        },
+        {
+          "texto": "invadiu",
+          "inicio_s": 33.09,
+          "fim_s": 33.532
+        },
+        {
+          "texto": "a",
+          "inicio_s": 33.572,
+          "fim_s": 33.592
+        },
+        {
+          "texto": "Bastilha",
+          "inicio_s": 33.632,
+          "fim_s": 34.033
+        },
+        {
+          "texto": "símbolo",
+          "inicio_s": 34.675,
+          "fim_s": 35.036
+        },
+        {
+          "texto": "do",
+          "inicio_s": 35.216,
+          "fim_s": 35.296
+        },
+        {
+          "texto": "poder",
+          "inicio_s": 35.337,
+          "fim_s": 35.637
+        },
+        {
+          "texto": "absoluto",
+          "inicio_s": 35.678,
+          "fim_s": 36.179
+        },
+        {
+          "texto": "do",
+          "inicio_s": 36.219,
+          "fim_s": 36.279
+        },
+        {
+          "texto": "rei",
+          "inicio_s": 36.339,
+          "fim_s": 36.48
+        }
+      ]
+    },
+    {
+      "texto": "A queda da Bastilha virou símbolo tão forte que até hoje a data é comemorada como feriado nacional na França.",
+      "inicio_s": 36.91,
+      "fim_s": 44.13,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 36.93,
+          "fim_s": 36.95
+        },
+        {
+          "texto": "queda",
+          "inicio_s": 37.05,
+          "fim_s": 37.271
+        },
+        {
+          "texto": "da",
+          "inicio_s": 37.311,
+          "fim_s": 37.371
+        },
+        {
+          "texto": "Bastilha",
+          "inicio_s": 37.411,
+          "fim_s": 37.833
+        },
+        {
+          "texto": "virou",
+          "inicio_s": 38.214,
+          "fim_s": 38.454
+        },
+        {
+          "texto": "símbolo",
+          "inicio_s": 38.635,
+          "fim_s": 38.956
+        },
+        {
+          "texto": "tão",
+          "inicio_s": 39.116,
+          "fim_s": 39.277
+        },
+        {
+          "texto": "forte",
+          "inicio_s": 39.397,
+          "fim_s": 39.778
+        },
+        {
+          "texto": "que",
+          "inicio_s": 40.299,
+          "fim_s": 40.38
+        },
+        {
+          "texto": "até",
+          "inicio_s": 40.42,
+          "fim_s": 40.6
+        },
+        {
+          "texto": "hoje",
+          "inicio_s": 40.701,
+          "fim_s": 40.921
+        },
+        {
+          "texto": "a",
+          "inicio_s": 40.981,
+          "fim_s": 41.001
+        },
+        {
+          "texto": "data",
+          "inicio_s": 41.041,
+          "fim_s": 41.342
+        },
+        {
+          "texto": "é",
+          "inicio_s": 41.643,
+          "fim_s": 41.663
+        },
+        {
+          "texto": "comemorada",
+          "inicio_s": 41.723,
+          "fim_s": 42.305
+        },
+        {
+          "texto": "como",
+          "inicio_s": 42.365,
+          "fim_s": 42.526
+        },
+        {
+          "texto": "feriado",
+          "inicio_s": 42.586,
+          "fim_s": 43.067
+        },
+        {
+          "texto": "nacional",
+          "inicio_s": 43.107,
+          "fim_s": 43.548
+        },
+        {
+          "texto": "na",
+          "inicio_s": 43.588,
+          "fim_s": 43.649
+        },
+        {
+          "texto": "França",
+          "inicio_s": 43.709,
+          "fim_s": 44.03
+        }
+      ]
+    },
+    {
+      "texto": "Meses depois, a Assembleia aprovou a Declaração dos Direitos do Homem e do Cidadão, prometendo liberdade e igualdade pra todos.",
+      "inicio_s": 44.48,
+      "fim_s": 51.7,
+      "palavras": [
+        {
+          "texto": "Meses",
+          "inicio_s": 44.5,
+          "fim_s": 44.761
+        },
+        {
+          "texto": "depois",
+          "inicio_s": 44.801,
+          "fim_s": 45.182
+        },
+        {
+          "texto": "a",
+          "inicio_s": 45.503,
+          "fim_s": 45.523
+        },
+        {
+          "texto": "Assembleia",
+          "inicio_s": 45.583,
+          "fim_s": 46.064
+        },
+        {
+          "texto": "aprovou",
+          "inicio_s": 46.105,
+          "fim_s": 46.486
+        },
+        {
+          "texto": "a",
+          "inicio_s": 46.506,
+          "fim_s": 46.526
+        },
+        {
+          "texto": "Declaração",
+          "inicio_s": 46.546,
+          "fim_s": 47.007
+        },
+        {
+          "texto": "dos",
+          "inicio_s": 47.047,
+          "fim_s": 47.147
+        },
+        {
+          "texto": "Direitos",
+          "inicio_s": 47.188,
+          "fim_s": 47.528
+        },
+        {
+          "texto": "do",
+          "inicio_s": 47.549,
+          "fim_s": 47.609
+        },
+        {
+          "texto": "Homem",
+          "inicio_s": 47.669,
+          "fim_s": 47.93
+        },
+        {
+          "texto": "e",
+          "inicio_s": 47.97,
+          "fim_s": 47.99
+        },
+        {
+          "texto": "do",
+          "inicio_s": 48.03,
+          "fim_s": 48.09
+        },
+        {
+          "texto": "Cidadão",
+          "inicio_s": 48.15,
+          "fim_s": 48.511
+        },
+        {
+          "texto": "prometendo",
+          "inicio_s": 49.153,
+          "fim_s": 49.634
+        },
+        {
+          "texto": "liberdade",
+          "inicio_s": 49.694,
+          "fim_s": 50.236
+        },
+        {
+          "texto": "e",
+          "inicio_s": 50.336,
+          "fim_s": 50.356
+        },
+        {
+          "texto": "igualdade",
+          "inicio_s": 50.457,
+          "fim_s": 50.998
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 51.058,
+          "fim_s": 51.158
+        },
+        {
+          "texto": "todos",
+          "inicio_s": 51.239,
+          "fim_s": 51.58
+        }
+      ]
+    },
+    {
+      "texto": "Mas a revolução não parou por aí.",
+      "inicio_s": 52.05,
+      "fim_s": 53.65,
+      "palavras": [
+        {
+          "texto": "Mas",
+          "inicio_s": 52.07,
+          "fim_s": 52.212
+        },
+        {
+          "texto": "a",
+          "inicio_s": 52.253,
+          "fim_s": 52.273
+        },
+        {
+          "texto": "revolução",
+          "inicio_s": 52.313,
+          "fim_s": 52.779
+        },
+        {
+          "texto": "não",
+          "inicio_s": 52.86,
+          "fim_s": 52.982
+        },
+        {
+          "texto": "parou",
+          "inicio_s": 53.022,
+          "fim_s": 53.265
+        },
+        {
+          "texto": "por",
+          "inicio_s": 53.306,
+          "fim_s": 53.427
+        },
+        {
+          "texto": "aí",
+          "inicio_s": 53.468,
+          "fim_s": 53.549
+        }
+      ]
+    },
+    {
+      "texto": "Em 1792, a monarquia foi abolida e a França virou república.",
+      "inicio_s": 54.0,
+      "fim_s": 59.24,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 54.02,
+          "fim_s": 54.08
+        },
+        {
+          "texto": "1792",
+          "inicio_s": 54.08,
+          "fim_s": 55.947
+        },
+        {
+          "texto": "a",
+          "inicio_s": 55.947,
+          "fim_s": 55.968
+        },
+        {
+          "texto": "monarquia",
+          "inicio_s": 56.028,
+          "fim_s": 56.49
+        },
+        {
+          "texto": "foi",
+          "inicio_s": 56.55,
+          "fim_s": 56.69
+        },
+        {
+          "texto": "abolida",
+          "inicio_s": 56.73,
+          "fim_s": 57.152
+        },
+        {
+          "texto": "e",
+          "inicio_s": 57.634,
+          "fim_s": 57.654
+        },
+        {
+          "texto": "a",
+          "inicio_s": 57.754,
+          "fim_s": 57.774
+        },
+        {
+          "texto": "França",
+          "inicio_s": 57.855,
+          "fim_s": 58.196
+        },
+        {
+          "texto": "virou",
+          "inicio_s": 58.256,
+          "fim_s": 58.517
+        },
+        {
+          "texto": "república",
+          "inicio_s": 58.698,
+          "fim_s": 59.16
+        }
+      ]
+    },
+    {
+      "texto": "No ano seguinte, o rei Luís XVI foi guilhotinado em praça pública.",
+      "inicio_s": 59.59,
+      "fim_s": 64.15,
+      "palavras": [
+        {
+          "texto": "No",
+          "inicio_s": 59.63,
+          "fim_s": 59.69
+        },
+        {
+          "texto": "ano",
+          "inicio_s": 59.791,
+          "fim_s": 59.931
+        },
+        {
+          "texto": "seguinte",
+          "inicio_s": 59.972,
+          "fim_s": 60.394
+        },
+        {
+          "texto": "o",
+          "inicio_s": 60.856,
+          "fim_s": 60.876
+        },
+        {
+          "texto": "rei",
+          "inicio_s": 60.956,
+          "fim_s": 61.097
+        },
+        {
+          "texto": "Luís",
+          "inicio_s": 61.157,
+          "fim_s": 61.378
+        },
+        {
+          "texto": "XVI",
+          "inicio_s": 61.518,
+          "fim_s": 61.86
+        },
+        {
+          "texto": "foi",
+          "inicio_s": 62.262,
+          "fim_s": 62.402
+        },
+        {
+          "texto": "guilhotinado",
+          "inicio_s": 62.483,
+          "fim_s": 63.105
+        },
+        {
+          "texto": "em",
+          "inicio_s": 63.246,
+          "fim_s": 63.306
+        },
+        {
+          "texto": "praça",
+          "inicio_s": 63.367,
+          "fim_s": 63.688
+        },
+        {
+          "texto": "pública",
+          "inicio_s": 63.728,
+          "fim_s": 64.07
+        }
+      ]
+    },
+    {
+      "texto": "O que veio depois ficou conhecido como o Terror.",
+      "inicio_s": 64.5,
+      "fim_s": 66.84,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 64.54,
+          "fim_s": 64.561
+        },
+        {
+          "texto": "que",
+          "inicio_s": 64.581,
+          "fim_s": 64.661
+        },
+        {
+          "texto": "veio",
+          "inicio_s": 64.702,
+          "fim_s": 64.924
+        },
+        {
+          "texto": "depois",
+          "inicio_s": 64.964,
+          "fim_s": 65.307
+        },
+        {
+          "texto": "ficou",
+          "inicio_s": 65.347,
+          "fim_s": 65.569
+        },
+        {
+          "texto": "conhecido",
+          "inicio_s": 65.609,
+          "fim_s": 66.094
+        },
+        {
+          "texto": "como",
+          "inicio_s": 66.134,
+          "fim_s": 66.316
+        },
+        {
+          "texto": "o",
+          "inicio_s": 66.356,
+          "fim_s": 66.376
+        },
+        {
+          "texto": "Terror",
+          "inicio_s": 66.416,
+          "fim_s": 66.739
+        }
+      ]
+    },
+    {
+      "texto": "Robespierre e o Comitê de Salvação Pública mandaram milhares de pessoas pra guilhotina, sob a desculpa de proteger a revolução de seus inimigos.",
+      "inicio_s": 67.19,
+      "fim_s": 74.93,
+      "palavras": [
+        {
+          "texto": "Robespierre",
+          "inicio_s": 67.23,
+          "fim_s": 67.812
+        },
+        {
+          "texto": "e",
+          "inicio_s": 67.852,
+          "fim_s": 67.872
+        },
+        {
+          "texto": "o",
+          "inicio_s": 67.932,
+          "fim_s": 67.952
+        },
+        {
+          "texto": "Comitê",
+          "inicio_s": 67.972,
+          "fim_s": 68.293
+        },
+        {
+          "texto": "de",
+          "inicio_s": 68.353,
+          "fim_s": 68.413
+        },
+        {
+          "texto": "Salvação",
+          "inicio_s": 68.453,
+          "fim_s": 68.834
+        },
+        {
+          "texto": "Pública",
+          "inicio_s": 68.874,
+          "fim_s": 69.215
+        },
+        {
+          "texto": "mandaram",
+          "inicio_s": 69.536,
+          "fim_s": 69.877
+        },
+        {
+          "texto": "milhares",
+          "inicio_s": 69.917,
+          "fim_s": 70.358
+        },
+        {
+          "texto": "de",
+          "inicio_s": 70.378,
+          "fim_s": 70.438
+        },
+        {
+          "texto": "pessoas",
+          "inicio_s": 70.478,
+          "fim_s": 70.839
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 70.88,
+          "fim_s": 71.0
+        },
+        {
+          "texto": "guilhotina",
+          "inicio_s": 71.06,
+          "fim_s": 71.581
+        },
+        {
+          "texto": "sob",
+          "inicio_s": 72.063,
+          "fim_s": 72.203
+        },
+        {
+          "texto": "a",
+          "inicio_s": 72.263,
+          "fim_s": 72.283
+        },
+        {
+          "texto": "desculpa",
+          "inicio_s": 72.323,
+          "fim_s": 72.784
+        },
+        {
+          "texto": "de",
+          "inicio_s": 72.805,
+          "fim_s": 72.885
+        },
+        {
+          "texto": "proteger",
+          "inicio_s": 72.905,
+          "fim_s": 73.326
+        },
+        {
+          "texto": "a",
+          "inicio_s": 73.366,
+          "fim_s": 73.386
+        },
+        {
+          "texto": "revolução",
+          "inicio_s": 73.426,
+          "fim_s": 73.947
+        },
+        {
+          "texto": "de",
+          "inicio_s": 73.988,
+          "fim_s": 74.048
+        },
+        {
+          "texto": "seus",
+          "inicio_s": 74.128,
+          "fim_s": 74.308
+        },
+        {
+          "texto": "inimigos",
+          "inicio_s": 74.328,
+          "fim_s": 74.81
+        }
+      ]
+    },
+    {
+      "texto": "Em pouco mais de um ano, o Terror matou dezenas de milhares de pessoas, a maioria sem julgamento justo.",
+      "inicio_s": 75.28,
+      "fim_s": 82.18,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 75.3,
+          "fim_s": 75.38
+        },
+        {
+          "texto": "pouco",
+          "inicio_s": 75.461,
+          "fim_s": 75.701
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 75.761,
+          "fim_s": 75.962
+        },
+        {
+          "texto": "de",
+          "inicio_s": 75.982,
+          "fim_s": 76.042
+        },
+        {
+          "texto": "um",
+          "inicio_s": 76.082,
+          "fim_s": 76.122
+        },
+        {
+          "texto": "ano",
+          "inicio_s": 76.203,
+          "fim_s": 76.383
+        },
+        {
+          "texto": "o",
+          "inicio_s": 76.945,
+          "fim_s": 76.965
+        },
+        {
+          "texto": "Terror",
+          "inicio_s": 77.025,
+          "fim_s": 77.306
+        },
+        {
+          "texto": "matou",
+          "inicio_s": 77.366,
+          "fim_s": 77.647
+        },
+        {
+          "texto": "dezenas",
+          "inicio_s": 77.687,
+          "fim_s": 78.249
+        },
+        {
+          "texto": "de",
+          "inicio_s": 78.289,
+          "fim_s": 78.349
+        },
+        {
+          "texto": "milhares",
+          "inicio_s": 78.389,
+          "fim_s": 78.79
+        },
+        {
+          "texto": "de",
+          "inicio_s": 78.81,
+          "fim_s": 78.89
+        },
+        {
+          "texto": "pessoas",
+          "inicio_s": 78.911,
+          "fim_s": 79.412
+        },
+        {
+          "texto": "a",
+          "inicio_s": 79.913,
+          "fim_s": 79.933
+        },
+        {
+          "texto": "maioria",
+          "inicio_s": 79.974,
+          "fim_s": 80.395
+        },
+        {
+          "texto": "sem",
+          "inicio_s": 80.535,
+          "fim_s": 80.676
+        },
+        {
+          "texto": "julgamento",
+          "inicio_s": 80.736,
+          "fim_s": 81.318
+        },
+        {
+          "texto": "justo",
+          "inicio_s": 81.759,
+          "fim_s": 82.12
+        }
+      ]
+    },
+    {
+      "texto": "O próprio Robespierre acabou executado em 1794, quando seus aliados se voltaram contra ele.",
+      "inicio_s": 82.53,
+      "fim_s": 89.11,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 82.57,
+          "fim_s": 82.59
+        },
+        {
+          "texto": "próprio",
+          "inicio_s": 82.63,
+          "fim_s": 82.991
+        },
+        {
+          "texto": "Robespierre",
+          "inicio_s": 83.032,
+          "fim_s": 83.774
+        },
+        {
+          "texto": "acabou",
+          "inicio_s": 84.155,
+          "fim_s": 84.456
+        },
+        {
+          "texto": "executado",
+          "inicio_s": 84.496,
+          "fim_s": 85.018
+        },
+        {
+          "texto": "em",
+          "inicio_s": 85.118,
+          "fim_s": 85.178
+        },
+        {
+          "texto": "1794",
+          "inicio_s": 85.178,
+          "fim_s": 87.144
+        },
+        {
+          "texto": "quando",
+          "inicio_s": 87.144,
+          "fim_s": 87.345
+        },
+        {
+          "texto": "seus",
+          "inicio_s": 87.385,
+          "fim_s": 87.525
+        },
+        {
+          "texto": "aliados",
+          "inicio_s": 87.565,
+          "fim_s": 87.946
+        },
+        {
+          "texto": "se",
+          "inicio_s": 87.987,
+          "fim_s": 88.047
+        },
+        {
+          "texto": "voltaram",
+          "inicio_s": 88.067,
+          "fim_s": 88.448
+        },
+        {
+          "texto": "contra",
+          "inicio_s": 88.488,
+          "fim_s": 88.709
+        },
+        {
+          "texto": "ele",
+          "inicio_s": 88.789,
+          "fim_s": 88.97
+        }
+      ]
+    },
+    {
+      "texto": "Nos anos seguintes, a França viveu numa instabilidade constante, até que um general chamado Napoleão Bonaparte deu um golpe e assumiu o poder em 1799.",
+      "inicio_s": 89.46,
+      "fim_s": 99.76,
+      "palavras": [
+        {
+          "texto": "Nos",
+          "inicio_s": 89.48,
+          "fim_s": 89.6
+        },
+        {
+          "texto": "anos",
+          "inicio_s": 89.66,
+          "fim_s": 89.821
+        },
+        {
+          "texto": "seguintes",
+          "inicio_s": 89.861,
+          "fim_s": 90.362
+        },
+        {
+          "texto": "a",
+          "inicio_s": 90.903,
+          "fim_s": 90.923
+        },
+        {
+          "texto": "França",
+          "inicio_s": 91.043,
+          "fim_s": 91.364
+        },
+        {
+          "texto": "viveu",
+          "inicio_s": 91.424,
+          "fim_s": 91.704
+        },
+        {
+          "texto": "numa",
+          "inicio_s": 91.744,
+          "fim_s": 91.885
+        },
+        {
+          "texto": "instabilidade",
+          "inicio_s": 91.925,
+          "fim_s": 92.586
+        },
+        {
+          "texto": "constante",
+          "inicio_s": 92.626,
+          "fim_s": 93.167
+        },
+        {
+          "texto": "até",
+          "inicio_s": 93.668,
+          "fim_s": 93.849
+        },
+        {
+          "texto": "que",
+          "inicio_s": 93.909,
+          "fim_s": 93.989
+        },
+        {
+          "texto": "um",
+          "inicio_s": 94.009,
+          "fim_s": 94.069
+        },
+        {
+          "texto": "general",
+          "inicio_s": 94.089,
+          "fim_s": 94.47
+        },
+        {
+          "texto": "chamado",
+          "inicio_s": 94.51,
+          "fim_s": 94.891
+        },
+        {
+          "texto": "Napoleão",
+          "inicio_s": 94.971,
+          "fim_s": 95.492
+        },
+        {
+          "texto": "Bonaparte",
+          "inicio_s": 95.532,
+          "fim_s": 96.073
+        },
+        {
+          "texto": "deu",
+          "inicio_s": 96.133,
+          "fim_s": 96.273
+        },
+        {
+          "texto": "um",
+          "inicio_s": 96.293,
+          "fim_s": 96.353
+        },
+        {
+          "texto": "golpe",
+          "inicio_s": 96.393,
+          "fim_s": 96.714
+        },
+        {
+          "texto": "e",
+          "inicio_s": 97.115,
+          "fim_s": 97.135
+        },
+        {
+          "texto": "assumiu",
+          "inicio_s": 97.215,
+          "fim_s": 97.556
+        },
+        {
+          "texto": "o",
+          "inicio_s": 97.596,
+          "fim_s": 97.616
+        },
+        {
+          "texto": "poder",
+          "inicio_s": 97.656,
+          "fim_s": 97.956
+        },
+        {
+          "texto": "em",
+          "inicio_s": 97.997,
+          "fim_s": 98.077
+        },
+        {
+          "texto": "1799",
+          "inicio_s": 98.077,
+          "fim_s": 99.76
+        }
+      ]
+    },
+    {
+      "texto": "A Revolução Francesa mudou pra sempre a forma como o mundo pensa poder, liberdade e igualdade, e ainda ecoa em toda revolução que veio depois.",
+      "inicio_s": 100.11,
+      "fim_s": 110.59,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 100.15,
+          "fim_s": 100.17
+        },
+        {
+          "texto": "Revolução",
+          "inicio_s": 100.23,
+          "fim_s": 100.671
+        },
+        {
+          "texto": "Francesa",
+          "inicio_s": 100.691,
+          "fim_s": 101.152
+        },
+        {
+          "texto": "mudou",
+          "inicio_s": 101.212,
+          "fim_s": 101.493
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 101.533,
+          "fim_s": 101.653
+        },
+        {
+          "texto": "sempre",
+          "inicio_s": 101.773,
+          "fim_s": 102.094
+        },
+        {
+          "texto": "a",
+          "inicio_s": 102.434,
+          "fim_s": 102.454
+        },
+        {
+          "texto": "forma",
+          "inicio_s": 102.575,
+          "fim_s": 102.875
+        },
+        {
+          "texto": "como",
+          "inicio_s": 102.935,
+          "fim_s": 103.116
+        },
+        {
+          "texto": "o",
+          "inicio_s": 103.176,
+          "fim_s": 103.196
+        },
+        {
+          "texto": "mundo",
+          "inicio_s": 103.256,
+          "fim_s": 103.577
+        },
+        {
+          "texto": "pensa",
+          "inicio_s": 103.697,
+          "fim_s": 103.977
+        },
+        {
+          "texto": "poder",
+          "inicio_s": 104.037,
+          "fim_s": 104.438
+        },
+        {
+          "texto": "liberdade",
+          "inicio_s": 104.899,
+          "fim_s": 105.52
+        },
+        {
+          "texto": "e",
+          "inicio_s": 105.981,
+          "fim_s": 106.001
+        },
+        {
+          "texto": "igualdade",
+          "inicio_s": 106.142,
+          "fim_s": 106.783
+        },
+        {
+          "texto": "e",
+          "inicio_s": 107.304,
+          "fim_s": 107.324
+        },
+        {
+          "texto": "ainda",
+          "inicio_s": 107.444,
+          "fim_s": 107.785
+        },
+        {
+          "texto": "ecoa",
+          "inicio_s": 107.865,
+          "fim_s": 108.225
+        },
+        {
+          "texto": "em",
+          "inicio_s": 108.246,
+          "fim_s": 108.306
+        },
+        {
+          "texto": "toda",
+          "inicio_s": 108.386,
+          "fim_s": 108.626
+        },
+        {
+          "texto": "revolução",
+          "inicio_s": 108.626,
+          "fim_s": 109.047
+        },
+        {
+          "texto": "que",
+          "inicio_s": 109.087,
+          "fim_s": 109.167
+        },
+        {
+          "texto": "veio",
+          "inicio_s": 109.227,
+          "fim_s": 109.448
+        },
+        {
+          "texto": "depois",
+          "inicio_s": 109.969,
+          "fim_s": 110.45
+        }
+      ]
+    }
+  ]
+}
