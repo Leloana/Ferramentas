@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Agent-Remote — Central de Controle</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
+</head>
+<body class="dark-theme">
+  <!-- Modal de Login -->
+  <div id="login-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span class="logo-icon">🌐</span>
+        <h2>Agent-Remote</h2>
+        <p>Controle remoto seguro do agente & ferramentas</p>
+      </div>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="password-input">Senha de Acesso</label>
+          <input type="password" id="password-input" placeholder="Digite sua senha..." autocomplete="current-password" required autofocus>
+        </div>
+        <p id="login-error" class="error-msg hidden"></p>
+        <button type="submit" class="btn btn-primary btn-block">Conectar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de Configuração do LLM -->
+  <div id="model-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>⚙️ Provedor & Modelo de IA</h3>
+        <button id="close-model-modal" class="close-btn">&times;</button>
+      </div>
+      <form id="model-form">
+        <div class="form-group">
+          <label for="provider-select">Provedor</label>
+          <select id="provider-select">
+            <option value="ollama">Ollama Local (padrão)</option>
+            <option value="gemini">Google Gemini</option>
+            <option value="openai">OpenAI</option>
+            <option value="anthropic">Anthropic Claude</option>
+            <option value="groq">Groq</option>
+            <option value="openrouter">OpenRouter</option>
+            <option value="custom">Custom (OpenAI-compatible)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="model-name-input">Nome do Modelo</label>
+          <input type="text" id="model-name-input" placeholder="ex: qwen3.5:9b ou gemini-2.5-flash">
+        </div>
+        <div class="form-group">
+          <label for="api-key-input">Chave de API (opcional se configurado no servidor)</label>
+          <input type="password" id="api-key-input" placeholder="Cole sua chave aqui se necessário...">
+        </div>
+        <div class="form-group" id="base-url-group">
+          <label for="base-url-input">Endpoint Base URL</label>
+          <input type="text" id="base-url-input" placeholder="http://127.0.0.1:11434/v1">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Salvar Preferências</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Aplicação Principal -->
+  <div id="app-container" class="app-container hidden">
+    <!-- Header Superior -->
+    <header class="top-nav">
+      <div class="nav-left">
+        <span class="logo">🌐 Agent-Remote</span>
+        
+        <!-- Seletor de Aplicação -->
+        <div class="app-selector-wrapper">
+          <label for="app-select" class="sr-only">Aplicação Ativa</label>
+          <select id="app-select" title="Escolha a aplicação para exibir no preview">
+            <!-- Populado dinamicamente -->
+          </select>
+          <button id="add-custom-app-btn" class="btn-icon" title="Adicionar URL customizada">+</button>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <!-- VRAM Pill -->
+        <div id="vram-pill" class="status-pill" title="Clique para atualizar status de GPU">
+          <span class="dot green"></span>
+          <span id="vram-text">GPU: ...</span>
+        </div>
+
+        <!-- Model Pill -->
+        <button id="model-pill" class="btn-pill" title="Configurar provedor de IA">
+          <span id="model-pill-text">IA: Ollama</span>
+        </button>
+
+        <!-- Logout -->
+        <button id="logout-btn" class="btn-icon" title="Desconectar">🚪</button>
+      </div>
+    </header>
+
+    <!-- Conteúdo Principal: Split View -->
+    <main class="main-content">
+      <!-- Painel Esquerdo: Chat com Agente -->
+      <section id="chat-pane" class="pane pane-chat active-pane">
+        <div class="pane-header">
+          <h3>💬 Chat com o Agente</h3>
+          <button id="clear-chat-btn" class="btn-text" title="Limpar conversa">Limpar</button>
+        </div>
+
+        <div id="chat-messages" class="chat-messages">
+          <div class="message system-msg">
+            👋 Conectado ao <strong>Agent-Remote</strong>. Converse com o agente, comande a produção de vídeos ou solicite ações no PC.
+          </div>
+        </div>
+
+        <div class="chat-input-wrapper">
+          <textarea id="chat-input" placeholder="Mensagem para o agente... (Shift+Enter para nova linha)" rows="1"></textarea>
+          <button id="send-chat-btn" class="btn btn-primary" title="Enviar">Enviar</button>
+        </div>
+      </section>
+
+      <!-- Painel Direito: Live Preview da Aplicação -->
+      <section id="preview-pane" class="pane pane-preview">
+        <div class="pane-header">
+          <div class="preview-title-area">
+            <span class="dot green"></span>
+            <strong id="preview-app-title">Aplicação</strong>
+            <span id="preview-app-url" class="badge"></span>
+          </div>
+          <div class="preview-actions">
+            <button id="reload-preview-btn" class="btn-icon" title="Recarregar preview">🔄</button>
+            <button id="open-external-btn" class="btn-icon" title="Abrir em nova aba">↗️</button>
+          </div>
+        </div>
+
+        <div class="iframe-wrapper">
+          <iframe id="app-iframe" src="about:blank" frameborder="0" allowfullscreen></iframe>
+        </div>
+      </section>
+    </main>
+
+    <!-- Gaveta Inferior: Terminal Web Seguro -->
+    <section id="terminal-drawer" class="terminal-drawer collapsed">
+      <div class="terminal-header" id="terminal-toggle">
+        <div class="terminal-header-title">
+          <span>⌨️ Terminal Seguro (Whitelist)</span>
+          <span id="terminal-status-dot" class="dot green"></span>
+        </div>
+        <button class="drawer-toggle-btn" id="drawer-toggle-arrow">▲</button>
+      </div>
+
+      <div class="terminal-body">
+        <!-- Botões de Ação Rápida (Chips) -->
+        <div id="quick-action-chips" class="quick-chips">
+          <!-- Populado dinamicamente -->
+        </div>
+
+        <!-- Tela do Terminal -->
+        <div id="terminal-output" class="terminal-screen"></div>
+
+        <!-- Linha de Comando -->
+        <form id="terminal-form" class="terminal-input-row">
+          <span class="terminal-prompt">$</span>
+          <input type="text" id="terminal-input" placeholder="Digite um comando permitido (ex: git status, nvidia-smi)..." autocomplete="off">
+          <button type="submit" class="btn btn-secondary">Executar</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Barra de Abas Inferior (Modo Mobile) -->
+    <nav class="mobile-nav">
+      <button class="tab-btn active" data-target="chat-pane">
+        <span class="tab-icon">💬</span>
+        <span class="tab-label">Chat</span>
+      </button>
+      <button class="tab-btn" data-target="preview-pane">
+        <span class="tab-icon">🖥️</span>
+        <span class="tab-label">App Preview</span>
+      </button>
+      <button class="tab-btn" data-target="terminal-drawer">
+        <span class="tab-icon">⌨️</span>
+        <span class="tab-label">Terminal</span>
+      </button>
+    </nav>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

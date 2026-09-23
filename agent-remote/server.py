@@ -1,0 +1,383 @@
+import asyncio
+import json
+import os
+import uuid
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+from fastapi import FastAPI, Request, Response, WebSocket, WebSocketDisconnect, HTTPException, status, Depends
+from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
+from fastapi.staticfiles import StaticFiles
+import httpx
+
+from config import load_config, save_config, CONFIG_DIR
+from auth import (
+    COOKIE_NAME,
+    verify_password,
+    create_session_token,
+    verify_session_token,
+    is_authenticated,
+    verify_ws_auth
+)
+from llm import stream_chat_response
+from terminal import execute_whitelisted_command, validate_command
+import mcp_server
+
+app = FastAPI(title="Agent-Remote", version="1.0.0")
+
+STATIC_DIR = CONFIG_DIR / "static"
+STATIC_DIR.mkdir(parents=True, exist_ok=True)
+
+# Armazenamento de sessões SSE do MCP
+_MCP_SESSIONS: Dict[str, asyncio.Queue] = {}
+
+
+# --- Middleware simples para autenticação na raiz ---
+@app.get("/", response_class=HTMLResponse)
+async def serve_index(request: Request):
+    """Serve a página principal se autenticado, ou a tela de login."""
+    index_file = STATIC_DIR / "index.html"
+    if not index_file.exists():
+        return HTMLResponse("<h1>Agent-Remote: static/index.html não encontrado</h1>", status_code=500)
+    with open(index_file, "r", encoding="utf-8") as f:
+        return HTMLResponse(f.read())
+
+
+# --- Autenticação HTTP ---
+@app.post("/api/auth/login")
+async def api_login(request: Request, response: Response):
+    data = await request.json()
+    pwd = data.get("password", "")
+    if verify_password(pwd):
+        token = create_session_token()
+        response.set_cookie(
+            key=COOKIE_NAME,
+            value=token,
+            httponly=True,
+            max_age=7 * 24 * 3600,
+            samesite="lax",
+            secure=False  # Funciona tanto em localhost quanto em Cloudflare HTTPS
+        )
+        return {"ok": True, "token": token}
+    return JSONResponse(status_code=401, content={"ok": False, "error": "Senha incorreta"})
+
+
+@app.post("/api/auth/logout")
+async def api_logout(response: Response):
+    response.delete_cookie(COOKIE_NAME)
+    return {"ok": True}
+
+
+@app.get("/api/auth/status")
+async def api_auth_status(request: Request):
+    auth = is_authenticated(request)
+    return {"authenticated": auth}
+
+
+# --- Gerenciamento de Aplicações ---
+@app.get("/api/apps")
+async def api_get_apps(request: Request):
+    cfg = load_config()
+    return {
+        "apps": cfg.get("apps", []),
+        "active_app": mcp_server.get_active_app(),
+        "tunnel_url": mcp_server.get_tunnel_url(),
+        "quick_actions": cfg.get("terminal", {}).get("quick_actions", [])
+    }
+
+
+@app.post("/api/apps/active")
+async def api_set_active_app(request: Request):
+    data = await request.json()
+    app_id = data.get("app_id")
+    if not app_id:
+        raise HTTPException(status_code=400, detail="app_id é obrigatório")
+    mcp_server.set_active_app(app_id)
+    return {"ok": True, "active_app": app_id}
+
+
+@app.post("/api/apps")
+async def api_add_app(request: Request):
+    data = await request.json()
+    app_id = data.get("id") or str(uuid.uuid4())[:8]
+    name = data.get("name", "Nova Aplicação")
+    url = data.get("url", "http://127.0.0.1:8000")
+    port = data.get("port", 8000)
+    desc = data.get("desc", "")
+
+    cfg = load_config()
+    apps = cfg.get("apps", [])
+    # Atualiza se existir, senão adiciona
+    existing = next((a for a in apps if a["id"] == app_id), None)
+    if existing:
+        existing.update({"name": name, "url": url, "port": port, "desc": desc})
+    else:
+        apps.append({"id": app_id, "name": name, "url": url, "port": port, "desc": desc})
+
+    cfg["apps"] = apps
+    save_config(cfg)
+    return {"ok": True, "apps": apps}
+
+
+# --- Telemetria e Hardware (VRAM) ---
+@app.get("/api/vram")
+async def api_get_vram():
+    """Lê telemetria da GPU via nvidia-smi de forma assíncrona."""
+    output = []
+    try:
+        proc = await asyncio.create_subprocess_exec(
+            "nvidia-smi", "--query-gpu=memory.used,memory.total,temperature.gpu,utilization.gpu",
+            "--format=csv,noheader,nounits",
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE
+        )
+        stdout, _ = await proc.communicate()
+        if proc.returncode == 0:
+            parts = stdout.decode().strip().split(",")
+            if len(parts) >= 4:
+                used = float(parts[0].strip())
+                total = float(parts[1].strip())
+                temp = parts[2].strip()
+                util = parts[3].strip()
+                return {
+                    "available": True,
+                    "used_mb": used,
+                    "total_mb": total,
+                    "used_gb": round(used / 1024, 1),
+                    "total_gb": round(total / 1024, 1),
+                    "percent": round((used / total) * 100, 1),
+                    "temp_c": temp,
+                    "gpu_util_pct": util
+                }
+    except Exception:
+        pass
+    return {"available": False, "msg": "GPU não detectada ou nvidia-smi indisponível"}
+
+
+# --- Modelos & Configuração LLM ---
+@app.get("/api/models")
+async def api_get_models():
+    cfg = load_config()
+    llm_cfg = cfg.get("llm", {})
+    return {
+        "current": llm_cfg,
+        "providers": [
+            {"id": "ollama", "name": "Ollama Local (qwen3.5, etc.)"},
+            {"id": "gemini", "name": "Google Gemini (gemini-2.5, etc.)"},
+            {"id": "openai", "name": "OpenAI (gpt-4o, etc.)"},
+            {"id": "anthropic", "name": "Anthropic Claude (claude-3-7-sonnet)"},
+            {"id": "groq", "name": "Groq (ultra fast)"},
+            {"id": "openrouter", "name": "OpenRouter (multi-provider)"},
+            {"id": "custom", "name": "Custom OpenAI-Compatible"}
+        ]
+    }
+
+
+@app.post("/api/models")
+async def api_save_model(request: Request):
+    data = await request.json()
+    cfg = load_config()
+    cfg["llm"].update(data)
+    save_config(cfg)
+    return {"ok": True, "llm": cfg["llm"]}
+
+
+# --- Proxy Reverso para Contornar Mixed Content no Cloudflare Tunnel ---
+@app.api_route("/proxy/{app_id}/{path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH"])
+async def app_reverse_proxy(app_id: str, path: str, request: Request):
+    """
+    Encaminha requisições da web HTTPS para o serviço HTTP local correspondente,
+    permitindo que o iframe funcione dentro do túnel Cloudflare sem erro de Mixed Content.
+    """
+    cfg = load_config()
+    app_info = next((a for a in cfg.get("apps", []) if a["id"] == app_id), None)
+    if not app_info:
+        raise HTTPException(status_code=404, detail="Aplicação não encontrada no proxy")
+
+    target_base = app_info["url"].rstrip("/")
+    target_url = f"{target_base}/{path}"
+    if request.url.query:
+        target_url += f"?{request.url.query}"
+
+    # Copia headers relevantes
+    headers = {k: v for k, v in request.headers.items() if k.lower() not in ["host", "content-length"]}
+
+    try:
+        body = await request.body()
+        client = httpx.AsyncClient(timeout=30.0)
+        resp = await client.request(
+            method=request.method,
+            url=target_url,
+            headers=headers,
+            content=body
+        )
+        # Excluir headers problemáticos
+        excluded_headers = ["content-encoding", "content-length", "transfer-encoding", "connection"]
+        resp_headers = {k: v for k, v in resp.headers.items() if k.lower() not in excluded_headers}
+
+        return Response(content=resp.content, status_code=resp.status_code, headers=resp_headers)
+    except httpx.ConnectError:
+        return HTMLResponse(
+            f"<div style='font-family:sans-serif;padding:2rem;color:#ff5555;'>"
+            f"<h3>⚠️ Aplicação '{app_info['name']}' não está em execução</h3>"
+            f"<p>Certifique-se de iniciar o servidor local na porta {app_info.get('port', 8000)}.</p>"
+            f"</div>",
+            status_code=502
+        )
+    except Exception as e:
+        return HTMLResponse(f"Erro no proxy: {str(e)}", status_code=500)
+
+
+# --- WebSockets: Chat com IA ---
+@app.websocket("/ws/chat")
+async def websocket_chat(websocket: WebSocket):
+    await websocket.accept()
+    if not await verify_ws_auth(websocket):
+        await websocket.send_json({"type": "error", "content": "Não autenticado"})
+        await websocket.close(code=1008)
+        return
+
+    history: List[Dict[str, str]] = []
+
+    try:
+        while True:
+            raw_data = await websocket.receive_text()
+            data = json.loads(raw_data)
+            user_msg = data.get("message", "").strip()
+            if not user_msg:
+                continue
+
+            history.append({"role": "user", "content": user_msg})
+
+            provider = data.get("provider")
+            model = data.get("model")
+            api_key = data.get("api_key")
+            base_url = data.get("base_url")
+
+            # Avisa início da resposta
+            await websocket.send_json({"type": "start"})
+
+            full_reply = ""
+            async for token in stream_chat_response(
+                messages=history,
+                provider=provider,
+                model=model,
+                api_key=api_key,
+                base_url=base_url
+            ):
+                full_reply += token
+                await websocket.send_json({"type": "chunk", "content": token})
+
+            history.append({"role": "assistant", "content": full_reply})
+            await websocket.send_json({"type": "done", "full_content": full_reply})
+
+    except WebSocketDisconnect:
+        pass
+    except Exception as e:
+        try:
+            await websocket.send_json({"type": "error", "content": str(e)})
+        except Exception:
+            pass
+
+
+# --- WebSockets: Terminal Seguro (Whitelist) ---
+@app.websocket("/ws/terminal")
+async def websocket_terminal(websocket: WebSocket):
+    await websocket.accept()
+    if not await verify_ws_auth(websocket):
+        await websocket.send_json({"type": "output", "text": "[ERRO] Acesso negado: faça login primeiro.\n"})
+        await websocket.close(code=1008)
+        return
+
+    await websocket.send_json({
+        "type": "output",
+        "text": "🟢 Terminal Remoto Seguro Ativo (Whitelist habilitada).\nDigite comandos como 'git status', 'nvidia-smi' ou use os botões rápidos.\n\n"
+    })
+
+    try:
+        while True:
+            raw_data = await websocket.receive_text()
+            data = json.loads(raw_data)
+            cmd = data.get("command", "").strip()
+            if not cmd:
+                continue
+
+            await websocket.send_json({"type": "start"})
+            async for output_line in execute_whitelisted_command(cmd):
+                await websocket.send_json({"type": "output", "text": output_line})
+            await websocket.send_json({"type": "done"})
+
+    except WebSocketDisconnect:
+        pass
+    except Exception as e:
+        try:
+            await websocket.send_json({"type": "output", "text": f"\n[ERRO WS] {str(e)}\n"})
+        except Exception:
+            pass
+
+
+# --- MCP Server (Server-Sent Events) ---
+@app.get("/mcp/sse")
+async def mcp_sse_endpoint():
+    """Endpoint SSE para inicialização do transporte MCP."""
+    session_id = str(uuid.uuid4())
+    queue = asyncio.Queue()
+    _MCP_SESSIONS[session_id] = queue
+
+    async def event_generator():
+        # Envia o endpoint de mensagens para o cliente MCP
+        yield f"event: endpoint\ndata: /mcp/messages?session_id={session_id}\n\n"
+        while True:
+            msg = await queue.get()
+            yield f"event: message\ndata: {json.dumps(msg)}\n\n"
+
+    return StreamingResponse(event_generator(), media_type="text/event-stream")
+
+
+@app.post("/mcp/messages")
+async def mcp_message_handler(request: Request, session_id: Optional[str] = None):
+    """Trata requisições JSON-RPC 2.0 vindas de clientes MCP."""
+    body = await request.json()
+    method = body.get("method")
+    msg_id = body.get("id")
+
+    response_data = None
+
+    if method == "initialize":
+        response_data = {
+            "jsonrpc": "2.0",
+            "id": msg_id,
+            "result": {
+                "protocolVersion": "2024-11-05",
+                "serverInfo": {"name": "agent-remote-mcp", "version": "1.0.0"},
+                "capabilities": {"tools": {}}
+            }
+        }
+    elif method == "tools/list":
+        response_data = {
+            "jsonrpc": "2.0",
+            "id": msg_id,
+            "result": {"tools": mcp_server.MCP_TOOLS}
+        }
+    elif method == "tools/call":
+        params = body.get("params", {})
+        name = params.get("name", "")
+        args = params.get("arguments", {})
+        result_text = await mcp_server.handle_tool_call(name, args)
+        response_data = {
+            "jsonrpc": "2.0",
+            "id": msg_id,
+            "result": {"content": [{"type": "text", "text": result_text}]}
+        }
+    else:
+        response_data = {"jsonrpc": "2.0", "id": msg_id, "result": {}}
+
+    # Se houver sessão SSE ativa, despacha por ela; senão responde HTTP direto
+    if session_id and session_id in _MCP_SESSIONS:
+        await _MCP_SESSIONS[session_id].put(response_data)
+        return {"status": "dispatched"}
+
+    return response_data
+
+
+# Monta a pasta estática por último
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")

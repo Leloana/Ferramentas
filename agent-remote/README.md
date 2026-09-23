@@ -11,8 +11,11 @@ O objetivo central é transformar o ecossistema de ferramentas locais em uma cen
 1. **Acesso Móvel sem Complicação:** Controlar execuções de scripts (ex: geração de vídeos do `tts_platform_pt`, checagem de VRAM, status do git) direto da tela do smartphone, sem precisar ficar na frente do PC.
 2. **Duas Abas / Split View Integrado:** Inspirado em plataformas modernas como *Bolt.new* e *OpenHands*, reúne a conversa com o agente e o iframe da aplicação ativa em uma única interface.
 3. **Segurança por Padrão (Sem Abrir Portas no Roteador):** Utiliza o Cloudflare Tunnel (`cloudflared`), fornecendo uma URL pública HTTPS gratuita (`.trycloudflare.com`) sem expor IP, sem redirecionamento de portas (port forwarding) e com proteção por senha.
-4. **Terminal Web Seguro (Whitelist):** Um terminal leve embutido no navegador, restrito estritamente a comandos pré-aprovados (evitando riscos de injeção de comandos arbitrários pela web).
-5. **Zero Complexidade:** Nada de dezenas de containers Docker ou frameworks pesados. É uma aplicação Python única (FastAPI) com frontend em HTML/CSS/JS puro, rápida para carregar em redes móveis 4G/5G.
+4. **Agnóstico a Modelos e Agentes:** Suporte flexível a modelos locais (**Ollama** / `qwen3.5:9b`, etc.) e modelos proprietários de ponta (**Google Gemini**, **Anthropic Claude**, **OpenAI**, **Groq**, **OpenRouter**) ou qualquer endpoint OpenAI-compatible.
+5. **Agnóstico a Aplicações:** Registre qualquer ferramenta no `config.json` ou adicione URLs dinamicamente direto na interface web com 1 clique. Conta com **Proxy Reverso integrado** (`/proxy/{app}/`) que resolve problemas de *Mixed Content* ao carregar apps locais HTTP dentro de túneis HTTPS.
+6. **Servidor MCP Embutido (Model Context Protocol):** Expõe ferramentas nativas para agentes externos (Antigravity, Claude Code, Cursor, Windsurf) via STDIO ou HTTP/SSE (`/mcp/sse`), permitindo que a IA controle o preview, envie notificações de chat e execute comandos remotamente.
+7. **Terminal Web Seguro (Whitelist):** Um terminal leve embutido no navegador, restrito estritamente a comandos pré-aprovados (evitando riscos de injeção de comandos arbitrários pela web).
+8. **Zero Complexidade:** Nada de dezenas de containers Docker ou frameworks pesados. É uma aplicação Python única (FastAPI) com frontend em HTML/CSS/JS puro, rápida para carregar em redes móveis 4G/5G.
 
 ---
 
