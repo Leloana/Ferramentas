@@ -118,6 +118,37 @@ async def api_add_app(request: Request):
     return {"ok": True, "apps": apps}
 
 
+# --- Endpoints da Aba MCP ---
+@app.get("/api/mcp/tools")
+async def api_get_mcp_tools():
+    """Retorna o catálogo de ferramentas MCP disponíveis."""
+    return {"tools": mcp_server.MCP_TOOLS}
+
+
+@app.post("/api/mcp/call")
+async def api_call_mcp_tool(request: Request):
+    """Executa uma ferramenta MCP a partir da interface web."""
+    data = await request.json()
+    name = data.get("name", "")
+    args = data.get("arguments", {})
+    result = await mcp_server.handle_tool_call(name, args)
+    return {
+        "ok": True,
+        "name": name,
+        "result": result,
+        "history": mcp_server.get_tool_call_history()
+    }
+
+
+@app.get("/api/mcp/history")
+async def api_get_mcp_history():
+    """Retorna o histórico de chamadas de ferramentas MCP."""
+    return {
+        "history": mcp_server.get_tool_call_history(),
+        "notifications": mcp_server.get_chat_notifications()
+    }
+
+
 # --- Telemetria e Hardware (VRAM) ---
 @app.get("/api/vram")
 async def api_get_vram():

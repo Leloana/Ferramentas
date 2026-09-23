@@ -31,14 +31,29 @@ const chatInput = document.getElementById("chat-input");
 const sendChatBtn = document.getElementById("send-chat-btn");
 const clearChatBtn = document.getElementById("clear-chat-btn");
 
-const terminalDrawer = document.getElementById("terminal-drawer");
-const terminalToggle = document.getElementById("terminal-toggle");
-const drawerToggleArrow = document.getElementById("drawer-toggle-arrow");
+// Sub-abas do painel direito (MCP vs Terminal)
+const tabBtnMcp = document.getElementById("tab-btn-mcp");
+const tabBtnTerminal = document.getElementById("tab-btn-terminal");
+const mcpContainer = document.getElementById("mcp-container");
+const terminalContainer = document.getElementById("terminal-container");
+
+// Alternador dentro da aba MCP (Tools vs Web Preview)
+const btnShowMcpTools = document.getElementById("btn-show-mcp-tools");
+const btnShowWebPreview = document.getElementById("btn-show-web-preview");
+const mcpToolsView = document.getElementById("mcp-tools-view");
+const webPreviewView = document.getElementById("web-preview-view");
+
+const mcpToolsList = document.getElementById("mcp-tools-list");
+const mcpCallLog = document.getElementById("mcp-call-log");
+const clearMcpLogBtn = document.getElementById("clear-mcp-log-btn");
+
+// Terminal dedicado
 const quickChipsContainer = document.getElementById("quick-action-chips");
 const terminalOutput = document.getElementById("terminal-output");
 const terminalForm = document.getElementById("terminal-form");
 const terminalInput = document.getElementById("terminal-input");
 
+// Modal de Modelo
 const modelModal = document.getElementById("model-modal");
 const closeModelModal = document.getElementById("close-model-modal");
 const modelForm = document.getElementById("model-form");
@@ -113,11 +128,14 @@ async function initApp() {
   await loadApps();
   await loadVram();
   await loadModelConfig();
+  await loadMcpTools();
+  await loadMcpHistory();
   connectChatWs();
   connectTerminalWs();
 
-  // Polling leve para VRAM a cada 15 segundos
+  // Polling leve para VRAM e histórico MCP a cada 15 segundos
   setInterval(loadVram, 15000);
+  setInterval(loadMcpHistory, 10000);
 }
 
 // --- Carregar Aplicações & Iframe ---
@@ -181,9 +199,9 @@ openExternalBtn.addEventListener("click", () => {
 });
 
 addCustomAppBtn.addEventListener("click", async () => {
-  const name = prompt("Nome da aplicação (ex: Meu Streamlit):");
+  const name = prompt("Nome da aplicação (ex: Meu App):");
   if (!name) return;
-  const url = prompt("URL da aplicação (ex: http://127.0.0.1:8501):", "http://127.0.0.1:8501");
+  const url = prompt("URL da aplicação (ex: http://127.0.0.1:8080):", "http://127.0.0.1:8080");
   if (!url) return;
 
   let port = 8000;
@@ -205,6 +223,150 @@ addCustomAppBtn.addEventListener("click", async () => {
     appSelect.value = id;
     updatePreview(id);
   }
+});
+
+// --- Aba MCP: Ferramentas e Histórico ---
+async function loadMcpTools() {
+  try {
+    const res = await fetch("/api/mcp/tools");
+    const data = await res.json();
+    const tools = data.tools || [];
+    renderMcpTools(tools);
+  } catch (err) {
+    console.error("Erro ao carregar ferramentas MCP:", err);
+  }
+}
+
+function renderMcpTools(tools) {
+  mcpToolsList.innerHTML = "";
+  tools.forEach(t => {
+    const card = document.createElement("div");
+    card.className = "tool-card";
+
+    const title = document.createElement("div");
+    title.className = "tool-card-title";
+    title.textContent = `🛠️ ${t.name}`;
+
+    const desc = document.createElement("div");
+    desc.className = "tool-card-desc";
+    desc.textContent = t.description;
+
+    const runBtn = document.createElement("button");
+    runBtn.className = "btn-tool-run";
+    runBtn.textContent = "Executar";
+    runBtn.addEventListener("click", () => triggerMcpTool(t));
+
+    card.appendChild(title);
+    card.appendChild(desc);
+    card.appendChild(runBtn);
+    mcpToolsList.appendChild(card);
+  });
+}
+
+async function triggerMcpTool(tool) {
+  let args = {};
+  const schema = tool.inputSchema || {};
+  const required = schema.required || [];
+
+  if (tool.name === "execute_whitelisted_command") {
+    const cmd = prompt("Digite o comando a executar (ex: git status, nvidia-smi):", "git status");
+    if (!cmd) return;
+    args = { command: cmd };
+  } else if (tool.name === "set_active_application") {
+    const appId = prompt(`Digite o ID da aplicação (ex: ${currentApps.map(a => a.id).join(", ")}):`, activeAppId);
+    if (!appId) return;
+    args = { app_id: appId };
+  } else if (tool.name === "send_remote_chat") {
+    const msg = prompt("Digite a mensagem a enviar para a tela remota:");
+    if (!msg) return;
+    args = { message: msg };
+  }
+
+  try {
+    const res = await fetch("/api/mcp/call", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: jsonStringify({ name: tool.name, arguments: args })
+    });
+    const data = await res.json();
+    renderMcpLogs(data.history || []);
+
+    if (tool.name === "set_active_application" && args.app_id) {
+      updatePreview(args.app_id);
+      appSelect.value = args.app_id;
+    }
+  } catch (err) {
+    alert("Erro ao executar ferramenta MCP: " + err);
+  }
+}
+
+async function loadMcpHistory() {
+  try {
+    const res = await fetch("/api/mcp/history");
+    const data = await res.json();
+    renderMcpLogs(data.history || []);
+  } catch {}
+}
+
+function renderMcpLogs(history) {
+  if (!history || history.length === 0) {
+    mcpCallLog.innerHTML = `<div class="mcp-log-empty">Nenhuma chamada de ferramenta registrada ainda.</div>`;
+    return;
+  }
+
+  mcpCallLog.innerHTML = "";
+  // Exibe do mais recente para o mais antigo
+  history.slice().reverse().forEach(item => {
+    const row = document.createElement("div");
+    row.className = "mcp-log-item";
+
+    const header = document.createElement("div");
+    header.className = "mcp-log-header";
+    header.innerHTML = `<span>[${item.timestamp}]</span> <strong>${item.name}</strong>`;
+
+    const resPre = document.createElement("pre");
+    resPre.className = "mcp-log-result";
+    resPre.textContent = item.result || "(sem retorno)";
+
+    row.appendChild(header);
+    row.appendChild(resPre);
+    mcpCallLog.appendChild(row);
+  });
+}
+
+clearMcpLogBtn.addEventListener("click", () => {
+  mcpCallLog.innerHTML = `<div class="mcp-log-empty">Log limpo.</div>`;
+});
+
+// --- Alternadores de Visão (MCP Tools vs Web Preview) ---
+btnShowMcpTools.addEventListener("click", () => {
+  btnShowMcpTools.classList.add("active");
+  btnShowWebPreview.classList.remove("active");
+  mcpToolsView.classList.remove("hidden");
+  webPreviewView.classList.add("hidden");
+});
+
+btnShowWebPreview.addEventListener("click", () => {
+  btnShowWebPreview.classList.add("active");
+  btnShowMcpTools.classList.remove("active");
+  webPreviewView.classList.remove("hidden");
+  mcpToolsView.classList.add("hidden");
+});
+
+// --- Alternadores de Aba no Painel Direito (Desktop) ---
+tabBtnMcp.addEventListener("click", () => {
+  tabBtnMcp.classList.add("active");
+  tabBtnTerminal.classList.remove("active");
+  mcpContainer.classList.remove("hidden");
+  terminalContainer.classList.add("hidden");
+});
+
+tabBtnTerminal.addEventListener("click", () => {
+  tabBtnTerminal.classList.add("active");
+  tabBtnMcp.classList.remove("active");
+  terminalContainer.classList.remove("hidden");
+  mcpContainer.classList.add("hidden");
+  terminalInput.focus();
 });
 
 // --- Telemetria VRAM ---
@@ -315,7 +477,7 @@ clearChatBtn.addEventListener("click", () => {
   `;
 });
 
-// --- WebSocket do Terminal ---
+// --- WebSocket do Terminal Dedicado ---
 function connectTerminalWs() {
   const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
   terminalWs = new WebSocket(`${protocol}//${window.location.host}/ws/terminal`);
@@ -338,11 +500,6 @@ function sendTerminalCommand(cmd) {
   if (!command || !terminalWs || terminalWs.readyState !== WebSocket.OPEN) return;
 
   terminalInput.value = "";
-  // Se a gaveta estiver fechada, abre para exibir o resultado
-  if (terminalDrawer.classList.contains("collapsed")) {
-    toggleTerminal();
-  }
-
   terminalWs.send(jsonStringify({ command }));
 }
 
@@ -358,18 +515,14 @@ function renderQuickChips(chips) {
     btn.className = "chip";
     btn.textContent = c.label;
     btn.title = `$ ${c.cmd}`;
-    btn.addEventListener("click", () => sendTerminalCommand(c.cmd));
+    btn.addEventListener("click", () => {
+      // Se não estiver na aba do terminal, troca pra ela
+      tabBtnTerminal.click();
+      sendTerminalCommand(c.cmd);
+    });
     quickChipsContainer.appendChild(btn);
   });
 }
-
-// --- Toggle Gaveta do Terminal ---
-function toggleTerminal() {
-  const isCollapsed = terminalDrawer.classList.toggle("collapsed");
-  drawerToggleArrow.textContent = isCollapsed ? "▲" : "▼";
-}
-
-terminalToggle.addEventListener("click", toggleTerminal);
 
 // --- Navegação Mobile (Tabs) ---
 function setupEventListeners() {
@@ -381,18 +534,19 @@ function setupEventListeners() {
 
       const targetId = btn.getAttribute("data-target");
       const chatPane = document.getElementById("chat-pane");
-      const previewPane = document.getElementById("preview-pane");
+      const rightPane = document.getElementById("right-pane");
 
-      chatPane.classList.remove("active-pane");
-      previewPane.classList.remove("active-pane");
-      terminalDrawer.classList.remove("active-pane");
-
-      const target = document.getElementById(targetId);
-      if (target) {
-        target.classList.add("active-pane");
-        if (targetId === "terminal-drawer") {
-          target.classList.remove("collapsed");
-        }
+      if (targetId === "chat-pane") {
+        chatPane.classList.add("active-pane");
+        rightPane.classList.remove("active-pane");
+      } else if (targetId === "mcp-container") {
+        chatPane.classList.remove("active-pane");
+        rightPane.classList.add("active-pane");
+        tabBtnMcp.click();
+      } else if (targetId === "terminal-container") {
+        chatPane.classList.remove("active-pane");
+        rightPane.classList.add("active-pane");
+        tabBtnTerminal.click();
       }
     });
   });
@@ -415,15 +569,12 @@ function jsonStringify(obj) {
 
 function formatText(str) {
   if (!str) return "";
-  // Escapa HTML básico
   let escaped = str
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
 
-  // Código inline `exemplo`
   escaped = escaped.replace(/`([^`]+)`/g, "<code>$1</code>");
-  // Negrito **texto**
   escaped = escaped.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
 
   return escaped;

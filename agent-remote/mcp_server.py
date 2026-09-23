@@ -44,6 +44,27 @@ def get_chat_notifications() -> List[str]:
     return list(_CHAT_NOTIFICATIONS)
 
 
+_TOOL_CALL_HISTORY: List[Dict[str, Any]] = []
+
+
+def get_tool_call_history() -> List[Dict[str, Any]]:
+    global _TOOL_CALL_HISTORY
+    return list(_TOOL_CALL_HISTORY)
+
+
+def record_tool_call(name: str, arguments: Dict[str, Any], result: str) -> None:
+    global _TOOL_CALL_HISTORY
+    import time
+    _TOOL_CALL_HISTORY.append({
+        "timestamp": time.strftime("%H:%M:%S"),
+        "name": name,
+        "arguments": arguments,
+        "result": result
+    })
+    if len(_TOOL_CALL_HISTORY) > 50:
+        _TOOL_CALL_HISTORY.pop(0)
+
+
 MCP_TOOLS = [
     {
         "name": "list_applications",
@@ -120,45 +141,51 @@ MCP_TOOLS = [
 async def handle_tool_call(name: str, arguments: Dict[str, Any]) -> str:
     """Executa a ferramenta MCP solicitada e retorna texto."""
     cfg = load_config()
+    result = ""
 
     if name == "list_applications":
         apps = cfg.get("apps", [])
         active = get_active_app()
-        return json.dumps({"active_app": active, "applications": apps}, indent=2, ensure_ascii=False)
+        result = json.dumps({"active_app": active, "applications": apps}, indent=2, ensure_ascii=False)
 
     elif name == "set_active_application":
         app_id = arguments.get("app_id", "").strip()
         apps = [a["id"] for a in cfg.get("apps", [])]
         if app_id in apps:
             set_active_app(app_id)
-            return f"Aplicação ativa alterada com sucesso para '{app_id}'."
-        return f"Aplicação '{app_id}' não encontrada. Opções disponíveis: {', '.join(apps)}"
+            result = f"Aplicação ativa alterada com sucesso para '{app_id}'."
+        else:
+            result = f"Aplicação '{app_id}' não encontrada. Opções disponíveis: {', '.join(apps)}"
 
     elif name == "get_system_status":
         lines = []
         async for line in execute_whitelisted_command("nvidia-smi"):
             lines.append(line)
-        return "".join(lines)
+        result = "".join(lines)
 
     elif name == "execute_whitelisted_command":
         cmd = arguments.get("command", "").strip()
         lines = []
         async for line in execute_whitelisted_command(cmd):
             lines.append(line)
-        return "".join(lines)
+        result = "".join(lines)
 
     elif name == "send_remote_chat":
         msg = arguments.get("message", "").strip()
         add_chat_notification(msg)
-        return f"Mensagem enviada para a interface remota: '{msg}'"
+        result = f"Mensagem enviada para a interface remota: '{msg}'"
 
     elif name == "get_tunnel_url":
         url = get_tunnel_url()
         if url:
-            return f"URL pública ativa: {url}"
-        return "Nenhum Cloudflare Tunnel público detectado no momento (rodando localmente em http://127.0.0.1:8765)."
+            result = f"URL pública ativa: {url}"
+        else:
+            result = "Nenhum Cloudflare Tunnel público detectado no momento (rodando localmente em http://127.0.0.1:8765)."
+    else:
+        result = f"Ferramenta desconhecida: {name}"
 
-    return f"Ferramenta desconhecida: {name}"
+    record_tool_call(name, arguments, result)
+    return result
 
 
 async def stdio_server_loop():

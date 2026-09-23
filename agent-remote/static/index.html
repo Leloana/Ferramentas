@@ -74,7 +74,7 @@
         <!-- Seletor de Aplicação -->
         <div class="app-selector-wrapper">
           <label for="app-select" class="sr-only">Aplicação Ativa</label>
-          <select id="app-select" title="Escolha a aplicação para exibir no preview">
+          <select id="app-select" title="Escolha a aplicação ativa">
             <!-- Populado dinamicamente -->
           </select>
           <button id="add-custom-app-btn" class="btn-icon" title="Adicionar URL customizada">+</button>
@@ -100,7 +100,7 @@
 
     <!-- Conteúdo Principal: Split View -->
     <main class="main-content">
-      <!-- Painel Esquerdo: Chat com Agente -->
+      <!-- Painel Esquerdo: Chat com o Agente -->
       <section id="chat-pane" class="pane pane-chat active-pane">
         <div class="pane-header">
           <h3>💬 Chat com o Agente</h3>
@@ -109,7 +109,7 @@
 
         <div id="chat-messages" class="chat-messages">
           <div class="message system-msg">
-            👋 Conectado ao <strong>Agent-Remote</strong>. Converse com o agente, comande a produção de vídeos ou solicite ações no PC.
+            👋 Conectado ao <strong>Agent-Remote</strong>. O agente pode interagir diretamente com as ferramentas via <strong>MCP</strong>.
           </div>
         </div>
 
@@ -119,53 +119,91 @@
         </div>
       </section>
 
-      <!-- Painel Direito: Live Preview da Aplicação -->
-      <section id="preview-pane" class="pane pane-preview">
-        <div class="pane-header">
-          <div class="preview-title-area">
-            <span class="dot green"></span>
-            <strong id="preview-app-title">Aplicação</strong>
-            <span id="preview-app-url" class="badge"></span>
+      <!-- Painel Direito: Abas (Aplicação MCP ou Terminal) -->
+      <section id="right-pane" class="pane pane-right">
+        <!-- Barra de Abas do Painel Direito -->
+        <div class="sub-tab-bar">
+          <button id="tab-btn-mcp" class="sub-tab-btn active" data-pane="mcp-container">
+            🛠️ Aplicação (MCP)
+          </button>
+          <button id="tab-btn-terminal" class="sub-tab-btn" data-pane="terminal-container">
+            ⌨️ Terminal
+          </button>
+        </div>
+
+        <!-- Conteúdo da Aba 1: Aplicação (MCP Hub + Web Preview) -->
+        <div id="mcp-container" class="sub-pane active-sub-pane">
+          <div class="mcp-toolbar">
+            <div class="mcp-status-pill">
+              <span class="dot green"></span>
+              <strong>MCP Server Ativo</strong> (STDIO & SSE)
+            </div>
+            <div class="mcp-view-toggle">
+              <button id="btn-show-mcp-tools" class="toggle-pill active">🛠️ Ferramentas & Logs</button>
+              <button id="btn-show-web-preview" class="toggle-pill">🖥️ Web App View</button>
+            </div>
           </div>
-          <div class="preview-actions">
-            <button id="reload-preview-btn" class="btn-icon" title="Recarregar preview">🔄</button>
-            <button id="open-external-btn" class="btn-icon" title="Abrir em nova aba">↗️</button>
+
+          <!-- Visão 1A: Ferramentas MCP & Histórico de Chamadas -->
+          <div id="mcp-tools-view" class="mcp-view-content">
+            <div class="mcp-section">
+              <div class="section-title">
+                <h4>🧰 Ferramentas MCP Disponíveis</h4>
+                <span class="text-xs text-muted">Acesse ou teste com 1 clique</span>
+              </div>
+              <div id="mcp-tools-list" class="tools-grid">
+                <!-- Populado dinamicamente -->
+              </div>
+            </div>
+
+            <div class="mcp-section">
+              <div class="section-title">
+                <h4>📜 Log de Execuções MCP</h4>
+                <button id="clear-mcp-log-btn" class="btn-text">Limpar</button>
+              </div>
+              <div id="mcp-call-log" class="mcp-log-list">
+                <div class="mcp-log-empty">Nenhuma chamada de ferramenta registrada ainda.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Visão 1B: Web Preview da Aplicação selecionada -->
+          <div id="web-preview-view" class="mcp-view-content hidden">
+            <div class="preview-header-bar">
+              <span id="preview-app-title">Aplicação</span>
+              <span id="preview-app-url" class="badge"></span>
+              <div class="preview-actions">
+                <button id="reload-preview-btn" class="btn-icon" title="Recarregar preview">🔄</button>
+                <button id="open-external-btn" class="btn-icon" title="Abrir em nova aba">↗️</button>
+              </div>
+            </div>
+            <div class="iframe-wrapper">
+              <iframe id="app-iframe" src="about:blank" frameborder="0" allowfullscreen></iframe>
+            </div>
           </div>
         </div>
 
-        <div class="iframe-wrapper">
-          <iframe id="app-iframe" src="about:blank" frameborder="0" allowfullscreen></iframe>
+        <!-- Conteúdo da Aba 2: Terminal Dedicado -->
+        <div id="terminal-container" class="sub-pane hidden">
+          <div class="terminal-full-layout">
+            <!-- Chips de ação rápida -->
+            <div id="quick-action-chips" class="quick-chips">
+              <!-- Populado dinamicamente -->
+            </div>
+
+            <!-- Tela do Terminal -->
+            <div id="terminal-output" class="terminal-screen terminal-full-screen"></div>
+
+            <!-- Linha de Entrada do Terminal -->
+            <form id="terminal-form" class="terminal-input-row">
+              <span class="terminal-prompt">$</span>
+              <input type="text" id="terminal-input" placeholder="Digite um comando permitido (ex: git status, nvidia-smi)..." autocomplete="off">
+              <button type="submit" class="btn btn-secondary">Executar</button>
+            </form>
+          </div>
         </div>
       </section>
     </main>
-
-    <!-- Gaveta Inferior: Terminal Web Seguro -->
-    <section id="terminal-drawer" class="terminal-drawer collapsed">
-      <div class="terminal-header" id="terminal-toggle">
-        <div class="terminal-header-title">
-          <span>⌨️ Terminal Seguro (Whitelist)</span>
-          <span id="terminal-status-dot" class="dot green"></span>
-        </div>
-        <button class="drawer-toggle-btn" id="drawer-toggle-arrow">▲</button>
-      </div>
-
-      <div class="terminal-body">
-        <!-- Botões de Ação Rápida (Chips) -->
-        <div id="quick-action-chips" class="quick-chips">
-          <!-- Populado dinamicamente -->
-        </div>
-
-        <!-- Tela do Terminal -->
-        <div id="terminal-output" class="terminal-screen"></div>
-
-        <!-- Linha de Comando -->
-        <form id="terminal-form" class="terminal-input-row">
-          <span class="terminal-prompt">$</span>
-          <input type="text" id="terminal-input" placeholder="Digite um comando permitido (ex: git status, nvidia-smi)..." autocomplete="off">
-          <button type="submit" class="btn btn-secondary">Executar</button>
-        </form>
-      </div>
-    </section>
 
     <!-- Barra de Abas Inferior (Modo Mobile) -->
     <nav class="mobile-nav">
@@ -173,11 +211,11 @@
         <span class="tab-icon">💬</span>
         <span class="tab-label">Chat</span>
       </button>
-      <button class="tab-btn" data-target="preview-pane">
-        <span class="tab-icon">🖥️</span>
-        <span class="tab-label">App Preview</span>
+      <button class="tab-btn" data-target="mcp-container">
+        <span class="tab-icon">🛠️</span>
+        <span class="tab-label">Aplicação (MCP)</span>
       </button>
-      <button class="tab-btn" data-target="terminal-drawer">
+      <button class="tab-btn" data-target="terminal-container">
         <span class="tab-icon">⌨️</span>
         <span class="tab-label">Terminal</span>
       </button>
