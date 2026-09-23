@@ -72,3 +72,7 @@ image_gen/resultados/*
 # Agentic CLI persist and history
 .persist/
 .history
+
+# TTS Platform: logs de execucao (servidor XTTS, downloads de modelo)
+tts_platform_pt/*.log
+tts_platform_pt/comfy/*.log
