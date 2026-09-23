@@ -133,6 +133,14 @@ _ZIMAGE_NODE_REF_IMAGEM = "12"
 # nós alcançáveis a partir do `SaveImage`).
 _KREA2_NODE_REF_IMAGEM = "30:60"
 
+# Nós dos workflows `image_qwen_image_2_1_t2i.json`, `image_qwen_image_2_1_i2i.json`
+# e `image_qwen_image_2_1_lora_t2i.json` (Qwen-Image-2.1 DiT + Qwen3-VL-8B)
+_QWEN_NODE_PROMPT = "6"
+_QWEN_NODE_RESOLUCAO = "4"
+_QWEN_NODE_SAMPLER = "8"
+_QWEN_NODE_SAVE = "10"
+_QWEN_NODE_REF_IMAGEM = "11"
+
 
 def montar_prompt(texto: str) -> str:
     return texto.strip() + _SUFIXO_SEGURANCA
@@ -168,6 +176,14 @@ def gerar_imagem(
     wf = copy.deepcopy(workflow)
     prompt_final = montar_prompt(texto)
     eh_krea2 = _NODE_REFINAR in wf
+    eh_qwen = (
+        _QWEN_NODE_PROMPT in wf
+        and (
+            "qwen" in str(wf.get("1", {}).get("inputs", {}).get("unet_name", "")).lower()
+            or "qwen" in str(wf.get("2", {}).get("inputs", {}).get("clip_name", "")).lower()
+            or "TextEncodeQwenImage" in str(wf.get(_QWEN_NODE_PROMPT, {}).get("class_type", ""))
+        )
+    )
     if eh_krea2:
         wf[_NODE_PROMPT]["inputs"]["value"] = prompt_final
         wf[_NODE_REFINAR]["inputs"]["value"] = True
@@ -178,6 +194,21 @@ def gerar_imagem(
             wf[_NODE_SAMPLER]["inputs"]["denoise"] = referencia_denoise
             wf[_KREA2_NODE_REF_IMAGEM]["inputs"]["image"] = referencia_imagem
         node_save = _NODE_SAVE
+    elif eh_qwen:
+        # Qwen-Image-2.1: se nó 6 for TextEncodeQwenImageEdit usa "prompt", se CLIPTextEncode usa "text"
+        if "prompt" in wf[_QWEN_NODE_PROMPT]["inputs"]:
+            wf[_QWEN_NODE_PROMPT]["inputs"]["prompt"] = prompt_final
+        else:
+            wf[_QWEN_NODE_PROMPT]["inputs"]["text"] = prompt_final
+
+        wf[_QWEN_NODE_RESOLUCAO]["inputs"]["aspect_ratio"] = aspect_ratio
+        wf[_QWEN_NODE_SAMPLER]["inputs"]["seed"] = random.randint(0, 2**32 - 1)
+
+        # Na continuidade do Qwen, o nó de referência é o LoadImage (11) e o modelo usa tag <image1>
+        if referencia_imagem and _QWEN_NODE_REF_IMAGEM in wf:
+            wf[_QWEN_NODE_REF_IMAGEM]["inputs"]["image"] = referencia_imagem
+
+        node_save = _QWEN_NODE_SAVE
     elif referencia_imagem:
         wf[_ZIMAGE_NODE_PROMPT]["inputs"]["text"] = prompt_final
         wf[_ZIMAGE_NODE_RESOLUCAO]["inputs"]["aspect_ratio"] = aspect_ratio
