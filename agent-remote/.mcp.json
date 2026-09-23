@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "agent-remote": {
+      "command": "/home/marcelo/marcelo/Ferramentas/agent-remote/venv/bin/python",
+      "args": [
+        "/home/marcelo/marcelo/Ferramentas/agent-remote/mcp_server.py"
+      ]
+    }
+  }
+}

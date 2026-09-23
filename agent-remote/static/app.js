@@ -1,72 +1,79 @@
 // --- Estado Global ---
-let currentApps = [];
-let activeAppId = "tts_platform_pt";
+let ptyWs = null;
+let eventsWs = null;
 let chatWs = null;
-let terminalWs = null;
-let currentAssistantMsgElement = null;
+let term = null;
+let fitAddon = null;
+let activeTab = "tab-terminal";
+let activePreview = { url: "http://127.0.0.1:8000", title: "Aplicação", app_id: "tts_platform_pt" };
+let currentClientIp = "";
 
-// --- Elementos DOM ---
+// --- Elementos do DOM ---
 const loginModal = document.getElementById("login-modal");
 const loginForm = document.getElementById("login-form");
 const passwordInput = document.getElementById("password-input");
 const loginError = document.getElementById("login-error");
 const appContainer = document.getElementById("app-container");
-
-const appSelect = document.getElementById("app-select");
-const addCustomAppBtn = document.getElementById("add-custom-app-btn");
-const appIframe = document.getElementById("app-iframe");
-const previewAppTitle = document.getElementById("preview-app-title");
-const previewAppUrl = document.getElementById("preview-app-url");
-const reloadPreviewBtn = document.getElementById("reload-preview-btn");
-const openExternalBtn = document.getElementById("open-external-btn");
-
-const vramPill = document.getElementById("vram-pill");
-const vramText = document.getElementById("vram-text");
-const modelPill = document.getElementById("model-pill");
-const modelPillText = document.getElementById("model-pill-text");
 const logoutBtn = document.getElementById("logout-btn");
+const connStatusDot = document.getElementById("conn-status-dot");
+const vramBadge = document.getElementById("vram-badge");
+const vramText = document.getElementById("vram-text");
 
-const chatMessages = document.getElementById("chat-messages");
-const chatInput = document.getElementById("chat-input");
-const sendChatBtn = document.getElementById("send-chat-btn");
-const clearChatBtn = document.getElementById("clear-chat-btn");
+// Toast
+const toastNotification = document.getElementById("toast-notification");
+const toastTitle = document.getElementById("toast-title");
+const toastBody = document.getElementById("toast-body");
+const toastActionBtn = document.getElementById("toast-action-btn");
 
-// Sub-abas do painel direito (MCP vs Terminal)
-const tabBtnMcp = document.getElementById("tab-btn-mcp");
-const tabBtnTerminal = document.getElementById("tab-btn-terminal");
-const mcpContainer = document.getElementById("mcp-container");
-const terminalContainer = document.getElementById("terminal-container");
+// Preview
+const previewTitle = document.getElementById("preview-title");
+const previewUrlBadge = document.getElementById("preview-url-badge");
+const previewIframe = document.getElementById("preview-iframe");
+const btnToggleCustomUrl = document.getElementById("btn-toggle-custom-url");
+const customUrlBar = document.getElementById("custom-url-bar");
+const customUrlInput = document.getElementById("custom-url-input");
+const btnApplyCustomUrl = document.getElementById("btn-apply-custom-url");
+const btnReloadPreview = document.getElementById("btn-reload-preview");
+const btnOpenExternal = document.getElementById("btn-open-external");
+const appBadgeDots = [document.getElementById("app-badge-dot"), document.getElementById("mobile-app-badge")];
 
-// Alternador dentro da aba MCP (Tools vs Web Preview)
-const btnShowMcpTools = document.getElementById("btn-show-mcp-tools");
-const btnShowWebPreview = document.getElementById("btn-show-web-preview");
-const mcpToolsView = document.getElementById("mcp-tools-view");
-const webPreviewView = document.getElementById("web-preview-view");
+// Status & Whitelist
+const statusTunnelUrl = document.getElementById("status-tunnel-url");
+const btnCopyTunnel = document.getElementById("btn-copy-tunnel");
+const currentClientIpEl = document.getElementById("current-client-ip");
+const whitelistToggle = document.getElementById("whitelist-toggle");
+const btnWhitelistCurrentIp = document.getElementById("btn-whitelist-current-ip");
+const whitelistItems = document.getElementById("whitelist-items");
+const manualIpInput = document.getElementById("manual-ip-input");
+const btnAddManualIp = document.getElementById("btn-add-manual-ip");
+const btnRefreshVram = document.getElementById("btn-refresh-vram");
+const metricVramUsage = document.getElementById("metric-vram-usage");
+const metricVramBar = document.getElementById("metric-vram-bar");
+const metricGpuTemp = document.getElementById("metric-gpu-temp");
+const metricGpuUtil = document.getElementById("metric-gpu-util");
 
-const mcpToolsList = document.getElementById("mcp-tools-list");
-const mcpCallLog = document.getElementById("mcp-call-log");
-const clearMcpLogBtn = document.getElementById("clear-mcp-log-btn");
+// Terminal
+const xtermContainer = document.getElementById("xterm-container");
+const terminalStatusText = document.getElementById("terminal-status-text");
+const btnRestartPty = document.getElementById("btn-restart-pty");
+const btnClearTerm = document.getElementById("btn-clear-term");
 
-// Terminal dedicado
-const quickChipsContainer = document.getElementById("quick-action-chips");
-const terminalOutput = document.getElementById("terminal-output");
-const terminalForm = document.getElementById("terminal-form");
-const terminalInput = document.getElementById("terminal-input");
-
-// Modal de Modelo
-const modelModal = document.getElementById("model-modal");
-const closeModelModal = document.getElementById("close-model-modal");
-const modelForm = document.getElementById("model-form");
-const providerSelect = document.getElementById("provider-select");
-const modelNameInput = document.getElementById("model-name-input");
-const apiKeyInput = document.getElementById("api-key-input");
-const baseUrlInput = document.getElementById("base-url-input");
+// Chat
+const chatMessagesContainer = document.getElementById("chat-messages-container");
+const webChatInput = document.getElementById("web-chat-input");
+const btnSendWebChat = document.getElementById("btn-send-web-chat");
+const btnClearChat = document.getElementById("btn-clear-chat");
 
 // --- Inicialização ---
 document.addEventListener("DOMContentLoaded", async () => {
-  setupEventListeners();
-  const authOk = await checkAuth();
-  if (authOk) {
+  setupNavigation();
+  setupTouchBar();
+  setupPreviewControls();
+  setupWhitelistControls();
+  setupChatControls();
+
+  const authenticated = await checkAuth();
+  if (authenticated) {
     showApp();
   } else {
     showLogin();
@@ -93,7 +100,7 @@ function showLogin() {
 function showApp() {
   loginModal.classList.add("hidden");
   appContainer.classList.remove("hidden");
-  initApp();
+  initApplication();
 }
 
 loginForm.addEventListener("submit", async (e) => {
@@ -103,7 +110,7 @@ loginForm.addEventListener("submit", async (e) => {
     const res = await fetch("/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: jsonStringify({ password: passwordInput.value })
+      body: JSON.stringify({ password: passwordInput.value })
     });
     const data = await res.json();
     if (data.ok) {
@@ -112,7 +119,7 @@ loginForm.addEventListener("submit", async (e) => {
       loginError.textContent = data.error || "Senha incorreta.";
       loginError.classList.remove("hidden");
     }
-  } catch (err) {
+  } catch {
     loginError.textContent = "Erro ao conectar com o servidor.";
     loginError.classList.remove("hidden");
   }
@@ -123,324 +130,472 @@ logoutBtn.addEventListener("click", async () => {
   window.location.reload();
 });
 
-// --- Inicialização dos Componentes ---
-async function initApp() {
-  await loadApps();
-  await loadVram();
-  await loadModelConfig();
-  await loadMcpTools();
-  await loadMcpHistory();
+// --- Inicialização do App ---
+async function initApplication() {
+  initTerminal();
+  connectPtyWs();
+  connectEventsWs();
   connectChatWs();
-  connectTerminalWs();
+  await loadPreviewState();
+  await loadIpStatus();
+  await loadVramTelemetry();
+  await loadTunnelInfo();
 
-  // Polling leve para VRAM e histórico MCP a cada 15 segundos
-  setInterval(loadVram, 15000);
-  setInterval(loadMcpHistory, 10000);
+  // Polling periódico de telemetria
+  setInterval(loadVramTelemetry, 15000);
 }
 
-// --- Carregar Aplicações & Iframe ---
-async function loadApps() {
+// --- Navegação entre Abas (Fazer uma coisa por vez) ---
+function setupNavigation() {
+  const allTabButtons = document.querySelectorAll("[data-tab]");
+  allTabButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const targetTab = btn.getAttribute("data-tab");
+      switchTab(targetTab);
+    });
+  });
+
+  toastActionBtn.addEventListener("click", () => {
+    toastNotification.classList.add("hidden");
+    switchTab("tab-app");
+  });
+}
+
+function switchTab(tabId) {
+  activeTab = tabId;
+
+  // Atualiza botões
+  document.querySelectorAll("[data-tab]").forEach(btn => {
+    if (btn.getAttribute("data-tab") === tabId) {
+      btn.classList.add("active");
+    } else {
+      btn.classList.remove("active");
+    }
+  });
+
+  // Alterna views
+  document.querySelectorAll(".tab-view").forEach(view => {
+    if (view.id === tabId) {
+      view.classList.add("active");
+    } else {
+      view.classList.remove("active");
+    }
+  });
+
+  // Ajustes específicos ao entrar na aba
+  if (tabId === "tab-terminal") {
+    setTimeout(() => {
+      if (fitAddon) {
+        fitAddon.fit();
+      }
+      if (term) {
+        term.focus();
+      }
+    }, 50);
+  } else if (tabId === "tab-app") {
+    // Remove badge de notificação
+    appBadgeDots.forEach(dot => dot && dot.classList.add("hidden"));
+  }
+}
+
+// --- Terminal Interativo (xterm.js + PTY) ---
+function initTerminal() {
+  if (term) return;
+
+  const TerminalConstructor = window.Terminal || Terminal;
+  const FitAddonConstructor = (window.FitAddon && window.FitAddon.FitAddon) || window.FitAddon || FitAddon;
+
+  term = new TerminalConstructor({
+    cursorBlink: true,
+    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace',
+    fontSize: 13,
+    theme: {
+      background: "#000000",
+      foreground: "#f8fafc",
+      cursor: "#38bdf8",
+      black: "#0f172a",
+      red: "#ef4444",
+      green: "#10b981",
+      yellow: "#f59e0b",
+      blue: "#38bdf8",
+      magenta: "#c084fc",
+      cyan: "#22d3ee",
+      white: "#f8fafc",
+      brightBlack: "#475569",
+      brightRed: "#f87171",
+      brightGreen: "#34d399",
+      brightYellow: "#fbbf24",
+      brightBlue: "#60a5fa",
+      brightMagenta: "#e879f9",
+      brightCyan: "#67e8f9",
+      brightWhite: "#ffffff"
+    },
+    convertEol: true,
+    scrollback: 5000
+  });
+
+  if (FitAddonConstructor) {
+    fitAddon = new FitAddonConstructor();
+    term.loadAddon(fitAddon);
+  }
+
+  term.open(xtermContainer);
+
+  if (fitAddon) {
+    setTimeout(() => fitAddon.fit(), 100);
+  }
+
+  // Envia digitação direta do teclado para o WebSocket PTY
+  term.onData(data => {
+    if (ptyWs && ptyWs.readyState === WebSocket.OPEN) {
+      ptyWs.send(data);
+    }
+  });
+
+  // Notifica o backend sobre redimensionamento da janela do terminal
+  term.onResize(size => {
+    if (ptyWs && ptyWs.readyState === WebSocket.OPEN) {
+      ptyWs.send(JSON.stringify({ type: "resize", cols: size.cols, rows: size.rows }));
+    }
+  });
+
+  window.addEventListener("resize", () => {
+    if (activeTab === "tab-terminal" && fitAddon) {
+      fitAddon.fit();
+    }
+  });
+}
+
+function connectPtyWs() {
+  const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+  ptyWs = new WebSocket(`${protocol}//${window.location.host}/ws/pty?session_id=mobile`);
+
+  ptyWs.onopen = () => {
+    terminalStatusText.textContent = "🟢 Conectado ao Bash do host";
+    terminalStatusText.style.color = "var(--green)";
+    if (fitAddon && term) {
+      fitAddon.fit();
+      ptyWs.send(JSON.stringify({ type: "resize", cols: term.cols, rows: term.rows }));
+    }
+  };
+
+  ptyWs.onmessage = (event) => {
+    if (term) {
+      term.write(event.data);
+    }
+  };
+
+  ptyWs.onclose = () => {
+    terminalStatusText.textContent = "🔴 Desconectado (reconectando...)";
+    terminalStatusText.style.color = "var(--red)";
+    setTimeout(connectPtyWs, 3000);
+  };
+}
+
+// Botões Touch de Celular para Terminal
+function setupTouchBar() {
+  // Teclas especiais
+  const keyMap = {
+    tab: "\t",
+    ctrl_c: "\x03",
+    esc: "\x1b",
+    up: "\x1b[A",
+    down: "\x1b[B",
+    left: "\x1b[D",
+    right: "\x1b[C",
+    enter: "\r"
+  };
+
+  document.querySelectorAll(".key-btn").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const keyId = btn.getAttribute("data-key");
+      const seq = keyMap[keyId];
+      if (seq && ptyWs && ptyWs.readyState === WebSocket.OPEN) {
+        ptyWs.send(seq);
+        if (term) term.focus();
+      }
+    });
+  });
+
+  // Chips de comandos
+  document.querySelectorAll(".chip-btn").forEach(chip => {
+    chip.addEventListener("click", (e) => {
+      e.preventDefault();
+      const cmd = chip.getAttribute("data-cmd");
+      if (cmd && ptyWs && ptyWs.readyState === WebSocket.OPEN) {
+        ptyWs.send(cmd + "\r");
+        if (term) term.focus();
+      }
+    });
+  });
+
+  btnRestartPty.addEventListener("click", () => {
+    if (ptyWs && ptyWs.readyState === WebSocket.OPEN) {
+      ptyWs.send("\x03"); // Envia Ctrl+C primeiro
+      ptyWs.send("reset\r");
+    }
+  });
+
+  btnClearTerm.addEventListener("click", () => {
+    if (term) term.clear();
+  });
+}
+
+// --- Live Preview da Aplicação ---
+function computePreviewUrl(targetUrl) {
+  if (!targetUrl) return "about:blank";
+
+  // Se a página estiver rodando em HTTPS (Cloudflare Tunnel), direciona portas locais pelo proxy reverso do host
+  const isHttps = window.location.protocol === "https:";
+  const portMatch = targetUrl.match(/(?:localhost|127\.0\.0\.1):(\d+)/);
+
+  if (isHttps && portMatch) {
+    const port = portMatch[1];
+    return `/proxy/port/${port}/`;
+  }
+
+  return targetUrl;
+}
+
+function updatePreviewUi(url, title) {
+  activePreview.url = url;
+  activePreview.title = title || "Aplicação";
+
+  previewTitle.textContent = activePreview.title;
+  previewUrlBadge.textContent = url;
+  previewUrlBadge.title = url;
+
+  const resolvedUrl = computePreviewUrl(url);
+  if (previewIframe.src !== resolvedUrl) {
+    previewIframe.src = resolvedUrl;
+  }
+}
+
+async function loadPreviewState() {
+  try {
+    const res = await fetch("/api/preview");
+    const data = await res.json();
+    if (data.url) {
+      updatePreviewUi(data.url, data.title);
+    }
+  } catch {}
+}
+
+function setupPreviewControls() {
+  btnToggleCustomUrl.addEventListener("click", () => {
+    customUrlBar.classList.toggle("hidden");
+    if (!customUrlBar.classList.contains("hidden")) {
+      customUrlInput.value = activePreview.url;
+      customUrlInput.focus();
+    }
+  });
+
+  btnApplyCustomUrl.addEventListener("click", async () => {
+    const rawVal = customUrlInput.value.trim();
+    if (!rawVal) return;
+
+    try {
+      const res = await fetch("/api/preview", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: rawVal, title: "Aplicação Customizada" })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        updatePreviewUi(data.preview.url, data.preview.title);
+        customUrlBar.classList.add("hidden");
+      }
+    } catch {}
+  });
+
+  btnReloadPreview.addEventListener("click", () => {
+    if (previewIframe.src && previewIframe.src !== "about:blank") {
+      previewIframe.src = previewIframe.src;
+    }
+  });
+
+  btnOpenExternal.addEventListener("click", () => {
+    if (activePreview.url) {
+      const resolved = computePreviewUrl(activePreview.url);
+      window.open(resolved, "_blank");
+    }
+  });
+}
+
+// --- Canal de Eventos em Tempo Real (/ws/events) ---
+function connectEventsWs() {
+  const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+  eventsWs = new WebSocket(`${protocol}//${window.location.host}/ws/events`);
+
+  eventsWs.onopen = () => {
+    connStatusDot.className = "status-indicator online";
+  };
+
+  eventsWs.onmessage = (event) => {
+    try {
+      const data = JSON.parse(event.data);
+      if (data.type === "preview_updated") {
+        updatePreviewUi(data.url, data.title);
+
+        // Se o usuário estiver em outra aba (ex: no terminal digitando prompts), exibe o toast e badge
+        if (activeTab !== "tab-app") {
+          appBadgeDots.forEach(dot => dot && dot.classList.remove("hidden"));
+          toastTitle.textContent = data.title || "Aplicação Atualizada";
+          toastBody.textContent = `Visualização pronta em: ${data.url}`;
+          toastNotification.classList.remove("hidden");
+
+          // Esconde automaticamente após 6 segundos
+          setTimeout(() => {
+            toastNotification.classList.add("hidden");
+          }, 6000);
+        }
+      }
+    } catch {}
+  };
+
+  eventsWs.onclose = () => {
+    connStatusDot.className = "status-indicator offline";
+    setTimeout(connectEventsWs, 3000);
+  };
+}
+
+// --- Status, Túnel & IP Whitelist ---
+async function loadTunnelInfo() {
   try {
     const res = await fetch("/api/apps");
     const data = await res.json();
-    currentApps = data.apps || [];
-    activeAppId = data.active_app || (currentApps[0] ? currentApps[0].id : "");
-
-    // Preenche Select
-    appSelect.innerHTML = "";
-    currentApps.forEach(app => {
-      const opt = document.createElement("option");
-      opt.value = app.id;
-      opt.textContent = `${app.name} (porta ${app.port})`;
-      if (app.id === activeAppId) opt.selected = true;
-      appSelect.appendChild(opt);
-    });
-
-    // Renderiza Quick Action Chips do terminal
-    renderQuickChips(data.quick_actions || []);
-
-    // Atualiza preview
-    updatePreview(activeAppId);
-  } catch (err) {
-    console.error("Erro ao carregar apps:", err);
-  }
-}
-
-function updatePreview(appId) {
-  activeAppId = appId;
-  const app = currentApps.find(a => a.id === appId);
-  if (!app) return;
-
-  previewAppTitle.textContent = app.name;
-  previewAppUrl.textContent = app.url;
-
-  // Usa o proxy reverso para contornar Mixed Content no HTTPS do Cloudflare Tunnel
-  const proxyUrl = `/proxy/${app.id}/`;
-  appIframe.src = proxyUrl;
-}
-
-appSelect.addEventListener("change", async (e) => {
-  const chosen = e.target.value;
-  updatePreview(chosen);
-  await fetch("/api/apps/active", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: jsonStringify({ app_id: chosen })
-  });
-});
-
-reloadPreviewBtn.addEventListener("click", () => {
-  if (appIframe) appIframe.src = appIframe.src;
-});
-
-openExternalBtn.addEventListener("click", () => {
-  const app = currentApps.find(a => a.id === activeAppId);
-  if (app) window.open(app.url, "_blank");
-});
-
-addCustomAppBtn.addEventListener("click", async () => {
-  const name = prompt("Nome da aplicação (ex: Meu App):");
-  if (!name) return;
-  const url = prompt("URL da aplicação (ex: http://127.0.0.1:8080):", "http://127.0.0.1:8080");
-  if (!url) return;
-
-  let port = 8000;
-  try {
-    const u = new URL(url);
-    port = parseInt(u.port) || 80;
-  } catch {}
-
-  const id = name.toLowerCase().replace(/[^a-z0-9]/g, "_") + "_" + Math.floor(Math.random() * 1000);
-
-  const res = await fetch("/api/apps", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: jsonStringify({ id, name, url, port, desc: "Custom" })
-  });
-  const data = await res.json();
-  if (data.ok) {
-    await loadApps();
-    appSelect.value = id;
-    updatePreview(id);
-  }
-});
-
-// --- Aba MCP: Ferramentas e Histórico ---
-async function loadMcpTools() {
-  try {
-    const res = await fetch("/api/mcp/tools");
-    const data = await res.json();
-    const tools = data.tools || [];
-    renderMcpTools(tools);
-  } catch (err) {
-    console.error("Erro ao carregar ferramentas MCP:", err);
-  }
-}
-
-function renderMcpTools(tools) {
-  mcpToolsList.innerHTML = "";
-  tools.forEach(t => {
-    const card = document.createElement("div");
-    card.className = "tool-card";
-
-    const title = document.createElement("div");
-    title.className = "tool-card-title";
-    title.textContent = `🛠️ ${t.name}`;
-
-    const desc = document.createElement("div");
-    desc.className = "tool-card-desc";
-    desc.textContent = t.description;
-
-    const runBtn = document.createElement("button");
-    runBtn.className = "btn-tool-run";
-    runBtn.textContent = "Executar";
-    runBtn.addEventListener("click", () => triggerMcpTool(t));
-
-    card.appendChild(title);
-    card.appendChild(desc);
-    card.appendChild(runBtn);
-    mcpToolsList.appendChild(card);
-  });
-}
-
-async function triggerMcpTool(tool) {
-  let args = {};
-  const schema = tool.inputSchema || {};
-  const required = schema.required || [];
-
-  if (tool.name === "execute_whitelisted_command") {
-    const cmd = prompt("Digite o comando a executar (ex: git status, nvidia-smi):", "git status");
-    if (!cmd) return;
-    args = { command: cmd };
-  } else if (tool.name === "set_active_application") {
-    const appId = prompt(`Digite o ID da aplicação (ex: ${currentApps.map(a => a.id).join(", ")}):`, activeAppId);
-    if (!appId) return;
-    args = { app_id: appId };
-  } else if (tool.name === "send_remote_chat") {
-    const msg = prompt("Digite a mensagem a enviar para a tela remota:");
-    if (!msg) return;
-    args = { message: msg };
-  }
-
-  try {
-    const res = await fetch("/api/mcp/call", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: jsonStringify({ name: tool.name, arguments: args })
-    });
-    const data = await res.json();
-    renderMcpLogs(data.history || []);
-
-    if (tool.name === "set_active_application" && args.app_id) {
-      updatePreview(args.app_id);
-      appSelect.value = args.app_id;
+    if (data.tunnel_url) {
+      statusTunnelUrl.textContent = data.tunnel_url;
+      btnCopyTunnel.onclick = () => {
+        navigator.clipboard.writeText(data.tunnel_url);
+        btnCopyTunnel.textContent = "Copiado!";
+        setTimeout(() => btnCopyTunnel.textContent = "Copiar", 2000);
+      };
+    } else {
+      statusTunnelUrl.textContent = "http://127.0.0.1:8765 (Local)";
     }
-  } catch (err) {
-    alert("Erro ao executar ferramenta MCP: " + err);
-  }
-}
-
-async function loadMcpHistory() {
-  try {
-    const res = await fetch("/api/mcp/history");
-    const data = await res.json();
-    renderMcpLogs(data.history || []);
   } catch {}
 }
 
-function renderMcpLogs(history) {
-  if (!history || history.length === 0) {
-    mcpCallLog.innerHTML = `<div class="mcp-log-empty">Nenhuma chamada de ferramenta registrada ainda.</div>`;
+async function loadIpStatus() {
+  try {
+    const res = await fetch("/api/ip/status");
+    const data = await res.json();
+
+    currentClientIp = data.client_ip;
+    currentClientIpEl.textContent = data.client_ip;
+    whitelistToggle.checked = Boolean(data.ip_whitelist_enabled);
+
+    renderWhitelist(data.allowed_ips || []);
+  } catch {}
+}
+
+function renderWhitelist(ips) {
+  whitelistItems.innerHTML = "";
+  if (!ips || ips.length === 0) {
+    whitelistItems.innerHTML = '<li class="empty-state text-muted text-xs">Nenhum IP restrito. Qualquer IP com senha pode conectar.</li>';
     return;
   }
 
-  mcpCallLog.innerHTML = "";
-  // Exibe do mais recente para o mais antigo
-  history.slice().reverse().forEach(item => {
-    const row = document.createElement("div");
-    row.className = "mcp-log-item";
+  ips.forEach(ip => {
+    const li = document.createElement("li");
+    li.className = "whitelist-item";
+    li.innerHTML = `
+      <span>${ip}</span>
+      <button class="btn-xs btn-remove-ip" data-ip="${ip}">Remover</button>
+    `;
+    whitelistItems.appendChild(li);
+  });
 
-    const header = document.createElement("div");
-    header.className = "mcp-log-header";
-    header.innerHTML = `<span>[${item.timestamp}]</span> <strong>${item.name}</strong>`;
-
-    const resPre = document.createElement("pre");
-    resPre.className = "mcp-log-result";
-    resPre.textContent = item.result || "(sem retorno)";
-
-    row.appendChild(header);
-    row.appendChild(resPre);
-    mcpCallLog.appendChild(row);
+  document.querySelectorAll(".btn-remove-ip").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const ip = btn.getAttribute("data-ip");
+      await updateWhitelist({ remove_ip: ip });
+    });
   });
 }
 
-clearMcpLogBtn.addEventListener("click", () => {
-  mcpCallLog.innerHTML = `<div class="mcp-log-empty">Log limpo.</div>`;
-});
+async function updateWhitelist(payload) {
+  try {
+    const res = await fetch("/api/ip/whitelist", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (data.ok) {
+      whitelistToggle.checked = Boolean(data.ip_whitelist_enabled);
+      renderWhitelist(data.ip_whitelist);
+    }
+  } catch {}
+}
 
-// --- Alternadores de Visão (MCP Tools vs Web Preview) ---
-btnShowMcpTools.addEventListener("click", () => {
-  btnShowMcpTools.classList.add("active");
-  btnShowWebPreview.classList.remove("active");
-  mcpToolsView.classList.remove("hidden");
-  webPreviewView.classList.add("hidden");
-});
+function setupWhitelistControls() {
+  whitelistToggle.addEventListener("change", async () => {
+    await updateWhitelist({ enabled: whitelistToggle.checked });
+  });
 
-btnShowWebPreview.addEventListener("click", () => {
-  btnShowWebPreview.classList.add("active");
-  btnShowMcpTools.classList.remove("active");
-  webPreviewView.classList.remove("hidden");
-  mcpToolsView.classList.add("hidden");
-});
+  btnWhitelistCurrentIp.addEventListener("click", async () => {
+    if (currentClientIp) {
+      await updateWhitelist({ ip: currentClientIp, enabled: true });
+      btnWhitelistCurrentIp.textContent = "✅ IP Autorizado com Sucesso!";
+      setTimeout(() => {
+        btnWhitelistCurrentIp.textContent = "✅ Autorizar meu IP Atual na Whitelist";
+      }, 3000);
+    }
+  });
 
-// --- Alternadores de Aba no Painel Direito (Desktop) ---
-tabBtnMcp.addEventListener("click", () => {
-  tabBtnMcp.classList.add("active");
-  tabBtnTerminal.classList.remove("active");
-  mcpContainer.classList.remove("hidden");
-  terminalContainer.classList.add("hidden");
-});
+  btnAddManualIp.addEventListener("click", async () => {
+    const val = manualIpInput.value.trim();
+    if (val) {
+      await updateWhitelist({ ip: val });
+      manualIpInput.value = "";
+    }
+  });
 
-tabBtnTerminal.addEventListener("click", () => {
-  tabBtnTerminal.classList.add("active");
-  tabBtnMcp.classList.remove("active");
-  terminalContainer.classList.remove("hidden");
-  mcpContainer.classList.add("hidden");
-  terminalInput.focus();
-});
+  btnRefreshVram.addEventListener("click", loadVramTelemetry);
+}
 
-// --- Telemetria VRAM ---
-async function loadVram() {
+async function loadVramTelemetry() {
   try {
     const res = await fetch("/api/vram");
     const data = await res.json();
     if (data.available) {
-      vramText.textContent = `VRAM: ${data.used_gb} / ${data.total_gb} GB (${data.percent}%)`;
+      vramText.textContent = `GPU: ${data.percent}% (${data.used_gb}/${data.total_gb} GB)`;
+      metricVramUsage.textContent = `${data.used_gb} / ${data.total_gb} GB (${data.percent}%)`;
+      metricVramBar.style.width = `${data.percent}%`;
+      metricGpuTemp.textContent = `${data.temp_c} °C`;
+      metricGpuUtil.textContent = `${data.gpu_util_pct} %`;
     } else {
-      vramText.textContent = "GPU: Local";
+      vramText.textContent = "GPU: N/A";
+      metricVramUsage.textContent = "Indisponível";
+      metricVramBar.style.width = "0%";
     }
-  } catch {
-    vramText.textContent = "GPU: --";
-  }
+  } catch {}
 }
 
-vramPill.addEventListener("click", loadVram);
-
-// --- Configuração do Modelo LLM ---
-async function loadModelConfig() {
-  try {
-    const res = await fetch("/api/models");
-    const data = await res.json();
-    const curr = data.current || {};
-    modelPillText.textContent = `IA: ${curr.provider || "ollama"} (${curr.model || "default"})`;
-    providerSelect.value = curr.provider || "ollama";
-    modelNameInput.value = curr.model || "";
-    apiKeyInput.value = curr.api_key || "";
-    baseUrlInput.value = curr.base_url || "";
-  } catch (err) {
-    console.error("Erro ao carregar modelos:", err);
-  }
-}
-
-modelPill.addEventListener("click", () => modelModal.classList.remove("hidden"));
-closeModelModal.addEventListener("click", () => modelModal.classList.add("hidden"));
-
-modelForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const payload = {
-    provider: providerSelect.value,
-    model: modelNameInput.value.trim(),
-    api_key: apiKeyInput.value.trim(),
-    base_url: baseUrlInput.value.trim()
-  };
-  await fetch("/api/models", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: jsonStringify(payload)
-  });
-  modelModal.classList.add("hidden");
-  await loadModelConfig();
-});
-
-// --- WebSocket do Chat ---
+// --- Chat IA Opcional ---
 function connectChatWs() {
   const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
   chatWs = new WebSocket(`${protocol}//${window.location.host}/ws/chat`);
 
+  let currentMsgEl = null;
+
   chatWs.onmessage = (event) => {
     const data = JSON.parse(event.data);
     if (data.type === "start") {
-      currentAssistantMsgElement = appendMessage("assistant", "");
+      currentMsgEl = appendChatMessage("assistant", "");
     } else if (data.type === "chunk") {
-      if (currentAssistantMsgElement) {
-        currentAssistantMsgElement.innerHTML += formatText(data.content);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+      if (currentMsgEl) {
+        currentMsgEl.textContent += data.content;
+        chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
       }
     } else if (data.type === "done") {
-      currentAssistantMsgElement = null;
+      currentMsgEl = null;
     } else if (data.type === "error") {
-      appendMessage("system-msg", `❌ ${data.content}`);
-      currentAssistantMsgElement = null;
+      appendChatMessage("system-msg", `❌ ${data.content}`);
+      currentMsgEl = null;
     }
   };
 
@@ -449,133 +604,38 @@ function connectChatWs() {
   };
 }
 
-function sendChatMessage() {
-  const text = chatInput.value.trim();
+function sendWebChat() {
+  const text = webChatInput.value.trim();
   if (!text || !chatWs || chatWs.readyState !== WebSocket.OPEN) return;
 
-  appendMessage("user", text);
-  chatInput.value = "";
-  chatInput.style.height = "auto";
-
-  chatWs.send(jsonStringify({ message: text }));
+  appendChatMessage("user", text);
+  webChatInput.value = "";
+  chatWs.send(JSON.stringify({ message: text }));
 }
 
-function appendMessage(role, content) {
-  const msgDiv = document.createElement("div");
-  msgDiv.className = `message ${role}`;
-  msgDiv.innerHTML = formatText(content);
-  chatMessages.appendChild(msgDiv);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-  return msgDiv;
+function appendChatMessage(role, content) {
+  const div = document.createElement("div");
+  div.className = `message ${role}`;
+  div.textContent = content;
+  chatMessagesContainer.appendChild(div);
+  chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+  return div;
 }
 
-clearChatBtn.addEventListener("click", () => {
-  chatMessages.innerHTML = `
-    <div class="message system-msg">
-      👋 Conversa limpa. Você pode enviar uma nova pergunta ou comando.
-    </div>
-  `;
-});
-
-// --- WebSocket do Terminal Dedicado ---
-function connectTerminalWs() {
-  const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-  terminalWs = new WebSocket(`${protocol}//${window.location.host}/ws/terminal`);
-
-  terminalWs.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    if (data.type === "output") {
-      terminalOutput.textContent += data.text;
-      terminalOutput.scrollTop = terminalOutput.scrollHeight;
-    }
-  };
-
-  terminalWs.onclose = () => {
-    setTimeout(connectTerminalWs, 3000);
-  };
-}
-
-function sendTerminalCommand(cmd) {
-  const command = (cmd || terminalInput.value).trim();
-  if (!command || !terminalWs || terminalWs.readyState !== WebSocket.OPEN) return;
-
-  terminalInput.value = "";
-  terminalWs.send(jsonStringify({ command }));
-}
-
-terminalForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  sendTerminalCommand();
-});
-
-function renderQuickChips(chips) {
-  quickChipsContainer.innerHTML = "";
-  chips.forEach(c => {
-    const btn = document.createElement("button");
-    btn.className = "chip";
-    btn.textContent = c.label;
-    btn.title = `$ ${c.cmd}`;
-    btn.addEventListener("click", () => {
-      // Se não estiver na aba do terminal, troca pra ela
-      tabBtnTerminal.click();
-      sendTerminalCommand(c.cmd);
-    });
-    quickChipsContainer.appendChild(btn);
-  });
-}
-
-// --- Navegação Mobile (Tabs) ---
-function setupEventListeners() {
-  const tabButtons = document.querySelectorAll(".mobile-nav .tab-btn");
-  tabButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      tabButtons.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-
-      const targetId = btn.getAttribute("data-target");
-      const chatPane = document.getElementById("chat-pane");
-      const rightPane = document.getElementById("right-pane");
-
-      if (targetId === "chat-pane") {
-        chatPane.classList.add("active-pane");
-        rightPane.classList.remove("active-pane");
-      } else if (targetId === "mcp-container") {
-        chatPane.classList.remove("active-pane");
-        rightPane.classList.add("active-pane");
-        tabBtnMcp.click();
-      } else if (targetId === "terminal-container") {
-        chatPane.classList.remove("active-pane");
-        rightPane.classList.add("active-pane");
-        tabBtnTerminal.click();
-      }
-    });
-  });
-
-  // Envio de chat por Enter (Shift+Enter para pular linha)
-  chatInput.addEventListener("keydown", (e) => {
+function setupChatControls() {
+  btnSendWebChat.addEventListener("click", sendWebChat);
+  webChatInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      sendChatMessage();
+      sendWebChat();
     }
   });
 
-  sendChatBtn.addEventListener("click", sendChatMessage);
-}
-
-// --- Funções Utilitárias ---
-function jsonStringify(obj) {
-  return JSON.stringify(obj);
-}
-
-function formatText(str) {
-  if (!str) return "";
-  let escaped = str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-
-  escaped = escaped.replace(/`([^`]+)`/g, "<code>$1</code>");
-  escaped = escaped.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
-
-  return escaped;
+  btnClearChat.addEventListener("click", () => {
+    chatMessagesContainer.innerHTML = `
+      <div class="message system-msg">
+        👋 Conversa limpa. Use a aba <strong>Terminal</strong> para interagir com o agy e claude no PC.
+      </div>
+    `;
+  });
 }

@@ -2,23 +2,36 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Agent-Remote — Central de Controle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Agent-Remote — Terminal & Aplicações</title>
+  <link rel="stylesheet" href="/static/xterm.css">
   <link rel="stylesheet" href="/static/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
 </head>
 <body class="dark-theme">
+  <!-- Toast de Notificação do Agente -->
+  <div id="toast-notification" class="toast hidden">
+    <div class="toast-content">
+      <span class="toast-icon">🚀</span>
+      <div class="toast-text">
+        <strong id="toast-title">Aplicação Atualizada</strong>
+        <p id="toast-body">O agente enviou uma visualização web.</p>
+      </div>
+    </div>
+    <button id="toast-action-btn" class="toast-btn">Ver na Aba</button>
+  </div>
+
   <!-- Modal de Login -->
   <div id="login-modal" class="modal-overlay">
     <div class="modal-card">
       <div class="modal-header">
         <span class="logo-icon">🌐</span>
         <h2>Agent-Remote</h2>
-        <p>Controle remoto seguro do agente & ferramentas</p>
+        <p>Acesse seu PC de casa pelo celular com segurança</p>
       </div>
       <form id="login-form">
         <div class="form-group">
-          <label for="password-input">Senha de Acesso</label>
+          <label for="password-input">Senha do Servidor</label>
           <input type="password" id="password-input" placeholder="Digite sua senha..." autocomplete="current-password" required autofocus>
         </div>
         <p id="login-error" class="error-msg hidden"></p>
@@ -27,201 +40,264 @@
     </div>
   </div>
 
-  <!-- Modal de Configuração do LLM -->
-  <div id="model-modal" class="modal-overlay hidden">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3>⚙️ Provedor & Modelo de IA</h3>
-        <button id="close-model-modal" class="close-btn">&times;</button>
-      </div>
-      <form id="model-form">
-        <div class="form-group">
-          <label for="provider-select">Provedor</label>
-          <select id="provider-select">
-            <option value="ollama">Ollama Local (padrão)</option>
-            <option value="gemini">Google Gemini</option>
-            <option value="openai">OpenAI</option>
-            <option value="anthropic">Anthropic Claude</option>
-            <option value="groq">Groq</option>
-            <option value="openrouter">OpenRouter</option>
-            <option value="custom">Custom (OpenAI-compatible)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="model-name-input">Nome do Modelo</label>
-          <input type="text" id="model-name-input" placeholder="ex: qwen3.5:9b ou gemini-2.5-flash">
-        </div>
-        <div class="form-group">
-          <label for="api-key-input">Chave de API (opcional se configurado no servidor)</label>
-          <input type="password" id="api-key-input" placeholder="Cole sua chave aqui se necessário...">
-        </div>
-        <div class="form-group" id="base-url-group">
-          <label for="base-url-input">Endpoint Base URL</label>
-          <input type="text" id="base-url-input" placeholder="http://127.0.0.1:11434/v1">
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">Salvar Preferências</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Aplicação Principal -->
-  <div id="app-container" class="app-container hidden">
-    <!-- Header Superior -->
-    <header class="top-nav">
-      <div class="nav-left">
-        <span class="logo">🌐 Agent-Remote</span>
-        
-        <!-- Seletor de Aplicação -->
-        <div class="app-selector-wrapper">
-          <label for="app-select" class="sr-only">Aplicação Ativa</label>
-          <select id="app-select" title="Escolha a aplicação ativa">
-            <!-- Populado dinamicamente -->
-          </select>
-          <button id="add-custom-app-btn" class="btn-icon" title="Adicionar URL customizada">+</button>
-        </div>
+  <!-- Container Principal da Aplicação -->
+  <div id="app-container" class="app-layout hidden">
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <span class="brand-logo">🌐 Agent-Remote</span>
+        <span id="conn-status-dot" class="status-indicator online" title="Conexão ativa"></span>
       </div>
 
-      <div class="nav-right">
-        <!-- VRAM Pill -->
-        <div id="vram-pill" class="status-pill" title="Clique para atualizar status de GPU">
-          <span class="dot green"></span>
+      <!-- Navegação por Abas (Desktop) -->
+      <nav class="desktop-tabs">
+        <button class="nav-tab-btn active" data-tab="tab-terminal">
+          <span class="tab-icon">⌨️</span> Terminal
+        </button>
+        <button class="nav-tab-btn" data-tab="tab-app">
+          <span class="tab-icon">📱</span> Aplicação
+          <span id="app-badge-dot" class="badge-dot hidden"></span>
+        </button>
+        <button class="nav-tab-btn" data-tab="tab-status">
+          <span class="tab-icon">⚙️</span> Status & IP
+        </button>
+        <button class="nav-tab-btn" data-tab="tab-chat">
+          <span class="tab-icon">💬</span> Chat IA
+        </button>
+      </nav>
+
+      <div class="header-right">
+        <div id="vram-badge" class="header-pill" title="Uso de GPU / VRAM">
+          <span class="pill-dot"></span>
           <span id="vram-text">GPU: ...</span>
         </div>
-
-        <!-- Model Pill -->
-        <button id="model-pill" class="btn-pill" title="Configurar provedor de IA">
-          <span id="model-pill-text">IA: Ollama</span>
-        </button>
-
-        <!-- Logout -->
-        <button id="logout-btn" class="btn-icon" title="Desconectar">🚪</button>
+        <button id="logout-btn" class="btn-icon" title="Encerrar Sessão">🚪</button>
       </div>
     </header>
 
-    <!-- Conteúdo Principal: Split View -->
-    <main class="main-content">
-      <!-- Painel Esquerdo: Chat com o Agente -->
-      <section id="chat-pane" class="pane pane-chat active-pane">
-        <div class="pane-header">
-          <h3>💬 Chat com o Agente</h3>
-          <button id="clear-chat-btn" class="btn-text" title="Limpar conversa">Limpar</button>
-        </div>
-
-        <div id="chat-messages" class="chat-messages">
-          <div class="message system-msg">
-            👋 Conectado ao <strong>Agent-Remote</strong>. O agente pode interagir diretamente com as ferramentas via <strong>MCP</strong>.
+    <!-- Área de Conteúdo das Abas (Fazer uma coisa por vez) -->
+    <main class="app-main">
+      <!-- ABA 1: TERMINAL INTERATIVO (PTY + xterm.js) -->
+      <section id="tab-terminal" class="tab-view active">
+        <div class="terminal-workspace">
+          <!-- Barra de Atalhos Touch para Celular -->
+          <div class="mobile-touch-bar">
+            <!-- Linha 1: Teclas Especiais de Terminal -->
+            <div class="touch-keys-row">
+              <button class="key-btn" data-key="tab" title="Tab Autocomplete">Tab</button>
+              <button class="key-btn danger" data-key="ctrl_c" title="Interromper (Ctrl+C)">Ctrl+C</button>
+              <button class="key-btn" data-key="esc" title="Escape">Esc</button>
+              <button class="key-btn" data-key="up" title="Histórico Anterior">↑</button>
+              <button class="key-btn" data-key="down" title="Histórico Próximo">↓</button>
+              <button class="key-btn" data-key="left" title="Mover Cursor Esquerda">←</button>
+              <button class="key-btn" data-key="right" title="Mover Cursor Direita">→</button>
+              <button class="key-btn primary" data-key="enter" title="Enter">↵</button>
+            </div>
+            <!-- Linha 2: Ações Rápidas de Agente & Git -->
+            <div class="touch-chips-row">
+              <button class="chip-btn chip-agent" data-cmd="agy" title="Iniciar Antigravity CLI">agy</button>
+              <button class="chip-btn chip-agent" data-cmd="claude" title="Iniciar Claude Code">claude</button>
+              <button class="chip-btn" data-cmd="git status" title="Verificar status do git">git status</button>
+              <button class="chip-btn" data-cmd="git push" title="Enviar alterações com git push">git push</button>
+              <button class="chip-btn" data-cmd="cd /home/marcelo/marcelo/Ferramentas" title="Ir para pasta Ferramentas">cd Ferramentas</button>
+              <button class="chip-btn" data-cmd="cd .." title="Subir diretório">cd ..</button>
+              <button class="chip-btn" data-cmd="clear" title="Limpar tela">clear</button>
+            </div>
           </div>
-        </div>
 
-        <div class="chat-input-wrapper">
-          <textarea id="chat-input" placeholder="Mensagem para o agente... (Shift+Enter para nova linha)" rows="1"></textarea>
-          <button id="send-chat-btn" class="btn btn-primary" title="Enviar">Enviar</button>
+          <!-- Container Real do xterm.js -->
+          <div id="xterm-container" class="xterm-container"></div>
+
+          <!-- Rodapé do Terminal com Status da Conexão PTY -->
+          <div class="terminal-footer">
+            <span id="terminal-status-text" class="text-xs text-muted">🟢 Conectado ao Bash do host</span>
+            <div class="terminal-footer-actions">
+              <button id="btn-restart-pty" class="btn-xs" title="Reiniciar sessão do shell">Reiniciar Shell</button>
+              <button id="btn-clear-term" class="btn-xs" title="Limpar visualização">Limpar</button>
+            </div>
+          </div>
         </div>
       </section>
 
-      <!-- Painel Direito: Abas (Aplicação MCP ou Terminal) -->
-      <section id="right-pane" class="pane pane-right">
-        <!-- Barra de Abas do Painel Direito -->
-        <div class="sub-tab-bar">
-          <button id="tab-btn-mcp" class="sub-tab-btn active" data-pane="mcp-container">
-            🛠️ Aplicação (MCP)
-          </button>
-          <button id="tab-btn-terminal" class="sub-tab-btn" data-pane="terminal-container">
-            ⌨️ Terminal
-          </button>
-        </div>
-
-        <!-- Conteúdo da Aba 1: Aplicação (MCP Hub + Web Preview) -->
-        <div id="mcp-container" class="sub-pane active-sub-pane">
-          <div class="mcp-toolbar">
-            <div class="mcp-status-pill">
-              <span class="dot green"></span>
-              <strong>MCP Server Ativo</strong> (STDIO & SSE)
+      <!-- ABA 2: APLICAÇÃO (LIVE PREVIEW VIA MCP) -->
+      <section id="tab-app" class="tab-view">
+        <div class="preview-workspace">
+          <!-- Barra Superior do Preview -->
+          <div class="preview-header">
+            <div class="preview-title-group">
+              <h3 id="preview-title">Aplicação</h3>
+              <span id="preview-url-badge" class="badge-url">Nenhuma</span>
             </div>
-            <div class="mcp-view-toggle">
-              <button id="btn-show-mcp-tools" class="toggle-pill active">🛠️ Ferramentas & Logs</button>
-              <button id="btn-show-web-preview" class="toggle-pill">🖥️ Web App View</button>
+            <div class="preview-controls">
+              <button id="btn-toggle-custom-url" class="btn-icon" title="Digitar URL ou porta manual">✏️</button>
+              <button id="btn-reload-preview" class="btn-icon" title="Recarregar aplicação">🔄</button>
+              <button id="btn-open-external" class="btn-icon" title="Abrir em nova aba do navegador">↗️</button>
             </div>
           </div>
 
-          <!-- Visão 1A: Ferramentas MCP & Histórico de Chamadas -->
-          <div id="mcp-tools-view" class="mcp-view-content">
-            <div class="mcp-section">
-              <div class="section-title">
-                <h4>🧰 Ferramentas MCP Disponíveis</h4>
-                <span class="text-xs text-muted">Acesse ou teste com 1 clique</span>
-              </div>
-              <div id="mcp-tools-list" class="tools-grid">
-                <!-- Populado dinamicamente -->
-              </div>
-            </div>
-
-            <div class="mcp-section">
-              <div class="section-title">
-                <h4>📜 Log de Execuções MCP</h4>
-                <button id="clear-mcp-log-btn" class="btn-text">Limpar</button>
-              </div>
-              <div id="mcp-call-log" class="mcp-log-list">
-                <div class="mcp-log-empty">Nenhuma chamada de ferramenta registrada ainda.</div>
-              </div>
-            </div>
+          <!-- Linha Expansível para Alterar URL Manualmente -->
+          <div id="custom-url-bar" class="custom-url-bar hidden">
+            <input type="text" id="custom-url-input" placeholder="Digite a porta ou URL (ex: 3000, 5173, http://127.0.0.1:8000)...">
+            <button id="btn-apply-custom-url" class="btn btn-sm btn-primary">Carregar</button>
           </div>
 
-          <!-- Visão 1B: Web Preview da Aplicação selecionada -->
-          <div id="web-preview-view" class="mcp-view-content hidden">
-            <div class="preview-header-bar">
-              <span id="preview-app-title">Aplicação</span>
-              <span id="preview-app-url" class="badge"></span>
-              <div class="preview-actions">
-                <button id="reload-preview-btn" class="btn-icon" title="Recarregar preview">🔄</button>
-                <button id="open-external-btn" class="btn-icon" title="Abrir em nova aba">↗️</button>
-              </div>
-            </div>
-            <div class="iframe-wrapper">
-              <iframe id="app-iframe" src="about:blank" frameborder="0" allowfullscreen></iframe>
-            </div>
+          <!-- Iframe da Aplicação -->
+          <div class="preview-iframe-wrapper">
+            <iframe id="preview-iframe" src="about:blank" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
           </div>
         </div>
+      </section>
 
-        <!-- Conteúdo da Aba 2: Terminal Dedicado -->
-        <div id="terminal-container" class="sub-pane hidden">
-          <div class="terminal-full-layout">
-            <!-- Chips de ação rápida -->
-            <div id="quick-action-chips" class="quick-chips">
-              <!-- Populado dinamicamente -->
+      <!-- ABA 3: STATUS & SEGURANÇA (IP WHITELIST, TUNNEL, VRAM) -->
+      <section id="tab-status" class="tab-view">
+        <div class="status-workspace">
+          <div class="cards-grid">
+            <!-- Card 1: Cloudflare Tunnel & Acesso Celular -->
+            <div class="card">
+              <div class="card-header">
+                <h4>☁️ Acesso Remoto (Cloudflare Tunnel)</h4>
+              </div>
+              <div class="card-body">
+                <p class="text-sm text-muted">URL pública HTTPS ativa para acessar do celular:</p>
+                <div class="tunnel-url-box">
+                  <code id="status-tunnel-url">Carregando URL...</code>
+                  <button id="btn-copy-tunnel" class="btn-sm">Copiar</button>
+                </div>
+                <div class="qr-container">
+                  <div id="qr-display" class="qr-placeholder">
+                    <span>📱 Escaneie o QR Code no terminal do PC ou copie o link acima.</span>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <!-- Tela do Terminal -->
-            <div id="terminal-output" class="terminal-screen terminal-full-screen"></div>
+            <!-- Card 2: IP Whitelist (Apenas seu celular) -->
+            <div class="card">
+              <div class="card-header">
+                <h4>🛡️ Proteção por IP Whitelist</h4>
+                <label class="switch-toggle" title="Ativar ou desativar proteção estrita por IP">
+                  <input type="checkbox" id="whitelist-toggle">
+                  <span class="slider"></span>
+                </label>
+              </div>
+              <div class="card-body">
+                <div class="ip-info-box">
+                  <span>Seu IP Detectado Agora:</span>
+                  <strong id="current-client-ip" class="ip-badge">Detectando...</strong>
+                </div>
+                <div class="ip-actions-row">
+                  <button id="btn-whitelist-current-ip" class="btn btn-sm btn-success">
+                    ✅ Autorizar meu IP Atual na Whitelist
+                  </button>
+                </div>
+                <hr class="divider">
+                <h5>IPs e Sub-redes Autorizados:</h5>
+                <ul id="whitelist-items" class="whitelist-list">
+                  <li class="empty-state">Nenhum IP restrito no momento.</li>
+                </ul>
+                <div class="add-ip-row">
+                  <input type="text" id="manual-ip-input" placeholder="Adicionar IP ou CIDR (ex: 201.86.12.34)...">
+                  <button id="btn-add-manual-ip" class="btn btn-sm btn-secondary">Adicionar</button>
+                </div>
+              </div>
+            </div>
 
-            <!-- Linha de Entrada do Terminal -->
-            <form id="terminal-form" class="terminal-input-row">
-              <span class="terminal-prompt">$</span>
-              <input type="text" id="terminal-input" placeholder="Digite um comando permitido (ex: git status, nvidia-smi)..." autocomplete="off">
-              <button type="submit" class="btn btn-secondary">Executar</button>
-            </form>
+            <!-- Card 3: Telemetria de GPU / VRAM -->
+            <div class="card">
+              <div class="card-header">
+                <h4>⚡ GPU & Hardware (nvidia-smi)</h4>
+                <button id="btn-refresh-vram" class="btn-icon">🔄</button>
+              </div>
+              <div class="card-body">
+                <div id="gpu-info-content">
+                  <div class="metric-row">
+                    <span>Uso de VRAM:</span>
+                    <strong id="metric-vram-usage">-- / -- GB (--%)</strong>
+                  </div>
+                  <div class="progress-bar-bg">
+                    <div id="metric-vram-bar" class="progress-bar-fill" style="width: 0%"></div>
+                  </div>
+                  <div class="metrics-grid">
+                    <div class="metric-box">
+                      <span class="label">Temperatura</span>
+                      <strong id="metric-gpu-temp">-- °C</strong>
+                    </div>
+                    <div class="metric-box">
+                      <span class="label">Utilização GPU</span>
+                      <strong id="metric-gpu-util">-- %</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 4: Configuração MCP para Agentes -->
+            <div class="card">
+              <div class="card-header">
+                <h4>🤖 Configuração MCP (Antigravity & Claude Code)</h4>
+              </div>
+              <div class="card-body">
+                <p class="text-sm text-muted">Para o agente colocar aplicações na aba automaticamente, conecte o MCP Server:</p>
+                <div class="code-snippet-box">
+                  <div class="snippet-label">No Claude Code:</div>
+                  <code>claude mcp add agent-remote python /home/marcelo/marcelo/Ferramentas/agent-remote/mcp_server.py</code>
+                </div>
+                <div class="code-snippet-box">
+                  <div class="snippet-label">No Antigravity CLI (agy):</div>
+                  <code>Conectado via STDIO automático ou HTTP SSE em http://127.0.0.1:8765/mcp/sse</code>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA 4: CHAT IA (OPCIONAL) -->
+      <section id="tab-chat" class="tab-view">
+        <div class="chat-workspace">
+          <div class="chat-header">
+            <span class="text-sm">💬 Conversa com LLM</span>
+            <button id="btn-chat-model-settings" class="btn-sm btn-outline">Configurar Modelo</button>
+            <button id="btn-clear-chat" class="btn-sm btn-outline">Limpar</button>
+          </div>
+          <div id="chat-messages-container" class="chat-messages-container">
+            <div class="message system-msg">
+              👋 Bem-vindo ao chat web. Para programar com seu ambiente e agentes favoritos, use a aba <strong>Terminal</strong> (onde roda o <code>agy</code> e o <code>claude</code>).
+            </div>
+          </div>
+          <div class="chat-input-box">
+            <textarea id="web-chat-input" placeholder="Digite uma mensagem..." rows="1"></textarea>
+            <button id="btn-send-web-chat" class="btn btn-primary">Enviar</button>
           </div>
         </div>
       </section>
     </main>
 
-    <!-- Barra de Abas Inferior (Modo Mobile) -->
-    <nav class="mobile-nav">
-      <button class="tab-btn active" data-target="chat-pane">
-        <span class="tab-icon">💬</span>
-        <span class="tab-label">Chat</span>
+    <!-- Barra de Navegação Inferior Fixa (Mobile First) -->
+    <nav class="mobile-bottom-nav">
+      <button class="mobile-nav-btn active" data-tab="tab-terminal">
+        <span class="icon">⌨️</span>
+        <span class="label">Terminal</span>
       </button>
-      <button class="tab-btn" data-target="mcp-container">
-        <span class="tab-icon">🛠️</span>
-        <span class="tab-label">Aplicação (MCP)</span>
+      <button class="mobile-nav-btn" data-tab="tab-app">
+        <span class="icon">📱</span>
+        <span class="label">Aplicação</span>
+        <span id="mobile-app-badge" class="badge-dot hidden"></span>
       </button>
-      <button class="tab-btn" data-target="terminal-container">
-        <span class="tab-icon">⌨️</span>
-        <span class="tab-label">Terminal</span>
+      <button class="mobile-nav-btn" data-tab="tab-status">
+        <span class="icon">⚙️</span>
+        <span class="label">Status & IP</span>
+      </button>
+      <button class="mobile-nav-btn" data-tab="tab-chat">
+        <span class="icon">💬</span>
+        <span class="label">Chat</span>
       </button>
     </nav>
   </div>
 
+  <!-- Scripts: xterm.js primeiro, depois app.js -->
+  <script src="/static/xterm.js"></script>
+  <script src="/static/xterm-addon-fit.js"></script>
   <script src="/static/app.js"></script>
 </body>
 </html>

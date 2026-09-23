@@ -2,14 +2,56 @@ import asyncio
 import json
 import os
 import sys
-from typing import Any, Dict, List
+import time
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 from config import load_config, save_config
 from terminal import execute_whitelisted_command
 
-# Armazena estado compartilhado em memória
+# Armazena estado compartilhado em memória e em arquivo
 _ACTIVE_APP = "tts_platform_pt"
 _TUNNEL_URL = ""
 _CHAT_NOTIFICATIONS: List[str] = []
+_PREVIEW_STATE_FILE = Path(__file__).resolve().parent / "preview_state.json"
+
+
+def get_preview_state() -> Dict[str, Any]:
+    if _PREVIEW_STATE_FILE.exists():
+        try:
+            with open(_PREVIEW_STATE_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {
+        "url": "http://127.0.0.1:8000",
+        "title": "TTS Platform",
+        "app_id": "tts_platform_pt",
+        "updated_at": time.strftime("%H:%M:%S")
+    }
+
+
+def save_preview_state(state: Dict[str, Any]) -> None:
+    try:
+        with open(_PREVIEW_STATE_FILE, "w", encoding="utf-8") as f:
+            json.dump(state, f, indent=2, ensure_ascii=False)
+    except Exception:
+        pass
+
+
+async def notify_server_preview_update(url: str, title: str, app_id: Optional[str] = None) -> None:
+    """Envia notificação HTTP interna para o FastAPI despachar via WebSocket aos clientes web."""
+    cfg = load_config()
+    port = cfg.get("server", {}).get("port", 8765)
+    try:
+        import httpx
+        async with httpx.AsyncClient(timeout=2.0) as client:
+            await client.post(
+                f"http://127.0.0.1:{port}/api/internal/preview-update",
+                json={"url": url, "title": title, "app_id": app_id}
+            )
+    except Exception:
+        # Se o servidor não estiver online, o preview_state.json já foi salvo
+        pass
 
 
 def get_active_app() -> str:
@@ -87,6 +129,24 @@ MCP_TOOLS = [
                 }
             },
             "required": ["app_id"]
+        }
+    },
+    {
+        "name": "show_in_remote_preview",
+        "description": "Exibe imediatamente um site ou aplicação web na aba 'Aplicação' do Agent-Remote no celular/navegador remoto (ex: 'http://localhost:3000' ou '8000'). Use esta ferramenta quando o usuário pedir para ver ou testar a aplicação construída.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "url": {
+                    "type": "string",
+                    "description": "A URL completa (ex: 'http://localhost:3000') ou porta (ex: '3000') da aplicação a ser exibida."
+                },
+                "title": {
+                    "type": "string",
+                    "description": "Título opcional descritivo da aplicação (ex: 'Dashboard', 'TTS Studio', 'Minha Aplicação')."
+                }
+            },
+            "required": ["url"]
         }
     },
     {
@@ -177,12 +237,49 @@ async def handle_tool_call(name: str, arguments: Dict[str, Any]) -> str:
 
     elif name == "set_active_application":
         app_id = arguments.get("app_id", "").strip()
-        apps = [a["id"] for a in cfg.get("apps", [])]
-        if app_id in apps:
+        apps = cfg.get("apps", [])
+        matched = next((a for a in apps if a["id"] == app_id), None)
+        if matched:
             set_active_app(app_id)
-            result = f"Aplicação ativa alterada com sucesso para '{app_id}'."
+            target_url = matched.get("url", f"http://127.0.0.1:{matched.get('port', 8000)}")
+            title = matched.get("name", app_id)
+            state = {
+                "url": target_url,
+                "title": title,
+                "app_id": app_id,
+                "updated_at": time.strftime("%H:%M:%S")
+            }
+            save_preview_state(state)
+            await notify_server_preview_update(target_url, title, app_id=app_id)
+            result = f"Aplicação ativa alterada com sucesso para '{title}' ({target_url})."
         else:
-            result = f"Aplicação '{app_id}' não encontrada. Opções disponíveis: {', '.join(apps)}"
+            available = [a["id"] for a in apps]
+            result = f"Aplicação '{app_id}' não encontrada. Opções disponíveis: {', '.join(available)}"
+
+    elif name == "show_in_remote_preview":
+        raw_url = str(arguments.get("url", "")).strip()
+        title = arguments.get("title", "").strip() or "Aplicação Remota"
+        if not raw_url:
+            result = "Erro: URL ou porta não foi especificada."
+        else:
+            if raw_url.isdigit():
+                norm_url = f"http://localhost:{raw_url}"
+            elif raw_url.startswith("localhost:") or raw_url.startswith("127.0.0.1:"):
+                norm_url = f"http://{raw_url}"
+            elif not raw_url.startswith("http://") and not raw_url.startswith("https://"):
+                norm_url = f"http://{raw_url}"
+            else:
+                norm_url = raw_url
+
+            state = {
+                "url": norm_url,
+                "title": title,
+                "app_id": "custom",
+                "updated_at": time.strftime("%H:%M:%S")
+            }
+            save_preview_state(state)
+            await notify_server_preview_update(norm_url, title, app_id="custom")
+            result = f"Aplicação '{title}' ({norm_url}) enviada com sucesso para a aba 'Aplicação' do Agent-Remote! A tela no celular foi atualizada para exibição."
 
     elif name == "get_system_status":
         lines = []

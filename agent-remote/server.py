@@ -1,9 +1,10 @@
 import asyncio
 import json
 import os
+import time
 import uuid
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Set
 from fastapi import FastAPI, Request, Response, WebSocket, WebSocketDisconnect, HTTPException, status, Depends
 from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
@@ -24,6 +25,7 @@ from auth import (
 )
 from llm import stream_chat_response
 from terminal import execute_whitelisted_command, validate_command
+from pty_manager import pty_manager
 import mcp_server
 
 app = FastAPI(title="Agent-Remote", version="1.0.0")
@@ -31,8 +33,18 @@ app = FastAPI(title="Agent-Remote", version="1.0.0")
 STATIC_DIR = CONFIG_DIR / "static"
 STATIC_DIR.mkdir(parents=True, exist_ok=True)
 
-# Armazenamento de sessões SSE do MCP
+# Armazenamento de sessões SSE do MCP e clientes WebSocket para broadcast de eventos
 _MCP_SESSIONS: Dict[str, asyncio.Queue] = {}
+_EVENT_CLIENTS: Set[WebSocket] = set()
+
+
+async def broadcast_event(event_dict: Dict[str, Any]) -> None:
+    """Envia evento em broadcast para todos os navegadores/celulares conectados."""
+    for ws in list(_EVENT_CLIENTS):
+        try:
+            await ws.send_json(event_dict)
+        except Exception:
+            _EVENT_CLIENTS.discard(ws)
 
 
 # --- Middleware de IP Whitelist ---
@@ -295,12 +307,61 @@ async def api_save_model(request: Request):
     return {"ok": True, "llm": cfg["llm"]}
 
 
-# --- Proxy Reverso para Contornar Mixed Content no Cloudflare Tunnel ---
+# --- Proxy Reverso Dinâmico para Qualquer Porta Local ---
+@app.api_route("/proxy/port/{port}/{path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH"])
+@app.api_route("/proxy/port/{port}", methods=["GET", "POST", "PUT", "DELETE", "PATCH"])
+async def dynamic_port_proxy(port: int, request: Request, path: str = ""):
+    """
+    Proxy reverso universal para qualquer porta local (ex: 3000, 5173, 8080).
+    Permite testar qualquer site gerado pelo agente através do Cloudflare Tunnel sem Mixed Content.
+    """
+    target_url = f"http://127.0.0.1:{port}/{path}"
+    if request.url.query:
+        target_url += f"?{request.url.query}"
+
+    headers = {k: v for k, v in request.headers.items() if k.lower() not in ["host", "content-length"]}
+
+    try:
+        body = await request.body()
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            resp = await client.request(
+                method=request.method,
+                url=target_url,
+                headers=headers,
+                content=body,
+                follow_redirects=True
+            )
+
+            excluded_headers = ["content-encoding", "content-length", "transfer-encoding", "connection"]
+            resp_headers = {k: v for k, v in resp.headers.items() if k.lower() not in excluded_headers}
+
+            content = resp.content
+            content_type = resp.headers.get("content-type", "").lower()
+            if "text/html" in content_type:
+                base_tag = f'<base href="/proxy/port/{port}/">'.encode("utf-8")
+                if b"<head>" in content:
+                    content = content.replace(b"<head>", b"<head>" + base_tag, 1)
+                elif b"<HEAD>" in content:
+                    content = content.replace(b"<HEAD>", b"<HEAD>" + base_tag, 1)
+
+            return Response(content=content, status_code=resp.status_code, headers=resp_headers)
+    except httpx.ConnectError:
+        return HTMLResponse(
+            f"<div style='font-family:sans-serif;padding:2rem;color:#f87171;background:#0f172a;height:100vh;box-sizing:border-box;'>"
+            f"<h3>⚠️ Nenhuma aplicação respondendo na porta {port}</h3>"
+            f"<p style='color:#94a3b8;'>Inicie o servidor no terminal (ex: <code>npm run dev</code>, <code>python app.py</code>) e recarregue a aba.</p>"
+            f"</div>",
+            status_code=502
+        )
+    except Exception as e:
+        return HTMLResponse(f"Erro no proxy: {str(e)}", status_code=500)
+
+
+# --- Proxy Reverso para Aplicações Pré-registradas no config.json ---
 @app.api_route("/proxy/{app_id}/{path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH"])
 async def app_reverse_proxy(app_id: str, path: str, request: Request):
     """
-    Encaminha requisições da web HTTPS para o serviço HTTP local correspondente,
-    permitindo que o iframe funcione dentro do túnel Cloudflare sem erro de Mixed Content.
+    Encaminha requisições da web HTTPS para o serviço HTTP local correspondente.
     """
     cfg = load_config()
     app_info = next((a for a in cfg.get("apps", []) if a["id"] == app_id), None)
@@ -312,23 +373,22 @@ async def app_reverse_proxy(app_id: str, path: str, request: Request):
     if request.url.query:
         target_url += f"?{request.url.query}"
 
-    # Copia headers relevantes
     headers = {k: v for k, v in request.headers.items() if k.lower() not in ["host", "content-length"]}
 
     try:
         body = await request.body()
-        client = httpx.AsyncClient(timeout=30.0)
-        resp = await client.request(
-            method=request.method,
-            url=target_url,
-            headers=headers,
-            content=body
-        )
-        # Excluir headers problemáticos
-        excluded_headers = ["content-encoding", "content-length", "transfer-encoding", "connection"]
-        resp_headers = {k: v for k, v in resp.headers.items() if k.lower() not in excluded_headers}
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            resp = await client.request(
+                method=request.method,
+                url=target_url,
+                headers=headers,
+                content=body,
+                follow_redirects=True
+            )
+            excluded_headers = ["content-encoding", "content-length", "transfer-encoding", "connection"]
+            resp_headers = {k: v for k, v in resp.headers.items() if k.lower() not in excluded_headers}
 
-        return Response(content=resp.content, status_code=resp.status_code, headers=resp_headers)
+            return Response(content=resp.content, status_code=resp.status_code, headers=resp_headers)
     except httpx.ConnectError:
         return HTMLResponse(
             f"<div style='font-family:sans-serif;padding:2rem;color:#ff5555;'>"
@@ -339,6 +399,62 @@ async def app_reverse_proxy(app_id: str, path: str, request: Request):
         )
     except Exception as e:
         return HTMLResponse(f"Erro no proxy: {str(e)}", status_code=500)
+
+
+# --- Endpoints de Preview (Sincronização MCP & Web UI) ---
+@app.get("/api/preview")
+async def api_get_preview():
+    """Retorna a URL e metadados da aplicação ativa exibida no preview."""
+    return mcp_server.get_preview_state()
+
+
+@app.post("/api/preview")
+async def api_set_preview(request: Request):
+    """Permite alterar a aplicação ativa diretamente pela interface web."""
+    require_auth(request)
+    data = await request.json()
+    raw_url = str(data.get("url", "")).strip()
+    title = data.get("title", "").strip() or "Aplicação Remota"
+
+    if raw_url.isdigit():
+        norm_url = f"http://localhost:{raw_url}"
+    elif raw_url.startswith("localhost:") or raw_url.startswith("127.0.0.1:"):
+        norm_url = f"http://{raw_url}"
+    elif not raw_url.startswith("http://") and not raw_url.startswith("https://"):
+        norm_url = f"http://{raw_url}"
+    else:
+        norm_url = raw_url
+
+    state = {
+        "url": norm_url,
+        "title": title,
+        "app_id": data.get("app_id", "custom"),
+        "updated_at": time.strftime("%H:%M:%S")
+    }
+    mcp_server.save_preview_state(state)
+    await broadcast_event({
+        "type": "preview_updated",
+        "url": norm_url,
+        "title": title,
+        "app_id": state["app_id"]
+    })
+    return {"ok": True, "preview": state}
+
+
+@app.post("/api/internal/preview-update")
+async def api_internal_preview_update(request: Request):
+    """Recebe eventos internos disparados por chamadas MCP em outro processo."""
+    data = await request.json()
+    url = data.get("url", "")
+    title = data.get("title", "")
+    app_id = data.get("app_id", "custom")
+    await broadcast_event({
+        "type": "preview_updated",
+        "url": url,
+        "title": title,
+        "app_id": app_id
+    })
+    return {"ok": True}
 
 
 # --- WebSockets: Chat com IA ---
@@ -427,6 +543,98 @@ async def websocket_terminal(websocket: WebSocket):
             await websocket.send_json({"type": "output", "text": f"\n[ERRO WS] {str(e)}\n"})
         except Exception:
             pass
+
+
+# --- WebSockets: Terminal PTY Interativo (xterm.js para agy, claude e bash) ---
+@app.websocket("/ws/pty")
+async def websocket_pty(websocket: WebSocket, session_id: str = "default"):
+    await websocket.accept()
+    if not await verify_ws_auth(websocket):
+        await websocket.send_text("[ERRO] Acesso negado: faça login primeiro.\r\n")
+        await websocket.close(code=1008)
+        return
+
+    loop = asyncio.get_running_loop()
+    session = pty_manager.get_or_create(session_id=session_id, cols=80, rows=24, loop=loop)
+
+    output_queue: asyncio.Queue = asyncio.Queue()
+    session.subscribe(output_queue)
+
+    async def pty_reader():
+        try:
+            while True:
+                chunk = await output_queue.get()
+                await websocket.send_text(chunk.decode("utf-8", errors="replace"))
+        except (asyncio.CancelledError, WebSocketDisconnect):
+            pass
+        except Exception:
+            pass
+
+    reader_task = asyncio.create_task(pty_reader())
+
+    try:
+        while True:
+            msg = await websocket.receive_text()
+            if msg.startswith("{") and "type" in msg:
+                try:
+                    payload = json.loads(msg)
+                    msg_type = payload.get("type")
+                    if msg_type == "resize":
+                        cols = int(payload.get("cols", 80))
+                        rows = int(payload.get("rows", 24))
+                        session.resize(cols, rows)
+                        continue
+                    elif msg_type == "input":
+                        data_str = payload.get("data", "")
+                        session.write(data_str.encode("utf-8"))
+                        continue
+                except json.JSONDecodeError:
+                    pass
+
+            session.write(msg.encode("utf-8"))
+
+    except WebSocketDisconnect:
+        pass
+    except Exception:
+        pass
+    finally:
+        session.unsubscribe(output_queue)
+        reader_task.cancel()
+        try:
+            await reader_task
+        except asyncio.CancelledError:
+            pass
+
+
+# --- WebSockets: Canal de Eventos e Telemetria em Tempo Real ---
+@app.websocket("/ws/events")
+async def websocket_events(websocket: WebSocket):
+    await websocket.accept()
+    if not await verify_ws_auth(websocket):
+        await websocket.close(code=1008)
+        return
+
+    _EVENT_CLIENTS.add(websocket)
+    try:
+        # Envia estado inicial do preview
+        state = mcp_server.get_preview_state()
+        await websocket.send_json({
+            "type": "preview_updated",
+            "url": state.get("url", ""),
+            "title": state.get("title", ""),
+            "app_id": state.get("app_id", "")
+        })
+
+        while True:
+            raw = await websocket.receive_text()
+            if raw == "ping":
+                await websocket.send_text("pong")
+    except WebSocketDisconnect:
+        pass
+    except Exception:
+        pass
+    finally:
+        _EVENT_CLIENTS.discard(websocket)
 
 
 # --- MCP Server (Server-Sent Events) ---

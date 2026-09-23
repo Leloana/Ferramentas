@@ -1,83 +1,107 @@
 # 🌐 Agent-Remote — Controle Web Remoto do PC & Central de Aplicações
 
-O **Agent-Remote** é uma interface web minimalista, ágil e segura para controlar o seu computador e interagir com o agente de IA local à distância (via celular, tablet ou outro computador), utilizando um túnel criptografado **Cloudflare Tunnel**.
+O **Agent-Remote** é uma ferramenta feita para você programar no seu PC com **`agy` (Antigravity CLI)** ou **`claude` (Claude Code)**, ir para a academia (ou qualquer lugar fora de casa) e **continuar exatamente de onde parou pelo celular**, com um terminal interativo real e uma aba de aplicação controlada pelo agente via **MCP**.
 
-O objetivo central é transformar o ecossistema de ferramentas locais em uma central unificada: você escolhe a ferramenta alvo, digita uma senha de acesso e tem em mãos uma visão em **duas abas / split-screen** — de um lado o **chat com o agente**, do outro a **aplicação funcionando em tempo real**.
-
----
-
-## 🎯 Por que foi criado?
-
-1. **Acesso Móvel sem Complicação:** Controlar execuções de scripts (ex: geração de vídeos do `tts_platform_pt`, checagem de VRAM, status do git) direto da tela do smartphone, sem precisar ficar na frente do PC.
-2. **Duas Abas / Split View Integrado:** Inspirado em plataformas modernas como *Bolt.new* e *OpenHands*, reúne a conversa com o agente e o iframe da aplicação ativa em uma única interface.
-3. **Segurança por Padrão (Sem Abrir Portas no Roteador):** Utiliza o Cloudflare Tunnel (`cloudflared`), fornecendo uma URL pública HTTPS gratuita (`.trycloudflare.com`) sem expor IP, sem redirecionamento de portas (port forwarding) e com proteção por senha.
-4. **Agnóstico a Modelos e Agentes:** Suporte flexível a modelos locais (**Ollama** / `qwen3.5:9b`, etc.) e modelos proprietários de ponta (**Google Gemini**, **Anthropic Claude**, **OpenAI**, **Groq**, **OpenRouter**) ou qualquer endpoint OpenAI-compatible.
-5. **Agnóstico a Aplicações:** Registre qualquer ferramenta no `config.json` ou adicione URLs dinamicamente direto na interface web com 1 clique. Conta com **Proxy Reverso integrado** (`/proxy/{app}/`) que resolve problemas de *Mixed Content* ao carregar apps locais HTTP dentro de túneis HTTPS.
-6. **Servidor MCP Embutido (Model Context Protocol):** Expõe ferramentas nativas para agentes externos (Antigravity, Claude Code, Cursor, Windsurf) via STDIO ou HTTP/SSE (`/mcp/sse`), permitindo que a IA controle o preview, envie notificações de chat e execute comandos remotamente.
-7. **Terminal Web Seguro (Whitelist):** Um terminal leve embutido no navegador, restrito estritamente a comandos pré-aprovados (evitando riscos de injeção de comandos arbitrários pela web).
-8. **Zero Complexidade:** Nada de dezenas de containers Docker ou frameworks pesados. É uma aplicação Python única (FastAPI) com frontend em HTML/CSS/JS puro, rápida para carregar em redes móveis 4G/5G.
+A interface é focada em **fazer apenas uma coisa por vez**, otimizada para toque no smartphone:
+1. ⌨️ **Aba Terminal:** Terminal Linux PTY real (`xterm.js`) com barra de atalhos touch (`Tab`, `Ctrl+C`, `Esc`, setas, chips para `agy`, `claude`, `git push`, etc.).
+2. 📱 **Aba Aplicação (Live Preview):** O agente coloca o site que criou na aba via MCP (`show_in_remote_preview`). O preview atualiza na hora e contorna problemas de HTTPS com proxy reverso automático.
+3. ⚙️ **Aba Status & Segurança:** IP Whitelist com detecção real do celular via Cloudflare (`CF-Connecting-IP`), telemetria de VRAM/GPU (`nvidia-smi`) e link do túnel.
+4. 💬 **Aba Chat IA:** Interface opcional para conversar diretamente com modelos (Ollama, Gemini, Claude, OpenAI).
 
 ---
 
-## 🏛️ Visão Geral da Interface
+## 🏋️‍♂️ O Cenário Real de Uso
+
+> *"Estou fazendo código com o agy ou claude no meu PC via terminal, vou para a academia e quero continuar. Abro o celular: lá tem o terminal na pasta que eu quero, escolho se continuo com o agy ou claude mandando prompts normalmente. Quando finalizamos, digo: 'beleza, agora me mostra a aplicação usando o mcp do agent-remote', e ela aparece na aba Aplicação para eu testar no celular. Se precisar dar push, volto na aba Terminal e dou git push."*
+
+---
+
+## 🏛️ Arquitetura das Abas
 
 ```
 +---------------------------------------------------------------------------------+
-| [🌐 Agent-Remote]   [Projeto: tts_platform_pt ▼]   [VRAM: 8.2/12 GB]   [Sair]  |
-+----------------------------------------+----------------------------------------+
-| 💬 ABA 1: CHAT COM O AGENTE (Ollama)   | 🖥️ ABA 2: APLICAÇÃO ATIVA (Preview)    |
-|                                        |                                        |
-| [Usuário]: Gere o vídeo do Musashi.    |  +----------------------------------+  |
-|                                        |  | Preview do App (ex: porta 8011)   |  |
-| [Agente]: Iniciando produção em lote   |  |                                  |  |
-| com o script executar_projeto.py.      |  |  [Interface Web do TTS / Vídeos] |  |
-| Acompanhe pelo terminal abaixo!        |  |  Status: Renderizando cena 3/10  |  |
-|                                        |  +----------------------------------+  |
-|                                        |                                        |
-+----------------------------------------+----------------------------------------+
-| ⌨️ TERMINAL EMBUTIDO (Comandos permitidos: git, executar_projeto, nvidia-smi...)  |
-| $ python scripts/executar_projeto.py Projetos/Video_11/musashi_duelo_ganryujima |
-| [OK] Áudio XTTS sintetizado com sucesso. Submetendo prompts ao ComfyUI...       |
+| 🌐 Agent-Remote         [⌨️ Terminal]  [📱 Aplicação]  [⚙️ Status]  [💬 Chat]     |
++---------------------------------------------------------------------------------+
+|                                                                                 |
+|  [📱 VISÃO 1: TERMINAL (PTY)]                                                   |
+|  +---------------------------------------------------------------------------+  |
+|  | [Tab] [Ctrl+C] [Esc] [↑] [↓] [←] [→] [↵] | [agy] [claude] [git push]      |  |
+|  +---------------------------------------------------------------------------+  |
+|  | marcelo@pc:~/marcelo/Ferramentas$ agy                                     |  |
+|  | Antigravity CLI v1.1.27                                                   |  |
+|  | > Faça um dashboard de vendas em React na porta 3000                      |  |
+|  | Criando aplicação... Servidor rodando em http://localhost:3000            |  |
+|  +---------------------------------------------------------------------------+  |
+|                                                                                 |
+|  [📱 VISÃO 2: APLICAÇÃO (Preview acionado via MCP)]                             |
+|  +---------------------------------------------------------------------------+  |
+|  | Aplicação: Dashboard de Vendas (porta 3000)  [🔄 Recarregar] [↗️ Abrir]    |  |
+|  +---------------------------------------------------------------------------+  |
+|  |  +---------------------------------------------------------------------+  |  |
+|  |  |  [Interface Web da aplicação gerada pelo agente rodando 100%]       |  |  |
+|  |  +---------------------------------------------------------------------+  |  |
+|  +---------------------------------------------------------------------------+  |
+|                                                                                 |
 +---------------------------------------------------------------------------------+
 ```
 
-> 📱 **No Celular:** A interface se adapta automaticamente em abas deslizantes de toque único: `[ 💬 Chat ]`, `[ 🖥️ App ]` e `[ ⌨️ Terminal ]`.
+---
+
+## 🚀 Como Executar
+
+### 1. Iniciar no PC
+No diretório `agent-remote`, execute:
+```bash
+./run.py
+```
+*(ou `run.bat` no Windows)*
+
+O script:
+* Inicia o servidor FastAPI local na porta `8765`.
+* Cria automaticamente o **Cloudflare Quick Tunnel** seguro HTTPS (`https://...trycloudflare.com`).
+* Exibe no terminal o **QR Code ASCII** para escanear com o celular.
+
+### 2. No Celular
+1. Escaneie o QR Code ou acerte a URL gerada pelo Cloudflare Tunnel.
+2. Digite sua senha de acesso.
+3. Na aba **Status & IP**, clique em **"Autorizar meu IP Atual na Whitelist"** se quiser restringir o acesso apenas para o seu smartphone.
+4. Na aba **Terminal**, use o bash, lance o `agy` ou `claude`, e trabalhe normalmente!
 
 ---
 
-## 🚀 Como Funciona (Fluxo de Uso)
+## 🤖 Como os Agentes Interagem via MCP
 
-1. **Na máquina do PC:**
-   Execute o inicializador único:
-   ```bash
-   python run.py
-   ```
-2. **Geração do Acesso Remoto:**
-   O script inicia o servidor local FastAPI e o Cloudflare Tunnel em segundo plano, imprimindo no terminal:
-   * A URL pública HTTPS temporária gerada (ex: `https://alpha-beta-gamma.trycloudflare.com`).
-   * Um **QR Code ASCII** no próprio terminal para escanear direto com a câmera do celular.
-3. **No Navegador / Celular:**
-   * Abra a URL ou escaneie o QR Code.
-   * Digite a senha configurada no `config.json` ou `.env`.
-   * Escolha a ferramenta que deseja acompanhar (ex: `tts_platform_pt`, `karaoke`, etc.).
-   * Converse com o agente e veja a aplicação rodando lado a lado.
+O **Agent-Remote** inclui um MCP Server pronto para ser consumido pelo `claude` (Claude Code) e `agy` (Antigravity CLI):
+
+### Ferramenta `show_in_remote_preview`
+* **Nome:** `show_in_remote_preview`
+* **Parâmetros:**
+  * `url`: URL completa (ex: `http://localhost:3000`) ou apenas a porta (ex: `3000`).
+  * `title`: Título descritivo opcional (ex: `Dashboard de Métricas`).
+* **Efeito:** Grava o estado de visualização e despacha um evento WebSocket em tempo real para a tela do celular, que carrega o iframe e notifica o usuário!
+
+### Como Registrar o MCP no Claude Code
+No terminal:
+```bash
+claude mcp add agent-remote python /home/marcelo/marcelo/Ferramentas/agent-remote/mcp_server.py
+```
+Ou no arquivo de configuração do projeto `.mcp.json`:
+```json
+{
+  "mcpServers": {
+    "agent-remote": {
+      "command": "/home/marcelo/marcelo/Ferramentas/agent-remote/venv/bin/python",
+      "args": ["/home/marcelo/marcelo/Ferramentas/agent-remote/mcp_server.py"]
+    }
+  }
+}
+```
 
 ---
 
-## 📂 Documentação Completa
+## 🛡️ Segurança
 
-| Documento | Descrição |
-| --- | --- |
-| [**ARQUITETURA.md**](./ARQUITETURA.md) | Detalhamento da arquitetura técnica, lições de projetos existentes (OpenHands, Bolt.new, ttyd) e modelo de segurança. |
-| [**GUIA_CLOUDFLARE.md**](./GUIA_CLOUDFLARE.md) | Passo a passo de instalação do `cloudflared`, uso de Quick Tunnels gratuitos e túneis permanentes. |
-| [**COMANDOS_WHITELIST.md**](./COMANDOS_WHITELIST.md) | Catálogo e regras de segurança da whitelist de comandos do terminal web. |
-| [**PLANO_IMPLEMENTACAO.md**](./PLANO_IMPLEMENTACAO.md) | Roteiro prático passo a passo para a codificação leve do sistema. |
-
----
-
-## 🛠️ Stack Tecnológica Recomendada
-
-* **Backend:** Python 3.10+ com **FastAPI** + **Uvicorn** (suporte nativo a WebSockets assíncronos e SSE).
-* **IA Local:** Integração direta com a API do **Ollama** local (`http://127.0.0.1:11434`), aproveitando modelos com bom raciocínio e tool calling como `qwen3.5:9b`.
-* **Túnel Seguro:** **Cloudflare Tunnel (`cloudflared`)** oficial.
-* **Frontend:** Vanilla HTML5, CSS3 flexbox moderno e JavaScript moderno (ES6 modules). Zero bundlers, zero compilação (npm/webpack), carregamento instantâneo.
+1. **IP Whitelist com `CF-Connecting-IP`:** Quando ativada, bloqueia qualquer visitante cujo IP não seja o do seu celular, mesmo que saiba a senha.
+2. **Sessão HMAC Segura:** Cookies assinados criptograficamente.
+3. **Sem Port Forwarding:** O túnel Cloudflare estabelece conexões de saída criptografadas com a rede da Cloudflare, sem abrir portas no roteador de casa.
+4. **Proxy Reverso Automático:** Aplicativos rodando em portas locais (ex: 3000, 5173, 8000) são roteados por `/proxy/port/{porta}/`, contornando problemas de *Mixed Content* em conexões móveis HTTPS.
