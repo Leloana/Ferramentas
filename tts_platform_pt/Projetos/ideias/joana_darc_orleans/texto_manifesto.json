@@ -1,0 +1,671 @@
+{
+  "gerado_em": "2026-09-23T21:01:43",
+  "roteiro": "C:\\Users\\mf827\\Documents\\Ferramentas\\tts_platform_pt\\Projetos\\ideias\\joana_darc_orleans\\texto.md",
+  "voz": "Ana Florence",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 43.0,
+  "texto_usado": "Uma camponesa de dezessete anos desafiou o exército mais temido da Europa. Em maio de 1429, a cidade francesa de Orléans estava cercada há sete meses pelas forças inglesas, à beira da fome e da rendição total.\n\nFoi quando Joana d'Arc chegou aos portões montada em um cavalo branco. Ela não tinha treinamento militar nem sangue nobre, mas trazia uma armadura de aço polido feita sob medida e um estandarte branco com lírios dourados.\n\nOs soldados calejados que antes zombavam da jovem viram nos seus olhos uma determinação inabalável que acendeu uma chama extinta na alma da França. Sob uma chuva de flechas incendiárias, Joana ergueu a bandeira para o céu e ordenou o ataque contra a fortaleza inglesa que parecia inexpugnável.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Uma camponesa de dezessete anos desafiou o exército mais temido da Europa.",
+      "inicio_s": 0.15,
+      "fim_s": 4.51,
+      "palavras": [
+        {
+          "texto": "Uma",
+          "inicio_s": 0.17,
+          "fim_s": 0.271
+        },
+        {
+          "texto": "camponesa",
+          "inicio_s": 0.331,
+          "fim_s": 0.873
+        },
+        {
+          "texto": "de",
+          "inicio_s": 0.914,
+          "fim_s": 0.974
+        },
+        {
+          "texto": "dezessete",
+          "inicio_s": 1.014,
+          "fim_s": 1.516
+        },
+        {
+          "texto": "anos",
+          "inicio_s": 1.617,
+          "fim_s": 1.858
+        },
+        {
+          "texto": "desafiou",
+          "inicio_s": 2.139,
+          "fim_s": 2.601
+        },
+        {
+          "texto": "o",
+          "inicio_s": 2.641,
+          "fim_s": 2.662
+        },
+        {
+          "texto": "exército",
+          "inicio_s": 2.702,
+          "fim_s": 3.184
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 3.244,
+          "fim_s": 3.465
+        },
+        {
+          "texto": "temido",
+          "inicio_s": 3.525,
+          "fim_s": 3.907
+        },
+        {
+          "texto": "da",
+          "inicio_s": 3.947,
+          "fim_s": 4.008
+        },
+        {
+          "texto": "Europa",
+          "inicio_s": 4.068,
+          "fim_s": 4.43
+        }
+      ]
+    },
+    {
+      "texto": "Em maio de 1429, a cidade francesa de Orléans estava cercada há sete meses pelas forças inglesas, à beira da fome e da rendição total.",
+      "inicio_s": 4.86,
+      "fim_s": 14.14,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 4.9,
+          "fim_s": 4.94
+        },
+        {
+          "texto": "maio",
+          "inicio_s": 4.98,
+          "fim_s": 5.201
+        },
+        {
+          "texto": "de",
+          "inicio_s": 5.221,
+          "fim_s": 5.301
+        },
+        {
+          "texto": "1429",
+          "inicio_s": 5.301,
+          "fim_s": 6.944
+        },
+        {
+          "texto": "a",
+          "inicio_s": 6.944,
+          "fim_s": 6.965
+        },
+        {
+          "texto": "cidade",
+          "inicio_s": 7.025,
+          "fim_s": 7.325
+        },
+        {
+          "texto": "francesa",
+          "inicio_s": 7.345,
+          "fim_s": 7.766
+        },
+        {
+          "texto": "de",
+          "inicio_s": 7.786,
+          "fim_s": 7.846
+        },
+        {
+          "texto": "Orléans",
+          "inicio_s": 7.866,
+          "fim_s": 8.247
+        },
+        {
+          "texto": "estava",
+          "inicio_s": 8.568,
+          "fim_s": 8.829
+        },
+        {
+          "texto": "cercada",
+          "inicio_s": 8.889,
+          "fim_s": 9.31
+        },
+        {
+          "texto": "há",
+          "inicio_s": 9.33,
+          "fim_s": 9.37
+        },
+        {
+          "texto": "sete",
+          "inicio_s": 9.47,
+          "fim_s": 9.73
+        },
+        {
+          "texto": "meses",
+          "inicio_s": 9.771,
+          "fim_s": 10.071
+        },
+        {
+          "texto": "pelas",
+          "inicio_s": 10.111,
+          "fim_s": 10.332
+        },
+        {
+          "texto": "forças",
+          "inicio_s": 10.392,
+          "fim_s": 10.753
+        },
+        {
+          "texto": "inglesas",
+          "inicio_s": 10.793,
+          "fim_s": 11.254
+        },
+        {
+          "texto": "à",
+          "inicio_s": 11.755,
+          "fim_s": 11.775
+        },
+        {
+          "texto": "beira",
+          "inicio_s": 11.855,
+          "fim_s": 12.096
+        },
+        {
+          "texto": "da",
+          "inicio_s": 12.136,
+          "fim_s": 12.196
+        },
+        {
+          "texto": "fome",
+          "inicio_s": 12.276,
+          "fim_s": 12.597
+        },
+        {
+          "texto": "e",
+          "inicio_s": 12.957,
+          "fim_s": 12.977
+        },
+        {
+          "texto": "da",
+          "inicio_s": 13.038,
+          "fim_s": 13.098
+        },
+        {
+          "texto": "rendição",
+          "inicio_s": 13.138,
+          "fim_s": 13.559
+        },
+        {
+          "texto": "total",
+          "inicio_s": 13.659,
+          "fim_s": 14.02
+        }
+      ]
+    },
+    {
+      "texto": "Foi quando Joana d'Arc chegou aos portões montada em um cavalo branco.",
+      "inicio_s": 14.49,
+      "fim_s": 17.81,
+      "palavras": [
+        {
+          "texto": "Foi",
+          "inicio_s": 14.49,
+          "fim_s": 14.591
+        },
+        {
+          "texto": "quando",
+          "inicio_s": 14.611,
+          "fim_s": 14.812
+        },
+        {
+          "texto": "Joana",
+          "inicio_s": 14.852,
+          "fim_s": 15.114
+        },
+        {
+          "texto": "d",
+          "inicio_s": 15.174,
+          "fim_s": 15.194
+        },
+        {
+          "texto": "Arc",
+          "inicio_s": 15.255,
+          "fim_s": 15.456
+        },
+        {
+          "texto": "chegou",
+          "inicio_s": 15.516,
+          "fim_s": 15.778
+        },
+        {
+          "texto": "aos",
+          "inicio_s": 15.818,
+          "fim_s": 15.939
+        },
+        {
+          "texto": "portões",
+          "inicio_s": 15.979,
+          "fim_s": 16.402
+        },
+        {
+          "texto": "montada",
+          "inicio_s": 16.442,
+          "fim_s": 16.884
+        },
+        {
+          "texto": "em",
+          "inicio_s": 16.925,
+          "fim_s": 16.965
+        },
+        {
+          "texto": "um",
+          "inicio_s": 17.005,
+          "fim_s": 17.045
+        },
+        {
+          "texto": "cavalo",
+          "inicio_s": 17.086,
+          "fim_s": 17.387
+        },
+        {
+          "texto": "branco",
+          "inicio_s": 17.408,
+          "fim_s": 17.73
+        }
+      ]
+    },
+    {
+      "texto": "Ela não tinha treinamento militar nem sangue nobre, mas trazia uma armadura de aço polido feita sob medida e um estandarte branco com lírios dourados.",
+      "inicio_s": 18.16,
+      "fim_s": 27.76,
+      "palavras": [
+        {
+          "texto": "Ela",
+          "inicio_s": 18.2,
+          "fim_s": 18.32
+        },
+        {
+          "texto": "não",
+          "inicio_s": 18.36,
+          "fim_s": 18.461
+        },
+        {
+          "texto": "tinha",
+          "inicio_s": 18.541,
+          "fim_s": 18.741
+        },
+        {
+          "texto": "treinamento",
+          "inicio_s": 18.781,
+          "fim_s": 19.242
+        },
+        {
+          "texto": "militar",
+          "inicio_s": 19.282,
+          "fim_s": 19.703
+        },
+        {
+          "texto": "nem",
+          "inicio_s": 20.004,
+          "fim_s": 20.144
+        },
+        {
+          "texto": "sangue",
+          "inicio_s": 20.224,
+          "fim_s": 20.465
+        },
+        {
+          "texto": "nobre",
+          "inicio_s": 20.505,
+          "fim_s": 20.826
+        },
+        {
+          "texto": "mas",
+          "inicio_s": 21.467,
+          "fim_s": 21.607
+        },
+        {
+          "texto": "trazia",
+          "inicio_s": 21.627,
+          "fim_s": 21.988
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 22.008,
+          "fim_s": 22.128
+        },
+        {
+          "texto": "armadura",
+          "inicio_s": 22.228,
+          "fim_s": 22.689
+        },
+        {
+          "texto": "de",
+          "inicio_s": 22.75,
+          "fim_s": 22.81
+        },
+        {
+          "texto": "aço",
+          "inicio_s": 22.87,
+          "fim_s": 23.03
+        },
+        {
+          "texto": "polido",
+          "inicio_s": 23.07,
+          "fim_s": 23.491
+        },
+        {
+          "texto": "feita",
+          "inicio_s": 23.972,
+          "fim_s": 24.293
+        },
+        {
+          "texto": "sob",
+          "inicio_s": 24.373,
+          "fim_s": 24.513
+        },
+        {
+          "texto": "medida",
+          "inicio_s": 24.573,
+          "fim_s": 25.014
+        },
+        {
+          "texto": "e",
+          "inicio_s": 25.455,
+          "fim_s": 25.475
+        },
+        {
+          "texto": "um",
+          "inicio_s": 25.555,
+          "fim_s": 25.616
+        },
+        {
+          "texto": "estandarte",
+          "inicio_s": 25.656,
+          "fim_s": 26.257
+        },
+        {
+          "texto": "branco",
+          "inicio_s": 26.317,
+          "fim_s": 26.598
+        },
+        {
+          "texto": "com",
+          "inicio_s": 26.638,
+          "fim_s": 26.778
+        },
+        {
+          "texto": "lírios",
+          "inicio_s": 26.838,
+          "fim_s": 27.079
+        },
+        {
+          "texto": "dourados",
+          "inicio_s": 27.119,
+          "fim_s": 27.64
+        }
+      ]
+    },
+    {
+      "texto": "Os soldados calejados que antes zombavam da jovem viram nos seus olhos uma determinação inabalável que acendeu uma chama extinta na alma da França.",
+      "inicio_s": 28.11,
+      "fim_s": 35.35,
+      "palavras": [
+        {
+          "texto": "Os",
+          "inicio_s": 28.13,
+          "fim_s": 28.17
+        },
+        {
+          "texto": "soldados",
+          "inicio_s": 28.21,
+          "fim_s": 28.511
+        },
+        {
+          "texto": "calejados",
+          "inicio_s": 28.551,
+          "fim_s": 28.992
+        },
+        {
+          "texto": "que",
+          "inicio_s": 29.012,
+          "fim_s": 29.093
+        },
+        {
+          "texto": "antes",
+          "inicio_s": 29.153,
+          "fim_s": 29.333
+        },
+        {
+          "texto": "zombavam",
+          "inicio_s": 29.353,
+          "fim_s": 29.714
+        },
+        {
+          "texto": "da",
+          "inicio_s": 29.755,
+          "fim_s": 29.815
+        },
+        {
+          "texto": "jovem",
+          "inicio_s": 29.875,
+          "fim_s": 30.196
+        },
+        {
+          "texto": "viram",
+          "inicio_s": 30.477,
+          "fim_s": 30.677
+        },
+        {
+          "texto": "nos",
+          "inicio_s": 30.697,
+          "fim_s": 30.777
+        },
+        {
+          "texto": "seus",
+          "inicio_s": 30.797,
+          "fim_s": 30.958
+        },
+        {
+          "texto": "olhos",
+          "inicio_s": 31.038,
+          "fim_s": 31.279
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 31.56,
+          "fim_s": 31.66
+        },
+        {
+          "texto": "determinação",
+          "inicio_s": 31.68,
+          "fim_s": 32.241
+        },
+        {
+          "texto": "inabalável",
+          "inicio_s": 32.261,
+          "fim_s": 32.843
+        },
+        {
+          "texto": "que",
+          "inicio_s": 33.084,
+          "fim_s": 33.164
+        },
+        {
+          "texto": "acendeu",
+          "inicio_s": 33.184,
+          "fim_s": 33.485
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 33.525,
+          "fim_s": 33.605
+        },
+        {
+          "texto": "chama",
+          "inicio_s": 33.705,
+          "fim_s": 33.926
+        },
+        {
+          "texto": "extinta",
+          "inicio_s": 33.966,
+          "fim_s": 34.407
+        },
+        {
+          "texto": "na",
+          "inicio_s": 34.448,
+          "fim_s": 34.508
+        },
+        {
+          "texto": "alma",
+          "inicio_s": 34.588,
+          "fim_s": 34.728
+        },
+        {
+          "texto": "da",
+          "inicio_s": 34.748,
+          "fim_s": 34.809
+        },
+        {
+          "texto": "França",
+          "inicio_s": 34.869,
+          "fim_s": 35.25
+        }
+      ]
+    },
+    {
+      "texto": "Sob uma chuva de flechas incendiárias, Joana ergueu a bandeira para o céu e ordenou o ataque contra a fortaleza inglesa que parecia inexpugnável.",
+      "inicio_s": 35.7,
+      "fim_s": 43.02,
+      "palavras": [
+        {
+          "texto": "Sob",
+          "inicio_s": 35.74,
+          "fim_s": 35.86
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 35.921,
+          "fim_s": 36.021
+        },
+        {
+          "texto": "chuva",
+          "inicio_s": 36.081,
+          "fim_s": 36.282
+        },
+        {
+          "texto": "de",
+          "inicio_s": 36.322,
+          "fim_s": 36.402
+        },
+        {
+          "texto": "flechas",
+          "inicio_s": 36.442,
+          "fim_s": 36.803
+        },
+        {
+          "texto": "incendiárias",
+          "inicio_s": 36.823,
+          "fim_s": 37.445
+        },
+        {
+          "texto": "Joana",
+          "inicio_s": 37.846,
+          "fim_s": 38.147
+        },
+        {
+          "texto": "ergueu",
+          "inicio_s": 38.167,
+          "fim_s": 38.407
+        },
+        {
+          "texto": "a",
+          "inicio_s": 38.427,
+          "fim_s": 38.448
+        },
+        {
+          "texto": "bandeira",
+          "inicio_s": 38.468,
+          "fim_s": 38.788
+        },
+        {
+          "texto": "para",
+          "inicio_s": 38.808,
+          "fim_s": 38.949
+        },
+        {
+          "texto": "o",
+          "inicio_s": 38.969,
+          "fim_s": 38.989
+        },
+        {
+          "texto": "céu",
+          "inicio_s": 39.049,
+          "fim_s": 39.23
+        },
+        {
+          "texto": "e",
+          "inicio_s": 39.651,
+          "fim_s": 39.691
+        },
+        {
+          "texto": "ordenou",
+          "inicio_s": 39.751,
+          "fim_s": 40.072
+        },
+        {
+          "texto": "o",
+          "inicio_s": 40.112,
+          "fim_s": 40.132
+        },
+        {
+          "texto": "ataque",
+          "inicio_s": 40.172,
+          "fim_s": 40.493
+        },
+        {
+          "texto": "contra",
+          "inicio_s": 40.533,
+          "fim_s": 40.734
+        },
+        {
+          "texto": "a",
+          "inicio_s": 40.774,
+          "fim_s": 40.794
+        },
+        {
+          "texto": "fortaleza",
+          "inicio_s": 40.814,
+          "fim_s": 41.255
+        },
+        {
+          "texto": "inglesa",
+          "inicio_s": 41.295,
+          "fim_s": 41.656
+        },
+        {
+          "texto": "que",
+          "inicio_s": 41.696,
+          "fim_s": 41.757
+        },
+        {
+          "texto": "parecia",
+          "inicio_s": 41.797,
+          "fim_s": 42.178
+        },
+        {
+          "texto": "inexpugnável",
+          "inicio_s": 42.198,
+          "fim_s": 42.94
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+[
+  {
+    "frase": 1,
+    "plano": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "A cinematic anime action screenshot of an elegant female samurai standing on a windy mountain peak at dawn holding a curved naginata, cherry blossom petals and mist sweeping past her, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00071_.png"
+  },
+  {
+    "frase": 1,
+    "plano": 2,
+    "arquivo": "texto_01b.png",
+    "prompt_final": "An anime close-up of the naginata blade of the female samurai commander from <image1>, preserving her exact face, long flowing black hair and fierce amber eyes, in red laced lamellar armor, catching the first sunlight, her silhouette sharp against the pale sky, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00040_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\tomoe_gozen_kurikara_1183\\imagens\\texto_03.png"
+  },
+  {
+    "frase": 2,
+    "plano": 1,
+    "arquivo": "texto_02.png",
+    "prompt_final": "A wide dramatic anime establishing shot of opposing samurai armies with clan banners lining mountain ridges under ominous storm clouds, arrows arcing overhead, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00072_.png"
+  },
+  {
+    "frase": 2,
+    "plano": 2,
+    "arquivo": "texto_02b.png",
+    "prompt_final": "An anime shot of mounted archers massing in a misty valley pass, horses stamping in the wet grass, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00073_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 1,
+    "arquivo": "texto_03.png",
+    "prompt_final": "A magnificent medium anime portrait of Tomoe Gozen, a legendary 24 year old female samurai commander with long flowing black hair, fair skin and fierce amber eyes, riding a powerful black warhorse in red laced lamellar armor, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00070_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 2,
+    "arquivo": "texto_03b.png",
+    "prompt_final": "An anime shot of the female samurai commander from <image1>, preserving her exact face, long flowing black hair and fierce amber eyes, in red laced lamellar armor, at the head of the vanguard, raising her naginata to signal the charge as banners snap behind her, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00041_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\tomoe_gozen_kurikara_1183\\imagens\\texto_03.png"
+  },
+  {
+    "frase": 4,
+    "plano": 1,
+    "arquivo": "texto_04.png",
+    "prompt_final": "A dynamic action anime screenshot of the female samurai commander from <image1>, preserving her exact face, long flowing black hair and fierce amber eyes, in red laced lamellar armor, drawing a giant asymmetrical bamboo longbow at full gallop on her black steed and loosing an arrow through the mountain fog, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00042_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\tomoe_gozen_kurikara_1183\\imagens\\texto_03.png"
+  },
+  {
+    "frase": 4,
+    "plano": 2,
+    "arquivo": "texto_04b.png",
+    "prompt_final": "An anime impact frame of an arrow punching through an enemy helmet crest as the fog parts around charging riders, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00074_.png"
+  },
+  {
+    "frase": 5,
+    "plano": 1,
+    "arquivo": "texto_05.png",
+    "prompt_final": "An intense close quarters anime combat shot of the female samurai commander from <image1>, preserving her exact face, long flowing black hair and fierce amber eyes, in red laced lamellar armor, dismounting with supernatural agility, parrying a heavy katana with her naginata and striking down an enemy general, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00043_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\tomoe_gozen_kurikara_1183\\imagens\\texto_03.png"
+  },
+  {
+    "frase": 5,
+    "plano": 2,
+    "arquivo": "texto_05b.png",
+    "prompt_final": "A brutal anime action frame of a broken enemy helmet spinning through the air amid flying mud and sparks, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00075_.png"
+  },
+  {
+    "frase": 6,
+    "plano": 1,
+    "arquivo": "texto_06.png",
+    "prompt_final": "A poetic timeless wide anime shot of the female samurai commander from <image1>, preserving her exact face, long flowing black hair and fierce amber eyes, in red laced lamellar armor, standing beside her black warhorse at twilight on a quiet battlefield above a misty valley, sheathing a short blade as the first star appears, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00044_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\tomoe_gozen_kurikara_1183\\imagens\\texto_03.png"
+  },
+  {
+    "frase": 6,
+    "plano": 2,
+    "arquivo": "texto_06b.png",
+    "prompt_final": "A serene anime shot of a lone warhorse and rider silhouetted on a ridge road at dusk, legend walking into history, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00076_.png"
+  }
+]

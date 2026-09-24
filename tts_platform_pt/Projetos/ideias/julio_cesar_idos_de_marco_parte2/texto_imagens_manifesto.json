@@ -1,0 +1,178 @@
+[
+  {
+    "frase": 1,
+    "plano": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "A cinematic close-up of a senator's hands emerging from beneath white toga folds and grasping a gleaming double edged iron dagger in the dim senate hall, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00109_.png"
+  },
+  {
+    "frase": 1,
+    "plano": 2,
+    "arquivo": "texto_01b.png",
+    "prompt_final": "A sudden shot from behind of the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, as a blade drives into his back between the shoulder blades, his body arching in shock, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00063_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\julio_cesar_idos_de_marco\\imagens\\texto_02.png"
+  },
+  {
+    "frase": 2,
+    "plano": 1,
+    "arquivo": "texto_02.png",
+    "prompt_final": "A dynamic medium shot inside the marble hall as a senator pretending to present a scroll yanks the toga from the shoulder of the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, exposing his neck, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00064_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\julio_cesar_idos_de_marco\\imagens\\texto_02.png"
+  },
+  {
+    "frase": 2,
+    "plano": 2,
+    "arquivo": "texto_02b.png",
+    "prompt_final": "A close-up of a scroll petition falling open on marble steps as feet scuffle around it, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00110_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 1,
+    "arquivo": "texto_03.png",
+    "prompt_final": "A chaotic medium combat shot of dozens of roman senators in white togas closing in on the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, daggers raised overhead against towering marble columns, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00065_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\julio_cesar_idos_de_marco\\imagens\\texto_02.png"
+  },
+  {
+    "frase": 3,
+    "plano": 2,
+    "arquivo": "texto_03b.png",
+    "prompt_final": "A high angle shot of a tightening ring of white togas converging on a single figure at the center of the hall, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00111_.png"
+  },
+  {
+    "frase": 4,
+    "plano": 1,
+    "arquivo": "texto_04.png",
+    "prompt_final": "A visceral close-up of an iron blade striking the shoulder of the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, tearing purple cloth and splashing crimson across white marble tiles, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00066_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\julio_cesar_idos_de_marco\\imagens\\texto_02.png"
+  },
+  {
+    "frase": 4,
+    "plano": 2,
+    "arquivo": "texto_04b.png",
+    "prompt_final": "A macro shot of blood spreading between the veined marble floor tiles of the senate hall, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00112_.png"
+  },
+  {
+    "frase": 5,
+    "plano": 1,
+    "arquivo": "texto_05.png",
+    "prompt_final": "A dynamic action shot of the wounded the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, fighting back like a veteran soldier and driving a bronze writing stylus into a conspirator's arm to break the circle, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00067_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\julio_cesar_idos_de_marco\\imagens\\texto_02.png"
+  },
+  {
+    "frase": 5,
+    "plano": 2,
+    "arquivo": "texto_05b.png",
+    "prompt_final": "A close-up of a bronze stylus slick with blood clenched in a shaking fist among grasping hands, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00113_.png"
+  },
+  {
+    "frase": 6,
+    "plano": 1,
+    "arquivo": "texto_06.png",
+    "prompt_final": "A high angle master shot over the marble floor of the curia as a flurry of stabbing daggers strikes within a cluster of blood splattered white togas, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00114_.png"
+  },
+  {
+    "frase": 6,
+    "plano": 2,
+    "arquivo": "texto_06b.png",
+    "prompt_final": "A blurred chaotic shot of upraised arms and blades seen through drifting dust in the colonnade light, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00115_.png"
+  },
+  {
+    "frase": 7,
+    "plano": 1,
+    "arquivo": "texto_07.png",
+    "prompt_final": "An emotional close-up of the young roman senator from <image1>, preserving his exact pale clean shaven face and dark curly hair, in a white senatorial toga, his face torn with sorrow and conflict, stepping forward from the crowd of conspirators with a bloodied dagger, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00068_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\julio_cesar_idos_de_marco\\imagens\\texto_03.png"
+  },
+  {
+    "frase": 7,
+    "plano": 2,
+    "arquivo": "texto_07b.png",
+    "prompt_final": "A devastating reverse close-up of the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, recognising the young man he loved like a son, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00069_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\julio_cesar_idos_de_marco\\imagens\\texto_02.png"
+  },
+  {
+    "frase": 8,
+    "plano": 1,
+    "arquivo": "texto_08.png",
+    "prompt_final": "A heartbreaking close-up of the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, bruised and bleeding, eyes wide with shattered disbelief as all resistance leaves his body, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00070_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\julio_cesar_idos_de_marco\\imagens\\texto_02.png"
+  },
+  {
+    "frase": 8,
+    "plano": 2,
+    "arquivo": "texto_08b.png",
+    "prompt_final": "A silent shot of the raised dagger of the young roman senator from <image1>, preserving his exact pale clean shaven face and dark curly hair, in a white senatorial toga, trembling for one instant before it falls, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00071_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\julio_cesar_idos_de_marco\\imagens\\texto_03.png"
+  },
+  {
+    "frase": 9,
+    "plano": 1,
+    "arquivo": "texto_09.png",
+    "prompt_final": "A tragic cinematic medium shot of the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, pulling the blood drenched purple folds of his toga over his own face with trembling hands, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00072_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\julio_cesar_idos_de_marco\\imagens\\texto_02.png"
+  },
+  {
+    "frase": 9,
+    "plano": 2,
+    "arquivo": "texto_09b.png",
+    "prompt_final": "A close-up of a purple bordered toga hem slipping over a bloodied sandal on cold stone, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00116_.png"
+  },
+  {
+    "frase": 10,
+    "plano": 1,
+    "arquivo": "texto_10.png",
+    "prompt_final": "A wide somber shot of the senate floor with the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, lying lifeless in a pool of dark blood at the base of the towering marble statue of Pompey while conspirators retreat into shadow, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00073_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\julio_cesar_idos_de_marco\\imagens\\texto_02.png"
+  },
+  {
+    "frase": 10,
+    "plano": 2,
+    "arquivo": "texto_10b.png",
+    "prompt_final": "A still wide shot of the empty curia, an overturned curule chair and scattered scrolls beside a dark stain on the marble, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00117_.png"
+  },
+  {
+    "frase": 11,
+    "plano": 1,
+    "arquivo": "texto_11.png",
+    "prompt_final": "A sweeping panoramic vista over the roman forum at twilight, heavy storm clouds gathering over illuminated temples and arches as smoke curls into the sky, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00118_.png"
+  },
+  {
+    "frase": 11,
+    "plano": 2,
+    "arquivo": "texto_11b.png",
+    "prompt_final": "A closing shot of a bronze eagle standard silhouetted against the stormy roman sky, rain beginning to fall on the marble city, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00119_.png"
+  }
+]

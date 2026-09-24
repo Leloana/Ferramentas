@@ -1,0 +1,715 @@
+{
+  "gerado_em": "2026-09-23T21:07:25",
+  "roteiro": "C:\\Users\\mf827\\Documents\\Ferramentas\\tts_platform_pt\\Projetos\\ideias\\joana_darc_orleans_parte2\\texto.md",
+  "voz": "Ana Florence",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 42.6,
+  "texto_usado": "A flecha atravessou o aço da armadura entre o ombro e o pescoço. Joana caiu do cavalo na lama com um grito de dor, enquanto os soldados franceses recuavam tomados pelo pânico. Os ingleses comemoravam do alto das muralhas, acreditando que a profetisa estava morta.\n\nMas Joana recusou os curativos que a tirariam do campo de batalha. Ela mesma arrancou a flecha da carne, chorou de dor por um breve instante, e se levantou com a armadura manchada de sangue para empunhar o estandarte novamente.\n\nAo verem a jovem de pé liderando a investida, os guerreiros franceses avançaram como uma tempestade incontrolável. As fortificações inglesas caíram naquele mesmo entardecer. Com apenas dezessete anos, Joana d'Arc libertou Orléans e mudou o curso de uma guerra que durava cem anos.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "A flecha atravessou o aço da armadura entre o ombro e o pescoço.",
+      "inicio_s": 0.15,
+      "fim_s": 2.97,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 0.17,
+          "fim_s": 0.19
+        },
+        {
+          "texto": "flecha",
+          "inicio_s": 0.231,
+          "fim_s": 0.492
+        },
+        {
+          "texto": "atravessou",
+          "inicio_s": 0.513,
+          "fim_s": 0.936
+        },
+        {
+          "texto": "o",
+          "inicio_s": 0.956,
+          "fim_s": 0.976
+        },
+        {
+          "texto": "aço",
+          "inicio_s": 1.077,
+          "fim_s": 1.298
+        },
+        {
+          "texto": "da",
+          "inicio_s": 1.318,
+          "fim_s": 1.359
+        },
+        {
+          "texto": "armadura",
+          "inicio_s": 1.419,
+          "fim_s": 1.862
+        },
+        {
+          "texto": "entre",
+          "inicio_s": 1.923,
+          "fim_s": 2.084
+        },
+        {
+          "texto": "o",
+          "inicio_s": 2.104,
+          "fim_s": 2.124
+        },
+        {
+          "texto": "ombro",
+          "inicio_s": 2.205,
+          "fim_s": 2.386
+        },
+        {
+          "texto": "e",
+          "inicio_s": 2.386,
+          "fim_s": 2.406
+        },
+        {
+          "texto": "o",
+          "inicio_s": 2.406,
+          "fim_s": 2.426
+        },
+        {
+          "texto": "pescoço",
+          "inicio_s": 2.426,
+          "fim_s": 2.93
+        }
+      ]
+    },
+    {
+      "texto": "Joana caiu do cavalo na lama com um grito de dor, enquanto os soldados franceses recuavam tomados pelo pânico.",
+      "inicio_s": 3.32,
+      "fim_s": 8.96,
+      "palavras": [
+        {
+          "texto": "Joana",
+          "inicio_s": 3.36,
+          "fim_s": 3.681
+        },
+        {
+          "texto": "caiu",
+          "inicio_s": 3.721,
+          "fim_s": 3.902
+        },
+        {
+          "texto": "do",
+          "inicio_s": 3.922,
+          "fim_s": 3.982
+        },
+        {
+          "texto": "cavalo",
+          "inicio_s": 4.022,
+          "fim_s": 4.404
+        },
+        {
+          "texto": "na",
+          "inicio_s": 4.444,
+          "fim_s": 4.524
+        },
+        {
+          "texto": "lama",
+          "inicio_s": 4.625,
+          "fim_s": 4.865
+        },
+        {
+          "texto": "com",
+          "inicio_s": 4.906,
+          "fim_s": 5.026
+        },
+        {
+          "texto": "um",
+          "inicio_s": 5.046,
+          "fim_s": 5.106
+        },
+        {
+          "texto": "grito",
+          "inicio_s": 5.187,
+          "fim_s": 5.468
+        },
+        {
+          "texto": "de",
+          "inicio_s": 5.508,
+          "fim_s": 5.588
+        },
+        {
+          "texto": "dor",
+          "inicio_s": 5.628,
+          "fim_s": 5.829
+        },
+        {
+          "texto": "enquanto",
+          "inicio_s": 6.21,
+          "fim_s": 6.471
+        },
+        {
+          "texto": "os",
+          "inicio_s": 6.491,
+          "fim_s": 6.531
+        },
+        {
+          "texto": "soldados",
+          "inicio_s": 6.551,
+          "fim_s": 6.973
+        },
+        {
+          "texto": "franceses",
+          "inicio_s": 7.013,
+          "fim_s": 7.535
+        },
+        {
+          "texto": "recuavam",
+          "inicio_s": 7.575,
+          "fim_s": 8.037
+        },
+        {
+          "texto": "tomados",
+          "inicio_s": 8.077,
+          "fim_s": 8.418
+        },
+        {
+          "texto": "pelo",
+          "inicio_s": 8.458,
+          "fim_s": 8.619
+        },
+        {
+          "texto": "pânico",
+          "inicio_s": 8.679,
+          "fim_s": 8.9
+        }
+      ]
+    },
+    {
+      "texto": "Os ingleses comemoravam do alto das muralhas, acreditando que a profetisa estava morta.",
+      "inicio_s": 9.31,
+      "fim_s": 13.79,
+      "palavras": [
+        {
+          "texto": "Os",
+          "inicio_s": 9.33,
+          "fim_s": 9.41
+        },
+        {
+          "texto": "ingleses",
+          "inicio_s": 9.431,
+          "fim_s": 9.873
+        },
+        {
+          "texto": "comemoravam",
+          "inicio_s": 9.913,
+          "fim_s": 10.455
+        },
+        {
+          "texto": "do",
+          "inicio_s": 10.495,
+          "fim_s": 10.556
+        },
+        {
+          "texto": "alto",
+          "inicio_s": 10.636,
+          "fim_s": 10.817
+        },
+        {
+          "texto": "das",
+          "inicio_s": 10.837,
+          "fim_s": 10.957
+        },
+        {
+          "texto": "muralhas",
+          "inicio_s": 10.998,
+          "fim_s": 11.46
+        },
+        {
+          "texto": "acreditando",
+          "inicio_s": 11.821,
+          "fim_s": 12.404
+        },
+        {
+          "texto": "que",
+          "inicio_s": 12.404,
+          "fim_s": 12.464
+        },
+        {
+          "texto": "a",
+          "inicio_s": 12.484,
+          "fim_s": 12.504
+        },
+        {
+          "texto": "profetisa",
+          "inicio_s": 12.524,
+          "fim_s": 12.986
+        },
+        {
+          "texto": "estava",
+          "inicio_s": 13.027,
+          "fim_s": 13.288
+        },
+        {
+          "texto": "morta",
+          "inicio_s": 13.348,
+          "fim_s": 13.69
+        }
+      ]
+    },
+    {
+      "texto": "Mas Joana recusou os curativos que a tirariam do campo de batalha.",
+      "inicio_s": 14.14,
+      "fim_s": 17.08,
+      "palavras": [
+        {
+          "texto": "Mas",
+          "inicio_s": 14.16,
+          "fim_s": 14.261
+        },
+        {
+          "texto": "Joana",
+          "inicio_s": 14.281,
+          "fim_s": 14.563
+        },
+        {
+          "texto": "recusou",
+          "inicio_s": 14.603,
+          "fim_s": 14.945
+        },
+        {
+          "texto": "os",
+          "inicio_s": 14.986,
+          "fim_s": 15.046
+        },
+        {
+          "texto": "curativos",
+          "inicio_s": 15.086,
+          "fim_s": 15.61
+        },
+        {
+          "texto": "que",
+          "inicio_s": 15.63,
+          "fim_s": 15.711
+        },
+        {
+          "texto": "a",
+          "inicio_s": 15.731,
+          "fim_s": 15.751
+        },
+        {
+          "texto": "tirariam",
+          "inicio_s": 15.791,
+          "fim_s": 16.154
+        },
+        {
+          "texto": "do",
+          "inicio_s": 16.174,
+          "fim_s": 16.254
+        },
+        {
+          "texto": "campo",
+          "inicio_s": 16.295,
+          "fim_s": 16.516
+        },
+        {
+          "texto": "de",
+          "inicio_s": 16.536,
+          "fim_s": 16.597
+        },
+        {
+          "texto": "batalha",
+          "inicio_s": 16.597,
+          "fim_s": 16.959
+        }
+      ]
+    },
+    {
+      "texto": "Ela mesma arrancou a flecha da carne, chorou de dor por um breve instante, e se levantou com a armadura manchada de sangue para empunhar o estandarte novamente.",
+      "inicio_s": 17.43,
+      "fim_s": 25.89,
+      "palavras": [
+        {
+          "texto": "Ela",
+          "inicio_s": 17.45,
+          "fim_s": 17.59
+        },
+        {
+          "texto": "mesma",
+          "inicio_s": 17.651,
+          "fim_s": 17.951
+        },
+        {
+          "texto": "arrancou",
+          "inicio_s": 17.991,
+          "fim_s": 18.292
+        },
+        {
+          "texto": "a",
+          "inicio_s": 18.332,
+          "fim_s": 18.372
+        },
+        {
+          "texto": "flecha",
+          "inicio_s": 18.412,
+          "fim_s": 18.693
+        },
+        {
+          "texto": "da",
+          "inicio_s": 18.733,
+          "fim_s": 18.773
+        },
+        {
+          "texto": "carne",
+          "inicio_s": 18.853,
+          "fim_s": 19.154
+        },
+        {
+          "texto": "chorou",
+          "inicio_s": 19.695,
+          "fim_s": 19.956
+        },
+        {
+          "texto": "de",
+          "inicio_s": 19.996,
+          "fim_s": 20.056
+        },
+        {
+          "texto": "dor",
+          "inicio_s": 20.116,
+          "fim_s": 20.277
+        },
+        {
+          "texto": "por",
+          "inicio_s": 20.337,
+          "fim_s": 20.437
+        },
+        {
+          "texto": "um",
+          "inicio_s": 20.477,
+          "fim_s": 20.537
+        },
+        {
+          "texto": "breve",
+          "inicio_s": 20.557,
+          "fim_s": 20.758
+        },
+        {
+          "texto": "instante",
+          "inicio_s": 20.798,
+          "fim_s": 21.239
+        },
+        {
+          "texto": "e",
+          "inicio_s": 21.74,
+          "fim_s": 21.76
+        },
+        {
+          "texto": "se",
+          "inicio_s": 21.82,
+          "fim_s": 21.881
+        },
+        {
+          "texto": "levantou",
+          "inicio_s": 21.921,
+          "fim_s": 22.302
+        },
+        {
+          "texto": "com",
+          "inicio_s": 22.362,
+          "fim_s": 22.462
+        },
+        {
+          "texto": "a",
+          "inicio_s": 22.482,
+          "fim_s": 22.502
+        },
+        {
+          "texto": "armadura",
+          "inicio_s": 22.542,
+          "fim_s": 22.923
+        },
+        {
+          "texto": "manchada",
+          "inicio_s": 22.963,
+          "fim_s": 23.324
+        },
+        {
+          "texto": "de",
+          "inicio_s": 23.364,
+          "fim_s": 23.424
+        },
+        {
+          "texto": "sangue",
+          "inicio_s": 23.504,
+          "fim_s": 23.825
+        },
+        {
+          "texto": "para",
+          "inicio_s": 24.146,
+          "fim_s": 24.266
+        },
+        {
+          "texto": "empunhar",
+          "inicio_s": 24.286,
+          "fim_s": 24.687
+        },
+        {
+          "texto": "o",
+          "inicio_s": 24.707,
+          "fim_s": 24.727
+        },
+        {
+          "texto": "estandarte",
+          "inicio_s": 24.747,
+          "fim_s": 25.289
+        },
+        {
+          "texto": "novamente",
+          "inicio_s": 25.329,
+          "fim_s": 25.81
+        }
+      ]
+    },
+    {
+      "texto": "Ao verem a jovem de pé liderando a investida, os guerreiros franceses avançaram como uma tempestade incontrolável.",
+      "inicio_s": 26.24,
+      "fim_s": 32.84,
+      "palavras": [
+        {
+          "texto": "Ao",
+          "inicio_s": 26.26,
+          "fim_s": 26.34
+        },
+        {
+          "texto": "verem",
+          "inicio_s": 26.36,
+          "fim_s": 26.561
+        },
+        {
+          "texto": "a",
+          "inicio_s": 26.581,
+          "fim_s": 26.601
+        },
+        {
+          "texto": "jovem",
+          "inicio_s": 26.681,
+          "fim_s": 26.982
+        },
+        {
+          "texto": "de",
+          "inicio_s": 27.002,
+          "fim_s": 27.083
+        },
+        {
+          "texto": "pé",
+          "inicio_s": 27.143,
+          "fim_s": 27.243
+        },
+        {
+          "texto": "liderando",
+          "inicio_s": 27.263,
+          "fim_s": 27.624
+        },
+        {
+          "texto": "a",
+          "inicio_s": 27.624,
+          "fim_s": 27.644
+        },
+        {
+          "texto": "investida",
+          "inicio_s": 27.664,
+          "fim_s": 28.166
+        },
+        {
+          "texto": "os",
+          "inicio_s": 28.667,
+          "fim_s": 28.728
+        },
+        {
+          "texto": "guerreiros",
+          "inicio_s": 28.768,
+          "fim_s": 29.069
+        },
+        {
+          "texto": "franceses",
+          "inicio_s": 29.109,
+          "fim_s": 29.751
+        },
+        {
+          "texto": "avançaram",
+          "inicio_s": 30.252,
+          "fim_s": 30.874
+        },
+        {
+          "texto": "como",
+          "inicio_s": 30.934,
+          "fim_s": 31.115
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 31.155,
+          "fim_s": 31.255
+        },
+        {
+          "texto": "tempestade",
+          "inicio_s": 31.315,
+          "fim_s": 31.957
+        },
+        {
+          "texto": "incontrolável",
+          "inicio_s": 31.997,
+          "fim_s": 32.76
+        }
+      ]
+    },
+    {
+      "texto": "As fortificações inglesas caíram naquele mesmo entardecer.",
+      "inicio_s": 33.19,
+      "fim_s": 36.21,
+      "palavras": [
+        {
+          "texto": "As",
+          "inicio_s": 33.23,
+          "fim_s": 33.311
+        },
+        {
+          "texto": "fortificações",
+          "inicio_s": 33.351,
+          "fim_s": 34.015
+        },
+        {
+          "texto": "inglesas",
+          "inicio_s": 34.036,
+          "fim_s": 34.458
+        },
+        {
+          "texto": "caíram",
+          "inicio_s": 34.499,
+          "fim_s": 34.821
+        },
+        {
+          "texto": "naquele",
+          "inicio_s": 34.841,
+          "fim_s": 35.123
+        },
+        {
+          "texto": "mesmo",
+          "inicio_s": 35.203,
+          "fim_s": 35.505
+        },
+        {
+          "texto": "entardecer",
+          "inicio_s": 35.525,
+          "fim_s": 36.129
+        }
+      ]
+    },
+    {
+      "texto": "Com apenas dezessete anos, Joana d'Arc libertou Orléans e mudou o curso de uma guerra que durava cem anos.",
+      "inicio_s": 36.56,
+      "fim_s": 42.56,
+      "palavras": [
+        {
+          "texto": "Com",
+          "inicio_s": 36.56,
+          "fim_s": 36.66
+        },
+        {
+          "texto": "apenas",
+          "inicio_s": 36.7,
+          "fim_s": 36.981
+        },
+        {
+          "texto": "dezessete",
+          "inicio_s": 37.022,
+          "fim_s": 37.543
+        },
+        {
+          "texto": "anos",
+          "inicio_s": 37.624,
+          "fim_s": 37.884
+        },
+        {
+          "texto": "Joana",
+          "inicio_s": 38.286,
+          "fim_s": 38.527
+        },
+        {
+          "texto": "d",
+          "inicio_s": 38.587,
+          "fim_s": 38.607
+        },
+        {
+          "texto": "Arc",
+          "inicio_s": 38.667,
+          "fim_s": 38.848
+        },
+        {
+          "texto": "libertou",
+          "inicio_s": 38.948,
+          "fim_s": 39.329
+        },
+        {
+          "texto": "Orléans",
+          "inicio_s": 39.409,
+          "fim_s": 39.871
+        },
+        {
+          "texto": "e",
+          "inicio_s": 40.132,
+          "fim_s": 40.152
+        },
+        {
+          "texto": "mudou",
+          "inicio_s": 40.212,
+          "fim_s": 40.433
+        },
+        {
+          "texto": "o",
+          "inicio_s": 40.473,
+          "fim_s": 40.493
+        },
+        {
+          "texto": "curso",
+          "inicio_s": 40.573,
+          "fim_s": 40.854
+        },
+        {
+          "texto": "de",
+          "inicio_s": 40.894,
+          "fim_s": 40.935
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 40.975,
+          "fim_s": 41.075
+        },
+        {
+          "texto": "guerra",
+          "inicio_s": 41.135,
+          "fim_s": 41.396
+        },
+        {
+          "texto": "que",
+          "inicio_s": 41.456,
+          "fim_s": 41.517
+        },
+        {
+          "texto": "durava",
+          "inicio_s": 41.537,
+          "fim_s": 41.818
+        },
+        {
+          "texto": "cem",
+          "inicio_s": 41.918,
+          "fim_s": 42.078
+        },
+        {
+          "texto": "anos",
+          "inicio_s": 42.179,
+          "fim_s": 42.44
+        }
+      ]
+    }
+  ]
+}

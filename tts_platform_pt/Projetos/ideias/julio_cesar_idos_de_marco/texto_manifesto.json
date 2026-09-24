@@ -1,0 +1,802 @@
+{
+  "gerado_em": "2026-09-23T21:15:23",
+  "roteiro": "C:\\Users\\mf827\\Documents\\Ferramentas\\tts_platform_pt\\Projetos\\ideias\\julio_cesar_idos_de_marco\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 55.7,
+  "texto_usado": "Sessenta homens planejavam um assassinato em segredo. Em 44 antes de Cristo, Júlio César foi proclamado ditador perpétuo, e os senadores de Roma temiam a morte definitiva da República. Nas sombras, uma conspiração se formou em torno de Marco Bruto, um jovem nobre que César amava e protegia como a um filho.\n\nNa manhã do dia 15 de março, os avisos se multiplicaram. Sua esposa Calpúrnia acordou aos prantos, implorando para que ele não saísse de casa após um pesadelo aterrador. No caminho pelas ruas movimentadas, um adivinho tocou seu manto e sussurrou uma última profecia: cuidado com os Idos de Março.\n\nConfiante de sua glória e poder absoluto, César apenas sorriu com desdém e entrou no Teatro de Pompeia. Quando as pesadas portas de bronze se fecharam atrás dele, sessenta senadores se levantaram. Sob as togas brancas, dezenas de adagas de ferro estavam prontas.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Sessenta homens planejavam um assassinato em segredo.",
+      "inicio_s": 0.15,
+      "fim_s": 2.79,
+      "palavras": [
+        {
+          "texto": "Sessenta",
+          "inicio_s": 0.17,
+          "fim_s": 0.573
+        },
+        {
+          "texto": "homens",
+          "inicio_s": 0.634,
+          "fim_s": 0.936
+        },
+        {
+          "texto": "planejavam",
+          "inicio_s": 0.996,
+          "fim_s": 1.5
+        },
+        {
+          "texto": "um",
+          "inicio_s": 1.52,
+          "fim_s": 1.581
+        },
+        {
+          "texto": "assassinato",
+          "inicio_s": 1.601,
+          "fim_s": 2.185
+        },
+        {
+          "texto": "em",
+          "inicio_s": 2.226,
+          "fim_s": 2.266
+        },
+        {
+          "texto": "segredo",
+          "inicio_s": 2.306,
+          "fim_s": 2.709
+        }
+      ]
+    },
+    {
+      "texto": "Em 44 antes de Cristo, Júlio César foi proclamado ditador perpétuo, e os senadores de Roma temiam a morte definitiva da República.",
+      "inicio_s": 3.14,
+      "fim_s": 11.6,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 3.16,
+          "fim_s": 3.22
+        },
+        {
+          "texto": "44",
+          "inicio_s": 3.22,
+          "fim_s": 4.082
+        },
+        {
+          "texto": "antes",
+          "inicio_s": 4.082,
+          "fim_s": 4.263
+        },
+        {
+          "texto": "de",
+          "inicio_s": 4.283,
+          "fim_s": 4.343
+        },
+        {
+          "texto": "Cristo",
+          "inicio_s": 4.383,
+          "fim_s": 4.724
+        },
+        {
+          "texto": "Júlio",
+          "inicio_s": 5.285,
+          "fim_s": 5.526
+        },
+        {
+          "texto": "César",
+          "inicio_s": 5.566,
+          "fim_s": 5.907
+        },
+        {
+          "texto": "foi",
+          "inicio_s": 5.947,
+          "fim_s": 6.047
+        },
+        {
+          "texto": "proclamado",
+          "inicio_s": 6.087,
+          "fim_s": 6.608
+        },
+        {
+          "texto": "ditador",
+          "inicio_s": 6.648,
+          "fim_s": 7.029
+        },
+        {
+          "texto": "perpétuo",
+          "inicio_s": 7.109,
+          "fim_s": 7.671
+        },
+        {
+          "texto": "e",
+          "inicio_s": 8.312,
+          "fim_s": 8.332
+        },
+        {
+          "texto": "os",
+          "inicio_s": 8.372,
+          "fim_s": 8.433
+        },
+        {
+          "texto": "senadores",
+          "inicio_s": 8.473,
+          "fim_s": 8.974
+        },
+        {
+          "texto": "de",
+          "inicio_s": 8.994,
+          "fim_s": 9.054
+        },
+        {
+          "texto": "Roma",
+          "inicio_s": 9.134,
+          "fim_s": 9.375
+        },
+        {
+          "texto": "temiam",
+          "inicio_s": 9.455,
+          "fim_s": 9.856
+        },
+        {
+          "texto": "a",
+          "inicio_s": 9.896,
+          "fim_s": 9.916
+        },
+        {
+          "texto": "morte",
+          "inicio_s": 9.976,
+          "fim_s": 10.297
+        },
+        {
+          "texto": "definitiva",
+          "inicio_s": 10.337,
+          "fim_s": 10.898
+        },
+        {
+          "texto": "da",
+          "inicio_s": 10.938,
+          "fim_s": 10.999
+        },
+        {
+          "texto": "República",
+          "inicio_s": 11.059,
+          "fim_s": 11.52
+        }
+      ]
+    },
+    {
+      "texto": "Nas sombras, uma conspiração se formou em torno de Marco Bruto, um jovem nobre que César amava e protegia como a um filho.",
+      "inicio_s": 11.95,
+      "fim_s": 21.01,
+      "palavras": [
+        {
+          "texto": "Nas",
+          "inicio_s": 11.97,
+          "fim_s": 12.09
+        },
+        {
+          "texto": "sombras",
+          "inicio_s": 12.17,
+          "fim_s": 12.632
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 13.333,
+          "fim_s": 13.453
+        },
+        {
+          "texto": "conspiração",
+          "inicio_s": 13.533,
+          "fim_s": 14.175
+        },
+        {
+          "texto": "se",
+          "inicio_s": 14.235,
+          "fim_s": 14.295
+        },
+        {
+          "texto": "formou",
+          "inicio_s": 14.335,
+          "fim_s": 14.656
+        },
+        {
+          "texto": "em",
+          "inicio_s": 14.696,
+          "fim_s": 14.756
+        },
+        {
+          "texto": "torno",
+          "inicio_s": 14.816,
+          "fim_s": 15.097
+        },
+        {
+          "texto": "de",
+          "inicio_s": 15.137,
+          "fim_s": 15.217
+        },
+        {
+          "texto": "Marco",
+          "inicio_s": 15.257,
+          "fim_s": 15.538
+        },
+        {
+          "texto": "Bruto",
+          "inicio_s": 15.598,
+          "fim_s": 15.899
+        },
+        {
+          "texto": "um",
+          "inicio_s": 16.62,
+          "fim_s": 16.7
+        },
+        {
+          "texto": "jovem",
+          "inicio_s": 16.761,
+          "fim_s": 17.081
+        },
+        {
+          "texto": "nobre",
+          "inicio_s": 17.141,
+          "fim_s": 17.502
+        },
+        {
+          "texto": "que",
+          "inicio_s": 17.983,
+          "fim_s": 18.084
+        },
+        {
+          "texto": "César",
+          "inicio_s": 18.164,
+          "fim_s": 18.504
+        },
+        {
+          "texto": "amava",
+          "inicio_s": 18.545,
+          "fim_s": 18.925
+        },
+        {
+          "texto": "e",
+          "inicio_s": 19.487,
+          "fim_s": 19.507
+        },
+        {
+          "texto": "protegia",
+          "inicio_s": 19.567,
+          "fim_s": 20.088
+        },
+        {
+          "texto": "como",
+          "inicio_s": 20.148,
+          "fim_s": 20.308
+        },
+        {
+          "texto": "a",
+          "inicio_s": 20.349,
+          "fim_s": 20.369
+        },
+        {
+          "texto": "um",
+          "inicio_s": 20.409,
+          "fim_s": 20.489
+        },
+        {
+          "texto": "filho",
+          "inicio_s": 20.609,
+          "fim_s": 20.93
+        }
+      ]
+    },
+    {
+      "texto": "Na manhã do dia 15 de março, os avisos se multiplicaram.",
+      "inicio_s": 21.36,
+      "fim_s": 24.9,
+      "palavras": [
+        {
+          "texto": "Na",
+          "inicio_s": 21.38,
+          "fim_s": 21.42
+        },
+        {
+          "texto": "manhã",
+          "inicio_s": 21.461,
+          "fim_s": 21.702
+        },
+        {
+          "texto": "do",
+          "inicio_s": 21.803,
+          "fim_s": 21.863
+        },
+        {
+          "texto": "dia",
+          "inicio_s": 21.923,
+          "fim_s": 22.104
+        },
+        {
+          "texto": "15",
+          "inicio_s": 22.104,
+          "fim_s": 22.506
+        },
+        {
+          "texto": "de",
+          "inicio_s": 22.506,
+          "fim_s": 22.587
+        },
+        {
+          "texto": "março",
+          "inicio_s": 22.627,
+          "fim_s": 22.969
+        },
+        {
+          "texto": "os",
+          "inicio_s": 23.351,
+          "fim_s": 23.452
+        },
+        {
+          "texto": "avisos",
+          "inicio_s": 23.512,
+          "fim_s": 23.894
+        },
+        {
+          "texto": "se",
+          "inicio_s": 23.955,
+          "fim_s": 24.015
+        },
+        {
+          "texto": "multiplicaram",
+          "inicio_s": 24.075,
+          "fim_s": 24.799
+        }
+      ]
+    },
+    {
+      "texto": "Sua esposa Calpúrnia acordou aos prantos, implorando para que ele não saísse de casa após um pesadelo aterrador.",
+      "inicio_s": 25.25,
+      "fim_s": 31.49,
+      "palavras": [
+        {
+          "texto": "Sua",
+          "inicio_s": 25.27,
+          "fim_s": 25.37
+        },
+        {
+          "texto": "esposa",
+          "inicio_s": 25.39,
+          "fim_s": 25.752
+        },
+        {
+          "texto": "Calpúrnia",
+          "inicio_s": 25.792,
+          "fim_s": 26.293
+        },
+        {
+          "texto": "acordou",
+          "inicio_s": 26.855,
+          "fim_s": 27.256
+        },
+        {
+          "texto": "aos",
+          "inicio_s": 27.297,
+          "fim_s": 27.417
+        },
+        {
+          "texto": "prantos",
+          "inicio_s": 27.497,
+          "fim_s": 27.858
+        },
+        {
+          "texto": "implorando",
+          "inicio_s": 28.32,
+          "fim_s": 28.882
+        },
+        {
+          "texto": "para",
+          "inicio_s": 28.922,
+          "fim_s": 29.082
+        },
+        {
+          "texto": "que",
+          "inicio_s": 29.102,
+          "fim_s": 29.163
+        },
+        {
+          "texto": "ele",
+          "inicio_s": 29.203,
+          "fim_s": 29.283
+        },
+        {
+          "texto": "não",
+          "inicio_s": 29.303,
+          "fim_s": 29.423
+        },
+        {
+          "texto": "saísse",
+          "inicio_s": 29.464,
+          "fim_s": 29.785
+        },
+        {
+          "texto": "de",
+          "inicio_s": 29.805,
+          "fim_s": 29.865
+        },
+        {
+          "texto": "casa",
+          "inicio_s": 29.925,
+          "fim_s": 30.246
+        },
+        {
+          "texto": "após",
+          "inicio_s": 30.266,
+          "fim_s": 30.467
+        },
+        {
+          "texto": "um",
+          "inicio_s": 30.507,
+          "fim_s": 30.567
+        },
+        {
+          "texto": "pesadelo",
+          "inicio_s": 30.607,
+          "fim_s": 30.988
+        },
+        {
+          "texto": "aterrador",
+          "inicio_s": 31.029,
+          "fim_s": 31.41
+        }
+      ]
+    },
+    {
+      "texto": "No caminho pelas ruas movimentadas, um adivinho tocou seu manto e sussurrou uma última profecia: cuidado com os Idos de Março.",
+      "inicio_s": 31.84,
+      "fim_s": 39.9,
+      "palavras": [
+        {
+          "texto": "No",
+          "inicio_s": 31.86,
+          "fim_s": 31.92
+        },
+        {
+          "texto": "caminho",
+          "inicio_s": 31.98,
+          "fim_s": 32.341
+        },
+        {
+          "texto": "pelas",
+          "inicio_s": 32.381,
+          "fim_s": 32.622
+        },
+        {
+          "texto": "ruas",
+          "inicio_s": 32.662,
+          "fim_s": 32.863
+        },
+        {
+          "texto": "movimentadas",
+          "inicio_s": 32.903,
+          "fim_s": 33.604
+        },
+        {
+          "texto": "um",
+          "inicio_s": 33.965,
+          "fim_s": 34.025
+        },
+        {
+          "texto": "adivinho",
+          "inicio_s": 34.066,
+          "fim_s": 34.507
+        },
+        {
+          "texto": "tocou",
+          "inicio_s": 34.567,
+          "fim_s": 34.787
+        },
+        {
+          "texto": "seu",
+          "inicio_s": 34.847,
+          "fim_s": 34.968
+        },
+        {
+          "texto": "manto",
+          "inicio_s": 35.008,
+          "fim_s": 35.289
+        },
+        {
+          "texto": "e",
+          "inicio_s": 35.69,
+          "fim_s": 35.71
+        },
+        {
+          "texto": "sussurrou",
+          "inicio_s": 35.77,
+          "fim_s": 36.211
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 36.251,
+          "fim_s": 36.371
+        },
+        {
+          "texto": "última",
+          "inicio_s": 36.471,
+          "fim_s": 36.772
+        },
+        {
+          "texto": "profecia",
+          "inicio_s": 36.812,
+          "fim_s": 37.314
+        },
+        {
+          "texto": "cuidado",
+          "inicio_s": 38.476,
+          "fim_s": 38.898
+        },
+        {
+          "texto": "com",
+          "inicio_s": 38.938,
+          "fim_s": 39.058
+        },
+        {
+          "texto": "os",
+          "inicio_s": 39.078,
+          "fim_s": 39.178
+        },
+        {
+          "texto": "Idos",
+          "inicio_s": 39.238,
+          "fim_s": 39.419
+        },
+        {
+          "texto": "de",
+          "inicio_s": 39.439,
+          "fim_s": 39.499
+        },
+        {
+          "texto": "Março",
+          "inicio_s": 39.539,
+          "fim_s": 39.86
+        }
+      ]
+    },
+    {
+      "texto": "Confiante de sua glória e poder absoluto, César apenas sorriu com desdém e entrou no Teatro de Pompeia.",
+      "inicio_s": 40.25,
+      "fim_s": 46.31,
+      "palavras": [
+        {
+          "texto": "Confiante",
+          "inicio_s": 40.25,
+          "fim_s": 40.691
+        },
+        {
+          "texto": "de",
+          "inicio_s": 40.732,
+          "fim_s": 40.792
+        },
+        {
+          "texto": "sua",
+          "inicio_s": 40.832,
+          "fim_s": 40.972
+        },
+        {
+          "texto": "glória",
+          "inicio_s": 41.013,
+          "fim_s": 41.334
+        },
+        {
+          "texto": "e",
+          "inicio_s": 41.374,
+          "fim_s": 41.414
+        },
+        {
+          "texto": "poder",
+          "inicio_s": 41.454,
+          "fim_s": 41.715
+        },
+        {
+          "texto": "absoluto",
+          "inicio_s": 41.755,
+          "fim_s": 42.237
+        },
+        {
+          "texto": "César",
+          "inicio_s": 42.798,
+          "fim_s": 43.059
+        },
+        {
+          "texto": "apenas",
+          "inicio_s": 43.119,
+          "fim_s": 43.38
+        },
+        {
+          "texto": "sorriu",
+          "inicio_s": 43.42,
+          "fim_s": 43.701
+        },
+        {
+          "texto": "com",
+          "inicio_s": 43.742,
+          "fim_s": 43.822
+        },
+        {
+          "texto": "desdém",
+          "inicio_s": 43.882,
+          "fim_s": 44.223
+        },
+        {
+          "texto": "e",
+          "inicio_s": 44.745,
+          "fim_s": 44.765
+        },
+        {
+          "texto": "entrou",
+          "inicio_s": 44.845,
+          "fim_s": 45.166
+        },
+        {
+          "texto": "no",
+          "inicio_s": 45.186,
+          "fim_s": 45.246
+        },
+        {
+          "texto": "Teatro",
+          "inicio_s": 45.307,
+          "fim_s": 45.688
+        },
+        {
+          "texto": "de",
+          "inicio_s": 45.708,
+          "fim_s": 45.768
+        },
+        {
+          "texto": "Pompeia",
+          "inicio_s": 45.808,
+          "fim_s": 46.21
+        }
+      ]
+    },
+    {
+      "texto": "Quando as pesadas portas de bronze se fecharam atrás dele, sessenta senadores se levantaram.",
+      "inicio_s": 46.66,
+      "fim_s": 51.64,
+      "palavras": [
+        {
+          "texto": "Quando",
+          "inicio_s": 46.66,
+          "fim_s": 46.821
+        },
+        {
+          "texto": "as",
+          "inicio_s": 46.861,
+          "fim_s": 46.921
+        },
+        {
+          "texto": "pesadas",
+          "inicio_s": 46.981,
+          "fim_s": 47.443
+        },
+        {
+          "texto": "portas",
+          "inicio_s": 47.503,
+          "fim_s": 47.845
+        },
+        {
+          "texto": "de",
+          "inicio_s": 47.885,
+          "fim_s": 47.965
+        },
+        {
+          "texto": "bronze",
+          "inicio_s": 48.005,
+          "fim_s": 48.287
+        },
+        {
+          "texto": "se",
+          "inicio_s": 48.347,
+          "fim_s": 48.407
+        },
+        {
+          "texto": "fecharam",
+          "inicio_s": 48.447,
+          "fim_s": 48.869
+        },
+        {
+          "texto": "atrás",
+          "inicio_s": 48.929,
+          "fim_s": 49.17
+        },
+        {
+          "texto": "dele",
+          "inicio_s": 49.23,
+          "fim_s": 49.451
+        },
+        {
+          "texto": "sessenta",
+          "inicio_s": 49.752,
+          "fim_s": 50.194
+        },
+        {
+          "texto": "senadores",
+          "inicio_s": 50.234,
+          "fim_s": 50.777
+        },
+        {
+          "texto": "se",
+          "inicio_s": 50.857,
+          "fim_s": 50.917
+        },
+        {
+          "texto": "levantaram",
+          "inicio_s": 50.977,
+          "fim_s": 51.52
+        }
+      ]
+    },
+    {
+      "texto": "Sob as togas brancas, dezenas de adagas de ferro estavam prontas.",
+      "inicio_s": 51.99,
+      "fim_s": 55.69,
+      "palavras": [
+        {
+          "texto": "Sob",
+          "inicio_s": 52.03,
+          "fim_s": 52.151
+        },
+        {
+          "texto": "as",
+          "inicio_s": 52.231,
+          "fim_s": 52.292
+        },
+        {
+          "texto": "togas",
+          "inicio_s": 52.332,
+          "fim_s": 52.613
+        },
+        {
+          "texto": "brancas",
+          "inicio_s": 52.674,
+          "fim_s": 53.036
+        },
+        {
+          "texto": "dezenas",
+          "inicio_s": 53.398,
+          "fim_s": 53.84
+        },
+        {
+          "texto": "de",
+          "inicio_s": 53.88,
+          "fim_s": 53.92
+        },
+        {
+          "texto": "adagas",
+          "inicio_s": 53.961,
+          "fim_s": 54.302
+        },
+        {
+          "texto": "de",
+          "inicio_s": 54.323,
+          "fim_s": 54.383
+        },
+        {
+          "texto": "ferro",
+          "inicio_s": 54.463,
+          "fim_s": 54.745
+        },
+        {
+          "texto": "estavam",
+          "inicio_s": 54.785,
+          "fim_s": 55.127
+        },
+        {
+          "texto": "prontas",
+          "inicio_s": 55.187,
+          "fim_s": 55.589
+        }
+      ]
+    }
+  ]
+}

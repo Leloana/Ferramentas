@@ -1,0 +1,144 @@
+[
+  {
+    "frase": 1,
+    "plano": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "A moody cinematic shot inside a dimly lit stone cellar in ancient Rome, conspiratorial senators in dark wool cloaks huddled around a rough wooden table lit by clay oil lamps, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00100_.png"
+  },
+  {
+    "frase": 1,
+    "plano": 2,
+    "arquivo": "texto_01b.png",
+    "prompt_final": "A tight shot of pale hands sliding an iron dagger across a wooden table toward a circle of shadowed faces, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00101_.png"
+  },
+  {
+    "frase": 2,
+    "plano": 1,
+    "arquivo": "texto_02.png",
+    "prompt_final": "A commanding medium portrait of Julius Caesar, an authoritative 55 year old roman statesman with sharp patrician features, piercing brown eyes and short receding silver gray hair, standing in the roman forum in a purple bordered white toga, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00098_.png"
+  },
+  {
+    "frase": 2,
+    "plano": 2,
+    "arquivo": "texto_02b.png",
+    "prompt_final": "A low angle shot of a gilded laurel wreath being lowered toward the head of the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, before a crowd of watching senators, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00055_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\julio_cesar_idos_de_marco\\imagens\\texto_02.png"
+  },
+  {
+    "frase": 3,
+    "plano": 1,
+    "arquivo": "texto_03.png",
+    "prompt_final": "An intense close-up portrait of young Marcus Brutus, a 30 year old noble roman senator with dark curly hair and a pale clean shaven face, conflicted haunted eyes staring through deep shadow, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00099_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 2,
+    "arquivo": "texto_03b.png",
+    "prompt_final": "A quiet shot of the young roman senator from <image1>, preserving his exact pale clean shaven face and dark curly hair, in a white senatorial toga, reading an anonymous note urging him to act, oil lamp trembling beside his hand, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00056_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\julio_cesar_idos_de_marco\\imagens\\texto_03.png"
+  },
+  {
+    "frase": 4,
+    "plano": 1,
+    "arquivo": "texto_04.png",
+    "prompt_final": "A wide cinematic vista of Rome at early dawn on the fifteenth of March, blood orange sunrise over ancient temples and aqueducts with fog on the Tiber, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00102_.png"
+  },
+  {
+    "frase": 4,
+    "plano": 2,
+    "arquivo": "texto_04b.png",
+    "prompt_final": "A close-up of a sacrificial bull liver on a stone altar, priests recoiling at the omen in the pale morning light, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00103_.png"
+  },
+  {
+    "frase": 5,
+    "plano": 1,
+    "arquivo": "texto_05.png",
+    "prompt_final": "An emotional medium shot in a roman villa bedchamber of Calpurnia, a noble roman woman with dark braided hair and tear stained cheeks, clutching the arm of the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga and begging him to stay home, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00057_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\julio_cesar_idos_de_marco\\imagens\\texto_02.png"
+  },
+  {
+    "frase": 5,
+    "plano": 2,
+    "arquivo": "texto_05b.png",
+    "prompt_final": "A tender close-up of the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, gently removing his wife's hands from his arm, resolve and affection on his face, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00058_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\julio_cesar_idos_de_marco\\imagens\\texto_02.png"
+  },
+  {
+    "frase": 6,
+    "plano": 1,
+    "arquivo": "texto_06.png",
+    "prompt_final": "A dramatic street scene in ancient Rome where an elderly blind soothsayer with a ragged gray beard reaches out to touch the toga of the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, whispering a warning as citizens watch in silence, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00059_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\julio_cesar_idos_de_marco\\imagens\\texto_02.png"
+  },
+  {
+    "frase": 6,
+    "plano": 2,
+    "arquivo": "texto_06b.png",
+    "prompt_final": "A close-up of a gnarled hand closing on the hem of a purple bordered toga in a crowded roman street, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00104_.png"
+  },
+  {
+    "frase": 7,
+    "plano": 1,
+    "arquivo": "texto_07.png",
+    "prompt_final": "A cinematic medium close-up of the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, smiling with confident arrogance as he walks into the grand stone colonnade of the Theatre of Pompey, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00060_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\julio_cesar_idos_de_marco\\imagens\\texto_02.png"
+  },
+  {
+    "frase": 7,
+    "plano": 2,
+    "arquivo": "texto_07b.png",
+    "prompt_final": "A wide shot of the marble portico swallowing a lone figure in a purple bordered toga, long morning shadows between the columns, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00105_.png"
+  },
+  {
+    "frase": 8,
+    "plano": 1,
+    "arquivo": "texto_08.png",
+    "prompt_final": "A wide interior shot inside the grand curia of Pompey as sixty roman senators in white togas rise to their feet from marble tiers while heavy bronze doors close behind, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00106_.png"
+  },
+  {
+    "frase": 8,
+    "plano": 2,
+    "arquivo": "texto_08b.png",
+    "prompt_final": "A tense reverse shot of the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, pausing mid step as he registers the silence and the standing rows of senators, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00061_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\julio_cesar_idos_de_marco\\imagens\\texto_02.png"
+  },
+  {
+    "frase": 9,
+    "plano": 1,
+    "arquivo": "texto_09.png",
+    "prompt_final": "A tense macro close-up of the draped folds of a white toga revealing a trembling hand clutching a concealed iron dagger in deep shadow, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00107_.png"
+  },
+  {
+    "frase": 9,
+    "plano": 2,
+    "arquivo": "texto_09b.png",
+    "prompt_final": "A close-up of the young roman senator from <image1>, preserving his exact pale clean shaven face and dark curly hair, in a white senatorial toga, swallowing hard among the rising senators, his hand hidden inside his toga, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00062_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\julio_cesar_idos_de_marco\\imagens\\texto_03.png"
+  }
+]

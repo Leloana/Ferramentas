@@ -1,0 +1,1530 @@
+{
+  "gerado_em": "2026-09-23T22:30:50",
+  "roteiro": "C:\\Users\\mf827\\Documents\\Ferramentas\\tts_platform_pt\\Projetos\\ideias\\stanislav_petrov_1983\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 101.8,
+  "texto_usado": "O alarme vermelho começou a tocar à meia-noite. O sistema de satélites da União Soviética detectou o lançamento de um míssil balístico intercontinental vindo dos Estados Unidos. Poucos segundos depois, as telas do bunker secreto Serpukhov-15 piscaram com uma mensagem que gelou o sangue de todos os operadores: mais quatro mísseis a caminho.\n\nNo centro da sala de comando, o tenente-coronel Stanislav Petrov estava de plantão naquele turno. Pelo protocolo militar soviético, a ordem era clara e imediata: alertar a cúpula do Kremlin para autorizar uma retaliação nuclear devastadora. Mas alguma coisa não fazia sentido na mente de Petrov. Se os americanos decidissem iniciar a Terceira Guerra Mundial, atacariam com centenas de ogivas para aniquilar qualquer defesa, não apenas cinco.\n\nAo redor dele, os operadores em pânico olhavam em sua direção, esperando a ordem que selaria o destino da Terra. O telefone com linha direta para os generais estava diante dele, tocando com insistência. O tempo estimado de impacto diminuía a cada segundo nos relógios da parede. Petrov sentiu o suor frio escorrer pela testa enquanto fechava os olhos por um instante. Ele respirou fundo, pegou o fone com a mão trêmula e fez o relatório mais arriscado da vida humana: era um alarme falso.\n\nPelos vinte minutos seguintes, o silêncio no bunker foi ensurdecedor. Todos esperavam pelo clarão atômico que transformaria suas cidades em cinzas. O clarão nunca veio. Mais tarde, descobriu-se que os satélites tinham confundido o reflexo do sol nas nuvens com o rastro de motores de foguetes. Stanislav Petrov nunca se considerou um herói. Mas, naquela madrugada, o futuro da humanidade dependeu da coragem de um homem que se recusou a apertar o botão.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "O alarme vermelho começou a tocar à meia-noite.",
+      "inicio_s": 0.15,
+      "fim_s": 2.53,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 0.15,
+          "fim_s": 0.19
+        },
+        {
+          "texto": "alarme",
+          "inicio_s": 0.231,
+          "fim_s": 0.574
+        },
+        {
+          "texto": "vermelho",
+          "inicio_s": 0.614,
+          "fim_s": 1.017
+        },
+        {
+          "texto": "começou",
+          "inicio_s": 1.037,
+          "fim_s": 1.401
+        },
+        {
+          "texto": "a",
+          "inicio_s": 1.421,
+          "fim_s": 1.441
+        },
+        {
+          "texto": "tocar",
+          "inicio_s": 1.481,
+          "fim_s": 1.804
+        },
+        {
+          "texto": "à",
+          "inicio_s": 1.864,
+          "fim_s": 1.885
+        },
+        {
+          "texto": "meia-noite",
+          "inicio_s": 1.905,
+          "fim_s": 2.449
+        }
+      ]
+    },
+    {
+      "texto": "O sistema de satélites da União Soviética detectou o lançamento de um míssil balístico intercontinental vindo dos Estados Unidos.",
+      "inicio_s": 2.88,
+      "fim_s": 9.1,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 2.9,
+          "fim_s": 2.92
+        },
+        {
+          "texto": "sistema",
+          "inicio_s": 2.96,
+          "fim_s": 3.281
+        },
+        {
+          "texto": "de",
+          "inicio_s": 3.321,
+          "fim_s": 3.382
+        },
+        {
+          "texto": "satélites",
+          "inicio_s": 3.422,
+          "fim_s": 3.923
+        },
+        {
+          "texto": "da",
+          "inicio_s": 3.943,
+          "fim_s": 4.004
+        },
+        {
+          "texto": "União",
+          "inicio_s": 4.064,
+          "fim_s": 4.264
+        },
+        {
+          "texto": "Soviética",
+          "inicio_s": 4.305,
+          "fim_s": 4.746
+        },
+        {
+          "texto": "detectou",
+          "inicio_s": 5.107,
+          "fim_s": 5.508
+        },
+        {
+          "texto": "o",
+          "inicio_s": 5.549,
+          "fim_s": 5.569
+        },
+        {
+          "texto": "lançamento",
+          "inicio_s": 5.589,
+          "fim_s": 6.03
+        },
+        {
+          "texto": "de",
+          "inicio_s": 6.07,
+          "fim_s": 6.13
+        },
+        {
+          "texto": "um",
+          "inicio_s": 6.171,
+          "fim_s": 6.231
+        },
+        {
+          "texto": "míssil",
+          "inicio_s": 6.271,
+          "fim_s": 6.532
+        },
+        {
+          "texto": "balístico",
+          "inicio_s": 6.552,
+          "fim_s": 7.013
+        },
+        {
+          "texto": "intercontinental",
+          "inicio_s": 7.094,
+          "fim_s": 7.836
+        },
+        {
+          "texto": "vindo",
+          "inicio_s": 7.956,
+          "fim_s": 8.177
+        },
+        {
+          "texto": "dos",
+          "inicio_s": 8.197,
+          "fim_s": 8.317
+        },
+        {
+          "texto": "Estados",
+          "inicio_s": 8.358,
+          "fim_s": 8.639
+        },
+        {
+          "texto": "Unidos",
+          "inicio_s": 8.699,
+          "fim_s": 9.0
+        }
+      ]
+    },
+    {
+      "texto": "Poucos segundos depois, as telas do bunker secreto Serpukhov-15 piscaram com uma mensagem que gelou o sangue de todos os operadores: mais quatro mísseis a caminho.",
+      "inicio_s": 9.45,
+      "fim_s": 20.91,
+      "palavras": [
+        {
+          "texto": "Poucos",
+          "inicio_s": 9.45,
+          "fim_s": 9.751
+        },
+        {
+          "texto": "segundos",
+          "inicio_s": 9.791,
+          "fim_s": 10.111
+        },
+        {
+          "texto": "depois",
+          "inicio_s": 10.151,
+          "fim_s": 10.552
+        },
+        {
+          "texto": "as",
+          "inicio_s": 11.053,
+          "fim_s": 11.173
+        },
+        {
+          "texto": "telas",
+          "inicio_s": 11.233,
+          "fim_s": 11.534
+        },
+        {
+          "texto": "do",
+          "inicio_s": 11.554,
+          "fim_s": 11.634
+        },
+        {
+          "texto": "bunker",
+          "inicio_s": 11.674,
+          "fim_s": 11.954
+        },
+        {
+          "texto": "secreto",
+          "inicio_s": 12.014,
+          "fim_s": 12.435
+        },
+        {
+          "texto": "Serpukhov-15",
+          "inicio_s": 12.575,
+          "fim_s": 13.177
+        },
+        {
+          "texto": "piscaram",
+          "inicio_s": 14.238,
+          "fim_s": 14.679
+        },
+        {
+          "texto": "com",
+          "inicio_s": 14.719,
+          "fim_s": 14.819
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 14.839,
+          "fim_s": 14.94
+        },
+        {
+          "texto": "mensagem",
+          "inicio_s": 14.98,
+          "fim_s": 15.42
+        },
+        {
+          "texto": "que",
+          "inicio_s": 15.44,
+          "fim_s": 15.521
+        },
+        {
+          "texto": "gelou",
+          "inicio_s": 15.561,
+          "fim_s": 15.861
+        },
+        {
+          "texto": "o",
+          "inicio_s": 16.001,
+          "fim_s": 16.021
+        },
+        {
+          "texto": "sangue",
+          "inicio_s": 16.142,
+          "fim_s": 16.402
+        },
+        {
+          "texto": "de",
+          "inicio_s": 16.442,
+          "fim_s": 16.502
+        },
+        {
+          "texto": "todos",
+          "inicio_s": 16.683,
+          "fim_s": 17.003
+        },
+        {
+          "texto": "os",
+          "inicio_s": 17.023,
+          "fim_s": 17.123
+        },
+        {
+          "texto": "operadores",
+          "inicio_s": 17.183,
+          "fim_s": 17.785
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 18.706,
+          "fim_s": 18.967
+        },
+        {
+          "texto": "quatro",
+          "inicio_s": 19.127,
+          "fim_s": 19.508
+        },
+        {
+          "texto": "mísseis",
+          "inicio_s": 19.588,
+          "fim_s": 20.028
+        },
+        {
+          "texto": "a",
+          "inicio_s": 20.289,
+          "fim_s": 20.309
+        },
+        {
+          "texto": "caminho",
+          "inicio_s": 20.409,
+          "fim_s": 20.79
+        }
+      ]
+    },
+    {
+      "texto": "No centro da sala de comando, o tenente-coronel Stanislav Petrov estava de plantão naquele turno.",
+      "inicio_s": 21.26,
+      "fim_s": 27.08,
+      "palavras": [
+        {
+          "texto": "No",
+          "inicio_s": 21.28,
+          "fim_s": 21.36
+        },
+        {
+          "texto": "centro",
+          "inicio_s": 21.461,
+          "fim_s": 21.742
+        },
+        {
+          "texto": "da",
+          "inicio_s": 21.782,
+          "fim_s": 21.842
+        },
+        {
+          "texto": "sala",
+          "inicio_s": 21.922,
+          "fim_s": 22.103
+        },
+        {
+          "texto": "de",
+          "inicio_s": 22.123,
+          "fim_s": 22.183
+        },
+        {
+          "texto": "comando",
+          "inicio_s": 22.223,
+          "fim_s": 22.605
+        },
+        {
+          "texto": "o",
+          "inicio_s": 23.006,
+          "fim_s": 23.026
+        },
+        {
+          "texto": "tenente-coronel",
+          "inicio_s": 23.106,
+          "fim_s": 23.929
+        },
+        {
+          "texto": "Stanislav",
+          "inicio_s": 24.03,
+          "fim_s": 24.531
+        },
+        {
+          "texto": "Petrov",
+          "inicio_s": 24.612,
+          "fim_s": 25.013
+        },
+        {
+          "texto": "estava",
+          "inicio_s": 25.495,
+          "fim_s": 25.816
+        },
+        {
+          "texto": "de",
+          "inicio_s": 25.856,
+          "fim_s": 25.936
+        },
+        {
+          "texto": "plantão",
+          "inicio_s": 25.956,
+          "fim_s": 26.358
+        },
+        {
+          "texto": "naquele",
+          "inicio_s": 26.398,
+          "fim_s": 26.699
+        },
+        {
+          "texto": "turno",
+          "inicio_s": 26.739,
+          "fim_s": 27.02
+        }
+      ]
+    },
+    {
+      "texto": "Pelo protocolo militar soviético, a ordem era clara e imediata: alertar a cúpula do Kremlin para autorizar uma retaliação nuclear devastadora.",
+      "inicio_s": 27.43,
+      "fim_s": 35.41,
+      "palavras": [
+        {
+          "texto": "Pelo",
+          "inicio_s": 27.43,
+          "fim_s": 27.59
+        },
+        {
+          "texto": "protocolo",
+          "inicio_s": 27.61,
+          "fim_s": 27.991
+        },
+        {
+          "texto": "militar",
+          "inicio_s": 28.011,
+          "fim_s": 28.352
+        },
+        {
+          "texto": "soviético",
+          "inicio_s": 28.412,
+          "fim_s": 28.934
+        },
+        {
+          "texto": "a",
+          "inicio_s": 29.395,
+          "fim_s": 29.415
+        },
+        {
+          "texto": "ordem",
+          "inicio_s": 29.535,
+          "fim_s": 29.736
+        },
+        {
+          "texto": "era",
+          "inicio_s": 29.776,
+          "fim_s": 29.876
+        },
+        {
+          "texto": "clara",
+          "inicio_s": 29.936,
+          "fim_s": 30.237
+        },
+        {
+          "texto": "e",
+          "inicio_s": 30.277,
+          "fim_s": 30.297
+        },
+        {
+          "texto": "imediata",
+          "inicio_s": 30.317,
+          "fim_s": 30.798
+        },
+        {
+          "texto": "alertar",
+          "inicio_s": 31.36,
+          "fim_s": 31.721
+        },
+        {
+          "texto": "a",
+          "inicio_s": 31.761,
+          "fim_s": 31.781
+        },
+        {
+          "texto": "cúpula",
+          "inicio_s": 31.841,
+          "fim_s": 32.162
+        },
+        {
+          "texto": "do",
+          "inicio_s": 32.182,
+          "fim_s": 32.242
+        },
+        {
+          "texto": "Kremlin",
+          "inicio_s": 32.302,
+          "fim_s": 32.643
+        },
+        {
+          "texto": "para",
+          "inicio_s": 32.884,
+          "fim_s": 33.024
+        },
+        {
+          "texto": "autorizar",
+          "inicio_s": 33.064,
+          "fim_s": 33.505
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 33.545,
+          "fim_s": 33.626
+        },
+        {
+          "texto": "retaliação",
+          "inicio_s": 33.666,
+          "fim_s": 34.187
+        },
+        {
+          "texto": "nuclear",
+          "inicio_s": 34.207,
+          "fim_s": 34.568
+        },
+        {
+          "texto": "devastadora",
+          "inicio_s": 34.628,
+          "fim_s": 35.27
+        }
+      ]
+    },
+    {
+      "texto": "Mas alguma coisa não fazia sentido na mente de Petrov.",
+      "inicio_s": 35.76,
+      "fim_s": 39.34,
+      "palavras": [
+        {
+          "texto": "Mas",
+          "inicio_s": 35.78,
+          "fim_s": 35.941
+        },
+        {
+          "texto": "alguma",
+          "inicio_s": 36.001,
+          "fim_s": 36.303
+        },
+        {
+          "texto": "coisa",
+          "inicio_s": 36.383,
+          "fim_s": 36.705
+        },
+        {
+          "texto": "não",
+          "inicio_s": 37.248,
+          "fim_s": 37.409
+        },
+        {
+          "texto": "fazia",
+          "inicio_s": 37.49,
+          "fim_s": 37.872
+        },
+        {
+          "texto": "sentido",
+          "inicio_s": 37.952,
+          "fim_s": 38.354
+        },
+        {
+          "texto": "na",
+          "inicio_s": 38.395,
+          "fim_s": 38.475
+        },
+        {
+          "texto": "mente",
+          "inicio_s": 38.536,
+          "fim_s": 38.757
+        },
+        {
+          "texto": "de",
+          "inicio_s": 38.797,
+          "fim_s": 38.877
+        },
+        {
+          "texto": "Petrov",
+          "inicio_s": 38.938,
+          "fim_s": 39.28
+        }
+      ]
+    },
+    {
+      "texto": "Se os americanos decidissem iniciar a Terceira Guerra Mundial, atacariam com centenas de ogivas para aniquilar qualquer defesa, não apenas cinco.",
+      "inicio_s": 39.69,
+      "fim_s": 47.37,
+      "palavras": [
+        {
+          "texto": "Se",
+          "inicio_s": 39.71,
+          "fim_s": 39.79
+        },
+        {
+          "texto": "os",
+          "inicio_s": 39.83,
+          "fim_s": 39.891
+        },
+        {
+          "texto": "americanos",
+          "inicio_s": 39.931,
+          "fim_s": 40.412
+        },
+        {
+          "texto": "decidissem",
+          "inicio_s": 40.452,
+          "fim_s": 40.933
+        },
+        {
+          "texto": "iniciar",
+          "inicio_s": 40.953,
+          "fim_s": 41.374
+        },
+        {
+          "texto": "a",
+          "inicio_s": 41.414,
+          "fim_s": 41.435
+        },
+        {
+          "texto": "Terceira",
+          "inicio_s": 41.475,
+          "fim_s": 41.856
+        },
+        {
+          "texto": "Guerra",
+          "inicio_s": 41.896,
+          "fim_s": 42.096
+        },
+        {
+          "texto": "Mundial",
+          "inicio_s": 42.116,
+          "fim_s": 42.497
+        },
+        {
+          "texto": "atacariam",
+          "inicio_s": 42.959,
+          "fim_s": 43.44
+        },
+        {
+          "texto": "com",
+          "inicio_s": 43.48,
+          "fim_s": 43.58
+        },
+        {
+          "texto": "centenas",
+          "inicio_s": 43.64,
+          "fim_s": 44.021
+        },
+        {
+          "texto": "de",
+          "inicio_s": 44.041,
+          "fim_s": 44.101
+        },
+        {
+          "texto": "ogivas",
+          "inicio_s": 44.142,
+          "fim_s": 44.503
+        },
+        {
+          "texto": "para",
+          "inicio_s": 44.563,
+          "fim_s": 44.683
+        },
+        {
+          "texto": "aniquilar",
+          "inicio_s": 44.703,
+          "fim_s": 45.084
+        },
+        {
+          "texto": "qualquer",
+          "inicio_s": 45.124,
+          "fim_s": 45.445
+        },
+        {
+          "texto": "defesa",
+          "inicio_s": 45.485,
+          "fim_s": 45.906
+        },
+        {
+          "texto": "não",
+          "inicio_s": 46.428,
+          "fim_s": 46.588
+        },
+        {
+          "texto": "apenas",
+          "inicio_s": 46.648,
+          "fim_s": 46.969
+        },
+        {
+          "texto": "cinco",
+          "inicio_s": 47.009,
+          "fim_s": 47.27
+        }
+      ]
+    },
+    {
+      "texto": "Ao redor dele, os operadores em pânico olhavam em sua direção, esperando a ordem que selaria o destino da Terra.",
+      "inicio_s": 47.72,
+      "fim_s": 54.02,
+      "palavras": [
+        {
+          "texto": "Ao",
+          "inicio_s": 47.74,
+          "fim_s": 47.8
+        },
+        {
+          "texto": "redor",
+          "inicio_s": 47.84,
+          "fim_s": 48.081
+        },
+        {
+          "texto": "dele",
+          "inicio_s": 48.121,
+          "fim_s": 48.362
+        },
+        {
+          "texto": "os",
+          "inicio_s": 48.924,
+          "fim_s": 49.004
+        },
+        {
+          "texto": "operadores",
+          "inicio_s": 49.064,
+          "fim_s": 49.526
+        },
+        {
+          "texto": "em",
+          "inicio_s": 49.586,
+          "fim_s": 49.646
+        },
+        {
+          "texto": "pânico",
+          "inicio_s": 49.726,
+          "fim_s": 50.047
+        },
+        {
+          "texto": "olhavam",
+          "inicio_s": 50.108,
+          "fim_s": 50.489
+        },
+        {
+          "texto": "em",
+          "inicio_s": 50.529,
+          "fim_s": 50.589
+        },
+        {
+          "texto": "sua",
+          "inicio_s": 50.649,
+          "fim_s": 50.79
+        },
+        {
+          "texto": "direção",
+          "inicio_s": 50.81,
+          "fim_s": 51.211
+        },
+        {
+          "texto": "esperando",
+          "inicio_s": 51.793,
+          "fim_s": 52.194
+        },
+        {
+          "texto": "a",
+          "inicio_s": 52.234,
+          "fim_s": 52.254
+        },
+        {
+          "texto": "ordem",
+          "inicio_s": 52.355,
+          "fim_s": 52.575
+        },
+        {
+          "texto": "que",
+          "inicio_s": 52.595,
+          "fim_s": 52.656
+        },
+        {
+          "texto": "selaria",
+          "inicio_s": 52.696,
+          "fim_s": 53.037
+        },
+        {
+          "texto": "o",
+          "inicio_s": 53.057,
+          "fim_s": 53.077
+        },
+        {
+          "texto": "destino",
+          "inicio_s": 53.117,
+          "fim_s": 53.538
+        },
+        {
+          "texto": "da",
+          "inicio_s": 53.559,
+          "fim_s": 53.619
+        },
+        {
+          "texto": "Terra",
+          "inicio_s": 53.679,
+          "fim_s": 53.92
+        }
+      ]
+    },
+    {
+      "texto": "O telefone com linha direta para os generais estava diante dele, tocando com insistência.",
+      "inicio_s": 54.37,
+      "fim_s": 59.41,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 54.41,
+          "fim_s": 54.43
+        },
+        {
+          "texto": "telefone",
+          "inicio_s": 54.47,
+          "fim_s": 54.872
+        },
+        {
+          "texto": "com",
+          "inicio_s": 54.892,
+          "fim_s": 55.033
+        },
+        {
+          "texto": "linha",
+          "inicio_s": 55.073,
+          "fim_s": 55.294
+        },
+        {
+          "texto": "direta",
+          "inicio_s": 55.555,
+          "fim_s": 55.936
+        },
+        {
+          "texto": "para",
+          "inicio_s": 55.976,
+          "fim_s": 56.117
+        },
+        {
+          "texto": "os",
+          "inicio_s": 56.117,
+          "fim_s": 56.157
+        },
+        {
+          "texto": "generais",
+          "inicio_s": 56.177,
+          "fim_s": 56.579
+        },
+        {
+          "texto": "estava",
+          "inicio_s": 56.619,
+          "fim_s": 56.9
+        },
+        {
+          "texto": "diante",
+          "inicio_s": 56.96,
+          "fim_s": 57.221
+        },
+        {
+          "texto": "dele",
+          "inicio_s": 57.261,
+          "fim_s": 57.502
+        },
+        {
+          "texto": "tocando",
+          "inicio_s": 57.924,
+          "fim_s": 58.286
+        },
+        {
+          "texto": "com",
+          "inicio_s": 58.326,
+          "fim_s": 58.446
+        },
+        {
+          "texto": "insistência",
+          "inicio_s": 58.506,
+          "fim_s": 59.189
+        }
+      ]
+    },
+    {
+      "texto": "O tempo estimado de impacto diminuía a cada segundo nos relógios da parede.",
+      "inicio_s": 59.76,
+      "fim_s": 63.86,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 59.8,
+          "fim_s": 59.82
+        },
+        {
+          "texto": "tempo",
+          "inicio_s": 59.881,
+          "fim_s": 60.102
+        },
+        {
+          "texto": "estimado",
+          "inicio_s": 60.122,
+          "fim_s": 60.604
+        },
+        {
+          "texto": "de",
+          "inicio_s": 60.644,
+          "fim_s": 60.705
+        },
+        {
+          "texto": "impacto",
+          "inicio_s": 60.745,
+          "fim_s": 61.187
+        },
+        {
+          "texto": "diminuía",
+          "inicio_s": 61.569,
+          "fim_s": 62.091
+        },
+        {
+          "texto": "a",
+          "inicio_s": 62.132,
+          "fim_s": 62.152
+        },
+        {
+          "texto": "cada",
+          "inicio_s": 62.232,
+          "fim_s": 62.413
+        },
+        {
+          "texto": "segundo",
+          "inicio_s": 62.473,
+          "fim_s": 62.855
+        },
+        {
+          "texto": "nos",
+          "inicio_s": 62.895,
+          "fim_s": 62.996
+        },
+        {
+          "texto": "relógios",
+          "inicio_s": 63.016,
+          "fim_s": 63.358
+        },
+        {
+          "texto": "da",
+          "inicio_s": 63.358,
+          "fim_s": 63.418
+        },
+        {
+          "texto": "parede",
+          "inicio_s": 63.458,
+          "fim_s": 63.8
+        }
+      ]
+    },
+    {
+      "texto": "Petrov sentiu o suor frio escorrer pela testa enquanto fechava os olhos por um instante.",
+      "inicio_s": 64.21,
+      "fim_s": 68.59,
+      "palavras": [
+        {
+          "texto": "Petrov",
+          "inicio_s": 64.21,
+          "fim_s": 64.531
+        },
+        {
+          "texto": "sentiu",
+          "inicio_s": 64.632,
+          "fim_s": 64.913
+        },
+        {
+          "texto": "o",
+          "inicio_s": 64.933,
+          "fim_s": 64.953
+        },
+        {
+          "texto": "suor",
+          "inicio_s": 64.994,
+          "fim_s": 65.235
+        },
+        {
+          "texto": "frio",
+          "inicio_s": 65.315,
+          "fim_s": 65.536
+        },
+        {
+          "texto": "escorrer",
+          "inicio_s": 65.556,
+          "fim_s": 65.878
+        },
+        {
+          "texto": "pela",
+          "inicio_s": 65.898,
+          "fim_s": 66.079
+        },
+        {
+          "texto": "testa",
+          "inicio_s": 66.119,
+          "fim_s": 66.44
+        },
+        {
+          "texto": "enquanto",
+          "inicio_s": 66.822,
+          "fim_s": 67.123
+        },
+        {
+          "texto": "fechava",
+          "inicio_s": 67.163,
+          "fim_s": 67.505
+        },
+        {
+          "texto": "os",
+          "inicio_s": 67.545,
+          "fim_s": 67.606
+        },
+        {
+          "texto": "olhos",
+          "inicio_s": 67.686,
+          "fim_s": 67.867
+        },
+        {
+          "texto": "por",
+          "inicio_s": 67.907,
+          "fim_s": 68.007
+        },
+        {
+          "texto": "um",
+          "inicio_s": 68.048,
+          "fim_s": 68.108
+        },
+        {
+          "texto": "instante",
+          "inicio_s": 68.128,
+          "fim_s": 68.53
+        }
+      ]
+    },
+    {
+      "texto": "Ele respirou fundo, pegou o fone com a mão trêmula e fez o relatório mais arriscado da vida humana: era um alarme falso.",
+      "inicio_s": 68.94,
+      "fim_s": 76.2,
+      "palavras": [
+        {
+          "texto": "Ele",
+          "inicio_s": 68.96,
+          "fim_s": 69.08
+        },
+        {
+          "texto": "respirou",
+          "inicio_s": 69.12,
+          "fim_s": 69.502
+        },
+        {
+          "texto": "fundo",
+          "inicio_s": 69.582,
+          "fim_s": 69.883
+        },
+        {
+          "texto": "pegou",
+          "inicio_s": 70.203,
+          "fim_s": 70.464
+        },
+        {
+          "texto": "o",
+          "inicio_s": 70.484,
+          "fim_s": 70.504
+        },
+        {
+          "texto": "fone",
+          "inicio_s": 70.585,
+          "fim_s": 70.865
+        },
+        {
+          "texto": "com",
+          "inicio_s": 70.905,
+          "fim_s": 71.026
+        },
+        {
+          "texto": "a",
+          "inicio_s": 71.066,
+          "fim_s": 71.086
+        },
+        {
+          "texto": "mão",
+          "inicio_s": 71.126,
+          "fim_s": 71.266
+        },
+        {
+          "texto": "trêmula",
+          "inicio_s": 71.367,
+          "fim_s": 71.748
+        },
+        {
+          "texto": "e",
+          "inicio_s": 72.008,
+          "fim_s": 72.029
+        },
+        {
+          "texto": "fez",
+          "inicio_s": 72.089,
+          "fim_s": 72.249
+        },
+        {
+          "texto": "o",
+          "inicio_s": 72.289,
+          "fim_s": 72.309
+        },
+        {
+          "texto": "relatório",
+          "inicio_s": 72.349,
+          "fim_s": 72.791
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 72.831,
+          "fim_s": 73.031
+        },
+        {
+          "texto": "arriscado",
+          "inicio_s": 73.071,
+          "fim_s": 73.593
+        },
+        {
+          "texto": "da",
+          "inicio_s": 73.613,
+          "fim_s": 73.673
+        },
+        {
+          "texto": "vida",
+          "inicio_s": 73.713,
+          "fim_s": 73.874
+        },
+        {
+          "texto": "humana",
+          "inicio_s": 73.894,
+          "fim_s": 74.194
+        },
+        {
+          "texto": "era",
+          "inicio_s": 75.077,
+          "fim_s": 75.177
+        },
+        {
+          "texto": "um",
+          "inicio_s": 75.217,
+          "fim_s": 75.257
+        },
+        {
+          "texto": "alarme",
+          "inicio_s": 75.298,
+          "fim_s": 75.659
+        },
+        {
+          "texto": "falso",
+          "inicio_s": 75.739,
+          "fim_s": 76.14
+        }
+      ]
+    },
+    {
+      "texto": "Pelos vinte minutos seguintes, o silêncio no bunker foi ensurdecedor.",
+      "inicio_s": 76.55,
+      "fim_s": 80.37,
+      "palavras": [
+        {
+          "texto": "Pelos",
+          "inicio_s": 76.55,
+          "fim_s": 76.751
+        },
+        {
+          "texto": "vinte",
+          "inicio_s": 76.791,
+          "fim_s": 77.012
+        },
+        {
+          "texto": "minutos",
+          "inicio_s": 77.053,
+          "fim_s": 77.354
+        },
+        {
+          "texto": "seguintes",
+          "inicio_s": 77.374,
+          "fim_s": 77.797
+        },
+        {
+          "texto": "o",
+          "inicio_s": 78.158,
+          "fim_s": 78.179
+        },
+        {
+          "texto": "silêncio",
+          "inicio_s": 78.239,
+          "fim_s": 78.641
+        },
+        {
+          "texto": "no",
+          "inicio_s": 78.661,
+          "fim_s": 78.741
+        },
+        {
+          "texto": "bunker",
+          "inicio_s": 78.782,
+          "fim_s": 79.063
+        },
+        {
+          "texto": "foi",
+          "inicio_s": 79.103,
+          "fim_s": 79.244
+        },
+        {
+          "texto": "ensurdecedor",
+          "inicio_s": 79.465,
+          "fim_s": 80.29
+        }
+      ]
+    },
+    {
+      "texto": "Todos esperavam pelo clarão atômico que transformaria suas cidades em cinzas.",
+      "inicio_s": 80.72,
+      "fim_s": 84.38,
+      "palavras": [
+        {
+          "texto": "Todos",
+          "inicio_s": 80.72,
+          "fim_s": 81.002
+        },
+        {
+          "texto": "esperavam",
+          "inicio_s": 81.042,
+          "fim_s": 81.464
+        },
+        {
+          "texto": "pelo",
+          "inicio_s": 81.484,
+          "fim_s": 81.645
+        },
+        {
+          "texto": "clarão",
+          "inicio_s": 81.685,
+          "fim_s": 81.947
+        },
+        {
+          "texto": "atômico",
+          "inicio_s": 81.987,
+          "fim_s": 82.47
+        },
+        {
+          "texto": "que",
+          "inicio_s": 82.51,
+          "fim_s": 82.59
+        },
+        {
+          "texto": "transformaria",
+          "inicio_s": 82.61,
+          "fim_s": 83.153
+        },
+        {
+          "texto": "suas",
+          "inicio_s": 83.214,
+          "fim_s": 83.334
+        },
+        {
+          "texto": "cidades",
+          "inicio_s": 83.354,
+          "fim_s": 83.696
+        },
+        {
+          "texto": "em",
+          "inicio_s": 83.736,
+          "fim_s": 83.817
+        },
+        {
+          "texto": "cinzas",
+          "inicio_s": 83.897,
+          "fim_s": 84.279
+        }
+      ]
+    },
+    {
+      "texto": "O clarão nunca veio.",
+      "inicio_s": 84.73,
+      "fim_s": 85.81,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 84.75,
+          "fim_s": 84.771
+        },
+        {
+          "texto": "clarão",
+          "inicio_s": 84.812,
+          "fim_s": 85.117
+        },
+        {
+          "texto": "nunca",
+          "inicio_s": 85.158,
+          "fim_s": 85.443
+        },
+        {
+          "texto": "veio",
+          "inicio_s": 85.484,
+          "fim_s": 85.728
+        }
+      ]
+    },
+    {
+      "texto": "Mais tarde, descobriu-se que os satélites tinham confundido o reflexo do sol nas nuvens com o rastro de motores de foguetes.",
+      "inicio_s": 86.16,
+      "fim_s": 93.24,
+      "palavras": [
+        {
+          "texto": "Mais",
+          "inicio_s": 86.18,
+          "fim_s": 86.361
+        },
+        {
+          "texto": "tarde",
+          "inicio_s": 86.401,
+          "fim_s": 86.722
+        },
+        {
+          "texto": "descobriu-se",
+          "inicio_s": 87.123,
+          "fim_s": 87.744
+        },
+        {
+          "texto": "que",
+          "inicio_s": 87.785,
+          "fim_s": 87.845
+        },
+        {
+          "texto": "os",
+          "inicio_s": 87.865,
+          "fim_s": 87.905
+        },
+        {
+          "texto": "satélites",
+          "inicio_s": 87.945,
+          "fim_s": 88.547
+        },
+        {
+          "texto": "tinham",
+          "inicio_s": 88.787,
+          "fim_s": 88.988
+        },
+        {
+          "texto": "confundido",
+          "inicio_s": 89.028,
+          "fim_s": 89.65
+        },
+        {
+          "texto": "o",
+          "inicio_s": 89.69,
+          "fim_s": 89.71
+        },
+        {
+          "texto": "reflexo",
+          "inicio_s": 89.75,
+          "fim_s": 90.211
+        },
+        {
+          "texto": "do",
+          "inicio_s": 90.252,
+          "fim_s": 90.312
+        },
+        {
+          "texto": "sol",
+          "inicio_s": 90.392,
+          "fim_s": 90.593
+        },
+        {
+          "texto": "nas",
+          "inicio_s": 90.633,
+          "fim_s": 90.793
+        },
+        {
+          "texto": "nuvens",
+          "inicio_s": 90.853,
+          "fim_s": 91.234
+        },
+        {
+          "texto": "com",
+          "inicio_s": 91.535,
+          "fim_s": 91.656
+        },
+        {
+          "texto": "o",
+          "inicio_s": 91.676,
+          "fim_s": 91.696
+        },
+        {
+          "texto": "rastro",
+          "inicio_s": 91.756,
+          "fim_s": 92.057
+        },
+        {
+          "texto": "de",
+          "inicio_s": 92.097,
+          "fim_s": 92.157
+        },
+        {
+          "texto": "motores",
+          "inicio_s": 92.197,
+          "fim_s": 92.578
+        },
+        {
+          "texto": "de",
+          "inicio_s": 92.598,
+          "fim_s": 92.658
+        },
+        {
+          "texto": "foguetes",
+          "inicio_s": 92.678,
+          "fim_s": 93.12
+        }
+      ]
+    },
+    {
+      "texto": "Stanislav Petrov nunca se considerou um herói.",
+      "inicio_s": 93.59,
+      "fim_s": 95.95,
+      "palavras": [
+        {
+          "texto": "Stanislav",
+          "inicio_s": 93.61,
+          "fim_s": 94.135
+        },
+        {
+          "texto": "Petrov",
+          "inicio_s": 94.215,
+          "fim_s": 94.599
+        },
+        {
+          "texto": "nunca",
+          "inicio_s": 94.72,
+          "fim_s": 94.921
+        },
+        {
+          "texto": "se",
+          "inicio_s": 94.982,
+          "fim_s": 95.042
+        },
+        {
+          "texto": "considerou",
+          "inicio_s": 95.083,
+          "fim_s": 95.526
+        },
+        {
+          "texto": "um",
+          "inicio_s": 95.567,
+          "fim_s": 95.607
+        },
+        {
+          "texto": "herói",
+          "inicio_s": 95.647,
+          "fim_s": 95.869
+        }
+      ]
+    },
+    {
+      "texto": "Mas, naquela madrugada, o futuro da humanidade dependeu da coragem de um homem que se recusou a apertar o botão.",
+      "inicio_s": 96.3,
+      "fim_s": 101.76,
+      "palavras": [
+        {
+          "texto": "Mas",
+          "inicio_s": 96.32,
+          "fim_s": 96.541
+        },
+        {
+          "texto": "naquela",
+          "inicio_s": 96.581,
+          "fim_s": 96.862
+        },
+        {
+          "texto": "madrugada",
+          "inicio_s": 96.902,
+          "fim_s": 97.384
+        },
+        {
+          "texto": "o",
+          "inicio_s": 97.846,
+          "fim_s": 97.866
+        },
+        {
+          "texto": "futuro",
+          "inicio_s": 97.906,
+          "fim_s": 98.307
+        },
+        {
+          "texto": "da",
+          "inicio_s": 98.327,
+          "fim_s": 98.388
+        },
+        {
+          "texto": "humanidade",
+          "inicio_s": 98.408,
+          "fim_s": 98.91
+        },
+        {
+          "texto": "dependeu",
+          "inicio_s": 98.93,
+          "fim_s": 99.291
+        },
+        {
+          "texto": "da",
+          "inicio_s": 99.331,
+          "fim_s": 99.391
+        },
+        {
+          "texto": "coragem",
+          "inicio_s": 99.431,
+          "fim_s": 99.793
+        },
+        {
+          "texto": "de",
+          "inicio_s": 99.813,
+          "fim_s": 99.873
+        },
+        {
+          "texto": "um",
+          "inicio_s": 99.893,
+          "fim_s": 99.973
+        },
+        {
+          "texto": "homem",
+          "inicio_s": 99.994,
+          "fim_s": 100.214
+        },
+        {
+          "texto": "que",
+          "inicio_s": 100.254,
+          "fim_s": 100.335
+        },
+        {
+          "texto": "se",
+          "inicio_s": 100.355,
+          "fim_s": 100.435
+        },
+        {
+          "texto": "recusou",
+          "inicio_s": 100.475,
+          "fim_s": 100.817
+        },
+        {
+          "texto": "a",
+          "inicio_s": 100.837,
+          "fim_s": 100.857
+        },
+        {
+          "texto": "apertar",
+          "inicio_s": 100.897,
+          "fim_s": 101.278
+        },
+        {
+          "texto": "o",
+          "inicio_s": 101.298,
+          "fim_s": 101.318
+        },
+        {
+          "texto": "botão",
+          "inicio_s": 101.338,
+          "fim_s": 101.64
+        }
+      ]
+    }
+  ]
+}

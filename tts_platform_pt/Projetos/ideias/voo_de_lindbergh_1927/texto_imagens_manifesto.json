@@ -1,0 +1,94 @@
+[
+  {
+    "frase": 1,
+    "plano": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "A cinematic wide exterior photograph of a silver high wing monoplane flying alone through freezing storm clouds over the black Atlantic at midnight, navigation lights blinking, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00259_.png"
+  },
+  {
+    "frase": 1,
+    "plano": 2,
+    "arquivo": "texto_01b.png",
+    "prompt_final": "A photograph of the young american aviator from <image1>, preserving his exact gaunt face, sleep deprived blue eyes and brown leather flight cap, hunched in the dark cockpit, instrument glow on his exhausted face after a day without sleep, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00115_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\voo_de_lindbergh_1927\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 2,
+    "plano": 1,
+    "arquivo": "texto_02.png",
+    "prompt_final": "A historic documentary photograph of a silver monoplane struggling off a rain soaked airfield in May 1927, crowds watching from the muddy grass, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00260_.png"
+  },
+  {
+    "frase": 2,
+    "plano": 2,
+    "arquivo": "texto_02b.png",
+    "prompt_final": "A photograph of a paper navigation chart spread across an aviator's knees beside a magnetic compass, a straight pencil line drawn across the north atlantic, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00261_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 1,
+    "arquivo": "texto_03.png",
+    "prompt_final": "An interior photograph of an extremely cramped fabric cockpit with no front windscreen, a huge silver fuel tank filling the forward view and an improvised periscope mirror, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00262_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 2,
+    "arquivo": "texto_03b.png",
+    "prompt_final": "A photograph of the young american aviator from <image1>, preserving his exact gaunt face, sleep deprived blue eyes and brown leather flight cap, checking the periscope mirror to see ahead past the fuel tank, one hand steady on the control stick, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00116_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\voo_de_lindbergh_1927\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 4,
+    "plano": 1,
+    "arquivo": "texto_04.png",
+    "prompt_final": "A haunting photograph of ice forming along a fabric covered wing in dense freezing fog, the engine exhaust glowing faintly in the night, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00258_.png"
+  },
+  {
+    "frase": 4,
+    "plano": 2,
+    "arquivo": "texto_04b.png",
+    "prompt_final": "A photograph of the young american aviator from <image1>, preserving his exact gaunt face, sleep deprived blue eyes and brown leather flight cap, leaning toward the side window to judge the ice on the strut, frost on his breath, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00117_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\voo_de_lindbergh_1927\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 5,
+    "plano": 1,
+    "arquivo": "texto_05.png",
+    "prompt_final": "An extreme close-up photograph of the young american aviator from <image1>, preserving his exact gaunt face, sleep deprived blue eyes and brown leather flight cap, propping his heavy eyelids open with his fingers against overwhelming sleep, breath condensing in the vibrating cockpit, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00118_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\voo_de_lindbergh_1927\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 5,
+    "plano": 2,
+    "arquivo": "texto_05b.png",
+    "prompt_final": "A macro photograph of a shaking hand slapping a bare cheek to stay awake beside a trembling altimeter dial, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00263_.png"
+  },
+  {
+    "frase": 6,
+    "plano": 1,
+    "arquivo": "texto_06.png",
+    "prompt_final": "A magnificent wide cinematic photograph of a silver monoplane descending through night fog over the glittering lights of Paris toward an airfield, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00264_.png"
+  },
+  {
+    "frase": 6,
+    "plano": 2,
+    "arquivo": "texto_06b.png",
+    "prompt_final": "A photograph of a vast cheering crowd flooding the floodlit airfield around a small silver plane, hats thrown into the night air, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00265_.png"
+  }
+]

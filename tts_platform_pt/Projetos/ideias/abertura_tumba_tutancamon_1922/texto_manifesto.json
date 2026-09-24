@@ -1,0 +1,676 @@
+{
+  "gerado_em": "2026-09-23T20:36:37",
+  "roteiro": "C:\\Users\\mf827\\Documents\\Ferramentas\\tts_platform_pt\\Projetos\\ideias\\abertura_tumba_tutancamon_1922\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 49.4,
+  "texto_usado": "Sim, eu vejo coisas maravilhosas. Esse foi o sussurro emocionado do arqueólogo britânico Howard Carter em novembro de 1922, no Vale dos Reis no Egito.\n\nApós cinco anos de escavações infrutíferas no deserto sob calor escaldante, sua equipe encontrou degraus de pedra enterrados no cascalho que levavam a uma porta selada intacta por mais de três mil anos. Com as mãos trêmulas, Carter fez uma pequena abertura na parede de gesso e inseriu uma vela acesa na escuridão.\n\nO ar quente e milenar escapou do túmulo, revelando o brilho misterioso de ouro maciço, carruagens douradas e estátuas de faraós guardiões. Pela primeira vez na história moderna, a tumba de um faraó foi encontrada imaculada, revelando ao mundo o esplendor eterno do jovem rei Tutancâmon.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Sim, eu vejo coisas maravilhosas.",
+      "inicio_s": 0.15,
+      "fim_s": 2.83,
+      "palavras": [
+        {
+          "texto": "Sim",
+          "inicio_s": 0.251,
+          "fim_s": 0.392
+        },
+        {
+          "texto": "eu",
+          "inicio_s": 1.238,
+          "fim_s": 1.339
+        },
+        {
+          "texto": "vejo",
+          "inicio_s": 1.379,
+          "fim_s": 1.621
+        },
+        {
+          "texto": "coisas",
+          "inicio_s": 1.661,
+          "fim_s": 1.984
+        },
+        {
+          "texto": "maravilhosas",
+          "inicio_s": 2.024,
+          "fim_s": 2.709
+        }
+      ]
+    },
+    {
+      "texto": "Esse foi o sussurro emocionado do arqueólogo britânico Howard Carter em novembro de 1922, no Vale dos Reis no Egito.",
+      "inicio_s": 3.18,
+      "fim_s": 11.84,
+      "palavras": [
+        {
+          "texto": "Esse",
+          "inicio_s": 3.24,
+          "fim_s": 3.481
+        },
+        {
+          "texto": "foi",
+          "inicio_s": 3.561,
+          "fim_s": 3.721
+        },
+        {
+          "texto": "o",
+          "inicio_s": 3.761,
+          "fim_s": 3.781
+        },
+        {
+          "texto": "sussurro",
+          "inicio_s": 3.821,
+          "fim_s": 4.222
+        },
+        {
+          "texto": "emocionado",
+          "inicio_s": 4.263,
+          "fim_s": 4.804
+        },
+        {
+          "texto": "do",
+          "inicio_s": 4.844,
+          "fim_s": 4.904
+        },
+        {
+          "texto": "arqueólogo",
+          "inicio_s": 4.984,
+          "fim_s": 5.505
+        },
+        {
+          "texto": "britânico",
+          "inicio_s": 5.525,
+          "fim_s": 5.986
+        },
+        {
+          "texto": "Howard",
+          "inicio_s": 6.047,
+          "fim_s": 6.327
+        },
+        {
+          "texto": "Carter",
+          "inicio_s": 6.367,
+          "fim_s": 6.688
+        },
+        {
+          "texto": "em",
+          "inicio_s": 7.149,
+          "fim_s": 7.209
+        },
+        {
+          "texto": "novembro",
+          "inicio_s": 7.249,
+          "fim_s": 7.69
+        },
+        {
+          "texto": "de",
+          "inicio_s": 7.71,
+          "fim_s": 7.791
+        },
+        {
+          "texto": "1922",
+          "inicio_s": 7.791,
+          "fim_s": 10.437
+        },
+        {
+          "texto": "no",
+          "inicio_s": 10.437,
+          "fim_s": 10.537
+        },
+        {
+          "texto": "Vale",
+          "inicio_s": 10.617,
+          "fim_s": 10.878
+        },
+        {
+          "texto": "dos",
+          "inicio_s": 10.918,
+          "fim_s": 11.058
+        },
+        {
+          "texto": "Reis",
+          "inicio_s": 11.118,
+          "fim_s": 11.339
+        },
+        {
+          "texto": "no",
+          "inicio_s": 11.379,
+          "fim_s": 11.419
+        },
+        {
+          "texto": "Egito",
+          "inicio_s": 11.459,
+          "fim_s": 11.76
+        }
+      ]
+    },
+    {
+      "texto": "Após cinco anos de escavações infrutíferas no deserto sob calor escaldante, sua equipe encontrou degraus de pedra enterrados no cascalho que levavam a uma porta selada intacta por mais de três mil anos.",
+      "inicio_s": 12.19,
+      "fim_s": 24.05,
+      "palavras": [
+        {
+          "texto": "Após",
+          "inicio_s": 12.21,
+          "fim_s": 12.491
+        },
+        {
+          "texto": "cinco",
+          "inicio_s": 12.591,
+          "fim_s": 12.871
+        },
+        {
+          "texto": "anos",
+          "inicio_s": 12.971,
+          "fim_s": 13.152
+        },
+        {
+          "texto": "de",
+          "inicio_s": 13.172,
+          "fim_s": 13.212
+        },
+        {
+          "texto": "escavações",
+          "inicio_s": 13.232,
+          "fim_s": 13.753
+        },
+        {
+          "texto": "infrutíferas",
+          "inicio_s": 13.773,
+          "fim_s": 14.434
+        },
+        {
+          "texto": "no",
+          "inicio_s": 14.474,
+          "fim_s": 14.534
+        },
+        {
+          "texto": "deserto",
+          "inicio_s": 14.574,
+          "fim_s": 14.975
+        },
+        {
+          "texto": "sob",
+          "inicio_s": 15.035,
+          "fim_s": 15.175
+        },
+        {
+          "texto": "calor",
+          "inicio_s": 15.275,
+          "fim_s": 15.556
+        },
+        {
+          "texto": "escaldante",
+          "inicio_s": 15.596,
+          "fim_s": 16.157
+        },
+        {
+          "texto": "sua",
+          "inicio_s": 16.778,
+          "fim_s": 16.918
+        },
+        {
+          "texto": "equipe",
+          "inicio_s": 16.938,
+          "fim_s": 17.259
+        },
+        {
+          "texto": "encontrou",
+          "inicio_s": 17.299,
+          "fim_s": 17.679
+        },
+        {
+          "texto": "degraus",
+          "inicio_s": 17.719,
+          "fim_s": 18.04
+        },
+        {
+          "texto": "de",
+          "inicio_s": 18.06,
+          "fim_s": 18.14
+        },
+        {
+          "texto": "pedra",
+          "inicio_s": 18.2,
+          "fim_s": 18.501
+        },
+        {
+          "texto": "enterrados",
+          "inicio_s": 18.981,
+          "fim_s": 19.522
+        },
+        {
+          "texto": "no",
+          "inicio_s": 19.562,
+          "fim_s": 19.623
+        },
+        {
+          "texto": "cascalho",
+          "inicio_s": 19.663,
+          "fim_s": 20.163
+        },
+        {
+          "texto": "que",
+          "inicio_s": 20.564,
+          "fim_s": 20.644
+        },
+        {
+          "texto": "levavam",
+          "inicio_s": 20.684,
+          "fim_s": 21.065
+        },
+        {
+          "texto": "a",
+          "inicio_s": 21.105,
+          "fim_s": 21.145
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 21.165,
+          "fim_s": 21.265
+        },
+        {
+          "texto": "porta",
+          "inicio_s": 21.325,
+          "fim_s": 21.586
+        },
+        {
+          "texto": "selada",
+          "inicio_s": 21.626,
+          "fim_s": 21.926
+        },
+        {
+          "texto": "intacta",
+          "inicio_s": 21.946,
+          "fim_s": 22.347
+        },
+        {
+          "texto": "por",
+          "inicio_s": 22.708,
+          "fim_s": 22.848
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 22.888,
+          "fim_s": 23.088
+        },
+        {
+          "texto": "de",
+          "inicio_s": 23.108,
+          "fim_s": 23.189
+        },
+        {
+          "texto": "três",
+          "inicio_s": 23.249,
+          "fim_s": 23.469
+        },
+        {
+          "texto": "mil",
+          "inicio_s": 23.529,
+          "fim_s": 23.649
+        },
+        {
+          "texto": "anos",
+          "inicio_s": 23.729,
+          "fim_s": 23.95
+        }
+      ]
+    },
+    {
+      "texto": "Com as mãos trêmulas, Carter fez uma pequena abertura na parede de gesso e inseriu uma vela acesa na escuridão.",
+      "inicio_s": 24.4,
+      "fim_s": 30.56,
+      "palavras": [
+        {
+          "texto": "Com",
+          "inicio_s": 24.4,
+          "fim_s": 24.5
+        },
+        {
+          "texto": "as",
+          "inicio_s": 24.54,
+          "fim_s": 24.641
+        },
+        {
+          "texto": "mãos",
+          "inicio_s": 24.681,
+          "fim_s": 24.882
+        },
+        {
+          "texto": "trêmulas",
+          "inicio_s": 24.942,
+          "fim_s": 25.403
+        },
+        {
+          "texto": "Carter",
+          "inicio_s": 25.704,
+          "fim_s": 26.065
+        },
+        {
+          "texto": "fez",
+          "inicio_s": 26.106,
+          "fim_s": 26.286
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 26.326,
+          "fim_s": 26.427
+        },
+        {
+          "texto": "pequena",
+          "inicio_s": 26.487,
+          "fim_s": 26.828
+        },
+        {
+          "texto": "abertura",
+          "inicio_s": 26.868,
+          "fim_s": 27.37
+        },
+        {
+          "texto": "na",
+          "inicio_s": 27.41,
+          "fim_s": 27.47
+        },
+        {
+          "texto": "parede",
+          "inicio_s": 27.51,
+          "fim_s": 27.851
+        },
+        {
+          "texto": "de",
+          "inicio_s": 27.891,
+          "fim_s": 27.972
+        },
+        {
+          "texto": "gesso",
+          "inicio_s": 28.032,
+          "fim_s": 28.333
+        },
+        {
+          "texto": "e",
+          "inicio_s": 28.594,
+          "fim_s": 28.614
+        },
+        {
+          "texto": "inseriu",
+          "inicio_s": 28.674,
+          "fim_s": 29.075
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 29.115,
+          "fim_s": 29.216
+        },
+        {
+          "texto": "vela",
+          "inicio_s": 29.276,
+          "fim_s": 29.517
+        },
+        {
+          "texto": "acesa",
+          "inicio_s": 29.537,
+          "fim_s": 29.878
+        },
+        {
+          "texto": "na",
+          "inicio_s": 29.918,
+          "fim_s": 29.978
+        },
+        {
+          "texto": "escuridão",
+          "inicio_s": 29.998,
+          "fim_s": 30.48
+        }
+      ]
+    },
+    {
+      "texto": "O ar quente e milenar escapou do túmulo, revelando o brilho misterioso de ouro maciço, carruagens douradas e estátuas de faraós guardiões.",
+      "inicio_s": 30.91,
+      "fim_s": 40.81,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 30.95,
+          "fim_s": 30.97
+        },
+        {
+          "texto": "ar",
+          "inicio_s": 31.05,
+          "fim_s": 31.15
+        },
+        {
+          "texto": "quente",
+          "inicio_s": 31.231,
+          "fim_s": 31.531
+        },
+        {
+          "texto": "e",
+          "inicio_s": 31.571,
+          "fim_s": 31.591
+        },
+        {
+          "texto": "milenar",
+          "inicio_s": 31.631,
+          "fim_s": 32.052
+        },
+        {
+          "texto": "escapou",
+          "inicio_s": 32.433,
+          "fim_s": 32.894
+        },
+        {
+          "texto": "do",
+          "inicio_s": 32.934,
+          "fim_s": 33.014
+        },
+        {
+          "texto": "túmulo",
+          "inicio_s": 33.114,
+          "fim_s": 33.475
+        },
+        {
+          "texto": "revelando",
+          "inicio_s": 33.876,
+          "fim_s": 34.317
+        },
+        {
+          "texto": "o",
+          "inicio_s": 34.357,
+          "fim_s": 34.377
+        },
+        {
+          "texto": "brilho",
+          "inicio_s": 34.437,
+          "fim_s": 34.718
+        },
+        {
+          "texto": "misterioso",
+          "inicio_s": 34.738,
+          "fim_s": 35.299
+        },
+        {
+          "texto": "de",
+          "inicio_s": 35.339,
+          "fim_s": 35.419
+        },
+        {
+          "texto": "ouro",
+          "inicio_s": 35.499,
+          "fim_s": 35.66
+        },
+        {
+          "texto": "maciço",
+          "inicio_s": 35.7,
+          "fim_s": 36.261
+        },
+        {
+          "texto": "carruagens",
+          "inicio_s": 36.682,
+          "fim_s": 37.223
+        },
+        {
+          "texto": "douradas",
+          "inicio_s": 37.263,
+          "fim_s": 37.804
+        },
+        {
+          "texto": "e",
+          "inicio_s": 38.205,
+          "fim_s": 38.225
+        },
+        {
+          "texto": "estátuas",
+          "inicio_s": 38.305,
+          "fim_s": 38.846
+        },
+        {
+          "texto": "de",
+          "inicio_s": 38.886,
+          "fim_s": 38.966
+        },
+        {
+          "texto": "faraós",
+          "inicio_s": 39.006,
+          "fim_s": 39.507
+        },
+        {
+          "texto": "guardiões",
+          "inicio_s": 39.928,
+          "fim_s": 40.67
+        }
+      ]
+    },
+    {
+      "texto": "Pela primeira vez na história moderna, a tumba de um faraó foi encontrada imaculada, revelando ao mundo o esplendor eterno do jovem rei Tutancâmon.",
+      "inicio_s": 41.16,
+      "fim_s": 49.38,
+      "palavras": [
+        {
+          "texto": "Pela",
+          "inicio_s": 41.16,
+          "fim_s": 41.32
+        },
+        {
+          "texto": "primeira",
+          "inicio_s": 41.32,
+          "fim_s": 41.621
+        },
+        {
+          "texto": "vez",
+          "inicio_s": 41.661,
+          "fim_s": 41.862
+        },
+        {
+          "texto": "na",
+          "inicio_s": 41.882,
+          "fim_s": 41.942
+        },
+        {
+          "texto": "história",
+          "inicio_s": 41.942,
+          "fim_s": 42.263
+        },
+        {
+          "texto": "moderna",
+          "inicio_s": 42.283,
+          "fim_s": 42.704
+        },
+        {
+          "texto": "a",
+          "inicio_s": 43.065,
+          "fim_s": 43.085
+        },
+        {
+          "texto": "tumba",
+          "inicio_s": 43.205,
+          "fim_s": 43.426
+        },
+        {
+          "texto": "de",
+          "inicio_s": 43.466,
+          "fim_s": 43.526
+        },
+        {
+          "texto": "um",
+          "inicio_s": 43.526,
+          "fim_s": 43.586
+        },
+        {
+          "texto": "faraó",
+          "inicio_s": 43.626,
+          "fim_s": 43.947
+        },
+        {
+          "texto": "foi",
+          "inicio_s": 44.067,
+          "fim_s": 44.207
+        },
+        {
+          "texto": "encontrada",
+          "inicio_s": 44.248,
+          "fim_s": 44.749
+        },
+        {
+          "texto": "imaculada",
+          "inicio_s": 44.789,
+          "fim_s": 45.41
+        },
+        {
+          "texto": "revelando",
+          "inicio_s": 45.871,
+          "fim_s": 46.292
+        },
+        {
+          "texto": "ao",
+          "inicio_s": 46.333,
+          "fim_s": 46.393
+        },
+        {
+          "texto": "mundo",
+          "inicio_s": 46.433,
+          "fim_s": 46.653
+        },
+        {
+          "texto": "o",
+          "inicio_s": 46.693,
+          "fim_s": 46.714
+        },
+        {
+          "texto": "esplendor",
+          "inicio_s": 46.774,
+          "fim_s": 47.235
+        },
+        {
+          "texto": "eterno",
+          "inicio_s": 47.315,
+          "fim_s": 47.756
+        },
+        {
+          "texto": "do",
+          "inicio_s": 47.796,
+          "fim_s": 47.876
+        },
+        {
+          "texto": "jovem",
+          "inicio_s": 47.936,
+          "fim_s": 48.257
+        },
+        {
+          "texto": "rei",
+          "inicio_s": 48.317,
+          "fim_s": 48.498
+        },
+        {
+          "texto": "Tutancâmon",
+          "inicio_s": 48.698,
+          "fim_s": 49.28
+        }
+      ]
+    }
+  ]
+}

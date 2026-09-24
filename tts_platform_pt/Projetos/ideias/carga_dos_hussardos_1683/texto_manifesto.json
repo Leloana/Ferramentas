@@ -1,0 +1,723 @@
+{
+  "gerado_em": "2026-09-23T20:42:40",
+  "roteiro": "C:\\Users\\mf827\\Documents\\Ferramentas\\tts_platform_pt\\Projetos\\ideias\\carga_dos_hussardos_1683\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 51.4,
+  "texto_usado": "O chão tremeu sob dezoito mil cavalos em fúria. Em setembro de 1683, a cidade de Viena estava a poucas horas da queda definitiva após dois meses de cerco otomano brutal.\n\nFoi então que, no alto da colina arborizada de Kahlenberg, surgiu a maior carga de cavalaria da história da humanidade. Liderados pelo rei polonês Jan Sobieski, três mil hussardos alados desceram a encosta com grandes asas de penas de águia presas às armaduras de aço polido.\n\nO som do vento uivando nas asas criava um zumbido aterrorizante que desestabilizava os cavalos inimigos. Com lanças de cinco metros apontadas para frente, os hussardos romperam as linhas do cerco como um raio que partiu o exército adversário ao meio. Em poucas horas, Viena foi libertada e o destino da Europa Central foi selado.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "O chão tremeu sob dezoito mil cavalos em fúria.",
+      "inicio_s": 0.15,
+      "fim_s": 2.77,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 0.17,
+          "fim_s": 0.19
+        },
+        {
+          "texto": "chão",
+          "inicio_s": 0.251,
+          "fim_s": 0.412
+        },
+        {
+          "texto": "tremeu",
+          "inicio_s": 0.472,
+          "fim_s": 0.876
+        },
+        {
+          "texto": "sob",
+          "inicio_s": 0.996,
+          "fim_s": 1.138
+        },
+        {
+          "texto": "dezoito",
+          "inicio_s": 1.218,
+          "fim_s": 1.621
+        },
+        {
+          "texto": "mil",
+          "inicio_s": 1.682,
+          "fim_s": 1.803
+        },
+        {
+          "texto": "cavalos",
+          "inicio_s": 1.843,
+          "fim_s": 2.246
+        },
+        {
+          "texto": "em",
+          "inicio_s": 2.286,
+          "fim_s": 2.347
+        },
+        {
+          "texto": "fúria",
+          "inicio_s": 2.407,
+          "fim_s": 2.669
+        }
+      ]
+    },
+    {
+      "texto": "Em setembro de 1683, a cidade de Viena estava a poucas horas da queda definitiva após dois meses de cerco otomano brutal.",
+      "inicio_s": 3.12,
+      "fim_s": 12.24,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 3.14,
+          "fim_s": 3.2
+        },
+        {
+          "texto": "setembro",
+          "inicio_s": 3.28,
+          "fim_s": 3.761
+        },
+        {
+          "texto": "de",
+          "inicio_s": 3.822,
+          "fim_s": 3.902
+        },
+        {
+          "texto": "1683",
+          "inicio_s": 3.902,
+          "fim_s": 6.087
+        },
+        {
+          "texto": "a",
+          "inicio_s": 6.087,
+          "fim_s": 6.107
+        },
+        {
+          "texto": "cidade",
+          "inicio_s": 6.187,
+          "fim_s": 6.568
+        },
+        {
+          "texto": "de",
+          "inicio_s": 6.608,
+          "fim_s": 6.668
+        },
+        {
+          "texto": "Viena",
+          "inicio_s": 6.688,
+          "fim_s": 6.968
+        },
+        {
+          "texto": "estava",
+          "inicio_s": 7.009,
+          "fim_s": 7.289
+        },
+        {
+          "texto": "a",
+          "inicio_s": 7.329,
+          "fim_s": 7.349
+        },
+        {
+          "texto": "poucas",
+          "inicio_s": 7.409,
+          "fim_s": 7.81
+        },
+        {
+          "texto": "horas",
+          "inicio_s": 7.85,
+          "fim_s": 8.111
+        },
+        {
+          "texto": "da",
+          "inicio_s": 8.131,
+          "fim_s": 8.211
+        },
+        {
+          "texto": "queda",
+          "inicio_s": 8.271,
+          "fim_s": 8.512
+        },
+        {
+          "texto": "definitiva",
+          "inicio_s": 8.572,
+          "fim_s": 9.193
+        },
+        {
+          "texto": "após",
+          "inicio_s": 9.294,
+          "fim_s": 9.554
+        },
+        {
+          "texto": "dois",
+          "inicio_s": 9.674,
+          "fim_s": 9.915
+        },
+        {
+          "texto": "meses",
+          "inicio_s": 9.995,
+          "fim_s": 10.296
+        },
+        {
+          "texto": "de",
+          "inicio_s": 10.336,
+          "fim_s": 10.416
+        },
+        {
+          "texto": "cerco",
+          "inicio_s": 10.516,
+          "fim_s": 10.857
+        },
+        {
+          "texto": "otomano",
+          "inicio_s": 11.258,
+          "fim_s": 11.779
+        },
+        {
+          "texto": "brutal",
+          "inicio_s": 11.819,
+          "fim_s": 12.18
+        }
+      ]
+    },
+    {
+      "texto": "Foi então que, no alto da colina arborizada de Kahlenberg, surgiu a maior carga de cavalaria da história da humanidade.",
+      "inicio_s": 12.59,
+      "fim_s": 19.39,
+      "palavras": [
+        {
+          "texto": "Foi",
+          "inicio_s": 12.61,
+          "fim_s": 12.73
+        },
+        {
+          "texto": "então",
+          "inicio_s": 12.771,
+          "fim_s": 13.091
+        },
+        {
+          "texto": "que",
+          "inicio_s": 13.192,
+          "fim_s": 13.312
+        },
+        {
+          "texto": "no",
+          "inicio_s": 13.533,
+          "fim_s": 13.633
+        },
+        {
+          "texto": "alto",
+          "inicio_s": 13.753,
+          "fim_s": 13.994
+        },
+        {
+          "texto": "da",
+          "inicio_s": 14.014,
+          "fim_s": 14.094
+        },
+        {
+          "texto": "colina",
+          "inicio_s": 14.135,
+          "fim_s": 14.476
+        },
+        {
+          "texto": "arborizada",
+          "inicio_s": 14.576,
+          "fim_s": 15.178
+        },
+        {
+          "texto": "de",
+          "inicio_s": 15.218,
+          "fim_s": 15.298
+        },
+        {
+          "texto": "Kahlenberg",
+          "inicio_s": 15.338,
+          "fim_s": 15.86
+        },
+        {
+          "texto": "surgiu",
+          "inicio_s": 16.381,
+          "fim_s": 16.782
+        },
+        {
+          "texto": "a",
+          "inicio_s": 16.822,
+          "fim_s": 16.843
+        },
+        {
+          "texto": "maior",
+          "inicio_s": 16.883,
+          "fim_s": 17.163
+        },
+        {
+          "texto": "carga",
+          "inicio_s": 17.264,
+          "fim_s": 17.565
+        },
+        {
+          "texto": "de",
+          "inicio_s": 17.605,
+          "fim_s": 17.685
+        },
+        {
+          "texto": "cavalaria",
+          "inicio_s": 17.725,
+          "fim_s": 18.207
+        },
+        {
+          "texto": "da",
+          "inicio_s": 18.227,
+          "fim_s": 18.287
+        },
+        {
+          "texto": "história",
+          "inicio_s": 18.307,
+          "fim_s": 18.688
+        },
+        {
+          "texto": "da",
+          "inicio_s": 18.708,
+          "fim_s": 18.768
+        },
+        {
+          "texto": "humanidade",
+          "inicio_s": 18.788,
+          "fim_s": 19.29
+        }
+      ]
+    },
+    {
+      "texto": "Liderados pelo rei polonês Jan Sobieski, três mil hussardos alados desceram a encosta com grandes asas de penas de águia presas às armaduras de aço polido.",
+      "inicio_s": 19.74,
+      "fim_s": 31.24,
+      "palavras": [
+        {
+          "texto": "Liderados",
+          "inicio_s": 19.76,
+          "fim_s": 20.281
+        },
+        {
+          "texto": "pelo",
+          "inicio_s": 20.321,
+          "fim_s": 20.501
+        },
+        {
+          "texto": "rei",
+          "inicio_s": 20.541,
+          "fim_s": 20.662
+        },
+        {
+          "texto": "polonês",
+          "inicio_s": 20.702,
+          "fim_s": 21.223
+        },
+        {
+          "texto": "Jan",
+          "inicio_s": 21.643,
+          "fim_s": 21.844
+        },
+        {
+          "texto": "Sobieski",
+          "inicio_s": 21.944,
+          "fim_s": 22.405
+        },
+        {
+          "texto": "três",
+          "inicio_s": 23.246,
+          "fim_s": 23.507
+        },
+        {
+          "texto": "mil",
+          "inicio_s": 23.587,
+          "fim_s": 23.707
+        },
+        {
+          "texto": "hussardos",
+          "inicio_s": 23.767,
+          "fim_s": 24.368
+        },
+        {
+          "texto": "alados",
+          "inicio_s": 25.59,
+          "fim_s": 26.011
+        },
+        {
+          "texto": "desceram",
+          "inicio_s": 26.051,
+          "fim_s": 26.472
+        },
+        {
+          "texto": "a",
+          "inicio_s": 26.512,
+          "fim_s": 26.532
+        },
+        {
+          "texto": "encosta",
+          "inicio_s": 26.592,
+          "fim_s": 27.013
+        },
+        {
+          "texto": "com",
+          "inicio_s": 27.053,
+          "fim_s": 27.173
+        },
+        {
+          "texto": "grandes",
+          "inicio_s": 27.233,
+          "fim_s": 27.614
+        },
+        {
+          "texto": "asas",
+          "inicio_s": 27.734,
+          "fim_s": 27.994
+        },
+        {
+          "texto": "de",
+          "inicio_s": 28.014,
+          "fim_s": 28.095
+        },
+        {
+          "texto": "penas",
+          "inicio_s": 28.155,
+          "fim_s": 28.475
+        },
+        {
+          "texto": "de",
+          "inicio_s": 28.495,
+          "fim_s": 28.575
+        },
+        {
+          "texto": "águia",
+          "inicio_s": 28.676,
+          "fim_s": 28.896
+        },
+        {
+          "texto": "presas",
+          "inicio_s": 29.257,
+          "fim_s": 29.577
+        },
+        {
+          "texto": "às",
+          "inicio_s": 29.617,
+          "fim_s": 29.697
+        },
+        {
+          "texto": "armaduras",
+          "inicio_s": 29.757,
+          "fim_s": 30.298
+        },
+        {
+          "texto": "de",
+          "inicio_s": 30.338,
+          "fim_s": 30.419
+        },
+        {
+          "texto": "aço",
+          "inicio_s": 30.519,
+          "fim_s": 30.739
+        },
+        {
+          "texto": "polido",
+          "inicio_s": 30.779,
+          "fim_s": 31.18
+        }
+      ]
+    },
+    {
+      "texto": "O som do vento uivando nas asas criava um zumbido aterrorizante que desestabilizava os cavalos inimigos.",
+      "inicio_s": 31.59,
+      "fim_s": 37.47,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 31.61,
+          "fim_s": 31.63
+        },
+        {
+          "texto": "som",
+          "inicio_s": 31.71,
+          "fim_s": 31.851
+        },
+        {
+          "texto": "do",
+          "inicio_s": 31.891,
+          "fim_s": 31.971
+        },
+        {
+          "texto": "vento",
+          "inicio_s": 32.032,
+          "fim_s": 32.333
+        },
+        {
+          "texto": "uivando",
+          "inicio_s": 32.393,
+          "fim_s": 32.734
+        },
+        {
+          "texto": "nas",
+          "inicio_s": 32.774,
+          "fim_s": 32.915
+        },
+        {
+          "texto": "asas",
+          "inicio_s": 32.995,
+          "fim_s": 33.256
+        },
+        {
+          "texto": "criava",
+          "inicio_s": 33.296,
+          "fim_s": 33.637
+        },
+        {
+          "texto": "um",
+          "inicio_s": 33.657,
+          "fim_s": 33.697
+        },
+        {
+          "texto": "zumbido",
+          "inicio_s": 33.757,
+          "fim_s": 34.239
+        },
+        {
+          "texto": "aterrorizante",
+          "inicio_s": 34.319,
+          "fim_s": 35.062
+        },
+        {
+          "texto": "que",
+          "inicio_s": 35.403,
+          "fim_s": 35.483
+        },
+        {
+          "texto": "desestabilizava",
+          "inicio_s": 35.564,
+          "fim_s": 36.346
+        },
+        {
+          "texto": "os",
+          "inicio_s": 36.386,
+          "fim_s": 36.447
+        },
+        {
+          "texto": "cavalos",
+          "inicio_s": 36.487,
+          "fim_s": 36.868
+        },
+        {
+          "texto": "inimigos",
+          "inicio_s": 36.908,
+          "fim_s": 37.35
+        }
+      ]
+    },
+    {
+      "texto": "Com lanças de cinco metros apontadas para frente, os hussardos romperam as linhas do cerco como um raio que partiu o exército adversário ao meio.",
+      "inicio_s": 37.82,
+      "fim_s": 45.42,
+      "palavras": [
+        {
+          "texto": "Com",
+          "inicio_s": 37.82,
+          "fim_s": 37.94
+        },
+        {
+          "texto": "lanças",
+          "inicio_s": 37.98,
+          "fim_s": 38.301
+        },
+        {
+          "texto": "de",
+          "inicio_s": 38.321,
+          "fim_s": 38.402
+        },
+        {
+          "texto": "cinco",
+          "inicio_s": 38.462,
+          "fim_s": 38.682
+        },
+        {
+          "texto": "metros",
+          "inicio_s": 38.722,
+          "fim_s": 39.023
+        },
+        {
+          "texto": "apontadas",
+          "inicio_s": 39.063,
+          "fim_s": 39.484
+        },
+        {
+          "texto": "para",
+          "inicio_s": 39.524,
+          "fim_s": 39.685
+        },
+        {
+          "texto": "frente",
+          "inicio_s": 39.725,
+          "fim_s": 40.046
+        },
+        {
+          "texto": "os",
+          "inicio_s": 40.367,
+          "fim_s": 40.447
+        },
+        {
+          "texto": "hussardos",
+          "inicio_s": 40.487,
+          "fim_s": 41.089
+        },
+        {
+          "texto": "romperam",
+          "inicio_s": 41.149,
+          "fim_s": 41.59
+        },
+        {
+          "texto": "as",
+          "inicio_s": 41.63,
+          "fim_s": 41.71
+        },
+        {
+          "texto": "linhas",
+          "inicio_s": 41.77,
+          "fim_s": 41.991
+        },
+        {
+          "texto": "do",
+          "inicio_s": 42.011,
+          "fim_s": 42.071
+        },
+        {
+          "texto": "cerco",
+          "inicio_s": 42.171,
+          "fim_s": 42.492
+        },
+        {
+          "texto": "como",
+          "inicio_s": 42.813,
+          "fim_s": 42.974
+        },
+        {
+          "texto": "um",
+          "inicio_s": 43.014,
+          "fim_s": 43.054
+        },
+        {
+          "texto": "raio",
+          "inicio_s": 43.134,
+          "fim_s": 43.415
+        },
+        {
+          "texto": "que",
+          "inicio_s": 43.435,
+          "fim_s": 43.515
+        },
+        {
+          "texto": "partiu",
+          "inicio_s": 43.555,
+          "fim_s": 43.896
+        },
+        {
+          "texto": "o",
+          "inicio_s": 43.916,
+          "fim_s": 43.936
+        },
+        {
+          "texto": "exército",
+          "inicio_s": 43.976,
+          "fim_s": 44.397
+        },
+        {
+          "texto": "adversário",
+          "inicio_s": 44.417,
+          "fim_s": 44.959
+        },
+        {
+          "texto": "ao",
+          "inicio_s": 44.979,
+          "fim_s": 45.039
+        },
+        {
+          "texto": "meio",
+          "inicio_s": 45.079,
+          "fim_s": 45.34
+        }
+      ]
+    },
+    {
+      "texto": "Em poucas horas, Viena foi libertada e o destino da Europa Central foi selado.",
+      "inicio_s": 45.77,
+      "fim_s": 51.41,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 45.81,
+          "fim_s": 45.89
+        },
+        {
+          "texto": "poucas",
+          "inicio_s": 46.011,
+          "fim_s": 46.372
+        },
+        {
+          "texto": "horas",
+          "inicio_s": 46.412,
+          "fim_s": 46.733
+        },
+        {
+          "texto": "Viena",
+          "inicio_s": 47.175,
+          "fim_s": 47.496
+        },
+        {
+          "texto": "foi",
+          "inicio_s": 47.536,
+          "fim_s": 47.657
+        },
+        {
+          "texto": "libertada",
+          "inicio_s": 47.697,
+          "fim_s": 48.239
+        },
+        {
+          "texto": "e",
+          "inicio_s": 48.68,
+          "fim_s": 48.7
+        },
+        {
+          "texto": "o",
+          "inicio_s": 48.781,
+          "fim_s": 48.801
+        },
+        {
+          "texto": "destino",
+          "inicio_s": 48.841,
+          "fim_s": 49.303
+        },
+        {
+          "texto": "da",
+          "inicio_s": 49.343,
+          "fim_s": 49.403
+        },
+        {
+          "texto": "Europa",
+          "inicio_s": 49.463,
+          "fim_s": 49.764
+        },
+        {
+          "texto": "Central",
+          "inicio_s": 49.824,
+          "fim_s": 50.206
+        },
+        {
+          "texto": "foi",
+          "inicio_s": 50.627,
+          "fim_s": 50.808
+        },
+        {
+          "texto": "selado",
+          "inicio_s": 50.888,
+          "fim_s": 51.29
+        }
+      ]
+    }
+  ]
+}

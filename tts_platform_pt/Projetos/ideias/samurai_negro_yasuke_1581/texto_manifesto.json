@@ -1,0 +1,726 @@
+{
+  "gerado_em": "2026-09-23T20:49:24",
+  "roteiro": "C:\\Users\\mf827\\Documents\\Ferramentas\\tts_platform_pt\\Projetos\\ideias\\samurai_negro_yasuke_1581\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 47.4,
+  "texto_usado": "Ele media quase dois metros de altura e chamou a atenção de todo o Japão. Em 1581, quando um guerreiro da África Oriental chegou à capital de Quioto, milhares de pessoas escalaram telhados para ver o homem com a pele da cor do carvão.\n\nO poderoso lorde Oda Nobunaga, desconfiado, ordenou que ele se lavasse até a cintura, acreditando que seu corpo estava pintado com tinta preta. Ao perceber que aquela era sua cor natural, Nobunaga ficou fascinado por sua força descomunal e inteligência refinada.\n\nO lorde deu a ele o nome de Yasuke, concedeu-lhe uma residência, duas espadas lendárias e o título de samurai pessoal de elite. Nas batalhas do Japão feudal, o imponente guerreiro lutou lado a lado com Nobunaga até o fim, gravando seu nome para sempre na história dos samurais.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Ele media quase dois metros de altura e chamou a atenção de todo o Japão.",
+      "inicio_s": 0.15,
+      "fim_s": 4.17,
+      "palavras": [
+        {
+          "texto": "Ele",
+          "inicio_s": 0.17,
+          "fim_s": 0.291
+        },
+        {
+          "texto": "media",
+          "inicio_s": 0.331,
+          "fim_s": 0.673
+        },
+        {
+          "texto": "quase",
+          "inicio_s": 0.753,
+          "fim_s": 0.994
+        },
+        {
+          "texto": "dois",
+          "inicio_s": 1.054,
+          "fim_s": 1.235
+        },
+        {
+          "texto": "metros",
+          "inicio_s": 1.296,
+          "fim_s": 1.577
+        },
+        {
+          "texto": "de",
+          "inicio_s": 1.597,
+          "fim_s": 1.637
+        },
+        {
+          "texto": "altura",
+          "inicio_s": 1.678,
+          "fim_s": 1.999
+        },
+        {
+          "texto": "e",
+          "inicio_s": 2.441,
+          "fim_s": 2.461
+        },
+        {
+          "texto": "chamou",
+          "inicio_s": 2.522,
+          "fim_s": 2.803
+        },
+        {
+          "texto": "a",
+          "inicio_s": 2.823,
+          "fim_s": 2.843
+        },
+        {
+          "texto": "atenção",
+          "inicio_s": 2.884,
+          "fim_s": 3.265
+        },
+        {
+          "texto": "de",
+          "inicio_s": 3.306,
+          "fim_s": 3.386
+        },
+        {
+          "texto": "todo",
+          "inicio_s": 3.466,
+          "fim_s": 3.667
+        },
+        {
+          "texto": "o",
+          "inicio_s": 3.708,
+          "fim_s": 3.748
+        },
+        {
+          "texto": "Japão",
+          "inicio_s": 3.768,
+          "fim_s": 4.069
+        }
+      ]
+    },
+    {
+      "texto": "Em 1581, quando um guerreiro da África Oriental chegou à capital de Quioto, milhares de pessoas escalaram telhados para ver o homem com a pele da cor do carvão.",
+      "inicio_s": 4.52,
+      "fim_s": 13.8,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 4.56,
+          "fim_s": 4.62
+        },
+        {
+          "texto": "1581",
+          "inicio_s": 4.62,
+          "fim_s": 6.083
+        },
+        {
+          "texto": "quando",
+          "inicio_s": 6.083,
+          "fim_s": 6.304
+        },
+        {
+          "texto": "um",
+          "inicio_s": 6.324,
+          "fim_s": 6.364
+        },
+        {
+          "texto": "guerreiro",
+          "inicio_s": 6.404,
+          "fim_s": 6.745
+        },
+        {
+          "texto": "da",
+          "inicio_s": 6.785,
+          "fim_s": 6.865
+        },
+        {
+          "texto": "África",
+          "inicio_s": 6.965,
+          "fim_s": 7.286
+        },
+        {
+          "texto": "Oriental",
+          "inicio_s": 7.366,
+          "fim_s": 7.767
+        },
+        {
+          "texto": "chegou",
+          "inicio_s": 7.807,
+          "fim_s": 8.068
+        },
+        {
+          "texto": "à",
+          "inicio_s": 8.088,
+          "fim_s": 8.108
+        },
+        {
+          "texto": "capital",
+          "inicio_s": 8.148,
+          "fim_s": 8.509
+        },
+        {
+          "texto": "de",
+          "inicio_s": 8.529,
+          "fim_s": 8.589
+        },
+        {
+          "texto": "Quioto",
+          "inicio_s": 8.629,
+          "fim_s": 8.99
+        },
+        {
+          "texto": "milhares",
+          "inicio_s": 9.471,
+          "fim_s": 9.992
+        },
+        {
+          "texto": "de",
+          "inicio_s": 10.012,
+          "fim_s": 10.072
+        },
+        {
+          "texto": "pessoas",
+          "inicio_s": 10.112,
+          "fim_s": 10.553
+        },
+        {
+          "texto": "escalaram",
+          "inicio_s": 10.773,
+          "fim_s": 11.194
+        },
+        {
+          "texto": "telhados",
+          "inicio_s": 11.234,
+          "fim_s": 11.655
+        },
+        {
+          "texto": "para",
+          "inicio_s": 11.695,
+          "fim_s": 11.856
+        },
+        {
+          "texto": "ver",
+          "inicio_s": 11.876,
+          "fim_s": 12.016
+        },
+        {
+          "texto": "o",
+          "inicio_s": 12.036,
+          "fim_s": 12.056
+        },
+        {
+          "texto": "homem",
+          "inicio_s": 12.096,
+          "fim_s": 12.337
+        },
+        {
+          "texto": "com",
+          "inicio_s": 12.377,
+          "fim_s": 12.477
+        },
+        {
+          "texto": "a",
+          "inicio_s": 12.517,
+          "fim_s": 12.537
+        },
+        {
+          "texto": "pele",
+          "inicio_s": 12.597,
+          "fim_s": 12.818
+        },
+        {
+          "texto": "da",
+          "inicio_s": 12.838,
+          "fim_s": 12.918
+        },
+        {
+          "texto": "cor",
+          "inicio_s": 12.978,
+          "fim_s": 13.139
+        },
+        {
+          "texto": "do",
+          "inicio_s": 13.239,
+          "fim_s": 13.299
+        },
+        {
+          "texto": "carvão",
+          "inicio_s": 13.339,
+          "fim_s": 13.7
+        }
+      ]
+    },
+    {
+      "texto": "O poderoso lorde Oda Nobunaga, desconfiado, ordenou que ele se lavasse até a cintura, acreditando que seu corpo estava pintado com tinta preta.",
+      "inicio_s": 14.15,
+      "fim_s": 22.11,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 14.17,
+          "fim_s": 14.19
+        },
+        {
+          "texto": "poderoso",
+          "inicio_s": 14.23,
+          "fim_s": 14.691
+        },
+        {
+          "texto": "lorde",
+          "inicio_s": 14.752,
+          "fim_s": 15.012
+        },
+        {
+          "texto": "Oda",
+          "inicio_s": 15.072,
+          "fim_s": 15.253
+        },
+        {
+          "texto": "Nobunaga",
+          "inicio_s": 15.313,
+          "fim_s": 15.754
+        },
+        {
+          "texto": "desconfiado",
+          "inicio_s": 16.175,
+          "fim_s": 16.837
+        },
+        {
+          "texto": "ordenou",
+          "inicio_s": 17.358,
+          "fim_s": 17.699
+        },
+        {
+          "texto": "que",
+          "inicio_s": 17.719,
+          "fim_s": 17.779
+        },
+        {
+          "texto": "ele",
+          "inicio_s": 17.799,
+          "fim_s": 17.879
+        },
+        {
+          "texto": "se",
+          "inicio_s": 17.919,
+          "fim_s": 17.98
+        },
+        {
+          "texto": "lavasse",
+          "inicio_s": 18.02,
+          "fim_s": 18.32
+        },
+        {
+          "texto": "até",
+          "inicio_s": 18.361,
+          "fim_s": 18.441
+        },
+        {
+          "texto": "a",
+          "inicio_s": 18.501,
+          "fim_s": 18.521
+        },
+        {
+          "texto": "cintura",
+          "inicio_s": 18.561,
+          "fim_s": 18.942
+        },
+        {
+          "texto": "acreditando",
+          "inicio_s": 19.544,
+          "fim_s": 20.045
+        },
+        {
+          "texto": "que",
+          "inicio_s": 20.065,
+          "fim_s": 20.125
+        },
+        {
+          "texto": "seu",
+          "inicio_s": 20.165,
+          "fim_s": 20.285
+        },
+        {
+          "texto": "corpo",
+          "inicio_s": 20.326,
+          "fim_s": 20.566
+        },
+        {
+          "texto": "estava",
+          "inicio_s": 20.606,
+          "fim_s": 20.827
+        },
+        {
+          "texto": "pintado",
+          "inicio_s": 20.867,
+          "fim_s": 21.208
+        },
+        {
+          "texto": "com",
+          "inicio_s": 21.228,
+          "fim_s": 21.328
+        },
+        {
+          "texto": "tinta",
+          "inicio_s": 21.388,
+          "fim_s": 21.649
+        },
+        {
+          "texto": "preta",
+          "inicio_s": 21.709,
+          "fim_s": 22.01
+        }
+      ]
+    },
+    {
+      "texto": "Ao perceber que aquela era sua cor natural, Nobunaga ficou fascinado por sua força descomunal e inteligência refinada.",
+      "inicio_s": 22.46,
+      "fim_s": 29.76,
+      "palavras": [
+        {
+          "texto": "Ao",
+          "inicio_s": 22.48,
+          "fim_s": 22.56
+        },
+        {
+          "texto": "perceber",
+          "inicio_s": 22.6,
+          "fim_s": 23.122
+        },
+        {
+          "texto": "que",
+          "inicio_s": 23.182,
+          "fim_s": 23.262
+        },
+        {
+          "texto": "aquela",
+          "inicio_s": 23.302,
+          "fim_s": 23.623
+        },
+        {
+          "texto": "era",
+          "inicio_s": 23.723,
+          "fim_s": 23.824
+        },
+        {
+          "texto": "sua",
+          "inicio_s": 23.904,
+          "fim_s": 24.044
+        },
+        {
+          "texto": "cor",
+          "inicio_s": 24.125,
+          "fim_s": 24.305
+        },
+        {
+          "texto": "natural",
+          "inicio_s": 24.345,
+          "fim_s": 24.766
+        },
+        {
+          "texto": "Nobunaga",
+          "inicio_s": 25.468,
+          "fim_s": 26.07
+        },
+        {
+          "texto": "ficou",
+          "inicio_s": 26.13,
+          "fim_s": 26.371
+        },
+        {
+          "texto": "fascinado",
+          "inicio_s": 26.431,
+          "fim_s": 26.952
+        },
+        {
+          "texto": "por",
+          "inicio_s": 26.972,
+          "fim_s": 27.093
+        },
+        {
+          "texto": "sua",
+          "inicio_s": 27.133,
+          "fim_s": 27.273
+        },
+        {
+          "texto": "força",
+          "inicio_s": 27.373,
+          "fim_s": 27.634
+        },
+        {
+          "texto": "descomunal",
+          "inicio_s": 27.674,
+          "fim_s": 28.236
+        },
+        {
+          "texto": "e",
+          "inicio_s": 28.296,
+          "fim_s": 28.316
+        },
+        {
+          "texto": "inteligência",
+          "inicio_s": 28.396,
+          "fim_s": 29.038
+        },
+        {
+          "texto": "refinada",
+          "inicio_s": 29.118,
+          "fim_s": 29.66
+        }
+      ]
+    },
+    {
+      "texto": "O lorde deu a ele o nome de Yasuke, concedeu-lhe uma residência, duas espadas lendárias e o título de samurai pessoal de elite.",
+      "inicio_s": 30.11,
+      "fim_s": 38.61,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 30.15,
+          "fim_s": 30.17
+        },
+        {
+          "texto": "lorde",
+          "inicio_s": 30.23,
+          "fim_s": 30.511
+        },
+        {
+          "texto": "deu",
+          "inicio_s": 30.591,
+          "fim_s": 30.711
+        },
+        {
+          "texto": "a",
+          "inicio_s": 30.772,
+          "fim_s": 30.792
+        },
+        {
+          "texto": "ele",
+          "inicio_s": 30.892,
+          "fim_s": 31.032
+        },
+        {
+          "texto": "o",
+          "inicio_s": 31.092,
+          "fim_s": 31.112
+        },
+        {
+          "texto": "nome",
+          "inicio_s": 31.152,
+          "fim_s": 31.353
+        },
+        {
+          "texto": "de",
+          "inicio_s": 31.413,
+          "fim_s": 31.493
+        },
+        {
+          "texto": "Yasuke",
+          "inicio_s": 31.614,
+          "fim_s": 32.135
+        },
+        {
+          "texto": "concedeu-lhe",
+          "inicio_s": 32.856,
+          "fim_s": 33.398
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 33.418,
+          "fim_s": 33.518
+        },
+        {
+          "texto": "residência",
+          "inicio_s": 33.558,
+          "fim_s": 34.119
+        },
+        {
+          "texto": "duas",
+          "inicio_s": 34.661,
+          "fim_s": 34.861
+        },
+        {
+          "texto": "espadas",
+          "inicio_s": 34.921,
+          "fim_s": 35.362
+        },
+        {
+          "texto": "lendárias",
+          "inicio_s": 35.422,
+          "fim_s": 35.944
+        },
+        {
+          "texto": "e",
+          "inicio_s": 36.345,
+          "fim_s": 36.365
+        },
+        {
+          "texto": "o",
+          "inicio_s": 36.425,
+          "fim_s": 36.445
+        },
+        {
+          "texto": "título",
+          "inicio_s": 36.505,
+          "fim_s": 36.846
+        },
+        {
+          "texto": "de",
+          "inicio_s": 36.886,
+          "fim_s": 36.966
+        },
+        {
+          "texto": "samurai",
+          "inicio_s": 37.066,
+          "fim_s": 37.487
+        },
+        {
+          "texto": "pessoal",
+          "inicio_s": 37.568,
+          "fim_s": 37.989
+        },
+        {
+          "texto": "de",
+          "inicio_s": 38.029,
+          "fim_s": 38.109
+        },
+        {
+          "texto": "elite",
+          "inicio_s": 38.149,
+          "fim_s": 38.53
+        }
+      ]
+    },
+    {
+      "texto": "Nas batalhas do Japão feudal, o imponente guerreiro lutou lado a lado com Nobunaga até o fim, gravando seu nome para sempre na história dos samurais.",
+      "inicio_s": 38.96,
+      "fim_s": 47.36,
+      "palavras": [
+        {
+          "texto": "Nas",
+          "inicio_s": 38.98,
+          "fim_s": 39.1
+        },
+        {
+          "texto": "batalhas",
+          "inicio_s": 39.12,
+          "fim_s": 39.541
+        },
+        {
+          "texto": "do",
+          "inicio_s": 39.561,
+          "fim_s": 39.622
+        },
+        {
+          "texto": "Japão",
+          "inicio_s": 39.662,
+          "fim_s": 39.962
+        },
+        {
+          "texto": "feudal",
+          "inicio_s": 40.043,
+          "fim_s": 40.444
+        },
+        {
+          "texto": "o",
+          "inicio_s": 41.045,
+          "fim_s": 41.065
+        },
+        {
+          "texto": "imponente",
+          "inicio_s": 41.125,
+          "fim_s": 41.606
+        },
+        {
+          "texto": "guerreiro",
+          "inicio_s": 41.626,
+          "fim_s": 41.967
+        },
+        {
+          "texto": "lutou",
+          "inicio_s": 42.007,
+          "fim_s": 42.288
+        },
+        {
+          "texto": "lado",
+          "inicio_s": 42.348,
+          "fim_s": 42.508
+        },
+        {
+          "texto": "a",
+          "inicio_s": 42.549,
+          "fim_s": 42.569
+        },
+        {
+          "texto": "lado",
+          "inicio_s": 42.649,
+          "fim_s": 42.869
+        },
+        {
+          "texto": "com",
+          "inicio_s": 42.909,
+          "fim_s": 43.01
+        },
+        {
+          "texto": "Nobunaga",
+          "inicio_s": 43.05,
+          "fim_s": 43.551
+        },
+        {
+          "texto": "até",
+          "inicio_s": 43.651,
+          "fim_s": 43.852
+        },
+        {
+          "texto": "o",
+          "inicio_s": 43.912,
+          "fim_s": 43.932
+        },
+        {
+          "texto": "fim",
+          "inicio_s": 44.032,
+          "fim_s": 44.213
+        },
+        {
+          "texto": "gravando",
+          "inicio_s": 44.654,
+          "fim_s": 45.055
+        },
+        {
+          "texto": "seu",
+          "inicio_s": 45.115,
+          "fim_s": 45.235
+        },
+        {
+          "texto": "nome",
+          "inicio_s": 45.295,
+          "fim_s": 45.536
+        },
+        {
+          "texto": "para",
+          "inicio_s": 45.576,
+          "fim_s": 45.736
+        },
+        {
+          "texto": "sempre",
+          "inicio_s": 45.856,
+          "fim_s": 46.137
+        },
+        {
+          "texto": "na",
+          "inicio_s": 46.177,
+          "fim_s": 46.217
+        },
+        {
+          "texto": "história",
+          "inicio_s": 46.237,
+          "fim_s": 46.578
+        },
+        {
+          "texto": "dos",
+          "inicio_s": 46.598,
+          "fim_s": 46.698
+        },
+        {
+          "texto": "samurais",
+          "inicio_s": 46.718,
+          "fim_s": 47.22
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+[
+  {
+    "frase": 1,
+    "plano": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "A cinematic macro photograph of a flickering wax candle flame casting warm golden light through a jagged hole in an ancient plastered limestone wall, floating dust motes against pitch black shadows, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00043_.png"
+  },
+  {
+    "frase": 1,
+    "plano": 2,
+    "arquivo": "texto_01b.png",
+    "prompt_final": "An intimate close-up photograph of the face of the british archaeologist from <image1>, preserving his exact face, neat mustache, dark slicked hair and dusty khaki linen suit, lit only by the candle he holds to the breach, eyes widening in disbelief at what he sees inside, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00027_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\abertura_tumba_tutancamon_1922\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 2,
+    "plano": 1,
+    "arquivo": "texto_02.png",
+    "prompt_final": "A wide dramatic photograph of the arid Valley of the Kings in Egypt in November 1922, towering limestone cliffs under a blazing sun and excavation trenches where egyptian workers in white galabeyas rest beside baskets of rubble, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00044_.png"
+  },
+  {
+    "frase": 2,
+    "plano": 2,
+    "arquivo": "texto_02b.png",
+    "prompt_final": "A documentary style photograph of a 1920s archaeological camp at the valley floor, canvas tents, wooden crates, survey maps weighted with stones on a folding table, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00045_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 1,
+    "arquivo": "texto_03.png",
+    "prompt_final": "A low angle archaeological photograph looking down into a freshly excavated stone pit, sixteen descending limestone steps carved into bedrock leading to a sealed ancient doorway stamped with royal necropolis seals, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00046_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 2,
+    "arquivo": "texto_03b.png",
+    "prompt_final": "A tense medium photograph of the british archaeologist from <image1>, preserving his exact face, neat mustache, dark slicked hair and dusty khaki linen suit, kneeling on the bottom step and brushing sand from the intact clay seals of the doorway with a small brush, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00028_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\abertura_tumba_tutancamon_1922\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 4,
+    "plano": 1,
+    "arquivo": "texto_04.png",
+    "prompt_final": "A medium portrait photograph of Howard Carter, a dedicated 48 year old british archaeologist with weathered tanned skin, dark slicked hair and a neat mustache, wearing a dusty khaki linen suit with rolled sleeves, holding an iron chisel and a lit candle in the dim tomb corridor, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00042_.png"
+  },
+  {
+    "frase": 4,
+    "plano": 2,
+    "arquivo": "texto_04b.png",
+    "prompt_final": "An extreme close-up photograph of the trembling hands of the british archaeologist from <image1>, preserving his exact face, neat mustache, dark slicked hair and dusty khaki linen suit, widening a small opening in the plaster wall with a chisel, dust falling through the candlelight, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00029_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\abertura_tumba_tutancamon_1922\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 5,
+    "plano": 1,
+    "arquivo": "texto_05.png",
+    "prompt_final": "An extraordinary over the shoulder photograph past the british archaeologist from <image1>, preserving his exact face, neat mustache, dark slicked hair and dusty khaki linen suit, through the breach, warm candlelight revealing a golden antechamber packed with gilded pharaonic chariots and life sized guardian statues, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00030_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\abertura_tumba_tutancamon_1922\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 5,
+    "plano": 2,
+    "arquivo": "texto_05b.png",
+    "prompt_final": "A breathtaking interior photograph of the sealed antechamber, three thousand year old gold gleaming through hanging dust, alabaster vessels and ebony furniture stacked exactly where they were left, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00047_.png"
+  },
+  {
+    "frase": 6,
+    "plano": 1,
+    "arquivo": "texto_06.png",
+    "prompt_final": "A breathtaking macro photograph of the solid gold burial mask of Pharaoh Tutankhamun, inlaid with deep blue lapis lazuli and obsidian eyes, gleaming with eternal majesty in soft museum lighting, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00048_.png"
+  },
+  {
+    "frase": 6,
+    "plano": 2,
+    "arquivo": "texto_06b.png",
+    "prompt_final": "A reverent wide photograph of the golden sarcophagus chamber lit by work lamps, the young king's shrine glowing in the dark while shadows of onlookers fall on the painted wall, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00049_.png"
+  }
+]

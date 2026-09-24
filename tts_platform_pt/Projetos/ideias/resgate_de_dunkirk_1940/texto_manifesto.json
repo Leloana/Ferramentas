@@ -1,0 +1,681 @@
+{
+  "gerado_em": "2026-09-23T22:03:54",
+  "roteiro": "C:\\Users\\mf827\\Documents\\Ferramentas\\tts_platform_pt\\Projetos\\ideias\\resgate_de_dunkirk_1940\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 48.4,
+  "texto_usado": "Barcos de pesca civis salvaram um exército inteiro. Em junho de 1940, mais de trezentos mil soldados britânicos e franceses estavam encurralados nas praias de Dunquerque, cercados pelos tanques alemães e bombardeados pelos caças da Luftwaffe.\n\nOs grandes navios de guerra da marinha não conseguiam chegar às águas rasas da praia para o resgate. Foi quando o governo britânico emitiu um apelo de emergência e mais de oitocentos pequenos barcos civis — traineiras de pesca, iates particulares e rebocadores — cruzaram o Canal da Mancha.\n\nCivis comuns, como o veterano Charles Lightoller no seu iate particular, navegaram sob fogo de metralhadoras e bombas para retirar os soldados da areia. O que parecia uma aniquilação inevitável transformou-se no milagre de Dunquerque, garantindo a resistência que derrotaria o nazismo.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Barcos de pesca civis salvaram um exército inteiro.",
+      "inicio_s": 0.15,
+      "fim_s": 3.31,
+      "palavras": [
+        {
+          "texto": "Barcos",
+          "inicio_s": 0.19,
+          "fim_s": 0.532
+        },
+        {
+          "texto": "de",
+          "inicio_s": 0.553,
+          "fim_s": 0.633
+        },
+        {
+          "texto": "pesca",
+          "inicio_s": 0.673,
+          "fim_s": 0.915
+        },
+        {
+          "texto": "civis",
+          "inicio_s": 0.975,
+          "fim_s": 1.317
+        },
+        {
+          "texto": "salvaram",
+          "inicio_s": 1.72,
+          "fim_s": 2.163
+        },
+        {
+          "texto": "um",
+          "inicio_s": 2.163,
+          "fim_s": 2.203
+        },
+        {
+          "texto": "exército",
+          "inicio_s": 2.243,
+          "fim_s": 2.706
+        },
+        {
+          "texto": "inteiro",
+          "inicio_s": 2.746,
+          "fim_s": 3.169
+        }
+      ]
+    },
+    {
+      "texto": "Em junho de 1940, mais de trezentos mil soldados britânicos e franceses estavam encurralados nas praias de Dunquerque, cercados pelos tanques alemães e bombardeados pelos caças da Luftwaffe.",
+      "inicio_s": 3.66,
+      "fim_s": 15.06,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 3.7,
+          "fim_s": 3.76
+        },
+        {
+          "texto": "junho",
+          "inicio_s": 3.82,
+          "fim_s": 4.081
+        },
+        {
+          "texto": "de",
+          "inicio_s": 4.121,
+          "fim_s": 4.181
+        },
+        {
+          "texto": "1940",
+          "inicio_s": 4.181,
+          "fim_s": 5.583
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 5.583,
+          "fim_s": 5.824
+        },
+        {
+          "texto": "de",
+          "inicio_s": 5.844,
+          "fim_s": 5.924
+        },
+        {
+          "texto": "trezentos",
+          "inicio_s": 5.964,
+          "fim_s": 6.445
+        },
+        {
+          "texto": "mil",
+          "inicio_s": 6.485,
+          "fim_s": 6.585
+        },
+        {
+          "texto": "soldados",
+          "inicio_s": 6.645,
+          "fim_s": 7.046
+        },
+        {
+          "texto": "britânicos",
+          "inicio_s": 7.066,
+          "fim_s": 7.567
+        },
+        {
+          "texto": "e",
+          "inicio_s": 7.587,
+          "fim_s": 7.607
+        },
+        {
+          "texto": "franceses",
+          "inicio_s": 7.647,
+          "fim_s": 8.168
+        },
+        {
+          "texto": "estavam",
+          "inicio_s": 8.468,
+          "fim_s": 8.849
+        },
+        {
+          "texto": "encurralados",
+          "inicio_s": 8.889,
+          "fim_s": 9.51
+        },
+        {
+          "texto": "nas",
+          "inicio_s": 9.53,
+          "fim_s": 9.671
+        },
+        {
+          "texto": "praias",
+          "inicio_s": 9.731,
+          "fim_s": 10.011
+        },
+        {
+          "texto": "de",
+          "inicio_s": 10.031,
+          "fim_s": 10.111
+        },
+        {
+          "texto": "Dunquerque",
+          "inicio_s": 10.151,
+          "fim_s": 10.652
+        },
+        {
+          "texto": "cercados",
+          "inicio_s": 10.973,
+          "fim_s": 11.434
+        },
+        {
+          "texto": "pelos",
+          "inicio_s": 11.454,
+          "fim_s": 11.674
+        },
+        {
+          "texto": "tanques",
+          "inicio_s": 11.734,
+          "fim_s": 12.035
+        },
+        {
+          "texto": "alemães",
+          "inicio_s": 12.075,
+          "fim_s": 12.475
+        },
+        {
+          "texto": "e",
+          "inicio_s": 12.776,
+          "fim_s": 12.796
+        },
+        {
+          "texto": "bombardeados",
+          "inicio_s": 12.856,
+          "fim_s": 13.557
+        },
+        {
+          "texto": "pelos",
+          "inicio_s": 13.597,
+          "fim_s": 13.838
+        },
+        {
+          "texto": "caças",
+          "inicio_s": 13.898,
+          "fim_s": 14.219
+        },
+        {
+          "texto": "da",
+          "inicio_s": 14.239,
+          "fim_s": 14.299
+        },
+        {
+          "texto": "Luftwaffe",
+          "inicio_s": 14.359,
+          "fim_s": 14.98
+        }
+      ]
+    },
+    {
+      "texto": "Os grandes navios de guerra da marinha não conseguiam chegar às águas rasas da praia para o resgate.",
+      "inicio_s": 15.41,
+      "fim_s": 20.47,
+      "palavras": [
+        {
+          "texto": "Os",
+          "inicio_s": 15.45,
+          "fim_s": 15.51
+        },
+        {
+          "texto": "grandes",
+          "inicio_s": 15.571,
+          "fim_s": 15.892
+        },
+        {
+          "texto": "navios",
+          "inicio_s": 15.912,
+          "fim_s": 16.233
+        },
+        {
+          "texto": "de",
+          "inicio_s": 16.273,
+          "fim_s": 16.334
+        },
+        {
+          "texto": "guerra",
+          "inicio_s": 16.374,
+          "fim_s": 16.615
+        },
+        {
+          "texto": "da",
+          "inicio_s": 16.635,
+          "fim_s": 16.695
+        },
+        {
+          "texto": "marinha",
+          "inicio_s": 16.735,
+          "fim_s": 17.077
+        },
+        {
+          "texto": "não",
+          "inicio_s": 17.358,
+          "fim_s": 17.498
+        },
+        {
+          "texto": "conseguiam",
+          "inicio_s": 17.558,
+          "fim_s": 18.081
+        },
+        {
+          "texto": "chegar",
+          "inicio_s": 18.121,
+          "fim_s": 18.442
+        },
+        {
+          "texto": "às",
+          "inicio_s": 18.522,
+          "fim_s": 18.663
+        },
+        {
+          "texto": "águas",
+          "inicio_s": 18.743,
+          "fim_s": 18.984
+        },
+        {
+          "texto": "rasas",
+          "inicio_s": 19.024,
+          "fim_s": 19.305
+        },
+        {
+          "texto": "da",
+          "inicio_s": 19.346,
+          "fim_s": 19.406
+        },
+        {
+          "texto": "praia",
+          "inicio_s": 19.466,
+          "fim_s": 19.707
+        },
+        {
+          "texto": "para",
+          "inicio_s": 19.767,
+          "fim_s": 19.908
+        },
+        {
+          "texto": "o",
+          "inicio_s": 19.928,
+          "fim_s": 19.948
+        },
+        {
+          "texto": "resgate",
+          "inicio_s": 19.968,
+          "fim_s": 20.39
+        }
+      ]
+    },
+    {
+      "texto": "Foi quando o governo britânico emitiu um apelo de emergência e mais de oitocentos pequenos barcos civis — traineiras de pesca, iates particulares e rebocadores — cruzaram o Canal da Mancha.",
+      "inicio_s": 20.82,
+      "fim_s": 32.3,
+      "palavras": [
+        {
+          "texto": "Foi",
+          "inicio_s": 20.84,
+          "fim_s": 20.94
+        },
+        {
+          "texto": "quando",
+          "inicio_s": 21.0,
+          "fim_s": 21.201
+        },
+        {
+          "texto": "o",
+          "inicio_s": 21.221,
+          "fim_s": 21.241
+        },
+        {
+          "texto": "governo",
+          "inicio_s": 21.261,
+          "fim_s": 21.621
+        },
+        {
+          "texto": "britânico",
+          "inicio_s": 21.621,
+          "fim_s": 22.062
+        },
+        {
+          "texto": "emitiu",
+          "inicio_s": 22.102,
+          "fim_s": 22.423
+        },
+        {
+          "texto": "um",
+          "inicio_s": 22.463,
+          "fim_s": 22.523
+        },
+        {
+          "texto": "apelo",
+          "inicio_s": 22.563,
+          "fim_s": 22.864
+        },
+        {
+          "texto": "de",
+          "inicio_s": 22.904,
+          "fim_s": 22.964
+        },
+        {
+          "texto": "emergência",
+          "inicio_s": 23.004,
+          "fim_s": 23.585
+        },
+        {
+          "texto": "e",
+          "inicio_s": 23.905,
+          "fim_s": 23.925
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 24.006,
+          "fim_s": 24.186
+        },
+        {
+          "texto": "de",
+          "inicio_s": 24.206,
+          "fim_s": 24.266
+        },
+        {
+          "texto": "oitocentos",
+          "inicio_s": 24.306,
+          "fim_s": 24.747
+        },
+        {
+          "texto": "pequenos",
+          "inicio_s": 24.787,
+          "fim_s": 25.188
+        },
+        {
+          "texto": "barcos",
+          "inicio_s": 25.248,
+          "fim_s": 25.548
+        },
+        {
+          "texto": "civis",
+          "inicio_s": 25.588,
+          "fim_s": 25.969
+        },
+        {
+          "texto": "traineiras",
+          "inicio_s": 27.151,
+          "fim_s": 27.712
+        },
+        {
+          "texto": "de",
+          "inicio_s": 27.752,
+          "fim_s": 27.832
+        },
+        {
+          "texto": "pesca",
+          "inicio_s": 27.892,
+          "fim_s": 28.233
+        },
+        {
+          "texto": "iates",
+          "inicio_s": 28.594,
+          "fim_s": 28.934
+        },
+        {
+          "texto": "particulares",
+          "inicio_s": 28.974,
+          "fim_s": 29.655
+        },
+        {
+          "texto": "e",
+          "inicio_s": 29.695,
+          "fim_s": 29.715
+        },
+        {
+          "texto": "rebocadores",
+          "inicio_s": 29.776,
+          "fim_s": 30.417
+        },
+        {
+          "texto": "cruzaram",
+          "inicio_s": 30.898,
+          "fim_s": 31.358
+        },
+        {
+          "texto": "o",
+          "inicio_s": 31.378,
+          "fim_s": 31.418
+        },
+        {
+          "texto": "Canal",
+          "inicio_s": 31.438,
+          "fim_s": 31.739
+        },
+        {
+          "texto": "da",
+          "inicio_s": 31.759,
+          "fim_s": 31.819
+        },
+        {
+          "texto": "Mancha",
+          "inicio_s": 31.879,
+          "fim_s": 32.2
+        }
+      ]
+    },
+    {
+      "texto": "Civis comuns, como o veterano Charles Lightoller no seu iate particular, navegaram sob fogo de metralhadoras e bombas para retirar os soldados da areia.",
+      "inicio_s": 32.65,
+      "fim_s": 41.03,
+      "palavras": [
+        {
+          "texto": "Civis",
+          "inicio_s": 32.69,
+          "fim_s": 33.011
+        },
+        {
+          "texto": "comuns",
+          "inicio_s": 33.071,
+          "fim_s": 33.472
+        },
+        {
+          "texto": "como",
+          "inicio_s": 33.833,
+          "fim_s": 34.053
+        },
+        {
+          "texto": "o",
+          "inicio_s": 34.093,
+          "fim_s": 34.113
+        },
+        {
+          "texto": "veterano",
+          "inicio_s": 34.174,
+          "fim_s": 34.595
+        },
+        {
+          "texto": "Charles",
+          "inicio_s": 34.675,
+          "fim_s": 34.996
+        },
+        {
+          "texto": "Lightoller",
+          "inicio_s": 35.036,
+          "fim_s": 35.517
+        },
+        {
+          "texto": "no",
+          "inicio_s": 35.557,
+          "fim_s": 35.617
+        },
+        {
+          "texto": "seu",
+          "inicio_s": 35.677,
+          "fim_s": 35.798
+        },
+        {
+          "texto": "iate",
+          "inicio_s": 35.838,
+          "fim_s": 36.118
+        },
+        {
+          "texto": "particular",
+          "inicio_s": 36.158,
+          "fim_s": 36.68
+        },
+        {
+          "texto": "navegaram",
+          "inicio_s": 37.181,
+          "fim_s": 37.662
+        },
+        {
+          "texto": "sob",
+          "inicio_s": 37.702,
+          "fim_s": 37.842
+        },
+        {
+          "texto": "fogo",
+          "inicio_s": 37.923,
+          "fim_s": 38.163
+        },
+        {
+          "texto": "de",
+          "inicio_s": 38.203,
+          "fim_s": 38.263
+        },
+        {
+          "texto": "metralhadoras",
+          "inicio_s": 38.283,
+          "fim_s": 38.945
+        },
+        {
+          "texto": "e",
+          "inicio_s": 38.985,
+          "fim_s": 39.005
+        },
+        {
+          "texto": "bombas",
+          "inicio_s": 39.065,
+          "fim_s": 39.426
+        },
+        {
+          "texto": "para",
+          "inicio_s": 39.486,
+          "fim_s": 39.647
+        },
+        {
+          "texto": "retirar",
+          "inicio_s": 39.687,
+          "fim_s": 40.028
+        },
+        {
+          "texto": "os",
+          "inicio_s": 40.048,
+          "fim_s": 40.108
+        },
+        {
+          "texto": "soldados",
+          "inicio_s": 40.148,
+          "fim_s": 40.549
+        },
+        {
+          "texto": "da",
+          "inicio_s": 40.569,
+          "fim_s": 40.629
+        },
+        {
+          "texto": "areia",
+          "inicio_s": 40.689,
+          "fim_s": 40.93
+        }
+      ]
+    },
+    {
+      "texto": "O que parecia uma aniquilação inevitável transformou-se no milagre de Dunquerque, garantindo a resistência que derrotaria o nazismo.",
+      "inicio_s": 41.38,
+      "fim_s": 48.44,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 41.42,
+          "fim_s": 41.44
+        },
+        {
+          "texto": "que",
+          "inicio_s": 41.46,
+          "fim_s": 41.54
+        },
+        {
+          "texto": "parecia",
+          "inicio_s": 41.581,
+          "fim_s": 42.002
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 42.042,
+          "fim_s": 42.122
+        },
+        {
+          "texto": "aniquilação",
+          "inicio_s": 42.142,
+          "fim_s": 42.624
+        },
+        {
+          "texto": "inevitável",
+          "inicio_s": 42.644,
+          "fim_s": 43.225
+        },
+        {
+          "texto": "transformou-se",
+          "inicio_s": 43.506,
+          "fim_s": 44.188
+        },
+        {
+          "texto": "no",
+          "inicio_s": 44.228,
+          "fim_s": 44.268
+        },
+        {
+          "texto": "milagre",
+          "inicio_s": 44.288,
+          "fim_s": 44.729
+        },
+        {
+          "texto": "de",
+          "inicio_s": 44.81,
+          "fim_s": 44.89
+        },
+        {
+          "texto": "Dunquerque",
+          "inicio_s": 44.95,
+          "fim_s": 45.512
+        },
+        {
+          "texto": "garantindo",
+          "inicio_s": 46.133,
+          "fim_s": 46.615
+        },
+        {
+          "texto": "a",
+          "inicio_s": 46.655,
+          "fim_s": 46.675
+        },
+        {
+          "texto": "resistência",
+          "inicio_s": 46.695,
+          "fim_s": 47.217
+        },
+        {
+          "texto": "que",
+          "inicio_s": 47.237,
+          "fim_s": 47.297
+        },
+        {
+          "texto": "derrotaria",
+          "inicio_s": 47.317,
+          "fim_s": 47.758
+        },
+        {
+          "texto": "o",
+          "inicio_s": 47.798,
+          "fim_s": 47.818
+        },
+        {
+          "texto": "nazismo",
+          "inicio_s": 47.858,
+          "fim_s": 48.36
+        }
+      ]
+    }
+  ]
+}

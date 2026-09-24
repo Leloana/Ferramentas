@@ -1,0 +1,263 @@
+[
+  {
+    "frase": 1,
+    "plano": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "A cinematic close-up photograph of a vintage red rotating emergency beacon flashing inside an underground soviet command bunker, crimson light across concrete and cables, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00219_.png"
+  },
+  {
+    "frase": 1,
+    "plano": 2,
+    "arquivo": "texto_01b.png",
+    "prompt_final": "A photograph of an alarm klaxon mounted on a concrete wall, its horn vibrating under the red strobe, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00220_.png"
+  },
+  {
+    "frase": 2,
+    "plano": 1,
+    "arquivo": "texto_02.png",
+    "prompt_final": "A wide photorealistic space photograph of a 1980s soviet early warning satellite in orbit, metallic solar panels reflecting sunlight against the blue curve of Earth, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00221_.png"
+  },
+  {
+    "frase": 2,
+    "plano": 2,
+    "arquivo": "texto_02b.png",
+    "prompt_final": "A photograph of a satellite sensor array pointed down at a cloud covered ocean, sunlight glaring off the cloud tops, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00222_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 1,
+    "arquivo": "texto_03.png",
+    "prompt_final": "A wide interior photograph of a secret soviet command bunker with an illuminated wall map board, rows of amber monitors and operators in olive uniforms staring at the screens, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00223_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 2,
+    "arquivo": "texto_03b.png",
+    "prompt_final": "A close-up photograph of an amber monitor showing four additional inbound missile tracks appearing one after another, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00224_.png"
+  },
+  {
+    "frase": 4,
+    "plano": 1,
+    "arquivo": "texto_04.png",
+    "prompt_final": "A medium portrait photograph of Stanislav Petrov, a 44 year old soviet military officer with tired watchful dark eyes, receding dark hair and a neat mustache, sitting at a metal command desk in an olive green uniform, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00218_.png"
+  },
+  {
+    "frase": 4,
+    "plano": 2,
+    "arquivo": "texto_04b.png",
+    "prompt_final": "A photograph of the soviet officer from <image1>, preserving his exact face, neat mustache, receding dark hair and olive green uniform, lit only by console glow as the red beacon sweeps across his face, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00102_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\stanislav_petrov_1983\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 5,
+    "plano": 1,
+    "arquivo": "texto_05.png",
+    "prompt_final": "A low angle exterior photograph of the Moscow Kremlin at midnight in autumn rain, the illuminated red star glowing atop a tower through heavy mist, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00225_.png"
+  },
+  {
+    "frase": 5,
+    "plano": 2,
+    "arquivo": "texto_05b.png",
+    "prompt_final": "A photograph of a printed soviet military protocol page under a desk lamp, the retaliation procedure underlined in pencil, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00226_.png"
+  },
+  {
+    "frase": 6,
+    "plano": 1,
+    "arquivo": "texto_06.png",
+    "prompt_final": "A dramatic close-up photograph of the soviet officer from <image1>, preserving his exact face, neat mustache, receding dark hair and olive green uniform, furrowing his brow in skeptical concentration, the alarm light reflected in his eyes, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00103_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\stanislav_petrov_1983\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 6,
+    "plano": 2,
+    "arquivo": "texto_06b.png",
+    "prompt_final": "A macro photograph of a shaking hand hovering above a red reporting button without pressing it, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00227_.png"
+  },
+  {
+    "frase": 7,
+    "plano": 1,
+    "arquivo": "texto_07.png",
+    "prompt_final": "A stark cinematic landscape photograph across arctic tundra at dusk with five glowing missile launch plumes rising into dark stratospheric clouds, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00228_.png"
+  },
+  {
+    "frase": 7,
+    "plano": 2,
+    "arquivo": "texto_07b.png",
+    "prompt_final": "A conceptual photograph of a strategic map showing hundreds of expected launch vectors beside only five plotted marks, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00229_.png"
+  },
+  {
+    "frase": 8,
+    "plano": 1,
+    "arquivo": "texto_08.png",
+    "prompt_final": "A medium photograph inside the bunker of young soviet operators frozen behind their consoles, pale faces turning toward their commander, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00230_.png"
+  },
+  {
+    "frase": 8,
+    "plano": 2,
+    "arquivo": "texto_08b.png",
+    "prompt_final": "A photograph over the shoulders of the crew toward the soviet officer from <image1>, preserving his exact face, neat mustache, receding dark hair and olive green uniform, alone at the center desk with every face waiting on him, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00104_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\stanislav_petrov_1983\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 9,
+    "plano": 1,
+    "arquivo": "texto_09.png",
+    "prompt_final": "A macro photograph of a heavy vintage red rotary telephone on a steel console, its indicator lamp flashing beside the handset, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00231_.png"
+  },
+  {
+    "frase": 9,
+    "plano": 2,
+    "arquivo": "texto_09b.png",
+    "prompt_final": "A photograph of the coiled telephone cord trembling slightly on the desk under the alarm strobe, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00232_.png"
+  },
+  {
+    "frase": 10,
+    "plano": 1,
+    "arquivo": "texto_10.png",
+    "prompt_final": "A close-up photograph of an industrial soviet analog wall clock, red second hand sweeping beside glowing countdown digits on gray concrete, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00233_.png"
+  },
+  {
+    "frase": 10,
+    "plano": 2,
+    "arquivo": "texto_10b.png",
+    "prompt_final": "A photograph of an impact estimate readout ticking down on a monitor in harsh green phosphor, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00234_.png"
+  },
+  {
+    "frase": 11,
+    "plano": 1,
+    "arquivo": "texto_11.png",
+    "prompt_final": "An extreme close-up photograph of the soviet officer from <image1>, preserving his exact face, neat mustache, receding dark hair and olive green uniform, a bead of cold sweat running down his temple as he closes his eyes in agonizing concentration, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00105_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\stanislav_petrov_1983\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 11,
+    "plano": 2,
+    "arquivo": "texto_11b.png",
+    "prompt_final": "A photograph of a hand pressed flat on a cold metal desk, knuckles tight beside a stack of telemetry printouts, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00235_.png"
+  },
+  {
+    "frase": 12,
+    "plano": 1,
+    "arquivo": "texto_12.png",
+    "prompt_final": "A cinematic medium photograph of the soviet officer from <image1>, preserving his exact face, neat mustache, receding dark hair and olive green uniform, lifting the heavy black telephone receiver with trembling fingers and taking a steady breath, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00106_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\stanislav_petrov_1983\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 12,
+    "plano": 2,
+    "arquivo": "texto_12b.png",
+    "prompt_final": "A photograph of the soviet officer from <image1>, preserving his exact face, neat mustache, receding dark hair and olive green uniform, speaking two calm words into the receiver while the entire room holds its breath, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00107_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\stanislav_petrov_1983\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 13,
+    "plano": 1,
+    "arquivo": "texto_13.png",
+    "prompt_final": "A wide master photograph of the command room in dead silence, operators motionless before their consoles, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00236_.png"
+  },
+  {
+    "frase": 13,
+    "plano": 2,
+    "arquivo": "texto_13b.png",
+    "prompt_final": "A photograph of the wall map board glowing over empty aisles, nobody moving between the desks, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00237_.png"
+  },
+  {
+    "frase": 14,
+    "plano": 1,
+    "arquivo": "texto_14.png",
+    "prompt_final": "A panoramic photograph over the Moscow skyline at night, silhouetted architecture resting under quiet clouds in deep blue stillness, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00238_.png"
+  },
+  {
+    "frase": 14,
+    "plano": 2,
+    "arquivo": "texto_14b.png",
+    "prompt_final": "A photograph of a sleeping apartment block window with a child's toy on the sill, city lights beyond, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00239_.png"
+  },
+  {
+    "frase": 15,
+    "plano": 1,
+    "arquivo": "texto_15.png",
+    "prompt_final": "A tranquil dawn photograph of golden morning light breaking over the Moscow river, mist rising from calm water, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00240_.png"
+  },
+  {
+    "frase": 16,
+    "plano": 1,
+    "arquivo": "texto_16.png",
+    "prompt_final": "A breathtaking high altitude photograph above the cloud tops at low sunrise, grazing light striking cirrus clouds in a blinding flare that mimics a rocket plume, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00241_.png"
+  },
+  {
+    "frase": 16,
+    "plano": 2,
+    "arquivo": "texto_16b.png",
+    "prompt_final": "A photograph of an engineer's report page with a diagram of sunlight reflecting off high clouds into a satellite sensor, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00242_.png"
+  },
+  {
+    "frase": 17,
+    "plano": 1,
+    "arquivo": "texto_17.png",
+    "prompt_final": "An intimate quiet portrait photograph of the soviet officer from <image1>, preserving his exact face, neat mustache, receding dark hair and olive green uniform, sitting alone in a small break room in morning window light, holding a ceramic teacup with both hands, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00108_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\stanislav_petrov_1983\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 17,
+    "plano": 2,
+    "arquivo": "texto_17b.png",
+    "prompt_final": "A photograph of a plain bunk room with a folded olive uniform jacket on a chair and grey daylight through a narrow window, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00243_.png"
+  },
+  {
+    "frase": 18,
+    "plano": 1,
+    "arquivo": "texto_18.png",
+    "prompt_final": "A heroic low angle portrait photograph of the soviet officer from <image1>, preserving his exact face, neat mustache, receding dark hair and olive green uniform, standing beside tall vintage command consoles as morning sunlight streams through a high ventilation shaft, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00109_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\stanislav_petrov_1983\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 18,
+    "plano": 2,
+    "arquivo": "texto_18b.png",
+    "prompt_final": "A closing photograph of a quiet city street at sunrise, people walking to work with no idea what nearly happened, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00244_.png"
+  }
+]

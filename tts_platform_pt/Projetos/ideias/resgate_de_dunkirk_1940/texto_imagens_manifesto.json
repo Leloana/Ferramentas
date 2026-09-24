@@ -1,0 +1,90 @@
+[
+  {
+    "frase": 1,
+    "plano": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "A cinematic wide establishing photograph of the beaches of Dunkirk in 1940, dense black oil smoke across the gray channel sky and thousands of british soldiers queued in disciplined lines into the shallows, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00169_.png"
+  },
+  {
+    "frase": 1,
+    "plano": 2,
+    "arquivo": "texto_01b.png",
+    "prompt_final": "A photograph of a small wooden fishing boat crossing choppy gray water toward a smoke darkened coastline, its civilian skipper hunched at the tiller, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00170_.png"
+  },
+  {
+    "frase": 2,
+    "plano": 1,
+    "arquivo": "texto_02.png",
+    "prompt_final": "A dramatic panoramic photograph of the wide sandy beaches under air attack, dive bombers plunging through cloudy skies and water geysers erupting around improvised wooden piers, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00171_.png"
+  },
+  {
+    "frase": 2,
+    "plano": 2,
+    "arquivo": "texto_02b.png",
+    "prompt_final": "A photograph of soldiers throwing themselves flat on wet sand as a bomb blast lifts a column of water and debris behind them, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00172_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 1,
+    "arquivo": "texto_03.png",
+    "prompt_final": "A low angle maritime photograph of a massive royal navy destroyer stranded in deep water, unable to reach the shallow shoals while soldiers wade chest deep in the surf, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00173_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 2,
+    "arquivo": "texto_03b.png",
+    "prompt_final": "A photograph from the destroyer deck of sailors watching the distant beach through binoculars, helpless in the swell, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00174_.png"
+  },
+  {
+    "frase": 4,
+    "plano": 1,
+    "arquivo": "texto_04.png",
+    "prompt_final": "A medium portrait photograph of Charles Lightoller, a determined 66 year old british maritime veteran with weathered skin, steely gray eyes and a neat white mustache, standing firmly at the wooden wheel of his small private motor yacht, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00168_.png"
+  },
+  {
+    "frase": 4,
+    "plano": 2,
+    "arquivo": "texto_04b.png",
+    "prompt_final": "A photograph of hundreds of little ships, fishing smacks, tugs and pleasure yachts, gathering in an english harbour at dawn before the crossing, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00175_.png"
+  },
+  {
+    "frase": 5,
+    "plano": 1,
+    "arquivo": "texto_05.png",
+    "prompt_final": "An action packed photograph from the open deck of a small wooden yacht where the elderly british skipper from <image1>, preserving his exact weathered face, steely gray eyes and neat white mustache, in a dark peacoat at the wooden ship wheel, steers calmly through exploding water geysers and machine gun fire while exhausted oil stained soldiers climb aboard, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00091_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\resgate_de_dunkirk_1940\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 5,
+    "plano": 2,
+    "arquivo": "texto_05b.png",
+    "prompt_final": "A tight photograph of the elderly british skipper from <image1>, preserving his exact weathered face, steely gray eyes and neat white mustache, gripping the spokes of the wheel with white knuckles, sea spray across the windscreen, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00092_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\resgate_de_dunkirk_1940\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 6,
+    "plano": 1,
+    "arquivo": "texto_06.png",
+    "prompt_final": "A magnificent wide photograph of hundreds of little ships sailing together across the white capped english channel toward the chalk cliffs of Dover, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00176_.png"
+  },
+  {
+    "frase": 6,
+    "plano": 2,
+    "arquivo": "texto_06b.png",
+    "prompt_final": "A warm photograph of rescued soldiers crowded shoulder to shoulder on a small deck, blankets over their shoulders, coastline of home ahead, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00177_.png"
+  }
+]

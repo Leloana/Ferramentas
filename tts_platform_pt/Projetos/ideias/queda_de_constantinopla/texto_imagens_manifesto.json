@@ -1,0 +1,132 @@
+[
+  {
+    "frase": 1,
+    "plano": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "A grand panoramic photograph of Constantinople at dawn in 1453, the ancient triple stone walls standing before a vast ottoman siege encampment stretching to the horizon with thousands of smoking campfires, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00122_.png"
+  },
+  {
+    "frase": 1,
+    "plano": 2,
+    "arquivo": "texto_01b.png",
+    "prompt_final": "A photograph of ottoman siege lines at first light, ranks of janissaries and horsetail standards waiting in the cold mist, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00123_.png"
+  },
+  {
+    "frase": 2,
+    "plano": 1,
+    "arquivo": "texto_02.png",
+    "prompt_final": "A wide cinematic photograph of the theodosian land walls under an overcast morning sky, byzantine double headed eagle banners on the parapets as sunbeams pierce the clouds, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00124_.png"
+  },
+  {
+    "frase": 2,
+    "plano": 2,
+    "arquivo": "texto_02b.png",
+    "prompt_final": "A photograph of worn defenders patrolling a narrow wall walk, repairing gabions of earth and timber between the towers, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00125_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 1,
+    "arquivo": "texto_03.png",
+    "prompt_final": "A dramatic wide photograph of a colossal bronze ottoman siege bombard firing a heavy stone ball, a burst of orange flame and dark powder smoke against the walls, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00126_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 2,
+    "arquivo": "texto_03b.png",
+    "prompt_final": "A photograph of oxen teams and gun crews hauling an enormous bronze cannon barrel through churned mud toward the siege line, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00127_.png"
+  },
+  {
+    "frase": 4,
+    "plano": 1,
+    "arquivo": "texto_04.png",
+    "prompt_final": "A solemn medium photograph inside the besieged city of a thin line of byzantine and genoese soldiers in dented armor looking up toward the parapets in the morning mist, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00128_.png"
+  },
+  {
+    "frase": 4,
+    "plano": 2,
+    "arquivo": "texto_04b.png",
+    "prompt_final": "A photograph of city women and monks carrying baskets of stones and water up a rampart stair to the defenders, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00129_.png"
+  },
+  {
+    "frase": 5,
+    "plano": 1,
+    "arquivo": "texto_05.png",
+    "prompt_final": "A medium portrait photograph of Emperor Constantine the eleventh on the stone ramparts, a rugged 49 year old byzantine emperor with a trimmed graying beard and fierce dark eyes, wearing ornate lamellar armor over a crimson tunic, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00121_.png"
+  },
+  {
+    "frase": 5,
+    "plano": 2,
+    "arquivo": "texto_05b.png",
+    "prompt_final": "A photograph of the byzantine emperor from <image1>, preserving his exact face, trimmed graying beard and fierce dark eyes, in ornate lamellar armor over a crimson tunic, directing the defense at night by torchlight, pointing along the wall as messengers run past him, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00074_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\queda_de_constantinopla\\imagens\\texto_05.png"
+  },
+  {
+    "frase": 6,
+    "plano": 1,
+    "arquivo": "texto_06.png",
+    "prompt_final": "A dynamic photograph of burning greek fire cascading down stone fortifications in streaks of orange flame, repelling siege towers in the smoke filled dark, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00130_.png"
+  },
+  {
+    "frase": 6,
+    "plano": 2,
+    "arquivo": "texto_06b.png",
+    "prompt_final": "A photograph of exhausted defenders slumped against broken masonry at dawn, bandaged hands still gripping spears, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00131_.png"
+  },
+  {
+    "frase": 7,
+    "plano": 1,
+    "arquivo": "texto_07.png",
+    "prompt_final": "A dramatic close-up photograph of ancient stone wall blocks cracking under the shock of heavy artillery, mortar crumbling into clouds of gray dust, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00132_.png"
+  },
+  {
+    "frase": 7,
+    "plano": 2,
+    "arquivo": "texto_07b.png",
+    "prompt_final": "A photograph of a bronze cannonball tearing through a parapet, splinters and stone shards flying across the wall walk, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00133_.png"
+  },
+  {
+    "frase": 8,
+    "plano": 1,
+    "arquivo": "texto_08.png",
+    "prompt_final": "A monumental wide photograph of a major section of the Saint Romanus gate collapsing inward in a thunderous cloud of dust and flying masonry, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00134_.png"
+  },
+  {
+    "frase": 8,
+    "plano": 2,
+    "arquivo": "texto_08b.png",
+    "prompt_final": "A photograph from inside the city of the gate tower folding into rubble while defenders scramble back from the falling stone, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00135_.png"
+  },
+  {
+    "frase": 9,
+    "plano": 1,
+    "arquivo": "texto_09.png",
+    "prompt_final": "A low angle cinematic photograph through the smoking breach where dark silhouettes of advancing janissaries charge forward with curved swords and red banners, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00136_.png"
+  },
+  {
+    "frase": 9,
+    "plano": 2,
+    "arquivo": "texto_09b.png",
+    "prompt_final": "A tense photograph of the byzantine emperor from <image1>, preserving his exact face, trimmed graying beard and fierce dark eyes, in ornate lamellar armor over a crimson tunic, turning toward the breach with his sword drawn as the enemy tide pours in, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00075_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\queda_de_constantinopla\\imagens\\texto_05.png"
+  }
+]

@@ -1,0 +1,797 @@
+{
+  "gerado_em": "2026-09-23T21:43:07",
+  "roteiro": "C:\\Users\\mf827\\Documents\\Ferramentas\\tts_platform_pt\\Projetos\\ideias\\queda_de_constantinopla_parte2\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 53.1,
+  "texto_usado": "O imperador recusou a fuga. Enquanto os janízaros tomavam as muralhas de Constantinopla, conselheiros imploraram de joelhos para que Constantino Onze fugisse em um navio e salvasse sua linhagem. O imperador olhou para a cúpula dourada de Santa Sofia no horizonte e balançou a cabeça.\n\nEle sabia que Roma morreria naquele amanhecer, e se recusava a ser um líder sem império. Com as mãos cobertas de fuligem, arrancou de sua capa o broche da águia bicéfala e atirou a coroa dourada na poeira. Não queria ser capturado vivo nem exibido como troféu.\n\nDesembainhou sua espada de aço, olhou para os poucos guerreiros que ainda resistiam e gritou suas últimas palavras: a cidade caiu, e eu cairei com ela. Constantino avançou sozinho contra uma parede de lanças e desapareceu no turbilhão da batalha. Com o último imperador, as cinzas de Roma se apagaram para sempre.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "O imperador recusou a fuga.",
+      "inicio_s": 0.15,
+      "fim_s": 1.95,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 0.17,
+          "fim_s": 0.19
+        },
+        {
+          "texto": "imperador",
+          "inicio_s": 0.251,
+          "fim_s": 0.817
+        },
+        {
+          "texto": "recusou",
+          "inicio_s": 0.939,
+          "fim_s": 1.424
+        },
+        {
+          "texto": "a",
+          "inicio_s": 1.485,
+          "fim_s": 1.505
+        },
+        {
+          "texto": "fuga",
+          "inicio_s": 1.586,
+          "fim_s": 1.849
+        }
+      ]
+    },
+    {
+      "texto": "Enquanto os janízaros tomavam as muralhas de Constantinopla, conselheiros imploraram de joelhos para que Constantino Onze fugisse em um navio e salvasse sua linhagem.",
+      "inicio_s": 2.3,
+      "fim_s": 12.62,
+      "palavras": [
+        {
+          "texto": "Enquanto",
+          "inicio_s": 2.34,
+          "fim_s": 2.701
+        },
+        {
+          "texto": "os",
+          "inicio_s": 2.721,
+          "fim_s": 2.761
+        },
+        {
+          "texto": "janízaros",
+          "inicio_s": 2.781,
+          "fim_s": 3.282
+        },
+        {
+          "texto": "tomavam",
+          "inicio_s": 3.322,
+          "fim_s": 3.783
+        },
+        {
+          "texto": "as",
+          "inicio_s": 3.823,
+          "fim_s": 3.903
+        },
+        {
+          "texto": "muralhas",
+          "inicio_s": 3.943,
+          "fim_s": 4.324
+        },
+        {
+          "texto": "de",
+          "inicio_s": 4.364,
+          "fim_s": 4.424
+        },
+        {
+          "texto": "Constantinopla",
+          "inicio_s": 4.464,
+          "fim_s": 5.206
+        },
+        {
+          "texto": "conselheiros",
+          "inicio_s": 5.767,
+          "fim_s": 6.328
+        },
+        {
+          "texto": "imploraram",
+          "inicio_s": 6.368,
+          "fim_s": 6.869
+        },
+        {
+          "texto": "de",
+          "inicio_s": 6.889,
+          "fim_s": 6.969
+        },
+        {
+          "texto": "joelhos",
+          "inicio_s": 7.009,
+          "fim_s": 7.41
+        },
+        {
+          "texto": "para",
+          "inicio_s": 7.47,
+          "fim_s": 7.61
+        },
+        {
+          "texto": "que",
+          "inicio_s": 7.65,
+          "fim_s": 7.731
+        },
+        {
+          "texto": "Constantino",
+          "inicio_s": 7.811,
+          "fim_s": 8.492
+        },
+        {
+          "texto": "Onze",
+          "inicio_s": 9.253,
+          "fim_s": 9.494
+        },
+        {
+          "texto": "fugisse",
+          "inicio_s": 9.534,
+          "fim_s": 10.035
+        },
+        {
+          "texto": "em",
+          "inicio_s": 10.255,
+          "fim_s": 10.316
+        },
+        {
+          "texto": "um",
+          "inicio_s": 10.376,
+          "fim_s": 10.436
+        },
+        {
+          "texto": "navio",
+          "inicio_s": 10.476,
+          "fim_s": 10.837
+        },
+        {
+          "texto": "e",
+          "inicio_s": 11.257,
+          "fim_s": 11.277
+        },
+        {
+          "texto": "salvasse",
+          "inicio_s": 11.378,
+          "fim_s": 11.899
+        },
+        {
+          "texto": "sua",
+          "inicio_s": 11.979,
+          "fim_s": 12.119
+        },
+        {
+          "texto": "linhagem",
+          "inicio_s": 12.139,
+          "fim_s": 12.56
+        }
+      ]
+    },
+    {
+      "texto": "O imperador olhou para a cúpula dourada de Santa Sofia no horizonte e balançou a cabeça.",
+      "inicio_s": 12.97,
+      "fim_s": 18.07,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 12.99,
+          "fim_s": 13.01
+        },
+        {
+          "texto": "imperador",
+          "inicio_s": 13.05,
+          "fim_s": 13.532
+        },
+        {
+          "texto": "olhou",
+          "inicio_s": 13.613,
+          "fim_s": 13.833
+        },
+        {
+          "texto": "para",
+          "inicio_s": 13.874,
+          "fim_s": 14.014
+        },
+        {
+          "texto": "a",
+          "inicio_s": 14.054,
+          "fim_s": 14.074
+        },
+        {
+          "texto": "cúpula",
+          "inicio_s": 14.114,
+          "fim_s": 14.416
+        },
+        {
+          "texto": "dourada",
+          "inicio_s": 14.476,
+          "fim_s": 14.958
+        },
+        {
+          "texto": "de",
+          "inicio_s": 15.018,
+          "fim_s": 15.078
+        },
+        {
+          "texto": "Santa",
+          "inicio_s": 15.179,
+          "fim_s": 15.42
+        },
+        {
+          "texto": "Sofia",
+          "inicio_s": 15.46,
+          "fim_s": 15.841
+        },
+        {
+          "texto": "no",
+          "inicio_s": 15.861,
+          "fim_s": 15.901
+        },
+        {
+          "texto": "horizonte",
+          "inicio_s": 15.942,
+          "fim_s": 16.464
+        },
+        {
+          "texto": "e",
+          "inicio_s": 16.905,
+          "fim_s": 16.926
+        },
+        {
+          "texto": "balançou",
+          "inicio_s": 16.986,
+          "fim_s": 17.407
+        },
+        {
+          "texto": "a",
+          "inicio_s": 17.448,
+          "fim_s": 17.468
+        },
+        {
+          "texto": "cabeça",
+          "inicio_s": 17.508,
+          "fim_s": 17.95
+        }
+      ]
+    },
+    {
+      "texto": "Ele sabia que Roma morreria naquele amanhecer, e se recusava a ser um líder sem império.",
+      "inicio_s": 18.42,
+      "fim_s": 23.12,
+      "palavras": [
+        {
+          "texto": "Ele",
+          "inicio_s": 18.44,
+          "fim_s": 18.561
+        },
+        {
+          "texto": "sabia",
+          "inicio_s": 18.621,
+          "fim_s": 18.922
+        },
+        {
+          "texto": "que",
+          "inicio_s": 18.962,
+          "fim_s": 19.063
+        },
+        {
+          "texto": "Roma",
+          "inicio_s": 19.143,
+          "fim_s": 19.344
+        },
+        {
+          "texto": "morreria",
+          "inicio_s": 19.404,
+          "fim_s": 19.806
+        },
+        {
+          "texto": "naquele",
+          "inicio_s": 19.826,
+          "fim_s": 20.087
+        },
+        {
+          "texto": "amanhecer",
+          "inicio_s": 20.107,
+          "fim_s": 20.589
+        },
+        {
+          "texto": "e",
+          "inicio_s": 20.951,
+          "fim_s": 20.971
+        },
+        {
+          "texto": "se",
+          "inicio_s": 21.051,
+          "fim_s": 21.132
+        },
+        {
+          "texto": "recusava",
+          "inicio_s": 21.192,
+          "fim_s": 21.774
+        },
+        {
+          "texto": "a",
+          "inicio_s": 21.814,
+          "fim_s": 21.835
+        },
+        {
+          "texto": "ser",
+          "inicio_s": 21.875,
+          "fim_s": 22.015
+        },
+        {
+          "texto": "um",
+          "inicio_s": 22.035,
+          "fim_s": 22.096
+        },
+        {
+          "texto": "líder",
+          "inicio_s": 22.136,
+          "fim_s": 22.437
+        },
+        {
+          "texto": "sem",
+          "inicio_s": 22.497,
+          "fim_s": 22.618
+        },
+        {
+          "texto": "império",
+          "inicio_s": 22.658,
+          "fim_s": 23.04
+        }
+      ]
+    },
+    {
+      "texto": "Com as mãos cobertas de fuligem, arrancou de sua capa o broche da águia bicéfala e atirou a coroa dourada na poeira.",
+      "inicio_s": 23.47,
+      "fim_s": 30.29,
+      "palavras": [
+        {
+          "texto": "Com",
+          "inicio_s": 23.47,
+          "fim_s": 23.57
+        },
+        {
+          "texto": "as",
+          "inicio_s": 23.59,
+          "fim_s": 23.671
+        },
+        {
+          "texto": "mãos",
+          "inicio_s": 23.731,
+          "fim_s": 23.891
+        },
+        {
+          "texto": "cobertas",
+          "inicio_s": 23.931,
+          "fim_s": 24.333
+        },
+        {
+          "texto": "de",
+          "inicio_s": 24.373,
+          "fim_s": 24.433
+        },
+        {
+          "texto": "fuligem",
+          "inicio_s": 24.473,
+          "fim_s": 24.894
+        },
+        {
+          "texto": "arrancou",
+          "inicio_s": 25.496,
+          "fim_s": 25.917
+        },
+        {
+          "texto": "de",
+          "inicio_s": 25.957,
+          "fim_s": 26.038
+        },
+        {
+          "texto": "sua",
+          "inicio_s": 26.098,
+          "fim_s": 26.258
+        },
+        {
+          "texto": "capa",
+          "inicio_s": 26.318,
+          "fim_s": 26.559
+        },
+        {
+          "texto": "o",
+          "inicio_s": 26.619,
+          "fim_s": 26.639
+        },
+        {
+          "texto": "broche",
+          "inicio_s": 26.699,
+          "fim_s": 27.02
+        },
+        {
+          "texto": "da",
+          "inicio_s": 27.04,
+          "fim_s": 27.121
+        },
+        {
+          "texto": "águia",
+          "inicio_s": 27.181,
+          "fim_s": 27.361
+        },
+        {
+          "texto": "bicéfala",
+          "inicio_s": 27.381,
+          "fim_s": 27.903
+        },
+        {
+          "texto": "e",
+          "inicio_s": 28.445,
+          "fim_s": 28.465
+        },
+        {
+          "texto": "atirou",
+          "inicio_s": 28.545,
+          "fim_s": 28.866
+        },
+        {
+          "texto": "a",
+          "inicio_s": 28.906,
+          "fim_s": 28.926
+        },
+        {
+          "texto": "coroa",
+          "inicio_s": 28.986,
+          "fim_s": 29.267
+        },
+        {
+          "texto": "dourada",
+          "inicio_s": 29.307,
+          "fim_s": 29.708
+        },
+        {
+          "texto": "na",
+          "inicio_s": 29.748,
+          "fim_s": 29.809
+        },
+        {
+          "texto": "poeira",
+          "inicio_s": 29.869,
+          "fim_s": 30.21
+        }
+      ]
+    },
+    {
+      "texto": "Não queria ser capturado vivo nem exibido como troféu.",
+      "inicio_s": 30.64,
+      "fim_s": 33.42,
+      "palavras": [
+        {
+          "texto": "Não",
+          "inicio_s": 30.66,
+          "fim_s": 30.781
+        },
+        {
+          "texto": "queria",
+          "inicio_s": 30.801,
+          "fim_s": 31.083
+        },
+        {
+          "texto": "ser",
+          "inicio_s": 31.144,
+          "fim_s": 31.264
+        },
+        {
+          "texto": "capturado",
+          "inicio_s": 31.325,
+          "fim_s": 31.808
+        },
+        {
+          "texto": "vivo",
+          "inicio_s": 31.869,
+          "fim_s": 32.111
+        },
+        {
+          "texto": "nem",
+          "inicio_s": 32.171,
+          "fim_s": 32.292
+        },
+        {
+          "texto": "exibido",
+          "inicio_s": 32.332,
+          "fim_s": 32.735
+        },
+        {
+          "texto": "como",
+          "inicio_s": 32.775,
+          "fim_s": 32.957
+        },
+        {
+          "texto": "troféu",
+          "inicio_s": 32.997,
+          "fim_s": 33.339
+        }
+      ]
+    },
+    {
+      "texto": "Desembainhou sua espada de aço, olhou para os poucos guerreiros que ainda resistiam e gritou suas últimas palavras: a cidade caiu, e eu cairei com ela.",
+      "inicio_s": 33.77,
+      "fim_s": 43.23,
+      "palavras": [
+        {
+          "texto": "Desembainhou",
+          "inicio_s": 33.79,
+          "fim_s": 34.351
+        },
+        {
+          "texto": "sua",
+          "inicio_s": 34.411,
+          "fim_s": 34.512
+        },
+        {
+          "texto": "espada",
+          "inicio_s": 34.552,
+          "fim_s": 34.852
+        },
+        {
+          "texto": "de",
+          "inicio_s": 34.892,
+          "fim_s": 34.973
+        },
+        {
+          "texto": "aço",
+          "inicio_s": 35.053,
+          "fim_s": 35.273
+        },
+        {
+          "texto": "olhou",
+          "inicio_s": 35.754,
+          "fim_s": 35.955
+        },
+        {
+          "texto": "para",
+          "inicio_s": 35.995,
+          "fim_s": 36.135
+        },
+        {
+          "texto": "os",
+          "inicio_s": 36.155,
+          "fim_s": 36.215
+        },
+        {
+          "texto": "poucos",
+          "inicio_s": 36.295,
+          "fim_s": 36.596
+        },
+        {
+          "texto": "guerreiros",
+          "inicio_s": 36.636,
+          "fim_s": 37.097
+        },
+        {
+          "texto": "que",
+          "inicio_s": 37.137,
+          "fim_s": 37.217
+        },
+        {
+          "texto": "ainda",
+          "inicio_s": 37.277,
+          "fim_s": 37.518
+        },
+        {
+          "texto": "resistiam",
+          "inicio_s": 37.558,
+          "fim_s": 38.119
+        },
+        {
+          "texto": "e",
+          "inicio_s": 38.62,
+          "fim_s": 38.64
+        },
+        {
+          "texto": "gritou",
+          "inicio_s": 38.68,
+          "fim_s": 39.001
+        },
+        {
+          "texto": "suas",
+          "inicio_s": 39.081,
+          "fim_s": 39.262
+        },
+        {
+          "texto": "últimas",
+          "inicio_s": 39.322,
+          "fim_s": 39.602
+        },
+        {
+          "texto": "palavras",
+          "inicio_s": 39.622,
+          "fim_s": 40.083
+        },
+        {
+          "texto": "a",
+          "inicio_s": 40.685,
+          "fim_s": 40.705
+        },
+        {
+          "texto": "cidade",
+          "inicio_s": 40.785,
+          "fim_s": 41.166
+        },
+        {
+          "texto": "caiu",
+          "inicio_s": 41.206,
+          "fim_s": 41.546
+        },
+        {
+          "texto": "e",
+          "inicio_s": 42.007,
+          "fim_s": 42.027
+        },
+        {
+          "texto": "eu",
+          "inicio_s": 42.108,
+          "fim_s": 42.188
+        },
+        {
+          "texto": "cairei",
+          "inicio_s": 42.228,
+          "fim_s": 42.589
+        },
+        {
+          "texto": "com",
+          "inicio_s": 42.629,
+          "fim_s": 42.769
+        },
+        {
+          "texto": "ela",
+          "inicio_s": 42.849,
+          "fim_s": 43.07
+        }
+      ]
+    },
+    {
+      "texto": "Constantino avançou sozinho contra uma parede de lanças e desapareceu no turbilhão da batalha.",
+      "inicio_s": 43.58,
+      "fim_s": 49.0,
+      "palavras": [
+        {
+          "texto": "Constantino",
+          "inicio_s": 43.58,
+          "fim_s": 44.062
+        },
+        {
+          "texto": "avançou",
+          "inicio_s": 44.102,
+          "fim_s": 44.443
+        },
+        {
+          "texto": "sozinho",
+          "inicio_s": 44.523,
+          "fim_s": 44.925
+        },
+        {
+          "texto": "contra",
+          "inicio_s": 45.246,
+          "fim_s": 45.507
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 45.527,
+          "fim_s": 45.607
+        },
+        {
+          "texto": "parede",
+          "inicio_s": 45.648,
+          "fim_s": 45.969
+        },
+        {
+          "texto": "de",
+          "inicio_s": 46.009,
+          "fim_s": 46.069
+        },
+        {
+          "texto": "lanças",
+          "inicio_s": 46.129,
+          "fim_s": 46.491
+        },
+        {
+          "texto": "e",
+          "inicio_s": 46.872,
+          "fim_s": 46.892
+        },
+        {
+          "texto": "desapareceu",
+          "inicio_s": 46.973,
+          "fim_s": 47.575
+        },
+        {
+          "texto": "no",
+          "inicio_s": 47.615,
+          "fim_s": 47.675
+        },
+        {
+          "texto": "turbilhão",
+          "inicio_s": 47.735,
+          "fim_s": 48.137
+        },
+        {
+          "texto": "da",
+          "inicio_s": 48.177,
+          "fim_s": 48.217
+        },
+        {
+          "texto": "batalha",
+          "inicio_s": 48.257,
+          "fim_s": 48.578
+        }
+      ]
+    },
+    {
+      "texto": "Com o último imperador, as cinzas de Roma se apagaram para sempre.",
+      "inicio_s": 49.35,
+      "fim_s": 53.07,
+      "palavras": [
+        {
+          "texto": "Com",
+          "inicio_s": 49.35,
+          "fim_s": 49.471
+        },
+        {
+          "texto": "o",
+          "inicio_s": 49.511,
+          "fim_s": 49.551
+        },
+        {
+          "texto": "último",
+          "inicio_s": 49.632,
+          "fim_s": 49.953
+        },
+        {
+          "texto": "imperador",
+          "inicio_s": 50.014,
+          "fim_s": 50.516
+        },
+        {
+          "texto": "as",
+          "inicio_s": 50.878,
+          "fim_s": 50.979
+        },
+        {
+          "texto": "cinzas",
+          "inicio_s": 51.039,
+          "fim_s": 51.361
+        },
+        {
+          "texto": "de",
+          "inicio_s": 51.381,
+          "fim_s": 51.441
+        },
+        {
+          "texto": "Roma",
+          "inicio_s": 51.502,
+          "fim_s": 51.743
+        },
+        {
+          "texto": "se",
+          "inicio_s": 51.803,
+          "fim_s": 51.864
+        },
+        {
+          "texto": "apagaram",
+          "inicio_s": 51.904,
+          "fim_s": 52.346
+        },
+        {
+          "texto": "para",
+          "inicio_s": 52.386,
+          "fim_s": 52.527
+        },
+        {
+          "texto": "sempre",
+          "inicio_s": 52.628,
+          "fim_s": 52.969
+        }
+      ]
+    }
+  ]
+}

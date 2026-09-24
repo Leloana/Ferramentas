@@ -1,0 +1,108 @@
+[
+  {
+    "frase": 1,
+    "plano": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "A cinematic action anime screenshot of a gleaming greek bronze spear slammed upright into blood stained seaside rocks, a crimson spartan cloak snapping in the sea gale, storm clouds and ocean spray, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00032_.png"
+  },
+  {
+    "frase": 1,
+    "plano": 2,
+    "arquivo": "texto_01b.png",
+    "prompt_final": "A defiant anime close-up of the face of the spartan king from <image1>, preserving his exact face, short dark beard, bronze hoplite cuirass, crested bronze corinthian helmet and deep crimson cloak, jaw set and eyes burning as he answers the demand to surrender, sea wind in his helmet crest, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00023_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\batalha_das_termopilas_480ac\\imagens\\texto_03.png"
+  },
+  {
+    "frase": 2,
+    "plano": 1,
+    "arquivo": "texto_02.png",
+    "prompt_final": "A wide cinematic anime establishing shot of the narrow coastal pass of Thermopylae, sheer dark cliffs on one side and rough turquoise aegean waves on the other, the colossal persian armada anchored in the stormy distance, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00033_.png"
+  },
+  {
+    "frase": 2,
+    "plano": 2,
+    "arquivo": "texto_02b.png",
+    "prompt_final": "A menacing wide anime shot of the persian imperial host covering the plain like a dark tide, banners and ranks of Immortals stretching to the horizon at dawn, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00034_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 1,
+    "arquivo": "texto_03.png",
+    "prompt_final": "A powerful medium anime portrait of King Leonidas of Sparta, a formidable 50 year old warrior king with rugged features, short dark beard and intense burning eyes, wearing an ornate bronze hoplite cuirass, a bronze corinthian helmet with a tall red horsehair crest and a deep crimson cloak pinned at his shoulder, clean anime cel shading, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00031_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 2,
+    "arquivo": "texto_03b.png",
+    "prompt_final": "A tight anime shot of the spartan phalanx wall from the front, overlapping bronze aspis shields and levelled ash wood spears filling the narrow rocky pass, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00035_.png"
+  },
+  {
+    "frase": 4,
+    "plano": 1,
+    "arquivo": "texto_04.png",
+    "prompt_final": "A monumental wide anime battle shot of the spartan king from <image1>, preserving his exact face, short dark beard, bronze hoplite cuirass, crested bronze corinthian helmet and deep crimson cloak, locking his heavy bronze shield in the front rank and thrusting his spear into a crashing wave of persian Immortals, sea spray and dust, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00024_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\batalha_das_termopilas_480ac\\imagens\\texto_03.png"
+  },
+  {
+    "frase": 4,
+    "plano": 2,
+    "arquivo": "texto_04b.png",
+    "prompt_final": "A brutal anime action frame of persian attackers breaking apart against a wall of bronze shields in the narrow pass, splintered spears and falling bodies, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00036_.png"
+  },
+  {
+    "frase": 5,
+    "plano": 1,
+    "arquivo": "texto_05.png",
+    "prompt_final": "A breathtaking high angle anime shot of a black cloud of hundreds of thousands of persian arrows blotting out the midday sun over a rocky battlefield, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00037_.png"
+  },
+  {
+    "frase": 5,
+    "plano": 2,
+    "arquivo": "texto_05b.png",
+    "prompt_final": "A proud anime close-up of the spartan king from <image1>, preserving his exact face, short dark beard, bronze hoplite cuirass, crested bronze corinthian helmet and deep crimson cloak, smiling grimly under the sudden arrow shadow as he raises his bronze shield, fellow spartans laughing beside him, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00025_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\batalha_das_termopilas_480ac\\imagens\\texto_03.png"
+  },
+  {
+    "frase": 6,
+    "plano": 1,
+    "arquivo": "texto_06.png",
+    "prompt_final": "A tense anime shot of a hooded greek traitor leading persian soldiers along a hidden goat path through misty night mountains above the pass, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00038_.png"
+  },
+  {
+    "frase": 6,
+    "plano": 2,
+    "arquivo": "texto_06b.png",
+    "prompt_final": "An epic visceral anime climax of the spartan king from <image1>, preserving his exact face, short dark beard, bronze hoplite cuirass, crested bronze corinthian helmet and deep crimson cloak, helmet lost, fighting with a broken spear shaft and drawn short sword amid piles of shattered weapons, sunset light through sea mist, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00026_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\batalha_das_termopilas_480ac\\imagens\\texto_03.png"
+  },
+  {
+    "frase": 7,
+    "plano": 1,
+    "arquivo": "texto_07.png",
+    "prompt_final": "A solemn poetic wide anime shot of the rocky battlefield of Thermopylae at twilight, three hundred spartan shields lying silent among scattered spears and wild poppies above the calm sea, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00039_.png"
+  },
+  {
+    "frase": 7,
+    "plano": 2,
+    "arquivo": "texto_07b.png",
+    "prompt_final": "A quiet anime close-up of a weathered stone memorial slab on the empty pass at dawn, sea wind moving dry grass around it, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00040_.png"
+  }
+]

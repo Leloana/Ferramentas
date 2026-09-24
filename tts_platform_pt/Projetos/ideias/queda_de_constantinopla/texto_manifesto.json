@@ -1,0 +1,777 @@
+{
+  "gerado_em": "2026-09-23T21:35:17",
+  "roteiro": "C:\\Users\\mf827\\Documents\\Ferramentas\\tts_platform_pt\\Projetos\\ideias\\queda_de_constantinopla\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 54.9,
+  "texto_usado": "Cem mil guerreiros cercavam a cidade sagrada. Em maio de 1453, as lendárias muralhas de Constantinopla, que haviam protegido o Império Romano do Oriente por mais de mil anos, enfrentavam seu maior pesadelo. O sultão Mehmed Segundo posicionou canhões de bronze gigantescos, monstros de metal capazes de arremessar pedras de meia tonelada contra as fortificações.\n\nDo lado de dentro, menos de oito mil defensores enfrentavam um exército esmagador. No topo das muralhas, o imperador Constantino Onze Paleólogo comandava a resistência dia e noite, repelindo invasores com fogo grego e bravura sobre-humana.\n\nMas o bombardeio incessante de semanas cobrou seu preço. Na madrugada de vinte e nove de maio, um estrondo monumental abalou a terra. O portão de São Romano ruiu em uma nuvem densa de poeira e cinzas. A brecha fatal estava aberta, e a maré inimiga começou a entrar.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Cem mil guerreiros cercavam a cidade sagrada.",
+      "inicio_s": 0.15,
+      "fim_s": 2.77,
+      "palavras": [
+        {
+          "texto": "Cem",
+          "inicio_s": 0.231,
+          "fim_s": 0.412
+        },
+        {
+          "texto": "mil",
+          "inicio_s": 0.472,
+          "fim_s": 0.614
+        },
+        {
+          "texto": "guerreiros",
+          "inicio_s": 0.654,
+          "fim_s": 1.138
+        },
+        {
+          "texto": "cercavam",
+          "inicio_s": 1.178,
+          "fim_s": 1.682
+        },
+        {
+          "texto": "a",
+          "inicio_s": 1.702,
+          "fim_s": 1.722
+        },
+        {
+          "texto": "cidade",
+          "inicio_s": 1.762,
+          "fim_s": 2.125
+        },
+        {
+          "texto": "sagrada",
+          "inicio_s": 2.206,
+          "fim_s": 2.589
+        }
+      ]
+    },
+    {
+      "texto": "Em maio de 1453, as lendárias muralhas de Constantinopla, que haviam protegido o Império Romano do Oriente por mais de mil anos, enfrentavam seu maior pesadelo.",
+      "inicio_s": 3.12,
+      "fim_s": 12.52,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 3.14,
+          "fim_s": 3.22
+        },
+        {
+          "texto": "maio",
+          "inicio_s": 3.26,
+          "fim_s": 3.421
+        },
+        {
+          "texto": "de",
+          "inicio_s": 3.461,
+          "fim_s": 3.521
+        },
+        {
+          "texto": "1453",
+          "inicio_s": 3.521,
+          "fim_s": 5.345
+        },
+        {
+          "texto": "as",
+          "inicio_s": 5.345,
+          "fim_s": 5.445
+        },
+        {
+          "texto": "lendárias",
+          "inicio_s": 5.485,
+          "fim_s": 5.906
+        },
+        {
+          "texto": "muralhas",
+          "inicio_s": 5.946,
+          "fim_s": 6.327
+        },
+        {
+          "texto": "de",
+          "inicio_s": 6.347,
+          "fim_s": 6.407
+        },
+        {
+          "texto": "Constantinopla",
+          "inicio_s": 6.447,
+          "fim_s": 7.149
+        },
+        {
+          "texto": "que",
+          "inicio_s": 7.469,
+          "fim_s": 7.549
+        },
+        {
+          "texto": "haviam",
+          "inicio_s": 7.59,
+          "fim_s": 7.83
+        },
+        {
+          "texto": "protegido",
+          "inicio_s": 7.87,
+          "fim_s": 8.331
+        },
+        {
+          "texto": "o",
+          "inicio_s": 8.351,
+          "fim_s": 8.371
+        },
+        {
+          "texto": "Império",
+          "inicio_s": 8.411,
+          "fim_s": 8.732
+        },
+        {
+          "texto": "Romano",
+          "inicio_s": 8.752,
+          "fim_s": 9.113
+        },
+        {
+          "texto": "do",
+          "inicio_s": 9.133,
+          "fim_s": 9.193
+        },
+        {
+          "texto": "Oriente",
+          "inicio_s": 9.233,
+          "fim_s": 9.574
+        },
+        {
+          "texto": "por",
+          "inicio_s": 9.614,
+          "fim_s": 9.734
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 9.794,
+          "fim_s": 10.015
+        },
+        {
+          "texto": "de",
+          "inicio_s": 10.055,
+          "fim_s": 10.115
+        },
+        {
+          "texto": "mil",
+          "inicio_s": 10.155,
+          "fim_s": 10.295
+        },
+        {
+          "texto": "anos",
+          "inicio_s": 10.395,
+          "fim_s": 10.596
+        },
+        {
+          "texto": "enfrentavam",
+          "inicio_s": 10.977,
+          "fim_s": 11.498
+        },
+        {
+          "texto": "seu",
+          "inicio_s": 11.538,
+          "fim_s": 11.638
+        },
+        {
+          "texto": "maior",
+          "inicio_s": 11.658,
+          "fim_s": 11.939
+        },
+        {
+          "texto": "pesadelo",
+          "inicio_s": 12.019,
+          "fim_s": 12.46
+        }
+      ]
+    },
+    {
+      "texto": "O sultão Mehmed Segundo posicionou canhões de bronze gigantescos, monstros de metal capazes de arremessar pedras de meia tonelada contra as fortificações.",
+      "inicio_s": 12.87,
+      "fim_s": 22.19,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 12.89,
+          "fim_s": 12.91
+        },
+        {
+          "texto": "sultão",
+          "inicio_s": 12.97,
+          "fim_s": 13.311
+        },
+        {
+          "texto": "Mehmed",
+          "inicio_s": 13.371,
+          "fim_s": 13.752
+        },
+        {
+          "texto": "Segundo",
+          "inicio_s": 13.852,
+          "fim_s": 14.213
+        },
+        {
+          "texto": "posicionou",
+          "inicio_s": 14.253,
+          "fim_s": 14.794
+        },
+        {
+          "texto": "canhões",
+          "inicio_s": 15.155,
+          "fim_s": 15.556
+        },
+        {
+          "texto": "de",
+          "inicio_s": 15.596,
+          "fim_s": 15.676
+        },
+        {
+          "texto": "bronze",
+          "inicio_s": 15.736,
+          "fim_s": 16.057
+        },
+        {
+          "texto": "gigantescos",
+          "inicio_s": 16.117,
+          "fim_s": 16.818
+        },
+        {
+          "texto": "monstros",
+          "inicio_s": 17.139,
+          "fim_s": 17.6
+        },
+        {
+          "texto": "de",
+          "inicio_s": 17.62,
+          "fim_s": 17.7
+        },
+        {
+          "texto": "metal",
+          "inicio_s": 17.74,
+          "fim_s": 18.081
+        },
+        {
+          "texto": "capazes",
+          "inicio_s": 18.262,
+          "fim_s": 18.743
+        },
+        {
+          "texto": "de",
+          "inicio_s": 18.743,
+          "fim_s": 18.803
+        },
+        {
+          "texto": "arremessar",
+          "inicio_s": 18.823,
+          "fim_s": 19.304
+        },
+        {
+          "texto": "pedras",
+          "inicio_s": 19.404,
+          "fim_s": 19.785
+        },
+        {
+          "texto": "de",
+          "inicio_s": 19.825,
+          "fim_s": 19.905
+        },
+        {
+          "texto": "meia",
+          "inicio_s": 19.945,
+          "fim_s": 20.126
+        },
+        {
+          "texto": "tonelada",
+          "inicio_s": 20.166,
+          "fim_s": 20.667
+        },
+        {
+          "texto": "contra",
+          "inicio_s": 20.887,
+          "fim_s": 21.128
+        },
+        {
+          "texto": "as",
+          "inicio_s": 21.168,
+          "fim_s": 21.228
+        },
+        {
+          "texto": "fortificações",
+          "inicio_s": 21.268,
+          "fim_s": 22.07
+        }
+      ]
+    },
+    {
+      "texto": "Do lado de dentro, menos de oito mil defensores enfrentavam um exército esmagador.",
+      "inicio_s": 22.54,
+      "fim_s": 28.28,
+      "palavras": [
+        {
+          "texto": "Do",
+          "inicio_s": 22.56,
+          "fim_s": 22.62
+        },
+        {
+          "texto": "lado",
+          "inicio_s": 22.68,
+          "fim_s": 22.861
+        },
+        {
+          "texto": "de",
+          "inicio_s": 22.901,
+          "fim_s": 22.982
+        },
+        {
+          "texto": "dentro",
+          "inicio_s": 23.022,
+          "fim_s": 23.323
+        },
+        {
+          "texto": "menos",
+          "inicio_s": 23.804,
+          "fim_s": 24.085
+        },
+        {
+          "texto": "de",
+          "inicio_s": 24.146,
+          "fim_s": 24.226
+        },
+        {
+          "texto": "oito",
+          "inicio_s": 24.527,
+          "fim_s": 24.768
+        },
+        {
+          "texto": "mil",
+          "inicio_s": 24.848,
+          "fim_s": 24.989
+        },
+        {
+          "texto": "defensores",
+          "inicio_s": 25.049,
+          "fim_s": 25.651
+        },
+        {
+          "texto": "enfrentavam",
+          "inicio_s": 26.072,
+          "fim_s": 26.654
+        },
+        {
+          "texto": "um",
+          "inicio_s": 26.795,
+          "fim_s": 26.875
+        },
+        {
+          "texto": "exército",
+          "inicio_s": 26.915,
+          "fim_s": 27.457
+        },
+        {
+          "texto": "esmagador",
+          "inicio_s": 27.618,
+          "fim_s": 28.2
+        }
+      ]
+    },
+    {
+      "texto": "No topo das muralhas, o imperador Constantino Onze Paleólogo comandava a resistência dia e noite, repelindo invasores com fogo grego e bravura sobre-humana.",
+      "inicio_s": 28.63,
+      "fim_s": 38.13,
+      "palavras": [
+        {
+          "texto": "No",
+          "inicio_s": 28.65,
+          "fim_s": 28.73
+        },
+        {
+          "texto": "topo",
+          "inicio_s": 28.83,
+          "fim_s": 29.071
+        },
+        {
+          "texto": "das",
+          "inicio_s": 29.111,
+          "fim_s": 29.231
+        },
+        {
+          "texto": "muralhas",
+          "inicio_s": 29.271,
+          "fim_s": 29.732
+        },
+        {
+          "texto": "o",
+          "inicio_s": 30.073,
+          "fim_s": 30.093
+        },
+        {
+          "texto": "imperador",
+          "inicio_s": 30.153,
+          "fim_s": 30.594
+        },
+        {
+          "texto": "Constantino",
+          "inicio_s": 30.654,
+          "fim_s": 31.235
+        },
+        {
+          "texto": "Onze",
+          "inicio_s": 31.396,
+          "fim_s": 31.636
+        },
+        {
+          "texto": "Paleólogo",
+          "inicio_s": 31.676,
+          "fim_s": 32.177
+        },
+        {
+          "texto": "comandava",
+          "inicio_s": 32.538,
+          "fim_s": 32.979
+        },
+        {
+          "texto": "a",
+          "inicio_s": 33.019,
+          "fim_s": 33.039
+        },
+        {
+          "texto": "resistência",
+          "inicio_s": 33.059,
+          "fim_s": 33.6
+        },
+        {
+          "texto": "dia",
+          "inicio_s": 33.641,
+          "fim_s": 33.841
+        },
+        {
+          "texto": "e",
+          "inicio_s": 33.861,
+          "fim_s": 33.881
+        },
+        {
+          "texto": "noite",
+          "inicio_s": 33.941,
+          "fim_s": 34.222
+        },
+        {
+          "texto": "repelindo",
+          "inicio_s": 34.542,
+          "fim_s": 35.064
+        },
+        {
+          "texto": "invasores",
+          "inicio_s": 35.204,
+          "fim_s": 35.745
+        },
+        {
+          "texto": "com",
+          "inicio_s": 35.785,
+          "fim_s": 35.905
+        },
+        {
+          "texto": "fogo",
+          "inicio_s": 36.046,
+          "fim_s": 36.286
+        },
+        {
+          "texto": "grego",
+          "inicio_s": 36.326,
+          "fim_s": 36.607
+        },
+        {
+          "texto": "e",
+          "inicio_s": 36.927,
+          "fim_s": 36.948
+        },
+        {
+          "texto": "bravura",
+          "inicio_s": 37.008,
+          "fim_s": 37.449
+        },
+        {
+          "texto": "sobre-humana",
+          "inicio_s": 37.529,
+          "fim_s": 38.05
+        }
+      ]
+    },
+    {
+      "texto": "Mas o bombardeio incessante de semanas cobrou seu preço.",
+      "inicio_s": 38.48,
+      "fim_s": 41.56,
+      "palavras": [
+        {
+          "texto": "Mas",
+          "inicio_s": 38.5,
+          "fim_s": 38.621
+        },
+        {
+          "texto": "o",
+          "inicio_s": 38.641,
+          "fim_s": 38.661
+        },
+        {
+          "texto": "bombardeio",
+          "inicio_s": 38.681,
+          "fim_s": 39.205
+        },
+        {
+          "texto": "incessante",
+          "inicio_s": 39.265,
+          "fim_s": 39.869
+        },
+        {
+          "texto": "de",
+          "inicio_s": 39.889,
+          "fim_s": 39.95
+        },
+        {
+          "texto": "semanas",
+          "inicio_s": 40.01,
+          "fim_s": 40.413
+        },
+        {
+          "texto": "cobrou",
+          "inicio_s": 40.553,
+          "fim_s": 40.936
+        },
+        {
+          "texto": "seu",
+          "inicio_s": 41.016,
+          "fim_s": 41.117
+        },
+        {
+          "texto": "preço",
+          "inicio_s": 41.137,
+          "fim_s": 41.439
+        }
+      ]
+    },
+    {
+      "texto": "Na madrugada de vinte e nove de maio, um estrondo monumental abalou a terra.",
+      "inicio_s": 41.91,
+      "fim_s": 46.37,
+      "palavras": [
+        {
+          "texto": "Na",
+          "inicio_s": 41.93,
+          "fim_s": 41.99
+        },
+        {
+          "texto": "madrugada",
+          "inicio_s": 42.051,
+          "fim_s": 42.493
+        },
+        {
+          "texto": "de",
+          "inicio_s": 42.513,
+          "fim_s": 42.593
+        },
+        {
+          "texto": "vinte",
+          "inicio_s": 42.673,
+          "fim_s": 42.915
+        },
+        {
+          "texto": "e",
+          "inicio_s": 42.935,
+          "fim_s": 42.955
+        },
+        {
+          "texto": "nove",
+          "inicio_s": 42.995,
+          "fim_s": 43.196
+        },
+        {
+          "texto": "de",
+          "inicio_s": 43.216,
+          "fim_s": 43.296
+        },
+        {
+          "texto": "maio",
+          "inicio_s": 43.336,
+          "fim_s": 43.618
+        },
+        {
+          "texto": "um",
+          "inicio_s": 44.1,
+          "fim_s": 44.18
+        },
+        {
+          "texto": "estrondo",
+          "inicio_s": 44.22,
+          "fim_s": 44.703
+        },
+        {
+          "texto": "monumental",
+          "inicio_s": 44.763,
+          "fim_s": 45.365
+        },
+        {
+          "texto": "abalou",
+          "inicio_s": 45.506,
+          "fim_s": 45.848
+        },
+        {
+          "texto": "a",
+          "inicio_s": 45.888,
+          "fim_s": 45.908
+        },
+        {
+          "texto": "terra",
+          "inicio_s": 45.968,
+          "fim_s": 46.189
+        }
+      ]
+    },
+    {
+      "texto": "O portão de São Romano ruiu em uma nuvem densa de poeira e cinzas.",
+      "inicio_s": 46.72,
+      "fim_s": 50.5,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 46.74,
+          "fim_s": 46.76
+        },
+        {
+          "texto": "portão",
+          "inicio_s": 46.78,
+          "fim_s": 47.082
+        },
+        {
+          "texto": "de",
+          "inicio_s": 47.122,
+          "fim_s": 47.182
+        },
+        {
+          "texto": "São",
+          "inicio_s": 47.223,
+          "fim_s": 47.343
+        },
+        {
+          "texto": "Romano",
+          "inicio_s": 47.384,
+          "fim_s": 47.725
+        },
+        {
+          "texto": "ruiu",
+          "inicio_s": 47.786,
+          "fim_s": 48.087
+        },
+        {
+          "texto": "em",
+          "inicio_s": 48.148,
+          "fim_s": 48.208
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 48.268,
+          "fim_s": 48.389
+        },
+        {
+          "texto": "nuvem",
+          "inicio_s": 48.449,
+          "fim_s": 48.771
+        },
+        {
+          "texto": "densa",
+          "inicio_s": 48.831,
+          "fim_s": 49.093
+        },
+        {
+          "texto": "de",
+          "inicio_s": 49.113,
+          "fim_s": 49.173
+        },
+        {
+          "texto": "poeira",
+          "inicio_s": 49.213,
+          "fim_s": 49.595
+        },
+        {
+          "texto": "e",
+          "inicio_s": 49.897,
+          "fim_s": 49.917
+        },
+        {
+          "texto": "cinzas",
+          "inicio_s": 50.017,
+          "fim_s": 50.379
+        }
+      ]
+    },
+    {
+      "texto": "A brecha fatal estava aberta, e a maré inimiga começou a entrar.",
+      "inicio_s": 50.85,
+      "fim_s": 54.89,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 50.89,
+          "fim_s": 50.91
+        },
+        {
+          "texto": "brecha",
+          "inicio_s": 50.95,
+          "fim_s": 51.272
+        },
+        {
+          "texto": "fatal",
+          "inicio_s": 51.312,
+          "fim_s": 51.674
+        },
+        {
+          "texto": "estava",
+          "inicio_s": 51.996,
+          "fim_s": 52.297
+        },
+        {
+          "texto": "aberta",
+          "inicio_s": 52.317,
+          "fim_s": 52.719
+        },
+        {
+          "texto": "e",
+          "inicio_s": 53.061,
+          "fim_s": 53.081
+        },
+        {
+          "texto": "a",
+          "inicio_s": 53.161,
+          "fim_s": 53.182
+        },
+        {
+          "texto": "maré",
+          "inicio_s": 53.242,
+          "fim_s": 53.443
+        },
+        {
+          "texto": "inimiga",
+          "inicio_s": 53.543,
+          "fim_s": 53.925
+        },
+        {
+          "texto": "começou",
+          "inicio_s": 53.965,
+          "fim_s": 54.367
+        },
+        {
+          "texto": "a",
+          "inicio_s": 54.388,
+          "fim_s": 54.428
+        },
+        {
+          "texto": "entrar",
+          "inicio_s": 54.488,
+          "fim_s": 54.81
+        }
+      ]
+    }
+  ]
+}

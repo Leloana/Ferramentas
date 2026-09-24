@@ -1,0 +1,696 @@
+{
+  "gerado_em": "2026-09-23T21:57:51",
+  "roteiro": "C:\\Users\\mf827\\Documents\\Ferramentas\\tts_platform_pt\\Projetos\\ideias\\minutos_finais_titanic_1912\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 46.5,
+  "texto_usado": "A música nunca parou de tocar no convés inclinado. Na madrugada de quinze de abril de 1912, o Titanic afundava lentamente nas águas geladas do Atlântico Norte a dois graus abaixo de zero.\n\nEnquanto os últimos botes salva-vidas desciam na escuridão e o pânico consumia a multidão, o maestro Wallace Hartley reuniu sua banda de oito músicos e continuou tocando hinos de ragtime e música sacra. A poucos metros dali, na ponte de comando inundada, o capitão Edward Smith permaneceu em silêncio, cumprindo a lei do mar de afundar com o navio que comandava.\n\nA música acalmou o desespero de centenas de passageiros até os minutos finais, quando a proa desapareceu na água negra sob as estrelas cintilantes. Foi o adeus mais nobre e comovente da história marítima.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "A música nunca parou de tocar no convés inclinado.",
+      "inicio_s": 0.15,
+      "fim_s": 2.73,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 0.19,
+          "fim_s": 0.21
+        },
+        {
+          "texto": "música",
+          "inicio_s": 0.271,
+          "fim_s": 0.573
+        },
+        {
+          "texto": "nunca",
+          "inicio_s": 0.634,
+          "fim_s": 0.835
+        },
+        {
+          "texto": "parou",
+          "inicio_s": 0.876,
+          "fim_s": 1.138
+        },
+        {
+          "texto": "de",
+          "inicio_s": 1.178,
+          "fim_s": 1.238
+        },
+        {
+          "texto": "tocar",
+          "inicio_s": 1.299,
+          "fim_s": 1.601
+        },
+        {
+          "texto": "no",
+          "inicio_s": 1.621,
+          "fim_s": 1.682
+        },
+        {
+          "texto": "convés",
+          "inicio_s": 1.722,
+          "fim_s": 2.105
+        },
+        {
+          "texto": "inclinado",
+          "inicio_s": 2.166,
+          "fim_s": 2.629
+        }
+      ]
+    },
+    {
+      "texto": "Na madrugada de quinze de abril de 1912, o Titanic afundava lentamente nas águas geladas do Atlântico Norte a dois graus abaixo de zero.",
+      "inicio_s": 3.08,
+      "fim_s": 11.14,
+      "palavras": [
+        {
+          "texto": "Na",
+          "inicio_s": 3.1,
+          "fim_s": 3.16
+        },
+        {
+          "texto": "madrugada",
+          "inicio_s": 3.2,
+          "fim_s": 3.681
+        },
+        {
+          "texto": "de",
+          "inicio_s": 3.722,
+          "fim_s": 3.782
+        },
+        {
+          "texto": "quinze",
+          "inicio_s": 3.842,
+          "fim_s": 4.082
+        },
+        {
+          "texto": "de",
+          "inicio_s": 4.082,
+          "fim_s": 4.123
+        },
+        {
+          "texto": "abril",
+          "inicio_s": 4.183,
+          "fim_s": 4.403
+        },
+        {
+          "texto": "de",
+          "inicio_s": 4.443,
+          "fim_s": 4.504
+        },
+        {
+          "texto": "1912",
+          "inicio_s": 4.504,
+          "fim_s": 5.967
+        },
+        {
+          "texto": "o",
+          "inicio_s": 5.967,
+          "fim_s": 5.987
+        },
+        {
+          "texto": "Titanic",
+          "inicio_s": 6.047,
+          "fim_s": 6.428
+        },
+        {
+          "texto": "afundava",
+          "inicio_s": 6.509,
+          "fim_s": 6.95
+        },
+        {
+          "texto": "lentamente",
+          "inicio_s": 7.07,
+          "fim_s": 7.651
+        },
+        {
+          "texto": "nas",
+          "inicio_s": 7.691,
+          "fim_s": 7.832
+        },
+        {
+          "texto": "águas",
+          "inicio_s": 7.892,
+          "fim_s": 8.072
+        },
+        {
+          "texto": "geladas",
+          "inicio_s": 8.092,
+          "fim_s": 8.473
+        },
+        {
+          "texto": "do",
+          "inicio_s": 8.493,
+          "fim_s": 8.554
+        },
+        {
+          "texto": "Atlântico",
+          "inicio_s": 8.594,
+          "fim_s": 8.975
+        },
+        {
+          "texto": "Norte",
+          "inicio_s": 9.015,
+          "fim_s": 9.315
+        },
+        {
+          "texto": "a",
+          "inicio_s": 9.737,
+          "fim_s": 9.757
+        },
+        {
+          "texto": "dois",
+          "inicio_s": 9.857,
+          "fim_s": 10.037
+        },
+        {
+          "texto": "graus",
+          "inicio_s": 10.077,
+          "fim_s": 10.318
+        },
+        {
+          "texto": "abaixo",
+          "inicio_s": 10.358,
+          "fim_s": 10.659
+        },
+        {
+          "texto": "de",
+          "inicio_s": 10.679,
+          "fim_s": 10.759
+        },
+        {
+          "texto": "zero",
+          "inicio_s": 10.819,
+          "fim_s": 11.04
+        }
+      ]
+    },
+    {
+      "texto": "Enquanto os últimos botes salva-vidas desciam na escuridão e o pânico consumia a multidão, o maestro Wallace Hartley reuniu sua banda de oito músicos e continuou tocando hinos de ragtime e música sacra.",
+      "inicio_s": 11.49,
+      "fim_s": 25.09,
+      "palavras": [
+        {
+          "texto": "Enquanto",
+          "inicio_s": 11.53,
+          "fim_s": 11.931
+        },
+        {
+          "texto": "os",
+          "inicio_s": 11.971,
+          "fim_s": 12.051
+        },
+        {
+          "texto": "últimos",
+          "inicio_s": 12.111,
+          "fim_s": 12.411
+        },
+        {
+          "texto": "botes",
+          "inicio_s": 12.471,
+          "fim_s": 12.812
+        },
+        {
+          "texto": "salva-vidas",
+          "inicio_s": 12.872,
+          "fim_s": 13.453
+        },
+        {
+          "texto": "desciam",
+          "inicio_s": 13.493,
+          "fim_s": 13.914
+        },
+        {
+          "texto": "na",
+          "inicio_s": 13.954,
+          "fim_s": 14.014
+        },
+        {
+          "texto": "escuridão",
+          "inicio_s": 14.074,
+          "fim_s": 14.555
+        },
+        {
+          "texto": "e",
+          "inicio_s": 14.995,
+          "fim_s": 15.015
+        },
+        {
+          "texto": "o",
+          "inicio_s": 15.075,
+          "fim_s": 15.095
+        },
+        {
+          "texto": "pânico",
+          "inicio_s": 15.195,
+          "fim_s": 15.536
+        },
+        {
+          "texto": "consumia",
+          "inicio_s": 15.576,
+          "fim_s": 16.057
+        },
+        {
+          "texto": "a",
+          "inicio_s": 16.097,
+          "fim_s": 16.137
+        },
+        {
+          "texto": "multidão",
+          "inicio_s": 16.157,
+          "fim_s": 16.577
+        },
+        {
+          "texto": "o",
+          "inicio_s": 17.138,
+          "fim_s": 17.158
+        },
+        {
+          "texto": "maestro",
+          "inicio_s": 17.198,
+          "fim_s": 17.639
+        },
+        {
+          "texto": "Wallace",
+          "inicio_s": 17.699,
+          "fim_s": 18.06
+        },
+        {
+          "texto": "Hartley",
+          "inicio_s": 18.12,
+          "fim_s": 18.52
+        },
+        {
+          "texto": "reuniu",
+          "inicio_s": 18.841,
+          "fim_s": 19.261
+        },
+        {
+          "texto": "sua",
+          "inicio_s": 19.342,
+          "fim_s": 19.462
+        },
+        {
+          "texto": "banda",
+          "inicio_s": 19.542,
+          "fim_s": 19.782
+        },
+        {
+          "texto": "de",
+          "inicio_s": 19.822,
+          "fim_s": 19.902
+        },
+        {
+          "texto": "oito",
+          "inicio_s": 19.982,
+          "fim_s": 20.183
+        },
+        {
+          "texto": "músicos",
+          "inicio_s": 20.263,
+          "fim_s": 20.744
+        },
+        {
+          "texto": "e",
+          "inicio_s": 21.224,
+          "fim_s": 21.244
+        },
+        {
+          "texto": "continuou",
+          "inicio_s": 21.304,
+          "fim_s": 22.025
+        },
+        {
+          "texto": "tocando",
+          "inicio_s": 22.226,
+          "fim_s": 22.606
+        },
+        {
+          "texto": "hinos",
+          "inicio_s": 22.666,
+          "fim_s": 22.887
+        },
+        {
+          "texto": "de",
+          "inicio_s": 22.927,
+          "fim_s": 22.987
+        },
+        {
+          "texto": "ragtime",
+          "inicio_s": 23.067,
+          "fim_s": 23.608
+        },
+        {
+          "texto": "e",
+          "inicio_s": 24.229,
+          "fim_s": 24.249
+        },
+        {
+          "texto": "música",
+          "inicio_s": 24.329,
+          "fim_s": 24.609
+        },
+        {
+          "texto": "sacra",
+          "inicio_s": 24.669,
+          "fim_s": 25.01
+        }
+      ]
+    },
+    {
+      "texto": "A poucos metros dali, na ponte de comando inundada, o capitão Edward Smith permaneceu em silêncio, cumprindo a lei do mar de afundar com o navio que comandava.",
+      "inicio_s": 25.44,
+      "fim_s": 34.18,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 25.46,
+          "fim_s": 25.48
+        },
+        {
+          "texto": "poucos",
+          "inicio_s": 25.56,
+          "fim_s": 25.861
+        },
+        {
+          "texto": "metros",
+          "inicio_s": 25.921,
+          "fim_s": 26.202
+        },
+        {
+          "texto": "dali",
+          "inicio_s": 26.222,
+          "fim_s": 26.442
+        },
+        {
+          "texto": "na",
+          "inicio_s": 26.883,
+          "fim_s": 26.963
+        },
+        {
+          "texto": "ponte",
+          "inicio_s": 27.044,
+          "fim_s": 27.264
+        },
+        {
+          "texto": "de",
+          "inicio_s": 27.304,
+          "fim_s": 27.364
+        },
+        {
+          "texto": "comando",
+          "inicio_s": 27.384,
+          "fim_s": 27.725
+        },
+        {
+          "texto": "inundada",
+          "inicio_s": 27.846,
+          "fim_s": 28.367
+        },
+        {
+          "texto": "o",
+          "inicio_s": 28.788,
+          "fim_s": 28.808
+        },
+        {
+          "texto": "capitão",
+          "inicio_s": 28.848,
+          "fim_s": 29.189
+        },
+        {
+          "texto": "Edward",
+          "inicio_s": 29.309,
+          "fim_s": 29.529
+        },
+        {
+          "texto": "Smith",
+          "inicio_s": 29.61,
+          "fim_s": 29.87
+        },
+        {
+          "texto": "permaneceu",
+          "inicio_s": 29.91,
+          "fim_s": 30.431
+        },
+        {
+          "texto": "em",
+          "inicio_s": 30.472,
+          "fim_s": 30.512
+        },
+        {
+          "texto": "silêncio",
+          "inicio_s": 30.552,
+          "fim_s": 30.993
+        },
+        {
+          "texto": "cumprindo",
+          "inicio_s": 31.514,
+          "fim_s": 31.935
+        },
+        {
+          "texto": "a",
+          "inicio_s": 31.995,
+          "fim_s": 32.015
+        },
+        {
+          "texto": "lei",
+          "inicio_s": 32.055,
+          "fim_s": 32.195
+        },
+        {
+          "texto": "do",
+          "inicio_s": 32.216,
+          "fim_s": 32.276
+        },
+        {
+          "texto": "mar",
+          "inicio_s": 32.316,
+          "fim_s": 32.496
+        },
+        {
+          "texto": "de",
+          "inicio_s": 32.536,
+          "fim_s": 32.596
+        },
+        {
+          "texto": "afundar",
+          "inicio_s": 32.616,
+          "fim_s": 32.977
+        },
+        {
+          "texto": "com",
+          "inicio_s": 33.017,
+          "fim_s": 33.118
+        },
+        {
+          "texto": "o",
+          "inicio_s": 33.118,
+          "fim_s": 33.138
+        },
+        {
+          "texto": "navio",
+          "inicio_s": 33.178,
+          "fim_s": 33.478
+        },
+        {
+          "texto": "que",
+          "inicio_s": 33.518,
+          "fim_s": 33.599
+        },
+        {
+          "texto": "comandava",
+          "inicio_s": 33.639,
+          "fim_s": 34.12
+        }
+      ]
+    },
+    {
+      "texto": "A música acalmou o desespero de centenas de passageiros até os minutos finais, quando a proa desapareceu na água negra sob as estrelas cintilantes.",
+      "inicio_s": 34.53,
+      "fim_s": 43.05,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 34.55,
+          "fim_s": 34.57
+        },
+        {
+          "texto": "música",
+          "inicio_s": 34.63,
+          "fim_s": 34.991
+        },
+        {
+          "texto": "acalmou",
+          "inicio_s": 35.011,
+          "fim_s": 35.352
+        },
+        {
+          "texto": "o",
+          "inicio_s": 35.372,
+          "fim_s": 35.392
+        },
+        {
+          "texto": "desespero",
+          "inicio_s": 35.412,
+          "fim_s": 35.893
+        },
+        {
+          "texto": "de",
+          "inicio_s": 35.913,
+          "fim_s": 35.973
+        },
+        {
+          "texto": "centenas",
+          "inicio_s": 36.013,
+          "fim_s": 36.394
+        },
+        {
+          "texto": "de",
+          "inicio_s": 36.414,
+          "fim_s": 36.475
+        },
+        {
+          "texto": "passageiros",
+          "inicio_s": 36.495,
+          "fim_s": 37.096
+        },
+        {
+          "texto": "até",
+          "inicio_s": 37.497,
+          "fim_s": 37.697
+        },
+        {
+          "texto": "os",
+          "inicio_s": 37.778,
+          "fim_s": 37.858
+        },
+        {
+          "texto": "minutos",
+          "inicio_s": 37.898,
+          "fim_s": 38.279
+        },
+        {
+          "texto": "finais",
+          "inicio_s": 38.319,
+          "fim_s": 38.72
+        },
+        {
+          "texto": "quando",
+          "inicio_s": 39.201,
+          "fim_s": 39.381
+        },
+        {
+          "texto": "a",
+          "inicio_s": 39.421,
+          "fim_s": 39.442
+        },
+        {
+          "texto": "proa",
+          "inicio_s": 39.502,
+          "fim_s": 39.722
+        },
+        {
+          "texto": "desapareceu",
+          "inicio_s": 39.762,
+          "fim_s": 40.404
+        },
+        {
+          "texto": "na",
+          "inicio_s": 40.444,
+          "fim_s": 40.504
+        },
+        {
+          "texto": "água",
+          "inicio_s": 40.584,
+          "fim_s": 40.765
+        },
+        {
+          "texto": "negra",
+          "inicio_s": 40.825,
+          "fim_s": 41.105
+        },
+        {
+          "texto": "sob",
+          "inicio_s": 41.486,
+          "fim_s": 41.607
+        },
+        {
+          "texto": "as",
+          "inicio_s": 41.687,
+          "fim_s": 41.747
+        },
+        {
+          "texto": "estrelas",
+          "inicio_s": 41.787,
+          "fim_s": 42.208
+        },
+        {
+          "texto": "cintilantes",
+          "inicio_s": 42.248,
+          "fim_s": 42.91
+        }
+      ]
+    },
+    {
+      "texto": "Foi o adeus mais nobre e comovente da história marítima.",
+      "inicio_s": 43.4,
+      "fim_s": 46.5,
+      "palavras": [
+        {
+          "texto": "Foi",
+          "inicio_s": 43.4,
+          "fim_s": 43.541
+        },
+        {
+          "texto": "o",
+          "inicio_s": 43.601,
+          "fim_s": 43.621
+        },
+        {
+          "texto": "adeus",
+          "inicio_s": 43.662,
+          "fim_s": 43.964
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 44.024,
+          "fim_s": 44.225
+        },
+        {
+          "texto": "nobre",
+          "inicio_s": 44.266,
+          "fim_s": 44.588
+        },
+        {
+          "texto": "e",
+          "inicio_s": 44.809,
+          "fim_s": 44.829
+        },
+        {
+          "texto": "comovente",
+          "inicio_s": 44.89,
+          "fim_s": 45.453
+        },
+        {
+          "texto": "da",
+          "inicio_s": 45.494,
+          "fim_s": 45.554
+        },
+        {
+          "texto": "história",
+          "inicio_s": 45.574,
+          "fim_s": 45.956
+        },
+        {
+          "texto": "marítima",
+          "inicio_s": 45.997,
+          "fim_s": 46.419
+        }
+      ]
+    }
+  ]
+}

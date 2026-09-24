@@ -1,0 +1,250 @@
+[
+  {
+    "frase": 1,
+    "plano": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "A cinematic macro photograph of an authentic 1969 Apollo propellant gauge on a metal dashboard, its vibrating needle dipping into the red warning sector, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00189_.png"
+  },
+  {
+    "frase": 1,
+    "plano": 2,
+    "arquivo": "texto_01b.png",
+    "prompt_final": "A tight photograph of the astronaut from <image1>, preserving his exact face, sharp focused blue eyes, white NASA pressure suit and black and white communications cap, glancing sideways at the falling fuel gauge, jaw tightening inside the cramped cockpit, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00097_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\apollo11_pouso_tenso\\imagens\\texto_05.png"
+  },
+  {
+    "frase": 2,
+    "plano": 1,
+    "arquivo": "texto_02.png",
+    "prompt_final": "A dramatic point of view photograph through the triangular cockpit window of the Apollo Lunar Module, the stark gray lunar surface rushing closer with harsh black crater shadows under a pitch black sky, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00190_.png"
+  },
+  {
+    "frase": 2,
+    "plano": 2,
+    "arquivo": "texto_02b.png",
+    "prompt_final": "A close-up photograph of a red master alarm button flashing on the Apollo control panel while toggle switches vibrate with the descent engine, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00191_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 1,
+    "arquivo": "texto_03.png",
+    "prompt_final": "A close-up photograph of the Apollo guidance computer display unit, vintage green numeric segments glowing beside an illuminated yellow caution light reading 1202, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00192_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 2,
+    "arquivo": "texto_03b.png",
+    "prompt_final": "A photograph of a young flight controller in Houston leaning into his console screen, finger on a checklist page, deciding in seconds whether the alarm is fatal, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00193_.png"
+  },
+  {
+    "frase": 4,
+    "plano": 1,
+    "arquivo": "texto_04.png",
+    "prompt_final": "An exterior wide photograph of the gold foil wrapped Lunar Module descending above the vast gray regolith plains of the Moon, a faint translucent exhaust plume below it, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00194_.png"
+  },
+  {
+    "frase": 4,
+    "plano": 2,
+    "arquivo": "texto_04b.png",
+    "prompt_final": "A stark photograph of the desolate lunar horizon curving against absolute black space, long knife edged shadows across the craters, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00195_.png"
+  },
+  {
+    "frase": 5,
+    "plano": 1,
+    "arquivo": "texto_05.png",
+    "prompt_final": "An intense close-up portrait photograph of astronaut Neil Armstrong inside the Apollo cockpit, a 38 year old american astronaut with sharp focused blue eyes and beads of sweat on his forehead, wearing a white NASA pressure suit and a communications cap, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00188_.png"
+  },
+  {
+    "frase": 5,
+    "plano": 2,
+    "arquivo": "texto_05b.png",
+    "prompt_final": "A photograph over the shoulder of the astronaut from <image1>, preserving his exact face, sharp focused blue eyes, white NASA pressure suit and black and white communications cap, looking through the small triangular window at the approaching gray ground, his reflection faint in the glass, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00098_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\apollo11_pouso_tenso\\imagens\\texto_05.png"
+  },
+  {
+    "frase": 6,
+    "plano": 1,
+    "arquivo": "texto_06.png",
+    "prompt_final": "A pilot perspective photograph down through the spacecraft window revealing a massive boulder strewn crater directly on the landing path, angular rocks the size of cars, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00196_.png"
+  },
+  {
+    "frase": 6,
+    "plano": 2,
+    "arquivo": "texto_06b.png",
+    "prompt_final": "A tense close-up photograph of a gloved hand tightening on the manual attitude controller as the crater fills the window, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00197_.png"
+  },
+  {
+    "frase": 7,
+    "plano": 1,
+    "arquivo": "texto_07.png",
+    "prompt_final": "A conceptual photograph of a lunar landing module tipped over on broken struts among sharp boulders, a stark reminder of the stakes of failure, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00198_.png"
+  },
+  {
+    "frase": 7,
+    "plano": 2,
+    "arquivo": "texto_07b.png",
+    "prompt_final": "A somber photograph of an empty mission control console with a cold cup of coffee and a family photo taped to the panel, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00199_.png"
+  },
+  {
+    "frase": 8,
+    "plano": 1,
+    "arquivo": "texto_08.png",
+    "prompt_final": "A medium photograph of the astronaut from <image1>, preserving his exact face, sharp focused blue eyes, white NASA pressure suit and black and white communications cap, firmly grasping the black manual attitude controller with his pressurized glove and flicking the autopilot override switch with decisive calm, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00099_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\apollo11_pouso_tenso\\imagens\\texto_05.png"
+  },
+  {
+    "frase": 8,
+    "plano": 2,
+    "arquivo": "texto_08b.png",
+    "prompt_final": "A close-up photograph of the attitude controller stick moving under a white glove, cockpit dials trembling with engine vibration, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00200_.png"
+  },
+  {
+    "frase": 9,
+    "plano": 1,
+    "arquivo": "texto_09.png",
+    "prompt_final": "A wide interior photograph of NASA Mission Control in Houston in July 1969, flight controllers in white short sleeve shirts and narrow black ties frozen at their consoles, cigarette smoke drifting through projector light, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00201_.png"
+  },
+  {
+    "frase": 9,
+    "plano": 2,
+    "arquivo": "texto_09b.png",
+    "prompt_final": "A photograph of the mission control front screen showing the descent trajectory plot while rows of headsets stay silent, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00202_.png"
+  },
+  {
+    "frase": 10,
+    "plano": 1,
+    "arquivo": "texto_10.png",
+    "prompt_final": "A dynamic low angle exterior photograph of the descent engine firing near the surface, blowing dense horizontal sheets of fine gray dust across the sunlit ground, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00203_.png"
+  },
+  {
+    "frase": 10,
+    "plano": 2,
+    "arquivo": "texto_10b.png",
+    "prompt_final": "A photograph through the cockpit window of the landing zone erased by a blowing blanket of lunar dust, horizon barely visible, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00204_.png"
+  },
+  {
+    "frase": 11,
+    "plano": 1,
+    "arquivo": "texto_11.png",
+    "prompt_final": "A close-up photograph of astronaut Charlie Duke at the capsule communicator console in Houston, speaking urgently into his headset microphone with furrowed brows, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00205_.png"
+  },
+  {
+    "frase": 11,
+    "plano": 2,
+    "arquivo": "texto_11b.png",
+    "prompt_final": "A macro photograph of a fuel remaining readout on the mission control console ticking down past sixty seconds, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00206_.png"
+  },
+  {
+    "frase": 12,
+    "plano": 1,
+    "arquivo": "texto_12.png",
+    "prompt_final": "An exterior medium photograph of the Lunar Module skimming a few yards above the surface, sliding sideways across the terrain and kicking radial sheets of dust, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00207_.png"
+  },
+  {
+    "frase": 12,
+    "plano": 2,
+    "arquivo": "texto_12b.png",
+    "prompt_final": "A wide photograph of the module casting a small dark shadow over an endless field of rocks with no level ground in sight, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00208_.png"
+  },
+  {
+    "frase": 13,
+    "plano": 1,
+    "arquivo": "texto_13.png",
+    "prompt_final": "A macro photograph of an analog stopwatch on a metal console, its second hand sweeping past the final thirty second mark under cool ambient light, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00209_.png"
+  },
+  {
+    "frase": 14,
+    "plano": 1,
+    "arquivo": "texto_14.png",
+    "prompt_final": "An extreme close-up photograph of the eyes of the astronaut from <image1>, preserving his exact face, sharp focused blue eyes, white NASA pressure suit and black and white communications cap, reflecting the glowing cockpit dials, pupils unwavering in the final seconds of the manual descent, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00100_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\apollo11_pouso_tenso\\imagens\\texto_05.png"
+  },
+  {
+    "frase": 14,
+    "plano": 2,
+    "arquivo": "texto_14b.png",
+    "prompt_final": "A macro photograph of a biomedical heart rate trace spiking on a mission control strip chart recorder, ink pen scratching fast, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00210_.png"
+  },
+  {
+    "frase": 15,
+    "plano": 1,
+    "arquivo": "texto_15.png",
+    "prompt_final": "A low angle photograph of the gold wrapped circular footpad of the Lunar Module settling into soft powdery gray soil, bending the thin contact probe underneath, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00211_.png"
+  },
+  {
+    "frase": 15,
+    "plano": 2,
+    "arquivo": "texto_15b.png",
+    "prompt_final": "A photograph of the blue contact light illuminating on the cockpit panel, a gloved finger already moving toward the engine stop button, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00212_.png"
+  },
+  {
+    "frase": 16,
+    "plano": 1,
+    "arquivo": "texto_16.png",
+    "prompt_final": "An exterior wide photograph of the Apollo Lunar Module resting in complete stillness on the plains of the Sea of Tranquility, engine quiet, undisturbed regolith around it, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00213_.png"
+  },
+  {
+    "frase": 17,
+    "plano": 1,
+    "arquivo": "texto_17.png",
+    "prompt_final": "An intimate medium photograph of the astronaut from <image1>, preserving his exact face, sharp focused blue eyes, white NASA pressure suit and black and white communications cap, exhaling deeply in relief inside the cramped cockpit, shoulders dropping as a faint smile appears on his weary face, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00101_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\apollo11_pouso_tenso\\imagens\\texto_05.png"
+  },
+  {
+    "frase": 17,
+    "plano": 2,
+    "arquivo": "texto_17b.png",
+    "prompt_final": "A photograph of mission control erupting in silent relief, controllers rising from their chairs, one man pressing both hands to his face, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00214_.png"
+  },
+  {
+    "frase": 18,
+    "plano": 1,
+    "arquivo": "texto_18.png",
+    "prompt_final": "An iconic panoramic photograph of the Lunar Module standing on the Moon with planet Earth visible in the black sky above as a fragile blue and white marble, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00215_.png"
+  },
+  {
+    "frase": 18,
+    "plano": 2,
+    "arquivo": "texto_18b.png",
+    "prompt_final": "A photograph of a single boot print pressed crisply into gray lunar dust beside the landing pad, sunlight raking across it, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00216_.png"
+  }
+]

@@ -1,0 +1,144 @@
+[
+  {
+    "frase": 1,
+    "plano": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "A close-up portrait photograph of the byzantine emperor from <image1>, preserving his exact face, trimmed graying beard and fierce dark eyes, in ornate lamellar armor over a crimson tunic, his face smeared with stone dust and soot, dark eyes burning with defiance as he refuses to flee, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00076_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\queda_de_constantinopla\\imagens\\texto_05.png"
+  },
+  {
+    "frase": 1,
+    "plano": 2,
+    "arquivo": "texto_01b.png",
+    "prompt_final": "A photograph of a waiting galley at the harbour steps, oars ready, nobody coming down to board it, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00138_.png"
+  },
+  {
+    "frase": 2,
+    "plano": 1,
+    "arquivo": "texto_02.png",
+    "prompt_final": "A dramatic medium photograph on crumbling battlements of elderly senators and venetian captains pleading on their knees with the byzantine emperor from <image1>, preserving his exact face, trimmed graying beard and fierce dark eyes, in ornate lamellar armor over a crimson tunic, pointing toward the ships in the harbour, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00077_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\queda_de_constantinopla\\imagens\\texto_05.png"
+  },
+  {
+    "frase": 2,
+    "plano": 2,
+    "arquivo": "texto_02b.png",
+    "prompt_final": "A photograph of frightened courtiers carrying chests and icons down a stair toward the docks as embers fall around them, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00139_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 1,
+    "arquivo": "texto_03.png",
+    "prompt_final": "An over the shoulder photograph past the byzantine emperor from <image1>, preserving his exact face, trimmed graying beard and fierce dark eyes, in ornate lamellar armor over a crimson tunic, toward the distant dome of the Hagia Sophia bathed in dawn light beneath rising war smoke, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00078_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\queda_de_constantinopla\\imagens\\texto_05.png"
+  },
+  {
+    "frase": 3,
+    "plano": 2,
+    "arquivo": "texto_03b.png",
+    "prompt_final": "A photograph of the great dome catching the first sun above the burning city skyline, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00140_.png"
+  },
+  {
+    "frase": 4,
+    "plano": 1,
+    "arquivo": "texto_04.png",
+    "prompt_final": "A close-up photograph of the byzantine emperor from <image1>, preserving his exact face, trimmed graying beard and fierce dark eyes, in ornate lamellar armor over a crimson tunic, grief hardening into soldierly resolve as morning light rims his weathered cheekbones, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00079_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\queda_de_constantinopla\\imagens\\texto_05.png"
+  },
+  {
+    "frase": 4,
+    "plano": 2,
+    "arquivo": "texto_04b.png",
+    "prompt_final": "A photograph of a tattered imperial banner still flying over a shattered tower against the pale dawn, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00141_.png"
+  },
+  {
+    "frase": 5,
+    "plano": 1,
+    "arquivo": "texto_05.png",
+    "prompt_final": "A macro photograph of the soot stained hands of the byzantine emperor from <image1>, preserving his exact face, trimmed graying beard and fierce dark eyes, in ornate lamellar armor over a crimson tunic, unclasping the imperial gold brooch from his cloak, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00080_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\queda_de_constantinopla\\imagens\\texto_05.png"
+  },
+  {
+    "frase": 5,
+    "plano": 2,
+    "arquivo": "texto_05b.png",
+    "prompt_final": "A photograph of a jeweled crown striking the stone dust of the rampart and rolling among broken arrow shafts, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00142_.png"
+  },
+  {
+    "frase": 6,
+    "plano": 1,
+    "arquivo": "texto_06.png",
+    "prompt_final": "A symbolic close-up photograph of a discarded imperial crown resting in the dirt among rubble, blurred fighting figures in the smoke behind it, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00143_.png"
+  },
+  {
+    "frase": 6,
+    "plano": 2,
+    "arquivo": "texto_06b.png",
+    "prompt_final": "A photograph of the byzantine emperor from <image1>, preserving his exact face, trimmed graying beard and fierce dark eyes, in ornate lamellar armor over a crimson tunic, tightening the straps of a common soldier's armor over his crimson tunic, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00081_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\queda_de_constantinopla\\imagens\\texto_05.png"
+  },
+  {
+    "frase": 7,
+    "plano": 1,
+    "arquivo": "texto_07.png",
+    "prompt_final": "A heroic low angle photograph of the byzantine emperor from <image1>, preserving his exact face, trimmed graying beard and fierce dark eyes, in ornate lamellar armor over a crimson tunic, now dressed as a frontline soldier, raising his steel longsword into the morning air beside a battered handful of defenders, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00082_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\queda_de_constantinopla\\imagens\\texto_05.png"
+  },
+  {
+    "frase": 7,
+    "plano": 2,
+    "arquivo": "texto_07b.png",
+    "prompt_final": "A photograph of a small knot of exhausted soldiers lifting their swords in answer amid dust and falling ash, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00144_.png"
+  },
+  {
+    "frase": 8,
+    "plano": 1,
+    "arquivo": "texto_08.png",
+    "prompt_final": "A visceral close quarters photograph of the byzantine emperor from <image1>, preserving his exact face, trimmed graying beard and fierce dark eyes, in ornate lamellar armor over a crimson tunic, charging alone into a wall of enemy spears in the chaotic center of the breach, dust and sparks flying, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00083_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\queda_de_constantinopla\\imagens\\texto_05.png"
+  },
+  {
+    "frase": 8,
+    "plano": 2,
+    "arquivo": "texto_08b.png",
+    "prompt_final": "A photograph of the melee closing over a crimson cloak, blades and shields filling the frame in the smoke, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00145_.png"
+  },
+  {
+    "frase": 9,
+    "plano": 1,
+    "arquivo": "texto_09.png",
+    "prompt_final": "A wide panoramic photograph of the Bosporus at sunset, thin trails of smoke rising from historic ramparts while golden water reflects the twilight sky, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00146_.png"
+  },
+  {
+    "frase": 9,
+    "plano": 2,
+    "arquivo": "texto_09b.png",
+    "prompt_final": "A quiet photograph of an empty rampart at dusk, a broken double headed eagle shield leaning against the stone, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00147_.png"
+  }
+]
