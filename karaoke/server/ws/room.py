@@ -588,7 +588,9 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
         logger.error(f"Erro no WebSocket da sala {room_id}: {e}", exc_info=True)
     finally:
         if role == "mic":
-            if player_name:
+            # Só remove o jogador se este socket ainda é o dele: um celular que
+            # reconectou com o mesmo nome já registrou o socket novo.
+            if player_name and room.players.get(player_name) is websocket:
                 room.players.pop(player_name, None)
                 if player_name in room.active_players:
                     room.active_players.remove(player_name)
@@ -610,7 +612,9 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
 
             if room.mic == websocket:
                 room.mic = None
-        else:
+        elif room.display is websocket:
+            # Display substituído (troca de página na TV) fecha depois que o novo
+            # já assumiu: não pode apagar o novo nem avisar "TV desconectada".
             room.display = None
             queue_manager.notify_game_ended()
             targets = list(room.players.values()) + room.unregistered_mics

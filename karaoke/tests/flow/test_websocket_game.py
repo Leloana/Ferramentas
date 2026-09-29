@@ -278,5 +278,51 @@ class TestWebsocketGameFlow(unittest.TestCase):
                 self.assertEqual(int(np.count_nonzero(audio)), 3000)
 
 
+
+    def test_replaced_display_closing_keeps_new_display(self):
+        """TV troca de página: o display antigo fecha depois que o novo assumiu.
+
+        Antes o `finally` do antigo zerava room.display (o placar sumia da TV) e
+        mandava "unpaired" para os celulares ("TV Desconectada").
+        """
+        from state import room_manager
+
+        with self.client.websocket_connect(f"/ws/room/swaproom?role=display&song_id={self.song_slug}") as ws_old:
+            for expected_type in ("pairing_status", "players_update", "singing_state"):
+                self.assertEqual(ws_old.receive_json()["type"], expected_type)
+
+            with self.client.websocket_connect("/ws/room/swaproom?role=mic") as ws_mic:
+                self.assertEqual(ws_mic.receive_json()["type"], "register_request")
+                self.assertEqual(ws_mic.receive_json()["type"], "singing_state")
+                ws_mic.send_json({"type": "register_name", "name": "Swapper"})
+                self.assertEqual(ws_mic.receive_json()["type"], "registration_success")
+
+                with self.client.websocket_connect(f"/ws/room/swaproom?role=display&song_id={self.song_slug}") as ws_new:
+                    for expected_type in ("pairing_status", "players_update", "singing_state"):
+                        self.assertEqual(ws_new.receive_json()["type"], expected_type)
+                    # O servidor fecha o display antigo ao aceitar o novo; ler dele
+                    # completa o fechamento e roda o `finally` do handler antigo.
+                    from starlette.websockets import WebSocketDisconnect
+                    with self.assertRaises(WebSocketDisconnect):
+                        for _ in range(20):
+                            ws_old.receive_json()
+                    ws_old.close()
+                    room = room_manager.rooms["swaproom"]
+                    deadline = time.monotonic() + 1.0
+                    while room.display is not None and time.monotonic() < deadline:
+                        time.sleep(0.02)
+                    self.assertIsNotNone(room.display)
+                    self.assertIn("Swapper", room.players)
+
+                    # Nenhum "unpaired" de display chegou ao celular.
+                    ws_mic.send_json({"type": "register_name", "name": "Swapper"})
+                    mic_msgs = []
+                    while not any(m["type"] == "registration_error" for m in mic_msgs) and len(mic_msgs) < 20:
+                        mic_msgs.append(ws_mic.receive_json())
+                    self.assertFalse(any(
+                        m["type"] == "pairing_status" and m.get("status") == "unpaired" for m in mic_msgs
+                    ), mic_msgs)
+
+
 if __name__ == "__main__":
     unittest.main()
