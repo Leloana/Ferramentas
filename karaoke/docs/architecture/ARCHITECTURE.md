@@ -8,7 +8,7 @@ This document describes the high-level architecture, module contracts, data flow
 
 Karaoke AI is a multi-device local singing and scoring system. It allows:
 1. **Large Screen Console (Display / TV):** Renders lyrics, plays high-fidelity backing track audio, and renders score updates.
-2. **Mobile Microphones (Phones):** Connect as wireless micro-controllers that capture and stream PCM Float32 audio bytes in real-time.
+2. **Mobile Microphones (Phones):** Connect as wireless micro-controllers that capture audio, resample it to 16 kHz Int16 and stream `KM01` packets (100 ms, first-sample index in the header).
 3. **AI Backend Server (FastAPI):** Orchestrates WebSocket rooms, manages pairing queues, resamples and processes audio streams, transcribes vocals using faster-whisper, performs forced alignment using Torchaudio's MMS_FA model, and evaluates performance using RapidFuzz/Double Metaphone.
 
 ---
@@ -80,7 +80,7 @@ graph TD
   - `display`: WebSocket reference to the active display.
   - `players`: Dict of `player_name` mapping to WebSocket references.
   - `unregistered_mics`: Waiting queue for connecting microphones.
-  - `player_segment_buffers`: Dual dictionary holding binary PCM Float32 audio bytes per player per segment index.
+  - `mic_timelines` + `song_clock`: per-player audio indexed by song time (`mic_stream.py`); each verse cuts its own disjoint window.
   - `segment_scores`: Cached scores per segment.
 
 ### C. Speech-to-Text Engine (`server/stt_engine.py`)

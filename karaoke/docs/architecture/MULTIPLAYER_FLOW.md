@@ -8,7 +8,7 @@ This document details the architecture and step-by-step flow of the multi-player
 
 The system operates on a client-server-client layout:
 1. **Display (TV/Console):** Serves as the central display. Renders lyrics, plays instrumental tracks, manages playback state (seeking/time), and displays real-time score updates.
-2. **Microphones (Phones):** Connect as wireless micro controllers that record and stream PCM Float32 audio bytes in real time and display lyrics/scores.
+2. **Microphones (Phones):** Connect as wireless micro controllers that record and stream `KM01` packets (Int16 16 kHz) in real time and display lyrics/scores.
 3. **Server (FastAPI):** Coordinates WebSocket rooms, queues registrations, routes incoming audio buffers, transcribes segments, and evaluates scores.
 
 ```mermaid
@@ -107,7 +107,7 @@ The display sets the active singers for the round:
 Once configured, the display sends `{"type": "start_game", "game_mode": "...", "active_players": [...]}`. The server resets game-wide aggregates, registers the active singers, and broadcasts `game_started` containing the active player list to all connected websockets.
 
 ### 4. Audio Routing & Buffering
-- Microphones stream raw PCM Float32 audio bytes through WebSocket binary messages.
+- Microphones stream `KM01` packets (Int16 16 kHz + first-sample index) through WebSocket binary messages. The server anchors each player's sample counter to the song time.
 - The display continually streams Uvicorn-synced playback updates `{"type": "playback_time", "current_time": X}`.
 - The server maps the current time against the loaded song segments:
   - If the player is within the active singing window of a segment (plus preparation margins: `PRE_SING_BUFFER_SEC` and `POST_SING_BUFFER_SEC`), the server appends the incoming audio bytes to that player's segment-specific buffer:
@@ -116,7 +116,7 @@ Once configured, the display sends `{"type": "start_game", "game_mode": "...", "
 
 ### 5. Asynchronous Transcription & Scoring
 - Once the playback time exceeds the segment's singing duration (`current_time >= seg["sing_end"] + POST_SING_BUFFER_SEC`):
-  1. The server extracts the accumulated PCM Float32 buffer for the segment.
+  1. The server cuts the segment's disjoint window from the player's timeline (`mic_stream.segment_window`).
   2. Spawns an asynchronous task using `asyncio.create_task` to run the transcription and scoring pipeline.
   3. The task resamples the microphone input from its source rate (typically 48kHz) to Whisper's 16kHz rate using `scipy.signal.resample_poly`.
   4. Transcription is executed off the main FastAPI event loop via `asyncio.to_thread` to maintain loop responsiveness.

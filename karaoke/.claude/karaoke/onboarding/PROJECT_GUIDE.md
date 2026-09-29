@@ -113,7 +113,7 @@ Durante o canto, o fluxo de processamento e avaliação de áudio assíncrono se
 ```
 Mobile Client / PC Mic         Server WS (ws/room.py)         Score & STT Engines
          |                                |                            |
-         |-- PCM Float32 (Binary Blob) -->|                            |
+         |-- Pacote KM01 (Int16 16 kHz) ->|                            |
          |   (Acumula nos buffers)        |                            |
          |                                |                            |
          |-- Text (playback_time) ------->| (Checa fim de segmento)    |
@@ -127,10 +127,10 @@ Mobile Client / PC Mic         Server WS (ws/room.py)         Score & STT Engine
          |    (Texto acústico + %)        |                            |
 ```
 
-1.  **Captura**: O microfone ativo captura áudio. O `AudioWorklet` nativo encapsula em PCM Float32 e envia pacotes binários brutos via WebSocket.
-2.  **Distribuição Temporizada**: O servidor recebe o áudio binário e, com base no `playback_time` atualizado em tempo real pelo Display, distribui os bytes nos buffers de segmentos correspondentes aos limites `[sing_start - 1.5s, sing_end + 0.5s]`.
-3.  **Gatilho de Transcrição**: Assim que o tempo de reprodução ultrapassa `sing_end + 0.5s` (ou chega perto do fim da pausa instrumental), o servidor fecha o buffer do segmento, extrai o array numpy, despacha para uma thread de processamento paralela e esvazia a memória residual.
-4.  **Resampling e Whisper**: O áudio em frequência original do cliente (ex: 48kHz) sofre resample polifásico para 16kHz e é transcrevido pelo `stt_engine.py` (usando a letra esperada como `initial_prompt` para evitar desvios).
+1.  **Captura**: O microfone ativo captura áudio. O `AudioWorklet` filtra, reamostra para 16 kHz Int16 e envia pacotes `KM01` de 100 ms com o índice da primeira amostra (contador contínuo desde o início da captura).
+2.  **Linha do Tempo**: O servidor (`mic_stream.py`) converte índice → tempo da música com uma âncora por jogador (menor atraso observado, que descarta o jitter da rede). O `playback_time` da TV alimenta o `SongClock`, que detecta seek e pausa. Cada verso recorta a própria janela, disjunta das vizinhas: `[max(sing_start - 1.5s, fim da anterior), min(sing_end + 0.5s, início da próxima)]`.
+3.  **Gatilho de Transcrição**: Assim que o tempo de reprodução passa do fim da janela + a folga para pacotes atrasados (0,6 s a 2 s, acompanhando o atraso observado de cada celular), o servidor recorta o áudio da linha do tempo e despacha para uma thread. No `audio_ended`, os versos que ainda não fecharam são pontuados também.
+4.  **Whisper**: O áudio já chega a 16 kHz e é transcrito pelo `stt_engine.py` (usando a letra esperada como `initial_prompt`). Os tempos das palavras são convertidos de "relativo à janela" para "relativo ao `sing_start`" antes do score.
 5.  **Cálculo do Score**: O resultado é comparado no `score_engine.py`, aplicando regras de **Fuzzy Matching**, **Perdão de Vazamento**, **Correção de Homófonos por Idioma** e **Sandwich Recovery**.
 6.  **Retorno**: O resultado é transmitido via `broadcast()` simultâneo ao display (para atualizar a pontuação geral acumulada e destacar as palavras faladas/cantadas) e ao microfone (como feedback visual rápido).
 

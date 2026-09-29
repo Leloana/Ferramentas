@@ -27,6 +27,10 @@ const loadedWorklets = new WeakMap();
  * worklet injection, and playback pitch-shifting audio graphs.
  * Optimized for iOS Safari and Android Chrome compatibility.
  */
+// A versão na URL muda junto com o formato do pacote: Worklet velho em cache
+// mandaria áudio que o servidor descarta.
+const WORKLET_URL = '/js/worklets/audio-processor.js?v=km01';
+
 export class AudioLifecycleManager {
     /**
      * @param {Object} [options]
@@ -414,7 +418,7 @@ export class AudioLifecycleManager {
      */
     async _ensureWorkletRegistered(audioCtx) {
         if (!loadedWorklets.has(audioCtx)) {
-            const loadPromise = audioCtx.audioWorklet.addModule('/js/worklets/audio-processor.js')
+            const loadPromise = audioCtx.audioWorklet.addModule(WORKLET_URL)
                 .then(() => {
                     console.log("AudioLifecycleManager: Audio worklet processor registered successfully.");
                 })

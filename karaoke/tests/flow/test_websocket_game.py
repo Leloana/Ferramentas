@@ -3,6 +3,7 @@
 
 import unittest
 import sys
+import time
 import json
 import shutil
 import tempfile
@@ -93,9 +94,11 @@ class TestWebsocketGameFlow(unittest.TestCase):
         # Mock Whisper Engine
         mock_stt = MagicMock()
         # Mock transcription return: (text, words)
+        # Canto no tempo exato. A janela do verso começa em 0.0 (sing_start 1.0 - 1.5,
+        # limitado a 0), então o Whisper mede +1.0 s em relação ao lyrics_timed.
         mock_stt.transcribe.return_value = ("hello world", [
-            {"word": "hello", "start": 0.6, "end": 0.9, "probability": 0.95},
-            {"word": "world", "start": 1.2, "end": 1.8, "probability": 0.99}
+            {"word": "hello", "start": 1.5, "end": 1.9, "probability": 0.95},
+            {"word": "world", "start": 2.1, "end": 2.8, "probability": 0.99}
         ])
         mock_get_stt.return_value = mock_stt
 
@@ -158,9 +161,10 @@ class TestWebsocketGameFlow(unittest.TestCase):
                 self.assertEqual(msg_game_start["active_players"], ["PlayerOne"])
 
                 # 4. Stream PCM Audio bytes from Mic
-                # Send mock audio with some energy (Float32 values of 0.1) so that RMS > 0.0018 noise gate threshold
+                # Pacote KM01 (Int16 16 kHz) com energia 0.1, acima do gate de RMS 0.0018
                 import numpy as np
-                mock_audio_bytes = np.full(1000, 0.1, dtype=np.float32).tobytes()
+                from mic_stream import build_packet
+                mock_audio_bytes = build_packet(0, np.full(1000, 0.1, dtype=np.float32))
                 
                 # Set playback time in singing range
                 # Segment 1: sing_start=1.0, sing_end=5.0
@@ -172,8 +176,8 @@ class TestWebsocketGameFlow(unittest.TestCase):
                 # Mic streams bytes
                 ws_mic.send_bytes(mock_audio_bytes)
 
-                # Move playback time past the segment end to trigger transcription
-                ws_display.send_json({"type": "playback_time", "current_time": 6.0})
+                # Move playback time past the segment end + grace to trigger transcription
+                ws_display.send_json({"type": "playback_time", "current_time": 6.2})
                 
                 # The display should receive outro_start first (since segment index check runs first)
                 msg_outro = ws_display.receive_json()
@@ -187,7 +191,7 @@ class TestWebsocketGameFlow(unittest.TestCase):
                 # And then it receives the segment score result
                 msg_score = ws_display.receive_json()
                 self.assertEqual(msg_score["type"], "segment_result")
-                self.assertGreaterEqual(msg_score["score"], 80.0) # High score expected for matching words
+                self.assertEqual(msg_score["score"], 100.0)  # sem o deslocamento da janela daria 85
                 self.assertEqual(msg_score["transcription"], "hello world")
 
                 # 5. End Audio
@@ -195,6 +199,76 @@ class TestWebsocketGameFlow(unittest.TestCase):
                 msg_game_over = ws_display.receive_json()
                 self.assertEqual(msg_game_over["type"], "game_over")
                 self.assertGreaterEqual(msg_game_over["player_scores"]["PlayerOne"], 80.0)
+
+    @patch("ws.room.get_stt_engine")
+    def test_last_verse_is_scored_when_audio_ends_inside_grace(self, mock_get_stt):
+        """Música acaba entre o fim da janela e a folga de pacote atrasado: o verso ainda pontua."""
+        import numpy as np
+        from mic_stream import build_packet
+
+        mock_stt = MagicMock()
+        mock_stt.transcribe.return_value = ("hello world", [
+            {"word": "hello", "start": 1.5, "end": 1.9, "probability": 0.95},
+            {"word": "world", "start": 2.1, "end": 2.8, "probability": 0.99}
+        ])
+        mock_get_stt.return_value = mock_stt
+
+        # Relógio do servidor avança junto com a música (sem isso 2.0 → 5.6 vira seek).
+        server_clock = {"now": 100.0}
+        clock_patch = patch("mic_stream._monotonic", lambda: server_clock["now"])
+        clock_patch.start()
+        self.addCleanup(clock_patch.stop)
+
+        with self.client.websocket_connect(f"/ws/room/graceroom?role=display&song_id={self.song_slug}") as ws_display:
+            for expected_type in ("pairing_status", "players_update", "singing_state"):
+                self.assertEqual(ws_display.receive_json()["type"], expected_type)
+
+            with self.client.websocket_connect("/ws/room/graceroom?role=mic") as ws_mic:
+                self.assertEqual(ws_mic.receive_json()["type"], "register_request")
+                self.assertEqual(ws_mic.receive_json()["type"], "singing_state")
+                ws_mic.send_json({"type": "register_name", "name": "PlayerTwo"})
+                self.assertEqual(ws_mic.receive_json()["type"], "registration_success")
+                self.assertEqual(ws_display.receive_json()["type"], "pairing_status")
+                self.assertEqual(ws_display.receive_json()["type"], "players_update")
+
+                ws_display.send_json({"type": "start_game", "game_mode": "solo", "active_players": ["PlayerTwo"]})
+                self.assertEqual(ws_display.receive_json()["type"], "game_started")
+
+                ws_display.send_json({"type": "playback_time", "current_time": 2.0})
+                self.assertEqual(ws_display.receive_json()["type"], "singing_state")
+                ws_mic.send_bytes(build_packet(0, np.full(1000, 0.1, dtype=np.float32)))
+
+                # Janela do verso fecha em 5.5 s; 5.6 s ainda está dentro da folga (0.6 s).
+                server_clock["now"] += 3.6
+                ws_display.send_json({"type": "playback_time", "current_time": 5.6})
+                self.assertEqual(ws_display.receive_json()["type"], "outro_start")
+                self.assertEqual(ws_display.receive_json()["type"], "singing_state")
+
+                # Pacote atrasado pela rede: amostras de 5.4 s (dentro da janela) chegando em 5.6 s.
+                # Âncora = 2.0 - 1000/16000 = 1.9375, então o índice de 5.4 s é 55400.
+                ws_mic.send_bytes(build_packet(55400, np.full(1000, 0.1, dtype=np.float32)))
+                # Ida e volta no mesmo socket garante que o pacote já foi processado.
+                ws_mic.send_json({"type": "register_name", "name": "PlayerTwo"})
+                mic_types = []
+                while "registration_error" not in mic_types and len(mic_types) < 20:
+                    mic_types.append(ws_mic.receive_json()["type"])  # drena os broadcasts da sala
+                self.assertIn("registration_error", mic_types)
+
+                # audio_ended logo depois do último playback_time crescente.
+                ws_display.send_json({"type": "audio_ended"})
+                # Outro pacote do fim do verso (5.3 s) chegando 450 ms depois. Sem congelar
+                # o relógio no audio_ended, a extrapolação o jogaria para fora da janela.
+                time.sleep(0.1)
+                server_clock["now"] += 0.45
+                ws_mic.send_bytes(build_packet(53800, np.full(1000, 0.1, dtype=np.float32)))
+                msg_score = ws_display.receive_json()
+                self.assertEqual(msg_score["type"], "segment_result")
+                self.assertEqual(msg_score["score"], 100.0)
+                self.assertEqual(ws_display.receive_json()["type"], "game_over")
+
+                audio = mock_stt.transcribe.call_args.args[0]
+                self.assertEqual(int(np.count_nonzero(audio)), 3000)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -6,6 +6,8 @@ from typing import Optional
 
 from fastapi import WebSocket
 
+from mic_stream import MicTimeline, SongClock
+
 logger = logging.getLogger(__name__)
 
 
@@ -23,11 +25,10 @@ class KaraokeRoom:
         # correto) ou "words" (somente palavras acertadas).
         self.scoring_mode: str = "timing"
         self.player_segment_scores: dict[str, dict[int, float]] = {}
-        self.player_segment_buffers: dict[str, dict[int, bytearray]] = {}
-        # Buffers de áudio dedicados por índice de segmento. O `audio_buffer`
-        # global antigo foi removido — não era mais lido por nenhum caminho.
-        self.segment_buffers: dict[int, bytearray] = {}
-        self.client_sample_rate = 48000
+        # Áudio de cada microfone indexado pelo tempo da música. Chave "Solo"
+        # quando o jogo roda sem jogadores registrados.
+        self.mic_timelines: dict[str, MicTimeline] = {}
+        self.song_clock = SongClock()
         self.current_segment_idx = 0
         self.transcribed_segments: set[int] = set()
         self.segment_scores: dict[int, float] = {}
@@ -41,6 +42,11 @@ class KaraokeRoom:
         self.is_singing_active = False
         self.song_title = ""
         self.pending_tasks: set = set()
+
+    def reset_audio(self) -> None:
+        """Descarta o áudio capturado e o relógio (nova música ou novo jogo)."""
+        self.mic_timelines.clear()
+        self.song_clock = SongClock()
 
     async def broadcast(self, msg: dict) -> None:
         """Envia uma mensagem para display, players e fila (quando conectados), tolerando falhas."""

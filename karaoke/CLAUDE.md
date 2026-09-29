@@ -16,13 +16,14 @@ Este arquivo resume os detalhes técnicos específicos do subprojeto **Karaoke A
 | &emsp;&emsp;├─ `main.js` | Bootstrap da aplicação (identifica display vs mic) | Define o ponto de entrada. |
 | &emsp;&emsp;├─ `game-view.js` | Renderização da letra e animações de gameplay | Controla o acendimento progressivo das sílabas/palavras. |
 | &emsp;&emsp;├─ `ws-display.js` / `ws-mic.js` | WebSockets do Display (TV) / Microfone (Celular) | Tratam reconexões e recebimento de blobs binários PCM. |
-| &emsp;&emsp;└─ `worklets/audio-processor.js` | AudioWorklet para captura e fluxo de áudio PCM | Roda em thread separada. Envia pacotes PCM Float32 brutos. |
+| &emsp;&emsp;└─ `worklets/audio-processor.js` | AudioWorklet para captura e fluxo de áudio PCM | Roda em thread separada. Reamostra para 16 kHz Int16 e envia pacotes `KM01` de 100 ms com o índice da 1ª amostra. Mudou o formato? Mude também `server/mic_stream.py` e a versão em `WORKLET_URL`. |
 | **`server/`** | Backend FastAPI e motores de IA | Orquestrado por managers de estado singletons. |
 | ├─ `main.py` | Entrada Uvicorn e registro de middlewares/routers | Inicializa o servidor. Mantém logs em console. |
 | ├─ `state.py` | Singletons compartilhados (`room_manager`, etc.) | **Use para evitar imports circulares** entre routers e websockets. |
 | ├─ `rooms.py` | Modelo da sala de canto (`KaraokeRoom`) | Gerencia buffers em memória por jogador e por segmento. |
 | ├─ `queue_manager.py` | Fila de downloads/processamento da GPU | Garante que processos pesados de IA aguardem ocioso da GPU. |
 | ├─ `score_engine.py` | Motor de cálculo de notas do cantor | Contém fuzzy tokens, Double Metaphone e penalidades de tempo. |
+| ├─ `mic_stream.py` | Linha do tempo do áudio dos microfones | Formato do pacote `KM01`, relógio da música (`SongClock`) e janelas disjuntas por verso. |
 | ├─ `stt_engine.py` | Instanciação e controle do Faster-Whisper | Tem fallback CUDA -> CPU automático e limpa silêncio (VAD). |
 | ├─ `routes/` | Handlers REST HTTP (`songs`, `lyrics`, `upload`, `queue`) | Retornam estritamente JSON (ou `FileResponse` para áudio). |
 | ├─ `ws/room.py` | Canal WebSocket bidirecional da sala | Processa áudio PCM, gerencia turnos e persiste perfis. |
@@ -39,7 +40,8 @@ Este arquivo resume os detalhes técnicos específicos do subprojeto **Karaoke A
 *   **Loop de Jogo & Handshake (WebSockets):** `server/ws/room.py` (Display + Mics na mesma sala).
 *   **Adicionar música (Upload / YouTube):** `server/routes/upload.py` (inicia pipeline de download e alinhamento).
 *   **Fila de processamento em segundo plano:** `server/routes/queue.py` (adiciona tarefas ao `queue_manager.py`).
-*   **Tratamento de áudio/resampling:** `server/utils/audio.py` (converte PCM Float32 para 16kHz Mono).
+*   **Tratamento de áudio/resampling:** ao vivo o celular já manda 16 kHz (`worklets/audio-processor.js`). Offline, `server/utils/audio.py` converte arquivos para 16kHz Mono.
+*   **Áudio ao vivo → verso:** `server/mic_stream.py` (âncora por jogador, `segment_window`, tempos do Whisper relativos à janela).
 *   **Cálculo da Pontuação:** `server/score_engine.py` (fuzzy matching, Double Metaphone e atrasos).
 *   **Alinhamento de letras com áudio:** `server/utils/lrc_align.py` (Whisper) e `server/utils/lrc_pro.py` (MMS_FA PyTorch).
 *   **Criação de segmentos de canto:** `tools/prepare_song.py` (gera metadados de jogabilidade no arquivo final).
@@ -167,6 +169,9 @@ Armazena a nota histórica de cada sessão.
     *   No arquivo `segments.json`, a lista `lyrics_timed` **deve possuir tempos de expected_start estritamente crescentes**. Nunca permita que duas palavras seguidas no JSON comecem no mesmo segundo (ex.: 0.0s e 0.0s). O frontend calcula gradientes de cor com base no avanço de tempo; tempos iguais causam divisão por zero e quebram a animação visual.
 *   **Vazamento Instrumental:**
     *   O Whisper é sensível a ruído. Se o microfone capturar a caixa de som da TV (backing track), o Whisper transcreverá o segmento anterior ou alucinará. Use o `score_engine.py` com o mecanismo de remoção de vazamento de versos anteriores (`leakage removal`).
+    *   Desde o P0 as janelas dos versos são disjuntas (`mic_stream.segment_window`), então o mesmo áudio não cai mais em dois versos. O `leakage removal` ficou só para voz que vaza de verdade.
+*   **Referencial de tempo do Whisper:**
+    *   O Whisper devolve `start` relativo ao início da JANELA, que começa até 1,5 s antes do `sing_start`. Compare com `expected_start` só depois de `_shift_words(words, t0 - sing_start)` em `ws/room.py`. Sem isso o canto perfeito tira 85.
 *   **Hallucinações no Silêncio:**
     *   Trechos silenciosos longos fazem o Whisper gerar alucinações repetitivas. Garanta que o gate de áudio de RMS (`rms_threshold` em `stt_engine.py`) rejeite transcrição abaixo de `0.0018` de energia média.
 

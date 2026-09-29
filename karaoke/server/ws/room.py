@@ -4,20 +4,18 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
-import math
 import os
 import re
 from datetime import datetime
 from pathlib import Path
 
 import numpy as np
-import scipy.signal
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
+from mic_stream import STREAM_SR, MicTimeline, parse_packet, segment_window
 from score_engine import calculate_score
 from state import room_manager, song_manager, queue_manager
 from stt_engine import get_stt_engine
-from utils.whisper_params import WHISPER_SR
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -34,7 +32,12 @@ VOCALIZE_LOW_RMS = 0.002
 PRE_SING_BUFFER_SEC = 1.5
 POST_SING_BUFFER_SEC = 0.5
 SINGING_PRE_BUFFER_SEC = 1.0
-PAUSE_END_LEAD_SEC = 0.15
+# Espera extra após o fim da janela: os últimos pacotes do celular ainda
+# podem estar a caminho (rede local ou túnel). Piso folgado porque um pico de
+# atraso só nos últimos pacotes ainda não aparece no atraso medido.
+LATE_PACKET_GRACE_SEC = 0.6
+# Com rede lenta a folga acompanha o atraso observado, até este teto.
+MAX_LATE_PACKET_GRACE_SEC = 2.0
 PENDING_TASKS_TIMEOUT_SEC = 10.0
 
 # Pasta para perfis de jogadores
@@ -156,10 +159,16 @@ async def _advance_registration_queue(room) -> None:
             pass
 
 
+def _shift_words(words: list[dict], offset: float) -> list[dict]:
+    """Converte tempos relativos ao início da janela para relativos ao sing_start."""
+    return [{**w, "start": w["start"] + offset, "end": w["end"] + offset} for w in words]
+
+
 async def process_segment_multiplayer(
     room,
     seg_idx: int,
-    active_buffers: dict[str, bytearray],
+    active_audio: dict[str, tuple[np.ndarray, float]],
+    window_offset: float,
     seg_lang: str,
     seg_lyrics: list,
     seg_text: str,
@@ -168,11 +177,9 @@ async def process_segment_multiplayer(
     stt = get_stt_engine()
     results = {}
 
-    async def process_player(player_name: str, seg_buffer: bytearray):
+    async def process_player(player_name: str, audio_data: np.ndarray, rms_original: float):
         try:
-            audio_data = np.frombuffer(seg_buffer, dtype=np.float32).copy()
-            duration = len(audio_data) / room.client_sample_rate
-            rms_original = float(np.sqrt(np.mean(audio_data ** 2))) if len(audio_data) > 0 else 0.0
+            duration = len(audio_data) / STREAM_SR
 
             logger.info(
                 f"\n========================================\n"
@@ -203,15 +210,12 @@ async def process_segment_multiplayer(
                     }
                 else:
                     def compute():
-                        gcd = math.gcd(WHISPER_SR, room.client_sample_rate)
-                        up = WHISPER_SR // gcd
-                        down = room.client_sample_rate // gcd
-                        resampled = scipy.signal.resample_poly(audio_data, up, down).astype(np.float32)
                         expected = [w["word"] for w in seg_lyrics] if seg_lyrics else None
-                        return stt.transcribe(resampled, language=seg_lang, initial_prompt=seg_text, expected_words=expected)
+                        return stt.transcribe(audio_data, language=seg_lang, initial_prompt=seg_text, expected_words=expected)
 
                     async with queue_manager.whisper_lock:
                         transcribed_text, words = await asyncio.to_thread(compute)
+                    words = _shift_words(words, window_offset)
 
                     prev_lyrics = None
                     if seg_idx > 0 and seg_idx - 1 < len(room.segments):
@@ -239,7 +243,7 @@ async def process_segment_multiplayer(
                 "transcription": f"(erro: {str(e)})"
             }
 
-    await asyncio.gather(*(process_player(name, buf) for name, buf in active_buffers.items()))
+    await asyncio.gather(*(process_player(name, audio, rms) for name, (audio, rms) in active_audio.items()))
 
     primary_name = "Solo"
     if "Solo" not in results and results:
@@ -263,6 +267,51 @@ async def process_segment_multiplayer(
         "total_score": primary_res["total_score"],
         "player_scores": results
     })
+
+
+def _late_packet_grace(room) -> float:
+    """Folga antes de fechar um verso: piso fixo ou o atraso do celular mais lento."""
+    lateness = max((t.lateness for t in room.mic_timelines.values()), default=0.0)
+    return min(MAX_LATE_PACKET_GRACE_SEC, max(LATE_PACKET_GRACE_SEC, lateness + 0.1))
+
+
+def _dispatch_due_segments(room, current_time: float | None) -> None:
+    """Fecha e pontua os versos cuja janela já passou (None = todos, fim da música)."""
+    grace = _late_packet_grace(room)
+    for idx, seg in enumerate(room.segments):
+        if idx in room.transcribed_segments:
+            continue
+        t0, t1 = segment_window(room.segments, idx, PRE_SING_BUFFER_SEC, POST_SING_BUFFER_SEC)
+        if current_time is not None and current_time < t1 + grace:
+            continue
+        room.transcribed_segments.add(idx)
+
+        active_audio = {}
+        for player in room.active_players or ["Solo"]:
+            timeline = room.mic_timelines.get(player)
+            if not timeline:
+                continue
+            audio, covered = timeline.extract(t0, t1)
+            timeline.prune_before(t1)
+            if covered.any():
+                rms = float(np.sqrt(np.mean(audio[covered] ** 2)))
+                active_audio[player] = (audio, rms)
+
+        if not active_audio:
+            continue
+        logger.info(f"Processando segmento {idx + 1} (janela {t0:.2f}s–{t1:.2f}s) para a sala {room.song_id}")
+        task = asyncio.create_task(process_segment_multiplayer(
+            room,
+            idx,
+            active_audio,
+            t0 - seg["sing_start"],
+            seg["language"],
+            seg["lyrics_timed"],
+            seg["lyrics"],
+            room.scoring_mode
+        ))
+        room.pending_tasks.add(task)
+        task.add_done_callback(room.pending_tasks.discard)
 
 
 @router.websocket("/ws/room/{room_id}")
@@ -300,8 +349,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
         room.total_score = 0.0
         room.scored_count = 0
         room.last_client_time = 0.0
-        room.segment_buffers = {}
-        room.player_segment_buffers.clear()
+        room.reset_audio()
         room.player_segment_scores.clear()
         room.is_singing_active = False
 
@@ -334,27 +382,30 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
             message = await websocket.receive()
 
             if "bytes" in message:
-                # Áudio PCM Float32 do microfone — distribui nos buffers dos segmentos ativos.
+                # Pacote do microfone (mic_stream.PACKET_HEADER + Int16 16 kHz) —
+                # entra na linha do tempo do jogador pelo tempo da música agora.
                 effective_player = player_name
                 if role == "display" and "PC_Local" in room.active_players:
                     effective_player = "PC_Local"
 
-                if effective_player and effective_player in room.active_players:
-                    current_time = room.last_client_time
-                    for seg_idx, seg in enumerate(room.segments):
-                        if (seg["sing_start"] - PRE_SING_BUFFER_SEC) <= current_time <= (seg["sing_end"] + POST_SING_BUFFER_SEC):
-                            if effective_player not in room.player_segment_buffers:
-                                room.player_segment_buffers[effective_player] = {}
-                            if seg_idx not in room.player_segment_buffers[effective_player]:
-                                room.player_segment_buffers[effective_player][seg_idx] = bytearray()
-                            room.player_segment_buffers[effective_player][seg_idx].extend(message["bytes"])
-                elif not room.active_players:
-                    current_time = room.last_client_time
-                    for seg_idx, seg in enumerate(room.segments):
-                        if (seg["sing_start"] - PRE_SING_BUFFER_SEC) <= current_time <= (seg["sing_end"] + POST_SING_BUFFER_SEC):
-                            if seg_idx not in room.segment_buffers:
-                                room.segment_buffers[seg_idx] = bytearray()
-                            room.segment_buffers[seg_idx].extend(message["bytes"])
+                if room.active_players:
+                    stream_key = effective_player if effective_player in room.active_players else None
+                else:
+                    stream_key = "Solo"
+
+                packet = parse_packet(message["bytes"])
+                song_time = room.song_clock.now()
+                if packet is None:
+                    logger.debug("Pacote de áudio fora do formato KM01 descartado.")
+                elif stream_key:
+                    first_index, sample_rate, samples = packet
+                    if sample_rate != STREAM_SR:
+                        logger.warning(f"Pacote a {sample_rate} Hz descartado (esperado {STREAM_SR} Hz).")
+                    elif song_time is not None:
+                        timeline = room.mic_timelines.setdefault(stream_key, MicTimeline())
+                        timeline.add(first_index, samples, song_time, room.song_clock.epoch)
+                    elif stream_key in room.mic_timelines and room.song_clock.just_stopped():
+                        room.mic_timelines[stream_key].add_in_flight(first_index, samples)
 
             elif "text" in message:
                 data = json.loads(message["text"])
@@ -386,9 +437,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                     room.scoring_mode = data.get("scoring_mode", "timing")
                     logger.info(f"Jogo iniciado no modo {room.game_mode} (pontuação: {room.scoring_mode}) com: {room.active_players}")
                     
-                    room.player_segment_buffers.clear()
+                    room.reset_audio()
                     room.player_segment_scores.clear()
-                    room.segment_buffers.clear()
                     room.segment_scores.clear()
                     room.total_score = 0.0
                     room.scored_count = 0
@@ -405,13 +455,14 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                     })
 
                 elif msg_type == "client_info":
-                    room.client_sample_rate = data.get("sample_rate", 48000)
-                    logger.info(f"Sample rate do cliente na sala {room_id}: {room.client_sample_rate}")
+                    # Só informativo: o áudio chega sempre a STREAM_SR, com a taxa no próprio pacote.
+                    logger.info(f"Sample rate nativo do cliente ({role}) na sala {room_id}: {data.get('sample_rate')}")
                     await _broadcast_segment_start(room, 0)
 
                 elif msg_type == "playback_time":
                     current_time = data.get("current_time", 0.0)
                     room.last_client_time = current_time
+                    room.song_clock.update(current_time)
 
                     new_idx = len(room.segments)
                     for idx, seg in enumerate(room.segments):
@@ -423,14 +474,10 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         # Se retrocedeu o player (seek para trás)
                         if new_idx < room.current_segment_idx:
                             logger.info(f"Retrocesso detectado: {room.current_segment_idx} -> {new_idx}")
-                            for idx in list(room.segment_buffers.keys()):
-                                if idx >= new_idx:
-                                    room.segment_buffers.pop(idx, None)
-                            
-                            for p in room.player_segment_buffers:
-                                for idx in list(room.player_segment_buffers[p].keys()):
-                                    if idx >= new_idx:
-                                        room.player_segment_buffers[p].pop(idx, None)
+                            if new_idx < len(room.segments):
+                                redo_from, _ = segment_window(room.segments, new_idx, PRE_SING_BUFFER_SEC, POST_SING_BUFFER_SEC)
+                                for timeline in room.mic_timelines.values():
+                                    timeline.drop_from(redo_from)
 
                             room.transcribed_segments = {idx for idx in room.transcribed_segments if idx < new_idx}
                             
@@ -489,54 +536,16 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         room.is_singing_active = is_singing
                         await room.broadcast({"type": "singing_state", "active": is_singing})
 
-                    # Verifica se o segmento passou do tempo de transcrição
-                    for idx, seg in enumerate(room.segments):
-                        if idx not in room.transcribed_segments:
-                            has_buffer = False
-                            if room.active_players:
-                                has_buffer = any(
-                                    p in room.player_segment_buffers and idx in room.player_segment_buffers[p]
-                                    for p in room.active_players
-                                )
-                            else:
-                                has_buffer = (idx in room.segment_buffers)
-
-                            if has_buffer:
-                                should_transcribe = (
-                                    current_time >= (seg["sing_end"] + POST_SING_BUFFER_SEC)
-                                    or current_time >= (seg["pause_end"] - PAUSE_END_LEAD_SEC)
-                                )
-                                if should_transcribe:
-                                    room.transcribed_segments.add(idx)
-                                    logger.info(f"Processando segmento {idx + 1} para a sala {room_id}")
-
-                                    active_buffers = {}
-                                    if room.active_players:
-                                        for p in room.active_players:
-                                            if p in room.player_segment_buffers and idx in room.player_segment_buffers[p]:
-                                                buf = room.player_segment_buffers[p].pop(idx, None)
-                                                if buf:
-                                                    active_buffers[p] = buf
-                                    else:
-                                        buf = room.segment_buffers.pop(idx, None)
-                                        if buf:
-                                            active_buffers["Solo"] = buf
-
-                                    if active_buffers:
-                                        task = asyncio.create_task(process_segment_multiplayer(
-                                            room,
-                                            idx,
-                                            active_buffers,
-                                            seg["language"],
-                                            seg["lyrics_timed"],
-                                            seg["lyrics"],
-                                            room.scoring_mode
-                                        ))
-                                        room.pending_tasks.add(task)
-                                        task.add_done_callback(room.pending_tasks.discard)
+                    _dispatch_due_segments(room, current_time)
 
                 elif msg_type == "audio_ended":
                     logger.info(f"Áudio finalizado na sala {room_id}. Finalizando jogo...")
+                    # Versos cuja janela não fechou antes do fim do áudio. A folga deixa
+                    # chegar os últimos pacotes, que vêm por outro WebSocket. O relógio
+                    # congela antes: extrapolado, ele empurraria esses pacotes para depois.
+                    room.song_clock.stop()
+                    await asyncio.sleep(_late_packet_grace(room))
+                    _dispatch_due_segments(room, None)
                     if room.pending_tasks:
                         try:
                             await asyncio.wait_for(
