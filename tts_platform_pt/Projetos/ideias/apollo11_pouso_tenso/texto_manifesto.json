@@ -1,0 +1,1495 @@
+{
+  "gerado_em": "2026-09-23T22:16:10",
+  "roteiro": "C:\\Users\\mf827\\Documents\\Ferramentas\\tts_platform_pt\\Projetos\\ideias\\apollo11_pouso_tenso\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 107.9,
+  "texto_usado": "O combustível estava acabando rápido demais. A trezentos metros da superfície lunar, as buzinas de emergência do computador de bordo começaram a disparar sem parar. O código 1202 piscava em amarelo na tela minúscula, indicando que o sistema do módulo Eagle estava sobrecarregado e prestes a reiniciar. Do lado de fora, a paisagem cinzenta e desolada da Lua se aproximava em uma velocidade assustadora.\n\nQuando Neil Armstrong olhou pela pequena janela triangular, o coração disparou. O piloto automático estava guiando a nave diretamente para dentro de uma cratera gigantesca, cercada por pedras afiadas do tamanho de carros. Um pouso ali significaria a destruição do trem de pouso, a morte dos astronautas e o fim trágico da missão Apollo. Sem hesitar, Armstrong desligou o piloto automático e assumiu os comandos manuais com a mão enluvada.\n\nNo controle da missão em Houston, centenas de engenheiros prenderam a respiração em silêncio absoluto. O motor de descida queimava o propelente precioso a cada fração de segundo, levantando nuvens densas de poeira lunar que cegavam os instrumentos visuais. No rádio, a voz tensa de Charlie Duke avisava: sessenta segundos de combustível restante. O módulo continuava deslizando lateralmente sobre o mar de poeira, sem encontrar um único trecho plano.\n\nTrinta segundos. Os batimentos cardíacos de Armstrong chegaram a cento e cinquenta por minuto, mas suas mãos permaneceram firmes nos controles. Com apenas vinte segundos antes de os motores morrerem no vácuo, as sapatas do Eagle finalmente tocaram o solo lunar com um solavanco suave. O motor silenciou. No cockpit apertado e congelante, Armstrong respirou fundo pela primeira vez em minutos. Houston, aqui base Tranquilidade: a Águia pousou.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "O combustível estava acabando rápido demais.",
+      "inicio_s": 0.15,
+      "fim_s": 2.95,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 0.17,
+          "fim_s": 0.19
+        },
+        {
+          "texto": "combustível",
+          "inicio_s": 0.231,
+          "fim_s": 0.875
+        },
+        {
+          "texto": "estava",
+          "inicio_s": 1.298,
+          "fim_s": 1.56
+        },
+        {
+          "texto": "acabando",
+          "inicio_s": 1.6,
+          "fim_s": 1.963
+        },
+        {
+          "texto": "rápido",
+          "inicio_s": 2.044,
+          "fim_s": 2.346
+        },
+        {
+          "texto": "demais",
+          "inicio_s": 2.386,
+          "fim_s": 2.829
+        }
+      ]
+    },
+    {
+      "texto": "A trezentos metros da superfície lunar, as buzinas de emergência do computador de bordo começaram a disparar sem parar.",
+      "inicio_s": 3.3,
+      "fim_s": 9.1,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 3.32,
+          "fim_s": 3.34
+        },
+        {
+          "texto": "trezentos",
+          "inicio_s": 3.4,
+          "fim_s": 3.822
+        },
+        {
+          "texto": "metros",
+          "inicio_s": 3.882,
+          "fim_s": 4.163
+        },
+        {
+          "texto": "da",
+          "inicio_s": 4.203,
+          "fim_s": 4.263
+        },
+        {
+          "texto": "superfície",
+          "inicio_s": 4.303,
+          "fim_s": 4.765
+        },
+        {
+          "texto": "lunar",
+          "inicio_s": 4.785,
+          "fim_s": 5.066
+        },
+        {
+          "texto": "as",
+          "inicio_s": 5.568,
+          "fim_s": 5.648
+        },
+        {
+          "texto": "buzinas",
+          "inicio_s": 5.688,
+          "fim_s": 6.029
+        },
+        {
+          "texto": "de",
+          "inicio_s": 6.049,
+          "fim_s": 6.09
+        },
+        {
+          "texto": "emergência",
+          "inicio_s": 6.13,
+          "fim_s": 6.611
+        },
+        {
+          "texto": "do",
+          "inicio_s": 6.631,
+          "fim_s": 6.672
+        },
+        {
+          "texto": "computador",
+          "inicio_s": 6.692,
+          "fim_s": 7.113
+        },
+        {
+          "texto": "de",
+          "inicio_s": 7.133,
+          "fim_s": 7.193
+        },
+        {
+          "texto": "bordo",
+          "inicio_s": 7.234,
+          "fim_s": 7.515
+        },
+        {
+          "texto": "começaram",
+          "inicio_s": 7.535,
+          "fim_s": 7.956
+        },
+        {
+          "texto": "a",
+          "inicio_s": 7.976,
+          "fim_s": 7.996
+        },
+        {
+          "texto": "disparar",
+          "inicio_s": 8.016,
+          "fim_s": 8.418
+        },
+        {
+          "texto": "sem",
+          "inicio_s": 8.478,
+          "fim_s": 8.638
+        },
+        {
+          "texto": "parar",
+          "inicio_s": 8.699,
+          "fim_s": 9.0
+        }
+      ]
+    },
+    {
+      "texto": "O código 1202 piscava em amarelo na tela minúscula, indicando que o sistema do módulo Eagle estava sobrecarregado e prestes a reiniciar.",
+      "inicio_s": 9.45,
+      "fim_s": 18.43,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 9.49,
+          "fim_s": 9.51
+        },
+        {
+          "texto": "código",
+          "inicio_s": 9.57,
+          "fim_s": 9.931
+        },
+        {
+          "texto": "1202",
+          "inicio_s": 9.931,
+          "fim_s": 11.254
+        },
+        {
+          "texto": "piscava",
+          "inicio_s": 11.254,
+          "fim_s": 11.735
+        },
+        {
+          "texto": "em",
+          "inicio_s": 11.795,
+          "fim_s": 11.855
+        },
+        {
+          "texto": "amarelo",
+          "inicio_s": 11.895,
+          "fim_s": 12.316
+        },
+        {
+          "texto": "na",
+          "inicio_s": 12.356,
+          "fim_s": 12.417
+        },
+        {
+          "texto": "tela",
+          "inicio_s": 12.497,
+          "fim_s": 12.717
+        },
+        {
+          "texto": "minúscula",
+          "inicio_s": 12.737,
+          "fim_s": 13.258
+        },
+        {
+          "texto": "indicando",
+          "inicio_s": 13.619,
+          "fim_s": 14.08
+        },
+        {
+          "texto": "que",
+          "inicio_s": 14.12,
+          "fim_s": 14.181
+        },
+        {
+          "texto": "o",
+          "inicio_s": 14.221,
+          "fim_s": 14.241
+        },
+        {
+          "texto": "sistema",
+          "inicio_s": 14.281,
+          "fim_s": 14.622
+        },
+        {
+          "texto": "do",
+          "inicio_s": 14.662,
+          "fim_s": 14.722
+        },
+        {
+          "texto": "módulo",
+          "inicio_s": 14.782,
+          "fim_s": 15.063
+        },
+        {
+          "texto": "Eagle",
+          "inicio_s": 15.203,
+          "fim_s": 15.403
+        },
+        {
+          "texto": "estava",
+          "inicio_s": 15.704,
+          "fim_s": 16.005
+        },
+        {
+          "texto": "sobrecarregado",
+          "inicio_s": 16.125,
+          "fim_s": 16.907
+        },
+        {
+          "texto": "e",
+          "inicio_s": 17.147,
+          "fim_s": 17.167
+        },
+        {
+          "texto": "prestes",
+          "inicio_s": 17.307,
+          "fim_s": 17.708
+        },
+        {
+          "texto": "a",
+          "inicio_s": 17.748,
+          "fim_s": 17.769
+        },
+        {
+          "texto": "reiniciar",
+          "inicio_s": 17.809,
+          "fim_s": 18.31
+        }
+      ]
+    },
+    {
+      "texto": "Do lado de fora, a paisagem cinzenta e desolada da Lua se aproximava em uma velocidade assustadora.",
+      "inicio_s": 18.78,
+      "fim_s": 24.48,
+      "palavras": [
+        {
+          "texto": "Do",
+          "inicio_s": 18.8,
+          "fim_s": 18.86
+        },
+        {
+          "texto": "lado",
+          "inicio_s": 18.9,
+          "fim_s": 19.081
+        },
+        {
+          "texto": "de",
+          "inicio_s": 19.121,
+          "fim_s": 19.181
+        },
+        {
+          "texto": "fora",
+          "inicio_s": 19.222,
+          "fim_s": 19.503
+        },
+        {
+          "texto": "a",
+          "inicio_s": 19.924,
+          "fim_s": 19.944
+        },
+        {
+          "texto": "paisagem",
+          "inicio_s": 19.984,
+          "fim_s": 20.426
+        },
+        {
+          "texto": "cinzenta",
+          "inicio_s": 20.466,
+          "fim_s": 20.847
+        },
+        {
+          "texto": "e",
+          "inicio_s": 20.867,
+          "fim_s": 20.887
+        },
+        {
+          "texto": "desolada",
+          "inicio_s": 20.907,
+          "fim_s": 21.329
+        },
+        {
+          "texto": "da",
+          "inicio_s": 21.369,
+          "fim_s": 21.429
+        },
+        {
+          "texto": "Lua",
+          "inicio_s": 21.49,
+          "fim_s": 21.71
+        },
+        {
+          "texto": "se",
+          "inicio_s": 22.072,
+          "fim_s": 22.152
+        },
+        {
+          "texto": "aproximava",
+          "inicio_s": 22.172,
+          "fim_s": 22.694
+        },
+        {
+          "texto": "em",
+          "inicio_s": 22.734,
+          "fim_s": 22.774
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 22.794,
+          "fim_s": 22.894
+        },
+        {
+          "texto": "velocidade",
+          "inicio_s": 22.915,
+          "fim_s": 23.436
+        },
+        {
+          "texto": "assustadora",
+          "inicio_s": 23.778,
+          "fim_s": 24.38
+        }
+      ]
+    },
+    {
+      "texto": "Quando Neil Armstrong olhou pela pequena janela triangular, o coração disparou.",
+      "inicio_s": 24.83,
+      "fim_s": 28.99,
+      "palavras": [
+        {
+          "texto": "Quando",
+          "inicio_s": 24.83,
+          "fim_s": 24.971
+        },
+        {
+          "texto": "Neil",
+          "inicio_s": 25.031,
+          "fim_s": 25.192
+        },
+        {
+          "texto": "Armstrong",
+          "inicio_s": 25.332,
+          "fim_s": 25.775
+        },
+        {
+          "texto": "olhou",
+          "inicio_s": 25.875,
+          "fim_s": 26.076
+        },
+        {
+          "texto": "pela",
+          "inicio_s": 26.096,
+          "fim_s": 26.277
+        },
+        {
+          "texto": "pequena",
+          "inicio_s": 26.277,
+          "fim_s": 26.599
+        },
+        {
+          "texto": "janela",
+          "inicio_s": 26.619,
+          "fim_s": 26.96
+        },
+        {
+          "texto": "triangular",
+          "inicio_s": 27.021,
+          "fim_s": 27.523
+        },
+        {
+          "texto": "o",
+          "inicio_s": 27.885,
+          "fim_s": 27.905
+        },
+        {
+          "texto": "coração",
+          "inicio_s": 27.945,
+          "fim_s": 28.327
+        },
+        {
+          "texto": "disparou",
+          "inicio_s": 28.387,
+          "fim_s": 28.869
+        }
+      ]
+    },
+    {
+      "texto": "O piloto automático estava guiando a nave diretamente para dentro de uma cratera gigantesca, cercada por pedras afiadas do tamanho de carros.",
+      "inicio_s": 29.34,
+      "fim_s": 36.76,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 29.38,
+          "fim_s": 29.4
+        },
+        {
+          "texto": "piloto",
+          "inicio_s": 29.44,
+          "fim_s": 29.721
+        },
+        {
+          "texto": "automático",
+          "inicio_s": 29.741,
+          "fim_s": 30.262
+        },
+        {
+          "texto": "estava",
+          "inicio_s": 30.283,
+          "fim_s": 30.523
+        },
+        {
+          "texto": "guiando",
+          "inicio_s": 30.563,
+          "fim_s": 30.864
+        },
+        {
+          "texto": "a",
+          "inicio_s": 30.904,
+          "fim_s": 30.944
+        },
+        {
+          "texto": "nave",
+          "inicio_s": 31.004,
+          "fim_s": 31.245
+        },
+        {
+          "texto": "diretamente",
+          "inicio_s": 31.345,
+          "fim_s": 32.027
+        },
+        {
+          "texto": "para",
+          "inicio_s": 32.047,
+          "fim_s": 32.188
+        },
+        {
+          "texto": "dentro",
+          "inicio_s": 32.248,
+          "fim_s": 32.549
+        },
+        {
+          "texto": "de",
+          "inicio_s": 32.589,
+          "fim_s": 32.649
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 32.669,
+          "fim_s": 32.769
+        },
+        {
+          "texto": "cratera",
+          "inicio_s": 32.829,
+          "fim_s": 33.23
+        },
+        {
+          "texto": "gigantesca",
+          "inicio_s": 33.251,
+          "fim_s": 33.852
+        },
+        {
+          "texto": "cercada",
+          "inicio_s": 34.333,
+          "fim_s": 34.735
+        },
+        {
+          "texto": "por",
+          "inicio_s": 34.755,
+          "fim_s": 34.875
+        },
+        {
+          "texto": "pedras",
+          "inicio_s": 34.935,
+          "fim_s": 35.236
+        },
+        {
+          "texto": "afiadas",
+          "inicio_s": 35.276,
+          "fim_s": 35.717
+        },
+        {
+          "texto": "do",
+          "inicio_s": 35.737,
+          "fim_s": 35.797
+        },
+        {
+          "texto": "tamanho",
+          "inicio_s": 35.858,
+          "fim_s": 36.158
+        },
+        {
+          "texto": "de",
+          "inicio_s": 36.178,
+          "fim_s": 36.239
+        },
+        {
+          "texto": "carros",
+          "inicio_s": 36.299,
+          "fim_s": 36.64
+        }
+      ]
+    },
+    {
+      "texto": "Um pouso ali significaria a destruição do trem de pouso, a morte dos astronautas e o fim trágico da missão Apollo.",
+      "inicio_s": 37.11,
+      "fim_s": 44.33,
+      "palavras": [
+        {
+          "texto": "Um",
+          "inicio_s": 37.15,
+          "fim_s": 37.21
+        },
+        {
+          "texto": "pouso",
+          "inicio_s": 37.29,
+          "fim_s": 37.631
+        },
+        {
+          "texto": "ali",
+          "inicio_s": 37.692,
+          "fim_s": 37.872
+        },
+        {
+          "texto": "significaria",
+          "inicio_s": 38.012,
+          "fim_s": 38.694
+        },
+        {
+          "texto": "a",
+          "inicio_s": 38.775,
+          "fim_s": 38.795
+        },
+        {
+          "texto": "destruição",
+          "inicio_s": 38.835,
+          "fim_s": 39.356
+        },
+        {
+          "texto": "do",
+          "inicio_s": 39.396,
+          "fim_s": 39.456
+        },
+        {
+          "texto": "trem",
+          "inicio_s": 39.517,
+          "fim_s": 39.677
+        },
+        {
+          "texto": "de",
+          "inicio_s": 39.717,
+          "fim_s": 39.777
+        },
+        {
+          "texto": "pouso",
+          "inicio_s": 39.838,
+          "fim_s": 40.138
+        },
+        {
+          "texto": "a",
+          "inicio_s": 40.88,
+          "fim_s": 40.901
+        },
+        {
+          "texto": "morte",
+          "inicio_s": 41.001,
+          "fim_s": 41.302
+        },
+        {
+          "texto": "dos",
+          "inicio_s": 41.322,
+          "fim_s": 41.442
+        },
+        {
+          "texto": "astronautas",
+          "inicio_s": 41.482,
+          "fim_s": 42.104
+        },
+        {
+          "texto": "e",
+          "inicio_s": 42.585,
+          "fim_s": 42.605
+        },
+        {
+          "texto": "o",
+          "inicio_s": 42.665,
+          "fim_s": 42.685
+        },
+        {
+          "texto": "fim",
+          "inicio_s": 42.726,
+          "fim_s": 42.866
+        },
+        {
+          "texto": "trágico",
+          "inicio_s": 42.966,
+          "fim_s": 43.387
+        },
+        {
+          "texto": "da",
+          "inicio_s": 43.427,
+          "fim_s": 43.488
+        },
+        {
+          "texto": "missão",
+          "inicio_s": 43.528,
+          "fim_s": 43.849
+        },
+        {
+          "texto": "Apollo",
+          "inicio_s": 43.889,
+          "fim_s": 44.25
+        }
+      ]
+    },
+    {
+      "texto": "Sem hesitar, Armstrong desligou o piloto automático e assumiu os comandos manuais com a mão enluvada.",
+      "inicio_s": 44.68,
+      "fim_s": 49.8,
+      "palavras": [
+        {
+          "texto": "Sem",
+          "inicio_s": 44.72,
+          "fim_s": 44.861
+        },
+        {
+          "texto": "hesitar",
+          "inicio_s": 44.881,
+          "fim_s": 45.242
+        },
+        {
+          "texto": "Armstrong",
+          "inicio_s": 45.644,
+          "fim_s": 46.025
+        },
+        {
+          "texto": "desligou",
+          "inicio_s": 46.045,
+          "fim_s": 46.407
+        },
+        {
+          "texto": "o",
+          "inicio_s": 46.447,
+          "fim_s": 46.467
+        },
+        {
+          "texto": "piloto",
+          "inicio_s": 46.487,
+          "fim_s": 46.788
+        },
+        {
+          "texto": "automático",
+          "inicio_s": 46.828,
+          "fim_s": 47.31
+        },
+        {
+          "texto": "e",
+          "inicio_s": 47.611,
+          "fim_s": 47.632
+        },
+        {
+          "texto": "assumiu",
+          "inicio_s": 47.692,
+          "fim_s": 48.033
+        },
+        {
+          "texto": "os",
+          "inicio_s": 48.033,
+          "fim_s": 48.093
+        },
+        {
+          "texto": "comandos",
+          "inicio_s": 48.133,
+          "fim_s": 48.475
+        },
+        {
+          "texto": "manuais",
+          "inicio_s": 48.495,
+          "fim_s": 48.896
+        },
+        {
+          "texto": "com",
+          "inicio_s": 48.937,
+          "fim_s": 49.017
+        },
+        {
+          "texto": "a",
+          "inicio_s": 49.057,
+          "fim_s": 49.077
+        },
+        {
+          "texto": "mão",
+          "inicio_s": 49.097,
+          "fim_s": 49.238
+        },
+        {
+          "texto": "enluvada",
+          "inicio_s": 49.278,
+          "fim_s": 49.72
+        }
+      ]
+    },
+    {
+      "texto": "No controle da missão em Houston, centenas de engenheiros prenderam a respiração em silêncio absoluto.",
+      "inicio_s": 50.15,
+      "fim_s": 56.09,
+      "palavras": [
+        {
+          "texto": "No",
+          "inicio_s": 50.17,
+          "fim_s": 50.21
+        },
+        {
+          "texto": "controle",
+          "inicio_s": 50.25,
+          "fim_s": 50.652
+        },
+        {
+          "texto": "da",
+          "inicio_s": 50.672,
+          "fim_s": 50.732
+        },
+        {
+          "texto": "missão",
+          "inicio_s": 50.772,
+          "fim_s": 51.033
+        },
+        {
+          "texto": "em",
+          "inicio_s": 51.073,
+          "fim_s": 51.133
+        },
+        {
+          "texto": "Houston",
+          "inicio_s": 51.173,
+          "fim_s": 51.555
+        },
+        {
+          "texto": "centenas",
+          "inicio_s": 52.076,
+          "fim_s": 52.558
+        },
+        {
+          "texto": "de",
+          "inicio_s": 52.578,
+          "fim_s": 52.638
+        },
+        {
+          "texto": "engenheiros",
+          "inicio_s": 52.679,
+          "fim_s": 53.2
+        },
+        {
+          "texto": "prenderam",
+          "inicio_s": 53.22,
+          "fim_s": 53.642
+        },
+        {
+          "texto": "a",
+          "inicio_s": 53.662,
+          "fim_s": 53.702
+        },
+        {
+          "texto": "respiração",
+          "inicio_s": 53.722,
+          "fim_s": 54.264
+        },
+        {
+          "texto": "em",
+          "inicio_s": 54.304,
+          "fim_s": 54.364
+        },
+        {
+          "texto": "silêncio",
+          "inicio_s": 54.424,
+          "fim_s": 54.866
+        },
+        {
+          "texto": "absoluto",
+          "inicio_s": 55.327,
+          "fim_s": 55.99
+        }
+      ]
+    },
+    {
+      "texto": "O motor de descida queimava o propelente precioso a cada fração de segundo, levantando nuvens densas de poeira lunar que cegavam os instrumentos visuais.",
+      "inicio_s": 56.44,
+      "fim_s": 65.8,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 56.46,
+          "fim_s": 56.48
+        },
+        {
+          "texto": "motor",
+          "inicio_s": 56.52,
+          "fim_s": 56.861
+        },
+        {
+          "texto": "de",
+          "inicio_s": 56.941,
+          "fim_s": 57.001
+        },
+        {
+          "texto": "descida",
+          "inicio_s": 57.041,
+          "fim_s": 57.482
+        },
+        {
+          "texto": "queimava",
+          "inicio_s": 57.643,
+          "fim_s": 58.124
+        },
+        {
+          "texto": "o",
+          "inicio_s": 58.164,
+          "fim_s": 58.184
+        },
+        {
+          "texto": "propelente",
+          "inicio_s": 58.224,
+          "fim_s": 58.665
+        },
+        {
+          "texto": "precioso",
+          "inicio_s": 58.685,
+          "fim_s": 59.206
+        },
+        {
+          "texto": "a",
+          "inicio_s": 59.426,
+          "fim_s": 59.446
+        },
+        {
+          "texto": "cada",
+          "inicio_s": 59.507,
+          "fim_s": 59.667
+        },
+        {
+          "texto": "fração",
+          "inicio_s": 59.707,
+          "fim_s": 60.008
+        },
+        {
+          "texto": "de",
+          "inicio_s": 60.028,
+          "fim_s": 60.088
+        },
+        {
+          "texto": "segundo",
+          "inicio_s": 60.148,
+          "fim_s": 60.509
+        },
+        {
+          "texto": "levantando",
+          "inicio_s": 61.491,
+          "fim_s": 61.952
+        },
+        {
+          "texto": "nuvens",
+          "inicio_s": 62.052,
+          "fim_s": 62.433
+        },
+        {
+          "texto": "densas",
+          "inicio_s": 62.493,
+          "fim_s": 62.834
+        },
+        {
+          "texto": "de",
+          "inicio_s": 62.854,
+          "fim_s": 62.934
+        },
+        {
+          "texto": "poeira",
+          "inicio_s": 62.974,
+          "fim_s": 63.275
+        },
+        {
+          "texto": "lunar",
+          "inicio_s": 63.295,
+          "fim_s": 63.635
+        },
+        {
+          "texto": "que",
+          "inicio_s": 64.056,
+          "fim_s": 64.136
+        },
+        {
+          "texto": "cegavam",
+          "inicio_s": 64.177,
+          "fim_s": 64.617
+        },
+        {
+          "texto": "os",
+          "inicio_s": 64.638,
+          "fim_s": 64.718
+        },
+        {
+          "texto": "instrumentos",
+          "inicio_s": 64.738,
+          "fim_s": 65.219
+        },
+        {
+          "texto": "visuais",
+          "inicio_s": 65.259,
+          "fim_s": 65.68
+        }
+      ]
+    },
+    {
+      "texto": "No rádio, a voz tensa de Charlie Duke avisava: sessenta segundos de combustível restante.",
+      "inicio_s": 66.15,
+      "fim_s": 72.01,
+      "palavras": [
+        {
+          "texto": "No",
+          "inicio_s": 66.17,
+          "fim_s": 66.25
+        },
+        {
+          "texto": "rádio",
+          "inicio_s": 66.331,
+          "fim_s": 66.632
+        },
+        {
+          "texto": "a",
+          "inicio_s": 66.993,
+          "fim_s": 67.013
+        },
+        {
+          "texto": "voz",
+          "inicio_s": 67.073,
+          "fim_s": 67.254
+        },
+        {
+          "texto": "tensa",
+          "inicio_s": 67.334,
+          "fim_s": 67.615
+        },
+        {
+          "texto": "de",
+          "inicio_s": 67.655,
+          "fim_s": 67.715
+        },
+        {
+          "texto": "Charlie",
+          "inicio_s": 67.776,
+          "fim_s": 68.036
+        },
+        {
+          "texto": "Duke",
+          "inicio_s": 68.057,
+          "fim_s": 68.297
+        },
+        {
+          "texto": "avisava",
+          "inicio_s": 68.378,
+          "fim_s": 68.819
+        },
+        {
+          "texto": "sessenta",
+          "inicio_s": 70.043,
+          "fim_s": 70.425
+        },
+        {
+          "texto": "segundos",
+          "inicio_s": 70.485,
+          "fim_s": 70.826
+        },
+        {
+          "texto": "de",
+          "inicio_s": 70.846,
+          "fim_s": 70.906
+        },
+        {
+          "texto": "combustível",
+          "inicio_s": 70.946,
+          "fim_s": 71.468
+        },
+        {
+          "texto": "restante",
+          "inicio_s": 71.488,
+          "fim_s": 71.93
+        }
+      ]
+    },
+    {
+      "texto": "O módulo continuava deslizando lateralmente sobre o mar de poeira, sem encontrar um único trecho plano.",
+      "inicio_s": 72.36,
+      "fim_s": 78.2,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 72.4,
+          "fim_s": 72.42
+        },
+        {
+          "texto": "módulo",
+          "inicio_s": 72.48,
+          "fim_s": 72.842
+        },
+        {
+          "texto": "continuava",
+          "inicio_s": 73.163,
+          "fim_s": 73.745
+        },
+        {
+          "texto": "deslizando",
+          "inicio_s": 73.805,
+          "fim_s": 74.307
+        },
+        {
+          "texto": "lateralmente",
+          "inicio_s": 74.347,
+          "fim_s": 74.929
+        },
+        {
+          "texto": "sobre",
+          "inicio_s": 74.989,
+          "fim_s": 75.15
+        },
+        {
+          "texto": "o",
+          "inicio_s": 75.19,
+          "fim_s": 75.21
+        },
+        {
+          "texto": "mar",
+          "inicio_s": 75.23,
+          "fim_s": 75.39
+        },
+        {
+          "texto": "de",
+          "inicio_s": 75.431,
+          "fim_s": 75.511
+        },
+        {
+          "texto": "poeira",
+          "inicio_s": 75.551,
+          "fim_s": 75.872
+        },
+        {
+          "texto": "sem",
+          "inicio_s": 76.354,
+          "fim_s": 76.494
+        },
+        {
+          "texto": "encontrar",
+          "inicio_s": 76.554,
+          "fim_s": 76.996
+        },
+        {
+          "texto": "um",
+          "inicio_s": 77.056,
+          "fim_s": 77.136
+        },
+        {
+          "texto": "único",
+          "inicio_s": 77.237,
+          "fim_s": 77.478
+        },
+        {
+          "texto": "trecho",
+          "inicio_s": 77.538,
+          "fim_s": 77.799
+        },
+        {
+          "texto": "plano",
+          "inicio_s": 77.839,
+          "fim_s": 78.1
+        }
+      ]
+    },
+    {
+      "texto": "Trinta segundos.",
+      "inicio_s": 78.55,
+      "fim_s": 80.53,
+      "palavras": [
+        {
+          "texto": "Trinta",
+          "inicio_s": 78.55,
+          "fim_s": 78.893
+        },
+        {
+          "texto": "segundos",
+          "inicio_s": 79.883,
+          "fim_s": 80.368
+        }
+      ]
+    },
+    {
+      "texto": "Os batimentos cardíacos de Armstrong chegaram a cento e cinquenta por minuto, mas suas mãos permaneceram firmes nos controles.",
+      "inicio_s": 80.88,
+      "fim_s": 87.76,
+      "palavras": [
+        {
+          "texto": "Os",
+          "inicio_s": 80.9,
+          "fim_s": 80.98
+        },
+        {
+          "texto": "batimentos",
+          "inicio_s": 81.0,
+          "fim_s": 81.482
+        },
+        {
+          "texto": "cardíacos",
+          "inicio_s": 81.522,
+          "fim_s": 82.063
+        },
+        {
+          "texto": "de",
+          "inicio_s": 82.083,
+          "fim_s": 82.144
+        },
+        {
+          "texto": "Armstrong",
+          "inicio_s": 82.244,
+          "fim_s": 82.685
+        },
+        {
+          "texto": "chegaram",
+          "inicio_s": 82.946,
+          "fim_s": 83.267
+        },
+        {
+          "texto": "a",
+          "inicio_s": 83.287,
+          "fim_s": 83.327
+        },
+        {
+          "texto": "cento",
+          "inicio_s": 83.427,
+          "fim_s": 83.628
+        },
+        {
+          "texto": "e",
+          "inicio_s": 83.648,
+          "fim_s": 83.668
+        },
+        {
+          "texto": "cinquenta",
+          "inicio_s": 83.708,
+          "fim_s": 84.17
+        },
+        {
+          "texto": "por",
+          "inicio_s": 84.21,
+          "fim_s": 84.33
+        },
+        {
+          "texto": "minuto",
+          "inicio_s": 84.37,
+          "fim_s": 84.751
+        },
+        {
+          "texto": "mas",
+          "inicio_s": 85.293,
+          "fim_s": 85.413
+        },
+        {
+          "texto": "suas",
+          "inicio_s": 85.433,
+          "fim_s": 85.614
+        },
+        {
+          "texto": "mãos",
+          "inicio_s": 85.674,
+          "fim_s": 85.895
+        },
+        {
+          "texto": "permaneceram",
+          "inicio_s": 85.935,
+          "fim_s": 86.436
+        },
+        {
+          "texto": "firmes",
+          "inicio_s": 86.536,
+          "fim_s": 86.897
+        },
+        {
+          "texto": "nos",
+          "inicio_s": 86.938,
+          "fim_s": 87.058
+        },
+        {
+          "texto": "controles",
+          "inicio_s": 87.098,
+          "fim_s": 87.62
+        }
+      ]
+    },
+    {
+      "texto": "Com apenas vinte segundos antes de os motores morrerem no vácuo, as sapatas do Eagle finalmente tocaram o solo lunar com um solavanco suave.",
+      "inicio_s": 88.11,
+      "fim_s": 95.71,
+      "palavras": [
+        {
+          "texto": "Com",
+          "inicio_s": 88.11,
+          "fim_s": 88.21
+        },
+        {
+          "texto": "apenas",
+          "inicio_s": 88.25,
+          "fim_s": 88.591
+        },
+        {
+          "texto": "vinte",
+          "inicio_s": 88.651,
+          "fim_s": 88.872
+        },
+        {
+          "texto": "segundos",
+          "inicio_s": 88.932,
+          "fim_s": 89.353
+        },
+        {
+          "texto": "antes",
+          "inicio_s": 89.433,
+          "fim_s": 89.674
+        },
+        {
+          "texto": "de",
+          "inicio_s": 89.694,
+          "fim_s": 89.754
+        },
+        {
+          "texto": "os",
+          "inicio_s": 89.774,
+          "fim_s": 89.835
+        },
+        {
+          "texto": "motores",
+          "inicio_s": 89.895,
+          "fim_s": 90.296
+        },
+        {
+          "texto": "morrerem",
+          "inicio_s": 90.356,
+          "fim_s": 90.737
+        },
+        {
+          "texto": "no",
+          "inicio_s": 90.777,
+          "fim_s": 90.817
+        },
+        {
+          "texto": "vácuo",
+          "inicio_s": 90.877,
+          "fim_s": 91.178
+        },
+        {
+          "texto": "as",
+          "inicio_s": 91.619,
+          "fim_s": 91.679
+        },
+        {
+          "texto": "sapatas",
+          "inicio_s": 91.74,
+          "fim_s": 92.161
+        },
+        {
+          "texto": "do",
+          "inicio_s": 92.181,
+          "fim_s": 92.241
+        },
+        {
+          "texto": "Eagle",
+          "inicio_s": 92.341,
+          "fim_s": 92.582
+        },
+        {
+          "texto": "finalmente",
+          "inicio_s": 92.642,
+          "fim_s": 93.163
+        },
+        {
+          "texto": "tocaram",
+          "inicio_s": 93.223,
+          "fim_s": 93.604
+        },
+        {
+          "texto": "o",
+          "inicio_s": 93.625,
+          "fim_s": 93.665
+        },
+        {
+          "texto": "solo",
+          "inicio_s": 93.705,
+          "fim_s": 93.925
+        },
+        {
+          "texto": "lunar",
+          "inicio_s": 93.965,
+          "fim_s": 94.286
+        },
+        {
+          "texto": "com",
+          "inicio_s": 94.346,
+          "fim_s": 94.447
+        },
+        {
+          "texto": "um",
+          "inicio_s": 94.467,
+          "fim_s": 94.527
+        },
+        {
+          "texto": "solavanco",
+          "inicio_s": 94.587,
+          "fim_s": 95.128
+        },
+        {
+          "texto": "suave",
+          "inicio_s": 95.209,
+          "fim_s": 95.61
+        }
+      ]
+    },
+    {
+      "texto": "O motor silenciou.",
+      "inicio_s": 96.06,
+      "fim_s": 97.22,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 96.08,
+          "fim_s": 96.101
+        },
+        {
+          "texto": "motor",
+          "inicio_s": 96.162,
+          "fim_s": 96.508
+        },
+        {
+          "texto": "silenciou",
+          "inicio_s": 96.63,
+          "fim_s": 97.139
+        }
+      ]
+    },
+    {
+      "texto": "No cockpit apertado e congelante, Armstrong respirou fundo pela primeira vez em minutos.",
+      "inicio_s": 97.57,
+      "fim_s": 102.95,
+      "palavras": [
+        {
+          "texto": "No",
+          "inicio_s": 97.61,
+          "fim_s": 97.67
+        },
+        {
+          "texto": "cockpit",
+          "inicio_s": 97.771,
+          "fim_s": 98.212
+        },
+        {
+          "texto": "apertado",
+          "inicio_s": 98.313,
+          "fim_s": 98.815
+        },
+        {
+          "texto": "e",
+          "inicio_s": 99.015,
+          "fim_s": 99.035
+        },
+        {
+          "texto": "congelante",
+          "inicio_s": 99.096,
+          "fim_s": 99.658
+        },
+        {
+          "texto": "Armstrong",
+          "inicio_s": 100.22,
+          "fim_s": 100.661
+        },
+        {
+          "texto": "respirou",
+          "inicio_s": 100.722,
+          "fim_s": 101.063
+        },
+        {
+          "texto": "fundo",
+          "inicio_s": 101.183,
+          "fim_s": 101.505
+        },
+        {
+          "texto": "pela",
+          "inicio_s": 101.545,
+          "fim_s": 101.705
+        },
+        {
+          "texto": "primeira",
+          "inicio_s": 101.746,
+          "fim_s": 102.027
+        },
+        {
+          "texto": "vez",
+          "inicio_s": 102.067,
+          "fim_s": 102.267
+        },
+        {
+          "texto": "em",
+          "inicio_s": 102.308,
+          "fim_s": 102.368
+        },
+        {
+          "texto": "minutos",
+          "inicio_s": 102.388,
+          "fim_s": 102.83
+        }
+      ]
+    },
+    {
+      "texto": "Houston, aqui base Tranquilidade: a Águia pousou.",
+      "inicio_s": 103.3,
+      "fim_s": 107.92,
+      "palavras": [
+        {
+          "texto": "Houston",
+          "inicio_s": 103.32,
+          "fim_s": 103.641
+        },
+        {
+          "texto": "aqui",
+          "inicio_s": 104.204,
+          "fim_s": 104.425
+        },
+        {
+          "texto": "base",
+          "inicio_s": 104.887,
+          "fim_s": 105.148
+        },
+        {
+          "texto": "Tranquilidade",
+          "inicio_s": 105.188,
+          "fim_s": 105.851
+        },
+        {
+          "texto": "a",
+          "inicio_s": 106.675,
+          "fim_s": 106.695
+        },
+        {
+          "texto": "Águia",
+          "inicio_s": 106.896,
+          "fim_s": 107.177
+        },
+        {
+          "texto": "pousou",
+          "inicio_s": 107.378,
+          "fim_s": 107.799
+        }
+      ]
+    }
+  ]
+}

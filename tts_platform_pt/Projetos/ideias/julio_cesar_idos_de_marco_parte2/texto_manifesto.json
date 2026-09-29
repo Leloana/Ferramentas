@@ -1,0 +1,856 @@
+{
+  "gerado_em": "2026-09-23T21:24:19",
+  "roteiro": "C:\\Users\\mf827\\Documents\\Ferramentas\\tts_platform_pt\\Projetos\\ideias\\julio_cesar_idos_de_marco_parte2\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 54.2,
+  "texto_usado": "O primeiro golpe veio pelas costas. No centro do salão de mármore, um senador fingiu entregar uma petição e puxou a túnica de César pelos ombros, expondo seu pescoço. Em um instante, dezenas de homens cercaram o homem mais poderoso de Roma com lâminas desembainhadas.\n\nO primeiro corte atingiu a carne, manchando a seda púrpura de vermelho vivo. César lutou bravamente como um soldado, usando seu estilete de escrita para ferir os conspiradores e tentar romper o cerco. Mas os punhais caíam sem piedade de todas as direções.\n\nFoi então que seus olhos marejados cruzaram a sala e encontraram Marco Bruto avançando com uma adaga ensanguentada nas mãos. O coração de César quebrou antes de seu corpo ceder. Ele cobriu o rosto com a própria toga e parou de resistir. Aos pés da estátua de Pompeu, César deu seu último suspiro sob vinte e três facadas. A República de Roma morria com ele.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "O primeiro golpe veio pelas costas.",
+      "inicio_s": 0.15,
+      "fim_s": 2.57,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 0.19,
+          "fim_s": 0.21
+        },
+        {
+          "texto": "primeiro",
+          "inicio_s": 0.231,
+          "fim_s": 0.694
+        },
+        {
+          "texto": "golpe",
+          "inicio_s": 0.755,
+          "fim_s": 1.158
+        },
+        {
+          "texto": "veio",
+          "inicio_s": 1.32,
+          "fim_s": 1.602
+        },
+        {
+          "texto": "pelas",
+          "inicio_s": 1.662,
+          "fim_s": 1.904
+        },
+        {
+          "texto": "costas",
+          "inicio_s": 1.965,
+          "fim_s": 2.409
+        }
+      ]
+    },
+    {
+      "texto": "No centro do salão de mármore, um senador fingiu entregar uma petição e puxou a túnica de César pelos ombros, expondo seu pescoço.",
+      "inicio_s": 2.92,
+      "fim_s": 10.34,
+      "palavras": [
+        {
+          "texto": "No",
+          "inicio_s": 2.94,
+          "fim_s": 3.0
+        },
+        {
+          "texto": "centro",
+          "inicio_s": 3.1,
+          "fim_s": 3.381
+        },
+        {
+          "texto": "do",
+          "inicio_s": 3.421,
+          "fim_s": 3.461
+        },
+        {
+          "texto": "salão",
+          "inicio_s": 3.502,
+          "fim_s": 3.722
+        },
+        {
+          "texto": "de",
+          "inicio_s": 3.742,
+          "fim_s": 3.802
+        },
+        {
+          "texto": "mármore",
+          "inicio_s": 3.842,
+          "fim_s": 4.203
+        },
+        {
+          "texto": "um",
+          "inicio_s": 4.524,
+          "fim_s": 4.584
+        },
+        {
+          "texto": "senador",
+          "inicio_s": 4.625,
+          "fim_s": 5.046
+        },
+        {
+          "texto": "fingiu",
+          "inicio_s": 5.086,
+          "fim_s": 5.427
+        },
+        {
+          "texto": "entregar",
+          "inicio_s": 5.467,
+          "fim_s": 5.808
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 5.828,
+          "fim_s": 5.968
+        },
+        {
+          "texto": "petição",
+          "inicio_s": 5.988,
+          "fim_s": 6.45
+        },
+        {
+          "texto": "e",
+          "inicio_s": 6.971,
+          "fim_s": 6.991
+        },
+        {
+          "texto": "puxou",
+          "inicio_s": 7.051,
+          "fim_s": 7.292
+        },
+        {
+          "texto": "a",
+          "inicio_s": 7.332,
+          "fim_s": 7.372
+        },
+        {
+          "texto": "túnica",
+          "inicio_s": 7.472,
+          "fim_s": 7.813
+        },
+        {
+          "texto": "de",
+          "inicio_s": 7.853,
+          "fim_s": 7.913
+        },
+        {
+          "texto": "César",
+          "inicio_s": 7.994,
+          "fim_s": 8.294
+        },
+        {
+          "texto": "pelos",
+          "inicio_s": 8.375,
+          "fim_s": 8.595
+        },
+        {
+          "texto": "ombros",
+          "inicio_s": 8.676,
+          "fim_s": 8.956
+        },
+        {
+          "texto": "expondo",
+          "inicio_s": 9.257,
+          "fim_s": 9.698
+        },
+        {
+          "texto": "seu",
+          "inicio_s": 9.698,
+          "fim_s": 9.819
+        },
+        {
+          "texto": "pescoço",
+          "inicio_s": 9.819,
+          "fim_s": 10.28
+        }
+      ]
+    },
+    {
+      "texto": "Em um instante, dezenas de homens cercaram o homem mais poderoso de Roma com lâminas desembainhadas.",
+      "inicio_s": 10.69,
+      "fim_s": 17.13,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 10.73,
+          "fim_s": 10.79
+        },
+        {
+          "texto": "um",
+          "inicio_s": 10.83,
+          "fim_s": 10.891
+        },
+        {
+          "texto": "instante",
+          "inicio_s": 10.911,
+          "fim_s": 11.372
+        },
+        {
+          "texto": "dezenas",
+          "inicio_s": 11.733,
+          "fim_s": 12.155
+        },
+        {
+          "texto": "de",
+          "inicio_s": 12.175,
+          "fim_s": 12.255
+        },
+        {
+          "texto": "homens",
+          "inicio_s": 12.295,
+          "fim_s": 12.576
+        },
+        {
+          "texto": "cercaram",
+          "inicio_s": 12.616,
+          "fim_s": 13.118
+        },
+        {
+          "texto": "o",
+          "inicio_s": 13.178,
+          "fim_s": 13.198
+        },
+        {
+          "texto": "homem",
+          "inicio_s": 13.238,
+          "fim_s": 13.499
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 13.599,
+          "fim_s": 13.82
+        },
+        {
+          "texto": "poderoso",
+          "inicio_s": 13.9,
+          "fim_s": 14.341
+        },
+        {
+          "texto": "de",
+          "inicio_s": 14.361,
+          "fim_s": 14.442
+        },
+        {
+          "texto": "Roma",
+          "inicio_s": 14.502,
+          "fim_s": 14.743
+        },
+        {
+          "texto": "com",
+          "inicio_s": 15.204,
+          "fim_s": 15.344
+        },
+        {
+          "texto": "lâminas",
+          "inicio_s": 15.425,
+          "fim_s": 15.846
+        },
+        {
+          "texto": "desembainhadas",
+          "inicio_s": 16.007,
+          "fim_s": 16.99
+        }
+      ]
+    },
+    {
+      "texto": "O primeiro corte atingiu a carne, manchando a seda púrpura de vermelho vivo.",
+      "inicio_s": 17.48,
+      "fim_s": 21.62,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 17.52,
+          "fim_s": 17.54
+        },
+        {
+          "texto": "primeiro",
+          "inicio_s": 17.56,
+          "fim_s": 17.922
+        },
+        {
+          "texto": "corte",
+          "inicio_s": 17.982,
+          "fim_s": 18.284
+        },
+        {
+          "texto": "atingiu",
+          "inicio_s": 18.304,
+          "fim_s": 18.666
+        },
+        {
+          "texto": "a",
+          "inicio_s": 18.706,
+          "fim_s": 18.726
+        },
+        {
+          "texto": "carne",
+          "inicio_s": 18.786,
+          "fim_s": 19.088
+        },
+        {
+          "texto": "manchando",
+          "inicio_s": 19.57,
+          "fim_s": 19.952
+        },
+        {
+          "texto": "a",
+          "inicio_s": 19.992,
+          "fim_s": 20.012
+        },
+        {
+          "texto": "seda",
+          "inicio_s": 20.093,
+          "fim_s": 20.314
+        },
+        {
+          "texto": "púrpura",
+          "inicio_s": 20.394,
+          "fim_s": 20.776
+        },
+        {
+          "texto": "de",
+          "inicio_s": 20.816,
+          "fim_s": 20.876
+        },
+        {
+          "texto": "vermelho",
+          "inicio_s": 20.897,
+          "fim_s": 21.258
+        },
+        {
+          "texto": "vivo",
+          "inicio_s": 21.298,
+          "fim_s": 21.54
+        }
+      ]
+    },
+    {
+      "texto": "César lutou bravamente como um soldado, usando seu estilete de escrita para ferir os conspiradores e tentar romper o cerco.",
+      "inicio_s": 21.97,
+      "fim_s": 29.47,
+      "palavras": [
+        {
+          "texto": "César",
+          "inicio_s": 22.01,
+          "fim_s": 22.331
+        },
+        {
+          "texto": "lutou",
+          "inicio_s": 22.391,
+          "fim_s": 22.652
+        },
+        {
+          "texto": "bravamente",
+          "inicio_s": 22.752,
+          "fim_s": 23.454
+        },
+        {
+          "texto": "como",
+          "inicio_s": 23.494,
+          "fim_s": 23.675
+        },
+        {
+          "texto": "um",
+          "inicio_s": 23.695,
+          "fim_s": 23.755
+        },
+        {
+          "texto": "soldado",
+          "inicio_s": 23.815,
+          "fim_s": 24.276
+        },
+        {
+          "texto": "usando",
+          "inicio_s": 24.757,
+          "fim_s": 25.098
+        },
+        {
+          "texto": "seu",
+          "inicio_s": 25.159,
+          "fim_s": 25.279
+        },
+        {
+          "texto": "estilete",
+          "inicio_s": 25.319,
+          "fim_s": 25.74
+        },
+        {
+          "texto": "de",
+          "inicio_s": 25.78,
+          "fim_s": 25.82
+        },
+        {
+          "texto": "escrita",
+          "inicio_s": 25.84,
+          "fim_s": 26.241
+        },
+        {
+          "texto": "para",
+          "inicio_s": 26.402,
+          "fim_s": 26.562
+        },
+        {
+          "texto": "ferir",
+          "inicio_s": 26.602,
+          "fim_s": 26.863
+        },
+        {
+          "texto": "os",
+          "inicio_s": 26.883,
+          "fim_s": 26.943
+        },
+        {
+          "texto": "conspiradores",
+          "inicio_s": 26.983,
+          "fim_s": 27.725
+        },
+        {
+          "texto": "e",
+          "inicio_s": 28.146,
+          "fim_s": 28.167
+        },
+        {
+          "texto": "tentar",
+          "inicio_s": 28.227,
+          "fim_s": 28.588
+        },
+        {
+          "texto": "romper",
+          "inicio_s": 28.648,
+          "fim_s": 29.009
+        },
+        {
+          "texto": "o",
+          "inicio_s": 29.049,
+          "fim_s": 29.069
+        },
+        {
+          "texto": "cerco",
+          "inicio_s": 29.129,
+          "fim_s": 29.43
+        }
+      ]
+    },
+    {
+      "texto": "Mas os punhais caíam sem piedade de todas as direções.",
+      "inicio_s": 29.82,
+      "fim_s": 33.2,
+      "palavras": [
+        {
+          "texto": "Mas",
+          "inicio_s": 29.84,
+          "fim_s": 29.961
+        },
+        {
+          "texto": "os",
+          "inicio_s": 30.001,
+          "fim_s": 30.082
+        },
+        {
+          "texto": "punhais",
+          "inicio_s": 30.122,
+          "fim_s": 30.585
+        },
+        {
+          "texto": "caíam",
+          "inicio_s": 30.685,
+          "fim_s": 31.067
+        },
+        {
+          "texto": "sem",
+          "inicio_s": 31.168,
+          "fim_s": 31.329
+        },
+        {
+          "texto": "piedade",
+          "inicio_s": 31.389,
+          "fim_s": 31.872
+        },
+        {
+          "texto": "de",
+          "inicio_s": 31.912,
+          "fim_s": 31.973
+        },
+        {
+          "texto": "todas",
+          "inicio_s": 32.114,
+          "fim_s": 32.415
+        },
+        {
+          "texto": "as",
+          "inicio_s": 32.456,
+          "fim_s": 32.516
+        },
+        {
+          "texto": "direções",
+          "inicio_s": 32.556,
+          "fim_s": 33.079
+        }
+      ]
+    },
+    {
+      "texto": "Foi então que seus olhos marejados cruzaram a sala e encontraram Marco Bruto avançando com uma adaga ensanguentada nas mãos.",
+      "inicio_s": 33.55,
+      "fim_s": 40.03,
+      "palavras": [
+        {
+          "texto": "Foi",
+          "inicio_s": 33.55,
+          "fim_s": 33.65
+        },
+        {
+          "texto": "então",
+          "inicio_s": 33.69,
+          "fim_s": 33.931
+        },
+        {
+          "texto": "que",
+          "inicio_s": 33.971,
+          "fim_s": 34.031
+        },
+        {
+          "texto": "seus",
+          "inicio_s": 34.092,
+          "fim_s": 34.272
+        },
+        {
+          "texto": "olhos",
+          "inicio_s": 34.352,
+          "fim_s": 34.553
+        },
+        {
+          "texto": "marejados",
+          "inicio_s": 34.593,
+          "fim_s": 35.115
+        },
+        {
+          "texto": "cruzaram",
+          "inicio_s": 35.155,
+          "fim_s": 35.556
+        },
+        {
+          "texto": "a",
+          "inicio_s": 35.596,
+          "fim_s": 35.616
+        },
+        {
+          "texto": "sala",
+          "inicio_s": 35.697,
+          "fim_s": 35.977
+        },
+        {
+          "texto": "e",
+          "inicio_s": 36.278,
+          "fim_s": 36.298
+        },
+        {
+          "texto": "encontraram",
+          "inicio_s": 36.379,
+          "fim_s": 36.9
+        },
+        {
+          "texto": "Marco",
+          "inicio_s": 36.94,
+          "fim_s": 37.221
+        },
+        {
+          "texto": "Bruto",
+          "inicio_s": 37.282,
+          "fim_s": 37.542
+        },
+        {
+          "texto": "avançando",
+          "inicio_s": 37.582,
+          "fim_s": 38.064
+        },
+        {
+          "texto": "com",
+          "inicio_s": 38.104,
+          "fim_s": 38.204
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 38.244,
+          "fim_s": 38.345
+        },
+        {
+          "texto": "adaga",
+          "inicio_s": 38.385,
+          "fim_s": 38.666
+        },
+        {
+          "texto": "ensanguentada",
+          "inicio_s": 38.706,
+          "fim_s": 39.408
+        },
+        {
+          "texto": "nas",
+          "inicio_s": 39.448,
+          "fim_s": 39.589
+        },
+        {
+          "texto": "mãos",
+          "inicio_s": 39.629,
+          "fim_s": 39.89
+        }
+      ]
+    },
+    {
+      "texto": "O coração de César quebrou antes de seu corpo ceder.",
+      "inicio_s": 40.38,
+      "fim_s": 43.28,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 40.4,
+          "fim_s": 40.42
+        },
+        {
+          "texto": "coração",
+          "inicio_s": 40.461,
+          "fim_s": 40.803
+        },
+        {
+          "texto": "de",
+          "inicio_s": 40.823,
+          "fim_s": 40.904
+        },
+        {
+          "texto": "César",
+          "inicio_s": 40.984,
+          "fim_s": 41.327
+        },
+        {
+          "texto": "quebrou",
+          "inicio_s": 41.387,
+          "fim_s": 41.709
+        },
+        {
+          "texto": "antes",
+          "inicio_s": 41.911,
+          "fim_s": 42.213
+        },
+        {
+          "texto": "de",
+          "inicio_s": 42.253,
+          "fim_s": 42.313
+        },
+        {
+          "texto": "seu",
+          "inicio_s": 42.374,
+          "fim_s": 42.495
+        },
+        {
+          "texto": "corpo",
+          "inicio_s": 42.555,
+          "fim_s": 42.817
+        },
+        {
+          "texto": "ceder",
+          "inicio_s": 42.877,
+          "fim_s": 43.199
+        }
+      ]
+    },
+    {
+      "texto": "Ele cobriu o rosto com a própria toga e parou de resistir.",
+      "inicio_s": 43.63,
+      "fim_s": 46.87,
+      "palavras": [
+        {
+          "texto": "Ele",
+          "inicio_s": 43.65,
+          "fim_s": 43.771
+        },
+        {
+          "texto": "cobriu",
+          "inicio_s": 43.811,
+          "fim_s": 44.113
+        },
+        {
+          "texto": "o",
+          "inicio_s": 44.153,
+          "fim_s": 44.173
+        },
+        {
+          "texto": "rosto",
+          "inicio_s": 44.234,
+          "fim_s": 44.536
+        },
+        {
+          "texto": "com",
+          "inicio_s": 44.556,
+          "fim_s": 44.656
+        },
+        {
+          "texto": "a",
+          "inicio_s": 44.697,
+          "fim_s": 44.717
+        },
+        {
+          "texto": "própria",
+          "inicio_s": 44.757,
+          "fim_s": 45.059
+        },
+        {
+          "texto": "toga",
+          "inicio_s": 45.099,
+          "fim_s": 45.381
+        },
+        {
+          "texto": "e",
+          "inicio_s": 45.683,
+          "fim_s": 45.703
+        },
+        {
+          "texto": "parou",
+          "inicio_s": 45.783,
+          "fim_s": 46.045
+        },
+        {
+          "texto": "de",
+          "inicio_s": 46.065,
+          "fim_s": 46.166
+        },
+        {
+          "texto": "resistir",
+          "inicio_s": 46.226,
+          "fim_s": 46.749
+        }
+      ]
+    },
+    {
+      "texto": "Aos pés da estátua de Pompeu, César deu seu último suspiro sob vinte e três facadas.",
+      "inicio_s": 47.22,
+      "fim_s": 52.2,
+      "palavras": [
+        {
+          "texto": "Aos",
+          "inicio_s": 47.24,
+          "fim_s": 47.361
+        },
+        {
+          "texto": "pés",
+          "inicio_s": 47.421,
+          "fim_s": 47.602
+        },
+        {
+          "texto": "da",
+          "inicio_s": 47.622,
+          "fim_s": 47.682
+        },
+        {
+          "texto": "estátua",
+          "inicio_s": 47.722,
+          "fim_s": 48.043
+        },
+        {
+          "texto": "de",
+          "inicio_s": 48.083,
+          "fim_s": 48.144
+        },
+        {
+          "texto": "Pompeu",
+          "inicio_s": 48.164,
+          "fim_s": 48.505
+        },
+        {
+          "texto": "César",
+          "inicio_s": 49.469,
+          "fim_s": 49.81
+        },
+        {
+          "texto": "deu",
+          "inicio_s": 49.851,
+          "fim_s": 49.991
+        },
+        {
+          "texto": "seu",
+          "inicio_s": 50.051,
+          "fim_s": 50.172
+        },
+        {
+          "texto": "último",
+          "inicio_s": 50.212,
+          "fim_s": 50.473
+        },
+        {
+          "texto": "suspiro",
+          "inicio_s": 50.513,
+          "fim_s": 50.895
+        },
+        {
+          "texto": "sob",
+          "inicio_s": 50.935,
+          "fim_s": 51.055
+        },
+        {
+          "texto": "vinte",
+          "inicio_s": 51.176,
+          "fim_s": 51.377
+        },
+        {
+          "texto": "e",
+          "inicio_s": 51.397,
+          "fim_s": 51.417
+        },
+        {
+          "texto": "três",
+          "inicio_s": 51.437,
+          "fim_s": 51.598
+        },
+        {
+          "texto": "facadas",
+          "inicio_s": 51.638,
+          "fim_s": 52.08
+        }
+      ]
+    },
+    {
+      "texto": "A República de Roma morria com ele.",
+      "inicio_s": 52.55,
+      "fim_s": 54.25,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 52.57,
+          "fim_s": 52.611
+        },
+        {
+          "texto": "República",
+          "inicio_s": 52.651,
+          "fim_s": 53.076
+        },
+        {
+          "texto": "de",
+          "inicio_s": 53.096,
+          "fim_s": 53.177
+        },
+        {
+          "texto": "Roma",
+          "inicio_s": 53.238,
+          "fim_s": 53.44
+        },
+        {
+          "texto": "morria",
+          "inicio_s": 53.501,
+          "fim_s": 53.785
+        },
+        {
+          "texto": "com",
+          "inicio_s": 53.825,
+          "fim_s": 53.946
+        },
+        {
+          "texto": "ele",
+          "inicio_s": 54.007,
+          "fim_s": 54.149
+        }
+      ]
+    }
+  ]
+}

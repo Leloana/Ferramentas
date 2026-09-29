@@ -1,0 +1,94 @@
+[
+  {
+    "frase": 1,
+    "plano": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "A cinematic low angle photograph on the slanting wooden boat deck of an ocean liner at night, polished deck chairs sliding into rising seawater under warm electric sconces, cold mist swirling, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00161_.png"
+  },
+  {
+    "frase": 1,
+    "plano": 2,
+    "arquivo": "texto_01b.png",
+    "prompt_final": "A close-up photograph of the english bandmaster from <image1>, preserving his exact face and neatly groomed brown mustache, drawing a steady note from his violin while the wooden deck tilts under his polished shoes, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00087_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\minutos_finais_titanic_1912\\imagens\\texto_03.png"
+  },
+  {
+    "frase": 2,
+    "plano": 1,
+    "arquivo": "texto_02.png",
+    "prompt_final": "A wide dramatic exterior photograph of a massive ocean liner listing heavily forward in the pitch black north atlantic, thousands of yellow portholes reflected in freezing water under brilliant stars, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00162_.png"
+  },
+  {
+    "frase": 2,
+    "plano": 2,
+    "arquivo": "texto_02b.png",
+    "prompt_final": "A photograph of a half empty wooden lifeboat being lowered on ropes past rows of lit portholes toward the black sea, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00163_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 1,
+    "arquivo": "texto_03.png",
+    "prompt_final": "A poignant medium photograph of bandmaster Wallace Hartley, a 33 year old english gentleman with a neatly groomed brown mustache and dignified posture, standing on the tilted wooden deck in a formal edwardian tuxedo and wool overcoat holding a violin, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00159_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 2,
+    "arquivo": "texto_03b.png",
+    "prompt_final": "A photograph of the eight musicians around the english bandmaster from <image1>, preserving his exact face, neatly groomed brown mustache, formal edwardian tuxedo and wool overcoat, keeping their footing on the sloping deck, instruments raised as the ship groans, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00088_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\minutos_finais_titanic_1912\\imagens\\texto_03.png"
+  },
+  {
+    "frase": 4,
+    "plano": 1,
+    "arquivo": "texto_04.png",
+    "prompt_final": "A solemn medium portrait photograph of Captain Edward John Smith inside the wheelhouse, a distinguished 62 year old naval commander with a full white beard and sorrowful blue eyes in a brass buttoned navy uniform, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00160_.png"
+  },
+  {
+    "frase": 4,
+    "plano": 2,
+    "arquivo": "texto_04b.png",
+    "prompt_final": "A quiet photograph of the ship captain from <image1>, preserving his exact face, full white beard and brass buttoned navy officer uniform, alone at the flooding bridge, one hand resting on the polished wooden helm as water climbs the windows, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00089_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\minutos_finais_titanic_1912\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 5,
+    "plano": 1,
+    "arquivo": "texto_05.png",
+    "prompt_final": "An emotional master photograph of edwardian passengers in lifejackets huddled together in tears on the sloping deck, listening in reverence to the musicians, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00164_.png"
+  },
+  {
+    "frase": 5,
+    "plano": 2,
+    "arquivo": "texto_05b.png",
+    "prompt_final": "A close-up photograph of the calm face of the english bandmaster from <image1>, preserving his exact face, neatly groomed brown mustache, formal edwardian tuxedo and wool overcoat, eyes closed as he plays the final hymn, breath misting in the freezing air, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00090_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\minutos_finais_titanic_1912\\imagens\\texto_03.png"
+  },
+  {
+    "frase": 6,
+    "plano": 1,
+    "arquivo": "texto_06.png",
+    "prompt_final": "A haunting panoramic photograph of the calm black ocean surface at night under millions of cold stars, a solitary wooden violin case floating quietly in the ripples, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00165_.png"
+  },
+  {
+    "frase": 6,
+    "plano": 2,
+    "arquivo": "texto_06b.png",
+    "prompt_final": "A final photograph of empty wooden lifeboats drifting far apart on a glassy dark sea as the first gray light touches the horizon, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00166_.png"
+  }
+]

@@ -1,0 +1,696 @@
+{
+  "gerado_em": "2026-09-23T22:55:13",
+  "roteiro": "C:\\Users\\mf827\\Documents\\Ferramentas\\tts_platform_pt\\Projetos\\ideias\\voo_de_lindbergh_1927\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 50.1,
+  "texto_usado": "Vinte e cinco horas sem dormir sobre o oceano infinito. Em maio de 1927, o piloto americano Charles Lindbergh decolou de Nova York sozinho a bordo do Spirit of St. Louis com um único objetivo: cruzar o Oceano Atlântico sem escalas.\n\nO avião monomotor não tinha paraquedas nem rádio, e o tanque gigante de combustível bloqueava totalmente a visão frontal, forçando-o a pilotar olhando por um periscópio improvisado. No meio da noite gélida sobre o Atlântico, nevoeiros densos cobriram as asas de gelo e o sono se tornou seu pior inimigo.\n\nLindbergh segurou as pálpebras abertas com os dedos para não adormecer nos controles. Trinta e três horas e meia depois de decolar, as luzes de Paris surgiram na neblina, consagrando o primeiro voo transatlântico solo da história.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Vinte e cinco horas sem dormir sobre o oceano infinito.",
+      "inicio_s": 0.15,
+      "fim_s": 2.85,
+      "palavras": [
+        {
+          "texto": "Vinte",
+          "inicio_s": 0.19,
+          "fim_s": 0.412
+        },
+        {
+          "texto": "e",
+          "inicio_s": 0.432,
+          "fim_s": 0.452
+        },
+        {
+          "texto": "cinco",
+          "inicio_s": 0.493,
+          "fim_s": 0.714
+        },
+        {
+          "texto": "horas",
+          "inicio_s": 0.754,
+          "fim_s": 0.976
+        },
+        {
+          "texto": "sem",
+          "inicio_s": 1.016,
+          "fim_s": 1.117
+        },
+        {
+          "texto": "dormir",
+          "inicio_s": 1.157,
+          "fim_s": 1.5
+        },
+        {
+          "texto": "sobre",
+          "inicio_s": 1.56,
+          "fim_s": 1.762
+        },
+        {
+          "texto": "o",
+          "inicio_s": 1.782,
+          "fim_s": 1.802
+        },
+        {
+          "texto": "oceano",
+          "inicio_s": 1.843,
+          "fim_s": 2.225
+        },
+        {
+          "texto": "infinito",
+          "inicio_s": 2.266,
+          "fim_s": 2.769
+        }
+      ]
+    },
+    {
+      "texto": "Em maio de 1927, o piloto americano Charles Lindbergh decolou de Nova York sozinho a bordo do Spirit of St. Louis com um único objetivo: cruzar o Oceano Atlântico sem escalas.",
+      "inicio_s": 3.2,
+      "fim_s": 17.32,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 3.22,
+          "fim_s": 3.28
+        },
+        {
+          "texto": "maio",
+          "inicio_s": 3.32,
+          "fim_s": 3.52
+        },
+        {
+          "texto": "de",
+          "inicio_s": 3.54,
+          "fim_s": 3.621
+        },
+        {
+          "texto": "1927",
+          "inicio_s": 3.621,
+          "fim_s": 5.223
+        },
+        {
+          "texto": "o",
+          "inicio_s": 5.223,
+          "fim_s": 5.243
+        },
+        {
+          "texto": "piloto",
+          "inicio_s": 5.303,
+          "fim_s": 5.583
+        },
+        {
+          "texto": "americano",
+          "inicio_s": 5.603,
+          "fim_s": 6.084
+        },
+        {
+          "texto": "Charles",
+          "inicio_s": 6.745,
+          "fim_s": 7.146
+        },
+        {
+          "texto": "Lindbergh",
+          "inicio_s": 7.226,
+          "fim_s": 7.666
+        },
+        {
+          "texto": "decolou",
+          "inicio_s": 7.967,
+          "fim_s": 8.407
+        },
+        {
+          "texto": "de",
+          "inicio_s": 8.447,
+          "fim_s": 8.528
+        },
+        {
+          "texto": "Nova",
+          "inicio_s": 8.568,
+          "fim_s": 8.728
+        },
+        {
+          "texto": "York",
+          "inicio_s": 8.788,
+          "fim_s": 9.008
+        },
+        {
+          "texto": "sozinho",
+          "inicio_s": 9.148,
+          "fim_s": 9.589
+        },
+        {
+          "texto": "a",
+          "inicio_s": 9.649,
+          "fim_s": 9.669
+        },
+        {
+          "texto": "bordo",
+          "inicio_s": 9.729,
+          "fim_s": 9.99
+        },
+        {
+          "texto": "do",
+          "inicio_s": 10.01,
+          "fim_s": 10.05
+        },
+        {
+          "texto": "Spirit",
+          "inicio_s": 10.15,
+          "fim_s": 10.45
+        },
+        {
+          "texto": "of",
+          "inicio_s": 10.61,
+          "fim_s": 10.711
+        },
+        {
+          "texto": "St",
+          "inicio_s": 10.811,
+          "fim_s": 11.071
+        },
+        {
+          "texto": "Louis",
+          "inicio_s": 11.972,
+          "fim_s": 12.373
+        },
+        {
+          "texto": "com",
+          "inicio_s": 12.693,
+          "fim_s": 12.834
+        },
+        {
+          "texto": "um",
+          "inicio_s": 12.854,
+          "fim_s": 13.014
+        },
+        {
+          "texto": "único",
+          "inicio_s": 13.074,
+          "fim_s": 13.294
+        },
+        {
+          "texto": "objetivo",
+          "inicio_s": 13.334,
+          "fim_s": 13.835
+        },
+        {
+          "texto": "cruzar",
+          "inicio_s": 14.476,
+          "fim_s": 14.957
+        },
+        {
+          "texto": "o",
+          "inicio_s": 15.017,
+          "fim_s": 15.037
+        },
+        {
+          "texto": "Oceano",
+          "inicio_s": 15.097,
+          "fim_s": 15.477
+        },
+        {
+          "texto": "Atlântico",
+          "inicio_s": 15.537,
+          "fim_s": 16.078
+        },
+        {
+          "texto": "sem",
+          "inicio_s": 16.258,
+          "fim_s": 16.459
+        },
+        {
+          "texto": "escalas",
+          "inicio_s": 16.679,
+          "fim_s": 17.18
+        }
+      ]
+    },
+    {
+      "texto": "O avião monomotor não tinha paraquedas nem rádio, e o tanque gigante de combustível bloqueava totalmente a visão frontal, forçando-o a pilotar olhando por um periscópio improvisado.",
+      "inicio_s": 17.67,
+      "fim_s": 27.39,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 17.69,
+          "fim_s": 17.71
+        },
+        {
+          "texto": "avião",
+          "inicio_s": 17.75,
+          "fim_s": 18.011
+        },
+        {
+          "texto": "monomotor",
+          "inicio_s": 18.031,
+          "fim_s": 18.552
+        },
+        {
+          "texto": "não",
+          "inicio_s": 18.612,
+          "fim_s": 18.712
+        },
+        {
+          "texto": "tinha",
+          "inicio_s": 18.772,
+          "fim_s": 18.973
+        },
+        {
+          "texto": "paraquedas",
+          "inicio_s": 19.013,
+          "fim_s": 19.554
+        },
+        {
+          "texto": "nem",
+          "inicio_s": 19.594,
+          "fim_s": 19.694
+        },
+        {
+          "texto": "rádio",
+          "inicio_s": 19.754,
+          "fim_s": 20.055
+        },
+        {
+          "texto": "e",
+          "inicio_s": 20.556,
+          "fim_s": 20.576
+        },
+        {
+          "texto": "o",
+          "inicio_s": 20.656,
+          "fim_s": 20.676
+        },
+        {
+          "texto": "tanque",
+          "inicio_s": 20.756,
+          "fim_s": 20.997
+        },
+        {
+          "texto": "gigante",
+          "inicio_s": 21.057,
+          "fim_s": 21.398
+        },
+        {
+          "texto": "de",
+          "inicio_s": 21.438,
+          "fim_s": 21.498
+        },
+        {
+          "texto": "combustível",
+          "inicio_s": 21.518,
+          "fim_s": 22.099
+        },
+        {
+          "texto": "bloqueava",
+          "inicio_s": 22.36,
+          "fim_s": 22.801
+        },
+        {
+          "texto": "totalmente",
+          "inicio_s": 22.861,
+          "fim_s": 23.322
+        },
+        {
+          "texto": "a",
+          "inicio_s": 23.342,
+          "fim_s": 23.362
+        },
+        {
+          "texto": "visão",
+          "inicio_s": 23.382,
+          "fim_s": 23.602
+        },
+        {
+          "texto": "frontal",
+          "inicio_s": 23.642,
+          "fim_s": 24.003
+        },
+        {
+          "texto": "forçando-o",
+          "inicio_s": 24.364,
+          "fim_s": 24.945
+        },
+        {
+          "texto": "a",
+          "inicio_s": 24.985,
+          "fim_s": 25.005
+        },
+        {
+          "texto": "pilotar",
+          "inicio_s": 25.045,
+          "fim_s": 25.486
+        },
+        {
+          "texto": "olhando",
+          "inicio_s": 25.686,
+          "fim_s": 25.987
+        },
+        {
+          "texto": "por",
+          "inicio_s": 26.027,
+          "fim_s": 26.127
+        },
+        {
+          "texto": "um",
+          "inicio_s": 26.147,
+          "fim_s": 26.208
+        },
+        {
+          "texto": "periscópio",
+          "inicio_s": 26.248,
+          "fim_s": 26.829
+        },
+        {
+          "texto": "improvisado",
+          "inicio_s": 26.849,
+          "fim_s": 27.35
+        }
+      ]
+    },
+    {
+      "texto": "No meio da noite gélida sobre o Atlântico, nevoeiros densos cobriram as asas de gelo e o sono se tornou seu pior inimigo.",
+      "inicio_s": 27.74,
+      "fim_s": 34.4,
+      "palavras": [
+        {
+          "texto": "No",
+          "inicio_s": 27.76,
+          "fim_s": 27.82
+        },
+        {
+          "texto": "meio",
+          "inicio_s": 27.86,
+          "fim_s": 28.041
+        },
+        {
+          "texto": "da",
+          "inicio_s": 28.061,
+          "fim_s": 28.121
+        },
+        {
+          "texto": "noite",
+          "inicio_s": 28.181,
+          "fim_s": 28.362
+        },
+        {
+          "texto": "gélida",
+          "inicio_s": 28.442,
+          "fim_s": 28.803
+        },
+        {
+          "texto": "sobre",
+          "inicio_s": 28.883,
+          "fim_s": 29.044
+        },
+        {
+          "texto": "o",
+          "inicio_s": 29.084,
+          "fim_s": 29.104
+        },
+        {
+          "texto": "Atlântico",
+          "inicio_s": 29.144,
+          "fim_s": 29.626
+        },
+        {
+          "texto": "nevoeiros",
+          "inicio_s": 30.027,
+          "fim_s": 30.528
+        },
+        {
+          "texto": "densos",
+          "inicio_s": 30.589,
+          "fim_s": 30.93
+        },
+        {
+          "texto": "cobriram",
+          "inicio_s": 30.99,
+          "fim_s": 31.351
+        },
+        {
+          "texto": "as",
+          "inicio_s": 31.391,
+          "fim_s": 31.491
+        },
+        {
+          "texto": "asas",
+          "inicio_s": 31.551,
+          "fim_s": 31.772
+        },
+        {
+          "texto": "de",
+          "inicio_s": 31.792,
+          "fim_s": 31.872
+        },
+        {
+          "texto": "gelo",
+          "inicio_s": 31.933,
+          "fim_s": 32.173
+        },
+        {
+          "texto": "e",
+          "inicio_s": 32.595,
+          "fim_s": 32.615
+        },
+        {
+          "texto": "o",
+          "inicio_s": 32.675,
+          "fim_s": 32.695
+        },
+        {
+          "texto": "sono",
+          "inicio_s": 32.775,
+          "fim_s": 32.996
+        },
+        {
+          "texto": "se",
+          "inicio_s": 33.036,
+          "fim_s": 33.116
+        },
+        {
+          "texto": "tornou",
+          "inicio_s": 33.156,
+          "fim_s": 33.457
+        },
+        {
+          "texto": "seu",
+          "inicio_s": 33.497,
+          "fim_s": 33.618
+        },
+        {
+          "texto": "pior",
+          "inicio_s": 33.638,
+          "fim_s": 33.878
+        },
+        {
+          "texto": "inimigo",
+          "inicio_s": 33.919,
+          "fim_s": 34.32
+        }
+      ]
+    },
+    {
+      "texto": "Lindbergh segurou as pálpebras abertas com os dedos para não adormecer nos controles.",
+      "inicio_s": 34.75,
+      "fim_s": 39.39,
+      "palavras": [
+        {
+          "texto": "Lindbergh",
+          "inicio_s": 34.79,
+          "fim_s": 35.333
+        },
+        {
+          "texto": "segurou",
+          "inicio_s": 35.393,
+          "fim_s": 35.714
+        },
+        {
+          "texto": "as",
+          "inicio_s": 35.754,
+          "fim_s": 35.835
+        },
+        {
+          "texto": "pálpebras",
+          "inicio_s": 35.935,
+          "fim_s": 36.377
+        },
+        {
+          "texto": "abertas",
+          "inicio_s": 36.417,
+          "fim_s": 36.839
+        },
+        {
+          "texto": "com",
+          "inicio_s": 36.879,
+          "fim_s": 36.98
+        },
+        {
+          "texto": "os",
+          "inicio_s": 37.0,
+          "fim_s": 37.08
+        },
+        {
+          "texto": "dedos",
+          "inicio_s": 37.12,
+          "fim_s": 37.422
+        },
+        {
+          "texto": "para",
+          "inicio_s": 37.743,
+          "fim_s": 37.884
+        },
+        {
+          "texto": "não",
+          "inicio_s": 37.964,
+          "fim_s": 38.104
+        },
+        {
+          "texto": "adormecer",
+          "inicio_s": 38.125,
+          "fim_s": 38.627
+        },
+        {
+          "texto": "nos",
+          "inicio_s": 38.667,
+          "fim_s": 38.767
+        },
+        {
+          "texto": "controles",
+          "inicio_s": 38.787,
+          "fim_s": 39.269
+        }
+      ]
+    },
+    {
+      "texto": "Trinta e três horas e meia depois de decolar, as luzes de Paris surgiram na neblina, consagrando o primeiro voo transatlântico solo da história.",
+      "inicio_s": 39.74,
+      "fim_s": 50.06,
+      "palavras": [
+        {
+          "texto": "Trinta",
+          "inicio_s": 39.74,
+          "fim_s": 40.021
+        },
+        {
+          "texto": "e",
+          "inicio_s": 40.061,
+          "fim_s": 40.081
+        },
+        {
+          "texto": "três",
+          "inicio_s": 40.161,
+          "fim_s": 40.401
+        },
+        {
+          "texto": "horas",
+          "inicio_s": 40.461,
+          "fim_s": 40.722
+        },
+        {
+          "texto": "e",
+          "inicio_s": 40.762,
+          "fim_s": 40.782
+        },
+        {
+          "texto": "meia",
+          "inicio_s": 40.862,
+          "fim_s": 41.083
+        },
+        {
+          "texto": "depois",
+          "inicio_s": 41.724,
+          "fim_s": 42.105
+        },
+        {
+          "texto": "de",
+          "inicio_s": 42.145,
+          "fim_s": 42.205
+        },
+        {
+          "texto": "decolar",
+          "inicio_s": 42.245,
+          "fim_s": 42.686
+        },
+        {
+          "texto": "as",
+          "inicio_s": 43.327,
+          "fim_s": 43.447
+        },
+        {
+          "texto": "luzes",
+          "inicio_s": 43.527,
+          "fim_s": 43.828
+        },
+        {
+          "texto": "de",
+          "inicio_s": 43.848,
+          "fim_s": 43.928
+        },
+        {
+          "texto": "Paris",
+          "inicio_s": 43.968,
+          "fim_s": 44.329
+        },
+        {
+          "texto": "surgiram",
+          "inicio_s": 44.71,
+          "fim_s": 45.271
+        },
+        {
+          "texto": "na",
+          "inicio_s": 45.331,
+          "fim_s": 45.391
+        },
+        {
+          "texto": "neblina",
+          "inicio_s": 45.451,
+          "fim_s": 45.892
+        },
+        {
+          "texto": "consagrando",
+          "inicio_s": 46.453,
+          "fim_s": 47.154
+        },
+        {
+          "texto": "o",
+          "inicio_s": 47.275,
+          "fim_s": 47.295
+        },
+        {
+          "texto": "primeiro",
+          "inicio_s": 47.335,
+          "fim_s": 47.756
+        },
+        {
+          "texto": "voo",
+          "inicio_s": 47.836,
+          "fim_s": 48.116
+        },
+        {
+          "texto": "transatlântico",
+          "inicio_s": 48.216,
+          "fim_s": 49.018
+        },
+        {
+          "texto": "solo",
+          "inicio_s": 49.178,
+          "fim_s": 49.419
+        },
+        {
+          "texto": "da",
+          "inicio_s": 49.439,
+          "fim_s": 49.499
+        },
+        {
+          "texto": "história",
+          "inicio_s": 49.539,
+          "fim_s": 49.96
+        }
+      ]
+    }
+  ]
+}

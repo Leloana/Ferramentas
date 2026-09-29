@@ -17,19 +17,27 @@ git push origin main
 ### Passo 1: Atualizar o Repositório Local
 Abra o terminal na pasta do projeto e puxe as novidades:
 ```bash
-cd /caminho/do/projeto/tts_platform_pt
+cd C:\Users\<usuario>\Documents\Ferramentas\tts_platform_pt
 git pull origin main
 ```
 
 ---
 
-### Passo 2: Download dos Modelos Qwen-Image-2.1 (Apenas na 1ª vez)
-Execute o script automatizado com suporte a continuação de download (pesos INT8 `int8_convrot` otimizados para consumir ~8.5GB VRAM no ComfyUI, sem estourar os 12GB da 4070):
-```bash
-python3 scripts/download_qwen_models.py
+### Passo 2: Preparar o ComfyUI e baixar os modelos (Apenas na 1ª vez)
+
+> ⚠️ **O ComfyUI precisa estar na v0.37 ou mais nova** — versões anteriores não
+> reconhecem o Qwen-Image-2.1 nem os pesos `int8_convrot`. O passo a passo da
+> atualização (e a armadilha do `torch+cpu` que ela traz) está em
+> [`comfy/guia_execucao_qwen.md`](comfy/guia_execucao_qwen.md).
+
+Depois, baixe os pesos (~17GB, com retomada se a internet oscilar):
+```powershell
+python scripts\download_qwen_models.py
 ```
-> **Nota**: O script detecta automaticamente a instalação padrão do ComfyUI. Se seu ComfyUI estiver em um caminho customizado, use:
-> `python3 scripts/download_qwen_models.py --comfy-dir /caminho/para/ComfyUI`
+> **Nota**: O script detecta sozinho o ComfyUI Desktop — os modelos vão pra
+> `%LOCALAPPDATA%\Comfy-Desktop\ComfyUI-Shared\models`, e **não** pra pasta
+> `models` de dentro do install, que fica vazia. Caminho customizado:
+> `python scripts\download_qwen_models.py --comfy-dir "C:\caminho\para\ComfyUI-Shared"`
 
 ---
 
@@ -53,10 +61,10 @@ Criamos o orquestrador [`scripts/executar_projeto.py`](scripts/executar_projeto.
 #### A. Produzir o Vídeo Oficial (Video_11 — Miyamoto Musashi):
 ```bash
 # Parte 1: O Duelo na Ilha de Ganryujima (~50s)
-python3 scripts/executar_projeto.py Projetos/Video_11/musashi_duelo_ganryujima
+python scripts/executar_projeto.py Projetos/Video_11/musashi_duelo_ganryujima
 
 # Parte 2: O Golpe do Remo (~50s) - Reutiliza a consistência visual de Musashi
-python3 scripts/executar_projeto.py Projetos/Video_11/musashi_duelo_ganryujima_parte2
+python scripts/executar_projeto.py Projetos/Video_11/musashi_duelo_ganryujima_parte2
 ```
 
 #### B. Produzir Projetos do Acervo Histórico (`Projetos/ideias/`):
@@ -64,37 +72,37 @@ python3 scripts/executar_projeto.py Projetos/Video_11/musashi_duelo_ganryujima_p
 **🎨 Estilo Anime Cinematográfico (Makoto Shinkai / Wit Studio):**
 ```bash
 # Bruxas da Noite (1942) - Pilotos soviéticas de Po-2
-python3 scripts/executar_projeto.py Projetos/ideias/bruxas_da_noite_1942
+python scripts/executar_projeto.py Projetos/ideias/bruxas_da_noite_1942
 
 # Batalha das Termópilas (480 a.C.) - Leônidas e os 300
-python3 scripts/executar_projeto.py Projetos/ideias/batalha_das_termopilas_480ac
+python scripts/executar_projeto.py Projetos/ideias/batalha_das_termopilas_480ac
 
 # Samurai Negro Yasuke (1581) - Yasuke e Nobunaga
-python3 scripts/executar_projeto.py Projetos/ideias/samurai_negro_yasuke_1581
+python scripts/executar_projeto.py Projetos/ideias/samurai_negro_yasuke_1581
 
 # Tomoe Gozen (1183) - A lendária onna-musha
-python3 scripts/executar_projeto.py Projetos/ideias/tomoe_gozen_kurikara_1183
+python scripts/executar_projeto.py Projetos/ideias/tomoe_gozen_kurikara_1183
 
 # Carga dos Hussardos Alados (1683) - Batalha de Viena
-python3 scripts/executar_projeto.py Projetos/ideias/carga_dos_hussardos_1683
+python scripts/executar_projeto.py Projetos/ideias/carga_dos_hussardos_1683
 ```
 
 **🎥 Estilo Realista (Docudrama / Cinematografia Histórica):**
 ```bash
 # Mergulhadores de Chernobyl (1986)
-python3 scripts/executar_projeto.py Projetos/ideias/mergulhadores_de_chernobyl_1986
+python scripts/executar_projeto.py Projetos/ideias/mergulhadores_de_chernobyl_1986
 
 # Os Minutos Finais do Titanic (1912)
-python3 scripts/executar_projeto.py Projetos/ideias/minutos_finais_titanic_1912
+python scripts/executar_projeto.py Projetos/ideias/minutos_finais_titanic_1912
 
 # O Resgate de Dunkirk (1940)
-python3 scripts/executar_projeto.py Projetos/ideias/resgate_de_dunkirk_1940
+python scripts/executar_projeto.py Projetos/ideias/resgate_de_dunkirk_1940
 
 # Abertura da Tumba de Tutancâmon (1922)
-python3 scripts/executar_projeto.py Projetos/ideias/abertura_tumba_tutancamon_1922
+python scripts/executar_projeto.py Projetos/ideias/abertura_tumba_tutancamon_1922
 
 # O Voo Solo de Lindbergh (1927)
-python3 scripts/executar_projeto.py Projetos/ideias/voo_de_lindbergh_1927
+python scripts/executar_projeto.py Projetos/ideias/voo_de_lindbergh_1927
 ```
 
 ---

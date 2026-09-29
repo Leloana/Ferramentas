@@ -1,8 +1,26 @@
 {
-  "1": "A cinematic high-budget anime action screenshot of an elegant female samurai warrior standing atop a windy mountain peak at dawn, holding a curved naginata polearm as cherry blossom petals and morning mist sweep across the rugged landscape, beautiful digital anime background art in the style of Wit Studio, full-color single frame animation still.",
-  "2": "A wide dramatic anime establishing shot of the Genpei War in 12th-century Japan: opposing samurai armies with fluttering clan banners lining the mountain ridges of Kurikara under ominous dark storm clouds, arrows flying across the misty valley.",
-  "3": "A magnificent medium anime portrait of Tomoe Gozen, a legendary 24-year-old female samurai commander with long flowing black hair, fair skin, and fierce, unyielding amber eyes. She rides a powerful black warhorse wearing classical lacquered white-and-vermilion o-yoroi samurai armor, holding a tall curved naginata blade gleaming in the morning light, clean anime cel shading, full-color single frame animation still.",
-  "4": "A dynamic action anime screenshot: the female warrior from <image1> drawing back a giant asymmetrical yumi bamboo longbow at full gallop on her black steed, loosing an arrow with pinpoint precision through the mountain fog as her white silk battle robes billow behind her.",
-  "5": "An intense close-quarters combat anime shot: the female warrior from <image1> dismounting with supernatural agility, parrying a heavy enemy katana with her naginata and striking down an enemy general with lethal martial precision amidst flying sparks and autumn leaves.",
-  "6": "A poetic and timeless wide anime shot: Tomoe Gozen standing beside her black warhorse at twilight on the quiet battlefield overlooking a tranquil misty valley, sheathing a short tantō blade as the first evening star glows in the purple sky, honoring the legend of the greatest female samurai in history, full-color single frame animation still."
+  "1": [
+    "A cinematic anime action screenshot of an elegant female samurai standing on a windy mountain peak at dawn holding a curved naginata, cherry blossom petals and mist sweeping past her, full-color single frame anime movie still, cinematic lighting",
+    "An anime close-up of the naginata blade of the female samurai commander from <image1>, preserving her exact face, long flowing black hair and fierce amber eyes, in red laced lamellar armor, catching the first sunlight, her silhouette sharp against the pale sky, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "2": [
+    "A wide dramatic anime establishing shot of opposing samurai armies with clan banners lining mountain ridges under ominous storm clouds, arrows arcing overhead, full-color single frame anime movie still, cinematic lighting",
+    "An anime shot of mounted archers massing in a misty valley pass, horses stamping in the wet grass, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "3": [
+    "A magnificent medium anime portrait of Tomoe Gozen, a legendary 24 year old female samurai commander with long flowing black hair, fair skin and fierce amber eyes, riding a powerful black warhorse in red laced lamellar armor, full-color single frame anime movie still, cinematic lighting",
+    "An anime shot of the female samurai commander from <image1>, preserving her exact face, long flowing black hair and fierce amber eyes, in red laced lamellar armor, at the head of the vanguard, raising her naginata to signal the charge as banners snap behind her, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "4": [
+    "A dynamic action anime screenshot of the female samurai commander from <image1>, preserving her exact face, long flowing black hair and fierce amber eyes, in red laced lamellar armor, drawing a giant asymmetrical bamboo longbow at full gallop on her black steed and loosing an arrow through the mountain fog, full-color single frame anime movie still, cinematic lighting",
+    "An anime impact frame of an arrow punching through an enemy helmet crest as the fog parts around charging riders, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "5": [
+    "An intense close quarters anime combat shot of the female samurai commander from <image1>, preserving her exact face, long flowing black hair and fierce amber eyes, in red laced lamellar armor, dismounting with supernatural agility, parrying a heavy katana with her naginata and striking down an enemy general, full-color single frame anime movie still, cinematic lighting",
+    "A brutal anime action frame of a broken enemy helmet spinning through the air amid flying mud and sparks, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "6": [
+    "A poetic timeless wide anime shot of the female samurai commander from <image1>, preserving her exact face, long flowing black hair and fierce amber eyes, in red laced lamellar armor, standing beside her black warhorse at twilight on a quiet battlefield above a misty valley, sheathing a short blade as the first star appears, full-color single frame anime movie still, cinematic lighting",
+    "A serene anime shot of a lone warhorse and rider silhouetted on a ridge road at dusk, legend walking into history, full-color single frame anime movie still, cinematic lighting"
+  ]
 }

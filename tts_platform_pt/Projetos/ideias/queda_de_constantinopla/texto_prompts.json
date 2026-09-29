@@ -1,11 +1,38 @@
 {
-  "1": "A grand panoramic vista of Constantinople in the dawn of 1453: the ancient triple stone walls of Theodosius standing tall before a massive Ottoman siege encampment stretching to the horizon, filled with thousands of smoking campfires beside the Sea of Marmara.",
-  "2": "A wide cinematic shot of the iconic Theodosian land walls under an overcast morning sky, Byzantine gold double-headed eagle standards fluttering on the parapets while morning sunbeams pierce through storm clouds.",
-  "3": "A dramatic wide battle photograph of a colossal 15th-century bronze Ottoman siege bombard firing a heavy stone cannonball, producing a massive burst of orange flame and billowing dark gunpowder smoke against the crumbling stone masonry.",
-  "4": "A solemn medium shot inside the besieged city: a resolute line of Byzantine and Genoese soldiers in dented iron armor and chainmail looking up toward the parapets with steadfast courage in the cool morning mist.",
-  "5": "A medium portrait shot of Emperor Constantine XI Palaiologos standing on the stone ramparts of the Saint Romanus wall. A rugged 49-year-old Byzantine emperor with trimmed graying beard and fierce dark eyes, he wears ornate Byzantine steel and bronze lamellar armor over a crimson tunic, with a crimson cloak fastened by a gold double-headed eagle brooch, holding a double-edged steel sword against a smoking battlefield sky in sharp 35mm film photography.",
-  "6": "A dynamic action photograph of medieval defense: streams of burning liquid Greek fire cascading down the stone fortifications in dazzling streaks of orange flame, repelling siege towers in the smoke-filled dark.",
-  "7": "A dramatic close-up of ancient Byzantine stone wall blocks cracking and vibrating violently under the concussive shock of heavy artillery impacts, mortar crumbling into cascading clouds of gray stone dust.",
-  "8": "A monumental wide shot showing a major section of the Saint Romanus gate collapsing inward with a thunderous roar, sending up enormous clouds of dust and flying masonry to reveal a massive breach in the fortifications.",
-  "9": "A low-angle cinematic shot looking through the smoking wall breach, where the dark silhouettes of advancing Ottoman Janissaries charge forward with curved swords and red banners through the settling dust."
+  "1": [
+    "A grand panoramic photograph of Constantinople at dawn in 1453, the ancient triple stone walls standing before a vast ottoman siege encampment stretching to the horizon with thousands of smoking campfires, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of ottoman siege lines at first light, ranks of janissaries and horsetail standards waiting in the cold mist, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "2": [
+    "A wide cinematic photograph of the theodosian land walls under an overcast morning sky, byzantine double headed eagle banners on the parapets as sunbeams pierce the clouds, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of worn defenders patrolling a narrow wall walk, repairing gabions of earth and timber between the towers, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "3": [
+    "A dramatic wide photograph of a colossal bronze ottoman siege bombard firing a heavy stone ball, a burst of orange flame and dark powder smoke against the walls, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of oxen teams and gun crews hauling an enormous bronze cannon barrel through churned mud toward the siege line, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "4": [
+    "A solemn medium photograph inside the besieged city of a thin line of byzantine and genoese soldiers in dented armor looking up toward the parapets in the morning mist, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of city women and monks carrying baskets of stones and water up a rampart stair to the defenders, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "5": [
+    "A medium portrait photograph of Emperor Constantine the eleventh on the stone ramparts, a rugged 49 year old byzantine emperor with a trimmed graying beard and fierce dark eyes, wearing ornate lamellar armor over a crimson tunic, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of the byzantine emperor from <image1>, preserving his exact face, trimmed graying beard and fierce dark eyes, in ornate lamellar armor over a crimson tunic, directing the defense at night by torchlight, pointing along the wall as messengers run past him, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "6": [
+    "A dynamic photograph of burning greek fire cascading down stone fortifications in streaks of orange flame, repelling siege towers in the smoke filled dark, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of exhausted defenders slumped against broken masonry at dawn, bandaged hands still gripping spears, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "7": [
+    "A dramatic close-up photograph of ancient stone wall blocks cracking under the shock of heavy artillery, mortar crumbling into clouds of gray dust, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of a bronze cannonball tearing through a parapet, splinters and stone shards flying across the wall walk, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "8": [
+    "A monumental wide photograph of a major section of the Saint Romanus gate collapsing inward in a thunderous cloud of dust and flying masonry, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph from inside the city of the gate tower folding into rubble while defenders scramble back from the falling stone, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "9": [
+    "A low angle cinematic photograph through the smoking breach where dark silhouettes of advancing janissaries charge forward with curved swords and red banners, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A tense photograph of the byzantine emperor from <image1>, preserving his exact face, trimmed graying beard and fierce dark eyes, in ornate lamellar armor over a crimson tunic, turning toward the breach with his sword drawn as the enemy tide pours in, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ]
 }

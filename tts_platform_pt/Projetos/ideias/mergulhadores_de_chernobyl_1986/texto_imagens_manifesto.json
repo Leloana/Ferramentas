@@ -1,0 +1,92 @@
+[
+  {
+    "frase": 1,
+    "plano": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "A cinematic macro photograph of black murky water rippling inside a dark industrial concrete basement, a single trembling flashlight beam cutting through floating debris in the haze, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00150_.png"
+  },
+  {
+    "frase": 1,
+    "plano": 2,
+    "arquivo": "texto_01b.png",
+    "prompt_final": "A tense photograph of the soviet engineer from <image1>, preserving his exact pale face and focused dark eyes, stepping down a submerged concrete stair into black water in his heavy rubber diving suit, ripples spreading into the dark, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00084_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\mergulhadores_de_chernobyl_1986\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 2,
+    "plano": 1,
+    "arquivo": "texto_02.png",
+    "prompt_final": "A wide dramatic exterior photograph of the ruins of reactor number four at Chernobyl in May 1986, thick smoke rising from the fractured core into an overcast sky, military cranes and rescue vehicles around the rubble, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00151_.png"
+  },
+  {
+    "frase": 2,
+    "plano": 2,
+    "arquivo": "texto_02b.png",
+    "prompt_final": "A documentary photograph of a dosimeter needle pinned at the end of its scale in a gloved hand, the ruined reactor blurred behind it, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00152_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 1,
+    "arquivo": "texto_03.png",
+    "prompt_final": "A conceptual wide photograph beneath a damaged reactor, glowing molten radioactive corium burning through a cracked concrete slab above dark submerged reservoirs of stagnant water, ominous red glow, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00153_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 2,
+    "arquivo": "texto_03b.png",
+    "prompt_final": "A cross section style photograph of flooded basement corridors under the reactor, still black water reflecting dim emergency lamps, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00154_.png"
+  },
+  {
+    "frase": 4,
+    "plano": 1,
+    "arquivo": "texto_04.png",
+    "prompt_final": "A medium portrait photograph of Alexei Ananenko, a courageous 26 year old soviet mechanical engineer with a determined pale face and focused dark eyes, wearing a heavy vintage black rubber diving suit with a respirator mask resting on his chest, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00149_.png"
+  },
+  {
+    "frase": 4,
+    "plano": 2,
+    "arquivo": "texto_04b.png",
+    "prompt_final": "A photograph of three volunteers in rubber diving suits checking each other's straps in a concrete corridor lit by a single caged bulb, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00155_.png"
+  },
+  {
+    "frase": 5,
+    "plano": 1,
+    "arquivo": "texto_05.png",
+    "prompt_final": "An intense visceral photograph of the soviet engineer from <image1>, preserving his exact pale face and focused dark eyes, in a heavy black rubber diving suit with a respirator mask, submerged chest deep in dark murky water inside a flooded pipe corridor, feeling along enormous rusted valves with heavy rubber gloves as his flashlight flickers, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00085_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\mergulhadores_de_chernobyl_1986\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 5,
+    "plano": 2,
+    "arquivo": "texto_05b.png",
+    "prompt_final": "A claustrophobic photograph of a failing flashlight beam sweeping across submerged pipes and dripping concrete in total darkness, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00156_.png"
+  },
+  {
+    "frase": 6,
+    "plano": 1,
+    "arquivo": "texto_06.png",
+    "prompt_final": "A heroic low angle photograph of the soviet engineer from <image1>, preserving his exact pale face and focused dark eyes, in a heavy black rubber diving suit with a respirator mask, and his companions forcing a massive iron valve wheel open while black water drains rapidly around their boots, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00086_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\mergulhadores_de_chernobyl_1986\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 6,
+    "plano": 2,
+    "arquivo": "texto_06b.png",
+    "prompt_final": "A quiet photograph of an emptied reservoir chamber, wet concrete floor steaming faintly under emergency lights after the water is gone, shot on 35mm film, natural grain, cinematic color grading, photorealistic, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00157_.png"
+  }
+]

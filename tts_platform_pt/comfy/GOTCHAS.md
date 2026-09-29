@@ -350,3 +350,133 @@ tone, not a statue` / `natural horse coats, not statues`. Ou seja, o
 reforço de material tem que ser aplicado ao objeto certo (armadura, arma,
 arreio) e não ao sujeito (pessoa, animal) — reforçar demais em cima do
 sujeito também tende a "vazar" pra pele/pelo.
+
+## 12. Qwen-Image-2.1 exige ComfyUI >= v0.37 — em versão antiga o peso nem é reconhecido
+
+Descoberto ao migrar a máquina da 4070 pro Qwen-Image-2.1 (o ComfyUI Desktop
+estava em **v0.26.0**, de junho/2026). Dois requisitos são novos e só aparecem na
+v0.37:
+
+* `comfy/supported_models.py` precisa ter a classe **`QwenImage21`** (a `QwenImage`
+  antiga é o Qwen-Image 1.x e não serve);
+* o `comfy-kitchen` empacotado precisa expor **`dequantize_int8_convrot_weight`**
+  (aparece no log de boot, na linha `Found comfy_kitchen backend cuda: {...}`), se
+  não os pesos `int8_convrot` não carregam.
+
+O app Desktop é só um invólucro de um clone git comum, então a atualização é
+`git fetch --tags` + `git checkout` da tag + `pip install -r requirements.txt` no
+`.venv` de `ComfyUI-Installs\ComfyUI\ComfyUI`. Comandos exatos no
+[`guia_execucao_qwen.md`](guia_execucao_qwen.md).
+
+## 13. `pip install -r requirements.txt` no ComfyUI derruba a GPU (instala `torch+cpu`)
+
+O `requirements.txt` do ComfyUI lista `torch` **sem pin e sem `--index-url`**. No
+Windows a wheel correspondente no PyPI é CPU-only, então atualizar as dependências
+desinstala o `torch==2.10.0+cu130` e põe um `torch==2.14.0+cpu` no lugar — o
+ComfyUI sobe normalmente, só que sem CUDA (`torch.cuda.is_available() == False`) e
+tudo vira lentidão inexplicável.
+
+Sempre conferir depois de mexer nas dependências:
+
+```powershell
+& "$C\.venv\Scripts\python.exe" -c "import torch; print(torch.__version__, torch.cuda.is_available())"
+```
+
+Se tiver voltado pro CPU, reinstale pelo índice do PyTorch (`--index-url
+https://download.pytorch.org/whl/cu130`). Reabrir o app Desktop também conserta:
+ele valida o ambiente contra o `manifest.json` (que fixa `torch_version`) e
+restaura a wheel CUDA sozinho.
+
+## 14. A frase-âncora não pode se referenciar no `texto_referencia.json`
+
+O `Video_11/musashi_duelo_ganryujima` veio com `{"6": ".../texto_06.png", "9":
+".../texto_06.png"}`: a frase 6 é justamente a âncora (prompt t2i puro que
+apresenta o Musashi) e estava listada como referência de si mesma. Resultado:
+`gerar_imagens.py` abortava a rodada inteira antes de gerar qualquer coisa, com
+`Imagem de referência da frase 6 não encontrada`.
+
+Regra: entram no `texto_referencia.json` **apenas** as frases cujo prompt usa
+`<image1>`, e sempre com índice maior que o da âncora (ou apontando pra imagem de
+um projeto já produzido, como faz a Parte 2 ao reusar o Musashi da Parte 1).
+
+Junto disso, `gerar_imagens.py` passou a checar a existência do arquivo de
+referência **na hora de usar**, e não mais toda de uma vez no começo — assim a
+âncora gerada na própria rodada (frase 6) serve de `<image1>` pras frases
+seguintes (frase 9) sem precisar de duas passadas.
+
+## 15. `POST /free` devolve a VRAM sem fechar o ComfyUI
+
+Com o Qwen-Image-2.1 int8 o ComfyUI fica com ~9,6 GB de VRAM ocupados mesmo
+ocioso (pesos em cache), e o pico durante a geração é ~10,4 GB dos 12 GB da 4070 —
+não sobra espaço pro XTTS-v2. Pra alternar entre as etapas sem matar o processo:
+
+```powershell
+curl.exe -X POST http://127.0.0.1:8188/free -H "Content-Type: application/json" -d '{\"unload_models\":true,\"free_memory\":true}'
+```
+
+Medido nesta máquina: 9,6 GB → 1,1 GB em ~3 s. O custo é a próxima imagem recarregar
+os pesos (~27 s em vez de ~15 s).
+
+## 16. Continuidade só existe onde tem âncora — e cada personagem precisa da sua
+
+Sintoma no `Video_11` Parte 2: o vídeo parecia ter dois atores diferentes fazendo o
+mesmo papel, e algumas imagens pareciam "mais chapadas" que outras. A causa não era
+o modelo: o `texto_referencia.json` só tinha 3 das 8 frases, e todas apontavam pra
+âncora do **Musashi**. Os outros 5 planos eram txt2img puro — incluindo todos os
+planos do **Kojiro**, que por isso era redesenhado do zero a cada imagem (cabelo,
+quimono e até idade mudando de plano pra plano).
+
+Regra que ficou: **um plano com rosto = uma âncora**. Todo personagem recorrente
+ganha a própria imagem-âncora (um txt2img caprichado, de preferência um plano médio
+bem iluminado), e todos os planos em que ele aparece apontam pra ela. Planos sem
+rosto (objeto, paisagem, multidão ao longe) continuam txt2img puro.
+
+Na Parte 2 isso virou: âncora do Musashi + âncora do Kojiro, ambas vindas da Parte 1
+— o que também amarra as duas partes visualmente.
+
+## 17. `<image1>` sem imagem (e imagem sem `<image1>`) — agora o script recusa
+
+A frase 8 da Parte 2 tinha prompt pedindo *the samurai from `<image1>`* sem nenhuma
+referência anexada: o modelo inventou um personagem novo e ninguém percebeu até o
+vídeo montado. O inverso (referência anexada sem a tag no prompt) é igualmente
+silencioso — o Qwen simplesmente ignora a imagem (gotcha 9 da análise).
+
+`gerar_imagens.py` agora valida os dois casos antes de gerar qualquer imagem e
+aborta listando frase e plano. A checagem só roda no caminho Qwen: o i2i do
+Krea2/Z-Image é img2img por denoise e não usa tag nenhuma.
+
+## 18. O i2i com referência NÃO perde detalhe — quem perde é o prompt fraco
+
+Medido com o mesmo prompt e a mesma seed (4242), plano de ação do Musashi:
+
+| Caminho | Tempo | Resultado |
+| :--- | ---: | :--- |
+| A — txt2img puro | 21 s | dinâmico e detalhado, mas personagem redesenhado |
+| B — i2i com `<image1>` | 33 s | mesmo nível de detalhe **e** rosto fiel à âncora |
+| C — i2i + LoRA `Qwen2.1_Anime_consistency` | 33 s | igual ao B, traço de rosto um pouco mais limpo |
+| D — i2i com 35 passos (em vez de 25) | 39 s | indistinguível do B, 20% mais caro |
+
+Ou seja: a impressão de "imagem com referência sai lavada" vinha dos prompts — os
+planos com referência do projeto eram os calmos (falando, rezando, reverência) e os
+sem referência eram os de ação (explosão, salto, impacto). Prompt calmo dá imagem
+calma, com ou sem referência. O padrão de i2i do `executar_projeto.py` passou a ser
+o workflow com LoRA (`comfy/image_qwen_image_2_1_lora_i2i.json`) por causa do C, e
+os passos continuam em 25 por causa do D.
+
+Detalhe que confundia a leitura: `--referencia-denoise` **não tem efeito nenhum no
+Qwen-Image-2.1** (a referência entra como condicionamento de edição, com o sampler
+em denoise 1.0). O valor 0.5 era herança do img2img do Krea2 e ainda ia parar no
+manifesto de imagens, dando a impressão errada de que a imagem tinha saído de um
+denoise parcial. Agora só é registrado quando o caminho realmente usa denoise.
+
+## 19. Vários planos (cortes) por frase
+
+`texto_prompts.json` aceita uma lista no lugar da string: `{"3": ["plano A", "plano
+B"]}` gera `texto_03.png` e `texto_03b.png`, e `montar_video.py` divide o tempo da
+frase entre eles (a frase de ~5 s vira dois cortes de ~2,5 s). `texto_referencia.json`
+acompanha: string vale pra todos os planos da frase, lista escolhe por plano (`null`
+= txt2img puro).
+
+O formato antigo (uma string por frase) continua valendo — projeto antigo não precisa
+de nada. E a ordem de geração não importa mais: quem serve de âncora pra outro plano
+é gerado primeiro, então a frase 1 pode reusar o rosto definido num plano da frase 6.

@@ -1,0 +1,1512 @@
+{
+  "gerado_em": "2026-08-13T21:34:03",
+  "roteiro": "Projetos\\ideias\\invencoes_famosas_da_vinci\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 106.9,
+  "texto_usado": "Leonardo da Vinci inventou o tanque de guerra. Sério — quase quinhentos anos antes dele existir de verdade. Nos cadernos dele, cheios de anotações escritas ao contrário, apareciam projetos que pareciam ficção científica pro século quinze. Um deles era um veículo blindado, redondo como uma casca de tartaruga, coberto de canhões apontando pra todos os lados — a lógica por trás do tanque moderno. Do lado das armas, ele também projetou uma metralhadora primitiva: dezenas de canos organizados em leque, disparando em sequência pra um único atirador não precisar recarregar toda hora. Outro projeto era uma máquina voadora com asas articuladas, inspirada no movimento de morcegos, pensada pra erguer uma pessoa no ar batendo as próprias asas com o corpo inteiro. Da Vinci também desenhou um pára-quedas piramidal — testado de verdade só muito depois, com as proporções quase idênticas às que ele calculou, e funcionou. Tem ainda o carrinho autopropelido: uma espécie de carroça sem cavalo, movida só por molas gigantes enroladas por dentro, capaz de andar sozinha por um trecho curto. Isso é quase três séculos antes do primeiro carro de verdade rodar sem tração animal. E tem o cavaleiro mecânico: uma armadura vazia, movida por polias e cabos escondidos por dentro, capaz de sentar, levantar os braços e virar a cabeça sozinha. Nenhuma dessas máquinas saiu do papel enquanto ele viveu — faltava material, motor, tecnologia pra dar conta da própria ideia. Mas quando alguém finalmente tentou construir cada uma delas, séculos depois, quase todas funcionaram, quase do jeito exato que ele tinha desenhado. Da Vinci não deixou máquinas prontas. Ele deixou a lógica por trás delas, esperando o mundo alcançar o que a cabeça dele já tinha resolvido séculos antes.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Leonardo da Vinci inventou o tanque de guerra.",
+      "inicio_s": 0.15,
+      "fim_s": 2.87,
+      "palavras": [
+        {
+          "texto": "Leonardo",
+          "inicio_s": 0.19,
+          "fim_s": 0.714
+        },
+        {
+          "texto": "da",
+          "inicio_s": 0.754,
+          "fim_s": 0.815
+        },
+        {
+          "texto": "Vinci",
+          "inicio_s": 0.895,
+          "fim_s": 1.198
+        },
+        {
+          "texto": "inventou",
+          "inicio_s": 1.419,
+          "fim_s": 1.842
+        },
+        {
+          "texto": "o",
+          "inicio_s": 1.903,
+          "fim_s": 1.923
+        },
+        {
+          "texto": "tanque",
+          "inicio_s": 2.024,
+          "fim_s": 2.326
+        },
+        {
+          "texto": "de",
+          "inicio_s": 2.346,
+          "fim_s": 2.427
+        },
+        {
+          "texto": "guerra",
+          "inicio_s": 2.467,
+          "fim_s": 2.749
+        }
+      ]
+    },
+    {
+      "texto": "Sério — quase quinhentos anos antes dele existir de verdade.",
+      "inicio_s": 3.22,
+      "fim_s": 7.1,
+      "palavras": [
+        {
+          "texto": "Sério",
+          "inicio_s": 3.321,
+          "fim_s": 3.682
+        },
+        {
+          "texto": "quase",
+          "inicio_s": 4.165,
+          "fim_s": 4.466
+        },
+        {
+          "texto": "quinhentos",
+          "inicio_s": 4.507,
+          "fim_s": 5.029
+        },
+        {
+          "texto": "anos",
+          "inicio_s": 5.13,
+          "fim_s": 5.391
+        },
+        {
+          "texto": "antes",
+          "inicio_s": 5.472,
+          "fim_s": 5.693
+        },
+        {
+          "texto": "dele",
+          "inicio_s": 5.733,
+          "fim_s": 5.974
+        },
+        {
+          "texto": "existir",
+          "inicio_s": 6.055,
+          "fim_s": 6.497
+        },
+        {
+          "texto": "de",
+          "inicio_s": 6.537,
+          "fim_s": 6.597
+        },
+        {
+          "texto": "verdade",
+          "inicio_s": 6.618,
+          "fim_s": 7.04
+        }
+      ]
+    },
+    {
+      "texto": "Nos cadernos dele, cheios de anotações escritas ao contrário, apareciam projetos que pareciam ficção científica pro século quinze.",
+      "inicio_s": 7.45,
+      "fim_s": 14.35,
+      "palavras": [
+        {
+          "texto": "Nos",
+          "inicio_s": 7.47,
+          "fim_s": 7.57
+        },
+        {
+          "texto": "cadernos",
+          "inicio_s": 7.61,
+          "fim_s": 8.032
+        },
+        {
+          "texto": "dele",
+          "inicio_s": 8.072,
+          "fim_s": 8.313
+        },
+        {
+          "texto": "cheios",
+          "inicio_s": 8.714,
+          "fim_s": 9.035
+        },
+        {
+          "texto": "de",
+          "inicio_s": 9.055,
+          "fim_s": 9.115
+        },
+        {
+          "texto": "anotações",
+          "inicio_s": 9.135,
+          "fim_s": 9.596
+        },
+        {
+          "texto": "escritas",
+          "inicio_s": 9.636,
+          "fim_s": 10.058
+        },
+        {
+          "texto": "ao",
+          "inicio_s": 10.078,
+          "fim_s": 10.138
+        },
+        {
+          "texto": "contrário",
+          "inicio_s": 10.158,
+          "fim_s": 10.559
+        },
+        {
+          "texto": "apareciam",
+          "inicio_s": 10.98,
+          "fim_s": 11.422
+        },
+        {
+          "texto": "projetos",
+          "inicio_s": 11.442,
+          "fim_s": 11.883
+        },
+        {
+          "texto": "que",
+          "inicio_s": 11.903,
+          "fim_s": 11.983
+        },
+        {
+          "texto": "pareciam",
+          "inicio_s": 12.023,
+          "fim_s": 12.424
+        },
+        {
+          "texto": "ficção",
+          "inicio_s": 12.485,
+          "fim_s": 12.866
+        },
+        {
+          "texto": "científica",
+          "inicio_s": 12.946,
+          "fim_s": 13.488
+        },
+        {
+          "texto": "pro",
+          "inicio_s": 13.528,
+          "fim_s": 13.648
+        },
+        {
+          "texto": "século",
+          "inicio_s": 13.688,
+          "fim_s": 13.969
+        },
+        {
+          "texto": "quinze",
+          "inicio_s": 14.009,
+          "fim_s": 14.27
+        }
+      ]
+    },
+    {
+      "texto": "Um deles era um veículo blindado, redondo como uma casca de tartaruga, coberto de canhões apontando pra todos os lados — a lógica por trás do tanque moderno.",
+      "inicio_s": 14.7,
+      "fim_s": 24.7,
+      "palavras": [
+        {
+          "texto": "Um",
+          "inicio_s": 14.74,
+          "fim_s": 14.82
+        },
+        {
+          "texto": "deles",
+          "inicio_s": 14.86,
+          "fim_s": 15.101
+        },
+        {
+          "texto": "era",
+          "inicio_s": 15.141,
+          "fim_s": 15.241
+        },
+        {
+          "texto": "um",
+          "inicio_s": 15.241,
+          "fim_s": 15.301
+        },
+        {
+          "texto": "veículo",
+          "inicio_s": 15.321,
+          "fim_s": 15.722
+        },
+        {
+          "texto": "blindado",
+          "inicio_s": 15.762,
+          "fim_s": 16.263
+        },
+        {
+          "texto": "redondo",
+          "inicio_s": 16.684,
+          "fim_s": 17.105
+        },
+        {
+          "texto": "como",
+          "inicio_s": 17.345,
+          "fim_s": 17.486
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 17.526,
+          "fim_s": 17.626
+        },
+        {
+          "texto": "casca",
+          "inicio_s": 17.766,
+          "fim_s": 18.067
+        },
+        {
+          "texto": "de",
+          "inicio_s": 18.107,
+          "fim_s": 18.187
+        },
+        {
+          "texto": "tartaruga",
+          "inicio_s": 18.227,
+          "fim_s": 18.728
+        },
+        {
+          "texto": "coberto",
+          "inicio_s": 19.149,
+          "fim_s": 19.61
+        },
+        {
+          "texto": "de",
+          "inicio_s": 19.63,
+          "fim_s": 19.71
+        },
+        {
+          "texto": "canhões",
+          "inicio_s": 19.75,
+          "fim_s": 20.151
+        },
+        {
+          "texto": "apontando",
+          "inicio_s": 20.411,
+          "fim_s": 20.872
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 20.912,
+          "fim_s": 21.013
+        },
+        {
+          "texto": "todos",
+          "inicio_s": 21.133,
+          "fim_s": 21.433
+        },
+        {
+          "texto": "os",
+          "inicio_s": 21.474,
+          "fim_s": 21.554
+        },
+        {
+          "texto": "lados",
+          "inicio_s": 21.614,
+          "fim_s": 21.934
+        },
+        {
+          "texto": "a",
+          "inicio_s": 22.415,
+          "fim_s": 22.435
+        },
+        {
+          "texto": "lógica",
+          "inicio_s": 22.536,
+          "fim_s": 22.876
+        },
+        {
+          "texto": "por",
+          "inicio_s": 22.896,
+          "fim_s": 23.017
+        },
+        {
+          "texto": "trás",
+          "inicio_s": 23.077,
+          "fim_s": 23.357
+        },
+        {
+          "texto": "do",
+          "inicio_s": 23.718,
+          "fim_s": 23.798
+        },
+        {
+          "texto": "tanque",
+          "inicio_s": 23.898,
+          "fim_s": 24.159
+        },
+        {
+          "texto": "moderno",
+          "inicio_s": 24.199,
+          "fim_s": 24.62
+        }
+      ]
+    },
+    {
+      "texto": "Do lado das armas, ele também projetou uma metralhadora primitiva: dezenas de canos organizados em leque, disparando em sequência pra um único atirador não precisar recarregar toda hora.",
+      "inicio_s": 25.05,
+      "fim_s": 36.59,
+      "palavras": [
+        {
+          "texto": "Do",
+          "inicio_s": 25.07,
+          "fim_s": 25.15
+        },
+        {
+          "texto": "lado",
+          "inicio_s": 25.21,
+          "fim_s": 25.431
+        },
+        {
+          "texto": "das",
+          "inicio_s": 25.471,
+          "fim_s": 25.611
+        },
+        {
+          "texto": "armas",
+          "inicio_s": 25.711,
+          "fim_s": 25.992
+        },
+        {
+          "texto": "ele",
+          "inicio_s": 26.492,
+          "fim_s": 26.613
+        },
+        {
+          "texto": "também",
+          "inicio_s": 26.653,
+          "fim_s": 26.893
+        },
+        {
+          "texto": "projetou",
+          "inicio_s": 26.953,
+          "fim_s": 27.314
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 27.334,
+          "fim_s": 27.434
+        },
+        {
+          "texto": "metralhadora",
+          "inicio_s": 27.474,
+          "fim_s": 28.075
+        },
+        {
+          "texto": "primitiva",
+          "inicio_s": 28.095,
+          "fim_s": 28.616
+        },
+        {
+          "texto": "dezenas",
+          "inicio_s": 29.177,
+          "fim_s": 29.698
+        },
+        {
+          "texto": "de",
+          "inicio_s": 29.738,
+          "fim_s": 29.838
+        },
+        {
+          "texto": "canos",
+          "inicio_s": 29.918,
+          "fim_s": 30.219
+        },
+        {
+          "texto": "organizados",
+          "inicio_s": 30.279,
+          "fim_s": 30.96
+        },
+        {
+          "texto": "em",
+          "inicio_s": 31.02,
+          "fim_s": 31.08
+        },
+        {
+          "texto": "leque",
+          "inicio_s": 31.161,
+          "fim_s": 31.521
+        },
+        {
+          "texto": "disparando",
+          "inicio_s": 31.942,
+          "fim_s": 32.683
+        },
+        {
+          "texto": "em",
+          "inicio_s": 32.723,
+          "fim_s": 32.783
+        },
+        {
+          "texto": "sequência",
+          "inicio_s": 32.844,
+          "fim_s": 33.284
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 33.304,
+          "fim_s": 33.425
+        },
+        {
+          "texto": "um",
+          "inicio_s": 33.465,
+          "fim_s": 33.545
+        },
+        {
+          "texto": "único",
+          "inicio_s": 33.685,
+          "fim_s": 33.925
+        },
+        {
+          "texto": "atirador",
+          "inicio_s": 33.965,
+          "fim_s": 34.466
+        },
+        {
+          "texto": "não",
+          "inicio_s": 34.587,
+          "fim_s": 34.707
+        },
+        {
+          "texto": "precisar",
+          "inicio_s": 34.767,
+          "fim_s": 35.228
+        },
+        {
+          "texto": "recarregar",
+          "inicio_s": 35.288,
+          "fim_s": 35.849
+        },
+        {
+          "texto": "toda",
+          "inicio_s": 35.989,
+          "fim_s": 36.289
+        },
+        {
+          "texto": "hora",
+          "inicio_s": 36.33,
+          "fim_s": 36.51
+        }
+      ]
+    },
+    {
+      "texto": "Outro projeto era uma máquina voadora com asas articuladas, inspirada no movimento de morcegos, pensada pra erguer uma pessoa no ar batendo as próprias asas com o corpo inteiro.",
+      "inicio_s": 36.94,
+      "fim_s": 46.46,
+      "palavras": [
+        {
+          "texto": "Outro",
+          "inicio_s": 37.0,
+          "fim_s": 37.201
+        },
+        {
+          "texto": "projeto",
+          "inicio_s": 37.221,
+          "fim_s": 37.722
+        },
+        {
+          "texto": "era",
+          "inicio_s": 37.882,
+          "fim_s": 37.982
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 37.982,
+          "fim_s": 38.082
+        },
+        {
+          "texto": "máquina",
+          "inicio_s": 38.122,
+          "fim_s": 38.463
+        },
+        {
+          "texto": "voadora",
+          "inicio_s": 38.503,
+          "fim_s": 38.984
+        },
+        {
+          "texto": "com",
+          "inicio_s": 39.064,
+          "fim_s": 39.165
+        },
+        {
+          "texto": "asas",
+          "inicio_s": 39.265,
+          "fim_s": 39.465
+        },
+        {
+          "texto": "articuladas",
+          "inicio_s": 39.505,
+          "fim_s": 40.127
+        },
+        {
+          "texto": "inspirada",
+          "inicio_s": 40.407,
+          "fim_s": 40.928
+        },
+        {
+          "texto": "no",
+          "inicio_s": 40.968,
+          "fim_s": 41.009
+        },
+        {
+          "texto": "movimento",
+          "inicio_s": 41.049,
+          "fim_s": 41.449
+        },
+        {
+          "texto": "de",
+          "inicio_s": 41.47,
+          "fim_s": 41.53
+        },
+        {
+          "texto": "morcegos",
+          "inicio_s": 41.55,
+          "fim_s": 42.051
+        },
+        {
+          "texto": "pensada",
+          "inicio_s": 42.311,
+          "fim_s": 42.772
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 42.792,
+          "fim_s": 42.913
+        },
+        {
+          "texto": "erguer",
+          "inicio_s": 42.953,
+          "fim_s": 43.193
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 43.233,
+          "fim_s": 43.313
+        },
+        {
+          "texto": "pessoa",
+          "inicio_s": 43.353,
+          "fim_s": 43.674
+        },
+        {
+          "texto": "no",
+          "inicio_s": 43.714,
+          "fim_s": 43.774
+        },
+        {
+          "texto": "ar",
+          "inicio_s": 43.875,
+          "fim_s": 43.975
+        },
+        {
+          "texto": "batendo",
+          "inicio_s": 44.315,
+          "fim_s": 44.656
+        },
+        {
+          "texto": "as",
+          "inicio_s": 44.676,
+          "fim_s": 44.736
+        },
+        {
+          "texto": "próprias",
+          "inicio_s": 44.817,
+          "fim_s": 45.177
+        },
+        {
+          "texto": "asas",
+          "inicio_s": 45.278,
+          "fim_s": 45.558
+        },
+        {
+          "texto": "com",
+          "inicio_s": 45.598,
+          "fim_s": 45.718
+        },
+        {
+          "texto": "o",
+          "inicio_s": 45.759,
+          "fim_s": 45.779
+        },
+        {
+          "texto": "corpo",
+          "inicio_s": 45.839,
+          "fim_s": 46.039
+        },
+        {
+          "texto": "inteiro",
+          "inicio_s": 46.079,
+          "fim_s": 46.4
+        }
+      ]
+    },
+    {
+      "texto": "Da Vinci também desenhou um pára-quedas piramidal — testado de verdade só muito depois, com as proporções quase idênticas às que ele calculou, e funcionou.",
+      "inicio_s": 46.81,
+      "fim_s": 56.09,
+      "palavras": [
+        {
+          "texto": "Da",
+          "inicio_s": 46.85,
+          "fim_s": 46.91
+        },
+        {
+          "texto": "Vinci",
+          "inicio_s": 46.99,
+          "fim_s": 47.291
+        },
+        {
+          "texto": "também",
+          "inicio_s": 47.331,
+          "fim_s": 47.552
+        },
+        {
+          "texto": "desenhou",
+          "inicio_s": 47.592,
+          "fim_s": 47.932
+        },
+        {
+          "texto": "um",
+          "inicio_s": 47.952,
+          "fim_s": 47.993
+        },
+        {
+          "texto": "pára-quedas",
+          "inicio_s": 48.113,
+          "fim_s": 48.694
+        },
+        {
+          "texto": "piramidal",
+          "inicio_s": 48.734,
+          "fim_s": 49.195
+        },
+        {
+          "texto": "testado",
+          "inicio_s": 49.496,
+          "fim_s": 49.937
+        },
+        {
+          "texto": "de",
+          "inicio_s": 49.957,
+          "fim_s": 50.017
+        },
+        {
+          "texto": "verdade",
+          "inicio_s": 50.057,
+          "fim_s": 50.458
+        },
+        {
+          "texto": "só",
+          "inicio_s": 50.538,
+          "fim_s": 50.618
+        },
+        {
+          "texto": "muito",
+          "inicio_s": 50.738,
+          "fim_s": 50.959
+        },
+        {
+          "texto": "depois",
+          "inicio_s": 50.999,
+          "fim_s": 51.38
+        },
+        {
+          "texto": "com",
+          "inicio_s": 51.721,
+          "fim_s": 51.841
+        },
+        {
+          "texto": "as",
+          "inicio_s": 51.861,
+          "fim_s": 51.941
+        },
+        {
+          "texto": "proporções",
+          "inicio_s": 51.981,
+          "fim_s": 52.502
+        },
+        {
+          "texto": "quase",
+          "inicio_s": 52.623,
+          "fim_s": 52.923
+        },
+        {
+          "texto": "idênticas",
+          "inicio_s": 52.983,
+          "fim_s": 53.545
+        },
+        {
+          "texto": "às",
+          "inicio_s": 53.865,
+          "fim_s": 53.965
+        },
+        {
+          "texto": "que",
+          "inicio_s": 54.006,
+          "fim_s": 54.086
+        },
+        {
+          "texto": "ele",
+          "inicio_s": 54.166,
+          "fim_s": 54.286
+        },
+        {
+          "texto": "calculou",
+          "inicio_s": 54.326,
+          "fim_s": 54.747
+        },
+        {
+          "texto": "e",
+          "inicio_s": 55.489,
+          "fim_s": 55.509
+        },
+        {
+          "texto": "funcionou",
+          "inicio_s": 55.569,
+          "fim_s": 56.01
+        }
+      ]
+    },
+    {
+      "texto": "Tem ainda o carrinho autopropelido: uma espécie de carroça sem cavalo, movida só por molas gigantes enroladas por dentro, capaz de andar sozinha por um trecho curto.",
+      "inicio_s": 56.44,
+      "fim_s": 65.24,
+      "palavras": [
+        {
+          "texto": "Tem",
+          "inicio_s": 56.44,
+          "fim_s": 56.54
+        },
+        {
+          "texto": "ainda",
+          "inicio_s": 56.62,
+          "fim_s": 56.901
+        },
+        {
+          "texto": "o",
+          "inicio_s": 56.961,
+          "fim_s": 56.981
+        },
+        {
+          "texto": "carrinho",
+          "inicio_s": 57.001,
+          "fim_s": 57.342
+        },
+        {
+          "texto": "autopropelido",
+          "inicio_s": 57.422,
+          "fim_s": 58.184
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 58.525,
+          "fim_s": 58.645
+        },
+        {
+          "texto": "espécie",
+          "inicio_s": 58.665,
+          "fim_s": 59.026
+        },
+        {
+          "texto": "de",
+          "inicio_s": 59.046,
+          "fim_s": 59.106
+        },
+        {
+          "texto": "carroça",
+          "inicio_s": 59.126,
+          "fim_s": 59.527
+        },
+        {
+          "texto": "sem",
+          "inicio_s": 59.567,
+          "fim_s": 59.667
+        },
+        {
+          "texto": "cavalo",
+          "inicio_s": 59.707,
+          "fim_s": 60.088
+        },
+        {
+          "texto": "movida",
+          "inicio_s": 60.148,
+          "fim_s": 60.469
+        },
+        {
+          "texto": "só",
+          "inicio_s": 60.589,
+          "fim_s": 60.69
+        },
+        {
+          "texto": "por",
+          "inicio_s": 60.81,
+          "fim_s": 60.93
+        },
+        {
+          "texto": "molas",
+          "inicio_s": 60.97,
+          "fim_s": 61.251
+        },
+        {
+          "texto": "gigantes",
+          "inicio_s": 61.271,
+          "fim_s": 61.712
+        },
+        {
+          "texto": "enroladas",
+          "inicio_s": 61.752,
+          "fim_s": 62.173
+        },
+        {
+          "texto": "por",
+          "inicio_s": 62.213,
+          "fim_s": 62.333
+        },
+        {
+          "texto": "dentro",
+          "inicio_s": 62.373,
+          "fim_s": 62.674
+        },
+        {
+          "texto": "capaz",
+          "inicio_s": 63.055,
+          "fim_s": 63.356
+        },
+        {
+          "texto": "de",
+          "inicio_s": 63.396,
+          "fim_s": 63.456
+        },
+        {
+          "texto": "andar",
+          "inicio_s": 63.476,
+          "fim_s": 63.676
+        },
+        {
+          "texto": "sozinha",
+          "inicio_s": 63.757,
+          "fim_s": 64.198
+        },
+        {
+          "texto": "por",
+          "inicio_s": 64.258,
+          "fim_s": 64.378
+        },
+        {
+          "texto": "um",
+          "inicio_s": 64.398,
+          "fim_s": 64.458
+        },
+        {
+          "texto": "trecho",
+          "inicio_s": 64.498,
+          "fim_s": 64.779
+        },
+        {
+          "texto": "curto",
+          "inicio_s": 64.839,
+          "fim_s": 65.14
+        }
+      ]
+    },
+    {
+      "texto": "Isso é quase três séculos antes do primeiro carro de verdade rodar sem tração animal.",
+      "inicio_s": 65.59,
+      "fim_s": 72.15,
+      "palavras": [
+        {
+          "texto": "Isso",
+          "inicio_s": 65.63,
+          "fim_s": 65.771
+        },
+        {
+          "texto": "é",
+          "inicio_s": 65.811,
+          "fim_s": 65.831
+        },
+        {
+          "texto": "quase",
+          "inicio_s": 65.871,
+          "fim_s": 66.112
+        },
+        {
+          "texto": "três",
+          "inicio_s": 66.192,
+          "fim_s": 66.433
+        },
+        {
+          "texto": "séculos",
+          "inicio_s": 66.533,
+          "fim_s": 66.914
+        },
+        {
+          "texto": "antes",
+          "inicio_s": 66.974,
+          "fim_s": 67.155
+        },
+        {
+          "texto": "do",
+          "inicio_s": 67.175,
+          "fim_s": 67.235
+        },
+        {
+          "texto": "primeiro",
+          "inicio_s": 67.275,
+          "fim_s": 67.576
+        },
+        {
+          "texto": "carro",
+          "inicio_s": 67.656,
+          "fim_s": 67.877
+        },
+        {
+          "texto": "de",
+          "inicio_s": 67.897,
+          "fim_s": 67.957
+        },
+        {
+          "texto": "verdade",
+          "inicio_s": 67.977,
+          "fim_s": 68.399
+        },
+        {
+          "texto": "rodar",
+          "inicio_s": 70.886,
+          "fim_s": 71.207
+        },
+        {
+          "texto": "sem",
+          "inicio_s": 71.247,
+          "fim_s": 71.388
+        },
+        {
+          "texto": "tração",
+          "inicio_s": 71.408,
+          "fim_s": 71.709
+        },
+        {
+          "texto": "animal",
+          "inicio_s": 71.749,
+          "fim_s": 72.07
+        }
+      ]
+    },
+    {
+      "texto": "E tem o cavaleiro mecânico: uma armadura vazia, movida por polias e cabos escondidos por dentro, capaz de sentar, levantar os braços e virar a cabeça sozinha.",
+      "inicio_s": 72.5,
+      "fim_s": 82.42,
+      "palavras": [
+        {
+          "texto": "E",
+          "inicio_s": 72.54,
+          "fim_s": 72.56
+        },
+        {
+          "texto": "tem",
+          "inicio_s": 72.62,
+          "fim_s": 72.761
+        },
+        {
+          "texto": "o",
+          "inicio_s": 72.801,
+          "fim_s": 72.821
+        },
+        {
+          "texto": "cavaleiro",
+          "inicio_s": 72.861,
+          "fim_s": 73.262
+        },
+        {
+          "texto": "mecânico",
+          "inicio_s": 73.282,
+          "fim_s": 73.743
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 75.085,
+          "fim_s": 75.185
+        },
+        {
+          "texto": "armadura",
+          "inicio_s": 75.246,
+          "fim_s": 75.566
+        },
+        {
+          "texto": "vazia",
+          "inicio_s": 75.586,
+          "fim_s": 75.967
+        },
+        {
+          "texto": "movida",
+          "inicio_s": 76.047,
+          "fim_s": 76.388
+        },
+        {
+          "texto": "por",
+          "inicio_s": 76.428,
+          "fim_s": 76.548
+        },
+        {
+          "texto": "polias",
+          "inicio_s": 76.588,
+          "fim_s": 76.989
+        },
+        {
+          "texto": "e",
+          "inicio_s": 77.029,
+          "fim_s": 77.049
+        },
+        {
+          "texto": "cabos",
+          "inicio_s": 77.109,
+          "fim_s": 77.39
+        },
+        {
+          "texto": "escondidos",
+          "inicio_s": 77.43,
+          "fim_s": 77.831
+        },
+        {
+          "texto": "por",
+          "inicio_s": 77.871,
+          "fim_s": 77.991
+        },
+        {
+          "texto": "dentro",
+          "inicio_s": 78.011,
+          "fim_s": 78.292
+        },
+        {
+          "texto": "capaz",
+          "inicio_s": 78.953,
+          "fim_s": 79.294
+        },
+        {
+          "texto": "de",
+          "inicio_s": 79.334,
+          "fim_s": 79.394
+        },
+        {
+          "texto": "sentar",
+          "inicio_s": 79.454,
+          "fim_s": 79.835
+        },
+        {
+          "texto": "levantar",
+          "inicio_s": 80.316,
+          "fim_s": 80.676
+        },
+        {
+          "texto": "os",
+          "inicio_s": 80.697,
+          "fim_s": 80.757
+        },
+        {
+          "texto": "braços",
+          "inicio_s": 80.817,
+          "fim_s": 81.177
+        },
+        {
+          "texto": "e",
+          "inicio_s": 81.218,
+          "fim_s": 81.238
+        },
+        {
+          "texto": "virar",
+          "inicio_s": 81.278,
+          "fim_s": 81.478
+        },
+        {
+          "texto": "a",
+          "inicio_s": 81.518,
+          "fim_s": 81.538
+        },
+        {
+          "texto": "cabeça",
+          "inicio_s": 81.578,
+          "fim_s": 81.879
+        },
+        {
+          "texto": "sozinha",
+          "inicio_s": 81.939,
+          "fim_s": 82.32
+        }
+      ]
+    },
+    {
+      "texto": "Nenhuma dessas máquinas saiu do papel enquanto ele viveu — faltava material, motor, tecnologia pra dar conta da própria ideia.",
+      "inicio_s": 82.77,
+      "fim_s": 89.23,
+      "palavras": [
+        {
+          "texto": "Nenhuma",
+          "inicio_s": 82.79,
+          "fim_s": 83.111
+        },
+        {
+          "texto": "dessas",
+          "inicio_s": 83.151,
+          "fim_s": 83.412
+        },
+        {
+          "texto": "máquinas",
+          "inicio_s": 83.472,
+          "fim_s": 83.813
+        },
+        {
+          "texto": "saiu",
+          "inicio_s": 83.853,
+          "fim_s": 84.034
+        },
+        {
+          "texto": "do",
+          "inicio_s": 84.054,
+          "fim_s": 84.114
+        },
+        {
+          "texto": "papel",
+          "inicio_s": 84.154,
+          "fim_s": 84.495
+        },
+        {
+          "texto": "enquanto",
+          "inicio_s": 84.596,
+          "fim_s": 84.897
+        },
+        {
+          "texto": "ele",
+          "inicio_s": 84.917,
+          "fim_s": 85.017
+        },
+        {
+          "texto": "viveu",
+          "inicio_s": 85.037,
+          "fim_s": 85.298
+        },
+        {
+          "texto": "faltava",
+          "inicio_s": 86.221,
+          "fim_s": 86.562
+        },
+        {
+          "texto": "material",
+          "inicio_s": 86.602,
+          "fim_s": 87.023
+        },
+        {
+          "texto": "motor",
+          "inicio_s": 87.023,
+          "fim_s": 87.304
+        },
+        {
+          "texto": "tecnologia",
+          "inicio_s": 87.364,
+          "fim_s": 87.946
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 87.966,
+          "fim_s": 88.086
+        },
+        {
+          "texto": "dar",
+          "inicio_s": 88.107,
+          "fim_s": 88.227
+        },
+        {
+          "texto": "conta",
+          "inicio_s": 88.267,
+          "fim_s": 88.468
+        },
+        {
+          "texto": "da",
+          "inicio_s": 88.508,
+          "fim_s": 88.568
+        },
+        {
+          "texto": "própria",
+          "inicio_s": 88.608,
+          "fim_s": 88.889
+        },
+        {
+          "texto": "ideia",
+          "inicio_s": 88.909,
+          "fim_s": 89.15
+        }
+      ]
+    },
+    {
+      "texto": "Mas quando alguém finalmente tentou construir cada uma delas, séculos depois, quase todas funcionaram, quase do jeito exato que ele tinha desenhado.",
+      "inicio_s": 89.58,
+      "fim_s": 98.32,
+      "palavras": [
+        {
+          "texto": "Mas",
+          "inicio_s": 89.6,
+          "fim_s": 89.76
+        },
+        {
+          "texto": "quando",
+          "inicio_s": 89.801,
+          "fim_s": 90.001
+        },
+        {
+          "texto": "alguém",
+          "inicio_s": 90.041,
+          "fim_s": 90.262
+        },
+        {
+          "texto": "finalmente",
+          "inicio_s": 90.302,
+          "fim_s": 90.803
+        },
+        {
+          "texto": "tentou",
+          "inicio_s": 90.843,
+          "fim_s": 91.164
+        },
+        {
+          "texto": "construir",
+          "inicio_s": 91.204,
+          "fim_s": 91.625
+        },
+        {
+          "texto": "cada",
+          "inicio_s": 91.725,
+          "fim_s": 91.965
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 92.046,
+          "fim_s": 92.186
+        },
+        {
+          "texto": "delas",
+          "inicio_s": 92.226,
+          "fim_s": 92.567
+        },
+        {
+          "texto": "séculos",
+          "inicio_s": 93.168,
+          "fim_s": 93.569
+        },
+        {
+          "texto": "depois",
+          "inicio_s": 93.609,
+          "fim_s": 94.03
+        },
+        {
+          "texto": "quase",
+          "inicio_s": 94.471,
+          "fim_s": 94.732
+        },
+        {
+          "texto": "todas",
+          "inicio_s": 94.772,
+          "fim_s": 95.032
+        },
+        {
+          "texto": "funcionaram",
+          "inicio_s": 95.073,
+          "fim_s": 95.634
+        },
+        {
+          "texto": "quase",
+          "inicio_s": 96.175,
+          "fim_s": 96.496
+        },
+        {
+          "texto": "do",
+          "inicio_s": 96.536,
+          "fim_s": 96.596
+        },
+        {
+          "texto": "jeito",
+          "inicio_s": 96.636,
+          "fim_s": 96.837
+        },
+        {
+          "texto": "exato",
+          "inicio_s": 96.877,
+          "fim_s": 97.258
+        },
+        {
+          "texto": "que",
+          "inicio_s": 97.298,
+          "fim_s": 97.378
+        },
+        {
+          "texto": "ele",
+          "inicio_s": 97.418,
+          "fim_s": 97.538
+        },
+        {
+          "texto": "tinha",
+          "inicio_s": 97.558,
+          "fim_s": 97.739
+        },
+        {
+          "texto": "desenhado",
+          "inicio_s": 97.779,
+          "fim_s": 98.26
+        }
+      ]
+    },
+    {
+      "texto": "Da Vinci não deixou máquinas prontas.",
+      "inicio_s": 98.67,
+      "fim_s": 100.43,
+      "palavras": [
+        {
+          "texto": "Da",
+          "inicio_s": 98.69,
+          "fim_s": 98.751
+        },
+        {
+          "texto": "Vinci",
+          "inicio_s": 98.812,
+          "fim_s": 99.075
+        },
+        {
+          "texto": "não",
+          "inicio_s": 99.135,
+          "fim_s": 99.236
+        },
+        {
+          "texto": "deixou",
+          "inicio_s": 99.257,
+          "fim_s": 99.52
+        },
+        {
+          "texto": "máquinas",
+          "inicio_s": 99.56,
+          "fim_s": 99.904
+        },
+        {
+          "texto": "prontas",
+          "inicio_s": 99.944,
+          "fim_s": 100.329
+        }
+      ]
+    },
+    {
+      "texto": "Ele deixou a lógica por trás delas, esperando o mundo alcançar o que a cabeça dele já tinha resolvido séculos antes.",
+      "inicio_s": 100.78,
+      "fim_s": 106.88,
+      "palavras": [
+        {
+          "texto": "Ele",
+          "inicio_s": 100.8,
+          "fim_s": 100.92
+        },
+        {
+          "texto": "deixou",
+          "inicio_s": 100.961,
+          "fim_s": 101.262
+        },
+        {
+          "texto": "a",
+          "inicio_s": 101.302,
+          "fim_s": 101.322
+        },
+        {
+          "texto": "lógica",
+          "inicio_s": 101.402,
+          "fim_s": 101.763
+        },
+        {
+          "texto": "por",
+          "inicio_s": 101.803,
+          "fim_s": 101.924
+        },
+        {
+          "texto": "trás",
+          "inicio_s": 101.964,
+          "fim_s": 102.144
+        },
+        {
+          "texto": "delas",
+          "inicio_s": 102.205,
+          "fim_s": 102.506
+        },
+        {
+          "texto": "esperando",
+          "inicio_s": 102.787,
+          "fim_s": 103.248
+        },
+        {
+          "texto": "o",
+          "inicio_s": 103.288,
+          "fim_s": 103.308
+        },
+        {
+          "texto": "mundo",
+          "inicio_s": 103.368,
+          "fim_s": 103.589
+        },
+        {
+          "texto": "alcançar",
+          "inicio_s": 103.69,
+          "fim_s": 104.191
+        },
+        {
+          "texto": "o",
+          "inicio_s": 104.231,
+          "fim_s": 104.251
+        },
+        {
+          "texto": "que",
+          "inicio_s": 104.271,
+          "fim_s": 104.332
+        },
+        {
+          "texto": "a",
+          "inicio_s": 104.352,
+          "fim_s": 104.372
+        },
+        {
+          "texto": "cabeça",
+          "inicio_s": 104.392,
+          "fim_s": 104.733
+        },
+        {
+          "texto": "dele",
+          "inicio_s": 104.793,
+          "fim_s": 105.014
+        },
+        {
+          "texto": "já",
+          "inicio_s": 105.054,
+          "fim_s": 105.114
+        },
+        {
+          "texto": "tinha",
+          "inicio_s": 105.194,
+          "fim_s": 105.375
+        },
+        {
+          "texto": "resolvido",
+          "inicio_s": 105.435,
+          "fim_s": 105.897
+        },
+        {
+          "texto": "séculos",
+          "inicio_s": 106.017,
+          "fim_s": 106.418
+        },
+        {
+          "texto": "antes",
+          "inicio_s": 106.499,
+          "fim_s": 106.78
+        }
+      ]
+    }
+  ]
+}

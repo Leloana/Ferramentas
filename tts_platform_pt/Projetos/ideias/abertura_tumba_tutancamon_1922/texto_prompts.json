@@ -1,8 +1,26 @@
 {
-  "1": "A cinematic macro photograph of a flickering wax candle flame casting warm golden light through a jagged hole in an ancient plastered limestone wall, illuminating floating ancient dust motes against deep pitch-black shadows, 35mm film photography.",
-  "2": "A wide dramatic establishing photograph in the arid Valley of the Kings in Egypt, November 1922: towering jagged limestone cliffs under a blazing Egyptian sun, archaeological dig trenches surrounded by Egyptian excavation workers in white galabeyas resting beside wooden sifting sieves.",
-  "3": "A low-angle archaeological photograph looking down into a deep freshly excavated stone pit: sixteen descending limestone steps carved into bedrock leading to a sealed ancient doorway stamped with the royal necropolis seals of the jackal and nine captives, intact for over three millennia.",
-  "4": "A medium portrait shot of Howard Carter, a dedicated 48-year-old British archaeologist with weathered tanned skin, dark slicked hair, and a neat mustache. Dressed in a dusty khaki linen suit with sleeves rolled up, holding an iron chisel in one hand and a lit wax candle in the other, kneeling before a dark hole in the stone wall with breathless awe in his eyes.",
-  "5": "An extraordinary over-the-shoulder photograph looking through the breach beside the archaeologist from <image1>: the warm candlelight revealing the dazzling sight of an ancient golden antechamber, packed with ornate gilded pharaonic chariots, life-sized black-and-gold guardian statues holding golden maces, and gleaming golden royal chests untouched by time.",
-  "6": "A breathtaking cinematic macro photograph of the iconic solid gold burial mask of Pharaoh Tutankhamun, inlaid with deep blue lapis lazuli and obsidian eyes, gleaming with eternal divine majesty in soft museum lighting, representing the greatest archaeological discovery in human history."
+  "1": [
+    "A cinematic macro photograph of a flickering wax candle flame casting warm golden light through a jagged hole in an ancient plastered limestone wall, floating dust motes against pitch black shadows, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "An intimate close-up photograph of the face of the british archaeologist from <image1>, preserving his exact face, neat mustache, dark slicked hair and dusty khaki linen suit, lit only by the candle he holds to the breach, eyes widening in disbelief at what he sees inside, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "2": [
+    "A wide dramatic photograph of the arid Valley of the Kings in Egypt in November 1922, towering limestone cliffs under a blazing sun and excavation trenches where egyptian workers in white galabeyas rest beside baskets of rubble, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A documentary style photograph of a 1920s archaeological camp at the valley floor, canvas tents, wooden crates, survey maps weighted with stones on a folding table, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "3": [
+    "A low angle archaeological photograph looking down into a freshly excavated stone pit, sixteen descending limestone steps carved into bedrock leading to a sealed ancient doorway stamped with royal necropolis seals, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A tense medium photograph of the british archaeologist from <image1>, preserving his exact face, neat mustache, dark slicked hair and dusty khaki linen suit, kneeling on the bottom step and brushing sand from the intact clay seals of the doorway with a small brush, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "4": [
+    "A medium portrait photograph of Howard Carter, a dedicated 48 year old british archaeologist with weathered tanned skin, dark slicked hair and a neat mustache, wearing a dusty khaki linen suit with rolled sleeves, holding an iron chisel and a lit candle in the dim tomb corridor, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "An extreme close-up photograph of the trembling hands of the british archaeologist from <image1>, preserving his exact face, neat mustache, dark slicked hair and dusty khaki linen suit, widening a small opening in the plaster wall with a chisel, dust falling through the candlelight, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "5": [
+    "An extraordinary over the shoulder photograph past the british archaeologist from <image1>, preserving his exact face, neat mustache, dark slicked hair and dusty khaki linen suit, through the breach, warm candlelight revealing a golden antechamber packed with gilded pharaonic chariots and life sized guardian statues, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A breathtaking interior photograph of the sealed antechamber, three thousand year old gold gleaming through hanging dust, alabaster vessels and ebony furniture stacked exactly where they were left, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "6": [
+    "A breathtaking macro photograph of the solid gold burial mask of Pharaoh Tutankhamun, inlaid with deep blue lapis lazuli and obsidian eyes, gleaming with eternal majesty in soft museum lighting, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A reverent wide photograph of the golden sarcophagus chamber lit by work lamps, the young king's shrine glowing in the dark while shadows of onlookers fall on the painted wall, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ]
 }

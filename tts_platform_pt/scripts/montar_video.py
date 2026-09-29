@@ -1,4 +1,4 @@
-"""Monta um vídeo curto (uma imagem de fundo animada por frase + áudio +
+"""Monta um vídeo curto (imagens de fundo animadas + áudio +
 legenda) a partir do que já foi gerado por `gerar_video.py` +
 `gerar_imagens.py`.
 
@@ -7,7 +7,8 @@ Uso:
 
 Fluxo:
 1. Lê o áudio e o timestamp por frase (do manifesto de `gerar_video.py`) e
-   a imagem de fundo de cada frase (de `gerar_imagens.py`, uma por frase,
+   as imagens de fundo de cada frase (de `gerar_imagens.py`, um ou mais
+   planos por frase — o tempo da frase é dividido entre eles,
    mesma numeração, já no formato vertical final — sem folga lateral pra
    pan).
 2. Renderiza um clipe mudo por frase: zoom lento (`zoompan`) sobre a
@@ -175,11 +176,13 @@ def renderizar_clipe_imagem(imagem: Path, duracao: float, destino: Path, largura
 
 
 def montar(
-    imagens: list[Path], frases: list[dict], audio: Path, destino: Path,
+    imagens: list[list[Path]], frases: list[dict], audio: Path, destino: Path,
     proporcao: str = "9:16", efeito: str = "alternar",
 ) -> Path:
+    """`imagens` é uma lista por frase, e cada item é a lista de planos (cortes)
+    daquela frase — o tempo da frase é dividido igualmente entre eles."""
     if len(imagens) != len(frases):
-        raise ValueError(f"{len(imagens)} imagem(ns) para {len(frases)} frase(s) — precisa ser 1 pra 1")
+        raise ValueError(f"{len(imagens)} grupo(s) de imagem para {len(frases)} frase(s) — precisa ser 1 pra 1")
 
     largura, altura = _RESOLUCOES[proporcao]
     duracao_total = duracao_wav(audio)
@@ -198,10 +201,17 @@ def montar(
         duracoes.append(duracao_total - inicios[-1])
 
         linhas_concat = []
-        for i, (imagem, dur) in enumerate(zip(imagens, duracoes)):
-            clipe = pasta_tmp / f"clipe_{i:02d}.mp4"
-            renderizar_clipe_imagem(imagem, dur, clipe, largura, altura, _direcao_zoom(i, efeito))
-            linhas_concat.append(f"file '{clipe.name}'")
+        i = 0
+        for planos, dur in zip(imagens, duracoes):
+            # Dentro da frase, cada plano fica com uma fatia igual do tempo dela;
+            # a última fatia absorve o arredondamento pra soma bater exatamente.
+            fatia = dur / len(planos)
+            for k, imagem in enumerate(planos):
+                dur_plano = dur - fatia * (len(planos) - 1) if k == len(planos) - 1 else fatia
+                clipe = pasta_tmp / f"clipe_{i:03d}.mp4"
+                renderizar_clipe_imagem(imagem, dur_plano, clipe, largura, altura, _direcao_zoom(i, efeito))
+                linhas_concat.append(f"file '{clipe.name}'")
+                i += 1
         lista_concat = pasta_tmp / "lista.txt"
         lista_concat.write_text("\n".join(linhas_concat), encoding="utf-8")
 
@@ -268,16 +278,36 @@ def main():
         raise SystemExit(f"Áudio não encontrado: {audio}")
 
     frases = manifesto["frases"]
-    imagens = [projeto / "imagens" / f"{nome_imagens}_{j:02d}.png" for j in range(1, len(frases) + 1)]
-    faltando = [str(p) for p in imagens if not p.exists()]
+    # Cada frase pode ter mais de um plano: o primeiro é `<nome>_FF.png` e os
+    # extras vêm com sufixo de letra (`_FFb.png`, `_FFc.png`, ...), na ordem em
+    # que `gerar_imagens.py` os escreveu a partir da lista de prompts da frase.
+    dir_imagens = projeto / "imagens"
+    imagens: list[list[Path]] = []
+    faltando = []
+    for j in range(1, len(frases) + 1):
+        primeira = dir_imagens / f"{nome_imagens}_{j:02d}.png"
+        if not primeira.exists():
+            faltando.append(str(primeira))
+            continue
+        planos = [primeira]
+        for k in range(1, 26):
+            extra = dir_imagens / f"{nome_imagens}_{j:02d}{chr(ord('a') + k)}.png"
+            if not extra.exists():
+                break
+            planos.append(extra)
+        imagens.append(planos)
     if faltando:
         raise SystemExit(
             "Imagem(ns) não encontrada(s):\n" + "\n".join(faltando) +
             f"\nRode: python scripts/gerar_imagens.py {args.manifesto}"
         )
 
+    total_planos = sum(len(p) for p in imagens)
     destino = args.saida or projeto / "video" / f"{nome_base}_{args.proporcao.replace(':', 'x')}.mp4"
-    print(f"Montando {destino.name} ({args.proporcao}, {len(imagens)} imagem(ns), efeito {args.efeito})...")
+    print(
+        f"Montando {destino.name} ({args.proporcao}, {total_planos} imagem(ns) "
+        f"em {len(frases)} frase(s), efeito {args.efeito})..."
+    )
     montar(imagens, frases, audio, destino, proporcao=args.proporcao, efeito=args.efeito)
     print(f"Pronto: {destino}")
 

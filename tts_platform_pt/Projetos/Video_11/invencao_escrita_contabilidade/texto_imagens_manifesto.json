@@ -1,0 +1,98 @@
+[
+  {
+    "frase": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "close-up of a Sumerian scribe's hands pressing a cut reed stylus into a wet clay tablet, wedge-shaped marks forming, warm torchlight, mud-brick temple workshop, ancient Mesopotamia, photorealistic cinematic photography, not a painting, not an illustration, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00001_.png"
+  },
+  {
+    "frase": 2,
+    "arquivo": "texto_02.png",
+    "prompt_final": "close-up of a small clay tablet covered in cuneiform wedge marks resting beside scattered barley grains on a wooden table, soft natural light, ancient Mesopotamia, photorealistic macro photography, not a painting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00002_.png"
+  },
+  {
+    "frase": 3,
+    "arquivo": "texto_03.png",
+    "prompt_final": "wide cinematic shot of the ancient Sumerian city of Uruk at sunset, mud-brick ziggurat and granary buildings silhouetted against an orange sky, river in the foreground, photorealistic cinematic photography, not a painting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00003_.png"
+  },
+  {
+    "frase": 4,
+    "arquivo": "texto_04.png",
+    "prompt_final": "aerial view of a sprawling ancient Mesopotamian city between two rivers, mud-brick houses, irrigation canals and farmland, golden hour light, photorealistic cinematic photography, not a painting, not a video game render, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00004_.png"
+  },
+  {
+    "frase": 5,
+    "arquivo": "texto_05.png",
+    "prompt_final": "interior of an ancient temple storehouse, tall clay jars, sacks of grain and stacked woven textiles under dim torchlight, a robed administrator inspecting the goods, ancient Mesopotamia, photorealistic cinematic photography, not a painting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00005_.png"
+  },
+  {
+    "frase": 6,
+    "arquivo": "texto_06.png",
+    "prompt_final": "close-up of small clay tokens shaped like cones, spheres and disks scattered on a wooden table beside a scribe's hand, warm lighting, ancient Mesopotamia, photorealistic macro photography, not a painting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00006_.png"
+  },
+  {
+    "frase": 7,
+    "arquivo": "texto_07.png",
+    "prompt_final": "close-up of ancient Mesopotamian hands sealing small clay tokens inside a round hollow clay envelope, dim workshop light, textured clay surface, photorealistic macro photography, not a painting, not an illustration, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00007_.png"
+  },
+  {
+    "frase": 8,
+    "arquivo": "texto_08.png",
+    "prompt_final": "close-up of an ancient Mesopotamian hand pressing a small clay token against the outer surface of a round wet clay envelope, leaving a round blank impression mark, no carved symbols, no writing, no numbers, warm workshop lighting, photorealistic macro photography, not a painting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00019_.png"
+  },
+  {
+    "frase": 9,
+    "arquivo": "texto_09.png",
+    "prompt_final": "close-up of a cracked open round clay envelope revealing smooth round token-shaped impressions pressed into its inner clay surface, plain blank shapes, no carved symbols, no writing, no numbers, no letters, dramatic side lighting, dusty workshop table, photorealistic macro photography, not a painting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00016_.png"
+  },
+  {
+    "frase": 10,
+    "arquivo": "texto_10.png",
+    "prompt_final": "close-up of a scribe's hand holding a cut reed stylus above a flat rectangular wet clay tablet, angled light casting long shadows, ancient Mesopotamia, photorealistic cinematic photography, not a painting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00009_.png"
+  },
+  {
+    "frase": 11,
+    "arquivo": "texto_11.png",
+    "prompt_final": "overhead shot of a flat clay tablet densely covered in cuneiform wedge marks arranged in neat rows, museum-style lighting, textured clay surface, photorealistic macro photography, not a painting, no legible modern text, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00010_.png"
+  },
+  {
+    "frase": 12,
+    "arquivo": "texto_12.png",
+    "prompt_final": "close-up of an ancient Mesopotamian clay tablet with rows of small wedge-shaped cuneiform tally marks beside carved relief pictograms of grain sheaves, storage jars and sheep, warm lighting, photorealistic macro photography, not a painting, no modern digits, no Arabic numerals, no readable alphabet, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00017_.png"
+  },
+  {
+    "frase": 13,
+    "arquivo": "texto_13.png",
+    "prompt_final": "an elderly Mesopotamian priest in robes reading aloud from a clay tablet inside a torchlit temple chamber, seated scribes listening attentively, warm firelight, photorealistic cinematic photography, not a painting, not an illustration, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00012_.png"
+  },
+  {
+    "frase": 14,
+    "arquivo": "texto_14.png",
+    "prompt_final": "a tall stack of ancient clay tablets densely inscribed with cuneiform text, dramatic museum spotlight from above, dark background, photorealistic cinematic photography, not a painting, no legible modern text, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00013_.png"
+  },
+  {
+    "frase": 15,
+    "arquivo": "texto_15.png",
+    "prompt_final": "silhouette of a robed ancient Mesopotamian scribe walking away through a torchlit archive room lined with shelves of clay tablets, dusk light, deep shadows, photorealistic cinematic photography, not a painting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00014_.png"
+  },
+  {
+    "frase": 16,
+    "arquivo": "texto_16.png",
+    "prompt_final": "wide shot of towering wooden shelves filled with thousands of ancient clay tablets inside a torchlit stone archive room, deep warm shadows, ancient Mesopotamia, photorealistic cinematic wide shot, not a painting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00015_.png"
+  }
+]

@@ -1,0 +1,108 @@
+[
+  {
+    "frase": 1,
+    "plano": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "A cinematic action anime screenshot of the ground trembling and dust bursting into the air under thousands of galloping iron shod hooves at dawn, sunbeams cutting through forest mist, dynamic speed lines, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00052_.png"
+  },
+  {
+    "frase": 1,
+    "plano": 2,
+    "arquivo": "texto_01b.png",
+    "prompt_final": "A tight anime close-up of armored horse legs and hooves tearing through wet grass and mud in full gallop, earth flying, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00053_.png"
+  },
+  {
+    "frase": 2,
+    "plano": 1,
+    "arquivo": "texto_02.png",
+    "prompt_final": "A wide dramatic anime establishing shot of Vienna under brutal siege in 1683, battered stone ramparts and smoking craters surrounded by hundreds of thousands of white ottoman siege tents across the plains, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00054_.png"
+  },
+  {
+    "frase": 2,
+    "plano": 2,
+    "arquivo": "texto_02b.png",
+    "prompt_final": "A desperate anime shot inside the city walls, exhausted defenders passing buckets along a burning rampart while civilians shelter in the smoke, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00055_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 1,
+    "arquivo": "texto_03.png",
+    "prompt_final": "A sweeping panoramic anime shot from the wooded ridge of Kahlenberg, eighteen thousand allied cavalrymen in gleaming armor lining the forest edge against a golden sunrise, lances upright like a forest of steel, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00056_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 2,
+    "arquivo": "texto_03b.png",
+    "prompt_final": "A low angle anime shot of hussar lance pennants and eagle feather wings rising above the treeline as the cavalry emerges from the woods, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00057_.png"
+  },
+  {
+    "frase": 4,
+    "plano": 1,
+    "arquivo": "texto_04.png",
+    "prompt_final": "A magnificent medium anime portrait of King Jan Sobieski leading the winged hussars, a formidable 54 year old monarch with an authoritative mustache and fierce regal gaze, wearing mirror polished steel plate armor draped in a leopard pelt with a pair of tall eagle feather wings mounted on his back, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00051_.png"
+  },
+  {
+    "frase": 4,
+    "plano": 2,
+    "arquivo": "texto_04b.png",
+    "prompt_final": "A dynamic anime shot of the polish warrior king from <image1>, preserving his exact face, authoritative mustache, mirror polished steel plate armor, leopard pelt and the pair of tall eagle feather wings on his back, spurring his warhorse down the grassy slope at the head of three thousand winged riders, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00031_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\carga_dos_hussardos_1683\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 5,
+    "plano": 1,
+    "arquivo": "texto_05.png",
+    "prompt_final": "An intense anime close-up of the polish warrior king from <image1>, preserving his exact face, authoritative mustache, mirror polished steel plate armor, leopard pelt and the pair of tall eagle feather wings on his back, shouting a thunderous battle command as his eagle wings whistle and vibrate in the headwind, fiery horizon reflected in his eyes, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00032_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\carga_dos_hussardos_1683\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 5,
+    "plano": 2,
+    "arquivo": "texto_05b.png",
+    "prompt_final": "A haunting anime shot from the ottoman lines, enemy horses rearing in panic as an eerie howling rises from thousands of feathered wings sweeping down the hill, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00058_.png"
+  },
+  {
+    "frase": 6,
+    "plano": 1,
+    "arquivo": "texto_06.png",
+    "prompt_final": "An epic monumental anime battle climax of winged hussars lowering sixteen foot lances in unison and crashing like a tidal wave through the enemy lines, lances shattering on impact amid clouds of dust, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00059_.png"
+  },
+  {
+    "frase": 6,
+    "plano": 2,
+    "arquivo": "texto_06b.png",
+    "prompt_final": "A brutal anime action frame of the polish warrior king from <image1>, preserving his exact face, authoritative mustache, mirror polished steel plate armor, leopard pelt and the pair of tall eagle feather wings on his back, driving through the broken center of the enemy camp with a drawn saber, tents collapsing and banners falling around him, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00033_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\carga_dos_hussardos_1683\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 7,
+    "plano": 1,
+    "arquivo": "texto_07.png",
+    "prompt_final": "A majestic wide anime closing shot of the winged hussars standing victorious outside the liberated gates of Vienna at sunset, eagle wings glowing against orange and purple twilight, church bells ringing over cheering citizens, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00060_.png"
+  },
+  {
+    "frase": 7,
+    "plano": 2,
+    "arquivo": "texto_07b.png",
+    "prompt_final": "A warm anime shot of the polish warrior king from <image1>, preserving his exact face, authoritative mustache, mirror polished steel plate armor, leopard pelt and the pair of tall eagle feather wings on his back, removing his plumed helmet before the grateful crowd at the city gate, evening light on his tired face, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00034_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\carga_dos_hussardos_1683\\imagens\\texto_04.png"
+  }
+]

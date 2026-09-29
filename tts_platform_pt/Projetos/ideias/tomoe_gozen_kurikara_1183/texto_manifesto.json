@@ -1,0 +1,666 @@
+{
+  "gerado_em": "2026-09-23T20:55:35",
+  "roteiro": "C:\\Users\\mf827\\Documents\\Ferramentas\\tts_platform_pt\\Projetos\\ideias\\tomoe_gozen_kurikara_1183\\texto.md",
+  "voz": "Ana Florence",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 45.0,
+  "texto_usado": "Ela valia por mil guerreiros no campo de batalha. No final do século doze, durante a brutal Guerra Genpei, Tomoe Gozen quebrou todas as regras do Japão medieval.\n\nMestre suprema do arco longo montado e da temível lâmina naginata, ela liderava a vanguarda da cavalaria como general de confiança do clã Minamoto. Na lendária batalha de Kurikara, enquanto milhares de soldados hesitavam diante da neblina da montanha, Tomoe avançou a galope contra as linhas inimigas com seus cabelos negros voando sob o elmo de batalha.\n\nEm duelos corpo a corpo, ela desarmava e decapitava generais adversários com técnica e força implacáveis. Tomoe Gozen tornou-se o maior símbolo da bravura feminina samurai, uma guerreira cuja lenda sobreviveu a quase mil anos de história.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Ela valia por mil guerreiros no campo de batalha.",
+      "inicio_s": 0.15,
+      "fim_s": 2.23,
+      "palavras": [
+        {
+          "texto": "Ela",
+          "inicio_s": 0.17,
+          "fim_s": 0.291
+        },
+        {
+          "texto": "valia",
+          "inicio_s": 0.312,
+          "fim_s": 0.614
+        },
+        {
+          "texto": "por",
+          "inicio_s": 0.655,
+          "fim_s": 0.756
+        },
+        {
+          "texto": "mil",
+          "inicio_s": 0.776,
+          "fim_s": 0.897
+        },
+        {
+          "texto": "guerreiros",
+          "inicio_s": 0.917,
+          "fim_s": 1.321
+        },
+        {
+          "texto": "no",
+          "inicio_s": 1.341,
+          "fim_s": 1.402
+        },
+        {
+          "texto": "campo",
+          "inicio_s": 1.463,
+          "fim_s": 1.644
+        },
+        {
+          "texto": "de",
+          "inicio_s": 1.685,
+          "fim_s": 1.745
+        },
+        {
+          "texto": "batalha",
+          "inicio_s": 1.766,
+          "fim_s": 2.068
+        }
+      ]
+    },
+    {
+      "texto": "No final do século doze, durante a brutal Guerra Genpei, Tomoe Gozen quebrou todas as regras do Japão medieval.",
+      "inicio_s": 2.58,
+      "fim_s": 9.98,
+      "palavras": [
+        {
+          "texto": "No",
+          "inicio_s": 2.6,
+          "fim_s": 2.66
+        },
+        {
+          "texto": "final",
+          "inicio_s": 2.7,
+          "fim_s": 2.961
+        },
+        {
+          "texto": "do",
+          "inicio_s": 2.981,
+          "fim_s": 3.061
+        },
+        {
+          "texto": "século",
+          "inicio_s": 3.121,
+          "fim_s": 3.422
+        },
+        {
+          "texto": "doze",
+          "inicio_s": 3.462,
+          "fim_s": 3.763
+        },
+        {
+          "texto": "durante",
+          "inicio_s": 4.084,
+          "fim_s": 4.405
+        },
+        {
+          "texto": "a",
+          "inicio_s": 4.425,
+          "fim_s": 4.445
+        },
+        {
+          "texto": "brutal",
+          "inicio_s": 4.485,
+          "fim_s": 4.826
+        },
+        {
+          "texto": "Guerra",
+          "inicio_s": 4.886,
+          "fim_s": 5.187
+        },
+        {
+          "texto": "Genpei",
+          "inicio_s": 5.809,
+          "fim_s": 6.21
+        },
+        {
+          "texto": "Tomoe",
+          "inicio_s": 6.691,
+          "fim_s": 7.032
+        },
+        {
+          "texto": "Gozen",
+          "inicio_s": 7.112,
+          "fim_s": 7.513
+        },
+        {
+          "texto": "quebrou",
+          "inicio_s": 7.614,
+          "fim_s": 7.914
+        },
+        {
+          "texto": "todas",
+          "inicio_s": 8.015,
+          "fim_s": 8.295
+        },
+        {
+          "texto": "as",
+          "inicio_s": 8.336,
+          "fim_s": 8.436
+        },
+        {
+          "texto": "regras",
+          "inicio_s": 8.496,
+          "fim_s": 8.817
+        },
+        {
+          "texto": "do",
+          "inicio_s": 8.857,
+          "fim_s": 8.917
+        },
+        {
+          "texto": "Japão",
+          "inicio_s": 8.957,
+          "fim_s": 9.278
+        },
+        {
+          "texto": "medieval",
+          "inicio_s": 9.358,
+          "fim_s": 9.9
+        }
+      ]
+    },
+    {
+      "texto": "Mestre suprema do arco longo montado e da temível lâmina naginata, ela liderava a vanguarda da cavalaria como general de confiança do clã Minamoto.",
+      "inicio_s": 10.33,
+      "fim_s": 18.29,
+      "palavras": [
+        {
+          "texto": "Mestre",
+          "inicio_s": 10.35,
+          "fim_s": 10.711
+        },
+        {
+          "texto": "suprema",
+          "inicio_s": 10.771,
+          "fim_s": 11.132
+        },
+        {
+          "texto": "do",
+          "inicio_s": 11.172,
+          "fim_s": 11.232
+        },
+        {
+          "texto": "arco",
+          "inicio_s": 11.333,
+          "fim_s": 11.553
+        },
+        {
+          "texto": "longo",
+          "inicio_s": 11.613,
+          "fim_s": 11.834
+        },
+        {
+          "texto": "montado",
+          "inicio_s": 11.874,
+          "fim_s": 12.395
+        },
+        {
+          "texto": "e",
+          "inicio_s": 12.716,
+          "fim_s": 12.736
+        },
+        {
+          "texto": "da",
+          "inicio_s": 12.776,
+          "fim_s": 12.836
+        },
+        {
+          "texto": "temível",
+          "inicio_s": 12.896,
+          "fim_s": 13.257
+        },
+        {
+          "texto": "lâmina",
+          "inicio_s": 13.318,
+          "fim_s": 13.598
+        },
+        {
+          "texto": "naginata",
+          "inicio_s": 13.638,
+          "fim_s": 14.18
+        },
+        {
+          "texto": "ela",
+          "inicio_s": 14.701,
+          "fim_s": 14.821
+        },
+        {
+          "texto": "liderava",
+          "inicio_s": 14.861,
+          "fim_s": 15.242
+        },
+        {
+          "texto": "a",
+          "inicio_s": 15.262,
+          "fim_s": 15.302
+        },
+        {
+          "texto": "vanguarda",
+          "inicio_s": 15.302,
+          "fim_s": 15.824
+        },
+        {
+          "texto": "da",
+          "inicio_s": 15.824,
+          "fim_s": 15.884
+        },
+        {
+          "texto": "cavalaria",
+          "inicio_s": 15.904,
+          "fim_s": 16.385
+        },
+        {
+          "texto": "como",
+          "inicio_s": 16.425,
+          "fim_s": 16.566
+        },
+        {
+          "texto": "general",
+          "inicio_s": 16.606,
+          "fim_s": 16.947
+        },
+        {
+          "texto": "de",
+          "inicio_s": 16.967,
+          "fim_s": 17.027
+        },
+        {
+          "texto": "confiança",
+          "inicio_s": 17.067,
+          "fim_s": 17.528
+        },
+        {
+          "texto": "do",
+          "inicio_s": 17.568,
+          "fim_s": 17.628
+        },
+        {
+          "texto": "clã",
+          "inicio_s": 17.668,
+          "fim_s": 17.789
+        },
+        {
+          "texto": "Minamoto",
+          "inicio_s": 17.829,
+          "fim_s": 18.27
+        }
+      ]
+    },
+    {
+      "texto": "Na lendária batalha de Kurikara, enquanto milhares de soldados hesitavam diante da neblina da montanha, Tomoe avançou a galope contra as linhas inimigas com seus cabelos negros voando sob o elmo de batalha.",
+      "inicio_s": 18.64,
+      "fim_s": 29.54,
+      "palavras": [
+        {
+          "texto": "Na",
+          "inicio_s": 18.66,
+          "fim_s": 18.7
+        },
+        {
+          "texto": "lendária",
+          "inicio_s": 18.74,
+          "fim_s": 19.101
+        },
+        {
+          "texto": "batalha",
+          "inicio_s": 19.141,
+          "fim_s": 19.482
+        },
+        {
+          "texto": "de",
+          "inicio_s": 19.502,
+          "fim_s": 19.562
+        },
+        {
+          "texto": "Kurikara",
+          "inicio_s": 19.602,
+          "fim_s": 20.103
+        },
+        {
+          "texto": "enquanto",
+          "inicio_s": 20.383,
+          "fim_s": 20.684
+        },
+        {
+          "texto": "milhares",
+          "inicio_s": 20.724,
+          "fim_s": 21.105
+        },
+        {
+          "texto": "de",
+          "inicio_s": 21.125,
+          "fim_s": 21.185
+        },
+        {
+          "texto": "soldados",
+          "inicio_s": 21.245,
+          "fim_s": 21.686
+        },
+        {
+          "texto": "hesitavam",
+          "inicio_s": 21.706,
+          "fim_s": 22.207
+        },
+        {
+          "texto": "diante",
+          "inicio_s": 22.247,
+          "fim_s": 22.587
+        },
+        {
+          "texto": "da",
+          "inicio_s": 22.607,
+          "fim_s": 22.667
+        },
+        {
+          "texto": "neblina",
+          "inicio_s": 22.707,
+          "fim_s": 23.028
+        },
+        {
+          "texto": "da",
+          "inicio_s": 23.068,
+          "fim_s": 23.128
+        },
+        {
+          "texto": "montanha",
+          "inicio_s": 23.148,
+          "fim_s": 23.569
+        },
+        {
+          "texto": "Tomoe",
+          "inicio_s": 24.11,
+          "fim_s": 24.431
+        },
+        {
+          "texto": "avançou",
+          "inicio_s": 24.511,
+          "fim_s": 24.912
+        },
+        {
+          "texto": "a",
+          "inicio_s": 24.932,
+          "fim_s": 24.952
+        },
+        {
+          "texto": "galope",
+          "inicio_s": 24.992,
+          "fim_s": 25.372
+        },
+        {
+          "texto": "contra",
+          "inicio_s": 25.432,
+          "fim_s": 25.633
+        },
+        {
+          "texto": "as",
+          "inicio_s": 25.673,
+          "fim_s": 25.733
+        },
+        {
+          "texto": "linhas",
+          "inicio_s": 25.773,
+          "fim_s": 26.014
+        },
+        {
+          "texto": "inimigas",
+          "inicio_s": 26.054,
+          "fim_s": 26.494
+        },
+        {
+          "texto": "com",
+          "inicio_s": 26.534,
+          "fim_s": 26.655
+        },
+        {
+          "texto": "seus",
+          "inicio_s": 26.715,
+          "fim_s": 26.875
+        },
+        {
+          "texto": "cabelos",
+          "inicio_s": 26.915,
+          "fim_s": 27.256
+        },
+        {
+          "texto": "negros",
+          "inicio_s": 27.316,
+          "fim_s": 27.657
+        },
+        {
+          "texto": "voando",
+          "inicio_s": 28.037,
+          "fim_s": 28.418
+        },
+        {
+          "texto": "sob",
+          "inicio_s": 28.478,
+          "fim_s": 28.618
+        },
+        {
+          "texto": "o",
+          "inicio_s": 28.698,
+          "fim_s": 28.718
+        },
+        {
+          "texto": "elmo",
+          "inicio_s": 28.799,
+          "fim_s": 28.979
+        },
+        {
+          "texto": "de",
+          "inicio_s": 28.979,
+          "fim_s": 29.059
+        },
+        {
+          "texto": "batalha",
+          "inicio_s": 29.079,
+          "fim_s": 29.46
+        }
+      ]
+    },
+    {
+      "texto": "Em duelos corpo a corpo, ela desarmava e decapitava generais adversários com técnica e força implacáveis.",
+      "inicio_s": 29.89,
+      "fim_s": 36.29,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 29.93,
+          "fim_s": 29.99
+        },
+        {
+          "texto": "duelos",
+          "inicio_s": 30.01,
+          "fim_s": 30.351
+        },
+        {
+          "texto": "corpo",
+          "inicio_s": 30.392,
+          "fim_s": 30.632
+        },
+        {
+          "texto": "a",
+          "inicio_s": 30.672,
+          "fim_s": 30.693
+        },
+        {
+          "texto": "corpo",
+          "inicio_s": 30.733,
+          "fim_s": 31.114
+        },
+        {
+          "texto": "ela",
+          "inicio_s": 31.635,
+          "fim_s": 31.776
+        },
+        {
+          "texto": "desarmava",
+          "inicio_s": 31.816,
+          "fim_s": 32.398
+        },
+        {
+          "texto": "e",
+          "inicio_s": 32.458,
+          "fim_s": 32.478
+        },
+        {
+          "texto": "decapitava",
+          "inicio_s": 32.518,
+          "fim_s": 33.04
+        },
+        {
+          "texto": "generais",
+          "inicio_s": 33.1,
+          "fim_s": 33.481
+        },
+        {
+          "texto": "adversários",
+          "inicio_s": 33.521,
+          "fim_s": 34.163
+        },
+        {
+          "texto": "com",
+          "inicio_s": 34.203,
+          "fim_s": 34.304
+        },
+        {
+          "texto": "técnica",
+          "inicio_s": 34.384,
+          "fim_s": 34.845
+        },
+        {
+          "texto": "e",
+          "inicio_s": 34.906,
+          "fim_s": 34.926
+        },
+        {
+          "texto": "força",
+          "inicio_s": 34.986,
+          "fim_s": 35.367
+        },
+        {
+          "texto": "implacáveis",
+          "inicio_s": 35.427,
+          "fim_s": 36.129
+        }
+      ]
+    },
+    {
+      "texto": "Tomoe Gozen tornou-se o maior símbolo da bravura feminina samurai, uma guerreira cuja lenda sobreviveu a quase mil anos de história.",
+      "inicio_s": 36.64,
+      "fim_s": 44.98,
+      "palavras": [
+        {
+          "texto": "Tomoe",
+          "inicio_s": 36.64,
+          "fim_s": 36.901
+        },
+        {
+          "texto": "Gozen",
+          "inicio_s": 36.941,
+          "fim_s": 37.322
+        },
+        {
+          "texto": "tornou-se",
+          "inicio_s": 37.562,
+          "fim_s": 37.943
+        },
+        {
+          "texto": "o",
+          "inicio_s": 37.963,
+          "fim_s": 37.983
+        },
+        {
+          "texto": "maior",
+          "inicio_s": 38.003,
+          "fim_s": 38.284
+        },
+        {
+          "texto": "símbolo",
+          "inicio_s": 38.384,
+          "fim_s": 38.725
+        },
+        {
+          "texto": "da",
+          "inicio_s": 38.745,
+          "fim_s": 38.805
+        },
+        {
+          "texto": "bravura",
+          "inicio_s": 38.845,
+          "fim_s": 39.246
+        },
+        {
+          "texto": "feminina",
+          "inicio_s": 39.286,
+          "fim_s": 39.747
+        },
+        {
+          "texto": "samurai",
+          "inicio_s": 40.85,
+          "fim_s": 41.311
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 41.812,
+          "fim_s": 41.933
+        },
+        {
+          "texto": "guerreira",
+          "inicio_s": 41.973,
+          "fim_s": 42.294
+        },
+        {
+          "texto": "cuja",
+          "inicio_s": 42.334,
+          "fim_s": 42.554
+        },
+        {
+          "texto": "lenda",
+          "inicio_s": 42.614,
+          "fim_s": 42.855
+        },
+        {
+          "texto": "sobreviveu",
+          "inicio_s": 42.915,
+          "fim_s": 43.376
+        },
+        {
+          "texto": "a",
+          "inicio_s": 43.416,
+          "fim_s": 43.436
+        },
+        {
+          "texto": "quase",
+          "inicio_s": 43.496,
+          "fim_s": 43.797
+        },
+        {
+          "texto": "mil",
+          "inicio_s": 43.877,
+          "fim_s": 44.038
+        },
+        {
+          "texto": "anos",
+          "inicio_s": 44.158,
+          "fim_s": 44.379
+        },
+        {
+          "texto": "de",
+          "inicio_s": 44.399,
+          "fim_s": 44.459
+        },
+        {
+          "texto": "história",
+          "inicio_s": 44.459,
+          "fim_s": 44.9
+        }
+      ]
+    }
+  ]
+}

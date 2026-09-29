@@ -1,20 +1,73 @@
 {
-  "1": "A cinematic close-up shot of a vintage red rotating emergency beacon lamp flashing inside an underground Soviet military command bunker, casting deep crimson light across industrial cables and concrete walls in atmospheric smoke.",
-  "2": "A wide photorealistic space photograph of a 1980s Soviet early-warning missile satellite in Earth orbit, metallic solar panels reflecting brilliant sunlight against the deep black void of space with the blue curve of planet Earth below.",
-  "3": "A wide interior shot of the secret Serpukhov-15 command bunker, featuring a massive illuminated world map display board on the wall, rows of glowing amber CRT monitors, and subordinate operators in olive uniforms staring at alert screens under pulsing red emergency lights.",
-  "4": "A medium portrait shot of Stanislav Petrov, a 44-year-old Soviet military officer with tired watchful dark eyes, receding dark hair at the temples, and a neat mustache. He sits at his metal command desk wearing an authentic 1983 olive-green Soviet military officer uniform with red shoulder boards and brass buttons, bathed in dramatic shadows and warm amber radar reflections, captured in 35mm film still photography.",
-  "5": "A low-angle exterior shot of the Moscow Kremlin at midnight during a rainy autumn storm, the illuminated red ruby star glowing atop the Spasskaya Tower through heavy mist and cold falling rain.",
-  "6": "A dramatic close-up of the Soviet officer from <image1>, preserving his identical facial identity, dark mustache, and olive uniform. He furrows his brow in intense skeptical contemplation, his sharp eyes reflecting the amber phosphor glow of an old radar screen as he evaluates the alert under extreme psychological pressure.",
-  "7": "A stark cinematic landscape view across an arctic tundra at dusk, showing five glowing intercontinental ballistic missile launch plumes rising into the dark stratospheric clouds, creating an ominous and chilling atmosphere.",
-  "8": "A medium shot inside the bunker: young subordinate Soviet operators standing frozen behind their consoles, pale faces filled with fear, turning desperately to look at the commander from <image1> who remains at the center console evaluating the crisis.",
-  "9": "A macro close-up photograph of a heavy vintage red Soviet rotary telephone sitting on a steel console desk, its red indicator lamp flashing rapidly beside the handset in harsh industrial lighting.",
-  "10": "A close-up of an industrial Soviet analog wall clock with its red second hand ticking forward, positioned beside glowing nixie-tube countdown digits on a gray concrete bunker wall.",
-  "11": "An extreme close-up of the Soviet officer from <image1>, maintaining his exact facial structure and mustache. A bead of cold sweat runs down his temple as he closes his eyes in agonizing concentration, surrounded by the pulsing red emergency glow of the bunker.",
-  "12": "A cinematic medium shot of the officer from <image1>, preserving his exact identity and olive uniform. He lifts the heavy black telephone receiver to his ear with trembling fingers, taking a deep steady breath as he prepares to deliver his life-defining report.",
-  "13": "A wide master shot of the Serpukhov-15 command room falling into dead silence, operators sitting motionless before their consoles while the officer from <image1> sits upright with clasped hands, waiting through twenty minutes of agonizing tension.",
-  "14": "A panoramic cinematic shot looking over the Moscow skyline at night, historic silhouetted architecture resting peacefully beneath quiet clouds in deep dark blue stillness.",
-  "15": "A tranquil dawn landscape as warm golden morning sunlight breaks over the Moscow River, gentle mist rising from calm water as birds fly across a peaceful morning sky.",
-  "16": "A breathtaking high-altitude view above the cloud tops at low sunrise, where grazing golden sunlight strikes high-altitude cirrus clouds, creating a blinding bright flare that resembles the optical signature of a rocket motor.",
-  "17": "An intimate quiet portrait of the officer from <image1>, now sitting alone in a small break room in natural morning window light. His uniform collar is unbuttoned as he holds a ceramic teacup with both hands, his expression pensive, humble, and relieved.",
-  "18": "A heroic low-angle cinematic portrait of the Soviet officer from <image1> in his complete olive-green uniform, standing beside the tall vintage command consoles as morning sunlight streams through a high ventilation shaft, honoring the man who saved humanity."
+  "1": [
+    "A cinematic close-up photograph of a vintage red rotating emergency beacon flashing inside an underground soviet command bunker, crimson light across concrete and cables, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of an alarm klaxon mounted on a concrete wall, its horn vibrating under the red strobe, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "2": [
+    "A wide photorealistic space photograph of a 1980s soviet early warning satellite in orbit, metallic solar panels reflecting sunlight against the blue curve of Earth, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of a satellite sensor array pointed down at a cloud covered ocean, sunlight glaring off the cloud tops, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "3": [
+    "A wide interior photograph of a secret soviet command bunker with an illuminated wall map board, rows of amber monitors and operators in olive uniforms staring at the screens, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A close-up photograph of an amber monitor showing four additional inbound missile tracks appearing one after another, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "4": [
+    "A medium portrait photograph of Stanislav Petrov, a 44 year old soviet military officer with tired watchful dark eyes, receding dark hair and a neat mustache, sitting at a metal command desk in an olive green uniform, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of the soviet officer from <image1>, preserving his exact face, neat mustache, receding dark hair and olive green uniform, lit only by console glow as the red beacon sweeps across his face, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "5": [
+    "A low angle exterior photograph of the Moscow Kremlin at midnight in autumn rain, the illuminated red star glowing atop a tower through heavy mist, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of a printed soviet military protocol page under a desk lamp, the retaliation procedure underlined in pencil, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "6": [
+    "A dramatic close-up photograph of the soviet officer from <image1>, preserving his exact face, neat mustache, receding dark hair and olive green uniform, furrowing his brow in skeptical concentration, the alarm light reflected in his eyes, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A macro photograph of a shaking hand hovering above a red reporting button without pressing it, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "7": [
+    "A stark cinematic landscape photograph across arctic tundra at dusk with five glowing missile launch plumes rising into dark stratospheric clouds, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A conceptual photograph of a strategic map showing hundreds of expected launch vectors beside only five plotted marks, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "8": [
+    "A medium photograph inside the bunker of young soviet operators frozen behind their consoles, pale faces turning toward their commander, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph over the shoulders of the crew toward the soviet officer from <image1>, preserving his exact face, neat mustache, receding dark hair and olive green uniform, alone at the center desk with every face waiting on him, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "9": [
+    "A macro photograph of a heavy vintage red rotary telephone on a steel console, its indicator lamp flashing beside the handset, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of the coiled telephone cord trembling slightly on the desk under the alarm strobe, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "10": [
+    "A close-up photograph of an industrial soviet analog wall clock, red second hand sweeping beside glowing countdown digits on gray concrete, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of an impact estimate readout ticking down on a monitor in harsh green phosphor, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "11": [
+    "An extreme close-up photograph of the soviet officer from <image1>, preserving his exact face, neat mustache, receding dark hair and olive green uniform, a bead of cold sweat running down his temple as he closes his eyes in agonizing concentration, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of a hand pressed flat on a cold metal desk, knuckles tight beside a stack of telemetry printouts, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "12": [
+    "A cinematic medium photograph of the soviet officer from <image1>, preserving his exact face, neat mustache, receding dark hair and olive green uniform, lifting the heavy black telephone receiver with trembling fingers and taking a steady breath, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of the soviet officer from <image1>, preserving his exact face, neat mustache, receding dark hair and olive green uniform, speaking two calm words into the receiver while the entire room holds its breath, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "13": [
+    "A wide master photograph of the command room in dead silence, operators motionless before their consoles, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of the wall map board glowing over empty aisles, nobody moving between the desks, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "14": [
+    "A panoramic photograph over the Moscow skyline at night, silhouetted architecture resting under quiet clouds in deep blue stillness, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of a sleeping apartment block window with a child's toy on the sill, city lights beyond, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "15": [
+    "A tranquil dawn photograph of golden morning light breaking over the Moscow river, mist rising from calm water, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "16": [
+    "A breathtaking high altitude photograph above the cloud tops at low sunrise, grazing light striking cirrus clouds in a blinding flare that mimics a rocket plume, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of an engineer's report page with a diagram of sunlight reflecting off high clouds into a satellite sensor, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "17": [
+    "An intimate quiet portrait photograph of the soviet officer from <image1>, preserving his exact face, neat mustache, receding dark hair and olive green uniform, sitting alone in a small break room in morning window light, holding a ceramic teacup with both hands, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A photograph of a plain bunk room with a folded olive uniform jacket on a chair and grey daylight through a narrow window, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ],
+  "18": [
+    "A heroic low angle portrait photograph of the soviet officer from <image1>, preserving his exact face, neat mustache, receding dark hair and olive green uniform, standing beside tall vintage command consoles as morning sunlight streams through a high ventilation shaft, shot on 35mm film, natural grain, cinematic color grading, photorealistic",
+    "A closing photograph of a quiet city street at sunrise, people walking to work with no idea what nearly happened, shot on 35mm film, natural grain, cinematic color grading, photorealistic"
+  ]
 }

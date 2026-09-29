@@ -1,0 +1,686 @@
+{
+  "gerado_em": "2026-09-23T21:51:59",
+  "roteiro": "C:\\Users\\mf827\\Documents\\Ferramentas\\tts_platform_pt\\Projetos\\ideias\\mergulhadores_de_chernobyl_1986\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 51.2,
+  "texto_usado": "Eles entraram na água sabendo do risco mortal. Em maio de 1986, dias após a explosão do reator quatro de Chernobyl, uma catástrofe ainda maior ameaçava toda a Europa.\n\nA lava de corium incandescente estava derretendo a laje de concreto do reator e se aproximava de uma piscina subterrânea com milhões de litros de água, o que causaria uma gigantesca explosão térmica nuclear. Três voluntários — os engenheiros Alexei Ananenko, Valery Bezpalov e o supervisor Boris Baranov — vestiram roupas de mergulho simples e desceram aos porões inundados na escuridão radioativa.\n\nCom lanternas falhando e água preta até o peito, tatearam os canos no escuro até encontrarem as válvulas manuais de drenagem. Eles abriram as comportas, esvaziaram os tanques e evitaram a destruição de metade do continente europeu.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Eles entraram na água sabendo do risco mortal.",
+      "inicio_s": 0.15,
+      "fim_s": 2.33,
+      "palavras": [
+        {
+          "texto": "Eles",
+          "inicio_s": 0.17,
+          "fim_s": 0.332
+        },
+        {
+          "texto": "entraram",
+          "inicio_s": 0.372,
+          "fim_s": 0.735
+        },
+        {
+          "texto": "na",
+          "inicio_s": 0.756,
+          "fim_s": 0.816
+        },
+        {
+          "texto": "água",
+          "inicio_s": 0.917,
+          "fim_s": 1.099
+        },
+        {
+          "texto": "sabendo",
+          "inicio_s": 1.139,
+          "fim_s": 1.502
+        },
+        {
+          "texto": "do",
+          "inicio_s": 1.523,
+          "fim_s": 1.603
+        },
+        {
+          "texto": "risco",
+          "inicio_s": 1.644,
+          "fim_s": 1.886
+        },
+        {
+          "texto": "mortal",
+          "inicio_s": 1.926,
+          "fim_s": 2.269
+        }
+      ]
+    },
+    {
+      "texto": "Em maio de 1986, dias após a explosão do reator quatro de Chernobyl, uma catástrofe ainda maior ameaçava toda a Europa.",
+      "inicio_s": 2.68,
+      "fim_s": 11.86,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 2.72,
+          "fim_s": 2.8
+        },
+        {
+          "texto": "maio",
+          "inicio_s": 2.86,
+          "fim_s": 3.141
+        },
+        {
+          "texto": "de",
+          "inicio_s": 3.181,
+          "fim_s": 3.261
+        },
+        {
+          "texto": "1986",
+          "inicio_s": 3.261,
+          "fim_s": 5.446
+        },
+        {
+          "texto": "dias",
+          "inicio_s": 5.446,
+          "fim_s": 5.727
+        },
+        {
+          "texto": "após",
+          "inicio_s": 5.787,
+          "fim_s": 6.067
+        },
+        {
+          "texto": "a",
+          "inicio_s": 6.107,
+          "fim_s": 6.128
+        },
+        {
+          "texto": "explosão",
+          "inicio_s": 6.188,
+          "fim_s": 6.649
+        },
+        {
+          "texto": "do",
+          "inicio_s": 6.689,
+          "fim_s": 6.749
+        },
+        {
+          "texto": "reator",
+          "inicio_s": 6.789,
+          "fim_s": 7.15
+        },
+        {
+          "texto": "quatro",
+          "inicio_s": 7.25,
+          "fim_s": 7.591
+        },
+        {
+          "texto": "de",
+          "inicio_s": 7.611,
+          "fim_s": 7.691
+        },
+        {
+          "texto": "Chernobyl",
+          "inicio_s": 7.731,
+          "fim_s": 8.192
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 8.753,
+          "fim_s": 8.873
+        },
+        {
+          "texto": "catástrofe",
+          "inicio_s": 8.954,
+          "fim_s": 9.575
+        },
+        {
+          "texto": "ainda",
+          "inicio_s": 9.735,
+          "fim_s": 9.956
+        },
+        {
+          "texto": "maior",
+          "inicio_s": 10.016,
+          "fim_s": 10.337
+        },
+        {
+          "texto": "ameaçava",
+          "inicio_s": 10.357,
+          "fim_s": 10.878
+        },
+        {
+          "texto": "toda",
+          "inicio_s": 10.998,
+          "fim_s": 11.279
+        },
+        {
+          "texto": "a",
+          "inicio_s": 11.339,
+          "fim_s": 11.379
+        },
+        {
+          "texto": "Europa",
+          "inicio_s": 11.399,
+          "fim_s": 11.76
+        }
+      ]
+    },
+    {
+      "texto": "A lava de corium incandescente estava derretendo a laje de concreto do reator e se aproximava de uma piscina subterrânea com milhões de litros de água, o que causaria uma gigantesca explosão térmica nuclear.",
+      "inicio_s": 12.21,
+      "fim_s": 24.61,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 12.25,
+          "fim_s": 12.27
+        },
+        {
+          "texto": "lava",
+          "inicio_s": 12.33,
+          "fim_s": 12.571
+        },
+        {
+          "texto": "de",
+          "inicio_s": 12.631,
+          "fim_s": 12.711
+        },
+        {
+          "texto": "corium",
+          "inicio_s": 12.751,
+          "fim_s": 13.111
+        },
+        {
+          "texto": "incandescente",
+          "inicio_s": 13.352,
+          "fim_s": 14.113
+        },
+        {
+          "texto": "estava",
+          "inicio_s": 14.554,
+          "fim_s": 14.834
+        },
+        {
+          "texto": "derretendo",
+          "inicio_s": 14.894,
+          "fim_s": 15.435
+        },
+        {
+          "texto": "a",
+          "inicio_s": 15.495,
+          "fim_s": 15.515
+        },
+        {
+          "texto": "laje",
+          "inicio_s": 15.575,
+          "fim_s": 15.856
+        },
+        {
+          "texto": "de",
+          "inicio_s": 15.896,
+          "fim_s": 15.956
+        },
+        {
+          "texto": "concreto",
+          "inicio_s": 15.996,
+          "fim_s": 16.417
+        },
+        {
+          "texto": "do",
+          "inicio_s": 16.457,
+          "fim_s": 16.517
+        },
+        {
+          "texto": "reator",
+          "inicio_s": 16.557,
+          "fim_s": 16.958
+        },
+        {
+          "texto": "e",
+          "inicio_s": 17.458,
+          "fim_s": 17.478
+        },
+        {
+          "texto": "se",
+          "inicio_s": 17.539,
+          "fim_s": 17.599
+        },
+        {
+          "texto": "aproximava",
+          "inicio_s": 17.639,
+          "fim_s": 18.2
+        },
+        {
+          "texto": "de",
+          "inicio_s": 18.26,
+          "fim_s": 18.32
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 18.34,
+          "fim_s": 18.44
+        },
+        {
+          "texto": "piscina",
+          "inicio_s": 18.5,
+          "fim_s": 18.841
+        },
+        {
+          "texto": "subterrânea",
+          "inicio_s": 18.901,
+          "fim_s": 19.522
+        },
+        {
+          "texto": "com",
+          "inicio_s": 19.562,
+          "fim_s": 19.682
+        },
+        {
+          "texto": "milhões",
+          "inicio_s": 19.722,
+          "fim_s": 20.183
+        },
+        {
+          "texto": "de",
+          "inicio_s": 20.223,
+          "fim_s": 20.303
+        },
+        {
+          "texto": "litros",
+          "inicio_s": 20.363,
+          "fim_s": 20.664
+        },
+        {
+          "texto": "de",
+          "inicio_s": 20.684,
+          "fim_s": 20.744
+        },
+        {
+          "texto": "água",
+          "inicio_s": 20.864,
+          "fim_s": 21.064
+        },
+        {
+          "texto": "o",
+          "inicio_s": 21.565,
+          "fim_s": 21.585
+        },
+        {
+          "texto": "que",
+          "inicio_s": 21.645,
+          "fim_s": 21.745
+        },
+        {
+          "texto": "causaria",
+          "inicio_s": 21.785,
+          "fim_s": 22.206
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 22.246,
+          "fim_s": 22.366
+        },
+        {
+          "texto": "gigantesca",
+          "inicio_s": 22.426,
+          "fim_s": 23.007
+        },
+        {
+          "texto": "explosão",
+          "inicio_s": 23.047,
+          "fim_s": 23.508
+        },
+        {
+          "texto": "térmica",
+          "inicio_s": 23.648,
+          "fim_s": 24.069
+        },
+        {
+          "texto": "nuclear",
+          "inicio_s": 24.129,
+          "fim_s": 24.53
+        }
+      ]
+    },
+    {
+      "texto": "Três voluntários — os engenheiros Alexei Ananenko, Valery Bezpalov e o supervisor Boris Baranov — vestiram roupas de mergulho simples e desceram aos porões inundados na escuridão radioativa.",
+      "inicio_s": 24.96,
+      "fim_s": 37.76,
+      "palavras": [
+        {
+          "texto": "Três",
+          "inicio_s": 24.98,
+          "fim_s": 25.18
+        },
+        {
+          "texto": "voluntários",
+          "inicio_s": 25.22,
+          "fim_s": 25.821
+        },
+        {
+          "texto": "os",
+          "inicio_s": 26.222,
+          "fim_s": 26.302
+        },
+        {
+          "texto": "engenheiros",
+          "inicio_s": 26.342,
+          "fim_s": 26.843
+        },
+        {
+          "texto": "Alexei",
+          "inicio_s": 26.863,
+          "fim_s": 27.244
+        },
+        {
+          "texto": "Ananenko",
+          "inicio_s": 27.284,
+          "fim_s": 27.724
+        },
+        {
+          "texto": "Valery",
+          "inicio_s": 28.185,
+          "fim_s": 28.486
+        },
+        {
+          "texto": "Bezpalov",
+          "inicio_s": 28.646,
+          "fim_s": 29.247
+        },
+        {
+          "texto": "e",
+          "inicio_s": 29.828,
+          "fim_s": 29.848
+        },
+        {
+          "texto": "o",
+          "inicio_s": 29.908,
+          "fim_s": 29.928
+        },
+        {
+          "texto": "supervisor",
+          "inicio_s": 29.988,
+          "fim_s": 30.589
+        },
+        {
+          "texto": "Boris",
+          "inicio_s": 30.849,
+          "fim_s": 31.13
+        },
+        {
+          "texto": "Baranov",
+          "inicio_s": 31.19,
+          "fim_s": 31.61
+        },
+        {
+          "texto": "vestiram",
+          "inicio_s": 32.672,
+          "fim_s": 33.093
+        },
+        {
+          "texto": "roupas",
+          "inicio_s": 33.153,
+          "fim_s": 33.453
+        },
+        {
+          "texto": "de",
+          "inicio_s": 33.493,
+          "fim_s": 33.553
+        },
+        {
+          "texto": "mergulho",
+          "inicio_s": 33.593,
+          "fim_s": 33.974
+        },
+        {
+          "texto": "simples",
+          "inicio_s": 34.094,
+          "fim_s": 34.475
+        },
+        {
+          "texto": "e",
+          "inicio_s": 35.016,
+          "fim_s": 35.036
+        },
+        {
+          "texto": "desceram",
+          "inicio_s": 35.076,
+          "fim_s": 35.496
+        },
+        {
+          "texto": "aos",
+          "inicio_s": 35.537,
+          "fim_s": 35.617
+        },
+        {
+          "texto": "porões",
+          "inicio_s": 35.677,
+          "fim_s": 35.997
+        },
+        {
+          "texto": "inundados",
+          "inicio_s": 36.037,
+          "fim_s": 36.558
+        },
+        {
+          "texto": "na",
+          "inicio_s": 36.598,
+          "fim_s": 36.638
+        },
+        {
+          "texto": "escuridão",
+          "inicio_s": 36.678,
+          "fim_s": 37.079
+        },
+        {
+          "texto": "radioativa",
+          "inicio_s": 37.119,
+          "fim_s": 37.68
+        }
+      ]
+    },
+    {
+      "texto": "Com lanternas falhando e água preta até o peito, tatearam os canos no escuro até encontrarem as válvulas manuais de drenagem.",
+      "inicio_s": 38.11,
+      "fim_s": 44.87,
+      "palavras": [
+        {
+          "texto": "Com",
+          "inicio_s": 38.11,
+          "fim_s": 38.21
+        },
+        {
+          "texto": "lanternas",
+          "inicio_s": 38.23,
+          "fim_s": 38.712
+        },
+        {
+          "texto": "falhando",
+          "inicio_s": 38.732,
+          "fim_s": 39.153
+        },
+        {
+          "texto": "e",
+          "inicio_s": 39.294,
+          "fim_s": 39.314
+        },
+        {
+          "texto": "água",
+          "inicio_s": 39.454,
+          "fim_s": 39.655
+        },
+        {
+          "texto": "preta",
+          "inicio_s": 39.715,
+          "fim_s": 40.016
+        },
+        {
+          "texto": "até",
+          "inicio_s": 40.116,
+          "fim_s": 40.296
+        },
+        {
+          "texto": "o",
+          "inicio_s": 40.357,
+          "fim_s": 40.377
+        },
+        {
+          "texto": "peito",
+          "inicio_s": 40.457,
+          "fim_s": 40.738
+        },
+        {
+          "texto": "tatearam",
+          "inicio_s": 41.219,
+          "fim_s": 41.681
+        },
+        {
+          "texto": "os",
+          "inicio_s": 41.701,
+          "fim_s": 41.781
+        },
+        {
+          "texto": "canos",
+          "inicio_s": 41.821,
+          "fim_s": 42.042
+        },
+        {
+          "texto": "no",
+          "inicio_s": 42.082,
+          "fim_s": 42.122
+        },
+        {
+          "texto": "escuro",
+          "inicio_s": 42.162,
+          "fim_s": 42.543
+        },
+        {
+          "texto": "até",
+          "inicio_s": 42.663,
+          "fim_s": 42.804
+        },
+        {
+          "texto": "encontrarem",
+          "inicio_s": 42.864,
+          "fim_s": 43.386
+        },
+        {
+          "texto": "as",
+          "inicio_s": 43.406,
+          "fim_s": 43.486
+        },
+        {
+          "texto": "válvulas",
+          "inicio_s": 43.526,
+          "fim_s": 43.847
+        },
+        {
+          "texto": "manuais",
+          "inicio_s": 43.887,
+          "fim_s": 44.248
+        },
+        {
+          "texto": "de",
+          "inicio_s": 44.268,
+          "fim_s": 44.348
+        },
+        {
+          "texto": "drenagem",
+          "inicio_s": 44.389,
+          "fim_s": 44.81
+        }
+      ]
+    },
+    {
+      "texto": "Eles abriram as comportas, esvaziaram os tanques e evitaram a destruição de metade do continente europeu.",
+      "inicio_s": 45.22,
+      "fim_s": 51.2,
+      "palavras": [
+        {
+          "texto": "Eles",
+          "inicio_s": 45.22,
+          "fim_s": 45.401
+        },
+        {
+          "texto": "abriram",
+          "inicio_s": 45.441,
+          "fim_s": 45.762
+        },
+        {
+          "texto": "as",
+          "inicio_s": 45.782,
+          "fim_s": 45.862
+        },
+        {
+          "texto": "comportas",
+          "inicio_s": 45.882,
+          "fim_s": 46.404
+        },
+        {
+          "texto": "esvaziaram",
+          "inicio_s": 46.926,
+          "fim_s": 47.488
+        },
+        {
+          "texto": "os",
+          "inicio_s": 47.528,
+          "fim_s": 47.608
+        },
+        {
+          "texto": "tanques",
+          "inicio_s": 47.668,
+          "fim_s": 48.029
+        },
+        {
+          "texto": "e",
+          "inicio_s": 48.411,
+          "fim_s": 48.431
+        },
+        {
+          "texto": "evitaram",
+          "inicio_s": 48.491,
+          "fim_s": 48.993
+        },
+        {
+          "texto": "a",
+          "inicio_s": 49.013,
+          "fim_s": 49.053
+        },
+        {
+          "texto": "destruição",
+          "inicio_s": 49.073,
+          "fim_s": 49.635
+        },
+        {
+          "texto": "de",
+          "inicio_s": 49.695,
+          "fim_s": 49.775
+        },
+        {
+          "texto": "metade",
+          "inicio_s": 49.815,
+          "fim_s": 50.237
+        },
+        {
+          "texto": "do",
+          "inicio_s": 50.277,
+          "fim_s": 50.337
+        },
+        {
+          "texto": "continente",
+          "inicio_s": 50.357,
+          "fim_s": 50.779
+        },
+        {
+          "texto": "europeu",
+          "inicio_s": 50.799,
+          "fim_s": 51.12
+        }
+      ]
+    }
+  ]
+}

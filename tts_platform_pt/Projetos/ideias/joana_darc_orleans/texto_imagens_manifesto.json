@@ -1,0 +1,92 @@
+[
+  {
+    "frase": 1,
+    "plano": 1,
+    "arquivo": "texto_01.png",
+    "prompt_final": "A wide cinematic anime establishing shot of a massive english medieval siege army surrounding a fortress city at twilight, hundreds of torches flickering in the mist and black dragon standards in the cold wind, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00079_.png"
+  },
+  {
+    "frase": 1,
+    "plano": 2,
+    "arquivo": "texto_01b.png",
+    "prompt_final": "A striking anime close-up of the young warrior maiden from <image1>, preserving her exact face, short cropped blonde hair, fierce blue eyes, polished silver steel plate armor over a royal blue surcoat, standing alone against the distant firelit siege camp, wind pulling at her white banner, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00045_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\joana_darc_orleans\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 2,
+    "plano": 1,
+    "arquivo": "texto_02.png",
+    "prompt_final": "A somber anime scene inside the walled city of Orleans under siege, broken stone ramparts and hungry french citizens in wool robes looking up at an overcast sky full of sparks and smoke, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00080_.png"
+  },
+  {
+    "frase": 2,
+    "plano": 2,
+    "arquivo": "texto_02b.png",
+    "prompt_final": "A quiet anime shot of an empty grain store and a starving child holding an empty wooden bowl in a shadowed medieval street, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00081_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 1,
+    "arquivo": "texto_03.png",
+    "prompt_final": "A dynamic medium anime shot of a young maiden in silver armor riding a galloping white charger through the open city gates, divine sunbeams piercing dark clouds above her, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00082_.png"
+  },
+  {
+    "frase": 3,
+    "plano": 2,
+    "arquivo": "texto_03b.png",
+    "prompt_final": "A joyful anime shot of french townspeople crowding the gate street, reaching out and throwing spring flowers as a white horse passes, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00083_.png"
+  },
+  {
+    "frase": 4,
+    "plano": 1,
+    "arquivo": "texto_04.png",
+    "prompt_final": "A cinematic anime screenshot of Joan of Arc, a 17 year old french warrior maiden with short cropped blonde hair and fierce resolute blue eyes, wearing gleaming custom fitted silver steel plate armor over a royal blue surcoat and holding a white banner with golden lilies, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00078_.png"
+  },
+  {
+    "frase": 4,
+    "plano": 2,
+    "arquivo": "texto_04b.png",
+    "prompt_final": "A detailed anime close-up of a white banner embroidered with golden fleur de lis lilies snapping in the wind above a field of spears, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00084_.png"
+  },
+  {
+    "frase": 5,
+    "plano": 1,
+    "arquivo": "texto_05.png",
+    "prompt_final": "A medium anime shot of scarred veteran french knights in dented iron armor staring in wide eyed awe at the young maiden, hope rekindling on their weathered faces, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00085_.png"
+  },
+  {
+    "frase": 5,
+    "plano": 2,
+    "arquivo": "texto_05b.png",
+    "prompt_final": "A powerful anime close-up of the unwavering eyes of the young warrior maiden from <image1>, preserving her exact face, short cropped blonde hair, fierce blue eyes, polished silver steel plate armor over a royal blue surcoat, meeting the gaze of hardened soldiers who had mocked her moments before, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00046_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\joana_darc_orleans\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 6,
+    "plano": 1,
+    "arquivo": "texto_06.png",
+    "prompt_final": "A monumental action anime climax of the young warrior maiden from <image1>, preserving her exact face, short cropped blonde hair, fierce blue eyes, polished silver steel plate armor over a royal blue surcoat, raising her white banner into the sky and leading a thunderous cavalry charge against a massive english stone bastion while flaming arrows streak across the smoky dusk, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_lora_i2i_00047_.png",
+    "referencia_modo": "edicao_condicionamento",
+    "referencia": "Projetos\\ideias\\joana_darc_orleans\\imagens\\texto_04.png"
+  },
+  {
+    "frase": 6,
+    "plano": 2,
+    "arquivo": "texto_06b.png",
+    "prompt_final": "An epic wide anime battle shot of french troops swarming a burning english redoubt with scaling ladders as fire arrows rain down, full-color single frame anime movie still, cinematic lighting, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "QwenImage2_1_t2i_00086_.png"
+  }
+]

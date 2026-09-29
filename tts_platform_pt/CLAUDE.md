@@ -774,6 +774,25 @@ python scripts\gerar_capa.py Projetos\Video_1\historia_humanidade_parte2\texto_m
   `_LEAD_IN_S` (150ms de silêncio puro) antes da primeira frase em
   `synthesize()`, dando ao fade-in um colchão real pra rampar, igual ao que o
   gap já garante pras frases seguintes.
+- **Limite de ~203 caracteres POR FRASE em pt no tokenizer do XTTS-v2**
+  (`TTS.tts.layers.xtts.tokenizer`) — diferente do limite de 400 tokens do
+  texto inteiro (gotcha acima, já contornado por sintetizar frase por frase).
+  Mesmo com o texto já dividido em frases, uma frase individual longa demais
+  (~230 caracteres, ex.: uma frase com duas orações separadas por vírgula
+  encadeadas) dispara o warning `The text length exceeds the character limit
+  of 203 for language 'pt', this might cause truncated audio` e sai com o
+  fim cortado/atropelado. Não é aviso cosmético — reproduzido no
+  `Video_11/invencao_escrita_contabilidade`: a frase sobre selar fichas de
+  argila num envelope (229 caracteres) saiu com áudio realmente truncado no
+  fim. Sem correção automática no código (o preprocessador não quebra frases
+  longas) — o fix é sempre no `texto.md`: reescrever a frase problemática em
+  duas mais curtas antes de sintetizar. Ao escrever roteiro novo (ver skill
+  `gerar-texto`), evite frases com múltiplas orações encadeadas por vírgula
+  que passem de ~200 caracteres; se aparecer o warning no log do servidor
+  depois de gerar, quebre a frase apontada e rode `gerar_video.py` de novo
+  (isso muda a numeração das frases seguintes — replanejar
+  `texto_prompts.json`/imagens já geradas de acordo, ver convenção de
+  pastas).
 - **XTTS-v2 "trava"/alonga demais em frases com datas compostas** (ex.: "Roma,
   26 de abril de 121 – Vindobona, 17 de março de 180"): uma frase que deveria
   durar ~5s saiu com 14-17s (repetição/alucinação do decoder autoregressivo).

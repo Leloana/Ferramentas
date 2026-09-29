@@ -1,9 +1,30 @@
 {
-  "1": "A cinematic high-budget action anime screenshot: a gleaming Greek bronze spear slammed forcefully upright into blood-stained seaside rocks, a crimson Spartan cloak caught in the sea gale, dramatic ocean spray and storm clouds in Ufotable animation style, full-color single frame animation still.",
-  "2": "A wide cinematic anime establishing shot of the narrow coastal pass of Thermopylae: sheer dark vertical stone cliffs on the left, rough turquoise Aegean Sea waves crashing on the right, and the colossal Persian imperial armada anchored in the stormy distance, magnificent anime background painting.",
-  "3": "A powerful medium anime portrait of King Leonidas I of Sparta, a formidable 50-year-old warrior king with sharp rugged features, short dark beard streaked with bronze, and intense burning eyes. He wears an ornate bronze hoplite cuirass, a bronze Corinthian helmet with a tall transverse red horsehair crest, and a deep crimson cloak pinned at his muscular shoulder, clean anime cel shading, full-color single frame animation still.",
-  "4": "A monumental wide anime battle shot: the king from <image1> locking his heavy bronze circular aspis shield alongside a tightly packed wall of three hundred Spartan warriors in matching bronze armor, thrusting long ash-wood spears into waves of attacking Persian Immortals beneath thunderous sea spray.",
-  "5": "A breathtaking high-altitude anime shot: a pitch-black cloud of hundreds of thousands of Persian arrows blotting out the midday sun, casting the rocky battlefield into sudden ominous darkness, while the Spartans from <image1> raise their bronze shields and smile with defiant warrior pride.",
-  "6": "An epic and visceral action anime climax: the king from <image1>, his helmet removed, fighting furiously with a broken spear shaft and drawn xiphos short sword, surrounded by piles of shattered weapons and fallen foes on the narrow rocky pass, glowing sunset light breaking through sea mist.",
-  "7": "A solemn and poetic wide anime shot: the rocky battlefield of Thermopylae at twilight, three hundred Spartan shields lying silent among scattered spears and wild poppies on the cliff edge overlooking the calm sea, golden evening light honoring the heroes who saved western civilization, full-color single frame animation still."
+  "1": [
+    "A cinematic action anime screenshot of a gleaming greek bronze spear slammed upright into blood stained seaside rocks, a crimson spartan cloak snapping in the sea gale, storm clouds and ocean spray, full-color single frame anime movie still, cinematic lighting",
+    "A defiant anime close-up of the face of the spartan king from <image1>, preserving his exact face, short dark beard, bronze hoplite cuirass, crested bronze corinthian helmet and deep crimson cloak, jaw set and eyes burning as he answers the demand to surrender, sea wind in his helmet crest, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "2": [
+    "A wide cinematic anime establishing shot of the narrow coastal pass of Thermopylae, sheer dark cliffs on one side and rough turquoise aegean waves on the other, the colossal persian armada anchored in the stormy distance, full-color single frame anime movie still, cinematic lighting",
+    "A menacing wide anime shot of the persian imperial host covering the plain like a dark tide, banners and ranks of Immortals stretching to the horizon at dawn, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "3": [
+    "A powerful medium anime portrait of King Leonidas of Sparta, a formidable 50 year old warrior king with rugged features, short dark beard and intense burning eyes, wearing an ornate bronze hoplite cuirass, a bronze corinthian helmet with a tall red horsehair crest and a deep crimson cloak pinned at his shoulder, clean anime cel shading, full-color single frame anime movie still, cinematic lighting",
+    "A tight anime shot of the spartan phalanx wall from the front, overlapping bronze aspis shields and levelled ash wood spears filling the narrow rocky pass, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "4": [
+    "A monumental wide anime battle shot of the spartan king from <image1>, preserving his exact face, short dark beard, bronze hoplite cuirass, crested bronze corinthian helmet and deep crimson cloak, locking his heavy bronze shield in the front rank and thrusting his spear into a crashing wave of persian Immortals, sea spray and dust, full-color single frame anime movie still, cinematic lighting",
+    "A brutal anime action frame of persian attackers breaking apart against a wall of bronze shields in the narrow pass, splintered spears and falling bodies, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "5": [
+    "A breathtaking high angle anime shot of a black cloud of hundreds of thousands of persian arrows blotting out the midday sun over a rocky battlefield, full-color single frame anime movie still, cinematic lighting",
+    "A proud anime close-up of the spartan king from <image1>, preserving his exact face, short dark beard, bronze hoplite cuirass, crested bronze corinthian helmet and deep crimson cloak, smiling grimly under the sudden arrow shadow as he raises his bronze shield, fellow spartans laughing beside him, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "6": [
+    "A tense anime shot of a hooded greek traitor leading persian soldiers along a hidden goat path through misty night mountains above the pass, full-color single frame anime movie still, cinematic lighting",
+    "An epic visceral anime climax of the spartan king from <image1>, preserving his exact face, short dark beard, bronze hoplite cuirass, crested bronze corinthian helmet and deep crimson cloak, helmet lost, fighting with a broken spear shaft and drawn short sword amid piles of shattered weapons, sunset light through sea mist, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "7": [
+    "A solemn poetic wide anime shot of the rocky battlefield of Thermopylae at twilight, three hundred spartan shields lying silent among scattered spears and wild poppies above the calm sea, full-color single frame anime movie still, cinematic lighting",
+    "A quiet anime close-up of a weathered stone memorial slab on the empty pass at dawn, sea wind moving dry grass around it, full-color single frame anime movie still, cinematic lighting"
+  ]
 }

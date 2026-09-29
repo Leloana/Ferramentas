@@ -1,0 +1,772 @@
+{
+  "gerado_em": "2026-09-23T18:28:18",
+  "roteiro": "C:\\Users\\mf827\\Documents\\Ferramentas\\tts_platform_pt\\Projetos\\Video_11\\musashi_duelo_ganryujima\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 47.7,
+  "texto_usado": "O maior espadachim do Japão venceu a luta antes mesmo de desembainhar a espada. Na manhã de treze de abril de 1612, centenas de pessoas se reuniram nas areias da ilha de Ganryu para assistir ao duelo do século. De um lado estava Sasaki Kojiro, o mestre supremo da espada longa, invicto e elegante em seu quimono de seda.\n\nDo outro lado não havia ninguém. Kojiro esperou por horas debaixo do sol escaldante, sentindo a raiva e a impaciência corroerem sua concentração. A milhas dali, Miyamoto Musashi navegava sem pressa em um pequeno barco de pesca.\n\nCom uma faca simples, esculpia com calma um remo de madeira quebrado, transformando a madeira rústica em uma espada pesada. Quando o barco finalmente tocou as pedras da praia, Kojiro desembainhou sua lâmina lendária e atirou a bainha na água. Musashi apenas sorriu.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "O maior espadachim do Japão venceu a luta antes mesmo de desembainhar a espada.",
+      "inicio_s": 0.15,
+      "fim_s": 4.65,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 0.17,
+          "fim_s": 0.19
+        },
+        {
+          "texto": "maior",
+          "inicio_s": 0.23,
+          "fim_s": 0.492
+        },
+        {
+          "texto": "espadachim",
+          "inicio_s": 0.532,
+          "fim_s": 0.974
+        },
+        {
+          "texto": "do",
+          "inicio_s": 0.994,
+          "fim_s": 1.074
+        },
+        {
+          "texto": "Japão",
+          "inicio_s": 1.094,
+          "fim_s": 1.416
+        },
+        {
+          "texto": "venceu",
+          "inicio_s": 1.797,
+          "fim_s": 2.119
+        },
+        {
+          "texto": "a",
+          "inicio_s": 2.159,
+          "fim_s": 2.179
+        },
+        {
+          "texto": "luta",
+          "inicio_s": 2.259,
+          "fim_s": 2.5
+        },
+        {
+          "texto": "antes",
+          "inicio_s": 2.641,
+          "fim_s": 2.922
+        },
+        {
+          "texto": "mesmo",
+          "inicio_s": 2.983,
+          "fim_s": 3.244
+        },
+        {
+          "texto": "de",
+          "inicio_s": 3.284,
+          "fim_s": 3.344
+        },
+        {
+          "texto": "desembainhar",
+          "inicio_s": 3.425,
+          "fim_s": 4.088
+        },
+        {
+          "texto": "a",
+          "inicio_s": 4.128,
+          "fim_s": 4.148
+        },
+        {
+          "texto": "espada",
+          "inicio_s": 4.188,
+          "fim_s": 4.57
+        }
+      ]
+    },
+    {
+      "texto": "Na manhã de treze de abril de 1612, centenas de pessoas se reuniram nas areias da ilha de Ganryu para assistir ao duelo do século.",
+      "inicio_s": 5.0,
+      "fim_s": 12.78,
+      "palavras": [
+        {
+          "texto": "Na",
+          "inicio_s": 5.02,
+          "fim_s": 5.08
+        },
+        {
+          "texto": "manhã",
+          "inicio_s": 5.12,
+          "fim_s": 5.301
+        },
+        {
+          "texto": "de",
+          "inicio_s": 5.381,
+          "fim_s": 5.441
+        },
+        {
+          "texto": "treze",
+          "inicio_s": 5.521,
+          "fim_s": 5.842
+        },
+        {
+          "texto": "de",
+          "inicio_s": 5.842,
+          "fim_s": 5.902
+        },
+        {
+          "texto": "abril",
+          "inicio_s": 5.942,
+          "fim_s": 6.203
+        },
+        {
+          "texto": "de",
+          "inicio_s": 6.243,
+          "fim_s": 6.323
+        },
+        {
+          "texto": "1612",
+          "inicio_s": 6.323,
+          "fim_s": 7.988
+        },
+        {
+          "texto": "centenas",
+          "inicio_s": 7.988,
+          "fim_s": 8.449
+        },
+        {
+          "texto": "de",
+          "inicio_s": 8.469,
+          "fim_s": 8.529
+        },
+        {
+          "texto": "pessoas",
+          "inicio_s": 8.569,
+          "fim_s": 8.91
+        },
+        {
+          "texto": "se",
+          "inicio_s": 8.95,
+          "fim_s": 9.01
+        },
+        {
+          "texto": "reuniram",
+          "inicio_s": 9.05,
+          "fim_s": 9.471
+        },
+        {
+          "texto": "nas",
+          "inicio_s": 9.512,
+          "fim_s": 9.652
+        },
+        {
+          "texto": "areias",
+          "inicio_s": 9.692,
+          "fim_s": 9.953
+        },
+        {
+          "texto": "da",
+          "inicio_s": 9.993,
+          "fim_s": 10.053
+        },
+        {
+          "texto": "ilha",
+          "inicio_s": 10.133,
+          "fim_s": 10.294
+        },
+        {
+          "texto": "de",
+          "inicio_s": 10.314,
+          "fim_s": 10.394
+        },
+        {
+          "texto": "Ganryu",
+          "inicio_s": 10.434,
+          "fim_s": 10.795
+        },
+        {
+          "texto": "para",
+          "inicio_s": 11.096,
+          "fim_s": 11.236
+        },
+        {
+          "texto": "assistir",
+          "inicio_s": 11.276,
+          "fim_s": 11.717
+        },
+        {
+          "texto": "ao",
+          "inicio_s": 11.757,
+          "fim_s": 11.818
+        },
+        {
+          "texto": "duelo",
+          "inicio_s": 11.838,
+          "fim_s": 12.158
+        },
+        {
+          "texto": "do",
+          "inicio_s": 12.219,
+          "fim_s": 12.279
+        },
+        {
+          "texto": "século",
+          "inicio_s": 12.339,
+          "fim_s": 12.7
+        }
+      ]
+    },
+    {
+      "texto": "De um lado estava Sasaki Kojiro, o mestre supremo da espada longa, invicto e elegante em seu quimono de seda.",
+      "inicio_s": 13.13,
+      "fim_s": 19.65,
+      "palavras": [
+        {
+          "texto": "De",
+          "inicio_s": 13.15,
+          "fim_s": 13.23
+        },
+        {
+          "texto": "um",
+          "inicio_s": 13.27,
+          "fim_s": 13.331
+        },
+        {
+          "texto": "lado",
+          "inicio_s": 13.351,
+          "fim_s": 13.632
+        },
+        {
+          "texto": "estava",
+          "inicio_s": 13.672,
+          "fim_s": 13.953
+        },
+        {
+          "texto": "Sasaki",
+          "inicio_s": 14.033,
+          "fim_s": 14.414
+        },
+        {
+          "texto": "Kojiro",
+          "inicio_s": 14.454,
+          "fim_s": 14.855
+        },
+        {
+          "texto": "o",
+          "inicio_s": 15.257,
+          "fim_s": 15.277
+        },
+        {
+          "texto": "mestre",
+          "inicio_s": 15.317,
+          "fim_s": 15.618
+        },
+        {
+          "texto": "supremo",
+          "inicio_s": 15.658,
+          "fim_s": 16.059
+        },
+        {
+          "texto": "da",
+          "inicio_s": 16.079,
+          "fim_s": 16.139
+        },
+        {
+          "texto": "espada",
+          "inicio_s": 16.179,
+          "fim_s": 16.5
+        },
+        {
+          "texto": "longa",
+          "inicio_s": 16.561,
+          "fim_s": 16.821
+        },
+        {
+          "texto": "invicto",
+          "inicio_s": 17.423,
+          "fim_s": 17.905
+        },
+        {
+          "texto": "e",
+          "inicio_s": 18.045,
+          "fim_s": 18.065
+        },
+        {
+          "texto": "elegante",
+          "inicio_s": 18.125,
+          "fim_s": 18.567
+        },
+        {
+          "texto": "em",
+          "inicio_s": 18.587,
+          "fim_s": 18.647
+        },
+        {
+          "texto": "seu",
+          "inicio_s": 18.687,
+          "fim_s": 18.787
+        },
+        {
+          "texto": "quimono",
+          "inicio_s": 18.827,
+          "fim_s": 19.148
+        },
+        {
+          "texto": "de",
+          "inicio_s": 19.189,
+          "fim_s": 19.249
+        },
+        {
+          "texto": "seda",
+          "inicio_s": 19.329,
+          "fim_s": 19.55
+        }
+      ]
+    },
+    {
+      "texto": "Do outro lado não havia ninguém.",
+      "inicio_s": 20.0,
+      "fim_s": 21.6,
+      "palavras": [
+        {
+          "texto": "Do",
+          "inicio_s": 20.041,
+          "fim_s": 20.101
+        },
+        {
+          "texto": "outro",
+          "inicio_s": 20.182,
+          "fim_s": 20.405
+        },
+        {
+          "texto": "lado",
+          "inicio_s": 20.446,
+          "fim_s": 20.689
+        },
+        {
+          "texto": "não",
+          "inicio_s": 20.749,
+          "fim_s": 20.891
+        },
+        {
+          "texto": "havia",
+          "inicio_s": 20.911,
+          "fim_s": 21.154
+        },
+        {
+          "texto": "ninguém",
+          "inicio_s": 21.195,
+          "fim_s": 21.478
+        }
+      ]
+    },
+    {
+      "texto": "Kojiro esperou por horas debaixo do sol escaldante, sentindo a raiva e a impaciência corroerem sua concentração.",
+      "inicio_s": 21.95,
+      "fim_s": 27.37,
+      "palavras": [
+        {
+          "texto": "Kojiro",
+          "inicio_s": 21.95,
+          "fim_s": 22.271
+        },
+        {
+          "texto": "esperou",
+          "inicio_s": 22.291,
+          "fim_s": 22.612
+        },
+        {
+          "texto": "por",
+          "inicio_s": 22.653,
+          "fim_s": 22.773
+        },
+        {
+          "texto": "horas",
+          "inicio_s": 22.813,
+          "fim_s": 23.054
+        },
+        {
+          "texto": "debaixo",
+          "inicio_s": 23.074,
+          "fim_s": 23.415
+        },
+        {
+          "texto": "do",
+          "inicio_s": 23.456,
+          "fim_s": 23.496
+        },
+        {
+          "texto": "sol",
+          "inicio_s": 23.576,
+          "fim_s": 23.717
+        },
+        {
+          "texto": "escaldante",
+          "inicio_s": 23.737,
+          "fim_s": 24.259
+        },
+        {
+          "texto": "sentindo",
+          "inicio_s": 24.56,
+          "fim_s": 24.921
+        },
+        {
+          "texto": "a",
+          "inicio_s": 24.961,
+          "fim_s": 24.981
+        },
+        {
+          "texto": "raiva",
+          "inicio_s": 25.041,
+          "fim_s": 25.343
+        },
+        {
+          "texto": "e",
+          "inicio_s": 25.403,
+          "fim_s": 25.423
+        },
+        {
+          "texto": "a",
+          "inicio_s": 25.483,
+          "fim_s": 25.503
+        },
+        {
+          "texto": "impaciência",
+          "inicio_s": 25.523,
+          "fim_s": 26.065
+        },
+        {
+          "texto": "corroerem",
+          "inicio_s": 26.105,
+          "fim_s": 26.507
+        },
+        {
+          "texto": "sua",
+          "inicio_s": 26.547,
+          "fim_s": 26.667
+        },
+        {
+          "texto": "concentração",
+          "inicio_s": 26.687,
+          "fim_s": 27.27
+        }
+      ]
+    },
+    {
+      "texto": "A milhas dali, Miyamoto Musashi navegava sem pressa em um pequeno barco de pesca.",
+      "inicio_s": 27.72,
+      "fim_s": 32.84,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 27.76,
+          "fim_s": 27.78
+        },
+        {
+          "texto": "milhas",
+          "inicio_s": 27.861,
+          "fim_s": 28.122
+        },
+        {
+          "texto": "dali",
+          "inicio_s": 28.142,
+          "fim_s": 28.363
+        },
+        {
+          "texto": "Miyamoto",
+          "inicio_s": 28.885,
+          "fim_s": 29.306
+        },
+        {
+          "texto": "Musashi",
+          "inicio_s": 29.326,
+          "fim_s": 29.708
+        },
+        {
+          "texto": "navegava",
+          "inicio_s": 30.39,
+          "fim_s": 30.832
+        },
+        {
+          "texto": "sem",
+          "inicio_s": 30.912,
+          "fim_s": 31.033
+        },
+        {
+          "texto": "pressa",
+          "inicio_s": 31.073,
+          "fim_s": 31.394
+        },
+        {
+          "texto": "em",
+          "inicio_s": 31.515,
+          "fim_s": 31.575
+        },
+        {
+          "texto": "um",
+          "inicio_s": 31.595,
+          "fim_s": 31.655
+        },
+        {
+          "texto": "pequeno",
+          "inicio_s": 31.675,
+          "fim_s": 32.017
+        },
+        {
+          "texto": "barco",
+          "inicio_s": 32.057,
+          "fim_s": 32.298
+        },
+        {
+          "texto": "de",
+          "inicio_s": 32.338,
+          "fim_s": 32.398
+        },
+        {
+          "texto": "pesca",
+          "inicio_s": 32.438,
+          "fim_s": 32.74
+        }
+      ]
+    },
+    {
+      "texto": "Com uma faca simples, esculpia com calma um remo de madeira quebrado, transformando a madeira rústica em uma espada pesada.",
+      "inicio_s": 33.19,
+      "fim_s": 39.73,
+      "palavras": [
+        {
+          "texto": "Com",
+          "inicio_s": 33.19,
+          "fim_s": 33.31
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 33.35,
+          "fim_s": 33.451
+        },
+        {
+          "texto": "faca",
+          "inicio_s": 33.531,
+          "fim_s": 33.752
+        },
+        {
+          "texto": "simples",
+          "inicio_s": 33.852,
+          "fim_s": 34.213
+        },
+        {
+          "texto": "esculpia",
+          "inicio_s": 34.614,
+          "fim_s": 35.076
+        },
+        {
+          "texto": "com",
+          "inicio_s": 35.116,
+          "fim_s": 35.216
+        },
+        {
+          "texto": "calma",
+          "inicio_s": 35.317,
+          "fim_s": 35.577
+        },
+        {
+          "texto": "um",
+          "inicio_s": 35.637,
+          "fim_s": 35.698
+        },
+        {
+          "texto": "remo",
+          "inicio_s": 35.758,
+          "fim_s": 35.958
+        },
+        {
+          "texto": "de",
+          "inicio_s": 35.999,
+          "fim_s": 36.059
+        },
+        {
+          "texto": "madeira",
+          "inicio_s": 36.079,
+          "fim_s": 36.38
+        },
+        {
+          "texto": "quebrado",
+          "inicio_s": 36.42,
+          "fim_s": 36.821
+        },
+        {
+          "texto": "transformando",
+          "inicio_s": 37.222,
+          "fim_s": 37.764
+        },
+        {
+          "texto": "a",
+          "inicio_s": 37.804,
+          "fim_s": 37.824
+        },
+        {
+          "texto": "madeira",
+          "inicio_s": 37.844,
+          "fim_s": 38.165
+        },
+        {
+          "texto": "rústica",
+          "inicio_s": 38.225,
+          "fim_s": 38.627
+        },
+        {
+          "texto": "em",
+          "inicio_s": 38.667,
+          "fim_s": 38.727
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 38.767,
+          "fim_s": 38.867
+        },
+        {
+          "texto": "espada",
+          "inicio_s": 38.907,
+          "fim_s": 39.208
+        },
+        {
+          "texto": "pesada",
+          "inicio_s": 39.249,
+          "fim_s": 39.65
+        }
+      ]
+    },
+    {
+      "texto": "Quando o barco finalmente tocou as pedras da praia, Kojiro desembainhou sua lâmina lendária e atirou a bainha na água.",
+      "inicio_s": 40.08,
+      "fim_s": 46.1,
+      "palavras": [
+        {
+          "texto": "Quando",
+          "inicio_s": 40.08,
+          "fim_s": 40.241
+        },
+        {
+          "texto": "o",
+          "inicio_s": 40.281,
+          "fim_s": 40.301
+        },
+        {
+          "texto": "barco",
+          "inicio_s": 40.321,
+          "fim_s": 40.602
+        },
+        {
+          "texto": "finalmente",
+          "inicio_s": 40.662,
+          "fim_s": 41.123
+        },
+        {
+          "texto": "tocou",
+          "inicio_s": 41.164,
+          "fim_s": 41.404
+        },
+        {
+          "texto": "as",
+          "inicio_s": 41.445,
+          "fim_s": 41.505
+        },
+        {
+          "texto": "pedras",
+          "inicio_s": 41.565,
+          "fim_s": 41.826
+        },
+        {
+          "texto": "da",
+          "inicio_s": 41.826,
+          "fim_s": 41.906
+        },
+        {
+          "texto": "praia",
+          "inicio_s": 41.946,
+          "fim_s": 42.227
+        },
+        {
+          "texto": "Kojiro",
+          "inicio_s": 42.689,
+          "fim_s": 43.09
+        },
+        {
+          "texto": "desembainhou",
+          "inicio_s": 43.11,
+          "fim_s": 43.612
+        },
+        {
+          "texto": "sua",
+          "inicio_s": 43.672,
+          "fim_s": 43.792
+        },
+        {
+          "texto": "lâmina",
+          "inicio_s": 43.832,
+          "fim_s": 44.053
+        },
+        {
+          "texto": "lendária",
+          "inicio_s": 44.093,
+          "fim_s": 44.535
+        },
+        {
+          "texto": "e",
+          "inicio_s": 44.796,
+          "fim_s": 44.816
+        },
+        {
+          "texto": "atirou",
+          "inicio_s": 44.876,
+          "fim_s": 45.217
+        },
+        {
+          "texto": "a",
+          "inicio_s": 45.257,
+          "fim_s": 45.277
+        },
+        {
+          "texto": "bainha",
+          "inicio_s": 45.317,
+          "fim_s": 45.578
+        },
+        {
+          "texto": "na",
+          "inicio_s": 45.618,
+          "fim_s": 45.679
+        },
+        {
+          "texto": "água",
+          "inicio_s": 45.739,
+          "fim_s": 45.96
+        }
+      ]
+    },
+    {
+      "texto": "Musashi apenas sorriu.",
+      "inicio_s": 46.45,
+      "fim_s": 47.69,
+      "palavras": [
+        {
+          "texto": "Musashi",
+          "inicio_s": 46.47,
+          "fim_s": 46.836
+        },
+        {
+          "texto": "apenas",
+          "inicio_s": 46.979,
+          "fim_s": 47.263
+        },
+        {
+          "texto": "sorriu",
+          "inicio_s": 47.324,
+          "fim_s": 47.588
+        }
+      ]
+    }
+  ]
+}

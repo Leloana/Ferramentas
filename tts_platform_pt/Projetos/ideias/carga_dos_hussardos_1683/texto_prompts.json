@@ -1,9 +1,30 @@
 {
-  "1": "A cinematic high-budget action anime screenshot of ground trembling and dust bursting into the air under thousands of galloping iron-shod horse hooves at early dawn, morning sunbeams cutting through forest mist, dynamic speed lines in Wit Studio animation style, full-color single frame animation still.",
-  "2": "A wide dramatic anime establishing shot of the city of Vienna under brutal siege in 1683: battered stone ramparts and smoking craters surrounded by hundreds of thousands of white Ottoman siege tents stretching across the Danube plains.",
-  "3": "A sweeping panoramic anime shot from atop the wooded ridge of Kahlenberg hill: eighteen thousand allied cavalrymen in gleaming armor lining the forest edge against a brilliant golden morning sunrise, lances held upright like a glittering forest of steel.",
-  "4": "A magnificent medium anime portrait of King Jan III Sobieski leading the Winged Hussars, a formidable 54-year-old monarch with an authoritative mustache and fierce regal gaze. He wears mirror-polished steel plate armor draped in a leopard pelt, with a pair of massive curved wooden wings mounted on his back bristling with white eagle feathers that catch the morning wind, riding a magnificent warhorse, clean anime cel shading, full-color single frame animation still.",
-  "5": "An intense close-up anime shot of the warrior king from <image1> shouting a thunderous battle command, his eagle wings whistling and vibrating violently in the headwind, eyes reflecting the fiery golden horizon as his horse leaps into full gallop down the grassy slope.",
-  "6": "An epic and monumental anime battle climax: the winged hussar cavalry from <image1> lowering their sixteen-foot hollow wood lances in unison and crashing like a seismic tidal wave through the enemy defensive lines, wooden lances shattering on impact amid clouds of smoke, flying sparks, and shockwaves, high-octane anime visual effects.",
-  "7": "A majestic wide anime closing shot: King Jan Sobieski and his winged hussars standing victorious outside the liberated gates of Vienna at sunset, eagle wings glowing against the orange and purple twilight sky, church bells ringing as thousands of grateful citizens look on, legendary anime finale, full-color single frame animation still."
+  "1": [
+    "A cinematic action anime screenshot of the ground trembling and dust bursting into the air under thousands of galloping iron shod hooves at dawn, sunbeams cutting through forest mist, dynamic speed lines, full-color single frame anime movie still, cinematic lighting",
+    "A tight anime close-up of armored horse legs and hooves tearing through wet grass and mud in full gallop, earth flying, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "2": [
+    "A wide dramatic anime establishing shot of Vienna under brutal siege in 1683, battered stone ramparts and smoking craters surrounded by hundreds of thousands of white ottoman siege tents across the plains, full-color single frame anime movie still, cinematic lighting",
+    "A desperate anime shot inside the city walls, exhausted defenders passing buckets along a burning rampart while civilians shelter in the smoke, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "3": [
+    "A sweeping panoramic anime shot from the wooded ridge of Kahlenberg, eighteen thousand allied cavalrymen in gleaming armor lining the forest edge against a golden sunrise, lances upright like a forest of steel, full-color single frame anime movie still, cinematic lighting",
+    "A low angle anime shot of hussar lance pennants and eagle feather wings rising above the treeline as the cavalry emerges from the woods, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "4": [
+    "A magnificent medium anime portrait of King Jan Sobieski leading the winged hussars, a formidable 54 year old monarch with an authoritative mustache and fierce regal gaze, wearing mirror polished steel plate armor draped in a leopard pelt with a pair of tall eagle feather wings mounted on his back, full-color single frame anime movie still, cinematic lighting",
+    "A dynamic anime shot of the polish warrior king from <image1>, preserving his exact face, authoritative mustache, mirror polished steel plate armor, leopard pelt and the pair of tall eagle feather wings on his back, spurring his warhorse down the grassy slope at the head of three thousand winged riders, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "5": [
+    "An intense anime close-up of the polish warrior king from <image1>, preserving his exact face, authoritative mustache, mirror polished steel plate armor, leopard pelt and the pair of tall eagle feather wings on his back, shouting a thunderous battle command as his eagle wings whistle and vibrate in the headwind, fiery horizon reflected in his eyes, full-color single frame anime movie still, cinematic lighting",
+    "A haunting anime shot from the ottoman lines, enemy horses rearing in panic as an eerie howling rises from thousands of feathered wings sweeping down the hill, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "6": [
+    "An epic monumental anime battle climax of winged hussars lowering sixteen foot lances in unison and crashing like a tidal wave through the enemy lines, lances shattering on impact amid clouds of dust, full-color single frame anime movie still, cinematic lighting",
+    "A brutal anime action frame of the polish warrior king from <image1>, preserving his exact face, authoritative mustache, mirror polished steel plate armor, leopard pelt and the pair of tall eagle feather wings on his back, driving through the broken center of the enemy camp with a drawn saber, tents collapsing and banners falling around him, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "7": [
+    "A majestic wide anime closing shot of the winged hussars standing victorious outside the liberated gates of Vienna at sunset, eagle wings glowing against orange and purple twilight, church bells ringing over cheering citizens, full-color single frame anime movie still, cinematic lighting",
+    "A warm anime shot of the polish warrior king from <image1>, preserving his exact face, authoritative mustache, mirror polished steel plate armor, leopard pelt and the pair of tall eagle feather wings on his back, removing his plumed helmet before the grateful crowd at the city gate, evening light on his tired face, full-color single frame anime movie still, cinematic lighting"
+  ]
 }

@@ -1,0 +1,1601 @@
+{
+  "gerado_em": "2026-08-10T21:19:07",
+  "roteiro": "Projetos\\Video_11\\invencao_escrita_contabilidade\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 109.0,
+  "texto_usado": "A primeira frase escrita da história não foi um poema, nem uma oração, nem uma declaração de guerra. Foi um recibo. Bem antes de qualquer verso ou mito ser gravado numa tábua, a escrita nasceu pra resolver um problema bem mais chato: contar. Na Suméria antiga, entre os rios Tigre e Eufrates, cidades como Uruk cresceram rápido demais pra caber na memória de qualquer administrador. Templos e palácios acumulavam grãos, rebanhos, cerveja e tecidos vindos de dezenas de aldeias, e alguém precisava saber exatamente quanto entrava, quanto saía e quem devia o quê. A solução começou séculos antes da escrita propriamente dita, com fichas de argila: pequenos objetos moldados em formas simples, cada uma representando uma medida de cevada ou uma cabeça de gado. Pra fechar um contrato, as fichas certas eram seladas dentro de um envelope de argila. Do lado de fora, alguém pressionava cada ficha na superfície mole antes de guardá-la lá dentro, deixando a marca do que havia sido combinado. Foi só um passo até perceber que a marca sozinha já bastava, sem precisar guardar nenhuma ficha dentro do envelope. Esse passo virou a tábua de argila achatada, marcada com uma cana cortada em bisel. Nascia a escrita cuneiforme, e as primeiras tábuas encontradas por arqueólogos não contam histórias: são listas. Fileiras de números ao lado de símbolos de cevada, óleo e ovelhas, o equivalente antigo de uma planilha de estoque. Só séculos depois de virar rotina administrativa alguém teve a ideia de usar esses mesmos sinais pra registrar um mito, uma oração ou uma lei. A épica de Gilgamesh, um dos textos literários mais antigos que existem, chegou à argila muito depois do primeiro recibo de cevada. A escrita não nasceu pra ser lida por prazer. Nasceu pra fechar as contas.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "A primeira frase escrita da história não foi um poema, nem uma oração, nem uma declaração de guerra.",
+      "inicio_s": 0.15,
+      "fim_s": 6.27,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 0.17,
+          "fim_s": 0.19
+        },
+        {
+          "texto": "primeira",
+          "inicio_s": 0.25,
+          "fim_s": 0.632
+        },
+        {
+          "texto": "frase",
+          "inicio_s": 0.692,
+          "fim_s": 1.013
+        },
+        {
+          "texto": "escrita",
+          "inicio_s": 1.053,
+          "fim_s": 1.394
+        },
+        {
+          "texto": "da",
+          "inicio_s": 1.414,
+          "fim_s": 1.474
+        },
+        {
+          "texto": "história",
+          "inicio_s": 1.494,
+          "fim_s": 1.896
+        },
+        {
+          "texto": "não",
+          "inicio_s": 2.317,
+          "fim_s": 2.458
+        },
+        {
+          "texto": "foi",
+          "inicio_s": 2.538,
+          "fim_s": 2.738
+        },
+        {
+          "texto": "um",
+          "inicio_s": 2.779,
+          "fim_s": 2.839
+        },
+        {
+          "texto": "poema",
+          "inicio_s": 2.879,
+          "fim_s": 3.22
+        },
+        {
+          "texto": "nem",
+          "inicio_s": 3.682,
+          "fim_s": 3.842
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 3.902,
+          "fim_s": 4.023
+        },
+        {
+          "texto": "oração",
+          "inicio_s": 4.083,
+          "fim_s": 4.464
+        },
+        {
+          "texto": "nem",
+          "inicio_s": 5.046,
+          "fim_s": 5.227
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 5.267,
+          "fim_s": 5.367
+        },
+        {
+          "texto": "declaração",
+          "inicio_s": 5.407,
+          "fim_s": 5.829
+        },
+        {
+          "texto": "de",
+          "inicio_s": 5.829,
+          "fim_s": 5.889
+        },
+        {
+          "texto": "guerra",
+          "inicio_s": 5.909,
+          "fim_s": 6.13
+        }
+      ]
+    },
+    {
+      "texto": "Foi um recibo.",
+      "inicio_s": 6.62,
+      "fim_s": 7.38,
+      "palavras": [
+        {
+          "texto": "Foi",
+          "inicio_s": 6.62,
+          "fim_s": 6.743
+        },
+        {
+          "texto": "um",
+          "inicio_s": 6.784,
+          "fim_s": 6.846
+        },
+        {
+          "texto": "recibo",
+          "inicio_s": 6.866,
+          "fim_s": 7.277
+        }
+      ]
+    },
+    {
+      "texto": "Bem antes de qualquer verso ou mito ser gravado numa tábua, a escrita nasceu pra resolver um problema bem mais chato: contar.",
+      "inicio_s": 7.73,
+      "fim_s": 14.69,
+      "palavras": [
+        {
+          "texto": "Bem",
+          "inicio_s": 7.77,
+          "fim_s": 7.931
+        },
+        {
+          "texto": "antes",
+          "inicio_s": 8.031,
+          "fim_s": 8.292
+        },
+        {
+          "texto": "de",
+          "inicio_s": 8.312,
+          "fim_s": 8.372
+        },
+        {
+          "texto": "qualquer",
+          "inicio_s": 8.412,
+          "fim_s": 8.693
+        },
+        {
+          "texto": "verso",
+          "inicio_s": 8.733,
+          "fim_s": 9.034
+        },
+        {
+          "texto": "ou",
+          "inicio_s": 9.074,
+          "fim_s": 9.114
+        },
+        {
+          "texto": "mito",
+          "inicio_s": 9.154,
+          "fim_s": 9.415
+        },
+        {
+          "texto": "ser",
+          "inicio_s": 9.475,
+          "fim_s": 9.595
+        },
+        {
+          "texto": "gravado",
+          "inicio_s": 9.656,
+          "fim_s": 10.037
+        },
+        {
+          "texto": "numa",
+          "inicio_s": 10.077,
+          "fim_s": 10.217
+        },
+        {
+          "texto": "tábua",
+          "inicio_s": 10.277,
+          "fim_s": 10.558
+        },
+        {
+          "texto": "a",
+          "inicio_s": 10.939,
+          "fim_s": 10.959
+        },
+        {
+          "texto": "escrita",
+          "inicio_s": 11.019,
+          "fim_s": 11.38
+        },
+        {
+          "texto": "nasceu",
+          "inicio_s": 11.421,
+          "fim_s": 11.721
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 11.762,
+          "fim_s": 11.902
+        },
+        {
+          "texto": "resolver",
+          "inicio_s": 11.942,
+          "fim_s": 12.283
+        },
+        {
+          "texto": "um",
+          "inicio_s": 12.303,
+          "fim_s": 12.363
+        },
+        {
+          "texto": "problema",
+          "inicio_s": 12.403,
+          "fim_s": 12.845
+        },
+        {
+          "texto": "bem",
+          "inicio_s": 13.105,
+          "fim_s": 13.226
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 13.266,
+          "fim_s": 13.406
+        },
+        {
+          "texto": "chato",
+          "inicio_s": 13.426,
+          "fim_s": 13.747
+        },
+        {
+          "texto": "contar",
+          "inicio_s": 14.209,
+          "fim_s": 14.59
+        }
+      ]
+    },
+    {
+      "texto": "Na Suméria antiga, entre os rios Tigre e Eufrates, cidades como Uruk cresceram rápido demais pra caber na memória de qualquer administrador.",
+      "inicio_s": 15.04,
+      "fim_s": 23.06,
+      "palavras": [
+        {
+          "texto": "Na",
+          "inicio_s": 15.06,
+          "fim_s": 15.12
+        },
+        {
+          "texto": "Suméria",
+          "inicio_s": 15.2,
+          "fim_s": 15.561
+        },
+        {
+          "texto": "antiga",
+          "inicio_s": 15.581,
+          "fim_s": 15.942
+        },
+        {
+          "texto": "entre",
+          "inicio_s": 16.443,
+          "fim_s": 16.604
+        },
+        {
+          "texto": "os",
+          "inicio_s": 16.624,
+          "fim_s": 16.704
+        },
+        {
+          "texto": "rios",
+          "inicio_s": 16.744,
+          "fim_s": 16.965
+        },
+        {
+          "texto": "Tigre",
+          "inicio_s": 17.045,
+          "fim_s": 17.366
+        },
+        {
+          "texto": "e",
+          "inicio_s": 17.486,
+          "fim_s": 17.506
+        },
+        {
+          "texto": "Eufrates",
+          "inicio_s": 17.586,
+          "fim_s": 18.148
+        },
+        {
+          "texto": "cidades",
+          "inicio_s": 18.589,
+          "fim_s": 19.01
+        },
+        {
+          "texto": "como",
+          "inicio_s": 19.05,
+          "fim_s": 19.23
+        },
+        {
+          "texto": "Uruk",
+          "inicio_s": 19.271,
+          "fim_s": 19.471
+        },
+        {
+          "texto": "cresceram",
+          "inicio_s": 19.571,
+          "fim_s": 19.972
+        },
+        {
+          "texto": "rápido",
+          "inicio_s": 20.052,
+          "fim_s": 20.373
+        },
+        {
+          "texto": "demais",
+          "inicio_s": 20.413,
+          "fim_s": 20.734
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 20.774,
+          "fim_s": 20.875
+        },
+        {
+          "texto": "caber",
+          "inicio_s": 20.935,
+          "fim_s": 21.215
+        },
+        {
+          "texto": "na",
+          "inicio_s": 21.276,
+          "fim_s": 21.336
+        },
+        {
+          "texto": "memória",
+          "inicio_s": 21.396,
+          "fim_s": 21.777
+        },
+        {
+          "texto": "de",
+          "inicio_s": 21.797,
+          "fim_s": 21.877
+        },
+        {
+          "texto": "qualquer",
+          "inicio_s": 21.917,
+          "fim_s": 22.298
+        },
+        {
+          "texto": "administrador",
+          "inicio_s": 22.338,
+          "fim_s": 23.0
+        }
+      ]
+    },
+    {
+      "texto": "Templos e palácios acumulavam grãos, rebanhos, cerveja e tecidos vindos de dezenas de aldeias, e alguém precisava saber exatamente quanto entrava, quanto saía e quem devia o quê.",
+      "inicio_s": 23.41,
+      "fim_s": 35.37,
+      "palavras": [
+        {
+          "texto": "Templos",
+          "inicio_s": 23.41,
+          "fim_s": 23.751
+        },
+        {
+          "texto": "e",
+          "inicio_s": 23.791,
+          "fim_s": 23.811
+        },
+        {
+          "texto": "palácios",
+          "inicio_s": 23.851,
+          "fim_s": 24.312
+        },
+        {
+          "texto": "acumulavam",
+          "inicio_s": 24.352,
+          "fim_s": 24.892
+        },
+        {
+          "texto": "grãos",
+          "inicio_s": 24.973,
+          "fim_s": 25.313
+        },
+        {
+          "texto": "rebanhos",
+          "inicio_s": 25.694,
+          "fim_s": 26.235
+        },
+        {
+          "texto": "cerveja",
+          "inicio_s": 26.595,
+          "fim_s": 27.136
+        },
+        {
+          "texto": "e",
+          "inicio_s": 27.256,
+          "fim_s": 27.276
+        },
+        {
+          "texto": "tecidos",
+          "inicio_s": 27.337,
+          "fim_s": 27.837
+        },
+        {
+          "texto": "vindos",
+          "inicio_s": 28.178,
+          "fim_s": 28.519
+        },
+        {
+          "texto": "de",
+          "inicio_s": 28.559,
+          "fim_s": 28.639
+        },
+        {
+          "texto": "dezenas",
+          "inicio_s": 28.699,
+          "fim_s": 29.28
+        },
+        {
+          "texto": "de",
+          "inicio_s": 29.32,
+          "fim_s": 29.36
+        },
+        {
+          "texto": "aldeias",
+          "inicio_s": 29.4,
+          "fim_s": 29.841
+        },
+        {
+          "texto": "e",
+          "inicio_s": 30.201,
+          "fim_s": 30.221
+        },
+        {
+          "texto": "alguém",
+          "inicio_s": 30.302,
+          "fim_s": 30.502
+        },
+        {
+          "texto": "precisava",
+          "inicio_s": 30.522,
+          "fim_s": 30.943
+        },
+        {
+          "texto": "saber",
+          "inicio_s": 30.983,
+          "fim_s": 31.223
+        },
+        {
+          "texto": "exatamente",
+          "inicio_s": 31.263,
+          "fim_s": 32.024
+        },
+        {
+          "texto": "quanto",
+          "inicio_s": 32.064,
+          "fim_s": 32.265
+        },
+        {
+          "texto": "entrava",
+          "inicio_s": 32.305,
+          "fim_s": 32.665
+        },
+        {
+          "texto": "quanto",
+          "inicio_s": 33.166,
+          "fim_s": 33.487
+        },
+        {
+          "texto": "saía",
+          "inicio_s": 33.547,
+          "fim_s": 33.928
+        },
+        {
+          "texto": "e",
+          "inicio_s": 34.308,
+          "fim_s": 34.328
+        },
+        {
+          "texto": "quem",
+          "inicio_s": 34.388,
+          "fim_s": 34.529
+        },
+        {
+          "texto": "devia",
+          "inicio_s": 34.569,
+          "fim_s": 34.949
+        },
+        {
+          "texto": "o",
+          "inicio_s": 35.029,
+          "fim_s": 35.049
+        },
+        {
+          "texto": "quê",
+          "inicio_s": 35.13,
+          "fim_s": 35.25
+        }
+      ]
+    },
+    {
+      "texto": "A solução começou séculos antes da escrita propriamente dita, com fichas de argila: pequenos objetos moldados em formas simples, cada uma representando uma medida de cevada ou uma cabeça de gado.",
+      "inicio_s": 35.72,
+      "fim_s": 45.96,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 35.74,
+          "fim_s": 35.76
+        },
+        {
+          "texto": "solução",
+          "inicio_s": 35.84,
+          "fim_s": 36.221
+        },
+        {
+          "texto": "começou",
+          "inicio_s": 36.261,
+          "fim_s": 36.582
+        },
+        {
+          "texto": "séculos",
+          "inicio_s": 36.662,
+          "fim_s": 37.083
+        },
+        {
+          "texto": "antes",
+          "inicio_s": 37.123,
+          "fim_s": 37.303
+        },
+        {
+          "texto": "da",
+          "inicio_s": 37.323,
+          "fim_s": 37.363
+        },
+        {
+          "texto": "escrita",
+          "inicio_s": 37.403,
+          "fim_s": 37.744
+        },
+        {
+          "texto": "propriamente",
+          "inicio_s": 37.784,
+          "fim_s": 38.305
+        },
+        {
+          "texto": "dita",
+          "inicio_s": 38.345,
+          "fim_s": 38.606
+        },
+        {
+          "texto": "com",
+          "inicio_s": 38.946,
+          "fim_s": 39.046
+        },
+        {
+          "texto": "fichas",
+          "inicio_s": 39.107,
+          "fim_s": 39.387
+        },
+        {
+          "texto": "de",
+          "inicio_s": 39.427,
+          "fim_s": 39.487
+        },
+        {
+          "texto": "argila",
+          "inicio_s": 39.547,
+          "fim_s": 39.888
+        },
+        {
+          "texto": "pequenos",
+          "inicio_s": 40.329,
+          "fim_s": 40.71
+        },
+        {
+          "texto": "objetos",
+          "inicio_s": 40.75,
+          "fim_s": 41.151
+        },
+        {
+          "texto": "moldados",
+          "inicio_s": 41.191,
+          "fim_s": 41.612
+        },
+        {
+          "texto": "em",
+          "inicio_s": 41.652,
+          "fim_s": 41.692
+        },
+        {
+          "texto": "formas",
+          "inicio_s": 41.752,
+          "fim_s": 42.032
+        },
+        {
+          "texto": "simples",
+          "inicio_s": 42.092,
+          "fim_s": 42.453
+        },
+        {
+          "texto": "cada",
+          "inicio_s": 42.954,
+          "fim_s": 43.175
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 43.275,
+          "fim_s": 43.415
+        },
+        {
+          "texto": "representando",
+          "inicio_s": 43.475,
+          "fim_s": 43.996
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 44.016,
+          "fim_s": 44.096
+        },
+        {
+          "texto": "medida",
+          "inicio_s": 44.136,
+          "fim_s": 44.417
+        },
+        {
+          "texto": "de",
+          "inicio_s": 44.437,
+          "fim_s": 44.497
+        },
+        {
+          "texto": "cevada",
+          "inicio_s": 44.557,
+          "fim_s": 44.938
+        },
+        {
+          "texto": "ou",
+          "inicio_s": 44.978,
+          "fim_s": 45.018
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 45.038,
+          "fim_s": 45.098
+        },
+        {
+          "texto": "cabeça",
+          "inicio_s": 45.118,
+          "fim_s": 45.459
+        },
+        {
+          "texto": "de",
+          "inicio_s": 45.499,
+          "fim_s": 45.559
+        },
+        {
+          "texto": "gado",
+          "inicio_s": 45.599,
+          "fim_s": 45.86
+        }
+      ]
+    },
+    {
+      "texto": "Pra fechar um contrato, as fichas certas eram seladas dentro de um envelope de argila.",
+      "inicio_s": 46.31,
+      "fim_s": 51.07,
+      "palavras": [
+        {
+          "texto": "Pra",
+          "inicio_s": 46.31,
+          "fim_s": 46.39
+        },
+        {
+          "texto": "fechar",
+          "inicio_s": 46.431,
+          "fim_s": 46.692
+        },
+        {
+          "texto": "um",
+          "inicio_s": 46.712,
+          "fim_s": 46.772
+        },
+        {
+          "texto": "contrato",
+          "inicio_s": 46.792,
+          "fim_s": 47.254
+        },
+        {
+          "texto": "as",
+          "inicio_s": 47.615,
+          "fim_s": 47.716
+        },
+        {
+          "texto": "fichas",
+          "inicio_s": 47.776,
+          "fim_s": 48.077
+        },
+        {
+          "texto": "certas",
+          "inicio_s": 48.158,
+          "fim_s": 48.559
+        },
+        {
+          "texto": "eram",
+          "inicio_s": 48.881,
+          "fim_s": 49.021
+        },
+        {
+          "texto": "seladas",
+          "inicio_s": 49.082,
+          "fim_s": 49.564
+        },
+        {
+          "texto": "dentro",
+          "inicio_s": 49.604,
+          "fim_s": 49.845
+        },
+        {
+          "texto": "de",
+          "inicio_s": 49.865,
+          "fim_s": 49.905
+        },
+        {
+          "texto": "um",
+          "inicio_s": 49.945,
+          "fim_s": 49.985
+        },
+        {
+          "texto": "envelope",
+          "inicio_s": 50.026,
+          "fim_s": 50.427
+        },
+        {
+          "texto": "de",
+          "inicio_s": 50.467,
+          "fim_s": 50.528
+        },
+        {
+          "texto": "argila",
+          "inicio_s": 50.588,
+          "fim_s": 50.97
+        }
+      ]
+    },
+    {
+      "texto": "Do lado de fora, alguém pressionava cada ficha na superfície mole antes de guardá-la lá dentro, deixando a marca do que havia sido combinado.",
+      "inicio_s": 51.42,
+      "fim_s": 58.72,
+      "palavras": [
+        {
+          "texto": "Do",
+          "inicio_s": 51.44,
+          "fim_s": 51.52
+        },
+        {
+          "texto": "lado",
+          "inicio_s": 51.56,
+          "fim_s": 51.741
+        },
+        {
+          "texto": "de",
+          "inicio_s": 51.761,
+          "fim_s": 51.821
+        },
+        {
+          "texto": "fora",
+          "inicio_s": 51.881,
+          "fim_s": 52.142
+        },
+        {
+          "texto": "alguém",
+          "inicio_s": 52.583,
+          "fim_s": 52.804
+        },
+        {
+          "texto": "pressionava",
+          "inicio_s": 52.864,
+          "fim_s": 53.405
+        },
+        {
+          "texto": "cada",
+          "inicio_s": 53.486,
+          "fim_s": 53.666
+        },
+        {
+          "texto": "ficha",
+          "inicio_s": 53.746,
+          "fim_s": 54.007
+        },
+        {
+          "texto": "na",
+          "inicio_s": 54.047,
+          "fim_s": 54.087
+        },
+        {
+          "texto": "superfície",
+          "inicio_s": 54.127,
+          "fim_s": 54.589
+        },
+        {
+          "texto": "mole",
+          "inicio_s": 54.649,
+          "fim_s": 54.89
+        },
+        {
+          "texto": "antes",
+          "inicio_s": 55.23,
+          "fim_s": 55.471
+        },
+        {
+          "texto": "de",
+          "inicio_s": 55.491,
+          "fim_s": 55.551
+        },
+        {
+          "texto": "guardá-la",
+          "inicio_s": 55.591,
+          "fim_s": 55.972
+        },
+        {
+          "texto": "lá",
+          "inicio_s": 56.013,
+          "fim_s": 56.073
+        },
+        {
+          "texto": "dentro",
+          "inicio_s": 56.133,
+          "fim_s": 56.394
+        },
+        {
+          "texto": "deixando",
+          "inicio_s": 56.815,
+          "fim_s": 57.236
+        },
+        {
+          "texto": "a",
+          "inicio_s": 57.276,
+          "fim_s": 57.296
+        },
+        {
+          "texto": "marca",
+          "inicio_s": 57.356,
+          "fim_s": 57.617
+        },
+        {
+          "texto": "do",
+          "inicio_s": 57.657,
+          "fim_s": 57.717
+        },
+        {
+          "texto": "que",
+          "inicio_s": 57.737,
+          "fim_s": 57.818
+        },
+        {
+          "texto": "havia",
+          "inicio_s": 57.838,
+          "fim_s": 58.038
+        },
+        {
+          "texto": "sido",
+          "inicio_s": 58.098,
+          "fim_s": 58.259
+        },
+        {
+          "texto": "combinado",
+          "inicio_s": 58.279,
+          "fim_s": 58.7
+        }
+      ]
+    },
+    {
+      "texto": "Foi só um passo até perceber que a marca sozinha já bastava, sem precisar guardar nenhuma ficha dentro do envelope.",
+      "inicio_s": 59.07,
+      "fim_s": 66.75,
+      "palavras": [
+        {
+          "texto": "Foi",
+          "inicio_s": 59.07,
+          "fim_s": 59.17
+        },
+        {
+          "texto": "só",
+          "inicio_s": 59.271,
+          "fim_s": 59.371
+        },
+        {
+          "texto": "um",
+          "inicio_s": 59.451,
+          "fim_s": 59.511
+        },
+        {
+          "texto": "passo",
+          "inicio_s": 59.611,
+          "fim_s": 59.952
+        },
+        {
+          "texto": "até",
+          "inicio_s": 60.253,
+          "fim_s": 60.434
+        },
+        {
+          "texto": "perceber",
+          "inicio_s": 60.514,
+          "fim_s": 60.995
+        },
+        {
+          "texto": "que",
+          "inicio_s": 61.035,
+          "fim_s": 61.115
+        },
+        {
+          "texto": "a",
+          "inicio_s": 61.155,
+          "fim_s": 61.175
+        },
+        {
+          "texto": "marca",
+          "inicio_s": 61.256,
+          "fim_s": 61.536
+        },
+        {
+          "texto": "sozinha",
+          "inicio_s": 61.597,
+          "fim_s": 61.978
+        },
+        {
+          "texto": "já",
+          "inicio_s": 62.038,
+          "fim_s": 62.118
+        },
+        {
+          "texto": "bastava",
+          "inicio_s": 62.158,
+          "fim_s": 62.639
+        },
+        {
+          "texto": "sem",
+          "inicio_s": 63.542,
+          "fim_s": 63.702
+        },
+        {
+          "texto": "precisar",
+          "inicio_s": 63.762,
+          "fim_s": 64.183
+        },
+        {
+          "texto": "guardar",
+          "inicio_s": 64.223,
+          "fim_s": 64.645
+        },
+        {
+          "texto": "nenhuma",
+          "inicio_s": 64.705,
+          "fim_s": 65.086
+        },
+        {
+          "texto": "ficha",
+          "inicio_s": 65.186,
+          "fim_s": 65.527
+        },
+        {
+          "texto": "dentro",
+          "inicio_s": 65.667,
+          "fim_s": 66.048
+        },
+        {
+          "texto": "do",
+          "inicio_s": 66.068,
+          "fim_s": 66.128
+        },
+        {
+          "texto": "envelope",
+          "inicio_s": 66.168,
+          "fim_s": 66.65
+        }
+      ]
+    },
+    {
+      "texto": "Esse passo virou a tábua de argila achatada, marcada com uma cana cortada em bisel.",
+      "inicio_s": 67.1,
+      "fim_s": 72.38,
+      "palavras": [
+        {
+          "texto": "Esse",
+          "inicio_s": 67.12,
+          "fim_s": 67.301
+        },
+        {
+          "texto": "passo",
+          "inicio_s": 67.361,
+          "fim_s": 67.662
+        },
+        {
+          "texto": "virou",
+          "inicio_s": 67.722,
+          "fim_s": 67.963
+        },
+        {
+          "texto": "a",
+          "inicio_s": 68.023,
+          "fim_s": 68.044
+        },
+        {
+          "texto": "tábua",
+          "inicio_s": 68.104,
+          "fim_s": 68.405
+        },
+        {
+          "texto": "de",
+          "inicio_s": 68.425,
+          "fim_s": 68.485
+        },
+        {
+          "texto": "argila",
+          "inicio_s": 68.525,
+          "fim_s": 68.927
+        },
+        {
+          "texto": "achatada",
+          "inicio_s": 68.987,
+          "fim_s": 69.569
+        },
+        {
+          "texto": "marcada",
+          "inicio_s": 69.911,
+          "fim_s": 70.372
+        },
+        {
+          "texto": "com",
+          "inicio_s": 70.413,
+          "fim_s": 70.533
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 70.573,
+          "fim_s": 70.694
+        },
+        {
+          "texto": "cana",
+          "inicio_s": 70.814,
+          "fim_s": 71.035
+        },
+        {
+          "texto": "cortada",
+          "inicio_s": 71.095,
+          "fim_s": 71.557
+        },
+        {
+          "texto": "em",
+          "inicio_s": 71.697,
+          "fim_s": 71.778
+        },
+        {
+          "texto": "bisel",
+          "inicio_s": 71.858,
+          "fim_s": 72.28
+        }
+      ]
+    },
+    {
+      "texto": "Nascia a escrita cuneiforme, e as primeiras tábuas encontradas por arqueólogos não contam histórias: são listas.",
+      "inicio_s": 72.73,
+      "fim_s": 80.41,
+      "palavras": [
+        {
+          "texto": "Nascia",
+          "inicio_s": 72.75,
+          "fim_s": 73.131
+        },
+        {
+          "texto": "a",
+          "inicio_s": 73.191,
+          "fim_s": 73.211
+        },
+        {
+          "texto": "escrita",
+          "inicio_s": 73.251,
+          "fim_s": 73.693
+        },
+        {
+          "texto": "cuneiforme",
+          "inicio_s": 73.733,
+          "fim_s": 74.294
+        },
+        {
+          "texto": "e",
+          "inicio_s": 74.655,
+          "fim_s": 74.675
+        },
+        {
+          "texto": "as",
+          "inicio_s": 74.735,
+          "fim_s": 74.815
+        },
+        {
+          "texto": "primeiras",
+          "inicio_s": 74.835,
+          "fim_s": 75.196
+        },
+        {
+          "texto": "tábuas",
+          "inicio_s": 75.257,
+          "fim_s": 75.618
+        },
+        {
+          "texto": "encontradas",
+          "inicio_s": 75.678,
+          "fim_s": 76.239
+        },
+        {
+          "texto": "por",
+          "inicio_s": 76.299,
+          "fim_s": 76.44
+        },
+        {
+          "texto": "arqueólogos",
+          "inicio_s": 76.48,
+          "fim_s": 77.081
+        },
+        {
+          "texto": "não",
+          "inicio_s": 77.362,
+          "fim_s": 77.482
+        },
+        {
+          "texto": "contam",
+          "inicio_s": 77.563,
+          "fim_s": 77.903
+        },
+        {
+          "texto": "histórias",
+          "inicio_s": 77.924,
+          "fim_s": 78.405
+        },
+        {
+          "texto": "são",
+          "inicio_s": 79.768,
+          "fim_s": 79.889
+        },
+        {
+          "texto": "listas",
+          "inicio_s": 79.929,
+          "fim_s": 80.29
+        }
+      ]
+    },
+    {
+      "texto": "Fileiras de números ao lado de símbolos de cevada, óleo e ovelhas, o equivalente antigo de uma planilha de estoque.",
+      "inicio_s": 80.76,
+      "fim_s": 87.2,
+      "palavras": [
+        {
+          "texto": "Fileiras",
+          "inicio_s": 80.76,
+          "fim_s": 81.121
+        },
+        {
+          "texto": "de",
+          "inicio_s": 81.161,
+          "fim_s": 81.221
+        },
+        {
+          "texto": "números",
+          "inicio_s": 81.282,
+          "fim_s": 81.562
+        },
+        {
+          "texto": "ao",
+          "inicio_s": 81.623,
+          "fim_s": 81.683
+        },
+        {
+          "texto": "lado",
+          "inicio_s": 81.723,
+          "fim_s": 81.924
+        },
+        {
+          "texto": "de",
+          "inicio_s": 81.964,
+          "fim_s": 82.044
+        },
+        {
+          "texto": "símbolos",
+          "inicio_s": 82.124,
+          "fim_s": 82.445
+        },
+        {
+          "texto": "de",
+          "inicio_s": 82.465,
+          "fim_s": 82.505
+        },
+        {
+          "texto": "cevada",
+          "inicio_s": 82.566,
+          "fim_s": 82.987
+        },
+        {
+          "texto": "óleo",
+          "inicio_s": 83.509,
+          "fim_s": 83.709
+        },
+        {
+          "texto": "e",
+          "inicio_s": 83.85,
+          "fim_s": 83.87
+        },
+        {
+          "texto": "ovelhas",
+          "inicio_s": 83.93,
+          "fim_s": 84.391
+        },
+        {
+          "texto": "o",
+          "inicio_s": 85.013,
+          "fim_s": 85.033
+        },
+        {
+          "texto": "equivalente",
+          "inicio_s": 85.093,
+          "fim_s": 85.555
+        },
+        {
+          "texto": "antigo",
+          "inicio_s": 85.595,
+          "fim_s": 85.916
+        },
+        {
+          "texto": "de",
+          "inicio_s": 85.956,
+          "fim_s": 86.016
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 86.056,
+          "fim_s": 86.157
+        },
+        {
+          "texto": "planilha",
+          "inicio_s": 86.197,
+          "fim_s": 86.598
+        },
+        {
+          "texto": "de",
+          "inicio_s": 86.638,
+          "fim_s": 86.719
+        },
+        {
+          "texto": "estoque",
+          "inicio_s": 86.739,
+          "fim_s": 87.1
+        }
+      ]
+    },
+    {
+      "texto": "Só séculos depois de virar rotina administrativa alguém teve a ideia de usar esses mesmos sinais pra registrar um mito, uma oração ou uma lei.",
+      "inicio_s": 87.55,
+      "fim_s": 96.39,
+      "palavras": [
+        {
+          "texto": "Só",
+          "inicio_s": 87.57,
+          "fim_s": 87.65
+        },
+        {
+          "texto": "séculos",
+          "inicio_s": 87.77,
+          "fim_s": 88.091
+        },
+        {
+          "texto": "depois",
+          "inicio_s": 88.111,
+          "fim_s": 88.452
+        },
+        {
+          "texto": "de",
+          "inicio_s": 88.472,
+          "fim_s": 88.532
+        },
+        {
+          "texto": "virar",
+          "inicio_s": 88.572,
+          "fim_s": 88.773
+        },
+        {
+          "texto": "rotina",
+          "inicio_s": 88.833,
+          "fim_s": 89.174
+        },
+        {
+          "texto": "administrativa",
+          "inicio_s": 89.194,
+          "fim_s": 89.955
+        },
+        {
+          "texto": "alguém",
+          "inicio_s": 90.036,
+          "fim_s": 90.296
+        },
+        {
+          "texto": "teve",
+          "inicio_s": 90.376,
+          "fim_s": 90.577
+        },
+        {
+          "texto": "a",
+          "inicio_s": 90.617,
+          "fim_s": 90.637
+        },
+        {
+          "texto": "ideia",
+          "inicio_s": 90.677,
+          "fim_s": 90.958
+        },
+        {
+          "texto": "de",
+          "inicio_s": 90.978,
+          "fim_s": 91.038
+        },
+        {
+          "texto": "usar",
+          "inicio_s": 91.098,
+          "fim_s": 91.359
+        },
+        {
+          "texto": "esses",
+          "inicio_s": 91.419,
+          "fim_s": 91.639
+        },
+        {
+          "texto": "mesmos",
+          "inicio_s": 91.739,
+          "fim_s": 92.08
+        },
+        {
+          "texto": "sinais",
+          "inicio_s": 92.14,
+          "fim_s": 92.521
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 92.822,
+          "fim_s": 92.962
+        },
+        {
+          "texto": "registrar",
+          "inicio_s": 93.002,
+          "fim_s": 93.483
+        },
+        {
+          "texto": "um",
+          "inicio_s": 93.524,
+          "fim_s": 93.584
+        },
+        {
+          "texto": "mito",
+          "inicio_s": 93.644,
+          "fim_s": 93.944
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 94.305,
+          "fim_s": 94.426
+        },
+        {
+          "texto": "oração",
+          "inicio_s": 94.506,
+          "fim_s": 94.907
+        },
+        {
+          "texto": "ou",
+          "inicio_s": 95.267,
+          "fim_s": 95.368
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 95.789,
+          "fim_s": 95.969
+        },
+        {
+          "texto": "lei",
+          "inicio_s": 96.089,
+          "fim_s": 96.27
+        }
+      ]
+    },
+    {
+      "texto": "A épica de Gilgamesh, um dos textos literários mais antigos que existem, chegou à argila muito depois do primeiro recibo de cevada.",
+      "inicio_s": 96.74,
+      "fim_s": 104.52,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 96.8,
+          "fim_s": 96.82
+        },
+        {
+          "texto": "épica",
+          "inicio_s": 96.941,
+          "fim_s": 97.281
+        },
+        {
+          "texto": "de",
+          "inicio_s": 97.342,
+          "fim_s": 97.442
+        },
+        {
+          "texto": "Gilgamesh",
+          "inicio_s": 97.542,
+          "fim_s": 98.164
+        },
+        {
+          "texto": "um",
+          "inicio_s": 98.685,
+          "fim_s": 98.785
+        },
+        {
+          "texto": "dos",
+          "inicio_s": 98.825,
+          "fim_s": 99.006
+        },
+        {
+          "texto": "textos",
+          "inicio_s": 99.066,
+          "fim_s": 99.387
+        },
+        {
+          "texto": "literários",
+          "inicio_s": 99.427,
+          "fim_s": 99.928
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 100.008,
+          "fim_s": 100.189
+        },
+        {
+          "texto": "antigos",
+          "inicio_s": 100.249,
+          "fim_s": 100.65
+        },
+        {
+          "texto": "que",
+          "inicio_s": 100.67,
+          "fim_s": 100.75
+        },
+        {
+          "texto": "existem",
+          "inicio_s": 100.79,
+          "fim_s": 101.191
+        },
+        {
+          "texto": "chegou",
+          "inicio_s": 101.713,
+          "fim_s": 102.014
+        },
+        {
+          "texto": "à",
+          "inicio_s": 102.054,
+          "fim_s": 102.074
+        },
+        {
+          "texto": "argila",
+          "inicio_s": 102.134,
+          "fim_s": 102.495
+        },
+        {
+          "texto": "muito",
+          "inicio_s": 102.555,
+          "fim_s": 102.796
+        },
+        {
+          "texto": "depois",
+          "inicio_s": 102.836,
+          "fim_s": 103.156
+        },
+        {
+          "texto": "do",
+          "inicio_s": 103.197,
+          "fim_s": 103.257
+        },
+        {
+          "texto": "primeiro",
+          "inicio_s": 103.297,
+          "fim_s": 103.578
+        },
+        {
+          "texto": "recibo",
+          "inicio_s": 103.598,
+          "fim_s": 103.959
+        },
+        {
+          "texto": "de",
+          "inicio_s": 103.999,
+          "fim_s": 104.059
+        },
+        {
+          "texto": "cevada",
+          "inicio_s": 104.099,
+          "fim_s": 104.46
+        }
+      ]
+    },
+    {
+      "texto": "A escrita não nasceu pra ser lida por prazer.",
+      "inicio_s": 104.87,
+      "fim_s": 107.35,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 104.89,
+          "fim_s": 104.91
+        },
+        {
+          "texto": "escrita",
+          "inicio_s": 104.971,
+          "fim_s": 105.354
+        },
+        {
+          "texto": "não",
+          "inicio_s": 105.414,
+          "fim_s": 105.556
+        },
+        {
+          "texto": "nasceu",
+          "inicio_s": 105.596,
+          "fim_s": 105.959
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 106.16,
+          "fim_s": 106.261
+        },
+        {
+          "texto": "ser",
+          "inicio_s": 106.322,
+          "fim_s": 106.463
+        },
+        {
+          "texto": "lida",
+          "inicio_s": 106.543,
+          "fim_s": 106.745
+        },
+        {
+          "texto": "por",
+          "inicio_s": 106.785,
+          "fim_s": 106.906
+        },
+        {
+          "texto": "prazer",
+          "inicio_s": 106.947,
+          "fim_s": 107.249
+        }
+      ]
+    },
+    {
+      "texto": "Nasceu pra fechar as contas.",
+      "inicio_s": 107.7,
+      "fim_s": 109.02,
+      "palavras": [
+        {
+          "texto": "Nasceu",
+          "inicio_s": 107.72,
+          "fim_s": 108.005
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 108.045,
+          "fim_s": 108.147
+        },
+        {
+          "texto": "fechar",
+          "inicio_s": 108.187,
+          "fim_s": 108.451
+        },
+        {
+          "texto": "as",
+          "inicio_s": 108.451,
+          "fim_s": 108.533
+        },
+        {
+          "texto": "contas",
+          "inicio_s": 108.573,
+          "fim_s": 108.878
+        }
+      ]
+    }
+  ]
+}

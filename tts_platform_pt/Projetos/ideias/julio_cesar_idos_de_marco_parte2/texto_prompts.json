@@ -1,13 +1,46 @@
 {
-  "1": "A cinematic close-up of a Roman senator's hands emerging from beneath white toga folds, firmly grasping a gleaming double-edged iron pugio dagger in the dim light of the Senate hall.",
-  "2": "A dynamic medium shot inside the marble hall: a senator pretending to present a scroll petition abruptly grabs and pulls down the purple-bordered toga from the shoulder of the leader from <image1>, exposing his neck as he turns in sudden outrage.",
-  "3": "A chaotic medium combat shot: dozens of Roman senators in white togas abruptly surround and lunge toward the leader from <image1>, daggers raised overhead in violent motion against the towering backdrop of marble columns.",
-  "4": "A visceral close-up: an iron blade striking the shoulder of the leader from <image1>, tearing through Tyrian purple silk and splashing crimson blood across the clean white marble tiles in dramatic high-contrast lighting.",
-  "5": "A dynamic action photograph: the wounded leader from <image1> fiercely fighting back like an experienced veteran soldier, driving a pointed bronze writing stylus into a conspirator's arm to break through the murderous circle.",
-  "6": "A high-angle master shot looking down on the marble floor of the Curia, where a flurry of stabbing daggers repeatedly strikes within a violent cluster of blood-splattered white togas.",
-  "7": "An emotional close-up portrait of Marcus Junius Brutus, his pale aristocratic face torn with sorrow and conflict, holding a bloodied iron dagger as he steps forward from the crowd of conspirators.",
-  "8": "A heartbreaking close-up of the leader from <image1>, bruised and bleeding, his eyes wide with shattered disbelief as he locks gazes with Brutus, all physical resistance vanishing from his wounded posture.",
-  "9": "A tragic cinematic medium shot: the leader from <image1> using his trembling bloody hands to pull the blood-drenched purple folds of his toga over his face, surrendering to his death on the cold stone floor.",
-  "10": "A wide somber shot of the Senate floor: the leader from <image1> lying lifeless in a pool of dark crimson blood at the base of the towering marble statue of Pompey, while breathless conspirators retreat into the shadows.",
-  "11": "A sweeping panoramic vista over the ancient Roman Forum at twilight, heavy dark storm clouds gathering over the illuminated temples and arches as smoke curls into the evening sky, marking the fall of the Roman Republic."
+  "1": [
+    "A cinematic close-up of a senator's hands emerging from beneath white toga folds and grasping a gleaming double edged iron dagger in the dim senate hall, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting",
+    "A sudden shot from behind of the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, as a blade drives into his back between the shoulder blades, his body arching in shock, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting"
+  ],
+  "2": [
+    "A dynamic medium shot inside the marble hall as a senator pretending to present a scroll yanks the toga from the shoulder of the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, exposing his neck, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting",
+    "A close-up of a scroll petition falling open on marble steps as feet scuffle around it, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting"
+  ],
+  "3": [
+    "A chaotic medium combat shot of dozens of roman senators in white togas closing in on the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, daggers raised overhead against towering marble columns, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting",
+    "A high angle shot of a tightening ring of white togas converging on a single figure at the center of the hall, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting"
+  ],
+  "4": [
+    "A visceral close-up of an iron blade striking the shoulder of the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, tearing purple cloth and splashing crimson across white marble tiles, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting",
+    "A macro shot of blood spreading between the veined marble floor tiles of the senate hall, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting"
+  ],
+  "5": [
+    "A dynamic action shot of the wounded the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, fighting back like a veteran soldier and driving a bronze writing stylus into a conspirator's arm to break the circle, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting",
+    "A close-up of a bronze stylus slick with blood clenched in a shaking fist among grasping hands, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting"
+  ],
+  "6": [
+    "A high angle master shot over the marble floor of the curia as a flurry of stabbing daggers strikes within a cluster of blood splattered white togas, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting",
+    "A blurred chaotic shot of upraised arms and blades seen through drifting dust in the colonnade light, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting"
+  ],
+  "7": [
+    "An emotional close-up of the young roman senator from <image1>, preserving his exact pale clean shaven face and dark curly hair, in a white senatorial toga, his face torn with sorrow and conflict, stepping forward from the crowd of conspirators with a bloodied dagger, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting",
+    "A devastating reverse close-up of the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, recognising the young man he loved like a son, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting"
+  ],
+  "8": [
+    "A heartbreaking close-up of the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, bruised and bleeding, eyes wide with shattered disbelief as all resistance leaves his body, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting",
+    "A silent shot of the raised dagger of the young roman senator from <image1>, preserving his exact pale clean shaven face and dark curly hair, in a white senatorial toga, trembling for one instant before it falls, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting"
+  ],
+  "9": [
+    "A tragic cinematic medium shot of the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, pulling the blood drenched purple folds of his toga over his own face with trembling hands, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting",
+    "A close-up of a purple bordered toga hem slipping over a bloodied sandal on cold stone, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting"
+  ],
+  "10": [
+    "A wide somber shot of the senate floor with the roman leader from <image1>, preserving his exact patrician features, piercing brown eyes, short receding silver gray hair and purple bordered white toga, lying lifeless in a pool of dark blood at the base of the towering marble statue of Pompey while conspirators retreat into shadow, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting",
+    "A still wide shot of the empty curia, an overturned curule chair and scattered scrolls beside a dark stain on the marble, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting"
+  ],
+  "11": [
+    "A sweeping panoramic vista over the roman forum at twilight, heavy storm clouds gathering over illuminated temples and arches as smoke curls into the sky, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting",
+    "A closing shot of a bronze eagle standard silhouetted against the stormy roman sky, rain beginning to fall on the marble city, cinematic film still, photorealistic, natural film grain, dramatic chiaroscuro lighting"
+  ]
 }

@@ -1,8 +1,26 @@
 {
-  "1": "A wide cinematic anime establishing shot: a massive English medieval siege army surrounding a fortress city at twilight, hundreds of glowing torches flickering in the mist and black dragon standards waving in the cold wind, detailed anime background art in the style of Wit Studio, full-color single frame animation still.",
-  "2": "A somber cinematic anime scene inside the walled city of Orleans under siege: broken stone ramparts, hungry French citizens in simple wool robes looking up at an overcast dark sky with flying sparks and smoke, emotional anime lighting, full-color single frame animation still.",
-  "3": "A dynamic medium anime shot: a young blonde maiden riding a galloping white charger through the open city gates, her silver armor glinting beneath divine sunbeams piercing through dark clouds, breathtaking fantasy anime composition.",
-  "4": "A cinematic anime screenshot of Joan of Arc, a 17-year-old French warrior maiden with short-cropped blonde hair and fierce tearful yet resolute blue eyes. She wears gleaming custom-fitted silver steel plate armor over a royal blue tunic, holding a glowing white silk war banner embroidered with golden fleur-de-lis, clean sharp lineart and luminous cel shading in the style of Fate and Ufotable, full-color single frame animation still.",
-  "5": "A medium anime shot: scarred veteran French knights in dented iron armor and kettle helmets staring in wide-eyed awe and reverence at the warrior maiden, newborn hope and fiery resolve illuminating their weathered faces under dramatic anime lighting.",
-  "6": "A monumental action anime climax: the warrior maiden from <image1>, holding her white banner high into the sky, leading a thunderous cavalry charge against a massive stone English bastion as flaming arrows streak across the smoky sky, explosive sparks and dust, full-color single frame animation still."
+  "1": [
+    "A wide cinematic anime establishing shot of a massive english medieval siege army surrounding a fortress city at twilight, hundreds of torches flickering in the mist and black dragon standards in the cold wind, full-color single frame anime movie still, cinematic lighting",
+    "A striking anime close-up of the young warrior maiden from <image1>, preserving her exact face, short cropped blonde hair, fierce blue eyes, polished silver steel plate armor over a royal blue surcoat, standing alone against the distant firelit siege camp, wind pulling at her white banner, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "2": [
+    "A somber anime scene inside the walled city of Orleans under siege, broken stone ramparts and hungry french citizens in wool robes looking up at an overcast sky full of sparks and smoke, full-color single frame anime movie still, cinematic lighting",
+    "A quiet anime shot of an empty grain store and a starving child holding an empty wooden bowl in a shadowed medieval street, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "3": [
+    "A dynamic medium anime shot of a young maiden in silver armor riding a galloping white charger through the open city gates, divine sunbeams piercing dark clouds above her, full-color single frame anime movie still, cinematic lighting",
+    "A joyful anime shot of french townspeople crowding the gate street, reaching out and throwing spring flowers as a white horse passes, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "4": [
+    "A cinematic anime screenshot of Joan of Arc, a 17 year old french warrior maiden with short cropped blonde hair and fierce resolute blue eyes, wearing gleaming custom fitted silver steel plate armor over a royal blue surcoat and holding a white banner with golden lilies, full-color single frame anime movie still, cinematic lighting",
+    "A detailed anime close-up of a white banner embroidered with golden fleur de lis lilies snapping in the wind above a field of spears, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "5": [
+    "A medium anime shot of scarred veteran french knights in dented iron armor staring in wide eyed awe at the young maiden, hope rekindling on their weathered faces, full-color single frame anime movie still, cinematic lighting",
+    "A powerful anime close-up of the unwavering eyes of the young warrior maiden from <image1>, preserving her exact face, short cropped blonde hair, fierce blue eyes, polished silver steel plate armor over a royal blue surcoat, meeting the gaze of hardened soldiers who had mocked her moments before, full-color single frame anime movie still, cinematic lighting"
+  ],
+  "6": [
+    "A monumental action anime climax of the young warrior maiden from <image1>, preserving her exact face, short cropped blonde hair, fierce blue eyes, polished silver steel plate armor over a royal blue surcoat, raising her white banner into the sky and leading a thunderous cavalry charge against a massive english stone bastion while flaming arrows streak across the smoky dusk, full-color single frame anime movie still, cinematic lighting",
+    "An epic wide anime battle shot of french troops swarming a burning english redoubt with scaling ladders as fire arrows rain down, full-color single frame anime movie still, cinematic lighting"
+  ]
 }

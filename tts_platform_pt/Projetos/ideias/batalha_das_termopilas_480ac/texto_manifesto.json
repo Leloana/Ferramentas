@@ -1,0 +1,678 @@
+{
+  "gerado_em": "2026-09-23T20:29:47",
+  "roteiro": "C:\\Users\\mf827\\Documents\\Ferramentas\\tts_platform_pt\\Projetos\\ideias\\batalha_das_termopilas_480ac\\texto.md",
+  "voz": "Dionisio Schuyler",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 46.6,
+  "texto_usado": "Venham buscar as nossas armas. Essa foi a resposta do rei Leônidas quando o imperador persa Xerxes ordenou que os espartanos se rendessem nas Termópilas.\n\nNo estreito desfiladeiro entre o penhasco e o mar revolto, trezentos guerreiros formaram uma muralha impenetrável de escudos de bronze e lanças de freixo. Por três dias sangrentos, o maior exército da antiguidade quebrou suas ondas de ataque contra a disciplina de ferro espartana.\n\nQuando os mensageiros avisaram que as flechas persas seriam tantas que tapariam o sol, os guerreiros riram: melhor, lutaremos à sombra. Traídos por uma rota secreta nas montanhas, Leônidas e seus homens lutaram até a última lança estilhaçada. Esparta perdeu o rei, mas deu à Grécia o tempo necessário para salvar a civilização ocidental.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Venham buscar as nossas armas.",
+      "inicio_s": 0.15,
+      "fim_s": 1.67,
+      "palavras": [
+        {
+          "texto": "Venham",
+          "inicio_s": 0.191,
+          "fim_s": 0.393
+        },
+        {
+          "texto": "buscar",
+          "inicio_s": 0.413,
+          "fim_s": 0.738
+        },
+        {
+          "texto": "as",
+          "inicio_s": 0.758,
+          "fim_s": 0.839
+        },
+        {
+          "texto": "nossas",
+          "inicio_s": 0.88,
+          "fim_s": 1.163
+        },
+        {
+          "texto": "armas",
+          "inicio_s": 1.265,
+          "fim_s": 1.569
+        }
+      ]
+    },
+    {
+      "texto": "Essa foi a resposta do rei Leônidas quando o imperador persa Xerxes ordenou que os espartanos se rendessem nas Termópilas.",
+      "inicio_s": 2.02,
+      "fim_s": 8.32,
+      "palavras": [
+        {
+          "texto": "Essa",
+          "inicio_s": 2.06,
+          "fim_s": 2.241
+        },
+        {
+          "texto": "foi",
+          "inicio_s": 2.301,
+          "fim_s": 2.461
+        },
+        {
+          "texto": "a",
+          "inicio_s": 2.502,
+          "fim_s": 2.522
+        },
+        {
+          "texto": "resposta",
+          "inicio_s": 2.562,
+          "fim_s": 3.023
+        },
+        {
+          "texto": "do",
+          "inicio_s": 3.043,
+          "fim_s": 3.103
+        },
+        {
+          "texto": "rei",
+          "inicio_s": 3.164,
+          "fim_s": 3.304
+        },
+        {
+          "texto": "Leônidas",
+          "inicio_s": 3.344,
+          "fim_s": 3.826
+        },
+        {
+          "texto": "quando",
+          "inicio_s": 4.127,
+          "fim_s": 4.307
+        },
+        {
+          "texto": "o",
+          "inicio_s": 4.327,
+          "fim_s": 4.347
+        },
+        {
+          "texto": "imperador",
+          "inicio_s": 4.367,
+          "fim_s": 4.809
+        },
+        {
+          "texto": "persa",
+          "inicio_s": 4.949,
+          "fim_s": 5.23
+        },
+        {
+          "texto": "Xerxes",
+          "inicio_s": 5.31,
+          "fim_s": 5.732
+        },
+        {
+          "texto": "ordenou",
+          "inicio_s": 5.872,
+          "fim_s": 6.233
+        },
+        {
+          "texto": "que",
+          "inicio_s": 6.253,
+          "fim_s": 6.334
+        },
+        {
+          "texto": "os",
+          "inicio_s": 6.354,
+          "fim_s": 6.434
+        },
+        {
+          "texto": "espartanos",
+          "inicio_s": 6.474,
+          "fim_s": 6.976
+        },
+        {
+          "texto": "se",
+          "inicio_s": 7.016,
+          "fim_s": 7.076
+        },
+        {
+          "texto": "rendessem",
+          "inicio_s": 7.116,
+          "fim_s": 7.517
+        },
+        {
+          "texto": "nas",
+          "inicio_s": 7.558,
+          "fim_s": 7.658
+        },
+        {
+          "texto": "Termópilas",
+          "inicio_s": 7.678,
+          "fim_s": 8.22
+        }
+      ]
+    },
+    {
+      "texto": "No estreito desfiladeiro entre o penhasco e o mar revolto, trezentos guerreiros formaram uma muralha impenetrável de escudos de bronze e lanças de freixo.",
+      "inicio_s": 8.67,
+      "fim_s": 16.81,
+      "palavras": [
+        {
+          "texto": "No",
+          "inicio_s": 8.69,
+          "fim_s": 8.75
+        },
+        {
+          "texto": "estreito",
+          "inicio_s": 8.77,
+          "fim_s": 9.171
+        },
+        {
+          "texto": "desfiladeiro",
+          "inicio_s": 9.191,
+          "fim_s": 9.813
+        },
+        {
+          "texto": "entre",
+          "inicio_s": 9.873,
+          "fim_s": 10.033
+        },
+        {
+          "texto": "o",
+          "inicio_s": 10.073,
+          "fim_s": 10.093
+        },
+        {
+          "texto": "penhasco",
+          "inicio_s": 10.134,
+          "fim_s": 10.615
+        },
+        {
+          "texto": "e",
+          "inicio_s": 10.655,
+          "fim_s": 10.675
+        },
+        {
+          "texto": "o",
+          "inicio_s": 10.755,
+          "fim_s": 10.775
+        },
+        {
+          "texto": "mar",
+          "inicio_s": 10.815,
+          "fim_s": 10.976
+        },
+        {
+          "texto": "revolto",
+          "inicio_s": 11.036,
+          "fim_s": 11.477
+        },
+        {
+          "texto": "trezentos",
+          "inicio_s": 11.798,
+          "fim_s": 12.259
+        },
+        {
+          "texto": "guerreiros",
+          "inicio_s": 12.279,
+          "fim_s": 12.72
+        },
+        {
+          "texto": "formaram",
+          "inicio_s": 12.78,
+          "fim_s": 13.221
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 13.301,
+          "fim_s": 13.402
+        },
+        {
+          "texto": "muralha",
+          "inicio_s": 13.462,
+          "fim_s": 13.803
+        },
+        {
+          "texto": "impenetrável",
+          "inicio_s": 13.863,
+          "fim_s": 14.645
+        },
+        {
+          "texto": "de",
+          "inicio_s": 14.665,
+          "fim_s": 14.725
+        },
+        {
+          "texto": "escudos",
+          "inicio_s": 14.785,
+          "fim_s": 15.146
+        },
+        {
+          "texto": "de",
+          "inicio_s": 15.166,
+          "fim_s": 15.246
+        },
+        {
+          "texto": "bronze",
+          "inicio_s": 15.306,
+          "fim_s": 15.647
+        },
+        {
+          "texto": "e",
+          "inicio_s": 15.787,
+          "fim_s": 15.808
+        },
+        {
+          "texto": "lanças",
+          "inicio_s": 15.888,
+          "fim_s": 16.229
+        },
+        {
+          "texto": "de",
+          "inicio_s": 16.229,
+          "fim_s": 16.309
+        },
+        {
+          "texto": "freixo",
+          "inicio_s": 16.369,
+          "fim_s": 16.73
+        }
+      ]
+    },
+    {
+      "texto": "Por três dias sangrentos, o maior exército da antiguidade quebrou suas ondas de ataque contra a disciplina de ferro espartana.",
+      "inicio_s": 17.16,
+      "fim_s": 23.94,
+      "palavras": [
+        {
+          "texto": "Por",
+          "inicio_s": 17.16,
+          "fim_s": 17.28
+        },
+        {
+          "texto": "três",
+          "inicio_s": 17.361,
+          "fim_s": 17.601
+        },
+        {
+          "texto": "dias",
+          "inicio_s": 17.641,
+          "fim_s": 17.882
+        },
+        {
+          "texto": "sangrentos",
+          "inicio_s": 17.922,
+          "fim_s": 18.484
+        },
+        {
+          "texto": "o",
+          "inicio_s": 18.865,
+          "fim_s": 18.885
+        },
+        {
+          "texto": "maior",
+          "inicio_s": 18.925,
+          "fim_s": 19.286
+        },
+        {
+          "texto": "exército",
+          "inicio_s": 19.367,
+          "fim_s": 19.868
+        },
+        {
+          "texto": "da",
+          "inicio_s": 19.908,
+          "fim_s": 19.968
+        },
+        {
+          "texto": "antiguidade",
+          "inicio_s": 20.008,
+          "fim_s": 20.57
+        },
+        {
+          "texto": "quebrou",
+          "inicio_s": 20.63,
+          "fim_s": 20.951
+        },
+        {
+          "texto": "suas",
+          "inicio_s": 21.011,
+          "fim_s": 21.232
+        },
+        {
+          "texto": "ondas",
+          "inicio_s": 21.332,
+          "fim_s": 21.533
+        },
+        {
+          "texto": "de",
+          "inicio_s": 21.573,
+          "fim_s": 21.633
+        },
+        {
+          "texto": "ataque",
+          "inicio_s": 21.673,
+          "fim_s": 22.034
+        },
+        {
+          "texto": "contra",
+          "inicio_s": 22.115,
+          "fim_s": 22.375
+        },
+        {
+          "texto": "a",
+          "inicio_s": 22.395,
+          "fim_s": 22.416
+        },
+        {
+          "texto": "disciplina",
+          "inicio_s": 22.436,
+          "fim_s": 22.897
+        },
+        {
+          "texto": "de",
+          "inicio_s": 22.937,
+          "fim_s": 23.017
+        },
+        {
+          "texto": "ferro",
+          "inicio_s": 23.057,
+          "fim_s": 23.318
+        },
+        {
+          "texto": "espartana",
+          "inicio_s": 23.338,
+          "fim_s": 23.86
+        }
+      ]
+    },
+    {
+      "texto": "Quando os mensageiros avisaram que as flechas persas seriam tantas que tapariam o sol, os guerreiros riram: melhor, lutaremos à sombra.",
+      "inicio_s": 24.29,
+      "fim_s": 33.05,
+      "palavras": [
+        {
+          "texto": "Quando",
+          "inicio_s": 24.29,
+          "fim_s": 24.47
+        },
+        {
+          "texto": "os",
+          "inicio_s": 24.511,
+          "fim_s": 24.571
+        },
+        {
+          "texto": "mensageiros",
+          "inicio_s": 24.611,
+          "fim_s": 25.152
+        },
+        {
+          "texto": "avisaram",
+          "inicio_s": 25.192,
+          "fim_s": 25.633
+        },
+        {
+          "texto": "que",
+          "inicio_s": 25.673,
+          "fim_s": 25.733
+        },
+        {
+          "texto": "as",
+          "inicio_s": 25.773,
+          "fim_s": 25.834
+        },
+        {
+          "texto": "flechas",
+          "inicio_s": 25.894,
+          "fim_s": 26.254
+        },
+        {
+          "texto": "persas",
+          "inicio_s": 26.315,
+          "fim_s": 26.635
+        },
+        {
+          "texto": "seriam",
+          "inicio_s": 26.695,
+          "fim_s": 26.936
+        },
+        {
+          "texto": "tantas",
+          "inicio_s": 27.096,
+          "fim_s": 27.457
+        },
+        {
+          "texto": "que",
+          "inicio_s": 27.517,
+          "fim_s": 27.598
+        },
+        {
+          "texto": "tapariam",
+          "inicio_s": 27.678,
+          "fim_s": 28.219
+        },
+        {
+          "texto": "o",
+          "inicio_s": 28.259,
+          "fim_s": 28.279
+        },
+        {
+          "texto": "sol",
+          "inicio_s": 28.359,
+          "fim_s": 28.56
+        },
+        {
+          "texto": "os",
+          "inicio_s": 29.041,
+          "fim_s": 29.101
+        },
+        {
+          "texto": "guerreiros",
+          "inicio_s": 29.141,
+          "fim_s": 29.562
+        },
+        {
+          "texto": "riram",
+          "inicio_s": 29.622,
+          "fim_s": 29.863
+        },
+        {
+          "texto": "melhor",
+          "inicio_s": 30.604,
+          "fim_s": 31.086
+        },
+        {
+          "texto": "lutaremos",
+          "inicio_s": 31.727,
+          "fim_s": 32.328
+        },
+        {
+          "texto": "à",
+          "inicio_s": 32.388,
+          "fim_s": 32.409
+        },
+        {
+          "texto": "sombra",
+          "inicio_s": 32.549,
+          "fim_s": 32.91
+        }
+      ]
+    },
+    {
+      "texto": "Traídos por uma rota secreta nas montanhas, Leônidas e seus homens lutaram até a última lança estilhaçada.",
+      "inicio_s": 33.4,
+      "fim_s": 40.3,
+      "palavras": [
+        {
+          "texto": "Traídos",
+          "inicio_s": 33.4,
+          "fim_s": 33.861
+        },
+        {
+          "texto": "por",
+          "inicio_s": 33.922,
+          "fim_s": 34.062
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 34.102,
+          "fim_s": 34.222
+        },
+        {
+          "texto": "rota",
+          "inicio_s": 34.303,
+          "fim_s": 34.563
+        },
+        {
+          "texto": "secreta",
+          "inicio_s": 34.644,
+          "fim_s": 35.085
+        },
+        {
+          "texto": "nas",
+          "inicio_s": 35.125,
+          "fim_s": 35.245
+        },
+        {
+          "texto": "montanhas",
+          "inicio_s": 35.285,
+          "fim_s": 35.847
+        },
+        {
+          "texto": "Leônidas",
+          "inicio_s": 36.228,
+          "fim_s": 36.81
+        },
+        {
+          "texto": "e",
+          "inicio_s": 37.171,
+          "fim_s": 37.191
+        },
+        {
+          "texto": "seus",
+          "inicio_s": 37.271,
+          "fim_s": 37.472
+        },
+        {
+          "texto": "homens",
+          "inicio_s": 37.512,
+          "fim_s": 37.773
+        },
+        {
+          "texto": "lutaram",
+          "inicio_s": 37.833,
+          "fim_s": 38.254
+        },
+        {
+          "texto": "até",
+          "inicio_s": 38.334,
+          "fim_s": 38.495
+        },
+        {
+          "texto": "a",
+          "inicio_s": 38.575,
+          "fim_s": 38.595
+        },
+        {
+          "texto": "última",
+          "inicio_s": 38.675,
+          "fim_s": 38.976
+        },
+        {
+          "texto": "lança",
+          "inicio_s": 39.056,
+          "fim_s": 39.357
+        },
+        {
+          "texto": "estilhaçada",
+          "inicio_s": 39.397,
+          "fim_s": 40.22
+        }
+      ]
+    },
+    {
+      "texto": "Esparta perdeu o rei, mas deu à Grécia o tempo necessário para salvar a civilização ocidental.",
+      "inicio_s": 40.65,
+      "fim_s": 46.59,
+      "palavras": [
+        {
+          "texto": "Esparta",
+          "inicio_s": 40.67,
+          "fim_s": 41.091
+        },
+        {
+          "texto": "perdeu",
+          "inicio_s": 41.152,
+          "fim_s": 41.473
+        },
+        {
+          "texto": "o",
+          "inicio_s": 41.493,
+          "fim_s": 41.533
+        },
+        {
+          "texto": "rei",
+          "inicio_s": 41.573,
+          "fim_s": 41.754
+        },
+        {
+          "texto": "mas",
+          "inicio_s": 42.436,
+          "fim_s": 42.597
+        },
+        {
+          "texto": "deu",
+          "inicio_s": 42.677,
+          "fim_s": 42.817
+        },
+        {
+          "texto": "à",
+          "inicio_s": 42.878,
+          "fim_s": 42.898
+        },
+        {
+          "texto": "Grécia",
+          "inicio_s": 42.958,
+          "fim_s": 43.319
+        },
+        {
+          "texto": "o",
+          "inicio_s": 43.52,
+          "fim_s": 43.54
+        },
+        {
+          "texto": "tempo",
+          "inicio_s": 43.64,
+          "fim_s": 43.881
+        },
+        {
+          "texto": "necessário",
+          "inicio_s": 43.921,
+          "fim_s": 44.463
+        },
+        {
+          "texto": "para",
+          "inicio_s": 44.483,
+          "fim_s": 44.603
+        },
+        {
+          "texto": "salvar",
+          "inicio_s": 44.664,
+          "fim_s": 45.025
+        },
+        {
+          "texto": "a",
+          "inicio_s": 45.065,
+          "fim_s": 45.085
+        },
+        {
+          "texto": "civilização",
+          "inicio_s": 45.145,
+          "fim_s": 45.767
+        },
+        {
+          "texto": "ocidental",
+          "inicio_s": 45.928,
+          "fim_s": 46.51
+        }
+      ]
+    }
+  ]
+}

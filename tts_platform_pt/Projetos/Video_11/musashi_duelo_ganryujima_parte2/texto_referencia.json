@@ -1,5 +1,34 @@
 {
-  "2": "Projetos/Video_11/musashi_duelo_ganryujima/imagens/texto_06.png",
-  "4": "Projetos/Video_11/musashi_duelo_ganryujima/imagens/texto_06.png",
-  "7": "Projetos/Video_11/musashi_duelo_ganryujima/imagens/texto_06.png"
+  "1": [
+    "Projetos/Video_11/musashi_duelo_ganryujima/imagens/texto_03.png",
+    null
+  ],
+  "2": [
+    "Projetos/Video_11/musashi_duelo_ganryujima/imagens/texto_06.png",
+    "Projetos/Video_11/musashi_duelo_ganryujima/imagens/texto_03.png"
+  ],
+  "3": [
+    "Projetos/Video_11/musashi_duelo_ganryujima/imagens/texto_03.png",
+    null
+  ],
+  "4": [
+    "Projetos/Video_11/musashi_duelo_ganryujima/imagens/texto_06.png",
+    "Projetos/Video_11/musashi_duelo_ganryujima/imagens/texto_06.png"
+  ],
+  "5": [
+    "Projetos/Video_11/musashi_duelo_ganryujima/imagens/texto_06.png",
+    "Projetos/Video_11/musashi_duelo_ganryujima/imagens/texto_03.png"
+  ],
+  "6": [
+    "Projetos/Video_11/musashi_duelo_ganryujima/imagens/texto_03.png",
+    null
+  ],
+  "7": [
+    "Projetos/Video_11/musashi_duelo_ganryujima/imagens/texto_06.png",
+    "Projetos/Video_11/musashi_duelo_ganryujima/imagens/texto_06.png"
+  ],
+  "8": [
+    "Projetos/Video_11/musashi_duelo_ganryujima/imagens/texto_06.png",
+    null
+  ]
 }

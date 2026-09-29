@@ -1,0 +1,705 @@
+{
+  "gerado_em": "2026-09-23T22:46:26",
+  "roteiro": "C:\\Users\\mf827\\Documents\\Ferramentas\\tts_platform_pt\\Projetos\\ideias\\bruxas_da_noite_1942\\texto.md",
+  "voz": "Ana Florence",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.2,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 51.8,
+  "texto_usado": "Elas desligavam os motores em pleno voo noturno. No inverno congelante de 1942, o 588º Regimento de Bombardeio da União Soviética era formado exclusivamente por mulheres jovens, muitas com menos de vinte anos.\n\nElas pilotavam frágeis biplanos de madeira e lona, sem paraquedas e sem radares. Ao se aproximarem dos acampamentos inimigos nas noites sem lua, cortavam a ignição do motor e planavam no silêncio absoluto do céu. O único som antes da detonação era o vento cortando as asas de lona, como o chiado de uma vassoura mágica na escuridão.\n\nAs bombas caíam antes que qualquer alarme soasse. Entre os soldados alemães aterrorizados na neve, espalhou-se o mito de que bruxas invencíveis voavam pelas sombras. Mas eram apenas mulheres comuns, donas da maior coragem dos céus.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Elas desligavam os motores em pleno voo noturno.",
+      "inicio_s": 0.15,
+      "fim_s": 2.73,
+      "palavras": [
+        {
+          "texto": "Elas",
+          "inicio_s": 0.17,
+          "fim_s": 0.352
+        },
+        {
+          "texto": "desligavam",
+          "inicio_s": 0.412,
+          "fim_s": 1.037
+        },
+        {
+          "texto": "os",
+          "inicio_s": 1.057,
+          "fim_s": 1.138
+        },
+        {
+          "texto": "motores",
+          "inicio_s": 1.178,
+          "fim_s": 1.581
+        },
+        {
+          "texto": "em",
+          "inicio_s": 1.621,
+          "fim_s": 1.662
+        },
+        {
+          "texto": "pleno",
+          "inicio_s": 1.722,
+          "fim_s": 1.984
+        },
+        {
+          "texto": "voo",
+          "inicio_s": 2.025,
+          "fim_s": 2.206
+        },
+        {
+          "texto": "noturno",
+          "inicio_s": 2.226,
+          "fim_s": 2.649
+        }
+      ]
+    },
+    {
+      "texto": "No inverno congelante de 1942, o 588º Regimento de Bombardeio da União Soviética era formado exclusivamente por mulheres jovens, muitas com menos de vinte anos.",
+      "inicio_s": 3.08,
+      "fim_s": 18.3,
+      "palavras": [
+        {
+          "texto": "No",
+          "inicio_s": 3.1,
+          "fim_s": 3.16
+        },
+        {
+          "texto": "inverno",
+          "inicio_s": 3.22,
+          "fim_s": 3.621
+        },
+        {
+          "texto": "congelante",
+          "inicio_s": 3.661,
+          "fim_s": 4.242
+        },
+        {
+          "texto": "de",
+          "inicio_s": 4.482,
+          "fim_s": 4.562
+        },
+        {
+          "texto": "1942",
+          "inicio_s": 4.562,
+          "fim_s": 10.43
+        },
+        {
+          "texto": "o",
+          "inicio_s": 10.43,
+          "fim_s": 10.45
+        },
+        {
+          "texto": "588º",
+          "inicio_s": 10.77,
+          "fim_s": 10.79
+        },
+        {
+          "texto": "Regimento",
+          "inicio_s": 10.81,
+          "fim_s": 11.251
+        },
+        {
+          "texto": "de",
+          "inicio_s": 11.291,
+          "fim_s": 11.351
+        },
+        {
+          "texto": "Bombardeio",
+          "inicio_s": 11.391,
+          "fim_s": 11.872
+        },
+        {
+          "texto": "da",
+          "inicio_s": 11.892,
+          "fim_s": 11.952
+        },
+        {
+          "texto": "União",
+          "inicio_s": 11.992,
+          "fim_s": 12.232
+        },
+        {
+          "texto": "Soviética",
+          "inicio_s": 12.272,
+          "fim_s": 12.813
+        },
+        {
+          "texto": "era",
+          "inicio_s": 13.313,
+          "fim_s": 13.434
+        },
+        {
+          "texto": "formado",
+          "inicio_s": 13.474,
+          "fim_s": 13.894
+        },
+        {
+          "texto": "exclusivamente",
+          "inicio_s": 14.034,
+          "fim_s": 14.855
+        },
+        {
+          "texto": "por",
+          "inicio_s": 15.196,
+          "fim_s": 15.316
+        },
+        {
+          "texto": "mulheres",
+          "inicio_s": 15.356,
+          "fim_s": 15.697
+        },
+        {
+          "texto": "jovens",
+          "inicio_s": 15.737,
+          "fim_s": 16.177
+        },
+        {
+          "texto": "muitas",
+          "inicio_s": 16.538,
+          "fim_s": 16.878
+        },
+        {
+          "texto": "com",
+          "inicio_s": 16.918,
+          "fim_s": 17.018
+        },
+        {
+          "texto": "menos",
+          "inicio_s": 17.078,
+          "fim_s": 17.319
+        },
+        {
+          "texto": "de",
+          "inicio_s": 17.359,
+          "fim_s": 17.439
+        },
+        {
+          "texto": "vinte",
+          "inicio_s": 17.519,
+          "fim_s": 17.799
+        },
+        {
+          "texto": "anos",
+          "inicio_s": 17.859,
+          "fim_s": 18.14
+        }
+      ]
+    },
+    {
+      "texto": "Elas pilotavam frágeis biplanos de madeira e lona, sem paraquedas e sem radares.",
+      "inicio_s": 18.65,
+      "fim_s": 23.51,
+      "palavras": [
+        {
+          "texto": "Elas",
+          "inicio_s": 18.67,
+          "fim_s": 18.831
+        },
+        {
+          "texto": "pilotavam",
+          "inicio_s": 18.851,
+          "fim_s": 19.313
+        },
+        {
+          "texto": "frágeis",
+          "inicio_s": 19.373,
+          "fim_s": 19.734
+        },
+        {
+          "texto": "biplanos",
+          "inicio_s": 19.775,
+          "fim_s": 20.176
+        },
+        {
+          "texto": "de",
+          "inicio_s": 20.216,
+          "fim_s": 20.257
+        },
+        {
+          "texto": "madeira",
+          "inicio_s": 20.297,
+          "fim_s": 20.739
+        },
+        {
+          "texto": "e",
+          "inicio_s": 20.96,
+          "fim_s": 20.98
+        },
+        {
+          "texto": "lona",
+          "inicio_s": 21.04,
+          "fim_s": 21.301
+        },
+        {
+          "texto": "sem",
+          "inicio_s": 21.863,
+          "fim_s": 21.984
+        },
+        {
+          "texto": "paraquedas",
+          "inicio_s": 22.024,
+          "fim_s": 22.566
+        },
+        {
+          "texto": "e",
+          "inicio_s": 22.687,
+          "fim_s": 22.707
+        },
+        {
+          "texto": "sem",
+          "inicio_s": 22.767,
+          "fim_s": 22.887
+        },
+        {
+          "texto": "radares",
+          "inicio_s": 22.928,
+          "fim_s": 23.39
+        }
+      ]
+    },
+    {
+      "texto": "Ao se aproximarem dos acampamentos inimigos nas noites sem lua, cortavam a ignição do motor e planavam no silêncio absoluto do céu.",
+      "inicio_s": 23.86,
+      "fim_s": 31.34,
+      "palavras": [
+        {
+          "texto": "Ao",
+          "inicio_s": 23.9,
+          "fim_s": 23.98
+        },
+        {
+          "texto": "se",
+          "inicio_s": 24.02,
+          "fim_s": 24.081
+        },
+        {
+          "texto": "aproximarem",
+          "inicio_s": 24.081,
+          "fim_s": 24.642
+        },
+        {
+          "texto": "dos",
+          "inicio_s": 24.662,
+          "fim_s": 24.762
+        },
+        {
+          "texto": "acampamentos",
+          "inicio_s": 24.803,
+          "fim_s": 25.384
+        },
+        {
+          "texto": "inimigos",
+          "inicio_s": 25.424,
+          "fim_s": 25.845
+        },
+        {
+          "texto": "nas",
+          "inicio_s": 25.905,
+          "fim_s": 26.026
+        },
+        {
+          "texto": "noites",
+          "inicio_s": 26.066,
+          "fim_s": 26.367
+        },
+        {
+          "texto": "sem",
+          "inicio_s": 26.407,
+          "fim_s": 26.527
+        },
+        {
+          "texto": "lua",
+          "inicio_s": 26.607,
+          "fim_s": 26.788
+        },
+        {
+          "texto": "cortavam",
+          "inicio_s": 27.209,
+          "fim_s": 27.69
+        },
+        {
+          "texto": "a",
+          "inicio_s": 27.73,
+          "fim_s": 27.75
+        },
+        {
+          "texto": "ignição",
+          "inicio_s": 27.791,
+          "fim_s": 28.212
+        },
+        {
+          "texto": "do",
+          "inicio_s": 28.252,
+          "fim_s": 28.312
+        },
+        {
+          "texto": "motor",
+          "inicio_s": 28.352,
+          "fim_s": 28.713
+        },
+        {
+          "texto": "e",
+          "inicio_s": 29.254,
+          "fim_s": 29.274
+        },
+        {
+          "texto": "planavam",
+          "inicio_s": 29.335,
+          "fim_s": 29.776
+        },
+        {
+          "texto": "no",
+          "inicio_s": 29.796,
+          "fim_s": 29.856
+        },
+        {
+          "texto": "silêncio",
+          "inicio_s": 29.896,
+          "fim_s": 30.357
+        },
+        {
+          "texto": "absoluto",
+          "inicio_s": 30.397,
+          "fim_s": 30.919
+        },
+        {
+          "texto": "do",
+          "inicio_s": 30.939,
+          "fim_s": 30.999
+        },
+        {
+          "texto": "céu",
+          "inicio_s": 31.079,
+          "fim_s": 31.24
+        }
+      ]
+    },
+    {
+      "texto": "O único som antes da detonação era o vento cortando as asas de lona, como o chiado de uma vassoura mágica na escuridão.",
+      "inicio_s": 31.69,
+      "fim_s": 38.01,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 31.71,
+          "fim_s": 31.73
+        },
+        {
+          "texto": "único",
+          "inicio_s": 31.79,
+          "fim_s": 32.031
+        },
+        {
+          "texto": "som",
+          "inicio_s": 32.111,
+          "fim_s": 32.272
+        },
+        {
+          "texto": "antes",
+          "inicio_s": 32.332,
+          "fim_s": 32.553
+        },
+        {
+          "texto": "da",
+          "inicio_s": 32.573,
+          "fim_s": 32.633
+        },
+        {
+          "texto": "detonação",
+          "inicio_s": 32.673,
+          "fim_s": 33.195
+        },
+        {
+          "texto": "era",
+          "inicio_s": 33.415,
+          "fim_s": 33.516
+        },
+        {
+          "texto": "o",
+          "inicio_s": 33.556,
+          "fim_s": 33.576
+        },
+        {
+          "texto": "vento",
+          "inicio_s": 33.616,
+          "fim_s": 33.857
+        },
+        {
+          "texto": "cortando",
+          "inicio_s": 33.897,
+          "fim_s": 34.258
+        },
+        {
+          "texto": "as",
+          "inicio_s": 34.278,
+          "fim_s": 34.358
+        },
+        {
+          "texto": "asas",
+          "inicio_s": 34.439,
+          "fim_s": 34.619
+        },
+        {
+          "texto": "de",
+          "inicio_s": 34.659,
+          "fim_s": 34.72
+        },
+        {
+          "texto": "lona",
+          "inicio_s": 34.76,
+          "fim_s": 35.021
+        },
+        {
+          "texto": "como",
+          "inicio_s": 35.582,
+          "fim_s": 35.763
+        },
+        {
+          "texto": "o",
+          "inicio_s": 35.803,
+          "fim_s": 35.823
+        },
+        {
+          "texto": "chiado",
+          "inicio_s": 35.883,
+          "fim_s": 36.244
+        },
+        {
+          "texto": "de",
+          "inicio_s": 36.285,
+          "fim_s": 36.345
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 36.365,
+          "fim_s": 36.445
+        },
+        {
+          "texto": "vassoura",
+          "inicio_s": 36.485,
+          "fim_s": 36.846
+        },
+        {
+          "texto": "mágica",
+          "inicio_s": 36.907,
+          "fim_s": 37.328
+        },
+        {
+          "texto": "na",
+          "inicio_s": 37.348,
+          "fim_s": 37.388
+        },
+        {
+          "texto": "escuridão",
+          "inicio_s": 37.428,
+          "fim_s": 37.89
+        }
+      ]
+    },
+    {
+      "texto": "As bombas caíam antes que qualquer alarme soasse.",
+      "inicio_s": 38.36,
+      "fim_s": 40.82,
+      "palavras": [
+        {
+          "texto": "As",
+          "inicio_s": 38.38,
+          "fim_s": 38.481
+        },
+        {
+          "texto": "bombas",
+          "inicio_s": 38.521,
+          "fim_s": 38.804
+        },
+        {
+          "texto": "caíam",
+          "inicio_s": 38.844,
+          "fim_s": 39.146
+        },
+        {
+          "texto": "antes",
+          "inicio_s": 39.247,
+          "fim_s": 39.489
+        },
+        {
+          "texto": "que",
+          "inicio_s": 39.509,
+          "fim_s": 39.59
+        },
+        {
+          "texto": "qualquer",
+          "inicio_s": 39.61,
+          "fim_s": 39.892
+        },
+        {
+          "texto": "alarme",
+          "inicio_s": 39.913,
+          "fim_s": 40.215
+        },
+        {
+          "texto": "soasse",
+          "inicio_s": 40.276,
+          "fim_s": 40.719
+        }
+      ]
+    },
+    {
+      "texto": "Entre os soldados alemães aterrorizados na neve, espalhou-se o mito de que bruxas invencíveis voavam pelas sombras.",
+      "inicio_s": 41.17,
+      "fim_s": 47.35,
+      "palavras": [
+        {
+          "texto": "Entre",
+          "inicio_s": 41.21,
+          "fim_s": 41.351
+        },
+        {
+          "texto": "os",
+          "inicio_s": 41.371,
+          "fim_s": 41.431
+        },
+        {
+          "texto": "soldados",
+          "inicio_s": 41.451,
+          "fim_s": 41.792
+        },
+        {
+          "texto": "alemães",
+          "inicio_s": 41.832,
+          "fim_s": 42.173
+        },
+        {
+          "texto": "aterrorizados",
+          "inicio_s": 42.193,
+          "fim_s": 42.835
+        },
+        {
+          "texto": "na",
+          "inicio_s": 42.876,
+          "fim_s": 42.936
+        },
+        {
+          "texto": "neve",
+          "inicio_s": 42.996,
+          "fim_s": 43.297
+        },
+        {
+          "texto": "espalhou-se",
+          "inicio_s": 43.698,
+          "fim_s": 44.24
+        },
+        {
+          "texto": "o",
+          "inicio_s": 44.26,
+          "fim_s": 44.28
+        },
+        {
+          "texto": "mito",
+          "inicio_s": 44.32,
+          "fim_s": 44.541
+        },
+        {
+          "texto": "de",
+          "inicio_s": 44.581,
+          "fim_s": 44.641
+        },
+        {
+          "texto": "que",
+          "inicio_s": 44.681,
+          "fim_s": 44.762
+        },
+        {
+          "texto": "bruxas",
+          "inicio_s": 44.842,
+          "fim_s": 45.183
+        },
+        {
+          "texto": "invencíveis",
+          "inicio_s": 45.223,
+          "fim_s": 45.905
+        },
+        {
+          "texto": "voavam",
+          "inicio_s": 46.186,
+          "fim_s": 46.588
+        },
+        {
+          "texto": "pelas",
+          "inicio_s": 46.628,
+          "fim_s": 46.828
+        },
+        {
+          "texto": "sombras",
+          "inicio_s": 46.868,
+          "fim_s": 47.23
+        }
+      ]
+    },
+    {
+      "texto": "Mas eram apenas mulheres comuns, donas da maior coragem dos céus.",
+      "inicio_s": 47.7,
+      "fim_s": 51.8,
+      "palavras": [
+        {
+          "texto": "Mas",
+          "inicio_s": 47.72,
+          "fim_s": 47.861
+        },
+        {
+          "texto": "eram",
+          "inicio_s": 47.941,
+          "fim_s": 48.102
+        },
+        {
+          "texto": "apenas",
+          "inicio_s": 48.162,
+          "fim_s": 48.504
+        },
+        {
+          "texto": "mulheres",
+          "inicio_s": 48.544,
+          "fim_s": 48.906
+        },
+        {
+          "texto": "comuns",
+          "inicio_s": 48.946,
+          "fim_s": 49.328
+        },
+        {
+          "texto": "donas",
+          "inicio_s": 49.971,
+          "fim_s": 50.293
+        },
+        {
+          "texto": "da",
+          "inicio_s": 50.313,
+          "fim_s": 50.353
+        },
+        {
+          "texto": "maior",
+          "inicio_s": 50.393,
+          "fim_s": 50.654
+        },
+        {
+          "texto": "coragem",
+          "inicio_s": 50.715,
+          "fim_s": 51.157
+        },
+        {
+          "texto": "dos",
+          "inicio_s": 51.197,
+          "fim_s": 51.318
+        },
+        {
+          "texto": "céus",
+          "inicio_s": 51.378,
+          "fim_s": 51.679
+        }
+      ]
+    }
+  ]
+}

@@ -23,39 +23,43 @@ DOWNLOADS = [
         "subpasta": "models/diffusion_models",
         "arquivo": "qwen_image_2.1_int8_convrot.safetensors",
         "url": "https://huggingface.co/Comfy-Org/Qwen-Image-2.1/resolve/main/diffusion_models/qwen_image_2.1_int8_convrot.safetensors",
-        "tamanho_aprox_mb": 7200,
+        "tamanho_aprox_mb": 7260,
     },
     {
         "nome": "Qwen3-VL-8B Text Encoder (INT8)",
         "subpasta": "models/text_encoders",
         "arquivo": "qwen3vl_8b_int8_convrot.safetensors",
         "url": "https://huggingface.co/Comfy-Org/Qwen-Image-2.1/resolve/main/text_encoders/qwen3vl_8b_int8_convrot.safetensors",
-        "tamanho_aprox_mb": 4600,
+        "tamanho_aprox_mb": 9350,
     },
     {
         "nome": "Qwen-Image-2.1 VAE (BF16)",
         "subpasta": "models/vae",
         "arquivo": "qwen_image_2.1_vae_bf16.safetensors",
         "url": "https://huggingface.co/Comfy-Org/Qwen-Image-2.1/resolve/main/vae/qwen_image_2.1_vae_bf16.safetensors",
-        "tamanho_aprox_mb": 350,
+        "tamanho_aprox_mb": 680,
     },
     {
         "nome": "LoRA Qwen2.1 Anime Consistency",
         "subpasta": "models/loras",
         "arquivo": "Qwen2.1_Anime_consistency.safetensors",
         "url": "https://huggingface.co/WarmBloodAban/Qwen-Image-2.1-LoRAs/resolve/main/Qwen2.1_Anime_consistency.safetensors",
-        "tamanho_aprox_mb": 150,
+        "tamanho_aprox_mb": 168,
     },
     {
         "nome": "LoRA Modern Anime Style",
         "subpasta": "models/loras",
         "arquivo": "qwen-image-modern-anime-lora.safetensors",
-        "url": "https://huggingface.co/alfredplpl/qwen-image-modern-anime-lora/resolve/main/qwen-image-modern-anime-lora.safetensors",
-        "tamanho_aprox_mb": 220,
+        "url": "https://huggingface.co/alfredplpl/qwen-image-modern-anime-lora/resolve/main/lora.safetensors",
+        "tamanho_aprox_mb": 590,
     },
 ]
 
 LOCAIS_COMUNS_COMFY = [
+    # Windows / ComfyUI Desktop: a pasta compartilhada e a que o app usa de fato
+    # (injetada como extra_model_paths). A "models" de dentro de ComfyUI-Installs
+    # fica vazia, entao ela vem depois na lista de propositio.
+    Path.home() / "AppData/Local/Comfy-Desktop/ComfyUI-Shared",
     Path.home() / "ComfyUI",
     Path.home() / "AppData/Local/Comfy-Desktop/ComfyUI-Installs/ComfyUI/ComfyUI",
     Path.home() / "marcelo/ComfyUI",
