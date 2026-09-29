@@ -2011,6 +2011,27 @@
     text-shadow: 0 0 10px rgba(253, 224, 71, 0.25) !important;
 }
 
+#mobile-score-text {
+    color: var(--dim);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0.5rem 0 0;
+    text-align: center;
+}
+
+#mobile-score-text[hidden] {
+    display: none;
+}
+
+.mobile-score__value {
+    color: #fde047;
+    font-weight: 900;
+}
+
+.mobile-score__total {
+    font-weight: 500;
+}
+
 /* Exit button zone */
 #mobile-mic-area > div:last-child {
     margin-top: 0 !important;

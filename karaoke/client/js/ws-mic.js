@@ -58,6 +58,8 @@ export function connectMobileMicrophoneWebSocket() {
         },
         game_started(data, context) {
             const { state } = context;
+            const scoreLine = document.getElementById('mobile-score-text');
+            if (scoreLine) scoreLine.hidden = true;
             const activePlayers = data.active_players || [];
             state.isActiveInGame = activePlayers.includes(state.mobileNickname);
             
@@ -102,23 +104,22 @@ export function connectMobileMicrophoneWebSocket() {
         },
         segment_result(data, context) {
             const { state } = context;
-            const lyrText = document.getElementById('mobile-lyrics-text');
-            if (lyrText) {
-                let myScore = data.score;
-                let myTotalScore = data.total_score;
-                
-                if (data.player_scores && state.mobileNickname && data.player_scores[state.mobileNickname]) {
-                    const pData = data.player_scores[state.mobileNickname];
-                    myScore = pData.score;
-                    myTotalScore = pData.total_score;
-                }
-                
-                if (state.isActiveInGame) {
-                    lyrText.innerHTML = `Segmento Anterior: <span style="color: #fde047; font-weight: 900;">${myScore}%</span><br><span style="font-size: 0.95rem; color: var(--dim); font-weight: 500;">Sua Precisão Geral: ${myTotalScore}%</span>`;
-                } else {
-                    lyrText.innerHTML = `<span style="color: var(--dim); font-weight: 700;">Você está assistindo 👀</span><br>Resultado da sala: ${myTotalScore}%`;
-                }
+            // A nota chega quando o verso seguinte já começou: vai numa linha
+            // própria para não apagar a letra que o cantor está acompanhando.
+            const scoreLine = document.getElementById('mobile-score-text');
+            if (!scoreLine) return;
+            let myScore = data.score;
+            let myTotalScore = data.total_score;
+
+            if (state.isActiveInGame && data.player_scores && state.mobileNickname && data.player_scores[state.mobileNickname]) {
+                const pData = data.player_scores[state.mobileNickname];
+                myScore = pData.score;
+                myTotalScore = pData.total_score;
             }
+
+            document.getElementById('mobile-score-last').textContent = `${myScore}%`;
+            document.getElementById('mobile-score-total').textContent = `${myTotalScore}%`;
+            scoreLine.hidden = false;
         },
         outro_start(data, context) {
             const { state } = context;
@@ -133,6 +134,8 @@ export function connectMobileMicrophoneWebSocket() {
         },
         game_over(data, context) {
             const { state } = context;
+            const scoreLine = document.getElementById('mobile-score-text');
+            if (scoreLine) scoreLine.hidden = true;
             const lyrText = document.getElementById('mobile-lyrics-text');
             if (lyrText) {
                 let myTotalScore = data.total_score;
