@@ -75,6 +75,82 @@ class TestScoreEngine(unittest.TestCase):
         # Leakage should be pardoned and score should be 100% for "hello"
         self.assertEqual(res["score"], 100.0)
 
+    @staticmethod
+    def _timed(words, step=0.4):
+        return [{"word": w, "expected_start": i * step, "expected_end": i * step + 0.3} for i, w in enumerate(words)]
+
+    @staticmethod
+    def _sung(words, step=0.4):
+        return [{"word": w, "start": i * step, "end": i * step + 0.3} for i, w in enumerate(words)]
+
+    def test_verse_repeating_the_end_of_the_previous_is_not_leakage(self):
+        """Casos reais das gravações de 2026-09-29: verso que repete o fim (ou o começo)
+        do anterior foi cantado certo e o "perdão de vazamento" apagava as palavras."""
+        cases = [
+            # (verso anterior, verso atual, idioma) — A Wolf at the Door / Zé Assassino / Geni
+            ("Help me, call the doctor, put me inside", "Put me inside", "en"),
+            ("De mãos dadas a cantar, mataram o doutor", "Mataram o doutor", "pt"),
+            ("Take it with the love its given", "Take it with a pinch of salt", "en"),
+            ("Ela é feita pra apanhar", "Ela é boa de cuspir", "pt"),
+            ("Get up get the gunge", "Get the eggs", "en"),
+        ]
+        for prev, current, lang in cases:
+            with self.subTest(current=current):
+                words = current.replace(",", "").split()
+                res = calculate_score(self._timed(words), self._sung(words),
+                                      prev_expected_words=prev.split(), language=lang)
+                self.assertEqual(res["score"], 100.0)
+
+    def test_short_vowel_words_in_the_lyrics_are_not_merged_away(self):
+        """"é", "eu", "a", "I" cantados no meio do verso são palavras, não "aaa" esticado."""
+        cases = [
+            ("Ela é boa de cuspir", "pt"),
+            ("Quando eu quero você", "pt"),
+            ("Vai a cidade e o bispo", "pt"),
+            ("Now I promise to be good", "en"),
+        ]
+        for current, lang in cases:
+            with self.subTest(current=current):
+                words = current.split()
+                res = calculate_score(self._timed(words), self._sung(words), language=lang)
+                self.assertEqual(res["score"], 100.0)
+
+    def test_vowel_fragment_not_in_lyrics_still_merges(self):
+        """"ooh" / "a" esticados que não estão na letra continuam colados à palavra anterior."""
+        expected = self._timed(["love", "me"])
+        sung = [{"word": "love", "start": 0.0, "end": 0.3}, {"word": "ah", "start": 0.3, "end": 0.6},
+                {"word": "me", "start": 0.4, "end": 0.7}]
+        self.assertEqual(calculate_score(expected, sung, language="en")["score"], 100.0)
+
+    def test_rushing_the_whole_line_is_still_penalized(self):
+        """Ler a linha inteira correndo (3 s de letra em 0,8 s) continua perdendo pontos."""
+        words = ["one", "two", "three", "four", "five", "six", "seven"]
+        expected = self._timed(words, step=0.5)          # vão esperado: 3,0 s
+        rushed = self._sung(words, step=0.8 / 6)          # vão cantado: 0,8 s
+        res = calculate_score(expected, rushed, language="en")
+        self.assertLess(res["tempo_factor"], 0.85)
+        self.assertLess(res["score"], 75.0)
+
+    def test_natural_timing_noise_is_not_penalized(self):
+        """Verso certo com o vão esticado (mediana 1,33x nas gravações de 2026-09-29) ou
+        levemente comprimido dentro da imprecisão do Whisper não perde andamento."""
+        words = ["tanto", "horror", "e", "muita", "iniquidade"]
+        expected = self._timed(words, step=0.3)          # vão esperado: 1,2 s
+        for sung_step in (0.3 * 1.33, 0.3 * 1.9, 0.3 * 0.55):   # 1,6 s · 2,3 s · 0,66 s
+            with self.subTest(sung_span=round(sung_step * 4, 2)):
+                res = calculate_score(expected, self._sung(words, step=sung_step), language="pt")
+                self.assertEqual(res["tempo_factor"], 1.0)
+
+    def test_real_leakage_is_still_forgiven(self):
+        """Geni 72: o fim do verso anterior vazou antes de "Bendita Geni"."""
+        prev = "Você dá pra qualquer um".split()
+        expected = self._timed(["Bendita", "Geni"], step=0.8)
+        sung = [{"word": w, "start": -1.2 + i * 0.3, "end": -1.0 + i * 0.3}
+                for i, w in enumerate(["Dá", "pra", "qualquer", "um"])]
+        sung += [{"word": "Bendita", "start": 0.0, "end": 0.5}, {"word": "Geni", "start": 0.8, "end": 1.2}]
+        res = calculate_score(expected, sung, prev_expected_words=prev, language="pt")
+        self.assertEqual(res["score"], 100.0)
+
     def test_sandwich_recovery(self):
         expected = [
             {"word": "one", "expected_start": 1.0, "expected_end": 1.3},

@@ -23,6 +23,7 @@ MAX_LEAKAGE_LOOKBACK = 6
 TEMPO_MIN_EXPECTED_SPAN = 0.8   # vãos esperados menores que isso não punem tempo
 TEMPO_WEIGHT = 0.35             # peso do andamento no score final (até -35%)
 TEMPO_DEADZONE = 0.95           # acima disso considera-se andamento correto
+TEMPO_ABS_TOLERANCE_SEC = 0.6   # encolhimento do vão perdoado (erro dos tempos do Whisper)
 
 # Penalidade de precisão: pune excesso de palavras cantadas (repetir a mesma
 # frase várias vezes). Uma margem evita punir hesitações/variações pequenas.
@@ -90,11 +91,18 @@ def filter_vocal_fragments(transcribed_words):
         filtered.append(w)
     return filtered
 
-def merge_vocal_fragments(transcribed_words):
+def merge_vocal_fragments(transcribed_words, lyric_words: frozenset = frozenset()):
+    """Cola vogal esticada ("ooh", "a") na palavra anterior.
+
+    `lyric_words` (já passadas pelo clean_text) ficam de fora: "é", "eu", "a",
+    "I" cantados onde a letra pede são palavras, não fragmentos.
+    """
     merged = []
     for w in transcribed_words:
         word = w["word"].lower().strip()
         is_fragment = word in VOCAL_FRAGMENTS or (len(word) <= 2 and re.match(r'^[aeiouáéíóúãõ]+$', word))
+        if is_fragment and lyric_words and (word in lyric_words or re.sub(r'[^\w]', '', word) in lyric_words):
+            is_fragment = False
         if merged and is_fragment:
             merged[-1] = {**merged[-1], "end": w.get("end", merged[-1].get("end"))}
         else:
@@ -177,13 +185,30 @@ def calculate_score(expected_timed: list[dict], transcribed_words: list[dict], p
                     if overlap_found > 0:
                         break
 
+            # O trecho "vazado" também é o começo do verso atual (repetição, verso
+            # que abre igual ao anterior): foi cantado agora e não se remove.
+            if overlap_found > 0:
+                current_clean = [clean_text(w["word"], language) for w in expected_timed]
+                k = overlap_found
+                own_match = sum(
+                    1 for idx in range(min(k, len(current_clean)))
+                    if fuzz.token_sort_ratio(current_clean[idx], trans_clean[idx]) >= LEAKAGE_PER_WORD_MATCH
+                )
+                if own_match / k >= LEAKAGE_GROUP_MATCH:
+                    logger.info(f"⏭️ [Perdão de Vazamento] Ignorado: {k} palavra(s) também abrem o verso atual")
+                    overlap_found = 0
+
             if overlap_found > 0:
                 leaked = [w['word'] for w in transcribed_words[:overlap_found]]
                 logger.info(f"🛡️ [Perdão de Vazamento] {overlap_found} palavras vazadas do verso anterior: {leaked}")
                 transcribed_words = transcribed_words[overlap_found:]
 
     # B. Merge de fragmentos vocálicos
-    transcribed_words = merge_vocal_fragments(transcribed_words)
+    lyric_words = frozenset(
+        {clean_text(w["word"], language) for w in expected_timed}
+        | {re.sub(r"[^\w]", "", w["word"].lower()) for w in expected_timed}
+    )
+    transcribed_words = merge_vocal_fragments(transcribed_words, lyric_words)
 
     # Tokenização e limpeza acústica normalizada
     expected_words = [clean_text(w["word"], language) for w in expected_timed]
@@ -250,18 +275,19 @@ def calculate_score(expected_timed: list[dict], transcribed_words: list[dict], p
     total_points = sum(word_scores)
     base_score = (total_points / len(expected_words)) * 100
 
-    # Penalidade de andamento global: se o cantor comprime/estica a linha
-    # inteira, o "vão" entre a primeira e a última palavra casada diverge do
-    # esperado. Um offset constante (atraso parelho) não pune aqui — isso é
-    # tratado pela penalidade por palavra acima; aqui só conta o ritmo relativo.
+    # Penalidade de andamento global: ler a linha inteira correndo encolhe o
+    # "vão" entre a primeira e a última palavra casada. Um offset constante
+    # (atraso parelho) não pune aqui — isso é tratado por palavra acima.
+    # Só compressão pune: canto certo sai em média 1,33x o vão esperado (o
+    # Whisper espalha mais os tempos que o alinhamento da letra) e esticar
+    # demais já cai na penalidade por palavra. Os primeiros
+    # TEMPO_ABS_TOLERANCE_SEC de encolhimento são imprecisão de medição.
     tempo_factor = 1.0
     if apply_timing and len(timing_pairs) >= 2:
         exp_span = max(p[0] for p in timing_pairs) - min(p[0] for p in timing_pairs)
         act_span = max(p[1] for p in timing_pairs) - min(p[1] for p in timing_pairs)
-        if exp_span >= TEMPO_MIN_EXPECTED_SPAN:
-            ratio = (act_span / exp_span) if exp_span > 0 else 1.0
-            closeness = min(ratio, 1.0 / ratio) if ratio > 0 else 0.0
-            closeness = max(0.0, min(1.0, closeness))
+        if exp_span >= TEMPO_MIN_EXPECTED_SPAN and act_span < exp_span:
+            closeness = min(1.0, max(0.0, (act_span + TEMPO_ABS_TOLERANCE_SEC) / exp_span))
             if closeness < TEMPO_DEADZONE:
                 tempo_factor = (1.0 - TEMPO_WEIGHT) + TEMPO_WEIGHT * closeness
 

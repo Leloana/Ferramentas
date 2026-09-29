@@ -169,7 +169,10 @@ Armazena a nota histórica de cada sessão.
     *   No arquivo `segments.json`, a lista `lyrics_timed` **deve possuir tempos de expected_start estritamente crescentes**. Nunca permita que duas palavras seguidas no JSON comecem no mesmo segundo (ex.: 0.0s e 0.0s). O frontend calcula gradientes de cor com base no avanço de tempo; tempos iguais causam divisão por zero e quebram a animação visual.
 *   **Vazamento Instrumental:**
     *   O Whisper é sensível a ruído. Se o microfone capturar a caixa de som da TV (backing track), o Whisper transcreverá o segmento anterior ou alucinará. Use o `score_engine.py` com o mecanismo de remoção de vazamento de versos anteriores (`leakage removal`).
-    *   Desde o P0 as janelas dos versos são disjuntas (`mic_stream.segment_window`), então o mesmo áudio não cai mais em dois versos. O `leakage removal` ficou só para voz que vaza de verdade.
+    *   Desde o P0 as janelas dos versos são disjuntas (`mic_stream.segment_window`), então o mesmo áudio não cai mais em dois versos. O `leakage removal` ficou só para voz que vaza de verdade, e não remove palavras que também abrem o verso atual (versos que repetem o anterior eram zerados).
+*   **Mudou o score? Rode as partidas reais:**
+    *   `tests/unit/test_recorded_sessions.py` repontua o que o Whisper ouviu em partidas reais (`tests/fixtures/recorded_sessions/`) contra o gabarito anotado pelo cantor. Canto certo tem que continuar alto e cantarolar, baixo.
+    *   As partidas ficam gravadas por padrão em `karaoke/recordings/` (fora do git; `KARAOKE_RECORD=0` desliga). `tools/replay_recording.py` roda o Whisper de novo nelas com outro modelo ou constante (`--set modulo.NOME=valor`).
 *   **Referencial de tempo do Whisper:**
     *   O Whisper devolve `start` relativo ao início da JANELA, que começa até 1,5 s antes do `sing_start`. Compare com `expected_start` só depois de `_shift_words(words, t0 - sing_start)` em `ws/room.py`. Sem isso o canto perfeito tira 85.
 *   **Hallucinações no Silêncio:**

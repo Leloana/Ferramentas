@@ -1,0 +1,4505 @@
+{
+ "song_id": "a-wolf-at-the-door-radiohead",
+ "recorded_at": "2026-09-29T20:10:28",
+ "whisper_model": "large-v3-turbo",
+ "scoring_mode": "timing",
+ "segments": [
+  {
+   "sing_start": 15.54,
+   "sing_end": 17.52,
+   "language": "en",
+   "lyrics": "Drag him out your window",
+   "lyrics_timed": [
+    {
+     "word": "Drag",
+     "expected_start": 0.05,
+     "expected_end": 0.78
+    },
+    {
+     "word": "him",
+     "expected_start": 0.78,
+     "expected_end": 1.06
+    },
+    {
+     "word": "out",
+     "expected_start": 1.06,
+     "expected_end": 1.2
+    },
+    {
+     "word": "your",
+     "expected_start": 1.2,
+     "expected_end": 1.4
+    },
+    {
+     "word": "window",
+     "expected_start": 1.4,
+     "expected_end": 1.58
+    }
+   ]
+  },
+  {
+   "sing_start": 17.14,
+   "sing_end": 18.78,
+   "language": "en",
+   "lyrics": "Dragging out the dead",
+   "lyrics_timed": [
+    {
+     "word": "Dragging",
+     "expected_start": 0.05,
+     "expected_end": 0.6
+    },
+    {
+     "word": "out",
+     "expected_start": 0.6,
+     "expected_end": 0.9
+    },
+    {
+     "word": "the",
+     "expected_start": 0.9,
+     "expected_end": 1.12
+    },
+    {
+     "word": "dead",
+     "expected_start": 1.12,
+     "expected_end": 1.24
+    }
+   ]
+  },
+  {
+   "sing_start": 18.6,
+   "sing_end": 20.02,
+   "language": "en",
+   "lyrics": "Singing I miss you",
+   "lyrics_timed": [
+    {
+     "word": "Singing",
+     "expected_start": 0.4,
+     "expected_end": 0.78
+    },
+    {
+     "word": "I",
+     "expected_start": 0.45,
+     "expected_end": 0.78
+    },
+    {
+     "word": "miss",
+     "expected_start": 0.5,
+     "expected_end": 0.78
+    },
+    {
+     "word": "you",
+     "expected_start": 0.94,
+     "expected_end": 1.04
+    }
+   ]
+  },
+  {
+   "sing_start": 19.64,
+   "sing_end": 21.76,
+   "language": "en",
+   "lyrics": "Snakes and ladders flip the lid",
+   "lyrics_timed": [
+    {
+     "word": "Snakes",
+     "expected_start": 0.05,
+     "expected_end": 0.58
+    },
+    {
+     "word": "and",
+     "expected_start": 0.58,
+     "expected_end": 0.8
+    },
+    {
+     "word": "ladders",
+     "expected_start": 0.8,
+     "expected_end": 1.0
+    },
+    {
+     "word": "flip",
+     "expected_start": 1.0,
+     "expected_end": 1.42
+    },
+    {
+     "word": "the",
+     "expected_start": 1.42,
+     "expected_end": 1.62
+    },
+    {
+     "word": "lid",
+     "expected_start": 1.62,
+     "expected_end": 1.72
+    }
+   ]
+  },
+  {
+   "sing_start": 21.52,
+   "sing_end": 23.14,
+   "language": "en",
+   "lyrics": "Out pops the cracker",
+   "lyrics_timed": [
+    {
+     "word": "Out",
+     "expected_start": 0.4,
+     "expected_end": 0.76
+    },
+    {
+     "word": "pops",
+     "expected_start": 0.45,
+     "expected_end": 0.76
+    },
+    {
+     "word": "the",
+     "expected_start": 0.5,
+     "expected_end": 0.76
+    },
+    {
+     "word": "cracker",
+     "expected_start": 0.76,
+     "expected_end": 1.08
+    }
+   ]
+  },
+  {
+   "sing_start": 22.86,
+   "sing_end": 24.36,
+   "language": "en",
+   "lyrics": "Smacks you in the head",
+   "lyrics_timed": [
+    {
+     "word": "Smacks",
+     "expected_start": 0.4,
+     "expected_end": 0.68
+    },
+    {
+     "word": "you",
+     "expected_start": 0.45,
+     "expected_end": 0.68
+    },
+    {
+     "word": "in",
+     "expected_start": 0.5,
+     "expected_end": 0.68
+    },
+    {
+     "word": "the",
+     "expected_start": 0.68,
+     "expected_end": 0.88
+    },
+    {
+     "word": "head",
+     "expected_start": 0.88,
+     "expected_end": 1.02
+    }
+   ]
+  },
+  {
+   "sing_start": 24.14,
+   "sing_end": 25.68,
+   "language": "en",
+   "lyrics": "Knives you in the neck",
+   "lyrics_timed": [
+    {
+     "word": "Knives",
+     "expected_start": 0.4,
+     "expected_end": 0.62
+    },
+    {
+     "word": "you",
+     "expected_start": 0.45,
+     "expected_end": 0.62
+    },
+    {
+     "word": "in",
+     "expected_start": 0.5,
+     "expected_end": 0.62
+    },
+    {
+     "word": "the",
+     "expected_start": 0.62,
+     "expected_end": 0.9
+    },
+    {
+     "word": "neck",
+     "expected_start": 0.9,
+     "expected_end": 1.12
+    }
+   ]
+  },
+  {
+   "sing_start": 25.34,
+   "sing_end": 27.08,
+   "language": "en",
+   "lyrics": "Kicks you in the teeth",
+   "lyrics_timed": [
+    {
+     "word": "Kicks",
+     "expected_start": 0.05,
+     "expected_end": 0.64
+    },
+    {
+     "word": "you",
+     "expected_start": 0.64,
+     "expected_end": 0.9
+    },
+    {
+     "word": "in",
+     "expected_start": 0.9,
+     "expected_end": 1.02
+    },
+    {
+     "word": "the",
+     "expected_start": 1.02,
+     "expected_end": 1.2
+    },
+    {
+     "word": "teeth",
+     "expected_start": 1.2,
+     "expected_end": 1.34
+    }
+   ]
+  },
+  {
+   "sing_start": 26.7,
+   "sing_end": 28.38,
+   "language": "en",
+   "lyrics": "Steel toe caps",
+   "lyrics_timed": [
+    {
+     "word": "Steel",
+     "expected_start": 0.05,
+     "expected_end": 0.5
+    },
+    {
+     "word": "toe",
+     "expected_start": 0.5,
+     "expected_end": 0.94
+    },
+    {
+     "word": "caps",
+     "expected_start": 0.94,
+     "expected_end": 1.28
+    }
+   ]
+  },
+  {
+   "sing_start": 28.54,
+   "sing_end": 30.12,
+   "language": "en",
+   "lyrics": "Takes all your credit cards",
+   "lyrics_timed": [
+    {
+     "word": "Takes",
+     "expected_start": 0.4,
+     "expected_end": 0.58
+    },
+    {
+     "word": "all",
+     "expected_start": 0.45,
+     "expected_end": 0.58
+    },
+    {
+     "word": "your",
+     "expected_start": 0.5,
+     "expected_end": 0.6
+    },
+    {
+     "word": "credit",
+     "expected_start": 0.58,
+     "expected_end": 0.86
+    },
+    {
+     "word": "cards",
+     "expected_start": 0.86,
+     "expected_end": 1.18
+    }
+   ]
+  },
+  {
+   "sing_start": 29.74,
+   "sing_end": 31.86,
+   "language": "en",
+   "lyrics": "Get up get the gunge",
+   "lyrics_timed": [
+    {
+     "word": "Get",
+     "expected_start": 0.05,
+     "expected_end": 0.4
+    },
+    {
+     "word": "up",
+     "expected_start": 0.4,
+     "expected_end": 0.86
+    },
+    {
+     "word": "get",
+     "expected_start": 0.45,
+     "expected_end": 0.86
+    },
+    {
+     "word": "the",
+     "expected_start": 1.28,
+     "expected_end": 1.54
+    },
+    {
+     "word": "gunge",
+     "expected_start": 1.33,
+     "expected_end": 1.54
+    }
+   ]
+  },
+  {
+   "sing_start": 31.48,
+   "sing_end": 32.72,
+   "language": "en",
+   "lyrics": "Get the eggs",
+   "lyrics_timed": [
+    {
+     "word": "Get",
+     "expected_start": 0.34,
+     "expected_end": 0.62
+    },
+    {
+     "word": "the",
+     "expected_start": 0.39,
+     "expected_end": 0.62
+    },
+    {
+     "word": "eggs",
+     "expected_start": 0.62,
+     "expected_end": 0.84
+    }
+   ]
+  },
+  {
+   "sing_start": 32.34,
+   "sing_end": 34.16,
+   "language": "en",
+   "lyrics": "Get the flan in the face",
+   "lyrics_timed": [
+    {
+     "word": "Get",
+     "expected_start": 0.34,
+     "expected_end": 0.64
+    },
+    {
+     "word": "the",
+     "expected_start": 0.39,
+     "expected_end": 0.64
+    },
+    {
+     "word": "flan",
+     "expected_start": 0.44,
+     "expected_end": 0.64
+    },
+    {
+     "word": "in",
+     "expected_start": 0.64,
+     "expected_end": 0.82
+    },
+    {
+     "word": "the",
+     "expected_start": 1.02,
+     "expected_end": 1.28
+    },
+    {
+     "word": "face",
+     "expected_start": 1.28,
+     "expected_end": 1.42
+    }
+   ]
+  },
+  {
+   "sing_start": 33.78,
+   "sing_end": 35.44,
+   "language": "en",
+   "lyrics": "The flan in the face",
+   "lyrics_timed": [
+    {
+     "word": "The",
+     "expected_start": 0.05,
+     "expected_end": 0.5
+    },
+    {
+     "word": "flan",
+     "expected_start": 0.5,
+     "expected_end": 0.72
+    },
+    {
+     "word": "in",
+     "expected_start": 0.72,
+     "expected_end": 0.9
+    },
+    {
+     "word": "the",
+     "expected_start": 0.9,
+     "expected_end": 1.14
+    },
+    {
+     "word": "face",
+     "expected_start": 1.14,
+     "expected_end": 1.26
+    }
+   ]
+  },
+  {
+   "sing_start": 35.08,
+   "sing_end": 36.82,
+   "language": "en",
+   "lyrics": "The flan in the face",
+   "lyrics_timed": [
+    {
+     "word": "The",
+     "expected_start": 0.05,
+     "expected_end": 0.48
+    },
+    {
+     "word": "flan",
+     "expected_start": 0.48,
+     "expected_end": 0.72
+    },
+    {
+     "word": "in",
+     "expected_start": 0.72,
+     "expected_end": 0.92
+    },
+    {
+     "word": "the",
+     "expected_start": 0.92,
+     "expected_end": 1.16
+    },
+    {
+     "word": "face",
+     "expected_start": 1.16,
+     "expected_end": 1.34
+    }
+   ]
+  },
+  {
+   "sing_start": 36.44,
+   "sing_end": 38.76,
+   "language": "en",
+   "lyrics": "Dance you fucker dance you fucker",
+   "lyrics_timed": [
+    {
+     "word": "Dance",
+     "expected_start": 0.05,
+     "expected_end": 0.64
+    },
+    {
+     "word": "you",
+     "expected_start": 0.64,
+     "expected_end": 0.8
+    },
+    {
+     "word": "fucker",
+     "expected_start": 0.8,
+     "expected_end": 1.18
+    },
+    {
+     "word": "dance",
+     "expected_start": 1.18,
+     "expected_end": 1.46
+    },
+    {
+     "word": "you",
+     "expected_start": 1.46,
+     "expected_end": 1.68
+    },
+    {
+     "word": "fucker",
+     "expected_start": 1.68,
+     "expected_end": 1.92
+    }
+   ]
+  },
+  {
+   "sing_start": 38.38,
+   "sing_end": 39.48,
+   "language": "en",
+   "lyrics": "Don't you dare",
+   "lyrics_timed": [
+    {
+     "word": "Don't",
+     "expected_start": 0.05,
+     "expected_end": 0.46
+    },
+    {
+     "word": "you",
+     "expected_start": 0.46,
+     "expected_end": 0.58
+    },
+    {
+     "word": "dare",
+     "expected_start": 0.58,
+     "expected_end": 0.7
+    }
+   ]
+  },
+  {
+   "sing_start": 39.1,
+   "sing_end": 40.34,
+   "language": "en",
+   "lyrics": "Don't you dare",
+   "lyrics_timed": [
+    {
+     "word": "Don't",
+     "expected_start": 0.05,
+     "expected_end": 0.62
+    },
+    {
+     "word": "you",
+     "expected_start": 0.62,
+     "expected_end": 0.78
+    },
+    {
+     "word": "dare",
+     "expected_start": 0.78,
+     "expected_end": 0.88
+    }
+   ]
+  },
+  {
+   "sing_start": 39.96,
+   "sing_end": 42.0,
+   "language": "en",
+   "lyrics": "Don't you flan in the face",
+   "lyrics_timed": [
+    {
+     "word": "Don't",
+     "expected_start": 0.05,
+     "expected_end": 0.58
+    },
+    {
+     "word": "you",
+     "expected_start": 0.58,
+     "expected_end": 0.7
+    },
+    {
+     "word": "flan",
+     "expected_start": 0.7,
+     "expected_end": 0.98
+    },
+    {
+     "word": "in",
+     "expected_start": 0.98,
+     "expected_end": 1.22
+    },
+    {
+     "word": "the",
+     "expected_start": 1.22,
+     "expected_end": 1.46
+    },
+    {
+     "word": "face",
+     "expected_start": 1.46,
+     "expected_end": 1.64
+    }
+   ]
+  },
+  {
+   "sing_start": 41.62,
+   "sing_end": 43.94,
+   "language": "en",
+   "lyrics": "Take it with the love its given",
+   "lyrics_timed": [
+    {
+     "word": "Take",
+     "expected_start": 0.05,
+     "expected_end": 0.62
+    },
+    {
+     "word": "it",
+     "expected_start": 0.62,
+     "expected_end": 0.86
+    },
+    {
+     "word": "with",
+     "expected_start": 0.86,
+     "expected_end": 1.04
+    },
+    {
+     "word": "the",
+     "expected_start": 1.04,
+     "expected_end": 1.28
+    },
+    {
+     "word": "love",
+     "expected_start": 1.28,
+     "expected_end": 1.4
+    },
+    {
+     "word": "its",
+     "expected_start": 1.4,
+     "expected_end": 1.64
+    },
+    {
+     "word": "given",
+     "expected_start": 1.64,
+     "expected_end": 1.92
+    }
+   ]
+  },
+  {
+   "sing_start": 43.56,
+   "sing_end": 45.64,
+   "language": "en",
+   "lyrics": "Take it with a pinch of salt",
+   "lyrics_timed": [
+    {
+     "word": "Take",
+     "expected_start": 0.05,
+     "expected_end": 0.36
+    },
+    {
+     "word": "it",
+     "expected_start": 0.36,
+     "expected_end": 0.62
+    },
+    {
+     "word": "with",
+     "expected_start": 0.62,
+     "expected_end": 0.88
+    },
+    {
+     "word": "a",
+     "expected_start": 0.88,
+     "expected_end": 1.12
+    },
+    {
+     "word": "pinch",
+     "expected_start": 1.12,
+     "expected_end": 1.34
+    },
+    {
+     "word": "of",
+     "expected_start": 1.34,
+     "expected_end": 1.62
+    },
+    {
+     "word": "salt",
+     "expected_start": 1.62,
+     "expected_end": 1.72
+    }
+   ]
+  },
+  {
+   "sing_start": 45.26,
+   "sing_end": 47.08,
+   "language": "en",
+   "lyrics": "Take it to the tax man",
+   "lyrics_timed": [
+    {
+     "word": "Take",
+     "expected_start": 0.05,
+     "expected_end": 0.42
+    },
+    {
+     "word": "it",
+     "expected_start": 0.42,
+     "expected_end": 0.72
+    },
+    {
+     "word": "to",
+     "expected_start": 0.47,
+     "expected_end": 0.72
+    },
+    {
+     "word": "the",
+     "expected_start": 0.9,
+     "expected_end": 1.2
+    },
+    {
+     "word": "tax",
+     "expected_start": 1.2,
+     "expected_end": 1.42
+    },
+    {
+     "word": "man",
+     "expected_start": 1.25,
+     "expected_end": 1.42
+    }
+   ]
+  },
+  {
+   "sing_start": 46.88,
+   "sing_end": 48.2,
+   "language": "en",
+   "lyrics": "Let me back",
+   "lyrics_timed": [
+    {
+     "word": "Let",
+     "expected_start": 0.05,
+     "expected_end": 0.66
+    },
+    {
+     "word": "me",
+     "expected_start": 0.1,
+     "expected_end": 0.66
+    },
+    {
+     "word": "back",
+     "expected_start": 0.66,
+     "expected_end": 0.92
+    }
+   ]
+  },
+  {
+   "sing_start": 47.86,
+   "sing_end": 49.02,
+   "language": "en",
+   "lyrics": "Let me back",
+   "lyrics_timed": [
+    {
+     "word": "Let",
+     "expected_start": 0.05,
+     "expected_end": 0.4
+    },
+    {
+     "word": "me",
+     "expected_start": 0.4,
+     "expected_end": 0.6
+    },
+    {
+     "word": "back",
+     "expected_start": 0.6,
+     "expected_end": 0.76
+    }
+   ]
+  },
+  {
+   "sing_start": 48.64,
+   "sing_end": 50.88,
+   "language": "en",
+   "lyrics": "I promise to be good",
+   "lyrics_timed": [
+    {
+     "word": "I",
+     "expected_start": 0.05,
+     "expected_end": 0.68
+    },
+    {
+     "word": "promise",
+     "expected_start": 0.68,
+     "expected_end": 1.08
+    },
+    {
+     "word": "to",
+     "expected_start": 1.08,
+     "expected_end": 1.42
+    },
+    {
+     "word": "be",
+     "expected_start": 1.42,
+     "expected_end": 1.64
+    },
+    {
+     "word": "good",
+     "expected_start": 1.64,
+     "expected_end": 1.84
+    }
+   ]
+  },
+  {
+   "sing_start": 50.5,
+   "sing_end": 55.12,
+   "language": "en",
+   "lyrics": "Don't look in the mirror at the face you don't recognize",
+   "lyrics_timed": [
+    {
+     "word": "Don't",
+     "expected_start": 0.05,
+     "expected_end": 0.58
+    },
+    {
+     "word": "look",
+     "expected_start": 0.58,
+     "expected_end": 0.96
+    },
+    {
+     "word": "in",
+     "expected_start": 0.96,
+     "expected_end": 1.32
+    },
+    {
+     "word": "the",
+     "expected_start": 1.32,
+     "expected_end": 1.46
+    },
+    {
+     "word": "mirror",
+     "expected_start": 1.46,
+     "expected_end": 1.8
+    },
+    {
+     "word": "at",
+     "expected_start": 1.8,
+     "expected_end": 2.16
+    },
+    {
+     "word": "the",
+     "expected_start": 2.16,
+     "expected_end": 2.42
+    },
+    {
+     "word": "face",
+     "expected_start": 2.42,
+     "expected_end": 2.74
+    },
+    {
+     "word": "you",
+     "expected_start": 2.74,
+     "expected_end": 3.08
+    },
+    {
+     "word": "don't",
+     "expected_start": 3.08,
+     "expected_end": 3.74
+    },
+    {
+     "word": "recognize",
+     "expected_start": 3.74,
+     "expected_end": 4.22
+    }
+   ]
+  },
+  {
+   "sing_start": 54.86,
+   "sing_end": 57.52,
+   "language": "en",
+   "lyrics": "Help me, call the doctor, put me inside",
+   "lyrics_timed": [
+    {
+     "word": "Help",
+     "expected_start": 0.05,
+     "expected_end": 0.28
+    },
+    {
+     "word": "me,",
+     "expected_start": 0.28,
+     "expected_end": 0.52
+    },
+    {
+     "word": "call",
+     "expected_start": 0.8,
+     "expected_end": 0.9
+    },
+    {
+     "word": "the",
+     "expected_start": 0.85,
+     "expected_end": 1.02
+    },
+    {
+     "word": "doctor,",
+     "expected_start": 1.02,
+     "expected_end": 1.24
+    },
+    {
+     "word": "put",
+     "expected_start": 1.46,
+     "expected_end": 1.56
+    },
+    {
+     "word": "me",
+     "expected_start": 1.56,
+     "expected_end": 1.94
+    },
+    {
+     "word": "inside",
+     "expected_start": 1.94,
+     "expected_end": 2.26
+    }
+   ]
+  },
+  {
+   "sing_start": 57.32,
+   "sing_end": 58.94,
+   "language": "en",
+   "lyrics": "Put me inside",
+   "lyrics_timed": [
+    {
+     "word": "Put",
+     "expected_start": 0.4,
+     "expected_end": 0.72
+    },
+    {
+     "word": "me",
+     "expected_start": 0.45,
+     "expected_end": 0.72
+    },
+    {
+     "word": "inside",
+     "expected_start": 0.72,
+     "expected_end": 1.22
+    }
+   ]
+  },
+  {
+   "sing_start": 58.68,
+   "sing_end": 60.08,
+   "language": "en",
+   "lyrics": "Put me inside",
+   "lyrics_timed": [
+    {
+     "word": "Put",
+     "expected_start": 0.36,
+     "expected_end": 0.74
+    },
+    {
+     "word": "me",
+     "expected_start": 0.41,
+     "expected_end": 0.74
+    },
+    {
+     "word": "inside",
+     "expected_start": 0.74,
+     "expected_end": 1.0
+    }
+   ]
+  },
+  {
+   "sing_start": 59.8,
+   "sing_end": 61.16,
+   "language": "en",
+   "lyrics": "Put me inside",
+   "lyrics_timed": [
+    {
+     "word": "Put",
+     "expected_start": 0.05,
+     "expected_end": 0.52
+    },
+    {
+     "word": "me",
+     "expected_start": 0.52,
+     "expected_end": 0.96
+    },
+    {
+     "word": "inside",
+     "expected_start": 0.57,
+     "expected_end": 0.96
+    }
+   ]
+  },
+  {
+   "sing_start": 61.3,
+   "sing_end": 62.66,
+   "language": "en",
+   "lyrics": "Put me inside",
+   "lyrics_timed": [
+    {
+     "word": "Put",
+     "expected_start": 0.05,
+     "expected_end": 0.32
+    },
+    {
+     "word": "me",
+     "expected_start": 0.32,
+     "expected_end": 0.66
+    },
+    {
+     "word": "inside",
+     "expected_start": 0.66,
+     "expected_end": 0.96
+    }
+   ]
+  },
+  {
+   "sing_start": 62.44,
+   "sing_end": 65.38,
+   "language": "en",
+   "lyrics": "I keep the wolf from the door",
+   "lyrics_timed": [
+    {
+     "word": "I",
+     "expected_start": 0.05,
+     "expected_end": 0.72
+    },
+    {
+     "word": "keep",
+     "expected_start": 0.72,
+     "expected_end": 1.2
+    },
+    {
+     "word": "the",
+     "expected_start": 0.77,
+     "expected_end": 1.2
+    },
+    {
+     "word": "wolf",
+     "expected_start": 1.2,
+     "expected_end": 1.64
+    },
+    {
+     "word": "from",
+     "expected_start": 1.64,
+     "expected_end": 2.0
+    },
+    {
+     "word": "the",
+     "expected_start": 2.0,
+     "expected_end": 2.46
+    },
+    {
+     "word": "door",
+     "expected_start": 2.05,
+     "expected_end": 2.46
+    }
+   ]
+  },
+  {
+   "sing_start": 65.72,
+   "sing_end": 67.78,
+   "language": "en",
+   "lyrics": "But he calls me up",
+   "lyrics_timed": [
+    {
+     "word": "But",
+     "expected_start": 0.4,
+     "expected_end": 1.3
+    },
+    {
+     "word": "he",
+     "expected_start": 0.45,
+     "expected_end": 1.3
+    },
+    {
+     "word": "calls",
+     "expected_start": 0.5,
+     "expected_end": 1.3
+    },
+    {
+     "word": "me",
+     "expected_start": 0.55,
+     "expected_end": 1.3
+    },
+    {
+     "word": "up",
+     "expected_start": 1.3,
+     "expected_end": 1.66
+    }
+   ]
+  },
+  {
+   "sing_start": 67.5,
+   "sing_end": 70.34,
+   "language": "en",
+   "lyrics": "Calls me on the phone",
+   "lyrics_timed": [
+    {
+     "word": "Calls",
+     "expected_start": 0.4,
+     "expected_end": 0.8
+    },
+    {
+     "word": "me",
+     "expected_start": 0.45,
+     "expected_end": 0.8
+    },
+    {
+     "word": "on",
+     "expected_start": 1.0,
+     "expected_end": 1.16
+    },
+    {
+     "word": "the",
+     "expected_start": 1.38,
+     "expected_end": 1.62
+    },
+    {
+     "word": "phone",
+     "expected_start": 1.98,
+     "expected_end": 2.36
+    }
+   ]
+  },
+  {
+   "sing_start": 69.96,
+   "sing_end": 73.72,
+   "language": "en",
+   "lyrics": "Tells me all the ways that he's gonna mess me up",
+   "lyrics_timed": [
+    {
+     "word": "Tells",
+     "expected_start": 0.05,
+     "expected_end": 0.15
+    },
+    {
+     "word": "me",
+     "expected_start": 0.1,
+     "expected_end": 0.2
+    },
+    {
+     "word": "all",
+     "expected_start": 0.15,
+     "expected_end": 0.54
+    },
+    {
+     "word": "the",
+     "expected_start": 0.54,
+     "expected_end": 0.64
+    },
+    {
+     "word": "ways",
+     "expected_start": 0.59,
+     "expected_end": 1.02
+    },
+    {
+     "word": "that",
+     "expected_start": 1.02,
+     "expected_end": 1.52
+    },
+    {
+     "word": "he's",
+     "expected_start": 1.52,
+     "expected_end": 1.82
+    },
+    {
+     "word": "gonna",
+     "expected_start": 1.82,
+     "expected_end": 2.24
+    },
+    {
+     "word": "mess",
+     "expected_start": 2.24,
+     "expected_end": 2.66
+    },
+    {
+     "word": "me",
+     "expected_start": 2.66,
+     "expected_end": 3.1
+    },
+    {
+     "word": "up",
+     "expected_start": 3.1,
+     "expected_end": 3.36
+    }
+   ]
+  },
+  {
+   "sing_start": 73.34,
+   "sing_end": 77.4,
+   "language": "en",
+   "lyrics": "Steal all my children if I don't pay the ransom",
+   "lyrics_timed": [
+    {
+     "word": "Steal",
+     "expected_start": 0.05,
+     "expected_end": 0.6
+    },
+    {
+     "word": "all",
+     "expected_start": 0.1,
+     "expected_end": 0.6
+    },
+    {
+     "word": "my",
+     "expected_start": 0.9,
+     "expected_end": 1.0
+    },
+    {
+     "word": "children",
+     "expected_start": 0.98,
+     "expected_end": 1.82
+    },
+    {
+     "word": "if",
+     "expected_start": 1.82,
+     "expected_end": 2.22
+    },
+    {
+     "word": "I",
+     "expected_start": 1.87,
+     "expected_end": 2.22
+    },
+    {
+     "word": "don't",
+     "expected_start": 2.22,
+     "expected_end": 2.5
+    },
+    {
+     "word": "pay",
+     "expected_start": 2.5,
+     "expected_end": 2.98
+    },
+    {
+     "word": "the",
+     "expected_start": 2.98,
+     "expected_end": 3.22
+    },
+    {
+     "word": "ransom",
+     "expected_start": 3.22,
+     "expected_end": 3.48
+    }
+   ]
+  },
+  {
+   "sing_start": 77.9,
+   "sing_end": 82.04,
+   "language": "en",
+   "lyrics": "And I'll never see them again if I squeal to the cops",
+   "lyrics_timed": [
+    {
+     "word": "And",
+     "expected_start": 0.4,
+     "expected_end": 0.94
+    },
+    {
+     "word": "I'll",
+     "expected_start": 0.45,
+     "expected_end": 0.94
+    },
+    {
+     "word": "never",
+     "expected_start": 2.26,
+     "expected_end": 2.58
+    },
+    {
+     "word": "see",
+     "expected_start": 3.58,
+     "expected_end": 4.06
+    },
+    {
+     "word": "them",
+     "expected_start": 3.63,
+     "expected_end": 4.06
+    },
+    {
+     "word": "again",
+     "expected_start": 3.68,
+     "expected_end": 4.06
+    },
+    {
+     "word": "if",
+     "expected_start": 3.73,
+     "expected_end": 4.06
+    },
+    {
+     "word": "I",
+     "expected_start": 3.78,
+     "expected_end": 4.06
+    },
+    {
+     "word": "squeal",
+     "expected_start": 3.83,
+     "expected_end": 4.06
+    },
+    {
+     "word": "to",
+     "expected_start": 3.88,
+     "expected_end": 4.06
+    },
+    {
+     "word": "the",
+     "expected_start": 3.93,
+     "expected_end": 4.06
+    },
+    {
+     "word": "cops",
+     "expected_start": 3.98,
+     "expected_end": 4.08
+    }
+   ]
+  },
+  {
+   "sing_start": 119.2,
+   "sing_end": 121.84,
+   "language": "en",
+   "lyrics": "Walking like giant cranes",
+   "lyrics_timed": [
+    {
+     "word": "Walking",
+     "expected_start": 0.05,
+     "expected_end": 0.92
+    },
+    {
+     "word": "like",
+     "expected_start": 0.92,
+     "expected_end": 1.4
+    },
+    {
+     "word": "giant",
+     "expected_start": 1.4,
+     "expected_end": 1.82
+    },
+    {
+     "word": "cranes",
+     "expected_start": 1.82,
+     "expected_end": 2.24
+    }
+   ]
+  },
+  {
+   "sing_start": 121.46,
+   "sing_end": 124.06,
+   "language": "en",
+   "lyrics": "And with my X-ray eyes I strip you naked",
+   "lyrics_timed": [
+    {
+     "word": "And",
+     "expected_start": 0.4,
+     "expected_end": 0.66
+    },
+    {
+     "word": "with",
+     "expected_start": 0.45,
+     "expected_end": 0.66
+    },
+    {
+     "word": "my",
+     "expected_start": 0.66,
+     "expected_end": 1.04
+    },
+    {
+     "word": "X-ray",
+     "expected_start": 0.71,
+     "expected_end": 1.04
+    },
+    {
+     "word": "eyes",
+     "expected_start": 1.28,
+     "expected_end": 1.52
+    },
+    {
+     "word": "I",
+     "expected_start": 1.52,
+     "expected_end": 1.84
+    },
+    {
+     "word": "strip",
+     "expected_start": 1.84,
+     "expected_end": 2.2
+    },
+    {
+     "word": "you",
+     "expected_start": 1.89,
+     "expected_end": 2.2
+    },
+    {
+     "word": "naked",
+     "expected_start": 1.94,
+     "expected_end": 2.2
+    }
+   ]
+  },
+  {
+   "sing_start": 124.22,
+   "sing_end": 126.64,
+   "language": "en",
+   "lyrics": "In a tight little world",
+   "lyrics_timed": [
+    {
+     "word": "In",
+     "expected_start": 0.4,
+     "expected_end": 1.06
+    },
+    {
+     "word": "a",
+     "expected_start": 0.45,
+     "expected_end": 1.06
+    },
+    {
+     "word": "tight",
+     "expected_start": 1.06,
+     "expected_end": 1.16
+    },
+    {
+     "word": "little",
+     "expected_start": 1.56,
+     "expected_end": 2.02
+    },
+    {
+     "word": "world",
+     "expected_start": 1.61,
+     "expected_end": 2.02
+    }
+   ]
+  },
+  {
+   "sing_start": 126.5,
+   "sing_end": 128.18,
+   "language": "en",
+   "lyrics": "And are you on the list?",
+   "lyrics_timed": [
+    {
+     "word": "And",
+     "expected_start": 0.05,
+     "expected_end": 0.5
+    },
+    {
+     "word": "are",
+     "expected_start": 0.1,
+     "expected_end": 0.5
+    },
+    {
+     "word": "you",
+     "expected_start": 0.68,
+     "expected_end": 0.78
+    },
+    {
+     "word": "on",
+     "expected_start": 0.73,
+     "expected_end": 0.83
+    },
+    {
+     "word": "the",
+     "expected_start": 0.78,
+     "expected_end": 0.9
+    },
+    {
+     "word": "list?",
+     "expected_start": 1.18,
+     "expected_end": 1.28
+    }
+   ]
+  },
+  {
+   "sing_start": 128.0,
+   "sing_end": 130.1,
+   "language": "en",
+   "lyrics": "Stepford wives who are we to complain?",
+   "lyrics_timed": [
+    {
+     "word": "Stepford",
+     "expected_start": 0.4,
+     "expected_end": 0.74
+    },
+    {
+     "word": "wives",
+     "expected_start": 0.45,
+     "expected_end": 0.74
+    },
+    {
+     "word": "who",
+     "expected_start": 0.5,
+     "expected_end": 0.74
+    },
+    {
+     "word": "are",
+     "expected_start": 0.9,
+     "expected_end": 1.12
+    },
+    {
+     "word": "we",
+     "expected_start": 1.28,
+     "expected_end": 1.7
+    },
+    {
+     "word": "to",
+     "expected_start": 1.33,
+     "expected_end": 1.7
+    },
+    {
+     "word": "complain?",
+     "expected_start": 1.38,
+     "expected_end": 1.7
+    }
+   ]
+  },
+  {
+   "sing_start": 130.34,
+   "sing_end": 131.12,
+   "language": "en",
+   "lyrics": "Investments and dealers",
+   "lyrics_timed": [
+    {
+     "word": "Investments",
+     "expected_start": 0.05,
+     "expected_end": 0.3
+    },
+    {
+     "word": "and",
+     "expected_start": 0.26,
+     "expected_end": 0.56
+    },
+    {
+     "word": "dealers",
+     "expected_start": 0.52,
+     "expected_end": 0.78
+    }
+   ]
+  },
+  {
+   "sing_start": 131.12,
+   "sing_end": 132.58,
+   "language": "en",
+   "lyrics": "Investments and dealers",
+   "lyrics_timed": [
+    {
+     "word": "Investments",
+     "expected_start": 0.05,
+     "expected_end": 0.4
+    },
+    {
+     "word": "and",
+     "expected_start": 0.4,
+     "expected_end": 0.78
+    },
+    {
+     "word": "dealers",
+     "expected_start": 0.78,
+     "expected_end": 1.06
+    }
+   ]
+  },
+  {
+   "sing_start": 132.48,
+   "sing_end": 133.22,
+   "language": "en",
+   "lyrics": "Cold wives and mistresses",
+   "lyrics_timed": [
+    {
+     "word": "Cold",
+     "expected_start": 0.05,
+     "expected_end": 0.3
+    },
+    {
+     "word": "wives",
+     "expected_start": 0.185,
+     "expected_end": 0.485
+    },
+    {
+     "word": "and",
+     "expected_start": 0.37,
+     "expected_end": 0.67
+    },
+    {
+     "word": "mistresses",
+     "expected_start": 0.555,
+     "expected_end": 0.74
+    }
+   ]
+  },
+  {
+   "sing_start": 133.28,
+   "sing_end": 137.76,
+   "language": "en",
+   "lyrics": "Cold wives and Sunday papers city",
+   "lyrics_timed": [
+    {
+     "word": "Cold",
+     "expected_start": 0.4,
+     "expected_end": 1.06
+    },
+    {
+     "word": "wives",
+     "expected_start": 0.45,
+     "expected_end": 1.06
+    },
+    {
+     "word": "and",
+     "expected_start": 1.56,
+     "expected_end": 1.8
+    },
+    {
+     "word": "Sunday",
+     "expected_start": 1.8,
+     "expected_end": 2.12
+    },
+    {
+     "word": "papers",
+     "expected_start": 3.24,
+     "expected_end": 3.88
+    },
+    {
+     "word": "city",
+     "expected_start": 3.29,
+     "expected_end": 3.88
+    }
+   ]
+  },
+  {
+   "sing_start": 137.54,
+   "sing_end": 141.1,
+   "language": "en",
+   "lyrics": "Boys in first class don't know we're born just know",
+   "lyrics_timed": [
+    {
+     "word": "Boys",
+     "expected_start": 0.05,
+     "expected_end": 0.15
+    },
+    {
+     "word": "in",
+     "expected_start": 0.26,
+     "expected_end": 0.72
+    },
+    {
+     "word": "first",
+     "expected_start": 0.72,
+     "expected_end": 1.3
+    },
+    {
+     "word": "class",
+     "expected_start": 0.77,
+     "expected_end": 1.3
+    },
+    {
+     "word": "don't",
+     "expected_start": 1.3,
+     "expected_end": 1.5
+    },
+    {
+     "word": "know",
+     "expected_start": 1.5,
+     "expected_end": 1.92
+    },
+    {
+     "word": "we're",
+     "expected_start": 2.06,
+     "expected_end": 2.44
+    },
+    {
+     "word": "born",
+     "expected_start": 2.11,
+     "expected_end": 2.44
+    },
+    {
+     "word": "just",
+     "expected_start": 2.44,
+     "expected_end": 2.68
+    },
+    {
+     "word": "know",
+     "expected_start": 3.04,
+     "expected_end": 3.16
+    }
+   ]
+  },
+  {
+   "sing_start": 140.72,
+   "sing_end": 143.56,
+   "language": "en",
+   "lyrics": "Someone else is gonna come and clean it up",
+   "lyrics_timed": [
+    {
+     "word": "Someone",
+     "expected_start": 0.2,
+     "expected_end": 0.44
+    },
+    {
+     "word": "else",
+     "expected_start": 0.44,
+     "expected_end": 0.7
+    },
+    {
+     "word": "is",
+     "expected_start": 0.7,
+     "expected_end": 1.02
+    },
+    {
+     "word": "gonna",
+     "expected_start": 1.02,
+     "expected_end": 1.34
+    },
+    {
+     "word": "come",
+     "expected_start": 1.34,
+     "expected_end": 1.6
+    },
+    {
+     "word": "and",
+     "expected_start": 1.6,
+     "expected_end": 1.8
+    },
+    {
+     "word": "clean",
+     "expected_start": 2.02,
+     "expected_end": 2.44
+    },
+    {
+     "word": "it",
+     "expected_start": 2.07,
+     "expected_end": 2.44
+    },
+    {
+     "word": "up",
+     "expected_start": 2.12,
+     "expected_end": 2.44
+    }
+   ]
+  },
+  {
+   "sing_start": 143.64,
+   "sing_end": 145.1,
+   "language": "en",
+   "lyrics": "Born and raised for the job",
+   "lyrics_timed": [
+    {
+     "word": "Born",
+     "expected_start": 0.05,
+     "expected_end": 0.3
+    },
+    {
+     "word": "and",
+     "expected_start": 0.243,
+     "expected_end": 0.543
+    },
+    {
+     "word": "raised",
+     "expected_start": 0.487,
+     "expected_end": 0.787
+    },
+    {
+     "word": "for",
+     "expected_start": 0.73,
+     "expected_end": 1.03
+    },
+    {
+     "word": "the",
+     "expected_start": 0.973,
+     "expected_end": 1.273
+    },
+    {
+     "word": "job",
+     "expected_start": 1.217,
+     "expected_end": 1.46
+    }
+   ]
+  },
+  {
+   "sing_start": 145.1,
+   "sing_end": 146.84,
+   "language": "en",
+   "lyrics": "Someone always does",
+   "lyrics_timed": [
+    {
+     "word": "Someone",
+     "expected_start": 0.4,
+     "expected_end": 0.56
+    },
+    {
+     "word": "always",
+     "expected_start": 0.56,
+     "expected_end": 1.02
+    },
+    {
+     "word": "does",
+     "expected_start": 1.02,
+     "expected_end": 1.34
+    }
+   ]
+  },
+  {
+   "sing_start": 146.6,
+   "sing_end": 148.3,
+   "language": "en",
+   "lyrics": "I wish you'd get up get over",
+   "lyrics_timed": [
+    {
+     "word": "I",
+     "expected_start": 0.4,
+     "expected_end": 0.5
+    },
+    {
+     "word": "wish",
+     "expected_start": 0.45,
+     "expected_end": 0.55
+    },
+    {
+     "word": "you'd",
+     "expected_start": 0.5,
+     "expected_end": 0.6
+    },
+    {
+     "word": "get",
+     "expected_start": 0.7,
+     "expected_end": 0.92
+    },
+    {
+     "word": "up",
+     "expected_start": 0.92,
+     "expected_end": 1.14
+    },
+    {
+     "word": "get",
+     "expected_start": 1.14,
+     "expected_end": 1.3
+    },
+    {
+     "word": "over",
+     "expected_start": 1.19,
+     "expected_end": 1.3
+    }
+   ]
+  },
+  {
+   "sing_start": 148.4,
+   "sing_end": 151.04,
+   "language": "en",
+   "lyrics": "Get up get over and turn the tape off",
+   "lyrics_timed": [
+    {
+     "word": "Get",
+     "expected_start": 0.4,
+     "expected_end": 0.5
+    },
+    {
+     "word": "up",
+     "expected_start": 0.45,
+     "expected_end": 0.55
+    },
+    {
+     "word": "get",
+     "expected_start": 0.66,
+     "expected_end": 1.08
+    },
+    {
+     "word": "over",
+     "expected_start": 0.71,
+     "expected_end": 1.08
+    },
+    {
+     "word": "and",
+     "expected_start": 1.54,
+     "expected_end": 1.64
+    },
+    {
+     "word": "turn",
+     "expected_start": 1.59,
+     "expected_end": 1.69
+    },
+    {
+     "word": "the",
+     "expected_start": 1.84,
+     "expected_end": 2.24
+    },
+    {
+     "word": "tape",
+     "expected_start": 1.89,
+     "expected_end": 2.24
+    },
+    {
+     "word": "off",
+     "expected_start": 1.94,
+     "expected_end": 2.24
+    }
+   ]
+  },
+  {
+   "sing_start": 151.42,
+   "sing_end": 152.56,
+   "language": "en",
+   "lyrics": "I keep the wolf from the door",
+   "lyrics_timed": [
+    {
+     "word": "I",
+     "expected_start": 0.3,
+     "expected_end": 0.74
+    },
+    {
+     "word": "keep",
+     "expected_start": 0.35,
+     "expected_end": 0.74
+    },
+    {
+     "word": "the",
+     "expected_start": 0.4,
+     "expected_end": 0.74
+    },
+    {
+     "word": "wolf",
+     "expected_start": 0.45,
+     "expected_end": 0.74
+    },
+    {
+     "word": "from",
+     "expected_start": 0.5,
+     "expected_end": 0.74
+    },
+    {
+     "word": "the",
+     "expected_start": 0.55,
+     "expected_end": 0.74
+    },
+    {
+     "word": "door",
+     "expected_start": 0.6,
+     "expected_end": 0.74
+    }
+   ]
+  },
+  {
+   "sing_start": 153.33,
+   "sing_end": 156.21,
+   "language": "en",
+   "lyrics": "But he calls me up",
+   "lyrics_timed": [
+    {
+     "word": "But",
+     "expected_start": 0.4,
+     "expected_end": 0.9
+    },
+    {
+     "word": "he",
+     "expected_start": 0.45,
+     "expected_end": 0.9
+    },
+    {
+     "word": "calls",
+     "expected_start": 0.9,
+     "expected_end": 1.78
+    },
+    {
+     "word": "me",
+     "expected_start": 1.78,
+     "expected_end": 2.28
+    },
+    {
+     "word": "up",
+     "expected_start": 2.28,
+     "expected_end": 2.48
+    }
+   ]
+  },
+  {
+   "sing_start": 155.99,
+   "sing_end": 157.65,
+   "language": "en",
+   "lyrics": "Calls me on the phone",
+   "lyrics_timed": [
+    {
+     "word": "Calls",
+     "expected_start": 0.05,
+     "expected_end": 0.46
+    },
+    {
+     "word": "me",
+     "expected_start": 0.46,
+     "expected_end": 0.7
+    },
+    {
+     "word": "on",
+     "expected_start": 0.7,
+     "expected_end": 0.9
+    },
+    {
+     "word": "the",
+     "expected_start": 0.9,
+     "expected_end": 1.08
+    },
+    {
+     "word": "phone",
+     "expected_start": 1.08,
+     "expected_end": 1.26
+    }
+   ]
+  },
+  {
+   "sing_start": 157.28,
+   "sing_end": 161.24,
+   "language": "en",
+   "lyrics": "Tells me all the ways that he's gonna mess me up",
+   "lyrics_timed": [
+    {
+     "word": "Tells",
+     "expected_start": 0.05,
+     "expected_end": 0.52
+    },
+    {
+     "word": "me",
+     "expected_start": 0.52,
+     "expected_end": 0.76
+    },
+    {
+     "word": "all",
+     "expected_start": 0.76,
+     "expected_end": 0.9
+    },
+    {
+     "word": "the",
+     "expected_start": 0.9,
+     "expected_end": 1.14
+    },
+    {
+     "word": "ways",
+     "expected_start": 1.14,
+     "expected_end": 1.42
+    },
+    {
+     "word": "that",
+     "expected_start": 1.42,
+     "expected_end": 1.76
+    },
+    {
+     "word": "he's",
+     "expected_start": 1.76,
+     "expected_end": 2.14
+    },
+    {
+     "word": "gonna",
+     "expected_start": 2.14,
+     "expected_end": 2.62
+    },
+    {
+     "word": "mess",
+     "expected_start": 2.62,
+     "expected_end": 3.06
+    },
+    {
+     "word": "me",
+     "expected_start": 3.06,
+     "expected_end": 3.44
+    },
+    {
+     "word": "up",
+     "expected_start": 3.44,
+     "expected_end": 3.56
+    }
+   ]
+  },
+  {
+   "sing_start": 160.87,
+   "sing_end": 166.15,
+   "language": "en",
+   "lyrics": "Steal all my children if I don't pay the ransom",
+   "lyrics_timed": [
+    {
+     "word": "Steal",
+     "expected_start": 0.05,
+     "expected_end": 1.16
+    },
+    {
+     "word": "all",
+     "expected_start": 0.1,
+     "expected_end": 1.16
+    },
+    {
+     "word": "my",
+     "expected_start": 1.16,
+     "expected_end": 1.3
+    },
+    {
+     "word": "children",
+     "expected_start": 1.56,
+     "expected_end": 2.52
+    },
+    {
+     "word": "if",
+     "expected_start": 2.52,
+     "expected_end": 2.88
+    },
+    {
+     "word": "I",
+     "expected_start": 2.88,
+     "expected_end": 3.16
+    },
+    {
+     "word": "don't",
+     "expected_start": 3.16,
+     "expected_end": 3.74
+    },
+    {
+     "word": "pay",
+     "expected_start": 4.22,
+     "expected_end": 4.88
+    },
+    {
+     "word": "the",
+     "expected_start": 4.27,
+     "expected_end": 4.88
+    },
+    {
+     "word": "ransom",
+     "expected_start": 4.32,
+     "expected_end": 4.88
+    }
+   ]
+  },
+  {
+   "sing_start": 166.73,
+   "sing_end": 170.37,
+   "language": "en",
+   "lyrics": "And I'll never see them again if I squeal to the cops",
+   "lyrics_timed": [
+    {
+     "word": "And",
+     "expected_start": 0.4,
+     "expected_end": 0.7
+    },
+    {
+     "word": "I'll",
+     "expected_start": 0.45,
+     "expected_end": 0.7
+    },
+    {
+     "word": "never",
+     "expected_start": 0.5,
+     "expected_end": 0.7
+    },
+    {
+     "word": "see",
+     "expected_start": 0.7,
+     "expected_end": 0.8
+    },
+    {
+     "word": "them",
+     "expected_start": 1.22,
+     "expected_end": 1.6
+    },
+    {
+     "word": "again",
+     "expected_start": 1.6,
+     "expected_end": 1.94
+    },
+    {
+     "word": "if",
+     "expected_start": 1.94,
+     "expected_end": 2.26
+    },
+    {
+     "word": "I",
+     "expected_start": 2.26,
+     "expected_end": 2.66
+    },
+    {
+     "word": "squeal",
+     "expected_start": 2.92,
+     "expected_end": 3.24
+    },
+    {
+     "word": "to",
+     "expected_start": 2.97,
+     "expected_end": 3.24
+    },
+    {
+     "word": "the",
+     "expected_start": 3.02,
+     "expected_end": 3.24
+    },
+    {
+     "word": "cops",
+     "expected_start": 3.07,
+     "expected_end": 3.24
+    }
+   ]
+  },
+  {
+   "sing_start": 170.81,
+   "sing_end": 172.07,
+   "language": "en",
+   "lyrics": "So I'm just gonna",
+   "lyrics_timed": [
+    {
+     "word": "So",
+     "expected_start": 0.05,
+     "expected_end": 0.3
+    },
+    {
+     "word": "I'm",
+     "expected_start": 0.54,
+     "expected_end": 0.86
+    },
+    {
+     "word": "just",
+     "expected_start": 0.59,
+     "expected_end": 0.86
+    },
+    {
+     "word": "gonna",
+     "expected_start": 0.64,
+     "expected_end": 0.86
+    }
+   ]
+  }
+ ],
+ "results": [
+  {
+   "segment": 0,
+   "live_score": 98.2,
+   "words": [
+    {
+     "word": "Drag",
+     "start": 0.42,
+     "end": 0.98,
+     "probability": 0.012
+    },
+    {
+     "word": "him",
+     "start": 0.98,
+     "end": 1.26,
+     "probability": 0.007
+    },
+    {
+     "word": "out",
+     "start": 1.26,
+     "end": 1.54,
+     "probability": 0.91
+    },
+    {
+     "word": "your",
+     "start": 1.54,
+     "end": 1.7,
+     "probability": 0.903
+    },
+    {
+     "word": "window",
+     "start": 1.7,
+     "end": 1.88,
+     "probability": 0.561
+    }
+   ]
+  },
+  {
+   "segment": 1,
+   "live_score": 12.5,
+   "words": [
+    {
+     "word": "I",
+     "start": 0.38,
+     "end": 0.64,
+     "probability": 0.122
+    },
+    {
+     "word": "miss",
+     "start": 0.64,
+     "end": 1.06,
+     "probability": 0.664
+    },
+    {
+     "word": "your",
+     "start": 1.06,
+     "end": 1.26,
+     "probability": 0.17
+    },
+    {
+     "word": "snake",
+     "start": 1.26,
+     "end": 1.46,
+     "probability": 0.869
+    }
+   ]
+  },
+  {
+   "segment": 3,
+   "live_score": 100.0,
+   "words": [
+    {
+     "word": "Snakes",
+     "start": 0.56,
+     "end": 1.08,
+     "probability": 0.064
+    },
+    {
+     "word": "and",
+     "start": 1.08,
+     "end": 1.32,
+     "probability": 0.777
+    },
+    {
+     "word": "ladders",
+     "start": 1.32,
+     "end": 1.8,
+     "probability": 0.306
+    },
+    {
+     "word": "flip",
+     "start": 1.8,
+     "end": 2.02,
+     "probability": 0.299
+    },
+    {
+     "word": "the",
+     "start": 2.02,
+     "end": 2.1,
+     "probability": 0.004
+    },
+    {
+     "word": "lid",
+     "start": 2.1,
+     "end": 2.1,
+     "probability": 0.002
+    }
+   ]
+  },
+  {
+   "segment": 4,
+   "live_score": 50.0,
+   "words": [
+    {
+     "word": "the",
+     "start": 0.24,
+     "end": 0.5,
+     "probability": 0.314
+    },
+    {
+     "word": "lid",
+     "start": 0.5,
+     "end": 0.74,
+     "probability": 0.752
+    },
+    {
+     "word": "I'll",
+     "start": 0.74,
+     "end": 1.28,
+     "probability": 0.615
+    },
+    {
+     "word": "pop",
+     "start": 1.28,
+     "end": 1.46,
+     "probability": 0.973
+    },
+    {
+     "word": "the",
+     "start": 1.46,
+     "end": 1.6,
+     "probability": 0.333
+    }
+   ]
+  },
+  {
+   "segment": 5,
+   "live_score": 0.0,
+   "words": [
+    {
+     "word": "Crackers",
+     "start": 0.28,
+     "end": 0.78,
+     "probability": 0.718
+    },
+    {
+     "word": "magazine",
+     "start": 0.78,
+     "end": 1.18,
+     "probability": 0.68
+    }
+   ]
+  },
+  {
+   "segment": 6,
+   "live_score": 100.0,
+   "words": [
+    {
+     "word": "Knives",
+     "start": 0.84,
+     "end": 1.28,
+     "probability": 0.208
+    },
+    {
+     "word": "you",
+     "start": 1.28,
+     "end": 1.3,
+     "probability": 0.001
+    },
+    {
+     "word": "in",
+     "start": 1.3,
+     "end": 1.52,
+     "probability": 0.289
+    },
+    {
+     "word": "the",
+     "start": 1.52,
+     "end": 1.52,
+     "probability": 0.887
+    },
+    {
+     "word": "neck",
+     "start": 1.52,
+     "end": 1.52,
+     "probability": 0.011
+    }
+   ]
+  },
+  {
+   "segment": 7,
+   "live_score": 81.4,
+   "words": [
+    {
+     "word": "Kicks",
+     "start": 1.1,
+     "end": 1.38,
+     "probability": 0.452
+    },
+    {
+     "word": "you",
+     "start": 1.38,
+     "end": 1.5,
+     "probability": 0.001
+    },
+    {
+     "word": "in",
+     "start": 1.5,
+     "end": 1.66,
+     "probability": 0.271
+    },
+    {
+     "word": "the",
+     "start": 1.66,
+     "end": 1.72,
+     "probability": 0.958
+    },
+    {
+     "word": "teeth",
+     "start": 1.72,
+     "end": 1.72,
+     "probability": 0.0
+    }
+   ]
+  },
+  {
+   "segment": 8,
+   "live_score": 39.0,
+   "words": [
+    {
+     "word": "It",
+     "start": 0.38,
+     "end": 0.6,
+     "probability": 0.351
+    },
+    {
+     "word": "is",
+     "start": 0.6,
+     "end": 0.86,
+     "probability": 0.937
+    },
+    {
+     "word": "still",
+     "start": 0.86,
+     "end": 1.24,
+     "probability": 0.46
+    },
+    {
+     "word": "to",
+     "start": 1.24,
+     "end": 1.54,
+     "probability": 0.325
+    },
+    {
+     "word": "get",
+     "start": 1.54,
+     "end": 1.82,
+     "probability": 0.107
+    }
+   ]
+  },
+  {
+   "segment": 9,
+   "live_score": 80.0,
+   "words": [
+    {
+     "word": "Takes",
+     "start": 0.0,
+     "end": 0.66,
+     "probability": 0.018
+    },
+    {
+     "word": "an",
+     "start": 0.66,
+     "end": 0.82,
+     "probability": 0.422
+    },
+    {
+     "word": "hour",
+     "start": 0.82,
+     "end": 1.08,
+     "probability": 0.898
+    },
+    {
+     "word": "credit",
+     "start": 1.08,
+     "end": 1.42,
+     "probability": 0.174
+    }
+   ]
+  },
+  {
+   "segment": 10,
+   "live_score": 100.0,
+   "words": [
+    {
+     "word": "Get",
+     "start": 0.38,
+     "end": 1.02,
+     "probability": 0.005
+    },
+    {
+     "word": "up",
+     "start": 1.02,
+     "end": 1.22,
+     "probability": 0.394
+    },
+    {
+     "word": "get",
+     "start": 1.22,
+     "end": 1.36,
+     "probability": 0.003
+    },
+    {
+     "word": "the",
+     "start": 1.36,
+     "end": 1.72,
+     "probability": 0.149
+    },
+    {
+     "word": "gunge",
+     "start": 1.72,
+     "end": 1.98,
+     "probability": 0.391
+    }
+   ]
+  },
+  {
+   "segment": 11,
+   "live_score": 33.3,
+   "words": [
+    {
+     "word": "Get",
+     "start": 0.38,
+     "end": 0.74,
+     "probability": 0.081
+    },
+    {
+     "word": "the",
+     "start": 0.74,
+     "end": 0.86,
+     "probability": 0.645
+    },
+    {
+     "word": "eggs",
+     "start": 0.86,
+     "end": 1.22,
+     "probability": 0.009
+    }
+   ]
+  },
+  {
+   "segment": 12,
+   "live_score": 73.8,
+   "words": [
+    {
+     "word": "Get",
+     "start": 0.38,
+     "end": 0.64,
+     "probability": 0.363
+    },
+    {
+     "word": "the",
+     "start": 0.64,
+     "end": 0.84,
+     "probability": 0.95
+    },
+    {
+     "word": "flan",
+     "start": 0.84,
+     "end": 1.16,
+     "probability": 0.403
+    },
+    {
+     "word": "in",
+     "start": 1.16,
+     "end": 1.3,
+     "probability": 0.176
+    },
+    {
+     "word": "the",
+     "start": 1.3,
+     "end": 1.44,
+     "probability": 0.806
+    },
+    {
+     "word": "face",
+     "start": 1.44,
+     "end": 1.76,
+     "probability": 0.985
+    }
+   ]
+  },
+  {
+   "segment": 13,
+   "live_score": 95.8,
+   "words": [
+    {
+     "word": "The",
+     "start": 0.38,
+     "end": 0.72,
+     "probability": 0.433
+    },
+    {
+     "word": "flan",
+     "start": 0.72,
+     "end": 1.02,
+     "probability": 0.251
+    },
+    {
+     "word": "in",
+     "start": 1.02,
+     "end": 1.18,
+     "probability": 0.955
+    },
+    {
+     "word": "the",
+     "start": 1.18,
+     "end": 1.34,
+     "probability": 0.793
+    },
+    {
+     "word": "face",
+     "start": 1.34,
+     "end": 1.58,
+     "probability": 0.874
+    }
+   ]
+  },
+  {
+   "segment": 14,
+   "live_score": 95.3,
+   "words": [
+    {
+     "word": "The",
+     "start": 0.36,
+     "end": 0.66,
+     "probability": 0.012
+    },
+    {
+     "word": "flan",
+     "start": 0.66,
+     "end": 1.0,
+     "probability": 0.361
+    },
+    {
+     "word": "in",
+     "start": 1.0,
+     "end": 1.16,
+     "probability": 0.955
+    },
+    {
+     "word": "the",
+     "start": 1.16,
+     "end": 1.32,
+     "probability": 0.954
+    },
+    {
+     "word": "face",
+     "start": 1.32,
+     "end": 1.64,
+     "probability": 0.973
+    }
+   ]
+  },
+  {
+   "segment": 15,
+   "live_score": 97.2,
+   "words": [
+    {
+     "word": "Dance",
+     "start": 0.38,
+     "end": 0.92,
+     "probability": 0.857
+    },
+    {
+     "word": "you",
+     "start": 0.92,
+     "end": 1.04,
+     "probability": 0.748
+    },
+    {
+     "word": "fucker",
+     "start": 1.04,
+     "end": 1.48,
+     "probability": 0.888
+    },
+    {
+     "word": "dance",
+     "start": 1.48,
+     "end": 1.68,
+     "probability": 0.072
+    },
+    {
+     "word": "you",
+     "start": 1.68,
+     "end": 1.88,
+     "probability": 0.99
+    },
+    {
+     "word": "fucker",
+     "start": 1.88,
+     "end": 2.3,
+     "probability": 0.996
+    }
+   ]
+  },
+  {
+   "segment": 16,
+   "live_score": 100.0,
+   "words": [
+    {
+     "word": "Don't",
+     "start": 0.38,
+     "end": 0.76,
+     "probability": 0.78
+    },
+    {
+     "word": "you",
+     "start": 0.76,
+     "end": 0.8,
+     "probability": 0.524
+    },
+    {
+     "word": "dare",
+     "start": 0.8,
+     "end": 1.0,
+     "probability": 0.867
+    }
+   ]
+  },
+  {
+   "segment": 17,
+   "live_score": 100.0,
+   "words": [
+    {
+     "word": "Don't",
+     "start": 0.38,
+     "end": 0.86,
+     "probability": 0.934
+    },
+    {
+     "word": "you",
+     "start": 0.86,
+     "end": 0.98,
+     "probability": 0.952
+    },
+    {
+     "word": "dare",
+     "start": 0.98,
+     "end": 1.16,
+     "probability": 0.961
+    }
+   ]
+  },
+  {
+   "segment": 18,
+   "live_score": 66.7,
+   "words": [
+    {
+     "word": "Don't",
+     "start": 0.38,
+     "end": 0.86,
+     "probability": 0.933
+    },
+    {
+     "word": "you",
+     "start": 0.86,
+     "end": 0.94,
+     "probability": 0.922
+    },
+    {
+     "word": "flan",
+     "start": 0.94,
+     "end": 1.3,
+     "probability": 0.17
+    },
+    {
+     "word": "in",
+     "start": 1.3,
+     "end": 1.44,
+     "probability": 0.957
+    },
+    {
+     "word": "the",
+     "start": 1.44,
+     "end": 1.56,
+     "probability": 0.957
+    },
+    {
+     "word": "face",
+     "start": 1.56,
+     "end": 1.96,
+     "probability": 0.981
+    }
+   ]
+  },
+  {
+   "segment": 19,
+   "live_score": 100.0,
+   "words": [
+    {
+     "word": "Take",
+     "start": 0.38,
+     "end": 0.9,
+     "probability": 0.923
+    },
+    {
+     "word": "it",
+     "start": 0.9,
+     "end": 1.04,
+     "probability": 0.945
+    },
+    {
+     "word": "with",
+     "start": 1.04,
+     "end": 1.28,
+     "probability": 0.983
+    },
+    {
+     "word": "the",
+     "start": 1.28,
+     "end": 1.44,
+     "probability": 0.995
+    },
+    {
+     "word": "love",
+     "start": 1.44,
+     "end": 1.78,
+     "probability": 0.998
+    },
+    {
+     "word": "its",
+     "start": 1.78,
+     "end": 1.9,
+     "probability": 0.008
+    },
+    {
+     "word": "given",
+     "start": 1.9,
+     "end": 2.22,
+     "probability": 0.578
+    }
+   ]
+  },
+  {
+   "segment": 20,
+   "live_score": 64.8,
+   "words": [
+    {
+     "word": "Take",
+     "start": 0.38,
+     "end": 0.74,
+     "probability": 0.274
+    },
+    {
+     "word": "it",
+     "start": 0.74,
+     "end": 0.88,
+     "probability": 0.455
+    },
+    {
+     "word": "with",
+     "start": 0.88,
+     "end": 1.14,
+     "probability": 0.848
+    },
+    {
+     "word": "a",
+     "start": 1.14,
+     "end": 1.34,
+     "probability": 0.939
+    },
+    {
+     "word": "pinch",
+     "start": 1.34,
+     "end": 1.58,
+     "probability": 0.896
+    },
+    {
+     "word": "of",
+     "start": 1.58,
+     "end": 1.74,
+     "probability": 0.626
+    },
+    {
+     "word": "salt",
+     "start": 1.74,
+     "end": 2.0,
+     "probability": 0.935
+    }
+   ]
+  },
+  {
+   "segment": 21,
+   "live_score": 60.9,
+   "words": [
+    {
+     "word": "Take",
+     "start": 0.38,
+     "end": 0.84,
+     "probability": 0.5
+    },
+    {
+     "word": "it",
+     "start": 0.84,
+     "end": 1.18,
+     "probability": 0.818
+    },
+    {
+     "word": "to",
+     "start": 1.18,
+     "end": 1.34,
+     "probability": 0.939
+    },
+    {
+     "word": "the",
+     "start": 1.34,
+     "end": 1.52,
+     "probability": 0.026
+    },
+    {
+     "word": "tax",
+     "start": 1.52,
+     "end": 1.72,
+     "probability": 0.002
+    },
+    {
+     "word": "man",
+     "start": 1.72,
+     "end": 1.8,
+     "probability": 0.017
+    }
+   ]
+  },
+  {
+   "segment": 22,
+   "live_score": 100.0,
+   "words": [
+    {
+     "word": "Let",
+     "start": 0.2,
+     "end": 0.78,
+     "probability": 0.521
+    },
+    {
+     "word": "me",
+     "start": 0.78,
+     "end": 1.0,
+     "probability": 0.978
+    },
+    {
+     "word": "back",
+     "start": 1.0,
+     "end": 1.28,
+     "probability": 0.737
+    }
+   ]
+  },
+  {
+   "segment": 23,
+   "live_score": 100.0,
+   "words": [
+    {
+     "word": "Let",
+     "start": 0.34,
+     "end": 0.7,
+     "probability": 0.462
+    },
+    {
+     "word": "me",
+     "start": 0.7,
+     "end": 0.92,
+     "probability": 0.963
+    },
+    {
+     "word": "back",
+     "start": 0.92,
+     "end": 1.14,
+     "probability": 0.733
+    }
+   ]
+  },
+  {
+   "segment": 24,
+   "live_score": 97.6,
+   "words": [
+    {
+     "word": "I",
+     "start": 0.38,
+     "end": 0.84,
+     "probability": 0.868
+    },
+    {
+     "word": "promise",
+     "start": 0.84,
+     "end": 1.42,
+     "probability": 0.938
+    },
+    {
+     "word": "to",
+     "start": 1.42,
+     "end": 1.62,
+     "probability": 0.942
+    },
+    {
+     "word": "be",
+     "start": 1.62,
+     "end": 1.86,
+     "probability": 0.988
+    },
+    {
+     "word": "good",
+     "start": 1.86,
+     "end": 2.14,
+     "probability": 0.983
+    }
+   ]
+  },
+  {
+   "segment": 25,
+   "live_score": 97.8,
+   "words": [
+    {
+     "word": "Don't",
+     "start": 0.38,
+     "end": 0.78,
+     "probability": 0.665
+    },
+    {
+     "word": "look",
+     "start": 0.78,
+     "end": 1.16,
+     "probability": 0.978
+    },
+    {
+     "word": "in",
+     "start": 1.16,
+     "end": 1.54,
+     "probability": 0.898
+    },
+    {
+     "word": "the",
+     "start": 1.54,
+     "end": 1.68,
+     "probability": 0.993
+    },
+    {
+     "word": "mirror",
+     "start": 1.68,
+     "end": 2.04,
+     "probability": 0.995
+    },
+    {
+     "word": "at",
+     "start": 2.04,
+     "end": 2.44,
+     "probability": 0.865
+    },
+    {
+     "word": "the",
+     "start": 2.44,
+     "end": 2.52,
+     "probability": 0.001
+    },
+    {
+     "word": "face",
+     "start": 2.52,
+     "end": 3.0,
+     "probability": 0.987
+    },
+    {
+     "word": "you",
+     "start": 3.0,
+     "end": 3.18,
+     "probability": 0.304
+    },
+    {
+     "word": "don't",
+     "start": 3.18,
+     "end": 3.84,
+     "probability": 0.918
+    },
+    {
+     "word": "recognize",
+     "start": 3.84,
+     "end": 4.24,
+     "probability": 0.902
+    }
+   ]
+  },
+  {
+   "segment": 26,
+   "live_score": 100.0,
+   "words": [
+    {
+     "word": "Help",
+     "start": 0.26,
+     "end": 0.6,
+     "probability": 0.467
+    },
+    {
+     "word": "me,",
+     "start": 0.6,
+     "end": 0.78,
+     "probability": 0.982
+    },
+    {
+     "word": "call",
+     "start": 0.82,
+     "end": 1.0,
+     "probability": 0.887
+    },
+    {
+     "word": "me,",
+     "start": 1.0,
+     "end": 1.16,
+     "probability": 0.994
+    },
+    {
+     "word": "doctor,",
+     "start": 1.28,
+     "end": 1.54,
+     "probability": 0.877
+    },
+    {
+     "word": "put",
+     "start": 1.54,
+     "end": 1.86,
+     "probability": 0.958
+    },
+    {
+     "word": "me",
+     "start": 1.86,
+     "end": 2.08,
+     "probability": 1.0
+    },
+    {
+     "word": "inside",
+     "start": 2.08,
+     "end": 2.4,
+     "probability": 0.968
+    }
+   ]
+  },
+  {
+   "segment": 27,
+   "live_score": 0.0,
+   "words": [
+    {
+     "word": "Put",
+     "start": 0.2,
+     "end": 0.7,
+     "probability": 0.205
+    },
+    {
+     "word": "me",
+     "start": 0.7,
+     "end": 0.98,
+     "probability": 0.955
+    },
+    {
+     "word": "inside",
+     "start": 0.98,
+     "end": 1.34,
+     "probability": 0.962
+    }
+   ]
+  },
+  {
+   "segment": 28,
+   "live_score": 100.0,
+   "words": [
+    {
+     "word": "Put",
+     "start": 0.26,
+     "end": 0.52,
+     "probability": 0.001
+    },
+    {
+     "word": "me",
+     "start": 0.52,
+     "end": 0.88,
+     "probability": 0.2
+    },
+    {
+     "word": "inside",
+     "start": 0.88,
+     "end": 1.22,
+     "probability": 0.596
+    }
+   ]
+  },
+  {
+   "segment": 29,
+   "live_score": 100.0,
+   "words": [
+    {
+     "word": "Put",
+     "start": 0.28,
+     "end": 0.8,
+     "probability": 0.597
+    },
+    {
+     "word": "me",
+     "start": 0.8,
+     "end": 1.12,
+     "probability": 0.978
+    },
+    {
+     "word": "inside",
+     "start": 1.12,
+     "end": 1.42,
+     "probability": 0.782
+    }
+   ]
+  },
+  {
+   "segment": 30,
+   "live_score": 100.0,
+   "words": [
+    {
+     "word": "Put",
+     "start": 0.0,
+     "end": 0.58,
+     "probability": 0.559
+    },
+    {
+     "word": "me",
+     "start": 0.58,
+     "end": 0.82,
+     "probability": 0.966
+    },
+    {
+     "word": "inside",
+     "start": 0.82,
+     "end": 1.26,
+     "probability": 0.97
+    }
+   ]
+  },
+  {
+   "segment": 31,
+   "live_score": 91.3,
+   "words": [
+    {
+     "word": "I",
+     "start": 0.22,
+     "end": 0.84,
+     "probability": 0.978
+    },
+    {
+     "word": "keep",
+     "start": 0.84,
+     "end": 1.3,
+     "probability": 0.944
+    },
+    {
+     "word": "the",
+     "start": 1.3,
+     "end": 1.62,
+     "probability": 0.995
+    },
+    {
+     "word": "wolf",
+     "start": 1.62,
+     "end": 2.2,
+     "probability": 0.296
+    },
+    {
+     "word": "from",
+     "start": 2.2,
+     "end": 2.62,
+     "probability": 0.955
+    },
+    {
+     "word": "the",
+     "start": 2.62,
+     "end": 2.88,
+     "probability": 0.997
+    },
+    {
+     "word": "door",
+     "start": 2.88,
+     "end": 3.16,
+     "probability": 0.029
+    }
+   ]
+  },
+  {
+   "segment": 32,
+   "live_score": 82.9,
+   "words": [
+    {
+     "word": "But",
+     "start": 0.0,
+     "end": 0.58,
+     "probability": 0.629
+    },
+    {
+     "word": "he",
+     "start": 0.58,
+     "end": 0.86,
+     "probability": 0.906
+    },
+    {
+     "word": "calls",
+     "start": 0.86,
+     "end": 1.44,
+     "probability": 0.997
+    },
+    {
+     "word": "me",
+     "start": 1.44,
+     "end": 1.76,
+     "probability": 0.999
+    },
+    {
+     "word": "up",
+     "start": 1.76,
+     "end": 2.04,
+     "probability": 0.842
+    }
+   ]
+  },
+  {
+   "segment": 33,
+   "live_score": 75.7,
+   "words": [
+    {
+     "word": "Calls",
+     "start": 0.28,
+     "end": 1.0,
+     "probability": 0.786
+    },
+    {
+     "word": "me",
+     "start": 1.0,
+     "end": 1.18,
+     "probability": 0.963
+    },
+    {
+     "word": "on",
+     "start": 1.18,
+     "end": 1.36,
+     "probability": 0.924
+    },
+    {
+     "word": "the",
+     "start": 1.36,
+     "end": 1.48,
+     "probability": 0.976
+    },
+    {
+     "word": "phone,",
+     "start": 1.48,
+     "end": 1.84,
+     "probability": 0.997
+    },
+    {
+     "word": "tells",
+     "start": 1.86,
+     "end": 2.24,
+     "probability": 0.895
+    },
+    {
+     "word": "me",
+     "start": 2.24,
+     "end": 2.54,
+     "probability": 0.999
+    },
+    {
+     "word": "how",
+     "start": 2.54,
+     "end": 2.68,
+     "probability": 0.439
+    }
+   ]
+  },
+  {
+   "segment": 34,
+   "live_score": 86.6,
+   "words": [
+    {
+     "word": "The",
+     "start": 0.38,
+     "end": 0.5,
+     "probability": 0.192
+    },
+    {
+     "word": "ways",
+     "start": 0.5,
+     "end": 0.76,
+     "probability": 0.042
+    },
+    {
+     "word": "that",
+     "start": 0.76,
+     "end": 1.02,
+     "probability": 0.978
+    },
+    {
+     "word": "he's",
+     "start": 1.02,
+     "end": 1.48,
+     "probability": 0.495
+    },
+    {
+     "word": "gonna",
+     "start": 1.48,
+     "end": 1.9,
+     "probability": 0.879
+    },
+    {
+     "word": "mess",
+     "start": 1.9,
+     "end": 2.5,
+     "probability": 0.938
+    },
+    {
+     "word": "me",
+     "start": 2.5,
+     "end": 2.74,
+     "probability": 0.995
+    },
+    {
+     "word": "up",
+     "start": 2.74,
+     "end": 3.12,
+     "probability": 0.999
+    }
+   ]
+  },
+  {
+   "segment": 35,
+   "live_score": 79.5,
+   "words": [
+    {
+     "word": "you",
+     "start": 0.56,
+     "end": 0.86,
+     "probability": 0.966
+    },
+    {
+     "word": "love",
+     "start": 0.86,
+     "end": 0.86,
+     "probability": 0.959
+    },
+    {
+     "word": "my",
+     "start": 0.86,
+     "end": 1.12,
+     "probability": 0.979
+    },
+    {
+     "word": "children",
+     "start": 1.12,
+     "end": 1.8,
+     "probability": 0.988
+    },
+    {
+     "word": "if",
+     "start": 1.8,
+     "end": 2.48,
+     "probability": 0.57
+    },
+    {
+     "word": "I",
+     "start": 2.48,
+     "end": 2.68,
+     "probability": 0.889
+    },
+    {
+     "word": "don't",
+     "start": 2.68,
+     "end": 3.08,
+     "probability": 0.984
+    },
+    {
+     "word": "pay",
+     "start": 3.08,
+     "end": 3.34,
+     "probability": 0.982
+    },
+    {
+     "word": "the",
+     "start": 3.34,
+     "end": 3.62,
+     "probability": 0.475
+    },
+    {
+     "word": "ransom?",
+     "start": 3.62,
+     "end": 4.24,
+     "probability": 0.991
+    }
+   ]
+  },
+  {
+   "segment": 36,
+   "live_score": 88.0,
+   "words": [
+    {
+     "word": "And",
+     "start": 0.0,
+     "end": 0.46,
+     "probability": 0.453
+    },
+    {
+     "word": "I'll",
+     "start": 0.46,
+     "end": 1.16,
+     "probability": 0.77
+    },
+    {
+     "word": "never",
+     "start": 1.16,
+     "end": 1.58,
+     "probability": 0.988
+    },
+    {
+     "word": "see",
+     "start": 1.58,
+     "end": 1.96,
+     "probability": 0.986
+    },
+    {
+     "word": "them",
+     "start": 1.96,
+     "end": 2.24,
+     "probability": 0.659
+    },
+    {
+     "word": "again",
+     "start": 2.24,
+     "end": 2.76,
+     "probability": 0.997
+    },
+    {
+     "word": "if",
+     "start": 2.76,
+     "end": 3.18,
+     "probability": 0.714
+    },
+    {
+     "word": "I",
+     "start": 3.18,
+     "end": 3.42,
+     "probability": 0.965
+    },
+    {
+     "word": "squeal",
+     "start": 3.42,
+     "end": 3.86,
+     "probability": 0.672
+    },
+    {
+     "word": "to",
+     "start": 3.86,
+     "end": 4.34,
+     "probability": 0.697
+    },
+    {
+     "word": "the",
+     "start": 4.34,
+     "end": 4.54,
+     "probability": 0.033
+    },
+    {
+     "word": "cops",
+     "start": 4.54,
+     "end": 4.62,
+     "probability": 0.0
+    }
+   ]
+  },
+  {
+   "segment": 37,
+   "live_score": 97.8,
+   "words": [
+    {
+     "word": "Walking",
+     "start": 0.44,
+     "end": 1.16,
+     "probability": 0.449
+    },
+    {
+     "word": "like",
+     "start": 1.16,
+     "end": 1.58,
+     "probability": 0.953
+    },
+    {
+     "word": "giant",
+     "start": 1.58,
+     "end": 2.1,
+     "probability": 0.016
+    },
+    {
+     "word": "cranes",
+     "start": 2.1,
+     "end": 2.62,
+     "probability": 0.473
+    }
+   ]
+  },
+  {
+   "segment": 38,
+   "live_score": 87.8,
+   "words": [
+    {
+     "word": "And",
+     "start": 0.38,
+     "end": 0.72,
+     "probability": 0.078
+    },
+    {
+     "word": "with",
+     "start": 0.72,
+     "end": 0.92,
+     "probability": 0.956
+    },
+    {
+     "word": "my",
+     "start": 0.92,
+     "end": 1.2,
+     "probability": 0.999
+    },
+    {
+     "word": "X",
+     "start": 1.2,
+     "end": 1.58,
+     "probability": 0.351
+    },
+    {
+     "word": "-ray",
+     "start": 1.58,
+     "end": 2.0,
+     "probability": 0.251
+    },
+    {
+     "word": "eyes",
+     "start": 2.0,
+     "end": 2.42,
+     "probability": 0.049
+    },
+    {
+     "word": "I",
+     "start": 2.42,
+     "end": 2.56,
+     "probability": 0.002
+    },
+    {
+     "word": "strip",
+     "start": 2.56,
+     "end": 2.62,
+     "probability": 0.047
+    },
+    {
+     "word": "you",
+     "start": 2.62,
+     "end": 2.74,
+     "probability": 0.042
+    },
+    {
+     "word": "naked",
+     "start": 2.74,
+     "end": 2.74,
+     "probability": 0.0
+    }
+   ]
+  },
+  {
+   "segment": 39,
+   "live_score": 89.6,
+   "words": [
+    {
+     "word": "In",
+     "start": 0.0,
+     "end": 0.38,
+     "probability": 0.013
+    },
+    {
+     "word": "a",
+     "start": 0.38,
+     "end": 0.58,
+     "probability": 0.524
+    },
+    {
+     "word": "tight",
+     "start": 0.58,
+     "end": 1.0,
+     "probability": 0.0
+    },
+    {
+     "word": "little",
+     "start": 1.0,
+     "end": 1.72,
+     "probability": 0.764
+    },
+    {
+     "word": "world",
+     "start": 1.72,
+     "end": 2.18,
+     "probability": 0.294
+    }
+   ]
+  },
+  {
+   "segment": 40,
+   "live_score": 68.5,
+   "words": [
+    {
+     "word": "I",
+     "start": 0.14,
+     "end": 0.22,
+     "probability": 0.206
+    },
+    {
+     "word": "am",
+     "start": 0.22,
+     "end": 0.48,
+     "probability": 0.542
+    },
+    {
+     "word": "on",
+     "start": 0.48,
+     "end": 0.68,
+     "probability": 0.74
+    },
+    {
+     "word": "the",
+     "start": 0.68,
+     "end": 0.8,
+     "probability": 0.718
+    },
+    {
+     "word": "list,",
+     "start": 0.8,
+     "end": 1.26,
+     "probability": 0.925
+    },
+    {
+     "word": "Apple.",
+     "start": 1.34,
+     "end": 1.5,
+     "probability": 0.473
+    }
+   ]
+  },
+  {
+   "segment": 41,
+   "live_score": 85.4,
+   "words": [
+    {
+     "word": "Stepford",
+     "start": 0.18,
+     "end": 0.44,
+     "probability": 0.0
+    },
+    {
+     "word": "wives",
+     "start": 0.44,
+     "end": 0.78,
+     "probability": 0.0
+    },
+    {
+     "word": "who",
+     "start": 0.78,
+     "end": 1.28,
+     "probability": 0.149
+    },
+    {
+     "word": "are",
+     "start": 1.28,
+     "end": 1.48,
+     "probability": 0.438
+    },
+    {
+     "word": "we",
+     "start": 1.48,
+     "end": 1.86,
+     "probability": 0.004
+    },
+    {
+     "word": "to",
+     "start": 1.86,
+     "end": 1.86,
+     "probability": 0.005
+    },
+    {
+     "word": "complain?",
+     "start": 1.86,
+     "end": 2.14,
+     "probability": 0.002
+    }
+   ]
+  },
+  {
+   "segment": 42,
+   "live_score": 0.0,
+   "words": [
+    {
+     "word": "To",
+     "start": 0.0,
+     "end": 0.56,
+     "probability": 0.179
+    }
+   ]
+  },
+  {
+   "segment": 43,
+   "live_score": 16.7,
+   "words": [
+    {
+     "word": "Builders",
+     "start": 0.0,
+     "end": 1.24,
+     "probability": 0.166
+    },
+    {
+     "word": "Builders",
+     "start": 1.24,
+     "end": 1.44,
+     "probability": 0.498
+    }
+   ]
+  },
+  {
+   "segment": 44,
+   "live_score": 0.0,
+   "words": [
+    {
+     "word": "love",
+     "start": 0.1,
+     "end": 0.26,
+     "probability": 0.437
+    },
+    {
+     "word": "you",
+     "start": 0.26,
+     "end": 0.36,
+     "probability": 0.902
+    }
+   ]
+  },
+  {
+   "segment": 45,
+   "live_score": 0.0,
+   "words": [
+    {
+     "word": "Ma",
+     "start": 0.72,
+     "end": 1.04,
+     "probability": 0.987
+    },
+    {
+     "word": "Ma",
+     "start": 1.04,
+     "end": 1.44,
+     "probability": 0.929
+    },
+    {
+     "word": "Ma",
+     "start": 1.44,
+     "end": 1.5,
+     "probability": 0.668
+    },
+    {
+     "word": "Ma",
+     "start": 1.5,
+     "end": 1.6,
+     "probability": 0.66
+    },
+    {
+     "word": "Ma",
+     "start": 1.6,
+     "end": 1.68,
+     "probability": 0.764
+    }
+   ]
+  },
+  {
+   "segment": 46,
+   "live_score": 33.2,
+   "words": [
+    {
+     "word": "we're",
+     "start": 1.55,
+     "end": 2.11,
+     "probability": 0.09
+    },
+    {
+     "word": "born",
+     "start": 2.11,
+     "end": 2.53,
+     "probability": 0.001
+    },
+    {
+     "word": "just",
+     "start": 2.53,
+     "end": 3.15,
+     "probability": 0.867
+    },
+    {
+     "word": "know",
+     "start": 3.15,
+     "end": 3.45,
+     "probability": 0.001
+    }
+   ]
+  },
+  {
+   "segment": 47,
+   "live_score": 87.8,
+   "words": [
+    {
+     "word": "Someone",
+     "start": 0.38,
+     "end": 1.14,
+     "probability": 0.369
+    },
+    {
+     "word": "else",
+     "start": 1.14,
+     "end": 1.62,
+     "probability": 0.673
+    },
+    {
+     "word": "is",
+     "start": 1.62,
+     "end": 1.78,
+     "probability": 0.912
+    },
+    {
+     "word": "gonna",
+     "start": 1.78,
+     "end": 2.04,
+     "probability": 0.956
+    },
+    {
+     "word": "clean",
+     "start": 2.04,
+     "end": 2.54,
+     "probability": 0.985
+    },
+    {
+     "word": "it",
+     "start": 2.54,
+     "end": 2.78,
+     "probability": 0.005
+    },
+    {
+     "word": "up",
+     "start": 2.78,
+     "end": 2.9,
+     "probability": 0.953
+    }
+   ]
+  },
+  {
+   "segment": 48,
+   "live_score": 95.5,
+   "words": [
+    {
+     "word": "Born",
+     "start": 0.0,
+     "end": 0.44,
+     "probability": 0.404
+    },
+    {
+     "word": "and",
+     "start": 0.44,
+     "end": 0.68,
+     "probability": 0.972
+    },
+    {
+     "word": "raised",
+     "start": 0.68,
+     "end": 0.94,
+     "probability": 0.179
+    },
+    {
+     "word": "for",
+     "start": 0.94,
+     "end": 1.22,
+     "probability": 0.099
+    },
+    {
+     "word": "the",
+     "start": 1.22,
+     "end": 1.34,
+     "probability": 0.971
+    },
+    {
+     "word": "job",
+     "start": 1.34,
+     "end": 1.44,
+     "probability": 0.018
+    }
+   ]
+  },
+  {
+   "segment": 49,
+   "live_score": 100.0,
+   "words": [
+    {
+     "word": "Someone",
+     "start": 0.0,
+     "end": 0.64,
+     "probability": 0.007
+    },
+    {
+     "word": "always",
+     "start": 0.64,
+     "end": 1.4,
+     "probability": 0.027
+    },
+    {
+     "word": "does",
+     "start": 1.4,
+     "end": 1.72,
+     "probability": 0.034
+    }
+   ]
+  },
+  {
+   "segment": 50,
+   "live_score": 100.0,
+   "words": [
+    {
+     "word": "I",
+     "start": 0.24,
+     "end": 0.88,
+     "probability": 0.424
+    },
+    {
+     "word": "wish",
+     "start": 0.88,
+     "end": 1.26,
+     "probability": 0.785
+    },
+    {
+     "word": "you'd",
+     "start": 1.26,
+     "end": 1.26,
+     "probability": 0.351
+    },
+    {
+     "word": "get",
+     "start": 1.26,
+     "end": 1.26,
+     "probability": 0.001
+    },
+    {
+     "word": "up",
+     "start": 1.26,
+     "end": 1.26,
+     "probability": 0.012
+    },
+    {
+     "word": "get",
+     "start": 1.26,
+     "end": 1.54,
+     "probability": 0.0
+    },
+    {
+     "word": "over",
+     "start": 1.54,
+     "end": 1.78,
+     "probability": 0.005
+    }
+   ]
+  },
+  {
+   "segment": 51,
+   "live_score": 55.6,
+   "words": [
+    {
+     "word": "Get",
+     "start": 0.0,
+     "end": 0.42,
+     "probability": 0.002
+    },
+    {
+     "word": "up",
+     "start": 0.42,
+     "end": 0.72,
+     "probability": 0.095
+    },
+    {
+     "word": "get",
+     "start": 0.72,
+     "end": 0.72,
+     "probability": 0.002
+    },
+    {
+     "word": "over",
+     "start": 0.72,
+     "end": 0.94,
+     "probability": 0.028
+    },
+    {
+     "word": "and",
+     "start": 0.94,
+     "end": 1.08,
+     "probability": 0.039
+    },
+    {
+     "word": "turn",
+     "start": 1.08,
+     "end": 1.2,
+     "probability": 0.0
+    },
+    {
+     "word": "the",
+     "start": 1.2,
+     "end": 1.4,
+     "probability": 0.345
+    },
+    {
+     "word": "tape",
+     "start": 1.4,
+     "end": 1.68,
+     "probability": 0.0
+    },
+    {
+     "word": "off",
+     "start": 1.68,
+     "end": 2.78,
+     "probability": 0.083
+    }
+   ]
+  },
+  {
+   "segment": 52,
+   "live_score": 95.7,
+   "words": [
+    {
+     "word": "I",
+     "start": 0.0,
+     "end": 0.14,
+     "probability": 0.128
+    },
+    {
+     "word": "keep",
+     "start": 0.14,
+     "end": 0.52,
+     "probability": 0.812
+    },
+    {
+     "word": "the",
+     "start": 0.52,
+     "end": 0.72,
+     "probability": 0.986
+    },
+    {
+     "word": "wolf",
+     "start": 0.72,
+     "end": 1.4,
+     "probability": 0.013
+    },
+    {
+     "word": "from",
+     "start": 1.4,
+     "end": 1.62,
+     "probability": 0.301
+    },
+    {
+     "word": "the",
+     "start": 1.62,
+     "end": 1.62,
+     "probability": 0.091
+    },
+    {
+     "word": "door",
+     "start": 1.62,
+     "end": 1.62,
+     "probability": 0.009
+    }
+   ]
+  },
+  {
+   "segment": 53,
+   "live_score": 48.1,
+   "words": [
+    {
+     "word": "The",
+     "start": -0.27,
+     "end": 0.13,
+     "probability": 0.124
+    },
+    {
+     "word": "door",
+     "start": 0.13,
+     "end": 0.91,
+     "probability": 0.657
+    },
+    {
+     "word": "is",
+     "start": 0.91,
+     "end": 1.31,
+     "probability": 0.305
+    },
+    {
+     "word": "gonna",
+     "start": 1.31,
+     "end": 1.59,
+     "probability": 0.545
+    },
+    {
+     "word": "be",
+     "start": 1.59,
+     "end": 2.35,
+     "probability": 0.942
+    },
+    {
+     "word": "up",
+     "start": 2.35,
+     "end": 2.73,
+     "probability": 0.087
+    }
+   ]
+  },
+  {
+   "segment": 54,
+   "live_score": 60.0,
+   "words": [
+    {
+     "word": "Calls",
+     "start": 0.22,
+     "end": 0.84,
+     "probability": 0.003
+    },
+    {
+     "word": "me",
+     "start": 0.84,
+     "end": 0.88,
+     "probability": 0.815
+    },
+    {
+     "word": "on",
+     "start": 0.88,
+     "end": 1.08,
+     "probability": 0.962
+    },
+    {
+     "word": "the",
+     "start": 1.08,
+     "end": 1.18,
+     "probability": 0.983
+    },
+    {
+     "word": "phone",
+     "start": 1.18,
+     "end": 1.6,
+     "probability": 0.974
+    }
+   ]
+  },
+  {
+   "segment": 55,
+   "live_score": 97.3,
+   "words": [
+    {
+     "word": "Tells",
+     "start": 0.67,
+     "end": 1.11,
+     "probability": 0.003
+    },
+    {
+     "word": "me",
+     "start": 1.11,
+     "end": 1.27,
+     "probability": 0.226
+    },
+    {
+     "word": "all",
+     "start": 1.27,
+     "end": 1.27,
+     "probability": 0.02
+    },
+    {
+     "word": "the",
+     "start": 1.27,
+     "end": 1.27,
+     "probability": 0.896
+    },
+    {
+     "word": "ways",
+     "start": 1.27,
+     "end": 1.53,
+     "probability": 0.234
+    },
+    {
+     "word": "that",
+     "start": 1.53,
+     "end": 2.23,
+     "probability": 0.412
+    },
+    {
+     "word": "he's",
+     "start": 2.23,
+     "end": 3.39,
+     "probability": 0.348
+    },
+    {
+     "word": "gonna",
+     "start": 3.39,
+     "end": 3.73,
+     "probability": 0.811
+    },
+    {
+     "word": "mess",
+     "start": 3.73,
+     "end": 3.93,
+     "probability": 0.0
+    },
+    {
+     "word": "me",
+     "start": 3.93,
+     "end": 3.93,
+     "probability": 0.012
+    },
+    {
+     "word": "up",
+     "start": 3.93,
+     "end": 3.93,
+     "probability": 0.681
+    }
+   ]
+  },
+  {
+   "segment": 56,
+   "live_score": 64.1,
+   "words": [
+    {
+     "word": "me",
+     "start": 0.95,
+     "end": 1.19,
+     "probability": 0.978
+    },
+    {
+     "word": "up",
+     "start": 1.19,
+     "end": 1.55,
+     "probability": 0.96
+    },
+    {
+     "word": "to",
+     "start": 1.55,
+     "end": 2.05,
+     "probability": 0.375
+    },
+    {
+     "word": "love",
+     "start": 2.05,
+     "end": 3.15,
+     "probability": 0.361
+    },
+    {
+     "word": "my",
+     "start": 3.15,
+     "end": 3.47,
+     "probability": 0.956
+    },
+    {
+     "word": "children",
+     "start": 3.47,
+     "end": 4.01,
+     "probability": 0.463
+    },
+    {
+     "word": "if",
+     "start": 4.01,
+     "end": 5.39,
+     "probability": 0.093
+    },
+    {
+     "word": "I",
+     "start": 5.39,
+     "end": 5.53,
+     "probability": 0.952
+    },
+    {
+     "word": "don't",
+     "start": 5.53,
+     "end": 5.75,
+     "probability": 0.881
+    },
+    {
+     "word": "pay",
+     "start": 5.75,
+     "end": 5.75,
+     "probability": 0.001
+    },
+    {
+     "word": "the",
+     "start": 5.75,
+     "end": 5.75,
+     "probability": 0.032
+    },
+    {
+     "word": "ransom",
+     "start": 5.75,
+     "end": 5.75,
+     "probability": 0.0
+    }
+   ]
+  },
+  {
+   "segment": 57,
+   "live_score": 48.4,
+   "words": [
+    {
+     "word": "I'll",
+     "start": 0.13,
+     "end": 0.67,
+     "probability": 0.162
+    },
+    {
+     "word": "pay",
+     "start": 0.67,
+     "end": 1.01,
+     "probability": 0.678
+    },
+    {
+     "word": "the",
+     "start": 1.01,
+     "end": 1.31,
+     "probability": 0.95
+    },
+    {
+     "word": "rest",
+     "start": 1.31,
+     "end": 1.91,
+     "probability": 0.973
+    },
+    {
+     "word": "of",
+     "start": 1.91,
+     "end": 2.35,
+     "probability": 0.762
+    },
+    {
+     "word": "the",
+     "start": 2.35,
+     "end": 3.41,
+     "probability": 0.324
+    },
+    {
+     "word": "night",
+     "start": 3.41,
+     "end": 3.53,
+     "probability": 0.589
+    }
+   ]
+  },
+  {
+   "segment": 58,
+   "live_score": 75.0,
+   "words": [
+    {
+     "word": "I'm",
+     "start": 0.37,
+     "end": 0.69,
+     "probability": 0.301
+    },
+    {
+     "word": "just",
+     "start": 0.69,
+     "end": 1.01,
+     "probability": 0.08
+    },
+    {
+     "word": "gonna",
+     "start": 1.01,
+     "end": 1.31,
+     "probability": 0.064
+    },
+    {
+     "word": "get",
+     "start": 1.31,
+     "end": 1.73,
+     "probability": 0.654
+    }
+   ]
+  }
+ ]
+}

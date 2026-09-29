@@ -1,0 +1,2450 @@
+{
+ "song_id": "ze-assassino-compulsivo-o-terno",
+ "recorded_at": "2026-09-29T20:24:05",
+ "whisper_model": "large-v3-turbo",
+ "scoring_mode": "timing",
+ "segments": [
+  {
+   "sing_start": 23.5,
+   "sing_end": 30.36,
+   "language": "pt",
+   "lyrics": "Zé não era aquele cara que só faz o bem",
+   "lyrics_timed": [
+    {
+     "word": "Zé",
+     "expected_start": 0.05,
+     "expected_end": 1.18
+    },
+    {
+     "word": "não",
+     "expected_start": 1.18,
+     "expected_end": 1.68
+    },
+    {
+     "word": "era",
+     "expected_start": 1.68,
+     "expected_end": 2.4
+    },
+    {
+     "word": "aquele",
+     "expected_start": 2.4,
+     "expected_end": 3.22
+    },
+    {
+     "word": "cara",
+     "expected_start": 3.22,
+     "expected_end": 4.04
+    },
+    {
+     "word": "que",
+     "expected_start": 4.04,
+     "expected_end": 4.94
+    },
+    {
+     "word": "só",
+     "expected_start": 4.94,
+     "expected_end": 5.42
+    },
+    {
+     "word": "faz",
+     "expected_start": 5.42,
+     "expected_end": 5.78
+    },
+    {
+     "word": "o",
+     "expected_start": 5.78,
+     "expected_end": 6.1
+    },
+    {
+     "word": "bem",
+     "expected_start": 6.1,
+     "expected_end": 6.72
+    }
+   ]
+  },
+  {
+   "sing_start": 32.36,
+   "sing_end": 38.46,
+   "language": "pt",
+   "lyrics": "Era alegre e bonito, mas tem um porém",
+   "lyrics_timed": [
+    {
+     "word": "Era",
+     "expected_start": 0.4,
+     "expected_end": 1.62
+    },
+    {
+     "word": "alegre",
+     "expected_start": 0.45,
+     "expected_end": 1.62
+    },
+    {
+     "word": "e",
+     "expected_start": 1.62,
+     "expected_end": 2.04
+    },
+    {
+     "word": "bonito,",
+     "expected_start": 2.04,
+     "expected_end": 3.2
+    },
+    {
+     "word": "mas",
+     "expected_start": 3.74,
+     "expected_end": 4.06
+    },
+    {
+     "word": "tem",
+     "expected_start": 4.06,
+     "expected_end": 4.56
+    },
+    {
+     "word": "um",
+     "expected_start": 4.9,
+     "expected_end": 5.7
+    },
+    {
+     "word": "porém",
+     "expected_start": 4.95,
+     "expected_end": 5.7
+    }
+   ]
+  },
+  {
+   "sing_start": 39.74,
+   "sing_end": 45.7,
+   "language": "pt",
+   "lyrics": "Ele era um assassino compulsivo, é",
+   "lyrics_timed": [
+    {
+     "word": "Ele",
+     "expected_start": 0.05,
+     "expected_end": 0.88
+    },
+    {
+     "word": "era",
+     "expected_start": 1.68,
+     "expected_end": 2.64
+    },
+    {
+     "word": "um",
+     "expected_start": 2.64,
+     "expected_end": 4.02
+    },
+    {
+     "word": "assassino",
+     "expected_start": 4.02,
+     "expected_end": 5.68
+    },
+    {
+     "word": "compulsivo,",
+     "expected_start": 4.07,
+     "expected_end": 5.68
+    },
+    {
+     "word": "é",
+     "expected_start": 6.26,
+     "expected_end": 6.36
+    }
+   ]
+  },
+  {
+   "sing_start": 47.36,
+   "sing_end": 53.64,
+   "language": "pt",
+   "lyrics": "Enforcou sua coleguinha quando era do pré",
+   "lyrics_timed": [
+    {
+     "word": "Enforcou",
+     "expected_start": 0.05,
+     "expected_end": 1.96
+    },
+    {
+     "word": "sua",
+     "expected_start": 1.96,
+     "expected_end": 2.44
+    },
+    {
+     "word": "coleguinha",
+     "expected_start": 2.44,
+     "expected_end": 4.2
+    },
+    {
+     "word": "quando",
+     "expected_start": 4.2,
+     "expected_end": 4.92
+    },
+    {
+     "word": "era",
+     "expected_start": 4.92,
+     "expected_end": 5.46
+    },
+    {
+     "word": "do",
+     "expected_start": 5.46,
+     "expected_end": 5.84
+    },
+    {
+     "word": "pré",
+     "expected_start": 5.84,
+     "expected_end": 6.16
+    }
+   ]
+  },
+  {
+   "sing_start": 55.2,
+   "sing_end": 61.8,
+   "language": "pt",
+   "lyrics": "Mas que belo assassino que Zé se tornou",
+   "lyrics_timed": [
+    {
+     "word": "Mas",
+     "expected_start": 0.05,
+     "expected_end": 1.2
+    },
+    {
+     "word": "que",
+     "expected_start": 1.2,
+     "expected_end": 2.06
+    },
+    {
+     "word": "belo",
+     "expected_start": 2.06,
+     "expected_end": 2.54
+    },
+    {
+     "word": "assassino",
+     "expected_start": 2.54,
+     "expected_end": 4.28
+    },
+    {
+     "word": "que",
+     "expected_start": 4.28,
+     "expected_end": 5.08
+    },
+    {
+     "word": "Zé",
+     "expected_start": 5.08,
+     "expected_end": 5.6
+    },
+    {
+     "word": "se",
+     "expected_start": 5.6,
+     "expected_end": 5.88
+    },
+    {
+     "word": "tornou",
+     "expected_start": 5.88,
+     "expected_end": 7.02
+    }
+   ]
+  },
+  {
+   "sing_start": 63.0,
+   "sing_end": 68.94,
+   "language": "pt",
+   "lyrics": "Sempre alegre a cantar, a colega ele matou",
+   "lyrics_timed": [
+    {
+     "word": "Sempre",
+     "expected_start": 0.05,
+     "expected_end": 1.33
+    },
+    {
+     "word": "alegre",
+     "expected_start": 1.33,
+     "expected_end": 2.45
+    },
+    {
+     "word": "a",
+     "expected_start": 2.45,
+     "expected_end": 3.11
+    },
+    {
+     "word": "cantar,",
+     "expected_start": 3.11,
+     "expected_end": 3.99
+    },
+    {
+     "word": "a",
+     "expected_start": 4.23,
+     "expected_end": 4.37
+    },
+    {
+     "word": "colega",
+     "expected_start": 4.37,
+     "expected_end": 4.95
+    },
+    {
+     "word": "ele",
+     "expected_start": 4.95,
+     "expected_end": 5.23
+    },
+    {
+     "word": "matou",
+     "expected_start": 5.23,
+     "expected_end": 6.41
+    }
+   ]
+  },
+  {
+   "sing_start": 84.66,
+   "sing_end": 91.3,
+   "language": "pt",
+   "lyrics": "Zé pegou a namorada com um amante nu",
+   "lyrics_timed": [
+    {
+     "word": "Zé",
+     "expected_start": 0.05,
+     "expected_end": 1.28
+    },
+    {
+     "word": "pegou",
+     "expected_start": 1.28,
+     "expected_end": 2.24
+    },
+    {
+     "word": "a",
+     "expected_start": 2.7,
+     "expected_end": 4.26
+    },
+    {
+     "word": "namorada",
+     "expected_start": 2.75,
+     "expected_end": 4.26
+    },
+    {
+     "word": "com",
+     "expected_start": 4.26,
+     "expected_end": 5.12
+    },
+    {
+     "word": "um",
+     "expected_start": 5.46,
+     "expected_end": 6.24
+    },
+    {
+     "word": "amante",
+     "expected_start": 5.51,
+     "expected_end": 6.24
+    },
+    {
+     "word": "nu",
+     "expected_start": 5.56,
+     "expected_end": 6.24
+    }
+   ]
+  },
+  {
+   "sing_start": 92.8,
+   "sing_end": 99.28,
+   "language": "pt",
+   "lyrics": "E em vários pedacinhos Zé o picotou",
+   "lyrics_timed": [
+    {
+     "word": "E",
+     "expected_start": 0.05,
+     "expected_end": 1.08
+    },
+    {
+     "word": "em",
+     "expected_start": 1.08,
+     "expected_end": 1.48
+    },
+    {
+     "word": "vários",
+     "expected_start": 2.36,
+     "expected_end": 4.36
+    },
+    {
+     "word": "pedacinhos",
+     "expected_start": 2.41,
+     "expected_end": 4.36
+    },
+    {
+     "word": "Zé",
+     "expected_start": 5.42,
+     "expected_end": 6.86
+    },
+    {
+     "word": "o",
+     "expected_start": 5.47,
+     "expected_end": 6.86
+    },
+    {
+     "word": "picotou",
+     "expected_start": 5.52,
+     "expected_end": 6.86
+    }
+   ]
+  },
+  {
+   "sing_start": 100.8,
+   "sing_end": 107.24,
+   "language": "pt",
+   "lyrics": "Escondeu todos os restos lá no seu jardim",
+   "lyrics_timed": [
+    {
+     "word": "Escondeu",
+     "expected_start": 0.05,
+     "expected_end": 1.98
+    },
+    {
+     "word": "todos",
+     "expected_start": 1.98,
+     "expected_end": 2.86
+    },
+    {
+     "word": "os",
+     "expected_start": 2.86,
+     "expected_end": 3.5
+    },
+    {
+     "word": "restos",
+     "expected_start": 3.5,
+     "expected_end": 4.5
+    },
+    {
+     "word": "lá",
+     "expected_start": 4.5,
+     "expected_end": 4.8
+    },
+    {
+     "word": "no",
+     "expected_start": 4.8,
+     "expected_end": 5.3
+    },
+    {
+     "word": "seu",
+     "expected_start": 5.3,
+     "expected_end": 5.62
+    },
+    {
+     "word": "jardim",
+     "expected_start": 5.62,
+     "expected_end": 6.9
+    }
+   ]
+  },
+  {
+   "sing_start": 108.82,
+   "sing_end": 115.78,
+   "language": "pt",
+   "lyrics": "E alegre e sorridente Zé cantava assim",
+   "lyrics_timed": [
+    {
+     "word": "E",
+     "expected_start": 0.05,
+     "expected_end": 1.14
+    },
+    {
+     "word": "alegre",
+     "expected_start": 0.1,
+     "expected_end": 1.14
+    },
+    {
+     "word": "e",
+     "expected_start": 2.6,
+     "expected_end": 3.98
+    },
+    {
+     "word": "sorridente",
+     "expected_start": 3.98,
+     "expected_end": 5.04
+    },
+    {
+     "word": "Zé",
+     "expected_start": 4.03,
+     "expected_end": 5.04
+    },
+    {
+     "word": "cantava",
+     "expected_start": 6.2,
+     "expected_end": 7.08
+    },
+    {
+     "word": "assim",
+     "expected_start": 6.25,
+     "expected_end": 7.08
+    }
+   ]
+  },
+  {
+   "sing_start": 117.42,
+   "sing_end": 119.5,
+   "language": "pt",
+   "lyrics": "Lalaralala, chop chop chop chop",
+   "lyrics_timed": [
+    {
+     "word": "Lalaralala,",
+     "expected_start": 0.4,
+     "expected_end": 0.78
+    },
+    {
+     "word": "chop",
+     "expected_start": 0.96,
+     "expected_end": 1.06
+    },
+    {
+     "word": "chop",
+     "expected_start": 1.01,
+     "expected_end": 1.32
+    },
+    {
+     "word": "chop",
+     "expected_start": 1.32,
+     "expected_end": 1.52
+    },
+    {
+     "word": "chop",
+     "expected_start": 1.52,
+     "expected_end": 1.68
+    }
+   ]
+  },
+  {
+   "sing_start": 119.18,
+   "sing_end": 121.24,
+   "language": "pt",
+   "lyrics": "Ai, como eu gosto de matar",
+   "lyrics_timed": [
+    {
+     "word": "Ai,",
+     "expected_start": 0.26,
+     "expected_end": 0.4
+    },
+    {
+     "word": "como",
+     "expected_start": 0.31,
+     "expected_end": 0.41
+    },
+    {
+     "word": "eu",
+     "expected_start": 0.58,
+     "expected_end": 0.9
+    },
+    {
+     "word": "gosto",
+     "expected_start": 0.9,
+     "expected_end": 1.26
+    },
+    {
+     "word": "de",
+     "expected_start": 1.26,
+     "expected_end": 1.66
+    },
+    {
+     "word": "matar",
+     "expected_start": 1.31,
+     "expected_end": 1.66
+    }
+   ]
+  },
+  {
+   "sing_start": 120.86,
+   "sing_end": 123.42,
+   "language": "pt",
+   "lyrics": "Nada me deixa mais contente",
+   "lyrics_timed": [
+    {
+     "word": "Nada",
+     "expected_start": 0.05,
+     "expected_end": 0.56
+    },
+    {
+     "word": "me",
+     "expected_start": 0.56,
+     "expected_end": 0.84
+    },
+    {
+     "word": "deixa",
+     "expected_start": 0.84,
+     "expected_end": 1.2
+    },
+    {
+     "word": "mais",
+     "expected_start": 1.2,
+     "expected_end": 1.6
+    },
+    {
+     "word": "contente",
+     "expected_start": 1.6,
+     "expected_end": 2.16
+    }
+   ]
+  },
+  {
+   "sing_start": 123.22,
+   "sing_end": 124.4,
+   "language": "pt",
+   "lyrics": "E feliz a saltitar",
+   "lyrics_timed": [
+    {
+     "word": "E",
+     "expected_start": 0.4,
+     "expected_end": 0.78
+    },
+    {
+     "word": "feliz",
+     "expected_start": 0.45,
+     "expected_end": 0.78
+    },
+    {
+     "word": "a",
+     "expected_start": 0.5,
+     "expected_end": 0.78
+    },
+    {
+     "word": "saltitar",
+     "expected_start": 0.55,
+     "expected_end": 0.78
+    }
+   ]
+  },
+  {
+   "sing_start": 124.68,
+   "sing_end": 131.18,
+   "language": "pt",
+   "lyrics": "Mas que belo assassino que Zé se tornou",
+   "lyrics_timed": [
+    {
+     "word": "Mas",
+     "expected_start": 0.05,
+     "expected_end": 1.12
+    },
+    {
+     "word": "que",
+     "expected_start": 1.12,
+     "expected_end": 1.6
+    },
+    {
+     "word": "belo",
+     "expected_start": 1.6,
+     "expected_end": 2.76
+    },
+    {
+     "word": "assassino",
+     "expected_start": 2.76,
+     "expected_end": 4.32
+    },
+    {
+     "word": "que",
+     "expected_start": 4.32,
+     "expected_end": 5.02
+    },
+    {
+     "word": "Zé",
+     "expected_start": 5.02,
+     "expected_end": 5.56
+    },
+    {
+     "word": "se",
+     "expected_start": 5.56,
+     "expected_end": 5.78
+    },
+    {
+     "word": "tornou",
+     "expected_start": 5.78,
+     "expected_end": 6.92
+    }
+   ]
+  },
+  {
+   "sing_start": 132.38,
+   "sing_end": 138.38,
+   "language": "pt",
+   "lyrics": "Sempre alegre a cantar, o amante ele matou",
+   "lyrics_timed": [
+    {
+     "word": "Sempre",
+     "expected_start": 0.05,
+     "expected_end": 1.33
+    },
+    {
+     "word": "alegre",
+     "expected_start": 1.33,
+     "expected_end": 2.67
+    },
+    {
+     "word": "a",
+     "expected_start": 2.67,
+     "expected_end": 3.19
+    },
+    {
+     "word": "cantar,",
+     "expected_start": 3.19,
+     "expected_end": 4.17
+    },
+    {
+     "word": "o",
+     "expected_start": 4.23,
+     "expected_end": 4.45
+    },
+    {
+     "word": "amante",
+     "expected_start": 4.45,
+     "expected_end": 4.97
+    },
+    {
+     "word": "ele",
+     "expected_start": 4.97,
+     "expected_end": 5.31
+    },
+    {
+     "word": "matou",
+     "expected_start": 5.31,
+     "expected_end": 6.45
+    }
+   ]
+  },
+  {
+   "sing_start": 154.18,
+   "sing_end": 161.42,
+   "language": "pt",
+   "lyrics": "Encontrou sua alma gêmea numa reunião",
+   "lyrics_timed": [
+    {
+     "word": "Encontrou",
+     "expected_start": 0.05,
+     "expected_end": 1.9
+    },
+    {
+     "word": "sua",
+     "expected_start": 1.9,
+     "expected_end": 2.46
+    },
+    {
+     "word": "alma",
+     "expected_start": 2.46,
+     "expected_end": 3.42
+    },
+    {
+     "word": "gêmea",
+     "expected_start": 3.42,
+     "expected_end": 4.76
+    },
+    {
+     "word": "numa",
+     "expected_start": 4.76,
+     "expected_end": 5.58
+    },
+    {
+     "word": "reunião",
+     "expected_start": 5.58,
+     "expected_end": 7.1
+    }
+   ]
+  },
+  {
+   "sing_start": 163.26,
+   "sing_end": 170.18,
+   "language": "pt",
+   "lyrics": "De assassinos compulsivos com um tal doutor",
+   "lyrics_timed": [
+    {
+     "word": "De",
+     "expected_start": 0.4,
+     "expected_end": 2.02
+    },
+    {
+     "word": "assassinos",
+     "expected_start": 0.45,
+     "expected_end": 2.02
+    },
+    {
+     "word": "compulsivos",
+     "expected_start": 2.02,
+     "expected_end": 4.18
+    },
+    {
+     "word": "com",
+     "expected_start": 4.18,
+     "expected_end": 5.04
+    },
+    {
+     "word": "um",
+     "expected_start": 4.23,
+     "expected_end": 5.04
+    },
+    {
+     "word": "tal",
+     "expected_start": 5.76,
+     "expected_end": 7.08
+    },
+    {
+     "word": "doutor",
+     "expected_start": 5.81,
+     "expected_end": 7.08
+    }
+   ]
+  },
+  {
+   "sing_start": 171.52,
+   "sing_end": 178.68,
+   "language": "pt",
+   "lyrics": "Era alegre e bonita e matava sem dó",
+   "lyrics_timed": [
+    {
+     "word": "Era",
+     "expected_start": 0.05,
+     "expected_end": 1.2
+    },
+    {
+     "word": "alegre",
+     "expected_start": 1.2,
+     "expected_end": 2.88
+    },
+    {
+     "word": "e",
+     "expected_start": 2.88,
+     "expected_end": 3.26
+    },
+    {
+     "word": "bonita",
+     "expected_start": 3.26,
+     "expected_end": 4.66
+    },
+    {
+     "word": "e",
+     "expected_start": 4.66,
+     "expected_end": 5.16
+    },
+    {
+     "word": "matava",
+     "expected_start": 5.16,
+     "expected_end": 6.34
+    },
+    {
+     "word": "sem",
+     "expected_start": 6.34,
+     "expected_end": 6.76
+    },
+    {
+     "word": "dó",
+     "expected_start": 6.39,
+     "expected_end": 6.76
+    }
+   ]
+  },
+  {
+   "sing_start": 180.4,
+   "sing_end": 187.84,
+   "language": "pt",
+   "lyrics": "Os dois se apaixonaram e punham-se a cantar",
+   "lyrics_timed": [
+    {
+     "word": "Os",
+     "expected_start": 0.05,
+     "expected_end": 1.04
+    },
+    {
+     "word": "dois",
+     "expected_start": 1.04,
+     "expected_end": 1.44
+    },
+    {
+     "word": "se",
+     "expected_start": 2.52,
+     "expected_end": 4.38
+    },
+    {
+     "word": "apaixonaram",
+     "expected_start": 2.57,
+     "expected_end": 4.38
+    },
+    {
+     "word": "e",
+     "expected_start": 4.38,
+     "expected_end": 5.02
+    },
+    {
+     "word": "punham-se",
+     "expected_start": 5.78,
+     "expected_end": 6.14
+    },
+    {
+     "word": "a",
+     "expected_start": 6.34,
+     "expected_end": 7.9
+    },
+    {
+     "word": "cantar",
+     "expected_start": 6.39,
+     "expected_end": 7.9
+    }
+   ]
+  },
+  {
+   "sing_start": 189.68,
+   "sing_end": 191.8,
+   "language": "pt",
+   "lyrics": "Lalaralala, chop chop chop chop",
+   "lyrics_timed": [
+    {
+     "word": "Lalaralala,",
+     "expected_start": 0.4,
+     "expected_end": 0.82
+    },
+    {
+     "word": "chop",
+     "expected_start": 1.04,
+     "expected_end": 1.14
+    },
+    {
+     "word": "chop",
+     "expected_start": 1.09,
+     "expected_end": 1.4
+    },
+    {
+     "word": "chop",
+     "expected_start": 1.4,
+     "expected_end": 1.6
+    },
+    {
+     "word": "chop",
+     "expected_start": 1.6,
+     "expected_end": 1.72
+    }
+   ]
+  },
+  {
+   "sing_start": 191.42,
+   "sing_end": 193.56,
+   "language": "pt",
+   "lyrics": "Como gostamos de matar",
+   "lyrics_timed": [
+    {
+     "word": "Como",
+     "expected_start": 0.05,
+     "expected_end": 0.38
+    },
+    {
+     "word": "gostamos",
+     "expected_start": 0.38,
+     "expected_end": 1.1
+    },
+    {
+     "word": "de",
+     "expected_start": 1.1,
+     "expected_end": 1.4
+    },
+    {
+     "word": "matar",
+     "expected_start": 1.4,
+     "expected_end": 1.74
+    }
+   ]
+  },
+  {
+   "sing_start": 193.18,
+   "sing_end": 195.9,
+   "language": "pt",
+   "lyrics": "Nada nos deixa mais contentes",
+   "lyrics_timed": [
+    {
+     "word": "Nada",
+     "expected_start": 0.05,
+     "expected_end": 0.58
+    },
+    {
+     "word": "nos",
+     "expected_start": 0.58,
+     "expected_end": 0.82
+    },
+    {
+     "word": "deixa",
+     "expected_start": 0.82,
+     "expected_end": 1.24
+    },
+    {
+     "word": "mais",
+     "expected_start": 1.24,
+     "expected_end": 1.64
+    },
+    {
+     "word": "contentes",
+     "expected_start": 1.64,
+     "expected_end": 2.32
+    }
+   ]
+  },
+  {
+   "sing_start": 195.52,
+   "sing_end": 196.72,
+   "language": "pt",
+   "lyrics": "E felizes a saltitar",
+   "lyrics_timed": [
+    {
+     "word": "E",
+     "expected_start": 0.28,
+     "expected_end": 0.8
+    },
+    {
+     "word": "felizes",
+     "expected_start": 0.33,
+     "expected_end": 0.8
+    },
+    {
+     "word": "a",
+     "expected_start": 0.38,
+     "expected_end": 0.8
+    },
+    {
+     "word": "saltitar",
+     "expected_start": 0.43,
+     "expected_end": 0.8
+    }
+   ]
+  },
+  {
+   "sing_start": 197.1,
+   "sing_end": 204.66,
+   "language": "pt",
+   "lyrics": "Mas que belo par de assassinos eram os dois",
+   "lyrics_timed": [
+    {
+     "word": "Mas",
+     "expected_start": 0.05,
+     "expected_end": 1.16
+    },
+    {
+     "word": "que",
+     "expected_start": 1.16,
+     "expected_end": 1.58
+    },
+    {
+     "word": "belo",
+     "expected_start": 1.58,
+     "expected_end": 2.34
+    },
+    {
+     "word": "par",
+     "expected_start": 2.34,
+     "expected_end": 3.24
+    },
+    {
+     "word": "de",
+     "expected_start": 3.24,
+     "expected_end": 3.72
+    },
+    {
+     "word": "assassinos",
+     "expected_start": 3.72,
+     "expected_end": 5.14
+    },
+    {
+     "word": "eram",
+     "expected_start": 5.14,
+     "expected_end": 5.66
+    },
+    {
+     "word": "os",
+     "expected_start": 5.66,
+     "expected_end": 5.98
+    },
+    {
+     "word": "dois",
+     "expected_start": 5.98,
+     "expected_end": 7.16
+    }
+   ]
+  },
+  {
+   "sing_start": 205.49,
+   "sing_end": 210.96,
+   "language": "pt",
+   "lyrics": "De mãos dadas a cantar, mataram o doutor",
+   "lyrics_timed": [
+    {
+     "word": "De",
+     "expected_start": 0.4,
+     "expected_end": 1.18
+    },
+    {
+     "word": "mãos",
+     "expected_start": 0.45,
+     "expected_end": 1.18
+    },
+    {
+     "word": "dadas",
+     "expected_start": 1.18,
+     "expected_end": 1.96
+    },
+    {
+     "word": "a",
+     "expected_start": 1.96,
+     "expected_end": 2.36
+    },
+    {
+     "word": "cantar,",
+     "expected_start": 3.46,
+     "expected_end": 4.34
+    },
+    {
+     "word": "mataram",
+     "expected_start": 4.34,
+     "expected_end": 4.7
+    },
+    {
+     "word": "o",
+     "expected_start": 4.7,
+     "expected_end": 5.94
+    },
+    {
+     "word": "doutor",
+     "expected_start": 4.75,
+     "expected_end": 5.94
+    }
+   ]
+  },
+  {
+   "sing_start": 212.32,
+   "sing_end": 214.96,
+   "language": "pt",
+   "lyrics": "Mataram o doutor",
+   "lyrics_timed": [
+    {
+     "word": "Mataram",
+     "expected_start": 0.05,
+     "expected_end": 1.38
+    },
+    {
+     "word": "o",
+     "expected_start": 1.38,
+     "expected_end": 1.7
+    },
+    {
+     "word": "doutor",
+     "expected_start": 1.7,
+     "expected_end": 2.8
+    }
+   ]
+  },
+  {
+   "sing_start": 217.2,
+   "sing_end": 218.86,
+   "language": "pt",
+   "lyrics": "Mataram o doutor",
+   "lyrics_timed": [
+    {
+     "word": "Mataram",
+     "expected_start": 0.4,
+     "expected_end": 0.78
+    },
+    {
+     "word": "o",
+     "expected_start": 0.45,
+     "expected_end": 0.78
+    },
+    {
+     "word": "doutor",
+     "expected_start": 0.78,
+     "expected_end": 1.7
+    }
+   ]
+  },
+  {
+   "sing_start": 221.52,
+   "sing_end": 222.86,
+   "language": "pt",
+   "lyrics": "Mataram o doutor",
+   "lyrics_timed": [
+    {
+     "word": "Mataram",
+     "expected_start": 0.4,
+     "expected_end": 0.96
+    },
+    {
+     "word": "o",
+     "expected_start": 0.45,
+     "expected_end": 0.96
+    },
+    {
+     "word": "doutor",
+     "expected_start": 0.5,
+     "expected_end": 0.96
+    }
+   ]
+  }
+ ],
+ "results": [
+  {
+   "segment": 0,
+   "live_score": 100.0,
+   "words": [
+    {
+     "word": "Zé",
+     "start": 0.31,
+     "end": 1.17,
+     "probability": 0.957
+    },
+    {
+     "word": "não",
+     "start": 1.17,
+     "end": 1.57,
+     "probability": 0.983
+    },
+    {
+     "word": "era",
+     "start": 1.57,
+     "end": 2.19,
+     "probability": 0.995
+    },
+    {
+     "word": "aquele",
+     "start": 2.19,
+     "end": 2.93,
+     "probability": 0.968
+    },
+    {
+     "word": "cara",
+     "start": 2.93,
+     "end": 3.97,
+     "probability": 0.985
+    },
+    {
+     "word": "que",
+     "start": 3.97,
+     "end": 4.77,
+     "probability": 0.911
+    },
+    {
+     "word": "só",
+     "start": 4.77,
+     "end": 5.17,
+     "probability": 0.992
+    },
+    {
+     "word": "faz",
+     "start": 5.17,
+     "end": 5.79,
+     "probability": 0.999
+    },
+    {
+     "word": "o",
+     "start": 5.79,
+     "end": 6.09,
+     "probability": 0.997
+    },
+    {
+     "word": "bem",
+     "start": 6.09,
+     "end": 6.75,
+     "probability": 0.998
+    }
+   ]
+  },
+  {
+   "segment": 1,
+   "live_score": 91.5,
+   "words": [
+    {
+     "word": "Era",
+     "start": -0.78,
+     "end": 0.24,
+     "probability": 0.819
+    },
+    {
+     "word": "alegre",
+     "start": 0.24,
+     "end": 1.58,
+     "probability": 0.996
+    },
+    {
+     "word": "e",
+     "start": 1.58,
+     "end": 1.94,
+     "probability": 0.949
+    },
+    {
+     "word": "bonito,",
+     "start": 1.94,
+     "end": 2.94,
+     "probability": 0.994
+    },
+    {
+     "word": "mas",
+     "start": 3.5,
+     "end": 4.2,
+     "probability": 0.947
+    },
+    {
+     "word": "tem",
+     "start": 4.2,
+     "end": 4.6,
+     "probability": 0.891
+    },
+    {
+     "word": "um",
+     "start": 4.6,
+     "end": 4.86,
+     "probability": 0.991
+    },
+    {
+     "word": "porém",
+     "start": 4.86,
+     "end": 5.74,
+     "probability": 0.996
+    }
+   ]
+  },
+  {
+   "segment": 2,
+   "live_score": 80.8,
+   "words": [
+    {
+     "word": "Ele",
+     "start": -0.22,
+     "end": 0.9,
+     "probability": 0.614
+    },
+    {
+     "word": "era",
+     "start": 0.9,
+     "end": 1.82,
+     "probability": 0.993
+    },
+    {
+     "word": "um",
+     "start": 1.82,
+     "end": 2.18,
+     "probability": 0.983
+    },
+    {
+     "word": "assassino",
+     "start": 2.18,
+     "end": 3.76,
+     "probability": 0.996
+    },
+    {
+     "word": "compulsivo,",
+     "start": 3.76,
+     "end": 5.44,
+     "probability": 0.993
+    },
+    {
+     "word": "é",
+     "start": 5.48,
+     "end": 6.22,
+     "probability": 0.262
+    }
+   ]
+  },
+  {
+   "segment": 3,
+   "live_score": 100.0,
+   "words": [
+    {
+     "word": "Enforcou",
+     "start": 0.1,
+     "end": 1.88,
+     "probability": 0.955
+    },
+    {
+     "word": "sua",
+     "start": 1.88,
+     "end": 2.34,
+     "probability": 0.973
+    },
+    {
+     "word": "coleguinha",
+     "start": 2.34,
+     "end": 4.0,
+     "probability": 0.994
+    },
+    {
+     "word": "quando",
+     "start": 4.0,
+     "end": 5.04,
+     "probability": 0.793
+    },
+    {
+     "word": "era",
+     "start": 5.04,
+     "end": 5.42,
+     "probability": 0.994
+    },
+    {
+     "word": "do",
+     "start": 5.42,
+     "end": 5.88,
+     "probability": 0.911
+    },
+    {
+     "word": "pré",
+     "start": 5.88,
+     "end": 6.26,
+     "probability": 0.581
+    }
+   ]
+  },
+  {
+   "segment": 4,
+   "live_score": 100.0,
+   "words": [
+    {
+     "word": "Mas",
+     "start": 0.24,
+     "end": 1.36,
+     "probability": 0.79
+    },
+    {
+     "word": "que",
+     "start": 1.36,
+     "end": 1.54,
+     "probability": 0.964
+    },
+    {
+     "word": "belo",
+     "start": 1.54,
+     "end": 2.52,
+     "probability": 0.989
+    },
+    {
+     "word": "assassino",
+     "start": 2.52,
+     "end": 4.52,
+     "probability": 0.989
+    },
+    {
+     "word": "que",
+     "start": 4.52,
+     "end": 4.92,
+     "probability": 0.801
+    },
+    {
+     "word": "Zé",
+     "start": 4.92,
+     "end": 5.58,
+     "probability": 0.718
+    },
+    {
+     "word": "se",
+     "start": 5.58,
+     "end": 5.84,
+     "probability": 0.999
+    },
+    {
+     "word": "tornou",
+     "start": 5.84,
+     "end": 6.62,
+     "probability": 1.0
+    }
+   ]
+  },
+  {
+   "segment": 5,
+   "live_score": 100.0,
+   "words": [
+    {
+     "word": "Sempre",
+     "start": 0.28,
+     "end": 1.4,
+     "probability": 0.82
+    },
+    {
+     "word": "alegre",
+     "start": 1.4,
+     "end": 2.48,
+     "probability": 0.986
+    },
+    {
+     "word": "a",
+     "start": 2.48,
+     "end": 3.16,
+     "probability": 0.905
+    },
+    {
+     "word": "cantar,",
+     "start": 3.16,
+     "end": 4.3,
+     "probability": 0.996
+    },
+    {
+     "word": "a",
+     "start": 4.36,
+     "end": 4.4,
+     "probability": 0.003
+    },
+    {
+     "word": "colega",
+     "start": 4.4,
+     "end": 5.06,
+     "probability": 0.983
+    },
+    {
+     "word": "ele",
+     "start": 5.06,
+     "end": 5.34,
+     "probability": 0.719
+    },
+    {
+     "word": "matou",
+     "start": 5.34,
+     "end": 6.0,
+     "probability": 0.988
+    }
+   ]
+  },
+  {
+   "segment": 6,
+   "live_score": 100.0,
+   "words": [
+    {
+     "word": "Zé",
+     "start": 0.21,
+     "end": 1.11,
+     "probability": 0.897
+    },
+    {
+     "word": "pegou",
+     "start": 1.11,
+     "end": 2.11,
+     "probability": 0.989
+    },
+    {
+     "word": "a",
+     "start": 2.11,
+     "end": 2.41,
+     "probability": 0.973
+    },
+    {
+     "word": "namorada",
+     "start": 2.41,
+     "end": 4.07,
+     "probability": 0.999
+    },
+    {
+     "word": "com",
+     "start": 4.07,
+     "end": 4.99,
+     "probability": 0.77
+    },
+    {
+     "word": "um",
+     "start": 4.99,
+     "end": 5.25,
+     "probability": 0.063
+    },
+    {
+     "word": "amante",
+     "start": 5.25,
+     "end": 6.01,
+     "probability": 0.997
+    },
+    {
+     "word": "nu",
+     "start": 6.01,
+     "end": 6.55,
+     "probability": 0.532
+    }
+   ]
+  },
+  {
+   "segment": 7,
+   "live_score": 95.9,
+   "words": [
+    {
+     "word": "E",
+     "start": 0.14,
+     "end": 0.88,
+     "probability": 0.814
+    },
+    {
+     "word": "em",
+     "start": 0.88,
+     "end": 1.64,
+     "probability": 0.982
+    },
+    {
+     "word": "vários",
+     "start": 1.64,
+     "end": 2.26,
+     "probability": 0.988
+    },
+    {
+     "word": "pedacinhos",
+     "start": 2.26,
+     "end": 4.0,
+     "probability": 0.993
+    },
+    {
+     "word": "Zé",
+     "start": 4.0,
+     "end": 5.0,
+     "probability": 0.502
+    },
+    {
+     "word": "o",
+     "start": 5.0,
+     "end": 5.3,
+     "probability": 0.522
+    },
+    {
+     "word": "picotou",
+     "start": 5.3,
+     "end": 6.38,
+     "probability": 0.805
+    }
+   ]
+  },
+  {
+   "segment": 8,
+   "live_score": 100.0,
+   "words": [
+    {
+     "word": "Escondeu",
+     "start": 0.08,
+     "end": 1.98,
+     "probability": 0.886
+    },
+    {
+     "word": "todos",
+     "start": 1.98,
+     "end": 2.52,
+     "probability": 0.983
+    },
+    {
+     "word": "os",
+     "start": 2.52,
+     "end": 3.24,
+     "probability": 0.996
+    },
+    {
+     "word": "restos",
+     "start": 3.24,
+     "end": 4.32,
+     "probability": 0.999
+    },
+    {
+     "word": "lá",
+     "start": 4.32,
+     "end": 4.72,
+     "probability": 0.868
+    },
+    {
+     "word": "no",
+     "start": 4.72,
+     "end": 5.08,
+     "probability": 0.995
+    },
+    {
+     "word": "seu",
+     "start": 5.08,
+     "end": 5.5,
+     "probability": 0.996
+    },
+    {
+     "word": "jardim",
+     "start": 5.5,
+     "end": 6.66,
+     "probability": 0.998
+    }
+   ]
+  },
+  {
+   "segment": 9,
+   "live_score": 95.7,
+   "words": [
+    {
+     "word": "E",
+     "start": -0.42,
+     "end": 1.02,
+     "probability": 0.928
+    },
+    {
+     "word": "alegre",
+     "start": 1.02,
+     "end": 2.2,
+     "probability": 0.991
+    },
+    {
+     "word": "e",
+     "start": 2.2,
+     "end": 2.54,
+     "probability": 0.889
+    },
+    {
+     "word": "sorridente",
+     "start": 2.54,
+     "end": 3.86,
+     "probability": 0.999
+    },
+    {
+     "word": "Zé",
+     "start": 3.86,
+     "end": 5.02,
+     "probability": 0.796
+    },
+    {
+     "word": "cantava",
+     "start": 5.02,
+     "end": 6.1,
+     "probability": 0.976
+    },
+    {
+     "word": "assim",
+     "start": 6.1,
+     "end": 6.76,
+     "probability": 0.825
+    }
+   ]
+  },
+  {
+   "segment": 10,
+   "live_score": 80.0,
+   "words": [
+    {
+     "word": "Lalaralala,",
+     "start": 0.52,
+     "end": 0.96,
+     "probability": 0.104
+    },
+    {
+     "word": "chop",
+     "start": 1.04,
+     "end": 1.18,
+     "probability": 0.13
+    },
+    {
+     "word": "chop",
+     "start": 1.18,
+     "end": 1.44,
+     "probability": 0.689
+    },
+    {
+     "word": "chop",
+     "start": 1.44,
+     "end": 1.66,
+     "probability": 0.988
+    }
+   ]
+  },
+  {
+   "segment": 11,
+   "live_score": 91.7,
+   "words": [
+    {
+     "word": "Ai,",
+     "start": 0.32,
+     "end": 0.42,
+     "probability": 0.081
+    },
+    {
+     "word": "como",
+     "start": 0.5,
+     "end": 0.6,
+     "probability": 0.989
+    },
+    {
+     "word": "eu",
+     "start": 0.6,
+     "end": 0.74,
+     "probability": 0.996
+    },
+    {
+     "word": "gosto",
+     "start": 0.74,
+     "end": 1.02,
+     "probability": 0.998
+    },
+    {
+     "word": "de",
+     "start": 1.02,
+     "end": 1.38,
+     "probability": 0.995
+    },
+    {
+     "word": "matar",
+     "start": 1.38,
+     "end": 1.76,
+     "probability": 0.971
+    }
+   ]
+  },
+  {
+   "segment": 12,
+   "live_score": 93.9,
+   "words": [
+    {
+     "word": "Nada",
+     "start": 0.38,
+     "end": 0.74,
+     "probability": 0.763
+    },
+    {
+     "word": "me",
+     "start": 0.74,
+     "end": 0.92,
+     "probability": 0.998
+    },
+    {
+     "word": "deixa",
+     "start": 0.92,
+     "end": 1.32,
+     "probability": 0.998
+    },
+    {
+     "word": "mais",
+     "start": 1.32,
+     "end": 1.66,
+     "probability": 0.994
+    },
+    {
+     "word": "contente",
+     "start": 1.66,
+     "end": 2.3,
+     "probability": 0.999
+    }
+   ]
+  },
+  {
+   "segment": 13,
+   "live_score": 62.5,
+   "words": [
+    {
+     "word": "Felizes",
+     "start": 0.2,
+     "end": 0.84,
+     "probability": 0.904
+    },
+    {
+     "word": "assaltes",
+     "start": 0.84,
+     "end": 1.44,
+     "probability": 0.807
+    }
+   ]
+  },
+  {
+   "segment": 14,
+   "live_score": 100.0,
+   "words": [
+    {
+     "word": "Mas",
+     "start": 0.0,
+     "end": 0.94,
+     "probability": 0.587
+    },
+    {
+     "word": "que",
+     "start": 0.94,
+     "end": 1.48,
+     "probability": 0.992
+    },
+    {
+     "word": "belo",
+     "start": 1.48,
+     "end": 2.42,
+     "probability": 0.989
+    },
+    {
+     "word": "assassino",
+     "start": 2.42,
+     "end": 4.3,
+     "probability": 0.5
+    },
+    {
+     "word": "que",
+     "start": 4.3,
+     "end": 4.72,
+     "probability": 0.405
+    },
+    {
+     "word": "Zé",
+     "start": 4.72,
+     "end": 5.46,
+     "probability": 0.555
+    },
+    {
+     "word": "se",
+     "start": 5.46,
+     "end": 5.72,
+     "probability": 0.979
+    },
+    {
+     "word": "tornou",
+     "start": 5.72,
+     "end": 6.56,
+     "probability": 0.99
+    }
+   ]
+  },
+  {
+   "segment": 15,
+   "live_score": 95.3,
+   "words": [
+    {
+     "word": "Sempre",
+     "start": -0.7,
+     "end": 1.4,
+     "probability": 0.923
+    },
+    {
+     "word": "alegre",
+     "start": 1.4,
+     "end": 2.56,
+     "probability": 0.997
+    },
+    {
+     "word": "a",
+     "start": 2.56,
+     "end": 3.16,
+     "probability": 0.953
+    },
+    {
+     "word": "cantar,",
+     "start": 3.16,
+     "end": 4.02,
+     "probability": 1.0
+    },
+    {
+     "word": "o",
+     "start": 4.34,
+     "end": 4.42,
+     "probability": 0.971
+    },
+    {
+     "word": "amante",
+     "start": 4.42,
+     "end": 5.06,
+     "probability": 0.999
+    },
+    {
+     "word": "ele",
+     "start": 5.06,
+     "end": 5.38,
+     "probability": 0.966
+    },
+    {
+     "word": "matou",
+     "start": 5.38,
+     "end": 6.28,
+     "probability": 0.995
+    }
+   ]
+  },
+  {
+   "segment": 16,
+   "live_score": 100.0,
+   "words": [
+    {
+     "word": "Encontrou",
+     "start": -0.14,
+     "end": 1.86,
+     "probability": 0.97
+    },
+    {
+     "word": "sua",
+     "start": 1.86,
+     "end": 2.4,
+     "probability": 0.994
+    },
+    {
+     "word": "alma",
+     "start": 2.4,
+     "end": 3.36,
+     "probability": 0.999
+    },
+    {
+     "word": "gêmea",
+     "start": 3.36,
+     "end": 4.8,
+     "probability": 0.994
+    },
+    {
+     "word": "numa",
+     "start": 4.8,
+     "end": 5.36,
+     "probability": 0.903
+    },
+    {
+     "word": "reunião",
+     "start": 5.36,
+     "end": 6.86,
+     "probability": 1.0
+    }
+   ]
+  },
+  {
+   "segment": 17,
+   "live_score": 92.3,
+   "words": [
+    {
+     "word": "De",
+     "start": -0.94,
+     "end": -0.38,
+     "probability": 0.758
+    },
+    {
+     "word": "assassinos",
+     "start": -0.38,
+     "end": 1.74,
+     "probability": 0.995
+    },
+    {
+     "word": "compulsivos",
+     "start": 1.74,
+     "end": 3.78,
+     "probability": 0.995
+    },
+    {
+     "word": "com",
+     "start": 3.78,
+     "end": 4.78,
+     "probability": 0.751
+    },
+    {
+     "word": "um",
+     "start": 4.78,
+     "end": 5.22,
+     "probability": 0.889
+    },
+    {
+     "word": "tal",
+     "start": 5.22,
+     "end": 5.52,
+     "probability": 0.99
+    },
+    {
+     "word": "doutor",
+     "start": 5.52,
+     "end": 6.52,
+     "probability": 0.987
+    }
+   ]
+  },
+  {
+   "segment": 18,
+   "live_score": 100.0,
+   "words": [
+    {
+     "word": "Era",
+     "start": 0.1,
+     "end": 1.2,
+     "probability": 0.874
+    },
+    {
+     "word": "alegre",
+     "start": 1.2,
+     "end": 2.58,
+     "probability": 0.999
+    },
+    {
+     "word": "e",
+     "start": 2.58,
+     "end": 3.22,
+     "probability": 0.947
+    },
+    {
+     "word": "bonita",
+     "start": 3.22,
+     "end": 4.22,
+     "probability": 0.999
+    },
+    {
+     "word": "e",
+     "start": 4.22,
+     "end": 4.74,
+     "probability": 0.635
+    },
+    {
+     "word": "matava",
+     "start": 4.74,
+     "end": 5.76,
+     "probability": 0.996
+    },
+    {
+     "word": "sem",
+     "start": 5.76,
+     "end": 6.44,
+     "probability": 0.992
+    },
+    {
+     "word": "dó",
+     "start": 6.44,
+     "end": 6.78,
+     "probability": 0.997
+    }
+   ]
+  },
+  {
+   "segment": 19,
+   "live_score": 85.3,
+   "words": [
+    {
+     "word": "Os",
+     "start": -1.04,
+     "end": 0.76,
+     "probability": 0.916
+    },
+    {
+     "word": "dois",
+     "start": 0.76,
+     "end": 1.26,
+     "probability": 0.997
+    },
+    {
+     "word": "se",
+     "start": 1.26,
+     "end": 1.94,
+     "probability": 0.998
+    },
+    {
+     "word": "apaixonaram",
+     "start": 1.94,
+     "end": 4.32,
+     "probability": 0.995
+    },
+    {
+     "word": "e",
+     "start": 4.32,
+     "end": 4.96,
+     "probability": 0.891
+    },
+    {
+     "word": "punham",
+     "start": 4.96,
+     "end": 5.56,
+     "probability": 0.726
+    },
+    {
+     "word": "-se",
+     "start": 5.56,
+     "end": 5.82,
+     "probability": 0.998
+    },
+    {
+     "word": "a",
+     "start": 5.82,
+     "end": 6.16,
+     "probability": 1.0
+    },
+    {
+     "word": "cantar",
+     "start": 6.16,
+     "end": 7.28,
+     "probability": 1.0
+    }
+   ]
+  },
+  {
+   "segment": 20,
+   "live_score": 80.0,
+   "words": [
+    {
+     "word": "Lalaralala,",
+     "start": 0.45,
+     "end": 0.97,
+     "probability": 0.239
+    },
+    {
+     "word": "chop",
+     "start": 1.05,
+     "end": 1.17,
+     "probability": 0.187
+    },
+    {
+     "word": "chop",
+     "start": 1.17,
+     "end": 1.45,
+     "probability": 0.708
+    },
+    {
+     "word": "chop",
+     "start": 1.45,
+     "end": 1.71,
+     "probability": 0.982
+    }
+   ]
+  },
+  {
+   "segment": 21,
+   "live_score": 93.5,
+   "words": [
+    {
+     "word": "Como",
+     "start": 0.38,
+     "end": 0.58,
+     "probability": 0.761
+    },
+    {
+     "word": "gostamos",
+     "start": 0.58,
+     "end": 1.16,
+     "probability": 0.973
+    },
+    {
+     "word": "de",
+     "start": 1.16,
+     "end": 1.48,
+     "probability": 0.995
+    },
+    {
+     "word": "matar",
+     "start": 1.48,
+     "end": 1.82,
+     "probability": 0.923
+    }
+   ]
+  },
+  {
+   "segment": 22,
+   "live_score": 94.1,
+   "words": [
+    {
+     "word": "Nada",
+     "start": 0.38,
+     "end": 0.76,
+     "probability": 0.736
+    },
+    {
+     "word": "nos",
+     "start": 0.76,
+     "end": 0.98,
+     "probability": 0.998
+    },
+    {
+     "word": "deixa",
+     "start": 0.98,
+     "end": 1.36,
+     "probability": 0.998
+    },
+    {
+     "word": "mais",
+     "start": 1.36,
+     "end": 1.7,
+     "probability": 0.99
+    },
+    {
+     "word": "contentes",
+     "start": 1.7,
+     "end": 2.54,
+     "probability": 0.998
+    },
+    {
+     "word": "e",
+     "start": 2.54,
+     "end": 2.68,
+     "probability": 0.911
+    },
+    {
+     "word": "f...",
+     "start": 2.68,
+     "end": 2.7,
+     "probability": 0.217
+    }
+   ]
+  },
+  {
+   "segment": 23,
+   "live_score": 75.0,
+   "words": [
+    {
+     "word": "Felizes",
+     "start": 0.38,
+     "end": 0.94,
+     "probability": 0.853
+    },
+    {
+     "word": "a",
+     "start": 0.94,
+     "end": 1.12,
+     "probability": 0.025
+    },
+    {
+     "word": "saltitar",
+     "start": 1.12,
+     "end": 1.56,
+     "probability": 0.031
+    }
+   ]
+  },
+  {
+   "segment": 24,
+   "live_score": 100.0,
+   "words": [
+    {
+     "word": "Mas",
+     "start": 0.0,
+     "end": 0.9,
+     "probability": 0.756
+    },
+    {
+     "word": "que",
+     "start": 0.9,
+     "end": 1.5,
+     "probability": 0.947
+    },
+    {
+     "word": "belo",
+     "start": 1.5,
+     "end": 2.42,
+     "probability": 0.961
+    },
+    {
+     "word": "par",
+     "start": 2.42,
+     "end": 2.9,
+     "probability": 0.835
+    },
+    {
+     "word": "de",
+     "start": 2.9,
+     "end": 3.64,
+     "probability": 0.898
+    },
+    {
+     "word": "assassinos",
+     "start": 3.64,
+     "end": 5.06,
+     "probability": 0.978
+    },
+    {
+     "word": "eram",
+     "start": 5.06,
+     "end": 5.66,
+     "probability": 0.538
+    },
+    {
+     "word": "os",
+     "start": 5.66,
+     "end": 6.08,
+     "probability": 0.992
+    },
+    {
+     "word": "dois",
+     "start": 6.08,
+     "end": 6.36,
+     "probability": 0.972
+    }
+   ]
+  },
+  {
+   "segment": 25,
+   "live_score": 93.7,
+   "words": [
+    {
+     "word": "De",
+     "start": -0.33,
+     "end": 0.15,
+     "probability": 0.628
+    },
+    {
+     "word": "mãos",
+     "start": 0.15,
+     "end": 0.89,
+     "probability": 0.989
+    },
+    {
+     "word": "dadas",
+     "start": 0.89,
+     "end": 1.85,
+     "probability": 0.989
+    },
+    {
+     "word": "a",
+     "start": 1.85,
+     "end": 2.37,
+     "probability": 0.953
+    },
+    {
+     "word": "cantar,",
+     "start": 2.37,
+     "end": 3.17,
+     "probability": 0.998
+    },
+    {
+     "word": "mataram",
+     "start": 3.53,
+     "end": 4.39,
+     "probability": 0.942
+    },
+    {
+     "word": "o",
+     "start": 4.39,
+     "end": 4.67,
+     "probability": 0.99
+    },
+    {
+     "word": "doutor",
+     "start": 4.67,
+     "end": 5.35,
+     "probability": 0.981
+    }
+   ]
+  },
+  {
+   "segment": 26,
+   "live_score": 0.0,
+   "words": [
+    {
+     "word": "Mataram",
+     "start": 0.18,
+     "end": 1.48,
+     "probability": 0.956
+    },
+    {
+     "word": "o",
+     "start": 1.48,
+     "end": 1.78,
+     "probability": 0.99
+    },
+    {
+     "word": "doutor",
+     "start": 1.78,
+     "end": 2.54,
+     "probability": 0.978
+    }
+   ]
+  },
+  {
+   "segment": 27,
+   "live_score": 95.0,
+   "words": [
+    {
+     "word": "Mataram",
+     "start": -0.78,
+     "end": 0.52,
+     "probability": 0.967
+    },
+    {
+     "word": "o",
+     "start": 0.52,
+     "end": 0.84,
+     "probability": 0.996
+    },
+    {
+     "word": "doutor",
+     "start": 0.84,
+     "end": 1.62,
+     "probability": 0.988
+    }
+   ]
+  },
+  {
+   "segment": 28,
+   "live_score": 95.0,
+   "words": [
+    {
+     "word": "Mataram",
+     "start": -1.16,
+     "end": 0.06,
+     "probability": 0.821
+    },
+    {
+     "word": "o",
+     "start": 0.06,
+     "end": 0.44,
+     "probability": 0.976
+    },
+    {
+     "word": "doutor",
+     "start": 0.44,
+     "end": 1.12,
+     "probability": 0.924
+    }
+   ]
+  }
+ ]
+}
