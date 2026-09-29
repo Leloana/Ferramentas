@@ -14,6 +14,7 @@ Este repositório agrupa scripts, automações e ferramentas diversas criadas pa
 | [**DOCX to PDF Converter** (`docx_to_pdf_converter`)](./docx_to_pdf_converter) | Utilitário em Python para conversão em lote ou individual de documentos Microsoft Word (`.docx`) para PDF utilizando automação COM nativa. |
 | [**Local Agent** (`local_agent`)](./local_agent) | Esqueleto e guardrails para agentes ReAct rodando 100% locais via Ollama (`qwen3.5:9b`), com sandboxing e orçamento estrito de VRAM para GPUs de 12GB (RTX 4070). |
 | [**Image Gen** (`image_gen`)](./image_gen) | Workflows e guias de geração de imagem para ComfyUI (ex: Krea2 turbo t2i). |
+| [**Apresentação PDF** (`apresentacao_pdf`)](./apresentacao_pdf) | Gera apresentações em PDF com cara de Canva (slides 16:9, blocos de cor, artes) a partir de um `.toml` simples. Python puro + Chrome headless. |
 
 ### 🔴 Descontinuadas / Arquivadas (Intactas para Referência)
 

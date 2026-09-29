@@ -40,6 +40,11 @@ Este repositório (`Ferramentas`) agrupa scripts, automações e ecossistemas in
 #### 7. 🎨 Image Gen (`/image_gen`)
 * **Descrição:** Workflows ComfyUI (ex: Krea2 turbo t2i) e documentação de geração de imagens.
 
+
+#### 8. 🎨 Apresentação PDF (`/apresentacao_pdf`)
+* **Descrição:** Gera apresentações em PDF com cara de Canva (7 layouts: capa, cards, comparação, frase, blocos, número, decisões) a partir de um `.toml`. Tema por cores, fontes do Google Fonts, artes opcionais.
+* **Stack:** Python 3.11+ (stdlib, `tomllib`), Chrome/Chromium/Edge headless.
+* **Documentação:** [`apresentacao_pdf/README.md`](apresentacao_pdf/README.md).
 ---
 
 ### 🔴 Projetos Descontinuados / Arquivados (Mantidos para Referência)
@@ -91,6 +96,10 @@ Este repositório (`Ferramentas`) agrupa scripts, automações e ecossistemas in
   ```powershell
   python main.py
   ```
+
+### Apresentação PDF (apresentacao_pdf)
+* **Novo modelo:** `python3 apresentacao_pdf/gerar.py novo <pasta>`
+* **Gerar PDF:** `python3 apresentacao_pdf/gerar.py <pasta>/slides.toml [--abrir] [--html]`
 
 ### DOCX to PDF Converter
 * **Ambiente:** Instalar `pip install -r requirements.txt` (com MS Word instalado no Windows).

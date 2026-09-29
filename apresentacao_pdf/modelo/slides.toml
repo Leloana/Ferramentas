@@ -1,0 +1,120 @@
+# Apresentação em PDF — edite e rode:  python3 gerar.py <esta pasta>/slides.toml
+#
+# Texto: *assim* fica na cor principal, **assim** fica em negrito.
+# Imagens: caminho relativo a esta pasta (ex.: "capa.png"). Todas são opcionais.
+# Cada [[slide]] é uma página. Layouts: capa · cards · comparacao · frase · blocos · numero · decisoes
+# Apague os slides que não usar e repita os que quiser.
+
+[tema]
+cor = "#2450d8"           # cor principal (capa e destaques)
+fundo = "#f7f6f2"         # fundo das páginas
+texto = "#1c1c1e"
+bom = "#1d8248"           # verde: ✓, sobe
+ruim = "#c7372f"          # vermelho: ✕, cai
+extra = "#c27a00"         # terceira cor dos blocos
+fonte = "Barlow"          # qualquer fonte do Google Fonts
+fonte_titulo = "Barlow Condensed"
+logo = ""                 # ex.: "logo.png" (quadrado, aparece na capa)
+
+# ---------- 1. capa ----------
+[[slide]]
+layout = "capa"
+titulo = "Minha Ideia"
+subtitulo = "Uma frase que resume tudo."
+selo = "Proposta para conversa"
+imagem = ""               # arte à direita, dentro de uma moldura
+
+# ---------- 2. cards: 2 a 4 cartões lado a lado ----------
+[[slide]]
+layout = "cards"
+rotulo = "A ideia"
+titulo = "Qual problema a gente *resolve* hoje?"
+selo = "✓ Pronto, falta lançar"   # opcional, canto superior direito
+cards = [
+  { titulo = "Primeiro", texto = "Uma linha explicando.", icone = "" },
+  { titulo = "Segundo", texto = "Outra linha curta.", icone = "" },
+  { titulo = "Terceiro", texto = "E a última.", icone = "" },
+]
+
+# ---------- 3. comparacao: antes (✕) × depois (✓) ----------
+[[slide]]
+layout = "comparacao"
+rotulo = "O diferencial"
+titulo = "Resultado, não opinião"
+antes = { titulo = "Como é hoje", itens = ["Problema um", "Problema dois", "Problema três"] }
+depois = { titulo = "Com a gente", itens = ["Solução um", "Solução dois", "Solução três"] }
+
+# ---------- 4. frase: frase grande + chips + paleta + celular OU imagem à direita ----------
+[[slide]]
+layout = "frase"
+rotulo = "Posicionamento"
+frase = "Uma frase *de impacto.*"
+sub = "Uma linha de apoio."
+chips = ["🎯 Público", "🔁 Hábito", "📱 Canal"]
+cores = ["#f7f6f2", "#2450d8", "#1d8248", "#c7372f"]
+legenda_cores = "verde = bom · vermelho = ruim"
+rodape = "Exemplo ilustrativo."
+# imagem = "arte.png"      # use imagem OU celular
+[slide.celular]
+rotulo = "Série semanal"
+titulo = "Top 3 da semana"
+botao = "Link na bio"
+linhas = [
+  { texto = "1 · Primeiro", valor = "58%", sobe = true },
+  { texto = "2 · Segundo", valor = "55%", sobe = true },
+  { texto = "3 · Terceiro", valor = "51%", sobe = false },
+]
+
+# ---------- 5. blocos: etiquetas + 1 a 3 blocos coloridos + números grandes ----------
+[[slide]]
+layout = "blocos"
+rotulo = "Como gera dinheiro"
+titulo = "Grátis pro usuário"
+etiquetas = [
+  { texto = "Isto pode", bom = true },
+  { texto = "isto não pode", bom = false },
+]
+blocos = [
+  { titulo = "Fonte 1", texto = "A principal." },      # estilo: cheio · suave · borda (automático)
+  { titulo = "Fonte 2", texto = "A segunda." },
+  { titulo = "Fonte 3", texto = "A terceira." },
+]
+numeros = [
+  { valor = "20 mi", texto = "um número de referência" },
+  { valor = "3×", texto = "outro número" },
+  { valor = "€ 50 mi", texto = "mais um" },
+]
+
+# ---------- 6. numero: número gigante + itens à esquerda, barras à direita ----------
+[[slide]]
+layout = "numero"
+rotulo = "Quanto custa"
+valor = "~R$ 200"
+unidade = " /ano"
+itens = [
+  { nome = "Item 1", valor = "R$ 58/ano" },
+  { nome = "Item 2", valor = "R$ 15/mês" },
+]
+faixa = { texto = "Uma frase de contexto com **destaque**.", icone = "" }
+[slide.lado]
+rotulo = "Quanto pode render"
+titulo = "Por mês"
+nota = "Estimativa."
+barras = [                 # pct = tamanho da barra (0 a 100)
+  { nome = "Cenário 1", valor = "R$ 400", pct = 5 },
+  { nome = "Cenário 2", valor = "R$ 5 mil", pct = 30 },
+  { nome = "Cenário 3", valor = "R$ 30 mil", pct = 100 },
+]
+
+# ---------- 7. decisoes: grade de decisões com sugestão + alternativas ----------
+[[slide]]
+layout = "decisoes"
+rotulo = "A palavra final é sua"
+titulo = "Para você decidir"
+sub = "Nada aqui está fechado. São sugestões."
+rodape = "Valores são estimativas."
+itens = [
+  { tema = "Nome", sugestao = "Opção A", alternativas = ["B", "C"] },
+  { tema = "Quando", sugestao = "Mês que vem", alternativas = ["Agora", "Depois"] },
+  { tema = "Quanto", sugestao = "R$ 200", alternativas = ["Mais", "Menos"] },
+]

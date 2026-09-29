@@ -1,0 +1,119 @@
+# Exemplo real: proposta do Tracker Royale para um stakeholder.
+# python3 gerar.py exemplos/tracker_royale/slides.toml
+
+titulo = "Tracker Royale — Proposta"
+
+[tema]
+logo = "logo.png"
+
+[[slide]]
+layout = "capa"
+titulo = "Tracker\nRoyale"
+subtitulo = "O meta de Clash Royale, sem achismo."
+selo = "Proposta para conversa · nome provisório"
+imagem = "hero.png"
+
+[[slide]]
+layout = "cards"
+rotulo = "A ideia"
+titulo = "Qual deck está *ganhando de verdade* hoje?"
+selo = "✓ Site pronto, falta lançar"
+cards = [
+  { titulo = "Os melhores decks", texto = "Milhares de partidas dos jogadores do topo, todo dia.", icone = "spot-trophy.png" },
+  { titulo = "Da sua arena", texto = "O deck certo pra onde você está, não só pro topo.", icone = "spot-tower.png" },
+  { titulo = "Em 1 toque", texto = "Copia o deck direto pro jogo.", icone = "spot-crown.png" },
+]
+
+[[slide]]
+layout = "comparacao"
+rotulo = "O diferencial"
+titulo = "Resultado, não opinião"
+antes = { titulo = "O que o jogador acha hoje", itens = [
+  "Tier list de opinião de criador",
+  "\"70% de vitória\" em só 20 partidas",
+  "Meta do topo, longe da arena dele",
+  "Patch sai e ninguém mostra o impacto",
+] }
+depois = { titulo = "Tracker Royale", itens = [
+  "Ranking pelo resultado das partidas",
+  "Só entra deck com jogos suficientes",
+  "O melhor deck de cada arena",
+  "Quem subiu e quem caiu em cada patch",
+] }
+
+[[slide]]
+layout = "frase"
+rotulo = "Posicionamento sugerido"
+frase = "O meta *sem achismo.*"
+sub = "O deck que ganha de verdade, não o que teve sorte."
+chips = ["🎯 Quem quer subir troféu", "🔁 Troca de deck a cada patch", "📱 Vídeos curtos toda semana"]
+cores = ["#f7f6f2", "#2450d8", "#1d8248", "#c7372f", "#b43ac9", "#1c1c1e"]
+legenda_cores = "verde = subiu · vermelho = caiu"
+rodape = "Exemplo ilustrativo de post, com números fictícios."
+[slide.celular]
+rotulo = "Meta Monday"
+titulo = "Top 5 decks da semana"
+botao = "Copia o deck no link da bio"
+linhas = [
+  { texto = "1 · Hog Cycle", valor = "58%", sobe = true },
+  { texto = "2 · Log Bait", valor = "57%", sobe = true },
+  { texto = "3 · Golem Beatdown", valor = "56%", sobe = true },
+  { texto = "4 · X-Bow", valor = "55%", sobe = false },
+  { texto = "5 · Miner Control", valor = "54%", sobe = false },
+]
+
+[[slide]]
+layout = "blocos"
+rotulo = "Como gera dinheiro"
+titulo = "Grátis pro jogador"
+etiquetas = [
+  { texto = "Supercell permite anúncio em site de fã", bom = true },
+  { texto = "e proíbe cobrar do jogador", bom = false },
+]
+blocos = [
+  { titulo = "Anúncios", texto = "Google AdSense no site. A fonte principal." },
+  { titulo = "Código de criador", texto = "~5% do que os seguidores gastam na loja do jogo." },
+  { titulo = "Doações", texto = "Apoio voluntário, sem benefício em troca." },
+]
+numeros = [
+  { valor = "20 mi", texto = "visitas/mês do RoyaleAPI, referência em Clash Royale" },
+  { valor = "20 mi", texto = "visitas/mês do DeckShop" },
+  { valor = "€ 50 mi", texto = "venda do League of Graphs (LoL), feito por 1 pessoa" },
+]
+
+[[slide]]
+layout = "numero"
+rotulo = "Quanto custa"
+valor = "~R$ 200"
+unidade = " /ano"
+itens = [
+  { nome = "Domínio", valor = "~R$ 58/ano" },
+  { nome = "Ferramenta de posts", valor = "~R$ 15/mês" },
+  { nome = "Servidor, e-mail, redes", valor = "R$ 0" },
+  { nome = "Opcional: anúncio pago", valor = "R$ 1.000" },
+]
+faixa = { texto = "Custo baixo porque **o site já está pronto** e roda num servidor que já existe. O risco é de tempo, não de dinheiro.", icone = "spot-chart.png" }
+[slide.lado]
+rotulo = "Quanto pode render"
+titulo = "Receita de anúncio por mês"
+nota = "Estimativa de mercado. Depende da rede de anúncio e do país do público. O código de criador soma por cima."
+barras = [
+  { nome = "50 mil visitas", valor = "~R$ 400", pct = 5 },
+  { nome = "300 mil visitas", valor = "R$ 2,5 a 10 mil", pct = 22 },
+  { nome = "1,5 milhão de visitas", valor = "R$ 12 a 50 mil", pct = 100 },
+]
+
+[[slide]]
+layout = "decisoes"
+rotulo = "A palavra final é sua"
+titulo = "Para você decidir"
+sub = "Nada aqui está fechado. São sugestões para a conversa."
+rodape = "Material não oficial e não endossado pela Supercell. Valores são estimativas."
+itens = [
+  { tema = "Nome", sugestao = "Tracker Royale", alternativas = ["RoyaleSignal", "CrownStat", "ElixirStats", "RoyaleEdge"] },
+  { tema = "Domínio", sugestao = "trackerroyale.com", alternativas = [".gg", ".app", "com hífen", "o do nome escolhido"] },
+  { tema = "Idioma nas redes", sugestao = "Português", alternativas = ["Inglês", "Os dois"] },
+  { tema = "Anúncio pago", sugestao = "Depois de 10 posts", alternativas = ["Não fazer", "Fazer já"] },
+  { tema = "Registro de marca", sugestao = "Não por agora", alternativas = ["Registrar (R$ 440)"] },
+  { tema = "Lançamento", sugestao = "Assim que houver domínio", alternativas = ["Outra data"] },
+]
