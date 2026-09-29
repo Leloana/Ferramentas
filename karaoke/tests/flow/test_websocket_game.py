@@ -218,6 +218,10 @@ class TestWebsocketGameFlow(unittest.TestCase):
         clock_patch = patch("mic_stream._monotonic", lambda: server_clock["now"])
         clock_patch.start()
         self.addCleanup(clock_patch.stop)
+        # Folga larga: o pacote pós-audio_ended depende de escalonamento real de threads.
+        grace_patch = patch("ws.room._late_packet_grace", lambda room: 1.5)
+        grace_patch.start()
+        self.addCleanup(grace_patch.stop)
 
         with self.client.websocket_connect(f"/ws/room/graceroom?role=display&song_id={self.song_slug}") as ws_display:
             for expected_type in ("pairing_status", "players_update", "singing_state"):
@@ -238,7 +242,7 @@ class TestWebsocketGameFlow(unittest.TestCase):
                 self.assertEqual(ws_display.receive_json()["type"], "singing_state")
                 ws_mic.send_bytes(build_packet(0, np.full(1000, 0.1, dtype=np.float32)))
 
-                # Janela do verso fecha em 5.5 s; 5.6 s ainda está dentro da folga (0.6 s).
+                # Janela do verso fecha em 5.5 s; 5.6 s ainda está dentro da folga.
                 server_clock["now"] += 3.6
                 ws_display.send_json({"type": "playback_time", "current_time": 5.6})
                 self.assertEqual(ws_display.receive_json()["type"], "outro_start")
@@ -258,7 +262,11 @@ class TestWebsocketGameFlow(unittest.TestCase):
                 ws_display.send_json({"type": "audio_ended"})
                 # Outro pacote do fim do verso (5.3 s) chegando 450 ms depois. Sem congelar
                 # o relógio no audio_ended, a extrapolação o jogaria para fora da janela.
-                time.sleep(0.1)
+                from state import room_manager
+                deadline = time.monotonic() + 2.0
+                while not room_manager.rooms["graceroom"].song_clock.ended and time.monotonic() < deadline:
+                    time.sleep(0.01)  # espera o servidor processar o audio_ended
+                self.assertTrue(room_manager.rooms["graceroom"].song_clock.ended)
                 server_clock["now"] += 0.45
                 ws_mic.send_bytes(build_packet(53800, np.full(1000, 0.1, dtype=np.float32)))
                 msg_score = ws_display.receive_json()

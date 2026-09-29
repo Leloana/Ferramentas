@@ -24,7 +24,7 @@ Este arquivo resume os detalhes técnicos específicos do subprojeto **Karaoke A
 | ├─ `queue_manager.py` | Fila de downloads/processamento da GPU | Garante que processos pesados de IA aguardem ocioso da GPU. |
 | ├─ `score_engine.py` | Motor de cálculo de notas do cantor | Contém fuzzy tokens, Double Metaphone e penalidades de tempo. |
 | ├─ `mic_stream.py` | Linha do tempo do áudio dos microfones | Formato do pacote `KM01`, relógio da música (`SongClock`) e janelas disjuntas por verso. |
-| ├─ `stt_engine.py` | Instanciação e controle do Faster-Whisper | Tem fallback CUDA -> CPU automático e limpa silêncio (VAD). |
+| ├─ `stt_engine.py` | Instanciação e controle do Faster-Whisper | Tem fallback CUDA -> CPU automático e limpa silêncio (VAD). Modelo padrão `large-v3-turbo` (float16 na GPU, int8 na CPU), trocável por `KARAOKE_WHISPER_*`. Os limiares de confiança foram calibrados no `medium`: recalibrar com canto real. |
 | ├─ `routes/` | Handlers REST HTTP (`songs`, `lyrics`, `upload`, `queue`) | Retornam estritamente JSON (ou `FileResponse` para áudio). |
 | ├─ `ws/room.py` | Canal WebSocket bidirecional da sala | Processa áudio PCM, gerencia turnos e persiste perfis. |
 | └─ `utils/` | Helpers (Download YouTube, parsing LRC, alinhadores) | Modifique `lrc_align.py` / `lrc_pro.py` para alterar o alinhamento da letra. |

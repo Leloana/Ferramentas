@@ -77,30 +77,42 @@ def _get_word_threshold(no_speech_prob: float) -> float:
     else:
         return max(0.08, _HARD_FLOOR)  # Canto relativamente limpo
 
+# large-v3-turbo: encoder do large-v3 com decoder de 4 camadas. Erra menos que o
+# medium e decodifica mais rápido que ele; ~2 GB de VRAM em float16.
+DEFAULT_WHISPER_MODEL = "large-v3-turbo"
+DEFAULT_COMPUTE = {"cuda": "float16", "cpu": "int8"}
+
+
 class STTEngine:
-    def __init__(self, model_size="medium", device="auto", compute_type="default"):
+    def __init__(self, model_size=None, device=None, compute_type=None):
+        """Carrega o Whisper. Sem argumento, lê do ambiente:
+
+        KARAOKE_WHISPER_MODEL   — nome do faster-whisper (padrão large-v3-turbo)
+        KARAOKE_WHISPER_DEVICE  — auto | cuda | cpu (padrão auto: tenta CUDA, cai na CPU)
+        KARAOKE_WHISPER_COMPUTE — força o compute_type (padrão float16 na GPU, int8 na CPU)
         """
-        device: "cuda", "cpu" ou "auto"
-        """
-        self.model_size = model_size
-        # Se device for auto, tenta cuda primeiro
-        if device == "auto":
+        self.model_size = model_size or os.environ.get("KARAOKE_WHISPER_MODEL", DEFAULT_WHISPER_MODEL)
+        device = device or os.environ.get("KARAOKE_WHISPER_DEVICE", "auto")
+        self.compute_override = compute_type or os.environ.get("KARAOKE_WHISPER_COMPUTE") or None
+
+        if device in ("auto", "cuda"):
             try:
-                logger.info(f"Tentando carregar modelo Whisper '{model_size}' com CUDA...")
-                self.model = WhisperModel(model_size, device="cuda", compute_type="float16")
-                logger.info("Modelo carregado com CUDA com sucesso!")
+                self._load("cuda")
                 return
             except Exception as e:
-                logger.warning(f"Falha ao carregar CUDA: {e}. Tentando CPU...")
-        
-        # Fallback para CPU
+                logger.warning(f"Falha ao carregar Whisper '{self.model_size}' com CUDA: {e}. Tentando CPU...")
         try:
-            logger.info(f"Carregando modelo Whisper '{model_size}' com CPU...")
-            self.model = WhisperModel(model_size, device="cpu", compute_type="int8")
-            logger.info("Modelo carregado com CPU com sucesso.")
+            self._load("cpu")
         except Exception as e:
-            logger.error(f"Erro fatal ao carregar Whisper: {e}")
+            logger.error(f"Erro fatal ao carregar Whisper '{self.model_size}': {e}")
             raise e
+
+    def _load(self, device: str) -> None:
+        compute = self.compute_override or DEFAULT_COMPUTE[device]
+        logger.info(f"Carregando Whisper '{self.model_size}' em {device} ({compute})...")
+        self.model = WhisperModel(self.model_size, device=device, compute_type=compute)
+        self.device = device
+        logger.info(f"Whisper '{self.model_size}' carregado em {device}.")
 
     def transcribe(self, audio_data, language, initial_prompt=None, rms_threshold=0.001, expected_words=None):
         rms = np.sqrt(np.mean(audio_data ** 2)) if len(audio_data) > 0 else 0
@@ -182,8 +194,11 @@ class STTEngine:
         except RuntimeError as e:
             if "cublas" in str(e).lower() or "cudnn" in str(e).lower():
                 logger.warning("Erro de biblioteca CUDA detectado durante execução. Trocando para CPU...")
-                self.model = WhisperModel(self.model_size, device="cpu", compute_type="int8")
-                return self.transcribe(audio_data, language, initial_prompt=initial_prompt, expected_words=expected_words)
+                # O compute forçado pode ser só de GPU (ex.: int8_float16): na CPU vale o padrão dela.
+                self.compute_override = None
+                self._load("cpu")
+                return self.transcribe(audio_data, language, initial_prompt=initial_prompt,
+                                       rms_threshold=rms_threshold, expected_words=expected_words)
             raise e
 
 # Singleton para uso no servidor
@@ -192,6 +207,5 @@ engine = None
 def get_stt_engine():
     global engine
     if engine is None:
-        # Usamos 'auto' para tentar GPU se disponível, senão CPU
-        engine = STTEngine(device="auto")
+        engine = STTEngine()
     return engine
