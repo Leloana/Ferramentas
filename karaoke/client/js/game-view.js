@@ -183,7 +183,9 @@ export async function startKaraoke() {
         captureMic: captureMic,
         mediaElement: dom.audioPlayer,
         onAudioChunk: (data) => {
-            if (state.ws && state.ws.readyState === WebSocket.OPEN && state.isSingingActive) {
+            // Música inteira, não só os versos (ver mobile-mic-view.js). Fora do
+            // jogo o servidor descarta: sem relógio da música não há onde encaixar.
+            if (state.ws && state.ws.readyState === WebSocket.OPEN) {
                 state.ws.send(data);
             }
         }

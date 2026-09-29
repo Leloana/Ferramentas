@@ -46,7 +46,9 @@ export function initMobileMicView() {
                 state.audioManager = new AudioLifecycleManager({
                     captureMic: true,
                     onAudioChunk: (data) => {
-                        if (state.mobileWs && state.mobileWs.readyState === WebSocket.OPEN && !state.micMuted && state.isSingingActive) {
+                        // Manda a música inteira, não só os versos: o servidor recorta a
+                        // janela de cada verso e a gravação da partida fica completa.
+                        if (state.mobileWs && state.mobileWs.readyState === WebSocket.OPEN && !state.micMuted && state.isActiveInGame) {
                             state.mobileWs.send(data);
                         }
                     }
