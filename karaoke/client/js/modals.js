@@ -5,6 +5,7 @@ import { showToast } from './toast.js';
 import { fetchSongs, loadAndOpenLrcEditor, promptGenerationOptions } from './selection-view.js';
 import { openModal, closeModal } from './modal.js';
 import { initTabs } from './tabs.js';
+import { resolvePublicOrigin } from './public-origin.js';
 
 export function initModals() {
     initPairingModal();
@@ -82,21 +83,7 @@ function initPairingModal() {
             statusBox.removeAttribute('data-status');
         }
 
-        let targetHost = window.location.host;
-        try {
-            const ipRes = await fetch('/api/get-ip');
-            if (ipRes.ok) {
-                const ipData = await ipRes.json();
-                if (ipData.ip && ipData.ip !== '127.0.0.1') {
-                    const port = window.location.port ? `:${window.location.port}` : '';
-                    targetHost = `${ipData.ip}${port}`;
-                }
-            }
-        } catch (e) {
-            console.warn("Nao foi possivel obter o IP da rede local, usando fallback do host do navegador:", e);
-        }
-
-        const pairingUrl = `${window.location.protocol}//${targetHost}/?role=mic&room=${activeRoomId}`;
+        const pairingUrl = `${await resolvePublicOrigin()}/?role=mic&room=${activeRoomId}`;
         pairingLink.href = pairingUrl;
         pairingLink.innerText = pairingUrl;
 

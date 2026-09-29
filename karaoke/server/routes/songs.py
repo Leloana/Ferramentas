@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+import os
 import shutil
 import socket
 from pathlib import Path
@@ -100,6 +101,7 @@ async def api_reinstall_song(song_id: str, align_lyrics: bool = False):
 
 @router.get("/api/get-ip")
 async def get_ip():
+    """IP na rede local e, atrás do túnel, a URL pública (KARAOKE_PUBLIC_URL) para o QR."""
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
         s.connect(("8.8.8.8", 1))
@@ -108,4 +110,4 @@ async def get_ip():
         ip = "127.0.0.1"
     finally:
         s.close()
-    return {"ip": ip}
+    return {"ip": ip, "public_url": os.environ.get("KARAOKE_PUBLIC_URL") or None}

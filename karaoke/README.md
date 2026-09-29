@@ -81,6 +81,10 @@ O backend suporta as seguintes variáveis de ambiente:
 | Variável | Descrição | Exemplo | Padrão |
 | :--- | :--- | :--- | :--- |
 | `KARAOKE_HTTP` | Desativa a verificação de arquivos SSL key.pem/cert.pem locais, forçando inicialização puramente em HTTP. Ideal para túneis reverso (ex. Cloudflare Tunnel). | `true` | `false` |
+| `KARAOKE_PUBLIC_URL` | URL pública usada nos QR Codes (atrás do túnel). Sem ela, o QR usa o IP da rede local quando a TV está em `localhost`/IP, ou o próprio domínio. | `https://karaoke.myall.net.br` | — |
+| `KARAOKE_HOST` / `KARAOKE_PORT` | Endereço e porta de escuta ao rodar `python server/main.py`. Atrás do túnel, use `127.0.0.1`. | `127.0.0.1` / `8000` | `0.0.0.0` / `8000` |
+
+Servidor final via Cloudflare Tunnel (`karaoke.myall.net.br`): checklist pendente em [docs/guides/TODO_SERVIDOR_FINAL.md](docs/guides/TODO_SERVIDOR_FINAL.md).
 
 ---
 

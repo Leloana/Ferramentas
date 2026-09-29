@@ -191,6 +191,18 @@ class TestHttpApiFlow(unittest.TestCase):
         response = self.client.get("/api/get-ip")
         self.assertEqual(response.status_code, 200)
         self.assertIn("ip", response.json())
+        self.assertIsNone(response.json()["public_url"])
+
+    def test_get_ip_reports_tunnel_url(self):
+        with patch.dict("os.environ", {"KARAOKE_PUBLIC_URL": "https://karaoke.myall.net.br"}):
+            response = self.client.get("/api/get-ip")
+        self.assertEqual(response.json()["public_url"], "https://karaoke.myall.net.br")
+
+    def test_static_assets_are_served_and_revalidated(self):
+        for path in ("/vendor/lucide.min.js", "/js/main.js", "/js/worklets/audio-processor.js?v=km01"):
+            response = self.client.get(path)
+            self.assertEqual(response.status_code, 200, path)
+            self.assertEqual(response.headers["cache-control"], "no-cache", path)
 
 if __name__ == "__main__":
     unittest.main()

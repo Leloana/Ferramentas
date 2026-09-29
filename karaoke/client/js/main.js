@@ -2,6 +2,7 @@ import { state, setAppState } from './state.js';
 import { dom } from './dom.js';
 import { myRole, myRoom, isSoloMobileMode } from './config.js';
 import { showToast } from './toast.js';
+import { resolvePublicOrigin } from './public-origin.js';
 import { updateMicStatusPanel, checkInitialMicPermission } from './mic-status.js';
 import { initSyncControls } from './sync.js';
 import { connectMobileMicrophoneWebSocket } from './ws-mic.js';
@@ -139,21 +140,7 @@ async function initHomeQrcode() {
         return;
     }
 
-    let targetHost = window.location.host;
-    try {
-        const ipRes = await fetch('/api/get-ip');
-        if (ipRes.ok) {
-            const ipData = await ipRes.json();
-            if (ipData.ip && ipData.ip !== '127.0.0.1') {
-                const port = window.location.port ? `:${window.location.port}` : '';
-                targetHost = `${ipData.ip}${port}`;
-            }
-        }
-    } catch (e) {
-        console.warn('Nao foi possivel obter o IP da rede local para o QR code:', e);
-    }
-
-    const homeUrl = `${window.location.protocol}//${targetHost}/?open=add-song`;
+    const homeUrl = `${await resolvePublicOrigin()}/?open=add-song`;
     qrcodeImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(homeUrl)}`;
 }
 

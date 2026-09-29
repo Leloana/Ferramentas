@@ -36,6 +36,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 CLIENT_DIR = Path(__file__).resolve().parent.parent / "client"
+STATIC_PREFIXES = ("/js/", "/styles/", "/vendor/")
 
 app = FastAPI(title="Karaoke MVP Server")
 app.add_middleware(
@@ -44,6 +45,17 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.middleware("http")
+async def revalidate_static(request, call_next):
+    """Estáticos sem versão na URL: obriga browser e Cloudflare a revalidar (ETag)."""
+    response = await call_next(request)
+    if request.url.path.startswith(STATIC_PREFIXES):
+        response.headers["Cache-Control"] = "no-cache"
+    return response
+
+
 app.mount("/styles", StaticFiles(directory=str(CLIENT_DIR / "styles")), name="styles")
 app.mount("/js", StaticFiles(directory=str(CLIENT_DIR / "js")), name="js")
 app.mount("/vendor", StaticFiles(directory=str(CLIENT_DIR / "vendor")), name="vendor")
@@ -56,23 +68,27 @@ app.include_router(ws_router)
 
 
 if __name__ == "__main__":
+    import os
+
     import uvicorn
     server_path = Path(__file__).resolve().parent
     ssl_key = server_path / "key.pem"
     ssl_cert = server_path / "cert.pem"
-    
-    import os
+
     force_http = os.environ.get("KARAOKE_HTTP", "").lower() in ("1", "true", "yes")
-    
+    # Atrás do Cloudflare Tunnel: KARAOKE_HOST=127.0.0.1 (o TLS fica no Cloudflare).
+    host = os.environ.get("KARAOKE_HOST", "0.0.0.0")
+    port = int(os.environ.get("KARAOKE_PORT", "8000"))
+
     if ssl_key.exists() and ssl_cert.exists() and not force_http:
         logger.info(f"Iniciando servidor HTTPS com SSL nos arquivos: {ssl_key} e {ssl_cert}")
         uvicorn.run(
             app,
-            host="0.0.0.0",
-            port=8000,
+            host=host,
+            port=port,
             ssl_keyfile=str(ssl_key),
             ssl_certfile=str(ssl_cert)
         )
     else:
-        logger.info("Iniciando servidor em modo HTTP padrão (sem SSL).")
-        uvicorn.run(app, host="0.0.0.0", port=8000)
+        logger.info(f"Iniciando servidor em modo HTTP padrão (sem SSL) em {host}:{port}.")
+        uvicorn.run(app, host=host, port=port)
