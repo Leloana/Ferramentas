@@ -351,5 +351,41 @@ class TestWebsocketGameFlow(unittest.TestCase):
                     ), mic_msgs)
 
 
+    def test_mic_sees_tv_back_after_display_reconnects(self):
+        """TV fecha de verdade (troca de página) e volta: o celular sai de "TV Desconectada"."""
+
+        def drain_until(ws, predicate, limit=20):
+            msgs = []
+            while len(msgs) < limit:
+                msgs.append(ws.receive_json())
+                if predicate(msgs[-1]):
+                    return msgs
+            self.fail(f"mensagem esperada não chegou: {msgs}")
+
+        def is_display_status(status):
+            return lambda m: m["type"] == "pairing_status" and m.get("role") == "display" and m["status"] == status
+
+        with self.client.websocket_connect(f"/ws/room/backroom?role=display&song_id={self.song_slug}") as ws_tv:
+            for expected_type in ("pairing_status", "players_update", "singing_state"):
+                self.assertEqual(ws_tv.receive_json()["type"], expected_type)
+            with self.client.websocket_connect("/ws/room/backroom?role=mic") as ws_mic:
+                self.assertEqual(ws_mic.receive_json()["type"], "register_request")
+                self.assertEqual(ws_mic.receive_json()["type"], "singing_state")
+                ws_mic.send_json({"type": "register_name", "name": "Volta"})
+                self.assertEqual(ws_mic.receive_json()["type"], "registration_success")
+
+                ws_tv.close()
+                drain_until(ws_mic, is_display_status("unpaired"))
+
+                with self.client.websocket_connect(f"/ws/room/backroom?role=display&song_id={self.song_slug}") as ws_tv2:
+                    # O singing_state da TV nova sai depois do aviso aos celulares.
+                    for expected_type in ("pairing_status", "players_update", "singing_state"):
+                        self.assertEqual(ws_tv2.receive_json()["type"], expected_type)
+                    # Ida e volta no celular: sem o aviso, falha em vez de esperar para sempre.
+                    ws_mic.send_json({"type": "register_name", "name": "Volta"})
+                    msgs = drain_until(ws_mic, lambda m: m["type"] == "registration_error")
+                    self.assertTrue(any(is_display_status("paired")(m) for m in msgs), msgs)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -107,6 +107,18 @@ async def _broadcast_segment_start(room, idx: int) -> None:
         await _send_segment_start(room.mic, room.segments, idx, room.song_title)
 
 
+async def _notify_mics_display_status(room, status: str) -> None:
+    """Avisa os celulares (registrados ou na fila) se a TV está conectada."""
+    targets = list(room.players.values()) + room.unregistered_mics
+    if room.mic and room.mic not in targets:
+        targets.append(room.mic)
+    for ws in targets:
+        try:
+            await ws.send_json({"type": "pairing_status", "status": status, "role": "display"})
+        except Exception as e:
+            logger.debug(f"Falha ao avisar o celular do estado da TV ({status}): {e}")
+
+
 async def _notify_players_status(room) -> None:
     status = "paired" if room.players else "unpaired"
     if room.display:
@@ -325,6 +337,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
         room.display = websocket
         logger.info(f"Display (TV) conectado para a sala: {room_id}")
         await _notify_players_status(room)
+        # Celular que viu "TV Desconectada" numa troca de página volta a "pareado".
+        await _notify_mics_display_status(room, "paired")
 
     try:
         await websocket.send_json({"type": "singing_state", "active": room.is_singing_active})
@@ -579,14 +593,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
             # já assumiu: não pode apagar o novo nem avisar "TV desconectada".
             room.display = None
             queue_manager.notify_game_ended()
-            targets = list(room.players.values()) + room.unregistered_mics
-            if room.mic and room.mic not in targets:
-                targets.append(room.mic)
-            for ws in targets:
-                try:
-                    await ws.send_json({"type": "pairing_status", "status": "unpaired", "role": "display"})
-                except Exception as e:
-                    logger.debug(f"Falha ao notificar mic do unpair: {e}")
+            await _notify_mics_display_status(room, "unpaired")
 
         try:
             await websocket.close()
