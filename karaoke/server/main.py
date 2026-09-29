@@ -46,6 +46,7 @@ app.add_middleware(
 )
 app.mount("/styles", StaticFiles(directory=str(CLIENT_DIR / "styles")), name="styles")
 app.mount("/js", StaticFiles(directory=str(CLIENT_DIR / "js")), name="js")
+app.mount("/vendor", StaticFiles(directory=str(CLIENT_DIR / "vendor")), name="vendor")
 
 app.include_router(songs_router)
 app.include_router(lyrics_router)
