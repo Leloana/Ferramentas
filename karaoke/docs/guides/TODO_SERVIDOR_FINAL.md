@@ -50,8 +50,13 @@ Celular/TV ──https/wss──> Cloudflare (TLS + Access) ──túnel──> 
       - **Decidir:** o QR da tela inicial abre `/?open=add-song` no celular, que usa `/api/queue/add`.
         Protegido = o celular também faz login (OTP por e-mail). Público = qualquer um com a URL
         enfileira download na GPU.
-- [ ] **Conferir o cache da borda:** `curl -sI https://karaoke.myall.net.br/js/main.js` deve trazer
-      `cache-control: no-cache` e `cf-cache-status` diferente de `HIT`.
+- [x] **Cache Rule no Cloudflare** (feito em 2026-09-29). Sem ela o *Browser Cache TTL* da zona (4 h)
+      troca o `no-cache` do servidor por `max-age=14400` e o celular fica com JS velho após uma
+      atualização. *Bypass cache* **não** resolve (não mexe no TTL do navegador).
+      Caching → Cache Rules: expressão `(http.host eq "karaoke.myall.net.br")` · *Eligible for cache* ·
+      Edge TTL *Use cache-control header if present, bypass cache if not* · Browser TTL *Respect origin TTL*.
+- [x] **Conferir o cache da borda:** `curl -sI https://karaoke.myall.net.br/js/main.js` deve trazer
+      `cache-control: no-cache` e `cf-cache-status` diferente de `HIT` (hoje: `REVALIDATED`).
 - [ ] **Teste no iPhone:** Safari → QR de pareamento → permitir microfone → cantar um verso inteiro.
       A nota de um verso cantado certinho deve chegar perto de 100 (antes do P0 o teto era 85).
 - [ ] **Tirar `server/key.pem` e `server/cert.pem` do git.** A chave privada está versionada. Com o
