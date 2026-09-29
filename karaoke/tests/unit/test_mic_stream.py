@@ -212,7 +212,7 @@ class TestSegmentWindow(unittest.TestCase):
 class TestTimingReference(unittest.TestCase):
     def test_perfect_singing_scores_100_after_window_shift(self):
         """Regressão do teto de 85: o tempo do Whisper conta do início da janela, não do verso."""
-        from ws.room import _shift_words
+        from segment_scoring import shift_words as _shift_words
 
         expected = [{"word": w, "expected_start": t} for w, t in
                     [("eu", 0.05), ("vou", 0.6), ("cantar", 1.2), ("agora", 2.0)]]

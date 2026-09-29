@@ -5,7 +5,6 @@ import asyncio
 import json
 import logging
 import os
-import re
 from datetime import datetime
 from pathlib import Path
 
@@ -13,20 +12,15 @@ import numpy as np
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 from mic_stream import STREAM_SR, MicTimeline, parse_packet, segment_window
-from score_engine import calculate_score
+from recorder import GameRecording, recording_base_dir
+from segment_scoring import (
+    needs_whisper, score_whisper_free, score_words, shift_words, transcribe_kwargs,
+)
 from state import room_manager, song_manager, queue_manager
 from stt_engine import get_stt_engine
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
-
-# Trechos não-lexicais que pulam o Whisper e são pontuados só por energia (RMS).
-VOCALIZE_WORDS = {
-    "oh", "la", "uh", "na", "ah", "oo", "woo", "yeah", "yeh", "wow",
-    "hm", "hmm", "hey", "hei",
-}
-VOCALIZE_HIGH_RMS = 0.008
-VOCALIZE_LOW_RMS = 0.002
 
 # Janelas de captura/transição relativas aos timestamps do segmento.
 PRE_SING_BUFFER_SEC = 1.5
@@ -113,22 +107,6 @@ async def _broadcast_segment_start(room, idx: int) -> None:
         await _send_segment_start(room.mic, room.segments, idx, room.song_title)
 
 
-def _score_vocalize(seg_text: str, rms: float) -> tuple[float, str, int, int]:
-    """Pontua segmentos não-lexicais (oh-oh, la-la-la) só pela energia."""
-    clean_words = [re.sub(r"[^\w]", "", w.lower()) for w in seg_text.split()]
-    total = len(clean_words)
-    if rms > VOCALIZE_HIGH_RMS:
-        return 100.0, seg_text, total, total
-    if rms > VOCALIZE_LOW_RMS:
-        return 50.0, "(som baixo)", total // 2, total
-    return 0.0, "(silêncio)", 0, total
-
-
-def _is_vocalize(seg_text: str) -> bool:
-    clean_words = [re.sub(r"[^\w]", "", w.lower()) for w in seg_text.split()]
-    return len(clean_words) > 0 and all(w in VOCALIZE_WORDS for w in clean_words if w)
-
-
 async def _notify_players_status(room) -> None:
     status = "paired" if room.players else "unpaired"
     if room.display:
@@ -159,23 +137,20 @@ async def _advance_registration_queue(room) -> None:
             pass
 
 
-def _shift_words(words: list[dict], offset: float) -> list[dict]:
-    """Converte tempos relativos ao início da janela para relativos ao sing_start."""
-    return [{**w, "start": w["start"] + offset, "end": w["end"] + offset} for w in words]
-
-
 async def process_segment_multiplayer(
     room,
+    segments: list[dict],
     seg_idx: int,
     active_audio: dict[str, tuple[np.ndarray, float]],
-    window_offset: float,
-    seg_lang: str,
-    seg_lyrics: list,
-    seg_text: str,
+    window: tuple[float, float],
     scoring_mode: str = "timing"
 ) -> None:
     stt = get_stt_engine()
     results = {}
+    # Lista capturada no disparo: a TV pode trocar de música antes do Whisper terminar.
+    segment = segments[seg_idx]
+    prev_segment = segments[seg_idx - 1] if seg_idx > 0 else None
+    window_offset = window[0] - segment["sing_start"]
 
     async def process_player(player_name: str, audio_data: np.ndarray, rms_original: float):
         try:
@@ -184,44 +159,29 @@ async def process_segment_multiplayer(
             logger.info(
                 f"\n========================================\n"
                 f"🎤 [DEBUG MULTI {player_name}] Segmento {seg_idx + 1} - Sala {room.song_id}\n"
-                f"   - Letra Esperada: '{seg_text}'\n"
+                f"   - Letra Esperada: '{segment['lyrics']}'\n"
                 f"   - Duração do Áudio: {duration:.2f}s\n"
                 f"   - RMS: {rms_original:.6f}\n"
                 f"========================================"
             )
 
-            if _is_vocalize(seg_text):
-                score, transcription_processed, matched_count, total = _score_vocalize(seg_text, rms_original)
-                transcribed_text = transcription_processed
-                result = {
-                    "score": score,
-                    "transcription": transcription_processed,
-                    "matched_words": matched_count,
-                    "total_expected": total,
-                }
+            words = []
+            if needs_whisper(segment, rms_original):
+                def compute():
+                    return stt.transcribe(audio_data, **transcribe_kwargs(segment))
+
+                async with queue_manager.whisper_lock:
+                    transcribed_text, words = await asyncio.to_thread(compute)
+                words = shift_words(words, window_offset)
+                result = score_words(segment, prev_segment, words, scoring_mode)
             else:
-                if rms_original < 0.0018:
-                    transcribed_text = ""
-                    result = {
-                        "score": 0.0,
-                        "transcription": "",
-                        "matched_words": 0,
-                        "total_expected": len(seg_lyrics),
-                    }
-                else:
-                    def compute():
-                        expected = [w["word"] for w in seg_lyrics] if seg_lyrics else None
-                        return stt.transcribe(audio_data, language=seg_lang, initial_prompt=seg_text, expected_words=expected)
+                result = score_whisper_free(segment, rms_original)
+                transcribed_text = result["transcription"]
 
-                    async with queue_manager.whisper_lock:
-                        transcribed_text, words = await asyncio.to_thread(compute)
-                    words = _shift_words(words, window_offset)
-
-                    prev_lyrics = None
-                    if seg_idx > 0 and seg_idx - 1 < len(room.segments):
-                        prev_lyrics = room.segments[seg_idx - 1]["lyrics"].split()
-
-                    result = calculate_score(seg_lyrics, words, prev_expected_words=prev_lyrics, language=seg_lang, scoring_mode=scoring_mode)
+            if room.recording:
+                room.recording.add_segment_result(
+                    player_name, seg_idx, window, rms_original, transcribed_text, words, result
+                )
 
             if player_name not in room.player_segment_scores:
                 room.player_segment_scores[player_name] = {}
@@ -278,7 +238,7 @@ def _late_packet_grace(room) -> float:
 def _dispatch_due_segments(room, current_time: float | None) -> None:
     """Fecha e pontua os versos cuja janela já passou (None = todos, fim da música)."""
     grace = _late_packet_grace(room)
-    for idx, seg in enumerate(room.segments):
+    for idx in range(len(room.segments)):
         if idx in room.transcribed_segments:
             continue
         t0, t1 = segment_window(room.segments, idx, PRE_SING_BUFFER_SEC, POST_SING_BUFFER_SEC)
@@ -292,7 +252,8 @@ def _dispatch_due_segments(room, current_time: float | None) -> None:
             if not timeline:
                 continue
             audio, covered = timeline.extract(t0, t1)
-            timeline.prune_before(t1)
+            if not room.recording:  # a gravação guarda a música inteira
+                timeline.prune_before(t1)
             if covered.any():
                 rms = float(np.sqrt(np.mean(audio[covered] ** 2)))
                 active_audio[player] = (audio, rms)
@@ -301,14 +262,7 @@ def _dispatch_due_segments(room, current_time: float | None) -> None:
             continue
         logger.info(f"Processando segmento {idx + 1} (janela {t0:.2f}s–{t1:.2f}s) para a sala {room.song_id}")
         task = asyncio.create_task(process_segment_multiplayer(
-            room,
-            idx,
-            active_audio,
-            t0 - seg["sing_start"],
-            seg["language"],
-            seg["lyrics_timed"],
-            seg["lyrics"],
-            room.scoring_mode
+            room, room.segments, idx, active_audio, (t0, t1), room.scoring_mode
         ))
         room.pending_tasks.add(task)
         task.add_done_callback(room.pending_tasks.discard)
@@ -440,6 +394,13 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                     room.reset_audio()
                     room.player_segment_scores.clear()
                     room.segment_scores.clear()
+                    base_dir = recording_base_dir()
+                    if base_dir:
+                        room.recording = GameRecording(
+                            base_dir, room.song_id, room.song_title, room.segments, room.scoring_mode,
+                            {"pre_sing_sec": PRE_SING_BUFFER_SEC, "post_sing_sec": POST_SING_BUFFER_SEC},
+                        )
+                        logger.info(f"Gravando a partida em {room.recording.dir}")
                     room.total_score = 0.0
                     room.scored_count = 0
                     room.transcribed_segments.clear()
@@ -579,6 +540,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         "player_scores": player_final_scores
                     })
 
+                    room.finish_recording(complete=True)
                     queue_manager.notify_game_ended()
                     break
 

@@ -202,6 +202,12 @@ class MicTimeline:
             covered[dst + src_lo:dst + src_hi] = True
         return audio, covered
 
+    def end_time(self) -> float | None:
+        """Tempo da música em que termina o pacote mais tardio (None sem pacotes)."""
+        if not self.chunks:
+            return None
+        return max(self._chunk_span(*c)[1] for c in self.chunks)
+
     def prune_before(self, t: float) -> None:
         """Descarta pacotes que terminam antes de `t`."""
         self.chunks = [c for c in self.chunks if self._chunk_span(*c)[1] > t]

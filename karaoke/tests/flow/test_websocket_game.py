@@ -66,6 +66,11 @@ class TestWebsocketGameFlow(unittest.TestCase):
         cls.patcher_dir = patch("state.SONGS_DIR", cls.temp_dir)
         cls.patcher_dir.start()
 
+        # Gravação ligada por padrão: nos testes vai para a pasta temporária.
+        cls.record_dir = cls.temp_dir / "_recordings"
+        cls.patcher_record = patch.dict("os.environ", {"KARAOKE_RECORD_DIR": str(cls.record_dir)})
+        cls.patcher_record.start()
+
         from song_manager import SongManager
         cls.mock_song_manager = SongManager(cls.temp_dir)
         cls.patcher_mgr = patch("state.song_manager", cls.mock_song_manager)
@@ -87,6 +92,7 @@ class TestWebsocketGameFlow(unittest.TestCase):
         cls.patcher_dir.stop()
         cls.patcher_mgr.stop()
         cls.patcher_room_songs.stop()
+        cls.patcher_record.stop()
         shutil.rmtree(cls.temp_dir, ignore_errors=True)
 
     @patch("ws.room.get_stt_engine")
@@ -222,6 +228,10 @@ class TestWebsocketGameFlow(unittest.TestCase):
         grace_patch = patch("ws.room._late_packet_grace", lambda room: 1.5)
         grace_patch.start()
         self.addCleanup(grace_patch.stop)
+        record_dir = self.temp_dir / "_recordings_grace"
+        record_patch = patch.dict("os.environ", {"KARAOKE_RECORD_DIR": str(record_dir)})
+        record_patch.start()
+        self.addCleanup(record_patch.stop)
 
         with self.client.websocket_connect(f"/ws/room/graceroom?role=display&song_id={self.song_slug}") as ws_display:
             for expected_type in ("pairing_status", "players_update", "singing_state"):
@@ -276,6 +286,23 @@ class TestWebsocketGameFlow(unittest.TestCase):
 
                 audio = mock_stt.transcribe.call_args.args[0]
                 self.assertEqual(int(np.count_nonzero(audio)), 3000)
+
+        # A partida ficou gravada: áudio no tempo da música + nota do verso.
+        from recorder import SESSION_FILE, covered_mask, read_wav
+        sessions = list(record_dir.iterdir())
+        self.assertEqual(len(sessions), 1)
+        session = json.loads((sessions[0] / SESSION_FILE).read_text(encoding="utf-8"))
+        self.assertTrue(session["complete"])
+        self.assertEqual(session["song_id"], self.song_slug)
+        self.assertEqual([(r["player"], r["segment"], r["score"]) for r in session["results"]],
+                         [("PlayerTwo", 0, 100.0)])
+        wav = read_wav(sessions[0] / session["players"]["PlayerTwo"]["audio"])
+        covered = covered_mask(session["players"]["PlayerTwo"]["covered"], len(wav))
+        self.assertEqual(int(covered.sum()), 3000)
+        # Pacote do índice 55400 caiu em 5.4 s da música (âncora 1.9375).
+        self.assertTrue(covered[int(round(5.4 * 16000)) + 10])
+        # Mesmas amostras Int16 que o celular mandou (build_packet trunca 0.1 * 32767).
+        np.testing.assert_array_equal(wav[covered], np.float32(int(0.1 * 32767) / 32768.0))
 
 
 

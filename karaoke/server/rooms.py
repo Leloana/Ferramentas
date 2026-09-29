@@ -7,6 +7,7 @@ from typing import Optional
 from fastapi import WebSocket
 
 from mic_stream import MicTimeline, SongClock
+from recorder import GameRecording
 
 logger = logging.getLogger(__name__)
 
@@ -42,9 +43,27 @@ class KaraokeRoom:
         self.is_singing_active = False
         self.song_title = ""
         self.pending_tasks: set = set()
+        # Partida em gravação (KARAOKE_RECORD_DIR) ou None.
+        self.recording: Optional[GameRecording] = None
+
+    def finish_recording(self, complete: bool) -> None:
+        """Salva a partida em gravação, se houver. Falha ao salvar não derruba o jogo."""
+        recording, self.recording = self.recording, None
+        if recording is None:
+            return
+        import stt_engine
+        model = stt_engine.engine.model_size if stt_engine.engine else None
+        try:
+            recording.save(self.mic_timelines, complete=complete, whisper_model=model)
+        except Exception as e:
+            logger.error(f"Falha ao salvar a gravação da partida: {e}", exc_info=True)
 
     def reset_audio(self) -> None:
-        """Descarta o áudio capturado e o relógio (nova música ou novo jogo)."""
+        """Descarta o áudio capturado e o relógio (nova música ou novo jogo).
+
+        Partida em gravação que não chegou ao fim é salva antes, como incompleta.
+        """
+        self.finish_recording(complete=False)
         self.mic_timelines.clear()
         self.song_clock = SongClock()
 

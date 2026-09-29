@@ -47,6 +47,9 @@ pipeline-project/.srclight/
 # Player Profiles
 karaoke/players/
 
+# Karaoke: gravações das partidas (voz dos jogadores; dados de ajuste do score)
+karaoke/recordings/
+
 # TTS Platform: áudio gerado e vozes clonadas enviadas pelo usuário
 tts_platform_pt/server/output/*
 !tts_platform_pt/server/output/.gitkeep
