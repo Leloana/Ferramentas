@@ -41,6 +41,9 @@ html.is-tv body {
     background-image: none;
     background-attachment: scroll;
 }
+/* textura de papel (SVG com feTurbulence) desligada em tudo na TV: modais,
+   card do fim de jogo e cartão demoravam para desenhar e travavam */
+html.is-tv { --tex-paper: none; }
 html.is-tv .app-header,
 html.is-tv .carousel-container,
 html.is-tv .stage-overlay,

@@ -136,6 +136,8 @@
         transparent 0, transparent 11px,
         rgba(151, 135, 105, 0.22) 11px, rgba(151, 135, 105, 0.22) 12px);
 
+    /* o ruído bege do papel foi feito para fundo claro: no escuro vira manchas */
+    --tex-paper: none;
     --paper-bright: #332a21;
     --overlay-paper: rgba(42, 35, 28, 0.96);
     --stamp-good: #2f3b2b;
