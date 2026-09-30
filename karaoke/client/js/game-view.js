@@ -265,6 +265,11 @@ export async function startKaraoke() {
 
         state.audioContext = state.audioManager.audioContext;
         state.localStream = state.audioManager.localStream;
+        if (state.localStream) {
+            // TV Bro não guarda a permissão: o painel só sabe do microfone depois do aviso
+            state.localStreamForced = true;
+            updateMicStatusPanel();
+        }
         state.micSourceNode = state.audioManager.micSourceNode;
         state.micProcessorNode = state.audioManager.micProcessorNode;
         state.mediaElementSource = state.audioManager.mediaElementSource;

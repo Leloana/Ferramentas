@@ -36,6 +36,9 @@ const WORKLET_URL = '/js/worklets/audio-processor.js?v=km01';
 // ficava em "PREPARANDO..." sem fim. Com prazo, cai no modo sem microfone.
 const RESUME_TIMEOUT_MS = 1500;
 const MIC_TIMEOUT_MS = 8000;
+// Com o aviso de permissão na tela (TV Bro pergunta toda vez), dá tempo de
+// responder pelo controle remoto.
+const MIC_PROMPT_TIMEOUT_MS = 60000;
 const WORKLET_TIMEOUT_MS = 8000;
 
 // onLate recebe o valor que chegar depois do prazo (ex.: fechar o microfone).
@@ -183,7 +186,8 @@ export class AudioLifecycleManager {
         // 1. Microphone setup
         if (this.captureMic && !this.localStream) {
             try {
-                this.localStream = await withTimeout(this._getMicStream(), MIC_TIMEOUT_MS, 'Microfone',
+                const micTimeout = (await this._micPermissionGranted()) ? MIC_TIMEOUT_MS : MIC_PROMPT_TIMEOUT_MS;
+                this.localStream = await withTimeout(this._getMicStream(), micTimeout, 'Microfone',
                     (stream) => { if (stream) stream.getTracks().forEach((t) => t.stop()); });
                 this.micSourceNode = this.audioContext.createMediaStreamSource(this.localStream);
                 this.nodes.add(this.micSourceNode);
@@ -503,6 +507,20 @@ export class AudioLifecycleManager {
             }
         }
         throw lastErr;
+    }
+
+    /**
+     * True se o navegador já liberou o microfone (sem aviso de permissão pela frente).
+     * @private
+     */
+    async _micPermissionGranted() {
+        try {
+            if (!navigator.permissions || !navigator.permissions.query) return false;
+            const status = await withTimeout(navigator.permissions.query({ name: 'microphone' }), 1000, 'Permissão');
+            return status.state === 'granted';
+        } catch (e) {
+            return false;
+        }
     }
 
     /**

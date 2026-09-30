@@ -28,14 +28,29 @@ html.is-tv .song-card { padding-top: 0.75rem; padding-bottom: 0.75rem; }
 html.is-tv .song-card__title { font-size: 1.25rem; }
 html.is-tv .artist-group__name { font-size: 1.35rem; }
 html.is-tv .song-card__btn { width: 44px; height: 44px; }
-/* efeitos caros em GPU fraca de TV */
-html.is-tv .carousel-inner { will-change: auto; }
 
-/* Partida na TV: o laço da letra roda a ~15 quadros/s (game-view.js); sem
-   escala/rotação por palavra nem animações infinitas, a GPU fraca acompanha. */
-html.is-tv .word { transition: none; }
+/* ---------- TV leve ----------
+   GPU de TV (Google TV/TV Bro) não aguenta o fundo de papel (SVG com
+   feTurbulence repetido e background-attachment: fixed repinta a tela toda),
+   sombras grandes nem transições de font-size. Na TV: cor lisa, sem sombra,
+   sem transição/animação. O laço da letra roda a ~15 quadros/s (game-view.js).
+   Nada no JS depende de transitionend/animationend. */
+html.is-tv body {
+    background-image: none;
+    background-attachment: scroll;
+}
+html.is-tv .app-header,
+html.is-tv .carousel-container,
+html.is-tv .stage-overlay,
+html.is-tv .modal-content.admin-modal,
+html.is-tv #app .main-card { background-image: none !important; }
+html.is-tv .carousel-container { box-shadow: none; }
+html.is-tv .carousel-inner { will-change: auto; }
+html.is-tv *,
+html.is-tv *::before,
+html.is-tv *::after {
+    transition: none !important;
+    animation: none !important;
+    text-shadow: none !important;
+}
 html.is-tv .word.active { transform: none; box-shadow: none; }
-html.is-tv .verse-progress-fill-top,
-html.is-tv .stage-overlay__fill { transition: none; }
-html.is-tv .status-dot,
-html.is-tv .stage-overlay__dot { animation: none; }
