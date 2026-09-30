@@ -14,6 +14,7 @@ import { initModals } from './modals.js';
 import { initQueueView } from './queue-view.js';
 import { openModal, closeModal } from './modal.js';
 import { initAnnotation } from './annotate.js';
+import { initLyricsScriptControls } from './lyrics-script.js';
 
 function bootstrap() {
     const appEl = document.getElementById('app');
@@ -29,6 +30,7 @@ function bootstrap() {
 
         connectMobileMicrophoneWebSocket();
         initMobileMicView();
+        initLyricsScriptControls();
         initQueueView();
         return;
     }
@@ -74,6 +76,7 @@ function bootstrap() {
     initGameControls();
     initModals();
     initAnnotation();
+    initLyricsScriptControls();
     initSearch();
     initQueueView();
     initHomeQrcode();

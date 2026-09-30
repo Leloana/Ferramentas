@@ -3,6 +3,7 @@ from pathlib import Path
 
 from utils.lrc import read_lrc_meta
 from utils.meta import get_meta_field
+from lyrics_text import add_romaji
 
 def _title_fallback(name: str) -> str:
     return name.replace("_", " ").replace("-", " ").title()
@@ -81,6 +82,8 @@ class SongManager:
             title = title or lrc_title
             artist = artist or lrc_artist
 
+        # Japonês: romaji por palavra e por linha, para a tela mostrar original, romaji ou ambos.
+        add_romaji(segments)
         return {"id": song_id, "title": title, "artist": artist, "segments": segments}
 
     def get_audio_path(self, song_id: str):

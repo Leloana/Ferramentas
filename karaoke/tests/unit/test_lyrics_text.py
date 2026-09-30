@@ -64,6 +64,98 @@ class TestJapaneseWords(unittest.TestCase):
         self.assertEqual(infer_language("我爱你中国人民", "en"), "en")  # chinês não tem kana
 
 
+class TestRomajiDisplay(unittest.TestCase):
+    def test_romaji_follows_pronunciation(self):
+        from lyrics_text import ja_romaji
+
+        # partículas como se cantam: は→wa, へ→e, を→o; vogal longa preservada
+        self.assertEqual([ja_romaji(w) for w in split_words("あの声はどこから来て", "ja")],
+                         ["ano", "koewa", "dokokara", "kite"])
+        self.assertEqual(ja_romaji("どこへ"), "dokoe")
+        self.assertEqual(ja_romaji("日を"), "hio")
+        self.assertEqual(ja_romaji("遠ざかって"), "toozakatte")
+
+    def test_add_romaji_only_touches_japanese_segments(self):
+        from lyrics_text import add_romaji
+
+        ja = {"language": "ja", "lyrics": "青い、濃い、橙色の日",
+              "lyrics_timed": [{"word": w} for w in split_words("青い、濃い、橙色の日", "ja")]}
+        pt = {"language": "pt", "lyrics": "Joga pedra", "lyrics_timed": [{"word": "Joga"}, {"word": "pedra"}]}
+        add_romaji([ja, pt])
+        self.assertEqual(ja["lyrics_romaji"], "aoi koi daidaiirono hi")
+        self.assertEqual([w["romaji"] for w in ja["lyrics_timed"]], ["aoi", "koi", "daidaiirono", "hi"])
+        self.assertNotIn("lyrics_romaji", pt)
+        self.assertNotIn("romaji", pt["lyrics_timed"][0])
+
+
+class TestSongLoadAddsRomaji(unittest.TestCase):
+    def test_song_manager_serves_romaji_for_japanese_songs_already_prepared(self):
+        import json
+        import shutil
+        import tempfile
+
+        from song_manager import SongManager
+
+        tmp = Path(tempfile.mkdtemp(prefix="karaoke_ja_"))
+        self.addCleanup(shutil.rmtree, tmp, ignore_errors=True)
+        (tmp / "aoi").mkdir()
+        segments = [{"language": "ja", "lyrics": "青い、濃い、橙色の日", "sing_start": 1.0, "sing_end": 3.0,
+                     "lyrics_timed": [{"word": w, "expected_start": 0.1 * i, "expected_end": 0.1 * i + 0.1}
+                                      for i, w in enumerate(split_words("青い、濃い、橙色の日", "ja"))]}]
+        (tmp / "aoi" / "segments.json").write_text(json.dumps(segments, ensure_ascii=False), encoding="utf-8")
+
+        data = SongManager(tmp).get_song_data("aoi")
+        self.assertEqual(data["segments"][0]["lyrics_romaji"], "aoi koi daidaiirono hi")
+        # o arquivo no disco não muda: romaji é calculado ao carregar
+        self.assertNotIn("lyrics_romaji", (tmp / "aoi" / "segments.json").read_text(encoding="utf-8"))
+
+
+class TestRomajiLyrics(unittest.TestCase):
+    """Letra colada só em romaji: fica como veio (sem inventar kana) e ainda pontua,
+    porque o Whisper escreve em kana e a comparação é pela pronúncia."""
+
+    LINE = "toozakatte iku hi mo mienai"
+    SEGMENT = {
+        "language": "ja", "lyrics": LINE,
+        "lyrics_timed": [{"word": w, "expected_start": round(0.05 + i * 0.4, 2), "expected_end": round(0.35 + i * 0.4, 2)}
+                         for i, w in enumerate(LINE.split())],
+    }
+
+    def test_romaji_line_is_split_on_spaces_and_gets_no_generated_script(self):
+        from lyrics_text import add_romaji
+
+        self.assertEqual(split_words(self.LINE, "ja"), self.LINE.split())
+        self.assertEqual(join_words(self.LINE.split(), "ja"), self.LINE)
+        seg = {**self.SEGMENT, "lyrics_timed": [dict(w) for w in self.SEGMENT["lyrics_timed"]]}
+        add_romaji([seg])
+        self.assertNotIn("lyrics_romaji", seg)
+        self.assertNotIn("romaji", seg["lyrics_timed"][0])
+
+    def test_typed_romaji_matches_the_sung_pronunciation(self):
+        self.assertEqual(ja_reading("koe wa"), ja_reading("声は"))  # partícula は = "wa"
+        self.assertEqual(ja_reading("toozakatte"), ja_reading("遠ざかって"))
+        self.assertEqual(ja_reading("tōzakatte"), "tozakatte")  # mácron normalizado
+
+    def test_sung_right_scores_high_and_wrong_lyrics_low(self):
+        heard = _pieces(["遠", "ざ", "かって", "いく", "日", "も", "見", "えない"])
+        self.assertGreaterEqual(score_words(self.SEGMENT, None, heard, "timing")["score"], 90.0)
+        other = _pieces(["あの", "声", "は", "どこ", "から", "来", "て"])
+        self.assertLess(score_words(self.SEGMENT, None, other, "timing")["score"], 20.0)
+
+    def test_song_prep_times_romaji_words_in_order(self):
+        heard = _pieces(["遠", "ざ", "かって", "いく", "日", "も", "見", "えない"])
+        timed = time_words_by_characters(self.LINE, "ja", heard)
+        self.assertEqual([w["word"] for w in timed], self.LINE.split())
+        starts = [w["start"] for w in timed]
+        self.assertEqual(starts, sorted(starts))
+        self.assertTrue(all(w["end"] >= w["start"] for w in timed))
+
+    def test_mixed_line_keeps_spaces_around_latin_words(self):
+        words = split_words("Oh baby 愛してる、ずっと", "ja")
+        self.assertEqual(words[:2], ["Oh", "baby"])
+        self.assertEqual(join_words(words, "ja"), "Oh baby 愛してる、ずっと")
+
+
 class TestJapaneseScoring(unittest.TestCase):
     SEGMENT = {
         "language": "ja", "lyrics": LINE,

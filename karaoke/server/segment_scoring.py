@@ -5,7 +5,9 @@ from __future__ import annotations
 
 import re
 
-from lyrics_text import regroup_timed_words, split_words
+from lyrics_text import (
+    has_japanese_script, is_japanese, project_onto_romaji_lyrics, regroup_timed_words, split_words,
+)
 from score_engine import calculate_score
 
 # Trechos não-lexicais que pulam o Whisper e são pontuados só por energia (RMS).
@@ -62,8 +64,13 @@ def score_words(segment: dict, prev_segment: dict | None, words: list[dict], sco
     """Nota das palavras do Whisper, já com tempos relativos ao sing_start."""
     language = segment["language"]
     prev_lyrics = split_words(prev_segment["lyrics"], language) if prev_segment else None
-    # Japonês: o Whisper devolve pedaços de 1–3 caracteres; regrupa nas unidades da letra.
-    words = regroup_timed_words(words, language)
+    if is_japanese(language) and not has_japanese_script(segment["lyrics"]):
+        # Letra colada em romaji e o Whisper escreve em kana: compara pela pronúncia,
+        # projetando o que foi ouvido sobre as palavras da letra.
+        words = project_onto_romaji_lyrics(words, segment["lyrics"])
+    else:
+        # Japonês: o Whisper devolve pedaços de 1–3 caracteres; regrupa nas unidades da letra.
+        words = regroup_timed_words(words, language)
     return calculate_score(
         segment["lyrics_timed"], words,
         prev_expected_words=prev_lyrics, language=segment["language"], scoring_mode=scoring_mode,

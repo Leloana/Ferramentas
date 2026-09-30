@@ -2,6 +2,7 @@ import { state, setAppState } from './state.js';
 import { myRoom } from './config.js';
 import { showToast } from './toast.js';
 import { dom } from './dom.js';
+import { fillLine, setLyricsScriptAvailable } from './lyrics-script.js';
 
 export function connectMobileMicrophoneWebSocket() {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
@@ -65,6 +66,7 @@ export function connectMobileMicrophoneWebSocket() {
             
             const lyrText = document.getElementById('mobile-lyrics-text');
             if (lyrText) {
+                lyrText.classList.remove('lyrics-line');
                 if (state.isActiveInGame) {
                     lyrText.innerHTML = `<span style="color: var(--success); font-weight: 800;">Você está no jogo! 🎤</span><br>Aguardando letras...`;
                 } else {
@@ -95,7 +97,8 @@ export function connectMobileMicrophoneWebSocket() {
         },
         segment_start(data, context) {
             const lyrText = document.getElementById('mobile-lyrics-text');
-            if (lyrText) lyrText.innerText = data.lyrics;
+            if (lyrText) fillLine(lyrText, data.lyrics, data.lyrics_romaji);
+            setLyricsScriptAvailable(data.lyrics_romaji);
 
             const songTitle = document.getElementById('mobile-song-title');
             if (songTitle && data.song_title) {
@@ -125,6 +128,7 @@ export function connectMobileMicrophoneWebSocket() {
             const { state } = context;
             const lyrText = document.getElementById('mobile-lyrics-text');
             if (lyrText) {
+                lyrText.classList.remove('lyrics-line');
                 if (state.isActiveInGame) {
                     lyrText.innerHTML = `🎸 FINALIZANDO APRESENTAÇÃO<br><span style="font-size: 1rem; color: #a855f7; font-weight: 800;">Você deu o seu show! ⚡</span><br><span style="font-size: 0.9rem; color: var(--dim);">Aguardando pontuação final...</span>`;
                 } else {
@@ -138,6 +142,7 @@ export function connectMobileMicrophoneWebSocket() {
             if (scoreLine) scoreLine.hidden = true;
             const lyrText = document.getElementById('mobile-lyrics-text');
             if (lyrText) {
+                lyrText.classList.remove('lyrics-line');
                 let myTotalScore = data.total_score;
                 if (data.player_scores && state.mobileNickname && data.player_scores[state.mobileNickname] !== undefined) {
                     myTotalScore = data.player_scores[state.mobileNickname];

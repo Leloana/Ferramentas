@@ -7,10 +7,24 @@ import { updateSyncDisplay, startTimeSync } from './sync.js';
 import { updateMicStatusPanel } from './mic-status.js';
 import { connectDisplayWebSocket } from './ws-display.js';
 import { showAnnotationButton } from './annotate.js';
+import { fillLine, fillWord, setLyricsScriptAvailable } from './lyrics-script.js';
 
-// Japonês não separa palavras com espaço (espelha server/lyrics_text.py).
-function wordSeparator(language) {
-    return (language || '').toLowerCase().startsWith('ja') ? '' : ' ';
+// Linha que passa a conter spans de palavra: deixa de ser redesenhada como linha
+// inteira quando o modo de escrita (original/romaji/ambos) muda.
+function clearLine(el) {
+    el.classList.remove('lyrics-line');
+    delete el.dataset.original;
+    delete el.dataset.romaji;
+    el.innerHTML = '';
+}
+
+// Japonês em kanji/kana não separa palavras com espaço; letra em romaji e trechos
+// em inglês separam (espelha separator_between em server/lyrics_text.py).
+const JA_SCRIPT_RE = /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\u3005]/; // kana + kanji + 々
+function wordSeparator(language, word, nextWord) {
+    const japanese = (language || '').toLowerCase().startsWith('ja');
+    if (japanese && JA_SCRIPT_RE.test(word) && (!nextWord || JA_SCRIPT_RE.test(nextWord))) return '';
+    return ' ';
 }
 
 export async function resetGameState() {
@@ -892,6 +906,7 @@ window.addEventListener('resize', () => {
 });
 
 export function renderLyrics(data) {
+    setLyricsScriptAvailable(data.lyrics_romaji);
     const virtualTime = dom.audioPlayer.currentTime + state.syncOffset;
     const pauseTime = data.sing_start - virtualTime;
 
@@ -949,13 +964,13 @@ export function renderLyrics(data) {
 
     // Populate line-next with new lyrics
     if (state.syncMode === 'verse') {
-        lineNext.textContent = data.lyrics || "";
+        fillLine(lineNext, data.lyrics, data.lyrics_romaji);
     } else {
-        lineNext.innerHTML = '';
+        clearLine(lineNext);
         data.lyrics_timed.forEach((item, idx) => {
             const span = document.createElement('span');
             span.className = 'word';
-            span.innerText = item.word + wordSeparator(data.language);
+            fillWord(span, item.word, item.romaji, wordSeparator(data.language, item.word, (data.lyrics_timed[idx + 1] || {}).word));
             span.id = `word-${idx}`;
             lineNext.appendChild(span);
         });
@@ -963,7 +978,7 @@ export function renderLyrics(data) {
 
     // Set line-upcoming to show the incoming line next lyrics
     if (lineUpcoming) {
-        lineUpcoming.innerText = data.next_lyrics || "";
+        fillLine(lineUpcoming, data.next_lyrics, data.next_lyrics_romaji);
     }
 
     // Calculate translation dynamically to center lineNext
@@ -983,15 +998,16 @@ export function renderLyrics(data) {
         carouselInner.classList.add('no-transition');
 
         // Swap contents
-        linePrev.innerText = data.prev_lyrics || "";
+        fillLine(linePrev, data.prev_lyrics, data.prev_lyrics_romaji);
         if (state.syncMode === 'verse') {
-            lineCurr.textContent = lineNext.textContent;
+            fillLine(lineCurr, lineNext.dataset.original, lineNext.dataset.romaji);
         } else {
+            clearLine(lineCurr);
             lineCurr.innerHTML = lineNext.innerHTML;
         }
-        lineNext.innerText = data.next_lyrics || "";
+        fillLine(lineNext, data.next_lyrics, data.next_lyrics_romaji);
         if (lineUpcoming) {
-            lineUpcoming.innerText = data.upcoming_lyrics || "";
+            fillLine(lineUpcoming, data.upcoming_lyrics, data.upcoming_lyrics_romaji);
         }
 
         // Reset transform to center the new current line (lineCurr) and remove transition classes
@@ -1020,20 +1036,21 @@ export function renderLyrics(data) {
 }
 
 export function updateLyricsDOM(data) {
-    dom.prevLyricsDisplay.innerText = data.prev_lyrics || "";
-    dom.nextLyricsDisplay.innerText = data.next_lyrics || "";
+    setLyricsScriptAvailable(data.lyrics_romaji);
+    fillLine(dom.prevLyricsDisplay, data.prev_lyrics, data.prev_lyrics_romaji);
+    fillLine(dom.nextLyricsDisplay, data.next_lyrics, data.next_lyrics_romaji);
     if (dom.upcomingLyricsDisplay) {
-        dom.upcomingLyricsDisplay.innerText = data.upcoming_lyrics || "";
+        fillLine(dom.upcomingLyricsDisplay, data.upcoming_lyrics, data.upcoming_lyrics_romaji);
     }
 
     if (state.syncMode === 'verse') {
-        dom.lyricsDisplay.textContent = data.lyrics || "";
+        fillLine(dom.lyricsDisplay, data.lyrics, data.lyrics_romaji);
     } else {
-        dom.lyricsDisplay.innerHTML = '';
+        clearLine(dom.lyricsDisplay);
         data.lyrics_timed.forEach((item, idx) => {
             const span = document.createElement('span');
             span.className = 'word';
-            span.innerText = item.word + wordSeparator(data.language);
+            fillWord(span, item.word, item.romaji, wordSeparator(data.language, item.word, (data.lyrics_timed[idx + 1] || {}).word));
             span.id = `word-${idx}`;
             dom.lyricsDisplay.appendChild(span);
         });
@@ -1103,12 +1120,17 @@ export function startHighlightLoop() {
                         const prev_lyrics = new_idx > 0 ? state.currentSegments[new_idx - 1].lyrics : "";
                         const next_lyrics = new_idx < state.currentSegments.length - 1 ? state.currentSegments[new_idx + 1].lyrics : "";
                         const upcoming_lyrics = new_idx < state.currentSegments.length - 2 ? state.currentSegments[new_idx + 2].lyrics : "";
+                        // Japonês: romaji das linhas vizinhas (undefined nos outros idiomas)
+                        const romajiAt = (i) => state.currentSegments[i] && state.currentSegments[i].lyrics_romaji;
 
                         const segmentData = {
                             ...currentSeg,
                             prev_lyrics,
                             next_lyrics,
-                            upcoming_lyrics
+                            upcoming_lyrics,
+                            prev_lyrics_romaji: romajiAt(new_idx - 1),
+                            next_lyrics_romaji: romajiAt(new_idx + 1),
+                            upcoming_lyrics_romaji: romajiAt(new_idx + 2),
                         };
 
                         renderLyrics(segmentData);

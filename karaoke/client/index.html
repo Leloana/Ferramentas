@@ -104,6 +104,12 @@
                     style="color: #fff; font-size: 1.15rem; font-weight: 800; line-height: 1.4; margin: 0; text-align: center;">
                     Aguardando início do canto na TV...</p>
             </div>
+            <!-- Escrita da letra no celular: só aparece em música japonesa -->
+            <div class="lyrics-script-control lyrics-script-group mobile-lyrics-script" role="group" aria-label="Escrita da letra" hidden>
+                <button type="button" class="btn-control-small lyrics-script-choice" data-script="original" aria-pressed="false" title="Só a letra original (kanji e kana)">あ Original</button>
+                <button type="button" class="btn-control-small lyrics-script-choice" data-script="romaji" aria-pressed="false" title="Só a letra em romaji">Aa Romaji</button>
+                <button type="button" class="btn-control-small lyrics-script-choice" data-script="both" aria-pressed="false" title="Letra original com o romaji em cima de cada palavra">Ambos</button>
+            </div>
             <!-- Nota do verso anterior: fora da letra para não apagar o verso atual -->
             <p id="mobile-score-text" hidden>
                 Verso anterior: <span id="mobile-score-last" class="mobile-score__value"></span>
@@ -468,6 +474,16 @@
                             <span class="sync-control-label">Sincronia:</span>
                             <div class="sync-control-group">
                                 <button id="btn-sync-mode" class="btn-control-small btn-sync-mode" title="Alternar entre sincronia por palavra ou por verso">🎯</button>
+                            </div>
+                        </div>
+
+                        <!-- Escrita da letra: só aparece em música japonesa (lyrics-script.js) -->
+                        <div class="sync-control-block lyrics-script-control" hidden>
+                            <span class="sync-control-label">Letra:</span>
+                            <div class="sync-control-group lyrics-script-group" role="group" aria-label="Escrita da letra">
+                                <button type="button" class="btn-control-small lyrics-script-choice" data-script="original" aria-pressed="false" title="Só a letra original (kanji e kana)">あ Original</button>
+                                <button type="button" class="btn-control-small lyrics-script-choice" data-script="romaji" aria-pressed="false" title="Só a letra em romaji">Aa Romaji</button>
+                                <button type="button" class="btn-control-small lyrics-script-choice" data-script="both" aria-pressed="false" title="Letra original com o romaji em cima de cada palavra">Ambos</button>
                             </div>
                         </div>
 
