@@ -194,3 +194,14 @@
 .btn-replay { display: inline-flex; align-items: center; gap: 0.45rem; }
 .btn-replay.is-playing { background: var(--sage); border-color: var(--sage-ink); }
 .mic-final .btn-replay { margin-top: 0.4rem; }
+
+/* Fechar o cartão pelo controle remoto (só na TV; no celular toca-se na tela) */
+.share-card-close { display: none; }
+html.is-tv .share-card-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}

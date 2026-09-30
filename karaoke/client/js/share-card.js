@@ -125,12 +125,19 @@ export function closeShareCard() {
     document.removeEventListener('keydown', onKey, true);
 }
 
+// Controle remoto: OK/Enter e as teclas de voltar (Android/Google TV, Tizen,
+// webOS) fecham; setas não vazam para a tela de fim de jogo escondida atrás.
+// No TV Bro o Voltar nem chega à página — o OK era a única saída e não fechava.
+const CLOSE_KEYS = ['Escape', 'Esc', 'Backspace', 'BrowserBack', 'GoBack', 'Enter', ' '];
+const CLOSE_CODES = [10009, 461, 13, 32];
+const ARROW_KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Up', 'Down', 'Left', 'Right'];
+
 function onKey(e) {
-    if (e.key === 'Escape' || e.key === 'Esc' || e.key === 'Backspace' || e.keyCode === 10009 || e.keyCode === 461) {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        closeShareCard();
-    }
+    const close = CLOSE_KEYS.indexOf(e.key) !== -1 || CLOSE_CODES.indexOf(e.keyCode) !== -1;
+    if (!close && ARROW_KEYS.indexOf(e.key) === -1) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    if (close) closeShareCard();
 }
 
 export function openShareCard(data) {
@@ -141,6 +148,12 @@ export function openShareCard(data) {
     overlay.setAttribute('aria-label', 'Cartão da música');
     overlay.tabIndex = -1;
     overlay.append(buildShareCard(data));
+    // TV: botão visível (share-card.css só mostra com html.is-tv)
+    const closeBtn = el('button', 'btn share-card-close');
+    closeBtn.type = 'button';
+    closeBtn.innerHTML = iconSvg('close');
+    closeBtn.append(document.createTextNode(' Fechar'));
+    overlay.append(closeBtn);
     // tocar em qualquer lugar fecha (o print é pelo botão do aparelho)
     overlay.addEventListener('click', closeShareCard);
     document.body.append(overlay);
