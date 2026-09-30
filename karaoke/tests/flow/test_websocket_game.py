@@ -224,8 +224,9 @@ class TestWebsocketGameFlow(unittest.TestCase):
         clock_patch = patch("mic_stream._monotonic", lambda: server_clock["now"])
         clock_patch.start()
         self.addCleanup(clock_patch.stop)
-        # Folga larga: o pacote pós-audio_ended depende de escalonamento real de threads.
-        grace_patch = patch("ws.room._late_packet_grace", lambda room: 1.5)
+        # Folga larga: o pacote pós-audio_ended depende de escalonamento real de threads
+        # (com 1,5 s falhava ~1 em 20 rodadas da suíte completa, sob carga).
+        grace_patch = patch("ws.room._late_packet_grace", lambda room: 3.0)
         grace_patch.start()
         self.addCleanup(grace_patch.stop)
         record_dir = self.temp_dir / "_recordings_grace"
