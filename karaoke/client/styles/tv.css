@@ -20,8 +20,10 @@ html.using-keys input[type="range"]:focus { outline-offset: 6px !important; }
 html:not(.using-keys) :focus { outline: none; }
 
 /* ---------- TV ---------- */
-html.is-tv { font-size: 20px; }
-html.is-tv body { font-size: 20px; cursor: none; }
+/* Tudo em rem, e o rem segue a altura da tela: a mesma interface cabe em
+   960×540 (WebView da Google TV) e em 1920×1080. */
+html.is-tv { font-size: clamp(11px, 2.3vh, 24px); }
+html.is-tv body { font-size: 1rem; cursor: none; }
 html.is-tv .btn,
 html.is-tv .tab-btn { min-height: 52px; }
 html.is-tv .song-card { padding-top: 0.75rem; padding-bottom: 0.75rem; }
@@ -54,3 +56,195 @@ html.is-tv *::after {
     text-shadow: none !important;
 }
 html.is-tv .word.active { transform: none; box-shadow: none; }
+
+/* ---------- TV: lobby e partida cabem na tela, sem rolagem ----------
+   Lobby em duas colunas (música | cantores + INICIAR) com os ajustes numa
+   faixa embaixo; partida com o palco ocupando o que sobra da altura. */
+html.is-tv #app[data-state="waiting"] .app-header,
+html.is-tv #app[data-state="singing"] .app-header,
+html.is-tv #app[data-state="scoring"] .app-header { display: none !important; }
+
+html.is-tv #app[data-state="waiting"] > .container,
+html.is-tv #app[data-state="singing"] > .container,
+html.is-tv #app[data-state="scoring"] > .container {
+    display: flex !important;
+    max-width: none !important;
+    height: 100vh !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden;
+}
+html.is-tv #app[data-state="waiting"] .main-card,
+html.is-tv #app[data-state="singing"] .main-card,
+html.is-tv #app[data-state="scoring"] .main-card {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    height: 100vh !important;
+    padding: 1.2rem 2rem !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* Lobby */
+html.is-tv #app[data-role="display"][data-state="waiting"] #game-area {
+    flex: 1;
+    min-height: 0;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    grid-template-areas: "song lobby" "sync sync";
+    gap: 1rem 2.5rem;
+}
+html.is-tv #app[data-state="waiting"] .game-header {
+    grid-area: song;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0.8rem;
+    min-height: 0;
+    margin: 0;
+}
+html.is-tv #app[data-state="waiting"] .song-cover {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 40vh;
+    aspect-ratio: 1 / 1;
+    box-shadow: 0.3rem 0.3rem 0 var(--ink);
+}
+html.is-tv #app[data-state="waiting"] .game-header__text { padding: 0; }
+html.is-tv #app[data-state="waiting"] .game-title { font-size: 2rem; line-height: 1.1; }
+html.is-tv #app[data-state="waiting"] .game-artist { font-size: 1.1rem; }
+html.is-tv #app[data-state="waiting"] .game-layout {
+    grid-area: lobby;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+html.is-tv #app[data-state="waiting"] .game-main-content { width: 100%; }
+html.is-tv #app[data-state="waiting"] .lobby { padding: 1rem 1.2rem; }
+html.is-tv #app[data-state="waiting"] .lobby-seats { grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); gap: 0.6rem; }
+html.is-tv #app[data-state="waiting"] .seat { min-height: 0; }
+html.is-tv #app[data-state="waiting"] .lobby-summary { margin-top: 0.6rem; font-size: 0.95rem; }
+html.is-tv #app[data-state="waiting"] .lobby__score { justify-content: flex-start; margin: 0.8rem 0 0; }
+html.is-tv #app[data-state="waiting"] .controls { margin-top: 1rem; justify-content: flex-start; }
+html.is-tv #app[data-state="waiting"] #sync-controls { grid-area: sync; }
+
+/* Ajustes da faixa: uma linha só */
+html.is-tv #sync-controls { margin-top: 0.6rem; padding: 0.6rem 0 0; }
+html.is-tv .sync-controls-inner { display: flex !important; flex-direction: row !important; flex-wrap: nowrap; align-items: center !important; justify-content: space-between; gap: 0.8rem; }
+html.is-tv .sync-control-block {
+    display: flex !important;
+    min-height: 0;
+    padding: 0;
+    gap: 0.4rem;
+    background: none;
+    border: none;
+}
+html.is-tv .sync-control-block[hidden] { display: none !important; }
+html.is-tv .sync-control-label .ico { display: none; }
+html.is-tv .sync-control-value { min-width: 2.6rem !important; }
+html.is-tv .sync-control-value--wide { min-width: 3.8rem !important; }
+html.is-tv #backing-volume-slider,
+html.is-tv #guide-volume-slider { flex: none; width: 4.5rem; }
+
+/* Partida: palco com o que sobra da altura */
+html.is-tv #app[data-state="singing"] #game-area,
+html.is-tv #app[data-state="scoring"] #game-area {
+    flex: 1 !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+html.is-tv #app[data-state="singing"] .game-header,
+html.is-tv #app[data-state="scoring"] .game-header { margin-bottom: 0.5rem; }
+html.is-tv #app[data-state="singing"] .song-cover,
+html.is-tv #app[data-state="scoring"] .song-cover { width: 2.8rem; height: 2.8rem; }
+html.is-tv #app[data-state="singing"] .game-title,
+html.is-tv #app[data-state="scoring"] .game-title { font-size: 1.3rem; }
+html.is-tv #app[data-state="singing"] .btn-change-cover,
+html.is-tv #app[data-state="scoring"] .btn-change-cover { display: none; }
+html.is-tv .song-progress-container { margin-bottom: 0.4rem; }
+html.is-tv #app[data-state="singing"] .game-layout,
+html.is-tv #app[data-state="scoring"] .game-layout { flex: 1 !important; min-height: 0 !important; gap: 1.5rem !important; }
+html.is-tv #app[data-state="singing"] .game-main-content,
+html.is-tv #app[data-state="scoring"] .game-main-content,
+html.is-tv #app[data-state="singing"] #canto-screen,
+html.is-tv #app[data-state="scoring"] #canto-screen { min-height: 0 !important; }
+html.is-tv #app[data-state="singing"] .carousel-container,
+html.is-tv #app[data-state="scoring"] .carousel-container {
+    flex: 1 1 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 1rem 2rem !important;
+    margin: 0.4rem 0 !important;
+}
+html.is-tv #app[data-state="singing"] .carousel-line,
+html.is-tv #app[data-state="scoring"] .carousel-line { height: auto; min-height: 0; padding: 0.3rem 0; }
+html.is-tv #app[data-state="singing"] .curr-line,
+html.is-tv #app[data-state="scoring"] .curr-line {
+    min-height: 0 !important;
+    margin: 0.6rem 0 !important;
+    font-size: 3rem !important;
+    line-height: 1.25 !important;
+}
+html.is-tv #app[data-state="singing"] .prev-line,
+html.is-tv #app[data-state="singing"] .next-line,
+html.is-tv #app[data-state="scoring"] .prev-line,
+html.is-tv #app[data-state="scoring"] .next-line { margin: 0.3rem 0 !important; font-size: 1.8rem !important; }
+html.is-tv #app[data-state="singing"] .upcoming-line,
+html.is-tv #app[data-state="scoring"] .upcoming-line { font-size: 1.4rem !important; }
+html.is-tv #app[data-state="singing"] .transcription-debug,
+html.is-tv #app[data-state="scoring"] .transcription-debug { margin-top: 0.4rem; padding: 0.4rem 0.8rem !important; font-size: 0.95rem !important; }
+html.is-tv #app[data-state="singing"] .controls,
+html.is-tv #app[data-state="scoring"] .controls { margin-top: 0.6rem; }
+html.is-tv #app[data-state="singing"] .game-score-sidebar,
+html.is-tv #app[data-state="scoring"] .game-score-sidebar { width: 6rem !important; }
+html.is-tv #app[data-state="singing"] .score-sidebar-container,
+html.is-tv #app[data-state="scoring"] .score-sidebar-container { height: 100%; padding: 1rem 0.5rem !important; }
+
+/* Duelo/times na TV: barras de placar menores (em rem) e espaço reservado
+   para elas; o título da música sai para o palco caber. */
+html.is-tv .mp-score-bar { padding: 0.4rem 0.8rem; gap: 0.25rem; }
+html.is-tv .mp-score-bar.horizontal-bar { width: 26rem; }
+html.is-tv .mp-score-bar.top-bar { top: 0.5rem; }
+html.is-tv .mp-score-bar.bottom-bar { bottom: 0.5rem; }
+html.is-tv .mp-score-bar.left-bar { left: 0.8rem; }
+html.is-tv .mp-score-bar.right-bar { right: 0.8rem; }
+html.is-tv .mp-score-bar.vertical-bar { width: 6.5rem; height: 40vh; padding: 0.6rem 0.4rem; }
+html.is-tv .mp-progress-bg { height: 0.6rem; }
+html.is-tv .mp-player-transcription { margin-top: 0.15rem; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+html.is-tv .mp-score-bar.vertical-bar .mp-player-transcription { display: none; }
+
+html.is-tv #app[data-players="multi"][data-state="singing"] .game-header,
+html.is-tv #app[data-players="multi"][data-state="scoring"] .game-header { display: none; }
+html.is-tv #app[data-players="multi"][data-state="singing"] .main-card,
+html.is-tv #app[data-players="multi"][data-state="scoring"] .main-card { padding: 5rem 2rem !important; }
+html.is-tv #app[data-players="multi"][data-teams][data-state="singing"] .main-card,
+html.is-tv #app[data-players="multi"][data-teams][data-state="scoring"] .main-card { padding-top: 7rem !important; padding-bottom: 7rem !important; }
+html.is-tv #app[data-players="multi"][data-player-count="3"][data-state="singing"] .main-card,
+html.is-tv #app[data-players="multi"][data-player-count="4"][data-state="singing"] .main-card,
+html.is-tv #app[data-players="multi"][data-player-count="3"][data-state="scoring"] .main-card,
+html.is-tv #app[data-players="multi"][data-player-count="4"][data-state="scoring"] .main-card { padding-left: 8.5rem !important; padding-right: 8.5rem !important; }
+html.is-tv #app[data-players="multi"][data-state="singing"] .carousel-container,
+html.is-tv #app[data-players="multi"][data-state="scoring"] .carousel-container,
+html.is-tv #app[data-players="multi"][data-teams][data-state="singing"] .carousel-container,
+html.is-tv #app[data-players="multi"][data-teams][data-state="scoring"] .carousel-container {
+    flex: 1 1 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0.6rem 1.5rem !important;
+}
+/* states.css põe o #canto-screen em display:block (seletor com data-role):
+   sem flex, o palco não encolhe e invade PAUSAR/SAIR. */
+html.is-tv #app[data-role="display"][data-state="singing"] #canto-screen,
+html.is-tv #app[data-role="display"][data-state="scoring"] #canto-screen {
+    display: flex !important;
+    flex-direction: column !important;
+}

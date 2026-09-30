@@ -652,6 +652,9 @@ function showTurn(owner) {
 }
 
 const COUNTDOWN_SEC = 3;
+// Barra do solo só com pelo menos 3 s dela + 3 s de contagem: menos que isso
+// ela piscava na tela. Pausas mais curtas mostram só a contagem.
+const SILENCE_BAR_MIN_SEC = 3;
 
 // Contagem antes de voltar a cantar (n = 3, 2, 1; null esconde).
 function setCountdown(n) {
@@ -1291,7 +1294,11 @@ export function startHighlightLoop() {
                 const remainingTime = state.pauseStartTarget - virtualTime;
                 const app = document.getElementById('app');
 
-                if (remainingTime > COUNTDOWN_SEC) {
+                const showBar = state.totalPauseDuration >= COUNTDOWN_SEC + SILENCE_BAR_MIN_SEC;
+                if (remainingTime > COUNTDOWN_SEC && !showBar) {
+                    if (app) app.removeAttribute('data-silence');
+                    setCountdown(null);
+                } else if (remainingTime > COUNTDOWN_SEC) {
                     if (app) app.setAttribute('data-silence', 'true');
                     setCountdown(null);
                     const fill = document.getElementById('silence-progress-fill');
