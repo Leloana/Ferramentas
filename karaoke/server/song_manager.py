@@ -4,7 +4,7 @@ from pathlib import Path
 from utils.lrc import read_lrc_meta
 from utils.meta import get_meta_field
 from utils.segment_timing import finalize_segments
-from utils.song_paths import safe_song_dir
+from utils.song_paths import USER_EDITED_MARKER, safe_song_dir
 from lyrics_text import add_romaji
 
 def _title_fallback(name: str) -> str:
@@ -36,8 +36,9 @@ class SongManager:
                         meta = json.load(f)
                         title = get_meta_field(meta, "meta", "title")
                         artist = get_meta_field(meta, "meta", "artist")
-                        # alinhamento fraco (utils/alignment_quality.py): a lista mostra "Revisar"
-                        needs_review = bool(meta.get("needs_review"))
+                        # alinhamento fraco (utils/alignment_quality.py): a lista mostra "Revisar",
+                        # a menos que a letra já tenha sido revisada à mão no editor
+                        needs_review = bool(meta.get("needs_review")) and not (item / USER_EDITED_MARKER).exists()
                 except Exception:
                     pass
 
