@@ -9,6 +9,8 @@ export const state = {
     currentSegmentData: null,
     lastSegmentLyricsTimed: null,
     animationId: null,
+    lyricsFrameAt: 0,         // diagnóstico: último quadro do laço da letra
+    lyricsFrameGapMax: 0,     // maior intervalo entre quadros desde o último verso (ms)
     syncOffset: 0,
     isFirstSegment: true,
     totalPauseDuration: 0,

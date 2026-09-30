@@ -1170,9 +1170,16 @@ function setTextIfChanged(el, text) {
 
 export function startHighlightLoop() {
     cancelLyricsFrame();
+    state.lyricsFrameAt = 0;
+    state.lyricsFrameGapMax = 0;
 
     function update() {
         try {
+            // maior intervalo entre quadros desde o último verso (diagnóstico de TV)
+            const now = performance.now();
+            if (state.lyricsFrameAt) state.lyricsFrameGapMax = Math.max(state.lyricsFrameGapMax, now - state.lyricsFrameAt);
+            state.lyricsFrameAt = now;
+
             const audioPlayer = dom.audioPlayer;
             if (audioPlayer.duration && !state.isUserDraggingProgress) {
                 const cur = audioPlayer.currentTime;
@@ -1247,6 +1254,9 @@ export function startHighlightLoop() {
                         };
 
                         renderLyrics(segmentData);
+                        // gravação: quando a TV mostrou o verso e se o laço travou
+                        sendPlayerEvent('line', `${currentSeg.id}|${Math.round(state.lyricsFrameGapMax)}`);
+                        state.lyricsFrameGapMax = 0;
                         showTurn(turnOwner(state.currentSegments, state.turnOrder, new_idx));
                     }
 
