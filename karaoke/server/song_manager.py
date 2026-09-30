@@ -93,6 +93,18 @@ class SongManager:
         add_romaji(segments)
         return {"id": song_id, "title": title, "artist": artist, "segments": segments}
 
+    def get_song_dir(self, song_id: str):
+        song_dir = safe_song_dir(self.songs_path, song_id)
+        return song_dir if song_dir is not None and song_dir.is_dir() else None
+
+    def get_vocal_path(self, song_id: str):
+        """vocal.mp3 (voz separada pelo Demucs): usado como voz guia na TV."""
+        song_dir = safe_song_dir(self.songs_path, song_id)
+        if song_dir is None:
+            return None
+        path = song_dir / "vocal.mp3"
+        return path if path.exists() else None
+
     def get_audio_path(self, song_id: str):
         """Retorna o caminho absoluto do backing_track.mp3."""
         song_dir = safe_song_dir(self.songs_path, song_id)

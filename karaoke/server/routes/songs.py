@@ -60,12 +60,26 @@ async def get_song_cover(song_id: str):
     return FileResponse(cover, media_type="image/jpeg", headers={"Cache-Control": "max-age=86400"})
 
 
+# O arquivo de uma música não muda depois de pronto (reinstalar troca o ETag):
+# a TV não baixa de novo o instrumental a cada partida.
+AUDIO_CACHE = {"Cache-Control": "public, max-age=86400"}
+
+
 @router.get("/songs/{song_id}/audio")
 async def get_audio(song_id: str):
     audio_path = song_manager.get_audio_path(song_id)
     if not audio_path:
         raise HTTPException(status_code=404, detail="Música não encontrada")
-    return FileResponse(audio_path)
+    return FileResponse(audio_path, headers=AUDIO_CACHE)
+
+
+@router.get("/songs/{song_id}/vocal")
+async def get_vocal(song_id: str):
+    """Voz separada (voz guia opcional, tocada baixinho junto do instrumental)."""
+    vocal_path = song_manager.get_vocal_path(song_id)
+    if not vocal_path:
+        raise HTTPException(status_code=404, detail="Sem voz separada")
+    return FileResponse(vocal_path, headers=AUDIO_CACHE)
 
 
 @router.delete("/api/delete-song/{song_id}")

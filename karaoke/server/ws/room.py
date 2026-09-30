@@ -6,8 +6,7 @@ import json
 import logging
 import math
 import os
-from datetime import datetime
-from pathlib import Path
+import time
 
 import numpy as np
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
@@ -18,7 +17,10 @@ from segment_scoring import (
     needs_whisper, score_whisper_free, score_words, shift_words, transcribe_kwargs,
 )
 from state import room_manager, song_manager, queue_manager
+from pitch import load_or_build_reference, verse_pitch_score
+from players import get_or_create_profile, record_game, song_leaderboard
 from stt_engine import get_stt_engine
+from utils.audio import load_audio_full
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -34,10 +36,6 @@ LATE_PACKET_GRACE_SEC = 0.6
 # Com rede lenta a folga acompanha o atraso observado, até este teto.
 MAX_LATE_PACKET_GRACE_SEC = 2.0
 PENDING_TASKS_TIMEOUT_SEC = 10.0
-
-# Pasta para perfis de jogadores
-PLAYERS_DIR = Path(__file__).resolve().parent.parent.parent / "players"
-
 
 MAX_NICKNAME_LEN = 15
 RESERVED_NICKNAMES = ("solo", "local", "tv", "pc_local")
@@ -55,50 +53,8 @@ def _nickname_taken(room, name: str, sanitized: str) -> bool:
     return False
 
 
-def get_player_profile_path(name: str) -> Path:
-    # Sanitiza o nome para evitar Path Traversal
-    sanitized_name = "".join(c for c in name if c.isalnum() or c in ("-", "_")).strip()
-    if not sanitized_name:
-        sanitized_name = "default_player"
-    return PLAYERS_DIR / sanitized_name / "profile.json"
-
-
-def get_or_create_profile(name: str) -> dict:
-    path = get_player_profile_path(name)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    if path.exists():
-        try:
-            with open(path, "r", encoding="utf-8") as f:
-                data = json.load(f)
-            if isinstance(data, dict):
-                return data
-        except Exception as e:
-            logger.error(f"Perfil corrompido em {path}: {e}")
-        # guarda o arquivo ruim em vez de sobrescrever o histórico
-        try:
-            path.replace(path.with_suffix(".corrompido.json"))
-        except OSError:
-            pass
-    # Cria novo perfil
-    profile = {
-        "name": name,
-        "songs_sung": []
-    }
-    save_profile(name, profile)
-    return profile
-
-
-def save_profile(name: str, profile: dict) -> None:
-    path = get_player_profile_path(name)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    # escrita atômica: queda no meio não deixa profile.json pela metade
-    tmp = path.with_suffix(".json.tmp")
-    with open(tmp, "w", encoding="utf-8") as f:
-        json.dump(profile, f, indent=2, ensure_ascii=False)
-    os.replace(tmp, path)
-
-
-async def _send_segment_start(ws: WebSocket, segments: list, idx: int, song_title: str = "") -> None:
+async def _send_segment_start(ws: WebSocket, segments: list, idx: int, song_title: str = "",
+                              turn: list | None = None) -> None:
     if not segments or idx < 0 or idx >= len(segments):
         logger.warning(f"Tentativa de enviar segment_start com idx {idx} inválido ou sem segmentos carregados.")
         return
@@ -121,6 +77,7 @@ async def _send_segment_start(ws: WebSocket, segments: list, idx: int, song_titl
         "next_lyrics": next_lyrics,
         "upcoming_lyrics": upcoming_lyrics,
         "song_title": song_title,
+        "turn": turn,  # revezar versos: de quem é este verso (None = todos)
     })
 
 
@@ -128,16 +85,17 @@ async def _broadcast_segment_start(room, idx: int) -> None:
     if not room.segments or idx < 0 or idx >= len(room.segments):
         logger.warning(f"Tentativa de broadcast_segment_start com idx {idx} inválido ou sem segmentos carregados na sala {room.song_id}.")
         return
+    turn = turn_owner(room.segments, room.turn_order, idx)
     if room.display:
-        await _send_segment_start(room.display, room.segments, idx, room.song_title)
+        await _send_segment_start(room.display, room.segments, idx, room.song_title, turn)
     # list(): um celular pode entrar/sair durante o await e mudar o dict
     for ws in list(room.players.values()):
         try:
-            await _send_segment_start(ws, room.segments, idx, room.song_title)
+            await _send_segment_start(ws, room.segments, idx, room.song_title, turn)
         except Exception as e:
             logger.debug(f"Falha ao enviar segment_start a um celular: {e}")
     if room.mic:
-        await _send_segment_start(room.mic, room.segments, idx, room.song_title)
+        await _send_segment_start(room.mic, room.segments, idx, room.song_title, turn)
 
 
 async def _notify_mics_display_status(room, status: str) -> None:
@@ -193,6 +151,7 @@ async def process_segment_multiplayer(
     stt = get_stt_engine()
     results = {}
     game_id = room.game_id
+    started = time.monotonic()
     # Lista capturada no disparo: a TV pode trocar de música antes do Whisper terminar.
     segment = segments[seg_idx]
     prev_segment = segments[seg_idx - 1] if seg_idx > 0 else None
@@ -222,11 +181,13 @@ async def process_segment_multiplayer(
                     transcribed_text, words = await asyncio.to_thread(compute)
                 if room.game_id != game_id:
                     return
+                pitch = await _pitch_for(room, audio_data, window[0])
                 words = shift_words(words, window_offset)
                 result = score_words(segment, prev_segment, words, scoring_mode)
             else:
                 result = score_whisper_free(segment, rms_original)
                 transcribed_text = result["transcription"]
+                pitch = None
 
             if room.recording:
                 room.recording.add_segment_result(
@@ -239,10 +200,19 @@ async def process_segment_multiplayer(
 
             running_avg = round(sum(room.player_segment_scores[player_name].values()) / len(room.player_segment_scores[player_name]), 1)
 
+            pitch_avg = None
+            if pitch is not None:
+                pscores = room.player_pitch_scores.setdefault(player_name, {})
+                pscores[seg_idx] = pitch
+                pitch_avg = round(sum(pscores.values()) / len(pscores), 1)
+
             results[player_name] = {
                 "score": result["score"],
                 "total_score": running_avg,
                 "transcription": result.get("transcription", transcribed_text),
+                # afinação: informativa por enquanto, fora da nota (calibrar no servidor)
+                "pitch": pitch,
+                "pitch_avg": pitch_avg,
             }
 
         except Exception as e:
@@ -273,13 +243,40 @@ async def process_segment_multiplayer(
         room.total_score = sum(room.segment_scores.values())
         room.scored_count = len(room.segment_scores)
 
+    room.verse_latencies.append(round(time.monotonic() - started, 2))
     await room.broadcast({
         "type": "segment_result",
         "score": primary_res["score"],
         "transcription": primary_res["transcription"],
         "total_score": primary_res["total_score"],
+        "pitch": primary_res.get("pitch"),
+        "pitch_avg": primary_res.get("pitch_avg"),
         "player_scores": results
     })
+
+
+def _track(room, task) -> None:
+    room.background_tasks.add(task)
+    task.add_done_callback(room.background_tasks.discard)
+
+
+async def _pitch_for(room, audio: np.ndarray, window_start: float):
+    """Nota de afinação do verso (None sem referência ou sem voz suficiente)."""
+    reference = room.pitch_reference
+    if not reference:
+        return None
+    result = await asyncio.to_thread(verse_pitch_score, audio, window_start, reference, room.transpose)
+    return result["score"] if result else None
+
+
+async def _load_pitch_reference(room, song_id: str) -> None:
+    """Carrega (ou gera, ~2 s de CPU) o pitch.json da música em segundo plano."""
+    song_dir = song_manager.get_song_dir(song_id)
+    if song_dir is None:
+        return
+    reference = await asyncio.to_thread(load_or_build_reference, song_dir, load_audio_full)
+    if room.song_id == song_id:
+        room.pitch_reference = reference
 
 
 def _late_packet_grace(room) -> float:
@@ -288,8 +285,29 @@ def _late_packet_grace(room) -> float:
     return min(MAX_LATE_PACKET_GRACE_SEC, max(LATE_PACKET_GRACE_SEC, lateness + 0.1))
 
 
-def _all_audio_arrived(room, t1: float) -> bool:
+def turn_owner(segments: list, turn_order: list | None, idx: int) -> list | None:
+    """Revezar versos: o k-ésimo verso com letra é do time k % n (None = todos).
+
+    Mesma regra do front (client/js/turns.js)."""
+    if not turn_order or len(turn_order) < 2 or not (0 <= idx < len(segments)):
+        return None
+    if not str(segments[idx].get("lyrics") or "").strip():
+        return None
+    k = sum(1 for seg in segments[:idx] if str(seg.get("lyrics") or "").strip())
+    return turn_order[k % len(turn_order)]
+
+
+def _verse_players(room, idx: int) -> list:
+    """Quem é pontuado neste verso (no revezamento, só o time da vez)."""
     players = room.active_players or ["Solo"]
+    owner = turn_owner(room.segments, room.turn_order, idx)
+    if owner is None:
+        return players
+    return [p for p in players if p in owner]
+
+
+def _all_audio_arrived(room, t1: float, players: list | None = None) -> bool:
+    players = players or room.active_players or ["Solo"]
     for player in players:
         timeline = room.mic_timelines.get(player)
         end = timeline.end_time() if timeline else None
@@ -308,12 +326,12 @@ def _dispatch_due_segments(room, current_time: float | None) -> None:
         if current_time is not None and current_time < t1 + grace:
             # A folga é para pacotes atrasados: se o áudio de todos os celulares
             # já cobre a janela, pontua na hora (~0,5 s mais cedo na rede local).
-            if current_time < t1 or not _all_audio_arrived(room, t1):
+            if current_time < t1 or not _all_audio_arrived(room, t1, _verse_players(room, idx)):
                 continue
         room.transcribed_segments.add(idx)
 
         active_audio = {}
-        for player in room.active_players or ["Solo"]:
+        for player in _verse_players(room, idx):
             timeline = room.mic_timelines.get(player)
             if not timeline:
                 continue
@@ -369,6 +387,10 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
         logger.info(f"Display reconectado na sala {room_id}: partida retomada sem reset")
     if role == "display" and song_id and not resuming:
         room.game_id += 1
+        if room.song_id != song_id:
+            room.pitch_reference = None
+        room.player_pitch_scores = {}
+        _track(room, asyncio.create_task(_load_pitch_reference(room, song_id)))
         room.song_id = song_id
         room.song_title = song_title
         room.segments = segments
@@ -492,6 +514,19 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                     logger.info(f"Jogo iniciado no modo {room.game_mode} (pontuação: {room.scoring_mode}) com: {room.active_players}")
                     
                     room.game_id += 1
+                    room.player_pitch_scores = {}
+                    # revezar versos: [[mics do time 1], [mics do time 2], ...]
+                    turns = data.get("turn_order")
+                    room.turn_order = (
+                        [[str(m) for m in g] for g in turns if isinstance(g, list) and g]
+                        if data.get("turns") and isinstance(turns, list) else None
+                    )
+                    if room.turn_order is not None and len(room.turn_order) < 2:
+                        room.turn_order = None
+                    try:
+                        room.transpose = float(data.get("transpose", 0) or 0)
+                    except (TypeError, ValueError):
+                        room.transpose = 0.0
                     room.reset_audio()
                     room.player_segment_scores.clear()
                     room.segment_scores.clear()
@@ -515,6 +550,13 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         "game_mode": room.game_mode,
                         "active_players": room.active_players
                     })
+
+                elif msg_type == "transpose" and role == "display":
+                    # TV mudou o tom da trilha: a referência da afinação acompanha
+                    try:
+                        room.transpose = float(data.get("semitones", 0) or 0)
+                    except (TypeError, ValueError):
+                        pass
 
                 elif msg_type == "client_info":
                     # Só informativo: o áudio chega sempre a STREAM_SR, com a taxa no próprio pacote.
@@ -627,25 +669,43 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                     total_score_avg = round(room.total_score / max(1, len(room.segments)), 1)
 
                     player_final_scores = {}
+                    records = {}
                     for p in room.active_players:
                         if p in room.player_segment_scores:
-                            p_score = round(sum(room.player_segment_scores[p].values()) / max(1, len(room.segments)), 1)
+                            # no revezamento, cada um é medido só nos versos dele
+                            own = len(room.segments)
+                            if room.turn_order:
+                                own = sum(1 for i in range(len(room.segments))
+                                          if p in (turn_owner(room.segments, room.turn_order, i) or []))
+                            p_score = round(sum(room.player_segment_scores[p].values()) / max(1, own), 1)
                             player_final_scores[p] = p_score
                             
                             # Salva perfil (falha aqui não pode impedir o game_over)
-                            try:
-                                profile = get_or_create_profile(p)
-                                if not isinstance(profile.get("songs_sung"), list):
-                                    profile["songs_sung"] = []
-                                profile["songs_sung"].append({
-                                    "name": room.song_title or room.song_id,
-                                    "score": p_score,
-                                    "date": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
-                                })
-                                save_profile(p, profile)
-                                logger.info(f"Salvo perfil de {p} com nota {p_score}% na musica {room.song_title}")
-                            except Exception as e:
-                                logger.error(f"Falha ao salvar o perfil de {p}: {e}", exc_info=True)
+                            if p != "PC_Local":
+                                try:
+                                    pv = room.player_pitch_scores.get(p) or {}
+                                    records[p] = record_game(
+                                        p, room.song_id, room.song_title or room.song_id, p_score,
+                                        pitch=round(sum(pv.values()) / len(pv), 1) if pv else None,
+                                        mode=room.game_mode,
+                                    )
+                                    logger.info(f"Salvo perfil de {p} com nota {p_score}% na musica {room.song_title}")
+                                except Exception as e:
+                                    logger.error(f"Falha ao salvar o perfil de {p}: {e}", exc_info=True)
+
+                    # contagem de versos por faixa (mesmas do carimbo: 85 / 70), p/ o cartão do fim
+                    player_stats = {
+                        p: {
+                            "good": sum(1 for v in scores.values() if v >= 85),
+                            "ok": sum(1 for v in scores.values() if 70 <= v < 85),
+                            "poor": sum(1 for v in scores.values() if v < 70),
+                        }
+                        for p, scores in room.player_segment_scores.items()
+                    }
+                    player_pitch = {
+                        p: round(sum(v.values()) / len(v), 1)
+                        for p, v in room.player_pitch_scores.items() if v
+                    }
 
                     # Salva antes do game_over: a TV recebe o id para o botão de anotar versos.
                     recording_id = room.finish_recording(complete=True)
@@ -653,6 +713,13 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         "type": "game_over",
                         "total_score": total_score_avg,
                         "player_scores": player_final_scores,
+                        "player_pitch": player_pitch,
+                        "player_stats": player_stats,
+                        "song_id": room.song_id,
+                        "song_title": room.song_title,
+                        # recorde pessoal por cantor e melhores da sala nesta música
+                        "records": records,
+                        "leaderboard": song_leaderboard(room.song_id, room.song_title or room.song_id),
                         "recording_id": recording_id,
                     })
 

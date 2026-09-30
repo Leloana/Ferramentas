@@ -43,6 +43,12 @@ export const state = {
     gameGeneration: 0,        // muda a cada início/saída; cancela awaits antigos
     gameReconnectTimer: null,
     timeSyncTimer: null,
+    wakeLock: null,           // wake-lock.js
+    wakeLockWanted: false,
+    replay: null,             // replay.js (ouvir a apresentação)
+    lastGameOver: null,       // último game_over (cartão para print)
+    lobbyTurns: false,        // revezar versos (lobby.js / turns.js)
+    turnOrder: null,          // [[mics do time 1], ...] da partida em curso
     lobbySeats: [],        // lobby: [{ mic, team }] — mesmo time = dupla/trio (lobby.js)
     lobbyMics: [],         // celulares registrados na sala
     scoreGroups: null,     // times da partida em curso [{ team, mics }] (score-bars.js)

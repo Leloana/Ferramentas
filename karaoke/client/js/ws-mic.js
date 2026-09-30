@@ -6,6 +6,8 @@ import { dom } from './dom.js';
 import { fillLine, setLyricsScriptAvailable } from './lyrics-script.js';
 import { verseQuality, replayClass } from './verse-stamp.js';
 import { escapeHtml } from './html.js';
+import { openShareCard, splitSongTitle } from './share-card.js';
+import { toggleReplay } from './replay.js';
 
 export function connectMobileMicrophoneWebSocket() {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
@@ -101,6 +103,15 @@ export function connectMobileMicrophoneWebSocket() {
         segment_start(data, context) {
             const lyrText = document.getElementById('mobile-lyrics-text');
             if (lyrText) fillLine(lyrText, data.lyrics, data.lyrics_romaji);
+            // revezar versos: "Sua vez" / "Vez de Ana"
+            const turnEl = document.getElementById('mobile-turn');
+            if (turnEl) {
+                const turn = data.turn;
+                const mine = turn && state.mobileNickname && turn.indexOf(state.mobileNickname) !== -1;
+                turnEl.hidden = !turn;
+                turnEl.dataset.mine = mine ? 'true' : 'false';
+                turnEl.textContent = !turn ? '' : (mine ? 'Sua vez' : `Vez de ${turn.join(' + ')}`);
+            }
             setLyricsScriptAvailable(data.lyrics_romaji);
 
             const songTitle = document.getElementById('mobile-song-title');
@@ -131,7 +142,11 @@ export function connectMobileMicrophoneWebSocket() {
 
             const lastEl = document.getElementById('mobile-score-last');
             const quality = verseQuality(myScore);
-            lastEl.textContent = `${quality.word} ${myScore}%`;
+            const myPitch = (state.isActiveInGame && data.player_scores && state.mobileNickname && data.player_scores[state.mobileNickname])
+                ? data.player_scores[state.mobileNickname].pitch : data.pitch;
+            lastEl.textContent = typeof myPitch === 'number'
+                ? `${quality.word} ${myScore}% · tom ${Math.round(myPitch)}%`
+                : `${quality.word} ${myScore}%`;
             lastEl.dataset.quality = quality.key;
             replayClass(lastEl, 'seg-score--pulse');
             document.getElementById('mobile-score-total').textContent = `${myTotalScore}%`;
@@ -186,6 +201,39 @@ export function connectMobileMicrophoneWebSocket() {
                 }
                 html += `</div>`;
                 lyrText.innerHTML = html;
+
+                // Cartão para print com a nota deste celular
+                if (state.isActiveInGame && state.mobileNickname) {
+                    const me = state.mobileNickname;
+                    const song = splitSongTitle(data.song_title);
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'btn btn--primary btn--block btn-share-card';
+                    btn.innerHTML = `${iconSvg('camera')} Cartão`;
+                    btn.addEventListener('click', () => openShareCard({
+                        songId: data.song_id,
+                        title: song.title,
+                        artist: song.artist,
+                        score: myTotalScore,
+                        pitch: data.player_pitch ? data.player_pitch[me] : undefined,
+                        stats: data.player_stats ? data.player_stats[me] : null,
+                        name: me,
+                        record: data.records ? data.records[me] : null,
+                    }));
+                    const finalBox = lyrText.querySelector('.mic-final');
+                    (finalBox || lyrText).append(btn);
+
+                    if (data.recording_id && data.player_stats && data.player_stats[me]) {
+                        const listen = document.createElement('button');
+                        listen.type = 'button';
+                        listen.className = 'btn btn--block btn-replay';
+                        listen.innerHTML = `${iconSvg('headphones')} Ouvir`;
+                        listen.addEventListener('click', () => toggleReplay({
+                            recordingId: data.recording_id, player: me, songId: data.song_id, button: listen,
+                        }));
+                        (finalBox || lyrText).append(listen);
+                    }
+                }
             }
         }
     };

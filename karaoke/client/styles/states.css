@@ -60,8 +60,11 @@
 #app[data-role="mic"][data-state="singing"] #mobile-queue-container { display: none !important; }
 
 /* 3b. Abas do celular-microfone: "Adicionar" troca o corpo pelo painel da fila */
-#app[data-role="mic"][data-mic-tab="queue"] .mic-body { display: none !important; }
+#app[data-role="mic"][data-mic-tab="queue"] .mic-body,
+#app[data-role="mic"][data-mic-tab="profile"] .mic-body { display: none !important; }
 #app[data-role="mic"]:not([data-mic-tab="queue"]) #mic-queue-panel { display: none !important; }
+#app[data-role="mic"]:not([data-mic-tab="profile"]) #mic-profile-panel { display: none !important; }
+#app[data-role="display"] #mic-profile-panel { display: none !important; }
 
 /* 4. Modais */
 .modal-overlay { display: none !important; }

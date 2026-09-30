@@ -18,7 +18,11 @@ Este arquivo resume os detalhes técnicos específicos do subprojeto **Karaoke A
 | &emsp;&emsp;├─ `main.js` | Bootstrap da aplicação (identifica display vs mic) | Define o ponto de entrada. |
 | &emsp;&emsp;├─ `game-view.js` | Renderização da letra e animações de gameplay | Controla o acendimento progressivo das sílabas/palavras. |
 | &emsp;&emsp;├─ `lobby.js` / `score-bars.js` | Lobby (vagas com "+": mic próprio + time A–D) e barras de placar | Não existe mais seletor de modo: mesmo time = dupla/trio. O servidor pontua por mic; a média do time é feita no front (barra do time + barrinha de cada membro, pódio por time). |
-| &emsp;&emsp;├─ `verse-stamp.js` | Carimbo de acerto/erro por verso (Afinado · Quase · Fora) | Faixas em `verseQuality` (85/70); usado no palco (solo), nas barras (multiplayer) e na nota do celular. |
+| &emsp;&emsp;├─ `share-card.js` / `replay.js` | Cartão 4:5 para print no fim de jogo (TV e celular) e "ouvir a apresentação" | Dados do `game_over` (`player_stats`, `player_pitch`, `records`, `song_id`). |
+| &emsp;&emsp;├─ `profile-view.js` / `players-modal.js` | Ranking e perfil dos cantores (modal "Cantores" na TV, aba "Perfil" no celular) | Lê `/api/players`. |
+| &emsp;&emsp;├─ `turns.js` | Revezar versos (duelo): dono de cada verso | Mesma regra de `turn_owner` em `ws/room.py`. |
+| &emsp;&emsp;├─ `guide-vocal.js` / `wake-lock.js` / `status-panel.js` | Voz guia (vocal.mp3 baixinho), tela sempre acesa, painel de saúde (clique no "Online") | A voz guia passa pelo mesmo tom do instrumental (`audio-lifecycle-manager.js`). |
+| &emsp;&emsp;├─ `verse-stamp.js` | Carimbo de acerto/erro por verso (Na mosca · Quase · Fora) | Faixas em `verseQuality` (85/70); usado no palco (solo), nas barras (multiplayer) e na nota do celular. |
 | &emsp;&emsp;├─ `youtube-search.js` | Busca no YouTube pelo nome (passo 1 do "Adicionar música") | Usa `GET /api/youtube-search`. Colar link continua valendo. |
 | &emsp;&emsp;├─ `select.js` | Select personalizado | Todo `<select>` é aprimorado no bootstrap; o nativo fica escondido por baixo. Troque valor com `select.value = x`. |
 | &emsp;&emsp;├─ `tv-nav.js` / `compat.js` | Controle remoto (setas/OK/Voltar/Play) e polyfills de TV | JS até ES2018. |
@@ -31,6 +35,8 @@ Este arquivo resume os detalhes técnicos específicos do subprojeto **Karaoke A
 | ├─ `rooms.py` | Modelo da sala de canto (`KaraokeRoom`) | Gerencia buffers em memória por jogador e por segmento. |
 | ├─ `queue_manager.py` | Fila de downloads/processamento da GPU | Garante que processos pesados de IA aguardem ocioso da GPU. |
 | ├─ `score_engine.py` | Motor de cálculo de notas do cantor | Fuzzy tokens (rapidfuzz), normalização por idioma (contrações, números, hífen) e penalidades de tempo. O Double Metaphone só existe no `lrc_realign.py`, não na nota. |
+| ├─ `pitch.py` | Afinação: YIN em numpy, `pitch.json` da voz separada, nota de tom por verso | Informativa (fora da nota) até calibrar; oitava livre; nota mostrada já desconta o acaso (~30). |
+| ├─ `players.py` | Perfis dos cantores (`players/<apelido>/profile.json`), recordes, ranking | `KARAOKE_PLAYERS_DIR` troca a pasta (os testes usam uma temporária via `tests/conftest.py`). |
 | ├─ `mic_stream.py` | Linha do tempo do áudio dos microfones | Formato do pacote `KM01`, relógio da música (`SongClock`) e janelas disjuntas por verso. |
 | ├─ `stt_engine.py` | Instanciação e controle do Faster-Whisper | Tem fallback CUDA -> CPU automático e limpa silêncio (VAD). Modelo padrão `large-v3-turbo` (float16 na GPU, int8 na CPU), trocável por `KARAOKE_WHISPER_*`. Os limiares de confiança foram calibrados no `medium`: recalibrar com canto real. |
 | ├─ `routes/` | Handlers REST HTTP (`songs`, `lyrics`, `upload`, `queue`) | Retornam estritamente JSON (ou `FileResponse` para áudio). |
@@ -145,6 +151,11 @@ Armazena a nota histórica de cada sessão.
 | `POST` | `/api/save-lyrics` | Form (`slug`, `language`, `lyrics_lrc`, `meta_json`) | `{"success": true}` (Salva e gera os segmentos) |
 | `GET` | `/api/youtube-metadata` | `url: str` (Query) | `{"title": "...", "artist": "..."}` |
 | `GET` | `/api/songs/{song_id}/cover` | — | Capa do álbum (JPEG). 1ª vez busca no iTunes, senão miniatura do YouTube; guarda em `songs/<slug>/cover.jpg` (`cover.none` = sem capa) |
+| `GET` | `/songs/{song_id}/vocal` | — | Voz separada (voz guia) |
+| `GET` | `/api/players` · `/api/players/{nome}` | — | Ranking · perfil (resumo, recordes por música, últimas) |
+| `GET` | `/api/songs/{song_id}/leaderboard` | — | Melhores da sala na música |
+| `GET` | `/api/recordings/{id}/audio/{jogador}` | — | Voz gravada (WAV 16 kHz no tempo da música) |
+| `GET` | `/api/status` | — | Painel de saúde: GPU, fila, salas (tempo até a nota), disco |
 | `GET` | `/api/youtube-search` | `q: str`, `limit: int` (Query) | `{"results": [{"url", "title", "channel", "duration", "thumbnail", "artist_guess", "title_guess"}]}` |
 | `POST` | `/api/upload-song` | Form (`title`, `artist`, `language`, files/URLs) | `{"success": true, "lyrics_status": "draft", "draft_lrc": "...", "slug": "..."}` |
 | `POST` | `/api/queue/add` | Form (`title`, `artist`, `youtube_url`, etc.) | `{"success": true, "item": {...}}` (Entra na fila) |
@@ -196,6 +207,7 @@ Armazena a nota histórica de cada sessão.
 *   **Texto de usuário no front:** apelidos, títulos e transcrições nunca vão crus para `innerHTML` — use `textContent` ou `escapeHtml` (`js/html.js`). `showToast` já é texto puro.
 *   **Reconexão da TV:** o jogo reconecta com `resume=1` (o servidor não reseta a sala) e o código de fechamento 4001 (`DISPLAY_REPLACED_CODE`) significa "outra tela assumiu" — não reconectar. Resultados de Whisper conferem `room.game_id` antes de gravar.
 *   **Letra revisada à mão:** o `save-lyrics` grava `songs/<slug>/.lyrics_edited`; o reinstall sem alinhamento forçado mantém esse `lyrics.lrc` em vez do backup/LRCLIB.
+*   **Testes das telas:** `tests/ui/test_screens.py` (Playwright sobre o preview; pulado sem Playwright). Mexeu em tela? Rode `python -m pytest tests/ui`.
 *   **Hallucinações no Silêncio:**
     *   Trechos silenciosos longos fazem o Whisper gerar alucinações repetitivas. Garanta que o gate de áudio de RMS (`rms_threshold` em `stt_engine.py`) rejeite transcrição abaixo de `0.0018` de energia média.
 

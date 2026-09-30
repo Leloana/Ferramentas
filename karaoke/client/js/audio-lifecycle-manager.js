@@ -41,6 +41,11 @@ export class AudioLifecycleManager {
     constructor(options = {}) {
         this.captureMic = options.captureMic || false;
         this.mediaElement = options.mediaElement || null;
+        // Voz guia (vocal.mp3): segue o mesmo caminho de tom do instrumental
+        this.guideElement = options.guideElement || null;
+        this.guideSource = null;
+        this.guideGain = null;
+        this.currentGuideVolume = options.guideVolume || 0;
         this.onAudioChunk = options.onAudioChunk || null;
 
         /** @type {AudioContext|null} */
@@ -187,6 +192,15 @@ export class AudioLifecycleManager {
                     this.nodes.add(this.gainNode);
                 }
 
+                if (this.guideElement && !this.guideSource) {
+                    this.guideSource = this.audioContext.createMediaElementSource(this.guideElement);
+                    this.guideGain = this.audioContext.createGain();
+                    this.guideGain.gain.value = this.currentGuideVolume;
+                    this.guideSource.connect(this.guideGain);
+                    this.nodes.add(this.guideSource);
+                    this.nodes.add(this.guideGain);
+                }
+
                 this.updateTranspose(this.currentTranspose);
             } catch (err) {
                 console.error("AudioLifecycleManager: Failed to capture MediaElement:", err);
@@ -255,6 +269,8 @@ export class AudioLifecycleManager {
         }
         this.analyserNode = null;
         this.mediaElementSource = null;
+        this.guideSource = null;
+        this.guideGain = null;
 
         // 4. Safely close AudioContext
         if (this.audioContext) {
@@ -289,6 +305,17 @@ export class AudioLifecycleManager {
             }
             this.mediaElement = null;
         }
+        if (this.guideElement) {
+            try {
+                const oldGuide = this.guideElement;
+                oldGuide.pause();
+                const newGuide = oldGuide.cloneNode(true);
+                if (oldGuide.parentNode) oldGuide.parentNode.replaceChild(newGuide, oldGuide);
+            } catch (e) {
+                console.error("AudioLifecycleManager: Error cloning guide element:", e);
+            }
+            this.guideElement = null;
+        }
 
         this._initialized = false;
         this._started = false;
@@ -314,9 +341,13 @@ export class AudioLifecycleManager {
         this._stopJungleBufferSources();
 
         // Route media element source through gainNode, then Jungle or directly to destination
+        if (this.guideGain) {
+            try { this.guideGain.disconnect(); } catch (e) { /* já desconectado */ }
+        }
         if (transpose === 0) {
             this.mediaElementSource.connect(this.gainNode);
             this.gainNode.connect(this.audioContext.destination);
+            if (this.guideGain) this.guideGain.connect(this.audioContext.destination);
             console.log("AudioLifecycleManager: Connected playback via gainNode -> destination (transpose=0).");
         } else {
             this.jungleNode = new Jungle(this.audioContext);
@@ -324,6 +355,7 @@ export class AudioLifecycleManager {
 
             this.mediaElementSource.connect(this.gainNode);
             this.gainNode.connect(this.jungleNode.input);
+            if (this.guideGain) this.guideGain.connect(this.jungleNode.input);
             this.jungleNode.output.connect(this.audioContext.destination);
             console.log(`AudioLifecycleManager: Connected playback via gainNode -> Jungle (transpose=${transpose}).`);
         }
@@ -337,6 +369,11 @@ export class AudioLifecycleManager {
      *
      * @param {number} val - Volume level between 0.0 and 1.0.
      */
+    setGuideVolume(val) {
+        this.currentGuideVolume = Math.max(0, Math.min(1, val));
+        if (this.guideGain) this.guideGain.gain.value = this.currentGuideVolume;
+    }
+
     setVolume(val) {
         this.currentVolume = Math.max(0, Math.min(1, val));
         if (this.gainNode) {

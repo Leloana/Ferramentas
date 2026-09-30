@@ -65,6 +65,13 @@ class TestRecordingsApi(unittest.TestCase):
         self.assertEqual(self.client.get(f"/api/recordings/{self.rec_id}").json()["labels"],
                          {"Lelo": {"1": "certo", "2": "cantarolei"}})
 
+    def test_player_voice_is_served_as_wav(self):
+        resp = self.client.get(f"/api/recordings/{self.rec_id}/audio/Lelo")
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.headers["content-type"], "audio/wav")
+        self.assertTrue(resp.content.startswith(b"RIFF"))
+        self.assertEqual(self.client.get(f"/api/recordings/{self.rec_id}/audio/Outro").status_code, 404)
+
     def test_rejects_bad_input(self):
         url = f"/api/recordings/{self.rec_id}/gabarito"
         for body in ({"player": "Lelo", "labels": {"1": "talvez"}},

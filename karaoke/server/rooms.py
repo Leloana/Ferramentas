@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+from collections import deque
 from typing import Optional
 
 from fastapi import WebSocket
@@ -46,6 +47,17 @@ class KaraokeRoom:
         # Sobe a cada partida/reset: resultado do Whisper de uma partida antiga
         # (que ficou esperando o lock) é descartado em vez de cair na nova.
         self.game_id = 0
+        # Afinação (pitch.py): melodia de referência do vocal separado, tom
+        # transposto pela TV e nota de afinação por jogador e verso.
+        self.pitch_reference: Optional[dict] = None
+        self.transpose = 0.0
+        self.player_pitch_scores: dict = {}
+        # Tarefas de fundo (ex.: gerar pitch.json) — referência forte para o GC
+        self.background_tasks: set = set()
+        # Revezar versos: times em rodízio por verso (None = todos cantam tudo)
+        self.turn_order: Optional[list] = None
+        # Painel de saúde: segundos entre fechar o verso e a nota chegar (últimos 30)
+        self.verse_latencies: deque = deque(maxlen=30)
         # Partida em gravação (KARAOKE_RECORD_DIR) ou None.
         self.recording: Optional[GameRecording] = None
 

@@ -190,6 +190,17 @@ class TestHttpApiFlow(unittest.TestCase):
             import shutil
             shutil.rmtree(outside, ignore_errors=True)
 
+    def test_status_panel(self):
+        data = self.client.get("/api/status").json()
+        self.assertIn("gpu", data)
+        self.assertIn("free_gb", data["disk"])
+        self.assertIsInstance(data["rooms"], list)
+        self.assertIn("total", data["queue"])
+
+    def test_players_api(self):
+        self.assertEqual(self.client.get("/api/players").status_code, 200)
+        self.assertEqual(self.client.get("/api/players/ninguem").status_code, 404)
+
     def test_delete_song(self):
         # Create a temp song specifically for deleting
         del_song_slug = "delete-me-artist"

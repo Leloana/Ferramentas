@@ -41,7 +41,7 @@ TV — e simplificar os fluxos de adicionar música e montar a partida.
 
 ## Retorno de acerto/erro por verso
 
-- **Carimbo de ensaio** (`js/verse-stamp.js`): a nota do verso vira "Afinado" (85+), "Quase" (70–84) ou "Fora" (<70), carimbado no canto do palco com a cor da faixa e recolhido depois de ~2 s. No multiplayer cada barra ganha um carimbinho e pisca na cor da faixa (a moldura da tela fica só no solo, porque a nota geral mistura os times).
+- **Carimbo de ensaio** (`js/verse-stamp.js`): a nota do verso vira "Na mosca" (85+; era "Afinado", trocado porque mede a letra, não o tom), "Quase" (70–84) ou "Fora" (<70), carimbado no canto do palco com a cor da faixa e recolhido depois de ~2 s. No multiplayer cada barra ganha um carimbinho e pisca na cor da faixa (a moldura da tela fica só no solo, porque a nota geral mistura os times).
 - Moldura da tela mais grossa e na cor "em tinta" (antes quase invisível); "Último" e a nota do celular pulsam na cor da faixa.
 - "Ouvi" compara sem acento (`normalizeWord`): o `\w` do JS é só ASCII e marcava "não" cantado certo como erro.
 

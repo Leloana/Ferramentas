@@ -21,6 +21,10 @@ import { initTabs } from './tabs.js';
 import { initTvNav } from './tv-nav.js';
 import { enhanceSelects } from './select.js';
 import { initLobby, validateLobby } from './lobby.js';
+import { initGuideVocal } from './guide-vocal.js';
+import { fetchProfile, renderProfile } from './profile-view.js';
+import { initPlayersModal } from './players-modal.js';
+import { initStatusPanel } from './status-panel.js';
 
 function bootstrap() {
     const appEl = document.getElementById('app');
@@ -85,6 +89,9 @@ function bootstrap() {
     }
 
     initSyncControls();
+    initGuideVocal();
+    initPlayersModal();
+    initStatusPanel();
     initGameControls();
     initModals();
     initLobby();
@@ -165,7 +172,22 @@ async function initHomeQrcode() {
     qrcodeImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(homeUrl)}`;
 }
 
-// Abas do celular-microfone (Microfone | Adicionar). O atributo vai também no
+// Aba "Perfil" do celular: o histórico do apelido registrado neste aparelho.
+async function showMyProfile() {
+    const view = document.getElementById('mic-profile-view');
+    if (!view) return;
+    if (!state.mobileNickname) {
+        renderProfile(view, null);
+        return;
+    }
+    try {
+        renderProfile(view, await fetchProfile(state.mobileNickname));
+    } catch (e) {
+        showToast(e.message, 'error');
+    }
+}
+
+// Abas do celular-microfone (Microfone | Adicionar | Perfil). O atributo vai também no
 // #app porque as regras de estado em states.css partem do #app.
 function initMicTabs() {
     const appEl = document.getElementById('app');
@@ -176,7 +198,10 @@ function initMicTabs() {
         });
     });
     initTabs('mobile-mic-area', {
-        onSelect: (tab) => appEl.setAttribute('data-mic-tab', tab),
+        onSelect: (tab) => {
+            appEl.setAttribute('data-mic-tab', tab);
+            if (tab === 'profile') showMyProfile();
+        },
     });
     appEl.setAttribute('data-mic-tab', document.getElementById('mobile-mic-area').getAttribute('data-mic-tab') || 'mic');
 }

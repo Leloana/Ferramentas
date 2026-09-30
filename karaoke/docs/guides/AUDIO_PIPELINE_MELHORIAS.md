@@ -65,3 +65,10 @@ Ferramentas: `tools/replay_recording.py --set modulo.NOME=valor` sobre `karaoke/
 17. **Mudança de tom no navegador** (`jungle.js`) soa robótica acima de ±3 semitons e atrasa ~100 ms sem compensação na letra. Rápido: compensar o atraso quando `transpose ≠ 0`. Maior: gerar a versão transposta no servidor (rubberband).
 18. **Cache de stems por vídeo do YouTube** (reinstalar sem baixar e separar de novo).
 19. Rotas só de API (`/api/upload-song`, `/api/reinstall-song`) seguram o `whisper_lock` durante download + Demucs; o front usa só a fila, mas se voltarem a ser usadas, pegar o lock só no alinhamento.
+
+## Recursos novos (2026-09-30, segunda rodada)
+
+- **Afinação** (`server/pitch.py`): YIN em numpy (4 min de áudio em ~1 s na CPU). A referência sai do `vocal.mp3` (gerada logo depois da separação ou, nas músicas antigas, em segundo plano na 1ª partida) e fica em `pitch.json`. Cada verso ganha "tom X%" — oitava livre, ±0,25 s de folga, e a nota mostrada já desconta o acaso (altura aleatória fazia ~30). **Não entra na nota** até calibrar com canto real; o tom da trilha (transposição) é enviado pela TV. Pontos a observar no servidor: gate de RMS do mic (`MIC_RMS_GATE`), harmonias no stem, vazamento da TV no microfone.
+- **Voz guia**: `vocal.mp3` tocando junto do instrumental (controle "Voz guia", 0% = desligada), passando pelo mesmo tom.
+- **Revezar versos**: cada verso com letra é de um time em rodízio; o servidor pontua só o dono e a média de cada um é sobre os versos dele.
+- **Perfis/recordes**, **cartão para print**, **ouvir a apresentação**, **contagem 3-2-1**, **tela acesa no celular**, **painel de saúde**, **cache do instrumental** (`Cache-Control` de 1 dia).

@@ -1,0 +1,196 @@
+/* ============================================================
+   Cartão de fim de música para print (share-card.js).
+   Formato 4:5 (post do Instagram). Tudo medido em --u = 1/100 da
+   largura do cartão, para o print sair igual no celular e na TV.
+   ============================================================ */
+.share-card-overlay {
+    --u: 0.736vh;                       /* TV antiga (sem min()): cabe pela altura */
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 20000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--paper-2);
+    background-image: var(--tex-paper);
+    animation: fadeIn 0.25s ease;
+    cursor: pointer;
+}
+@supports (width: min(1px, 2px)) {
+    .share-card-overlay { --u: min(0.92vw, 0.736vh); }
+}
+
+.share-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: calc(var(--u) * 100);
+    height: calc(var(--u) * 125);
+    padding: calc(var(--u) * 5) calc(var(--u) * 6) calc(var(--u) * 4);
+    overflow: hidden;
+    background-color: var(--paper-light);
+    background-image: var(--staff-lines), var(--tex-paper);
+    border: calc(var(--u) * 0.5) solid var(--ink);
+    outline: calc(var(--u) * 0.25) solid var(--ink);
+    outline-offset: calc(var(--u) * 1.1);
+    box-shadow: calc(var(--u) * 1.4) calc(var(--u) * 1.4) 0 var(--ink);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    text-align: center;
+}
+/* cor de destaque pelo rank */
+.share-card[data-rank="S"] { --hl: var(--butter); --hl-ink: var(--butter-ink); }
+.share-card[data-rank="A"] { --hl: var(--sage); --hl-ink: var(--sage-ink); }
+.share-card[data-rank="B"] { --hl: var(--blue); --hl-ink: var(--blue-ink); }
+.share-card[data-rank="C"] { --hl: var(--rose); --hl-ink: var(--rose-ink); }
+
+.share-card__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-bottom: calc(var(--u) * 1.5);
+    border-bottom: calc(var(--u) * 0.6) double var(--ink);
+    font-size: calc(var(--u) * 3);
+}
+.share-card__brand { display: flex; align-items: center; gap: calc(var(--u) * 1.2); font-family: var(--font-display); font-size: calc(var(--u) * 4.4); font-style: italic; font-weight: 700; }
+.share-card__brand img { width: calc(var(--u) * 6); height: calc(var(--u) * 6); }
+.share-card__date { color: var(--dim); font-weight: 600; letter-spacing: 0.04em; }
+
+/* Capa como foto colada com fita */
+.share-card__photo {
+    position: relative;
+    flex-shrink: 0;
+    width: calc(var(--u) * 46);
+    height: calc(var(--u) * 46);
+    margin: calc(var(--u) * 4.5) 0 calc(var(--u) * 3);
+    padding: calc(var(--u) * 1.6);
+    background: #fffaf0;
+    border: calc(var(--u) * 0.3) solid var(--ink);
+    box-shadow: calc(var(--u) * 1) calc(var(--u) * 1) 0 var(--ink);
+    transform: rotate(-2.5deg);
+}
+.share-card__photo::before,
+.share-card__photo::after {
+    content: '';
+    position: absolute;
+    width: calc(var(--u) * 16);
+    height: calc(var(--u) * 4.5);
+    background: rgba(236, 213, 143, 0.75);
+    border: 1px solid rgba(125, 95, 20, 0.35);
+}
+.share-card__photo::before { top: calc(var(--u) * -2.2); left: calc(var(--u) * -4); transform: rotate(-32deg); }
+.share-card__photo::after { right: calc(var(--u) * -4); bottom: calc(var(--u) * -2.2); transform: rotate(-32deg); }
+.share-card__cover { display: block; width: 100%; height: 100%; object-fit: cover; filter: sepia(0.18) saturate(0.95); }
+.share-card__photo-icon { display: none; }
+.share-card__photo--empty { display: flex; align-items: center; justify-content: center; background: var(--hl); }
+.share-card__photo--empty .share-card__photo-icon { display: block; width: 45%; height: 45%; color: var(--ink); }
+
+.share-card__stamp {
+    position: absolute;
+    right: calc(var(--u) * -9);
+    top: calc(var(--u) * 4);
+    padding: calc(var(--u) * 1) calc(var(--u) * 2.2);
+    background: rgba(251, 246, 234, 0.92);
+    border: calc(var(--u) * 0.6) solid var(--rose-ink);
+    outline: calc(var(--u) * 0.2) solid var(--rose-ink);
+    outline-offset: calc(var(--u) * 0.6);
+    color: var(--rose-ink);
+    font-size: calc(var(--u) * 3.6);
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transform: rotate(14deg);
+}
+.share-card__stamp--first { border-color: var(--blue-ink); outline-color: var(--blue-ink); color: var(--blue-ink); }
+
+.share-card__song { width: 100%; }
+.share-card__title {
+    margin: 0;
+    overflow: hidden;
+    font-family: var(--font-ui);
+    font-size: calc(var(--u) * 6.2);
+    font-weight: 900;
+    line-height: 1.1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.share-card__artist { margin: calc(var(--u) * 0.8) 0 0; color: var(--dim); font-size: calc(var(--u) * 3.8); font-weight: 600; }
+
+.share-card__score-row { display: flex; align-items: center; justify-content: center; gap: calc(var(--u) * 5); margin-top: calc(var(--u) * 2.5); }
+.share-card__score { display: flex; align-items: flex-start; line-height: 0.85; }
+.share-card__score-num {
+    font-family: var(--font-display);
+    font-size: calc(var(--u) * 19);
+    font-weight: 700;
+    background: linear-gradient(transparent 58%, var(--hl) 58%, var(--hl) 88%, transparent 88%);
+}
+.share-card__score-pct { margin-top: calc(var(--u) * 1.5); font-family: var(--font-display); font-size: calc(var(--u) * 8); font-weight: 700; }
+.share-card__rank {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(var(--u) * 0.6);
+}
+.share-card__rank-letter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(var(--u) * 14);
+    height: calc(var(--u) * 14);
+    background: var(--hl);
+    border: calc(var(--u) * 0.6) solid var(--ink);
+    outline: calc(var(--u) * 0.25) solid var(--ink);
+    outline-offset: calc(var(--u) * 0.8);
+    font-family: var(--font-display);
+    font-size: calc(var(--u) * 9.5);
+    font-weight: 700;
+}
+.share-card__rank-title { margin-top: calc(var(--u) * 0.8); font-size: calc(var(--u) * 2.8); font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
+
+.share-card__chips { display: flex; flex-wrap: wrap; justify-content: center; gap: calc(var(--u) * 1.6); margin-top: calc(var(--u) * 3); }
+.share-chip {
+    display: inline-flex;
+    align-items: baseline;
+    gap: calc(var(--u) * 0.9);
+    padding: calc(var(--u) * 0.9) calc(var(--u) * 1.8);
+    border: calc(var(--u) * 0.3) solid var(--ink);
+    font-size: calc(var(--u) * 3);
+    font-weight: 600;
+}
+.share-chip strong { font-size: calc(var(--u) * 3.8); font-weight: 900; font-variant-numeric: tabular-nums; }
+.share-chip[data-tone="good"] { background: #e3ecdd; color: var(--sage-ink); border-color: var(--sage-ink); }
+.share-chip[data-tone="ok"] { background: #f7ecc6; color: var(--butter-ink); border-color: var(--butter-ink); }
+.share-chip[data-tone="poor"] { background: #f5dfd6; color: var(--rose-ink); border-color: var(--rose-ink); }
+.share-chip[data-tone="pitch"] { background: #e6dff0; color: var(--lavender-ink); border-color: var(--lavender-ink); }
+
+.share-card__by { margin: calc(var(--u) * 2.5) 0 0; font-size: calc(var(--u) * 3.6); color: var(--dim); }
+.share-card__by strong { color: var(--ink); font-weight: 900; }
+
+.share-card__podium { display: flex; flex-direction: column; gap: calc(var(--u) * 0.8); width: 80%; margin: calc(var(--u) * 3) 0 0; padding: 0; list-style: none; }
+.share-card__podium li { display: grid; grid-template-columns: calc(var(--u) * 7) minmax(0, 1fr) auto; align-items: baseline; font-size: calc(var(--u) * 3.6); border-bottom: 1px solid var(--fold); }
+.share-card__podium li:first-child { font-weight: 900; }
+.share-card__place { color: var(--dim); font-weight: 800; text-align: left; }
+.share-card__who { overflow: hidden; text-align: left; text-overflow: ellipsis; white-space: nowrap; }
+.share-card__pts { font-weight: 800; font-variant-numeric: tabular-nums; }
+
+.share-card__foot { width: 100%; margin-top: auto; padding-top: calc(var(--u) * 1.5); opacity: 0.55; }
+.share-card__foot img { display: block; width: 100%; height: calc(var(--u) * 4); object-fit: cover; }
+
+/* botão da câmera no fim de jogo */
+.btn-share-card { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; }
+
+/* fim de jogo: botões lado a lado e linha de recorde */
+.game-over-actions { display: flex; gap: 0.6rem; width: 100%; }
+.game-over-actions #btn-restart-game { flex: 1; }
+.game-over-record { margin: 0.2rem 0 0.8rem; color: var(--lavender-ink); font-weight: 700; text-align: center; }
+.mic-final .btn-share-card { margin-top: 0.6rem; }
+.game-over-replay { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-bottom: 0.8rem; }
+.btn-replay { display: inline-flex; align-items: center; gap: 0.45rem; }
+.btn-replay.is-playing { background: var(--sage); border-color: var(--sage-ink); }
+.mic-final .btn-replay { margin-top: 0.4rem; }

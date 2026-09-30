@@ -45,6 +45,10 @@
                     </div>
                 </div>
                 <div id="lobby-seats" class="lobby-seats"></div>
+                <div class="lobby__party">
+                    <button type="button" id="btn-lobby-shuffle" class="btn btn--sm" hidden><i data-icon="shuffle"></i> Sortear</button>
+                    <button type="button" id="btn-lobby-turns" class="btn btn--sm btn-toggle" aria-pressed="false" hidden><i data-icon="split"></i> Revezar versos</button>
+                </div>
                 <p id="lobby-summary" class="lobby-summary"></p>
                 <!-- ativa o mic deste aparelho (main.js); o lobby aciona ao escolher "Mic do dispositivo" -->
                 <button type="button" id="btn-force-pc-mic" hidden>Mic do dispositivo</button>
@@ -69,6 +73,12 @@
                         <div class="stage-overlay__track"><div id="outro-progress-fill" class="stage-overlay__fill" style="width: 0%;"></div></div>
                         <div id="outro-timer-text" class="stage-overlay__hint">Aguardando pontuação...</div>
                     </div>
+
+                    <!-- Revezar versos: de quem é o verso atual -->
+                    <div id="turn-badge" class="turn-badge" hidden></div>
+
+                    <!-- Contagem 3-2-1 antes de voltar a cantar depois de um solo -->
+                    <div id="verse-countdown" class="verse-countdown" aria-live="assertive" hidden></div>
 
                     <!-- Carimbo do verso que acabou de ser cantado (verse-stamp.js) -->
                     <div id="verse-stamp" class="verse-stamp" aria-live="polite"><span class="verse-stamp__word"></span><span class="verse-stamp__score"></span></div>
@@ -104,6 +114,7 @@
                 <div class="score-text-container">
                     <span id="score-percentage-text" class="score-value-large">0%</span>
                     <span class="score-label-text">Precisão</span>
+                    <span id="pitch-avg-text" class="pitch-avg-text" hidden></span>
                 </div>
             </div>
             <button id="btn-exit-sidebar" class="btn btn--danger btn-exit-sidebar">SAIR</button>
@@ -118,6 +129,13 @@
                 <div class="sync-control-group">
                     <input type="range" id="backing-volume-slider" min="0" max="1" step="0.05" value="1" aria-label="Volume da trilha">
                     <span id="backing-volume-value" class="sync-control-value">100%</span>
+                </div>
+            </div>
+            <div class="sync-control-block" id="guide-volume-block">
+                <span class="sync-control-label"><i data-icon="mic"></i> Voz guia</span>
+                <div class="sync-control-group">
+                    <input type="range" id="guide-volume-slider" min="0" max="1" step="0.05" value="0" aria-label="Volume da voz guia">
+                    <span id="guide-volume-value" class="sync-control-value">0%</span>
                 </div>
             </div>
             <div class="sync-control-block">

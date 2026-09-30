@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
 from recorder import SESSION_FILE, VERSE_LABELS, find_recording, load_labels, save_labels
@@ -49,6 +50,20 @@ async def get_recording(recording_id: str):
         "labels": load_labels(session_dir),
         "allowed_labels": list(VERSE_LABELS),
     }
+
+
+@router.get("/api/recordings/{recording_id}/audio/{player}")
+async def get_recording_audio(recording_id: str, player: str):
+    """Voz gravada do cantor (WAV 16 kHz no tempo da música): "ouvir a apresentação"."""
+    session_dir = _session_dir(recording_id)
+    session = json.loads((session_dir / SESSION_FILE).read_text(encoding="utf-8"))
+    info = session["players"].get(player)
+    if not info:
+        raise HTTPException(status_code=404, detail="Jogador não está nesta gravação.")
+    path = (session_dir / info["audio"]).resolve()
+    if path.parent != session_dir.resolve() or not path.is_file():
+        raise HTTPException(status_code=404, detail="Áudio não encontrado.")
+    return FileResponse(path, media_type="audio/wav")
 
 
 @router.post("/api/recordings/{recording_id}/gabarito")

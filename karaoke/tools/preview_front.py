@@ -28,6 +28,24 @@ STATIC_PREFIXES = ("/js/", "/styles/", "/assets/")
 
 sys.path.insert(0, str(ROOT / "server"))
 from utils.html_includes import render_page  # noqa: E402  (módulo puro, sem FastAPI)
+import players  # noqa: E402  (perfis: só biblioteca padrão)
+
+
+def seed_sample_players() -> None:
+    """Perfis de exemplo numa pasta temporária (não toca nos perfis reais)."""
+    import tempfile
+
+    players.PLAYERS_DIR = Path(tempfile.mkdtemp(prefix="preview-players-"))
+    games = [
+        ("Marcelo", "ze-assassino-compulsivo-o-terno", "Zé Assassino Compulsivo - O Terno", 94.2, 71.0),
+        ("Marcelo", "geni-e-o-zepelim-chico-buarque", "Geni e o Zepelim - Chico Buarque", 83.1, 64.0),
+        ("Marcelo", "ze-assassino-compulsivo-o-terno", "Zé Assassino Compulsivo - O Terno", 88.0, 69.0),
+        ("Ana", "geni-e-o-zepelim-chico-buarque", "Geni e o Zepelim - Chico Buarque", 90.4, 80.0),
+        ("Ana", "a-wolf-at-the-door-radiohead", "A Wolf at the Door - Radiohead", 76.5, 58.0),
+        ("Beto", "a-wolf-at-the-door-radiohead", "A Wolf at the Door - Radiohead", 62.0, None),
+    ]
+    for name, song_id, title, score, pitch in games:
+        players.record_game(name, song_id, title, score, pitch=pitch)
 
 mimetypes.add_type("text/javascript", ".js")
 mimetypes.add_type("image/svg+xml", ".svg")
@@ -116,6 +134,24 @@ class Handler(BaseHTTPRequestHandler):
             return self._json({"results": youtube_search(query)})
         if path == "/api/fetch-lyrics":
             return self._json({"success": False})
+        if path == "/api/status":
+            return self._json({
+                "gpu": {"locked": False, "game_active": False, "whisper_model": "large-v3-turbo (preview)"},
+                "queue": {"total": len(SAMPLE_QUEUE), "by_status": {"separating": 1, "queued": 1}},
+                "rooms": [{"id": "1234", "song": "Geni e o Zepelim - Chico Buarque", "display": True,
+                           "players": ["Ana", "Marcelo"], "waiting_mics": 0, "singing": True, "pending_verses": 1,
+                           "verse_latency_median": 1.4, "verse_latency_p90": 2.2, "verses_measured": 18}],
+                "disk": {"free_gb": 212.4, "total_gb": 476.9},
+                "songs": len(list_songs()),
+            })
+        if path == "/api/players":
+            return self._json({"players": players.list_profiles()})
+        if path.startswith("/api/players/"):
+            from urllib.parse import unquote
+            profile = players.load_profile(unquote(path.split("/", 3)[3]))
+            if not profile:
+                return self._json({"detail": "Cantor sem partidas"}, 404)
+            return self._json(players.profile_detail(profile))
         return self._json({"detail": "preview: rota não simulada"}, 404)
 
     def do_POST(self):
@@ -129,6 +165,7 @@ def main():
     parser.add_argument("--port", type=int, default=8765)
     parser.add_argument("--host", default="127.0.0.1")
     args = parser.parse_args()
+    seed_sample_players()
     server = ThreadingHTTPServer((args.host, args.port), Handler)
     print(f"Preview do front em http://{args.host}:{args.port}  (Ctrl+C para sair)")
     try:

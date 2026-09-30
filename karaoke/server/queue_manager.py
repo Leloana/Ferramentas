@@ -366,6 +366,14 @@ class SongQueueManager:
             # Exporta numa thread: leva segundos e a fase 1 roda durante a partida
             export_mp3(vocals_wav, song_dir / "vocal.mp3")
             export_mp3(no_vocals_wav, song_dir / "backing_track.mp3")
+            # melodia de referência da afinação (pitch.json): ~2 s de CPU, já pronta na 1ª partida
+            try:
+                from pitch import load_or_build_reference
+                from utils.audio import load_audio_full
+                (song_dir / "pitch.json").unlink(missing_ok=True)
+                load_or_build_reference(song_dir, load_audio_full)
+            except Exception as e:
+                logger.warning(f"[QUEUE:{item.id}] pitch.json não gerado: {e}")
 
         await asyncio.to_thread(_separate_and_export)
         logger.info(f"[QUEUE:{item.id}] Áudios vocal e backing exportados com sucesso.")

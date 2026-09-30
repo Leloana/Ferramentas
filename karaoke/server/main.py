@@ -29,6 +29,8 @@ from state import ffmpeg_bin_dir  # noqa: F401  (lido para forçar o bootstrap)
 from routes.lyrics import router as lyrics_router
 from routes.queue import router as queue_router
 from routes.recordings import router as recordings_router
+from routes.players import router as players_router
+from routes.status import router as status_router
 from routes.songs import router as songs_router
 from routes.upload import router as upload_router
 from ws.room import router as ws_router
@@ -66,6 +68,8 @@ app.include_router(lyrics_router)
 app.include_router(upload_router)
 app.include_router(queue_router)
 app.include_router(recordings_router)
+app.include_router(players_router)
+app.include_router(status_router)
 app.include_router(ws_router)
 
 

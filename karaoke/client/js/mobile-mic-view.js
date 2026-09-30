@@ -3,6 +3,7 @@ import { iconSvg } from './icons.js';
 import { AudioLifecycleManager } from './audio-lifecycle-manager.js';
 import { showToast } from './toast.js';
 import { dom } from './dom.js';
+import { keepScreenOn } from './wake-lock.js';
 
 export function initMobileMicView() {
     const btnMobileActivate = document.getElementById('btn-mobile-activate');
@@ -37,6 +38,8 @@ export function initMobileMicView() {
         btnMobileActivate.onclick = async () => {
             btnMobileActivate.disabled = true;
             btnMobileActivate.innerText = "ATIVANDO...";
+            // pedido dentro do toque do usuário (exigência do Safari)
+            keepScreenOn();
 
             try {
                 if (state.audioManager) {

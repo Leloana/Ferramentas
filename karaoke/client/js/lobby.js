@@ -75,7 +75,9 @@ export function lobbyLineup() {
     groups.forEach((g) => g.mics.forEach((m) => mics.push(m)));
     const hasTeams = groups.some((g) => g.mics.length > 1);
     const mode = hasTeams ? 'teams' : (MODES[Math.max(0, groups.length - 1)] || 'solo');
-    return { mics, groups, mode };
+    // revezar versos: cada verso é de um time, em rodízio (duelo)
+    const turns = !!state.lobbyTurns && groups.length > 1;
+    return { mics, groups, mode, turns };
 }
 
 // Chamado a cada players_update: tira das vagas os celulares que saíram.
@@ -122,7 +124,7 @@ function summaryText(groups) {
         const g = groups[0];
         return g.mics.length > 1 ? `${groupName(g.mics.length)} cantando junto · ${groupLabel(g)}` : `Solo · ${groupLabel(g)}`;
     }
-    const kind = groups.some((g) => g.mics.length > 1) ? 'Times' : 'Disputa';
+    const kind = (state.lobbyTurns ? 'Revezando versos' : (groups.some((g) => g.mics.length > 1) ? 'Times' : 'Disputa'));
     return `${kind} · ${groups.map((g) => (g.mics.length > 1 ? `${g.team} (${g.mics.map(micLabel).join(' + ')})` : micLabel(g.mics[0]))).join(' × ')}`;
 }
 
@@ -184,6 +186,15 @@ export function renderLobby() {
     const summary = document.getElementById('lobby-summary');
     if (summary) summary.textContent = summaryText(groupsOf(seats));
 
+    // Festa: sortear quem canta / a ordem, e revezar versos com 2+ times
+    const shuffle = document.getElementById('btn-lobby-shuffle');
+    if (shuffle) shuffle.hidden = availableMics().length < 2;
+    const turns = document.getElementById('btn-lobby-turns');
+    if (turns) {
+        turns.hidden = groupsOf(seats).length < 2;
+        turns.setAttribute('aria-pressed', String(!!state.lobbyTurns));
+    }
+
     // mantém o foco do controle remoto no mesmo botão após re-renderizar
     if (focused !== undefined) {
         const again = wrap.querySelector(`[data-seat-key="${focused}"]`) || wrap.querySelector('[data-seat-key="add"]');
@@ -241,7 +252,35 @@ function pick(seatIdx, mic) {
     }
 }
 
+// Sortear: com 1 cantor, escolhe um microfone ao acaso; com vários, embaralha
+// quem fica em cada vaga (muda a ordem do revezamento).
+function shuffleSeats() {
+    const seats = state.lobbySeats;
+    const pool = availableMics().slice();
+    for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const tmp = pool[i]; pool[i] = pool[j]; pool[j] = tmp;
+    }
+    if (seats.length <= 1) {
+        state.lobbySeats = [{ mic: pool[0], team: 'A' }];
+    } else {
+        seats.forEach((seat, i) => { seat.mic = pool[i % pool.length]; });
+    }
+    renderLobby();
+    const first = state.lobbySeats[0];
+    showToast(`Sorteado: ${micLabel(first.mic)}`, 'info');
+}
+
 export function initLobby() {
+    const shuffle = document.getElementById('btn-lobby-shuffle');
+    if (shuffle) shuffle.addEventListener('click', shuffleSeats);
+    const turns = document.getElementById('btn-lobby-turns');
+    if (turns) {
+        turns.addEventListener('click', () => {
+            state.lobbyTurns = !state.lobbyTurns;
+            renderLobby();
+        });
+    }
     const pair = document.getElementById('btn-picker-pair');
     if (pair) {
         pair.addEventListener('click', () => {

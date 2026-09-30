@@ -13,6 +13,7 @@ export const dom = {
     get btnExitSidebar() { return $('btn-exit-sidebar'); },
     get btnBack() { return $('btn-back'); },
     get audioPlayer() { return $('audio-player'); },
+    get guidePlayer() { return $('guide-player'); },
     get syncValueEl() { return $('sync-value'); },
     get btnSyncMinus() { return $('btn-sync-minus'); },
     get btnSyncPlus() { return $('btn-sync-plus'); },

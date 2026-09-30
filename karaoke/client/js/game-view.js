@@ -3,6 +3,11 @@ import { iconSvg } from './icons.js';
 import { lobbyLineup, validateLobby, setAvailableMics, micLabel, groupName, PC_MIC } from './lobby.js';
 import { showScoreBars, hideScoreBars, updateScoreBars, groupFinalScores } from './score-bars.js';
 import { stampVerse, clearStamp, verseQuality, replayClass } from './verse-stamp.js';
+import { keepScreenOn, allowScreenOff } from './wake-lock.js';
+import { attachGuideSync, savedGuideVolume } from './guide-vocal.js';
+import { openShareCard } from './share-card.js';
+import { toggleReplay, stopReplay } from './replay.js';
+import { turnOwner } from './turns.js';
 import { escapeHtml } from './html.js';
 import { dom } from './dom.js';
 import { myRoom, DISPLAY_REPLACED_CODE } from './config.js';
@@ -51,6 +56,10 @@ export async function resetGameState() {
         state.gameReconnectTimer = null;
     }
     stopTimeSync();
+    allowScreenOff();
+    stopReplay();
+    showTurn(null);
+    state.turnOrder = null;
     if (state.ws) {
         state.ws.onclose = null;
         state.ws.close();
@@ -106,6 +115,8 @@ export async function resetGameState() {
         scoreFill.style.width = '';
     }
     document.getElementById('score-percentage-text').innerText = '0%';
+    const pitchAvg = document.getElementById('pitch-avg-text');
+    if (pitchAvg) pitchAvg.hidden = true;
 
     const perfBorder = document.getElementById('perf-border-overlay');
     if (perfBorder) {
@@ -195,6 +206,7 @@ export async function resetGameState() {
 export async function startKaraoke() {
     const capturedSongId = state.selectedSongId;
     const generation = ++state.gameGeneration;
+    keepScreenOn();  // TV/PC: sem descanso de tela durante a partida
     // "Voltar" durante um await cancela o início (resetGameState muda a geração)
     const cancelled = () => generation !== state.gameGeneration;
 
@@ -230,6 +242,8 @@ export async function startKaraoke() {
     state.audioManager = new AudioLifecycleManager({
         captureMic: captureMic,
         mediaElement: dom.audioPlayer,
+        guideElement: dom.guidePlayer,
+        guideVolume: savedGuideVolume(),
         onAudioChunk: (data) => {
             // Música inteira, não só os versos (ver mobile-mic-view.js). Fora do
             // jogo o servidor descarta: sem relógio da música não há onde encaixar.
@@ -261,7 +275,9 @@ export async function startKaraoke() {
             }
             state.audioManager = new AudioLifecycleManager({
                 captureMic: false,
-                mediaElement: dom.audioPlayer
+                mediaElement: dom.audioPlayer,
+                guideElement: dom.guidePlayer,
+                guideVolume: savedGuideVolume(),
             });
             state.audioManager.currentTranspose = state.currentTranspose;
             await state.audioManager.init();
@@ -284,6 +300,8 @@ export async function startKaraoke() {
         return;
     }
 
+    attachGuideSync();
+
     // Aplica o volume salvo ao GainNode do AudioLifecycleManager
     const savedVolume = localStorage.getItem('karaoke_backing_volume');
     if (savedVolume !== null && state.audioManager) {
@@ -304,6 +322,7 @@ export async function startKaraoke() {
 
     state.activePlayers = activeList;
     state.gameMode = mode;
+    state.turnOrder = lineup.turns ? lineup.groups.map((g) => g.mics) : null;
     state.scoringMode = scoringMode;
 
     // Barras de placar nas bordas (a chamada tinha sumido no commit 8fc8799).
@@ -345,7 +364,10 @@ export async function startKaraoke() {
                 type: "start_game",
                 game_mode: mode,
                 active_players: activeList,
-                scoring_mode: scoringMode
+                scoring_mode: scoringMode,
+                transpose: state.currentTranspose || 0,
+                turns: !!state.turnOrder,
+                turn_order: state.turnOrder || undefined
             }));
 
             state.isFirstSegment = true;
@@ -478,7 +500,7 @@ const DISPLAY_HANDLERS = {
         replayClass(segScore, 'seg-score--pulse');
         // carimbo no palco só no solo; em disputa cada barra tem o seu
         if (!(state.activePlayers && state.activePlayers.length > 1)) {
-            stampVerse(document.getElementById('verse-stamp'), data.score);
+            stampVerse(document.getElementById('verse-stamp'), data.score, 0, data.pitch);
         }
         const transText = document.getElementById('transcription-text');
 
@@ -551,7 +573,9 @@ const DISPLAY_HANDLERS = {
         const { dom } = context;
         dom.audioPlayer.pause();
         setAppState('game-over');
+        state.lastGameOver = data;
         showGameOverModal(parseFloat(data.total_score) || 0, data.player_scores);
+        showGameOverExtras(data);
         showAnnotationButton(data.recording_id);
     }
 };
@@ -559,6 +583,11 @@ const DISPLAY_HANDLERS = {
 // Nota geral (lateral). No recálculo (voltou a música) também atualiza as
 // barras do multiplayer, só os números.
 function applyTotals(data) {
+    const pitchEl = document.getElementById('pitch-avg-text');
+    if (pitchEl && typeof data.pitch_avg === 'number') {
+        pitchEl.textContent = `Tom ${Math.round(data.pitch_avg)}%`;
+        pitchEl.hidden = false;
+    }
     const val = parseFloat(data.total_score) || 0;
     const scoreFill = document.getElementById('score-progress-fill');
     if (scoreFill) scoreFill.style.height = val + '%';
@@ -566,6 +595,133 @@ function applyTotals(data) {
     if (data.recalc && data.player_scores && state.activePlayers && state.activePlayers.length > 1) {
         updateScoreBars(data.player_scores, [], renderTranscriptionInto, { recalc: true });
     }
+}
+
+// Revezar versos: selo "Vez de ..." no palco e destaque da barra do time da vez
+function showTurn(owner) {
+    const badge = document.getElementById('turn-badge');
+    if (!badge) return;
+    if (!owner) {
+        badge.hidden = true;
+        document.querySelectorAll('.mp-score-bar').forEach((b) => b.classList.remove('mp-score-bar--turn', 'mp-score-bar--waiting'));
+        return;
+    }
+    const groups = state.scoreGroups || [];
+    const gi = groups.findIndex((g) => g.mics.join('|') === owner.join('|'));
+    const group = groups[gi];
+    badge.textContent = `Vez de ${group && group.mics.length > 1 ? `${groupName(group.mics.length)} ${group.team}` : owner.map(micLabel).join(' + ')}`;
+    badge.dataset.player = String(gi >= 0 ? (['A', 'B', 'C', 'D'].indexOf(group.team) + 1) : 1);
+    badge.hidden = false;
+    replayClass(badge, 'turn-badge--in');
+    groups.forEach((g, i) => {
+        const bar = document.getElementById(`mp-score-bar-p${i + 1}`);
+        if (!bar) return;
+        bar.classList.toggle('mp-score-bar--turn', i === gi);
+        bar.classList.toggle('mp-score-bar--waiting', i !== gi);
+    });
+}
+
+const COUNTDOWN_SEC = 3;
+
+// Contagem antes de voltar a cantar (n = 3, 2, 1; null esconde).
+function setCountdown(n) {
+    const el = document.getElementById('verse-countdown');
+    if (!el) return;
+    if (n === null) {
+        if (!el.hidden) el.hidden = true;
+        el.dataset.n = '';
+        return;
+    }
+    if (el.dataset.n === String(n)) return;
+    el.dataset.n = String(n);
+    el.textContent = String(n);
+    el.hidden = false;
+    replayClass(el, 'verse-countdown--tick');
+}
+
+// Chave de um jogador nas notas do servidor ("Solo" quando não há escalação)
+function soloKey(data) {
+    const keys = Object.keys(data.player_stats || {});
+    return keys.length === 1 ? keys[0] : null;
+}
+
+// Botões "ouvir" (um por cantor com voz gravada)
+function showReplayButtons(data) {
+    const box = document.getElementById('game-over-replay');
+    if (!box) return;
+    box.replaceChildren();
+    const players = Object.keys(data.player_stats || {});
+    if (!data.recording_id || !players.length) {
+        box.hidden = true;
+        return;
+    }
+    players.slice(0, 4).forEach((player) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn btn--ghost btn-replay';
+        const label = players.length > 1 ? `Ouvir ${micLabel(player)}` : 'Ouvir a apresentação';
+        btn.innerHTML = `${iconSvg('headphones')}<span></span>`;
+        btn.querySelector('span').textContent = label;
+        btn.addEventListener('click', () => toggleReplay({
+            recordingId: data.recording_id,
+            player,
+            songId: data.song_id || state.selectedSongId,
+            button: btn,
+        }));
+        box.append(btn);
+    });
+    box.hidden = false;
+}
+
+// Recorde pessoal / melhor da sala abaixo da nota do fim de jogo
+function showGameOverExtras(data) {
+    showReplayButtons(data);
+    const box = document.getElementById('game-over-record');
+    if (!box) return;
+    const lines = [];
+    const records = data.records || {};
+    Object.keys(records).forEach((name) => {
+        const r = records[name];
+        if (r && r.is_record && r.times_sung > 1) lines.push(`Recorde pessoal de ${micLabel(name)}`);
+    });
+    const board = data.leaderboard || [];
+    if (board.length) lines.push(`Melhor da sala: ${board[0].name} · ${Math.round(board[0].best)}%`);
+    box.textContent = lines.join('  ·  ');
+    box.hidden = !lines.length;
+}
+
+// Monta os dados do cartão para print a partir do game_over.
+export function shareDataFromGameOver(data) {
+    const title = document.getElementById('current-song-title');
+    const artist = document.getElementById('current-song-artist');
+    const scores = data.player_scores || {};
+    const names = Object.keys(scores);
+    const key = soloKey(data);
+    const teams = groupFinalScores(scores);
+    let podium = null;
+    if (teams && teams.length > 1) {
+        podium = teams.map((t) => ({
+            name: t.members.length > 1 ? `${groupName(t.members.length)} ${t.group.team}` : micLabel(t.members[0].mic),
+            score: t.score,
+        }));
+    } else if (names.length > 1) {
+        podium = names.map((n) => ({ name: micLabel(n), score: scores[n] })).sort((a, b) => b.score - a.score);
+    }
+    const pitchValues = Object.keys(data.player_pitch || {}).map((k) => data.player_pitch[k]);
+    const one = key && key !== 'Solo' && key !== PC_MIC ? key : null;
+    return {
+        songId: data.song_id || state.selectedSongId,
+        title: title ? title.textContent : '',
+        artist: artist ? artist.textContent : '',
+        score: podium ? podium[0].score : (parseFloat(data.total_score) || 0),
+        pitch: key && data.player_pitch && typeof data.player_pitch[key] === 'number'
+            ? data.player_pitch[key]
+            : (pitchValues.length === 1 ? pitchValues[0] : undefined),
+        stats: key ? data.player_stats[key] : null,
+        name: one,
+        record: one && data.records ? data.records[one] : null,
+        podium,
+    };
 }
 
 export function handleServerMessage(data) {
@@ -733,6 +889,13 @@ export function showGameOverModal(finalScore, playerScores) {
     }
 
     modal.setAttribute('data-open', 'true');
+
+    const shareBtn = document.getElementById('btn-share-card');
+    if (shareBtn) {
+        shareBtn.onclick = () => openShareCard(shareDataFromGameOver(state.lastGameOver || {
+            total_score: finalScore, player_scores: playerScores || {},
+        }));
+    }
 
     document.getElementById('btn-restart-game').onclick = () => {
         resetGameState();
@@ -1028,6 +1191,7 @@ export function startHighlightLoop() {
                         };
 
                         renderLyrics(segmentData);
+                        showTurn(turnOwner(state.currentSegments, state.turnOrder, new_idx));
                     }
 
                     // Determinação do estado de canto de forma local
@@ -1073,24 +1237,30 @@ export function startHighlightLoop() {
 
             if (state.totalPauseDuration > 3.0) {
                 const remainingTime = state.pauseStartTarget - virtualTime;
+                const app = document.getElementById('app');
 
-                if (remainingTime > 1.0) {
-                    const app = document.getElementById('app');
+                if (remainingTime > COUNTDOWN_SEC) {
                     if (app) app.setAttribute('data-silence', 'true');
+                    setCountdown(null);
                     const fill = document.getElementById('silence-progress-fill');
                     const text = document.getElementById('silence-timer-text');
-                    const pct = Math.max(0, Math.min(100, ((remainingTime - 1.0) / (state.totalPauseDuration - 1.0)) * 100));
+                    const pct = Math.max(0, Math.min(100, ((remainingTime - COUNTDOWN_SEC) / (state.totalPauseDuration - COUNTDOWN_SEC)) * 100));
                     if (fill) fill.style.width = pct + '%';
                     if (text) text.innerText = remainingTime.toFixed(1) + 's';
-                } else {
-                    const app = document.getElementById('app');
+                } else if (remainingTime > 0.1) {
+                    // 3… 2… 1 por cima da próxima linha: depois de um solo muita gente entrava atrasada
                     if (app) app.removeAttribute('data-silence');
+                    setCountdown(Math.ceil(remainingTime));
+                } else {
+                    if (app) app.removeAttribute('data-silence');
+                    setCountdown(null);
                     state.totalPauseDuration = 0;
                     state.pauseStartTarget = 0;
                 }
             } else {
                 const app = document.getElementById('app');
                 if (app) app.removeAttribute('data-silence');
+                setCountdown(null);
             }
 
             const verseContainer = document.getElementById('verse-progress-container');
@@ -1158,6 +1328,10 @@ export function updateAudioGraph(transpose) {
     if (state.audioManager) {
         state.audioManager.updateTranspose(transpose);
         state.jungleNode = state.audioManager.jungleNode;
+    }
+    // a afinação compara com a melodia no tom que está tocando
+    if (state.ws && state.ws.readyState === WebSocket.OPEN) {
+        state.ws.send(JSON.stringify({ type: 'transpose', semitones: transpose }));
     }
 }
 

@@ -38,6 +38,9 @@
                 </button>
             </div>
 
+            <!-- Revezar versos: de quem é o verso -->
+            <p id="mobile-turn" class="mobile-turn" hidden></p>
+
             <!-- Letra espelhada -->
             <div id="mobile-lyrics-container">
                 <p id="mobile-lyrics-text">Aguardando a TV</p>
@@ -77,6 +80,11 @@
         <div id="queue-mic-list" class="queue-items-list"></div>
     </div>
 
+    <!-- Aba "Perfil": histórico e recordes do apelido deste celular -->
+    <div id="mic-profile-panel" class="mic-profile-panel">
+        <div id="mic-profile-view" class="players-view"></div>
+    </div>
+
     <nav class="app-tabbar mic-tabbar" aria-label="Navegação do microfone">
         <div class="app-tabbar__tabs" role="tablist">
             <button type="button" data-tab="mic" class="tab-btn" role="tab">
@@ -84,6 +92,9 @@
             </button>
             <button type="button" data-tab="queue" class="tab-btn" role="tab">
                 <i data-icon="add-box"></i><span class="tab-btn__label">Adicionar</span>
+            </button>
+            <button type="button" data-tab="profile" class="tab-btn" role="tab">
+                <i data-icon="user"></i><span class="tab-btn__label">Perfil</span>
             </button>
         </div>
     </nav>

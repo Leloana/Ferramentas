@@ -1,11 +1,12 @@
 // Carimbo de ensaio: retorno de acerto/erro de cada verso.
 //
 // A nota do verso vira uma palavra curta com a cor pastel da faixa
-// (Afinado · Quase · Fora). Usado no palco (solo), nas barras de placar
+// (Na mosca · Quase · Fora). Usado no palco (solo), nas barras de placar
 // (multiplayer) e na nota do celular-microfone.
 
 const LEVELS = [
-    { min: 85, key: 'good', word: 'Afinado' },
+    // mede a letra, não o tom: "Afinado" prometia afinação (ver pitch.py)
+    { min: 85, key: 'good', word: 'Na mosca' },
     { min: 70, key: 'ok', word: 'Quase' },
     { min: -Infinity, key: 'poor', word: 'Fora' },
 ];
@@ -27,13 +28,17 @@ export function replayClass(node, cls) {
 
 // Bate o carimbo em `stamp` (.verse-stamp com __word e __score) e o recolhe
 // depois de `holdMs`. O timeout fica no próprio elemento.
-export function stampVerse(stamp, score, holdMs) {
+// `pitch` (opcional): nota de afinação do verso, mostrada ao lado ("tom 78%")
+export function stampVerse(stamp, score, holdMs, pitch) {
     if (!stamp) return;
     const q = verseQuality(score);
     const word = stamp.querySelector('.verse-stamp__word');
     const num = stamp.querySelector('.verse-stamp__score');
     if (word) word.textContent = q.word;
-    if (num) num.textContent = `${Math.round(parseFloat(score) || 0)}%`;
+    if (num) {
+        const lyric = `${Math.round(parseFloat(score) || 0)}%`;
+        num.textContent = typeof pitch === 'number' ? `${lyric} · tom ${Math.round(pitch)}%` : lyric;
+    }
     stamp.dataset.quality = q.key;
     stamp.classList.remove('verse-stamp--out');
     replayClass(stamp, 'verse-stamp--in');

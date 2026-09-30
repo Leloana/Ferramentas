@@ -4,6 +4,7 @@ import { showToast } from './toast.js';
 import { openModal, closeModal } from './modal.js';
 import { initTabs } from './tabs.js';
 import { ensureDefaultSeat } from './lobby.js';
+import { setGuideSong } from './guide-vocal.js';
 
 export async function fetchSongs() {
     try {
@@ -255,6 +256,7 @@ export function selectSong(song) {
     setAppState('waiting');
     ensureDefaultSeat();
     dom.audioPlayer.src = `/songs/${song.id}/audio`;
+    setGuideSong(song.id);
 
     const savedVolume = localStorage.getItem('karaoke_backing_volume');
     if (savedVolume !== null) {

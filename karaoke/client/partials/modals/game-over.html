@@ -14,7 +14,15 @@
             <div id="modal-score" class="score-box__value">0.0%</div>
         </div>
 
-        <button id="btn-restart-game" class="btn btn--primary btn--block btn--lg">CANTAR NOVAMENTE</button>
+        <div id="game-over-record" class="game-over-record" hidden></div>
+
+        <!-- Ouvir a apresentação (um botão por cantor, montado em game-view.js) -->
+        <div id="game-over-replay" class="game-over-replay" hidden></div>
+
+        <div class="game-over-actions">
+            <button id="btn-share-card" type="button" class="btn btn--lg btn-share-card"><i data-icon="camera"></i> Cartão</button>
+            <button id="btn-restart-game" class="btn btn--primary btn--lg">CANTAR NOVAMENTE</button>
+        </div>
 
         <!-- Anotar versos (gabarito do score): discreto de propósito, só para calibração -->
         <button id="btn-annotate-verses" class="annotate-trigger" type="button" hidden
