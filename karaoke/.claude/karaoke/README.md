@@ -37,6 +37,7 @@ necessariamente o estado atual do código.
 | [resolucoes/LRC_ALIGNMENT_FIX.md](resolucoes/LRC_ALIGNMENT_FIX.md) | Transição do alinhamento por linha para word-level. |
 | [resolucoes/LRC_ALIGNMENT_TUNING.md](resolucoes/LRC_ALIGNMENT_TUNING.md) | Playbook de ajuste de timestamps e "knobs" de alinhamento. |
 | [resolucoes/PLANO.md](resolucoes/PLANO.md) | Planejamento original do MVP (deprecado). |
+| [resolucoes/STT_AVALIACAO_2026-09.md](resolucoes/STT_AVALIACAO_2026-09.md) | Whisper × Qwen3-ASR no score ao vivo (medido em partidas reais) e o que falta para japonês. |
 | [resolucoes/notes.md](resolucoes/notes.md) | Rascunho inicial: VAD, API Vagalume, casos da música _Holiday_. |
 | `resolucoes/holiday-green-day/` | Áudios e JSONs de depuração usados como caso de teste de alinhamento. |
 
