@@ -109,6 +109,37 @@ def find_recording(recording_id: str, base_dir: Path | None = None) -> Path | No
     return path if (path / SESSION_FILE).is_file() else None
 
 
+def list_player_recordings(player: str, base_dir: Path | None = None) -> list[dict]:
+    """Partidas gravadas em que `player` cantou, da mais nova para a mais antiga.
+
+    Perfil do cantor: cada item abre a análise verso a verso (/api/recordings/<id>).
+    Gravação ilegível é pulada.
+    """
+    base = base_dir or recording_base_dir()
+    if not base or not base.is_dir() or not player:
+        return []
+    found = []
+    for session_path in base.glob(f"*/{SESSION_FILE}"):
+        try:
+            session = json.loads(session_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        if player not in (session.get("players") or {}):
+            continue
+        final = session.get("final") or {}
+        score = (final.get("player_scores") or {}).get(player)
+        found.append({
+            "id": session_path.parent.name,
+            "song_id": session.get("song_id"),
+            "song_title": session.get("song_title") or session.get("song_id"),
+            "date": session.get("started_at"),
+            "score": score,
+            "complete": bool(session.get("complete")),
+        })
+    found.sort(key=lambda r: r["date"] or "", reverse=True)
+    return found
+
+
 def load_labels(session_dir: Path) -> dict[str, dict[str, str]]:
     """{jogador: {"3": "certo", ...}} (versos numerados a partir de 1)."""
     path = session_dir / GABARITO_FILE

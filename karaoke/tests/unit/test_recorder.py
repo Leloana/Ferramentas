@@ -21,6 +21,7 @@ from recorder import (  # noqa: E402
     GameRecording,
     covered_intervals,
     covered_mask,
+    list_player_recordings,
     read_wav,
     recording_base_dir,
 )
@@ -168,3 +169,35 @@ class TestRoomSavesPartialGame(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PlayerRecordingsTest(unittest.TestCase):
+    """Perfil: partidas gravadas de um cantor, mais nova primeiro."""
+
+    def setUp(self):
+        self.base = Path(tempfile.mkdtemp())
+
+    def tearDown(self):
+        shutil.rmtree(self.base, ignore_errors=True)
+
+    def _session(self, name, started_at, players, scores):
+        folder = self.base / name
+        folder.mkdir()
+        (folder / SESSION_FILE).write_text(json.dumps({
+            "song_id": "musica", "song_title": "Música - Artista", "started_at": started_at,
+            "complete": True, "players": {p: {} for p in players},
+            "final": {"player_scores": scores},
+        }), encoding="utf-8")
+
+    def test_lists_only_the_players_games_newest_first(self):
+        self._session("a", "2026-09-30T10:00:00", ["Lelo"], {"Lelo": 80.8})
+        self._session("b", "2026-09-30T12:00:00", ["Lelo", "Ana"], {"Lelo": 91.0, "Ana": 70.0})
+        self._session("c", "2026-09-30T11:00:00", ["Ana"], {"Ana": 50.0})
+        (self.base / "quebrada").mkdir()
+        (self.base / "quebrada" / SESSION_FILE).write_text("{", encoding="utf-8")
+
+        games = list_player_recordings("Lelo", self.base)
+        self.assertEqual([g["id"] for g in games], ["b", "a"])
+        self.assertEqual(games[0]["score"], 91.0)
+        self.assertEqual(games[1]["song_title"], "Música - Artista")
+        self.assertEqual(list_player_recordings("Ninguem", self.base), [])

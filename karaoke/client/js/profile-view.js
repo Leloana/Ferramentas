@@ -2,6 +2,7 @@
 // Usado no modal "Cantores" da TV e na aba "Perfil" do celular-microfone.
 // Dados de /api/players (players.py no servidor).
 import { iconSvg } from './icons.js';
+import { openAnnotationFor } from './annotate.js';
 
 function el(tag, cls, text) {
     const node = document.createElement(tag);
@@ -103,6 +104,11 @@ export function renderProfile(container, detail) {
         container.append(list);
     }
 
+    // Partidas gravadas: tocar abre a análise verso a verso (a mesma do fim de jogo)
+    const sessions = el('div', 'profile-sessions');
+    container.append(sessions);
+    renderSessions(sessions, detail.name);
+
     if (detail.recent && detail.recent.length) {
         container.append(el('h4', 'profile-section', 'Últimas'));
         const list = el('ol', 'profile-recent');
@@ -117,4 +123,34 @@ export function renderProfile(container, detail) {
         });
         container.append(list);
     }
+}
+
+async function renderSessions(box, name) {
+    let games;
+    try {
+        const resp = await fetch(`/api/players/${encodeURIComponent(name)}/recordings`);
+        if (!resp.ok) return;
+        games = (await resp.json()).recordings || [];
+    } catch (e) {
+        return;  // sem gravações: a seção simplesmente não aparece
+    }
+    if (!games.length) return;
+    box.append(el('h4', 'profile-section', 'Partidas gravadas'));
+    const list = el('ol', 'profile-recent');
+    games.slice(0, 30).forEach((g) => {
+        const li = el('li');
+        const row = el('button', 'profile-record profile-session');
+        row.type = 'button';
+        row.title = 'Ver os versos';
+        row.append(
+            el('span', 'profile-record__name', g.song_title),
+            el('span', 'profile-record__times', formatDate(g.date)),
+            el('span', 'profile-record__best', pct(g.score)),
+        );
+        row.insertAdjacentHTML('beforeend', iconSvg('next', 'profile-session__go'));
+        row.addEventListener('click', () => openAnnotationFor(g.id, name));
+        li.append(row);
+        list.append(li);
+    });
+    box.append(list);
 }

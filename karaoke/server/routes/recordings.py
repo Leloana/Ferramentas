@@ -1,13 +1,14 @@
 """Gravações de partida: versos para o cantor anotar o gabarito (certo/errado/cantarolei)."""
 from __future__ import annotations
 
+import asyncio
 import json
 
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
-from recorder import SESSION_FILE, VERSE_LABELS, find_recording, load_labels, save_labels
+from recorder import SESSION_FILE, VERSE_LABELS, find_recording, list_player_recordings, load_labels, save_labels
 
 router = APIRouter()
 
@@ -22,6 +23,12 @@ def _session_dir(recording_id: str):
     if session_dir is None:
         raise HTTPException(status_code=404, detail="Gravação não encontrada.")
     return session_dir
+
+
+@router.get("/api/players/{name}/recordings")
+async def player_recordings(name: str):
+    """Partidas gravadas do cantor (perfil → análise verso a verso)."""
+    return {"recordings": await asyncio.to_thread(list_player_recordings, name)}
 
 
 @router.get("/api/recordings/{recording_id}")
