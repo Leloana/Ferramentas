@@ -212,17 +212,20 @@ def realign_segments(
     real_lines = _parse_ref_lines(plain_lyrics)
     logger.info(f"Processando {len(real_lines)} linhas via alinhamento global word-level (fonético+contextual).")
 
-    # 1. Flatten Whisper streams (âncoras de tempo temporárias)
+    # 1. Flatten Whisper streams (âncoras de tempo temporárias).
+    # expected_* no segments.json é relativo ao sing_start do verso: aqui tudo
+    # vira tempo absoluto da música (antes os versos saíam todos em ~0 s).
     wh_words = []
     for seg in segments:
+        base = float(seg.get("sing_start", 0.0) or 0.0)
         for w in seg.get("lyrics_timed", []):
             norm = _normalize_word(w["word"])
             if norm:
-                start = w.get("expected_start", 0.0)
+                start = base + w.get("expected_start", 0.0)
                 wh_words.append({
                     "word": norm,
                     "start": start,
-                    "end": w.get("expected_end", start + 0.3)
+                    "end": base + w.get("expected_end", w.get("expected_start", 0.0) + 0.3)
                 })
     
     wh_tokens = [w["word"] for w in wh_words]
@@ -284,16 +287,17 @@ def realign_segments(
         if not indices:
             continue
         
+        sing_start = global_word_objs[indices[0]]["start"]
+        sing_end = global_word_objs[indices[-1]]["end"]
+
+        # de volta ao formato do segments.json: relativo ao início do verso
         sub_lyrics_timed = []
         for k in indices:
             sub_lyrics_timed.append({
                 "word": global_word_objs[k]["word"],
-                "expected_start": round(global_word_objs[k]["start"], 3),
-                "expected_end": round(global_word_objs[k]["end"], 3)
+                "expected_start": round(global_word_objs[k]["start"] - sing_start, 3),
+                "expected_end": round(global_word_objs[k]["end"] - sing_start, 3)
             })
-            
-        sing_start = sub_lyrics_timed[0]["expected_start"]
-        sing_end = sub_lyrics_timed[-1]["expected_end"]
         
         # Preserva pausas naturais detectadas pelo word-level
         pause_start = sing_end

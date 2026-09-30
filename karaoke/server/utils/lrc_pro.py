@@ -251,7 +251,11 @@ def align_lyrics_forced(
                 "lyrics_timed": sub_lyrics_timed
             }
             corrected_segments.append(seg)
-            
+
+        # sing_end cobre a última palavra e não invade o verso seguinte
+        from utils.segment_timing import finalize_segments
+        finalize_segments(corrected_segments, audio_duration_sec)
+
         # 12. Gerar LRC final
         lrc_lines = []
         n = len(corrected_segments)

@@ -288,6 +288,16 @@ def _late_packet_grace(room) -> float:
     return min(MAX_LATE_PACKET_GRACE_SEC, max(LATE_PACKET_GRACE_SEC, lateness + 0.1))
 
 
+def _all_audio_arrived(room, t1: float) -> bool:
+    players = room.active_players or ["Solo"]
+    for player in players:
+        timeline = room.mic_timelines.get(player)
+        end = timeline.end_time() if timeline else None
+        if end is None or end < t1:
+            return False
+    return True
+
+
 def _dispatch_due_segments(room, current_time: float | None) -> None:
     """Fecha e pontua os versos cuja janela já passou (None = todos, fim da música)."""
     grace = _late_packet_grace(room)
@@ -296,7 +306,10 @@ def _dispatch_due_segments(room, current_time: float | None) -> None:
             continue
         t0, t1 = segment_window(room.segments, idx, PRE_SING_BUFFER_SEC, POST_SING_BUFFER_SEC)
         if current_time is not None and current_time < t1 + grace:
-            continue
+            # A folga é para pacotes atrasados: se o áudio de todos os celulares
+            # já cobre a janela, pontua na hora (~0,5 s mais cedo na rede local).
+            if current_time < t1 or not _all_audio_arrived(room, t1):
+                continue
         room.transcribed_segments.add(idx)
 
         active_audio = {}

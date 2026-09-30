@@ -30,7 +30,7 @@ Este arquivo resume os detalhes técnicos específicos do subprojeto **Karaoke A
 | ├─ `state.py` | Singletons compartilhados (`room_manager`, etc.) | **Use para evitar imports circulares** entre routers e websockets. |
 | ├─ `rooms.py` | Modelo da sala de canto (`KaraokeRoom`) | Gerencia buffers em memória por jogador e por segmento. |
 | ├─ `queue_manager.py` | Fila de downloads/processamento da GPU | Garante que processos pesados de IA aguardem ocioso da GPU. |
-| ├─ `score_engine.py` | Motor de cálculo de notas do cantor | Contém fuzzy tokens, Double Metaphone e penalidades de tempo. |
+| ├─ `score_engine.py` | Motor de cálculo de notas do cantor | Fuzzy tokens (rapidfuzz), normalização por idioma (contrações, números, hífen) e penalidades de tempo. O Double Metaphone só existe no `lrc_realign.py`, não na nota. |
 | ├─ `mic_stream.py` | Linha do tempo do áudio dos microfones | Formato do pacote `KM01`, relógio da música (`SongClock`) e janelas disjuntas por verso. |
 | ├─ `stt_engine.py` | Instanciação e controle do Faster-Whisper | Tem fallback CUDA -> CPU automático e limpa silêncio (VAD). Modelo padrão `large-v3-turbo` (float16 na GPU, int8 na CPU), trocável por `KARAOKE_WHISPER_*`. Os limiares de confiança foram calibrados no `medium`: recalibrar com canto real. |
 | ├─ `routes/` | Handlers REST HTTP (`songs`, `lyrics`, `upload`, `queue`) | Retornam estritamente JSON (ou `FileResponse` para áudio). |
@@ -50,7 +50,9 @@ Este arquivo resume os detalhes técnicos específicos do subprojeto **Karaoke A
 *   **Fila de processamento em segundo plano:** `server/routes/queue.py` (adiciona tarefas ao `queue_manager.py`).
 *   **Tratamento de áudio/resampling:** ao vivo o celular já manda 16 kHz (`worklets/audio-processor.js`). Offline, `server/utils/audio.py` converte arquivos para 16kHz Mono.
 *   **Áudio ao vivo → verso:** `server/mic_stream.py` (âncora por jogador, `segment_window`, tempos do Whisper relativos à janela).
-*   **Cálculo da Pontuação:** `server/score_engine.py` (fuzzy matching, Double Metaphone e atrasos).
+*   **Cálculo da Pontuação:** `server/score_engine.py` (fuzzy matching, normalização e atrasos).
+*   **Separação voz × instrumental:** `server/utils/separation.py` (Demucs via `python -m demucs.separate`, uma separação por vez, MP3 em `KARAOKE_MP3_BITRATE`=320k, modelo em `KARAOKE_DEMUCS_MODEL`=htdemucs). Fila e reinstall usam só ele.
+*   **Tempos dos versos:** `server/utils/segment_timing.py` — `match_words_in_order` (letra × Whisper sem inverter a ordem) e `finalize_segments` (sing_end cobre a última palavra e não invade o próximo verso; também aplicado na leitura pelo `song_manager`).
 *   **Alinhamento de letras com áudio:** `server/utils/lrc_align.py` (Whisper) e `server/utils/lrc_pro.py` (MMS_FA PyTorch).
 *   **Criação de segmentos de canto:** `tools/prepare_song.py` (gera metadados de jogabilidade no arquivo final).
 
@@ -193,6 +195,7 @@ Armazena a nota histórica de cada sessão.
 *   **Slug de música vindo do cliente:** sempre `utils/song_paths.safe_song_dir(SONGS_DIR, slug)`, nunca `SONGS_DIR / slug` direto (rotas apagam/renomeiam pastas).
 *   **Texto de usuário no front:** apelidos, títulos e transcrições nunca vão crus para `innerHTML` — use `textContent` ou `escapeHtml` (`js/html.js`). `showToast` já é texto puro.
 *   **Reconexão da TV:** o jogo reconecta com `resume=1` (o servidor não reseta a sala) e o código de fechamento 4001 (`DISPLAY_REPLACED_CODE`) significa "outra tela assumiu" — não reconectar. Resultados de Whisper conferem `room.game_id` antes de gravar.
+*   **Letra revisada à mão:** o `save-lyrics` grava `songs/<slug>/.lyrics_edited`; o reinstall sem alinhamento forçado mantém esse `lyrics.lrc` em vez do backup/LRCLIB.
 *   **Hallucinações no Silêncio:**
     *   Trechos silenciosos longos fazem o Whisper gerar alucinações repetitivas. Garanta que o gate de áudio de RMS (`rms_threshold` em `stt_engine.py`) rejeite transcrição abaixo de `0.0018` de energia média.
 

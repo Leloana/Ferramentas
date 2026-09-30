@@ -14,6 +14,7 @@ import torchaudio  # noqa: F401
 from lyrics_text import is_japanese, regroup_timed_words, split_words, time_words_by_characters
 from stt_engine import get_stt_engine
 from utils.audio import load_audio_full
+from utils.segment_timing import finalize_segments, match_words_in_order
 from utils.whisper_params import WHISPER_SR
 
 import re
@@ -21,8 +22,12 @@ import re
 import numpy as np
 
 
+LRC_STAMP_RE = re.compile(r"\[(\d+):(\d+(?:\.\d+)?)\]")
+
+
 def parse_lrc(lrc_path):
     lines = []
+    end_marks = []
     offset = 0.0
     with open(lrc_path, "r", encoding="utf-8") as f:
         for line in f:
@@ -36,22 +41,35 @@ def parse_lrc(lrc_path):
                             offset = float(match.group(1)) / 1000.0
                     continue
 
-                time_part, text = line.split("]", 1)
-                time_str = time_part[1:]
-                m, s = time_str.split(":")
-                timestamp = int(m) * 60 + float(s)
-                cleaned_text = text.strip()
+                # "[00:12.00][01:30.00]refrão": a mesma letra em várias marcas
+                stamps = []
+                rest = line
+                while True:
+                    m_ts = LRC_STAMP_RE.match(rest)
+                    if not m_ts:
+                        break
+                    stamps.append(int(m_ts.group(1)) * 60 + float(m_ts.group(2)))
+                    rest = rest[m_ts.end():]
+                if not stamps:
+                    continue
+                cleaned_text = rest.strip()
 
                 if not cleaned_text:
-                    if lines:
-                        lines[-1]["end"] = timestamp
+                    # marca vazia = fim do verso anterior (pausa); resolvida após ordenar
+                    end_marks.extend(stamps)
                     continue
 
-                lines.append({"start": timestamp, "text": cleaned_text, "end": None})
+                for timestamp in stamps:
+                    lines.append({"start": timestamp, "text": cleaned_text, "end": None})
             except Exception:
                 continue
 
-    return sorted(lines, key=lambda x: x["start"]), offset
+    lines.sort(key=lambda x: x["start"])
+    for mark in end_marks:
+        before = [ln for ln in lines if ln["start"] < mark]
+        if before and before[-1]["end"] is None:
+            before[-1]["end"] = mark
+    return lines, offset
 
 
 def prepare_song(song_dir, language="en", debug=False):
@@ -155,32 +173,15 @@ def prepare_song(song_dir, language="en", debug=False):
                         "expected_end": round(t_end, 3)
                     })
             else:
-                # Caso as contagens divirjam, usamos alinhamento por proximidade ou interpolação linear
-                for idx, off_word in enumerate(official_words):
-                    best_match_time = None
-                    min_dist = 999.0
-                    for trans_word in words:
-                        dist = abs(trans_word["start"] - (idx / len(official_words)) * (segment_audio.size / sample_rate))
-                        if dist < min_dist:
-                            min_dist = dist
-                            best_match_time = trans_word["start"]
-                            best_match_end = trans_word["end"]
-                    
-                    if best_match_time is not None:
-                        lyrics_timed.append({
-                            "word": off_word,
-                            "expected_start": round(best_match_time, 3),
-                            "expected_end": round(best_match_end, 3)
-                        })
-                    else:
-                        ratio = idx / len(official_words)
-                        t_start = ratio * (segment_audio.size / sample_rate)
-                        t_end = min(t_start + 0.3, segment_audio.size / sample_rate)
-                        lyrics_timed.append({
-                            "word": off_word,
-                            "expected_start": round(t_start, 3),
-                            "expected_end": round(t_end, 3)
-                        })
+                # Contagens diferentes: casamento que respeita a ordem + interpolação
+                # por sílabas (antes: "palavra do Whisper mais próxima de idx/N",
+                # que empilhava várias palavras da letra na mesma).
+                for w in match_words_in_order(official_words, words):
+                    lyrics_timed.append({
+                        "word": w["word"],
+                        "expected_start": round(max(0.0, w["start"]), 3),
+                        "expected_end": round(max(0.0, w["end"]), 3),
+                    })
         else:
             # Fallback completo se o Whisper falhar: distribui uniformemente no tempo do segmento extraído
             max_duration = segment_audio.size / sample_rate
@@ -289,6 +290,9 @@ def prepare_song(song_dir, language="en", debug=False):
             "lyrics": line["text"],
             "lyrics_timed": lyrics_timed
         })
+
+    # sing_end cobre a última palavra e não invade o verso seguinte
+    finalize_segments(segments_data, len(full_audio) / sample_rate + offset)
 
     # Salvar segments.json
     if debug:

@@ -3,7 +3,6 @@ import asyncio
 import json
 import logging
 import shutil
-import subprocess
 import sys
 from pathlib import Path
 
@@ -36,6 +35,8 @@ from utils.audio import vocal_to_float32_mono_16k
 from utils.meta import get_meta_field
 from utils.text import normalize_lyrics_text
 from utils.whisper_params import TRANSCRIBE_KWARGS
+from utils.separation import MP3_BITRATE, separate_stems
+from utils.song_paths import USER_EDITED_MARKER
 from utils.youtube import download_youtube_audio
 from tools.generate_lrc import generate_lrc
 from tools.prepare_song import prepare_song
@@ -131,6 +132,8 @@ async def reinstall_song(
     if lrc_file.exists():
         logger.info("Fazendo backup temporário das letras sincronizadas (lyrics.lrc)...")
         lrc_backup = lrc_file.read_text(encoding="utf-8")
+    # Letra revisada no editor vale mais que backup e LRCLIB (salvo pedido de alinhar)
+    user_edited_lrc = lrc_backup is not None and (song_dir / USER_EDITED_MARKER).exists()
     if txt_file.exists():
         logger.info("Fazendo backup temporário das letras planas (lyrics.txt)...")
         txt_backup = normalize_lyrics_text(txt_file.read_text(encoding="utf-8"))
@@ -187,49 +190,18 @@ async def reinstall_song(
         if not clean_existing and vocal_exists and backing_exists:
             logger.info("vocal.mp3 e backing_track.mp3 já existem. Pulando download e separação de áudio.")
             vocal_audio = AudioSegment.from_file(str(song_dir / "vocal.mp3"))
-            backing_audio = AudioSegment.from_file(str(song_dir / "backing_track.mp3"))
         elif not clean_existing and vocal_exists:
             logger.info("vocal.mp3 já existe. Pulando download do vocal.")
             vocal_audio = AudioSegment.from_file(str(song_dir / "vocal.mp3"))
             if use_demucs and not backing_exists:
                 logger.info("Executando Demucs no vocal.mp3 existente para separar o instrumental...")
-                python_dir = Path(sys.executable).parent
-                demucs_exe = python_dir / "demucs.exe"
-                if not demucs_exe.exists():
-                    demucs_exe = python_dir / "Scripts" / "demucs.exe"
-                if not demucs_exe.exists():
-                    demucs_exe = "demucs"
-                
-                device = "cpu"
                 try:
-                    import torch
-                    if torch.cuda.is_available():
-                        device = "cuda"
-                except Exception:
-                    pass
-
-                demucs_cmd = [
-                    str(demucs_exe),
-                    "--two-stems", "vocals",
-                    "-d", device,
-                    "-o", str(demucs_out_dir),
-                    str(song_dir / "vocal.mp3")
-                ]
-                process = await asyncio.to_thread(subprocess.run, demucs_cmd, capture_output=False, text=True)
-                if process.returncode != 0:
-                    logger.info(f"Demucs exe: {demucs_exe}")
-                    logger.info(f"Demucs cmd: {demucs_cmd}")
-                    logger.info(f"Original audio exists: {original_audio_path.exists()}")
+                    _, no_vocals_wav = await asyncio.to_thread(separate_stems, song_dir / "vocal.mp3", demucs_out_dir)
+                except RuntimeError as e:
+                    logger.error(f"Erro crítico na separação: {e}")
                     return False
-                    
-                separated_dir = demucs_out_dir / "htdemucs" / "vocal"
-                no_vocals_wav = separated_dir / "no_vocals.wav"
-                if not no_vocals_wav.exists():
-                    logger.exception("Erro crítico: backing track não gerada pelo Demucs.")
-                    return False
-                    
                 backing_audio = AudioSegment.from_file(str(no_vocals_wav))
-                backing_audio.export(str(song_dir / "backing_track.mp3"), format="mp3")
+                backing_audio.export(str(song_dir / "backing_track.mp3"), format="mp3", bitrate=MP3_BITRATE)
             elif backing_exists:
                 backing_audio = AudioSegment.from_file(str(song_dir / "backing_track.mp3"))
             else:
@@ -268,44 +240,12 @@ async def reinstall_song(
 
             # 3 - Separa áudio do youtube backing e vocal (ou exporta canais já baixados)
             if use_demucs:
-                python_dir = Path(sys.executable).parent
-                demucs_exe = python_dir / "demucs.exe"
-                if not demucs_exe.exists():
-                    demucs_exe = python_dir / "Scripts" / "demucs.exe"
-                if not demucs_exe.exists():
-                    demucs_exe = "demucs"
-                    
-                device = "cpu"
                 try:
-                    import torch
-                    if torch.cuda.is_available():
-                        device = "cuda"
-                except Exception:
-                    pass
+                    vocals_wav, no_vocals_wav = await asyncio.to_thread(separate_stems, original_audio_path, demucs_out_dir)
+                except RuntimeError as e:
+                    logger.error(f"Erro crítico na separação: {e}")
+                    return False
 
-                logger.info(f"Executando separação Demucs no dispositivo: {device}")
-                demucs_cmd = [
-                    str(demucs_exe),
-                    "--two-stems", "vocals",
-                    "-d", device,
-                    "-o", str(demucs_out_dir),
-                    str(original_audio_path)
-                ]
-                process = await asyncio.to_thread(subprocess.run, demucs_cmd, capture_output=False, text=True)
-                if process.returncode != 0:
-                    logger.info(f"Demucs exe: {demucs_exe}")
-                    logger.info(f"Demucs cmd: {demucs_cmd}")
-                    logger.info(f"Original audio exists: {original_audio_path.exists()}")
-                    return False
-                    
-                separated_dir = demucs_out_dir / "htdemucs" / "original"
-                vocals_wav = separated_dir / "vocals.wav"
-                no_vocals_wav = separated_dir / "no_vocals.wav"
-                
-                if not vocals_wav.exists() or not no_vocals_wav.exists():
-                    logger.error("Erro crítico: Os arquivos separados pelo Demucs não foram gerados.")
-                    return False
-                    
                 vocal_audio = AudioSegment.from_file(str(vocals_wav))
                 backing_audio = AudioSegment.from_file(str(no_vocals_wav))
             else:
@@ -314,8 +254,8 @@ async def reinstall_song(
                 
             # Salvar os canais de áudio definitivos sem corte/slicing
             logger.info("Salvando os canais de áudio definitivos...")
-            vocal_audio.export(str(song_dir / "vocal.mp3"), format="mp3")
-            backing_audio.export(str(song_dir / "backing_track.mp3"), format="mp3")
+            vocal_audio.export(str(song_dir / "vocal.mp3"), format="mp3", bitrate=MP3_BITRATE)
+            backing_audio.export(str(song_dir / "backing_track.mp3"), format="mp3", bitrate=MP3_BITRATE)
             logger.info("Áudios exportados com sucesso!")
     except Exception as e:
         logger.error(f"Erro ao processar áudios: {e}")
@@ -343,7 +283,12 @@ async def reinstall_song(
     backup_segs = backup_dir / "segments.json"
     backup_txt = backup_dir / "lyrics.txt"
     
-    if backup_lrc.exists() and backup_segs.exists():
+    if user_edited_lrc and not align_lyrics:
+        logger.info("lyrics.lrc revisado pelo usuário: mantido (backup e LRCLIB ignorados).")
+        lrc_file.write_text(lrc_backup, encoding="utf-8")
+        (song_dir / USER_EDITED_MARKER).touch()
+        has_lrc = True
+    elif backup_lrc.exists() and backup_segs.exists():
         logger.info(f"Backup premium/pro encontrado em {backup_dir}. Restaurando lyrics.lrc e segments.json...")
         try:
             shutil.copy(str(backup_lrc), str(lrc_file))

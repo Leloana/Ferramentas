@@ -9,6 +9,9 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Optional
 
+# Marca na pasta da música: o lyrics.lrc foi salvo pelo editor (revisado à mão).
+USER_EDITED_MARKER = ".lyrics_edited"
+
 
 def safe_song_dir(songs_dir: Path, slug: str) -> Optional[Path]:
     """Devolve `songs_dir/slug` se for uma pasta filha direta; senão None."""

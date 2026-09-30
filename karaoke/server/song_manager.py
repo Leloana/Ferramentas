@@ -3,6 +3,7 @@ from pathlib import Path
 
 from utils.lrc import read_lrc_meta
 from utils.meta import get_meta_field
+from utils.segment_timing import finalize_segments
 from utils.song_paths import safe_song_dir
 from lyrics_text import add_romaji
 
@@ -67,6 +68,9 @@ class SongManager:
 
         with open(segments_file, "r", encoding="utf-8") as f:
             segments = json.load(f)
+        # Músicas antigas têm versos sobrepostos e última palavra fora do verso:
+        # corrige na leitura, sem precisar reprocessar (utils/segment_timing.py).
+        finalize_segments(segments)
 
         title = None
         artist = None

@@ -79,6 +79,23 @@ _ACOUSTIC_PT = {
     "mas": "mais",
     "é": "eh",      # só com acento
     "há": "ah",     # só com acento
+    # crase: o Whisper escreve "a"/"as" (e "a" x "à" dava 0)
+    "à": "a",
+    "às": "as",
+    # fala cantada: letra formal × o que o Whisper escreve (e vice-versa)
+    "tá": "está",
+    "tô": "estou",
+    "cê": "você",
+    "ocê": "você",
+    "pra": "para",
+}
+
+# Números por extenso (o Whisper às vezes escreve "2" onde a letra diz "dois")
+_NUMBERS = {
+    "pt": ["zero", "um", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez",
+           "onze", "doze", "treze", "catorze", "quinze", "dezesseis", "dezessete", "dezoito", "dezenove", "vinte"],
+    "en": ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+           "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"],
 }
 
 # Mapa default conservador (usado quando idioma não é informado) — só os
@@ -131,7 +148,44 @@ def clean_text(text, language=None):
     t = t.replace("-", " ")  # hífen vira espaço antes de limpar
     t = re.sub(r'[^\w\s]', '', t)
     t = t.strip()
+    if t.isdigit():
+        names = _NUMBERS["pt" if language and language.lower().startswith("pt") else "en"]
+        if int(t) < len(names):
+            t = names[int(t)]
     return _normalization_map(language).get(t, t)
+
+
+def join_split_words(transcribed_words):
+    """Cola "-se"/"-lo" na palavra anterior: o Whisper devolve "Dá" + "-se",
+    a letra tem "Dá-se" (virava 2 tokens contra 1 e a nota caía para ~43)."""
+    out = []
+    for w in transcribed_words:
+        word = (w.get("word") or "").strip()
+        if out and word.startswith("-") and len(word) > 1:
+            prev = out[-1]
+            out[-1] = {**prev, "word": prev["word"].rstrip() + word, "end": w.get("end", prev.get("end"))}
+        else:
+            out.append(w)
+    return out
+
+
+DUPLICATE_LOW_PROB = 0.1
+DUPLICATE_TRUSTED_PROB = 0.3
+
+
+def drop_unreliable_duplicates(transcribed_words, language=None):
+    """Tira palavra quase sem confiança (<0.1) quando a mesma palavra também
+    aparece com confiança (>=0.3): o Whisper às vezes "ouve" o verso duas vezes
+    e a cópia fantasma disparava a penalidade de precisão."""
+    trusted = {
+        clean_text(w["word"], language)
+        for w in transcribed_words
+        if w.get("probability", 1.0) >= DUPLICATE_TRUSTED_PROB
+    }
+    return [
+        w for w in transcribed_words
+        if not (w.get("probability", 1.0) < DUPLICATE_LOW_PROB and clean_text(w["word"], language) in trusted)
+    ]
 
 
 def calculate_score(expected_timed: list[dict], transcribed_words: list[dict], prev_expected_words: list[str] = None, language: str | None = None, scoring_mode: str = "timing") -> dict:
@@ -212,7 +266,10 @@ def calculate_score(expected_timed: list[dict], transcribed_words: list[dict], p
                 logger.info(f"🛡️ [Perdão de Vazamento] {overlap_found} palavras vazadas do verso anterior: {leaked}")
                 transcribed_words = transcribed_words[overlap_found:]
 
-    # B. Merge de fragmentos vocálicos
+    # B. Palavras quebradas pelo hífen e cópias fantasma de baixa confiança
+    transcribed_words = drop_unreliable_duplicates(join_split_words(transcribed_words), language)
+
+    # Merge de fragmentos vocálicos
     lyric_words = frozenset(
         {clean_text(w["word"], language) for w in expected_timed}
         | {re.sub(r"[^\w]", "", w["word"].lower()) for w in expected_timed}

@@ -11,7 +11,7 @@ from fastapi import APIRouter, Form, HTTPException, Response
 from state import SONGS_DIR, queue_manager
 from utils.http import set_no_cache
 from utils.prepare import run_prepare_song
-from utils.song_paths import safe_song_dir
+from utils.song_paths import USER_EDITED_MARKER, safe_song_dir
 from utils.text import normalize_lyrics_text, slugify
 
 logger = logging.getLogger(__name__)
@@ -167,6 +167,9 @@ async def save_lyrics(
         lrc_path = song_dir / "lyrics.lrc"
         with open(lrc_path, "w", encoding="utf-8", newline="\n") as f:
             f.write("\n".join(clean_lines))
+        # Letra revisada à mão: o reinstall sem alinhamento forçado mantém esta
+        # versão em vez de trocar pela do LRCLIB ou de um backup antigo.
+        (song_dir / USER_EDITED_MARKER).touch()
 
         import asyncio
         # prepare_song usa o Whisper: só com o lock da GPU

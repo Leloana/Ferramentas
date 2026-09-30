@@ -165,6 +165,21 @@ class SongQueueManager:
             item.progress_pct = 5
             logger.info(f"[QUEUE:{item.id}] Fase 1 — Criando meta.json e iniciando download...")
 
+            # Reinstalação: limpa ANTES de gravar a letra (antes a limpeza vinha
+            # depois e apagava o lyrics.lrc/lyrics.txt recém-gravados).
+            if item.clean_existing:
+                logger.info(f"[QUEUE:{item.id}] Reinstalação solicitada. Limpando arquivos anteriores...")
+                for sub in song_dir.iterdir():
+                    if sub.name == "meta.json":
+                        continue
+                    try:
+                        if sub.is_dir():
+                            shutil.rmtree(sub)
+                        else:
+                            sub.unlink()
+                    except Exception as e:
+                        logger.warning(f"Não foi possível remover arquivo residual {sub.name} na limpeza da fila: {e}")
+
             # Se temos synced LRC (ex: LRCLIB), salva diretamente.
             # O reinstall_song preserva lyrics.lrc existente quando align_lyrics=False.
             if item.synced_lrc:
@@ -199,20 +214,6 @@ class SongQueueManager:
                 normalized = normalize_lyrics_text(item.plain_lyrics)
                 if normalized:
                     (song_dir / "lyrics.txt").write_text(normalized + "\n", encoding="utf-8")
-
-            # Se clean_existing for True, limpamos a pasta antes de começar a Fase 1!
-            if item.clean_existing:
-                logger.info(f"[QUEUE:{item.id}] Reinstalação solicitada. Limpando arquivos anteriores...")
-                for sub in song_dir.iterdir():
-                    if sub.name == "meta.json":
-                        continue
-                    try:
-                        if sub.is_dir():
-                            shutil.rmtree(sub)
-                        else:
-                            sub.unlink()
-                    except Exception as e:
-                        logger.warning(f"Não foi possível remover arquivo residual {sub.name} na limpeza da fila: {e}")
 
             # 2. Download do YouTube (ou detecção de arquivos locais já carregados)
             item.progress_pct = 15
@@ -251,13 +252,6 @@ class SongQueueManager:
 
             item.progress_pct = 70
 
-            # Limpeza de temporários
-            if original_audio.exists():
-                original_audio.unlink()
-            demucs_out = song_dir / "demucs_output"
-            if demucs_out.exists():
-                shutil.rmtree(demucs_out)
-
             # 4. Marca como pronto para Fase 2
             item.status = QueueStatus.AWAITING_ALIGNMENT
             item.progress_pct = 75
@@ -275,6 +269,17 @@ class SongQueueManager:
             logger.error(f"[QUEUE:{item.id}] Erro na Fase 1: {e}", exc_info=True)
             item.status = QueueStatus.ERROR
             item.error_msg = str(e)
+        finally:
+            # Saída do Demucs (~80 MB de WAV) sai também em erro/cancelamento.
+            # O original.mp3 só sai depois de separado: numa nova tentativa ele
+            # evita baixar de novo.
+            shutil.rmtree(song_dir / "demucs_output", ignore_errors=True)
+            original = song_dir / "original.mp3"
+            if original.exists() and (song_dir / "vocal.mp3").exists() and (song_dir / "backing_track.mp3").exists():
+                try:
+                    original.unlink()
+                except OSError:
+                    pass
 
     async def _process_phase2(self, item: QueueItem) -> None:
         """Fase 2: Whisper + alinhamento. DEVE rodar com exclusividade na GPU."""
@@ -295,7 +300,9 @@ class SongQueueManager:
                 success = await run_reinstall_song(
                     str(song_dir),
                     language=item.language,
-                    clean_existing=item.clean_existing,
+                    # a fase 1 já limpou e separou: limpar de novo baixava e rodava o
+                    # Demucs outra vez, segurando o whisper_lock (e a partida) por minutos
+                    clean_existing=False,
                     skip_prepare_song=False,  # Auto-aprovar: gera segments.json direto
                     align_lyrics=align_lyrics,
                 )
@@ -351,57 +358,14 @@ class SongQueueManager:
         self.remove_item(item_id)
 
     async def _run_demucs(self, item: QueueItem, song_dir: Path, audio_path: Path) -> None:
-        """Executa Demucs como subprocesso para separar vocal/instrumental."""
-        import subprocess
-        import sys
+        """Separa vocal/instrumental (utils/separation.py: uma separação por vez)."""
+        from utils.separation import export_mp3, separate_stems
 
-        python_dir = Path(sys.executable).parent
-        demucs_exe = python_dir / "demucs.exe"
-        if not demucs_exe.exists():
-            demucs_exe = python_dir / "Scripts" / "demucs.exe"
-        if not demucs_exe.exists():
-            demucs_exe = "demucs"
+        def _separate_and_export():
+            vocals_wav, no_vocals_wav = separate_stems(audio_path, song_dir / "demucs_output")
+            # Exporta numa thread: leva segundos e a fase 1 roda durante a partida
+            export_mp3(vocals_wav, song_dir / "vocal.mp3")
+            export_mp3(no_vocals_wav, song_dir / "backing_track.mp3")
 
-        device = "cpu"
-        try:
-            import torch
-            if torch.cuda.is_available():
-                device = "cuda"
-        except Exception:
-            pass
-
-        demucs_out_dir = song_dir / "demucs_output"
-        demucs_cmd = [
-            str(demucs_exe),
-            "--two-stems", "vocals",
-            "-d", device,
-            "-o", str(demucs_out_dir),
-            str(audio_path),
-        ]
-
-        logger.info(f"[QUEUE:{item.id}] Demucs device={device}, cmd={' '.join(demucs_cmd)}")
-        process = await asyncio.to_thread(
-            subprocess.run, demucs_cmd, capture_output=True, text=True
-        )
-        if process.returncode != 0:
-            logger.error(f"[QUEUE:{item.id}] Demucs stderr: {process.stderr}")
-            raise RuntimeError(f"Demucs falhou (exit code {process.returncode})")
-
-        # Localizar arquivos separados
-        separated_dir = demucs_out_dir / "htdemucs" / audio_path.stem
-        vocals_wav = separated_dir / "vocals.wav"
-        no_vocals_wav = separated_dir / "no_vocals.wav"
-
-        if not vocals_wav.exists() or not no_vocals_wav.exists():
-            raise RuntimeError("Demucs não gerou os arquivos de áudio separados.")
-
-        # Exportar como MP3 — numa thread: leva segundos e a fase 1 roda
-        # durante a partida (travaria os WebSockets e o relógio da música).
-        def _export_mp3s():
-            from pydub import AudioSegment
-
-            AudioSegment.from_file(str(vocals_wav)).export(str(song_dir / "vocal.mp3"), format="mp3")
-            AudioSegment.from_file(str(no_vocals_wav)).export(str(song_dir / "backing_track.mp3"), format="mp3")
-
-        await asyncio.to_thread(_export_mp3s)
+        await asyncio.to_thread(_separate_and_export)
         logger.info(f"[QUEUE:{item.id}] Áudios vocal e backing exportados com sucesso.")

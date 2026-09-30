@@ -83,6 +83,29 @@ class TestScoreEngine(unittest.TestCase):
     def _sung(words, step=0.4):
         return [{"word": w, "start": i * step, "end": i * step + 0.3} for i, w in enumerate(words)]
 
+    def test_portuguese_hyphen_words_split_by_whisper(self):
+        # Whisper devolve "Dá" + "-se"; antes dava 43
+        sung = self._sung(["Dá", "-se", "assim"])
+        res = calculate_score(self._timed(["Dá-se", "assim"]), sung, language="pt", scoring_mode="words")
+        self.assertEqual(res["score"], 100.0)
+
+    def test_spoken_contractions_numbers_and_crase(self):
+        cases = [(["Tá", "tudo", "bem"], ["está", "tudo", "bem"]),
+                 (["às", "dez", "da", "noite"], ["as", "10", "da", "noite"]),
+                 (["pra", "você"], ["para", "cê"])]
+        for lyric, heard in cases:
+            with self.subTest(lyric=lyric):
+                res = calculate_score(self._timed(lyric), self._sung(heard), language="pt", scoring_mode="words")
+                self.assertEqual(res["score"], 100.0)
+
+    def test_ghost_copy_with_low_probability_is_ignored(self):
+        # Geni 97: o verso "ouvido" duas vezes, a 1ª cópia com prob ~0.05
+        lyric = ["Joga", "pedra", "na", "Geni"]
+        ghost = [{**w, "probability": 0.05} for w in self._sung(lyric)]
+        real = [{**w, "start": w["start"] + 2, "end": w["end"] + 2, "probability": 0.9} for w in self._sung(lyric)]
+        res = calculate_score(self._timed(lyric), ghost + real, language="pt", scoring_mode="words")
+        self.assertEqual(res["score"], 100.0)
+
     def test_verse_repeating_the_end_of_the_previous_is_not_leakage(self):
         """Casos reais das gravações de 2026-09-29: verso que repete o fim (ou o começo)
         do anterior foi cantado certo e o "perdão de vazamento" apagava as palavras."""
