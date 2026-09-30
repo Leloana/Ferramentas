@@ -65,7 +65,7 @@ sequenceDiagram
     Server-->>Display: singing_state: inactive
     Note right of Server: Spawns asyncio task for Segment 1 transcription
     Server->>Server: Whisper transcribe (Alice) & (Bob) in threads
-    Server->>Server: Calculate phonetic scores (Fuzz/Metaphone)
+    Server->>Server: Calculate scores (fuzzy + language normalization) and pitch (YIN)
     Server-->>Display: segment_result {Alice: 88%, Bob: 91%}
     Server-->>Mic1: segment_result {Alice: 88%}
     Server-->>Mic2: segment_result {Bob: 91%}
@@ -83,7 +83,9 @@ sequenceDiagram
 ## 🎬 Detailed Step-by-Step Flow
 
 ### 1. Connection & Pairing
-- **Display Connection:** The display connects to `/ws/room/{room_id}?role=display&song_id={song_id}`. Connecting resets the room's scores, active segments, and playback indicators.
+- **Display Connection:** The display connects to `/ws/room/{room_id}?role=display&song_id={song_id}`. Connecting resets the room's scores, active segments, and playback indicators (and bumps `room.game_id`, so late Whisper results from the previous game are dropped).
+- **Display reconnect mid-song:** the game socket reconnects with `&resume=1`; the server keeps scores, recording and the current verse, and the client does not resend `start_game`.
+- **Display replaced:** a new display in the same room closes the previous one with close code **4001**; a client that receives 4001 does not reconnect (two tabs would otherwise kick each other forever).
 - **Microphone Connection:** Microphone devices connect to `/ws/room/{room_id}?role=mic` and are placed into the `room.unregistered_mics` queue.
 
 ### 2. Nickname Registration Queue
@@ -92,8 +94,8 @@ sequenceDiagram
   - The first connection receives `{"type": "register_request"}`.
   - All subsequent connections receive `{"type": "register_wait", "position": X}`.
 - When the first microphone sends `{"type": "register_name", "name": "..."}`, the server:
-  - Sanitizes the name (allowing only alphanumeric, hyphens, and underscores).
-  - Checks if the name is already in use or is a reserved keyword (`solo`, `local`, `tv`).
+  - Trims it to 15 printable characters and derives the profile key (alphanumeric, hyphens, underscores).
+  - Checks if the name (or its case-insensitive profile key) is already in use or reserved (`solo`, `local`, `tv`, `pc_local`).
   - Creates the player profile directory on the server disk (`players/<sanitized_name>/profile.json`) if it does not exist.
   - Returns `{"type": "registration_success", "name": "..."}` and broadcasts a `players_update` list to the Display.
   - Automatically pops the queue and sends a `register_request` to the next microphone.
@@ -103,25 +105,27 @@ There is no game-mode picker any more. The display shows a **lobby** (`client/js
 - **Everyone on their own team:** free-for-all — `game_mode` is `solo`, `1v1`, `1v1v1` or `1v1v1v1` (one per team).
 - **Two or more seats on the same team:** duo/trio — `game_mode` is `teams`.
 
-The display sends `{"type": "start_game", "game_mode": "...", "active_players": [...]}` with **one entry per microphone** (seat order, grouped by team). The server scores each microphone independently, exactly as before; it only stores `game_mode`. **Team scores are computed on the client**: `client/js/score-bars.js` shows one edge bar per team (up to 4: bottom, top, left, right) with the team average highlighted and a discreet bar per member, and the game-over podium ranks teams by the average of their members. The server resets game-wide aggregates, registers the active singers, and broadcasts `game_started` containing the active player list to all connected websockets.
+**Turns ("Revezar versos"):** with 2+ teams the lobby can alternate verses. `start_game` then carries `"turns": true, "turn_order": [[mics of team 1], [mics of team 2], ...]`; the k-th verse with lyrics belongs to team `k % n` (`ws/room.turn_owner`, mirrored in `client/js/turns.js`). Only the owner is scored, each player's final average is over their own verses, and `segment_start` carries `"turn": [...]` so phones show "Sua vez" / "Vez de ...".
+
+**GPU mutex:** if a song is generating lyrics (`queue_manager.alignment_busy()`), the server answers `start_game` with `{"type": "start_blocked", "reason": "..."}` and does not start; the TV already disables INICIAR while `/api/queue/status` reports `alignment_busy`.
+
+The display sends `{"type": "start_game", "game_mode": "...", "active_players": [...], "scoring_mode": "...", "transpose": 0}` with **one entry per microphone** (seat order, grouped by team). The server scores each microphone independently, exactly as before; it only stores `game_mode`. **Team scores are computed on the client**: `client/js/score-bars.js` shows one edge bar per team (up to 4: bottom, top, left, right) with the team average highlighted and a discreet bar per member, and the game-over podium ranks teams by the average of their members. The server resets game-wide aggregates, registers the active singers, and broadcasts `game_started` containing the active player list to all connected websockets.
 
 ### 4. Audio Routing & Buffering
 - Microphones stream `KM01` packets (Int16 16 kHz + first-sample index) through WebSocket binary messages. The server anchors each player's sample counter to the song time.
 - The display continually streams Uvicorn-synced playback updates `{"type": "playback_time", "current_time": X}`.
-- The server maps the current time against the loaded song segments:
-  - If the player is within the active singing window of a segment (plus preparation margins: `PRE_SING_BUFFER_SEC` and `POST_SING_BUFFER_SEC`), the server appends the incoming audio bytes to that player's segment-specific buffer:
-    `room.player_segment_buffers[player_name][segment_idx]`
-  - If no active players are registered (e.g. guest mode), the server defaults to appending audio to a global segment buffer `room.segment_buffers[segment_idx]`.
+- Each packet goes into that player's `MicTimeline` (`server/mic_stream.py`), anchored to the song clock; with no registered players the stream key is `"Solo"`. Packets with a non-finite or negative first-sample index are rejected.
+- The display also sends `{"type": "transpose", "semitones": n}` when the key changes, so the pitch reference follows the backing track.
 
 ### 5. Asynchronous Transcription & Scoring
-- Once the playback time exceeds the segment's singing duration (`current_time >= seg["sing_end"] + POST_SING_BUFFER_SEC`):
-  1. The server cuts the segment's disjoint window from the player's timeline (`mic_stream.segment_window`).
-  2. Spawns an asynchronous task using `asyncio.create_task` to run the transcription and scoring pipeline.
-  3. The task resamples the microphone input from its source rate (typically 48kHz) to Whisper's 16kHz rate using `scipy.signal.resample_poly`.
-  4. Transcription is executed off the main FastAPI event loop via `asyncio.to_thread` to maintain loop responsiveness.
-  5. The `score_engine.py` cleanses the expected lyrics and transcription (e.g. applying contractions, stripping vocalize particles like *ah/oh*).
-  6. Evaluates a matching score (`0.0` to `100.0`) based on RapidFuzz ratio, penalizes latency errors, applies sandwich recovery to repair missing words, and filters previous verse audio leakage.
-  7. Broadcasts the final segment evaluation `{"type": "segment_result", "score": ..., "player_scores": {...}}` to the display and players.
+- Once the playback time passes the end of the verse window: immediately if every scored player's audio already covers the window, otherwise after the late-packet grace (0.6–2 s):
+  1. The server cuts the segment's disjoint window from the player's timeline (`mic_stream.segment_window`) — only for the verse owner in turns mode.
+  2. Spawns an asynchronous task (strong reference in `room.pending_tasks`) to run transcription and scoring.
+  3. Audio is already 16 kHz Int16 from the phone's AudioWorklet (no server resampling).
+  4. Whisper runs off the event loop (`asyncio.to_thread`) under `queue_manager.whisper_lock`: prompted with the expected lyrics, retried without the prompt when the words are low-confidence (`pick_transcription`); both runs go to the recording.
+  5. `score_engine.py` normalizes both sides (accents, contractions, numbers, hyphen-split words, vocalizations, low-probability ghost copies).
+  6. Scores `0.0`–`100.0` (RapidFuzz, timing penalties, sandwich recovery, previous-verse leakage removal); `pitch.py` adds an informative pitch score from `pitch.json`.
+  7. Broadcasts `{"type": "segment_result", "score", "pitch", "pitch_avg", "total_score", "player_scores": {name: {score, total_score, transcription, pitch, pitch_avg}}}`.
 
 ### 6. Seeking & Rewinding
 - If a user seeks backward on the Display timeline, the display broadcasts the new `playback_time`.
@@ -130,10 +134,15 @@ The display sends `{"type": "start_game", "game_mode": "...", "active_players": 
   - Deletes all cached segment audio buffers starting from the new playback point.
   - Wipes segment scores from that index forward.
   - Recalculates total scoring averages for the room and all active players.
-  - Broadcasts the reset score update to keep client interfaces aligned.
+  - Broadcasts the reset score update with `"recalc": true` — clients update totals only (no verse stamp, no "Fora 0%").
 
 ### 7. Session Teardown
 - Once the backing track ends, the display sends `{"type": "audio_ended"}`.
 - The server halts inputs, awaits all running background transcription tasks, and calculates the final average score.
-- For each active player, the server appends the round's results to `profile.json` under `songs_sung` (storing song metadata, score, and timestamps).
-- Broadcasts the final average report `{"type": "game_over", "player_scores": {...}}` to all websockets.
+- For each active player, the server appends the round's results to `profile.json` under `songs_sung` (`server/players.py`: `song_id`, score, pitch, mode, date) and computes the personal record.
+- Broadcasts `{"type": "game_over", "total_score", "player_scores", "player_pitch", "player_stats": {name: {good, ok, poor}}, "records": {name: {is_record, best_before, times_sung}}, "leaderboard", "song_id", "song_title", "recording_id"}`. The TV and each phone build the shareable card and the "Ouvir" (replay) button from it.
+
+### 8. Night Queue ("quero cantar")
+- A registered phone sends `{"type": "request_song", "song_id": "..."}` (the TV may send `"singer"` too); `{"type": "cancel_request", "id": "..."}` removes one (a phone only its own).
+- The server keeps the list in `room.song_requests` (`server/song_requests.py`: max 30, 3 per singer) and broadcasts `{"type": "requests_update", "requests": [...]}`; errors come back as `request_error`.
+- The TV shows "Próximas"; at game over it counts down 10 s and opens the next request in the lobby with the singer seated.

@@ -17,6 +17,8 @@ Para especificações detalhadas, diagramas de componentes e contratos, consulte
 - [docs/architecture/MULTIPLAYER_FLOW.md](docs/architecture/MULTIPLAYER_FLOW.md) (Handshake Multi-player e WebSocket Game Loop)
 - [docs/guides/PROJECT_GUIDE.md](docs/guides/PROJECT_GUIDE.md) (Guia do Projeto & Fonte da Verdade de Engenharia)
 - [docs/guides/LRC_ALIGNMENT_TUNING.md](docs/guides/LRC_ALIGNMENT_TUNING.md) (Playbook de Solução de Timestamps e Ajuste LRC)
+- [docs/guides/AUDIO_PIPELINE_MELHORIAS.md](docs/guides/AUDIO_PIPELINE_MELHORIAS.md) (Revisão do pipeline de áudio: o que já foi feito e o que calibrar no servidor)
+- [docs/archive/FRONT_REDESIGN_2026-09.md](docs/archive/FRONT_REDESIGN_2026-09.md) (Histórico do redesign do front e dos recursos de festa)
 
 ---
 
@@ -86,6 +88,10 @@ O backend suporta as seguintes variáveis de ambiente:
 | `KARAOKE_WHISPER_MODEL` | Modelo do faster-whisper usado ao vivo e no preparo. | `small` | `large-v3-turbo` |
 | `KARAOKE_WHISPER_DEVICE` | `auto` tenta CUDA e cai na CPU. `cpu` força o perfil leve. | `cpu` | `auto` |
 | `KARAOKE_WHISPER_COMPUTE` | Força o compute_type. Sem ela: `float16` na GPU, `int8` na CPU. | `int8_float16` | — |
+| `KARAOKE_DEMUCS_MODEL` | Modelo do Demucs na separação voz × instrumental. | `htdemucs_ft` | `htdemucs` |
+| `KARAOKE_MP3_BITRATE` | Bitrate dos MP3 de voz e instrumental. | `256k` | `320k` |
+| `KARAOKE_RECORD` / `KARAOKE_RECORD_DIR` | Grava as partidas (voz de cada celular + o que o Whisper ouviu) para calibrar a nota. `0` desliga. | `0` / `D:/gravacoes` | ligado / `recordings/` |
+| `KARAOKE_PLAYERS_DIR` | Pasta dos perfis dos cantores (os testes usam uma temporária). | `D:/perfis` | `players/` |
 
 Servidor final via Cloudflare Tunnel (`karaoke.myall.net.br`): checklist pendente em [docs/guides/TODO_SERVIDOR_FINAL.md](docs/guides/TODO_SERVIDOR_FINAL.md).
 
@@ -107,10 +113,22 @@ Acesse `https://192.168.15.6:8000` nos dispositivos da rede para conectar. Para 
 
 ## 🧪 Como Executar os Testes
 
-Execute a suíte completa de testes unitários e de integração com o comando:
+Suíte completa (unitários, integração HTTP/WebSocket e partidas gravadas):
 ```bash
-.\venv\Scripts\python.exe -m unittest discover -s tests -p "test_*.py"
+.\venv\Scripts\python.exe -m pytest -q tests
 ```
+`tests/test_escolta_vagalumes.py` precisa do áudio real de uma música e de CUDA. Os testes das telas
+(`tests/ui/`) usam Playwright sobre o preview e são pulados sem ele:
+```bash
+pip install playwright && python -m playwright install chromium
+python -m pytest tests/ui
+```
+
+## 👀 Ver o front sem GPU
+
+`python tools/preview_front.py --host 0.0.0.0` serve o front em `http://<ip>:8765` com dados de exemplo
+(músicas de `server/songs/*/meta.json`, perfis fictícios, fila fictícia). Não há WebSocket: serve para
+ver telas, abas, modais, navegação por controle remoto (`/?tv=1`) e o celular-microfone (`/?role=mic&room=1234`).
 
 ---
 
@@ -134,6 +152,19 @@ karaoke/
 │   │   ├── youtube-search.js       # Busca no YouTube pelo nome
 │   │   ├── lobby.js                # Lobby: vagas com microfone + time (dupla/trio)
 │   │   ├── score-bars.js           # Placar por time nas bordas da TV
+│   │   ├── verse-stamp.js          # Carimbo por verso (Na mosca · Quase · Fora)
+│   │   ├── turns.js                # Revezar versos (duelo)
+│   │   ├── requests.js             # Fila da noite ("quero cantar") e próxima automática
+│   │   ├── share-card.js           # Cartão 4:5 para print no fim de jogo
+│   │   ├── replay.js               # Ouvir a própria apresentação
+│   │   ├── profile-view.js         # Ranking e perfil dos cantores
+│   │   ├── players-modal.js        # Modal "Cantores" da TV
+│   │   ├── cover-picker.js         # Trocar a capa entre as opções encontradas
+│   │   ├── song-preview.js         # Ouvir 12 s do refrão na lista
+│   │   ├── guide-vocal.js          # Voz guia (vocal separado baixinho)
+│   │   ├── wake-lock.js            # Tela sempre acesa (celular e TV)
+│   │   ├── status-panel.js         # Painel de saúde (clique no "Online")
+│   │   ├── html.js                 # escapeHtml (texto de usuário nunca vai cru para o HTML)
 │   │   ├── icons.js                # Ícones próprios em SVG
 │   │   ├── select.js               # Select personalizado
 │   │   ├── tv-nav.js               # Navegação por controle remoto
@@ -164,23 +195,38 @@ karaoke/
 │   ├── rooms.py                    # Modelo da sala de canto (KaraokeRoom, buffers por jogador)
 │   ├── song_manager.py             # Gerenciador de músicas no disco
 │   ├── queue_manager.py            # Fila de downloads/processamento GPU (async)
-│   ├── score_engine.py             # Motor de pontuação (fuzzy, Double Metaphone, timing)
-│   ├── stt_engine.py               # Faster-Whisper (fallback CUDA → CPU, VAD)
+│   ├── score_engine.py             # Motor de pontuação (fuzzy, normalização por idioma, timing)
+│   ├── stt_engine.py               # Faster-Whisper (fallback CUDA → CPU, VAD, duas passadas)
+│   ├── pitch.py                    # Afinação (YIN): pitch.json e "tom X%" por verso
+│   ├── players.py                  # Perfis, recordes e ranking dos cantores
+│   ├── song_requests.py            # Fila da noite por sala
+│   ├── recorder.py                 # Gravação das partidas (calibração da nota)
 │   ├── routes/                     # Rotas REST HTTP
 │   │   ├── songs.py                # Listagem, deleção e reinstalação de músicas
 │   │   ├── lyrics.py               # Leitura e salvamento de letras LRC
 │   │   ├── upload.py               # Upload de arquivo ou URL YouTube
-│   │   └── queue.py                # Gerenciamento da fila de processamento
+│   │   ├── queue.py                # Gerenciamento da fila de processamento
+│   │   ├── players.py              # /api/players (ranking e perfil)
+│   │   ├── recordings.py           # Gravações: anotar versos e ouvir a voz gravada
+│   │   └── status.py               # /api/status (painel de saúde)
 │   ├── utils/                      # Helpers internos
 │   │   ├── audio.py                # Conversão de PCM Float32 para 16kHz Mono
 │   │   ├── lrc_align.py            # Alinhamento de letras via Whisper
-│   │   ├── lrc_pro.py              # Alinhamento forçado via MMS_FA (PyTorch)
+│   │   ├── lrc_pro.py              # Alinhamento forçado via MMS_FA, linha por linha, com confiança
+│   │   ├── alignment_quality.py    # Nota da sincronia → needs_review ("Revisar")
+│   │   ├── segment_timing.py       # Casamento letra × Whisper e ajuste dos versos
+│   │   ├── separation.py           # Demucs (uma separação por vez) + MP3
+│   │   ├── loudness.py             # Volume do instrumental (~−16 LUFS)
+│   │   ├── cover.py                # Capa (iTunes + Deezer + YouTube, escolhível)
+│   │   ├── song_paths.py           # Slug seguro (nunca sai de songs/)
 │   │   └── youtube.py              # Download e extração de metadados do YouTube
 │   └── ws/
 │       └── room.py                 # WebSocket bidirecional (handshake e game loop)
 ├── tools/                          # Scripts CLI e ferramentas offline
-│   └── prepare_song.py             # Fatiador de áudio e alinhador word-level (gera segments.json)
-├── tests/                          # Suíte de Testes (unittest)
+│   ├── prepare_song.py             # Fatiador de áudio e alinhador word-level (gera segments.json)
+│   ├── replay_recording.py         # Repassa uma partida gravada pelo Whisper com outros parâmetros
+│   └── preview_front.py            # Front sem GPU, com dados de exemplo
+├── tests/                          # Suíte de Testes (unittest/pytest; tests/ui com Playwright)
 └── requirements.txt                # Dependências Python
 ```
 
@@ -192,12 +238,17 @@ karaoke/
 | :--- | :--- |
 | **Multi-dispositivo** | TV como display, celular como microfone sem fio via QR Code |
 | **Transcrição em Tempo Real** | Faster-Whisper com VAD, fallback automático CUDA → CPU |
-| **Pontuação IA** | Fuzzy matching + Double Metaphone + penalidades de timing por palavra |
-| **Alinhamento Word-Level** | MMS_FA (PyTorch) para sincronização precisa sílaba a sílaba |
-| **Fila de Processamento GPU** | Downloads e separação Demucs enfileirados, sem conflito de VRAM |
+| **Pontuação IA** | Fuzzy matching + normalização (acentos, contrações, números, hífen) + penalidades de timing; carimbo "Na mosca · Quase · Fora" por verso |
+| **Afinação** | "Tom X%" por verso comparando a voz com a melodia do vocal separado (informativo, fora da nota até calibrar) |
+| **Festa** | Lobby com vagas e times (dupla/trio), revezar versos (duelo), sortear cantor, fila da noite ("quero cantar") com próxima automática |
+| **Perfis e recordes** | Ranking "Cantores", perfil com recordes por música, recorde pessoal e melhor da sala no fim de jogo |
+| **Fim de jogo** | Cartão 4:5 para print (TV e celular), ouvir a própria apresentação |
+| **Voz guia** | Vocal separado tocando baixinho junto do instrumental, no mesmo tom |
+| **Alinhamento Word-Level** | MMS_FA (PyTorch) linha por linha na janela do LRC, com confiança por palavra; música fraca aparece como "Revisar" |
+| **Fila de Processamento GPU** | Download e Demucs durante a partida; gerar a letra espera o fim, e enquanto gera o INICIAR fica bloqueado (mutex de GPU) |
+| **Capas** | Automáticas (iTunes + Deezer + YouTube, nota por artista/título) e escolhíveis no lobby |
 | **Busca Automática de Letras** | Integração com LRCLIB e Lyrics.ovh para buscar LRC sincronizado |
 | **Gerenciamento de Músicas** | Upload por arquivo ou URL YouTube, reinstalação e edição de letras |
-| **Perfis de Cantores** | Histórico persistido de notas por música e sessão |
 | **HTTPS Automático** | Suporte a SSL local ou Cloudflare Tunnel para acesso seguro no mobile |
 
 ---
@@ -215,7 +266,10 @@ karaoke/
   - *Solução:* Use sempre `.\venv\Scripts\python.exe` para rodar scripts e testes.
 - **Travamento da GPU / status preso em `busy`:**
   - *Causa:* Processo de reinstalação de música rodando em paralelo com o servidor pode travar o lock da GPU.
-  - *Solução:* Use o botão "Destravar GPU" na interface de fila, ou reinicie o servidor.
+  - *Solução:* Use o botão "Destravar GPU" na interface de fila, ou reinicie o servidor. O painel de saúde (clique no "Online" do cabeçalho) mostra se a GPU está ocupada e o tempo até a nota.
+- **INICIAR bloqueado com "GPU ocupada":**
+  - *Causa:* uma música está na etapa de gerar a letra (mutex de GPU, de propósito).
+  - *Solução:* aguardar; o botão libera sozinho quando termina.
 - **Hallucinações do Whisper em silêncio:**
   - *Causa:* Trechos silenciosos longos fazem o Whisper gerar texto repetitivo.
   - *Solução:* O gate de áudio RMS em `stt_engine.py` rejeita segmentos abaixo de `0.0018` de energia média.

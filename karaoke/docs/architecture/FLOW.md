@@ -8,14 +8,21 @@ This document describes the major user-facing flows and internal pipelines of th
 
 This flow covers adding a new song to the system, either by uploading local files or downloading them from YouTube, separating vocal and instrumental tracks via Demucs, transcribing vocals with Whisper, and generating word-level aligned segments.
 
+> **Current UI path:** the client only uses the processing queue (`POST /api/queue/add`, `server/queue_manager.py`). The user searches YouTube by name, confirms title/artist (lyrics fetched from LRCLIB/Lyrics.ovh), picks PRO or FLASH, and the song enters the queue:
+> - **Phase 1** (runs immediately, even during a game): yt-dlp download → Demucs via `utils/separation.py` (one separation at a time, `python -m demucs.separate`, GPU→CPU retry) → MP3 320k → backing track normalized to ~−16 LUFS (`utils/loudness.py`, `meta.json["loudness"]`) → `pitch.json` (melody reference for pitch scoring). Demucs output is removed even on error.
+> - **Phase 2** (waits for the game to end): lyrics + timestamps under `queue_manager.gpu_job()` — holds the `whisper_lock` and makes `alignment_busy()` non-empty, so the TV blocks INICIAR and the server refuses `start_game`. PRO aligns each LRC line in its own window on the vocal stem with per-word confidence; `utils/alignment_quality.py` writes `meta.json["alignment_quality"]` and `["needs_review"]` (score < 70 → "Revisar" in the song list).
+> - `segment_timing.finalize_segments` guarantees verses never overlap and cover their last word.
+>
+> The steps below describe the legacy `POST /api/upload-song` route (API only).
+
 ### Step-by-Step Execution
 1. **Form Submission:** The user fills the upload form in the client, providing the title, artist, language, and optionally local files (vocal, backing, LRC) or YouTube URLs.
 2. **Metadata Creation:** The server generates a unique slug (e.g. `title-artist`) and creates the directory `server/songs/<slug>/`. It builds and saves a default `meta.json` with the song settings.
 3. **File Retrieval:**
    - **Local Files:** If files are uploaded, they are saved directly to `vocal.mp3`, `backing_track.mp3`, and `lyrics.lrc`.
    - **YouTube Download:** If URLs are provided, the server executes `yt-dlp` in parallel thread threads (`asyncio.to_thread`) to download the audio streams as high-quality MP3s.
-4. **Audio Separation (Optional Demucs):** If no backing track URL/file is provided, the server runs the Demucs command in a background thread to isolate vocals from the backing track:
-   `demucs --two-stems vocals -d cuda -o demucs_output original.mp3`
+4. **Audio Separation (Optional Demucs):** If no backing track URL/file is provided, the server isolates vocals via `utils/separation.separate_stems`:
+   `python -m demucs.separate -n htdemucs --two-stems vocals -d cuda -o demucs_output original.mp3` (model/bitrate via `KARAOKE_DEMUCS_MODEL` / `KARAOKE_MP3_BITRATE`).
 5. **Lyric Generation & Alignment:**
    - **FAST mode:** If no plain lyrics are supplied, Whisper transcribes `vocal.mp3` and generates a draft `lyrics.lrc`.
    - **PRO mode (Forced Alignment):** If plain lyrics are supplied and `align_lyrics` is checked, the server runs MMS_FA using PyTorch/CUDA in a background thread to generate perfectly timed word-level timestamps.
@@ -72,10 +79,10 @@ This flow allows re-running the processing pipeline for an already installed son
 ### Step-by-Step Execution
 1. **Request:** Client triggers a reinstallation request: `POST /api/reinstall-song/{song_id}?align_lyrics=true`.
 2. **Metadata Load:** Server reads `meta.json` in `server/songs/{song_id}/`.
-3. **Backup Check:** Server preserves custom edits by copying the existing `lyrics.lrc` and `lyrics.txt` to memory/temporary backup variables. It also checks if a backup exists in `server/songs_backup/{song_id}` and restores it if available.
+3. **Backup Check:** Server preserves custom edits by copying the existing `lyrics.lrc` and `lyrics.txt` to memory. Precedence without `align_lyrics`: lyrics edited in the editor (`.lyrics_edited` marker) > `server/songs_backup/{song_id}` > LRCLIB synced LRC > aligner.
 4. **Clean Folder:** If `clean_existing=True`, the server clears all files in the song directory except `meta.json`.
 5. **Re-run Pipeline:** Re-executes the YouTube download, Demucs separation, Whisper/MMS_FA alignment, and `prepare_song` segmentation.
-6. **Realign:** If `align_lyrics=True`, it performs global word-level realignment using syllabic weight interpolation to ensure the lyrics and segments are perfectly in sync.
+6. **Realign:** If `align_lyrics=True`, it performs global word-level realignment using syllabic weight interpolation (fixed: word times are converted to absolute song time before matching — previously every verse collapsed to ~0 s). The whole route runs inside `queue_manager.gpu_job()`.
 
 ### Error Paths
 - **meta.json Missing:** Returns `HTTP 400` with details.
@@ -93,7 +100,7 @@ This flow allows the user to manually edit a song's lyrics or metadata in the bu
 3. **Save:** Client sends: `POST /api/save-lyrics` containing the updated LRC, language, and metadata JSON.
 4. **Validation:** Server parses the new `meta_json` to verify it is valid JSON.
 5. **Save to Disk:** Server normalizes line endings (`\r\n` to `\n`) and writes `lyrics.lrc`, `lyrics.txt`, and `meta.json` to the song folder.
-6. **Regenerate Segments:** Server executes `run_prepare_song` in a background thread to slice the segments based on the new timestamps and write `segments.json`.
+6. **Regenerate Segments:** Server executes `run_prepare_song` in a background thread (inside `queue_manager.gpu_job()`) to slice the segments based on the new timestamps and write `segments.json`, and marks the folder with `.lyrics_edited`. Multi-timestamp LRC lines (`[00:12][01:30]chorus`) are expanded; words are matched to Whisper in order (`segment_timing.match_words_in_order`).
 
 ### Error Paths
 - **JSON Syntax Error:** If the metadata is invalid JSON, the server aborts the save operation and returns `HTTP 400` with the syntax error description.

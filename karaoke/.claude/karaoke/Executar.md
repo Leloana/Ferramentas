@@ -92,8 +92,9 @@ O próprio servidor também expõe o IP detectado em `GET /api/get-ip` após sub
 
 ## 4. Executar os Testes
 
-A suíte usa `unittest` e cobre testes unitários (`tests/unit/`) e de fluxo/
-integração (`tests/flow/`).
+A suíte usa `unittest` (roda também com `pytest`, que carrega o `tests/conftest.py`
+— perfis de teste numa pasta temporária) e cobre testes unitários (`tests/unit/`),
+de fluxo/integração (`tests/flow/`) e das telas (`tests/ui/`, Playwright).
 
 ```powershell
 # Windows
@@ -108,6 +109,23 @@ Para rodar um único arquivo de teste:
 ```bash
 venv/bin/python -m unittest tests.unit.test_score_engine
 ```
+
+Com `pytest` (recomendado — usa o `tests/conftest.py`):
+```bash
+venv/bin/python -m pytest -q tests
+```
+`tests/test_escolta_vagalumes.py` precisa de CUDA e do áudio real da música.
+Testes das telas (pulados sem Playwright):
+```bash
+venv/bin/pip install playwright && venv/bin/python -m playwright install chromium
+venv/bin/python -m pytest tests/ui
+```
+
+### Ver o front sem GPU
+```bash
+venv/bin/python tools/preview_front.py --host 0.0.0.0   # http://<ip>:8765
+```
+Dados de exemplo, sem WebSocket. `/?tv=1` força o modo TV; `/?role=mic&room=1234` abre o celular-microfone.
 
 ---
 

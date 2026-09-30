@@ -38,7 +38,9 @@ necessariamente o estado atual do código.
 | [resolucoes/LRC_ALIGNMENT_TUNING.md](resolucoes/LRC_ALIGNMENT_TUNING.md) | Playbook de ajuste de timestamps e "knobs" de alinhamento. |
 | [resolucoes/PLANO.md](resolucoes/PLANO.md) | Planejamento original do MVP (deprecado). |
 | [resolucoes/STT_AVALIACAO_2026-09.md](resolucoes/STT_AVALIACAO_2026-09.md) | Whisper × Qwen3-ASR no score ao vivo (medido em partidas reais) e o que falta para japonês. |
-| [resolucoes/FRONT_REDESIGN_2026-09.md](resolucoes/FRONT_REDESIGN_2026-09.md) | Redesign do front (partitura antiga): parciais, ícones próprios, lobby com times, busca no YouTube, capas, bugs antigos achados. |
+| [resolucoes/FRONT_REDESIGN_2026-09.md](resolucoes/FRONT_REDESIGN_2026-09.md) | Redesign do front (partitura antiga) e as rodadas seguintes: varredura de bugs, recursos de festa (cartão, perfis, fila da noite, duelo), capas escolhíveis, mutex de GPU. |
+| [resolucoes/AUDIO_PIPELINE_MELHORIAS.md](resolucoes/AUDIO_PIPELINE_MELHORIAS.md) | Revisão do áudio (voz/nota, letra e tempos, separação): o que foi feito e o que calibrar no servidor, com medidas nas partidas gravadas. |
+| [resolucoes/TODO_SERVIDOR_FINAL.md](resolucoes/TODO_SERVIDOR_FINAL.md) | Checklist do servidor final: túnel e o que validar com GPU e celulares de verdade. |
 | [resolucoes/notes.md](resolucoes/notes.md) | Rascunho inicial: VAD, API Vagalume, casos da música _Holiday_. |
 | `resolucoes/holiday-green-day/` | Áudios e JSONs de depuração usados como caso de teste de alinhamento. |
 

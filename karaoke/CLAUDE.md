@@ -91,9 +91,13 @@ Armazena links de origem, letras brutas e status de arquivos físicos.
         "has_vocal_file": true,
         "has_backing_file": true,
         "has_lrc_file": true
-    }
+    },
+    "alignment_quality": {"score": 88, "flags": ["..."], "lines": [{"idx": 0, "confidence": 0.8, "flags": []}]},
+    "needs_review": false,              // nota < 70 → "Revisar" na lista
+    "loudness": {"lufs_before": -21.3, "gain_db": 5.3}
 }
 ```
+Outros arquivos opcionais na pasta: `cover.jpg` (+ `cover.options.json`, `cover.choice.json`), `pitch.json` (melodia de referência, 10 ms/quadro), `.lyrics_edited` (letra revisada no editor).
 
 ### B. Arquivo de Gameplay (`server/songs/<slug>/segments.json`)
 Lido pelo frontend para renderizar e temporizar a letra durante a reprodução.
@@ -108,7 +112,9 @@ Lido pelo frontend para renderizar e temporizar a letra durante a reprodução.
     "pause_end": 31.161,      // Fim da pausa instrumental
     "language": "en",         // Idioma usado na transcrição
     "lyrics": "This is the place",
-    "lyrics_timed": [         // Palavras individuais mapeadas
+    "confidence": 0.82,       // opcional (PRO): confiança média do verso
+    "align": "window",        // opcional (PRO): window | fallback | global
+    "lyrics_timed": [         // Palavras individuais mapeadas (PRO acrescenta "confidence" por palavra)
       {
         "word": "This",
         "expected_start": 0.0,  // Offset relativo ao sing_start do segmento (segundos)
@@ -132,7 +138,10 @@ Armazena a nota histórica de cada sessão.
   "songs_sung": [
     {
       "name": "Título da Música - Artista",
+      "song_id": "titulo-da-musica-artista",
       "score": 85.5,
+      "pitch": 71.0,          // opcional: afinação média da partida
+      "mode": "solo",
       "date": "2026-05-25T23:50:00Z"
     }
   ]

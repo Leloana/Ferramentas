@@ -85,6 +85,15 @@ Três varreduras em paralelo (lógica do front, telas no navegador, servidor); c
 - **Modais**: fechar um e abrir outro no mesmo instante (picker → pareamento, passo 3 → opções) quebrava o histórico e o "Fechar" saía do app. Esc/Voltar da TV/botão do navegador recuam um passo no "Adicionar" antes de fechar. Tab fica preso no modal aberto. QR sem internet mostra o link.
 - Textos explicativos que sobraram foram encurtados; o modal morto `lyrics-review` saiu.
 
+## Rodadas seguintes (mesmo dia)
+
+- **Recursos de festa**: cartão 4:5 para print no fim de jogo (TV e celular), perfis e ranking ("Cantores" na TV, aba "Perfil" no celular), recorde pessoal e melhor da sala, ouvir a própria apresentação, revezar versos e sortear, fila da noite ("quero cantar") com próxima automática em 10 s, contagem 3-2-1 depois do solo, voz guia, tela sempre acesa, painel de saúde (clique no "Online").
+- **Afinação**: "tom X%" por verso (YIN contra a melodia do vocal separado), informativo; o carimbo "Afinado" virou "Na mosca" porque mede a letra.
+- **Capas**: candidatos iTunes + Deezer + YouTube com nota por artista/título (tributo, karaokê, ao vivo e coletânea perdem — "A Wolf at the Door" saía com a capa de um tributo); "Trocar capa" no lobby.
+- **Lista**: ouvir 12 s do refrão (verso mais repetido); selo "Revisar" quando a sincronia da letra ficou fraca.
+- **Lobby**: pontuação abaixo do quadro dos cantores, sem o botão "Conectar celular" do topo (a vaga "+" já pareia); "Mic do dispositivo" virou "Local".
+- **Mutex de GPU**: gerando letra, o INICIAR mostra "GPU ocupada" e o servidor recusa `start_game`.
+
 ## Ferramentas e testes
 
 - `tools/preview_front.py`: serve o front sem GPU/FastAPI, com dados de exemplo (usa busca real e capas se houver `yt-dlp`).
@@ -92,6 +101,7 @@ Três varreduras em paralelo (lógica do front, telas no navegador, servidor); c
 
 ## Pendências
 
-- Rodar a suíte completa e uma partida real (2×2 com quatro celulares) no servidor — a máquina de desenvolvimento não tem FastAPI/GPU.
+- Checklist completo em `docs/guides/TODO_SERVIDOR_FINAL.md` ("Validar no servidor").
 - Testar num navegador de TV de verdade e no iPhone.
-- Alinhamento de letras mais confiável (substituto do "refazer música").
+- Alinhamento de letras mais confiável: feito (PRO linha por linha + nota de qualidade), falta validar com áudio real. Destacar no editor as linhas fracas (os dados já estão em `alignment_quality.lines`).
+- Testes das telas: `tests/ui/test_screens.py` (Playwright).

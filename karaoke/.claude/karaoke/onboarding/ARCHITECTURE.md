@@ -9,7 +9,7 @@ This document describes the high-level architecture, module contracts, data flow
 Karaoke AI is a multi-device local singing and scoring system. It allows:
 1. **Large Screen Console (Display / TV):** Renders lyrics, plays high-fidelity backing track audio, and renders score updates.
 2. **Mobile Microphones (Phones):** Connect as wireless micro-controllers that capture audio, resample it to 16 kHz Int16 and stream `KM01` packets (100 ms, first-sample index in the header).
-3. **AI Backend Server (FastAPI):** Orchestrates WebSocket rooms, manages pairing queues, resamples and processes audio streams, transcribes vocals using faster-whisper, performs forced alignment using Torchaudio's MMS_FA model, and evaluates performance using RapidFuzz/Double Metaphone.
+3. **AI Backend Server (FastAPI):** Orchestrates WebSocket rooms, manages pairing queues, places the 16 kHz audio on a per-player song timeline, transcribes vocals using faster-whisper, performs forced alignment using Torchaudio's MMS_FA model (line by line, with confidence), evaluates lyrics with RapidFuzz plus language normalization, and pitch with YIN (`server/pitch.py`). Party features (night queue, turns, profiles/records, shareable end card) run on the same room socket.
 
 ---
 
@@ -73,6 +73,14 @@ graph TD
   - `POST /api/upload-song`: Accepts files/URLs and starts background download and alignment.
   - `POST /api/reinstall-song/{song_id}`: Cleans the song folder and regenerates all tracks and alignments.
   - `GET /api/youtube-metadata`: Retrieves title/artist from a YouTube URL.
+  - `GET /api/youtube-search`: Search YouTube by name (add-song step 1).
+  - `POST /api/queue/add` · `GET /api/queue/status`: processing queue; status includes `alignment_busy` (GPU mutex: TV blocks INICIAR).
+  - `GET /api/songs/{id}/cover` · `GET /api/songs/{id}/cover/options` · `POST /api/songs/{id}/cover`: album art (auto best candidate from iTunes/Deezer/YouTube, or a chosen option).
+  - `GET /songs/{id}/vocal`: separated vocal (guide vocal).
+  - `GET /api/players` · `GET /api/players/{name}` · `GET /api/songs/{id}/leaderboard`: ranking, profile, room bests.
+  - `GET /api/recordings/{id}` · `GET /api/recordings/{id}/audio/{player}` · `POST /api/recordings/{id}/gabarito`: recorded games (calibration and replay).
+  - `GET /api/status`: health panel (GPU, queue, per-room verse latency, disk).
+  - Every song id/slug from the client goes through `utils/song_paths.safe_song_dir` (never leaves `songs/`).
 
 ### B. Room Manager (`server/rooms.py`)
 - **Responsibility:** Manages room instances (`KaraokeRoom`), maps display/mic WebSockets, and handles the lifetime of room objects.
@@ -82,17 +90,22 @@ graph TD
   - `unregistered_mics`: Waiting queue for connecting microphones.
   - `mic_timelines` + `song_clock`: per-player audio indexed by song time (`mic_stream.py`); each verse cuts its own disjoint window.
   - `segment_scores`: Cached scores per segment.
+  - `game_id`: bumped per game/reset; late Whisper results from an older game are dropped.
+  - `turn_order`: teams alternating verses (or `None`).
+  - `song_requests`: night queue ("quero cantar").
+  - `pitch_reference`, `transpose`, `player_pitch_scores`: pitch scoring against `pitch.json`.
+  - `verse_latencies`: last 30 dispatch→result times (health panel).
 
 ### C. Speech-to-Text Engine (`server/stt_engine.py`)
 - **Responsibility:** Wraps the `faster-whisper` model. Performs voice detection, filters out training hallucinations (e.g. "thanks for watching"), and returns confidence metrics.
 - **Inputs:** Audio buffer (16kHz Float32 mono numpy array), language code, and expected lyric prompt.
-- **Outputs:** `(transcription_text, word_list)` where `word_list` contains start/end times and probability scores.
+- **Outputs:** `(transcription_text, word_list)` where `word_list` contains start/end times and probability scores. With `details={}` it also returns both runs (`prompted_words`, `unprompted_words`, `used`) — recorded for calibration.
 
 ### D. Scoring Engine (`server/score_engine.py`)
 - **Responsibility:** Compares transcribed lyrics with expected lyrics.
 - **Parameters & Mechanics:**
   - **Fuzzy Token Matching:** Employs RapidFuzz token sorting metrics.
-  - **Phonetic Checking:** Employs Double Metaphone for Portuguese and English phonetic approximations.
+  - **Language Normalization:** accents on both sides, Portuguese spoken forms (tá/está, tô/estou, cê/você, pra/para, à/a), numbers 0–20 spelled out, hyphen-split words ("Dá" + "-se"), low-probability ghost copies dropped. (Double Metaphone is used only in `utils/lrc_realign.py`, not in scoring.)
   - **Leakage Removal:** Trims text overlap leaking from previous segments.
   - **Sandwich Recovery:** Re-credits 1-2 missing words if surrounding words are correct.
   - **Timing Penalty:** Subtracts points if a word's start time diverges from the expected time (TIMING_TOLERANT_SEC, TIMING_LENIENT_SEC).
@@ -109,6 +122,12 @@ The system can be configured using environment variables:
 | :--- | :--- | :--- | :--- |
 | `KARAOKE_HTTP` | Force server to run in HTTP mode (disabling key.pem/cert.pem checks). Useful for Cloudflare Tunneling. | `true`, `1`, `yes` | `false` |
 | `PATH` | Server scans system PATH + localized directories to find `ffmpeg.exe` and Nvidia CUDA DLLs automatically. | — | — |
+| `KARAOKE_PUBLIC_URL` | Public URL used in QR codes behind the tunnel. | `https://karaoke.example` | — |
+| `KARAOKE_WHISPER_MODEL` / `_DEVICE` / `_COMPUTE` | faster-whisper model, device and compute type. | `small` / `cpu` / `int8` | `large-v3-turbo` / `auto` / per device |
+| `KARAOKE_DEMUCS_MODEL` | Demucs model for vocal separation. | `htdemucs_ft` | `htdemucs` |
+| `KARAOKE_MP3_BITRATE` | Bitrate of vocal/backing MP3s. | `256k` | `320k` |
+| `KARAOKE_RECORD` / `KARAOKE_RECORD_DIR` | Record games for calibration (`0` disables). | `0` | on / `recordings/` |
+| `KARAOKE_PLAYERS_DIR` | Player profiles folder. | `/data/players` | `players/` |
 
 ---
 
@@ -120,4 +139,6 @@ The system can be configured using environment variables:
 4. **demucs:** Isolates vocals and backing tracks.
 5. **pydub & PyAV:** Handles audio I/O, format conversion (e.g. webm/m4a to MP3), resampling, and slicing.
 6. **yt-dlp:** Fast metadata retrieval and audio downloads from YouTube.
-7. **rapidfuzz & DoubleMetaphone:** Fuzzy and phonetic string scoring.
+7. **rapidfuzz & DoubleMetaphone:** Fuzzy scoring (Metaphone only in the LRC realigner).
+8. **numpy:** YIN pitch tracking (`pitch.py`) and BS.1770 loudness (`utils/loudness.py`) — no scipy/librosa.
+9. **iTunes Search / Deezer / LRCLIB / Lyrics.ovh (HTTP, no keys):** album art and lyrics lookup.
