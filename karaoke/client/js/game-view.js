@@ -12,7 +12,7 @@ import { onRequestsUpdate, showNextUp, stopAutoNext } from './requests.js';
 import { attachPlayerEvents, deviceInfo, sendPlayerEvent } from './game-events.js';
 import { escapeHtml } from './html.js';
 import { dom } from './dom.js';
-import { myRoom, DISPLAY_REPLACED_CODE } from './config.js';
+import { myRoom, DISPLAY_REPLACED_CODE, isTvBrowser } from './config.js';
 import { showToast } from './toast.js';
 import { AudioLifecycleManager } from './audio-lifecycle-manager.js';
 import { updateSyncDisplay, startTimeSync, stopTimeSync } from './sync.js';
@@ -87,6 +87,7 @@ export async function resetGameState() {
     if (dom.songProgressSlider) {
         dom.songProgressSlider.value = 0;
         dom.songProgressSlider.style.background = 'var(--track)';
+        delete dom.songProgressSlider.dataset.pct;
     }
     if (state.animationId) {
         cancelAnimationFrame(state.animationId);
@@ -247,6 +248,7 @@ export async function startKaraoke() {
         mediaElement: dom.audioPlayer,
         guideElement: dom.guidePlayer,
         guideVolume: savedGuideVolume(),
+        nativePlayback: isTvBrowser,
         onAudioChunk: (data) => {
             // Música inteira, não só os versos (ver mobile-mic-view.js). Fora do
             // jogo o servidor descarta: sem relógio da música não há onde encaixar.
@@ -281,6 +283,7 @@ export async function startKaraoke() {
                 mediaElement: dom.audioPlayer,
                 guideElement: dom.guidePlayer,
                 guideVolume: savedGuideVolume(),
+                nativePlayback: isTvBrowser,
             });
             state.audioManager.currentTranspose = state.currentTranspose;
             await state.audioManager.init();
@@ -1139,16 +1142,27 @@ export function updateLyricsDOM(data) {
     }
 }
 
+const TV_FRAME_MS = 66;
+
+function setTextIfChanged(el, text) {
+    if (el && el.textContent !== text) el.textContent = text;
+}
+
 export function startHighlightLoop() {
     if (state.animationId) cancelAnimationFrame(state.animationId);
 
     function update() {
         try {
+            // TV fraca: ~15 quadros/s bastam para a letra e deixam CPU para o áudio e o controle
+            const now = performance.now();
+            if (isTvBrowser && now - state.lyricsFrameAt < TV_FRAME_MS) return;
+            state.lyricsFrameAt = now;
+
             const audioPlayer = dom.audioPlayer;
             if (audioPlayer.duration && !state.isUserDraggingProgress) {
                 const cur = audioPlayer.currentTime;
                 const dur = audioPlayer.duration;
-                const pct = Math.max(0, Math.min(100, (cur / dur) * 100));
+                const pct = Math.round(Math.max(0, Math.min(100, (cur / dur) * 100)) * 10) / 10;
 
                 const formatTime = (secs) => {
                     const m = Math.floor(secs / 60);
@@ -1156,14 +1170,16 @@ export function startHighlightLoop() {
                     return `${m}:${s < 10 ? '0' : ''}${s}`;
                 };
 
-                if (dom.songProgressSlider) {
+                // só mexe no DOM quando muda (cada escrita custa um repaint na TV)
+                if (dom.songProgressSlider && dom.songProgressSlider.dataset.pct !== String(pct)) {
+                    dom.songProgressSlider.dataset.pct = String(pct);
                     dom.songProgressSlider.value = pct;
                     dom.songProgressSlider.style.background = `linear-gradient(to right, var(--accent) ${pct}%, var(--track) ${pct}%)`;
                 }
                 const timeCurrent = document.getElementById('song-time-current');
-                if (timeCurrent) timeCurrent.innerText = formatTime(cur);
+                setTextIfChanged(timeCurrent, formatTime(cur));
                 const timeRemaining = document.getElementById('song-time-remaining');
-                if (timeRemaining) timeRemaining.innerText = '-' + formatTime(Math.max(0, dur - cur));
+                setTextIfChanged(timeRemaining, '-' + formatTime(Math.max(0, dur - cur)));
             }
 
             if (state.isOutroActive && audioPlayer.duration) {

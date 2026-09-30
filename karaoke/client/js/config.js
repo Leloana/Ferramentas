@@ -15,8 +15,29 @@ export const DISPLAY_REPLACED_CODE = 4001;
 
 // Navegador de TV (Tizen, webOS, Android TV, Fire TV...) ou forçado com ?tv=1.
 // Liga a navegação por controle remoto com letras maiores (tv-nav.js / tv.css).
-export const isTvBrowser = urlParams.get('tv') === '1' ||
-    /SMART-TV|SmartTV|Tizen|Web0S|webOS\.TV|NetCast|HbbTV|BRAVIA|AFT[A-Z]|CrKey|GoogleTV|Android ?TV|VIDAA|Viera|Roku/i.test(navigator.userAgent);
+// TV Bro e outros navegadores da Google TV se identificam como celular Android:
+// Android sem tela de toque é TV. ?tv=1 / ?tv=0 fica lembrado neste aparelho.
+const TV_UA = /SMART-TV|SmartTV|Tizen|Web0S|webOS\.TV|NetCast|HbbTV|BRAVIA|AFT[A-Z]|CrKey|Chromecast|GoogleTV|Google TV|Android ?TV|TV ?Bro|VIDAA|Viera|Roku/i;
+const androidWithoutTouch = /Android/i.test(navigator.userAgent) &&
+    !(navigator.maxTouchPoints > 0) && !('ontouchstart' in window);
 
-export const isSoloMobileMode = (myRole === 'display') && !isTvBrowser &&
-    (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768);
+function tvOverride() {
+    const q = urlParams.get('tv');
+    try {
+        if (q === '1' || q === '0') localStorage.setItem('karaoke_tv', q);
+        return localStorage.getItem('karaoke_tv');
+    } catch (e) {
+        return q;
+    }
+}
+
+const _tvOverride = tvOverride();
+export const isTvBrowser = _tvOverride === '1' ||
+    (_tvOverride !== '0' && (TV_UA.test(navigator.userAgent) || androidWithoutTouch));
+
+// Três modos de aparelho: 'tv' (controle remoto, música sem Web Audio, letra a
+// ~15 quadros/s), 'mobile' (celular/tablet) e 'desktop'. Vai para <html data-device>.
+export const deviceKind = isTvBrowser ? 'tv' :
+    ((/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768) ? 'mobile' : 'desktop');
+
+export const isSoloMobileMode = (myRole === 'display') && deviceKind === 'mobile';

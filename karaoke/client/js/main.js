@@ -1,7 +1,7 @@
 import './compat.js';
 import { state, setAppState } from './state.js';
 import { dom } from './dom.js';
-import { myRole, myRoom, isSoloMobileMode } from './config.js';
+import { myRole, myRoom, isSoloMobileMode, deviceKind } from './config.js';
 import { showToast } from './toast.js';
 import { resolvePublicOrigin } from './public-origin.js';
 import { updateMicStatusPanel, checkInitialMicPermission } from './mic-status.js';
@@ -33,6 +33,7 @@ function bootstrap() {
     if (appEl) {
         appEl.setAttribute('data-role', myRole);
     }
+    document.documentElement.setAttribute('data-device', deviceKind);
 
     renderIcons();
     enhanceSelects();

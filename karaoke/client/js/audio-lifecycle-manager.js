@@ -75,6 +75,9 @@ export class AudioLifecycleManager {
         this.guideGain = null;
         this.currentGuideVolume = options.guideVolume || 0;
         this.onAudioChunk = options.onAudioChunk || null;
+        // TV: música direto pelo <audio> (o Web Audio picotava num aparelho fraco);
+        // o grafo só é montado se o tom mudar.
+        this.nativePlayback = !!options.nativePlayback;
 
         /** @type {AudioContext|null} */
         this.audioContext = null;
@@ -211,34 +214,51 @@ export class AudioLifecycleManager {
 
         // 2. Playback/media element setup
         if (this.mediaElement && !this.mediaElementSource) {
-            try {
-                this.mediaElementSource = this.audioContext.createMediaElementSource(this.mediaElement);
-                this.nodes.add(this.mediaElementSource);
-
-                // Create gain node for volume control (bypasses HTMLMediaElement.volume limitation)
-                if (!this.gainNode) {
-                    this.gainNode = this.audioContext.createGain();
-                    this.gainNode.gain.value = this.currentVolume;
-                    this.nodes.add(this.gainNode);
-                }
-
-                if (this.guideElement && !this.guideSource) {
-                    this.guideSource = this.audioContext.createMediaElementSource(this.guideElement);
-                    this.guideGain = this.audioContext.createGain();
-                    this.guideGain.gain.value = this.currentGuideVolume;
-                    this.guideSource.connect(this.guideGain);
-                    this.nodes.add(this.guideSource);
-                    this.nodes.add(this.guideGain);
-                }
-
-                this.updateTranspose(this.currentTranspose);
-            } catch (err) {
-                console.error("AudioLifecycleManager: Failed to capture MediaElement:", err);
-                throw err;
+            if (this.nativePlayback && this.currentTranspose === 0) {
+                this.mediaElement.volume = this.currentVolume;
+                if (this.guideElement) this.guideElement.volume = this.currentGuideVolume;
+            } else {
+                this._connectMediaGraph();
             }
         }
 
         this._started = true;
+    }
+
+    /**
+     * Routes the media element (and guide vocal) through the Web Audio graph
+     * (gain + optional pitch shift).
+     * @private
+     */
+    _connectMediaGraph() {
+        // de volta ao volume cheio: quem controla agora é o GainNode
+        this.mediaElement.volume = 1;
+        if (this.guideElement) this.guideElement.volume = 1;
+        try {
+            this.mediaElementSource = this.audioContext.createMediaElementSource(this.mediaElement);
+            this.nodes.add(this.mediaElementSource);
+
+            // Create gain node for volume control (bypasses HTMLMediaElement.volume limitation)
+            if (!this.gainNode) {
+                this.gainNode = this.audioContext.createGain();
+                this.gainNode.gain.value = this.currentVolume;
+                this.nodes.add(this.gainNode);
+            }
+
+            if (this.guideElement && !this.guideSource) {
+                this.guideSource = this.audioContext.createMediaElementSource(this.guideElement);
+                this.guideGain = this.audioContext.createGain();
+                this.guideGain.gain.value = this.currentGuideVolume;
+                this.guideSource.connect(this.guideGain);
+                this.nodes.add(this.guideSource);
+                this.nodes.add(this.guideGain);
+            }
+
+            this.updateTranspose(this.currentTranspose);
+        } catch (err) {
+            console.error("AudioLifecycleManager: Failed to capture MediaElement:", err);
+            throw err;
+        }
     }
 
     /**
@@ -358,7 +378,13 @@ export class AudioLifecycleManager {
      */
     updateTranspose(transpose) {
         this.currentTranspose = transpose;
-        if (!this.audioContext || !this.mediaElementSource) return;
+        if (!this.audioContext || !this.mediaElement) return;
+        if (!this.mediaElementSource) {
+            // reprodução nativa (TV): o grafo só entra quando o tom sai do normal
+            if (transpose === 0 || !this._started) return;
+            this._connectMediaGraph();  // termina chamando updateTranspose de novo
+            return;
+        }
 
         // Disconnect media source
         try {
@@ -402,12 +428,15 @@ export class AudioLifecycleManager {
     setGuideVolume(val) {
         this.currentGuideVolume = Math.max(0, Math.min(1, val));
         if (this.guideGain) this.guideGain.gain.value = this.currentGuideVolume;
+        else if (this.nativePlayback && this.guideElement) this.guideElement.volume = this.currentGuideVolume;
     }
 
     setVolume(val) {
         this.currentVolume = Math.max(0, Math.min(1, val));
         if (this.gainNode) {
             this.gainNode.gain.value = this.currentVolume;
+        } else if (this.nativePlayback && this.mediaElement) {
+            this.mediaElement.volume = this.currentVolume;
         }
     }
 

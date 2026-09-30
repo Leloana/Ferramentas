@@ -30,3 +30,12 @@ html.is-tv .artist-group__name { font-size: 1.35rem; }
 html.is-tv .song-card__btn { width: 44px; height: 44px; }
 /* efeitos caros em GPU fraca de TV */
 html.is-tv .carousel-inner { will-change: auto; }
+
+/* Partida na TV: o laço da letra roda a ~15 quadros/s (game-view.js); sem
+   escala/rotação por palavra nem animações infinitas, a GPU fraca acompanha. */
+html.is-tv .word { transition: none; }
+html.is-tv .word.active { transform: none; box-shadow: none; }
+html.is-tv .verse-progress-fill-top,
+html.is-tv .stage-overlay__fill { transition: none; }
+html.is-tv .status-dot,
+html.is-tv .stage-overlay__dot { animation: none; }
