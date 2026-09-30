@@ -13,6 +13,7 @@ import torchaudio  # noqa: F401
 
 from lyrics_text import is_japanese, regroup_timed_words, split_words, time_words_by_characters
 from stt_engine import get_stt_engine
+from utils.alignment_quality import record_alignment_quality
 from utils.audio import load_audio_full
 from utils.segment_timing import finalize_segments, match_words_in_order
 from utils.whisper_params import WHISPER_SR
@@ -301,7 +302,12 @@ def prepare_song(song_dir, language="en", debug=False):
         output_path = song_path / "segments.json"
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(segments_data, f, indent=2, ensure_ascii=False)
-        
+
+    if not debug:
+        # nota do alinhamento + needs_review no meta.json (estrutura e silêncio no stem)
+        record_alignment_quality(song_path, segments_data, audio_duration=len(full_audio) / sample_rate,
+                                 vocal_audio=full_audio, sample_rate=sample_rate)
+
     print(f"\nSucesso! Gerado: {output_path}")
 
 if __name__ == "__main__":

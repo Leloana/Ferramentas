@@ -132,3 +132,46 @@
 @media (max-width: 700px) {
     .add-hero__btn { width: 100%; min-width: 0; }
 }
+
+/* ---------- Fila da noite (requests.js) ---------- */
+.requests-bar { margin: 0 0 1rem; padding: 0.6rem 0.8rem; background: var(--paper-light); border: var(--border); box-shadow: var(--shadow-lift); }
+.requests-bar[hidden] { display: none; }
+.requests-bar__title { display: flex; align-items: center; gap: 0.4rem; margin: 0 0 0.5rem; font-size: 1.15rem; }
+.requests-bar__title .ico { width: 18px; height: 18px; }
+.requests-bar__list { display: flex; gap: 0.5rem; margin: 0; padding: 0 0 0.2rem; overflow-x: auto; list-style: none; }
+.request-chip { display: flex; flex-shrink: 0; align-items: stretch; border: var(--border); background: var(--paper); }
+.request-chip:first-child { background: var(--butter); }
+.request-chip__open {
+    display: flex; align-items: baseline; gap: 0.45rem; padding: 0.4rem 0.6rem;
+    background: none; border: none; color: var(--ink); font-family: var(--font-ui); font-size: 1rem; cursor: pointer; text-align: left;
+}
+.request-chip__place { font-weight: 800; color: var(--dim); font-variant-numeric: tabular-nums; }
+.request-chip__who { font-weight: 900; }
+.request-chip__song { max-width: 16rem; overflow: hidden; color: var(--ink-2); text-overflow: ellipsis; white-space: nowrap; }
+.request-chip__remove { display: flex; align-items: center; padding: 0 0.4rem; background: none; border: none; border-left: var(--hairline); color: var(--dim); cursor: pointer; }
+.request-chip__remove .ico { width: 16px; height: 16px; }
+
+/* celular */
+.mic-requests { display: flex; flex-direction: column; gap: 0.35rem; margin: 0 0 0.5rem; padding: 0; list-style: none; }
+.request-row { display: grid; grid-template-columns: 2rem auto minmax(0, 1fr) auto; align-items: center; gap: 0.5rem; padding: 0.4rem 0.5rem; border: var(--hairline); background: var(--paper-light); font-family: var(--font-ui); }
+.request-row__who { font-weight: 900; }
+.request-row__song { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.request-songs { display: flex; flex-direction: column; max-height: 18rem; margin: 0.5rem 0 0.75rem; overflow-y: auto; border: var(--hairline); }
+.request-song {
+    display: grid; grid-template-columns: 1.4rem minmax(0, 1fr) auto; grid-template-rows: auto auto; column-gap: 0.5rem;
+    align-items: center; padding: 0.5rem 0.6rem; background: var(--paper-light); border: none; border-bottom: var(--hairline);
+    color: var(--ink); font-family: var(--font-ui); text-align: left; cursor: pointer;
+}
+.request-song__icon { grid-row: span 2; width: 18px; height: 18px; color: var(--dim); }
+.request-song__title { overflow: hidden; font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
+.request-song__artist { grid-column: 2; color: var(--dim); font-size: 0.85rem; }
+.request-song__add { grid-column: 3; grid-row: 1 / span 2; width: 22px; height: 22px; }
+
+/* fim de jogo */
+.game-over-next { display: flex; flex-direction: column; align-items: center; gap: 0.35rem; width: 100%; margin: 0 0 0.8rem; padding: 0.6rem; background: var(--paper-2); border: var(--border); }
+.game-over-next[hidden] { display: none; }
+.game-over-next__label { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); }
+.game-over-next__text { font-family: var(--font-ui); font-size: 1.1rem; text-align: center; }
+.game-over-next__track { width: 100%; height: 6px; background: var(--paper-light); border: 1px solid var(--ink); }
+.game-over-next__fill { height: 100%; background: var(--ink); transition: width 1s linear; }
+.game-over-next__actions { display: flex; gap: 0.5rem; }

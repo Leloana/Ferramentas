@@ -20,6 +20,8 @@ Este arquivo resume os detalhes técnicos específicos do subprojeto **Karaoke A
 | &emsp;&emsp;├─ `lobby.js` / `score-bars.js` | Lobby (vagas com "+": mic próprio + time A–D) e barras de placar | Não existe mais seletor de modo: mesmo time = dupla/trio. O servidor pontua por mic; a média do time é feita no front (barra do time + barrinha de cada membro, pódio por time). |
 | &emsp;&emsp;├─ `share-card.js` / `replay.js` | Cartão 4:5 para print no fim de jogo (TV e celular) e "ouvir a apresentação" | Dados do `game_over` (`player_stats`, `player_pitch`, `records`, `song_id`). |
 | &emsp;&emsp;├─ `profile-view.js` / `players-modal.js` | Ranking e perfil dos cantores (modal "Cantores" na TV, aba "Perfil" no celular) | Lê `/api/players`. |
+| &emsp;&emsp;├─ `requests.js` | Fila da noite ("quero cantar"): faixa "Próximas" na TV, "Pedir música" no celular, próxima automática no fim de jogo (10 s) | Servidor: `song_requests.py` (memória da sala, mensagens `request_song`/`cancel_request`/`requests_update`). |
+| &emsp;&emsp;├─ `cover-picker.js` / `song-preview.js` | Trocar a capa entre as opções achadas; ouvir 12 s do refrão na lista | Capa: `utils/cover.py` (iTunes + Deezer + YouTube, nota por artista/título). Refrão = verso mais repetido. |
 | &emsp;&emsp;├─ `turns.js` | Revezar versos (duelo): dono de cada verso | Mesma regra de `turn_owner` em `ws/room.py`. |
 | &emsp;&emsp;├─ `guide-vocal.js` / `wake-lock.js` / `status-panel.js` | Voz guia (vocal.mp3 baixinho), tela sempre acesa, painel de saúde (clique no "Online") | A voz guia passa pelo mesmo tom do instrumental (`audio-lifecycle-manager.js`). |
 | &emsp;&emsp;├─ `verse-stamp.js` | Carimbo de acerto/erro por verso (Na mosca · Quase · Fora) | Faixas em `verseQuality` (85/70); usado no palco (solo), nas barras (multiplayer) e na nota do celular. |
@@ -36,6 +38,7 @@ Este arquivo resume os detalhes técnicos específicos do subprojeto **Karaoke A
 | ├─ `queue_manager.py` | Fila de downloads/processamento da GPU | Garante que processos pesados de IA aguardem ocioso da GPU. |
 | ├─ `score_engine.py` | Motor de cálculo de notas do cantor | Fuzzy tokens (rapidfuzz), normalização por idioma (contrações, números, hífen) e penalidades de tempo. O Double Metaphone só existe no `lrc_realign.py`, não na nota. |
 | ├─ `pitch.py` | Afinação: YIN em numpy, `pitch.json` da voz separada, nota de tom por verso | Informativa (fora da nota) até calibrar; oitava livre; nota mostrada já desconta o acaso (~30). |
+| ├─ `song_requests.py` | Fila da noite por sala (pedidos "quero cantar") | Limites: 30 pedidos, 3 por cantor. Some quando a sala fecha. |
 | ├─ `players.py` | Perfis dos cantores (`players/<apelido>/profile.json`), recordes, ranking | `KARAOKE_PLAYERS_DIR` troca a pasta (os testes usam uma temporária via `tests/conftest.py`). |
 | ├─ `mic_stream.py` | Linha do tempo do áudio dos microfones | Formato do pacote `KM01`, relógio da música (`SongClock`) e janelas disjuntas por verso. |
 | ├─ `stt_engine.py` | Instanciação e controle do Faster-Whisper | Tem fallback CUDA -> CPU automático e limpa silêncio (VAD). Modelo padrão `large-v3-turbo` (float16 na GPU, int8 na CPU), trocável por `KARAOKE_WHISPER_*`. Os limiares de confiança foram calibrados no `medium`: recalibrar com canto real. |
@@ -59,6 +62,7 @@ Este arquivo resume os detalhes técnicos específicos do subprojeto **Karaoke A
 *   **Cálculo da Pontuação:** `server/score_engine.py` (fuzzy matching, normalização e atrasos).
 *   **Separação voz × instrumental:** `server/utils/separation.py` (Demucs via `python -m demucs.separate`, uma separação por vez, MP3 em `KARAOKE_MP3_BITRATE`=320k, modelo em `KARAOKE_DEMUCS_MODEL`=htdemucs). Fila e reinstall usam só ele.
 *   **Tempos dos versos:** `server/utils/segment_timing.py` — `match_words_in_order` (letra × Whisper sem inverter a ordem) e `finalize_segments` (sing_end cobre a última palavra e não invade o próximo verso; também aplicado na leitura pelo `song_manager`).
+*   **Qualidade do alinhamento:** `server/utils/alignment_quality.py` grava `meta.json["alignment_quality"]` e `["needs_review"]` (nota < 70); a lista mostra "Revisar". Volume do instrumental: `utils/loudness.py` (~−16 LUFS, `meta.json["loudness"]`).
 *   **Alinhamento de letras com áudio:** `server/utils/lrc_align.py` (Whisper) e `server/utils/lrc_pro.py` (MMS_FA PyTorch).
 *   **Criação de segmentos de canto:** `tools/prepare_song.py` (gera metadados de jogabilidade no arquivo final).
 
@@ -150,7 +154,8 @@ Armazena a nota histórica de cada sessão.
 | `GET` | `/api/get-lyrics` | `slug: str` (Query) | `{"success": true, "lyrics": "LRC", "language": "pt", "meta_json": "{}"}` |
 | `POST` | `/api/save-lyrics` | Form (`slug`, `language`, `lyrics_lrc`, `meta_json`) | `{"success": true}` (Salva e gera os segmentos) |
 | `GET` | `/api/youtube-metadata` | `url: str` (Query) | `{"title": "...", "artist": "..."}` |
-| `GET` | `/api/songs/{song_id}/cover` | — | Capa do álbum (JPEG). 1ª vez busca no iTunes, senão miniatura do YouTube; guarda em `songs/<slug>/cover.jpg` (`cover.none` = sem capa) |
+| `GET` | `/api/songs/{song_id}/cover` | — | Capa do álbum (JPEG). 1ª vez escolhe o melhor candidato (iTunes/Deezer/YouTube, nota por artista+título, tributo/karaokê/ao vivo perdem); guarda em `songs/<slug>/cover.jpg` (`cover.none` = sem capa) |
+| `GET` · `POST` | `/api/songs/{song_id}/cover/options` · `/api/songs/{song_id}/cover` | `{"url"}` (POST) | Opções de capa (`cover.options.json`) · escolher uma delas (só URLs da lista) |
 | `GET` | `/songs/{song_id}/vocal` | — | Voz separada (voz guia) |
 | `GET` | `/api/players` · `/api/players/{nome}` | — | Ranking · perfil (resumo, recordes por música, últimas) |
 | `GET` | `/api/songs/{song_id}/leaderboard` | — | Melhores da sala na música |
@@ -193,6 +198,7 @@ Armazena a nota histórica de cada sessão.
     *   Ao disparar tarefas assíncronas de transcrição do Whisper via `asyncio.create_task`, **você deve salvar uma referência forte** das tarefas no conjunto da sala (`room.pending_tasks`). Caso contrário, o Python pode destruí-las antes da conclusão da transcrição.
 *   **Limitação de VRAM e Threads da GPU:**
     *   Não execute processamento com Whisper ou Demucs fora de locks. Use `queue_manager.whisper_lock` no backend. O processamento concorrente da GPU pode estourar a VRAM no Windows e derrubar o servidor.
+*   **Mutex de GPU (gerar letra × partida):** trabalhos longos de Whisper/MMS fora da partida usam `async with queue_manager.gpu_job("nome")` (pega o `whisper_lock` e aparece em `alignment_busy()`). Enquanto houver um, o INICIAR fica bloqueado na TV ("GPU ocupada · Gerando a letra de X", via `/api/queue/status`) e o servidor responde `start_blocked` a um `start_game`. A etapa 1 (download + Demucs) continua rodando durante a partida.
 *   **Monotonicidade dos Timestamps Word-Level:**
     *   No arquivo `segments.json`, a lista `lyrics_timed` **deve possuir tempos de expected_start estritamente crescentes**. Nunca permita que duas palavras seguidas no JSON comecem no mesmo segundo (ex.: 0.0s e 0.0s). O frontend calcula gradientes de cor com base no avanço de tempo; tempos iguais causam divisão por zero e quebram a animação visual.
 *   **Vazamento Instrumental:**

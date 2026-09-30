@@ -187,7 +187,7 @@ async def upload_song(
         # gerado no editor antes de finalizar — o `segments.json` será gerado
         # depois, em `/api/save-lyrics`, sobre o LRC editado pelo usuário.
         # Whisper/Demucs na GPU: mesmo lock da partida e da fila (VRAM)
-        async with queue_manager.whisper_lock:
+        async with queue_manager.gpu_job(f"{title} - {artist}"):
             success = await run_reinstall_song(
                 str(song_dir),
                 language=language,

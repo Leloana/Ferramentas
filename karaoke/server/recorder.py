@@ -26,7 +26,9 @@ from mic_stream import STREAM_SR, MicTimeline
 logger = logging.getLogger(__name__)
 
 SESSION_FILE = "session.json"
-FORMAT_VERSION = 1
+# 2: resultados com as duas passadas do Whisper (prompted_words/unprompted_words/used).
+# Leitores usam .get: sessões do formato 1 continuam valendo.
+FORMAT_VERSION = 2
 
 # Gabarito anotado pelo cantor no fim da partida (botão discreto da tela final).
 GABARITO_FILE = "gabarito.json"
@@ -130,8 +132,13 @@ class GameRecording:
         self.results: list[dict] = []
 
     def add_segment_result(self, player: str, seg_idx: int, window: tuple[float, float], rms: float,
-                           transcription: str, words: list[dict], result: dict) -> None:
-        self.results.append({
+                           transcription: str, words: list[dict], result: dict,
+                           prompted_words: list[dict] | None = None,
+                           unprompted_words: list[dict] | None = None,
+                           used: str | None = None) -> None:
+        """`words` é a passada que valeu; com `used`, grava também as duas passadas
+        (já no tempo do sing_start) para repontuar com outro portão de confiança."""
+        entry = {
             "player": player,
             "segment": seg_idx,
             "window": [round(window[0], 4), round(window[1], 4)],
@@ -141,7 +148,10 @@ class GameRecording:
             "score": result["score"],
             "matched_words": result.get("matched_words"),
             "total_expected": result.get("total_expected"),
-        })
+        }
+        if used is not None:
+            entry.update(prompted_words=prompted_words, unprompted_words=unprompted_words, used=used)
+        self.results.append(entry)
 
     def save(self, timelines: dict[str, MicTimeline], complete: bool, whisper_model: str | None) -> Path | None:
         """Grava a partida. Sem áudio de nenhum jogador não cria nada."""

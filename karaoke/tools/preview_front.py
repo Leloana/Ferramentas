@@ -114,6 +114,12 @@ class Handler(BaseHTTPRequestHandler):
                 ctype = mimetypes.guess_type(file.name)[0] or "application/octet-stream"
                 return self._send(file.read_bytes(), ctype)
             return self._send(b"not found", "text/plain", 404)
+        if path.startswith("/api/songs/") and path.endswith("/cover/options"):
+            from utils.cover import cover_options
+            song_dir = (SONGS_DIR / path.split("/")[3]).resolve()
+            if SONGS_DIR.resolve() not in song_dir.parents:
+                return self._json({"detail": "Música não encontrada"}, 404)
+            return self._json(cover_options(song_dir))
         if path.startswith("/api/songs/") and path.endswith("/cover"):
             from utils.cover import find_cover
             song_dir = (SONGS_DIR / path.split("/")[3]).resolve()
@@ -155,6 +161,15 @@ class Handler(BaseHTTPRequestHandler):
         return self._json({"detail": "preview: rota não simulada"}, 404)
 
     def do_POST(self):
+        path = urlparse(self.path).path
+        if path.startswith("/api/songs/") and path.endswith("/cover"):
+            # escolher capa funciona de verdade (grava cover.jpg na pasta da música)
+            from utils.cover import choose_cover
+            song_dir = (SONGS_DIR / path.split("/")[3]).resolve()
+            length = int(self.headers.get("Content-Length") or 0)
+            body = json.loads(self.rfile.read(length) or b"{}")
+            ok = SONGS_DIR.resolve() in song_dir.parents and choose_cover(song_dir, body.get("url", ""))
+            return self._json({"success": bool(ok)}, 200 if ok else 400)
         self._json({"success": False, "detail": "preview: somente leitura"}, 400)
 
     do_DELETE = do_POST

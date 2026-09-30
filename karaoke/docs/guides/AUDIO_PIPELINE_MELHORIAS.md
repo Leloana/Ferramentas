@@ -42,7 +42,6 @@ repontuadas com `score_words`):
 Ferramentas: `tools/replay_recording.py --set modulo.NOME=valor` sobre `karaoke/recordings/`, e os testes de `tests/unit/test_recorded_sessions.py` (gabarito do cantor).
 
 ### Identificação de voz
-1. **O teste do gabarito não vê o que roda ao vivo** — só guarda as palavras da passada com dica; 11 versos teriam sido retranscritos sem a dica (Wolf 50 e 52 passam só porque o Whisper copiou a dica). *Fazer primeiro:* `stt_engine.transcribe` devolver as duas passadas e o `recorder` gravar ambas. Pré-requisito para calibrar o resto.
 2. **Pouco respiro antes do verso**: a janela do verso começa depois do pós-roll do anterior; Geni 53/102 versos com < 0,2 s antes do `sing_start`, e 33/99 cantores entram antes. Primeira palavra perdida (Geni 14, 56). Proposta: fim do verso anterior em `min(sing_end, última palavra + 0,25)` e respiro mínimo de 0,3–0,5 s.
 3. **Tolerância de tempo**: 1,0/2,5 s → 1,5/3,0 s dá 94,91 / 79,56 / 83,6 sem piorar os pares errados. Falta uma fixture de "cantou atrasado de propósito".
 4. **VAD**: parâmetros padrão do Silero (limiar 0,5, padding 400 ms) cortam começo suave. Expor como constantes e testar limiar 0,3–0,35 / padding 200 ms, ou sem VAD (o gate de RMS já barra silêncio).
@@ -54,17 +53,37 @@ Ferramentas: `tools/replay_recording.py --set modulo.NOME=valor` sobre `karaoke/
 10. **Ordem das palavras é ignorada** ("door the at wolf the" = 97) e o "sanduíche" dá 1,0 a palavra não cantada. Alinhamento monotônico e teto 0,7 no resgate — mexe em todas as notas, calibrar com o gabarito.
 
 ### Letra e tempos
-11. **MMS_FA na música inteira de uma vez** (memória cresce com o quadrado da duração → erro → caía no realign quebrado). Alinhar por linha na janela do LRC (`[início − 1 s, próximo + 0,5 s]`), no stem de voz.
-12. **Confiança por palavra** (`TokenSpan.score` do MMS_FA) e um **portão de qualidade** antes de marcar a música como pronta: % de palavras casadas, versos > 12 s, palavras < 80 ms, palavras caindo em silêncio no stem, diferença de duração LRC × áudio. Guardar `alignment_quality` no `meta.json` e mostrar "revisar" na fila; o editor destaca as linhas fracas.
 13. **LRCLIB por duração**: usar `/api/get` com a duração do vídeo e só aceitar LRC sincronizado cuja duração bata (±2 s); estimar um offset global cruzando inícios de linha com o início da voz no stem.
 14. Encaixar inícios de palavra no ataque de energia do stem (±150 ms) e dividir versos > 8 s / 10 palavras na maior pausa.
 
 ### Remoção de vocal
 15. **`htdemucs_ft`** (`KARAOKE_DEMUCS_MODEL=htdemucs_ft`): um pouco menos de voz vazando no instrumental, ~4× mais lento. Comparar de ouvido em 5 músicas.
-16. **Volume entre músicas** varia 6–10 dB: medir LUFS (ffmpeg `ebur128`) e normalizar o instrumental (~−16 LUFS) ou guardar o ganho no `meta.json`.
 17. **Mudança de tom no navegador** (`jungle.js`) soa robótica acima de ±3 semitons e atrasa ~100 ms sem compensação na letra. Rápido: compensar o atraso quando `transpose ≠ 0`. Maior: gerar a versão transposta no servidor (rubberband).
 18. **Cache de stems por vídeo do YouTube** (reinstalar sem baixar e separar de novo).
 19. Rotas só de API (`/api/upload-song`, `/api/reinstall-song`) seguram o `whisper_lock` durante download + Demucs; o front usa só a fila, mas se voltarem a ser usadas, pegar o lock só no alinhamento.
+
+## Feito na terceira rodada (2026-09-30) — validar no servidor
+
+Código e testes sem GPU prontos; os limiares são primeiro chute.
+
+### 1. As duas passadas do Whisper ficam gravadas
+- `stt_engine.transcribe(..., details={})` preenche `prompted_words`, `unprompted_words` (None se não rodou) e `used` (`"prompted"` | `"unprompted"`; None = silêncio). O retorno `(texto, palavras)` não mudou. O portão virou `stt_engine.pick_transcription` (mesma regra ao vivo e no teste).
+- `recorder.add_segment_result` grava os três campos (já no tempo do `sing_start`) quando o Whisper rodou; `session.json` passou a `format: 2`. Sessões e fixtures antigas continuam valendo (leitores usam `.get`).
+- `test_recorded_sessions.rescore_session`: com as duas passadas aplica o portão atual (`PROMPT_TRUST_MIN_PROB`); fixture antiga usa `words` como antes. `replay_recording.py` marca com `*` os versos em que valeu a passada sem dica.
+- **No servidor:** gravar partidas novas (formato 2), exportar para `tests/fixtures/recorded_sessions/` com gabarito e só então calibrar `PROMPT_TRUST_MIN_PROB` e os itens 2–10.
+
+### 11–12. MMS_FA por linha, confiança e portão de qualidade
+- `lrc_pro.align_lyrics_forced(..., synced_lrc=)`: com LRC, cada linha é alinhada na janela `[início − 1 s, próximo início + 0,5 s]` (máx. 30 s; a marca de fim do LRC encurta; começa depois da última palavra da linha anterior) no `vocal.mp3`. Linha que falha vira proporcional às sílabas a partir do início do LRC (~0,3 s/sílaba), sem atravessar a pausa. Sem LRC: letra inteira de uma vez, como antes. LRC que parece fora de sincronia (> 30% das linhas sem alinhar ou mediana da confiança < 0,35) tenta também a letra inteira e fica com a melhor nota do `assess`. O reinstall PRO passa o LRC revisado > LRCLIB > LRC anterior. Áudio lido pelo PyAV (`load_audio_full`), não mais `torchaudio.load`.
+- Confiança por palavra = média das probabilidades dos tokens (`TokenSpan.score`) ponderada pelos quadros; `segments.json` ganha `lyrics_timed[].confidence`, e por verso `confidence` e `align` (`window` | `fallback` | `global`). O alinhador é injetável (`align_fn`): testes com emissão falsa em `test_lrc_pro_windows.py`.
+- `utils/alignment_quality.assess(segments, audio_duration, vocal_rms_frames)` → `{"score", "flags", "lines": [{"idx", "confidence", "flags"}], "metrics"}`: palavras com confiança < 0,35 e mediana, empilhadas (≥ 3 a < 60 ms), versos > 12 s, palavras < 80 ms, depois do `sing_end`/fim do áudio, sobreposições e palavras no silêncio do stem (< −30 dB do p95). Sem confiança, só as estruturais.
+- `meta.json["alignment_quality"]` e `meta.json["needs_review"]` (nota < `REVIEW_SCORE_MIN` = 70), gravados pelo `prepare_song` (não-debug), pelo PRO do reinstall, pela restauração de backup e depois do `realign_segments`. Nas fixtures (sem confiança): cru → depois do `finalize_segments`: Wolf 47 → 82 (sobreposições; sobram 75 palavras empilhadas a 50 ms), Geni 89 → 94, Zé 78 → 93.
+- Falta: mostrar "revisar" na fila/lista e destacar as linhas fracas no editor (front).
+- **No servidor:** rodar o PRO em 5–10 músicas com LRCLIB e conferir (a) que não há mais OOM e o tempo por música, (b) a distribuição da confiança em linhas certas × erradas para acertar `LOW_CONFIDENCE` e os pesos de `WEIGHTS`, (c) se o LRCLIB fora de sincronia (item 13) derruba a nota como deveria, (d) se o MMS_FA estica a última palavra pela pausa quando a janela chega a 30 s sem marca de fim.
+
+### 16. Volume do instrumental normalizado
+- `utils/loudness.py`: LUFS integrado (BS.1770: K-weighting por FFT em pedaços de 30 s, portões −70 LUFS / −10 LU) em numpy, sem scipy/ffmpeg; ganho para −16 LUFS (máx. +12 dB, ignora < 0,5 dB) e limitador com antecipação de 5 ms para o pico por amostra ficar em −1,5 dBFS (−1 dBTP com 0,5 dB de folga, sem oversampling). 4 min estéreo: ~3 s de CPU.
+- `separation.export_backing_mp3` normaliza e exporta o `backing_track.mp3` (fila e reinstall, inclusive instrumental baixado do YouTube) e grava `meta.json["loudness"] = {"lufs_before", "gain_db"}`. Falha só loga e exporta o original. O `vocal.mp3` (voz guia, alinhamento, afinação) não é mexido.
+- **No servidor:** ouvir 5 músicas antes × depois (limitador em músicas com muito pico), conferir o `lufs_before` contra o `ffmpeg -af ebur128` e reinstalar as músicas antigas para igualar o volume. A voz guia fica com o volume relativo diferente do de antes nas faixas que ganharam/perderam muito.
 
 ## Recursos novos (2026-09-30, segunda rodada)
 

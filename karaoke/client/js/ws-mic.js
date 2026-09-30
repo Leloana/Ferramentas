@@ -8,6 +8,7 @@ import { verseQuality, replayClass } from './verse-stamp.js';
 import { escapeHtml } from './html.js';
 import { openShareCard, splitSongTitle } from './share-card.js';
 import { toggleReplay } from './replay.js';
+import { onRequestsUpdate } from './requests.js';
 
 export function connectMobileMicrophoneWebSocket() {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
@@ -61,6 +62,12 @@ export function connectMobileMicrophoneWebSocket() {
                 dom.mobileRegisterError.setAttribute('data-visible', 'true');
             }
             showToast(data.message, "error");
+        },
+        requests_update(data) {
+            onRequestsUpdate(data.requests);
+        },
+        request_error(data) {
+            showToast(data.message, 'error');
         },
         game_started(data, context) {
             const { state } = context;

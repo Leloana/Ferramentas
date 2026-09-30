@@ -49,6 +49,13 @@ export const state = {
     lastGameOver: null,       // último game_over (cartão para print)
     lobbyTurns: false,        // revezar versos (lobby.js / turns.js)
     turnOrder: null,          // [[mics do time 1], ...] da partida em curso
+    songRequests: [],         // fila da noite (requests.js)
+    autoNextTimer: null,
+    micSongs: null,           // músicas prontas para pedir no celular
+    preview: null,            // trecho tocando na lista (song-preview.js)
+    gpuBlock: null,           // nome da música gerando letra (bloqueia o INICIAR)
+    selectSongFn: null,       // selection-view.selectSong (evita import circular)
+    resetGameFn: null,        // game-view.resetGameState
     lobbySeats: [],        // lobby: [{ mic, team }] — mesmo time = dupla/trio (lobby.js)
     lobbyMics: [],         // celulares registrados na sala
     scoreGroups: null,     // times da partida em curso [{ team, mics }] (score-bars.js)

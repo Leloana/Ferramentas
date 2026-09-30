@@ -117,15 +117,17 @@ def replay_player(session: dict, audio: np.ndarray, covered: np.ndarray, stt, sc
             continue  # o servidor também não pontua verso sem nenhum pacote
         rms = float(np.sqrt(np.mean(window_audio[window_cov] ** 2)))
 
+        runs: dict = {}
         if segment_scoring.needs_whisper(segment, rms):
-            text, words = stt.transcribe(window_audio, **segment_scoring.transcribe_kwargs(segment))
+            text, words = stt.transcribe(window_audio, **segment_scoring.transcribe_kwargs(segment), details=runs)
             words = segment_scoring.shift_words(words, t0 - segment["sing_start"])
             prev = segments[idx - 1] if idx > 0 else None
             result = segment_scoring.score_words(segment, prev, words, scoring_mode)
             result.setdefault("transcription", text)
         else:
             result = segment_scoring.score_whisper_free(segment, rms)
-        results[idx] = {**result, "rms": rms}
+        # "unprompted" = a dica foi recusada pelo portão de confiança e valeu a passada sem dica
+        results[idx] = {**result, "rms": rms, "used": runs.get("used")}
     return results
 
 
@@ -153,14 +155,17 @@ def print_report(session_dir: Path, session: dict, player: str, replayed: dict[i
                 f"{'-' if new is None else f'{new['score']:.0f}':>5}")
         if gabarito:
             line += f" {'' if idx not in gabarito else f'{gabarito[idx]:.0f}':>5}"
-        print(line + "  " + _cut(new.get("transcription", "") if new else "", 50))
+        mark = "*" if new and new.get("used") == "unprompted" else " "
+        print(line + " " + mark + _cut(new.get("transcription", "") if new else "", 50))
 
     # Nota final como no game_over: soma dos versos pontuados / total de versos.
     final_rec = sum(r["score"] for r in recorded.values()) / max(1, n_segments)
     final_new = sum(r["score"] for r in replayed.values()) / max(1, n_segments)
     summary = {"session": session_dir.name, "player": player, "final_recorded": round(final_rec, 1),
                "final_replay": round(final_new, 1)}
-    msg = f"Final: gravada {final_rec:.1f} · nova {final_new:.1f}"
+    retried = sum(1 for r in replayed.values() if r.get("used") == "unprompted")
+    summary["unprompted"] = retried
+    msg = f"Final: gravada {final_rec:.1f} · nova {final_new:.1f} · {retried} versos sem a dica (*)"
     if gabarito:
         errors = [abs(replayed.get(i, {"score": 0.0})["score"] - exp) for i, exp in gabarito.items()]
         summary["mae"] = round(sum(errors) / len(errors), 1)

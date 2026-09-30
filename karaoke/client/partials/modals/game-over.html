@@ -19,6 +19,17 @@
         <!-- Ouvir a apresentação (um botão por cantor, montado em game-view.js) -->
         <div id="game-over-replay" class="game-over-replay" hidden></div>
 
+        <!-- Próxima da fila da noite: abre sozinha no fim da contagem -->
+        <div id="game-over-next" class="game-over-next" hidden>
+            <span class="game-over-next__label">Próxima</span>
+            <strong id="next-up-text" class="game-over-next__text"></strong>
+            <div class="game-over-next__track"><div id="next-up-fill" class="game-over-next__fill"></div></div>
+            <div class="game-over-next__actions">
+                <button type="button" id="btn-next-now" class="btn btn--primary btn--sm">Agora <span id="next-up-secs"></span></button>
+                <button type="button" id="btn-next-cancel" class="btn btn--ghost btn--sm">Cancelar</button>
+            </div>
+        </div>
+
         <div class="game-over-actions">
             <button id="btn-share-card" type="button" class="btn btn--lg btn-share-card"><i data-icon="camera"></i> Cartão</button>
             <button id="btn-restart-game" class="btn btn--primary btn--lg">CANTAR NOVAMENTE</button>

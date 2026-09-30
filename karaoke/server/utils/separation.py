@@ -84,3 +84,36 @@ def export_mp3(src: Path, dst: Path) -> None:
     from pydub import AudioSegment
 
     AudioSegment.from_file(str(src)).export(str(dst), format="mp3", bitrate=MP3_BITRATE)
+
+
+def export_backing_mp3(src, dst: Path, meta_path: Path | None = None) -> dict | None:
+    """Exporta o instrumental já com o volume normalizado (utils/loudness.py, ~−16 LUFS).
+
+    `src` é um caminho ou um pydub.AudioSegment. A normalização nunca derruba a
+    música: se falhar, exporta o áudio como veio. Com `meta_path` (padrão: o
+    meta.json ao lado de `dst`, se existir) grava `loudness` = {lufs_before, gain_db}.
+    """
+    from pydub import AudioSegment
+
+    audio = src if hasattr(src, "export") else AudioSegment.from_file(str(src))
+    info = None
+    try:
+        from utils.loudness import normalize_audiosegment
+
+        audio, info = normalize_audiosegment(audio)
+        logger.info(f"[Loudness] {Path(dst).name}: {info['lufs_before']} LUFS, ganho {info['gain_db']:+.1f} dB")
+    except Exception as e:
+        logger.warning(f"[Loudness] normalização falhou, exportando sem ajuste: {e}")
+    audio.export(str(dst), format="mp3", bitrate=MP3_BITRATE)
+
+    meta_path = Path(meta_path) if meta_path else Path(dst).parent / "meta.json"
+    if info is not None and meta_path.exists():
+        try:
+            import json
+
+            meta = json.loads(meta_path.read_text(encoding="utf-8"))
+            meta["loudness"] = info
+            meta_path.write_text(json.dumps(meta, indent=4, ensure_ascii=False), encoding="utf-8")
+        except Exception as e:
+            logger.warning(f"[Loudness] não gravou no meta.json: {e}")
+    return info

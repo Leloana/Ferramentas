@@ -81,3 +81,32 @@
 .status-row__value { font-weight: 700; text-align: right; overflow-wrap: anywhere; }
 .status-row[data-tone="ok"] .status-row__value { color: var(--sage-ink); }
 .status-row[data-tone="warn"] .status-row__value { color: var(--rose-ink); }
+
+/* Trocar capa (cover-picker.js) */
+.btn-change-cover { align-self: flex-start; display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.5rem; }
+#app:not([data-state="waiting"]) .btn-change-cover { display: none; }
+#app[data-state="waiting"] .song-cover { cursor: pointer; }
+.cover-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.75rem; }
+.cover-option {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.4rem;
+    background: var(--paper-light);
+    border: var(--border);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    text-align: left;
+    cursor: pointer;
+}
+.cover-option:hover, .cover-option:focus-visible { box-shadow: var(--shadow-lift); }
+.cover-option[aria-current="true"] { outline: 3px solid var(--sage-ink); outline-offset: 2px; }
+.cover-option__img { display: block; width: 100%; aspect-ratio: 1 / 1; min-height: 120px; object-fit: cover; background: var(--paper-2); }
+.cover-option__album { overflow: hidden; font-size: 0.85rem; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+.cover-option__source { color: var(--dim); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+.cover-option__check { position: absolute; top: 0.6rem; right: 0.6rem; width: 26px; height: 26px; padding: 3px; background: var(--sage); border: 2px solid var(--ink); }
+@media (max-width: 600px) {
+    .btn-change-cover { align-self: center; }
+    .cover-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

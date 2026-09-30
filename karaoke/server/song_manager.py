@@ -29,12 +29,15 @@ class SongManager:
             meta_path = item / "meta.json"
             title = None
             artist = None
+            needs_review = False
             if meta_path.exists():
                 try:
                     with open(meta_path, "r", encoding="utf-8") as f:
                         meta = json.load(f)
                         title = get_meta_field(meta, "meta", "title")
                         artist = get_meta_field(meta, "meta", "artist")
+                        # alinhamento fraco (utils/alignment_quality.py): a lista mostra "Revisar"
+                        needs_review = bool(meta.get("needs_review"))
                 except Exception:
                     pass
 
@@ -52,7 +55,8 @@ class SongManager:
                 "id": item.name,
                 "title": title,
                 "artist": artist or "Artista Desconhecido",
-                "is_ready": is_ready
+                "is_ready": is_ready,
+                "needs_review": needs_review,
             })
 
         return songs

@@ -19,6 +19,7 @@ from segment_scoring import (
 from state import room_manager, song_manager, queue_manager
 from pitch import load_or_build_reference, verse_pitch_score
 from players import get_or_create_profile, record_game, song_leaderboard
+from song_requests import add_request, remove_request, requests_payload
 from stt_engine import get_stt_engine
 from utils.audio import load_audio_full
 
@@ -171,9 +172,11 @@ async def process_segment_multiplayer(
             )
 
             words = []
+            # as duas passadas do Whisper (com e sem a letra como dica), para o gravador
+            stt_runs: dict = {}
             if needs_whisper(segment, rms_original):
                 def compute():
-                    return stt.transcribe(audio_data, **transcribe_kwargs(segment))
+                    return stt.transcribe(audio_data, **transcribe_kwargs(segment), details=stt_runs)
 
                 async with queue_manager.whisper_lock:
                     if room.game_id != game_id:
@@ -190,8 +193,11 @@ async def process_segment_multiplayer(
                 pitch = None
 
             if room.recording:
+                runs = {k: shift_words(stt_runs[k], window_offset) if stt_runs.get(k) is not None else None
+                        for k in ("prompted_words", "unprompted_words")}
                 room.recording.add_segment_result(
-                    player_name, seg_idx, window, rms_original, transcribed_text, words, result
+                    player_name, seg_idx, window, rms_original, transcribed_text, words, result,
+                    used=stt_runs.get("used"), **runs,
                 )
 
             if player_name not in room.player_segment_scores:
@@ -440,6 +446,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
 
     try:
         await websocket.send_json({"type": "singing_state", "active": room.is_singing_active})
+        if room.song_requests:  # fila da noite já em andamento: quem chega vê
+            await websocket.send_json(requests_payload(room))
     except Exception as e:
         logger.debug(f"Falha ao enviar estado inicial: {e}")
 
@@ -507,6 +515,14 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         await _notify_players_status(room)
                         await _advance_registration_queue(room)
 
+                elif msg_type == "start_game" and queue_manager.alignment_busy():
+                    # Mutex de GPU: gerando letra de uma música. Começar agora deixaria
+                    # a nota de cada verso esperando minutos pelo Whisper.
+                    await websocket.send_json({
+                        "type": "start_blocked",
+                        "reason": f"Gerando a letra de {queue_manager.alignment_busy()}",
+                    })
+
                 elif msg_type == "start_game":
                     room.game_mode = data.get("game_mode", "solo")
                     room.active_players = data.get("active_players", [])
@@ -550,6 +566,27 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         "game_mode": room.game_mode,
                         "active_players": room.active_players
                     })
+
+                elif msg_type == "request_song":
+                    # "Quero cantar": celular registrado pede para si; a TV pode pedir para qualquer mic
+                    singer = player_name if role == "mic" else str(data.get("singer") or "Local")[:MAX_NICKNAME_LEN]
+                    song_id = str(data.get("song_id") or "")
+                    song = next((s_ for s_ in song_manager.list_songs() if s_["id"] == song_id and s_.get("is_ready")), None)
+                    if not singer:
+                        await websocket.send_json({"type": "request_error", "message": "Entre com um apelido primeiro."})
+                    elif song is None:
+                        await websocket.send_json({"type": "request_error", "message": "Música não encontrada."})
+                    else:
+                        _, err = add_request(room, song, singer)
+                        if err:
+                            await websocket.send_json({"type": "request_error", "message": err})
+                        else:
+                            await room.broadcast(requests_payload(room))
+
+                elif msg_type == "cancel_request":
+                    owner = player_name if role == "mic" else None
+                    if remove_request(room, str(data.get("id") or ""), owner):
+                        await room.broadcast(requests_payload(room))
 
                 elif msg_type == "transpose" and role == "display":
                     # TV mudou o tom da trilha: a referência da afinação acompanha

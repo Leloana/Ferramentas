@@ -173,7 +173,7 @@ async def save_lyrics(
 
         import asyncio
         # prepare_song usa o Whisper: só com o lock da GPU
-        async with queue_manager.whisper_lock:
+        async with queue_manager.gpu_job(f"Letra de {slug}"):
             await asyncio.to_thread(run_prepare_song, str(song_dir), language)
         return {"success": True}
 

@@ -71,6 +71,13 @@
 
     <!-- Aba "Adicionar": mesmo fluxo padrão da TV + fila -->
     <div id="mic-queue-panel" class="mic-queue-panel">
+        <!-- Fila da noite: pedir uma música pronta para cantar (requests.js) -->
+        <div class="queue-tab-header"><span class="queue-items-title">Próximas</span></div>
+        <ol id="mic-requests" class="mic-requests"></ol>
+        <div class="queue-tab-header"><span class="queue-items-title">Pedir música</span></div>
+        <input type="search" id="mic-request-search" class="input" placeholder="Buscar música" aria-label="Buscar música para pedir">
+        <div id="mic-request-songs" class="request-songs"></div>
+        <div class="queue-tab-header"><span class="queue-items-title">Nova música</span></div>
         <button type="button" class="btn btn--primary btn--lg btn--block js-open-add-song">
             <i data-icon="add"></i> Adicionar música
         </button>

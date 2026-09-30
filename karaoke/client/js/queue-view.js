@@ -9,6 +9,7 @@ import { showToast } from './toast.js';
 import { iconSvg } from './icons.js';
 import { fetchSongs } from './selection-view.js';
 import { escapeHtml } from './html.js';
+import { state } from './state.js';
 
 // ── Status labels e ícones para cada estado da fila ──
 const STATUS_MAP = {
@@ -72,6 +73,26 @@ export function stopPolling() {
 
 let _previousReadyCount = 0;
 
+// Mutex de GPU: enquanto uma música gera a letra, o INICIAR fica bloqueado
+// com o motivo e volta sozinho quando termina (o servidor também recusa).
+export function applyStartBlock(busyLabel) {
+    state.gpuBlock = busyLabel;
+    const btn = document.getElementById('btn-start');
+    const note = document.getElementById('start-block-note');
+    if (!btn) return;
+    if (busyLabel) {
+        btn.disabled = true;
+        btn.dataset.blocked = 'true';
+        btn.innerText = 'GPU OCUPADA';
+        if (note) { note.textContent = `Gerando a letra de ${busyLabel}`; note.hidden = false; }
+    } else if (btn.dataset.blocked) {
+        delete btn.dataset.blocked;
+        btn.disabled = false;
+        btn.innerText = 'INICIAR';
+        if (note) note.hidden = true;
+    }
+}
+
 async function pollQueueStatus() {
     try {
         const resp = await fetch('/api/queue/status');
@@ -80,6 +101,7 @@ async function pollQueueStatus() {
 
         const items = data.queue || [];
         const gpuBusy = data.gpu_busy || false;
+        applyStartBlock(data.alignment_busy || null);
 
         LIST_IDS.forEach((id) => renderQueueItems(id, items));
 

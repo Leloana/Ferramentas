@@ -151,6 +151,28 @@ class ScreensTest(unittest.TestCase):
         # sem WebSocket no preview: só erros de página contam
         self.assertEqual(errors, [])
 
+    def test_night_queue_bar_opens_the_request_in_the_lobby(self):
+        page, errors = self.open()
+        page.evaluate("""async () => {
+            const rq = await import('/js/requests.js');
+            const songs = await fetch('/api/songs').then(r => r.json());
+            const song = songs.find(s => s.is_ready);
+            rq.onRequestsUpdate([{id: 'r1', song_id: song.id, title: song.title, artist: song.artist, singer: 'Ana'}]);
+        }""")
+        self.assertTrue(page.locator("#requests-bar").is_visible())
+        page.locator(".request-chip__open").first.click()
+        page.wait_for_function("document.getElementById('app').dataset.state === 'waiting'")
+        self.assertEqual(errors, [])
+
+    def test_song_cards_have_preview_and_lobby_has_cover_picker(self):
+        page, errors = self.open()
+        page.locator(".artist-group__header").first.click()
+        self.assertTrue(page.locator(".song-card .song-card__preview-btn").first.is_visible())
+        page.locator(".song-card").first.click()
+        page.wait_for_function("document.getElementById('app').dataset.state === 'waiting'")
+        self.assertTrue(page.locator("#btn-change-cover").is_visible())
+        self.assertEqual(errors, [])
+
     def test_tv_remote_moves_focus(self):
         page, errors = self.open("/?tv=1")
         page.keyboard.press("ArrowDown")

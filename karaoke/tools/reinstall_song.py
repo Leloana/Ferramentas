@@ -31,11 +31,12 @@ import torch  # noqa: F401 (Força carregamento de DLLs do PyTorch/cuDNN primeir
 import torchaudio  # noqa: F401
 
 from state import ffmpeg_bin_dir
+from utils.alignment_quality import record_alignment_quality
 from utils.audio import vocal_to_float32_mono_16k
 from utils.meta import get_meta_field
 from utils.text import normalize_lyrics_text
 from utils.whisper_params import TRANSCRIBE_KWARGS
-from utils.separation import MP3_BITRATE, separate_stems
+from utils.separation import MP3_BITRATE, export_backing_mp3, separate_stems
 from utils.song_paths import USER_EDITED_MARKER
 from utils.youtube import download_youtube_audio
 from tools.generate_lrc import generate_lrc
@@ -201,7 +202,7 @@ async def reinstall_song(
                     logger.error(f"Erro crítico na separação: {e}")
                     return False
                 backing_audio = AudioSegment.from_file(str(no_vocals_wav))
-                backing_audio.export(str(song_dir / "backing_track.mp3"), format="mp3", bitrate=MP3_BITRATE)
+                await asyncio.to_thread(export_backing_mp3, backing_audio, song_dir / "backing_track.mp3")
             elif backing_exists:
                 backing_audio = AudioSegment.from_file(str(song_dir / "backing_track.mp3"))
             else:
@@ -255,7 +256,8 @@ async def reinstall_song(
             # Salvar os canais de áudio definitivos sem corte/slicing
             logger.info("Salvando os canais de áudio definitivos...")
             vocal_audio.export(str(song_dir / "vocal.mp3"), format="mp3", bitrate=MP3_BITRATE)
-            backing_audio.export(str(song_dir / "backing_track.mp3"), format="mp3", bitrate=MP3_BITRATE)
+            # instrumental com volume normalizado (~−16 LUFS); falha só loga
+            await asyncio.to_thread(export_backing_mp3, backing_audio, song_dir / "backing_track.mp3")
             logger.info("Áudios exportados com sucesso!")
     except Exception as e:
         logger.error(f"Erro ao processar áudios: {e}")
@@ -297,6 +299,7 @@ async def reinstall_song(
                 shutil.copy(str(backup_txt), str(txt_file))
             has_lrc = True
             skip_prepare_song = True
+            await asyncio.to_thread(record_alignment_quality, song_dir)
             logger.info("Restauração do backup premium/pro concluída com sucesso!")
         except Exception as e:
             logger.error(f"Erro ao restaurar backup premium: {e}")
@@ -330,13 +333,17 @@ async def reinstall_song(
                 import torch
                 
                 device = "cuda" if torch.cuda.is_available() else "cpu"
+                # Inícios de linha para alinhar verso a verso (janela curta, sem estourar a
+                # memória): LRC revisado > LRCLIB > LRC anterior. Sem nenhum: letra inteira.
+                synced_lrc = (lrc_backup if user_edited_lrc else None) or fetched_synced_lrc or lrc_backup
                 logger.info(f"Chamando Forced Alignment (PRO) no dispositivo: {device}")
                 corrected_segments, lrc_text = await asyncio.to_thread(
                     align_lyrics_forced,
                     str(song_dir / "vocal.mp3"),
                     plain_lyrics,
                     language=song_lang,
-                    device=device
+                    device=device,
+                    synced_lrc=synced_lrc,
                 )
                 
                 # Salva o lyrics.lrc
@@ -346,7 +353,9 @@ async def reinstall_song(
                 segments_path = song_dir / "segments.json"
                 with open(segments_path, "w", encoding="utf-8") as f:
                     json.dump(corrected_segments, f, indent=2, ensure_ascii=False)
-                
+                # nota do alinhamento + needs_review no meta.json (nunca levanta)
+                await asyncio.to_thread(record_alignment_quality, song_dir, corrected_segments)
+
                 has_lrc = True
                 skip_prepare_song = True  # Já gerou o segments.json completo e com alinhamento perfeito!
                 logger.info("Arquivo lyrics.lrc e segments.json gerados com sucesso via Forced Alignment (PRO)!")
@@ -471,6 +480,8 @@ async def reinstall_song(
                         json.dump(corrected_main_segs, f, indent=2, ensure_ascii=False)
                     lrc_file.write_text(main_lrc, encoding="utf-8")
                     logger.info("Realinhamento concluído com sucesso!")
+                    # o prepare_song avaliou a versão anterior: avalia a realinhada
+                    await asyncio.to_thread(record_alignment_quality, song_dir, corrected_main_segs)
                 except Exception as e:
                     logger.warning(f"Erro ao realinhar versão principal: {e}")
 

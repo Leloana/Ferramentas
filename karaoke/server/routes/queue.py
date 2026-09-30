@@ -161,6 +161,8 @@ async def queue_status():
     return {
         "queue": queue_manager.get_queue_status(),
         "gpu_busy": queue_manager._gpu_game_active,
+        # mutex de GPU: gerando letra agora → a TV não inicia partida
+        "alignment_busy": queue_manager.alignment_busy(),
     }
 
 

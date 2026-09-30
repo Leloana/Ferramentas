@@ -9,7 +9,8 @@ import { initSyncControls } from './sync.js';
 import { connectMobileMicrophoneWebSocket } from './ws-mic.js';
 import { connectDisplayWebSocket } from './ws-display.js';
 import { initMobileMicView } from './mobile-mic-view.js';
-import { fetchSongs, initSearch } from './selection-view.js';
+import { fetchSongs, initSearch, selectSong } from './selection-view.js';
+import { initMicRequests, initNextUpButtons } from './requests.js';
 import { startKaraoke, resetGameState, initGameControls } from './game-view.js';
 import { initModals } from './modals.js';
 import { initQueueView } from './queue-view.js';
@@ -25,6 +26,7 @@ import { initGuideVocal } from './guide-vocal.js';
 import { fetchProfile, renderProfile } from './profile-view.js';
 import { initPlayersModal } from './players-modal.js';
 import { initStatusPanel } from './status-panel.js';
+import { initCoverPicker } from './cover-picker.js';
 
 function bootstrap() {
     const appEl = document.getElementById('app');
@@ -39,6 +41,7 @@ function bootstrap() {
     if (myRole === 'mic') {
         setAppState('registering');
         initMicTabs();
+        initMicRequests();
         initModals(); // "Adicionar música" padrão também no celular-microfone
 
         const roomIdEl = document.getElementById('mobile-room-id');
@@ -91,7 +94,11 @@ function bootstrap() {
     initSyncControls();
     initGuideVocal();
     initPlayersModal();
+    state.selectSongFn = selectSong;
+    state.resetGameFn = resetGameState;
+    initNextUpButtons();
     initStatusPanel();
+    initCoverPicker();
     initGameControls();
     initModals();
     initLobby();
@@ -113,6 +120,7 @@ function bootstrap() {
         const seen = localStorage.getItem('karaoke_onboarding_seen');
         const doStart = async () => {
             if (!validateLobby()) return;
+            if (state.gpuBlock) return;  // mutex de GPU (queue-view.js)
             dom.btnStart.disabled = true;
             dom.btnStart.innerText = 'PREPARANDO...';
             try {

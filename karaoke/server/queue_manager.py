@@ -10,6 +10,7 @@ que o singleton CTranslate2 do Whisper nunca seja chamado em paralelo.
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import json
 import logging
 import shutil
@@ -77,6 +78,9 @@ class SongQueueManager:
         self.queue: list[QueueItem] = []
         self.whisper_lock = asyncio.Lock()
         self._gpu_game_active = False
+        # Trabalhos longos de GPU fora da partida (gerar letra, recalcular
+        # segmentos): enquanto houver um, a TV não inicia partida (mutex de GPU)
+        self._gpu_jobs: list[str] = []
 
     # ------------------------------------------------------------------
     # Public API
@@ -138,6 +142,21 @@ class SongQueueManager:
                 logger.info(f"[QUEUE] Item removido da fila: {item_id} ({item.title})")
                 return True
         return False
+
+    @contextlib.asynccontextmanager
+    async def gpu_job(self, label: str):
+        """Trabalho longo na GPU (Whisper/MMS de uma música): pega o whisper_lock e
+        fica visível em `alignment_busy()` — a TV não começa partida por cima."""
+        async with self.whisper_lock:
+            self._gpu_jobs.append(label)
+            try:
+                yield
+            finally:
+                self._gpu_jobs.remove(label)
+
+    def alignment_busy(self) -> str | None:
+        """Nome do que está gerando letra na GPU agora (None = livre para cantar)."""
+        return self._gpu_jobs[0] if self._gpu_jobs else None
 
     def notify_game_started(self) -> None:
         """Chamado quando o jogo inicia — bloqueia Fase 2."""
@@ -288,7 +307,7 @@ class SongQueueManager:
         try:
             item.status = QueueStatus.ALIGNING
             item.progress_pct = 78
-            async with self.whisper_lock:
+            async with self.gpu_job(item.title or item.slug):
                 item.progress_pct = 80
                 logger.info(f"[QUEUE:{item.id}] Fase 2 — Whisper lock adquirido. Gerando LRC + alinhamento...")
 
@@ -359,13 +378,14 @@ class SongQueueManager:
 
     async def _run_demucs(self, item: QueueItem, song_dir: Path, audio_path: Path) -> None:
         """Separa vocal/instrumental (utils/separation.py: uma separação por vez)."""
-        from utils.separation import export_mp3, separate_stems
+        from utils.separation import export_backing_mp3, export_mp3, separate_stems
 
         def _separate_and_export():
             vocals_wav, no_vocals_wav = separate_stems(audio_path, song_dir / "demucs_output")
             # Exporta numa thread: leva segundos e a fase 1 roda durante a partida
             export_mp3(vocals_wav, song_dir / "vocal.mp3")
-            export_mp3(no_vocals_wav, song_dir / "backing_track.mp3")
+            # instrumental com volume normalizado (~−16 LUFS); falha só loga
+            export_backing_mp3(no_vocals_wav, song_dir / "backing_track.mp3")
             # melodia de referência da afinação (pitch.json): ~2 s de CPU, já pronta na 1ª partida
             try:
                 from pitch import load_or_build_reference

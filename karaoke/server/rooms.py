@@ -58,6 +58,8 @@ class KaraokeRoom:
         self.turn_order: Optional[list] = None
         # Painel de saúde: segundos entre fechar o verso e a nota chegar (últimos 30)
         self.verse_latencies: deque = deque(maxlen=30)
+        # Fila da noite: pedidos "quero cantar" (song_requests.py)
+        self.song_requests: list = []
         # Partida em gravação (KARAOKE_RECORD_DIR) ou None.
         self.recording: Optional[GameRecording] = None
 

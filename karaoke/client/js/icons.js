@@ -79,6 +79,7 @@ const P = {
     star: '<path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 17l-5.2 2.7 1-5.9-4.3-4.1 5.9-.8z"/>',
     camera: '<path d="M3.5 7.5h4l1.5-2.5h6l1.5 2.5h4v12h-17z"/><circle cx="12" cy="13" r="3.8"/>',
     shuffle: '<path d="M3 7h4l10 10h4M3 17h4l3-3M14 10l3-3h4"/><path d="M18 4l3 3-3 3M18 14l3 3-3 3"/>',
+    image: '<path d="M3.5 4.5h17v15h-17z"/><circle cx="9" cy="9.5" r="1.8"/><path d="M3.5 17l5-5 4 4 3-3 5 5"/>',
     gauge: '<path d="M3.5 17a8.5 8.5 0 1 1 17 0"/><path d="M12 17l4-6"/><circle cx="12" cy="17" r="1.3" fill="currentColor" stroke="none"/>',
 };
 

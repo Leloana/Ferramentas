@@ -5,6 +5,7 @@ import { openModal, closeModal } from './modal.js';
 import { initTabs } from './tabs.js';
 import { ensureDefaultSeat } from './lobby.js';
 import { setGuideSong } from './guide-vocal.js';
+import { togglePreview, stopPreview } from './song-preview.js';
 
 export async function fetchSongs() {
     try {
@@ -184,6 +185,7 @@ export function renderArtistGroups(songsList, { expandAll = false } = {}) {
             const artistEl = frag.querySelector('.song-card__artist');
             const editBtn = frag.querySelector('.song-card__edit-btn');
             const deleteBtn = frag.querySelector('.song-card__delete-btn');
+            const previewBtn = frag.querySelector('.song-card__preview-btn');
 
             titleEl.innerText = song.title;
             artistEl.innerText = song.artist || "Artista Desconhecido";
@@ -200,12 +202,27 @@ export function renderArtistGroups(songsList, { expandAll = false } = {}) {
                 badge.dataset.tone = 'peach';
                 titleEl.appendChild(badge);
 
-                // Música ainda processando: sem editar/apagar
+                // Música ainda processando: sem editar/apagar/ouvir
+                if (previewBtn) previewBtn.remove();
                 if (editBtn) editBtn.remove();
                 if (deleteBtn) deleteBtn.remove();
             } else {
+                if (song.needs_review) {
+                    // letra com alinhamento fraco: dá para cantar, mas vale abrir o editor
+                    const review = document.createElement('span');
+                    review.innerText = 'Revisar';
+                    review.className = 'chip';
+                    review.dataset.tone = 'rose';
+                    review.title = 'Letra com sincronia duvidosa';
+                    titleEl.appendChild(review);
+                }
                 // Música pronta: comportamento normal
                 card.addEventListener('click', () => selectSong(song));
+
+                previewBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    togglePreview(song.id, previewBtn);
+                });
 
                 editBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -249,6 +266,7 @@ function showSongCover(songId) {
 }
 
 export function selectSong(song) {
+    stopPreview();
     state.selectedSongId = song.id;
     document.getElementById('current-song-title').innerText = song.title;
     document.getElementById('current-song-artist').innerText = song.artist || '';

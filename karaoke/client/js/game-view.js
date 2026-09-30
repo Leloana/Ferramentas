@@ -8,6 +8,7 @@ import { attachGuideSync, savedGuideVolume } from './guide-vocal.js';
 import { openShareCard } from './share-card.js';
 import { toggleReplay, stopReplay } from './replay.js';
 import { turnOwner } from './turns.js';
+import { onRequestsUpdate, showNextUp, stopAutoNext } from './requests.js';
 import { escapeHtml } from './html.js';
 import { dom } from './dom.js';
 import { myRoom, DISPLAY_REPLACED_CODE } from './config.js';
@@ -58,6 +59,7 @@ export async function resetGameState() {
     stopTimeSync();
     allowScreenOff();
     stopReplay();
+    stopAutoNext();
     showTurn(null);
     state.turnOrder = null;
     if (state.ws) {
@@ -416,6 +418,17 @@ export async function startKaraoke() {
 }
 
 const DISPLAY_HANDLERS = {
+    start_blocked(data) {
+        // mutex de GPU no servidor: outra tela/aba tentou começar enquanto gera letra
+        showToast(`${data.reason}. Aguarde terminar para começar.`, 'error');
+        resetGameState();
+    },
+    requests_update(data) {
+        onRequestsUpdate(data.requests);
+    },
+    request_error(data) {
+        showToast(data.message, 'error');
+    },
     players_update(data, context) {
         const { dom } = context;
         if (dom.mpConnectedCount) dom.mpConnectedCount.innerText = data.players.length;
@@ -576,6 +589,7 @@ const DISPLAY_HANDLERS = {
         state.lastGameOver = data;
         showGameOverModal(parseFloat(data.total_score) || 0, data.player_scores);
         showGameOverExtras(data);
+        showNextUp();
         showAnnotationButton(data.recording_id);
     }
 };

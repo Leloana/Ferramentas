@@ -95,6 +95,22 @@ class TestWebsocketGameFlow(unittest.TestCase):
         cls.patcher_record.stop()
         shutil.rmtree(cls.temp_dir, ignore_errors=True)
 
+    def test_start_is_blocked_while_generating_lyrics(self):
+        """Mutex de GPU: com uma música gerando letra, o servidor recusa começar."""
+        from state import queue_manager
+        queue_manager._gpu_jobs.append("Outra - Música")
+        try:
+            with self.client.websocket_connect(f"/ws/room/blk1?role=display&song_id={self.song_slug}") as ws:
+                ws.send_json({"type": "start_game", "game_mode": "solo", "active_players": []})
+                for _ in range(6):
+                    msg = ws.receive_json()
+                    if msg["type"] == "start_blocked":
+                        break
+                self.assertEqual(msg["type"], "start_blocked")
+                self.assertIn("Outra - Música", msg["reason"])
+        finally:
+            queue_manager._gpu_jobs.remove("Outra - Música")
+
     @patch("ws.room.get_stt_engine")
     def test_websocket_full_game_loop(self, mock_get_stt):
         # Mock Whisper Engine

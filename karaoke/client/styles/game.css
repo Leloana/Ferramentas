@@ -814,3 +814,6 @@
 @media (max-width: 600px) {
     .turn-badge { top: 0.5rem; left: 0.5rem; font-size: 0.75rem; padding: 0.25rem 0.5rem; }
 }
+.start-block-note { width: 100%; margin: 0.4rem 0 0; color: var(--rose-ink); font-weight: 700; text-align: center; }
+.start-block-note[hidden] { display: none; }
+#btn-start[data-blocked] { opacity: 0.65; cursor: not-allowed; }

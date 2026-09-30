@@ -10,9 +10,10 @@ from pathlib import Path
 
 from fastapi import APIRouter, HTTPException, Response
 from fastapi.responses import FileResponse, HTMLResponse
+from pydantic import BaseModel
 
 from state import SONGS_DIR, song_manager, queue_manager
-from utils.cover import find_cover
+from utils.cover import choose_cover, cover_options, find_cover
 from utils.html_includes import render_page
 from utils.song_paths import safe_song_dir
 from utils.http import set_no_cache
@@ -57,7 +58,33 @@ async def get_song_cover(song_id: str):
     cover = await asyncio.to_thread(find_cover, song_dir)
     if not cover:
         raise HTTPException(status_code=404, detail="Sem capa")
+    # a capa pode ser trocada: o front pede com ?v=<versão> depois de escolher
     return FileResponse(cover, media_type="image/jpeg", headers={"Cache-Control": "max-age=86400"})
+
+
+class CoverChoice(BaseModel):
+    url: str
+
+
+@router.get("/api/songs/{song_id}/cover/options")
+async def get_cover_options(song_id: str, response: Response):
+    """Capas candidatas (iTunes, Deezer, YouTube) para a pessoa escolher, melhor primeiro."""
+    set_no_cache(response)
+    song_dir = safe_song_dir(SONGS_DIR, song_id)
+    if song_dir is None or not song_dir.is_dir():
+        raise HTTPException(status_code=404, detail="Música não encontrada")
+    return await asyncio.to_thread(cover_options, song_dir)
+
+
+@router.post("/api/songs/{song_id}/cover")
+async def post_cover_choice(song_id: str, body: CoverChoice):
+    """Troca a capa por uma das opções listadas (URL fora da lista é recusada)."""
+    song_dir = safe_song_dir(SONGS_DIR, song_id)
+    if song_dir is None or not song_dir.is_dir():
+        raise HTTPException(status_code=404, detail="Música não encontrada")
+    if not await asyncio.to_thread(choose_cover, song_dir, body.url):
+        raise HTTPException(status_code=400, detail="Não foi possível usar esta capa")
+    return {"success": True}
 
 
 # O arquivo de uma música não muda depois de pronto (reinstalar troca o ETag):
@@ -114,7 +141,7 @@ async def api_reinstall_song(song_id: str, align_lyrics: bool = False):
         # Aguarda o whisper_lock antes de rodar — garante que não conflite com
         # uma música em andamento no jogo (mesmo lock usado pelo room.py e queue_manager).
         logger.info(f"[Reinstall] Aguardando whisper_lock para reinstalar '{song_id}'...")
-        async with queue_manager.whisper_lock:
+        async with queue_manager.gpu_job(f"Reinstalando {song_id}"):
             logger.info(f"[Reinstall] Lock adquirido. Iniciando reinstalação de '{song_id}'...")
             success = await reinstall_song(str(song_dir), align_lyrics=align_lyrics)
         

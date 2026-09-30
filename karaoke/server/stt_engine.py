@@ -70,6 +70,20 @@ def prompted_words_trusted(words: list[dict]) -> bool:
     return float(np.mean([w["probability"] for w in words])) >= PROMPT_TRUST_MIN_PROB
 
 
+def pick_transcription(prompted_words: list[dict] | None,
+                       unprompted_words: list[dict] | None) -> tuple[list[dict], str | None]:
+    """Mesmo portão do ao vivo: (palavras, "prompted" | "unprompted" | None).
+
+    Com dica e confiável vale a passada com dica; sem confiança (ou sem dica) vale
+    a sem dica. Usado pelo `transcribe` e pela repontuação das partidas gravadas.
+    """
+    if prompted_words is not None and (unprompted_words is None or prompted_words_trusted(prompted_words)):
+        return prompted_words, "prompted"
+    if unprompted_words is not None:
+        return unprompted_words, "unprompted"
+    return [], None
+
+
 def _get_word_threshold(no_speech_prob: float) -> float:
     """Retorna o limiar de probabilidade de palavra aceitável baseado no no_speech_prob do segmento.
 
@@ -126,23 +140,43 @@ class STTEngine:
         self.device = device
         logger.info(f"Whisper '{self.model_size}' carregado em {device}.")
 
-    def transcribe(self, audio_data, language, initial_prompt=None, rms_threshold=0.001, expected_words=None):
+    def transcribe(self, audio_data, language, initial_prompt=None, rms_threshold=0.001, expected_words=None,
+                   details: dict | None = None):
+        """(texto, palavras) da passada que vale.
+
+        `details` (opcional) recebe as duas passadas para o gravador:
+        {"prompted_words", "unprompted_words", "used"} — None na que não rodou;
+        `used` é None quando o trecho era silêncio e o Whisper nem rodou.
+        """
+        if details is not None:
+            details.update(prompted_words=None, unprompted_words=None, used=None)
         rms = np.sqrt(np.mean(audio_data ** 2)) if len(audio_data) > 0 else 0
         if rms < rms_threshold:
             logger.info(f"Trecho silencioso detectado (RMS: {rms:.5f}). Ignorando Whisper para prevenir alucinações.")
             return "", []
 
         text, words = self._transcribe_once(audio_data, language, initial_prompt, expected_words)
+        if not initial_prompt:
+            if details is not None:
+                details.update(unprompted_words=words, used="unprompted")
+            return text, words
+        prompted_text, prompted = text, words
+        unprompted = None
 
         # Com a letra como dica e áudio confuso (cantarolar, murmurar), o Whisper
         # devolve a própria dica com confiança quase nula e o verso tira 100.
         # Segunda opinião sem dica: vale o que de fato foi ouvido.
-        if initial_prompt and not prompted_words_trusted(words):
+        if not prompted_words_trusted(prompted):
             logger.info(
                 f"🔁 [Dica suspeita] '{text}' com confiança média < {PROMPT_TRUST_MIN_PROB}: "
                 f"transcrevendo de novo sem a letra como dica"
             )
-            text, words = self._transcribe_once(audio_data, language, None, expected_words)
+            text, unprompted = self._transcribe_once(audio_data, language, None, expected_words)
+        words, used = pick_transcription(prompted, unprompted)
+        if used == "prompted":
+            text = prompted_text
+        if details is not None:
+            details.update(prompted_words=prompted, unprompted_words=unprompted, used=used)
         return text, words
 
     def _transcribe_once(self, audio_data, language, initial_prompt, expected_words):

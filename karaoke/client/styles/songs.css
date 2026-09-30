@@ -131,3 +131,7 @@
     .song-card__title { white-space: normal; }
     .song-card__btn { width: 38px; height: 38px; }
 }
+
+/* Ouvir um trecho (song-preview.js) */
+.song-card__preview-btn.is-playing { background: var(--sage); border-color: var(--sage-ink); color: var(--ink); }
+.song-card__preview-btn.is-playing .ico { animation: pulse 0.8s ease-in-out infinite alternate; }
