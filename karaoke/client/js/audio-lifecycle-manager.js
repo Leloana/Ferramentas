@@ -31,6 +31,34 @@ const loadedWorklets = new WeakMap();
 // mandaria áudio que o servidor descarta.
 const WORKLET_URL = '/js/worklets/audio-processor.js?v=km01';
 
+// Navegador de TV pode deixar resume()/getUserMedia/addModule pendentes para
+// sempre (sem gesto, sem microfone, permissão que ninguém responde): o INICIAR
+// ficava em "PREPARANDO..." sem fim. Com prazo, cai no modo sem microfone.
+const RESUME_TIMEOUT_MS = 1500;
+const MIC_TIMEOUT_MS = 8000;
+const WORKLET_TIMEOUT_MS = 8000;
+
+// onLate recebe o valor que chegar depois do prazo (ex.: fechar o microfone).
+function withTimeout(promise, ms, label, onLate) {
+    let timedOut = false;
+    let timer;
+    const timeout = new Promise((_, reject) => {
+        timer = setTimeout(() => {
+            timedOut = true;
+            reject(new Error(`${label}: sem resposta em ${ms} ms`));
+        }, ms);
+    });
+    const guarded = promise.then((value) => {
+        clearTimeout(timer);
+        if (timedOut && onLate) onLate(value);
+        return value;
+    }, (err) => {
+        clearTimeout(timer);
+        throw err;
+    });
+    return Promise.race([guarded, timeout]);
+}
+
 export class AudioLifecycleManager {
     /**
      * @param {Object} [options]
@@ -115,7 +143,7 @@ export class AudioLifecycleManager {
 
         // Register worklet module if mic capture is required
         if (this.captureMic) {
-            await this._ensureWorkletRegistered(this.audioContext);
+            await withTimeout(this._ensureWorkletRegistered(this.audioContext), WORKLET_TIMEOUT_MS, 'AudioWorklet');
         }
 
         this._initialized = true;
@@ -140,7 +168,8 @@ export class AudioLifecycleManager {
         // Ensure context is running (especially important inside iOS click/gesture context)
         if (this.audioContext.state === 'suspended') {
             try {
-                await this.audioContext.resume();
+                // sem gesto recente o resume() nunca resolve; o handler de gesto retoma depois
+                await withTimeout(this.audioContext.resume(), RESUME_TIMEOUT_MS, 'AudioContext.resume');
                 console.log("AudioLifecycleManager: AudioContext resumed successfully during start.");
                 this._cleanupIOSResumeHandler();
             } catch (err) {
@@ -151,7 +180,8 @@ export class AudioLifecycleManager {
         // 1. Microphone setup
         if (this.captureMic && !this.localStream) {
             try {
-                this.localStream = await this._getMicStream();
+                this.localStream = await withTimeout(this._getMicStream(), MIC_TIMEOUT_MS, 'Microfone',
+                    (stream) => { if (stream) stream.getTracks().forEach((t) => t.stop()); });
                 this.micSourceNode = this.audioContext.createMediaStreamSource(this.localStream);
                 this.nodes.add(this.micSourceNode);
 
