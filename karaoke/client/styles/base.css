@@ -134,7 +134,7 @@ button { font-family: inherit; color: inherit; }
 .input:focus,
 .form-group input:focus,
 .form-group select:focus,
-.form-group textarea:focus { border-color: var(--ink); background: #fffaf0; }
+.form-group textarea:focus { border-color: var(--ink); background: var(--paper-bright); }
 .input::placeholder, textarea::placeholder { color: var(--ink-3); font-style: italic; }
 .input--lg { font-size: 1.15rem; min-height: 50px; text-align: center; }
 .input--area { min-height: 120px; resize: vertical; line-height: 1.5; }
@@ -356,7 +356,7 @@ input[type="range"] { accent-color: var(--ink); }
 .cselect__value { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .cselect__chevron { width: 18px; height: 18px; flex-shrink: 0; color: var(--ink-2); transition: transform 0.15s; }
 .cselect--open .cselect__chevron { transform: rotate(180deg); }
-.cselect--open .cselect__button { border-color: var(--ink); background: #fffaf0; }
+.cselect--open .cselect__button { border-color: var(--ink); background: var(--paper-bright); }
 .cselect--disabled { opacity: 0.5; pointer-events: none; }
 .cselect__list {
     display: none;

@@ -27,6 +27,7 @@ import { fetchProfile, renderProfile } from './profile-view.js';
 import { initPlayersModal } from './players-modal.js';
 import { initStatusPanel } from './status-panel.js';
 import { initCoverPicker } from './cover-picker.js';
+import { initTheme } from './theme.js';
 
 function bootstrap() {
     const appEl = document.getElementById('app');
@@ -36,6 +37,7 @@ function bootstrap() {
     document.documentElement.setAttribute('data-device', deviceKind);
 
     renderIcons();
+    initTheme();
     enhanceSelects();
     initTvNav();
 

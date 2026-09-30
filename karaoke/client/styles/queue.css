@@ -98,7 +98,7 @@
 .queue-item-remove:hover { border-color: var(--rose-ink); background: rgba(227, 181, 164, 0.35); }
 
 .queue-empty { padding: 2rem 1rem; color: var(--dim); text-align: center; }
-.queue-empty-icon { display: block; width: 56px; height: 56px; margin: 0 auto 0.5rem; opacity: 0.45; }
+.queue-empty-icon { display: block; width: 56px; height: 56px; margin: 0 auto 0.5rem; opacity: 0.45; filter: var(--logo-filter); }
 
 /* GPU */
 .queue-gpu-badge {

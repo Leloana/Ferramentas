@@ -58,7 +58,7 @@
     font-size: calc(var(--u) * 3);
 }
 .share-card__brand { display: flex; align-items: center; gap: calc(var(--u) * 1.2); font-family: var(--font-display); font-size: calc(var(--u) * 4.4); font-style: italic; font-weight: 700; }
-.share-card__brand img { width: calc(var(--u) * 6); height: calc(var(--u) * 6); }
+.share-card__brand img { width: calc(var(--u) * 6); height: calc(var(--u) * 6); filter: var(--logo-filter); }
 .share-card__date { color: var(--dim); font-weight: 600; letter-spacing: 0.04em; }
 
 /* Capa como foto colada com fita */

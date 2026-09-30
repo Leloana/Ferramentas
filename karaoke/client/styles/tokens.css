@@ -85,4 +85,64 @@
     --gutter: clamp(0.75rem, 2.5vw, 2rem);
     --tabbar-h: 64px;
     --focus-ring: 0 0 0 3px var(--paper), 0 0 0 6px var(--ink);
+
+    /* Fundos pontuais (campo em foco, aviso sobre o palco, carimbo do verso) */
+    --paper-bright: #fffaf0;
+    --overlay-paper: rgba(249, 244, 230, 0.96);
+    --stamp-good: #e3ecdd;
+    --stamp-ok: #f7ecc6;
+    --stamp-poor: #f5dfd6;
+    --logo-filter: none;
+
+    color-scheme: light;
+}
+
+/* ------------------------------------------------------------
+   Tema escuro — a mesma partitura, à luz de vela: papel sépia
+   escuro, tinta creme, pastéis fundos (fundo) e claros (texto).
+   Padrão na TV (js/theme.js); botão no cabeçalho alterna.
+   ------------------------------------------------------------ */
+:root[data-theme="dark"] {
+    --paper: #221c16;
+    --paper-light: #2a231c;
+    --paper-2: #30281f;
+    --paper-3: #3a3026;
+    --fold: #4d4133;
+
+    --ink: #efe4cc;
+    --ink-2: #c9b89a;
+    --ink-3: #978769;
+    --staff: #5e503e;
+
+    --blue: #3b4f66;
+    --rose: #6b4338;
+    --sage: #445a3f;
+    --butter: #6e5c24;
+    --lavender: #4f4467;
+    --peach: #6f4d31;
+
+    --blue-ink: #a9c6e3;
+    --rose-ink: #eba995;
+    --sage-ink: #aad0a1;
+    --butter-ink: #ecd58f;
+    --lavender-ink: #cab9e4;
+    --peach-ink: #f0c39c;
+
+    --track: rgba(239, 228, 204, 0.14);
+    --border: 1.5px solid var(--ink-2);
+    --shadow-sheet: 0 1px 0 rgba(0, 0, 0, 0.3), 0 10px 28px -14px rgba(0, 0, 0, 0.7);
+    --shadow-lift: 3px 3px 0 rgba(0, 0, 0, 0.55);
+    --staff-lines: repeating-linear-gradient(to bottom,
+        transparent 0, transparent 11px,
+        rgba(151, 135, 105, 0.22) 11px, rgba(151, 135, 105, 0.22) 12px);
+
+    --paper-bright: #332a21;
+    --overlay-paper: rgba(42, 35, 28, 0.96);
+    --stamp-good: #2f3b2b;
+    --stamp-ok: #3d3419;
+    --stamp-poor: #3f2a24;
+    /* logo em tinta escura vira creme */
+    --logo-filter: invert(1) sepia(0.35) brightness(0.95);
+
+    color-scheme: dark;
 }

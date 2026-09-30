@@ -338,7 +338,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: rgba(249, 244, 230, 0.96);
+    background-color: var(--overlay-paper);
     background-image: var(--staff-lines);
 }
 .stage-overlay__kicker {
@@ -486,9 +486,9 @@
 }
 .verse-stamp__word { font-size: 1.6rem; font-weight: 900; letter-spacing: 0.12em; line-height: 1; }
 .verse-stamp__score { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; }
-.verse-stamp[data-quality="good"] { --stamp-ink: var(--sage-ink);   --stamp-tint: #e3ecdd; }
-.verse-stamp[data-quality="ok"]   { --stamp-ink: var(--butter-ink); --stamp-tint: #f7ecc6; }
-.verse-stamp[data-quality="poor"] { --stamp-ink: var(--rose-ink);   --stamp-tint: #f5dfd6; }
+.verse-stamp[data-quality="good"] { --stamp-ink: var(--sage-ink);   --stamp-tint: var(--stamp-good); }
+.verse-stamp[data-quality="ok"]   { --stamp-ink: var(--butter-ink); --stamp-tint: var(--stamp-ok); }
+.verse-stamp[data-quality="poor"] { --stamp-ink: var(--rose-ink);   --stamp-tint: var(--stamp-poor); }
 .verse-stamp--in  { animation: stampIn 0.38s cubic-bezier(0.2, 1.5, 0.4, 1) forwards; }
 .verse-stamp--out { animation: stampOut 0.45s ease forwards; }
 @keyframes stampIn {
