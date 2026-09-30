@@ -66,7 +66,8 @@ Celular/TV ──https/wss──> Cloudflare (TLS + Access) ──túnel──> 
 
 ## Validar no servidor (GPU + celulares de verdade)
 
-O que foi feito em 2026-09-30 sem GPU nem áudio real e ainda precisa ser conferido. Detalhes de cada
+O que foi feito em 2026-09-30 sem GPU nem áudio real e ainda precisa ser conferido. Roteiro passo a passo
+(com os cenários de gravação) em [PLANO_SERVIDOR.md](PLANO_SERVIDOR.md). Detalhes de cada
 item de áudio em [AUDIO_PIPELINE_MELHORIAS.md](AUDIO_PIPELINE_MELHORIAS.md).
 
 - [ ] **Suíte completa** — `python -m pytest -q tests` (inclui `tests/test_escolta_vagalumes.py`, que precisa de CUDA

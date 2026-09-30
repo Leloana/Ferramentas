@@ -17,6 +17,7 @@ Para especificações detalhadas, diagramas de componentes e contratos, consulte
 - [docs/architecture/MULTIPLAYER_FLOW.md](docs/architecture/MULTIPLAYER_FLOW.md) (Handshake Multi-player e WebSocket Game Loop)
 - [docs/guides/PROJECT_GUIDE.md](docs/guides/PROJECT_GUIDE.md) (Guia do Projeto & Fonte da Verdade de Engenharia)
 - [docs/guides/LRC_ALIGNMENT_TUNING.md](docs/guides/LRC_ALIGNMENT_TUNING.md) (Playbook de Solução de Timestamps e Ajuste LRC)
+- [docs/guides/PLANO_SERVIDOR.md](docs/guides/PLANO_SERVIDOR.md) (Roteiro no servidor: preparar, reprocessar o acervo, sessões de teste gravadas e anotadas)
 - [docs/guides/AUDIO_PIPELINE_MELHORIAS.md](docs/guides/AUDIO_PIPELINE_MELHORIAS.md) (Revisão do pipeline de áudio: o que já foi feito e o que calibrar no servidor)
 - [docs/archive/FRONT_REDESIGN_2026-09.md](docs/archive/FRONT_REDESIGN_2026-09.md) (Histórico do redesign do front e dos recursos de festa)
 
