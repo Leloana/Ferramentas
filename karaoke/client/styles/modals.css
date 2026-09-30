@@ -52,6 +52,16 @@
     border-bottom: 4px double var(--ink-2);
 }
 .modal-title--center, .modal-content--center .modal-title { justify-content: center; }
+/* título centralizado: a seta de voltar fica na esquerda, o texto no meio */
+.modal-content--center .modal-title { position: relative; padding-left: 3rem; padding-right: 3rem; }
+.modal-title--center .modal-back,
+.modal-content--center .modal-title .modal-back {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0.6rem;
+    margin: auto 0;
+}
 .modal-back {
     display: inline-flex;
     align-items: center;

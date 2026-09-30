@@ -47,7 +47,6 @@ html.is-tv .stage-overlay,
 html.is-tv .modal-content.admin-modal,
 html.is-tv #app .main-card { background-image: none !important; }
 html.is-tv .carousel-container { box-shadow: none; }
-html.is-tv .carousel-inner { will-change: auto; }
 html.is-tv *,
 html.is-tv *::before,
 html.is-tv *::after {
@@ -287,3 +286,26 @@ html.is-tv #sync-controls #lobby-score .field__label { font-size: 0.68rem; lette
 html.is-tv #sync-controls .btn-control-small { min-width: 0; min-height: 0; height: 1.9rem; padding: 0 0.55rem; }
 html.is-tv #sync-controls .btn-sync-mode .ico { display: none; }
 html.is-tv .sync-control-value { font-size: 0.9rem; }
+
+/* Tela de canto: capa do tamanho do Voltar, alinhados */
+html.is-tv #app[data-state="singing"] .game-header,
+html.is-tv #app[data-state="scoring"] .game-header { align-items: center; }
+html.is-tv #app[data-state="singing"] #btn-back,
+html.is-tv #app[data-state="scoring"] #btn-back { min-height: 0; height: 2.6rem; }
+html.is-tv #app[data-state="singing"] .song-cover,
+html.is-tv #app[data-state="scoring"] .song-cover { width: 2.6rem; height: 2.6rem; }
+
+/* Lobby: faixa de ajustes fina, sem sobra embaixo */
+html.is-tv #app[data-state="waiting"] .main-card { padding-bottom: 0.5rem !important; }
+html.is-tv #app[data-state="waiting"] #game-area { row-gap: 0.5rem; }
+html.is-tv #app[data-state="waiting"] #sync-controls { margin-top: 0; padding: 0.35rem 0 0; }
+/* barrinha do verso não tem uso no lobby e virava uma linha vazia na grade */
+html.is-tv #app[data-state="waiting"] #verse-progress-container { display: none; }
+
+/* Troca de versos: só o que a GPU anima barato (deslocar e esmaecer), sem
+   transição de tamanho de fonte (recalcula o layout e engasgava na TV). */
+html.is-tv .carousel-inner {
+    transition: transform 0.35s ease-out !important;
+    will-change: transform;
+}
+html.is-tv .carousel-line { transition: opacity 0.3s ease-out !important; }
