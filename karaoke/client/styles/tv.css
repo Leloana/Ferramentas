@@ -312,3 +312,15 @@ html.is-tv .carousel-inner {
     will-change: transform;
 }
 html.is-tv .carousel-line { transition: opacity 0.3s ease-out !important; }
+
+/* Fim de jogo na TV: só Cartão e Cantar novamente (ouvir a apresentação fica no
+   celular) e card compacto, que cabe na tela sem rolar. */
+html.is-tv #game-over-replay { display: none !important; }
+html.is-tv .game-over-card { max-height: 96vh; padding: 1.2rem 1.6rem 1.2rem; }
+html.is-tv .game-over-title { font-size: 1.8rem; }
+html.is-tv .game-over-subtitle { margin: 0.1rem 0 0.6rem; }
+html.is-tv .rank-seal { width: 6rem; height: 6rem; margin: 0.3rem auto 0.7rem; }
+html.is-tv .rank-badge { font-size: 3.8rem; }
+html.is-tv .rank-title { margin-bottom: 0.7rem; font-size: 1.1rem; }
+html.is-tv .score-box { margin-bottom: 0.8rem; padding: 0.5rem; }
+html.is-tv .score-box__value { font-size: 2rem; }
