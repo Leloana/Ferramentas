@@ -9,7 +9,6 @@ export const state = {
     currentSegmentData: null,
     lastSegmentLyricsTimed: null,
     animationId: null,
-    lyricsFrameAt: 0,         // último quadro do laço da letra (limite de FPS na TV)
     syncOffset: 0,
     isFirstSegment: true,
     totalPauseDuration: 0,

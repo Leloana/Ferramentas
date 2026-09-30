@@ -17,7 +17,7 @@ export const DISPLAY_REPLACED_CODE = 4001;
 // Liga a navegação por controle remoto com letras maiores (tv-nav.js / tv.css).
 // TV Bro e outros navegadores da Google TV se identificam como celular Android:
 // Android sem tela de toque é TV. ?tv=1 / ?tv=0 fica lembrado neste aparelho.
-const TV_UA = /SMART-TV|SmartTV|Tizen|Web0S|webOS\.TV|NetCast|HbbTV|BRAVIA|AFT[A-Z]|CrKey|Chromecast|GoogleTV|Google TV|Android ?TV|TV ?Bro|VIDAA|Viera|Roku/i;
+const TV_UA = /SMART-TV|Smart ?TV|Tizen|Web0S|webOS\.TV|NetCast|HbbTV|BRAVIA|AFT[A-Z]|CrKey|Chromecast|GoogleTV|Google TV|Android ?TV|TV ?Bro|VIDAA|Viera|Roku/i;
 const androidWithoutTouch = /Android/i.test(navigator.userAgent) &&
     !(navigator.maxTouchPoints > 0) && !('ontouchstart' in window);
 

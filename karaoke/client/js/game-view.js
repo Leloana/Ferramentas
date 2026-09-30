@@ -89,10 +89,7 @@ export async function resetGameState() {
         dom.songProgressSlider.style.background = 'var(--track)';
         delete dom.songProgressSlider.dataset.pct;
     }
-    if (state.animationId) {
-        cancelAnimationFrame(state.animationId);
-        state.animationId = null;
-    }
+    cancelLyricsFrame();
     setAppState('idle');
 
     state.isSingingActive = false;
@@ -1147,22 +1144,31 @@ export function updateLyricsDOM(data) {
     }
 }
 
+// TV: temporizador fixo de ~15 quadros/s. O requestAnimationFrame do WebView da
+// Google TV (TV Bro) dispara raramente: a letra acendia no fim do verso e o
+// contador parava antes do fim da música.
 const TV_FRAME_MS = 66;
+
+function scheduleLyricsFrame(fn) {
+    return isTvBrowser ? setTimeout(fn, TV_FRAME_MS) : requestAnimationFrame(fn);
+}
+
+function cancelLyricsFrame() {
+    if (!state.animationId) return;
+    if (isTvBrowser) clearTimeout(state.animationId);
+    else cancelAnimationFrame(state.animationId);
+    state.animationId = null;
+}
 
 function setTextIfChanged(el, text) {
     if (el && el.textContent !== text) el.textContent = text;
 }
 
 export function startHighlightLoop() {
-    if (state.animationId) cancelAnimationFrame(state.animationId);
+    cancelLyricsFrame();
 
     function update() {
         try {
-            // TV fraca: ~15 quadros/s bastam para a letra e deixam CPU para o áudio e o controle
-            const now = performance.now();
-            if (isTvBrowser && now - state.lyricsFrameAt < TV_FRAME_MS) return;
-            state.lyricsFrameAt = now;
-
             const audioPlayer = dom.audioPlayer;
             if (audioPlayer.duration && !state.isUserDraggingProgress) {
                 const cur = audioPlayer.currentTime;
@@ -1363,7 +1369,7 @@ export function startHighlightLoop() {
             console.error("Erro no loop de animação da letra:", err);
         } finally {
             if (state.currentAppState !== 'idle' && state.currentAppState !== 'game-over') {
-                state.animationId = requestAnimationFrame(update);
+                state.animationId = scheduleLyricsFrame(update);
             }
         }
     }

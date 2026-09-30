@@ -37,6 +37,8 @@ export function deviceInfo(stream) {
     const info = {
         user_agent: navigator.userAgent,
         platform: navigator.platform || null,
+        // tamanho da tela em px CSS (diagnóstico de layout na TV)
+        viewport: [window.innerWidth, window.innerHeight, window.devicePixelRatio || 1],
     };
     try {
         const track = stream && stream.getAudioTracks && stream.getAudioTracks()[0];

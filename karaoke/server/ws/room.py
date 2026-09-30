@@ -635,7 +635,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                 elif msg_type == "client_info":
                     # Só informativo: o áudio chega sempre a STREAM_SR, com a taxa no próprio pacote.
                     logger.info(f"Sample rate nativo do cliente ({role}) na sala {room_id}: {data.get('sample_rate')}")
-                    info = {k: data.get(k) for k in ("sample_rate", "user_agent", "platform", "track") if data.get(k) is not None}
+                    info = {k: data.get(k) for k in ("sample_rate", "user_agent", "platform", "track", "viewport") if data.get(k) is not None}
                     who = player_name if role == "mic" else ("PC_Local" if role == "display" else None)
                     if who and info:
                         room.device_info[who] = info
