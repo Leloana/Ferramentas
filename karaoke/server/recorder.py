@@ -33,6 +33,7 @@ from pathlib import Path
 import numpy as np
 
 from mic_stream import STREAM_SR, MicTimeline
+from utils.jsonsafe import jsonable
 
 logger = logging.getLogger(__name__)
 
@@ -268,7 +269,8 @@ class GameRecording:
             "final": final,
         }
         self._copy_song_files()
-        (self.dir / SESSION_FILE).write_text(json.dumps(session, ensure_ascii=False, indent=2), encoding="utf-8")
+        text = json.dumps(jsonable(session), ensure_ascii=False, indent=2)
+        (self.dir / SESSION_FILE).write_text(text, encoding="utf-8", errors="replace")
         logger.info(f"Gravação da partida salva em {self.dir}")
         return self.dir
 

@@ -8,6 +8,7 @@ from typing import Optional
 from fastapi import WebSocket
 
 from mic_stream import MicTimeline, SongClock
+from utils.jsonsafe import jsonable
 from recorder import GameRecording
 
 logger = logging.getLogger(__name__)
@@ -101,13 +102,15 @@ class KaraokeRoom:
         if self.mic and self.mic not in targets:
             targets.append(self.mic)
 
+        msg = jsonable(msg)
         for ws in targets:
             if ws is None:
                 continue
             try:
                 await ws.send_json(msg)
             except Exception as e:
-                logger.debug(f"Falha ao enviar para websocket: {e}")
+                # aviso (não debug): um game_over perdido deixa a TV e o celular presos
+                logger.warning(f"Falha ao enviar '{msg.get('type')}' para um websocket: {type(e).__name__}: {e}")
 
 
 class RoomManager:
