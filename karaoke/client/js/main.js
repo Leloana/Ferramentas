@@ -1,7 +1,7 @@
 import './compat.js';
 import { state, setAppState } from './state.js';
 import { dom } from './dom.js';
-import { myRole, myRoom, isSoloMobileMode, deviceKind } from './config.js';
+import { myRole, myRoom, isSoloMobileMode, deviceKind, isTvBrowser } from './config.js';
 import { showToast } from './toast.js';
 import { resolvePublicOrigin } from './public-origin.js';
 import { updateMicStatusPanel, checkInitialMicPermission } from './mic-status.js';
@@ -95,6 +95,7 @@ function bootstrap() {
         };
     }
 
+    if (isTvBrowser) moveScoreModeToSyncBar();
     initSyncControls();
     initGuideVocal();
     initPlayersModal();
@@ -167,6 +168,14 @@ function bootstrap() {
 
     fetchSongs();
     connectDisplayWebSocket();
+}
+
+// TV: a forma de pontuação vai para a faixa de ajustes embaixo do lobby,
+// deixando a coluna da direita só com os cantores e o INICIAR.
+function moveScoreModeToSyncBar() {
+    const score = document.getElementById('lobby-score');
+    const inner = document.querySelector('#sync-controls .sync-controls-inner');
+    if (score && inner) inner.appendChild(score);
 }
 
 async function initHomeQrcode() {

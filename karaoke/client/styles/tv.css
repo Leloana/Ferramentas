@@ -125,20 +125,31 @@ html.is-tv #app[data-state="waiting"] .game-layout {
     min-height: 0;
     display: flex;
     flex-direction: column;
-    justify-content: center;
 }
-html.is-tv #app[data-state="waiting"] .game-main-content { width: 100%; }
-html.is-tv #app[data-state="waiting"] .lobby { padding: 1rem 1.2rem; }
+/* coluna da direita: quadro dos cantores ocupa a altura, INICIAR embaixo na largura toda */
+html.is-tv #app[data-state="waiting"] .game-main-content {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+html.is-tv #app[data-state="waiting"] .lobby {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    padding: 1rem 1.2rem;
+}
 html.is-tv #app[data-state="waiting"] .lobby-seats { grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); gap: 0.6rem; }
 html.is-tv #app[data-state="waiting"] .seat { min-height: 0; }
 html.is-tv #app[data-state="waiting"] .lobby-summary { margin-top: 0.6rem; font-size: 0.95rem; }
-html.is-tv #app[data-state="waiting"] .lobby__score { justify-content: flex-start; margin: 0.8rem 0 0; }
-html.is-tv #app[data-state="waiting"] .controls { margin-top: 1rem; justify-content: flex-start; }
+html.is-tv #app[data-state="waiting"] .controls { flex-direction: column; align-items: stretch; margin-top: 0.8rem; }
+html.is-tv #app[data-state="waiting"] #btn-start { width: 100%; }
 html.is-tv #app[data-state="waiting"] #sync-controls { grid-area: sync; }
 
 /* Ajustes da faixa: uma linha só */
 html.is-tv #sync-controls { margin-top: 0.6rem; padding: 0.6rem 0 0; }
-html.is-tv .sync-controls-inner { display: flex !important; flex-direction: row !important; flex-wrap: nowrap; align-items: center !important; justify-content: space-between; gap: 0.8rem; }
+html.is-tv .sync-controls-inner { display: flex !important; flex-direction: row !important; flex-wrap: wrap; align-items: center !important; justify-content: center; gap: 0.5rem 1.4rem; }
 html.is-tv .sync-control-block {
     display: flex !important;
     min-height: 0;
@@ -247,4 +258,22 @@ html.is-tv #app[data-role="display"][data-state="singing"] #canto-screen,
 html.is-tv #app[data-role="display"][data-state="scoring"] #canto-screen {
     display: flex !important;
     flex-direction: column !important;
+}
+
+/* TV: uma página só (Músicas). Adicionar/editar/apagar ficam no celular (QR). */
+html.is-tv .app-tabbar,
+html.is-tv #queue-tab-content,
+html.is-tv .song-card__edit-btn,
+html.is-tv .song-card__delete-btn { display: none !important; }
+
+/* Pontuação na faixa de ajustes (main.js move o #lobby-score para lá) */
+html.is-tv #sync-controls #lobby-score { margin: 0; gap: 0.4rem; }
+html.is-tv #sync-controls #lobby-score .field__label {
+    margin: 0;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dim);
+    white-space: nowrap;
 }

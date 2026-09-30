@@ -233,7 +233,8 @@ export async function startKaraoke() {
     const mode = lineup.mode;
     const activeList = lineup.mics;
 
-    const captureMic = !!(state.localStreamForced || !state.isMobileMicrophoneConnected || activeList.indexOf(PC_MIC) !== -1);
+    // TV: nunca abre o microfone dela (só celulares cantam)
+    const captureMic = !isTvBrowser && !!(state.localStreamForced || !state.isMobileMicrophoneConnected || activeList.indexOf(PC_MIC) !== -1);
 
     if (state.audioManager) {
         await state.audioManager.destroy();

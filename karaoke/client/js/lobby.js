@@ -12,6 +12,7 @@ import { state } from './state.js';
 import { openModal, closeModal } from './modal.js';
 import { showToast } from './toast.js';
 import { renderIcons, iconSvg } from './icons.js';
+import { isTvBrowser } from './config.js';
 
 export const PC_MIC = 'PC_Local';
 const MAX_SEATS = 6;
@@ -42,8 +43,16 @@ function micWithIcon(cls, mic) {
     return span;
 }
 
+// Na TV não há microfone local: só celulares (o mic do controle chega mudo e
+// pedir permissão a cada partida atrapalhava).
 function availableMics() {
-    return [PC_MIC].concat(state.lobbyMics || []);
+    return (isTvBrowser ? [] : [PC_MIC]).concat(state.lobbyMics || []);
+}
+
+// Microfone da vaga padrão: o 1º celular; sem celular, o mic deste aparelho
+// (na TV, nenhum: a vaga "+" pede para conectar um celular).
+export function defaultMic() {
+    return (state.lobbyMics && state.lobbyMics[0]) || (isTvBrowser ? null : PC_MIC);
 }
 
 function usedTeams(seats) {
@@ -85,6 +94,10 @@ export function setAvailableMics(players) {
     state.lobbyMics = players.slice();
     const valid = availableMics();
     state.lobbySeats = state.lobbySeats.filter((s) => valid.indexOf(s.mic) !== -1);
+    // TV com o lobby vazio: o celular que acabou de conectar já entra na vaga
+    if (isTvBrowser && !state.lobbySeats.length && state.currentAppState === 'waiting' && state.lobbyMics.length) {
+        state.lobbySeats = [{ mic: state.lobbyMics[0], team: 'A' }];
+    }
     renderLobby();
 }
 
@@ -96,8 +109,8 @@ function nextFreeTeam(seats) {
 
 // Ao abrir uma música: se ninguém está escalado, põe o 1º celular (ou o mic do PC).
 export function ensureDefaultSeat() {
-    if (!state.lobbySeats.length) {
-        const mic = (state.lobbyMics && state.lobbyMics[0]) || PC_MIC;
+    const mic = defaultMic();
+    if (!state.lobbySeats.length && mic) {
         state.lobbySeats = [{ mic, team: 'A' }];
     }
     renderLobby();

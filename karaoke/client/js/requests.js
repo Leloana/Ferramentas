@@ -7,7 +7,7 @@
 import { state } from './state.js';
 import { iconSvg } from './icons.js';
 import { showToast } from './toast.js';
-import { micLabel, PC_MIC, renderLobby } from './lobby.js';
+import { micLabel, defaultMic, renderLobby } from './lobby.js';
 import { myRole } from './config.js';
 
 const AUTO_NEXT_SEC = 10;
@@ -45,8 +45,8 @@ export function startRequest(req) {
     if (!song || !state.selectSongFn) return;
     cancelRequest(req.id);
     state.selectSongFn(song);
-    const mic = (state.lobbyMics || []).indexOf(req.singer) !== -1 ? req.singer : PC_MIC;
-    state.lobbySeats = [{ mic, team: 'A' }];
+    const mic = (state.lobbyMics || []).indexOf(req.singer) !== -1 ? req.singer : defaultMic();
+    state.lobbySeats = mic ? [{ mic, team: 'A' }] : [];
     renderLobby();
 }
 
