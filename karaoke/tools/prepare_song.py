@@ -11,6 +11,7 @@ import utils.cuda_bootstrap  # noqa: F401
 import torch  # noqa: F401 (Força carregamento de DLLs do PyTorch/cuDNN primeiro)
 import torchaudio  # noqa: F401
 
+from lyrics_text import is_japanese, regroup_timed_words, split_words, time_words_by_characters
 from stt_engine import get_stt_engine
 from utils.audio import load_audio_full
 from utils.whisper_params import WHISPER_SR
@@ -129,9 +130,18 @@ def prepare_song(song_dir, language="en", debug=False):
         
         # 4. Alinhamento inteligente (Smart Word Alignment)
         lyrics_timed = []
-        official_words = line["text"].split()
-        
-        if words and len(words) > 0:
+        official_words = split_words(line["text"], language)
+
+        if words and is_japanese(language):
+            # Japonês: o Whisper devolve pedaços de 1–3 caracteres que não coincidem
+            # com as unidades da letra (bunsetsu); os tempos vêm caractere a caractere.
+            for w in time_words_by_characters(line["text"], language, words):
+                lyrics_timed.append({
+                    "word": w["word"],
+                    "expected_start": round(w["start"], 3),
+                    "expected_end": round(w["end"], 3),
+                })
+        elif words and len(words) > 0:
             # Temos timestamps do Whisper
             if len(words) == len(official_words):
                 # Caso ideal: match 1:1 perfeito
@@ -241,7 +251,7 @@ def prepare_song(song_dir, language="en", debug=False):
             lrc_end is not None
             and words
             and lyrics_timed
-            and len(words) != len(official_words)
+            and len(regroup_timed_words(words, language)) != len(official_words)
         ):
             lrc_duration = lrc_end - line["start"]
             detected_span = words[-1]["end"]  # relativo ao início do segmento

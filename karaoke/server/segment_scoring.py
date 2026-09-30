@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import re
 
+from lyrics_text import regroup_timed_words, split_words
 from score_engine import calculate_score
 
 # Trechos não-lexicais que pulam o Whisper e são pontuados só por energia (RMS).
@@ -59,7 +60,10 @@ def transcribe_kwargs(segment: dict) -> dict:
 
 def score_words(segment: dict, prev_segment: dict | None, words: list[dict], scoring_mode: str) -> dict:
     """Nota das palavras do Whisper, já com tempos relativos ao sing_start."""
-    prev_lyrics = prev_segment["lyrics"].split() if prev_segment else None
+    language = segment["language"]
+    prev_lyrics = split_words(prev_segment["lyrics"], language) if prev_segment else None
+    # Japonês: o Whisper devolve pedaços de 1–3 caracteres; regrupa nas unidades da letra.
+    words = regroup_timed_words(words, language)
     return calculate_score(
         segment["lyrics_timed"], words,
         prev_expected_words=prev_lyrics, language=segment["language"], scoring_mode=scoring_mode,

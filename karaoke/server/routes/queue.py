@@ -124,6 +124,13 @@ async def queue_add_song(
     if synced_lrc:
         align_lyrics = False
 
+    from lyrics_text import infer_language
+
+    detected = infer_language(f"{synced_lrc or ''}\n{plain_lyrics or ''}", language.strip())
+    if detected != language.strip():
+        logger.info(f"[Queue] Letra em japonês: idioma '{language}' trocado por '{detected}'.")
+        language = detected
+
     try:
         item = await queue_manager.enqueue(
             title=title.strip(),

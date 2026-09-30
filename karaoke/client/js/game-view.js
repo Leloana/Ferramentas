@@ -8,6 +8,11 @@ import { updateMicStatusPanel } from './mic-status.js';
 import { connectDisplayWebSocket } from './ws-display.js';
 import { showAnnotationButton } from './annotate.js';
 
+// Japonês não separa palavras com espaço (espelha server/lyrics_text.py).
+function wordSeparator(language) {
+    return (language || '').toLowerCase().startsWith('ja') ? '' : ' ';
+}
+
 export async function resetGameState() {
     const gameOverModal = document.getElementById('game-over-modal');
     if (gameOverModal) gameOverModal.removeAttribute('data-open');
@@ -950,7 +955,7 @@ export function renderLyrics(data) {
         data.lyrics_timed.forEach((item, idx) => {
             const span = document.createElement('span');
             span.className = 'word';
-            span.innerText = item.word + ' ';
+            span.innerText = item.word + wordSeparator(data.language);
             span.id = `word-${idx}`;
             lineNext.appendChild(span);
         });
@@ -1028,7 +1033,7 @@ export function updateLyricsDOM(data) {
         data.lyrics_timed.forEach((item, idx) => {
             const span = document.createElement('span');
             span.className = 'word';
-            span.innerText = item.word + ' ';
+            span.innerText = item.word + wordSeparator(data.language);
             span.id = `word-${idx}`;
             dom.lyricsDisplay.appendChild(span);
         });

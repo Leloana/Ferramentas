@@ -190,7 +190,12 @@ class STTEngine:
                             word_key = word_clean.lower().translate(
                                 str.maketrans("", "", string.punctuation)
                             )
-                            for exp in clean_expected:
+                            # Japonês vem em pedaços de 1–3 caracteres ("遠", "ざ"): vale
+                            # estar dentro de alguma palavra da letra.
+                            if word_key and language and language.lower().startswith("ja") \
+                                    and any(word_key in exp for exp in clean_expected):
+                                whitelisted = True
+                            for exp in ([] if whitelisted else clean_expected):
                                 if fuzz.ratio(word_key, exp) >= 80:
                                     whitelisted = True
                                     logger.info(

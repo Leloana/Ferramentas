@@ -3,6 +3,8 @@ import re
 
 from rapidfuzz import fuzz
 
+from lyrics_text import is_japanese, ja_reading
+
 logger = logging.getLogger(__name__)
 
 # Limiares de scoring (extraídos para facilitar tuning)
@@ -122,6 +124,9 @@ def _normalization_map(language: str | None) -> dict:
 def clean_text(text, language=None):
     if not text:
         return ""
+    # Japonês compara pela leitura: o STT escreve a mesma palavra em kanji ou kana.
+    if is_japanese(language):
+        return ja_reading(text)
     t = text.lower().strip()
     t = t.replace("-", " ")  # hífen vira espaço antes de limpar
     t = re.sub(r'[^\w\s]', '', t)

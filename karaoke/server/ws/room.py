@@ -88,6 +88,7 @@ async def _send_segment_start(ws: WebSocket, segments: list, idx: int, song_titl
         "sing_end": segment["sing_end"],
         "lyrics": segment["lyrics"],
         "lyrics_timed": segment["lyrics_timed"],
+        "language": segment.get("language"),  # japonês junta as palavras sem espaço
         "prev_lyrics": prev_lyrics,
         "next_lyrics": next_lyrics,
         "upcoming_lyrics": upcoming_lyrics,

@@ -70,3 +70,6 @@ Unidecode==1.4.0
 uvicorn==0.47.0
 websockets==16.0
 yt-dlp==2026.8.19
+fugashi==1.5.2
+pykakasi==2.3.0
+unidic-lite==1.0.8

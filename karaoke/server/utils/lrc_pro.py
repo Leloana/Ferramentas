@@ -13,6 +13,8 @@ import torchaudio.functional as F
 from pathlib import Path
 from unidecode import unidecode
 
+from lyrics_text import is_japanese, ja_reading, join_words, split_words
+
 logger = logging.getLogger(__name__)
 
 
@@ -24,7 +26,7 @@ def _format_timestamp(t: float) -> str:
     return f"[{m:02d}:{s:02d}.{ms:02d}]"
 
 
-def parse_and_normalize_lyrics(plain_lyrics: str) -> tuple[list[list[dict]], list[str]]:
+def parse_and_normalize_lyrics(plain_lyrics: str, language: str = "pt") -> tuple[list[list[dict]], list[str]]:
     """
     Divide a letra plana em linhas e palavras.
     Retorna:
@@ -44,11 +46,15 @@ def parse_and_normalize_lyrics(plain_lyrics: str) -> tuple[list[list[dict]], lis
                 continue
         
         words_in_line = []
-        for raw_word in line.split():
+        for raw_word in split_words(line, language):
             # Normalização fonética/alfabética compatível com MMS_FA vocabulary:
-            # remove acentos, converte para minúsculas e mantém apenas a-z e '
-            norm_word = unidecode(raw_word).lower()
-            norm_word = re.sub(r"[^a-z']", "", norm_word)
+            # remove acentos, converte para minúsculas e mantém apenas a-z e '.
+            # Japonês: leitura em romaji (unidecode daria pinyin chinês para kanji).
+            if is_japanese(language):
+                norm_word = ja_reading(raw_word)
+            else:
+                norm_word = unidecode(raw_word).lower()
+                norm_word = re.sub(r"[^a-z']", "", norm_word)
             
             word_dict = {
                 "raw": raw_word,
@@ -113,7 +119,7 @@ def align_lyrics_forced(
         aligner = bundle.get_aligner()
         
         # 6. Normalizar a letra
-        lines, flat_normalized_words = parse_and_normalize_lyrics(plain_lyrics)
+        lines, flat_normalized_words = parse_and_normalize_lyrics(plain_lyrics, language)
         if not flat_normalized_words:
             raise ValueError("A letra fornecida não contém palavras válidas para alinhamento.")
             
@@ -185,7 +191,7 @@ def align_lyrics_forced(
         corrected_segments = []
         num_lines = len(lines)
         for i, line_words in enumerate(lines):
-            line_text = " ".join([w["raw"] for w in line_words])
+            line_text = join_words([w["raw"] for w in line_words], language)
             
             # Tempos absolutos das palavras
             first_word_start = line_words[0]["start"]
