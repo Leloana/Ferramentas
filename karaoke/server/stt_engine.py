@@ -109,6 +109,35 @@ DEFAULT_WHISPER_MODEL = "large-v3-turbo"
 DEFAULT_COMPUTE = {"cuda": "float16", "cpu": "int8"}
 
 
+def _r(value, digits: int = 4):
+    """Arredonda para o JSON da gravação (None fica None)."""
+    try:
+        return None if value is None else round(float(value), digits)
+    except (TypeError, ValueError):
+        return None
+
+
+def _raw_segment(segment, text: str) -> dict | None:
+    """Segmento do Whisper para a gravação. Nunca atrapalha a transcrição."""
+    try:
+        g = lambda obj, name: _r(getattr(obj, name, None))  # noqa: E731
+        return {
+            "text": text,
+            "start": g(segment, "start"), "end": g(segment, "end"),
+            "no_speech_prob": g(segment, "no_speech_prob"),
+            "avg_logprob": g(segment, "avg_logprob"),
+            "compression_ratio": g(segment, "compression_ratio"),
+            "temperature": g(segment, "temperature"),
+            "words": [
+                {"word": str(getattr(w, "word", "")).strip(), "start": g(w, "start"), "end": g(w, "end"),
+                 "probability": g(w, "probability")}
+                for w in (getattr(segment, "words", None) or [])
+            ],
+        }
+    except Exception:
+        return None
+
+
 class STTEngine:
     def __init__(self, model_size=None, device=None, compute_type=None):
         """Carrega o Whisper. Sem argumento, lê do ambiente:
@@ -148,14 +177,19 @@ class STTEngine:
         {"prompted_words", "unprompted_words", "used"} — None na que não rodou;
         `used` é None quando o trecho era silêncio e o Whisper nem rodou.
         """
+        raw = None
         if details is not None:
             details.update(prompted_words=None, unprompted_words=None, used=None)
+            # dados crus de cada passada (gravação completa): segmentos com
+            # no_speech_prob/avg_logprob, idioma e TODAS as palavras, inclusive
+            # as descartadas pelo filtro de confiança (tempos relativos ao trecho)
+            raw = details.setdefault("raw", [])
         rms = np.sqrt(np.mean(audio_data ** 2)) if len(audio_data) > 0 else 0
         if rms < rms_threshold:
             logger.info(f"Trecho silencioso detectado (RMS: {rms:.5f}). Ignorando Whisper para prevenir alucinações.")
             return "", []
 
-        text, words = self._transcribe_once(audio_data, language, initial_prompt, expected_words)
+        text, words = self._transcribe_once(audio_data, language, initial_prompt, expected_words, raw)
         if not initial_prompt:
             if details is not None:
                 details.update(unprompted_words=words, used="unprompted")
@@ -171,7 +205,7 @@ class STTEngine:
                 f"🔁 [Dica suspeita] '{text}' com confiança média < {PROMPT_TRUST_MIN_PROB}: "
                 f"transcrevendo de novo sem a letra como dica"
             )
-            text, unprompted = self._transcribe_once(audio_data, language, None, expected_words)
+            text, unprompted = self._transcribe_once(audio_data, language, None, expected_words, raw)
         words, used = pick_transcription(prompted, unprompted)
         if used == "prompted":
             text = prompted_text
@@ -179,7 +213,7 @@ class STTEngine:
             details.update(prompted_words=prompted, unprompted_words=unprompted, used=used)
         return text, words
 
-    def _transcribe_once(self, audio_data, language, initial_prompt, expected_words):
+    def _transcribe_once(self, audio_data, language, initial_prompt, expected_words, raw: list | None = None):
         try:
             segments, info = self.model.transcribe(
                 audio_data, 
@@ -192,12 +226,27 @@ class STTEngine:
 
             full_text = ""
             words_list = []
+            raw_run = None
+            if raw is not None:
+                raw_run = {
+                    "prompted": bool(initial_prompt),
+                    "language": getattr(info, "language", None),
+                    "language_probability": _r(getattr(info, "language_probability", None)),
+                    "duration_after_vad": _r(getattr(info, "duration_after_vad", None)),
+                    "segments": [],
+                }
+                raw.append(raw_run)
 
             for segment in segments:
                 text_clean = segment.text.strip()
+                raw_seg = _raw_segment(segment, text_clean) if raw_run is not None else None
+                if raw_seg is not None:
+                    raw_run["segments"].append(raw_seg)
 
                 if _HALLUCINATION_RE.search(text_clean):
                     logger.info(f"Alucinação do Whisper detectada e expurgada: '{text_clean}'")
+                    if raw_seg is not None:
+                        raw_seg["dropped"] = "hallucination"
                     continue
 
                 no_speech_prob = getattr(segment, "no_speech_prob", 0.0)

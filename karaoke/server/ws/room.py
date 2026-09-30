@@ -178,10 +178,15 @@ async def process_segment_multiplayer(
                 def compute():
                     return stt.transcribe(audio_data, **transcribe_kwargs(segment), details=stt_runs)
 
+                t_wait = time.monotonic()
                 async with queue_manager.whisper_lock:
                     if room.game_id != game_id:
                         return  # partida acabou/trocou enquanto esperava a GPU
+                    t_run = time.monotonic()
                     transcribed_text, words = await asyncio.to_thread(compute)
+                    t_done = time.monotonic()
+                timing = {"lock_wait_s": round(t_run - t_wait, 3), "whisper_s": round(t_done - t_run, 3),
+                          "since_dispatch_s": round(t_done - started, 3)}
                 if room.game_id != game_id:
                     return
                 pitch = await _pitch_for(room, audio_data, window[0])
@@ -191,6 +196,7 @@ async def process_segment_multiplayer(
                 result = score_whisper_free(segment, rms_original)
                 transcribed_text = result["transcription"]
                 pitch = None
+                timing = None
 
             if room.recording:
                 runs = {k: shift_words(stt_runs[k], window_offset) if stt_runs.get(k) is not None else None
@@ -198,6 +204,7 @@ async def process_segment_multiplayer(
                 room.recording.add_segment_result(
                     player_name, seg_idx, window, rms_original, transcribed_text, words, result,
                     used=stt_runs.get("used"), **runs,
+                    pitch=pitch, whisper_raw=stt_runs.get("raw"), timing=timing,
                 )
 
             if player_name not in room.player_segment_scores:
@@ -512,6 +519,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         
                         get_or_create_profile(name)
                         await websocket.send_json({"type": "registration_success", "name": name})
+                        if room.recording:
+                            room.recording.add_event("mic_joined", room.last_client_time, value=name)
                         await _notify_players_status(room)
                         await _advance_registration_queue(room)
 
@@ -551,7 +560,21 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         room.recording = GameRecording(
                             base_dir, room.song_id, room.song_title, room.segments, room.scoring_mode,
                             {"pre_sing_sec": PRE_SING_BUFFER_SEC, "post_sing_sec": POST_SING_BUFFER_SEC},
+                            song_dir=song_manager.get_song_dir(room.song_id),
                         )
+                        # configuração da partida (o que a TV mandou) e aparelhos já conhecidos
+                        settings = data.get("settings") if isinstance(data.get("settings"), dict) else {}
+                        room.recording.set_config({
+                            "game_mode": room.game_mode,
+                            "active_players": list(room.active_players),
+                            "scoring_mode": room.scoring_mode,
+                            "transpose": room.transpose,
+                            "turn_order": room.turn_order,
+                            **{k: settings.get(k) for k in ("groups", "speed", "sync_offset", "backing_volume",
+                                                             "guide_volume", "display")},
+                        })
+                        for name, info in room.device_info.items():
+                            room.recording.set_device(name, info)
                         logger.info(f"Gravando a partida em {room.recording.dir}")
                     room.total_score = 0.0
                     room.scored_count = 0
@@ -594,10 +617,30 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         room.transpose = float(data.get("semitones", 0) or 0)
                     except (TypeError, ValueError):
                         pass
+                    if room.recording:
+                        room.recording.add_event("transpose", room.last_client_time, semitones=room.transpose)
+
+                elif msg_type == "player_event" and role == "display":
+                    # linha do tempo da TV para a gravação: play/pause/seek/velocidade/volumes/sincronia
+                    if room.recording:
+                        kind = str(data.get("event") or "")[:24]
+                        value = data.get("value")
+                        if kind and (value is None or isinstance(value, (int, float, str, bool))):
+                            try:
+                                song_t = float(data.get("t")) if data.get("t") is not None else None
+                            except (TypeError, ValueError):
+                                song_t = None
+                            room.recording.add_event(kind, song_t, value=value)
 
                 elif msg_type == "client_info":
                     # Só informativo: o áudio chega sempre a STREAM_SR, com a taxa no próprio pacote.
                     logger.info(f"Sample rate nativo do cliente ({role}) na sala {room_id}: {data.get('sample_rate')}")
+                    info = {k: data.get(k) for k in ("sample_rate", "user_agent", "platform", "track") if data.get(k) is not None}
+                    who = player_name if role == "mic" else ("PC_Local" if role == "display" else None)
+                    if who and info:
+                        room.device_info[who] = info
+                        if room.recording:
+                            room.recording.set_device(who, info)
                     # retomada: reenvia o verso atual, não o primeiro
                     await _broadcast_segment_start(room, room.current_segment_idx if resuming else 0)
 
@@ -745,7 +788,14 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                     }
 
                     # Salva antes do game_over: a TV recebe o id para o botão de anotar versos.
-                    recording_id = room.finish_recording(complete=True)
+                    recording_id = room.finish_recording(complete=True, final={
+                        "total_score": total_score_avg,
+                        "player_scores": player_final_scores,
+                        "player_pitch": player_pitch,
+                        "player_stats": player_stats,
+                        "records": records,
+                        "verse_latencies": list(room.verse_latencies),
+                    })
                     await room.broadcast({
                         "type": "game_over",
                         "total_score": total_score_avg,
@@ -776,6 +826,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                 # Continua em active_players: se o celular voltar e registrar o
                 # mesmo apelido, o áudio volta a pontuar e a nota entra no fim.
                 logger.info(f"Jogador {player_name} desconectado da sala.")
+                if room.recording:
+                    room.recording.add_event("mic_left", room.last_client_time, value=player_name)
             
             if websocket in room.unregistered_mics:
                 is_front = (room.unregistered_mics[0] == websocket)

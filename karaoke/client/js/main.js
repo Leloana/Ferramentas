@@ -42,6 +42,7 @@ function bootstrap() {
         setAppState('registering');
         initMicTabs();
         initMicRequests();
+        initAnnotation();  // cada cantor anota os próprios versos no fim
         initModals(); // "Adicionar música" padrão também no celular-microfone
 
         const roomIdEl = document.getElementById('mobile-room-id');

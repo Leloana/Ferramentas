@@ -330,6 +330,13 @@ class TestWebsocketGameFlow(unittest.TestCase):
         self.assertTrue(covered[int(round(5.4 * 16000)) + 10])
         # Mesmas amostras Int16 que o celular mandou (build_packet trunca 0.1 * 32767).
         np.testing.assert_array_equal(wav[covered], np.float32(int(0.1 * 32767) / 32768.0))
+        # Gravação completa (formato 3): configuração, rede, versões e o resultado final.
+        self.assertEqual(session["config"]["game_mode"], "solo")
+        self.assertEqual(session["config"]["active_players"], ["PlayerTwo"])
+        self.assertGreaterEqual(session["players"]["PlayerTwo"]["network"]["packets"], 3)
+        self.assertIn("commit", session["versions"])
+        self.assertEqual(session["final"]["player_scores"], {"PlayerTwo": 100.0})
+        self.assertIn("timing", session["results"][0])
 
 
 

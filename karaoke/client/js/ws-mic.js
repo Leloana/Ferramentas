@@ -9,6 +9,7 @@ import { escapeHtml } from './html.js';
 import { openShareCard, splitSongTitle } from './share-card.js';
 import { toggleReplay } from './replay.js';
 import { onRequestsUpdate } from './requests.js';
+import { openAnnotationFor } from './annotate.js';
 
 export function connectMobileMicrophoneWebSocket() {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
@@ -231,6 +232,15 @@ export function connectMobileMicrophoneWebSocket() {
                     (finalBox || lyrText).append(btn);
 
                     if (data.recording_id && data.player_stats && data.player_stats[me]) {
+                        // anotar os próprios versos (certo/errado/cantarolei): é o que
+                        // permite calibrar a nota com partidas reais
+                        const note = document.createElement('button');
+                        note.type = 'button';
+                        note.className = 'btn btn--block btn-replay';
+                        note.innerHTML = `${iconSvg('edit')} Anotar meus versos`;
+                        note.addEventListener('click', () => openAnnotationFor(data.recording_id, me));
+                        (finalBox || lyrText).append(note);
+
                         const listen = document.createElement('button');
                         listen.type = 'button';
                         listen.className = 'btn btn--block btn-replay';

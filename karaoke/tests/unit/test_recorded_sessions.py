@@ -46,34 +46,7 @@ GABARITO = {
 }
 
 
-def result_words(r: dict) -> list[dict]:
-    """Palavras que o servidor usaria hoje para o verso gravado.
-
-    Gravação com as duas passadas (recorder, formato 2): aplica o portão de confiança
-    atual (com dica se confiável, senão sem dica). Fixtures antigas: só `words`.
-    """
-    if "prompted_words" in r or "unprompted_words" in r:
-        from stt_engine import pick_transcription
-
-        words, _ = pick_transcription(r.get("prompted_words"), r.get("unprompted_words"))
-        return words
-    return r["words"]
-
-
-def rescore_session(data: dict) -> tuple[dict[int, float], int]:
-    segments = data["segments"]
-    scores = {}
-    for r in data["results"]:
-        idx = r["segment"]
-        words = result_words(r)
-        whisper_ran = r.get("used") is not None or bool(r["words"])
-        if whisper_ran:
-            prev = segments[idx - 1] if idx > 0 else None
-            scores[idx + 1] = score_words(segments[idx], prev, words, data["scoring_mode"])["score"]
-        else:
-            # silêncio/vocalize: não passou pelo Whisper
-            scores[idx + 1] = r.get("live_score", r.get("score"))
-    return scores, len(segments)
+from calibration import label_mae, rescore_session, result_words  # noqa: E402,F401  (compartilhado com tools/export_recordings.py)
 
 
 def _rescore(song_id: str) -> tuple[dict[int, float], int]:
@@ -126,6 +99,27 @@ class TestWrongLyrics(unittest.TestCase):
         self.assertLess(sum(scores) / len(scores), 8.0)
         self.assertLess(max(scores), 60.0)
         self.assertLessEqual(sum(s > 40 for s in scores), len(scores) * 0.05)
+
+# Nota piorou mais que isso numa partida exportada = regressão.
+EXPORTED_MAE_SLACK = 3.0
+
+
+class TestExportedSessions(unittest.TestCase):
+    """Partidas anotadas exportadas com tools/export_recordings.py (pasta exported/)."""
+
+    def test_exported_sessions_do_not_regress(self):
+        exported = FIXTURES / "exported"
+        files = sorted(exported.glob("*.json")) if exported.exists() else []
+        for path in files:
+            data = json.loads(path.read_text(encoding="utf-8"))
+            baseline = (data.get("baseline") or {}).get("mae")
+            if baseline is None:
+                continue
+            with self.subTest(fixture=path.name):
+                scores, _ = rescore_session(data)
+                mae, _ = label_mae(scores, data.get("labels"))
+                self.assertLessEqual(mae, baseline + EXPORTED_MAE_SLACK,
+                                     f"erro médio {mae} > base {baseline} (+{EXPORTED_MAE_SLACK})")
 
 
 if __name__ == "__main__":

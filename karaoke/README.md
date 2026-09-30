@@ -201,7 +201,8 @@ karaoke/
 │   ├── pitch.py                    # Afinação (YIN): pitch.json e "tom X%" por verso
 │   ├── players.py                  # Perfis, recordes e ranking dos cantores
 │   ├── song_requests.py            # Fila da noite por sala
-│   ├── recorder.py                 # Gravação das partidas (calibração da nota)
+│   ├── recorder.py                 # Gravação completa das partidas (formato 3, calibração)
+│   ├── calibration.py              # Repontuar partidas gravadas e medir contra o gabarito
 │   ├── routes/                     # Rotas REST HTTP
 │   │   ├── songs.py                # Listagem, deleção e reinstalação de músicas
 │   │   ├── lyrics.py               # Leitura e salvamento de letras LRC
@@ -226,6 +227,7 @@ karaoke/
 ├── tools/                          # Scripts CLI e ferramentas offline
 │   ├── prepare_song.py             # Fatiador de áudio e alinhador word-level (gera segments.json)
 │   ├── replay_recording.py         # Repassa uma partida gravada pelo Whisper com outros parâmetros
+│   ├── export_recordings.py        # Partidas anotadas → fixtures de teste; --zip faz backup
 │   └── preview_front.py            # Front sem GPU, com dados de exemplo
 ├── tests/                          # Suíte de Testes (unittest/pytest; tests/ui com Playwright)
 └── requirements.txt                # Dependências Python

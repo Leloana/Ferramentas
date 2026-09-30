@@ -54,6 +54,7 @@ export const state = {
     micSongs: null,           // músicas prontas para pedir no celular
     preview: null,            // trecho tocando na lista (song-preview.js)
     gpuBlock: null,           // nome da música gerando letra (bloqueia o INICIAR)
+    annotateOnlyPlayer: null, // celular: anotação só do próprio cantor
     selectSongFn: null,       // selection-view.selectSong (evita import circular)
     resetGameFn: null,        // game-view.resetGameState
     lobbySeats: [],        // lobby: [{ mic, team }] — mesmo time = dupla/trio (lobby.js)

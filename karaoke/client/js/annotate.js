@@ -72,6 +72,13 @@ function updateStatus() {
     document.getElementById('annotate-status').textContent = `${done}/${rows.length} anotados`;
 }
 
+// Celular: cada cantor anota os próprios versos logo depois de cantar.
+export function openAnnotationFor(recordingId, player) {
+    state.annotateRecordingId = recordingId;
+    state.annotateOnlyPlayer = player;
+    return openAnnotation();
+}
+
 async function openAnnotation() {
     const recordingId = state.annotateRecordingId;
     if (!recordingId) return;
@@ -93,6 +100,12 @@ async function openAnnotation() {
         return opt;
     }));
     select.hidden = data.players.length < 2;
+    const only = state.annotateOnlyPlayer;
+    if (only && data.players.indexOf(only) !== -1) {
+        select.value = only;
+        select.hidden = true;  // no celular, só o próprio cantor
+    }
+    state.annotateOnlyPlayer = null;
     document.getElementById('annotate-title').textContent = data.song_title;
     renderList(data, select.value);
     openModal('annotate-modal');

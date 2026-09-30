@@ -9,6 +9,7 @@ import { openShareCard } from './share-card.js';
 import { toggleReplay, stopReplay } from './replay.js';
 import { turnOwner } from './turns.js';
 import { onRequestsUpdate, showNextUp, stopAutoNext } from './requests.js';
+import { attachPlayerEvents, deviceInfo, sendPlayerEvent } from './game-events.js';
 import { escapeHtml } from './html.js';
 import { dom } from './dom.js';
 import { myRoom, DISPLAY_REPLACED_CODE } from './config.js';
@@ -303,6 +304,7 @@ export async function startKaraoke() {
     }
 
     attachGuideSync();
+    attachPlayerEvents();
 
     // Aplica o volume salvo ao GainNode do AudioLifecycleManager
     const savedVolume = localStorage.getItem('karaoke_backing_volume');
@@ -357,7 +359,7 @@ export async function startKaraoke() {
         state.ws.onopen = () => {
             reconnectAttempts = 0;
 
-            state.ws.send(JSON.stringify({ type: "client_info", sample_rate: sampleRate }));
+            state.ws.send(JSON.stringify({ type: "client_info", sample_rate: sampleRate, ...deviceInfo(state.localStream) }));
             if (resuming) {
                 startTimeSync();
                 return;
@@ -369,7 +371,16 @@ export async function startKaraoke() {
                 scoring_mode: scoringMode,
                 transpose: state.currentTranspose || 0,
                 turns: !!state.turnOrder,
-                turn_order: state.turnOrder || undefined
+                turn_order: state.turnOrder || undefined,
+                // contexto para a gravação completa (server/recorder.py)
+                settings: {
+                    groups: lineup.groups,
+                    speed: state.currentSpeed,
+                    sync_offset: state.syncOffset,
+                    backing_volume: state.audioManager ? state.audioManager.currentVolume : null,
+                    guide_volume: savedGuideVolume(),
+                    display: { user_agent: navigator.userAgent, tv: document.documentElement.classList.contains('is-tv') },
+                }
             }));
 
             state.isFirstSegment = true;

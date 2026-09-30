@@ -216,6 +216,8 @@ Armazena a nota histórica de cada sessão.
 *   **Mudou o score? Rode as partidas reais:**
     *   `tests/unit/test_recorded_sessions.py` repontua o que o Whisper ouviu em partidas reais (`tests/fixtures/recorded_sessions/`) contra o gabarito anotado pelo cantor. Canto certo tem que continuar alto e cantarolar, baixo.
     *   As partidas ficam gravadas por padrão em `karaoke/recordings/` (fora do git; `KARAOKE_RECORD=0` desliga). `tools/replay_recording.py` roda o Whisper de novo nelas com outro modelo ou constante (`--set modulo.NOME=valor`).
+    *   Gravação formato 3 (`server/recorder.py`): configuração, linha do tempo da TV (`player_event`), aparelhos (`client_info`), rede e ruído de fundo por celular, dados crus do Whisper, afinação e tempo por verso, versões (commit + constantes), resultado final e cópia da música. Anotação também pelo celular ("Anotar meus versos").
+    *   `tools/export_recordings.py` vira as partidas anotadas em fixtures (`tests/fixtures/recorded_sessions/exported/`, com `baseline` = erro médio contra o gabarito) e `--zip` faz backup. `test_exported_sessions_do_not_regress` barra piora. Lógica de repontuar em `server/calibration.py`.
 *   **Referencial de tempo do Whisper:**
     *   O Whisper devolve `start` relativo ao início da JANELA, que começa até 1,5 s antes do `sing_start`. Compare com `expected_start` só depois de `_shift_words(words, t0 - sing_start)` em `ws/room.py`. Sem isso o canto perfeito tira 85.
 *   **Slug de música vindo do cliente:** sempre `utils/song_paths.safe_song_dir(SONGS_DIR, slug)`, nunca `SONGS_DIR / slug` direto (rotas apagam/renomeiam pastas).

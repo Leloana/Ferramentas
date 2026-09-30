@@ -4,6 +4,7 @@ import { AudioLifecycleManager } from './audio-lifecycle-manager.js';
 import { showToast } from './toast.js';
 import { dom } from './dom.js';
 import { keepScreenOn } from './wake-lock.js';
+import { deviceInfo } from './game-events.js';
 
 export function initMobileMicView() {
     const btnMobileActivate = document.getElementById('btn-mobile-activate');
@@ -62,7 +63,11 @@ export function initMobileMicView() {
                 await state.audioManager.start();
 
                 if (state.mobileWs && state.mobileWs.readyState === WebSocket.OPEN) {
-                    state.mobileWs.send(JSON.stringify({ type: "client_info", sample_rate: state.audioManager.audioContext.sampleRate }));
+                    state.mobileWs.send(JSON.stringify({
+                        type: "client_info",
+                        sample_rate: state.audioManager.audioContext.sampleRate,
+                        ...deviceInfo(state.audioManager.localStream),
+                    }));
                 }
 
                 const analyser = state.audioManager.getAnalyser();

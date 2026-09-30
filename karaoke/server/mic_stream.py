@@ -144,6 +144,9 @@ class MicTimeline:
         self.chunks: list[tuple[int, float, np.ndarray]] = []
         # Maior atraso recente de chegada em relação à âncora (segundos).
         self.lateness = 0.0
+        # Estatísticas da rede para a gravação (recorder.py): pacotes, trechos,
+        # atraso máximo e amostras de atraso (para mediana/p90).
+        self.stats = {"packets": 0, "late_max": 0.0, "late_samples": []}
 
     def add(self, first_index: float, samples: np.ndarray, song_time: float, epoch: int) -> None:
         """Registra um pacote recebido quando a música estava em `song_time`."""
@@ -176,11 +179,18 @@ class MicTimeline:
 
         self.lateness = max(lateness, self.lateness * LATENESS_DECAY)
         self.chunks.append((self._span, first_index, samples))
+        st = self.stats
+        st["packets"] += 1
+        st["late_max"] = max(st["late_max"], lateness)
+        if len(st["late_samples"]) < 20000:  # ~33 min de pacotes de 100 ms
+            st["late_samples"].append(round(lateness, 3))
 
     def add_in_flight(self, first_index: float, samples: np.ndarray) -> None:
         """Pacote que chegou logo depois de a música parar: usa a âncora atual, sem mexer nela."""
         if len(samples) and self._span in self.anchors:
             self.chunks.append((self._span, first_index, samples))
+            self.stats["packets"] += 1
+            self.stats["in_flight"] = self.stats.get("in_flight", 0) + 1
 
     def _chunk_span(self, span: int, first_index: float, samples: np.ndarray) -> tuple[float, float]:
         start = self.anchors[span] + first_index / self.sample_rate

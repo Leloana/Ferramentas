@@ -7,6 +7,7 @@
 // de deriva).
 import { state } from './state.js';
 import { dom } from './dom.js';
+import { sendPlayerEvent } from './game-events.js';
 
 const STORAGE_KEY = 'karaoke_guide_volume';
 const MAX_DRIFT_SEC = 0.08;
@@ -87,6 +88,7 @@ export function initGuideVocal() {
         try { localStorage.setItem(STORAGE_KEY, String(v)); } catch (e) { /* sem storage */ }
         paintValue(v);
         if (state.audioManager) state.audioManager.setGuideVolume(v);
+        sendPlayerEvent('guide_volume', v);
         const guide = dom.guidePlayer;
         const audio = dom.audioPlayer;
         if (!guide || !audio) return;

@@ -52,6 +52,8 @@ class KaraokeRoom:
         self.pitch_reference: Optional[dict] = None
         self.transpose = 0.0
         self.player_pitch_scores: dict = {}
+        # Aparelho de cada celular (client_info): vai para a gravação da partida
+        self.device_info: dict = {}
         # Tarefas de fundo (ex.: gerar pitch.json) — referência forte para o GC
         self.background_tasks: set = set()
         # Revezar versos: times em rodízio por verso (None = todos cantam tudo)
@@ -63,7 +65,7 @@ class KaraokeRoom:
         # Partida em gravação (KARAOKE_RECORD_DIR) ou None.
         self.recording: Optional[GameRecording] = None
 
-    def finish_recording(self, complete: bool) -> Optional[str]:
+    def finish_recording(self, complete: bool, final: Optional[dict] = None) -> Optional[str]:
         """Salva a partida em gravação, se houver. Devolve o id (nome da pasta) ou None.
 
         Falha ao salvar não derruba o jogo.
@@ -74,7 +76,7 @@ class KaraokeRoom:
         import stt_engine
         model = stt_engine.engine.model_size if stt_engine.engine else None
         try:
-            saved = recording.save(self.mic_timelines, complete=complete, whisper_model=model)
+            saved = recording.save(self.mic_timelines, complete=complete, whisper_model=model, final=final)
         except Exception as e:
             logger.error(f"Falha ao salvar a gravação da partida: {e}", exc_info=True)
             return None

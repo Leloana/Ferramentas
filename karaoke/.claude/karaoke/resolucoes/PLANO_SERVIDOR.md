@@ -9,21 +9,25 @@ Comandos em PowerShell, na pasta `karaoke/` com a `venv` ativa (`.\venv\Scripts\
 
 ---
 
-## Antes de ir (no computador de desenvolvimento)
+## O que cada partida grava (feito em 2026-09-30)
 
-- [ ] **Gravação completa** (opcional, mas quanto antes melhor — partida gravada sem esses dados não
-      volta a ter). Hoje a gravação guarda a voz de cada celular, as duas passadas do Whisper e a nota
-      por verso. Faltam:
-      1. afinação por verso e cópia do `pitch.json`;
-      2. configuração da partida (tom, velocidade, sincronia, volumes, times, revezamento);
-      3. linha do tempo da TV (play, pausa, seek, velocidade);
-      4. celular e rede (modelo/navegador, taxa do mic, atraso, buracos no áudio);
-      5. ruído de fundo de cada celular nas pausas;
-      6. dados crus do Whisper (no_speech_prob, avg_logprob, idioma detectado);
-      7. tempo até a nota e espera pela GPU por verso;
-      8. versão de tudo (commit, constantes da nota, origem e qualidade da letra);
-      9. anotação do próprio cantor no celular no fim da música.
-- [ ] **Ferramenta de exportar** partidas anotadas para `tests/fixtures/recorded_sessions/` (como as três atuais).
+Gravação ligada por padrão em `recordings/<data>_<música>/` (`KARAOKE_RECORD=0` desliga). Formato 3:
+
+- `<cantor>.wav` — voz inteira de cada celular, 16 kHz, no tempo da música;
+- `session.json`:
+  - por verso: janela, volume, as duas passadas do Whisper e qual valeu, **dados crus do Whisper**
+    (no_speech_prob, avg_logprob, idioma, todas as palavras — inclusive as descartadas), nota,
+    **afinação** e **tempo até a nota** (espera pela GPU, Whisper);
+  - **configuração**: modo, times, revezamento, tom, velocidade, sincronia, volumes da trilha e da voz guia;
+  - **linha do tempo da TV**: play, pausa, seek, velocidade, travadas de rede, tom, volumes, celular entrando/saindo;
+  - **aparelhos**: navegador/sistema e como o microfone abriu (taxa, cancelamento de eco, supressão de ruído, ganho automático);
+  - **rede de cada celular**: pacotes, trechos, atraso mediano/p90/máximo, pacotes que chegaram depois do fim;
+  - **ruído de fundo** de cada celular nas pausas instrumentais;
+  - **versões**: commit do código e as constantes que decidem a nota;
+  - **resultado final** (notas, afinação, versos na mosca/quase/fora, recordes);
+- `song_meta.json`, `song_pitch.json`, `song_lyrics.lrc` — cópia da música naquele momento;
+- `gabarito.json` — anotação: pelo lápis do fim de jogo na TV **ou pelo próprio cantor no celular**
+  ("Anotar meus versos", logo depois de cantar).
 
 ## 1. Preparar (uma vez, ~30 min)
 
@@ -99,6 +103,12 @@ errado / cantarolei por verso). Gravação sem anotação serve pouco.
 - [ ] Copiar `recordings/` (cada partida é uma pasta com `session.json`, `gabarito.json` e um `.wav`
       por cantor — ~4 MB por minuto com dois celulares) e `players/` para o disco de backup.
 - [ ] Trazer as anotações do passo 4.
+- [ ] **Backup** de todas as partidas (com os .wav):
+      `python tools\export_recordings.py --zip D:\backup\karaoke-gravacoes.zip`
+- [ ] **Virar teste** as partidas anotadas: `python tools\export_recordings.py` grava em
+      `tests/fixtures/recorded_sessions/exported/` (uma por cantor, com o gabarito e o erro médio de hoje).
+      Commitar essas fixtures: o teste `test_exported_sessions_do_not_regress` passa a barrar qualquer
+      mudança na nota que piore o erro contra o gabarito.
 - [ ] Rodar o replay para ter a linha de base:
       `python tools\replay_recording.py --json linha_de_base.json`
 - [ ] Com os dados em mãos, calibramos juntos (cada mudança conferida no replay e nos testes de

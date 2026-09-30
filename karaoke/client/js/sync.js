@@ -1,5 +1,6 @@
 import { state } from './state.js';
 import { dom } from './dom.js';
+import { sendPlayerEvent } from './game-events.js';
 
 export function updateSyncDisplay() {
     const valStr = (state.syncOffset > 0 ? '+' : '') + (state.syncOffset * 1000).toFixed(0) + 'ms';
@@ -11,8 +12,8 @@ export function updateSyncDisplay() {
 export function initSyncControls() {
     const { btnSyncMinus, btnSyncPlus, backingVolumeSlider, backingVolumeValue, audioPlayer } = dom;
 
-    if (btnSyncMinus) btnSyncMinus.onclick = () => { state.syncOffset -= 0.1; updateSyncDisplay(); };
-    if (btnSyncPlus) btnSyncPlus.onclick = () => { state.syncOffset += 0.1; updateSyncDisplay(); };
+    if (btnSyncMinus) btnSyncMinus.onclick = () => { state.syncOffset -= 0.1; updateSyncDisplay(); sendPlayerEvent('sync_offset', state.syncOffset); };
+    if (btnSyncPlus) btnSyncPlus.onclick = () => { state.syncOffset += 0.1; updateSyncDisplay(); sendPlayerEvent('sync_offset', state.syncOffset); };
 
     if (backingVolumeSlider) {
         backingVolumeSlider.oninput = (e) => {
@@ -24,6 +25,7 @@ export function initSyncControls() {
             }
             backingVolumeValue.innerText = Math.round(val * 100) + '%';
             localStorage.setItem('karaoke_backing_volume', val);
+            sendPlayerEvent('backing_volume', val);
         };
 
         const savedVolume = localStorage.getItem('karaoke_backing_volume');
