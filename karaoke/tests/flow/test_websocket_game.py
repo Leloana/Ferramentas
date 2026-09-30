@@ -224,9 +224,8 @@ class TestWebsocketGameFlow(unittest.TestCase):
         clock_patch = patch("mic_stream._monotonic", lambda: server_clock["now"])
         clock_patch.start()
         self.addCleanup(clock_patch.stop)
-        # Folga larga: o pacote pós-audio_ended depende de escalonamento real de threads
-        # (com 1,5 s falhava ~1 em 20 rodadas da suíte completa, sob carga).
-        grace_patch = patch("ws.room._late_packet_grace", lambda room: 3.0)
+        # Folga larga: o pacote pós-audio_ended depende de escalonamento real de threads.
+        grace_patch = patch("ws.room._late_packet_grace", lambda room: 1.5)
         grace_patch.start()
         self.addCleanup(grace_patch.stop)
         record_dir = self.temp_dir / "_recordings_grace"
@@ -252,6 +251,14 @@ class TestWebsocketGameFlow(unittest.TestCase):
                 ws_display.send_json({"type": "playback_time", "current_time": 2.0})
                 self.assertEqual(ws_display.receive_json()["type"], "singing_state")
                 ws_mic.send_bytes(build_packet(0, np.full(1000, 0.1, dtype=np.float32)))
+                # Espera o servidor processar o pacote ANTES de adiantar o relógio falso:
+                # processado depois, ele era ancorado no tempo já adiantado e o pacote
+                # do meio caía fora da janela (falhava ~1 em 12).
+                ws_mic.send_json({"type": "register_name", "name": "PlayerTwo"})
+                first_types = []
+                while "registration_error" not in first_types and len(first_types) < 20:
+                    first_types.append(ws_mic.receive_json()["type"])
+                self.assertIn("registration_error", first_types)
 
                 # Janela do verso fecha em 5.5 s; 5.6 s ainda está dentro da folga.
                 server_clock["now"] += 3.6
