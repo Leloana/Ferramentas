@@ -149,7 +149,7 @@ html.is-tv #app[data-state="waiting"] #sync-controls { grid-area: sync; }
 
 /* Ajustes da faixa: uma linha só */
 html.is-tv #sync-controls { margin-top: 0.6rem; padding: 0.6rem 0 0; }
-html.is-tv .sync-controls-inner { display: flex !important; flex-direction: row !important; flex-wrap: wrap; align-items: center !important; justify-content: center; gap: 0.5rem 1.4rem; }
+html.is-tv .sync-controls-inner { display: flex !important; flex-direction: row !important; flex-wrap: wrap; align-items: center !important; justify-content: center; gap: 0.5rem 0.9rem; }
 html.is-tv .sync-control-block {
     display: flex !important;
     min-height: 0;
@@ -163,7 +163,7 @@ html.is-tv .sync-control-label .ico { display: none; }
 html.is-tv .sync-control-value { min-width: 2.6rem !important; }
 html.is-tv .sync-control-value--wide { min-width: 3.8rem !important; }
 html.is-tv #backing-volume-slider,
-html.is-tv #guide-volume-slider { flex: none; width: 4.5rem; }
+html.is-tv #guide-volume-slider { flex: none; width: 3.8rem; }
 
 /* Partida: palco com o que sobra da altura */
 html.is-tv #app[data-state="singing"] #game-area,
@@ -277,3 +277,13 @@ html.is-tv #sync-controls #lobby-score .field__label {
     color: var(--dim);
     white-space: nowrap;
 }
+
+/* Faixa de ajustes numa linha só na TV: rótulos, botões −/+ e seletores menores */
+html.is-tv .sync-control-block,
+html.is-tv #sync-controls #lobby-score,
+html.is-tv .sync-control-group { gap: 0.3rem; }
+html.is-tv .sync-control-label,
+html.is-tv #sync-controls #lobby-score .field__label { font-size: 0.68rem; letter-spacing: 0.03em; }
+html.is-tv #sync-controls .btn-control-small { min-width: 0; min-height: 0; height: 1.9rem; padding: 0 0.55rem; }
+html.is-tv #sync-controls .btn-sync-mode .ico { display: none; }
+html.is-tv .sync-control-value { font-size: 0.9rem; }
