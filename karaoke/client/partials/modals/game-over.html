@@ -1,0 +1,23 @@
+<!-- Fim de jogo: rank (solo) ou pódio (multiplayer, montado em game-view.js) -->
+<div id="game-over-modal" class="modal-overlay game-over-modal">
+    <div class="modal-content paper-card game-over-card">
+        <h2 class="game-over-title">Fim de jogo</h2>
+        <p class="game-over-subtitle">Desempenho geral</p>
+
+        <div class="rank-seal">
+            <div id="rank-badge" class="rank-badge" data-rank="S">S</div>
+        </div>
+        <div id="rank-title" class="rank-title">PERFORMANCE LENDÁRIA!</div>
+
+        <div class="score-box">
+            <div class="score-box__label">Pontuação média</div>
+            <div id="modal-score" class="score-box__value">0.0%</div>
+        </div>
+
+        <button id="btn-restart-game" class="btn btn--primary btn--block btn--lg">CANTAR NOVAMENTE</button>
+
+        <!-- Anotar versos (gabarito do score): discreto de propósito, só para calibração -->
+        <button id="btn-annotate-verses" class="annotate-trigger" type="button" hidden
+            title="Anotar versos" aria-label="Anotar versos"><i data-icon="edit"></i></button>
+    </div>
+</div>

@@ -1,0 +1,235 @@
+/* ============================================================
+   Celular como microfone (?role=mic).
+   Tela em coluna: cabeçalho compacto · conteúdo · abas no rodapé.
+   ============================================================ */
+#mobile-mic-area {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: calc(0.75rem + env(safe-area-inset-top, 0px)) 1rem calc(var(--tabbar-h) + 1rem + env(safe-area-inset-bottom, 0px));
+    background-color: var(--paper);
+    background-image: var(--tex-paper);
+}
+
+/* ---------- Cabeçalho ---------- */
+.mic-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 4px double var(--ink-2);
+    text-align: center;
+}
+.mic-header__logo { justify-content: center; }
+.mic-header__info { display: flex; flex-direction: column; align-items: center; gap: 0.15rem; width: 100%; }
+.mic-header__kicker {
+    font-family: var(--font-ui);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--lavender-ink);
+}
+.mic-header__title {
+    max-width: 100%;
+    margin: 0;
+    font-family: var(--font-ui);
+    font-size: 1.3rem;
+    font-weight: 800;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+.mic-header__status { margin: 0; font-size: 0.9rem; color: var(--dim); }
+#mobile-room-id { font-family: var(--font-ui); font-weight: 700; color: var(--ink); }
+
+/* ---------- Corpo ---------- */
+.mic-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    padding-top: 1rem;
+}
+
+.mic-card,
+#mobile-active-mic-container {
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+}
+.mic-card__title { margin: 0; font-size: 1.3rem; }
+.mic-card__hint { margin: 0; color: var(--dim); text-align: center; }
+.mic-card__hint strong { font-family: var(--font-ui); color: var(--ink); }
+
+#mobile-active-mic-container { justify-content: flex-start; gap: 0.9rem; }
+/* mic desligado: só o botão, no centro da tela */
+#mobile-active-mic-container:not([data-mic-active="true"]) { justify-content: center; }
+.mic-card { max-width: 340px; }
+
+/* Botão grande do microfone: quadrado, estilo carimbo */
+#mobile-mic-trigger-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 168px;
+    height: 168px;
+    margin: 0.25rem 0;
+}
+.mic-button {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    width: 140px;
+    height: 140px;
+    padding: 0;
+    background: var(--paper-light);
+    border: 3px solid var(--ink);
+    border-radius: var(--radius);
+    outline: 1px solid var(--ink);
+    outline-offset: 4px;
+    box-shadow: 5px 5px 0 var(--ink);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.12s, background-color 0.2s;
+    -webkit-tap-highlight-color: transparent;
+}
+.mic-button .ico { width: 40px; height: 40px; }
+.mic-button:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--ink); }
+.btn-mobile-activate--active { background: var(--sage); }
+.btn-mobile-activate--muted { background: var(--rose); }
+
+/* VU: halo quadrado atrás do botão (escala/opacidade vêm do JS) */
+#mobile-mic-vu {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    background: var(--butter);
+    border: 2px dashed var(--butter-ink);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Letra espelhada */
+#mobile-lyrics-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    flex: 1;
+    min-height: 140px;
+    max-height: 42vh;
+    padding: 1rem;
+    background-color: var(--paper-light);
+    background-image: var(--staff-lines);
+    border: var(--border);
+}
+#mobile-lyrics-text {
+    margin: 0;
+    font-family: var(--font-ui);
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1.35;
+    color: var(--ink);
+    text-align: center;
+}
+.mobile-lyrics-script { justify-content: center; margin-top: 0; }
+
+#mobile-score-text { margin: 0; color: var(--dim); font-size: 0.95rem; text-align: center; }
+.mobile-score__value { font-family: var(--font-ui); font-weight: 700; color: var(--ink); background: var(--marker); padding: 0 0.25em; }
+.mobile-score__total { font-weight: 500; }
+
+#mobile-active-controls { width: 100%; }
+.btn-mobile-mute--muted { background: var(--rose) !important; border-color: var(--rose-ink) !important; }
+
+/* Placar final no celular (ws-mic.js) */
+.mic-final { display: flex; flex-direction: column; gap: 0.6rem; width: 100%; align-items: center; }
+.mic-final__title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; }
+.mic-final__avg { font-size: 1rem; color: var(--dim); }
+.mic-final__avg strong { font-family: var(--font-ui); color: var(--ink); background: var(--marker); padding: 0 0.25em; }
+.mic-final__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    width: 100%;
+    max-height: 160px;
+    overflow-y: auto;
+    padding-top: 0.6rem;
+    border-top: var(--hairline);
+    text-align: left;
+}
+.mic-final__row { display: flex; justify-content: space-between; padding: 0.2rem 0.4rem; font-size: 0.95rem; font-family: var(--font-ui); }
+.mic-final__row--me { font-weight: 800; background: var(--paper-2); }
+.mic-final__row span:last-child { font-family: var(--font-ui); font-weight: 700; }
+.mic-note .ico, #mobile-lyrics-text > .ico { width: 1.1em; height: 1.1em; }
+.mic-note { display: block; font-size: 0.9rem; font-family: var(--font-ui); font-weight: 500; color: var(--dim); }
+.mic-note--good { color: var(--sage-ink); font-weight: 800; }
+.mic-note--accent { color: var(--lavender-ink); font-weight: 800; }
+.mic-status--error { color: var(--error); font-weight: 800; }
+.mic-status__name { font-weight: 800; color: var(--ink); }
+
+.mic-footer { width: 100%; padding-top: 1rem; text-align: center; }
+
+/* Aba "Adicionar" do celular-microfone */
+.mic-queue-panel { width: 100%; max-width: 420px; margin: 0 auto; padding-top: 1rem; }
+.mic-queue-panel .queue-tab-header { margin: 1.25rem 0 0.5rem; }
+
+/* Abas do microfone: sempre rodapé fixo (mesmo visual do .app-tabbar móvel) */
+.mic-tabbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 900;
+    margin: 0;
+    padding: 0 0.25rem env(safe-area-inset-bottom, 0px);
+    background: var(--paper-light);
+    border-top: var(--border);
+    border-bottom: none;
+    box-shadow: 0 -6px 18px -12px rgba(59, 48, 36, 0.6);
+}
+.mic-tabbar .app-tabbar__tabs { flex: 1; gap: 0; align-items: stretch; }
+.mic-tabbar .tab-btn {
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.15rem;
+    min-height: var(--tabbar-h);
+    margin: 0;
+    padding: 0.35rem 0.25rem;
+    background: transparent;
+    border: none;
+    font-size: 0.72rem;
+}
+.mic-tabbar .tab-btn .ico { width: 22px; height: 22px; }
+.mic-tabbar .tab-btn[aria-selected="true"] { background: var(--paper-2); margin: 0; padding-bottom: 0.35rem; }
+.mic-tabbar .tab-btn[aria-selected="true"]::before { left: 0; right: 0; top: 0; height: 3px; }
+
+/* Telas baixas (celular deitado / pequeno): comprime o botão */
+@media (max-height: 640px) {
+    #mobile-mic-trigger-container { width: 124px; height: 124px; }
+    .mic-button { width: 104px; height: 104px; }
+    .mic-button .ico { width: 30px; height: 30px; }
+    #mobile-lyrics-container { min-height: 90px; }
+    .mic-header__logo { display: none; }
+}
+#mobile-score-last[data-quality] { background: transparent; font-weight: 800; }

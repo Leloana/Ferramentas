@@ -37,7 +37,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 CLIENT_DIR = Path(__file__).resolve().parent.parent / "client"
-STATIC_PREFIXES = ("/js/", "/styles/", "/vendor/")
+STATIC_PREFIXES = ("/js/", "/styles/", "/assets/")
 
 app = FastAPI(title="Karaoke MVP Server")
 app.add_middleware(
@@ -59,7 +59,7 @@ async def revalidate_static(request, call_next):
 
 app.mount("/styles", StaticFiles(directory=str(CLIENT_DIR / "styles")), name="styles")
 app.mount("/js", StaticFiles(directory=str(CLIENT_DIR / "js")), name="js")
-app.mount("/vendor", StaticFiles(directory=str(CLIENT_DIR / "vendor")), name="vendor")
+app.mount("/assets", StaticFiles(directory=str(CLIENT_DIR / "assets")), name="assets")
 
 app.include_router(songs_router)
 app.include_router(lyrics_router)

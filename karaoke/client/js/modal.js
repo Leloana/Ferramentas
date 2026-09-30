@@ -53,6 +53,9 @@ export function openModal(idOrEl, options = {}) {
 
     modal.setAttribute('data-open', 'true');
     modal._onClose = options.onClose || null;
+    // modal sempre abre rolado no início
+    const scroller = modal.querySelector('.modal-content, .paper-card');
+    if (scroller) scroller.scrollTop = 0;
     openStack.push(modal.id);
 
     // Cada modal aberto vira uma entrada no histórico, para o "voltar" fechá-lo.
@@ -69,6 +72,10 @@ export function closeModal(idOrEl) {
     // Desfaz a entrada de histórico que abrimos, sem disparar o fechamento de novo.
     pendingProgrammaticPops++;
     history.back();
+}
+
+export function hasOpenModal() {
+    return openStack.length > 0;
 }
 
 export function closeTopModal() {

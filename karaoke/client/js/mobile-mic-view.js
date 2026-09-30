@@ -1,4 +1,5 @@
 import { state } from './state.js';
+import { iconSvg } from './icons.js';
 import { AudioLifecycleManager } from './audio-lifecycle-manager.js';
 import { showToast } from './toast.js';
 import { dom } from './dom.js';
@@ -17,7 +18,7 @@ export function initMobileMicView() {
         btnMobileRegister.onclick = () => {
             const name = mobileNicknameInput.value.trim();
             if (!name) {
-                showToast("Por favor, digite um apelido!", "warning");
+                showToast("Por favor, digite um apelido!", "error");
                 return;
             }
             btnMobileRegister.disabled = true;
@@ -27,7 +28,7 @@ export function initMobileMicView() {
             } else {
                 showToast("Conexão indisponível. Tente novamente em instantes.", "error");
                 btnMobileRegister.disabled = false;
-                btnMobileRegister.innerText = "Confirmar Apelido";
+                btnMobileRegister.innerText = "Entrar";
             }
         };
     }
@@ -65,7 +66,7 @@ export function initMobileMicView() {
                 const bufferLength = analyser.frequencyBinCount;
                 const dataArray = new Uint8Array(bufferLength);
 
-                btnMobileActivate.innerHTML = `<svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" x2="12" y1="19" y2="22"></line></svg><span>ATIVO</span>`;
+                btnMobileActivate.innerHTML = `${iconSvg('mic')}<span>ATIVO</span>`;
                 btnMobileActivate.classList.add('btn-mobile-activate--active');
 
                 const mobileActiveMicContainer = document.getElementById('mobile-active-mic-container');
@@ -104,7 +105,7 @@ export function initMobileMicView() {
                 console.error(e);
                 showToast("Erro ao ativar microfone: " + e.message, "error");
                 btnMobileActivate.disabled = false;
-                btnMobileActivate.innerText = "LIGAR MIC";
+                btnMobileActivate.innerHTML = `${iconSvg('mic')}<span>LIGAR MIC</span>`;
             }
         };
     }
@@ -113,7 +114,7 @@ export function initMobileMicView() {
         btnMobileMute.onclick = () => {
             state.micMuted = !state.micMuted;
             if (state.micMuted) {
-                btnMobileMute.innerText = "🎙️ Desmutar Microfone";
+                btnMobileMute.innerHTML = `${iconSvg('mic')} Desmutar microfone`;
                 btnMobileMute.classList.add('btn-mobile-mute--muted');
                 if (btnMobileActivate) {
                     btnMobileActivate.classList.remove('btn-mobile-activate--active');
@@ -122,7 +123,7 @@ export function initMobileMicView() {
                     if (btnSpan) btnSpan.innerText = 'MUDO';
                 }
             } else {
-                btnMobileMute.innerText = "🎙️ Mutar Microfone";
+                btnMobileMute.innerHTML = `${iconSvg('mic-off')} Mutar microfone`;
                 btnMobileMute.classList.remove('btn-mobile-mute--muted');
                 if (btnMobileActivate) {
                     btnMobileActivate.classList.remove('btn-mobile-activate--muted');

@@ -1,0 +1,90 @@
+<!-- Celular como microfone (?role=mic). Duas abas no rodapé: Microfone e Adicionar
+     (fila + "Adicionar música" padrão). -->
+<section id="mobile-mic-area" data-tabs="mic-tab">
+    <header class="mic-header">
+        <div class="brand brand--sm mic-header__logo">
+            <img class="brand__mark" src="/assets/art/logo-mark.svg" alt="" width="28" height="28">
+            <span class="brand__name">Karaoke</span>
+        </div>
+        <div class="mic-header__info">
+            <span class="mic-header__kicker">Microfone</span>
+            <h1 id="mobile-song-title" class="mic-header__title">Conectando...</h1>
+            <p id="mobile-status-text" class="mic-header__status">Sala <span id="mobile-room-id">0000</span></p>
+        </div>
+    </header>
+
+    <div class="mic-body">
+        <!-- Registro do apelido -->
+        <div id="mobile-register-container" class="mic-card">
+            <input type="text" id="mobile-nickname-input" class="input input--lg" placeholder="Seu apelido" aria-label="Seu apelido" maxlength="15" autocomplete="nickname">
+            <button id="btn-mobile-register" class="btn btn--primary btn--block btn--lg">Entrar</button>
+            <div id="mobile-register-error" class="form-error"></div>
+        </div>
+
+        <!-- Fila de espera para registrar -->
+        <div id="mobile-queue-container" class="mic-card">
+            <div class="spinner"></div>
+            <h3 class="mic-card__title">Na fila</h3>
+            <p class="mic-card__hint">Posição <strong id="mobile-queue-position">1</strong></p>
+        </div>
+
+        <!-- Microfone ativo -->
+        <div id="mobile-active-mic-container">
+            <div id="mobile-mic-trigger-container">
+                <div id="mobile-mic-vu"></div>
+                <button id="btn-mobile-activate" class="mic-button">
+                    <i data-icon="mic"></i>
+                    <span>LIGAR MIC</span>
+                </button>
+            </div>
+
+            <!-- Letra espelhada -->
+            <div id="mobile-lyrics-container">
+                <p id="mobile-lyrics-text">Aguardando a TV</p>
+            </div>
+            <!-- Escrita da letra no celular: só aparece em música japonesa -->
+            <div class="lyrics-script-control lyrics-script-group mobile-lyrics-script" role="group" aria-label="Escrita da letra" hidden>
+                <button type="button" class="btn-control-small lyrics-script-choice" data-script="original" aria-pressed="false" title="Só a letra original (kanji e kana)">あ Original</button>
+                <button type="button" class="btn-control-small lyrics-script-choice" data-script="romaji" aria-pressed="false" title="Só a letra em romaji">Aa Romaji</button>
+                <button type="button" class="btn-control-small lyrics-script-choice" data-script="both" aria-pressed="false" title="Letra original com o romaji em cima de cada palavra">Ambos</button>
+            </div>
+            <!-- Nota do verso anterior: fora da letra para não apagar o verso atual -->
+            <p id="mobile-score-text" hidden>
+                Verso anterior: <span id="mobile-score-last" class="mobile-score__value"></span>
+                <span class="mobile-score__total">· Geral: <span id="mobile-score-total"></span></span>
+            </p>
+
+            <div id="mobile-active-controls">
+                <button id="btn-mobile-mute" class="btn btn--block"><i data-icon="mic-off"></i> Mutar microfone</button>
+            </div>
+        </div>
+
+        <div class="mic-footer">
+            <button id="btn-mobile-exit-mic" class="btn btn--ghost btn--sm">
+                <i data-icon="phone"></i> Cantar só no celular
+            </button>
+        </div>
+    </div>
+
+    <!-- Aba "Adicionar": mesmo fluxo padrão da TV + fila -->
+    <div id="mic-queue-panel" class="mic-queue-panel">
+        <button type="button" class="btn btn--primary btn--lg btn--block js-open-add-song">
+            <i data-icon="add"></i> Adicionar música
+        </button>
+        <div class="queue-tab-header">
+            <span class="queue-items-title">Em processamento</span>
+        </div>
+        <div id="queue-mic-list" class="queue-items-list"></div>
+    </div>
+
+    <nav class="app-tabbar mic-tabbar" aria-label="Navegação do microfone">
+        <div class="app-tabbar__tabs" role="tablist">
+            <button type="button" data-tab="mic" class="tab-btn" role="tab">
+                <i data-icon="mic"></i><span class="tab-btn__label">Microfone</span>
+            </button>
+            <button type="button" data-tab="queue" class="tab-btn" role="tab">
+                <i data-icon="add-box"></i><span class="tab-btn__label">Adicionar</span>
+            </button>
+        </div>
+    </nav>
+</section>

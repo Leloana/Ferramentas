@@ -98,13 +98,12 @@ sequenceDiagram
   - Returns `{"type": "registration_success", "name": "..."}` and broadcasts a `players_update` list to the Display.
   - Automatically pops the queue and sends a `register_request` to the next microphone.
 
-### 3. Game Mode Configurations
-The display sets the active singers for the round:
-- **Solo:** Single microphone, scoring tracks standard session stats.
-- **1v1 (Duels):** Active players are listed. Each microphone streams audio, and individual segments are scored and rendered in real time.
-- **Duos (2v2):** Averages scores from dual player pairs.
+### 3. Lobby, Teams and Game Mode
+There is no game-mode picker any more. The display shows a **lobby** (`client/js/lobby.js`): one seat per singer, added with "+". Each seat picks **its own microphone** (a registered phone or `PC_Local`, shown as "Mic do dispositivo") and a **team** (A–D, the team button only shows with 2+ seats).
+- **Everyone on their own team:** free-for-all — `game_mode` is `solo`, `1v1`, `1v1v1` or `1v1v1v1` (one per team).
+- **Two or more seats on the same team:** duo/trio — `game_mode` is `teams`.
 
-Once configured, the display sends `{"type": "start_game", "game_mode": "...", "active_players": [...]}`. The server resets game-wide aggregates, registers the active singers, and broadcasts `game_started` containing the active player list to all connected websockets.
+The display sends `{"type": "start_game", "game_mode": "...", "active_players": [...]}` with **one entry per microphone** (seat order, grouped by team). The server scores each microphone independently, exactly as before; it only stores `game_mode`. **Team scores are computed on the client**: `client/js/score-bars.js` shows one edge bar per team (up to 4: bottom, top, left, right) with the team average highlighted and a discreet bar per member, and the game-over podium ranks teams by the average of their members. The server resets game-wide aggregates, registers the active singers, and broadcasts `game_started` containing the active player list to all connected websockets.
 
 ### 4. Audio Routing & Buffering
 - Microphones stream `KM01` packets (Int16 16 kHz + first-sample index) through WebSocket binary messages. The server anchors each player's sample counter to the song time.

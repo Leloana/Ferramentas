@@ -1,4 +1,8 @@
 import { state, setAppState } from './state.js';
+import { iconSvg } from './icons.js';
+import { lobbyLineup, validateLobby, setAvailableMics, micLabel, groupName, PC_MIC } from './lobby.js';
+import { showScoreBars, hideScoreBars, updateScoreBars, groupFinalScores } from './score-bars.js';
+import { stampVerse, clearStamp, verseQuality, replayClass } from './verse-stamp.js';
 import { dom } from './dom.js';
 import { myRoom } from './config.js';
 import { showToast } from './toast.js';
@@ -62,7 +66,7 @@ export async function resetGameState() {
     if (dom.speedValue) dom.speedValue.innerText = '1.0x';
     if (dom.songProgressSlider) {
         dom.songProgressSlider.value = 0;
-        dom.songProgressSlider.style.background = 'rgba(255, 255, 255, 0.05)';
+        dom.songProgressSlider.style.background = 'var(--track)';
     }
     if (state.animationId) {
         cancelAnimationFrame(state.animationId);
@@ -85,7 +89,7 @@ export async function resetGameState() {
 
     const transText = document.getElementById('transcription-text');
     if (transText) {
-        transText.innerHTML = '<strong>Ouvi:</strong> <span style="color: var(--dim);">[Aguardando canto...]</span>';
+        transText.innerHTML = '<strong>Ouvi:</strong> <span class="muted">[Aguardando canto...]</span>';
     }
 
     const scoreFill = document.getElementById('score-progress-fill');
@@ -99,6 +103,9 @@ export async function resetGameState() {
     if (perfBorder) {
         perfBorder.className = 'perf-border-idle';
     }
+    clearStamp(document.getElementById('verse-stamp'));
+    const segScoreReset = document.getElementById('seg-score');
+    if (segScoreReset) delete segScoreReset.dataset.quality;
 
     const verseContainer = document.getElementById('verse-progress-container');
     const verseFill = document.getElementById('verse-progress-fill');
@@ -112,6 +119,7 @@ export async function resetGameState() {
         app.removeAttribute('data-silence');
         app.removeAttribute('data-players');
         app.removeAttribute('data-player-count');
+        app.removeAttribute('data-teams');
     }
 
     if (state.mpBorderTimers) {
@@ -160,7 +168,7 @@ export async function resetGameState() {
         dom.btnPausePlay.removeAttribute('data-paused');
     }
 
-    hideMpScoreBars();
+    hideScoreBars();
 
     state.selectedSongId = null;
     state.currentSegments = null;
@@ -173,7 +181,6 @@ export async function resetGameState() {
     state.gameMode = null;
     updateSyncDisplay();
 
-    showToast("Retornou à lista de músicas", "info");
     connectDisplayWebSocket();
 }
 
@@ -193,7 +200,15 @@ export async function startKaraoke() {
         return;
     }
 
-    const captureMic = !!(state.localStreamForced || !state.isMobileMicrophoneConnected);
+    // Escalação do lobby: um competidor por microfone (vagas repetidas = dupla/trio)
+    if (!validateLobby()) {
+        throw new Error('Nenhum cantor no lobby');
+    }
+    const lineup = lobbyLineup();
+    const mode = lineup.mode;
+    const activeList = lineup.mics;
+
+    const captureMic = !!(state.localStreamForced || !state.isMobileMicrophoneConnected || activeList.indexOf(PC_MIC) !== -1);
 
     if (state.audioManager) {
         await state.audioManager.destroy();
@@ -267,22 +282,24 @@ export async function startKaraoke() {
         state.ws = null;
     }
 
-    const mode = dom.mpGameMode.value;
-    const activeList = [];
-    const slots = [dom.slotP1, dom.slotP2, dom.slotP3, dom.slotP4];
-    const numSlots = (mode === 'solo') ? 1 : ((mode === '1v1') ? 2 : ((mode === '1v1v1') ? 3 : 4));
-
-    for (let i = 0; i < numSlots; i++) {
-        if (slots[i] && slots[i].value) {
-            activeList.push(slots[i].value);
-        }
-    }
-
     const scoringMode = (dom.btnScoreMode && dom.btnScoreMode.getAttribute('data-mode')) || 'timing';
 
     state.activePlayers = activeList;
     state.gameMode = mode;
     state.scoringMode = scoringMode;
+
+    // Barras de placar nas bordas (a chamada tinha sumido no commit 8fc8799).
+    // data-players/-count: states.css esconde o placar solo e reserva espaço.
+    const appEl = document.getElementById('app');
+    if (activeList.length > 1) {
+        showScoreBars(lineup.groups);
+        appEl.setAttribute('data-players', 'multi');
+        appEl.setAttribute('data-player-count', String(Math.min(4, lineup.groups.length)));
+        if (lineup.mode === 'teams') appEl.setAttribute('data-teams', '');
+        else appEl.removeAttribute('data-teams');
+    } else {
+        hideScoreBars();
+    }
 
     let reconnectAttempts = 0;
     const maxReconnectAttempts = 5;
@@ -347,54 +364,8 @@ const DISPLAY_HANDLERS = {
         if (dom.mpConnectedCount) dom.mpConnectedCount.innerText = data.players.length;
         if (dom.mpQueueCount) dom.mpQueueCount.innerText = data.queue_count;
 
-        // Repopula os slots
-        const selects = [dom.slotP1, dom.slotP2, dom.slotP3, dom.slotP4];
-        selects.forEach((select, idx) => {
-            if (!select) return;
-            const prevVal = select.value;
-            select.innerHTML = '';
-
-            // Se não for o primeiro slot, permite que fique vazio
-            if (idx > 0) {
-                const optEmpty = document.createElement('option');
-                optEmpty.value = '';
-                optEmpty.innerText = '-- Vazio --';
-                select.appendChild(optEmpty);
-            }
-
-            // Opção para o microfone local do PC
-            const optPC = document.createElement('option');
-            optPC.value = 'PC_Local';
-            optPC.innerText = '💻 PC Local Mic';
-            select.appendChild(optPC);
-
-            // Adiciona os jogadores conectados (celulares)
-            data.players.forEach(p => {
-                const opt = document.createElement('option');
-                opt.value = p;
-                opt.innerText = p;
-                select.appendChild(opt);
-            });
-
-            // Tenta restaurar o valor selecionado anteriormente
-            if (prevVal === 'PC_Local' || data.players.includes(prevVal)) {
-                select.value = prevVal;
-            } else {
-                if (idx === 0) {
-                    if (data.players.length > 0) {
-                        select.value = data.players[0];
-                    } else {
-                        select.value = 'PC_Local';
-                    }
-                } else {
-                    if (idx < data.players.length) {
-                        select.value = data.players[idx];
-                    } else {
-                        select.value = '';
-                    }
-                }
-            }
-        });
+        // Microfones disponíveis para as vagas do lobby
+        setAvailableMics(data.players);
     },
     pairing_status(data, context) {
         const { state } = context;
@@ -405,7 +376,7 @@ const DISPLAY_HANDLERS = {
             state.isMobileMicrophoneConnected = true;
             updateMicStatusPanel();
             if (pairingStatusText) {
-                pairingStatusText.innerHTML = `✅ <span style="color: #10b981; font-weight: 800;">Celular conectado com sucesso!</span>`;
+                pairingStatusText.innerText = 'Celular conectado com sucesso!';
             }
             const statusBox = document.getElementById('pairing-status-box');
             if (statusBox) {
@@ -422,7 +393,7 @@ const DISPLAY_HANDLERS = {
             if (statusBox) {
                 statusBox.removeAttribute('data-status');
             }
-            showToast("Microfone sem fio desconectado.", "warning");
+            showToast("Microfone sem fio desconectado.", "error");
         }
     },
     singing_state(data, context) {
@@ -431,7 +402,7 @@ const DISPLAY_HANDLERS = {
         state.isSingingActive = data.active;
         const transText = document.getElementById('transcription-text');
         if (transText && !state.transcriptionActiveTimer) {
-            transText.innerHTML = `<strong>Ouvi:</strong> <span style="color: var(--dim);">${state.isSingingActive ? '[Ouvindo...]' : '[Solo Instrumental...]'}</span>`;
+            transText.innerHTML = `<strong>Ouvi:</strong> <span class="muted">${state.isSingingActive ? '[Ouvindo...]' : '[Solo Instrumental...]'}</span>`;
         }
     },
     outro_start(data, context) {
@@ -444,7 +415,7 @@ const DISPLAY_HANDLERS = {
 
         const transText = document.getElementById('transcription-text');
         if (transText) {
-            transText.innerHTML = '<strong>Ouvi:</strong> <span style="color: var(--accent); font-weight: 700;">[Show Finalizado! 🎸]</span>';
+            transText.innerHTML = '<strong>Ouvi:</strong> <span class="muted">[Show finalizado!]</span>';
         }
     },
     segment_start(data, context) {
@@ -453,7 +424,7 @@ const DISPLAY_HANDLERS = {
         if (!state.transcriptionActiveTimer) {
             const transText = document.getElementById('transcription-text');
             if (transText) {
-                transText.innerHTML = '<strong>Ouvi:</strong> <span style="color: var(--dim);">[Solo Instrumental...]</span>';
+                transText.innerHTML = '<strong>Ouvi:</strong> <span class="muted">[Solo Instrumental...]</span>';
             }
         }
         renderLyrics(data);
@@ -461,7 +432,14 @@ const DISPLAY_HANDLERS = {
     },
     segment_result(data, context) {
         const { state } = context;
-        document.getElementById('seg-score').innerText = data.score + '%';
+        const segScore = document.getElementById('seg-score');
+        segScore.innerText = data.score + '%';
+        segScore.dataset.quality = verseQuality(data.score).key;
+        replayClass(segScore, 'seg-score--pulse');
+        // carimbo no palco só no solo; em disputa cada barra tem o seu
+        if (!(state.activePlayers && state.activePlayers.length > 1)) {
+            stampVerse(document.getElementById('verse-stamp'), data.score);
+        }
         const transText = document.getElementById('transcription-text');
 
         if (data.transcription && data.transcription.trim()) {
@@ -469,23 +447,16 @@ const DISPLAY_HANDLERS = {
             transText.innerHTML = '<strong>Ouvi:</strong> ';
 
             const expectedNormalized = state.lastSegmentLyricsTimed
-                ? state.lastSegmentLyricsTimed.map(w => w.word.toLowerCase().replace(/[^\w\s]/g, '').trim())
+                ? state.lastSegmentLyricsTimed.map(w => normalizeWord(w.word))
                 : [];
 
             words.forEach(word => {
-                const cleanWord = word.toLowerCase().replace(/[^\w\s]/g, '').trim();
+                const cleanWord = normalizeWord(word);
                 const isMatch = expectedNormalized.includes(cleanWord);
 
                 const span = document.createElement('span');
                 span.innerText = word + ' ';
-                span.style.fontWeight = '700';
-                if (isMatch) {
-                    span.style.color = '#22c55e';
-                    span.style.textShadow = '0 0 10px rgba(34, 197, 94, 0.4)';
-                } else {
-                    span.style.color = '#ef4444';
-                    span.style.textShadow = '0 0 10px rgba(239, 68, 68, 0.4)';
-                }
+                span.className = isMatch ? 'heard-word heard-word--hit' : 'heard-word heard-word--miss';
                 transText.appendChild(span);
             });
 
@@ -493,16 +464,16 @@ const DISPLAY_HANDLERS = {
             state.transcriptionActiveTimer = setTimeout(() => {
                 state.transcriptionActiveTimer = null;
                 if (state.currentAppState !== 'idle') {
-                    transText.innerHTML = `<strong>Ouvi:</strong> <span style="color: var(--dim);">${state.isSingingActive ? '[Ouvindo...]' : '[Solo Instrumental...]'}</span>`;
+                    transText.innerHTML = `<strong>Ouvi:</strong> <span class="muted">${state.isSingingActive ? '[Ouvindo...]' : '[Solo Instrumental...]'}</span>`;
                 }
             }, 3500);
         } else {
-            transText.innerHTML = '<strong>Ouvi:</strong> <span style="color: var(--dim);">[Silêncio ou Incompreensível]</span>';
+            transText.innerHTML = '<strong>Ouvi:</strong> <span class="muted">[Silêncio ou Incompreensível]</span>';
             if (state.transcriptionActiveTimer) clearTimeout(state.transcriptionActiveTimer);
             state.transcriptionActiveTimer = setTimeout(() => {
                 state.transcriptionActiveTimer = null;
                 if (state.currentAppState !== 'idle') {
-                    transText.innerHTML = `<strong>Ouvi:</strong> <span style="color: var(--dim);">${state.isSingingActive ? '[Ouvindo...]' : '[Solo Instrumental...]'}</span>`;
+                    transText.innerHTML = `<strong>Ouvi:</strong> <span class="muted">${state.isSingingActive ? '[Ouvindo...]' : '[Solo Instrumental...]'}</span>`;
                 }
             }, 3500);
         }
@@ -516,16 +487,12 @@ const DISPLAY_HANDLERS = {
 
         // Update performance border overlay based on the last segment score
         const lastSegmentScore = parseFloat(data.score) || 0;
-        const perfBorder = document.getElementById('perf-border-overlay');
+        // em disputa a nota geral mistura os times: a moldura fica só no solo
+        const isMulti = state.activePlayers && state.activePlayers.length > 1;
+        const perfBorder = isMulti ? null : document.getElementById('perf-border-overlay');
         if (perfBorder) {
             perfBorder.className = ''; // Reset classes
-            if (lastSegmentScore >= 85) {
-                perfBorder.className = 'perf-border-good';
-            } else if (lastSegmentScore >= 70) {
-                perfBorder.className = 'perf-border-ok';
-            } else {
-                perfBorder.className = 'perf-border-poor';
-            }
+            perfBorder.className = `perf-border-${verseQuality(lastSegmentScore).key}`;
 
             if (state.perfBorderTimer) {
                 clearTimeout(state.perfBorderTimer);
@@ -538,145 +505,11 @@ const DISPLAY_HANDLERS = {
 
         // Atualização de scores no modo Multiplayer
         if (data.player_scores && state.activePlayers && state.activePlayers.length > 1) {
-            const activeList = state.activePlayers;
-            const mode = state.gameMode;
-            const slots = ['p1', 'p2', 'p3', 'p4'];
-            
             const expectedNormalized = state.lastSegmentLyricsTimed
-                ? state.lastSegmentLyricsTimed.map(w => w.word.toLowerCase().replace(/[^\w\s]/g, '').trim())
+                ? state.lastSegmentLyricsTimed.map(w => normalizeWord(w.word))
                 : [];
-
-            if (mode === '2v2') {
-                const p1Val = (data.player_scores[activeList[0]]?.total_score || 0);
-                const p2Val = (data.player_scores[activeList[1]]?.total_score || 0);
-                const teamA = (p1Val + p2Val) / 2;
-                
-                const p3Val = (data.player_scores[activeList[2]]?.total_score || 0);
-                const p4Val = (data.player_scores[activeList[3]]?.total_score || 0);
-                const teamB = (p3Val + p4Val) / 2;
-                
-                const barA = document.getElementById('mp-score-bar-p1');
-                if (barA) {
-                    barA.querySelector('.mp-player-pct').innerText = teamA.toFixed(1) + "%";
-                    barA.querySelector('.mp-progress-fill').style.width = teamA + "%";
-                    
-                    const transDiv = barA.querySelector('.mp-player-transcription');
-                    if (transDiv) {
-                        transDiv.innerHTML = '';
-                        const p1Name = activeList[0];
-                        const p2Name = activeList[1];
-                        const t1 = data.player_scores[p1Name]?.transcription || '';
-                        const t2 = data.player_scores[p2Name]?.transcription || '';
-                        
-                        if (t1 || t2) {
-                            const d1 = document.createElement('div');
-                            d1.style.fontSize = '0.8rem';
-                            d1.innerHTML = `<strong>${p1Name}:</strong> `;
-                            renderTranscriptionInto(d1, t1, expectedNormalized, false);
-                            transDiv.appendChild(d1);
-
-                            const d2 = document.createElement('div');
-                            d2.style.fontSize = '0.8rem';
-                            d2.innerHTML = `<strong>${p2Name}:</strong> `;
-                            renderTranscriptionInto(d2, t2, expectedNormalized, false);
-                            transDiv.appendChild(d2);
-                        } else {
-                            transDiv.innerHTML = '<strong>Ouvi:</strong> <span style="color: var(--dim);">[Silêncio]</span>';
-                        }
-                    }
-                }
-                const barB = document.getElementById('mp-score-bar-p2');
-                if (barB) {
-                    barB.querySelector('.mp-player-pct').innerText = teamB.toFixed(1) + "%";
-                    barB.querySelector('.mp-progress-fill').style.width = teamB + "%";
-
-                    const transDiv = barB.querySelector('.mp-player-transcription');
-                    if (transDiv) {
-                        transDiv.innerHTML = '';
-                        const p3Name = activeList[2];
-                        const p4Name = activeList[3];
-                        const t3 = data.player_scores[p3Name]?.transcription || '';
-                        const t4 = data.player_scores[p4Name]?.transcription || '';
-                        
-                        if (t3 || t4) {
-                            const d3 = document.createElement('div');
-                            d3.style.fontSize = '0.8rem';
-                            d3.innerHTML = `<strong>${p3Name}:</strong> `;
-                            renderTranscriptionInto(d3, t3, expectedNormalized, false);
-                            transDiv.appendChild(d3);
-
-                            const d4 = document.createElement('div');
-                            d4.style.fontSize = '0.8rem';
-                            d4.innerHTML = `<strong>${p4Name}:</strong> `;
-                            renderTranscriptionInto(d4, t4, expectedNormalized, false);
-                            transDiv.appendChild(d4);
-                        } else {
-                            transDiv.innerHTML = '<strong>Ouvi:</strong> <span style="color: var(--dim);">[Silêncio]</span>';
-                        }
-                    }
-                }
-            } else {
-                activeList.forEach((name, idx) => {
-                    const key = slots[idx];
-                    const bar = document.getElementById(`mp-score-bar-${key}`);
-                    if (bar && data.player_scores[name]) {
-                        const pVal = data.player_scores[name].total_score;
-                        bar.querySelector('.mp-player-pct').innerText = pVal.toFixed(1) + "%";
-                        const fill = bar.querySelector('.mp-progress-fill') || bar.querySelector('.mp-progress-fill-vertical');
-                        if (fill) {
-                            if (fill.classList.contains('mp-progress-fill-vertical')) {
-                                fill.style.height = pVal + "%";
-                            } else {
-                                fill.style.width = pVal + "%";
-                            }
-                        }
-
-                        const transDiv = bar.querySelector('.mp-player-transcription');
-                        if (transDiv) {
-                            renderTranscriptionInto(transDiv, data.player_scores[name].transcription || '', expectedNormalized, true);
-                        }
-                    }
-                });
-            }
-            
-            // Clear existing multiplayer border fade-out timers if any
-            if (state.mpBorderTimers) {
-                state.mpBorderTimers.forEach(t => clearTimeout(t));
-                state.mpBorderTimers = [];
-            } else {
-                state.mpBorderTimers = [];
-            }
-
-            // Atualiza bordas dos cards dos jogadores
-            activeList.forEach((name, idx) => {
-                const key = slots[idx];
-                const bar = document.getElementById(`mp-score-bar-${key}`);
-                if (bar && data.player_scores[name]) {
-                    const scoreVal = data.player_scores[name].score;
-                    bar.classList.remove('mp-score-bar--good', 'mp-score-bar--ok', 'mp-score-bar--poor');
-                    if (scoreVal >= 85) {
-                        bar.classList.add('mp-score-bar--good');
-                    } else if (scoreVal >= 70) {
-                        bar.classList.add('mp-score-bar--ok');
-                    } else {
-                        bar.classList.add('mp-score-bar--poor');
-                    }
-                }
-            });
-
-            // Schedule fade out of borders and transcriptions after 2 seconds
-            const fadeTimer = setTimeout(() => {
-                activeList.forEach((name, idx) => {
-                    const key = slots[idx];
-                    const bar = document.getElementById(`mp-score-bar-${key}`);
-                    if (bar) {
-                        bar.classList.remove('mp-score-bar--good', 'mp-score-bar--ok', 'mp-score-bar--poor');
-                        const transDiv = bar.querySelector('.mp-player-transcription');
-                        if (transDiv) transDiv.innerHTML = '';
-                    }
-                });
-            }, 2000);
-            state.mpBorderTimers.push(fadeTimer);
+            // Barra por time + barrinha de cada membro (score-bars.js)
+            updateScoreBars(data.player_scores, expectedNormalized, renderTranscriptionInto);
         }
     },
     game_over(data, context) {
@@ -707,21 +540,36 @@ export function showGameOverModal(finalScore, playerScores) {
     modalScore.innerText = finalScore.toFixed(1) + '%';
 
     let rank = 'C';
-    let color = '#ef4444';
     let title = 'PRECISA PRATICAR!';
 
     if (finalScore >= 95) {
-        rank = 'S'; color = '#fde047'; title = 'PERFORMANCE LENDÁRIA!';
+        rank = 'S'; title = 'PERFORMANCE LENDÁRIA!';
     } else if (finalScore >= 85) {
-        rank = 'A'; color = '#38bdf8'; title = 'EXCELENTE APRESENTAÇÃO!';
+        rank = 'A'; title = 'EXCELENTE APRESENTAÇÃO!';
     } else if (finalScore >= 70) {
-        rank = 'B'; color = '#22c55e'; title = 'BOM TRABALHO!';
+        rank = 'B'; title = 'BOM TRABALHO!';
     }
 
+    // cor do rank vem do CSS (.rank-badge[data-rank])
     rankBadge.innerText = rank;
-    rankBadge.style.color = color;
+    rankBadge.dataset.rank = rank;
+    const rankSeal = rankBadge.parentNode;
     rankTitle.innerText = title;
 
+    // Times (duplas/trios): o pódio mostra a nota do time, média dos membros
+    const teamResults = playerScores ? groupFinalScores(playerScores) : null;
+    const teamMembers = {};
+    if (teamResults) {
+        playerScores = {};
+        teamResults.forEach((r) => {
+            const name = r.members.length > 1 ? `${groupName(r.members.length)} ${r.group.team}` : micLabel(r.members[0].mic);
+            playerScores[name] = r.score;
+            if (r.members.length > 1) {
+                teamMembers[name] = r.members.map((m) => `${micLabel(m.mic)} ${Math.round(m.score)}%`).join(' · ');
+            }
+        });
+    }
+    const membersHtml = (name) => (teamMembers[name] ? `<span class="podium-members">${teamMembers[name]}</span>` : '');
     const sortedPlayers = playerScores ? Object.entries(playerScores).sort((a, b) => b[1] - a[1]) : [];
     const numPlayers = sortedPlayers.length;
 
@@ -733,8 +581,8 @@ export function showGameOverModal(finalScore, playerScores) {
 
     if (numPlayers > 1) {
         // Multiplayer: Show podium & hide solo rank components
-        rankBadge.style.display = 'none';
-        rankTitle.style.display = 'none';
+        rankSeal.hidden = true;
+        rankTitle.hidden = true;
 
         const podiumArea = document.createElement('div');
         podiumArea.id = 'podium-area';
@@ -749,7 +597,7 @@ export function showGameOverModal(finalScore, playerScores) {
         const third = sortedPlayers[2];
         const fourth = sortedPlayers[3];
 
-        const formatName = (n) => n === "PC_Local" ? "💻 PC Local" : n;
+        const formatName = micLabel;
 
         let columnsHtml = '';
 
@@ -758,6 +606,7 @@ export function showGameOverModal(finalScore, playerScores) {
             columnsHtml += `
                 <div class="podium-col podium-2nd">
                     <span class="podium-name" title="${formatName(second[0])}">${formatName(second[0])}</span>
+                    ${membersHtml(second[0])}
                     <span class="podium-score">${second[1].toFixed(1)}%</span>
                     <div class="podium-pedestal">2</div>
                 </div>
@@ -768,8 +617,9 @@ export function showGameOverModal(finalScore, playerScores) {
         if (first) {
             columnsHtml += `
                 <div class="podium-col podium-1st">
-                    <span class="podium-crown">👑</span>
+                    <span class="podium-crown">${iconSvg('crown')}</span>
                     <span class="podium-name" title="${formatName(first[0])}">${formatName(first[0])}</span>
+                    ${membersHtml(first[0])}
                     <span class="podium-score">${first[1].toFixed(1)}%</span>
                     <div class="podium-pedestal">1</div>
                 </div>
@@ -781,33 +631,34 @@ export function showGameOverModal(finalScore, playerScores) {
             columnsHtml += `
                 <div class="podium-col podium-3rd">
                     <span class="podium-name" title="${formatName(third[0])}">${formatName(third[0])}</span>
+                    ${membersHtml(third[0])}
                     <span class="podium-score">${third[1].toFixed(1)}%</span>
                     <div class="podium-pedestal">3</div>
                 </div>
             `;
         } else if (second) {
             // Spacer to keep 1st place centered when only 2 players are on the podium
-            columnsHtml += `<div class="podium-col" style="width: 95px; visibility: hidden;"></div>`;
+            columnsHtml += `<div class="podium-col podium-col--spacer"></div>`;
         }
 
         podiumArea.innerHTML = `
             <div class="podium-columns">
                 ${columnsHtml}
             </div>
-            <div id="podium-extra-list" style="width: 100%; display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;"></div>
+            <div id="podium-extra-list" class="podium-extra-list"></div>
         `;
 
         const extraList = document.getElementById('podium-extra-list');
         if (fourth && extraList) {
             const item = document.createElement('div');
             item.className = 'podium-extra-item';
-            item.innerHTML = `<span>4º Lugar: ${formatName(fourth[0])}</span><span style="color: var(--highlight);">${fourth[1].toFixed(1)}%</span>`;
+            item.innerHTML = `<span>4º Lugar: ${formatName(fourth[0])}</span><span class="score-num">${fourth[1].toFixed(1)}%</span>`;
             extraList.appendChild(item);
         }
     } else {
         // Solo: Show solo rank components & hide podium
-        rankBadge.style.display = 'block';
-        rankTitle.style.display = 'block';
+        rankSeal.hidden = false;
+        rankTitle.hidden = false;
     }
 
     // Placar multiplayer no modal (only shown in solo or fallback)
@@ -815,26 +666,23 @@ export function showGameOverModal(finalScore, playerScores) {
     if (!breakdownDiv) {
         breakdownDiv = document.createElement('div');
         breakdownDiv.id = 'modal-mp-breakdown';
-        breakdownDiv.style.cssText = "margin-top: 1.5rem; text-align: left; display: flex; flex-direction: column; gap: 0.6rem; max-height: 180px; overflow-y: auto; padding-right: 0.5rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1rem;";
+        breakdownDiv.className = 'mp-breakdown';
         modalScore.parentNode.appendChild(breakdownDiv);
     }
 
     breakdownDiv.innerHTML = '';
     if (playerScores && Object.keys(playerScores).length > 0 && numPlayers <= 1) {
-        breakdownDiv.style.display = 'flex';
+        breakdownDiv.hidden = false;
         sortedPlayers.forEach(([name, score], idx) => {
             const item = document.createElement('div');
-            item.style.cssText = "display: flex; justify-content: space-between; font-size: 0.95rem; font-weight: 700; color: #f8fafc; padding: 0.25rem 0;";
-            let medal = "🎤";
-            if (idx === 0) medal = "🥇";
-            else if (idx === 1) medal = "🥈";
-            else if (idx === 2) medal = "🥉";
-            const displayName = name === "PC_Local" ? "💻 PC Local" : name;
-            item.innerHTML = `<span>${medal} ${displayName}</span><span style="color: var(--highlight);">${score.toFixed(1)}%</span>`;
+            item.className = 'mp-breakdown__row';
+            const medal = `<span class="place-num">${idx + 1}º</span>`;
+            const displayName = micLabel(name);
+            item.innerHTML = `<span>${medal} ${displayName}</span><span>${score.toFixed(1)}%</span>`;
             breakdownDiv.appendChild(item);
         });
     } else {
-        breakdownDiv.style.display = 'none';
+        breakdownDiv.hidden = true;
     }
 
     modal.setAttribute('data-open', 'true');
@@ -844,12 +692,18 @@ export function showGameOverModal(finalScore, playerScores) {
     };
 }
 
+// Compara palavras sem acento e pontuação ("não" == "nao"). O \w do JS só
+// cobre ASCII: com ele "não" virava "no" e o acerto aparecia como erro.
+export function normalizeWord(word) {
+    return String(word).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
+}
+
 export function renderTranscriptionInto(container, transcription, expectedNormalized, showHeader = true) {
     if (!container) return;
     container.innerHTML = '';
     
     if (!transcription || !transcription.trim()) {
-        container.innerHTML = showHeader ? '<strong>Ouvi:</strong> <span style="color: var(--dim);">[Silêncio]</span>' : '<span style="color: var(--dim);">[Silêncio]</span>';
+        container.innerHTML = showHeader ? '<strong>Ouvi:</strong> <span class="muted">[Silêncio]</span>' : '<span class="muted">[Silêncio]</span>';
         return;
     }
 
@@ -858,19 +712,12 @@ export function renderTranscriptionInto(container, transcription, expectedNormal
     }
     const words = transcription.split(/\s+/);
     words.forEach(word => {
-        const cleanWord = word.toLowerCase().replace(/[^\w\s]/g, '').trim();
+        const cleanWord = normalizeWord(word);
         const isMatch = expectedNormalized.includes(cleanWord);
 
         const span = document.createElement('span');
         span.innerText = word + ' ';
-        span.style.fontWeight = '700';
-        if (isMatch) {
-            span.style.color = '#22c55e';
-            span.style.textShadow = '0 0 10px rgba(34, 197, 94, 0.4)';
-        } else {
-            span.style.color = '#ef4444';
-            span.style.textShadow = '0 0 10px rgba(239, 68, 68, 0.4)';
-        }
+        span.className = isMatch ? 'heard-word heard-word--hit' : 'heard-word heard-word--miss';
         container.appendChild(span);
     });
 }
@@ -1076,7 +923,7 @@ export function startHighlightLoop() {
 
                 if (dom.songProgressSlider) {
                     dom.songProgressSlider.value = pct;
-                    dom.songProgressSlider.style.background = `linear-gradient(to right, var(--accent) ${pct}%, rgba(255, 255, 255, 0.05) ${pct}%)`;
+                    dom.songProgressSlider.style.background = `linear-gradient(to right, var(--accent) ${pct}%, var(--track) ${pct}%)`;
                 }
                 const timeCurrent = document.getElementById('song-time-current');
                 if (timeCurrent) timeCurrent.innerText = formatTime(cur);
@@ -1149,7 +996,7 @@ export function startHighlightLoop() {
                         state.isSingingActive = isSinging;
                         const transText = document.getElementById('transcription-text');
                         if (transText && !state.transcriptionActiveTimer) {
-                            transText.innerHTML = `<strong>Ouvi:</strong> <span style="color: var(--dim);">${state.isSingingActive ? '[Ouvindo...]' : '[Solo Instrumental...]'}</span>`;
+                            transText.innerHTML = `<strong>Ouvi:</strong> <span class="muted">${state.isSingingActive ? '[Ouvindo...]' : '[Solo Instrumental...]'}</span>`;
                         }
                     }
                 } else {
@@ -1160,7 +1007,7 @@ export function startHighlightLoop() {
                                 state.isSingingActive = false;
                                 const transText = document.getElementById('transcription-text');
                                 if (transText && !state.transcriptionActiveTimer) {
-                                    transText.innerHTML = `<strong>Ouvi:</strong> <span style="color: var(--dim);">[Solo Instrumental...]</span>`;
+                                    transText.innerHTML = `<strong>Ouvi:</strong> <span class="muted">[Solo Instrumental...]</span>`;
                                 }
                             }
                         }
@@ -1268,14 +1115,6 @@ export function updateAudioGraph(transpose) {
 }
 
 export function initGameControls() {
-    if (dom.mpGameMode) {
-        dom.mpGameMode.onchange = () => {
-            updatePlayerSlotsVisibility();
-        };
-        // Inicializa a exibição das slots
-        updatePlayerSlotsVisibility();
-    }
-
     // Estilo de pontuação: botão toggle único (tempo+palavras vs. só palavras),
     // no mesmo padrão do botão de sincronia de letras.
     if (dom.btnScoreMode) {
@@ -1348,7 +1187,7 @@ export function initGameControls() {
         dom.songProgressSlider.oninput = (e) => {
             state.isUserDraggingProgress = true;
             const pct = parseFloat(e.target.value);
-            dom.songProgressSlider.style.background = `linear-gradient(to right, var(--accent) ${pct}%, rgba(255, 255, 255, 0.05) ${pct}%)`;
+            dom.songProgressSlider.style.background = `linear-gradient(to right, var(--accent) ${pct}%, var(--track) ${pct}%)`;
 
             if (dom.audioPlayer.duration) {
                 const targetTime = (pct / 100) * dom.audioPlayer.duration;
@@ -1415,15 +1254,13 @@ function updateSpeedUI() {
 function updateSyncModeButton() {
     if (!dom.btnSyncMode) return;
     if (state.syncMode === 'verse') {
-        dom.btnSyncMode.textContent = '📝';
+        dom.btnSyncMode.innerHTML = `${iconSvg('sync-verse')}<span>Verso</span>`;
         dom.btnSyncMode.title = 'Sincronia por verso — Clique para alternar para palavras';
-        dom.btnSyncMode.style.background = 'rgba(56, 189, 248, 0.2)';
-        dom.btnSyncMode.style.borderColor = 'var(--accent)';
+        dom.btnSyncMode.classList.add('btn-sync-mode--active');
     } else {
-        dom.btnSyncMode.textContent = '🎯';
+        dom.btnSyncMode.innerHTML = `${iconSvg('sync-word')}<span>Palavra</span>`;
         dom.btnSyncMode.title = 'Sincronia por palavra — Clique para alternar para verso';
-        dom.btnSyncMode.style.background = '';
-        dom.btnSyncMode.style.borderColor = '';
+        dom.btnSyncMode.classList.remove('btn-sync-mode--active');
     }
 }
 
@@ -1433,101 +1270,13 @@ function setScoreMode(mode) {
     const normalized = mode === 'words' ? 'words' : 'timing';
     btn.setAttribute('data-mode', normalized);
     if (normalized === 'words') {
-        btn.textContent = '🔤';
+        btn.innerHTML = `${iconSvg('score-words')}<span>Só palavras</span>`;
         btn.title = 'Pontuação: apenas palavras acertadas — Clique para incluir o tempo';
     } else {
-        btn.textContent = '⏱️';
+        btn.innerHTML = `${iconSvg('metronome')}<span>Palavras + tempo</span>`;
         btn.title = 'Pontuação: palavras + tempo correto — Clique para pontuar só palavras';
     }
     btn.classList.toggle('btn-score-mode--active', normalized === 'words');
     localStorage.setItem('karaoke_scoring_mode', normalized);
 }
 
-function updatePlayerSlotsVisibility() {
-    if (!dom.mpGameMode) return;
-    const mode = dom.mpGameMode.value;
-
-    const setupContainer = dom.mpSetupContainer;
-    if (setupContainer) {
-        setupContainer.setAttribute('data-game-mode', mode);
-    }
-
-    const labelP1 = dom.slotBoxP1 ? dom.slotBoxP1.querySelector('label') : null;
-    const labelP2 = dom.slotBoxP2 ? dom.slotBoxP2.querySelector('label') : null;
-    const labelP3 = dom.slotBoxP3 ? dom.slotBoxP3.querySelector('label') : null;
-    const labelP4 = dom.slotBoxP4 ? dom.slotBoxP4.querySelector('label') : null;
-
-    if (mode === '2v2') {
-        if (labelP1) labelP1.innerText = "Duo A - Jogador 1 (Bottom)";
-        if (labelP2) labelP2.innerText = "Duo A - Jogador 2 (Top)";
-        if (labelP3) labelP3.innerText = "Duo B - Jogador 3 (Left)";
-        if (labelP4) labelP4.innerText = "Duo B - Jogador 4 (Right)";
-    } else {
-        if (labelP1) labelP1.innerText = "Jogador 1 (Bottom)";
-        if (labelP2) labelP2.innerText = "Jogador 2 (Top)";
-        if (labelP3) labelP3.innerText = "Jogador 3 (Left)";
-        if (labelP4) labelP4.innerText = "Jogador 4 (Right)";
-    }
-}
-
-function resetAndShowMpScoreBars(activeList, mode) {
-    hideMpScoreBars();
-
-    const slots = ['p1', 'p2', 'p3', 'p4'];
-    const barMap = {
-        p1: document.getElementById('mp-score-bar-p1'),
-        p2: document.getElementById('mp-score-bar-p2'),
-        p3: document.getElementById('mp-score-bar-p3'),
-        p4: document.getElementById('mp-score-bar-p4')
-    };
-
-    if (mode === '2v2') {
-        const formatName = (n) => n === "PC_Local" ? "💻 PC Local" : (n || 'Jogador');
-        const nameA = formatName(activeList[0]) + " + " + formatName(activeList[1]);
-        const nameB = formatName(activeList[2]) + " + " + formatName(activeList[3]);
-
-        if (barMap.p1) {
-            barMap.p1.setAttribute('data-active', 'true');
-            barMap.p1.querySelector('.mp-player-name').innerText = "Duo A: " + nameA;
-            barMap.p1.querySelector('.mp-player-pct').innerText = "0%";
-            barMap.p1.querySelector('.mp-progress-fill').style.width = "0%";
-        }
-        if (barMap.p2) {
-            barMap.p2.setAttribute('data-active', 'true');
-            barMap.p2.querySelector('.mp-player-name').innerText = "Duo B: " + nameB;
-            barMap.p2.querySelector('.mp-player-pct').innerText = "0%";
-            barMap.p2.querySelector('.mp-progress-fill').style.width = "0%";
-        }
-    } else {
-        activeList.forEach((name, idx) => {
-            const key = slots[idx];
-            const el = barMap[key];
-            if (el) {
-                el.setAttribute('data-active', 'true');
-                const displayName = name === "PC_Local" ? "💻 PC Local" : name;
-                el.querySelector('.mp-player-name').innerText = displayName;
-                el.querySelector('.mp-player-pct').innerText = "0%";
-                const fill = el.querySelector('.mp-progress-fill') || el.querySelector('.mp-progress-fill-vertical');
-                if (fill) {
-                    if (fill.classList.contains('mp-progress-fill-vertical')) {
-                        fill.style.height = "0%";
-                    } else {
-                        fill.style.width = "0%";
-                    }
-                }
-            }
-        });
-    }
-}
-
-function hideMpScoreBars() {
-    ['p1', 'p2', 'p3', 'p4'].forEach(key => {
-        const el = document.getElementById(`mp-score-bar-${key}`);
-        if (el) {
-            el.removeAttribute('data-active');
-            el.classList.remove('mp-score-bar--good', 'mp-score-bar--ok', 'mp-score-bar--poor');
-            const transDiv = el.querySelector('.mp-player-transcription');
-            if (transDiv) transDiv.innerHTML = '';
-        }
-    });
-}

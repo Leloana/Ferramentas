@@ -1,0 +1,133 @@
+/* ============================================================
+   Repertório: busca, grupos por artista e cards de música.
+   Visual de índice de songbook antigo: título ....... ações
+   ============================================================ */
+.tab-panel { animation: fadeIn 0.2s ease; }
+
+.search-container { position: relative; margin-bottom: 1.25rem; }
+.search-container__icon {
+    position: absolute;
+    left: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ink-2);
+    pointer-events: none;
+}
+.search-input { padding-left: 2.5rem; font-size: 1.05rem; min-height: 48px; }
+
+.song-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.25rem; }
+.song-list__loading { padding: 2rem; text-align: center; color: var(--dim); }
+
+/* Colunas no desktop/TV: índice em 2 colunas independentes */
+.song-list__col { min-width: 0; }
+@media (min-width: 1100px) {
+    .song-list { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 2.5rem; align-items: start; }
+    .song-list > .empty-state, .song-list > .song-list__loading { grid-column: 1 / -1; }
+}
+
+/* ---------- Grupo de artista ---------- */
+.artist-group { border-bottom: 1px solid var(--fold); }
+.artist-group__header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 0.4rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.15s;
+}
+.artist-group__header:hover { background: rgba(236, 213, 143, 0.35); }
+.artist-group__chevron { width: 18px; height: 18px; color: var(--ink-2); transition: transform 0.2s; flex-shrink: 0; }
+.artist-group--open .artist-group__chevron { transform: rotate(90deg); }
+.artist-group__name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: var(--font-ui);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--ink);
+    text-align: left;
+}
+.artist-group__count {
+    margin-left: auto;
+    min-width: 28px;
+    padding: 0 0.35rem;
+    border: 1px solid var(--ink-3);
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    color: var(--ink-2);
+    text-align: center;
+}
+
+.artist-group__songs {
+    display: grid;
+    gap: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.22s ease;
+}
+/* aberto sem limite; a animação usa a altura real (selection-view.js) */
+.artist-group--open .artist-group__songs { max-height: none; }
+.artist-group--open .artist-group__songs > :last-child { margin-bottom: 0.5rem; }
+.artist-group .song-card__artist { display: none; }
+
+/* ---------- Card de música (linha de índice) ---------- */
+.song-card {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.55rem 0.4rem 0.55rem 2rem;
+    cursor: pointer;
+    color: var(--ink);
+    transition: background-color 0.15s;
+}
+.song-card:hover { background: rgba(169, 193, 217, 0.3); }
+.song-card__icon { width: 20px; height: 20px; flex-shrink: 0; color: var(--ink-3); }
+.song-card:hover .song-card__icon { color: var(--ink); }
+.song-card__text { display: flex; flex-direction: column; min-width: 0; flex-shrink: 1; text-align: left; }
+.song-card__title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.song-card__artist { font-size: 0.9rem; color: var(--dim); }
+.song-card__leader {
+    flex: 1;
+    min-width: 1.5rem;
+    height: 0;
+    border-bottom: 2px dotted var(--staff);
+    transform: translateY(4px);
+}
+.song-card__actions { display: flex; gap: 0.3rem; flex-shrink: 0; }
+.song-card__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    color: var(--ink-2);
+    cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s, transform 0.3s;
+}
+.song-card__btn:hover { border-color: var(--ink); background: var(--paper-light); color: var(--ink); }
+.song-card__delete-btn:hover { border-color: var(--rose-ink); color: var(--rose-ink); background: rgba(227, 181, 164, 0.35); }
+
+/* Música ainda processando */
+.song-card--pending { cursor: default; opacity: 0.72; }
+.song-card--pending:hover { background: transparent; }
+
+@media (max-width: 700px) {
+    .song-card { padding-left: 1.2rem; }
+    .song-card__leader { display: none; }
+    .song-card__text { flex: 1; }
+    .song-card__title { white-space: normal; }
+    .song-card__btn { width: 38px; height: 38px; }
+}

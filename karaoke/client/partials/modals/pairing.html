@@ -1,0 +1,23 @@
+<!-- Pareamento do celular como microfone -->
+<div id="pairing-modal" class="modal-overlay">
+    <div class="modal-content admin-modal modal-content--sm modal-content--center">
+        <h2 class="modal-title"><button type="button" class="modal-back" data-close aria-label="Voltar" title="Voltar"><i data-icon="back"></i></button>Conectar celular</h2>
+
+        <div class="qr-frame">
+            <img id="pairing-qrcode" src="" alt="QR Code de pareamento" class="qr-frame__img">
+            <div id="pairing-qrcode-loading" class="qr-frame__loading">Gerando QR Code...</div>
+            <div class="qr-frame__link">
+                <a id="pairing-link" href="#" target="_blank">https://localhost:8000/</a>
+            </div>
+        </div>
+
+        <div id="pairing-status-box" class="pairing-status">
+            <span id="pairing-status-dot" class="status-dot status-dot--idle"></span>
+            <span id="pairing-status-text">Aguardando conexão do celular...</span>
+        </div>
+
+        <div class="modal-buttons modal-buttons--center">
+            <button type="button" id="btn-close-pairing" class="btn btn--ghost">Fechar</button>
+        </div>
+    </div>
+</div>

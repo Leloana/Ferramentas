@@ -1,67 +1,41 @@
 /**
  * queue-view.js — Módulo de Fila de Músicas
  *
- * Gerencia o FAB, bottom sheet, formulário de adição e polling de status.
+ * Mostra a fila de processamento (aba "Adicionar") e faz o polling de status.
+ * Adicionar música é sempre pelo fluxo padrão (modals.js).
  * Funciona tanto no modo 'display' (TV) quanto no modo 'mic' (celular).
  */
 import { showToast } from './toast.js';
+import { iconSvg } from './icons.js';
 import { fetchSongs } from './selection-view.js';
 
 // ── Status labels e ícones para cada estado da fila ──
 const STATUS_MAP = {
-    queued:              { icon: '⏳', label: 'Na fila...' },
-    downloading:         { icon: '⬇️', label: 'Baixando do YouTube...' },
-    separating:          { icon: '🎛️', label: 'Separando vocal (Demucs GPU)...' },
-    awaiting_alignment:  { icon: '⏸️', label: 'Aguardando GPU livre para alinhar...' },
-    aligning:            { icon: '🎯', label: 'Alinhando letra (Whisper + MMS)...' },
-    finalizing:          { icon: '✨', label: 'Finalizando segmentos...' },
-    ready:               { icon: '✅', label: 'Pronta para cantar!' },
-    error:               { icon: '❌', label: 'Erro no processamento' },
-    searching:           { icon: '🔍', label: 'Buscando letra...' },
-    'lyrics-error':      { icon: '❌', label: 'Letra não encontrada' },
+    queued:              { icon: 'hourglass', label: 'Na fila...' },
+    downloading:         { icon: 'download', label: 'Baixando do YouTube...' },
+    separating:          { icon: 'split', label: 'Separando vocal (Demucs GPU)...' },
+    awaiting_alignment:  { icon: 'pause', label: 'Aguardando GPU livre para alinhar...' },
+    aligning:            { icon: 'target', label: 'Alinhando letra (Whisper + MMS)...' },
+    finalizing:          { icon: 'seal', label: 'Finalizando segmentos...' },
+    ready:               { icon: 'check', label: 'Pronta para cantar!' },
+    error:               { icon: 'cross', label: 'Erro no processamento' },
+    searching:           { icon: 'search', label: 'Buscando letra...' },
+    'lyrics-error':      { icon: 'cross', label: 'Letra não encontrada' },
 };
 
-let _tempIdCounter = 0;
-
 let pollInterval = null;
-let isSheetOpen = false;
+
+// Listas da fila: aba "Adicionar" da TV e aba "Adicionar" do celular-microfone.
+const LIST_IDS = ['queue-display-list', 'queue-mic-list'];
 
 // ── Inicialização ──
 export function initQueueView() {
-    const fab = document.getElementById('queue-fab');
-    const sheet = document.getElementById('queue-sheet');
-    const overlay = document.getElementById('queue-sheet-overlay');
-    const closeBtn = document.getElementById('queue-sheet-close');
-    const form = document.getElementById('queue-add-form');
-
-    if (!fab || !sheet) return;
-
-    // FAB click → abre sheet
-    fab.addEventListener('click', () => openSheet());
-
-    // Fechar sheet
-    if (closeBtn) closeBtn.addEventListener('click', () => closeSheet());
-    if (overlay) overlay.addEventListener('click', () => closeSheet());
-
-    // Submit do formulário
-    if (form) {
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            await submitToQueue();
-        });
-    }
-
-    // Botões de destravamento de GPU
-    const sheetResetBtn = document.getElementById('queue-sheet-gpu-reset');
     const displayResetBtn = document.getElementById('queue-display-gpu-reset');
-    if (sheetResetBtn) {
-        sheetResetBtn.addEventListener('click', () => clearGpuLock());
-    }
     if (displayResetBtn) {
         displayResetBtn.addEventListener('click', () => clearGpuLock());
     }
 
-    // Inicia polling de status (a cada 3s)
+    // Polling de status (a cada 3s)
     startPolling();
 }
 
@@ -76,182 +50,6 @@ async function clearGpuLock() {
         await pollQueueStatus();
     } catch (err) {
         showToast('Erro ao liberar GPU: ' + err.message, 'error');
-    }
-}
-
-// ── Sheet open/close ──
-function openSheet() {
-    const sheet = document.getElementById('queue-sheet');
-    const overlay = document.getElementById('queue-sheet-overlay');
-    if (sheet) sheet.setAttribute('data-open', 'true');
-    if (overlay) overlay.setAttribute('data-open', 'true');
-    isSheetOpen = true;
-}
-
-function closeSheet() {
-    const sheet = document.getElementById('queue-sheet');
-    const overlay = document.getElementById('queue-sheet-overlay');
-    if (sheet) sheet.removeAttribute('data-open');
-    if (overlay) overlay.removeAttribute('data-open');
-    isSheetOpen = false;
-}
-
-// ── Envio para a fila (fire-and-forget) ──
-async function submitToQueue() {
-    const urlInput = document.getElementById('queue-yt-url');
-    const langSelect = document.getElementById('queue-language');
-    const artistInput = document.getElementById('queue-artist');
-    const titleInput = document.getElementById('queue-title');
-    const submitBtn = document.getElementById('queue-submit-btn');
-
-    // ── FASE 1: Validação ──
-    const ytUrl = urlInput?.value?.trim();
-    const artist = artistInput?.value?.trim();
-    const title = titleInput?.value?.trim();
-
-    if (!ytUrl || !artist || !title) {
-        showToast('Preencha todos os campos obrigatórios.', 'error');
-        return;
-    }
-
-    if (!ytUrl.includes('youtube.com') && !ytUrl.includes('youtu.be')) {
-        showToast('Insira uma URL válida do YouTube.', 'error');
-        return;
-    }
-
-    const language = langSelect?.value || 'en';
-
-    // ── FASE 2: Estado visual "Buscando" ──
-    if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.textContent = '🔍 Buscando letra...';
-    }
-
-    const tempId = `temp-${++_tempIdCounter}`;
-    const provisionalCard = createProvisionalCard(tempId, title, artist);
-    const listContainer = document.getElementById('queue-items-list');
-    if (listContainer) {
-        // Remove empty state if present
-        const emptyState = listContainer.querySelector('.queue-empty');
-        if (emptyState) emptyState.remove();
-        listContainer.prepend(provisionalCard);
-    }
-
-    // ── FASE 3: Busca automática de letra (Preview apenas) ──
-    let syncedLrc = '';
-    let hasSyncedLrc = false;
-
-    try {
-        const lyricsRes = await fetch(`/api/fetch-lyrics?artist=${encodeURIComponent(artist)}&track=${encodeURIComponent(title)}`);
-        const lyricsData = await lyricsRes.json();
-
-        if (lyricsData.success) {
-            syncedLrc = lyricsData.syncedLyrics || '';
-            if (syncedLrc.trim()) {
-                hasSyncedLrc = true;
-            }
-        }
-    } catch (err) {
-        console.error('Erro ao buscar letra (preview):', err);
-    }
-
-    // ── FASE 4: Envio para o backend ──
-    try {
-        const body = new URLSearchParams({
-            youtube_url: ytUrl,
-            language,
-            title,
-            artist,
-            align_lyrics: 'true', // Centralizado: o backend fará MMS se tiver plain e sem synced
-        });
-
-        const resp = await fetch('/api/queue/add', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: body.toString(),
-        });
-
-        if (!resp.ok) {
-            const err = await resp.json();
-            throw new Error(err.detail || 'Erro ao adicionar à fila.');
-        }
-
-        const data = await resp.json();
-
-        // Atualiza item provisório para estado normal
-        updateProvisionalCardToSuccess(provisionalCard, title, artist, hasSyncedLrc);
-
-        showToast(`✅ "${title}" adicionada à fila!`, 'success');
-
-        // Limpa formulário
-        if (urlInput) urlInput.value = '';
-        if (artistInput) artistInput.value = '';
-        if (titleInput) titleInput.value = '';
-
-        // Atualiza fila — o item provisório será substituído pelo real no próximo poll
-        await pollQueueStatus();
-
-    } catch (err) {
-        updateProvisionalCardToError(provisionalCard, title, artist);
-        showToast(`❌ Erro ao enfileirar: ${err.message}`, 'error');
-    }
-
-    // Reabilita botão
-    if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.textContent = '➕ Adicionar à Fila';
-    }
-}
-
-// ── Cards provisórios (busca de letra) ──
-function createProvisionalCard(tempId, title, artist) {
-    const card = document.createElement('div');
-    card.className = 'queue-item-card';
-    card.dataset.tempId = tempId;
-    card.dataset.status = 'searching';
-    card.innerHTML = `
-        <div class="queue-item-icon" data-status="searching">🔍</div>
-        <div class="queue-item-info">
-            <div class="queue-item-title">${escapeHtml(title)}</div>
-            <div class="queue-item-status" data-status="searching">
-                Buscando letra... <span style="opacity: 0.5;">• ${escapeHtml(artist)}</span>
-            </div>
-        </div>
-    `;
-    return card;
-}
-
-function updateProvisionalCardToSuccess(card, title, artist, hasLrc) {
-    card.dataset.status = 'queued';
-    const badgeHtml = hasLrc
-        ? `<span style="font-size: 0.7rem; font-weight: 700; color: #10b981; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25); padding: 0.15rem 0.4rem; border-radius: 4px; margin-left: 0.5rem; display: inline-block; vertical-align: middle;">LRC</span>`
-        : `<span style="font-size: 0.7rem; font-weight: 700; color: #38bdf8; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.25); padding: 0.15rem 0.4rem; border-radius: 4px; margin-left: 0.5rem; display: inline-block; vertical-align: middle;">Com Letra</span>`;
-    card.innerHTML = `
-        <div class="queue-item-icon" data-status="queued">⏳</div>
-        <div class="queue-item-info">
-            <div class="queue-item-title">${escapeHtml(title)}${badgeHtml}</div>
-            <div class="queue-item-status" data-status="queued">
-                Na fila... <span style="opacity: 0.5;">• ${escapeHtml(artist)}</span>
-            </div>
-        </div>
-    `;
-}
-
-function updateProvisionalCardToError(card, title, artist) {
-    card.dataset.status = 'lyrics-error';
-    card.innerHTML = `
-        <div class="queue-item-icon" data-status="error">❌</div>
-        <div class="queue-item-info">
-            <div class="queue-item-title">${escapeHtml(title)}</div>
-            <div class="queue-item-status" data-status="error">
-                Letra não encontrada <span style="opacity: 0.5;">• ${escapeHtml(artist)}</span>
-            </div>
-        </div>
-        <button class="queue-item-remove" title="Remover da fila">🗑️</button>
-    `;
-    const removeBtn = card.querySelector('.queue-item-remove');
-    if (removeBtn) {
-        removeBtn.addEventListener('click', () => card.remove());
     }
 }
 
@@ -282,28 +80,22 @@ async function pollQueueStatus() {
         const items = data.queue || [];
         const gpuBusy = data.gpu_busy || false;
 
-        // Renderiza nos dois locais: bottom sheet e aba display
-        renderQueueItems('queue-items-list', items);
-        renderQueueItems('queue-display-list', items);
+        LIST_IDS.forEach((id) => renderQueueItems(id, items));
 
         // Atualiza badges de contagem
         updateBadges(items);
 
         // Atualiza indicadores de GPU
-        updateGpuBadge('queue-sheet-gpu-badge', 'queue-sheet-gpu-text', gpuBusy);
         updateGpuBadge('queue-display-gpu-badge', 'queue-display-gpu-text', gpuBusy);
-
-        const sheetResetBtn = document.getElementById('queue-sheet-gpu-reset');
         const displayResetBtn = document.getElementById('queue-display-gpu-reset');
-        if (sheetResetBtn) sheetResetBtn.style.display = gpuBusy ? 'inline-block' : 'none';
-        if (displayResetBtn) displayResetBtn.style.display = gpuBusy ? 'inline-block' : 'none';
+        if (displayResetBtn) displayResetBtn.hidden = !gpuBusy;
 
         // Notifica quando música ficou pronta
         const readyCount = items.filter(i => i.status === 'ready').length;
         if (readyCount > _previousReadyCount && _previousReadyCount >= 0) {
             const newReady = items.filter(i => i.status === 'ready').slice(-1)[0];
             if (newReady) {
-                showToast(`🎉 "${newReady.title}" está pronta para cantar!`, 'success', 6000);
+                showToast(`"${newReady.title}" está pronta para cantar!`, 'success', 6000);
                 // Recarrega lista de músicas para incluir a nova
                 fetchSongs();
             }
@@ -323,14 +115,11 @@ function renderQueueItems(containerId, items) {
     // Filtra apenas itens que não estão "ready" (ou mostra ready por 30s)
     const activeItems = items.filter(i => i.status !== 'ready' || true);
 
-    // Preserve provisional items even when server list is empty
-    const provisionalCards = Array.from(container.querySelectorAll('[data-temp-id]'));
-
-    if (activeItems.length === 0 && provisionalCards.length === 0) {
+    if (activeItems.length === 0) {
         container.innerHTML = `
             <div class="queue-empty">
-                <div class="queue-empty-icon">🎶</div>
-                <p>Nenhuma música na fila ainda.<br>Cole um link do YouTube acima!</p>
+                <img class="queue-empty-icon" src="/assets/art/logo-mark.svg" alt="">
+                <p>Nada sendo processado agora.</p>
             </div>
         `;
         return;
@@ -344,7 +133,6 @@ function renderQueueItems(containerId, items) {
 
     if (needsFullRender) {
         container.innerHTML = '';
-        provisionalCards.forEach(card => container.appendChild(card));
         activeItems.forEach(item => {
             container.appendChild(createQueueItemCard(item));
         });
@@ -358,11 +146,11 @@ function renderQueueItems(containerId, items) {
 
 function getLyricBadge(item) {
     if (item.has_lrc) {
-        return `<span style="font-size: 0.7rem; font-weight: 700; color: #10b981; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25); padding: 0.15rem 0.4rem; border-radius: 4px; margin-left: 0.5rem; display: inline-block; vertical-align: middle;">LRC</span>`;
+        return `<span class="chip" data-tone="sage">LRC</span>`;
     } else if (item.has_plain_lyrics) {
-        return `<span style="font-size: 0.7rem; font-weight: 700; color: #38bdf8; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.25); padding: 0.15rem 0.4rem; border-radius: 4px; margin-left: 0.5rem; display: inline-block; vertical-align: middle;">Com Letra</span>`;
+        return `<span class="chip" data-tone="blue">Com Letra</span>`;
     } else {
-        return `<span style="font-size: 0.7rem; font-weight: 700; color: #f59e0b; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.25); padding: 0.15rem 0.4rem; border-radius: 4px; margin-left: 0.5rem; display: inline-block; vertical-align: middle;">Sem Letra (Whisper)</span>`;
+        return `<span class="chip" data-tone="peach">Sem Letra (Whisper)</span>`;
     }
 }
 
@@ -375,7 +163,7 @@ function createQueueItemCard(item) {
     card.style.setProperty('--progress', `${item.progress_pct}%`);
 
     card.innerHTML = `
-        <div class="queue-item-icon" data-status="${item.status}">${info.icon}</div>
+        <div class="queue-item-icon" data-status="${item.status}">${iconSvg(info.icon)}</div>
         <div class="queue-item-info">
             <div class="queue-item-title">
                 ${escapeHtml(item.title || 'Processando...')}
@@ -383,10 +171,10 @@ function createQueueItemCard(item) {
             </div>
             <div class="queue-item-status" data-status="${item.status}">
                 ${info.label}${item.error_msg ? ' — ' + escapeHtml(item.error_msg) : ''}
-                ${item.added_by ? ` <span style="opacity: 0.5;">• ${escapeHtml(item.added_by)}</span>` : ''}
+                ${item.added_by ? ` <span class="muted">• ${escapeHtml(item.added_by)}</span>` : ''}
             </div>
         </div>
-        <button class="queue-item-remove" data-remove-id="${item.id}" title="Remover da fila">🗑️</button>
+        <button class="queue-item-remove" data-remove-id="${item.id}" title="Remover da fila" aria-label="Remover da fila">${iconSvg('trash')}</button>
     `;
 
     // Event: remover
@@ -413,7 +201,7 @@ function updateQueueItemCard(container, item) {
     const iconEl = card.querySelector('.queue-item-icon');
     if (iconEl) {
         iconEl.dataset.status = item.status;
-        iconEl.textContent = info.icon;
+        iconEl.innerHTML = iconSvg(info.icon);
     }
 
     const titleEl = card.querySelector('.queue-item-title');
@@ -452,22 +240,11 @@ function updateBadges(items) {
     const activeCount = items.filter(i => i.status !== 'ready' && i.status !== 'error').length;
     const totalCount = items.length;
 
-    // FAB badge
-    const fabBadge = document.getElementById('queue-fab-badge');
-    if (fabBadge) {
-        fabBadge.dataset.count = activeCount.toString();
-        fabBadge.textContent = activeCount > 0 ? activeCount.toString() : '';
-    }
-
     // Tab badge (display)
     const tabBadge = document.getElementById('queue-tab-badge');
     if (tabBadge) {
-        if (activeCount > 0) {
-            tabBadge.style.display = 'inline';
-            tabBadge.textContent = activeCount.toString();
-        } else {
-            tabBadge.style.display = 'none';
-        }
+        // vazio = escondido (.tab-badge:empty)
+        tabBadge.textContent = activeCount > 0 ? activeCount.toString() : '';
     }
 }
 

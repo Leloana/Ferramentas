@@ -14,7 +14,7 @@ function readSavedMode() {
     try {
         const saved = localStorage.getItem(STORAGE_KEY);
         return MODES.includes(saved) ? saved : 'both';
-    } catch {
+    } catch (e) {
         return 'both';
     }
 }
@@ -90,7 +90,7 @@ function syncButtons() {
 export function setLyricsScript(mode) {
     if (!MODES.includes(mode)) return;
     state.lyricsScript = mode;
-    try { localStorage.setItem(STORAGE_KEY, mode); } catch { /* sem armazenamento: vale só nesta aba */ }
+    try { localStorage.setItem(STORAGE_KEY, mode); } catch (e) { /* sem armazenamento: vale só nesta aba */ }
     syncButtons();
     repaintAll();
 }

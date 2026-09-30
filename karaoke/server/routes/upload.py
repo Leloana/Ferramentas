@@ -13,7 +13,7 @@ from state import SONGS_DIR
 from utils.lyrics_fetcher import fetch_lyrics
 from utils.prepare import run_reinstall_song
 from utils.text import normalize_lyrics_text, slugify
-from utils.youtube import get_youtube_video_info
+from utils.youtube import get_youtube_video_info, search_youtube
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -55,6 +55,20 @@ async def get_youtube_metadata(url: str):
     
     info = await get_youtube_video_info(url.strip())
     return info
+
+
+@router.get("/api/youtube-search")
+async def youtube_search(q: str, limit: int = 8):
+    """Busca no YouTube pelo nome da música: o usuário não precisa colar link."""
+    query = (q or "").strip()
+    if len(query) < 2:
+        raise HTTPException(status_code=400, detail="Digite o nome da música ou do artista.")
+    try:
+        results = await search_youtube(query, limit=max(1, min(limit, 12)))
+    except Exception as e:
+        logger.error(f"Erro na busca do YouTube: {e}", exc_info=True)
+        raise HTTPException(status_code=502, detail="Não foi possível buscar no YouTube agora.")
+    return {"results": results}
 
 
 @router.get("/api/fetch-lyrics")

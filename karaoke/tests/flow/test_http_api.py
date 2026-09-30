@@ -199,10 +199,18 @@ class TestHttpApiFlow(unittest.TestCase):
         self.assertEqual(response.json()["public_url"], "https://karaoke.myall.net.br")
 
     def test_static_assets_are_served_and_revalidated(self):
-        for path in ("/vendor/lucide.min.js", "/js/main.js", "/js/worklets/audio-processor.js?v=km01"):
+        for path in ("/styles/tokens.css", "/assets/art/logo-mark.svg", "/js/main.js", "/js/worklets/audio-processor.js?v=km01"):
             response = self.client.get(path)
             self.assertEqual(response.status_code, 200, path)
             self.assertEqual(response.headers["cache-control"], "no-cache", path)
+
+    def test_index_is_assembled_from_partials(self):
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn("<!-- @include", response.text)
+        for element_id in ('id="selection-area"', 'id="game-area"', 'id="lobby-seats"', 'id="add-song-modal"'):
+            self.assertIn(element_id, response.text)
+
 
 if __name__ == "__main__":
     unittest.main()

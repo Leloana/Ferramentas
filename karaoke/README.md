@@ -119,8 +119,10 @@ Execute a suíte completa de testes unitários e de integração com o comando:
 ```
 karaoke/
 ├── client/                         # Código estático do frontend (sem build step)
-│   ├── index.html                  # Interface principal (modais e templates HTML)
-│   ├── js/                         # Módulos ES Modules Vanilla JS
+│   ├── index.html                  # Esqueleto; parciais em client/partials/ (montados pelo servidor)
+│   ├── partials/                   # Uma tela/modal por arquivo
+│   ├── assets/art/                 # Artes SVG próprias
+│   ├── js/                         # Módulos ES Modules Vanilla JS (até ES2018, TV antiga)
 │   │   ├── main.js                 # Bootstrap: identifica display vs microfone
 │   │   ├── state.js                # Objeto central de estado compartilhado
 │   │   ├── config.js               # Constantes de configuração do cliente
@@ -128,8 +130,15 @@ karaoke/
 │   │   ├── toast.js                # Notificações toast de UI
 │   │   ├── modal.js                # Gerenciador único de modais (abrir/fechar, ESC, clique fora, botão voltar)
 │   │   ├── tabs.js                 # Helper declarativo de abas (reaproveitado em todos os seletores)
-│   │   ├── modals.js               # Lógica de todos os modais da aplicação
-│   │   ├── selection-view.js       # Tela de seleção de músicas
+│   │   ├── modals.js               # "Adicionar música" (busca no YouTube), editor e pareamento
+│   │   ├── youtube-search.js       # Busca no YouTube pelo nome
+│   │   ├── lobby.js                # Lobby: vagas com microfone + time (dupla/trio)
+│   │   ├── score-bars.js           # Placar por time nas bordas da TV
+│   │   ├── icons.js                # Ícones próprios em SVG
+│   │   ├── select.js               # Select personalizado
+│   │   ├── tv-nav.js               # Navegação por controle remoto
+│   │   ├── compat.js               # Polyfills para TV antiga
+│   │   ├── selection-view.js       # Repertório e lobby da música (capa + cantor)
 │   │   ├── game-view.js            # Renderização da letra e animações de gameplay
 │   │   ├── queue-view.js           # Interface da fila de processamento de músicas
 │   │   ├── mobile-mic-view.js      # Interface do microfone no celular
@@ -143,7 +152,7 @@ karaoke/
 │   │   └── worklets/
 │   │       └── audio-processor.js  # AudioWorklet: coleta PCM Float32 bruto
 │   └── styles/
-│       └── main.css                # Estilos visuais (Neon Glow, BEM)
+│       └── *.css                   # Estilos por área (partitura antiga, tons pastéis)
 ├── docs/                           # Documentação técnica e operacional
 │   ├── architecture/               # Especificações de arquitetura e fluxos de rede
 │   ├── guides/                     # Manuais e playbooks (Guia do Projeto, LRC Tuning)

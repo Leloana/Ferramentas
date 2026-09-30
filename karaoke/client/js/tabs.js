@@ -25,15 +25,29 @@ export function initTabs(containerOrId, { onSelect } = {}) {
 
     const select = (tab, { silent = false } = {}) => {
         container.setAttribute(attr, tab);
+        // O CSS desenha a aba ativa por aria-selected (e leitores de tela anunciam).
+        buttons.forEach((btn) => {
+            btn.setAttribute('aria-selected', String(btn.getAttribute('data-tab') === tab));
+        });
         if (!silent && typeof onSelect === 'function') onSelect(tab);
     };
 
     buttons.forEach((btn) => {
-        btn.addEventListener('click', () => select(btn.getAttribute('data-tab')));
+        btn.addEventListener('click', () => {
+            const changed = container.getAttribute(attr) !== btn.getAttribute('data-tab');
+            select(btn.getAttribute('data-tab'));
+            // aba nova começa do topo: a página, ou o próprio modal que contém as abas
+            if (!changed) return;
+            const scroller = container.closest('.modal-content');
+            if (scroller) scroller.scrollTop = 0;
+            else window.scrollTo(0, 0);
+        });
     });
 
     // Garante um estado inicial: respeita o que já estiver no HTML, senão usa a 1ª aba.
-    if (!container.hasAttribute(attr) && buttons.length) {
+    if (container.hasAttribute(attr)) {
+        select(container.getAttribute(attr), { silent: true });
+    } else if (buttons.length) {
         select(buttons[0].getAttribute('data-tab'), { silent: true });
     }
 

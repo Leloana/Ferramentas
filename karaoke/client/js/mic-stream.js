@@ -3,7 +3,7 @@ import { myRole } from './config.js';
 export async function getMicrophoneStream() {
     const isMobileMic = (myRole === 'mic');
     if (isMobileMic) {
-        console.log("🎤 [Celular como Mic] Forçando a desativação de echoCancellation, noiseSuppression e autoGainControl para alta fidelidade vocal.");
+        console.log("[Celular como Mic] Forçando a desativação de echoCancellation, noiseSuppression e autoGainControl para alta fidelidade vocal.");
     }
 
     const constraintsList = [

@@ -39,17 +39,9 @@ export const dom = {
     get btnPausePlay() { return $('btn-pause-play'); },
     // Multiplayer TV Getters
     get mpSetupContainer() { return $('multiplayer-setup-container'); },
-    get mpGameMode() { return $('mp-game-mode'); },
     get btnScoreMode() { return $('btn-score-mode'); },
     get mpConnectedCount() { return $('mp-connected-count'); },
     get mpQueueCount() { return $('mp-queue-count'); },
-    get slotP1() { return $('slot-p1'); },
-    get slotP2() { return $('slot-p2'); },
-    get slotP3() { return $('slot-p3'); },
-    get slotP4() { return $('slot-p4'); },
-    get slotBoxP2() { return $('slot-box-p2'); },
-    get slotBoxP3() { return $('slot-box-p3'); },
-    get slotBoxP4() { return $('slot-box-p4'); },
     // Multiplayer Mobile Getters
     get mobileRegisterContainer() { return $('mobile-register-container'); },
     get mobileNicknameInput() { return $('mobile-nickname-input'); },
@@ -58,20 +50,6 @@ export const dom = {
     get mobileQueueContainer() { return $('mobile-queue-container'); },
     get mobileQueuePosition() { return $('mobile-queue-position'); },
     get mobileActiveMicContainer() { return $('mobile-active-mic-container'); },
-    // Queue Getters
-    get queueFab() { return $('queue-fab'); },
-    get queueFabBadge() { return $('queue-fab-badge'); },
-    get queueSheet() { return $('queue-sheet'); },
-    get queueSheetOverlay() { return $('queue-sheet-overlay'); },
-    get queueSheetClose() { return $('queue-sheet-close'); },
-    get queueAddForm() { return $('queue-add-form'); },
-    get queueYtUrl() { return $('queue-yt-url'); },
-    get queueLanguage() { return $('queue-language'); },
-    get queueArtist() { return $('queue-artist'); },
-    get queueTitle() { return $('queue-title'); },
-    get queueSubmitBtn() { return $('queue-submit-btn'); },
-    get queueItemsList() { return $('queue-items-list'); },
-    get queueDisplayList() { return $('queue-display-list'); },
 };
 
 export const $id = $;
@@ -79,19 +57,19 @@ export const $id = $;
 let loadingInterval = null;
 let _loadingGen = 0;
 const funnyPhrases = [
-    "Ensinando o Whisper a cantar no tom... 🎙️🤖",
-    "Pedindo educadamente para a RTX 4070 ir mais rápido... ⚡",
-    "Separando a voz dos instrumentos com uma pinça digital... 🎻",
-    "Afiando a agulha virtual do toca-discos... 🎶",
-    "Removendo a tosse do baterista... 🥁",
-    "Subornando os robôs para não desafinarem o playback... 🤖🍬",
-    "Limpando os cabos virtuais para evitar chiado... 🔌",
-    "Whisper está escutando a música em 10x de velocidade... ⏩",
-    "Alinhando as sílabas com precisão cirúrgica... ✂️",
-    "Polindo a faixa de áudio para brilhar na sua caixa de som... ✨",
-    "Esfoliando as ondas sonoras... 🛁",
-    "Desembaraçando as frequências graves... 🎸",
-    "Passando pano nos microfones digitais... 🧼"
+    "Ensinando o Whisper a cantar no tom...",
+    "Pedindo educadamente para a RTX 4070 ir mais rápido...",
+    "Separando a voz dos instrumentos com uma pinça digital...",
+    "Afiando a agulha virtual do toca-discos...",
+    "Removendo a tosse do baterista...",
+    "Subornando os robôs para não desafinarem o playback...",
+    "Limpando os cabos virtuais para evitar chiado...",
+    "Whisper está escutando a música em 10x de velocidade...",
+    "Alinhando as sílabas com precisão cirúrgica...",
+    "Polindo a faixa de áudio para brilhar na sua caixa de som...",
+    "Esfoliando as ondas sonoras...",
+    "Desembaraçando as frequências graves...",
+    "Passando pano nos microfones digitais..."
 ];
 
 export function startLoadingOverlay(title, initialDesc, autoProgress = false) {
@@ -106,12 +84,12 @@ export function startLoadingOverlay(title, initialDesc, autoProgress = false) {
     
     if (autoProgress) {
         dom.loadingStatusDesc.innerHTML = `
-            <div style="font-weight: 700; color: var(--accent); margin-bottom: 0.5rem;" id="loading-action-status">${initialDesc}</div>
-            <div style="font-style: italic; color: var(--dim); min-height: 24px; font-size: 0.9rem;" id="loading-funny-phrase">
+            <div class="loading-action" id="loading-action-status">${initialDesc}</div>
+            <div class="loading-funny" id="loading-funny-phrase">
                 ${funnyPhrases[Math.floor(Math.random() * funnyPhrases.length)]}
             </div>
-            <div style="margin-top: 1rem; font-size: 0.75rem; color: #10b981; font-weight: 600; line-height: 1.4; opacity: 0.95;">
-                ℹ️ Nota: O vocal e a letra são processados em primeiro plano. O Backing Track instrumental está sendo gerado via separação por Inteligência Artificial (Demucs) em segundo plano usando a sua placa NVIDIA RTX!
+            <div class="loading-note">
+                Nota: O vocal e a letra são processados em primeiro plano. O Backing Track instrumental está sendo gerado via separação por Inteligência Artificial (Demucs) em segundo plano usando a sua placa NVIDIA RTX!
             </div>
         `;
         
@@ -127,11 +105,11 @@ export function startLoadingOverlay(title, initialDesc, autoProgress = false) {
             const actionEl = document.getElementById('loading-action-status');
             if (actionEl) {
                 if (timeElapsed < 8) {
-                    actionEl.innerText = "Fase 1/3: Baixando e preparando faixa vocal principal... 🎧";
+                    actionEl.innerText = "Fase 1/3: Baixando e preparando faixa vocal principal...";
                 } else if (timeElapsed < 22) {
-                    actionEl.innerText = "Fase 2/3: Transcrevendo a voz com Whisper AI na GPU RTX... 🎙️🤖";
+                    actionEl.innerText = "Fase 2/3: Transcrevendo a voz com Whisper AI na GPU RTX...";
                 } else {
-                    actionEl.innerText = "Fase 3/3: Mapeando fonemas e alinhando sílabas para o Karaokê... 📝⚡";
+                    actionEl.innerText = "Fase 3/3: Mapeando fonemas e alinhando sílabas para o Karaokê...";
                 }
             }
         }, 3000);

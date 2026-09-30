@@ -28,24 +28,36 @@ graph TD
 ```
 karaoke/
 ├── client/                     # Código da Interface do Usuário (Client-side)
-│   ├── index.html              # Shell HTML (templates, modais e markup)
+│   ├── index.html              # Esqueleto: o servidor troca cada @include pelos parciais
+│   ├── partials/               # Um arquivo por tela/modal (header, selection, game, mobile-mic, modals/*, templates, score-bars)
+│   ├── assets/art/             # Artes SVG próprias (símbolo, textura de papel, pauta, estante vazia...)
 │   ├── styles/
-│   │   └── main.css            # CSS monolítico com classes de estado discretas
+│   │   └── *.css               # Um arquivo por área (tokens, base, layout, songs, game, mobile-mic, modals, queue, states, tv)
 │   └── js/
 │       ├── main.js             # Bootstrap geral do client (TV ou Celular)
+│       ├── compat.js           # Polyfills para navegador de TV antigo (importado primeiro)
 │       ├── state.js            # Objeto central de estado mutável compartilhado
 │       ├── dom.js              # Cache centralizado de elementos DOM via getters
-│       ├── config.js           # Constantes globais e leitura de parâmetros de URL
-│       ├── toast.js            # Notificações visuais flutuantes
+│       ├── config.js           # Constantes globais, parâmetros de URL e detecção de TV (isTvBrowser)
+│       ├── icons.js            # Ícones próprios em SVG (<i data-icon> / iconSvg) — sem emojis nem bibliotecas
+│       ├── select.js           # Select personalizado (substitui o menu nativo; o <select> segue por baixo)
+│       ├── tabs.js             # Helper de abas (data-tabs + aria-selected)
+│       ├── modal.js            # Gerenciador único de modais (ESC, clique fora, botão voltar do navegador)
+│       ├── tv-nav.js           # Controle remoto: setas (navegação espacial), OK, Voltar, Play/Pause
+│       ├── toast.js            # Notificações (no celular só erros)
 │       ├── sync.js             # Sincronização e calibração de latência manual
 │       ├── mic-stream.js       # Fallbacks de constraints de captura de microfone
 │       ├── mic-status.js       # UI de monitoramento de microfones
 │       ├── ws-display.js       # Conexão de WebSocket e handlers do Display (TV)
 │       ├── ws-mic.js           # Conexão de WebSocket e handlers do Mic (Celular)
 │       ├── mobile-mic-view.js  # VU Meter e controles na tela do celular
-│       ├── selection-view.js   # Catálogo de músicas, filtros de busca e render
-│       ├── game-view.js        # Loop de gameplay, animações de lyrics e highlights
-│       ├── modals.js           # Popups de upload (YouTube/Local), LRC editor e pareamento
+│       ├── selection-view.js   # Repertório (2 colunas de artistas), busca, lobby da música (capa + cantor)
+│       ├── lobby.js            # Vagas de cantor: microfone próprio + time A–D (mesmo time = dupla/trio)
+│       ├── score-bars.js       # Barras de placar nas bordas: time em destaque + barrinha de cada membro
+│       ├── game-view.js        # Loop de gameplay, animações de lyrics e highlights, pódio
+│       ├── queue-view.js       # Fila de processamento (aba "Adicionar")
+│       ├── youtube-search.js   # Busca no YouTube pelo nome (passo 1 do "Adicionar música")
+│       ├── modals.js           # "Adicionar música" (só YouTube), editor LRC/meta e pareamento
 │       └── worklets/
 │           └── audio-processor.js # Web Audio Worklet para extração de PCM em baixa latência
 ├── server/                     # Servidor HTTP / WebSocket e Engenharia AI (Server-side)
@@ -137,7 +149,7 @@ Mobile Client / PC Mic         Server WS (ws/room.py)         Score & STT Engine
 ### C. Pipeline de Upload de Música
 Ao adicionar uma música na interface, as rotas sob `routes/upload.py` executam operações encadeadas:
 1.  **Conversão Slug**: Cria um ID seguro de URL convertendo `Título - Artista` para minusculizado e limpo (slug).
-2.  **Aquisição de Áudio**: Baixa faixas separadas (Vocal e Instrumental) do YouTube via `yt-dlp` ou armazena os uploads locais em arquivos de áudio temporários.
+2.  **Aquisição de Áudio**: Baixa faixas separadas (Vocal e Instrumental) do YouTube via `yt-dlp`. Na interface o usuário **busca pelo nome** (`GET /api/youtube-search`, também via `yt-dlp`, sem download) e escolhe um resultado; colar o link continua valendo. O envio de arquivos locais saiu da interface (a rota ainda aceita).
 3.  **Processamento e Alinhamento Temporal**: Os arquivos finais de áudio são processados e salvos como `vocal.mp3` e `backing_track.mp3`, garantindo perfeita sincronia instrumental. Os temporários pesados são deletados imediatamente.
 4.  **Tratamento de Letras**:
     *   *LRC Pronto*: Salva o arquivo de sincronização `lyrics.lrc` e dispara `prepare_song`.
@@ -188,8 +200,17 @@ O frontend lê e interpreta este arquivo JSON para orquestrar as telas, carross�
 
 ### C. Regras de Design e Convenções do Frontend
 *   **Bindings Imutáveis de Módulos ES**: Variáveis de estado mutável cruzado (ex: instâncias ativas de WS, timers de interface, caches de busca) não devem ser exportadas como `let` diretamente no nível do módulo. Use sempre o objeto central compartilhado `state` importado de `js/state.js` para mutações seguras (`state.propriedade = valor`).
-*   **Separação de Estilo**: Nunca mude diretamente propriedades visuais do DOM via JavaScript (ex: `el.style.backgroundColor = 'red'`) para alterar estados visuais discretos. Crie classes de estado específicas no arquivo `styles/main.css` (seguindo a convenção de nomenclatura BEM simplificada, como `.mic-badge--active`, `.btn-mobile-activate--muted`) e utilize estritamente a API `classList` do elemento no código JS para ativá-las ou desativá-las.
+*   **Separação de Estilo**: Nunca mude diretamente propriedades visuais do DOM via JavaScript (ex: `el.style.backgroundColor = 'red'`) para alterar estados visuais discretos. Crie classes de estado específicas no CSS da área (`styles/<área>.css`; visibilidade por estado em `styles/states.css`) (seguindo a convenção de nomenclatura BEM simplificada, como `.mic-badge--active`, `.btn-mobile-activate--muted`) e utilize estritamente a API `classList` do elemento no código JS para ativá-las ou desativá-las.
 *   **Buildless**: O projeto é estritamente Vanilla JS. Não é permitida a adição de empacotadores (Webpack, Vite), superconjuntos (TypeScript) ou frameworks de terceiros.
+*   **HTML em parciais**: `client/index.html` só tem `<!-- @include partials/... -->`; o `GET /` monta a página inteira (`server/utils/html_includes.py`) e entrega numa resposta só (bom para TV). IDs são contrato com o JS: mudou um, procure em `js/`.
+*   **Compatível com TV antiga (Chromium 68+)**: JS até ES2018 — sem `?.`, `??`, `catch {}`, `toggleAttribute`; CSS sem `inset`, `:has()`. Polyfills em `js/compat.js`. Conferir: `for f in client/js/*.js; do npx -y acorn --ecma2018 --module --silent "$f" || echo "$f"; done`.
+*   **Visual "partitura antiga"**: cores só por `var(--...)` de `styles/tokens.css` (pastéis + tinta sépia), cantos retos em tudo (`--radius: 0`).
+*   **Fontes**: `--font-ui` (Inter, sans simples) para tudo que se lê — letra, títulos de música, notas, listas, formulários; `--font-display` (Lora) só no estético — marca, títulos de seção/modal, letra do rank.
+*   **Ícones e emojis**: nenhum emoji na interface e nenhuma biblioteca de ícones. Ícone novo = novo path em `js/icons.js`, usado com `<i data-icon="nome">` ou `iconSvg('nome')`.
+*   **Selects**: nunca o menu nativo; `js/select.js` aprimora todo `<select>` no bootstrap. Mude o valor por `select.value = x` (o botão acompanha).
+*   **Textos**: sem textos explicativos na interface; rótulos curtos. No celular os toasts são só de erro — validação ("faltou algo") usa `showToast(..., 'error')`.
+*   **Navegação**: toda tela tem voltar (botão `Voltar`, seta nos modais, tecla Voltar do controle). Trocar de tela/aba ou abrir modal volta a rolagem ao topo (`setAppState`, `tabs.js`, `modal.js`).
+*   **Preview sem GPU**: `python tools/preview_front.py [--host 0.0.0.0]` serve o front com dados de exemplo (sem WebSocket/áudio); `/?tv=1` força o modo TV, `/?role=mic&room=1234` o celular.
 
 ---
 
@@ -197,6 +218,7 @@ O frontend lê e interpreta este arquivo JSON para orquestrar as telas, carross�
 
 Sempre que realizar uma alteração no ecossistema, valide os seguintes tópicos antes de finalizar a atividade:
 
+1.  [ ] **Front no preview**: mexeu em `client/`? Abra `tools/preview_front.py` no desktop e em largura de celular, e rode a checagem ES2018 acima.
 1.  [ ] **Sem imports circulares**: Certifique-se de que nenhum import no backend foi feito diretamente entre `rooms`, `ws/room` ou as rotas. Qualquer singleton ou configuração de ambiente necessária deve ser importada de `state.py`.
 2.  [ ] **Persistência e Fechamento**: Garanta que todas as tarefas assíncronas do Whisper (`asyncio.create_task`) em `room.py` tenham uma referência forte em `room.pending_tasks` para evitar coleta de lixo precoce e que sejam devidamente finalizadas (`await asyncio.wait_for`) ao receber a mensagem `"audio_ended"`.
 3.  [ ] **Fallback de Hardware**: Ao mexer na engine de transcrição, certifique-se de que a captura de erros `cublas` e `cudnn` está funcional e que ela converte a instância para rodar na CPU caso a biblioteca de CUDA falhe na execução.

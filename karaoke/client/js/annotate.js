@@ -1,14 +1,15 @@
 // Gabarito do cantor: anota cada verso da partida gravada como certo, errado ou
-// cantarolei. Fica atrás do ✎ discreto da tela de fim de jogo — ferramenta de
+// cantarolei. Fica atrás do lápis discreto da tela de fim de jogo — ferramenta de
 // calibração do score, não parte do jogo. Salva em recordings/<id>/gabarito.json.
 import { state } from './state.js';
+import { iconSvg } from './icons.js';
 import { showToast } from './toast.js';
 import { openModal, closeModal } from './modal.js';
 
 const LABELS = [
-    { value: 'certo', icon: '✅', title: 'Cantei certo' },
-    { value: 'errado', icon: '❌', title: 'Errei a letra' },
-    { value: 'cantarolei', icon: '〰️', title: 'Cantarolei / murmurei' },
+    { value: 'certo', icon: 'check', title: 'Cantei certo' },
+    { value: 'errado', icon: 'cross', title: 'Errei a letra' },
+    { value: 'cantarolei', icon: 'hum', title: 'Cantarolei / murmurei' },
 ];
 
 function formatTime(sec) {
@@ -24,7 +25,7 @@ function el(tag, className, text) {
     return node;
 }
 
-// Mostra o ✎ só quando a partida foi gravada (o servidor manda o id no game_over).
+// Mostra o lápis só quando a partida foi gravada (o servidor manda o id no game_over).
 export function showAnnotationButton(recordingId) {
     state.annotateRecordingId = recordingId || null;
     const btn = document.getElementById('btn-annotate-verses');
@@ -50,7 +51,8 @@ function renderList(data, player) {
 
         const choices = el('div', 'annotate-choices');
         for (const { value, icon, title } of LABELS) {
-            const btn = el('button', 'annotate-choice', icon);
+            const btn = el('button', 'annotate-choice');
+            btn.innerHTML = iconSvg(icon);
             btn.type = 'button';
             btn.dataset.label = value;
             btn.title = title;
@@ -86,7 +88,7 @@ async function openAnnotation() {
 
     const select = document.getElementById('annotate-player');
     select.replaceChildren(...data.players.map(p => {
-        const opt = el('option', null, p === 'PC_Local' ? 'PC Local' : p);
+        const opt = el('option', null, p === 'PC_Local' ? 'Mic do dispositivo' : p);
         opt.value = p;
         return opt;
     }));

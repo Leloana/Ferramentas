@@ -1,8 +1,14 @@
 import { state, setAppState } from './state.js';
+import { iconSvg } from './icons.js';
 import { myRoom } from './config.js';
 import { showToast } from './toast.js';
 import { dom } from './dom.js';
 import { fillLine, setLyricsScriptAvailable } from './lyrics-script.js';
+import { verseQuality, replayClass } from './verse-stamp.js';
+
+function escapeHtml(text) {
+    return String(text).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
 
 export function connectMobileMicrophoneWebSocket() {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
@@ -12,8 +18,8 @@ export function connectMobileMicrophoneWebSocket() {
     state.mobileWs.binaryType = 'arraybuffer';
 
     state.mobileWs.onopen = () => {
-        document.getElementById('mobile-song-title').innerText = "Aguardando registro...";
-        document.getElementById('mobile-status-text').innerHTML = `🎙️ Conectado à Sala <span style="color: #a855f7; font-weight: 800;">${myRoom}</span>`;
+        document.getElementById('mobile-song-title').innerText = "Karaoke";
+        document.getElementById('mobile-status-text').innerHTML = `Sala <span class="mic-status__name">${myRoom}</span>`;
     };
 
     const MIC_HANDLERS = {
@@ -22,7 +28,7 @@ export function connectMobileMicrophoneWebSocket() {
             setAppState('registering');
             if (dom.btnMobileRegister) {
                 dom.btnMobileRegister.disabled = false;
-                dom.btnMobileRegister.innerText = "Confirmar Apelido";
+                dom.btnMobileRegister.innerText = "Entrar";
             }
             if (dom.mobileRegisterError) dom.mobileRegisterError.removeAttribute('data-visible');
         },
@@ -36,11 +42,11 @@ export function connectMobileMicrophoneWebSocket() {
         registration_success(data, context) {
             const { state, dom, myRoom } = context;
             state.mobileNickname = data.name;
-            showToast(`Registrado com sucesso como "${data.name}"!`, "success");
+            showToast(`Registrado como "${data.name}"`, "success");
             
             const statusText = document.getElementById('mobile-status-text');
             if (statusText) {
-                statusText.innerHTML = `👤 Apelido: <span style="color: var(--accent); font-weight: 800;">${data.name}</span> (Sala ${myRoom})`;
+                statusText.innerHTML = `<span class="mic-status__name">${escapeHtml(data.name)}</span> · Sala ${myRoom}`;
             }
             
             setAppState('singing');
@@ -49,7 +55,7 @@ export function connectMobileMicrophoneWebSocket() {
             const { dom } = context;
             if (dom.btnMobileRegister) {
                 dom.btnMobileRegister.disabled = false;
-                dom.btnMobileRegister.innerText = "Confirmar Apelido";
+                dom.btnMobileRegister.innerText = "Entrar";
             }
             if (dom.mobileRegisterError) {
                 dom.mobileRegisterError.innerText = data.message;
@@ -68,9 +74,9 @@ export function connectMobileMicrophoneWebSocket() {
             if (lyrText) {
                 lyrText.classList.remove('lyrics-line');
                 if (state.isActiveInGame) {
-                    lyrText.innerHTML = `<span style="color: var(--success); font-weight: 800;">Você está no jogo! 🎤</span><br>Aguardando letras...`;
+                    lyrText.innerHTML = `<span class="mic-note mic-note--good">Você está no jogo</span>Prepare-se`;
                 } else {
-                    lyrText.innerHTML = `<span style="color: var(--dim); font-weight: 700;">Você está assistindo 👀</span><br>Aguardando próxima rodada...`;
+                    lyrText.innerHTML = `<span class="mic-note">Assistindo</span>Próxima rodada`;
                 }
             }
         },
@@ -80,10 +86,10 @@ export function connectMobileMicrophoneWebSocket() {
             if (statusText) {
                 if (data.status === 'paired') {
                     if (state.mobileNickname) {
-                        statusText.innerHTML = `👤 Apelido: <span style="color: var(--accent); font-weight: 800;">${state.mobileNickname}</span> (Sala ${myRoom})`;
+                        statusText.innerHTML = `<span class="mic-status__name">${escapeHtml(state.mobileNickname)}</span> · Sala ${myRoom}`;
                     }
                 } else if (data.status === 'unpaired') {
-                    statusText.innerHTML = `<span style="color: var(--error); font-weight: 800;">⚠️ TV Desconectada (Sala ${myRoom})</span>`;
+                    statusText.innerHTML = `<span class="mic-status--error">TV desconectada (sala ${myRoom})</span>`;
                 }
             }
         },
@@ -120,7 +126,11 @@ export function connectMobileMicrophoneWebSocket() {
                 myTotalScore = pData.total_score;
             }
 
-            document.getElementById('mobile-score-last').textContent = `${myScore}%`;
+            const lastEl = document.getElementById('mobile-score-last');
+            const quality = verseQuality(myScore);
+            lastEl.textContent = `${quality.word} ${myScore}%`;
+            lastEl.dataset.quality = quality.key;
+            replayClass(lastEl, 'seg-score--pulse');
             document.getElementById('mobile-score-total').textContent = `${myTotalScore}%`;
             scoreLine.hidden = false;
         },
@@ -130,9 +140,9 @@ export function connectMobileMicrophoneWebSocket() {
             if (lyrText) {
                 lyrText.classList.remove('lyrics-line');
                 if (state.isActiveInGame) {
-                    lyrText.innerHTML = `🎸 FINALIZANDO APRESENTAÇÃO<br><span style="font-size: 1rem; color: #a855f7; font-weight: 800;">Você deu o seu show! ⚡</span><br><span style="font-size: 0.9rem; color: var(--dim);">Aguardando pontuação final...</span>`;
+                    lyrText.innerHTML = `${iconSvg('fermata')} Fim da música<span class="mic-note">Calculando o placar</span>`;
                 } else {
-                    lyrText.innerHTML = `🎸 Fim da música!<br><span style="font-size: 0.9rem; color: var(--dim);">Aguardando placar final...</span>`;
+                    lyrText.innerHTML = `${iconSvg('double-bar')} Fim da música<span class="mic-note">Calculando o placar</span>`;
                 }
             }
         },
@@ -148,33 +158,28 @@ export function connectMobileMicrophoneWebSocket() {
                     myTotalScore = data.player_scores[state.mobileNickname];
                 }
                 
-                let html = `<div style="display: flex; flex-direction: column; gap: 0.75rem; width: 100%; align-items: center;">`;
-                html += `<span style="font-size: 1.25rem; font-weight: 900; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.2);">🎉 JOGO CONCLUÍDO!</span>`;
+                let html = `<div class="mic-final">`;
+                html += `<span class="mic-final__title">Placar final</span>`;
                 
                 if (state.isActiveInGame) {
-                    html += `<span style="font-size: 0.95rem; color: var(--dim); font-weight: 700;">Sua Média: <span style="color: var(--highlight); font-weight: 900;">${myTotalScore.toFixed(1)}%</span></span>`;
+                    html += `<span class="mic-final__avg">Sua média: <strong>${myTotalScore.toFixed(1)}%</strong></span>`;
                 }
                 
                 if (data.player_scores && Object.keys(data.player_scores).length > 0) {
-                    html += `<div style="width: 100%; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.75rem; margin-top: 0.25rem; display: flex; flex-direction: column; gap: 0.5rem; text-align: left; max-height: 150px; overflow-y: auto; box-sizing: border-box; padding-right: 4px;">`;
+                    html += `<div class="mic-final__list">`;
                     const sortedPlayers = Object.entries(data.player_scores).sort((a, b) => b[1] - a[1]);
                     sortedPlayers.forEach(([name, score], idx) => {
-                        let medal = "🎤";
-                        if (idx === 0) medal = "🥇";
-                        else if (idx === 1) medal = "🥈";
-                        else if (idx === 2) medal = "🥉";
-                        const displayName = name === "PC_Local" ? "💻 PC Local" : name;
+                        const medal = `<span class="place-num">${idx + 1}º</span>`;
+                        const displayName = name === "PC_Local" ? "Mic do dispositivo" : name;
                         const isMe = name === state.mobileNickname;
-                        const weight = isMe ? "800" : "600";
-                        const bg = isMe ? "background: rgba(255,255,255,0.06); padding: 0.25rem 0.5rem; border-radius: 8px;" : "";
-                        html += `<div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: ${weight}; color: #f8fafc; ${bg}">`;
-                        html += `<span>${medal} ${displayName}</span>`;
-                        html += `<span style="color: var(--highlight); font-weight: 800;">${score.toFixed(1)}%</span>`;
+                        html += `<div class="mic-final__row${isMe ? ' mic-final__row--me' : ''}">`;
+                        html += `<span>${medal} ${escapeHtml(displayName)}</span>`;
+                        html += `<span>${score.toFixed(1)}%</span>`;
                         html += `</div>`;
                     });
                     html += `</div>`;
                 } else if (!state.isActiveInGame) {
-                    html += `<span style="font-size: 0.9rem; color: var(--dim); font-weight: 700;">Placar final exibido na TV.</span>`;
+                    html += `<span class="mic-note">Placar na TV</span>`;
                 }
                 html += `</div>`;
                 lyrText.innerHTML = html;
@@ -201,7 +206,7 @@ export function connectMobileMicrophoneWebSocket() {
     };
 
     state.mobileWs.onclose = () => {
-        document.getElementById('mobile-status-text').innerHTML = `<span style="color: var(--error); font-weight: 800;">❌ Conexão Perdida. Reconectando...</span>`;
+        document.getElementById('mobile-status-text').innerHTML = `<span class="mic-status--error">Conexão perdida. Reconectando...</span>`;
         setTimeout(connectMobileMicrophoneWebSocket, 3000);
     };
 }

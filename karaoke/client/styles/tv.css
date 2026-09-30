@@ -1,0 +1,32 @@
+/* ============================================================
+   Navegação por controle remoto / teclado (js/tv-nav.js).
+   html.using-keys: o usuário navega com setas → foco bem visível.
+   html.is-tv: navegador de TV detectado (ou ?tv=1) → tudo maior.
+   :focus (e não :focus-visible) porque TVs antigas não o têm.
+   ============================================================ */
+html.using-keys :focus {
+    outline: 3px solid var(--ink) !important;
+    outline-offset: 3px !important;
+    box-shadow: 0 0 0 7px var(--butter) !important;
+    position: relative;
+    z-index: 5;
+}
+html.using-keys .song-card:focus,
+html.using-keys .artist-group__header:focus { background: rgba(236, 213, 143, 0.55); outline-offset: -3px !important; box-shadow: none !important; }
+html.using-keys .tab-btn:focus { background: var(--butter); color: var(--ink); }
+html.using-keys input[type="range"]:focus { outline-offset: 6px !important; }
+
+/* Toque/mouse: sem contorno de foco */
+html:not(.using-keys) :focus { outline: none; }
+
+/* ---------- TV ---------- */
+html.is-tv { font-size: 20px; }
+html.is-tv body { font-size: 20px; cursor: none; }
+html.is-tv .btn,
+html.is-tv .tab-btn { min-height: 52px; }
+html.is-tv .song-card { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+html.is-tv .song-card__title { font-size: 1.25rem; }
+html.is-tv .artist-group__name { font-size: 1.35rem; }
+html.is-tv .song-card__btn { width: 44px; height: 44px; }
+/* efeitos caros em GPU fraca de TV */
+html.is-tv .carousel-inner { will-change: auto; }

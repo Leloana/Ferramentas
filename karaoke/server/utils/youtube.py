@@ -69,7 +69,6 @@ async def download_youtube_audio(url: str, output_path: Path, ffmpeg_bin_dir: st
 async def get_youtube_video_info(url: str) -> dict:
     """Extrai rapidamente metadados do vídeo do YouTube sem fazer o download."""
     import yt_dlp
-    import re
 
     ydl_opts: dict = {
         "quiet": True,
@@ -84,31 +83,66 @@ async def get_youtube_video_info(url: str) -> dict:
 
     try:
         info = await asyncio.to_thread(_extract)
-        raw_title = info.get("title", "")
-        
-        # Heurística de divisão: Artista - Título com múltiplos separadores comuns
-        separators = [" - ", " – ", " — ", " | ", " ~ ", " : "]
-        artist = ""
-        title = raw_title
-        for sep in separators:
-            if sep in raw_title:
-                parts = raw_title.split(sep, 1)
-                artist = parts[0].strip()
-                title = parts[1].strip()
-                break
-        
-        # Limpar títulos e tags de vídeo comuns
-        # Ex: "Teenagers (Official Music Video)" -> "Teenagers"
-        clean_regex = r"\s*[\(\[][^)]*?(official|video|clip|audio|lyric|karaoke|instrumental|legendado|cover|lyrics|4k|hd|subtitles|traducao|tradução)[^)]*?[\)\]]"
-        
-        title = re.sub(clean_regex, "", title, flags=re.IGNORECASE).strip()
-        artist = re.sub(clean_regex, "", artist, flags=re.IGNORECASE).strip()
-        
-        # Limpar aspas adicionais se houver (ex: '"Teenagers"')
-        title = title.strip('"\'')
-        artist = artist.strip('"\'')
-        
-        return {"artist": artist, "title": title}
+        return split_artist_title(info.get("title", ""))
     except Exception as e:
         logger.error(f"Erro ao extrair info do YouTube: {e}", exc_info=True)
         return {"artist": "", "title": ""}
+
+
+_TITLE_SEPARATORS = [" - ", " – ", " — ", " | ", " ~ ", " : "]
+# Ex: "Teenagers (Official Music Video)" -> "Teenagers"
+_VIDEO_TAG_RE = r"\s*[\(\[][^)]*?(official|oficial|video|vídeo|clip|clipe|audio|áudio|lyric|karaoke|instrumental|legendado|cover|lyrics|4k|hd|subtitles|traducao|tradução|ao vivo|live)[^)]*?[\)\]]"
+
+
+def split_artist_title(raw_title: str, fallback_artist: str = "") -> dict:
+    """Separa "Artista - Título" e limpa tags de vídeo; sem separador, usa o canal."""
+    import re
+
+    artist = ""
+    title = raw_title or ""
+    for sep in _TITLE_SEPARATORS:
+        if sep in title:
+            artist, title = (part.strip() for part in title.split(sep, 1))
+            break
+    if not artist and fallback_artist:
+        artist = re.sub(r"\s*(- Topic|VEVO|Official)$", "", fallback_artist, flags=re.IGNORECASE).strip()
+
+    title = re.sub(_VIDEO_TAG_RE, "", title, flags=re.IGNORECASE).strip().strip("\"'")
+    artist = re.sub(_VIDEO_TAG_RE, "", artist, flags=re.IGNORECASE).strip().strip("\"'")
+    return {"artist": artist, "title": title}
+
+
+async def search_youtube(query: str, limit: int = 8) -> list[dict]:
+    """Busca vídeos no YouTube pelo nome (sem baixar). Rápido: só a listagem."""
+    import yt_dlp
+
+    ydl_opts: dict = {
+        "quiet": True,
+        "no_warnings": True,
+        "skip_download": True,
+        "extract_flat": "in_playlist",
+    }
+
+    def _search() -> dict:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            return ydl.extract_info(f"ytsearch{limit}:{query}", download=False)
+
+    info = await asyncio.to_thread(_search)
+    results = []
+    for entry in (info or {}).get("entries") or []:
+        video_id = entry.get("id")
+        if not video_id or entry.get("ie_key") not in (None, "Youtube"):
+            continue
+        channel = entry.get("channel") or entry.get("uploader") or ""
+        guess = split_artist_title(entry.get("title") or "", fallback_artist=channel)
+        results.append({
+            "id": video_id,
+            "url": f"https://www.youtube.com/watch?v={video_id}",
+            "title": entry.get("title") or "",
+            "channel": channel,
+            "duration": entry.get("duration"),
+            "thumbnail": f"https://i.ytimg.com/vi/{video_id}/mqdefault.jpg",
+            "artist_guess": guess["artist"],
+            "title_guess": guess["title"],
+        })
+    return results

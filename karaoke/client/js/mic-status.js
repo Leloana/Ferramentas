@@ -17,38 +17,40 @@ export function updateMicStatusPanel() {
         badge.classList.add('mic-badge', cls);
     };
 
+    // Botão aceso = fonte de microfone em uso (layout.css: .tab-btn--mic-on)
+    const markButtons = (pcOn, mobileOn) => {
+        if (btnForcePc) btnForcePc.classList.toggle('tab-btn--mic-on', pcOn);
+        if (btnForceMobile) btnForceMobile.classList.toggle('tab-btn--mic-on', mobileOn);
+    };
+
     if (isSoloMobileMode) {
-        dot.style.display = 'none';
+        dot.hidden = true;
         text.innerText = 'Modo Solo (Celular)';
         setBadgeClass('mic-badge--solo');
-        if (btnForcePc) btnForcePc.style.display = 'none';
-        if (btnForceMobile) btnForceMobile.style.display = 'none';
+        if (btnForcePc) btnForcePc.hidden = true;
+        if (btnForceMobile) btnForceMobile.hidden = true;
         return;
     }
 
-    dot.style.display = '';
+    dot.hidden = false;
     dot.classList.add('mic-badge-dot');
 
     if (state.isMobileMicrophoneConnected && state.localStreamForced) {
-        text.innerText = 'PC + Celular';
+        text.innerText = 'Dispositivo + Celular';
         setBadgeClass('mic-badge--both');
-        if (btnForcePc) btnForcePc.style.borderColor = '#3b82f6';
-        if (btnForceMobile) btnForceMobile.style.borderColor = '#a855f7';
+        markButtons(true, true);
     } else if (state.isMobileMicrophoneConnected) {
         text.innerText = 'Celular Ativo';
         setBadgeClass('mic-badge--paired');
-        if (btnForcePc) btnForcePc.style.borderColor = 'rgba(255,255,255,0.15)';
-        if (btnForceMobile) btnForceMobile.style.borderColor = '#a855f7';
+        markButtons(false, true);
     } else if (state.localStreamForced) {
-        text.innerText = 'PC Ativo';
+        text.innerText = 'Mic do dispositivo';
         setBadgeClass('mic-badge--pc');
-        if (btnForcePc) btnForcePc.style.borderColor = '#3b82f6';
-        if (btnForceMobile) btnForceMobile.style.borderColor = 'rgba(255,255,255,0.15)';
+        markButtons(true, false);
     } else {
         text.innerText = 'Sem Mic';
         setBadgeClass('mic-badge--idle');
-        if (btnForcePc) btnForcePc.style.borderColor = 'rgba(255,255,255,0.15)';
-        if (btnForceMobile) btnForceMobile.style.borderColor = 'rgba(255,255,255,0.15)';
+        markButtons(false, false);
     }
 }
 

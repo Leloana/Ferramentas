@@ -1,0 +1,69 @@
+<!-- Editor de informações (meta.json) e letras (.lrc / texto) -->
+<div id="lrc-editor-modal" class="modal-overlay" data-editor-tab="meta" data-tabs="editor-tab">
+    <div class="modal-content admin-modal modal-content--xl">
+        <h2 class="modal-title"><button type="button" class="modal-back" data-close aria-label="Voltar" title="Voltar"><i data-icon="back"></i></button>Informações e letras</h2>
+
+        <div id="editor-youtube-links" class="status-note" data-tone="rose" hidden>
+            <strong><i data-icon="video"></i> YouTube:</strong>
+            <a id="editor-youtube-vocal-link" href="#" target="_blank" rel="noopener noreferrer">Abrir no YouTube</a>
+        </div>
+
+        <div class="segmented">
+            <button type="button" id="btn-tab-meta" data-tab="meta" class="segmented__btn"><i data-icon="settings"></i> Ajustes (meta.json)</button>
+            <button type="button" id="btn-tab-lrc" data-tab="lrc" class="segmented__btn"><i data-icon="lrc-file"></i> Letras (.lrc)</button>
+            <button type="button" id="btn-tab-paste-lyrics" data-tab="paste" class="segmented__btn"><i data-icon="lyrics"></i> Letra</button>
+        </div>
+
+        <form id="lrc-editor-form" class="editor-form">
+            <input type="hidden" id="editor-slug" name="slug">
+            <input type="hidden" id="editor-language" name="language">
+
+            <div id="editor-section-meta" class="form-group">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="editor-meta-title">Título</label>
+                        <input type="text" id="editor-meta-title" class="input" placeholder="Nome da música">
+                    </div>
+                    <div class="form-group">
+                        <label for="editor-meta-artist">Artista / banda</label>
+                        <input type="text" id="editor-meta-artist" class="input" placeholder="Nome do artista ou banda">
+                    </div>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="editor-meta-language">Idioma</label>
+                        <select id="editor-meta-language" class="input">
+                            <option value="pt">Português (pt)</option>
+                            <option value="en">English (en)</option>
+                            <option value="es">Español (es)</option>
+                            <option value="ja">日本語 (ja)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editor-meta-youtube">Link YouTube</label>
+                        <input type="text" id="editor-meta-youtube" class="input" placeholder="https://www.youtube.com/watch?v=...">
+                    </div>
+                </div>
+                <!-- JSON completo, para compatibilidade interna -->
+                <textarea id="editor-meta-textarea" name="meta_json" hidden></textarea>
+            </div>
+
+            <div id="editor-section-lrc" class="form-group">
+                <label for="editor-textarea">Letras sincronizadas (.lrc)</label>
+                <textarea id="editor-textarea" name="lyrics_lrc" class="input input--area input--code"></textarea>
+            </div>
+
+            <div id="editor-section-paste-lyrics" class="form-group">
+                <label for="editor-paste-lyrics-textarea">Letra</label>
+                <textarea id="editor-paste-lyrics-textarea" class="input input--area input--code"
+                    placeholder="Cole a letra original da música aqui..."></textarea>
+            </div>
+
+            <div class="modal-buttons editor-form__buttons">
+                <button type="button" id="btn-close-editor" class="btn btn--ghost">Cancelar</button>
+                <button type="button" id="btn-save-meta" class="btn"><i data-icon="save"></i> Salvar meta</button>
+                <button type="submit" class="btn btn--primary">Gerar segments</button>
+            </div>
+        </form>
+    </div>
+</div>

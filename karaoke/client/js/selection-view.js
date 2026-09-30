@@ -3,12 +3,13 @@ import { dom, startLoadingOverlay, stopLoadingOverlay } from './dom.js';
 import { showToast } from './toast.js';
 import { openModal, closeModal } from './modal.js';
 import { initTabs } from './tabs.js';
+import { ensureDefaultSeat } from './lobby.js';
 
 export async function fetchSongs() {
     try {
         dom.songListEl.innerHTML = `
-            <div style="text-align: center; padding: 2rem; color: var(--dim);">
-                <div style="width: 32px; height: 32px; border: 3px solid #1e293b; border-top: 3px solid var(--accent); border-radius: 50%; margin: 0 auto 1rem; animation: spin 1s linear infinite;"></div>
+            <div class="song-list__loading">
+                <div class="spinner spinner--sm"></div>
                 Carregando músicas...
             </div>
         `;
@@ -27,9 +28,9 @@ export async function fetchSongs() {
         dom.songListEl.innerHTML = `
             <div class="empty-state">
                 <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="var(--error)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="empty-icon"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
-                <h4 style="color: var(--error)">Erro ao conectar com o servidor</h4>
+                <h4 class="form-error">Erro ao conectar com o servidor</h4>
                 <p>Certifique-se de que o backend está rodando localmente.</p>
-                <button id="btn-retry-fetch-songs" class="btn-icon-text" style="margin: 1.5rem auto 0 auto; border-color: rgba(239, 68, 68, 0.4); color: var(--error); padding: 0.5rem 1.2rem;">
+                <button id="btn-retry-fetch-songs" class="btn btn--danger">
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
                     Tentar Novamente
                 </button>
@@ -105,18 +106,31 @@ function groupSongsByArtist(songs) {
 
 /* ── Artist-Grouped Rendering ─────────────────────────────────── */
 
-// Fia o botão de reinstalar/regerar segmentos de um card (clique + hover).
-function wireReinstallButton(btn, song) {
-    if (!btn) return;
-    btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        triggerReinstall(song.id, song.title);
-    });
-    btn.addEventListener('mouseenter', () => { btn.style.transform = 'rotate(180deg)'; });
-    btn.addEventListener('mouseleave', () => { btn.style.transform = 'rotate(0deg)'; });
+// Abre/fecha um grupo animando a altura real do conteúdo (não um max-height
+// gigante, que dava a "travada" ao fechar).
+function toggleArtistGroup(groupDiv, header) {
+    const songs = groupDiv.querySelector('.artist-group__songs');
+    const opening = !groupDiv.classList.contains('artist-group--open');
+    header.setAttribute('aria-expanded', String(opening));
+    clearTimeout(songs._settle);
+
+    // parte sempre de um valor em px (de "none" não dá para animar)
+    songs.style.maxHeight = (opening ? 0 : songs.scrollHeight) + 'px';
+    songs.offsetHeight; // aplica o ponto de partida antes de mudar
+    groupDiv.classList.toggle('artist-group--open', opening);
+    songs.style.maxHeight = (opening ? songs.scrollHeight : 0) + 'px';
+
+    // fim da animação: aberto volta a "sem limite". Temporizador em vez de
+    // transitionend, que nem sempre dispara (aba em segundo plano, TV lenta).
+    songs._settle = setTimeout(() => {
+        if (groupDiv.classList.contains('artist-group--open')) songs.style.maxHeight = 'none';
+    }, 260);
 }
 
-export function renderArtistGroups(songsList) {
+// Com poucos artistas (ou numa busca) os grupos já abrem: menos cliques no controle da TV.
+const AUTO_EXPAND_MAX_GROUPS = 3;
+
+export function renderArtistGroups(songsList, { expandAll = false } = {}) {
     dom.songListEl.innerHTML = '';
 
     if (songsList.length === 0) {
@@ -132,23 +146,32 @@ export function renderArtistGroups(songsList) {
 
     const groups = groupSongsByArtist(songsList);
     const tpl = document.getElementById('song-card-tpl');
+    const openGroups = expandAll || groups.length <= AUTO_EXPAND_MAX_GROUPS;
 
-    groups.forEach(group => {
+    // Duas colunas independentes: 1ª metade (A→…) à esquerda, 2ª à direita.
+    // Abrir um grupo não empurra a outra coluna (em tela estreita elas empilham).
+    const columns = [document.createElement('div'), document.createElement('div')];
+    columns.forEach((col) => { col.className = 'song-list__col'; dom.songListEl.appendChild(col); });
+    const half = Math.ceil(groups.length / 2);
+
+    groups.forEach((group, groupIdx) => {
         // Container do artista
         const groupDiv = document.createElement('div');
-        groupDiv.className = 'artist-group';
+        groupDiv.className = openGroups ? 'artist-group artist-group--open' : 'artist-group';
 
         // Header do artista
         const header = document.createElement('div');
         header.className = 'artist-group__header';
+        header.tabIndex = 0;
+        header.setAttribute('role', 'button');
         header.innerHTML = `
             <svg class="artist-group__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            <span class="artist-group__name">${group.artist}</span>
+            <span class="artist-group__name"></span>
             <span class="artist-group__count">${group.songs.length}</span>
         `;
-        header.addEventListener('click', () => {
-            groupDiv.classList.toggle('artist-group--open');
-        });
+        header.querySelector('.artist-group__name').textContent = group.artist;
+        header.setAttribute('aria-expanded', String(openGroups));
+        header.addEventListener('click', () => toggleArtistGroup(groupDiv, header));
         groupDiv.appendChild(header);
 
         // Grid de músicas
@@ -162,25 +185,23 @@ export function renderArtistGroups(songsList) {
             const artistEl = frag.querySelector('.song-card__artist');
             const editBtn = frag.querySelector('.song-card__edit-btn');
             const deleteBtn = frag.querySelector('.song-card__delete-btn');
-            const reinstallBtn = frag.querySelector('.song-card__reinstall-btn');
 
             titleEl.innerText = song.title;
             artistEl.innerText = song.artist || "Artista Desconhecido";
 
-            // Botão de reinstalar/regerar segmentos disponível em todos os cards
-            wireReinstallButton(reinstallBtn, song);
-
             if (song.is_ready === false) {
                 // Música pendente: sem clique para jogar, com badge. Mantém só o reinstalar.
-                card.style.cursor = 'default';
-                card.style.opacity = '0.7';
+                card.classList.add('song-card--pending');
+                card.removeAttribute('role');
+                card.tabIndex = -1;
 
                 const badge = document.createElement('span');
                 badge.innerText = 'Pendente';
-                badge.style.cssText = 'font-size: 0.7rem; font-weight: 700; color: #f97316; background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.25); padding: 0.15rem 0.4rem; border-radius: 4px; margin-left: 0.5rem; display: inline-block; vertical-align: middle;';
-                artistEl.appendChild(badge);
+                badge.className = 'chip';
+                badge.dataset.tone = 'peach';
+                titleEl.appendChild(badge);
 
-                // Remove edit/delete; o reinstalar (template) permanece
+                // Música ainda processando: sem editar/apagar
                 if (editBtn) editBtn.remove();
                 if (deleteBtn) deleteBtn.remove();
             } else {
@@ -214,14 +235,27 @@ export function renderArtistGroups(songsList) {
         });
 
         groupDiv.appendChild(songsGrid);
-        dom.songListEl.appendChild(groupDiv);
+        columns[groupIdx < half ? 0 : 1].appendChild(groupDiv);
     });
+}
+
+// Capa do álbum no lobby (GET /api/songs/<id>/cover); some se não houver
+function showSongCover(songId) {
+    const img = document.getElementById('current-song-cover');
+    if (!img) return;
+    img.hidden = true;
+    img.onload = () => { img.hidden = false; };
+    img.onerror = () => { img.hidden = true; };
+    img.src = `/api/songs/${encodeURIComponent(songId)}/cover`;
 }
 
 export function selectSong(song) {
     state.selectedSongId = song.id;
     document.getElementById('current-song-title').innerText = song.title;
+    document.getElementById('current-song-artist').innerText = song.artist || '';
+    showSongCover(song.id);
     setAppState('waiting');
+    ensureDefaultSeat();
     dom.audioPlayer.src = `/songs/${song.id}/audio`;
 
     const savedVolume = localStorage.getItem('karaoke_backing_volume');
@@ -271,16 +305,19 @@ export async function loadAndOpenLrcEditor(slug) {
             const metaArtist = document.getElementById('editor-meta-artist');
             const metaLanguage = document.getElementById('editor-meta-language');
             const metaYoutube = document.getElementById('editor-meta-youtube');
-            if (metaTitle) metaTitle.value = metaParsed?.meta?.title || '';
-            if (metaArtist) metaArtist.value = metaParsed?.meta?.artist || '';
-            if (metaYoutube) metaYoutube.value = metaParsed?.audio?.youtube_vocal_url || metaParsed?.audio?.youtube_backing_url || '';
+            const metaInfo = (metaParsed && metaParsed.meta) || {};
+            const metaAudio = (metaParsed && metaParsed.audio) || {};
+            const metaLyrics = (metaParsed && metaParsed.lyrics) || {};
+            const ytUrl = metaAudio.youtube_vocal_url || metaAudio.youtube_backing_url || '';
+            if (metaTitle) metaTitle.value = metaInfo.title || '';
+            if (metaArtist) metaArtist.value = metaInfo.artist || '';
+            if (metaYoutube) metaYoutube.value = ytUrl;
             if (metaLanguage) {
-                const lang = metaParsed?.meta?.language || 'pt';
+                const lang = metaInfo.language || 'pt';
                 // Tenta selecionar a opção correspondente; se não existir, adiciona dinamicamente
-                let found = false;
-                for (const opt of metaLanguage.options) {
-                    if (opt.value === lang) { opt.selected = true; found = true; break; }
-                }
+                // via .value: o select personalizado (select.js) acompanha
+                const found = Array.prototype.some.call(metaLanguage.options, (opt) => opt.value === lang);
+                if (found) metaLanguage.value = lang;
                 if (!found && lang) {
                     const newOpt = document.createElement('option');
                     newOpt.value = lang;
@@ -290,27 +327,22 @@ export async function loadAndOpenLrcEditor(slug) {
                 }
             }
 
-            if (dom.lrcEditorForm) {
-                dom.lrcEditorForm.setAttribute('data-editor-tab', 'meta');
-            }
+            // Reabre sempre na aba de ajustes (meta.json)
+            const btnTabMeta = document.getElementById('btn-tab-meta');
+            if (btnTabMeta) btnTabMeta.click();
 
             // Popula a área de texto de colar letra
             const pasteArea = document.getElementById('editor-paste-lyrics-textarea');
             if (pasteArea) {
-                pasteArea.value = metaParsed?.lyrics?.plain_lyrics || '';
+                pasteArea.value = metaLyrics.plain_lyrics || '';
             }
 
             // Popula link do YouTube
             const ytLinksDiv = document.getElementById('editor-youtube-links');
             const ytLink = document.getElementById('editor-youtube-vocal-link');
             if (ytLinksDiv && ytLink) {
-                const ytUrl = metaParsed?.audio?.youtube_vocal_url || metaParsed?.audio?.youtube_backing_url || '';
-                if (ytUrl) {
-                    ytLink.href = ytUrl;
-                    ytLinksDiv.style.display = 'block';
-                } else {
-                    ytLinksDiv.style.display = 'none';
-                }
+                if (ytUrl) ytLink.href = ytUrl;
+                ytLinksDiv.hidden = !ytUrl;
             }
 
             openModal(dom.lrcEditorModal);
@@ -337,87 +369,10 @@ export function initSearch() {
             normalizeText(song.title).includes(query) ||
             normalizeText(song.artist).includes(query)
         );
-        renderArtistGroups(filtered);
+        renderArtistGroups(filtered, { expandAll: query.length > 0 });
     };
 
     initSelectionTabs();
-}
-
-export async function triggerReinstall(songId, songTitle) {
-    if (dom.lrcEditorModal) closeModal(dom.lrcEditorModal);
-
-    // Procura a música no state para pegar o artista correto
-    const song = state.allSongs?.find(s => s.id === songId);
-    const artist = song ? song.artist : '';
-    const title = song ? song.title : songTitle;
-
-    let hasSyncedLrc = false;
-
-    // Busca rápida de preview de letra
-    try {
-        const lyricsRes = await fetch(`/api/fetch-lyrics?artist=${encodeURIComponent(artist)}&track=${encodeURIComponent(title)}`);
-        const lyricsData = await lyricsRes.json();
-        if (lyricsData.success && lyricsData.syncedLyrics) {
-            hasSyncedLrc = true;
-        }
-    } catch (err) {
-        console.error('Erro ao verificar letras na API para reinstall:', err);
-    }
-
-    let choice = null;
-    if (hasSyncedLrc) {
-        // Se encontrou o .lrc via API, não abre o modal de escolha pro/flash!
-        // Segue direto para o reinstall (align_lyrics = false, pois usará o .lrc da API).
-        choice = 'flash'; 
-    } else {
-        // Caso contrário, abre o modal de escolha
-        choice = await promptGenerationOptions();
-        if (!choice) {
-            if (dom.lrcEditorModal && document.getElementById('editor-slug')?.value === songId) {
-                openModal(dom.lrcEditorModal);
-            }
-            return;
-        }
-    }
-
-    const alignLyrics = (choice === 'pro');
-
-    const gen = startLoadingOverlay("Reinstalando...", "Executando processo de download, separação Demucs (GPU) e alinhamento Whisper... 🔄🎧", true);
-
-    try {
-        const body = new URLSearchParams({
-            title,
-            artist,
-            align_lyrics: alignLyrics,
-            clean_existing: 'true',
-        });
-
-        const response = await fetch(`/api/queue/add`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: body.toString(),
-        });
-
-        if (!response.ok) {
-            const err = await response.json();
-            throw new Error(err.detail || "Erro ao reinstalar");
-        }
-
-        const data = await response.json();
-        stopLoadingOverlay(gen);
-        showToast(data.message || "Música adicionada à fila para reinstalação!", "success");
-        
-        // Abre a aba da Fila para o usuário acompanhar o progresso
-        const queueTabBtn = document.getElementById('tab-btn-queue');
-        if (queueTabBtn) queueTabBtn.click();
-
-    } catch (error) {
-        stopLoadingOverlay(gen);
-        showToast("Erro ao reinstalar: " + error.message, "error");
-        if (dom.lrcEditorModal && document.getElementById('editor-slug')?.value === songId) {
-            openModal(dom.lrcEditorModal);
-        }
-    }
 }
 
 export function initSelectionTabs() {

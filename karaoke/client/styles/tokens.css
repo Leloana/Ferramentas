@@ -1,0 +1,88 @@
+/* ============================================================
+   Tokens — "Partitura antiga": papel envelhecido, tinta sépia,
+   tons pastéis e cantos retos. Todas as cores do app saem daqui.
+   Os nomes legados (--accent, --dim, --highlight, --success...)
+   continuam existindo porque o JS monta HTML usando var(--x).
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    /* Papel */
+    --paper: #f4ecd8;
+    --paper-light: #f9f4e6;
+    --paper-2: #efe4c9;
+    --paper-3: #e8dcc0;
+    --fold: #d9c7a1;
+
+    /* Tinta */
+    --ink: #3b3024;
+    --ink-2: #6b5a45;
+    --ink-3: #8f7c62;
+    --staff: #b9a684;
+
+    /* Pastéis (fundos) */
+    --blue: #a9c1d9;
+    --rose: #e3b5a4;
+    --sage: #a8c3a0;
+    --butter: #ecd58f;
+    --lavender: #c3b4d6;
+    --peach: #f0c39c;
+
+    /* Pastéis "em tinta" (texto sobre papel, contraste AA) */
+    --blue-ink: #3f6182;
+    --rose-ink: #9c4a3c;
+    --sage-ink: #466841;
+    --butter-ink: #7d5f14;
+    --lavender-ink: #5f4d80;
+    --peach-ink: #8f5424;
+
+    /* Semânticos (nomes legados usados pelo JS) */
+    --bg: var(--paper);
+    --card: var(--paper-light);
+    --card-border: var(--fold);
+    --text: var(--ink);
+    --dim: var(--ink-2);
+    --accent: var(--blue-ink);
+    --highlight: var(--butter-ink);
+    --success: var(--sage-ink);
+    --error: var(--rose-ink);
+    --warning: var(--peach-ink);
+    --marker: var(--butter);          /* marca-texto da palavra cantada */
+    --track: rgba(59, 48, 36, 0.10);  /* trilho de sliders/barras */
+    --accent-gradient: var(--ink);    /* legado: antes era o degradê neon */
+
+    /* Jogadores */
+    --p1: var(--blue);   --p1-ink: var(--blue-ink);
+    --p2: var(--rose);   --p2-ink: var(--rose-ink);
+    --p3: var(--sage);   --p3-ink: var(--sage-ink);
+    --p4: var(--butter); --p4-ink: var(--butter-ink);
+
+    /* Tipografia */
+    /* Leitura (letra, títulos de música, notas, listas, formulários): sans simples.
+       Serifada de gravura só no que é estético (marca, títulos de seção, rank). */
+    --font-ui: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans JP', 'Hiragino Sans', sans-serif;
+    --font-display: 'Lora', Georgia, 'Times New Roman', serif;
+    --font-code: ui-monospace, 'SF Mono', Consolas, 'Liberation Mono', 'Courier New', monospace;
+
+    /* Forma: cantos retos em tudo (só pontos de status são redondos) */
+    --radius: 0;
+    --border: 1.5px solid var(--ink);
+    --hairline: 1px solid var(--fold);
+
+    /* Sombras de papel */
+    --shadow-sheet: 0 1px 0 rgba(59, 48, 36, 0.06), 0 10px 28px -14px rgba(59, 48, 36, 0.45);
+    --shadow-lift: 3px 3px 0 var(--ink);
+    --shadow-glow: none;      /* legado */
+    --shadow-premium: var(--shadow-sheet); /* legado */
+
+    /* Texturas (arte em /assets/art, desenhada pelo Codex) */
+    --tex-paper: url('/assets/art/paper-texture.svg');
+    --staff-lines: repeating-linear-gradient(to bottom,
+        transparent 0, transparent 11px,
+        rgba(185, 166, 132, 0.35) 11px, rgba(185, 166, 132, 0.35) 12px);
+
+    /* Medidas */
+    --gutter: clamp(0.75rem, 2.5vw, 2rem);
+    --tabbar-h: 64px;
+    --focus-ring: 0 0 0 3px var(--paper), 0 0 0 6px var(--ink);
+}

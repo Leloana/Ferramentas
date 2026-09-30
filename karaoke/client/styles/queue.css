@@ -1,0 +1,134 @@
+/* ============================================================
+   Aba "Adicionar": botão de adicionar música + fila de processamento.
+   ============================================================ */
+/* Aba "Adicionar": botão grande no topo, fila logo abaixo */
+.add-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem 1rem;
+    border: 1px dashed var(--staff);
+    background: var(--paper);
+    text-align: center;
+}
+.add-hero__btn { min-width: 260px; }
+
+/* Itens */
+.queue-tab-header { display: flex; align-items: center; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1rem; }
+.queue-tab-header .queue-items-title { margin-right: auto; }
+.queue-items-list { display: flex; flex-direction: column; gap: 0.6rem; }
+.queue-items-title {
+    margin-bottom: 0.4rem;
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
+    text-align: left;
+}
+.queue-item-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 0.9rem;
+    overflow: hidden;
+    background: var(--paper);
+    border: var(--hairline);
+    border-left: 4px solid var(--ink-3);
+    animation: queueItemIn 0.3s ease-out;
+}
+@keyframes queueItemIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.queue-item-card::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: var(--progress, 0%);
+    background: var(--blue-ink);
+    transition: width 0.5s ease;
+}
+.queue-item-card[data-status="ready"] { border-left-color: var(--sage-ink); }
+.queue-item-card[data-status="error"],
+.queue-item-card[data-status="lyrics-error"] { border-left-color: var(--rose-ink); background: rgba(227, 181, 164, 0.18); }
+.queue-item-card[data-status="searching"],
+.queue-item-card[data-status="downloading"],
+.queue-item-card[data-status="aligning"] { border-left-color: var(--blue-ink); }
+.queue-item-card[data-status="separating"] { border-left-color: var(--lavender-ink); }
+.queue-item-card[data-status="awaiting_alignment"] { border-left-color: var(--peach-ink); }
+
+.queue-item-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border: 1px solid var(--fold);
+    background: var(--paper-light);
+    font-size: 1.05rem;
+}
+.queue-item-icon[data-status="downloading"],
+.queue-item-icon[data-status="aligning"],
+.queue-item-icon[data-status="searching"] { background: var(--blue); animation: spin 1.5s linear infinite; }
+.queue-item-icon[data-status="separating"] { background: var(--lavender); animation: spin 2s linear infinite; }
+.queue-item-icon[data-status="awaiting_alignment"] { background: var(--peach); animation: pulse 1.5s infinite alternate; }
+.queue-item-icon[data-status="finalizing"] { background: var(--sage); animation: spin 1s linear infinite; }
+.queue-item-icon[data-status="ready"] { background: var(--sage); }
+.queue-item-icon[data-status="error"] { background: var(--rose); }
+
+.queue-item-info { flex: 1; min-width: 0; text-align: left; }
+.queue-item-title { font-weight: 700; font-size: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.queue-item-status { margin-top: 0.1rem; font-family: var(--font-ui); font-size: 0.75rem; color: var(--dim); }
+.queue-item-status[data-status="downloading"],
+.queue-item-status[data-status="aligning"] { color: var(--blue-ink); }
+.queue-item-status[data-status="separating"] { color: var(--lavender-ink); }
+.queue-item-status[data-status="awaiting_alignment"] { color: var(--peach-ink); }
+.queue-item-status[data-status="finalizing"],
+.queue-item-status[data-status="ready"] { color: var(--sage-ink); }
+.queue-item-status[data-status="error"] { color: var(--rose-ink); }
+
+.queue-item-icon .ico { width: 20px; height: 20px; }
+.queue-item-remove .ico { width: 18px; height: 18px; }
+.queue-item-remove { flex-shrink: 0; color: var(--ink-2); padding: 0.3rem 0.45rem; background: none; border: 1px solid transparent; border-radius: var(--radius); font-size: 1rem; cursor: pointer; }
+.queue-item-remove:hover { border-color: var(--rose-ink); background: rgba(227, 181, 164, 0.35); }
+
+.queue-empty { padding: 2rem 1rem; color: var(--dim); text-align: center; }
+.queue-empty-icon { display: block; width: 56px; height: 56px; margin: 0 auto 0.5rem; opacity: 0.45; }
+
+/* GPU */
+.queue-gpu-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid currentColor;
+    font-family: var(--font-ui);
+    font-size: 0.7rem;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+.queue-gpu-badge[data-busy="false"] { color: var(--sage-ink); background: rgba(168, 195, 160, 0.3); }
+.queue-gpu-badge[data-busy="true"] { color: var(--peach-ink); background: rgba(240, 195, 156, 0.35); }
+.queue-gpu-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.queue-gpu-badge[data-busy="true"] .queue-gpu-dot { animation: pulse-dot 1.4s infinite alternate; }
+.queue-gpu-reset-btn {
+    padding: 0.2rem 0.6rem;
+    background: var(--rose);
+    border: 1px solid var(--rose-ink);
+    border-radius: var(--radius);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: 0.7rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+@media (max-width: 700px) {
+    .add-hero__btn { width: 100%; min-width: 0; }
+}

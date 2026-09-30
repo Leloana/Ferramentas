@@ -1,6 +1,7 @@
 """Rotas HTTP simples: listagem, audio backing, delete, get-ip, index."""
 from __future__ import annotations
 
+import asyncio
 import logging
 import os
 import shutil
@@ -8,9 +9,11 @@ import socket
 from pathlib import Path
 
 from fastapi import APIRouter, HTTPException, Response
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 
 from state import SONGS_DIR, song_manager, queue_manager
+from utils.cover import find_cover
+from utils.html_includes import render_page
 from utils.http import set_no_cache
 
 logger = logging.getLogger(__name__)
@@ -20,9 +23,11 @@ CLIENT_DIR = Path(__file__).resolve().parent.parent.parent / "client"
 
 
 @router.get("/")
-async def get_index(response: Response):
+async def get_index():
+    # index.html é um esqueleto: os parciais de client/partials/ entram aqui.
+    response = HTMLResponse(render_page(CLIENT_DIR))
     set_no_cache(response)
-    return FileResponse(CLIENT_DIR / "index.html")
+    return response
 
 
 @router.get("/songs")
@@ -40,6 +45,18 @@ async def get_song(song_id: str, response: Response):
         raise HTTPException(status_code=404, detail="Música não encontrada")
     return data
 
+
+
+@router.get("/api/songs/{song_id}/cover")
+async def get_song_cover(song_id: str):
+    """Capa do álbum (iTunes ou miniatura do YouTube), baixada na 1ª vez e guardada na pasta."""
+    song_dir = (SONGS_DIR / song_id).resolve()
+    if SONGS_DIR.resolve() not in song_dir.parents:
+        raise HTTPException(status_code=404, detail="Música não encontrada")
+    cover = await asyncio.to_thread(find_cover, song_dir)
+    if not cover:
+        raise HTTPException(status_code=404, detail="Sem capa")
+    return FileResponse(cover, media_type="image/jpeg", headers={"Cache-Control": "max-age=86400"})
 
 
 @router.get("/songs/{song_id}/audio")

@@ -1,0 +1,58 @@
+<!-- Tela inicial (TV/PC): repertório e fila, com abas.
+     No celular a barra de abas vira uma barra fixa no rodapé. -->
+<section id="selection-area" data-tabs="active-tab">
+    <div class="selection-toolbar">
+        <h1 class="section-title">
+            <span class="section-title__text">Repertório</span>
+            <!-- Status do microfone ativo -->
+            <span id="mic-active-badge" class="mic-badge mic-badge--idle">
+                <span id="mic-badge-dot" class="mic-badge-dot"></span>
+                <span id="mic-badge-text">Sem Mic</span>
+            </span>
+        </h1>
+    </div>
+
+    <nav class="app-tabbar" aria-label="Navegação">
+        <div class="app-tabbar__tabs" role="tablist">
+            <button type="button" id="tab-btn-songs" data-tab="songs" class="tab-btn" role="tab">
+                <i data-icon="songs"></i><span class="tab-btn__label">Músicas</span>
+            </button>
+            <button type="button" id="tab-btn-queue" data-tab="queue" class="tab-btn" role="tab">
+                <i data-icon="add-box"></i><span class="tab-btn__label">Adicionar</span>
+                <span id="queue-tab-badge" class="tab-badge"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Aba: Músicas -->
+    <div id="songs-tab-content" class="tab-panel" role="tabpanel">
+        <div class="search-container">
+            <i data-icon="search" class="search-container__icon"></i>
+            <input type="text" id="search-input" class="input search-input" placeholder="Buscar por título ou artista..." autocomplete="off">
+        </div>
+        <div id="song-list" class="song-list">Carregando músicas...</div>
+    </div>
+
+    <!-- Aba: Adicionar (botão + fila de processamento) -->
+    <div id="queue-tab-content" class="tab-panel" role="tabpanel">
+        <div class="add-hero">
+            <button type="button" id="btn-open-add-song" class="btn btn--primary btn--lg add-hero__btn">
+                <i data-icon="add"></i> Adicionar música
+            </button>
+        </div>
+        <div class="queue-tab-header">
+            <span class="queue-items-title">Em processamento</span>
+            <span id="queue-display-gpu-badge" class="queue-gpu-badge" data-busy="false">
+                <span class="queue-gpu-dot"></span>
+                <span id="queue-display-gpu-text">GPU Livre</span>
+            </span>
+            <button id="queue-display-gpu-reset" class="queue-gpu-reset-btn" title="Liberar GPU travada manualmente" hidden>Destravar</button>
+        </div>
+        <div id="queue-display-list" class="queue-items-list">
+            <div class="queue-empty">
+                <img class="queue-empty-icon" src="/assets/art/logo-mark.svg" alt="">
+                <p>Nada sendo processado agora.</p>
+            </div>
+        </div>
+    </div>
+</section>

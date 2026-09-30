@@ -1,3 +1,4 @@
+import './compat.js';
 import { state, setAppState } from './state.js';
 import { dom } from './dom.js';
 import { myRole, myRoom, isSoloMobileMode } from './config.js';
@@ -15,6 +16,11 @@ import { initQueueView } from './queue-view.js';
 import { openModal, closeModal } from './modal.js';
 import { initAnnotation } from './annotate.js';
 import { initLyricsScriptControls } from './lyrics-script.js';
+import { renderIcons } from './icons.js';
+import { initTabs } from './tabs.js';
+import { initTvNav } from './tv-nav.js';
+import { enhanceSelects } from './select.js';
+import { initLobby, validateLobby } from './lobby.js';
 
 function bootstrap() {
     const appEl = document.getElementById('app');
@@ -22,8 +28,14 @@ function bootstrap() {
         appEl.setAttribute('data-role', myRole);
     }
 
+    renderIcons();
+    enhanceSelects();
+    initTvNav();
+
     if (myRole === 'mic') {
         setAppState('registering');
+        initMicTabs();
+        initModals(); // "Adicionar música" padrão também no celular-microfone
 
         const roomIdEl = document.getElementById('mobile-room-id');
         if (roomIdEl) roomIdEl.innerText = myRoom;
@@ -55,18 +67,18 @@ function bootstrap() {
                 state.isMobileMicrophoneConnected = false;
                 state.micSourceMode = 'pc';
                 updateMicStatusPanel();
-                showToast("Microfone do PC ativado e pronto para cantar!", "success");
+                showToast("Microfone do dispositivo ativado!", "success");
             } catch (e) {
                 console.error("Erro ao ativar microfone local:", e);
                 state.localStreamForced = false;
                 updateMicStatusPanel();
 
                 if (e.name === 'NotAllowedError' || e.name === 'PermissionDeniedError') {
-                    showToast("Microfone bloqueado! Clique no ícone de CADEADO 🔒 ou MICROFONE 🎤 na barra de endereços (lado esquerdo) e mude para 'Permitir'.", "error", 10000);
+                    showToast("Microfone bloqueado! Clique no ícone de cadeado ou de microfone na barra de endereços (lado esquerdo) e mude para 'Permitir'.", "error", 10000);
                 } else if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
                     showToast("O navegador bloqueia microfone em conexões HTTP sem fio. Acesse via http://localhost:8000/ no PC para liberar!", "error", 12000);
                 } else {
-                    showToast("Não foi possível acessar o microfone do PC: " + e.message, "error");
+                    showToast("Não foi possível acessar o microfone do dispositivo: " + e.message, "error");
                 }
             }
         };
@@ -75,6 +87,7 @@ function bootstrap() {
     initSyncControls();
     initGameControls();
     initModals();
+    initLobby();
     initAnnotation();
     initLyricsScriptControls();
     initSearch();
@@ -82,6 +95,8 @@ function bootstrap() {
     initHomeQrcode();
 
     dom.btnBack.onclick = resetGameState;
+    const headerBack = document.getElementById('btn-header-back');
+    if (headerBack) headerBack.onclick = () => dom.btnBack.click();
     dom.btnExit.onclick = resetGameState;
     if (dom.btnExitSidebar) {
         dom.btnExitSidebar.onclick = resetGameState;
@@ -90,6 +105,7 @@ function bootstrap() {
     dom.btnStart.onclick = async () => {
         const seen = localStorage.getItem('karaoke_onboarding_seen');
         const doStart = async () => {
+            if (!validateLobby()) return;
             dom.btnStart.disabled = true;
             dom.btnStart.innerText = 'PREPARANDO...';
             try {
@@ -141,12 +157,28 @@ async function initHomeQrcode() {
 
     // Don't show QR on mobile devices acting as display
     if (isSoloMobileMode) {
-        qrcodePanel.style.display = 'none';
+        qrcodePanel.hidden = true;
         return;
     }
 
     const homeUrl = `${await resolvePublicOrigin()}/?open=add-song`;
     qrcodeImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(homeUrl)}`;
+}
+
+// Abas do celular-microfone (Microfone | Adicionar). O atributo vai também no
+// #app porque as regras de estado em states.css partem do #app.
+function initMicTabs() {
+    const appEl = document.getElementById('app');
+    document.querySelectorAll('.js-open-add-song').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const open = document.getElementById('btn-open-add-song');
+            if (open) open.click();
+        });
+    });
+    initTabs('mobile-mic-area', {
+        onSelect: (tab) => appEl.setAttribute('data-mic-tab', tab),
+    });
+    appEl.setAttribute('data-mic-tab', document.getElementById('mobile-mic-area').getAttribute('data-mic-tab') || 'mic');
 }
 
 if (document.readyState === 'loading') {

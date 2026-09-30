@@ -1,0 +1,156 @@
+<!-- Tela da partida: configuração (waiting), canto (singing/scoring) e fim -->
+<section id="game-area" class="game-area">
+    <div class="game-header">
+        <button id="btn-back" class="btn btn--ghost btn--sm btn-back" aria-label="Voltar ao repertório" title="Voltar">
+            <i data-icon="back"></i><span class="btn-back__label">Voltar</span>
+        </button>
+        <img id="current-song-cover" class="song-cover" alt="" hidden>
+        <div class="game-header__text">
+            <h2 id="current-song-title" class="game-title">Nome da Música</h2>
+            <p id="current-song-artist" class="game-artist"></p>
+        </div>
+    </div>
+
+    <!-- Progresso da música -->
+    <div class="song-progress-container">
+        <div class="song-progress-times">
+            <span id="song-time-current">0:00</span>
+            <span id="song-time-remaining">-0:00</span>
+        </div>
+        <input type="range" id="song-progress-slider" min="0" max="100" step="0.1" value="0" aria-label="Posição da música">
+    </div>
+
+    <!-- Progresso do verso atual -->
+    <div id="verse-progress-container" class="verse-progress-container-top">
+        <div id="verse-progress-fill" class="verse-progress-fill-top" style="width: 0%;"></div>
+    </div>
+
+    <div class="game-layout">
+        <div class="game-main-content">
+            <!-- Lobby: cada vaga é um cantor; vagas no mesmo microfone formam dupla/trio (lobby.js) -->
+            <div id="multiplayer-setup-container" class="lobby">
+                <div class="lobby__head">
+                    <h3 class="panel-title">Quem vai cantar?</h3>
+                    <div class="lobby__tools">
+                        <span id="mp-queue-info" class="setup-counters">
+                            <span>Celulares: <strong id="mp-connected-count">0</strong></span>
+                            <span class="setup-counters__sep">·</span>
+                            <span>Registrando: <strong id="mp-queue-count">0</strong></span>
+                        </span>
+                        <button type="button" id="btn-open-pairing" class="btn btn--sm">
+                            <i data-icon="phone"></i> Conectar celular
+                        </button>
+                        <span class="lobby__score"><span class="field__label">Pontuação</span>
+                            <button type="button" id="btn-score-mode" class="btn-control-small btn-sync-mode" title="Alternar entre pontuação por palavras + tempo ou apenas palavras"><i data-icon="metronome"></i><span>Palavras + tempo</span></button></span>
+                    </div>
+                </div>
+                <div id="lobby-seats" class="lobby-seats"></div>
+                <p id="lobby-summary" class="lobby-summary"></p>
+                <!-- ativa o mic deste aparelho (main.js); o lobby aciona ao escolher "Mic do dispositivo" -->
+                <button type="button" id="btn-force-pc-mic" hidden>Mic do dispositivo</button>
+            </div>
+
+            <!-- Tela de canto -->
+            <div id="canto-screen">
+                <div id="instrumental-pause-container"></div>
+
+                <div class="carousel-container">
+                    <!-- Solo instrumental (silêncio > 3 s) -->
+                    <div id="silence-overlay" class="stage-overlay">
+                        <div class="stage-overlay__kicker"><span class="stage-overlay__dot"></span> Solo instrumental</div>
+                        <div class="stage-overlay__track"><div id="silence-progress-fill" class="stage-overlay__fill" style="width: 100%;"></div></div>
+                        <div id="silence-timer-text" class="stage-overlay__timer">0.0s</div>
+                    </div>
+
+                    <!-- Encerramento (outro instrumental) -->
+                    <div id="outro-overlay" class="stage-overlay">
+                        <div class="stage-overlay__kicker"><i data-icon="fermata"></i> Finalizando apresentação</div>
+                        <p class="stage-overlay__text">Você deu o seu show! Aguarde o solo final…</p>
+                        <div class="stage-overlay__track"><div id="outro-progress-fill" class="stage-overlay__fill" style="width: 0%;"></div></div>
+                        <div id="outro-timer-text" class="stage-overlay__hint">Aguardando pontuação...</div>
+                    </div>
+
+                    <!-- Carimbo do verso que acabou de ser cantado (verse-stamp.js) -->
+                    <div id="verse-stamp" class="verse-stamp" aria-live="polite"><span class="verse-stamp__word"></span><span class="verse-stamp__score"></span></div>
+
+                    <div id="carousel-inner" class="carousel-inner">
+                        <div id="line-prev" class="carousel-line prev-line"></div>
+                        <div id="line-curr" class="carousel-line curr-line"></div>
+                        <div id="line-next" class="carousel-line next-line"></div>
+                        <div id="line-upcoming" class="carousel-line upcoming-line"></div>
+                    </div>
+                </div>
+
+                <div id="transcription-text" class="transcription-debug"><strong>Ouvi:</strong> <span class="muted">[Aguardando canto...]</span></div>
+            </div><!-- #canto-screen -->
+
+            <div class="controls">
+                <button id="btn-start" class="btn btn--primary btn--lg">INICIAR</button>
+                <button id="btn-pause-play" class="btn btn--lg">PAUSAR</button>
+                <button id="btn-exit" class="btn btn--ghost btn--lg">SAIR</button>
+            </div>
+        </div>
+
+        <!-- Pontuação solo (lateral) -->
+        <aside class="game-score-sidebar">
+            <div class="score-sidebar-container">
+                <div class="stat-box-compact">
+                    <span class="stat-label-compact">Último</span>
+                    <span id="seg-score" class="stat-value-compact">0%</span>
+                </div>
+                <div class="vertical-progress-bg">
+                    <div id="score-progress-fill" class="vertical-progress-fill" style="height: 0%;"></div>
+                </div>
+                <div class="score-text-container">
+                    <span id="score-percentage-text" class="score-value-large">0%</span>
+                    <span class="score-label-text">Precisão</span>
+                </div>
+            </div>
+            <button id="btn-exit-sidebar" class="btn btn--danger btn-exit-sidebar">SAIR</button>
+        </aside>
+    </div>
+
+    <!-- Ajustes da faixa -->
+    <div id="sync-controls" class="sync-controls">
+        <div class="sync-controls-inner">
+            <div class="sync-control-block">
+                <span class="sync-control-label"><i data-icon="volume"></i> Volume</span>
+                <div class="sync-control-group">
+                    <input type="range" id="backing-volume-slider" min="0" max="1" step="0.05" value="1" aria-label="Volume da trilha">
+                    <span id="backing-volume-value" class="sync-control-value">100%</span>
+                </div>
+            </div>
+            <div class="sync-control-block">
+                <span class="sync-control-label"><i data-icon="pitch"></i> Tom</span>
+                <div class="sync-control-group">
+                    <button id="btn-pitch-minus" class="btn-control-small" aria-label="Baixar tom">−</button>
+                    <span id="pitch-value" class="sync-control-value sync-control-value--highlight sync-control-value--wide">Normal</span>
+                    <button id="btn-pitch-plus" class="btn-control-small" aria-label="Subir tom">+</button>
+                </div>
+            </div>
+            <div class="sync-control-block">
+                <span class="sync-control-label"><i data-icon="metronome"></i> Velocidade</span>
+                <div class="sync-control-group">
+                    <button id="btn-speed-minus" class="btn-control-small" aria-label="Mais devagar">−</button>
+                    <span id="speed-value" class="sync-control-value sync-control-value--highlight">1.0x</span>
+                    <button id="btn-speed-plus" class="btn-control-small" aria-label="Mais rápido">+</button>
+                </div>
+            </div>
+            <div class="sync-control-block">
+                <span class="sync-control-label"><i data-icon="sync-word"></i> Sincronia</span>
+                <div class="sync-control-group">
+                    <button id="btn-sync-mode" class="btn-control-small btn-sync-mode" title="Alternar entre sincronia por palavra ou por verso"><i data-icon="sync-word"></i><span>Palavra</span></button>
+                </div>
+            </div>
+            <!-- Escrita da letra: só aparece em música japonesa (lyrics-script.js) -->
+            <div class="sync-control-block lyrics-script-control" hidden>
+                <span class="sync-control-label">Letra</span>
+                <div class="sync-control-group lyrics-script-group" role="group" aria-label="Escrita da letra">
+                    <button type="button" class="btn-control-small lyrics-script-choice" data-script="original" aria-pressed="false" title="Só a letra original (kanji e kana)">あ Original</button>
+                    <button type="button" class="btn-control-small lyrics-script-choice" data-script="romaji" aria-pressed="false" title="Só a letra em romaji">Aa Romaji</button>
+                    <button type="button" class="btn-control-small lyrics-script-choice" data-script="both" aria-pressed="false" title="Letra original com o romaji em cima de cada palavra">Ambos</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

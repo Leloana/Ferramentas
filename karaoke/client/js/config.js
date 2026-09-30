@@ -9,5 +9,10 @@ if (!_roomId) {
 export const activeRoomId = _roomId;
 export const myRoom = urlParams.get('room') || activeRoomId;
 
-export const isSoloMobileMode = (myRole === 'display') &&
+// Navegador de TV (Tizen, webOS, Android TV, Fire TV...) ou forçado com ?tv=1.
+// Liga a navegação por controle remoto com letras maiores (tv-nav.js / tv.css).
+export const isTvBrowser = urlParams.get('tv') === '1' ||
+    /SMART-TV|SmartTV|Tizen|Web0S|webOS\.TV|NetCast|HbbTV|BRAVIA|AFT[A-Z]|CrKey|GoogleTV|Android ?TV|VIDAA|Viera|Roku/i.test(navigator.userAgent);
+
+export const isSoloMobileMode = (myRole === 'display') && !isTvBrowser &&
     (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768);

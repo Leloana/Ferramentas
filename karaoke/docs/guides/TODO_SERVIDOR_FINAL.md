@@ -45,6 +45,8 @@ Celular/TV ──https/wss──> Cloudflare (TLS + Access) ──túnel──> 
       - `karaoke.myall.net.br/api/reinstall-song/*`
       - `karaoke.myall.net.br/api/save-lyrics` · `/api/save-meta`
       - `karaoke.myall.net.br/api/queue/*`
+      - Rotas novas do redesign (2026-09-30): `/api/youtube-search` (busca via yt-dlp, sem download) e
+        `/api/songs/*/cover` (baixa a capa uma vez). Leves, mas usam a rede do servidor: decidir se entram no Access.
       - Na TV, logar uma vez abrindo `https://karaoke.myall.net.br/api/queue/status`. O cookie
         `CF_Authorization` vale para os `fetch` da página depois.
       - **Decidir:** o QR da tela inicial abre `/?open=add-song` no celular, que usa `/api/queue/add`.

@@ -1,0 +1,15 @@
+<!-- Card de música (selection-view.js clona este template) -->
+<template id="song-card-tpl">
+    <div class="song-card" tabindex="0" role="button">
+        <i data-icon="note" class="song-card__icon"></i>
+        <span class="song-card__text">
+            <span class="song-card__title"></span>
+            <span class="song-card__artist"></span>
+        </span>
+        <span class="song-card__leader" aria-hidden="true"></span>
+        <span class="song-card__actions">
+            <button type="button" class="song-card__btn song-card__edit-btn" title="Informações e letras" aria-label="Editar"><i data-icon="edit"></i></button>
+            <button type="button" class="song-card__btn song-card__delete-btn" title="Apagar música" aria-label="Apagar"><i data-icon="trash"></i></button>
+        </span>
+    </div>
+</template>

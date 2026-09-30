@@ -1,0 +1,19 @@
+<!-- Cabeçalho da TV/PC: marca, QR para adicionar música e status -->
+<header class="app-header">
+    <!-- Voltar no celular: fica na barra do app para não cobrir a capa (aciona o #btn-back) -->
+    <button type="button" id="btn-header-back" class="header-back" aria-label="Voltar" title="Voltar"><i data-icon="back"></i></button>
+    <div class="brand">
+        <img class="brand__mark" src="/assets/art/logo-mark.svg" alt="" width="56" height="56">
+        <span class="brand__name">Karaoke</span>
+    </div>
+    <div class="header-right">
+        <div id="header-qrcode-panel" class="header-qrcode-panel">
+            <img id="header-qrcode" src="" alt="QR Code para adicionar música" />
+            <span class="header-qrcode-label"><strong>Adicionar<br>música</strong></span>
+        </div>
+        <div class="header-status" title="Servidor conectado">
+            <span class="status-dot"></span>
+            <span class="status-text">Online</span>
+        </div>
+    </div>
+</header>

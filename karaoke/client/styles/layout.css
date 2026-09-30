@@ -1,0 +1,296 @@
+/* ============================================================
+   Layout: cabeçalho, folha principal, barra de abas.
+   A barra de abas (.app-tabbar) é uma faixa de "fichário" no
+   desktop/TV e vira uma barra fixa no rodapé no celular.
+   ============================================================ */
+
+/* ---------- Cabeçalho ---------- */
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    padding: 1rem var(--gutter) 0.75rem;
+    position: relative;
+    /* notas esparsas (arte do Codex) ao fundo */
+    background: url('/assets/art/notes-scatter.svg') 38% 50% / auto 80% no-repeat;
+}
+.app-header::after {
+    /* régua dupla de partitura sob o cabeçalho */
+    content: '';
+    position: absolute;
+    left: var(--gutter);
+    right: var(--gutter);
+    bottom: 0;
+    height: 4px;
+    border-top: 1px solid var(--ink-2);
+    border-bottom: 1px solid var(--ink-2);
+    opacity: 0.55;
+}
+
+/* Marca: símbolo do Codex (clave + microfone) + nome em tipografia de gravura */
+.brand { display: flex; align-items: center; gap: 0.6rem; min-width: 0; }
+/* Voltar na barra do app: só no celular, fora da tela inicial (ver @media abaixo) */
+.header-back { display: none; }
+.brand__mark { display: block; width: 56px; height: 56px; }
+.brand__name {
+    font-family: var(--font-display);
+    font-size: 2.6rem;
+    font-style: italic;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--ink);
+    letter-spacing: 0.01em;
+    padding-bottom: 0.15rem;
+    border-bottom: 3px double var(--staff);
+}
+.brand--sm .brand__mark { width: 28px; height: 28px; }
+.brand--sm .brand__name { font-size: 1.4rem; }
+
+.header-right { display: flex; align-items: center; gap: 1.25rem; }
+
+.header-qrcode-panel {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.45rem 0.75rem 0.45rem 0.45rem;
+    background: var(--paper-light);
+    border: var(--border);
+    box-shadow: var(--shadow-lift);
+}
+#header-qrcode { display: block; width: 84px; height: 84px; background: #fff; padding: 4px; border: 1px solid var(--fold); }
+.header-qrcode-label { font-size: 0.85rem; line-height: 1.25; color: var(--ink-2); text-align: left; }
+.header-qrcode-label strong { color: var(--ink); }
+
+.header-status {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.25rem 0.6rem;
+    border: 1px solid var(--sage-ink);
+    background: rgba(168, 195, 160, 0.35);
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--sage-ink);
+}
+
+/* ---------- Folha principal ---------- */
+.container {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 1.25rem var(--gutter) 3rem;
+}
+.main-card {
+    position: relative;
+    padding: clamp(1.25rem, 3vw, 2.5rem);
+    background: var(--paper-light);
+    border: 1px solid var(--fold);
+    box-shadow: var(--shadow-sheet);
+    /* moldura gravada por dentro da folha */
+    outline: 1px solid rgba(107, 90, 69, 0.35);
+    outline-offset: -10px;
+}
+
+/* ---------- Barra superior da seleção ---------- */
+.selection-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin: 0;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-style: italic;
+    font-weight: 700;
+}
+
+/* Status do microfone */
+.mic-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.2rem 0.55rem;
+    border: 1px solid var(--ink-3);
+    background: var(--paper-2);
+    font-family: var(--font-ui);
+    font-size: 0.72rem;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+}
+.mic-badge-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--rose-ink); }
+.mic-badge--idle   { border-color: var(--rose-ink); }
+.mic-badge--pc     { border-color: var(--blue-ink); background: rgba(169, 193, 217, 0.4); }
+.mic-badge--pc .mic-badge-dot { background: var(--blue-ink); }
+.mic-badge--paired { border-color: var(--sage-ink); background: rgba(168, 195, 160, 0.4); }
+.mic-badge--paired .mic-badge-dot { background: var(--sage-ink); }
+.mic-badge--both   { border-color: var(--sage-ink); background: rgba(168, 195, 160, 0.55); }
+.mic-badge--both .mic-badge-dot { background: var(--sage-ink); box-shadow: -4px 0 0 var(--blue-ink); margin-left: 4px; }
+.mic-badge--solo   { border-color: var(--lavender-ink); background: rgba(195, 180, 214, 0.4); }
+
+/* Botões de ação marcando o microfone ativo (mic-status.js) */
+.tab-btn--mic-on { background: var(--sage) !important; }
+
+/* ---------- Barra de abas ---------- */
+.app-tabbar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    border-bottom: var(--border);
+}
+.app-tabbar__tabs,
+.app-tabbar__actions { display: flex; gap: 0.4rem; align-items: flex-end; }
+.app-tabbar__actions { padding-bottom: 0.4rem; flex-wrap: wrap; justify-content: flex-end; }
+
+.tab-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 44px;
+    padding: 0.5rem 1.15rem;
+    background: var(--paper-2);
+    border: var(--border);
+    border-bottom: none;
+    border-radius: var(--radius);
+    color: var(--ink-2);
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+}
+.tab-btn:hover { background: var(--butter); color: var(--ink); }
+.tab-btn .ico { width: 1.2em; height: 1.2em; }
+
+/* aba ativa: "folha" que se funde com a página (sem borda inferior) */
+.tab-btn[aria-selected="true"] {
+    background: var(--paper-light);
+    color: var(--ink);
+    margin-bottom: -1.5px;
+    padding-bottom: calc(0.5rem + 1.5px);
+}
+.tab-btn[aria-selected="true"]::before {
+    content: '';
+    position: absolute;
+    left: -1.5px;
+    right: -1.5px;
+    top: -1.5px;
+    height: 4px;
+    background: var(--tab-accent, var(--blue));
+}
+
+/* botões de ação na barra: caixas completas */
+.tab-btn--action { border-bottom: var(--border); min-height: 40px; font-size: 0.9rem; padding: 0.4rem 0.9rem; }
+.tab-btn--primary { background: var(--ink); color: var(--paper-light); }
+.tab-btn--primary:hover { background: var(--ink); color: var(--butter); }
+
+.tab-badge {
+    min-width: 20px;
+    padding: 0 0.3rem;
+    background: var(--rose-ink);
+    color: var(--paper-light);
+    font-family: var(--font-ui);
+    font-size: 0.72rem;
+    line-height: 20px;
+    text-align: center;
+}
+.tab-badge:empty { display: none; }
+
+/* ---------- Celular / telas estreitas ---------- */
+@media (max-width: 700px) {
+    :root { --gutter: 0.75rem; }
+
+    .app-header { padding-top: 0.6rem; padding-bottom: 0.5rem; background: none; justify-content: flex-start; }
+    .header-right { margin-left: auto; }
+    #app[data-state="waiting"] .header-back,
+    #app[data-state="singing"] .header-back {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        flex-shrink: 0;
+        padding: 0;
+        background: var(--paper-light);
+        border: var(--border);
+        border-radius: var(--radius);
+        color: var(--ink);
+        cursor: pointer;
+    }
+    .header-back .ico { width: 20px; height: 20px; }
+    .brand__mark { width: 38px; height: 38px; }
+    .brand__name { font-size: 1.8rem; }
+    .header-qrcode-panel { display: none; }
+
+    .container { padding: 0.75rem 0.5rem calc(var(--tabbar-h) + 1.5rem + env(safe-area-inset-bottom, 0px)); }
+    .main-card { padding: 1rem 0.85rem; outline-offset: -6px; }
+    .selection-toolbar { margin-bottom: 0.75rem; }
+    .section-title { font-size: 1.5rem; }
+
+    /* barra de abas vira rodapé fixo, com ícone em cima do rótulo */
+    .app-tabbar {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 900;
+        margin: 0;
+        padding: 0 0.25rem env(safe-area-inset-bottom, 0px);
+        gap: 0;
+        align-items: stretch;
+        background: var(--paper-light);
+        border-top: var(--border);
+        border-bottom: none;
+        box-shadow: 0 -6px 18px -12px rgba(59, 48, 36, 0.6);
+    }
+    /* abas e ações dividem a barra por igual (some-se o que estiver escondido) */
+    .app-tabbar__tabs,
+    .app-tabbar__actions { display: contents; }
+    .tab-btn,
+    .tab-btn--action {
+        flex: 1;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.15rem;
+        min-height: var(--tabbar-h);
+        padding: 0.35rem 0.1rem;
+        margin: 0;
+        background: transparent;
+        border: none;
+        font-size: 0.66rem;
+        letter-spacing: 0.04em;
+        color: var(--ink-2);
+    }
+    .tab-btn .ico { width: 22px; height: 22px; }
+    .tab-btn[aria-selected="true"] { background: var(--paper-2); margin: 0; padding-bottom: 0.35rem; }
+    .tab-btn[aria-selected="true"]::before { left: 0; right: 0; top: 0; height: 3px; }
+    .tab-btn--primary { background: transparent; color: var(--ink); }
+    .tab-btn--primary .ico {
+        width: 30px;
+        height: 30px;
+        padding: 4px;
+        background: var(--ink);
+        color: var(--paper-light);
+    }
+    .tab-badge { position: absolute; top: 6px; left: 55%; }
+}

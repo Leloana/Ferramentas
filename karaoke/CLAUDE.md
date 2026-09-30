@@ -9,12 +9,20 @@ Este arquivo resume os detalhes técnicos específicos do subprojeto **Karaoke A
 | Diretório/Arquivo | Função Principal | O que saber antes de editar |
 | :--- | :--- | :--- |
 | **`client/`** | Frontend da aplicação (Vanilla HTML/CSS/JS) | Sem build step. Mantenha compatibilidade direta com ES Modules. |
-| ├─ `index.html` | Markup principal, modais e templates HTML | Contém todos os modais da aplicação. |
-| ├─ `styles/main.css` | Folha de estilos monolítica (Neon Glow, BEM) | **Não mude styles inline no JS.** Crie classes de estado CSS e alterne-as com `classList`. |
+| ├─ `index.html` | Esqueleto da página (`<!-- @include partials/... -->`) | O `GET /` monta os parciais (`server/utils/html_includes.py`) e entrega uma página só — bom para TV. Cada tela/modal é um arquivo em `partials/`. IDs são contrato com o JS. |
+| ├─ `partials/` | Um arquivo por área/modal | Mudou um ID? Procure-o em `js/`. |
+| ├─ `assets/art/` | Artes SVG (desenhadas pelo Codex) | Paleta de `styles/tokens.css`. |
+| ├─ `styles/*.css` | Tema "partitura antiga" em tons pastéis, cantos retos. `tokens.css` (cores/fontes), um arquivo por área, `states.css` (visibilidade por `data-state`), `tv.css` (foco do controle remoto) | **Não mude styles inline no JS.** Crie classes de estado CSS e alterne-as com `classList`. Cores só por `var(--...)`. Fontes: `--font-ui` (sans simples) para tudo que se lê — letra, títulos de música, notas, listas, formulários; `--font-display` (serifada) só no estético — marca, títulos de seção/modal, letra do rank. Sem `inset`/`:has()` (TV antiga). |
 | └─ `js/` | Módulos JavaScript (ES Modules) | Centralize as variáveis compartilhadas em `state.js`. |
 | &emsp;&emsp;├─ `state.js` | Objeto central de estado mutável compartilhado | **Nunca exporte `let` locais.** Adicione propriedades ao objeto `state`. |
 | &emsp;&emsp;├─ `main.js` | Bootstrap da aplicação (identifica display vs mic) | Define o ponto de entrada. |
 | &emsp;&emsp;├─ `game-view.js` | Renderização da letra e animações de gameplay | Controla o acendimento progressivo das sílabas/palavras. |
+| &emsp;&emsp;├─ `lobby.js` / `score-bars.js` | Lobby (vagas com "+": mic próprio + time A–D) e barras de placar | Não existe mais seletor de modo: mesmo time = dupla/trio. O servidor pontua por mic; a média do time é feita no front (barra do time + barrinha de cada membro, pódio por time). |
+| &emsp;&emsp;├─ `verse-stamp.js` | Carimbo de acerto/erro por verso (Afinado · Quase · Fora) | Faixas em `verseQuality` (85/70); usado no palco (solo), nas barras (multiplayer) e na nota do celular. |
+| &emsp;&emsp;├─ `youtube-search.js` | Busca no YouTube pelo nome (passo 1 do "Adicionar música") | Usa `GET /api/youtube-search`. Colar link continua valendo. |
+| &emsp;&emsp;├─ `select.js` | Select personalizado | Todo `<select>` é aprimorado no bootstrap; o nativo fica escondido por baixo. Troque valor com `select.value = x`. |
+| &emsp;&emsp;├─ `tv-nav.js` / `compat.js` | Controle remoto (setas/OK/Voltar/Play) e polyfills de TV | JS até ES2018. |
+| &emsp;&emsp;├─ `icons.js` | Ícones próprios (SVG desenhado à mão) | **Sem emojis e sem biblioteca de ícones.** Use `<i data-icon="nome">` no HTML ou `iconSvg('nome')` no JS; novo ícone = novo path em `icons.js`. |
 | &emsp;&emsp;├─ `ws-display.js` / `ws-mic.js` | WebSockets do Display (TV) / Microfone (Celular) | Tratam reconexões e recebimento de blobs binários PCM. |
 | &emsp;&emsp;└─ `worklets/audio-processor.js` | AudioWorklet para captura e fluxo de áudio PCM | Roda em thread separada. Reamostra para 16 kHz Int16 e envia pacotes `KM01` de 100 ms com o índice da 1ª amostra. Mudou o formato? Mude também `server/mic_stream.py` e a versão em `WORKLET_URL`. |
 | **`server/`** | Backend FastAPI e motores de IA | Orquestrado por managers de estado singletons. |
@@ -134,6 +142,8 @@ Armazena a nota histórica de cada sessão.
 | `GET` | `/api/get-lyrics` | `slug: str` (Query) | `{"success": true, "lyrics": "LRC", "language": "pt", "meta_json": "{}"}` |
 | `POST` | `/api/save-lyrics` | Form (`slug`, `language`, `lyrics_lrc`, `meta_json`) | `{"success": true}` (Salva e gera os segmentos) |
 | `GET` | `/api/youtube-metadata` | `url: str` (Query) | `{"title": "...", "artist": "..."}` |
+| `GET` | `/api/songs/{song_id}/cover` | — | Capa do álbum (JPEG). 1ª vez busca no iTunes, senão miniatura do YouTube; guarda em `songs/<slug>/cover.jpg` (`cover.none` = sem capa) |
+| `GET` | `/api/youtube-search` | `q: str`, `limit: int` (Query) | `{"results": [{"url", "title", "channel", "duration", "thumbnail", "artist_guess", "title_guess"}]}` |
 | `POST` | `/api/upload-song` | Form (`title`, `artist`, `language`, files/URLs) | `{"success": true, "lyrics_status": "draft", "draft_lrc": "...", "slug": "..."}` |
 | `POST` | `/api/queue/add` | Form (`title`, `artist`, `youtube_url`, etc.) | `{"success": true, "item": {...}}` (Entra na fila) |
 | `GET` | `/api/queue/status` | — | `{"queue": [...], "gpu_busy": bool}` |
@@ -149,6 +159,11 @@ Armazena a nota histórica de cada sessão.
     *   **Proibido:** Declarar variáveis soltas no topo dos módulos (como `let ws;` ou `let activeSong;`) que guardem estado interativo.
 2.  **No-Build Frontend:**
     *   O frontend deve permanecer estritamente em Vanilla ES Modules.
+    *   Sintaxe até ES2018 (navegador de TV antigo): sem `?.`, `??` nem `catch {}`. Polyfills em `js/compat.js`.
+    *   Controle remoto: `js/tv-nav.js` (setas, OK, Voltar, Play/Pause). `?tv=1` força o modo TV.
+    *   Preview sem GPU: `python tools/preview_front.py [--host 0.0.0.0]` (dados de exemplo, sem WebSocket; busca no YouTube e capas funcionam se o `yt-dlp` estiver instalado).
+    *   Interface: sem textos explicativos; no celular os toasts são só de erro (validação usa `'error'`); trocar de tela/aba/modal volta ao topo; toda tela tem voltar.
+    *   Histórico do redesign do front: `docs/archive/FRONT_REDESIGN_2026-09.md`.
     *   Não introduza bundlers, compiladores de TypeScript ou dependências NPM de runtime.
 3.  **Tratamento de Mídias e Line Endings:**
     *   Sempre filtre caracteres e line-endings (`\r\n` para `\n`) ao ler/salvar arquivos LRC. Use `normalize_lyrics_text` para evitar conflito de tags.

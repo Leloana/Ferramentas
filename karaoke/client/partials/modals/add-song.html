@@ -1,0 +1,98 @@
+<!-- Adicionar música: 1) origem · 2) artista/título · 3) revisão da letra -->
+<div id="add-song-modal" class="modal-overlay">
+    <div class="modal-content admin-modal">
+        <h2 class="modal-title"><button type="button" class="modal-back" id="btn-add-song-back" aria-label="Voltar" title="Voltar"><i data-icon="back"></i></button>Adicionar música</h2>
+        <form id="add-song-form" enctype="multipart/form-data" data-step="1" data-upload-tab="youtube">
+            <!-- Passo 1: origem -->
+            <div id="upload-step-1">
+                <div class="form-group">
+                    <label for="song-language">Idioma da letra</label>
+                    <select id="song-language" name="language" class="input">
+                        <option value="en">Inglês (en)</option>
+                        <option value="pt">Português (pt)</option>
+                        <option value="es">Espanhol (es)</option>
+                        <option value="ja">Japonês (ja)</option>
+                    </select>
+                </div>
+
+                <div id="section-youtube-import">
+                    <div class="form-group">
+                        <label for="youtube-search-input">Buscar no YouTube</label>
+                        <div class="yt-search">
+                            <input type="search" id="youtube-search-input" class="input" autocomplete="off"
+                                placeholder="Música ou artista">
+                            <button type="button" id="btn-youtube-search" class="btn btn--primary">
+                                <i data-icon="search"></i> Buscar
+                            </button>
+                        </div>
+                    </div>
+                    <div id="youtube-results" class="yt-results" aria-live="polite"></div>
+                    <!-- preenchido ao escolher um resultado (ou colando um link) -->
+                    <input type="hidden" id="youtube-vocal-url" name="youtube_vocal_url">
+                </div>
+
+                <!-- Opções avançadas (faixa instrumental e LRC próprios) -->
+                <div class="advanced">
+                    <button type="button" id="btn-toggle-advanced" class="btn btn--ghost btn--block advanced__toggle">
+                        <span><i data-icon="settings"></i> Opções avançadas</span>
+                        <span id="advanced-toggle-icon"><i data-icon="chevron-down"></i></span>
+                    </button>
+
+                    <div id="advanced-options-container">
+                        <div class="advanced__section">
+                            <div class="form-group">
+                                <label for="youtube-backing-url">Link do YouTube instrumental (opcional)</label>
+                                <input type="text" id="youtube-backing-url" name="youtube_backing_url" class="input"
+                                    placeholder="Ex: https://www.youtube.com/watch?v=Zg_F82yB0pU">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="lrc-text">Colar conteúdo LRC (opcional)</label>
+                            <textarea id="lrc-text" name="lrc_text" rows="5" class="input input--area"
+                                placeholder="Cole as letras com timestamps do arquivo .lrc aqui... Ex:&#10;[00:11.34] I do not understand&#10;[00:17.02] What it is I've done wrong"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Passo 2: artista e título -->
+            <div id="upload-step-2">
+                <div id="lyrics-fetch-status" class="status-note" data-tone="blue">
+                    <span id="lyrics-fetch-icon"><i data-icon="search"></i></span>
+                    <span id="lyrics-fetch-text">Confirme o artista e título acima — a letra será buscada automaticamente.</span>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="song-title">Título da música</label>
+                        <input type="text" id="song-title" name="title" class="input" placeholder="Ex: Teenagers">
+                    </div>
+                    <div class="form-group">
+                        <label for="song-artist">Artista / banda</label>
+                        <input type="text" id="song-artist" name="artist" class="input" placeholder="Ex: My Chemical Romance">
+                    </div>
+                </div>
+                <input type="hidden" id="fetched-synced-lrc" name="synced_lrc" value="">
+                <textarea id="fetched-plain-lyrics" name="plain_lyrics" hidden></textarea>
+            </div>
+
+            <!-- Passo 3: revisão da letra -->
+            <div id="upload-step-3">
+                <div id="lyrics-step3-status" class="status-note" data-tone="blue">
+                    <span id="lyrics-step3-icon"><i data-icon="search"></i></span>
+                    <span id="lyrics-step3-text">Verificando letra...</span>
+                </div>
+                <div class="form-group">
+                    <label for="lyrics-step3-textarea">Letra da música (linha por linha)</label>
+                    <textarea id="lyrics-step3-textarea" rows="10" class="input input--area input--tall"
+                        placeholder="Nenhuma letra encontrada online. Cole a letra da música aqui (linha por linha) ou deixe em branco para a IA transcrever."></textarea>
+                </div>
+            </div>
+
+            <div class="modal-buttons">
+                <button type="button" id="btn-close-add-song" class="btn btn--ghost">Cancelar</button>
+                <button type="button" id="btn-back-step-1" class="btn btn--ghost">Voltar</button>
+                <button type="submit" id="btn-submit-song" class="btn btn--primary">Avançar</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+<!-- Anotação dos versos (aberto pelo lápis discreto do fim de jogo) -->
+<div id="annotate-modal" class="modal-overlay annotate-modal">
+    <div class="annotate-card paper-card" role="dialog" aria-modal="true" aria-labelledby="annotate-title">
+        <header class="annotate-header">
+            <h2 id="annotate-title" class="annotate-title">Anotar versos</h2>
+            <select id="annotate-player" class="input annotate-player" aria-label="Jogador" hidden></select>
+            <button id="btn-annotate-close" class="annotate-close" type="button" aria-label="Fechar">×</button>
+        </header>
+        <p class="annotate-hint"><i data-icon="check"></i> certo · <i data-icon="cross"></i> errado · <i data-icon="hum"></i> cantarolei — sem marca = não anotado</p>
+        <ol id="annotate-list" class="annotate-list"></ol>
+        <footer class="annotate-footer">
+            <span id="annotate-status" class="annotate-status"></span>
+            <button id="btn-annotate-save" class="btn btn--primary" type="button">Salvar</button>
+        </footer>
+    </div>
+</div>

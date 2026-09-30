@@ -37,14 +37,22 @@ export const state = {
     currentAppState: 'idle',
     audioManager: null,
     syncMode: 'word', // 'word' | 'verse'
-    annotateRecordingId: null, // gravação da última partida (botão ✎ da tela final)
+    annotateRecordingId: null, // gravação da última partida (botão lápis da tela final)
     annotateData: null,
+    lastFocusedSong: null,
+    lobbySeats: [],        // lobby: [{ mic, team }] — mesmo time = dupla/trio (lobby.js)
+    lobbyMics: [],         // celulares registrados na sala
+    scoreGroups: null,     // times da partida em curso [{ team, mics }] (score-bars.js)
+    pickedYoutube: null,   // resultado escolhido na busca do YouTube (youtube-search.js) // último card de música focado pelo controle remoto (tv-nav.js)
 };
 
 export function setAppState(stateName) {
     const appEl = document.getElementById('app');
+    const changed = state.currentAppState !== stateName;
     if (appEl) {
         appEl.setAttribute('data-state', stateName);
     }
     state.currentAppState = stateName;
+    // tela nova começa do topo (não herda a rolagem da anterior)
+    if (changed) window.scrollTo(0, 0);
 }
