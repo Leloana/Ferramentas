@@ -159,14 +159,15 @@
   },
   "30:13": {
     "inputs": {
-      "conditioning": [
-        "30:6",
+      "text": "",
+      "clip": [
+        "30:11",
         0
       ]
     },
-    "class_type": "ConditioningZeroOut",
+    "class_type": "CLIPTextEncode",
     "_meta": {
-      "title": "CondicionamentoZerar"
+      "title": "Codificação de Texto CLIP (Negative Prompt)"
     }
   },
   "30:15": {
@@ -346,7 +347,7 @@
   "30:3": {
     "inputs": {
       "seed": 87146673821752,
-      "steps": 8,
+      "steps": 16,
       "cfg": 1,
       "sampler_name": "euler",
       "scheduler": "simple",
