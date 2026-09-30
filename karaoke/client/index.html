@@ -75,6 +75,26 @@
     </div>
 
     <script type="module" src="/js/main.js"></script>
+    <!-- Navegador sem ES Modules (TV antiga, ex.: NetRange/Philco): o app não roda.
+         Em vez da página parada, avisa e mostra a identificação para diagnóstico.
+         Navegadores modernos ignoram <script nomodule>. JS da época (ES3). -->
+    <script nomodule>
+        (function () {
+            var box = document.createElement('div');
+            box.setAttribute('style', 'position:fixed;top:0;left:0;right:0;bottom:0;z-index:99999;overflow:auto;padding:40px;background:#221c16;color:#efe4cc;font-family:sans-serif;font-size:22px;line-height:1.5');
+            var title = document.createElement('h1');
+            title.appendChild(document.createTextNode('Este navegador é antigo demais para o Karaokê'));
+            var text = document.createElement('p');
+            text.appendChild(document.createTextNode('Use um navegador mais novo (Chrome, Firefox, TV Bro) ou um Chromecast / Google TV nesta TV. Identificação do navegador:'));
+            var ua = document.createElement('p');
+            ua.setAttribute('style', 'font-family:monospace;font-size:18px;word-wrap:break-word;color:#ecd58f');
+            ua.appendChild(document.createTextNode(navigator.userAgent));
+            box.appendChild(title);
+            box.appendChild(text);
+            box.appendChild(ua);
+            document.body.appendChild(box);
+        })();
+    </script>
 </body>
 
 </html>
