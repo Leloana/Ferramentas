@@ -101,10 +101,11 @@ class TestWrongLyrics(unittest.TestCase):
 
     def test_singing_another_verse_scores_low(self):
         scores = self._scores()
-        self.assertLess(sum(scores) / len(scores), 16.0)
-        # Antes da segunda opinião, 3 pares tiravam 100: o Whisper copiava a dica.
-        self.assertLess(max(scores), 75.0)
-        self.assertLessEqual(sum(s > 40 for s in scores), len(scores) * 0.12)
+        # Antes: média 16,6 e 3 pares com 100 (o Whisper copiava a dica); meio ponto
+        # a partir de 50% de semelhança deixava 11% dos pares acima de 40.
+        self.assertLess(sum(scores) / len(scores), 8.0)
+        self.assertLess(max(scores), 60.0)
+        self.assertLessEqual(sum(s > 40 for s in scores), len(scores) * 0.05)
 
 
 if __name__ == "__main__":

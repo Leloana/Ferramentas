@@ -7,7 +7,11 @@ logger = logging.getLogger(__name__)
 
 # Limiares de scoring (extraídos para facilitar tuning)
 FUZZY_FULL_MATCH = 70
-FUZZY_HALF_MATCH = 50
+# Meio ponto a partir de 67: com 50, palavras sem relação e de tamanho parecido
+# ("cheirando"≈"cidade", "brilho"≈"isso") pontuavam e letra trocada tirava ~70.
+# Erro de uma letra em palavra de 4+ letras ainda vale meio; em palavra de 3
+# ("ele"→"ela", 66,7) não — custa ~0,2 ponto no canto certo e 2 na letra errada.
+FUZZY_HALF_MATCH = 67
 LEAKAGE_PER_WORD_MATCH = 80
 LEAKAGE_GROUP_MATCH = 0.8
 TIMING_TOLERANT_SEC = 1.0

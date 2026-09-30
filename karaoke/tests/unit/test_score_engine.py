@@ -141,6 +141,21 @@ class TestScoreEngine(unittest.TestCase):
                 res = calculate_score(expected, self._sung(words, step=sung_step), language="pt")
                 self.assertEqual(res["tempo_factor"], 1.0)
 
+    def test_unrelated_words_of_similar_length_get_no_credit(self):
+        """Letra trocada (sessão de 2026-09-29): "cheirando"≈"cidade", "brilho"≈"isso" passavam
+        de 50% no fuzzy e valiam meio ponto; a letra errada tirava ~70."""
+        expected = self._timed(["Tão", "cheirando", "brilho", "cobre"])
+        heard = self._sung(["Que", "cidade", "isso", "por"])
+        self.assertEqual(calculate_score(expected, heard, language="pt")["score"], 0.0)
+
+    def test_near_miss_still_gets_partial_credit(self):
+        """Erro de pronúncia/conjugação continua valendo alguma coisa."""
+        expected = self._timed(["someone", "always", "does"])
+        heard = self._sung(["someone", "always", "do"])
+        res = calculate_score(expected, heard, language="en")
+        self.assertGreater(res["score"], 60.0)
+        self.assertLess(res["score"], 100.0)
+
     def test_real_leakage_is_still_forgiven(self):
         """Geni 72: o fim do verso anterior vazou antes de "Bendita Geni"."""
         prev = "Você dá pra qualquer um".split()
