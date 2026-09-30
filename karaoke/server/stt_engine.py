@@ -57,6 +57,18 @@ from faster_whisper import WhisperModel
 # mesmo em contexto de canto. Sobe em degraus com o no_speech_prob.
 _HARD_FLOOR = 0.05
 
+# Confiança média abaixo disso com a letra como initial_prompt = o Whisper
+# provavelmente copiou a dica em vez de ouvir. Calibrado nas partidas de
+# 2026-09-29: alucinações ficaram em 0,08–0,09; canto certo tem mediana 0,84.
+PROMPT_TRUST_MIN_PROB = 0.2
+
+
+def prompted_words_trusted(words: list[dict]) -> bool:
+    """Palavras transcritas com a letra como dica merecem confiança? (vazio = nada a checar)"""
+    if not words:
+        return True
+    return float(np.mean([w["probability"] for w in words])) >= PROMPT_TRUST_MIN_PROB
+
 
 def _get_word_threshold(no_speech_prob: float) -> float:
     """Retorna o limiar de probabilidade de palavra aceitável baseado no no_speech_prob do segmento.
@@ -120,6 +132,20 @@ class STTEngine:
             logger.info(f"Trecho silencioso detectado (RMS: {rms:.5f}). Ignorando Whisper para prevenir alucinações.")
             return "", []
 
+        text, words = self._transcribe_once(audio_data, language, initial_prompt, expected_words)
+
+        # Com a letra como dica e áudio confuso (cantarolar, murmurar), o Whisper
+        # devolve a própria dica com confiança quase nula e o verso tira 100.
+        # Segunda opinião sem dica: vale o que de fato foi ouvido.
+        if initial_prompt and not prompted_words_trusted(words):
+            logger.info(
+                f"🔁 [Dica suspeita] '{text}' com confiança média < {PROMPT_TRUST_MIN_PROB}: "
+                f"transcrevendo de novo sem a letra como dica"
+            )
+            text, words = self._transcribe_once(audio_data, language, None, expected_words)
+        return text, words
+
+    def _transcribe_once(self, audio_data, language, initial_prompt, expected_words):
         try:
             segments, info = self.model.transcribe(
                 audio_data, 
@@ -170,7 +196,7 @@ class STTEngine:
                                     logger.info(
                                         f"✅ [Whitelist] Palavra '{word_clean}' aceita por match fuzzy "
                                         f"com esperada '{exp}' (ratio={fuzz.ratio(word_key, exp)}, "
-                                        f"prob={word.probability:.3f} < limiar={word_threshold})"
+                                        f"prob={word.probability:.3f}, limiar={word_threshold})"
                                     )
                                     break
 
@@ -197,8 +223,7 @@ class STTEngine:
                 # O compute forçado pode ser só de GPU (ex.: int8_float16): na CPU vale o padrão dela.
                 self.compute_override = None
                 self._load("cpu")
-                return self.transcribe(audio_data, language, initial_prompt=initial_prompt,
-                                       rms_threshold=rms_threshold, expected_words=expected_words)
+                return self._transcribe_once(audio_data, language, initial_prompt, expected_words)
             raise e
 
 # Singleton para uso no servidor

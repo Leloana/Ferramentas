@@ -83,5 +83,29 @@ class TestRecordedSessions(unittest.TestCase):
                     self.assertGreaterEqual(sum(chunk) / len(chunk), minimum)
 
 
+class TestWrongLyrics(unittest.TestCase):
+    """120 pares da mesma sessão: áudio de um verso pontuado com a letra de OUTRO verso
+    (sem palavras de conteúdo em comum). O Whisper foi rodado com a letra como dica
+    ("prompted") e sem ("unprompted"); o servidor usa a segunda quando a primeira não
+    merece confiança (stt_engine.prompted_words_trusted)."""
+
+    def _scores(self):
+        from stt_engine import prompted_words_trusted
+
+        pairs = json.loads((FIXTURES / "wrong_lyrics_pairs.json").read_text(encoding="utf-8"))
+        scores = []
+        for p in pairs:
+            words = p["prompted"] if prompted_words_trusted(p["prompted"]) else p["unprompted"]
+            scores.append(score_words(p["segment"], None, words, "timing")["score"] if words else 0.0)
+        return scores
+
+    def test_singing_another_verse_scores_low(self):
+        scores = self._scores()
+        self.assertLess(sum(scores) / len(scores), 16.0)
+        # Antes da segunda opinião, 3 pares tiravam 100: o Whisper copiava a dica.
+        self.assertLess(max(scores), 75.0)
+        self.assertLessEqual(sum(s > 40 for s in scores), len(scores) * 0.12)
+
+
 if __name__ == "__main__":
     unittest.main()
