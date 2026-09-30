@@ -77,9 +77,13 @@ Este repositório (`Ferramentas`) agrupa scripts, automações e ecossistemas in
 
 ### Karaoke AI Premium
 * **Ambiente:** `cd karaoke; .\venv\Scripts\Activate.ps1`
-* **Executar Servidor (HTTPS com rede local):**
+* **Executar Servidor (público via Cloudflare Tunnel em https://karaoke.myall.net.br):** alias `karaoke` do perfil do PowerShell (confere o serviço `cloudflared`, libera a porta 8000 e abre o site). Equivalente manual:
   ```powershell
-  Get-NetTCPConnection -LocalPort 8000 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }; .\venv\Scripts\Activate.ps1; uvicorn server.main:app --host 192.168.15.6 --port 8000 --reload --ssl-keyfile "server/key.pem" --ssl-certfile "server/cert.pem"
+  $env:KARAOKE_PUBLIC_URL = "https://karaoke.myall.net.br"; .\venv\Scripts\Activate.ps1; uvicorn server.main:app --host 127.0.0.1 --port 8000
+  ```
+* **Executar Servidor (modo antigo, HTTPS só na rede local):** `karaoke -lan`, ou
+  ```powershell
+  uvicorn server.main:app --host 192.168.15.6 --port 8000 --ssl-keyfile "server/key.pem" --ssl-certfile "server/cert.pem"
   ```
 * **Executar Testes Unitários:**
   ```powershell
