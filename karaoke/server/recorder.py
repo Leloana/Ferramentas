@@ -28,6 +28,11 @@ logger = logging.getLogger(__name__)
 SESSION_FILE = "session.json"
 FORMAT_VERSION = 1
 
+# Gabarito anotado pelo cantor no fim da partida (botão discreto da tela final).
+GABARITO_FILE = "gabarito.json"
+VERSE_LABELS = ("certo", "errado", "cantarolei")
+_RECORDING_ID_RE = re.compile(r"^[\w.-]+$")
+
 
 DEFAULT_RECORD_DIR = Path(__file__).resolve().parent.parent / "recordings"
 
@@ -77,6 +82,37 @@ def read_wav(path: Path) -> np.ndarray:
         if f.getnchannels() != 1 or f.getsampwidth() != 2 or f.getframerate() != STREAM_SR:
             raise ValueError(f"{path.name}: esperado mono Int16 a {STREAM_SR} Hz")
         return np.frombuffer(f.readframes(f.getnframes()), dtype="<i2").astype(np.float32) / 32768.0
+
+
+def find_recording(recording_id: str, base_dir: Path | None = None) -> Path | None:
+    """Pasta da partida `recording_id` (nome da pasta), ou None se não existe/for inválido."""
+    base = base_dir or recording_base_dir()
+    if not base or not recording_id or not _RECORDING_ID_RE.match(recording_id) or recording_id in (".", ".."):
+        return None
+    path = base / recording_id
+    return path if (path / SESSION_FILE).is_file() else None
+
+
+def load_labels(session_dir: Path) -> dict[str, dict[str, str]]:
+    """{jogador: {"3": "certo", ...}} (versos numerados a partir de 1)."""
+    path = session_dir / GABARITO_FILE
+    if not path.exists():
+        return {}
+    return json.loads(path.read_text(encoding="utf-8")).get("labels", {})
+
+
+def save_labels(session_dir: Path, player: str, labels: dict[str, str]) -> dict[str, dict[str, str]]:
+    """Substitui as anotações de `player`. Rótulo fora de VERSE_LABELS levanta ValueError."""
+    bad = {v for v in labels.values() if v not in VERSE_LABELS}
+    if bad:
+        raise ValueError(f"Rótulos inválidos: {sorted(bad)}")
+    if any(not str(k).isdigit() for k in labels):
+        raise ValueError("Versos devem ser números")
+    all_labels = load_labels(session_dir)
+    all_labels[player] = {str(int(k)): v for k, v in sorted(labels.items(), key=lambda kv: int(kv[0]))}
+    payload = {"labels": all_labels, "updated_at": datetime.now().isoformat(timespec="seconds")}
+    (session_dir / GABARITO_FILE).write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    return all_labels
 
 
 class GameRecording:

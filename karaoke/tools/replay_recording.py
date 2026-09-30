@@ -12,8 +12,10 @@ segment_scoring), trocando só o que for pedido na linha de comando:
 
 `--set modulo.NOME=valor` troca qualquer constante (valor em sintaxe Python).
 
-Gabarito opcional: `gabarito.json` na pasta da partida, com a nota esperada
-por verso (numeração a partir de 1), por jogador ou para todos:
+Gabarito opcional: `gabarito.json` na pasta da partida. O botão ✎ discreto da
+tela de fim de jogo grava as anotações do cantor (certo = 100, errado e
+cantarolei = 0). Também dá para escrever à mão a nota esperada por verso
+(numeração a partir de 1), por jogador ou para todos:
 
     {"3": 0, "4": 100}              ou   {"Lelo": {"3": 0, "4": 100}}
 
@@ -44,10 +46,9 @@ import utils.cuda_bootstrap  # noqa: E402,F401  (registra as DLLs do CUDA antes 
 import numpy as np  # noqa: E402
 
 from mic_stream import segment_window  # noqa: E402
-from recorder import DEFAULT_RECORD_DIR, SESSION_FILE, covered_mask, read_wav  # noqa: E402
+from recorder import DEFAULT_RECORD_DIR, GABARITO_FILE, SESSION_FILE, covered_mask, read_wav  # noqa: E402
 import segment_scoring  # noqa: E402
 
-GABARITO_FILE = "gabarito.json"
 
 
 def find_sessions(paths: list[str]) -> list[Path]:
@@ -76,11 +77,22 @@ def apply_overrides(overrides: list[str]) -> None:
         setattr(module, attr, ast.literal_eval(raw))
 
 
+LABEL_EXPECTED_SCORE = {"certo": 100.0, "errado": 0.0, "cantarolei": 0.0}
+
+
 def load_gabarito(session_dir: Path, player: str) -> dict[int, float]:
+    """Nota esperada por verso (índice a partir de 0).
+
+    Aceita o gabarito anotado na tela final ({"labels": {jogador: {"3": "certo"}}})
+    ou notas escritas à mão ({"3": 0} / {"Lelo": {"3": 0}}).
+    """
     path = session_dir / GABARITO_FILE
     if not path.exists():
         return {}
     data = json.loads(path.read_text(encoding="utf-8"))
+    if "labels" in data:
+        labels = data["labels"].get(player, {})
+        return {int(k) - 1: LABEL_EXPECTED_SCORE[v] for k, v in labels.items() if v in LABEL_EXPECTED_SCORE}
     if player in data and isinstance(data[player], dict):
         data = data[player]
     return {int(k) - 1: float(v) for k, v in data.items() if not isinstance(v, dict)}

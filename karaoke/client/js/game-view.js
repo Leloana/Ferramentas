@@ -6,10 +6,12 @@ import { AudioLifecycleManager } from './audio-lifecycle-manager.js';
 import { updateSyncDisplay, startTimeSync } from './sync.js';
 import { updateMicStatusPanel } from './mic-status.js';
 import { connectDisplayWebSocket } from './ws-display.js';
+import { showAnnotationButton } from './annotate.js';
 
 export async function resetGameState() {
     const gameOverModal = document.getElementById('game-over-modal');
     if (gameOverModal) gameOverModal.removeAttribute('data-open');
+    showAnnotationButton(null);
 
     if (state.slideTransitionCleanup) {
         state.slideTransitionCleanup();
@@ -663,6 +665,7 @@ const DISPLAY_HANDLERS = {
         dom.audioPlayer.pause();
         setAppState('game-over');
         showGameOverModal(parseFloat(data.total_score) || 0, data.player_scores);
+        showAnnotationButton(data.recording_id);
     }
 };
 

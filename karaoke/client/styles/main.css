@@ -3188,3 +3188,169 @@
         padding: 0.7rem 0.75rem;
     }
 }
+
+/* ===== Anotação dos versos (gabarito do score) — ✎ discreto no fim de jogo ===== */
+.annotate-trigger {
+    position: absolute;
+    right: 0.6rem;
+    bottom: 0.5rem;
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    font-size: 0.8rem;
+    line-height: 1;
+    color: var(--dim);
+    opacity: 0.12;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+.annotate-trigger:hover,
+.annotate-trigger:focus-visible {
+    opacity: 0.7;
+}
+.annotate-trigger[hidden] {
+    display: none;
+}
+
+.annotate-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1100; /* acima do fim de jogo (1000) */
+    background: rgba(15, 23, 42, 0.92);
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+.annotate-card {
+    background: var(--card);
+    border: 1px solid #334155;
+    border-radius: 16px;
+    width: min(720px, 100%);
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1.25rem;
+    box-sizing: border-box;
+    text-align: left;
+}
+.annotate-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+.annotate-title {
+    flex: 1;
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.annotate-player {
+    background: #0f172a;
+    color: var(--text);
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 0.3rem 0.5rem;
+}
+.annotate-player[hidden] {
+    display: none;
+}
+.annotate-close {
+    background: none;
+    border: none;
+    color: var(--dim);
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+}
+.annotate-hint {
+    margin: 0.4rem 0 0.75rem;
+    font-size: 0.8rem;
+    color: var(--dim);
+}
+.annotate-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    flex: 1;
+}
+.annotate-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.45rem 0.4rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-left: 3px solid transparent;
+}
+.annotate-row[data-label="certo"] { border-left-color: #22c55e; }
+.annotate-row[data-label="errado"] { border-left-color: #ef4444; }
+.annotate-row[data-label="cantarolei"] { border-left-color: #a855f7; }
+.annotate-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+.annotate-lyrics {
+    color: var(--text);
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+.annotate-heard {
+    color: var(--dim);
+    font-size: 0.75rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.annotate-choices {
+    display: flex;
+    gap: 0.25rem;
+    flex-shrink: 0;
+}
+.annotate-choice {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 0.3rem 0.45rem;
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    filter: grayscale(1);
+    opacity: 0.45;
+}
+.annotate-choice[aria-pressed="true"] {
+    filter: none;
+    opacity: 1;
+    border-color: var(--accent);
+    background: rgba(56, 189, 248, 0.12);
+}
+.annotate-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.75rem;
+}
+.annotate-status {
+    color: var(--dim);
+    font-size: 0.85rem;
+}
+.annotate-save {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    border-radius: 999px;
+    padding: 0.55rem 1.6rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+@media (max-width: 520px) {
+    .annotate-row { flex-wrap: wrap; }
+    .annotate-choices { width: 100%; justify-content: flex-end; }
+}

@@ -37,6 +37,8 @@ export const state = {
     currentAppState: 'idle',
     audioManager: null,
     syncMode: 'word', // 'word' | 'verse'
+    annotateRecordingId: null, // gravação da última partida (botão ✎ da tela final)
+    annotateData: null,
 };
 
 export function setAppState(stateName) {

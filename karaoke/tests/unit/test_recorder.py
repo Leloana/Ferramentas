@@ -125,6 +125,28 @@ class TestSaveAndReplay(unittest.TestCase):
         self.assertEqual(replayed[1]["score"], 100.0)
 
 
+class TestGabarito(unittest.TestCase):
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp(prefix="karaoke_gab_"))
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+
+    def test_labels_saved_by_the_game_over_screen_feed_the_replay(self):
+        import replay_recording
+        from recorder import save_labels
+
+        save_labels(self.tmp, "Lelo", {"1": "certo", "3": "cantarolei", "2": "errado"})
+        save_labels(self.tmp, "Ana", {"1": "errado"})
+        self.assertEqual(replay_recording.load_gabarito(self.tmp, "Lelo"), {0: 100.0, 1: 0.0, 2: 0.0})
+        self.assertEqual(replay_recording.load_gabarito(self.tmp, "Ana"), {0: 0.0})
+        self.assertEqual(replay_recording.load_gabarito(self.tmp, "Ninguém"), {})
+
+    def test_invalid_label_is_rejected(self):
+        from recorder import save_labels
+
+        with self.assertRaises(ValueError):
+            save_labels(self.tmp, "Lelo", {"1": "mais ou menos"})
+
+
 class TestRoomSavesPartialGame(unittest.TestCase):
     def test_reset_saves_unfinished_game(self):
         from rooms import KaraokeRoom

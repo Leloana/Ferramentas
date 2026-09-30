@@ -548,13 +548,15 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                             save_profile(p, profile)
                             logger.info(f"Salvo perfil de {p} com nota {p_score}% na musica {room.song_title}")
 
+                    # Salva antes do game_over: a TV recebe o id para o botão de anotar versos.
+                    recording_id = room.finish_recording(complete=True)
                     await room.broadcast({
                         "type": "game_over",
                         "total_score": total_score_avg,
-                        "player_scores": player_final_scores
+                        "player_scores": player_final_scores,
+                        "recording_id": recording_id,
                     })
 
-                    room.finish_recording(complete=True)
                     queue_manager.notify_game_ended()
                     break
 

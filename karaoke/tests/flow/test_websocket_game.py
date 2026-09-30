@@ -283,7 +283,8 @@ class TestWebsocketGameFlow(unittest.TestCase):
                 msg_score = ws_display.receive_json()
                 self.assertEqual(msg_score["type"], "segment_result")
                 self.assertEqual(msg_score["score"], 100.0)
-                self.assertEqual(ws_display.receive_json()["type"], "game_over")
+                msg_over = ws_display.receive_json()
+                self.assertEqual(msg_over["type"], "game_over")
 
                 audio = mock_stt.transcribe.call_args.args[0]
                 self.assertEqual(int(np.count_nonzero(audio)), 3000)
@@ -292,6 +293,8 @@ class TestWebsocketGameFlow(unittest.TestCase):
         from recorder import SESSION_FILE, covered_mask, read_wav
         sessions = list(record_dir.iterdir())
         self.assertEqual(len(sessions), 1)
+        # A TV recebe o id para o botão de anotar versos.
+        self.assertEqual(msg_over["recording_id"], sessions[0].name)
         session = json.loads((sessions[0] / SESSION_FILE).read_text(encoding="utf-8"))
         self.assertTrue(session["complete"])
         self.assertEqual(session["song_id"], self.song_slug)
