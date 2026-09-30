@@ -21,7 +21,7 @@ const MODES = ['solo', '1v1', '1v1v1', '1v1v1v1'];
 const GROUP_NAMES = { 2: 'Dupla', 3: 'Trio', 4: 'Quarteto' };
 
 export function micLabel(mic) {
-    return mic === PC_MIC ? 'Mic do dispositivo' : mic;
+    return mic === PC_MIC ? 'Local' : mic;
 }
 
 export function groupName(size) {
@@ -245,7 +245,7 @@ function pick(seatIdx, mic) {
     closeModal('lobby-picker-modal');
     renderLobby();
 
-    // Mic do dispositivo ainda sem permissão: pede agora (main.js cuida do getUserMedia).
+    // Mic local (deste aparelho) ainda sem permissão: pede agora (main.js cuida do getUserMedia).
     if (mic === PC_MIC && !state.localStreamForced) {
         const btn = document.getElementById('btn-force-pc-mic');
         if (btn) btn.click();

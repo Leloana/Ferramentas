@@ -188,7 +188,7 @@ export function connectMobileMicrophoneWebSocket() {
                     const sortedPlayers = Object.entries(data.player_scores).sort((a, b) => b[1] - a[1]);
                     sortedPlayers.forEach(([name, score], idx) => {
                         const medal = `<span class="place-num">${idx + 1}º</span>`;
-                        const displayName = name === "PC_Local" ? "Mic do dispositivo" : name;
+                        const displayName = name === "PC_Local" ? "Local" : name;
                         const isMe = name === state.mobileNickname;
                         html += `<div class="mic-final__row${isMe ? ' mic-final__row--me' : ''}">`;
                         html += `<span>${medal} ${escapeHtml(displayName)}</span>`;

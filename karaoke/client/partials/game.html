@@ -37,11 +37,8 @@
                             <span class="setup-counters__sep">·</span>
                             <span>Registrando: <strong id="mp-queue-count">0</strong></span>
                         </span>
-                        <button type="button" id="btn-open-pairing" class="btn btn--sm">
-                            <i data-icon="phone"></i> Conectar celular
-                        </button>
-                        <span class="lobby__score"><span class="field__label">Pontuação</span>
-                            <button type="button" id="btn-score-mode" class="btn-control-small btn-sync-mode" title="Alternar entre pontuação por palavras + tempo ou apenas palavras"><i data-icon="metronome"></i><span>Palavras + tempo</span></button></span>
+                        <!-- sem botão visível: a vaga "+" já diz "Conectar celular"; fica só como gatilho do modal (modals.js / lobby.js) -->
+                        <button type="button" id="btn-open-pairing" hidden>Conectar celular</button>
                     </div>
                 </div>
                 <div id="lobby-seats" class="lobby-seats"></div>
@@ -50,8 +47,14 @@
                     <button type="button" id="btn-lobby-turns" class="btn btn--sm btn-toggle" aria-pressed="false" hidden><i data-icon="split"></i> Revezar versos</button>
                 </div>
                 <p id="lobby-summary" class="lobby-summary"></p>
-                <!-- ativa o mic deste aparelho (main.js); o lobby aciona ao escolher "Mic do dispositivo" -->
-                <button type="button" id="btn-force-pc-mic" hidden>Mic do dispositivo</button>
+                <!-- ativa o mic deste aparelho (main.js); o lobby aciona ao escolher "Local" -->
+                <button type="button" id="btn-force-pc-mic" hidden>Local</button>
+            </div>
+
+            <!-- Forma de pontuação: fora do quadro dos cantores, logo abaixo dele -->
+            <div id="lobby-score" class="lobby__score">
+                <span class="field__label">Pontuação</span>
+                <button type="button" id="btn-score-mode" class="btn-control-small btn-sync-mode" title="Alternar entre pontuação por palavras + tempo ou apenas palavras"><i data-icon="metronome"></i><span>Palavras + tempo</span></button>
             </div>
 
             <!-- Tela de canto -->

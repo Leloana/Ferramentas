@@ -55,7 +55,8 @@ TV — e simplificar os fluxos de adicionar música e montar a partida.
 - **Lobby** (`js/lobby.js`): vagas com "+", cada uma com **microfone próprio** e **time A–D**; mesmo time = dupla/trio. O modo de jogo sai das vagas (`solo`…`1v1v1v1` ou `teams`). O botão de time só aparece com 2+ cantores.
 - **Capa do álbum + cantor** no lobby: `GET /api/songs/{id}/cover` (`utils/cover.py`) busca no iTunes (arte do álbum) e cai para a miniatura do YouTube; guarda `songs/<slug>/cover.jpg` (fora do git). Sem capa grava `cover.none`, exceto em falha de rede.
 - **Placar** (`js/score-bars.js`): uma barra por time nas bordas; time com 2+ membros mostra a média em destaque e uma barrinha discreta por membro. Pódio por time.
-- "Mic do PC" virou **"Mic do dispositivo"** (pode ser o celular abrindo a tela da TV).
+- "Mic do PC" virou **"Mic do dispositivo"** e depois só **"Local"** (texto curto; pode ser o celular abrindo a tela da TV).
+- Lobby: forma de pontuação saiu do quadro dos cantores (fica logo abaixo) e o botão "Conectar celular" do topo saiu — a vaga "+" já leva ao pareamento.
 
 ## Bugs antigos encontrados
 

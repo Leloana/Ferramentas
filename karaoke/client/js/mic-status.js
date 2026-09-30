@@ -44,7 +44,7 @@ export function updateMicStatusPanel() {
         setBadgeClass('mic-badge--paired');
         markButtons(false, true);
     } else if (state.localStreamForced) {
-        text.innerText = 'Mic do dispositivo';
+        text.innerText = 'Local';
         setBadgeClass('mic-badge--pc');
         markButtons(true, false);
     } else {

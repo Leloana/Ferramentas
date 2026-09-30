@@ -99,7 +99,7 @@ sequenceDiagram
   - Automatically pops the queue and sends a `register_request` to the next microphone.
 
 ### 3. Lobby, Teams and Game Mode
-There is no game-mode picker any more. The display shows a **lobby** (`client/js/lobby.js`): one seat per singer, added with "+". Each seat picks **its own microphone** (a registered phone or `PC_Local`, shown as "Mic do dispositivo") and a **team** (A–D, the team button only shows with 2+ seats).
+There is no game-mode picker any more. The display shows a **lobby** (`client/js/lobby.js`): one seat per singer, added with "+". Each seat picks **its own microphone** (a registered phone or `PC_Local`, shown as "Local") and a **team** (A–D, the team button only shows with 2+ seats).
 - **Everyone on their own team:** free-for-all — `game_mode` is `solo`, `1v1`, `1v1v1` or `1v1v1v1` (one per team).
 - **Two or more seats on the same team:** duo/trio — `game_mode` is `teams`.
 

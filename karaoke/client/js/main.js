@@ -71,7 +71,7 @@ function bootstrap() {
                 state.isMobileMicrophoneConnected = false;
                 state.micSourceMode = 'pc';
                 updateMicStatusPanel();
-                showToast("Microfone do dispositivo ativado!", "success");
+                showToast("Microfone local ativado!", "success");
             } catch (e) {
                 console.error("Erro ao ativar microfone local:", e);
                 state.localStreamForced = false;
@@ -82,7 +82,7 @@ function bootstrap() {
                 } else if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
                     showToast("O navegador bloqueia microfone em conexões HTTP sem fio. Acesse via http://localhost:8000/ no PC para liberar!", "error", 12000);
                 } else {
-                    showToast("Não foi possível acessar o microfone do dispositivo: " + e.message, "error");
+                    showToast("Não foi possível acessar o microfone local: " + e.message, "error");
                 }
             }
         };

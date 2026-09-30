@@ -111,7 +111,7 @@
 }
 .lobby__head .panel-title { margin: 0; }
 .lobby__tools { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
-.lobby__score { display: inline-flex; align-items: center; gap: 0.4rem; }
+.lobby__score { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin: 0.75rem 0 0.25rem; }
 .panel-title { display: flex; align-items: center; gap: 0.5rem; font-size: 1.35rem; margin-bottom: 1rem; }
 .setup-counters { display: flex; align-items: center; gap: 0.5rem; color: var(--dim); font-size: 0.9rem; }
 .setup-counters strong { color: var(--ink); }

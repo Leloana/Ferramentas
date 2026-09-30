@@ -88,7 +88,7 @@ async function openAnnotation() {
 
     const select = document.getElementById('annotate-player');
     select.replaceChildren(...data.players.map(p => {
-        const opt = el('option', null, p === 'PC_Local' ? 'Mic do dispositivo' : p);
+        const opt = el('option', null, p === 'PC_Local' ? 'Local' : p);
         opt.value = p;
         return opt;
     }));

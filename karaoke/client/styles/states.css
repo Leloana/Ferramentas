@@ -22,6 +22,7 @@
 #app[data-role="display"][data-state="waiting"] #selection-area { display: none !important; }
 #app[data-role="display"][data-state="waiting"] #game-area { display: block !important; }
 #app[data-role="display"][data-state="waiting"] #multiplayer-setup-container { display: block !important; }
+#app:not([data-state="waiting"]) #lobby-score { display: none !important; }
 #app[data-role="display"][data-state="waiting"] #canto-screen { display: none !important; }
 #app[data-role="display"][data-state="waiting"] #sync-controls { display: flex !important; }
 #app[data-role="display"][data-state="waiting"] .song-progress-container,
