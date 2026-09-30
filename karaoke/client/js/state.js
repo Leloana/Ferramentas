@@ -40,6 +40,9 @@ export const state = {
     annotateRecordingId: null, // gravação da última partida (botão lápis da tela final)
     annotateData: null,
     lastFocusedSong: null,
+    gameGeneration: 0,        // muda a cada início/saída; cancela awaits antigos
+    gameReconnectTimer: null,
+    timeSyncTimer: null,
     lobbySeats: [],        // lobby: [{ mic, team }] — mesmo time = dupla/trio (lobby.js)
     lobbyMics: [],         // celulares registrados na sala
     scoreGroups: null,     // times da partida em curso [{ team, mics }] (score-bars.js)

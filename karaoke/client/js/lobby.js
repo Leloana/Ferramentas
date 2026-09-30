@@ -214,9 +214,7 @@ function openPicker(seatIdx) {
         opt.disabled = owner !== -1;
         if (mic === current) opt.setAttribute('aria-current', 'true');
 
-        let hint = 'livre';
-        if (owner !== -1) hint = `já está com o cantor ${owner + 1}`;
-        else if (mic === PC_MIC && !state.localStreamForced) hint = 'livre · vai pedir permissão do microfone';
+        const hint = owner !== -1 ? `com o cantor ${owner + 1}` : 'livre';
 
         opt.append(micWithIcon('mic-option__name', mic), el('span', 'mic-option__hint', hint));
         opt.addEventListener('click', () => pick(seatIdx, mic));
@@ -224,7 +222,7 @@ function openPicker(seatIdx) {
     });
 
     if (!(state.lobbyMics || []).length) {
-        list.append(el('p', 'mic-options__empty', 'Nenhum celular conectado ainda. Use "Conectar outro celular" e escaneie o QR.'));
+        list.append(el('p', 'mic-options__empty', 'Nenhum celular conectado'));
     }
 
     openModal(modal);

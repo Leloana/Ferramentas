@@ -43,6 +43,9 @@ class KaraokeRoom:
         self.is_singing_active = False
         self.song_title = ""
         self.pending_tasks: set = set()
+        # Sobe a cada partida/reset: resultado do Whisper de uma partida antiga
+        # (que ficou esperando o lock) é descartado em vez de cair na nova.
+        self.game_id = 0
         # Partida em gravação (KARAOKE_RECORD_DIR) ou None.
         self.recording: Optional[GameRecording] = None
 

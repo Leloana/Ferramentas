@@ -4,6 +4,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import math
 import os
 from datetime import datetime
 from pathlib import Path
@@ -38,6 +39,22 @@ PENDING_TASKS_TIMEOUT_SEC = 10.0
 PLAYERS_DIR = Path(__file__).resolve().parent.parent.parent / "players"
 
 
+MAX_NICKNAME_LEN = 15
+RESERVED_NICKNAMES = ("solo", "local", "tv", "pc_local")
+
+
+def _nickname_taken(room, name: str, sanitized: str) -> bool:
+    # compara pelo nome da pasta do perfil, sem caixa: "Ana." e "ana" são o mesmo perfil
+    key = sanitized.lower()
+    if name.lower() in RESERVED_NICKNAMES or key in RESERVED_NICKNAMES:
+        return True
+    for other in room.players:
+        other_key = "".join(c for c in other if c.isalnum() or c in ("-", "_")).strip().lower()
+        if other == name or other_key == key:
+            return True
+    return False
+
+
 def get_player_profile_path(name: str) -> Path:
     # Sanitiza o nome para evitar Path Traversal
     sanitized_name = "".join(c for c in name if c.isalnum() or c in ("-", "_")).strip()
@@ -52,8 +69,15 @@ def get_or_create_profile(name: str) -> dict:
     if path.exists():
         try:
             with open(path, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception:
+                data = json.load(f)
+            if isinstance(data, dict):
+                return data
+        except Exception as e:
+            logger.error(f"Perfil corrompido em {path}: {e}")
+        # guarda o arquivo ruim em vez de sobrescrever o histórico
+        try:
+            path.replace(path.with_suffix(".corrompido.json"))
+        except OSError:
             pass
     # Cria novo perfil
     profile = {
@@ -67,8 +91,11 @@ def get_or_create_profile(name: str) -> dict:
 def save_profile(name: str, profile: dict) -> None:
     path = get_player_profile_path(name)
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "w", encoding="utf-8") as f:
+    # escrita atômica: queda no meio não deixa profile.json pela metade
+    tmp = path.with_suffix(".json.tmp")
+    with open(tmp, "w", encoding="utf-8") as f:
         json.dump(profile, f, indent=2, ensure_ascii=False)
+    os.replace(tmp, path)
 
 
 async def _send_segment_start(ws: WebSocket, segments: list, idx: int, song_title: str = "") -> None:
@@ -103,8 +130,12 @@ async def _broadcast_segment_start(room, idx: int) -> None:
         return
     if room.display:
         await _send_segment_start(room.display, room.segments, idx, room.song_title)
-    for ws in room.players.values():
-        await _send_segment_start(ws, room.segments, idx, room.song_title)
+    # list(): um celular pode entrar/sair durante o await e mudar o dict
+    for ws in list(room.players.values()):
+        try:
+            await _send_segment_start(ws, room.segments, idx, room.song_title)
+        except Exception as e:
+            logger.debug(f"Falha ao enviar segment_start a um celular: {e}")
     if room.mic:
         await _send_segment_start(room.mic, room.segments, idx, room.song_title)
 
@@ -161,6 +192,7 @@ async def process_segment_multiplayer(
 ) -> None:
     stt = get_stt_engine()
     results = {}
+    game_id = room.game_id
     # Lista capturada no disparo: a TV pode trocar de música antes do Whisper terminar.
     segment = segments[seg_idx]
     prev_segment = segments[seg_idx - 1] if seg_idx > 0 else None
@@ -185,7 +217,11 @@ async def process_segment_multiplayer(
                     return stt.transcribe(audio_data, **transcribe_kwargs(segment))
 
                 async with queue_manager.whisper_lock:
+                    if room.game_id != game_id:
+                        return  # partida acabou/trocou enquanto esperava a GPU
                     transcribed_text, words = await asyncio.to_thread(compute)
+                if room.game_id != game_id:
+                    return
                 words = shift_words(words, window_offset)
                 result = score_words(segment, prev_segment, words, scoring_mode)
             else:
@@ -218,6 +254,9 @@ async def process_segment_multiplayer(
             }
 
     await asyncio.gather(*(process_player(name, audio, rms) for name, (audio, rms) in active_audio.items()))
+    if room.game_id != game_id:
+        logger.info(f"Resultado do verso {seg_idx + 1} descartado: é de uma partida anterior")
+        return
 
     primary_name = "Solo"
     if "Solo" not in results and results:
@@ -282,12 +321,17 @@ def _dispatch_due_segments(room, current_time: float | None) -> None:
         task.add_done_callback(room.pending_tasks.discard)
 
 
+DISPLAY_REPLACED_CODE = 4001
+
+
 @router.websocket("/ws/room/{room_id}")
 async def websocket_endpoint(websocket: WebSocket, room_id: str):
     await websocket.accept()
 
     role = websocket.query_params.get("role", "display")
     song_id = websocket.query_params.get("song_id")
+    # Display que caiu no meio da música e voltou: mantém placar e gravação.
+    resume = websocket.query_params.get("resume") == "1"
     player_name = None
 
     segments = []
@@ -307,7 +351,11 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
         room.song_title = song_title
 
     # Display novo para outra música → reset da sala.
-    if role == "display" and song_id:
+    resuming = resume and role == "display" and song_id and room.song_id == song_id
+    if resuming:
+        logger.info(f"Display reconectado na sala {room_id}: partida retomada sem reset")
+    if role == "display" and song_id and not resuming:
+        room.game_id += 1
         room.song_id = song_id
         room.song_title = song_title
         room.segments = segments
@@ -326,14 +374,27 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
         room.unregistered_mics.append(websocket)
         logger.info(f"Microfone conectado na fila de registro. Fila total: {len(room.unregistered_mics)}")
         
-        if len(room.unregistered_mics) == 1:
-            await websocket.send_json({"type": "register_request"})
-        else:
-            await websocket.send_json({"type": "register_wait", "position": len(room.unregistered_mics) - 1})
+        try:
+            if len(room.unregistered_mics) == 1:
+                await websocket.send_json({"type": "register_request"})
+            else:
+                await websocket.send_json({"type": "register_wait", "position": len(room.unregistered_mics) - 1})
+        except Exception as e:
+            # Celular fechou na hora (recarregou): sem isso o socket morto ficava
+            # na frente da fila e ninguém mais recebia register_request.
+            logger.debug(f"Celular saiu antes do pareamento: {e}")
+            if websocket in room.unregistered_mics:
+                was_front = room.unregistered_mics[0] is websocket
+                room.unregistered_mics.remove(websocket)
+                if was_front:
+                    await _advance_registration_queue(room)
+            room_manager.clean_room(room_id)
+            return
     else:
         if room.display:
             try:
-                await room.display.close(code=1000, reason="Novo display conectado")
+                # 4001: o cliente sabe que foi substituído e não tenta reconectar
+                await room.display.close(code=DISPLAY_REPLACED_CODE, reason="Novo display conectado")
             except Exception as e:
                 logger.debug(f"Falha ao fechar display anterior: {e}")
         room.display = websocket
@@ -378,17 +439,27 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         room.mic_timelines[stream_key].add_in_flight(first_index, samples)
 
             elif "text" in message:
-                data = json.loads(message["text"])
+                # Mensagem malformada é ignorada: uma exceção aqui derrubaria a TV
+                try:
+                    data = json.loads(message["text"])
+                except ValueError:
+                    logger.debug("Mensagem de texto inválida descartada.")
+                    continue
+                if not isinstance(data, dict):
+                    continue
                 msg_type = data.get("type")
 
                 if msg_type == "register_name":
-                    name = data.get("name", "").strip()
+                    raw_name = data.get("name")
+                    name = raw_name.strip() if isinstance(raw_name, str) else ""
+                    # sem caracteres de controle, tamanho do campo do celular (15)
+                    name = "".join(c for c in name if c.isprintable())[:MAX_NICKNAME_LEN].strip()
                     sanitized = "".join(c for c in name if c.isalnum() or c in ("-", "_")).strip()
                     if not name:
                         await websocket.send_json({"type": "registration_error", "message": "O apelido não pode ser vazio!"})
                     elif not sanitized:
                         await websocket.send_json({"type": "registration_error", "message": "O apelido deve conter pelo menos uma letra ou número!"})
-                    elif name in room.players or sanitized in room.players or name.lower() in ("solo", "local", "tv") or sanitized.lower() in ("solo", "local", "tv"):
+                    elif _nickname_taken(room, name, sanitized):
                         await websocket.send_json({"type": "registration_error", "message": "Este apelido já está em uso!"})
                     else:
                         player_name = name
@@ -407,6 +478,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                     room.scoring_mode = data.get("scoring_mode", "timing")
                     logger.info(f"Jogo iniciado no modo {room.game_mode} (pontuação: {room.scoring_mode}) com: {room.active_players}")
                     
+                    room.game_id += 1
                     room.reset_audio()
                     room.player_segment_scores.clear()
                     room.segment_scores.clear()
@@ -434,10 +506,16 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                 elif msg_type == "client_info":
                     # Só informativo: o áudio chega sempre a STREAM_SR, com a taxa no próprio pacote.
                     logger.info(f"Sample rate nativo do cliente ({role}) na sala {room_id}: {data.get('sample_rate')}")
-                    await _broadcast_segment_start(room, 0)
+                    # retomada: reenvia o verso atual, não o primeiro
+                    await _broadcast_segment_start(room, room.current_segment_idx if resuming else 0)
 
                 elif msg_type == "playback_time":
-                    current_time = data.get("current_time", 0.0)
+                    try:
+                        current_time = float(data.get("current_time", 0.0))
+                    except (TypeError, ValueError):
+                        continue
+                    if not math.isfinite(current_time) or current_time < 0:
+                        continue
                     room.last_client_time = current_time
                     room.song_clock.update(current_time)
 
@@ -486,6 +564,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
 
                             await room.broadcast({
                                 "type": "segment_result",
+                                "recalc": True,  # só totais: o cliente não mostra nota de verso
                                 "score": 0.0,
                                 "transcription": "",
                                 "total_score": running_avg,
@@ -540,15 +619,20 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                             p_score = round(sum(room.player_segment_scores[p].values()) / max(1, len(room.segments)), 1)
                             player_final_scores[p] = p_score
                             
-                            # Salva perfil
-                            profile = get_or_create_profile(p)
-                            profile["songs_sung"].append({
-                                "name": room.song_title or room.song_id,
-                                "score": p_score,
-                                "date": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
-                            })
-                            save_profile(p, profile)
-                            logger.info(f"Salvo perfil de {p} com nota {p_score}% na musica {room.song_title}")
+                            # Salva perfil (falha aqui não pode impedir o game_over)
+                            try:
+                                profile = get_or_create_profile(p)
+                                if not isinstance(profile.get("songs_sung"), list):
+                                    profile["songs_sung"] = []
+                                profile["songs_sung"].append({
+                                    "name": room.song_title or room.song_id,
+                                    "score": p_score,
+                                    "date": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+                                })
+                                save_profile(p, profile)
+                                logger.info(f"Salvo perfil de {p} com nota {p_score}% na musica {room.song_title}")
+                            except Exception as e:
+                                logger.error(f"Falha ao salvar o perfil de {p}: {e}", exc_info=True)
 
                     # Salva antes do game_over: a TV recebe o id para o botão de anotar versos.
                     recording_id = room.finish_recording(complete=True)
@@ -572,8 +656,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
             # reconectou com o mesmo nome já registrou o socket novo.
             if player_name and room.players.get(player_name) is websocket:
                 room.players.pop(player_name, None)
-                if player_name in room.active_players:
-                    room.active_players.remove(player_name)
+                # Continua em active_players: se o celular voltar e registrar o
+                # mesmo apelido, o áudio volta a pontuar e a nota entra no fim.
                 logger.info(f"Jogador {player_name} desconectado da sala.")
             
             if websocket in room.unregistered_mics:

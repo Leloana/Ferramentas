@@ -9,7 +9,7 @@ from typing import Optional
 
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
-from state import SONGS_DIR
+from state import SONGS_DIR, queue_manager
 from utils.lyrics_fetcher import fetch_lyrics
 from utils.prepare import run_reinstall_song
 from utils.text import normalize_lyrics_text, slugify
@@ -186,13 +186,15 @@ async def upload_song(
         # letra) **menos** `prepare_song`. O usuário precisa aprovar o LRC
         # gerado no editor antes de finalizar — o `segments.json` será gerado
         # depois, em `/api/save-lyrics`, sobre o LRC editado pelo usuário.
-        success = await run_reinstall_song(
-            str(song_dir),
-            language=language,
-            clean_existing=False,
-            skip_prepare_song=True,
-            align_lyrics=align_lyrics,
-        )
+        # Whisper/Demucs na GPU: mesmo lock da partida e da fila (VRAM)
+        async with queue_manager.whisper_lock:
+            success = await run_reinstall_song(
+                str(song_dir),
+                language=language,
+                clean_existing=False,
+                skip_prepare_song=True,
+                align_lyrics=align_lyrics,
+            )
         if not success:
             raise HTTPException(status_code=500, detail="Falha ao preparar áudio e LRC. Verifique os logs do servidor.")
 

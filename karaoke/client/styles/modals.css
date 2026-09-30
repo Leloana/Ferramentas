@@ -370,7 +370,6 @@
 .annotate-title { flex: 1; margin: 0; font-size: 1.3rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .annotate-player { width: auto; min-height: 36px; }
 .annotate-header .cselect { width: auto; min-width: 170px; }
-.annotate-close { background: none; border: none; color: var(--dim); font-size: 1.6rem; line-height: 1; cursor: pointer; }
 .annotate-hint { margin: 0.4rem 0 0.75rem; font-size: 0.9rem; color: var(--dim); }
 .annotate-list { flex: 1; margin: 0; padding: 0; list-style: none; overflow-y: auto; }
 .annotate-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.45rem 0.4rem; border-bottom: var(--hairline); border-left: 4px solid transparent; }

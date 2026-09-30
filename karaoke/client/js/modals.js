@@ -35,25 +35,23 @@ function paintLyricsStatus(els, tone, icon, text) {
 
 // Resolve o resultado de /api/fetch-lyrics para uma classificação visual única,
 // usada tanto na pré-confirmação (passo 2) quanto na revisão final (passo 3).
-function describeLyricsResult(result, { step3 = false } = {}) {
+function describeLyricsResult(result) {
     if (result && result.pending) {
-        return { tone: 'blue', icon: 'search', text: 'Confirme o artista e título acima — a letra será buscada automaticamente em seguida.' };
+        return { tone: 'blue', icon: 'search', text: 'Letra: aguardando título' };
     }
     if (!result || !result.success) {
-        return { tone: 'amber', icon: 'robot', text: 'Nenhuma letra encontrada online — a IA vai transcrever diretamente do áudio.' };
+        return { tone: 'amber', icon: 'robot', text: 'Letra não encontrada · a IA transcreve' };
     }
     const via = (name) => `via ${name}`;
     if (result.syncedLyrics) {
         const src = result.source === 'lrclib' ? 'LRCLIB' : 'API';
         return {
             tone: 'green', icon: 'check',
-            text: step3
-                ? `Letra sincronizada encontrada ${via(src)}! O LRC será usado diretamente.`
-                : `Letra sincronizada encontrada ${via(src)}! O LRC será usado diretamente — não será necessário gerar.`,
+            text: `Letra sincronizada ${via(src)}`,
         };
     }
     const src = result.source === 'ovh' ? 'Lyrics.ovh' : 'LRCLIB';
-    return { tone: 'blue', icon: 'lyrics', text: `Letra encontrada ${via(src)}! Será usada como guia para o alinhamento automático.` };
+    return { tone: 'blue', icon: 'lyrics', text: `Letra encontrada ${via(src)}` };
 }
 
 function initPairingModal() {
@@ -68,6 +66,8 @@ function initPairingModal() {
     btnOpenPairing.onclick = async () => {
         openModal(pairingModal);
         pairingModal.setAttribute('data-qrcode-status', 'loading');
+        const qrLoading = document.getElementById('pairing-qrcode-loading');
+        if (qrLoading) qrLoading.textContent = 'Gerando QR Code...';
 
         // Reset pairing status and dot indicator
         const pairingStatusText = document.getElementById('pairing-status-text');
@@ -87,6 +87,12 @@ function initPairingModal() {
 
         pairingQrcode.onload = () => {
             pairingModal.setAttribute('data-qrcode-status', 'ready');
+        };
+        // QR vem de um serviço externo: sem internet, fica só o link
+        pairingQrcode.onerror = () => {
+            pairingModal.setAttribute('data-qrcode-status', 'error');
+            const loading = document.getElementById('pairing-qrcode-loading');
+            if (loading) loading.textContent = 'QR indisponível · use o link';
         };
     };
 
@@ -177,6 +183,13 @@ function initAddSongModal() {
     }
 
     btnCloseAddSong.onclick = () => closeModal(addSongModal);
+
+    // Esc / Voltar da TV / botão do navegador recuam um passo antes de fechar
+    addSongModal._onBack = () => {
+        if (currentStep <= 1) return false;
+        document.getElementById('btn-back-step-1').click();
+        return true;
+    };
 
     // Seta de voltar do título: recua um passo; no 1º passo, fecha
     const btnAddSongBack = document.getElementById('btn-add-song-back');
@@ -287,7 +300,7 @@ function initAddSongModal() {
             };
             const textarea = document.getElementById('lyrics-step3-textarea');
             if (step3StatusEls.box && textarea) {
-                const { tone, icon, text } = describeLyricsResult(fetchedLyrics, { step3: true });
+                const { tone, icon, text } = describeLyricsResult(fetchedLyrics);
                 paintLyricsStatus(step3StatusEls, tone, icon, text);
                 if (!fetchedLyrics || !fetchedLyrics.success) {
                     textarea.value = '';

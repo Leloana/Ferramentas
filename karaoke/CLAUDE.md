@@ -190,6 +190,9 @@ Armazena a nota histórica de cada sessão.
     *   As partidas ficam gravadas por padrão em `karaoke/recordings/` (fora do git; `KARAOKE_RECORD=0` desliga). `tools/replay_recording.py` roda o Whisper de novo nelas com outro modelo ou constante (`--set modulo.NOME=valor`).
 *   **Referencial de tempo do Whisper:**
     *   O Whisper devolve `start` relativo ao início da JANELA, que começa até 1,5 s antes do `sing_start`. Compare com `expected_start` só depois de `_shift_words(words, t0 - sing_start)` em `ws/room.py`. Sem isso o canto perfeito tira 85.
+*   **Slug de música vindo do cliente:** sempre `utils/song_paths.safe_song_dir(SONGS_DIR, slug)`, nunca `SONGS_DIR / slug` direto (rotas apagam/renomeiam pastas).
+*   **Texto de usuário no front:** apelidos, títulos e transcrições nunca vão crus para `innerHTML` — use `textContent` ou `escapeHtml` (`js/html.js`). `showToast` já é texto puro.
+*   **Reconexão da TV:** o jogo reconecta com `resume=1` (o servidor não reseta a sala) e o código de fechamento 4001 (`DISPLAY_REPLACED_CODE`) significa "outra tela assumiu" — não reconectar. Resultados de Whisper conferem `room.game_id` antes de gravar.
 *   **Hallucinações no Silêncio:**
     *   Trechos silenciosos longos fazem o Whisper gerar alucinações repetitivas. Garanta que o gate de áudio de RMS (`rms_threshold` em `stt_engine.py`) rejeite transcrição abaixo de `0.0018` de energia média.
 

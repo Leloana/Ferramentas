@@ -13,6 +13,7 @@ de mínimo descarta o jitter do Wi-Fi/túnel.
 """
 from __future__ import annotations
 
+import math
 import struct
 import time
 
@@ -56,6 +57,9 @@ def parse_packet(data: bytes) -> tuple[float, int, np.ndarray] | None:
     magic, first_index, sample_rate = PACKET_HEADER.unpack_from(data)
     payload = len(data) - PACKET_HEADER.size
     if magic != PACKET_MAGIC or sample_rate <= 0 or payload % 2:
+        return None
+    # NaN/infinito viraria âncora NaN e o int(round()) do extract derrubaria a TV
+    if not math.isfinite(first_index) or first_index < 0:
         return None
     samples = np.frombuffer(data, dtype="<i2", offset=PACKET_HEADER.size)
     return first_index, sample_rate, samples

@@ -3,11 +3,12 @@ import { iconSvg } from './icons.js';
 import { lobbyLineup, validateLobby, setAvailableMics, micLabel, groupName, PC_MIC } from './lobby.js';
 import { showScoreBars, hideScoreBars, updateScoreBars, groupFinalScores } from './score-bars.js';
 import { stampVerse, clearStamp, verseQuality, replayClass } from './verse-stamp.js';
+import { escapeHtml } from './html.js';
 import { dom } from './dom.js';
-import { myRoom } from './config.js';
+import { myRoom, DISPLAY_REPLACED_CODE } from './config.js';
 import { showToast } from './toast.js';
 import { AudioLifecycleManager } from './audio-lifecycle-manager.js';
-import { updateSyncDisplay, startTimeSync } from './sync.js';
+import { updateSyncDisplay, startTimeSync, stopTimeSync } from './sync.js';
 import { updateMicStatusPanel } from './mic-status.js';
 import { connectDisplayWebSocket } from './ws-display.js';
 import { showAnnotationButton } from './annotate.js';
@@ -43,6 +44,13 @@ export async function resetGameState() {
         clearTimeout(state.transcriptionActiveTimer);
         state.transcriptionActiveTimer = null;
     }
+    // invalida um startKaraoke/reconexão ainda em andamento
+    state.gameGeneration++;
+    if (state.gameReconnectTimer) {
+        clearTimeout(state.gameReconnectTimer);
+        state.gameReconnectTimer = null;
+    }
+    stopTimeSync();
     if (state.ws) {
         state.ws.onclose = null;
         state.ws.close();
@@ -186,6 +194,9 @@ export async function resetGameState() {
 
 export async function startKaraoke() {
     const capturedSongId = state.selectedSongId;
+    const generation = ++state.gameGeneration;
+    // "Voltar" durante um await cancela o início (resetGameState muda a geração)
+    const cancelled = () => generation !== state.gameGeneration;
 
     // Carrega o segments.json inteiro no front antes de iniciar
     try {
@@ -196,9 +207,10 @@ export async function startKaraoke() {
         console.log(`Carregados ${state.currentSegments.length} segmentos para a música localmente.`);
     } catch (err) {
         console.error("Erro ao pré-carregar os segmentos:", err);
-        showToast("Erro ao carregar os segmentos da música do servidor.", "error");
-        return;
+        // main.js mostra o erro e libera o botão INICIAR
+        throw new Error("não foi possível carregar a música");
     }
+    if (cancelled()) return;
 
     // Escalação do lobby: um competidor por microfone (vagas repetidas = dupla/trio)
     if (!validateLobby()) {
@@ -266,6 +278,12 @@ export async function startKaraoke() {
         }
     }
 
+    if (cancelled()) {
+        if (state.audioManager) await state.audioManager.destroy();
+        state.audioManager = null;
+        return;
+    }
+
     // Aplica o volume salvo ao GainNode do AudioLifecycleManager
     const savedVolume = localStorage.getItem('karaoke_backing_volume');
     if (savedVolume !== null && state.audioManager) {
@@ -305,8 +323,13 @@ export async function startKaraoke() {
     const maxReconnectAttempts = 5;
 
     function connectGameWebSocket() {
+        state.gameReconnectTimer = null;
+        if (cancelled()) return;
+        // Reconexão no meio da música: o servidor mantém placar e gravação
+        // (resume=1) e o front não reinicia a música nem a tela.
+        const resuming = reconnectAttempts > 0;
         const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const wsUrl = `${protocol}//${window.location.host}/ws/room/${myRoom}?role=display&song_id=${capturedSongId}`;
+        const wsUrl = `${protocol}//${window.location.host}/ws/room/${encodeURIComponent(myRoom)}?role=display&song_id=${encodeURIComponent(capturedSongId)}${resuming ? '&resume=1' : ''}`;
         state.ws = new WebSocket(wsUrl);
         state.ws.binaryType = 'arraybuffer';
 
@@ -314,6 +337,10 @@ export async function startKaraoke() {
             reconnectAttempts = 0;
 
             state.ws.send(JSON.stringify({ type: "client_info", sample_rate: sampleRate }));
+            if (resuming) {
+                startTimeSync();
+                return;
+            }
             state.ws.send(JSON.stringify({
                 type: "start_game",
                 game_mode: mode,
@@ -330,13 +357,21 @@ export async function startKaraoke() {
         };
 
         state.ws.onmessage = (event) => {
-            const data = JSON.parse(event.data);
+            let data;
+            try { data = JSON.parse(event.data); } catch (e) { return; }
             handleServerMessage(data);
         };
 
-        state.ws.onclose = () => {
+        state.ws.onclose = (event) => {
             console.warn("Game WebSocket fechado. Tentando reconectar...");
+            if (cancelled()) return;
             if (state.currentAppState === 'idle' || state.currentAppState === 'game-over') return;
+            if (event && event.code === DISPLAY_REPLACED_CODE) {
+                // outra tela assumiu a sala: não briga por ela
+                showToast('Outra tela assumiu esta sala.', 'error');
+                resetGameState();
+                return;
+            }
             if (reconnectAttempts >= maxReconnectAttempts) {
                 console.error("Número máximo de tentativas de reconexão atingido. Abortando jogo.");
                 resetGameState();
@@ -345,7 +380,7 @@ export async function startKaraoke() {
             reconnectAttempts++;
             const delay = Math.min(1000 * reconnectAttempts, 5000);
             console.log(`Tentativa de reconexão ${reconnectAttempts}/${maxReconnectAttempts} em ${delay}ms...`);
-            setTimeout(connectGameWebSocket, delay);
+            state.gameReconnectTimer = setTimeout(connectGameWebSocket, delay);
         };
 
         state.ws.onerror = (err) => {
@@ -432,6 +467,11 @@ const DISPLAY_HANDLERS = {
     },
     segment_result(data, context) {
         const { state } = context;
+        // Recálculo após voltar a música: só atualiza os totais, sem nota de verso
+        if (data.recalc) {
+            applyTotals(data);
+            return;
+        }
         const segScore = document.getElementById('seg-score');
         segScore.innerText = data.score + '%';
         segScore.dataset.quality = verseQuality(data.score).key;
@@ -478,12 +518,7 @@ const DISPLAY_HANDLERS = {
             }, 3500);
         }
 
-        const val = parseFloat(data.total_score) || 0;
-        const scoreFill = document.getElementById('score-progress-fill');
-        if (scoreFill) {
-            scoreFill.style.height = val + '%';
-        }
-        document.getElementById('score-percentage-text').innerText = val.toFixed(1) + '%';
+        applyTotals(data);
 
         // Update performance border overlay based on the last segment score
         const lastSegmentScore = parseFloat(data.score) || 0;
@@ -520,6 +555,18 @@ const DISPLAY_HANDLERS = {
         showAnnotationButton(data.recording_id);
     }
 };
+
+// Nota geral (lateral). No recálculo (voltou a música) também atualiza as
+// barras do multiplayer, só os números.
+function applyTotals(data) {
+    const val = parseFloat(data.total_score) || 0;
+    const scoreFill = document.getElementById('score-progress-fill');
+    if (scoreFill) scoreFill.style.height = val + '%';
+    document.getElementById('score-percentage-text').innerText = val.toFixed(1) + '%';
+    if (data.recalc && data.player_scores && state.activePlayers && state.activePlayers.length > 1) {
+        updateScoreBars(data.player_scores, [], renderTranscriptionInto, { recalc: true });
+    }
+}
 
 export function handleServerMessage(data) {
     const handler = DISPLAY_HANDLERS[data.type];
@@ -569,7 +616,7 @@ export function showGameOverModal(finalScore, playerScores) {
             }
         });
     }
-    const membersHtml = (name) => (teamMembers[name] ? `<span class="podium-members">${teamMembers[name]}</span>` : '');
+    const membersHtml = (name) => (teamMembers[name] ? `<span class="podium-members">${escapeHtml(teamMembers[name])}</span>` : '');
     const sortedPlayers = playerScores ? Object.entries(playerScores).sort((a, b) => b[1] - a[1]) : [];
     const numPlayers = sortedPlayers.length;
 
@@ -597,7 +644,7 @@ export function showGameOverModal(finalScore, playerScores) {
         const third = sortedPlayers[2];
         const fourth = sortedPlayers[3];
 
-        const formatName = micLabel;
+        const formatName = (name) => escapeHtml(micLabel(name));
 
         let columnsHtml = '';
 
@@ -677,7 +724,7 @@ export function showGameOverModal(finalScore, playerScores) {
             const item = document.createElement('div');
             item.className = 'mp-breakdown__row';
             const medal = `<span class="place-num">${idx + 1}º</span>`;
-            const displayName = micLabel(name);
+            const displayName = escapeHtml(micLabel(name));
             item.innerHTML = `<span>${medal} ${displayName}</span><span>${score.toFixed(1)}%</span>`;
             breakdownDiv.appendChild(item);
         });

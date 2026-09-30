@@ -8,6 +8,7 @@
 import { showToast } from './toast.js';
 import { iconSvg } from './icons.js';
 import { fetchSongs } from './selection-view.js';
+import { escapeHtml } from './html.js';
 
 // ── Status labels e ícones para cada estado da fila ──
 const STATUS_MAP = {
@@ -256,8 +257,4 @@ function updateGpuBadge(badgeId, textId, isBusy) {
 }
 
 // ── Utilitários ──
-function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-}
+

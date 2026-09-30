@@ -86,7 +86,8 @@ function qualityClass(score) {
 
 // playerScores: { microfone: { total_score, score, transcription } } do servidor.
 // renderHeard(container, transcription, expected, showHeader) vem do game-view.
-export function updateScoreBars(playerScores, expected, renderHeard) {
+export function updateScoreBars(playerScores, expected, renderHeard, opts) {
+    const recalc = !!(opts && opts.recalc);
     const groups = state.scoreGroups || [];
     if (state.mpBorderTimers) state.mpBorderTimers.forEach((t) => clearTimeout(t));
     state.mpBorderTimers = [];
@@ -108,6 +109,8 @@ export function updateScoreBars(playerScores, expected, renderHeard) {
             row.querySelector('.mp-member__pct').textContent = Math.round(value) + '%';
             row.querySelector('.mp-member__fill').style.width = value + '%';
         });
+
+        if (recalc) return;  // voltou a música: só os totais
 
         const verseScore = avg('score');
         bar.classList.remove('mp-score-bar--good', 'mp-score-bar--ok', 'mp-score-bar--poor');

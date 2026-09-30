@@ -64,6 +64,26 @@ TV — e simplificar os fluxos de adicionar música e montar a partida.
 - Selo "Pendente" dos cards invisível dentro dos grupos de artista; editor de letras reabria na última aba; ícones Lucide nunca eram hidratados; nome do artista inserido como HTML no cabeçalho do grupo.
 - Abrir/fechar grupo de artista "travava": animação de `max-height` até 6000 px; e a grade de 2 colunas criava buracos. Agora anima a altura real e usa duas colunas independentes.
 
+## Varredura de bugs (depois do redesign)
+
+Três varreduras em paralelo (lógica do front, telas no navegador, servidor); cada achado foi conferido no código antes de corrigir.
+
+- **Segurança**
+  - Slug/id de música vindo do cliente saía de `songs/` (`..`, `%2E%2E`): `delete-song`, `reinstall-song`, `save-meta` (que apaga/renomeia pasta), `save-lyrics`, `get-lyrics` e o `song_manager`. Agora tudo passa por `utils/song_paths.safe_song_dir` (teste em `tests/unit/test_song_paths.py` e `test_song_routes_reject_path_traversal`).
+  - Apelidos, títulos e o `?room=` iam crus para `innerHTML` na TV (pódio, toasts) e no celular. `showToast` virou texto puro; `js/html.js` (`escapeHtml`) no resto. O servidor limita o apelido a 15 caracteres imprimíveis.
+- **GPU**: `upload-song` e `save-lyrics` rodavam o Whisper sem o `whisper_lock`. Cancelar um item na fase 2 soltava o lock com a thread ainda na GPU (agora a fase 2 termina). Fase 2 duplicada no mesmo tick.
+- **Partida**
+  - O relógio `playback_time` (100 ms) acumulava a cada partida e seguia depois do "voltar" (mandando tempo 0 e apagando o placar final dos celulares).
+  - Reconexão da TV no meio da música reenviava `start_game` e zerava o placar: agora reconecta com `resume=1` e o servidor mantém a partida.
+  - Duas telas na mesma sala se derrubavam em loop: o servidor fecha a antiga com o código 4001 e ela não reconecta.
+  - Resultado atrasado do Whisper caía na partida seguinte (`room.game_id`).
+  - Voltar a música mostrava "Fora 0%": o recálculo vem com `recalc` e só atualiza totais.
+  - Celular que reconecta volta a pontuar (não sai mais de `active_players`).
+  - INICIAR ficava preso em "PREPARANDO..." se a música não carregasse; "voltar" durante o início deixava o jogo abrir por cima.
+- **Servidor robusto**: celular que fechava na hora travava a fila de apelidos; JSON inválido, `current_time` não numérico ou pacote de áudio com índice NaN derrubavam a TV; iteração do dict de jogadores durante `await`; exportação de MP3 bloqueava o loop (agora em thread); perfil corrompido era sobrescrito (agora é guardado à parte e a escrita é atômica) e erro no perfil impedia o `game_over`.
+- **Modais**: fechar um e abrir outro no mesmo instante (picker → pareamento, passo 3 → opções) quebrava o histórico e o "Fechar" saía do app. Esc/Voltar da TV/botão do navegador recuam um passo no "Adicionar" antes de fechar. Tab fica preso no modal aberto. QR sem internet mostra o link.
+- Textos explicativos que sobraram foram encurtados; o modal morto `lyrics-review` saiu.
+
 ## Ferramentas e testes
 
 - `tools/preview_front.py`: serve o front sem GPU/FastAPI, com dados de exemplo (usa busca real e capas se houver `yt-dlp`).

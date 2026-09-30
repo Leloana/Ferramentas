@@ -3,6 +3,7 @@ from pathlib import Path
 
 from utils.lrc import read_lrc_meta
 from utils.meta import get_meta_field
+from utils.song_paths import safe_song_dir
 from lyrics_text import add_romaji
 
 def _title_fallback(name: str) -> str:
@@ -57,7 +58,9 @@ class SongManager:
 
     def get_song_data(self, song_id: str):
         """Retorna os metadados e segmentos de uma música."""
-        song_dir = self.songs_path / song_id
+        song_dir = safe_song_dir(self.songs_path, song_id)
+        if song_dir is None:
+            return None
         segments_file = song_dir / "segments.json"
         if not segments_file.exists():
             return None
@@ -88,5 +91,8 @@ class SongManager:
 
     def get_audio_path(self, song_id: str):
         """Retorna o caminho absoluto do backing_track.mp3."""
-        path = self.songs_path / song_id / "backing_track.mp3"
+        song_dir = safe_song_dir(self.songs_path, song_id)
+        if song_dir is None:
+            return None
+        path = song_dir / "backing_track.mp3"
         return path if path.exists() else None

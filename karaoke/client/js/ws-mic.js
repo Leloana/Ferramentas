@@ -5,21 +5,18 @@ import { showToast } from './toast.js';
 import { dom } from './dom.js';
 import { fillLine, setLyricsScriptAvailable } from './lyrics-script.js';
 import { verseQuality, replayClass } from './verse-stamp.js';
-
-function escapeHtml(text) {
-    return String(text).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-}
+import { escapeHtml } from './html.js';
 
 export function connectMobileMicrophoneWebSocket() {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${protocol}//${window.location.host}/ws/room/${myRoom}?role=mic`;
+    const wsUrl = `${protocol}//${window.location.host}/ws/room/${encodeURIComponent(myRoom)}?role=mic`;
 
     state.mobileWs = new WebSocket(wsUrl);
     state.mobileWs.binaryType = 'arraybuffer';
 
     state.mobileWs.onopen = () => {
         document.getElementById('mobile-song-title').innerText = "Karaoke";
-        document.getElementById('mobile-status-text').innerHTML = `Sala <span class="mic-status__name">${myRoom}</span>`;
+        document.getElementById('mobile-status-text').innerHTML = `Sala <span class="mic-status__name">${escapeHtml(myRoom)}</span>`;
     };
 
     const MIC_HANDLERS = {
@@ -46,7 +43,7 @@ export function connectMobileMicrophoneWebSocket() {
             
             const statusText = document.getElementById('mobile-status-text');
             if (statusText) {
-                statusText.innerHTML = `<span class="mic-status__name">${escapeHtml(data.name)}</span> · Sala ${myRoom}`;
+                statusText.innerHTML = `<span class="mic-status__name">${escapeHtml(data.name)}</span> · Sala ${escapeHtml(myRoom)}`;
             }
             
             setAppState('singing');
@@ -86,10 +83,10 @@ export function connectMobileMicrophoneWebSocket() {
             if (statusText) {
                 if (data.status === 'paired') {
                     if (state.mobileNickname) {
-                        statusText.innerHTML = `<span class="mic-status__name">${escapeHtml(state.mobileNickname)}</span> · Sala ${myRoom}`;
+                        statusText.innerHTML = `<span class="mic-status__name">${escapeHtml(state.mobileNickname)}</span> · Sala ${escapeHtml(myRoom)}`;
                     }
                 } else if (data.status === 'unpaired') {
-                    statusText.innerHTML = `<span class="mic-status--error">TV desconectada (sala ${myRoom})</span>`;
+                    statusText.innerHTML = `<span class="mic-status--error">TV desconectada (sala ${escapeHtml(myRoom)})</span>`;
                 }
             }
         },
@@ -117,6 +114,12 @@ export function connectMobileMicrophoneWebSocket() {
             // própria para não apagar a letra que o cantor está acompanhando.
             const scoreLine = document.getElementById('mobile-score-text');
             if (!scoreLine) return;
+            if (data.recalc) {
+                // voltou a música: atualiza só a média geral
+                const own = data.player_scores && state.mobileNickname && data.player_scores[state.mobileNickname];
+                document.getElementById('mobile-score-total').textContent = `${own ? own.total_score : data.total_score}%`;
+                return;
+            }
             let myScore = data.score;
             let myTotalScore = data.total_score;
 

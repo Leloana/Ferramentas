@@ -1,5 +1,5 @@
 import { state } from './state.js';
-import { myRole, myRoom } from './config.js';
+import { myRole, myRoom, DISPLAY_REPLACED_CODE } from './config.js';
 import { handleServerMessage } from './game-view.js';
 
 export function connectDisplayWebSocket() {
@@ -7,7 +7,7 @@ export function connectDisplayWebSocket() {
     if (state.ws && (state.ws.readyState === WebSocket.OPEN || state.ws.readyState === WebSocket.CONNECTING)) return;
 
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${protocol}//${window.location.host}/ws/room/${myRoom}?role=display`;
+    const wsUrl = `${protocol}//${window.location.host}/ws/room/${encodeURIComponent(myRoom)}?role=display`;
 
     state.ws = new WebSocket(wsUrl);
     state.ws.binaryType = 'arraybuffer';
@@ -17,12 +17,15 @@ export function connectDisplayWebSocket() {
     };
 
     state.ws.onmessage = (event) => {
-        const data = JSON.parse(event.data);
+        let data;
+        try { data = JSON.parse(event.data); } catch (e) { return; }
         handleServerMessage(data);
     };
 
-    state.ws.onclose = () => {
+    state.ws.onclose = (event) => {
         console.log("WebSocket do Display desconectado. Tentando reconectar...");
+        // outra aba/tela assumiu a sala: reconectar derrubaria a outra, em loop
+        if (event && event.code === DISPLAY_REPLACED_CODE) return;
         if (state.currentAppState === 'idle') {
             setTimeout(connectDisplayWebSocket, 3000);
         }

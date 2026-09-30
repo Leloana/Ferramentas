@@ -9,6 +9,10 @@ if (!_roomId) {
 export const activeRoomId = _roomId;
 export const myRoom = urlParams.get('room') || activeRoomId;
 
+// Código de fechamento do servidor quando outra tela assume a sala (ws/room.py):
+// quem recebe não tenta reconectar, senão as duas telas se derrubam em loop.
+export const DISPLAY_REPLACED_CODE = 4001;
+
 // Navegador de TV (Tizen, webOS, Android TV, Fire TV...) ou forçado com ?tv=1.
 // Liga a navegação por controle remoto com letras maiores (tv-nav.js / tv.css).
 export const isTvBrowser = urlParams.get('tv') === '1' ||

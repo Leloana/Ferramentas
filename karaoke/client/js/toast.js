@@ -7,7 +7,8 @@ function isCompactScreen() {
     return myRole === 'mic' || (window.matchMedia && window.matchMedia('(max-width: 700px)').matches);
 }
 
-export function showToast(message, type = 'info') {
+// A mensagem é texto puro (títulos e apelidos vêm de outros usuários).
+export function showToast(message, type = 'info', duration = 4700) {
     if (type !== 'error' && isCompactScreen()) return;
 
     const container = document.getElementById('toast-container');
@@ -24,7 +25,7 @@ export function showToast(message, type = 'info') {
 
     const contentDiv = document.createElement('div');
     contentDiv.className = 'toast-content';
-    contentDiv.innerHTML = message;
+    contentDiv.textContent = message;
 
     const closeBtn = document.createElement('button');
     closeBtn.className = 'toast-close';
@@ -45,5 +46,5 @@ export function showToast(message, type = 'info') {
             toast.classList.add('fading-out');
             setTimeout(() => toast.remove(), 300);
         }
-    }, 4700);
+    }, duration);
 }

@@ -33,6 +33,11 @@ class TestPacket(unittest.TestCase):
         self.assertIsNone(parse_packet(np.full(1000, 0.1, dtype=np.float32).tobytes()))
         self.assertIsNone(parse_packet(build_packet(0, np.zeros(10))[:PACKET_HEADER.size + 3]))
 
+    def test_rejects_non_finite_or_negative_index(self):
+        # NaN viraria âncora NaN e derrubaria o loop da TV no extract()
+        for bad in (float("nan"), float("inf"), -1.0):
+            self.assertIsNone(parse_packet(build_packet(bad, np.zeros(10))), bad)
+
 
 class TestSongClock(unittest.TestCase):
     def test_extrapolates_between_updates(self):

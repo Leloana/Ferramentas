@@ -16,6 +16,9 @@
 //   data-no-backdrop  -> não fecha ao clicar fora
 //   data-no-esc       -> não fecha com a tecla ESC
 //   [data-close]      -> qualquer elemento interno com este atributo fecha o modal ao clicar
+//
+// `modal._onBack = () => bool`: "voltar" (Esc, botão do navegador, Voltar da
+// TV) chama antes de fechar; devolvendo true o modal só recua um passo.
 
 // Pilha de ids de modais abertos (o último é o "topo").
 const openStack = [];
@@ -23,6 +26,23 @@ const openStack = [];
 // Quantos popstate de fechamento programático devem ser ignorados pelo listener
 // global (evita fechar o modal errado quando nós mesmos chamamos history.back()).
 let pendingProgrammaticPops = 0;
+
+// Entradas de histórico de modais já fechados que ainda vamos desfazer. O
+// history.back() é adiado um tick: se outro modal abrir nesse meio-tempo
+// (fechar um e abrir outro, ex.: picker → pareamento) ele reaproveita a
+// entrada. Antes o back atrasado apagava a entrada do modal novo, e o
+// "Fechar" dele saía do app.
+let entriesToUndo = 0;
+let undoTimer = null;
+
+function flushUndo() {
+    undoTimer = null;
+    if (entriesToUndo <= 0) return;
+    const n = entriesToUndo;
+    entriesToUndo = 0;
+    pendingProgrammaticPops++;  // history.go(-n) dispara um único popstate
+    history.go(-n);
+}
 
 function el(idOrEl) {
     return typeof idOrEl === 'string' ? document.getElementById(idOrEl) : idOrEl;
@@ -59,7 +79,12 @@ export function openModal(idOrEl, options = {}) {
     openStack.push(modal.id);
 
     // Cada modal aberto vira uma entrada no histórico, para o "voltar" fechá-lo.
-    history.pushState({ karaokeModal: modal.id }, '');
+    if (entriesToUndo > 0) {
+        entriesToUndo--;
+        history.replaceState({ karaokeModal: modal.id }, '');
+    } else {
+        history.pushState({ karaokeModal: modal.id }, '');
+    }
     return modal;
 }
 
@@ -70,17 +95,24 @@ export function closeModal(idOrEl) {
     applyClose(modal);
 
     // Desfaz a entrada de histórico que abrimos, sem disparar o fechamento de novo.
-    pendingProgrammaticPops++;
-    history.back();
+    entriesToUndo++;
+    if (!undoTimer) undoTimer = setTimeout(flushUndo, 0);
 }
 
 export function hasOpenModal() {
     return openStack.length > 0;
 }
 
+function stepBack(modal) {
+    return !!(modal && typeof modal._onBack === 'function' && modal._onBack());
+}
+
+// "Voltar" genérico (tv-nav.js): recua um passo se o modal souber, senão fecha.
 export function closeTopModal() {
     const topId = openStack[openStack.length - 1];
-    if (topId) closeModal(topId);
+    if (!topId) return;
+    if (stepBack(el(topId))) return;
+    closeModal(topId);
 }
 
 // --- Listeners globais (instalados uma única vez) ---
@@ -96,7 +128,13 @@ function onPopState() {
     }
     // Botão "voltar" do navegador: fecha o modal do topo, se houver.
     const modal = topOpenModal();
-    if (modal) applyClose(modal);
+    if (!modal) return;
+    if (stepBack(modal)) {
+        // recuou um passo: o modal segue aberto, então devolve a entrada
+        history.pushState({ karaokeModal: modal.id }, '');
+        return;
+    }
+    applyClose(modal);
 }
 
 function onBackdropClick(e) {
@@ -114,12 +152,38 @@ function onBackdropClick(e) {
     }
 }
 
-function onKeyDown(e) {
-    if (e.key !== 'Escape') return;
-    const modal = topOpenModal();
-    if (modal && !modal.hasAttribute('data-no-esc')) {
-        closeModal(modal);
+const FOCUSABLE = 'button:not([disabled]), [href], input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+// Tab com modal aberto circula só dentro dele (senão o foco ia para trás do fundo).
+function trapTab(e, modal) {
+    const items = Array.prototype.filter.call(modal.querySelectorAll(FOCUSABLE),
+        (node) => node.offsetWidth > 0 || node.offsetHeight > 0);
+    if (!items.length) return;
+    const first = items[0];
+    const last = items[items.length - 1];
+    const inside = modal.contains(document.activeElement);
+    if (e.shiftKey && (document.activeElement === first || !inside)) {
+        e.preventDefault();
+        last.focus();
+    } else if (!e.shiftKey && (document.activeElement === last || !inside)) {
+        e.preventDefault();
+        first.focus();
     }
+}
+
+function onKeyDown(e) {
+    if (e.key === 'Tab') {
+        // o fim de jogo abre por atributo, fora da pilha: também prende o Tab
+        const trapIn = topOpenModal() || document.querySelector('.modal-overlay[data-open]');
+        if (trapIn) trapTab(e, trapIn);
+        return;
+    }
+    const modal = topOpenModal();
+    if (!modal) return;
+    if (e.key !== 'Escape') return;
+    if (modal.hasAttribute('data-no-esc')) return;
+    if (stepBack(modal)) return;
+    closeModal(modal);
 }
 
 window.addEventListener('popstate', onPopState);

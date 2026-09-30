@@ -129,7 +129,10 @@ class SongQueueManager:
         """Remove item da fila. Cancela task se estiver rodando."""
         for i, item in enumerate(self.queue):
             if item.id == item_id:
-                if item._task and not item._task.done():
+                # Fase 2 roda o Whisper numa thread que não para com cancel(): cancelar
+                # soltaria o whisper_lock com a GPU ainda ocupada. Deixa terminar.
+                in_phase2 = item.status in (QueueStatus.ALIGNING, QueueStatus.FINALIZING)
+                if item._task and not item._task.done() and not in_phase2:
                     item._task.cancel()
                 self.queue.pop(i)
                 logger.info(f"[QUEUE] Item removido da fila: {item_id} ({item.title})")
@@ -337,6 +340,8 @@ class SongQueueManager:
         for item in self.queue:
             if item.status == QueueStatus.AWAITING_ALIGNMENT:
                 logger.info(f"[QUEUE] Processando item pendente: {item.id} ({item.title})")
+                # marca antes de agendar: duas chamadas no mesmo tick não disparam a fase 2 duas vezes
+                item.status = QueueStatus.ALIGNING
                 item._task = asyncio.create_task(self._process_phase2(item))
                 return  # Um por vez — o próximo será processado quando este terminar
 
@@ -390,11 +395,13 @@ class SongQueueManager:
         if not vocals_wav.exists() or not no_vocals_wav.exists():
             raise RuntimeError("Demucs não gerou os arquivos de áudio separados.")
 
-        # Exportar como MP3
-        from pydub import AudioSegment
+        # Exportar como MP3 — numa thread: leva segundos e a fase 1 roda
+        # durante a partida (travaria os WebSockets e o relógio da música).
+        def _export_mp3s():
+            from pydub import AudioSegment
 
-        vocal_audio = AudioSegment.from_file(str(vocals_wav))
-        backing_audio = AudioSegment.from_file(str(no_vocals_wav))
-        vocal_audio.export(str(song_dir / "vocal.mp3"), format="mp3")
-        backing_audio.export(str(song_dir / "backing_track.mp3"), format="mp3")
+            AudioSegment.from_file(str(vocals_wav)).export(str(song_dir / "vocal.mp3"), format="mp3")
+            AudioSegment.from_file(str(no_vocals_wav)).export(str(song_dir / "backing_track.mp3"), format="mp3")
+
+        await asyncio.to_thread(_export_mp3s)
         logger.info(f"[QUEUE:{item.id}] Áudios vocal e backing exportados com sucesso.")

@@ -14,6 +14,7 @@ from fastapi.responses import FileResponse, HTMLResponse
 from state import SONGS_DIR, song_manager, queue_manager
 from utils.cover import find_cover
 from utils.html_includes import render_page
+from utils.song_paths import safe_song_dir
 from utils.http import set_no_cache
 
 logger = logging.getLogger(__name__)
@@ -50,8 +51,8 @@ async def get_song(song_id: str, response: Response):
 @router.get("/api/songs/{song_id}/cover")
 async def get_song_cover(song_id: str):
     """Capa do álbum (iTunes ou miniatura do YouTube), baixada na 1ª vez e guardada na pasta."""
-    song_dir = (SONGS_DIR / song_id).resolve()
-    if SONGS_DIR.resolve() not in song_dir.parents:
+    song_dir = safe_song_dir(SONGS_DIR, song_id)
+    if song_dir is None:
         raise HTTPException(status_code=404, detail="Música não encontrada")
     cover = await asyncio.to_thread(find_cover, song_dir)
     if not cover:
@@ -70,8 +71,8 @@ async def get_audio(song_id: str):
 @router.delete("/api/delete-song/{song_id}")
 async def delete_song(song_id: str):
     try:
-        song_dir = SONGS_DIR / song_id
-        if not song_dir.exists():
+        song_dir = safe_song_dir(SONGS_DIR, song_id)
+        if song_dir is None or not song_dir.exists():
             raise HTTPException(status_code=404, detail="Música não encontrada")
         shutil.rmtree(song_dir)
         logger.info(f"Música deletada do disco: {song_id}")
@@ -86,8 +87,8 @@ async def delete_song(song_id: str):
 @router.post("/api/reinstall-song/{song_id}")
 async def api_reinstall_song(song_id: str, align_lyrics: bool = False):
     try:
-        song_dir = SONGS_DIR / song_id
-        if not song_dir.exists():
+        song_dir = safe_song_dir(SONGS_DIR, song_id)
+        if song_dir is None or not song_dir.exists():
             raise HTTPException(status_code=404, detail="Música não encontrada")
         
         meta_path = song_dir / "meta.json"

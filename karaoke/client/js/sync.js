@@ -48,8 +48,18 @@ export function initSyncControls() {
     }
 }
 
+// Um único relógio por vez: cada partida/reconexão chamava de novo e os
+// intervalos se acumulavam (e seguiam mandando tempo 0 depois do "voltar").
+export function stopTimeSync() {
+    if (state.timeSyncTimer) {
+        clearInterval(state.timeSyncTimer);
+        state.timeSyncTimer = null;
+    }
+}
+
 export function startTimeSync() {
-    setInterval(() => {
+    stopTimeSync();
+    state.timeSyncTimer = setInterval(() => {
         if (state.ws && state.ws.readyState === WebSocket.OPEN) {
             state.ws.send(JSON.stringify({
                 type: "playback_time",

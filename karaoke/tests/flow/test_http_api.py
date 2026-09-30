@@ -171,6 +171,25 @@ class TestHttpApiFlow(unittest.TestCase):
             content = f.read()
             self.assertIn("Hello brand new world", content)
 
+    def test_song_routes_reject_path_traversal(self):
+        # slug vindo do cliente não pode sair de songs/ (delete, save-meta, get-lyrics)
+        outside = self.temp_dir.parent / "fora-de-songs"
+        outside.mkdir(exist_ok=True)
+        (outside / "meta.json").write_text("{}", encoding="utf-8")
+        try:
+            self.assertEqual(self.client.delete("/api/delete-song/%2E%2E").status_code, 404)
+            resp = self.client.post("/api/save-meta", data={
+                "slug": "../fora-de-songs",
+                "meta_json": json.dumps({"meta": {"title": "x", "artist": "y"}}),
+            })
+            self.assertEqual(resp.status_code, 404)
+            self.assertEqual(self.client.get("/api/get-lyrics", params={"slug": "../fora-de-songs"}).status_code, 404)
+            self.assertTrue(self.temp_dir.exists())
+            self.assertTrue((outside / "meta.json").exists())
+        finally:
+            import shutil
+            shutil.rmtree(outside, ignore_errors=True)
+
     def test_delete_song(self):
         # Create a temp song specifically for deleting
         del_song_slug = "delete-me-artist"

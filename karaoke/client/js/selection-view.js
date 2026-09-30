@@ -29,7 +29,6 @@ export async function fetchSongs() {
             <div class="empty-state">
                 <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="var(--error)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="empty-icon"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
                 <h4 class="form-error">Erro ao conectar com o servidor</h4>
-                <p>Certifique-se de que o backend está rodando localmente.</p>
                 <button id="btn-retry-fetch-songs" class="btn btn--danger">
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
                     Tentar Novamente
@@ -138,7 +137,6 @@ export function renderArtistGroups(songsList, { expandAll = false } = {}) {
             <div class="empty-state">
                 <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="var(--dim)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="empty-icon"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
                 <h4>Nenhuma música encontrada</h4>
-                <p>Tente buscar por outro termo ou adicione arquivos na pasta <code>server/songs/</code>!</p>
             </div>
         `;
         return;

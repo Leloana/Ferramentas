@@ -8,9 +8,10 @@ from typing import Optional
 
 from fastapi import APIRouter, Form, HTTPException, Response
 
-from state import SONGS_DIR
+from state import SONGS_DIR, queue_manager
 from utils.http import set_no_cache
 from utils.prepare import run_prepare_song
+from utils.song_paths import safe_song_dir
 from utils.text import normalize_lyrics_text, slugify
 
 logger = logging.getLogger(__name__)
@@ -21,7 +22,9 @@ router = APIRouter()
 async def get_lyrics(slug: str, response: Response):
     set_no_cache(response)
     try:
-        song_dir = SONGS_DIR / slug
+        song_dir = safe_song_dir(SONGS_DIR, slug)
+        if song_dir is None:
+            raise HTTPException(status_code=404, detail="Música não encontrada")
         lrc_path = song_dir / "lyrics.lrc"
         
         # Carrega o meta.json
@@ -56,6 +59,8 @@ async def get_lyrics(slug: str, response: Response):
                 logger.debug(f"Falha ao ler language de segments.json: {e}")
 
         return {"success": True, "lyrics": lrc_content, "language": language, "meta_json": meta_content}
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Erro ao obter letras: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))
@@ -68,8 +73,8 @@ async def save_meta(
 ):
     """Salva apenas o meta.json sem disparar o pipeline de alinhamento."""
     try:
-        song_dir = SONGS_DIR / slug
-        if not song_dir.exists():
+        song_dir = safe_song_dir(SONGS_DIR, slug)
+        if song_dir is None or not song_dir.exists():
             raise HTTPException(status_code=404, detail="Diretório da música não encontrado")
 
         if not meta_json.strip():
@@ -97,7 +102,9 @@ async def save_meta(
         new_slug = slugify(f"{title}-{artist}") if (title and artist) else None
 
         if new_slug and new_slug != slug:
-            new_dir = SONGS_DIR / new_slug
+            new_dir = safe_song_dir(SONGS_DIR, new_slug)
+            if new_dir is None:
+                raise HTTPException(status_code=400, detail="Título/artista inválidos para o nome da pasta")
             if new_dir.exists():
                 # Conflito: apaga a pasta antiga e mantém a existente
                 shutil.rmtree(song_dir)
@@ -124,8 +131,8 @@ async def save_lyrics(
     meta_json: Optional[str] = Form(None),
 ):
     try:
-        song_dir = SONGS_DIR / slug
-        if not song_dir.exists():
+        song_dir = safe_song_dir(SONGS_DIR, slug)
+        if song_dir is None or not song_dir.exists():
             raise HTTPException(status_code=404, detail="Diretório da música não encontrado")
 
         # Salva o meta.json se fornecido
@@ -162,7 +169,9 @@ async def save_lyrics(
             f.write("\n".join(clean_lines))
 
         import asyncio
-        await asyncio.to_thread(run_prepare_song, str(song_dir), language)
+        # prepare_song usa o Whisper: só com o lock da GPU
+        async with queue_manager.whisper_lock:
+            await asyncio.to_thread(run_prepare_song, str(song_dir), language)
         return {"success": True}
 
     except HTTPException:

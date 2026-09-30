@@ -88,9 +88,6 @@ export function startLoadingOverlay(title, initialDesc, autoProgress = false) {
             <div class="loading-funny" id="loading-funny-phrase">
                 ${funnyPhrases[Math.floor(Math.random() * funnyPhrases.length)]}
             </div>
-            <div class="loading-note">
-                Nota: O vocal e a letra são processados em primeiro plano. O Backing Track instrumental está sendo gerado via separação por Inteligência Artificial (Demucs) em segundo plano usando a sua placa NVIDIA RTX!
-            </div>
         `;
         
         let timeElapsed = 0;
