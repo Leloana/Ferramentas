@@ -205,3 +205,6 @@ html.is-tv .share-card-close {
     align-items: center;
     gap: 0.4rem;
 }
+
+/* Cartão aberto: a página por trás some (share-card.js), nada fica na frente dele */
+html.share-card-open #app { visibility: hidden; }

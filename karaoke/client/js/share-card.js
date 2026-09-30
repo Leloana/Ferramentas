@@ -7,6 +7,7 @@
 //   { songId, title, artist, score, pitch, stats: {good, ok, poor}, name,
 //     record: {is_record, best_before, times_sung}, podium: [{name, score}] }
 import { iconSvg } from './icons.js';
+import { state } from './state.js';
 
 function el(tag, cls, text) {
     const node = document.createElement(tag);
@@ -122,7 +123,12 @@ export function buildShareCard(data) {
 export function closeShareCard() {
     const overlay = document.getElementById('share-card-overlay');
     if (overlay) overlay.remove();
+    document.documentElement.classList.remove('share-card-open');
     document.removeEventListener('keydown', onKey, true);
+    // controle remoto: o foco volta para onde estava (o botão Cartão)
+    const back = state.shareCardReturnFocus;
+    state.shareCardReturnFocus = null;
+    if (overlay && back && document.body.contains(back)) back.focus();
 }
 
 // Controle remoto: OK/Enter e as teclas de voltar (Android/Google TV, Tizen,
@@ -142,6 +148,7 @@ function onKey(e) {
 
 export function openShareCard(data) {
     closeShareCard();
+    state.shareCardReturnFocus = document.activeElement;
     const overlay = el('div', 'share-card-overlay');
     overlay.id = 'share-card-overlay';
     overlay.setAttribute('role', 'dialog');
@@ -157,6 +164,9 @@ export function openShareCard(data) {
     // tocar em qualquer lugar fecha (o print é pelo botão do aparelho)
     overlay.addEventListener('click', closeShareCard);
     document.body.append(overlay);
+    // esconde a página por trás: no TV Bro o cartão aparecia atrás do fim de jogo
+    // na 1ª vez (camadas da GPU furavam o z-index)
+    document.documentElement.classList.add('share-card-open');
     document.addEventListener('keydown', onKey, true);
     overlay.focus();
 }
