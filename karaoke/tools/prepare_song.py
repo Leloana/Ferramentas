@@ -18,6 +18,9 @@ from utils.audio import load_audio_full
 from utils.segment_timing import finalize_segments, match_words_in_order
 from utils.whisper_params import WHISPER_SR
 
+# japonês: quanto as palavras depois da 1ª do verso são adiantadas (o Whisper marca tarde)
+JA_WORD_LEAD_SEC = 0.3
+
 import re
 
 import numpy as np
@@ -164,6 +167,11 @@ def prepare_song(song_dir, language="en", debug=False):
             # ela ficava interpolada junto da 2ª palavra, quase 1 s depois
             if lyrics_timed:
                 lyrics_timed[0]["expected_start"] = 0.0
+            # o Whisper marca o japonês mais tarde do que se canta: as outras palavras
+            # vinham ~0,25 s depois do canto (partida gravada de 青い、濃い、橙色の日;
+            # "palavras atrasadas" em bloom). A monotonia é garantida mais abaixo.
+            for w in lyrics_timed[1:]:
+                w["expected_start"] = max(0.0, round(w["expected_start"] - JA_WORD_LEAD_SEC, 3))
         elif words and len(words) > 0:
             # Temos timestamps do Whisper
             if len(words) == len(official_words):
