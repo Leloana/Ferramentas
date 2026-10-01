@@ -10,6 +10,7 @@ import { iconSvg } from '../core/icons.js';
 import { showToast } from '../core/toast.js';
 import { openModal, closeModal } from '../ui/modal.js';
 import { playVerse, stopReplay } from '../audio/replay.js';
+import { fillWord, fillLine } from '../game/lyrics-script.js';
 
 // Marcas antigas "cantarolei" continuam valendo como erro (o X fica aceso).
 const WRONG_LABELS = ['errado', 'cantarolei'];
@@ -29,12 +30,15 @@ function renderWords(verse, result, marked) {
     line.append(el('span', 'annotate-num', `${verse.n}.`));
     const words = (result && result.words) || [];
     if (!words.length) {
-        line.append(document.createTextNode(` ${verse.lyrics}`));
+        const lyr = el('span');
+        fillLine(lyr, verse.lyrics, verse.lyrics_romaji);  // japonês: original/romaji/ambos
+        line.append(document.createTextNode(' '), lyr);
         return line;
     }
     words.forEach((w, i) => {
         line.append(document.createTextNode(' '));
-        const btn = el('button', 'annotate-word', w.word);
+        const btn = el('button', 'annotate-word');
+        fillWord(btn, w.word, w.romaji, '');
         btn.type = 'button';
         btn.dataset.word = String(i);
         btn.setAttribute('aria-pressed', String(marked.indexOf(i) !== -1));
@@ -86,10 +90,15 @@ function renderList(data, player) {
         const text = el('div', 'annotate-text');
         const result = verse.players[player];
         text.append(renderWords(verse, result, timing[verse.n] || []));
-        const heard = result
-            ? `${formatTime(verse.start)} · nota ${Math.round(result.score)} · ouvi: ${result.heard || '—'}`
-            : `${formatTime(verse.start)} · sem áudio`;
-        text.append(el('span', 'annotate-heard', heard));
+        const heard = el('span', 'annotate-heard', result
+            ? `${formatTime(verse.start)} · nota ${Math.round(result.score)} · ouvi: `
+            : `${formatTime(verse.start)} · sem áudio`);
+        if (result) {
+            const said = el('span');
+            fillLine(said, result.heard || '—', result.heard_romaji);
+            heard.append(said);
+        }
+        text.append(heard);
 
         const choices = el('div', 'annotate-choices');
         if (result) {
@@ -179,6 +188,9 @@ async function openAnnotation() {
     }
     state.annotateOnlyPlayer = null;
     document.getElementById('annotate-title').textContent = data.song_title;
+    // música japonesa: a mesma escolha original/romaji/ambos da letra no jogo
+    const script = document.getElementById('annotate-script');
+    if (script) script.hidden = !data.verses.some(v => v.lyrics_romaji);
     renderList(data, select.value);
     openModal('annotate-modal', { onClose: stopReplay });
 }

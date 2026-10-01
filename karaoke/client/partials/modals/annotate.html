@@ -7,6 +7,12 @@
             <select id="annotate-player" class="input annotate-player" aria-label="Jogador" hidden></select>
         </header>
         <p class="annotate-hint"><i data-icon="cross"></i> verso errado · toque na palavra fora do tempo · sem marca = certo</p>
+        <!-- Escrita da letra em música japonesa (lyrics-script.js; mesma escolha do jogo) -->
+        <div id="annotate-script" class="sync-control-group lyrics-script-group annotate-script" role="group" aria-label="Escrita da letra" hidden>
+            <button type="button" class="btn-control-small lyrics-script-choice" data-script="original" aria-pressed="false">あ Original</button>
+            <button type="button" class="btn-control-small lyrics-script-choice" data-script="romaji" aria-pressed="false">Aa Romaji</button>
+            <button type="button" class="btn-control-small lyrics-script-choice" data-script="both" aria-pressed="false">Ambos</button>
+        </div>
         <ol id="annotate-list" class="annotate-list"></ol>
         <footer class="annotate-footer">
             <span id="annotate-status" class="annotate-status"></span>

@@ -3,9 +3,12 @@ e as palavras com tempo errado."""
 from __future__ import annotations
 
 import asyncio
+import copy
 import json
 
 from fastapi import APIRouter, HTTPException
+
+from lyrics_text import add_romaji, to_romaji
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
@@ -47,18 +50,35 @@ async def get_recording(recording_id: str):
     session = json.loads((session_dir / SESSION_FILE).read_text(encoding="utf-8"))
     results = {(r["player"], r["segment"]): r for r in session["results"]}
     players = list(session["players"].keys())
+    # japonês: romaji da letra e do que foi ouvido, para quem não lê kana (vazio nos outros idiomas)
+    romaji_segs = copy.deepcopy(session["segments"])
+    add_romaji(romaji_segs)
+
+    def _with_romaji(words, idx):
+        timed = romaji_segs[idx].get("lyrics_timed") or []
+        for i, w in enumerate(words):
+            if i < len(timed) and timed[i].get("romaji"):
+                w["romaji"] = timed[i]["romaji"]
+        return words
+
+    def _heard_romaji(text):
+        romaji = to_romaji(text or "")
+        return romaji if romaji != text else None
+
     verses = []
     for idx, seg in enumerate(session["segments"]):
         verses.append({
             "n": idx + 1,
             "lyrics": seg["lyrics"],
+            "lyrics_romaji": romaji_segs[idx].get("lyrics_romaji"),
             "start": seg["sing_start"],
             "end": seg.get("sing_end", seg["sing_start"]),
             "players": {
                 p: {
                     "score": results[(p, idx)]["score"],
                     "heard": results[(p, idx)]["transcription"],
-                    "words": sung_word_times(seg, results[(p, idx)]),
+                    "heard_romaji": _heard_romaji(results[(p, idx)]["transcription"]),
+                    "words": _with_romaji(sung_word_times(seg, results[(p, idx)]), idx),
                 }
                 for p in players if (p, idx) in results
             },

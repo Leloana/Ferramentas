@@ -952,3 +952,13 @@
 @media (prefers-reduced-motion: reduce) {
     .reaction { animation: reactionFade 2.6s linear forwards !important; }
 }
+
+/* ---------- Letra japonesa: original / romaji / ambos (game/lyrics-script.js) ----------
+   O redesign tinha perdido estas regras: no "Ambos" o romaji da linha saía grudado no kanji. */
+.lyrics-word ruby { ruby-position: over; }
+.lyrics-word rt { font-size: 0.42em; font-weight: 600; letter-spacing: 0.02em; opacity: 0.75; text-transform: none; }
+.lyrics-romaji-line { display: block; font-size: 0.55em; font-weight: 600; opacity: 0.7; margin-top: 0.15em; }
+.lyrics-script-control[hidden], .lyrics-script-group[hidden] { display: none !important; }
+.lyrics-script-group { display: flex; gap: 0.3rem; }
+.lyrics-script-choice { width: auto !important; padding: 0.3rem 0.65rem !important; font-size: 0.8rem !important; font-weight: 700; white-space: nowrap; opacity: 0.6; }
+.lyrics-script-choice[aria-pressed="true"] { opacity: 1; background: var(--butter) !important; border-color: var(--ink) !important; }

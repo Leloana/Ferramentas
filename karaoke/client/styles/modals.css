@@ -388,6 +388,7 @@
 .annotate-row[data-label="cantarolei"] { border-left-color: var(--lavender-ink); }
 .annotate-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.1rem; }
 .annotate-lyrics { font-weight: 600; line-height: 1.7; }
+.annotate-script { margin: 0 0 0.5rem; }
 .annotate-num { color: var(--dim); }
 /* palavra da letra: tocar marca tempo errado; sublinhado pontilhado = suspeita */
 .annotate-word { padding: 0 0.15rem; font: inherit; color: inherit; background: transparent; border: 1px solid transparent; border-radius: var(--radius); cursor: pointer; }
