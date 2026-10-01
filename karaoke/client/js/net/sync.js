@@ -1,6 +1,6 @@
-import { state } from './state.js';
-import { dom } from './dom.js';
-import { sendPlayerEvent } from './game-events.js';
+import { state } from '../core/state.js';
+import { dom } from '../core/dom.js';
+import { sendPlayerEvent } from '../game/game-events.js';
 
 export function updateSyncDisplay() {
     const valStr = (state.syncOffset > 0 ? '+' : '') + (state.syncOffset * 1000).toFixed(0) + 'ms';

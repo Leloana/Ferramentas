@@ -1,5 +1,5 @@
-import { state } from './state.js';
-import { myRole, isSoloMobileMode } from './config.js';
+import { state } from '../core/state.js';
+import { myRole, isSoloMobileMode } from '../core/config.js';
 
 export function updateMicStatusPanel() {
     if (myRole !== 'display') return;

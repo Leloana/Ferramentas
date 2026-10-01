@@ -1,4 +1,4 @@
-import { myRole } from './config.js';
+import { myRole } from '../core/config.js';
 
 export async function getMicrophoneStream() {
     const isMobileMic = (myRole === 'mic');

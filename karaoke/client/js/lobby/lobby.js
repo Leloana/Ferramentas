@@ -6,13 +6,13 @@
 //   - duas vagas no mesmo time     → dupla (três, trio): barra do time em destaque
 //                                    e uma barra discreta de cada membro.
 // O servidor pontua por microfone (`active_players`); a soma por time é feita
-// aqui no front (score-bars.js, pódio em game-view.js).
+// aqui no front (game/score-bars.js, pódio em game/game-over.js).
 
-import { state } from './state.js';
-import { openModal, closeModal } from './modal.js';
-import { showToast } from './toast.js';
-import { renderIcons, iconSvg } from './icons.js';
-import { isTvBrowser } from './config.js';
+import { state } from '../core/state.js';
+import { openModal, closeModal } from '../ui/modal.js';
+import { showToast } from '../core/toast.js';
+import { renderIcons, iconSvg } from '../core/icons.js';
+import { isTvBrowser } from '../core/config.js';
 
 export const PC_MIC = 'PC_Local';
 const MAX_SEATS = 6;

@@ -2,14 +2,14 @@
  * queue-view.js — Módulo de Fila de Músicas
  *
  * Mostra a fila de processamento (aba "Adicionar") e faz o polling de status.
- * Adicionar música é sempre pelo fluxo padrão (modals.js).
+ * Adicionar música é sempre pelo fluxo padrão (add-song-modal.js).
  * Funciona tanto no modo 'display' (TV) quanto no modo 'mic' (celular).
  */
-import { showToast } from './toast.js';
-import { iconSvg } from './icons.js';
+import { showToast } from '../core/toast.js';
+import { iconSvg } from '../core/icons.js';
 import { fetchSongs } from './selection-view.js';
-import { escapeHtml } from './html.js';
-import { state } from './state.js';
+import { escapeHtml } from '../core/html.js';
+import { state } from '../core/state.js';
 
 // ── Status labels e ícones para cada estado da fila ──
 const STATUS_MAP = {

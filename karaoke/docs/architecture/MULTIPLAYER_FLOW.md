@@ -101,15 +101,15 @@ sequenceDiagram
   - Automatically pops the queue and sends a `register_request` to the next microphone.
 
 ### 3. Lobby, Teams and Game Mode
-There is no game-mode picker any more. The display shows a **lobby** (`client/js/lobby.js`): one seat per singer, added with "+". Each seat picks **its own microphone** (a registered phone or `PC_Local`, shown as "Local") and a **team** (A–D, the team button only shows with 2+ seats).
+There is no game-mode picker any more. The display shows a **lobby** (`client/js/lobby/lobby.js`): one seat per singer, added with "+". Each seat picks **its own microphone** (a registered phone or `PC_Local`, shown as "Local") and a **team** (A–D, the team button only shows with 2+ seats).
 - **Everyone on their own team:** free-for-all — `game_mode` is `solo`, `1v1`, `1v1v1` or `1v1v1v1` (one per team).
 - **Two or more seats on the same team:** duo/trio — `game_mode` is `teams`.
 
-**Turns ("Revezar versos"):** with 2+ teams the lobby can alternate verses. `start_game` then carries `"turns": true, "turn_order": [[mics of team 1], [mics of team 2], ...]`; the k-th verse with lyrics belongs to team `k % n` (`ws/room.turn_owner`, mirrored in `client/js/turns.js`). Only the owner is scored, each player's final average is over their own verses, and `segment_start` carries `"turn": [...]` so phones show "Sua vez" / "Vez de ...".
+**Turns ("Revezar versos"):** with 2+ teams the lobby can alternate verses. `start_game` then carries `"turns": true, "turn_order": [[mics of team 1], [mics of team 2], ...]`; the k-th verse with lyrics belongs to team `k % n` (`ws/room.turn_owner`, mirrored in `client/js/game/turns.js`). Only the owner is scored, each player's final average is over their own verses, and `segment_start` carries `"turn": [...]` so phones show "Sua vez" / "Vez de ...".
 
 **GPU mutex:** if a song is generating lyrics (`queue_manager.alignment_busy()`), the server answers `start_game` with `{"type": "start_blocked", "reason": "..."}` and does not start; the TV already disables INICIAR while `/api/queue/status` reports `alignment_busy`.
 
-The display sends `{"type": "start_game", "game_mode": "...", "active_players": [...], "scoring_mode": "...", "transpose": 0}` with **one entry per microphone** (seat order, grouped by team). The server scores each microphone independently, exactly as before; it only stores `game_mode`. **Team scores are computed on the client**: `client/js/score-bars.js` shows one edge bar per team (up to 4: bottom, top, left, right) with the team average highlighted and a discreet bar per member, and the game-over podium ranks teams by the average of their members. The server resets game-wide aggregates, registers the active singers, and broadcasts `game_started` containing the active player list to all connected websockets.
+The display sends `{"type": "start_game", "game_mode": "...", "active_players": [...], "scoring_mode": "...", "transpose": 0}` with **one entry per microphone** (seat order, grouped by team). The server scores each microphone independently, exactly as before; it only stores `game_mode`. **Team scores are computed on the client**: `client/js/game/score-bars.js` shows one edge bar per team (up to 4: bottom, top, left, right) with the team average highlighted and a discreet bar per member, and the game-over podium ranks teams by the average of their members. The server resets game-wide aggregates, registers the active singers, and broadcasts `game_started` containing the active player list to all connected websockets.
 
 ### 4. Audio Routing & Buffering
 - Microphones stream `KM01` packets (Int16 16 kHz + first-sample index) through WebSocket binary messages. The server anchors each player's sample counter to the song time.

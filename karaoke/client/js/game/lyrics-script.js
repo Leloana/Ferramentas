@@ -5,7 +5,7 @@
 //
 // Cada elemento guarda o original e o romaji em data-* para a troca de modo
 // redesenhar o que está na tela sem esperar o próximo verso.
-import { state } from './state.js';
+import { state } from '../core/state.js';
 
 const STORAGE_KEY = 'karaoke_lyrics_script';
 const MODES = ['original', 'romaji', 'both'];

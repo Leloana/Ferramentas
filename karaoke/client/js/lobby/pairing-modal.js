@@ -1,7 +1,7 @@
 // Modal de pareamento: QR Code e link para o celular entrar como microfone.
-import { activeRoomId } from '../config.js';
-import { openModal, closeModal } from '../modal.js';
-import { resolvePublicOrigin } from '../public-origin.js';
+import { activeRoomId } from '../core/config.js';
+import { openModal, closeModal } from '../ui/modal.js';
+import { resolvePublicOrigin } from '../core/public-origin.js';
 
 export function initPairingModal() {
     const pairingModal = document.getElementById('pairing-modal');

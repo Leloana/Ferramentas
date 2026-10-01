@@ -1,8 +1,8 @@
 // Controles da partida na TV: tom, velocidade, pausar, barra da música, modo de
 // sincronia da letra (palavra/verso) e modo de pontuação.
-import { state } from '../state.js';
-import { dom } from '../dom.js';
-import { iconSvg } from '../icons.js';
+import { state } from '../core/state.js';
+import { dom } from '../core/dom.js';
+import { iconSvg } from '../core/icons.js';
 import { formatTime, paintProgressSlider } from './highlight-loop.js';
 import { sendToRoom } from './session.js';
 

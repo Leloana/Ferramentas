@@ -1,9 +1,9 @@
 // Carrossel da letra na TV: quatro linhas (anterior, atual, próxima, depois) que
 // deslizam um verso para cima a cada troca, com a atual centrada no palco.
-import { state } from '../state.js';
-import { dom } from '../dom.js';
-import { isTvBrowser } from '../config.js';
-import { fillLine, fillWord, setLyricsScriptAvailable } from '../lyrics-script.js';
+import { state } from '../core/state.js';
+import { dom } from '../core/dom.js';
+import { isTvBrowser } from '../core/config.js';
+import { fillLine, fillWord, setLyricsScriptAvailable } from './lyrics-script.js';
 
 const SLIDE_MS = 400;
 

@@ -1,9 +1,9 @@
 // Trocar a capa do álbum: grade com as opções achadas pelo servidor (iTunes,
 // Deezer, YouTube), a melhor primeiro. Escolher baixa a capa e atualiza o lobby.
-import { state } from './state.js';
-import { openModal, closeModal } from './modal.js';
-import { showToast } from './toast.js';
-import { iconSvg } from './icons.js';
+import { state } from '../core/state.js';
+import { openModal, closeModal } from '../ui/modal.js';
+import { showToast } from '../core/toast.js';
+import { iconSvg } from '../core/icons.js';
 
 function el(tag, cls, text) {
     const node = document.createElement(tag);

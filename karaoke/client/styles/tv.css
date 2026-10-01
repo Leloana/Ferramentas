@@ -1,5 +1,5 @@
 /* ============================================================
-   Navegação por controle remoto / teclado (js/tv-nav.js).
+   Navegação por controle remoto / teclado (js/ui/tv-nav.js).
    html.using-keys: o usuário navega com setas → foco bem visível.
    html.is-tv: navegador de TV detectado (ou ?tv=1) → tudo maior.
    :focus (e não :focus-visible) porque TVs antigas não o têm.
@@ -35,7 +35,7 @@ html.is-tv .song-card__btn { width: 44px; height: 44px; }
    GPU de TV (Google TV/TV Bro) não aguenta o fundo de papel (SVG com
    feTurbulence repetido e background-attachment: fixed repinta a tela toda),
    sombras grandes nem transições de font-size. Na TV: cor lisa, sem sombra,
-   sem transição/animação. O laço da letra roda a ~15 quadros/s (game-view.js).
+   sem transição/animação. O laço da letra roda a ~15 quadros/s (game/highlight-loop.js).
    Nada no JS depende de transitionend/animationend. */
 html.is-tv body {
     background-image: none;
@@ -351,7 +351,7 @@ html.is-tv #app[data-state="game-over"] .main-card {
 
 /* Troca de verso na TV: as classes de transição usam já os tamanhos finais (as
    regras de tamanho da TV acima venciam as de game.css: durante o deslize a
-   próxima linha seguia pequena e a atual grande). game-view.js mede o centro
+   próxima linha seguia pequena e a atual grande). game/lyrics-carousel.js mede o centro
    depois de aplicá-las, então o deslize vai direto ao lugar certo. */
 html.is-tv #app[data-state="singing"] .carousel-line.line-next-to-curr,
 html.is-tv #app[data-state="scoring"] .carousel-line.line-next-to-curr {

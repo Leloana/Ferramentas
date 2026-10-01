@@ -7,8 +7,8 @@
 // com a nota dele. `data`:
 //   { songId, title, artist, score, pitch, stats: {good, ok, poor}, name,
 //     record: {is_record, best_before, times_sung}, podium: [{name, score}] }
-import { iconSvg } from './icons.js';
-import { state } from './state.js';
+import { iconSvg } from '../core/icons.js';
+import { state } from '../core/state.js';
 
 function el(tag, cls, text) {
     const node = document.createElement(tag);

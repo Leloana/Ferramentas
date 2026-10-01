@@ -247,7 +247,7 @@ input[type="range"] { accent-color: var(--ink); }
     opacity: 0.8;
 }
 
-/* Ícones próprios (js/icons.js) — herdam a cor e escalam com o texto */
+/* Ícones próprios (js/core/icons.js) — herdam a cor e escalam com o texto */
 .ico { display: inline-block; width: 1.2em; height: 1.2em; vertical-align: -0.22em; flex-shrink: 0; }
 
 /* ---------- Estado vazio ---------- */
@@ -345,7 +345,7 @@ input[type="range"] { accent-color: var(--ink); }
     text-align: center;
 }
 
-/* ---------- Select personalizado (js/select.js) ---------- */
+/* ---------- Select personalizado (js/ui/select.js) ---------- */
 .cselect { position: relative; width: 100%; }
 .cselect__native { display: none !important; }
 .cselect__button {

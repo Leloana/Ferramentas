@@ -142,47 +142,72 @@ karaoke/
 │   ├── partials/                   # Uma tela/modal por arquivo
 │   ├── assets/art/                 # Artes SVG próprias
 │   ├── js/                         # Módulos ES Modules Vanilla JS (até ES2018, TV antiga)
-│   │   ├── main.js                 # Bootstrap: identifica display vs microfone
-│   │   ├── state.js                # Objeto central de estado compartilhado
-│   │   ├── config.js               # Constantes de configuração do cliente
-│   │   ├── dom.js                  # Helpers de manipulação do DOM
-│   │   ├── toast.js                # Notificações toast de UI
-│   │   ├── modal.js                # Gerenciador único de modais (abrir/fechar, ESC, clique fora, botão voltar)
-│   │   ├── tabs.js                 # Helper declarativo de abas (reaproveitado em todos os seletores)
-│   │   ├── modals.js               # "Adicionar música" (busca no YouTube), editor e pareamento
-│   │   ├── youtube-search.js       # Busca no YouTube pelo nome
-│   │   ├── lobby.js                # Lobby: vagas com microfone + time (dupla/trio)
-│   │   ├── score-bars.js           # Placar por time nas bordas da TV
-│   │   ├── verse-stamp.js          # Carimbo por verso (Na mosca · Quase · Fora)
-│   │   ├── turns.js                # Revezar versos (duelo)
-│   │   ├── requests.js             # Fila da noite ("quero cantar") e próxima automática
-│   │   ├── share-card.js           # Cartão 4:5 para print no fim de jogo
-│   │   ├── replay.js               # Ouvir a própria apresentação
-│   │   ├── profile-view.js         # Ranking e perfil dos cantores
-│   │   ├── players-modal.js        # Modal "Cantores" da TV
-│   │   ├── cover-picker.js         # Trocar a capa entre as opções encontradas
-│   │   ├── song-preview.js         # Ouvir 12 s do refrão na lista
-│   │   ├── guide-vocal.js          # Voz guia (vocal separado baixinho)
-│   │   ├── wake-lock.js            # Tela sempre acesa (celular e TV)
-│   │   ├── status-panel.js         # Painel de saúde (clique no "Online")
-│   │   ├── html.js                 # escapeHtml (texto de usuário nunca vai cru para o HTML)
-│   │   ├── icons.js                # Ícones próprios em SVG
-│   │   ├── select.js               # Select personalizado
-│   │   ├── tv-nav.js               # Navegação por controle remoto
-│   │   ├── compat.js               # Polyfills para TV antiga
-│   │   ├── selection-view.js       # Repertório e lobby da música (capa + cantor)
-│   │   ├── game-view.js            # Renderização da letra e animações de gameplay
-│   │   ├── queue-view.js           # Interface da fila de processamento de músicas
-│   │   ├── mobile-mic-view.js      # Interface do microfone no celular
-│   │   ├── audio-lifecycle-manager.js # Gerenciamento do ciclo de vida do áudio
-│   │   ├── mic-stream.js           # Captura e streaming de áudio do microfone
-│   │   ├── mic-status.js           # Indicador de status do microfone
-│   │   ├── sync.js                 # Sincronização de tempo display ↔ microfone
-│   │   ├── jungle.js               # Pitch shifter (Web Audio API)
-│   │   ├── ws-display.js           # WebSocket do Display (TV)
-│   │   ├── ws-mic.js               # WebSocket do Microfone (Celular)
+│   │   ├── main.js                                 # Bootstrap: identifica TV (display) ou celular (mic) e liga cada tela
+│   │   ├── core/                                   # Base usada por todos: estado, config, DOM, ícones, tema, toast
+│   │   │   ├── state.js                            # Objeto central de estado mutável compartilhado
+│   │   │   ├── config.js                           # Parâmetros de URL, sala, papel e detecção de TV (isTvBrowser)
+│   │   │   ├── compat.js                           # Polyfills para navegador de TV antigo (importado primeiro)
+│   │   │   ├── dom.js                              # Cache de elementos do DOM via getters e overlay de carregamento
+│   │   │   ├── html.js                             # escapeHtml: texto de usuário nunca vai cru para o HTML
+│   │   │   ├── icons.js                            # Ícones próprios em SVG (<i data-icon> / iconSvg), sem emojis
+│   │   │   ├── theme.js                            # Tema claro/escuro
+│   │   │   ├── toast.js                            # Notificações (no celular só erros)
+│   │   │   ├── public-origin.js                    # Endereço público para os QR Codes (KARAOKE_PUBLIC_URL)
+│   │   │   └── wake-lock.js                        # Tela sempre acesa (celular e TV na partida)
+│   │   ├── ui/                                     # Componentes de interface reaproveitados
+│   │   │   ├── modal.js                            # Gerenciador único de modais (Esc, clique fora, voltar do navegador)
+│   │   │   ├── select.js                           # Select personalizado (o <select> nativo segue por baixo)
+│   │   │   ├── tabs.js                             # Helper de abas (data-tabs + aria-selected)
+│   │   │   ├── tv-nav.js                           # Controle remoto: setas, OK, Voltar, Play/Pause
+│   │   │   └── status-panel.js                     # Painel de saúde (clique no "Online")
+│   │   ├── audio/                                  # Som e microfone
+│   │   │   ├── audio-lifecycle-manager.js          # AudioContext, música, voz guia, tom e captura do microfone
+│   │   │   ├── jungle.js                           # Pitch shifter (Web Audio API)
+│   │   │   ├── mic-stream.js                       # Constraints de captura do microfone
+│   │   │   ├── mic-status.js                       # Painel de microfones da TV
+│   │   │   ├── guide-vocal.js                      # Voz guia: vocal separado baixinho, no tom do instrumental
+│   │   │   ├── song-preview.js                     # Ouvir 12 s do refrão na lista
+│   │   │   └── replay.js                           # Ouvir a própria apresentação (voz gravada + instrumental)
+│   │   ├── net/                                    # Conexão com o servidor fora da partida
+│   │   │   ├── ws-display.js                       # WebSocket da TV no lobby
+│   │   │   └── sync.js                             # Sincronia de tempo e calibração de latência
+│   │   ├── game/                                   # Tela de jogo da TV
+│   │   │   ├── session.js                          # Início e fim da partida, áudio e WebSocket do jogo (reconexão)
+│   │   │   ├── server-messages.js                  # Uma função por mensagem do servidor para a TV
+│   │   │   ├── highlight-loop.js                   # Laço da letra: acende palavras, troca verso, conta o fim do solo
+│   │   │   ├── lyrics-carousel.js                  # As quatro linhas da letra e o deslize entre versos
+│   │   │   ├── hud.js                              # Nota do verso, nota geral, moldura, selo da vez, barras de progresso
+│   │   │   ├── transcription.js                    # Faixa "Ouvi:" com acerto e erro por palavra
+│   │   │   ├── game-over.js                        # Fim de jogo: rank ou pódio, recordes, botões de ouvir
+│   │   │   ├── controls.js                         # Tom, velocidade, pausa, barra da música e modos
+│   │   │   ├── score-bars.js                       # Barras de placar por time nas bordas
+│   │   │   ├── verse-stamp.js                      # Carimbo por verso: Na mosca · Quase · Fora
+│   │   │   ├── turns.js                            # Revezar versos (duelo): dono de cada verso
+│   │   │   ├── lyrics-script.js                    # Japonês: original, romaji ou ambos
+│   │   │   ├── game-events.js                      # Eventos do player para a gravação da partida
+│   │   │   └── share-card.js                       # Cartão 4:5 para print no fim de jogo (TV e celular)
+│   │   ├── lobby/                                  # Antes da partida: repertório, lobby, fila e biblioteca
+│   │   │   ├── selection-view.js                   # Repertório, busca e lobby da música (capa + cantor)
+│   │   │   ├── lobby.js                            # Vagas de cantor: microfone próprio + time A–D
+│   │   │   ├── queue-view.js                       # Fila de processamento (aba "Adicionar")
+│   │   │   ├── requests.js                         # Fila da noite: "Próximas" na TV, "Pedir música" no celular
+│   │   │   ├── cover-picker.js                     # Trocar a capa entre as opções encontradas
+│   │   │   ├── youtube-search.js                   # Busca no YouTube pelo nome
+│   │   │   ├── modals.js                           # Liga os três modais abaixo
+│   │   │   ├── pairing-modal.js                    # QR Code e link de pareamento do celular
+│   │   │   ├── add-song-modal.js                   # "Adicionar música" em três passos
+│   │   │   └── lrc-editor-modal.js                 # Editor de meta.json e letra LRC
+│   │   ├── players/                                # Cantores
+│   │   │   ├── profile-view.js                     # Ranking e perfil (TV e celular)
+│   │   │   ├── players-modal.js                    # Modal "Cantores" da TV
+│   │   │   └── annotate.js                         # Anotar os próprios versos para calibrar a nota
+│   │   ├── mobile/                                 # Celular-microfone
+│   │   │   ├── mobile-mic-view.js                  # Tela do microfone: VU, captura e controles
+│   │   │   ├── mic-socket.js                       # WebSocket role=mic e reconexão
+│   │   │   ├── mic-messages.js                     # Uma função por mensagem do servidor para o celular
+│   │   │   └── mic-final.js                        # Placar final e os botões Cartão, Anotar e Ouvir
 │   │   └── worklets/
-│   │       └── audio-processor.js  # AudioWorklet: coleta PCM Float32 bruto
+│   │       └── audio-processor.js                  # AudioWorklet: 16 kHz Int16 em pacotes KM01 de 100 ms
 │   └── styles/
 │       └── *.css                   # Estilos por área (partitura antiga, tons pastéis)
 ├── docs/                           # Documentação técnica e operacional

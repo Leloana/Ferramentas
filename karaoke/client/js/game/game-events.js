@@ -1,8 +1,8 @@
 // Linha do tempo da partida para a gravação (server/recorder.py): a TV avisa
 // play/pausa/seek/velocidade, volumes e sincronia. Só informativo — nada no
 // servidor depende disso para pontuar.
-import { state } from './state.js';
-import { dom } from './dom.js';
+import { state } from '../core/state.js';
+import { dom } from '../core/dom.js';
 
 export function sendPlayerEvent(event, value) {
     const ws = state.ws;

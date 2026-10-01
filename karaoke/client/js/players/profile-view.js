@@ -1,9 +1,9 @@
 // Perfil dos cantores: ranking (lista de cantores) e perfil de um apelido.
 // Usado no modal "Cantores" da TV e na aba "Perfil" do celular-microfone.
 // Dados de /api/players (players.py no servidor).
-import { iconSvg } from './icons.js';
+import { iconSvg } from '../core/icons.js';
 import { openAnnotationFor } from './annotate.js';
-import { toggleReplay, stopReplay } from './replay.js';
+import { toggleReplay, stopReplay } from '../audio/replay.js';
 
 function el(tag, cls, text) {
     const node = document.createElement(tag);

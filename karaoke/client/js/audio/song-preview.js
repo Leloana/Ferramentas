@@ -1,7 +1,7 @@
 // Ouvir um trecho na lista de músicas: ~12 s a partir do refrão (o verso que
 // mais se repete na letra) ou, sem repetição, a partir de 1/3 da música.
 // Um trecho por vez; abrir uma música ou tocar outro para o atual.
-import { state } from './state.js';
+import { state } from '../core/state.js';
 
 const CLIP_SEC = 12;
 const FADE_SEC = 1.2;

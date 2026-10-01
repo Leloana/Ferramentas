@@ -1,8 +1,8 @@
 // Modal "Cantores" (TV/PC): ranking → perfil. Voltar dentro do perfil volta
 // para a lista; na lista, fecha.
-import { openModal, closeModal } from './modal.js';
-import { showToast } from './toast.js';
-import { stopReplay } from './replay.js';
+import { openModal, closeModal } from '../ui/modal.js';
+import { showToast } from '../core/toast.js';
+import { stopReplay } from '../audio/replay.js';
 import { fetchPlayers, fetchProfile, renderPlayersList, renderProfile } from './profile-view.js';
 
 export function initPlayersModal() {

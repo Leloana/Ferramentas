@@ -154,7 +154,7 @@ class ScreensTest(unittest.TestCase):
     def test_night_queue_bar_opens_the_request_in_the_lobby(self):
         page, errors = self.open()
         page.evaluate("""async () => {
-            const rq = await import('/js/requests.js');
+            const rq = await import('/js/lobby/requests.js');
             const songs = await fetch('/api/songs').then(r => r.json());
             const song = songs.find(s => s.is_ready);
             rq.onRequestsUpdate([{id: 'r1', song_id: song.id, title: song.title, artist: song.artist, singer: 'Ana'}]);

@@ -1,8 +1,8 @@
 // WebSocket do celular-microfone (role=mic): abre, repassa as mensagens e
 // reconecta sozinho quando a rede cai.
-import { state } from '../state.js';
-import { myRoom, MIC_REPLACED_CODE } from '../config.js';
-import { escapeHtml } from '../html.js';
+import { state } from '../core/state.js';
+import { myRoom, MIC_REPLACED_CODE } from '../core/config.js';
+import { escapeHtml } from '../core/html.js';
 import { handleMicMessage } from './mic-messages.js';
 
 const RECONNECT_MS = 3000;

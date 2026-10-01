@@ -1,6 +1,6 @@
 // Faixa "Ouvi:" da TV: o que o Whisper entendeu no último verso, com acerto e
 // erro por palavra, e o aviso de espera entre um verso e outro.
-import { state } from '../state.js';
+import { state } from '../core/state.js';
 
 const HEARD_HOLD_MS = 3500;
 

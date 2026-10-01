@@ -1,5 +1,5 @@
 // Modais da biblioteca de músicas na TV.
-import { urlParams } from '../config.js';
+import { urlParams } from '../core/config.js';
 import { initPairingModal } from './pairing-modal.js';
 import { initAddSongModal } from './add-song-modal.js';
 import { initLrcEditorModal } from './lrc-editor-modal.js';

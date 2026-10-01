@@ -1,20 +1,20 @@
 // Ciclo de vida da partida na TV: carrega a letra, liga o áudio, abre o
 // WebSocket do jogo (com reconexão no meio da música) e desmonta tudo no fim.
-import { state, setAppState } from '../state.js';
-import { dom } from '../dom.js';
-import { myRoom, DISPLAY_REPLACED_CODE, isTvBrowser } from '../config.js';
-import { lobbyLineup, validateLobby, PC_MIC } from '../lobby.js';
-import { keepScreenOn, allowScreenOff } from '../wake-lock.js';
-import { attachGuideSync, savedGuideVolume } from '../guide-vocal.js';
-import { stopReplay } from '../replay.js';
-import { stopAutoNext } from '../requests.js';
-import { attachPlayerEvents, deviceInfo } from '../game-events.js';
-import { showToast } from '../toast.js';
-import { AudioLifecycleManager } from '../audio-lifecycle-manager.js';
-import { updateSyncDisplay, startTimeSync, stopTimeSync } from '../sync.js';
-import { updateMicStatusPanel } from '../mic-status.js';
-import { connectDisplayWebSocket } from '../ws-display.js';
-import { showAnnotationButton } from '../annotate.js';
+import { state, setAppState } from '../core/state.js';
+import { dom } from '../core/dom.js';
+import { myRoom, DISPLAY_REPLACED_CODE, isTvBrowser } from '../core/config.js';
+import { lobbyLineup, validateLobby, PC_MIC } from '../lobby/lobby.js';
+import { keepScreenOn, allowScreenOff } from '../core/wake-lock.js';
+import { attachGuideSync, savedGuideVolume } from '../audio/guide-vocal.js';
+import { stopReplay } from '../audio/replay.js';
+import { stopAutoNext } from '../lobby/requests.js';
+import { attachPlayerEvents, deviceInfo } from './game-events.js';
+import { showToast } from '../core/toast.js';
+import { AudioLifecycleManager } from '../audio/audio-lifecycle-manager.js';
+import { updateSyncDisplay, startTimeSync, stopTimeSync } from '../net/sync.js';
+import { updateMicStatusPanel } from '../audio/mic-status.js';
+import { connectDisplayWebSocket } from '../net/ws-display.js';
+import { showAnnotationButton } from '../players/annotate.js';
 import { handleServerMessage } from './server-messages.js';
 import { startHighlightLoop, cancelLyricsFrame } from './highlight-loop.js';
 import { resetCarousel } from './lyrics-carousel.js';

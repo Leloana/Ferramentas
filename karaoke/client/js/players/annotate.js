@@ -5,11 +5,11 @@
 // (com o instrumental baixinho) e mostra a transcrição inteira. Fica atrás do
 // lápis discreto da tela de fim de jogo — ferramenta de calibração do score, não
 // parte do jogo. Salva em recordings/<id>/gabarito.json.
-import { state } from './state.js';
-import { iconSvg } from './icons.js';
-import { showToast } from './toast.js';
-import { openModal, closeModal } from './modal.js';
-import { playVerse, stopReplay } from './replay.js';
+import { state } from '../core/state.js';
+import { iconSvg } from '../core/icons.js';
+import { showToast } from '../core/toast.js';
+import { openModal, closeModal } from '../ui/modal.js';
+import { playVerse, stopReplay } from '../audio/replay.js';
 
 // Marcas antigas "cantarolei" continuam valendo como erro (o X fica aceso).
 const WRONG_LABELS = ['errado', 'cantarolei'];

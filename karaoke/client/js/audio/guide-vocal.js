@@ -5,9 +5,9 @@
 // (audio-lifecycle-manager.js). Aqui fica o controle de volume e a
 // sincronia com o player principal (play/pausa/seek/velocidade + correção
 // de deriva).
-import { state } from './state.js';
-import { dom } from './dom.js';
-import { sendPlayerEvent } from './game-events.js';
+import { state } from '../core/state.js';
+import { dom } from '../core/dom.js';
+import { sendPlayerEvent } from '../game/game-events.js';
 
 const STORAGE_KEY = 'karaoke_guide_volume';
 const MAX_DRIFT_SEC = 0.08;

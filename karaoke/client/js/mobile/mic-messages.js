@@ -1,14 +1,14 @@
 // Mensagens do servidor para o celular-microfone (WebSocket role=mic), uma
 // função por tipo: entrada com apelido, letra do verso, nota e fim de jogo.
-import { state, setAppState } from '../state.js';
-import { iconSvg } from '../icons.js';
-import { myRoom, savedMicName, saveMicName, micDeviceId } from '../config.js';
-import { showToast } from '../toast.js';
-import { dom } from '../dom.js';
-import { fillLine, setLyricsScriptAvailable } from '../lyrics-script.js';
-import { verseQuality, replayClass } from '../verse-stamp.js';
-import { escapeHtml } from '../html.js';
-import { onRequestsUpdate } from '../requests.js';
+import { state, setAppState } from '../core/state.js';
+import { iconSvg } from '../core/icons.js';
+import { myRoom, savedMicName, saveMicName, micDeviceId } from '../core/config.js';
+import { showToast } from '../core/toast.js';
+import { dom } from '../core/dom.js';
+import { fillLine, setLyricsScriptAvailable } from '../game/lyrics-script.js';
+import { verseQuality, replayClass } from '../game/verse-stamp.js';
+import { escapeHtml } from '../core/html.js';
+import { onRequestsUpdate } from '../lobby/requests.js';
 import { showMicGameOver } from './mic-final.js';
 import { setMicStatus } from './mic-socket.js';
 

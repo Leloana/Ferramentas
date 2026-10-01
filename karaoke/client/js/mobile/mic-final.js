@@ -1,11 +1,11 @@
 // Tela final no celular: placar da sala, a média de quem cantou e os botões
 // Cartão, Anotar meus versos e Ouvir.
-import { state } from '../state.js';
-import { iconSvg } from '../icons.js';
-import { escapeHtml } from '../html.js';
-import { openShareCard, splitSongTitle } from '../share-card.js';
-import { toggleReplay } from '../replay.js';
-import { openAnnotationFor } from '../annotate.js';
+import { state } from '../core/state.js';
+import { iconSvg } from '../core/icons.js';
+import { escapeHtml } from '../core/html.js';
+import { openShareCard, splitSongTitle } from '../game/share-card.js';
+import { toggleReplay } from '../audio/replay.js';
+import { openAnnotationFor } from '../players/annotate.js';
 
 // Nota final deste celular (a geral quando o servidor não manda por jogador)
 function myFinalScore(data) {

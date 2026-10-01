@@ -1,10 +1,10 @@
 // Laço da letra na TV: a cada quadro lê o tempo da música e acende as palavras,
 // troca de verso, move as barras de progresso e conta o fim dos solos.
-import { state } from '../state.js';
-import { dom } from '../dom.js';
-import { isTvBrowser } from '../config.js';
-import { turnOwner } from '../turns.js';
-import { sendPlayerEvent } from '../game-events.js';
+import { state } from '../core/state.js';
+import { dom } from '../core/dom.js';
+import { isTvBrowser } from '../core/config.js';
+import { turnOwner } from './turns.js';
+import { sendPlayerEvent } from './game-events.js';
 import { renderLyrics } from './lyrics-carousel.js';
 import { showHeardHint, listeningHint } from './transcription.js';
 import { showTurn, setCountdown, setSilence, setSilenceProgress, setVerseProgress, setOutroProgress } from './hud.js';

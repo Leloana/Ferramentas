@@ -1,11 +1,11 @@
-import { state } from './state.js';
-import { iconSvg } from './icons.js';
-import { AudioLifecycleManager } from './audio-lifecycle-manager.js';
-import { showToast } from './toast.js';
-import { dom } from './dom.js';
-import { keepScreenOn } from './wake-lock.js';
-import { deviceInfo } from './game-events.js';
-import { micDeviceId, saveMicName } from './config.js';
+import { state } from '../core/state.js';
+import { iconSvg } from '../core/icons.js';
+import { AudioLifecycleManager } from '../audio/audio-lifecycle-manager.js';
+import { showToast } from '../core/toast.js';
+import { dom } from '../core/dom.js';
+import { keepScreenOn } from '../core/wake-lock.js';
+import { deviceInfo } from '../game/game-events.js';
+import { micDeviceId, saveMicName } from '../core/config.js';
 
 export function initMobileMicView() {
     const btnMobileActivate = document.getElementById('btn-mobile-activate');

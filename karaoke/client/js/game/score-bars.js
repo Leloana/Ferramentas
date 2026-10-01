@@ -4,8 +4,8 @@
 // um cantor (dupla/trio) mostra a nota do time em destaque — média dos membros —
 // e, embaixo, uma barra discreta com a nota de cada membro.
 
-import { state } from './state.js';
-import { micLabel, groupName } from './lobby.js';
+import { state } from '../core/state.js';
+import { micLabel, groupName } from '../lobby/lobby.js';
 import { stampVerse, clearStamp, replayClass, verseQuality } from './verse-stamp.js';
 
 const SLOTS = ['p1', 'p2', 'p3', 'p4'];
@@ -85,7 +85,7 @@ function qualityClass(score) {
 }
 
 // playerScores: { microfone: { total_score, score, transcription } } do servidor.
-// renderHeard(container, transcription, expected, showHeader) vem do game-view.
+// renderHeard(container, transcription, expected, showHeader) vem de game/transcription.js.
 export function updateScoreBars(playerScores, expected, renderHeard, opts) {
     const recalc = !!(opts && opts.recalc);
     const groups = state.scoreGroups || [];

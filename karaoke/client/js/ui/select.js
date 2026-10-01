@@ -9,7 +9,7 @@
 // Uso: enhanceSelects(document) no bootstrap. Mudanças feitas por código
 // (select.value = x, trocar as <option>, `hidden`, form.reset()) são refletidas.
 
-import { iconSvg } from './icons.js';
+import { iconSvg } from '../core/icons.js';
 
 const nativeValue = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value');
 const OPEN_CLASS = 'cselect--open';

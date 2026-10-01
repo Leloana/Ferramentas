@@ -1,12 +1,12 @@
 // Modal "Adicionar música" em três passos: escolher o vídeo, confirmar
 // título e artista (busca a letra) e revisar a letra antes de enfileirar.
-import { state } from '../state.js';
-import { iconSvg } from '../icons.js';
-import { dom, startLoadingOverlay, stopLoadingOverlay } from '../dom.js';
-import { showToast } from '../toast.js';
-import { promptGenerationOptions } from '../selection-view.js';
-import { openModal, closeModal } from '../modal.js';
-import { initYoutubeSearch, resetYoutubeSearch, isYoutubeUrl } from '../youtube-search.js';
+import { state } from '../core/state.js';
+import { iconSvg } from '../core/icons.js';
+import { dom, startLoadingOverlay, stopLoadingOverlay } from '../core/dom.js';
+import { showToast } from '../core/toast.js';
+import { promptGenerationOptions } from './selection-view.js';
+import { openModal, closeModal } from '../ui/modal.js';
+import { initYoutubeSearch, resetYoutubeSearch, isYoutubeUrl } from './youtube-search.js';
 
 // --- Status de busca de letras (compartilhado entre os passos 2 e 3) ---
 

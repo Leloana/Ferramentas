@@ -1,9 +1,9 @@
 // Editor da música: meta.json, letra LRC e "colar letra", com salvar e realinhar.
-import { dom, startLoadingOverlay, stopLoadingOverlay } from '../dom.js';
-import { showToast } from '../toast.js';
-import { fetchSongs } from '../selection-view.js';
-import { openModal, closeModal } from '../modal.js';
-import { initTabs } from '../tabs.js';
+import { dom, startLoadingOverlay, stopLoadingOverlay } from '../core/dom.js';
+import { showToast } from '../core/toast.js';
+import { fetchSongs } from './selection-view.js';
+import { openModal, closeModal } from '../ui/modal.js';
+import { initTabs } from '../ui/tabs.js';
 
 export function initLrcEditorModal() {
     const btnCloseEditor = document.getElementById('btn-close-editor');

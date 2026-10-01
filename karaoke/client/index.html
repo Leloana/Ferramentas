@@ -8,7 +8,7 @@
     <!-- a página tem tema próprio: o WebView não escurece as cores por conta própria -->
     <meta name="color-scheme" content="light dark">
     <script>
-        // tema salvo antes de pintar (sem piscar o claro); o padrão fica em js/theme.js
+        // tema salvo antes de pintar (sem piscar o claro); o padrão fica em js/core/theme.js
         try {
             var t = localStorage.getItem('karaoke_theme');
             if (t !== 'dark' && t !== 'light') t = localStorage.getItem('karaoke_tv') === '1' ? 'dark' : null;

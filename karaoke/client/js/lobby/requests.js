@@ -4,11 +4,11 @@
 // lobby com quem pediu já escalado. No fim de jogo, contagem de 10 s abre a
 // próxima sozinha (Cancelar segura).
 // Celular: "Pedir música" (busca nas músicas prontas) e os próprios pedidos.
-import { state } from './state.js';
-import { iconSvg } from './icons.js';
-import { showToast } from './toast.js';
+import { state } from '../core/state.js';
+import { iconSvg } from '../core/icons.js';
+import { showToast } from '../core/toast.js';
 import { micLabel, defaultMic, renderLobby } from './lobby.js';
-import { myRole } from './config.js';
+import { myRole } from '../core/config.js';
 
 const AUTO_NEXT_SEC = 10;
 

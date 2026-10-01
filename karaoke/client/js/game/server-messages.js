@@ -1,11 +1,11 @@
 // Mensagens do servidor para a TV (WebSocket role=display), uma função por tipo.
-import { state, setAppState } from '../state.js';
-import { dom } from '../dom.js';
-import { setAvailableMics } from '../lobby.js';
-import { onRequestsUpdate, showNextUp } from '../requests.js';
-import { showToast } from '../toast.js';
-import { updateMicStatusPanel } from '../mic-status.js';
-import { showAnnotationButton } from '../annotate.js';
+import { state, setAppState } from '../core/state.js';
+import { dom } from '../core/dom.js';
+import { setAvailableMics } from '../lobby/lobby.js';
+import { onRequestsUpdate, showNextUp } from '../lobby/requests.js';
+import { showToast } from '../core/toast.js';
+import { updateMicStatusPanel } from '../audio/mic-status.js';
+import { showAnnotationButton } from '../players/annotate.js';
 import { renderLyrics } from './lyrics-carousel.js';
 import { startHighlightLoop } from './highlight-loop.js';
 import { showHeardHint, showHeardResult, listeningHint, expectedWords } from './transcription.js';

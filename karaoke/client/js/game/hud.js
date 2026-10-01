@@ -1,9 +1,9 @@
 // Placar da TV durante a partida: nota do verso, nota geral, moldura de
 // desempenho, selo "Vez de ..." e as barras de progresso do verso e do solo.
-import { state } from '../state.js';
-import { groupName, micLabel } from '../lobby.js';
-import { showScoreBars, hideScoreBars, updateScoreBars } from '../score-bars.js';
-import { stampVerse, clearStamp, verseQuality, replayClass } from '../verse-stamp.js';
+import { state } from '../core/state.js';
+import { groupName, micLabel } from '../lobby/lobby.js';
+import { showScoreBars, hideScoreBars, updateScoreBars } from './score-bars.js';
+import { stampVerse, clearStamp, verseQuality, replayClass } from './verse-stamp.js';
 import { renderTranscriptionInto, expectedWords } from './transcription.js';
 
 const PERF_BORDER_MS = 2000;

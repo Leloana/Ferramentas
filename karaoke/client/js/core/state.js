@@ -61,7 +61,7 @@ export const state = {
     gpuBlock: null,           // nome da música gerando letra (bloqueia o INICIAR)
     annotateOnlyPlayer: null, // celular: anotação só do próprio cantor
     selectSongFn: null,       // selection-view.selectSong (evita import circular)
-    resetGameFn: null,        // game-view.resetGameState
+    resetGameFn: null,        // game/session.resetGameState
     lobbySeats: [],        // lobby: [{ mic, team }] — mesmo time = dupla/trio (lobby.js)
     lobbyMics: [],         // celulares registrados na sala
     scoreGroups: null,     // times da partida em curso [{ team, mics }] (score-bars.js)

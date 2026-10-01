@@ -1,6 +1,6 @@
 // "Ouvir minha apresentação": a voz gravada do cantor (recordings/<id>/<nome>.wav,
 // já no tempo da música) tocando junto do instrumental, no fim de jogo.
-import { state } from './state.js';
+import { state } from '../core/state.js';
 
 const BACKING_VOLUME = 0.55;
 const MAX_DRIFT_SEC = 0.3;

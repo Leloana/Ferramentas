@@ -1,12 +1,12 @@
 // Fim de jogo na TV: nota e rank (solo) ou pódio (disputa), recordes, botões
 // "Ouvir" e os dados do cartão para print.
-import { state } from '../state.js';
-import { iconSvg } from '../icons.js';
-import { micLabel, groupName, PC_MIC } from '../lobby.js';
-import { groupFinalScores } from '../score-bars.js';
-import { openShareCard, rankFor } from '../share-card.js';
-import { toggleReplay } from '../replay.js';
-import { escapeHtml } from '../html.js';
+import { state } from '../core/state.js';
+import { iconSvg } from '../core/icons.js';
+import { micLabel, groupName, PC_MIC } from '../lobby/lobby.js';
+import { groupFinalScores } from './score-bars.js';
+import { openShareCard, rankFor } from './share-card.js';
+import { toggleReplay } from '../audio/replay.js';
+import { escapeHtml } from '../core/html.js';
 import { resetGameState } from './session.js';
 
 const RANK_TITLES = {

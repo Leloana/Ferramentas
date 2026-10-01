@@ -1,11 +1,11 @@
-import { state, setAppState } from './state.js';
-import { dom, startLoadingOverlay, stopLoadingOverlay } from './dom.js';
-import { showToast } from './toast.js';
-import { openModal, closeModal } from './modal.js';
-import { initTabs } from './tabs.js';
+import { state, setAppState } from '../core/state.js';
+import { dom, startLoadingOverlay, stopLoadingOverlay } from '../core/dom.js';
+import { showToast } from '../core/toast.js';
+import { openModal, closeModal } from '../ui/modal.js';
+import { initTabs } from '../ui/tabs.js';
 import { ensureDefaultSeat } from './lobby.js';
-import { setGuideSong } from './guide-vocal.js';
-import { togglePreview, stopPreview } from './song-preview.js';
+import { setGuideSong } from '../audio/guide-vocal.js';
+import { togglePreview, stopPreview } from '../audio/song-preview.js';
 
 export async function fetchSongs() {
     try {

@@ -301,7 +301,7 @@ def _late_packet_grace(room) -> float:
 def turn_owner(segments: list, turn_order: list | None, idx: int) -> list | None:
     """Revezar versos: o k-ésimo verso com letra é do time k % n (None = todos).
 
-    Mesma regra do front (client/js/turns.js)."""
+    Mesma regra do front (client/js/game/turns.js)."""
     if not turn_order or len(turn_order) < 2 or not (0 <= idx < len(segments)):
         return None
     if not str(segments[idx].get("lyrics") or "").strip():

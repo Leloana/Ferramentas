@@ -13,23 +13,16 @@ Este arquivo resume os detalhes técnicos específicos do subprojeto **Karaoke A
 | ├─ `partials/` | Um arquivo por área/modal | Mudou um ID? Procure-o em `js/`. |
 | ├─ `assets/art/` | Artes SVG (desenhadas pelo Codex) | Paleta de `styles/tokens.css`. |
 | ├─ `styles/*.css` | Tema "partitura antiga" em tons pastéis, cantos retos. `tokens.css` (cores/fontes), um arquivo por área, `states.css` (visibilidade por `data-state`), `tv.css` (foco do controle remoto) | **Não mude styles inline no JS.** Crie classes de estado CSS e alterne-as com `classList`. Cores só por `var(--...)`. Fontes: `--font-ui` (sans simples) para tudo que se lê — letra, títulos de música, notas, listas, formulários; `--font-display` (serifada) só no estético — marca, títulos de seção/modal, letra do rank. Sem `inset`/`:has()` (TV antiga). |
-| └─ `js/` | Módulos JavaScript (ES Modules) | Centralize as variáveis compartilhadas em `state.js`. |
-| &emsp;&emsp;├─ `state.js` | Objeto central de estado mutável compartilhado | **Nunca exporte `let` locais.** Adicione propriedades ao objeto `state`. |
-| &emsp;&emsp;├─ `main.js` | Bootstrap da aplicação (identifica display vs mic) | Define o ponto de entrada. |
-| &emsp;&emsp;├─ `game-view.js` | Renderização da letra e animações de gameplay | Controla o acendimento progressivo das sílabas/palavras. |
-| &emsp;&emsp;├─ `lobby.js` / `score-bars.js` | Lobby (vagas com "+": mic próprio + time A–D) e barras de placar | Não existe mais seletor de modo: mesmo time = dupla/trio. O servidor pontua por mic; a média do time é feita no front (barra do time + barrinha de cada membro, pódio por time). |
-| &emsp;&emsp;├─ `share-card.js` / `replay.js` | Cartão 4:5 para print no fim de jogo (TV e celular) e "ouvir a apresentação" | Dados do `game_over` (`player_stats`, `player_pitch`, `records`, `song_id`). |
-| &emsp;&emsp;├─ `profile-view.js` / `players-modal.js` | Ranking e perfil dos cantores (modal "Cantores" na TV, aba "Perfil" no celular) | Lê `/api/players`. |
-| &emsp;&emsp;├─ `requests.js` | Fila da noite ("quero cantar"): faixa "Próximas" na TV, "Pedir música" no celular, próxima automática no fim de jogo (10 s) | Servidor: `song_requests.py` (memória da sala, mensagens `request_song`/`cancel_request`/`requests_update`). |
-| &emsp;&emsp;├─ `cover-picker.js` / `song-preview.js` | Trocar a capa entre as opções achadas; ouvir 12 s do refrão na lista | Capa: `utils/cover.py` (iTunes + Deezer + YouTube, nota por artista/título). Refrão = verso mais repetido. |
-| &emsp;&emsp;├─ `turns.js` | Revezar versos (duelo): dono de cada verso | Mesma regra de `turn_owner` em `ws/room.py`. |
-| &emsp;&emsp;├─ `guide-vocal.js` / `wake-lock.js` / `status-panel.js` | Voz guia (vocal.mp3 baixinho), tela sempre acesa, painel de saúde (clique no "Online") | A voz guia passa pelo mesmo tom do instrumental (`audio-lifecycle-manager.js`). |
-| &emsp;&emsp;├─ `verse-stamp.js` | Carimbo de acerto/erro por verso (Na mosca · Quase · Fora) | Faixas em `verseQuality` (85/70); usado no palco (solo), nas barras (multiplayer) e na nota do celular. |
-| &emsp;&emsp;├─ `youtube-search.js` | Busca no YouTube pelo nome (passo 1 do "Adicionar música") | Usa `GET /api/youtube-search`. Colar link continua valendo. |
-| &emsp;&emsp;├─ `select.js` | Select personalizado | Todo `<select>` é aprimorado no bootstrap; o nativo fica escondido por baixo. Troque valor com `select.value = x`. |
-| &emsp;&emsp;├─ `tv-nav.js` / `compat.js` | Controle remoto (setas/OK/Voltar/Play) e polyfills de TV | JS até ES2018. |
-| &emsp;&emsp;├─ `icons.js` | Ícones próprios (SVG desenhado à mão) | **Sem emojis e sem biblioteca de ícones.** Use `<i data-icon="nome">` no HTML ou `iconSvg('nome')` no JS; novo ícone = novo path em `icons.js`. |
-| &emsp;&emsp;├─ `ws-display.js` / `ws-mic.js` | WebSockets do Display (TV) / Microfone (Celular) | Tratam reconexões e recebimento de blobs binários PCM. |
+| └─ `js/` | Módulos JavaScript (ES Modules), uma pasta por área | Centralize as variáveis compartilhadas em `core/state.js`. Arquivo novo vai na pasta da área; nada solto na raiz além do `main.js`. |
+| &emsp;&emsp;├─ `main.js` | Bootstrap (identifica TV ou celular) | Ponto de entrada do `index.html`. Importa `core/compat.js` primeiro. |
+| &emsp;&emsp;├─ `core/` | Estado, config, DOM, ícones, tema, toast, endereço público, wake lock | `core/state.js`: **nunca exporte `let` locais**, adicione propriedades ao objeto `state`. `core/icons.js`: **sem emojis e sem biblioteca de ícones**, use `<i data-icon="nome">` ou `iconSvg('nome')`; ícone novo = novo path ali. |
+| &emsp;&emsp;├─ `ui/` | Modal único, select personalizado, abas, controle remoto, painel de saúde | Todo `<select>` é aprimorado no bootstrap (`ui/select.js`); troque valor com `select.value = x`. Controle remoto em `ui/tv-nav.js`. |
+| &emsp;&emsp;├─ `audio/` | `AudioLifecycleManager`, pitch shifter, microfone, voz guia, prévia do refrão, ouvir a apresentação | A voz guia passa pelo mesmo tom do instrumental (`audio/audio-lifecycle-manager.js`). |
+| &emsp;&emsp;├─ `net/` | WebSocket da TV no lobby (`ws-display.js`) e sincronia de tempo (`sync.js`) | O WebSocket da partida é o de `game/session.js`. |
+| &emsp;&emsp;├─ `game/` | Tela de jogo da TV: `session` (início, fim, reconexão), `server-messages` (uma função por mensagem), `highlight-loop` (laço da letra), `lyrics-carousel`, `hud`, `transcription`, `game-over`, `controls`; e as peças `score-bars`, `verse-stamp`, `turns`, `lyrics-script`, `game-events`, `share-card` | Mensagem nova do servidor para a TV = função nova em `server-messages.js`. Laço da letra: um passo nomeado por responsabilidade em `frame()`. Média do time é feita no front (`score-bars.js`). `turns.js` espelha `turn_owner` em `ws/room.py`. Faixas do carimbo em `verseQuality` (85/70). |
+| &emsp;&emsp;├─ `lobby/` | Repertório, lobby (vagas + time A–D), fila de processamento, fila da noite, capa, busca no YouTube e os modais da biblioteca (pareamento, adicionar música, editor) | Não existe seletor de modo: mesmo time = dupla/trio. Fila da noite: `song_requests.py` no servidor. Capa: `utils/cover.py`. |
+| &emsp;&emsp;├─ `players/` | Ranking, perfil, modal "Cantores" e anotação dos versos | Lê `/api/players`. |
+| &emsp;&emsp;├─ `mobile/` | Celular-microfone: tela (`mobile-mic-view`), `mic-socket` (conexão), `mic-messages` (uma função por mensagem), `mic-final` (placar final) | Mesmo formato da TV: conexão separada das mensagens. |
 | &emsp;&emsp;└─ `worklets/audio-processor.js` | AudioWorklet para captura e fluxo de áudio PCM | Roda em thread separada. Reamostra para 16 kHz Int16 e envia pacotes `KM01` de 100 ms com o índice da 1ª amostra. Mudou o formato? Mude também `server/mic_stream.py` e a versão em `WORKLET_URL`. |
 | **`server/`** | Backend FastAPI e motores de IA | Orquestrado por managers de estado singletons. |
 | ├─ `main.py` | Entrada Uvicorn e registro de middlewares/routers | Inicializa o servidor. Mantém logs em console. |
@@ -182,12 +175,12 @@ Armazena a nota histórica de cada sessão.
 ## ⚙️ 5. Padrões de Código e Convenções
 
 1.  **State Management (Frontend):**
-    *   Sempre use o objeto global `state` importado de `js/state.js` para ler ou escrever dados entre os módulos.
+    *   Sempre use o objeto global `state` importado de `js/core/state.js` para ler ou escrever dados entre os módulos.
     *   **Proibido:** Declarar variáveis soltas no topo dos módulos (como `let ws;` ou `let activeSong;`) que guardem estado interativo.
 2.  **No-Build Frontend:**
     *   O frontend deve permanecer estritamente em Vanilla ES Modules.
-    *   Sintaxe até ES2018 (navegador de TV antigo): sem `?.`, `??` nem `catch {}`. Polyfills em `js/compat.js`.
-    *   Controle remoto: `js/tv-nav.js` (setas, OK, Voltar, Play/Pause). `?tv=1` força o modo TV.
+    *   Sintaxe até ES2018 (navegador de TV antigo): sem `?.`, `??` nem `catch {}`. Polyfills em `js/core/compat.js`.
+    *   Controle remoto: `js/ui/tv-nav.js` (setas, OK, Voltar, Play/Pause). `?tv=1` força o modo TV.
     *   Preview sem GPU: `python tools/preview_front.py [--host 0.0.0.0]` (dados de exemplo, sem WebSocket; busca no YouTube e capas funcionam se o `yt-dlp` estiver instalado).
     *   Interface: sem textos explicativos; no celular os toasts são só de erro (validação usa `'error'`); trocar de tela/aba/modal volta ao topo; toda tela tem voltar.
     *   Histórico do redesign do front: `docs/archive/FRONT_REDESIGN_2026-09.md`.
@@ -221,7 +214,7 @@ Armazena a nota histórica de cada sessão.
 *   **Referencial de tempo do Whisper:**
     *   O Whisper devolve `start` relativo ao início da JANELA, que começa até 1,5 s antes do `sing_start`. Compare com `expected_start` só depois de `_shift_words(words, t0 - sing_start)` em `ws/room.py`. Sem isso o canto perfeito tira 85.
 *   **Slug de música vindo do cliente:** sempre `utils/song_paths.safe_song_dir(SONGS_DIR, slug)`, nunca `SONGS_DIR / slug` direto (rotas apagam/renomeiam pastas).
-*   **Texto de usuário no front:** apelidos, títulos e transcrições nunca vão crus para `innerHTML` — use `textContent` ou `escapeHtml` (`js/html.js`). `showToast` já é texto puro.
+*   **Texto de usuário no front:** apelidos, títulos e transcrições nunca vão crus para `innerHTML` — use `textContent` ou `escapeHtml` (`js/core/html.js`). `showToast` já é texto puro.
 *   **Reconexão da TV:** o jogo reconecta com `resume=1` (o servidor não reseta a sala) e o código de fechamento 4001 (`DISPLAY_REPLACED_CODE`) significa "outra tela assumiu" — não reconectar. Resultados de Whisper conferem `room.game_id` antes de gravar.
 *   **Letra revisada à mão:** o `save-lyrics` grava `songs/<slug>/.lyrics_edited`; o reinstall sem alinhamento forçado mantém esse `lyrics.lrc` em vez do backup/LRCLIB.
 *   **Testes das telas:** `tests/ui/test_screens.py` (Playwright sobre o preview; pulado sem Playwright). Mexeu em tela? Rode `python -m pytest tests/ui`.
@@ -233,5 +226,5 @@ Armazena a nota histórica de cada sessão.
 - Todo commit deve ser feito a partir da raiz do repositório (`Ferramentas/`)
 - Nunca rodar `git commit` de dentro de um subprojeto
 - Mensagem no formato: `feat(karaoke): descrição` / `fix(karaoke): descrição`
-- Sempre `git add` com path relativo à raiz: `git add karaoke/client/js/selection-view.js`
+- Sempre `git add` com path relativo à raiz: `git add karaoke/client/js/lobby/selection-view.js`
 - Push imediato após commit

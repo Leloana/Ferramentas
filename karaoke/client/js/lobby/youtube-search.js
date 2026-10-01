@@ -3,8 +3,8 @@
 // O usuário digita o nome, escolhe um resultado e o fluxo segue para o passo 2
 // com artista/título já sugeridos. Colar um link direto continua funcionando.
 
-import { state } from './state.js';
-import { showToast } from './toast.js';
+import { state } from '../core/state.js';
+import { showToast } from '../core/toast.js';
 
 const YT_URL_RE = /(youtube\.com\/|youtu\.be\/)/i;
 

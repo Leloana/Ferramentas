@@ -11,8 +11,8 @@
 // A classe `using-keys` no <html> liga o contorno de foco (tv.css); some ao usar
 // mouse ou toque. `is-tv` (config.isTvBrowser) aumenta a escala da interface.
 
-import { state } from './state.js';
-import { isTvBrowser } from './config.js';
+import { state } from '../core/state.js';
+import { isTvBrowser } from '../core/config.js';
 import { closeTopModal, hasOpenModal } from './modal.js';
 import { closeOpenSelects } from './select.js';
 
