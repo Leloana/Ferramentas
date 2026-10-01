@@ -192,6 +192,15 @@ class TestJapaneseScoring(unittest.TestCase):
         kanji = _pieces(["遠", "ざ", "かって", "いく", "日", "も", "見", "えない"])
         self.assertEqual(score_words(self.SEGMENT, None, kanji, "timing")["score"], 100.0)
 
+    def test_kanji_with_two_readings_accepts_the_sung_one(self):
+        # 抱いたら: o MeCab lê "idaitara" (idaku), a música canta "daitara" (daku)
+        from lyrics_text import ja_readings
+
+        self.assertIn("daitara", ja_readings("抱いたら"))
+        seg = {"language": "ja", "lyrics": "抱いたら",
+               "lyrics_timed": [{"word": "抱いたら", "expected_start": 0.05, "expected_end": 1.0}]}
+        self.assertEqual(score_words(seg, None, _pieces(["だ", "い", "た", "ら"], step=0.25), "timing")["score"], 100.0)
+
     def test_heard_words_come_marked_as_hits_for_the_tv(self):
         # A TV pintava o "Ouvi:" comparando com a letra em kanji: tudo vermelho.
         res = score_words(self.SEGMENT, None, _pieces(["遠", "ざ", "かって", "いく", "日", "も", "見", "えない"]), "timing")

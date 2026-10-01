@@ -213,7 +213,8 @@ def _word_points(ratio: float, expected_start: float, actual_start: float, apply
 
 
 def match_in_order(expected_words: list[str], expected_timed: list[dict],
-                   transcribed_clean: list[dict], apply_timing: bool) -> list[tuple[float, int]]:
+                   transcribed_clean: list[dict], apply_timing: bool,
+                   alternatives: list[tuple[str, ...]] | None = None) -> list[tuple[float, int]]:
     """Casa a letra com a transcrição sem cruzar pares: (pontos, índice transcrito | -1) por palavra.
 
     Programação dinâmica que maximiza a soma dos pontos com pares em ordem nos
@@ -224,7 +225,10 @@ def match_in_order(expected_words: list[str], expected_timed: list[dict],
     pts = [[0.0] * m for _ in range(n)]
     for i in range(n):
         for j in range(m):
-            ratio = fuzz.token_sort_ratio(expected_words[i], transcribed_clean[j]["word"])
+            heard = transcribed_clean[j]["word"]
+            ratio = fuzz.token_sort_ratio(expected_words[i], heard)
+            if alternatives:  # japonês: outra leitura do mesmo kanji (lyrics_text.ja_readings)
+                ratio = max([ratio] + [fuzz.token_sort_ratio(a, heard) for a in alternatives[i]])
             pts[i][j] = _word_points(ratio, expected_timed[i]["expected_start"],
                                      transcribed_clean[j]["start"], apply_timing)
     best = [[0.0] * (m + 1) for _ in range(n + 1)]
@@ -342,7 +346,13 @@ def calculate_score(expected_timed: list[dict], transcribed_words: list[dict], p
     consumed_indices = set()
     timing_pairs = []  # (expected_start, actual_start) das palavras casadas
 
-    for i, (word_points, j) in enumerate(match_in_order(expected_words, expected_timed, transcribed_clean, apply_timing)):
+    alternatives = None
+    if is_japanese(language):
+        from lyrics_text import ja_readings
+
+        alternatives = [ja_readings(w["word"]) for w in expected_timed]
+    for i, (word_points, j) in enumerate(match_in_order(expected_words, expected_timed, transcribed_clean,
+                                                        apply_timing, alternatives)):
         if j != -1:
             consumed_indices.add(j)
             if apply_timing:

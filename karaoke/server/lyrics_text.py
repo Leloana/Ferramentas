@@ -148,6 +148,22 @@ def ja_reading(word: str) -> str:
 
 
 @lru_cache(maxsize=4096)
+def ja_readings(word: str) -> tuple[str, ...]:
+    """Leituras aceitas na nota: a do MeCab e a do pykakasi, quando diferem.
+
+    Kanji com mais de uma leitura: o MeCab lê 抱いたら como "idaitara" (抱く = idaku) e a
+    música canta "daitara" (= daku); o pykakasi dá a outra. Com o Whisper escrevendo em
+    kana, só a leitura do MeCab zerava o verso.
+    """
+    main = ja_reading(word)
+    if not has_japanese_script(word):
+        return (main,)
+    hira = "".join(item["hira"] for item in _kakasi().convert(word))
+    alt = _kana_to_romaji(re.sub(r"[っッ]+$", "", hira))
+    return (main, alt) if alt and alt != main else (main,)
+
+
+@lru_cache(maxsize=4096)
 def ja_romaji(word: str) -> str:
     """Romaji para mostrar na tela: como se canta ("dokoe", "koewa", "toozakatte")."""
     if not has_japanese_script(word):
