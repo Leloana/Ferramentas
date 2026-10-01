@@ -184,6 +184,8 @@ html.is-tv #app[data-state="scoring"] .game-title { font-size: 1.3rem; }
 html.is-tv #app[data-state="singing"] .btn-change-cover,
 html.is-tv #app[data-state="scoring"] .btn-change-cover { display: none; }
 html.is-tv .song-progress-container { margin-bottom: 0.4rem; }
+/* cartão do fim de jogo: só o cartão, sem a faixa de pauta no pé */
+html.is-tv .share-card__foot { display: none; }
 html.is-tv #app[data-state="singing"] .game-layout,
 html.is-tv #app[data-state="scoring"] .game-layout { flex: 1 !important; min-height: 0 !important; gap: 1.5rem !important; }
 html.is-tv #app[data-state="singing"] .game-main-content,
@@ -215,8 +217,14 @@ html.is-tv #app[data-state="singing"] .upcoming-line,
 html.is-tv #app[data-state="scoring"] .upcoming-line { font-size: 1.4rem !important; }
 html.is-tv #app[data-state="singing"] .transcription-debug,
 html.is-tv #app[data-state="scoring"] .transcription-debug { margin-top: 0.4rem; padding: 0.4rem 0.8rem !important; font-size: 0.95rem !important; }
-html.is-tv #app[data-state="singing"] .controls,
-html.is-tv #app[data-state="scoring"] .controls { margin-top: 0.6rem; }
+/* Pausar fica à direita do tempo (main.js) e o SAIR some (a seta de voltar já sai):
+   a faixa de botões embaixo da letra deixa de existir na partida */
+html.is-tv .song-progress-container { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 1rem; align-items: center; }
+html.is-tv .song-progress-times { grid-column: 1; grid-row: 1; }
+html.is-tv #song-progress-slider { grid-column: 1; grid-row: 2; }
+html.is-tv .song-progress-container #btn-pause-play { grid-column: 2; grid-row: 1 / span 2; min-width: 7.5rem; min-height: 0; height: 2.2rem; padding: 0 0.9rem; font-size: 0.85rem; }
+html.is-tv #btn-exit { display: none !important; }
+html.is-tv #app[data-state="singing"] .controls { display: none !important; }
 html.is-tv #app[data-state="singing"] .game-score-sidebar,
 html.is-tv #app[data-state="scoring"] .game-score-sidebar { width: 6rem !important; }
 html.is-tv #app[data-state="singing"] .score-sidebar-container,

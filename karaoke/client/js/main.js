@@ -96,7 +96,10 @@ function bootstrap() {
         };
     }
 
-    if (isTvBrowser) moveScoreModeToSyncBar();
+    if (isTvBrowser) {
+        moveScoreModeToSyncBar();
+        movePausePlayToProgress();
+    }
     initSyncControls();
     initGuideVocal();
     initPlayersModal();
@@ -177,6 +180,13 @@ function moveScoreModeToSyncBar() {
     const score = document.getElementById('lobby-score');
     const inner = document.querySelector('#sync-controls .sync-controls-inner');
     if (score && inner) inner.appendChild(score);
+}
+
+// TV: pausar ao lado da barra de tempo, para a letra ganhar a altura dos botões
+function movePausePlayToProgress() {
+    const btn = document.getElementById('btn-pause-play');
+    const progress = document.querySelector('.song-progress-container');
+    if (btn && progress) progress.appendChild(btn);
 }
 
 async function initHomeQrcode() {
