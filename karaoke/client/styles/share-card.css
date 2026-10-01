@@ -42,344 +42,400 @@ html.using-keys .share-card-overlay:focus { position: fixed; outline: none; }
 .share-card-style { min-width: 6.5rem; }
 .share-card-style[aria-checked="true"] { color: var(--paper-light); background: var(--ink); border-color: var(--ink); }
 
-/* ---------------- Caderno (padrão): folha pautada, foto com fita ---------------- */
+/* ---------------- Esqueleto comum ----------------
+   Altura fixa e overflow escondido: nada sai do cartão. Sem gap, inset,
+   aspect-ratio nem filter: blur (TV antiga; no WebView o desfoque vazava
+   para fora do recorte). */
 .share-card {
     --ink: var(--sc-note-ink);
     --dim: var(--sc-note-dim);
-    --fold: var(--sc-note-fold);
-    --butter: var(--sc-note-butter); --butter-ink: var(--sc-note-butter-ink);
-    --sage: var(--sc-note-sage);     --sage-ink: var(--sc-note-sage-ink);
-    --blue: var(--sc-note-blue);     --blue-ink: var(--sc-note-blue-ink);
-    --rose: var(--sc-note-rose);     --rose-ink: var(--sc-note-rose-ink);
-    --lavender-ink: var(--sc-note-lavender-ink);
+    --line: var(--sc-note-rule);
+    --good: var(--sc-note-sage-ink);
+    --ok: var(--sc-note-butter-ink);
+    --poor: var(--sc-note-rose-ink);
+    --pitch: var(--sc-note-lavender-ink);
     position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center;
     flex-shrink: 0;
     width: calc(var(--u) * 100);
     height: calc(var(--u) * 125);
-    padding: calc(var(--u) * 5) calc(var(--u) * 6) calc(var(--u) * 4) calc(var(--u) * 10);
     overflow: hidden;
-    /* linhas azuis e margem vermelha de caderno (sem sombra dura: no tema
-       escuro ela virava uma faixa clara embaixo, parecendo um rodapé) */
-    background-color: var(--sc-note-paper);
-    background-image:
-        linear-gradient(to right, transparent calc(var(--u) * 7), var(--sc-note-margin) calc(var(--u) * 7), var(--sc-note-margin) calc(var(--u) * 7.35), transparent calc(var(--u) * 7.35)),
-        repeating-linear-gradient(to bottom, transparent 0, transparent calc(var(--u) * 5.6), var(--sc-note-rule) calc(var(--u) * 5.6), var(--sc-note-rule) calc(var(--u) * 5.8));
-    box-shadow: 0 calc(var(--u) * 1.5) calc(var(--u) * 5) var(--sc-drop);
     color: var(--ink);
     font-family: var(--font-ui);
-    text-align: center;
+    cursor: default;
+    box-shadow: 0 calc(var(--u) * 2) calc(var(--u) * 6) var(--sc-drop);
 }
-/* cor de destaque pelo rank */
-.share-card[data-rank="S"] { --hl: var(--butter); --hl-ink: var(--butter-ink); }
-.share-card[data-rank="A"] { --hl: var(--sage); --hl-ink: var(--sage-ink); }
-.share-card[data-rank="B"] { --hl: var(--blue); --hl-ink: var(--blue-ink); }
-.share-card[data-rank="C"] { --hl: var(--rose); --hl-ink: var(--rose-ink); }
-
-.share-card__backdrop { display: none; }
-
+.share-card__art {
+    position: relative;
+    flex-shrink: 0;
+    height: calc(var(--u) * 66);
+    overflow: hidden;
+    background: var(--sc-note-fold);
+}
+.share-card__cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.share-card__art-icon {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: calc(var(--u) * 18);
+    height: calc(var(--u) * 18);
+    margin: calc(var(--u) * -9) 0 0 calc(var(--u) * -9);
+    color: var(--dim);
+}
+.share-card__art--empty .share-card__art-icon { display: block; }
+.share-card__shade { position: absolute; top: 0; right: 0; bottom: 0; left: 0; }
 .share-card__top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
-    padding-bottom: calc(var(--u) * 1.5);
-    border-bottom: calc(var(--u) * 0.6) double var(--ink);
-    font-size: calc(var(--u) * 3);
+    padding: calc(var(--u) * 4) calc(var(--u) * 5);
 }
-.share-card__brand { display: flex; align-items: center; gap: calc(var(--u) * 1.2); font-family: var(--font-display); font-size: calc(var(--u) * 4.4); font-style: italic; font-weight: 700; }
-.share-card__brand img { width: calc(var(--u) * 6); height: calc(var(--u) * 6); }
-.share-card__date { color: var(--dim); font-weight: 600; letter-spacing: 0.04em; }
-
-/* Capa como foto colada com fita */
-.share-card__photo {
-    position: relative;
-    flex-shrink: 0;
-    width: calc(var(--u) * 46);
-    height: calc(var(--u) * 46);
-    margin: calc(var(--u) * 4.5) 0 calc(var(--u) * 3);
-    padding: calc(var(--u) * 1.6);
-    background: var(--sc-note-photo);
-    border: calc(var(--u) * 0.3) solid var(--ink);
-    box-shadow: calc(var(--u) * 1) calc(var(--u) * 1) 0 var(--ink);
-    transform: rotate(-2.5deg);
+.share-card__brand {
+    display: flex;
+    align-items: center;
+    font-family: var(--font-display);
+    font-size: calc(var(--u) * 4.2);
+    font-weight: 700;
 }
-.share-card__photo::before,
-.share-card__photo::after {
-    content: '';
+.share-card__brand img { width: calc(var(--u) * 5); height: calc(var(--u) * 5); margin-right: calc(var(--u) * 1.2); }
+.share-card__date { font-size: calc(var(--u) * 2.8); font-weight: 600; letter-spacing: 0.04em; }
+.share-card__badge {
     position: absolute;
-    width: calc(var(--u) * 16);
-    height: calc(var(--u) * 4.5);
-    background: var(--sc-note-tape);
-    border: 1px solid var(--sc-note-tape-edge);
-}
-.share-card__photo::before { top: calc(var(--u) * -2.2); left: calc(var(--u) * -4); transform: rotate(-32deg); }
-.share-card__photo::after { right: calc(var(--u) * -4); bottom: calc(var(--u) * -2.2); transform: rotate(-32deg); }
-.share-card__cover { display: block; width: 100%; height: 100%; object-fit: cover; filter: sepia(0.18) saturate(0.95); }
-.share-card__photo-icon { display: none; }
-.share-card__photo--empty { display: flex; align-items: center; justify-content: center; background: var(--hl); }
-.share-card__photo--empty .share-card__photo-icon { display: block; width: 45%; height: 45%; color: var(--ink); }
-
-.share-card__stamp {
-    position: absolute;
-    right: calc(var(--u) * -9);
-    top: calc(var(--u) * 4);
-    padding: calc(var(--u) * 1) calc(var(--u) * 2.2);
-    background: var(--sc-note-stamp-bg);
-    border: calc(var(--u) * 0.6) solid var(--rose-ink);
-    outline: calc(var(--u) * 0.2) solid var(--rose-ink);
-    outline-offset: calc(var(--u) * 0.6);
-    color: var(--rose-ink);
-    font-size: calc(var(--u) * 3.6);
-    font-weight: 900;
-    letter-spacing: 0.12em;
+    top: calc(var(--u) * 13);
+    right: calc(var(--u) * 5);
+    padding: calc(var(--u) * 1) calc(var(--u) * 2.4);
+    font-size: calc(var(--u) * 2.6);
+    font-weight: 800;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    white-space: nowrap;
-    transform: rotate(14deg);
 }
-.share-card__stamp--first { border-color: var(--blue-ink); outline-color: var(--blue-ink); color: var(--blue-ink); }
-
-.share-card__song { width: 100%; }
-.share-card__title {
+.share-card__song {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0 calc(var(--u) * 5) calc(var(--u) * 4);
+}
+.share-card__title,
+.share-card__artist {
     margin: 0;
     overflow: hidden;
-    font-family: var(--font-ui);
-    font-size: calc(var(--u) * 6.2);
-    font-weight: 900;
-    line-height: 1.1;
-    text-overflow: ellipsis;
     white-space: nowrap;
+    text-overflow: ellipsis;
 }
-.share-card__artist { margin: calc(var(--u) * 0.8) 0 0; color: var(--dim); font-size: calc(var(--u) * 3.8); font-weight: 600; }
+.share-card__title { font-size: calc(var(--u) * 7.4); font-weight: 800; line-height: 1.1; }
+.share-card__artist { margin-top: calc(var(--u) * 0.6); font-size: calc(var(--u) * 3.6); font-weight: 600; }
 
-.share-card__score-row { display: flex; align-items: center; justify-content: center; gap: calc(var(--u) * 5); margin-top: calc(var(--u) * 2.5); }
-.share-card__score { display: flex; align-items: flex-start; line-height: 0.85; }
-.share-card__score-num {
-    font-family: var(--font-display);
-    font-size: calc(var(--u) * 19);
-    font-weight: 700;
-    background: linear-gradient(transparent 58%, var(--hl) 58%, var(--hl) 88%, transparent 88%);
-}
-.share-card__score-pct { margin-top: calc(var(--u) * 1.5); font-family: var(--font-display); font-size: calc(var(--u) * 8); font-weight: 700; }
-.share-card__rank {
+.share-card__body {
     display: flex;
+    flex: 1;
     flex-direction: column;
-    align-items: center;
-    gap: calc(var(--u) * 0.6);
+    justify-content: center;
+    min-height: 0;
+    padding: calc(var(--u) * 3) calc(var(--u) * 6) calc(var(--u) * 4);
 }
+/* nada encolhe: o que não cabe é corte de projeto, não barra sumindo */
+.share-card__body > * { flex-shrink: 0; }
+.share-card__result { display: flex; align-items: center; justify-content: space-between; }
+.share-card__score { display: flex; align-items: flex-start; line-height: 0.85; }
+.share-card__score-num { font-size: calc(var(--u) * 22); font-weight: 800; letter-spacing: -0.03em; }
+.share-card__score-pct { margin: calc(var(--u) * 1.5) 0 0 calc(var(--u) * 0.6); font-size: calc(var(--u) * 7); font-weight: 800; }
+.share-card__rank { display: flex; flex-direction: column; align-items: center; }
 .share-card__rank-letter {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: calc(var(--u) * 14);
-    height: calc(var(--u) * 14);
-    background: var(--hl);
-    border: calc(var(--u) * 0.6) solid var(--ink);
-    outline: calc(var(--u) * 0.25) solid var(--ink);
-    outline-offset: calc(var(--u) * 0.8);
+    width: calc(var(--u) * 15);
+    height: calc(var(--u) * 15);
     font-family: var(--font-display);
-    font-size: calc(var(--u) * 9.5);
+    font-size: calc(var(--u) * 10);
     font-weight: 700;
+    line-height: 1;
 }
-.share-card__rank-title { margin-top: calc(var(--u) * 0.8); font-size: calc(var(--u) * 2.8); font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
-
-.share-card__chips { display: flex; flex-wrap: wrap; justify-content: center; gap: calc(var(--u) * 1.6); margin-top: calc(var(--u) * 3); }
-.share-chip {
-    display: inline-flex;
-    align-items: baseline;
-    gap: calc(var(--u) * 0.9);
-    padding: calc(var(--u) * 0.9) calc(var(--u) * 1.8);
-    border: calc(var(--u) * 0.3) solid var(--ink);
+.share-card__rank-title {
+    margin-top: calc(var(--u) * 1.4);
+    font-size: calc(var(--u) * 2.6);
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+.share-card__meter { display: flex; height: calc(var(--u) * 2.4); margin-top: calc(var(--u) * 4); }
+.share-card__seg { flex-basis: 0; min-width: calc(var(--u) * 2); }
+.share-card__seg + .share-card__seg { margin-left: calc(var(--u) * 0.7); }
+.share-card__seg[data-tone="good"] { background: var(--good); }
+.share-card__seg[data-tone="ok"] { background: var(--ok); }
+.share-card__seg[data-tone="poor"] { background: var(--poor); }
+.share-card__legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: calc(var(--u) * 2) 0 0;
+    color: var(--dim);
     font-size: calc(var(--u) * 3);
-    font-weight: 600;
 }
-.share-chip strong { font-size: calc(var(--u) * 3.8); font-weight: 900; font-variant-numeric: tabular-nums; }
-.share-chip[data-tone="good"] { background: var(--sc-note-chip-good); color: var(--sage-ink); border-color: var(--sage-ink); }
-.share-chip[data-tone="ok"] { background: var(--sc-note-chip-ok); color: var(--butter-ink); border-color: var(--butter-ink); }
-.share-chip[data-tone="poor"] { background: var(--sc-note-chip-poor); color: var(--rose-ink); border-color: var(--rose-ink); }
-.share-chip[data-tone="pitch"] { background: var(--sc-note-chip-pitch); color: var(--lavender-ink); border-color: var(--lavender-ink); }
+.share-card__legend-item strong { font-size: calc(var(--u) * 3.6); }
+.share-card__legend-item[data-tone="good"] strong { color: var(--good); }
+.share-card__legend-item[data-tone="ok"] strong { color: var(--ok); }
+.share-card__legend-item[data-tone="poor"] strong { color: var(--poor); }
+.share-card__legend-item[data-tone="pitch"] strong { color: var(--pitch); }
+.share-card__by { margin: calc(var(--u) * 3.4) 0 0; color: var(--dim); font-size: calc(var(--u) * 3.4); text-align: center; }
+.share-card__by strong { color: var(--ink); }
+.share-card__podium { margin: calc(var(--u) * 3) 0 0; padding: 0; list-style: none; }
+.share-card__podium li {
+    display: flex;
+    align-items: center;
+    padding: calc(var(--u) * 1.1) 0;
+    border-top: 1px solid var(--line);
+    font-size: calc(var(--u) * 3.4);
+}
+.share-card__place { width: calc(var(--u) * 7); font-weight: 800; }
+.share-card--podium .share-card__score-num { font-size: calc(var(--u) * 15); }
+.share-card--podium .share-card__rank-letter { width: calc(var(--u) * 11); height: calc(var(--u) * 11); font-size: calc(var(--u) * 7); }
+.share-card--podium .share-card__podium { margin-top: calc(var(--u) * 2); }
+.share-card--podium .share-card__podium li { padding: calc(var(--u) * 0.8) 0; }
+.share-card__who { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-weight: 700; }
+.share-card__pts { font-weight: 800; }
 
-.share-card__by { margin: calc(var(--u) * 2.5) 0 0; font-size: calc(var(--u) * 3.6); color: var(--dim); }
-.share-card__by strong { color: var(--ink); font-weight: 900; }
+/* ---------------- Caderno: folha pautada, foto colada com cantoneiras ----------------
+   A capa vira uma foto impressa com moldura branca, presa por cantoneiras; a nota
+   é corrigida a caneta (rank circulado em vermelho). */
+.share-card[data-style="caderno"] {
+    background:
+        linear-gradient(to right, transparent calc(var(--u) * 8), var(--sc-note-margin) calc(var(--u) * 8),
+            var(--sc-note-margin) calc(var(--u) * 8.3), transparent calc(var(--u) * 8.3)),
+        repeating-linear-gradient(to bottom, transparent 0, transparent calc(var(--u) * 6.2 - 1px),
+            var(--sc-note-rule) calc(var(--u) * 6.2 - 1px), var(--sc-note-rule) calc(var(--u) * 6.2)),
+        var(--sc-note-paper);
+}
+.share-card[data-style="caderno"] .share-card__art {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+    padding: 0 calc(var(--u) * 6) 0 calc(var(--u) * 12);
+    background: none;
+}
+.share-card[data-style="caderno"] .share-card__top {
+    position: static;
+    order: 0;
+    padding: calc(var(--u) * 4.5) 0 calc(var(--u) * 2.5);
+    border-bottom: calc(var(--u) * 0.4) solid var(--ink);
+}
+.share-card[data-style="caderno"] .share-card__cover,
+.share-card[data-style="caderno"] .share-card__art-icon { order: 1; }
+.share-card[data-style="caderno"] .share-card__cover {
+    position: relative;
+    height: calc(var(--u) * 41);
+    margin-top: calc(var(--u) * 4);
+    border: calc(var(--u) * 1.6) solid var(--sc-note-photo);
+    box-shadow: 0 calc(var(--u) * 0.8) calc(var(--u) * 1.8) rgba(0, 0, 0, 0.28);
+    transform: rotate(-1.2deg);
+}
+.share-card[data-style="caderno"] .share-card__art--empty .share-card__art-icon {
+    position: relative;
+    top: auto;
+    left: auto;
+    margin: calc(var(--u) * 16) auto;
+}
+/* cantoneiras de álbum de foto, em dois cantos */
+.share-card[data-style="caderno"] .share-card__shade {
+    top: calc(var(--u) * 15);
+    right: calc(var(--u) * 4.4);
+    bottom: auto;
+    left: calc(var(--u) * 10.4);
+    height: calc(var(--u) * 45);
+    z-index: 2;
+    pointer-events: none;
+}
+.share-card[data-style="caderno"] .share-card__shade::before,
+.share-card[data-style="caderno"] .share-card__shade::after {
+    content: '';
+    position: absolute;
+    width: calc(var(--u) * 8);
+    height: calc(var(--u) * 8);
+}
+.share-card[data-style="caderno"] .share-card__shade::before {
+    top: 0;
+    left: 0;
+    background: linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+}
+.share-card[data-style="caderno"] .share-card__shade::after {
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(315deg, var(--ink) 50%, transparent 50%);
+}
+.share-card[data-style="caderno"] .share-card__song { position: static; order: 2; padding: calc(var(--u) * 3.5) 0 0; }
+.share-card[data-style="caderno"] .share-card__title { font-family: var(--font-display); font-size: calc(var(--u) * 7); }
+.share-card[data-style="caderno"] .share-card__artist { color: var(--dim); }
+.share-card[data-style="caderno"] .share-card__date { color: var(--dim); }
+.share-card[data-style="caderno"] .share-card__badge {
+    top: calc(var(--u) * 17);
+    right: calc(var(--u) * 3);
+    border: calc(var(--u) * 0.5) solid var(--poor);
+    color: var(--poor);
+    background: var(--sc-note-stamp-bg);
+    transform: rotate(5deg);
+    z-index: 3;
+}
+.share-card[data-style="caderno"] .share-card__badge--first { border-color: var(--good); color: var(--good); }
+.share-card[data-style="caderno"] .share-card__body { padding-left: calc(var(--u) * 12); }
+.share-card[data-style="caderno"] .share-card__score-num { font-family: var(--font-display); font-weight: 700; }
+/* rank corrigido a caneta: círculo vermelho torto */
+.share-card[data-style="caderno"] .share-card__rank-letter {
+    border: calc(var(--u) * 0.7) solid var(--poor);
+    border-radius: 50%;
+    color: var(--poor);
+    transform: rotate(-8deg);
+}
+.share-card[data-style="caderno"] .share-card__rank-title { color: var(--poor); }
+.share-card[data-style="caderno"] .share-card__meter { height: calc(var(--u) * 1.8); }
+.share-card--podium[data-style="caderno"] .share-card__cover { height: calc(var(--u) * 33); }
+.share-card--podium[data-style="caderno"] .share-card__shade { height: calc(var(--u) * 37); }
+.share-card--podium .share-card__art { height: calc(var(--u) * 54); }
+.share-card--podium[data-style="caderno"] .share-card__art { height: auto; }
+.share-card--podium[data-style="vidro"] .share-card__art { height: auto; }
+.share-card--podium[data-style="vidro"] .share-card__song { top: calc(var(--u) * 30); }
 
-.share-card__podium { display: flex; flex-direction: column; gap: calc(var(--u) * 0.8); width: 80%; margin: calc(var(--u) * 3) 0 0; padding: 0; list-style: none; }
-.share-card__podium li { display: grid; grid-template-columns: calc(var(--u) * 7) minmax(0, 1fr) auto; align-items: baseline; font-size: calc(var(--u) * 3.6); border-bottom: 1px solid var(--fold); }
-.share-card__podium li:first-child { font-weight: 900; }
-.share-card__place { color: var(--dim); font-weight: 800; text-align: left; }
-.share-card__who { overflow: hidden; text-align: left; text-overflow: ellipsis; white-space: nowrap; }
-.share-card__pts { font-weight: 800; font-variant-numeric: tabular-nums; }
-
-/* ---------------- Neon: letreiro de bar à noite ---------------- */
+/* ---------------- Neon: pôster de show em duas cores ----------------
+   A capa sangra até as bordas em duotone rosa e ciano, com linhas de TV; a nota
+   brilha como letreiro. */
 .share-card[data-style="neon"] {
     --ink: var(--sc-neon-text);
     --dim: var(--sc-neon-dim);
-    --fold: var(--sc-neon-line);
-    padding: calc(var(--u) * 5) calc(var(--u) * 6) calc(var(--u) * 4);
-    background-color: var(--sc-neon-bg);
-    background-image:
-        radial-gradient(ellipse at 50% 0%, var(--sc-neon-haze) 0%, transparent 60%),
-        linear-gradient(to right, var(--sc-neon-grid) 1px, transparent 1px),
-        linear-gradient(to bottom, var(--sc-neon-grid) 1px, transparent 1px);
-    background-size: 100% 100%, calc(var(--u) * 8) calc(var(--u) * 8), calc(var(--u) * 8) calc(var(--u) * 8);
-    border: calc(var(--u) * 0.45) solid var(--sc-neon-cyan);
-    border-radius: calc(var(--u) * 2.5);
-    box-shadow: 0 0 calc(var(--u) * 2.5) var(--sc-neon-cyan), 0 0 calc(var(--u) * 9) var(--sc-neon-violet);
+    --line: var(--sc-neon-line);
+    --good: var(--sc-neon-green);
+    --ok: var(--sc-neon-yellow);
+    --poor: var(--sc-neon-pink);
+    --pitch: var(--sc-neon-cyan);
+    background:
+        linear-gradient(var(--sc-neon-grid) 1px, transparent 1px) 0 0 / calc(var(--u) * 6) calc(var(--u) * 6),
+        linear-gradient(90deg, var(--sc-neon-grid) 1px, transparent 1px) 0 0 / calc(var(--u) * 6) calc(var(--u) * 6),
+        var(--sc-neon-bg);
+    border: calc(var(--u) * 0.4) solid var(--sc-neon-cyan);
+    box-shadow: 0 0 calc(var(--u) * 5) var(--sc-neon-violet), 0 calc(var(--u) * 2) calc(var(--u) * 6) var(--sc-drop);
 }
-.share-card[data-style="neon"] .share-card__top { border-bottom: calc(var(--u) * 0.3) solid var(--sc-neon-pink); }
-.share-card[data-style="neon"] .share-card__brand {
-    font-family: var(--font-ui);
-    font-style: normal;
-    font-weight: 900;
-    letter-spacing: 0.04em;
-    color: var(--sc-neon-pink);
-    text-shadow: 0 0 calc(var(--u) * 1.5) var(--sc-neon-pink);
-}
-.share-card[data-style="neon"] .share-card__brand img { filter: var(--sc-neon-logo-filter); }
-.share-card[data-style="neon"] .share-card__photo {
-    padding: 0;
-    overflow: hidden;
+.share-card[data-style="neon"] .share-card__art {
     background: var(--sc-neon-bg);
-    border: calc(var(--u) * 0.45) solid var(--sc-neon-pink);
-    border-radius: calc(var(--u) * 2);
-    box-shadow: 0 0 calc(var(--u) * 2.5) var(--sc-neon-pink), 0 0 calc(var(--u) * 7) var(--sc-neon-violet);
-    transform: none;
+    border-bottom: calc(var(--u) * 0.5) solid var(--sc-neon-pink);
+    box-shadow: 0 0 calc(var(--u) * 3) var(--sc-neon-pink);
 }
-.share-card[data-style="neon"] .share-card__photo::before,
-.share-card[data-style="neon"] .share-card__photo::after { display: none; }
-.share-card[data-style="neon"] .share-card__cover { filter: saturate(1.25) contrast(1.05); }
-.share-card[data-style="neon"] .share-card__stamp {
-    right: calc(var(--u) * 2);
-    top: calc(var(--u) * 2);
-    background: var(--sc-neon-bg);
-    border-color: var(--sc-neon-cyan);
-    outline: none;
-    color: var(--sc-neon-cyan);
-    text-shadow: 0 0 calc(var(--u) * 1.2) var(--sc-neon-cyan);
-    box-shadow: 0 0 calc(var(--u) * 2) var(--sc-neon-cyan);
-    transform: rotate(6deg);
+.share-card[data-style="neon"] .share-card__cover { filter: grayscale(1) contrast(1.25); }
+.share-card[data-style="neon"] .share-card__shade {
+    background: linear-gradient(135deg, var(--sc-neon-pink) 0%, var(--sc-neon-violet) 50%, var(--sc-neon-cyan) 100%);
+    mix-blend-mode: color;
 }
-.share-card[data-style="neon"] .share-card__title { text-shadow: 0 0 calc(var(--u) * 1.6) var(--sc-neon-pink); }
-.share-card[data-style="neon"] .share-card__score-num,
-.share-card[data-style="neon"] .share-card__score-pct {
-    font-family: var(--font-ui);
-    font-weight: 900;
-    color: var(--sc-neon-cyan);
-    background: none;
-    text-shadow: 0 0 calc(var(--u) * 1.5) var(--sc-neon-cyan), 0 0 calc(var(--u) * 5) var(--sc-neon-cyan);
-}
-.share-card[data-style="neon"] .share-card__rank-letter {
-    background: transparent;
-    border: calc(var(--u) * 0.5) solid var(--sc-neon-pink);
-    border-radius: 50%;
-    outline: none;
-    color: var(--sc-neon-pink);
-    font-family: var(--font-ui);
-    font-weight: 900;
-    text-shadow: 0 0 calc(var(--u) * 1.5) var(--sc-neon-pink);
-    box-shadow: 0 0 calc(var(--u) * 2.5) var(--sc-neon-pink);
-}
-.share-card[data-style="neon"] .share-card__rank-title { color: var(--sc-neon-pink); }
-.share-card[data-style="neon"] .share-chip { background: transparent; border-radius: calc(var(--u) * 5); }
-.share-card[data-style="neon"] .share-chip[data-tone="good"] { color: var(--sc-neon-green); border-color: var(--sc-neon-green); box-shadow: 0 0 calc(var(--u) * 1.5) var(--sc-neon-green); }
-.share-card[data-style="neon"] .share-chip[data-tone="ok"] { color: var(--sc-neon-yellow); border-color: var(--sc-neon-yellow); box-shadow: 0 0 calc(var(--u) * 1.5) var(--sc-neon-yellow); }
-.share-card[data-style="neon"] .share-chip[data-tone="poor"] { color: var(--sc-neon-pink); border-color: var(--sc-neon-pink); box-shadow: 0 0 calc(var(--u) * 1.5) var(--sc-neon-pink); }
-.share-card[data-style="neon"] .share-chip[data-tone="pitch"] { color: var(--sc-neon-cyan); border-color: var(--sc-neon-cyan); box-shadow: 0 0 calc(var(--u) * 1.5) var(--sc-neon-cyan); }
-
-/* ---------------- Vidro: capa desfocada atrás de painéis foscos ---------------- */
-.share-card[data-style="vidro"] {
-    --ink: var(--sc-glass-text);
-    --dim: var(--sc-glass-dim);
-    --fold: var(--sc-glass-edge);
-    padding: calc(var(--u) * 5) calc(var(--u) * 6) calc(var(--u) * 4);
-    background: var(--sc-glass-fallback);
-    border: 1px solid var(--sc-glass-edge);
-    border-radius: calc(var(--u) * 6);
-    box-shadow: 0 calc(var(--u) * 2) calc(var(--u) * 7) var(--sc-drop);
-    font-family: -apple-system, 'SF Pro Display', var(--font-ui);
-}
-.share-card[data-style="vidro"] > * { position: relative; z-index: 1; }
-.share-card[data-style="vidro"] > .share-card__backdrop {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 0;
-    display: block;
-    overflow: hidden;
-    background: var(--sc-glass-fallback);
-}
-.share-card[data-style="vidro"] .share-card__backdrop img {
-    position: absolute;
-    top: -15%;
-    left: -15%;
-    width: 130%;
-    height: 130%;
-    object-fit: cover;
-    filter: blur(calc(var(--u) * 6)) saturate(1.5) brightness(0.8);
-}
-.share-card[data-style="vidro"] .share-card__backdrop::after {
+/* linhas de TV e o escuro embaixo, onde fica o nome da música */
+.share-card[data-style="neon"] .share-card__art::after {
     content: '';
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    background: linear-gradient(to bottom, var(--sc-glass-shade-top), var(--sc-glass-shade-bottom));
+    background:
+        repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.22) 0, rgba(0, 0, 0, 0.22) 1px, transparent 1px, transparent 3px),
+        linear-gradient(to bottom, rgba(13, 8, 32, 0.55) 0%, transparent 25%, transparent 50%, rgba(13, 8, 32, 0.92) 100%);
 }
-.share-card[data-style="vidro"] .share-card__top { border-bottom: 1px solid var(--sc-glass-edge); }
-.share-card[data-style="vidro"] .share-card__brand { font-family: inherit; font-style: normal; font-weight: 700; }
-.share-card[data-style="vidro"] .share-card__brand img { filter: var(--sc-glass-logo-filter); }
-.share-card[data-style="vidro"] .share-card__photo {
-    padding: 0;
-    overflow: hidden;
+.share-card[data-style="neon"] .share-card__top,
+.share-card[data-style="neon"] .share-card__song,
+.share-card[data-style="neon"] .share-card__badge { z-index: 1; }
+.share-card[data-style="neon"] .share-card__brand { color: var(--sc-neon-pink); text-shadow: 0 0 calc(var(--u) * 1.4) var(--sc-neon-pink); }
+.share-card[data-style="neon"] .share-card__brand img { filter: var(--sc-neon-logo-filter); }
+.share-card[data-style="neon"] .share-card__date { color: var(--dim); }
+.share-card[data-style="neon"] .share-card__badge {
+    border: calc(var(--u) * 0.4) solid var(--sc-neon-cyan);
+    color: var(--sc-neon-cyan);
+    background: rgba(7, 4, 15, 0.7);
+    box-shadow: 0 0 calc(var(--u) * 2) var(--sc-neon-cyan);
+}
+.share-card[data-style="neon"] .share-card__title { color: #fff; text-shadow: 0 0 calc(var(--u) * 2) var(--sc-neon-pink); }
+.share-card[data-style="neon"] .share-card__artist { color: var(--sc-neon-cyan); }
+.share-card[data-style="neon"] .share-card__score-num,
+.share-card[data-style="neon"] .share-card__score-pct {
+    color: var(--sc-neon-cyan);
+    text-shadow: 0 0 calc(var(--u) * 2.5) var(--sc-neon-cyan);
+}
+.share-card[data-style="neon"] .share-card__rank-letter {
+    border: calc(var(--u) * 0.6) solid var(--sc-neon-pink);
+    color: var(--sc-neon-pink);
+    box-shadow: 0 0 calc(var(--u) * 2.5) var(--sc-neon-pink), inset 0 0 calc(var(--u) * 2) var(--sc-neon-pink);
+    text-shadow: 0 0 calc(var(--u) * 2) var(--sc-neon-pink);
+}
+.share-card[data-style="neon"] .share-card__rank-title { color: var(--sc-neon-pink); }
+.share-card[data-style="neon"] .share-card__seg { box-shadow: 0 0 calc(var(--u) * 1.6) currentColor; }
+.share-card[data-style="neon"] .share-card__seg[data-tone="good"] { color: var(--good); }
+.share-card[data-style="neon"] .share-card__seg[data-tone="ok"] { color: var(--ok); }
+.share-card[data-style="neon"] .share-card__seg[data-tone="poor"] { color: var(--poor); }
+
+/* ---------------- Vidro: a capa é o fundo e tudo fica num painel de vidro ----------------
+   Sem desfoque (TV antiga): a capa inteira escurece embaixo e o painel é um vidro
+   claro com borda. */
+.share-card[data-style="vidro"] {
+    --ink: var(--sc-glass-text);
+    --dim: var(--sc-glass-dim);
+    --line: var(--sc-glass-edge);
+    --good: #9dffc0;
+    --ok: #ffe48a;
+    --poor: #ffa3a3;
+    --pitch: #d5c6ff;
+    background: var(--sc-glass-fallback);
+    border-radius: calc(var(--u) * 5);
+}
+.share-card[data-style="vidro"] .share-card__art {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: auto;
     background: transparent;
+}
+.share-card[data-style="vidro"] .share-card__art-icon { top: 32%; color: var(--dim); }
+.share-card[data-style="vidro"] .share-card__shade {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.35) 0%, transparent 22%, transparent 34%,
+        rgba(0, 0, 0, 0.55) 52%, rgba(0, 0, 0, 0.8) 100%);
+}
+.share-card[data-style="vidro"] .share-card__song { bottom: auto; top: calc(var(--u) * 44); }
+.share-card[data-style="vidro"] .share-card__title { text-shadow: 0 calc(var(--u) * 0.4) calc(var(--u) * 2) rgba(0, 0, 0, 0.5); }
+.share-card[data-style="vidro"] .share-card__artist { color: var(--dim); }
+.share-card[data-style="vidro"] .share-card__date { color: var(--dim); }
+.share-card[data-style="vidro"] .share-card__brand img { filter: var(--sc-glass-logo-filter); }
+.share-card[data-style="vidro"] .share-card__badge {
+    border: 1px solid var(--sc-glass-edge);
+    border-radius: calc(var(--u) * 5);
+    background: var(--sc-glass-tint-strong);
+}
+.share-card[data-style="vidro"] .share-card__body {
+    position: relative;
+    flex: none;
+    margin: auto calc(var(--u) * 5) calc(var(--u) * 5);
+    padding: calc(var(--u) * 3.5) calc(var(--u) * 5) calc(var(--u) * 4);
     border: 1px solid var(--sc-glass-edge);
     border-radius: calc(var(--u) * 4);
-    box-shadow: 0 calc(var(--u) * 2) calc(var(--u) * 6) var(--sc-drop);
-    transform: none;
+    background: linear-gradient(to bottom, var(--sc-glass-tint-strong), var(--sc-glass-tint));
 }
-.share-card[data-style="vidro"] .share-card__photo::before,
-.share-card[data-style="vidro"] .share-card__photo::after { display: none; }
-.share-card[data-style="vidro"] .share-card__cover { filter: none; }
-.share-card[data-style="vidro"] .share-card__stamp {
-    right: calc(var(--u) * 2);
-    top: calc(var(--u) * 2);
-    padding: calc(var(--u) * 0.8) calc(var(--u) * 2.2);
-    background: var(--sc-glass-tint-strong);
-    border: 1px solid var(--sc-glass-edge);
-    border-radius: calc(var(--u) * 5);
-    outline: none;
-    color: var(--sc-glass-text);
-    font-size: calc(var(--u) * 2.8);
-    letter-spacing: 0.06em;
-    transform: none;
-}
-.share-card[data-style="vidro"] .share-card__score-row {
-    padding: calc(var(--u) * 2) calc(var(--u) * 5);
-    background: var(--sc-glass-tint);
-    border: 1px solid var(--sc-glass-edge);
-    border-radius: calc(var(--u) * 5);
-}
-.share-card[data-style="vidro"] .share-card__score-num,
-.share-card[data-style="vidro"] .share-card__score-pct { font-family: inherit; font-weight: 700; letter-spacing: -0.03em; background: none; }
+.share-card[data-style="vidro"] .share-card__score-num { font-size: calc(var(--u) * 19); }
 .share-card[data-style="vidro"] .share-card__rank-letter {
-    background: var(--sc-glass-tint-strong);
     border: 1px solid var(--sc-glass-edge);
     border-radius: 50%;
-    outline: none;
-    font-family: inherit;
-    font-weight: 700;
+    background: var(--sc-glass-tint-strong);
 }
-.share-card[data-style="vidro"] .share-chip,
-.share-card[data-style="vidro"] .share-chip[data-tone] {
-    color: var(--sc-glass-text);
-    background: var(--sc-glass-tint);
-    border: 1px solid var(--sc-glass-edge);
-    border-radius: calc(var(--u) * 5);
-}
+.share-card[data-style="vidro"] .share-card__seg { border-radius: calc(var(--u) * 2); }
+.share-card[data-style="vidro"] .share-card__meter { margin-top: calc(var(--u) * 3); }
 
 /* botão da câmera no fim de jogo */
 .btn-share-card { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; }

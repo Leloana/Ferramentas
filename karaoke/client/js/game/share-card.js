@@ -1,7 +1,9 @@
 // Cartão de fim de música para print (Instagram/story): formato 4:5, em três
-// estilos (caderno, neon, vidro) escolhidos na barra acima do cartão. Abre por
-// cima de tudo, sem botões dentro do cartão; tocar fora da barra (ou Voltar/Esc)
-// fecha. No controle remoto, ←/→ trocam o estilo.
+// estilos (caderno, neon, vidro) escolhidos na barra acima do cartão. A capa ocupa
+// o alto, com o nome da música por cima; embaixo ficam a nota, o rank e a barra de
+// acertos. Cada estilo muda a composição, não só as cores. Abre por cima de tudo,
+// sem botões dentro do cartão; tocar fora da barra (ou Voltar/Esc) fecha. No
+// controle remoto, ←/→ trocam o estilo.
 //
 // Usado no fim de jogo da TV (botão da câmera) e no celular de cada cantor,
 // com a nota dele. `data`:
@@ -57,11 +59,60 @@ function today() {
     return new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
 }
 
-function statChip(tone, count, label) {
-    const chip = el('span', 'share-chip');
-    chip.dataset.tone = tone;
-    chip.append(el('strong', null, String(count)), el('span', null, label));
-    return chip;
+// Barra de acertos: um trecho por faixa, do tamanho da contagem
+function meter(stats) {
+    const bar = el('div', 'share-card__meter');
+    [['good', stats.good], ['ok', stats.ok], ['poor', stats.poor]].forEach(([tone, count]) => {
+        if (!count) return;
+        const seg = el('span', 'share-card__seg');
+        seg.dataset.tone = tone;
+        seg.style.flexGrow = String(count);
+        bar.append(seg);
+    });
+    return bar;
+}
+
+function legendItem(tone, value, label) {
+    const item = el('span', 'share-card__legend-item');
+    item.dataset.tone = tone;
+    item.append(el('strong', null, String(value)), document.createTextNode(` ${label}`));
+    return item;
+}
+
+// Arte: a capa ocupa o alto do cartão, com marca, data, selo e o nome da música por cima
+function artBlock(data) {
+    const art = el('div', 'share-card__art');
+    if (data.songId) {
+        const img = el('img', 'share-card__cover');
+        img.alt = '';
+        img.src = coverUrl(data.songId);
+        img.onerror = () => { art.classList.add('share-card__art--empty'); img.remove(); };
+        art.append(img);
+    } else {
+        art.classList.add('share-card__art--empty');
+    }
+    art.insertAdjacentHTML('beforeend', iconSvg('note', 'share-card__art-icon'));
+    art.append(el('div', 'share-card__shade'));
+
+    const top = el('header', 'share-card__top');
+    const brand = el('span', 'share-card__brand');
+    const logo = el('img');
+    logo.src = '/assets/art/logo-mark.svg';
+    logo.alt = '';
+    brand.append(logo, el('span', null, 'Karaoke'));
+    top.append(brand, el('span', 'share-card__date', today()));
+    art.append(top);
+
+    if (data.record && data.record.is_record && data.record.times_sung > 1) {
+        art.append(el('span', 'share-card__badge', 'Recorde pessoal'));
+    } else if (data.record && data.record.times_sung === 1) {
+        art.append(el('span', 'share-card__badge share-card__badge--first', 'Estreia'));
+    }
+
+    const song = el('div', 'share-card__song');
+    song.append(el('h2', 'share-card__title', data.title || ''), el('p', 'share-card__artist', data.artist || ''));
+    art.append(song);
+    return art;
 }
 
 export function buildShareCard(data, style) {
@@ -71,69 +122,38 @@ export function buildShareCard(data, style) {
     const card = el('article', 'share-card');
     card.dataset.rank = rank.letter;
     card.dataset.style = style || CARD_STYLES[0].id;
+    // pódio: quatro linhas a mais, a foto e a nota diminuem (share-card--podium)
+    if (data.podium && data.podium.length > 1) card.classList.add('share-card--podium');
+    card.append(artBlock(data));
 
-    // fundo do estilo vidro: a capa ampliada e desfocada (os outros estilos escondem)
-    const backdrop = el('div', 'share-card__backdrop');
-    if (data.songId) {
-        const blur = el('img');
-        blur.alt = '';
-        blur.src = coverUrl(data.songId);
-        blur.onerror = () => blur.remove();
-        backdrop.append(blur);
-    }
-    card.append(backdrop);
-
-    const top = el('header', 'share-card__top');
-    const brand = el('span', 'share-card__brand');
-    const logo = el('img');
-    logo.src = '/assets/art/logo-mark.svg';
-    logo.alt = '';
-    brand.append(logo, el('span', null, 'Karaoke'));
-    top.append(brand, el('span', 'share-card__date', today()));
-    card.append(top);
-
-    const photo = el('figure', 'share-card__photo');
-    if (data.songId) {
-        const img = el('img', 'share-card__cover');
-        img.alt = '';
-        img.src = coverUrl(data.songId);
-        img.onerror = () => { photo.classList.add('share-card__photo--empty'); img.remove(); };
-        photo.append(img);
-    } else {
-        photo.classList.add('share-card__photo--empty');
-    }
-    photo.insertAdjacentHTML('beforeend', iconSvg('note', 'share-card__photo-icon'));
-    if (data.record && data.record.is_record && data.record.times_sung > 1) {
-        photo.append(el('span', 'share-card__stamp', 'Recorde pessoal'));
-    } else if (data.record && data.record.times_sung === 1) {
-        photo.append(el('span', 'share-card__stamp share-card__stamp--first', 'Estreia'));
-    }
-    card.append(photo);
-
-    const song = el('div', 'share-card__song');
-    song.append(el('h2', 'share-card__title', data.title || ''), el('p', 'share-card__artist', data.artist || ''));
-    card.append(song);
-
-    const scoreRow = el('div', 'share-card__score-row');
+    const body = el('section', 'share-card__body');
+    const result = el('div', 'share-card__result');
     const big = el('div', 'share-card__score');
     big.append(el('span', 'share-card__score-num', String(Math.round(score))), el('span', 'share-card__score-pct', '%'));
     const rankBox = el('div', 'share-card__rank');
     rankBox.append(el('span', 'share-card__rank-letter', rank.letter), el('span', 'share-card__rank-title', rank.title));
-    scoreRow.append(big, rankBox);
-    card.append(scoreRow);
+    result.append(big, rankBox);
+    body.append(result);
 
-    const chips = el('div', 'share-card__chips');
-    if (data.stats) {
-        chips.append(
-            statChip('good', data.stats.good || 0, 'na mosca'),
-            statChip('ok', data.stats.ok || 0, 'quase'),
-            statChip('poor', data.stats.poor || 0, 'fora'),
-        );
+    // com pódio a barra de acertos sai: as notas são de vários cantores e não cabem as duas
+    const podiumRows = data.podium && data.podium.length > 1;
+    const hasPitch = typeof data.pitch === 'number' && !podiumRows;
+    if ((data.stats && !podiumRows) || hasPitch) {
+        const withStats = data.stats && !podiumRows;
+        if (withStats) body.append(meter(data.stats));
+        const legend = el('p', 'share-card__legend');
+        if (withStats) {
+            legend.append(
+                legendItem('good', data.stats.good || 0, 'na mosca'),
+                legendItem('ok', data.stats.ok || 0, 'quase'),
+                legendItem('poor', data.stats.poor || 0, 'fora'),
+            );
+        }
+        if (hasPitch) legend.append(legendItem('pitch', `${Math.round(data.pitch)}%`, 'tom'));
+        body.append(legend);
     }
-    if (typeof data.pitch === 'number') chips.append(statChip('pitch', `${Math.round(data.pitch)}%`, 'tom'));
-    if (chips.childNodes.length) card.append(chips);
 
-    if (data.podium && data.podium.length > 1) {
+    if (podiumRows) {
         const podium = el('ol', 'share-card__podium');
         data.podium.slice(0, 4).forEach((p, idx) => {
             const li = el('li');
@@ -141,13 +161,14 @@ export function buildShareCard(data, style) {
                 el('span', 'share-card__pts', `${Math.round(p.score)}%`));
             podium.append(li);
         });
-        card.append(podium);
+        body.append(podium);
     } else if (data.name) {
         const by = el('p', 'share-card__by');
         by.append(el('span', null, 'cantado por '), el('strong', null, data.name));
-        card.append(by);
+        body.append(by);
     }
 
+    card.append(body);
     return card;
 }
 
