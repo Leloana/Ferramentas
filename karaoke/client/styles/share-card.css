@@ -2,9 +2,12 @@
    Cartão de fim de música para print (share-card.js).
    Formato 4:5 (post do Instagram). Tudo medido em --u = 1/100 da
    largura do cartão, para o print sair igual no celular e na TV.
+   Três estilos (data-style): caderno (o do app), neon e vidro.
+   Cada estilo traz a própria paleta (tokens --sc-*): o cartão é uma
+   "foto" e sai igual no tema claro e no escuro.
    ============================================================ */
 .share-card-overlay {
-    --u: 0.736vh;                       /* TV antiga (sem min()): cabe pela altura */
+    --u: 0.6vh;                         /* TV antiga (sem min()): cabe pela altura */
     position: fixed;
     top: 0;
     right: 0;
@@ -12,32 +15,59 @@
     left: 0;
     z-index: 20000;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: var(--paper-2);
-    background-image: var(--tex-paper);
     animation: fadeIn 0.25s ease;
     cursor: pointer;
 }
+/* o overlay recebe o foco ao abrir e o :focus da TV (tv.css) põe position:
+   relative — o cartão saía do lugar e a página por baixo aparecia */
+html.using-keys .share-card-overlay:focus { position: fixed; outline: none; }
+/* respiro: o cartão fica em ~75% da altura, com a barra de estilos acima */
 @supports (width: min(1px, 2px)) {
-    .share-card-overlay { --u: min(0.92vw, 0.736vh); }
+    .share-card-overlay { --u: min(0.78vw, 0.6vh); }
 }
+.share-card-overlay[data-style="neon"] { background-color: var(--sc-neon-page); }
+.share-card-overlay[data-style="vidro"] { background-color: var(--sc-glass-page); }
 
+/* Barra de estilos, logo acima do cartão */
+.share-card-bar {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: calc(var(--u) * 5);
+    cursor: default;
+}
+.share-card-style { min-width: 6.5rem; }
+.share-card-style[aria-checked="true"] { color: var(--paper-light); background: var(--ink); border-color: var(--ink); }
+
+/* ---------------- Caderno (padrão): folha pautada, foto com fita ---------------- */
 .share-card {
+    --ink: var(--sc-note-ink);
+    --dim: var(--sc-note-dim);
+    --fold: var(--sc-note-fold);
+    --butter: var(--sc-note-butter); --butter-ink: var(--sc-note-butter-ink);
+    --sage: var(--sc-note-sage);     --sage-ink: var(--sc-note-sage-ink);
+    --blue: var(--sc-note-blue);     --blue-ink: var(--sc-note-blue-ink);
+    --rose: var(--sc-note-rose);     --rose-ink: var(--sc-note-rose-ink);
+    --lavender-ink: var(--sc-note-lavender-ink);
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex-shrink: 0;
     width: calc(var(--u) * 100);
     height: calc(var(--u) * 125);
-    padding: calc(var(--u) * 5) calc(var(--u) * 6) calc(var(--u) * 4);
+    padding: calc(var(--u) * 5) calc(var(--u) * 6) calc(var(--u) * 4) calc(var(--u) * 10);
     overflow: hidden;
-    background-color: var(--paper-light);
-    background-image: var(--staff-lines), var(--tex-paper);
-    border: calc(var(--u) * 0.5) solid var(--ink);
-    outline: calc(var(--u) * 0.25) solid var(--ink);
-    outline-offset: calc(var(--u) * 1.1);
-    box-shadow: calc(var(--u) * 1.4) calc(var(--u) * 1.4) 0 var(--ink);
+    /* linhas azuis e margem vermelha de caderno (sem sombra dura: no tema
+       escuro ela virava uma faixa clara embaixo, parecendo um rodapé) */
+    background-color: var(--sc-note-paper);
+    background-image:
+        linear-gradient(to right, transparent calc(var(--u) * 7), var(--sc-note-margin) calc(var(--u) * 7), var(--sc-note-margin) calc(var(--u) * 7.35), transparent calc(var(--u) * 7.35)),
+        repeating-linear-gradient(to bottom, transparent 0, transparent calc(var(--u) * 5.6), var(--sc-note-rule) calc(var(--u) * 5.6), var(--sc-note-rule) calc(var(--u) * 5.8));
+    box-shadow: 0 calc(var(--u) * 1.5) calc(var(--u) * 5) var(--sc-drop);
     color: var(--ink);
     font-family: var(--font-ui);
     text-align: center;
@@ -47,6 +77,8 @@
 .share-card[data-rank="A"] { --hl: var(--sage); --hl-ink: var(--sage-ink); }
 .share-card[data-rank="B"] { --hl: var(--blue); --hl-ink: var(--blue-ink); }
 .share-card[data-rank="C"] { --hl: var(--rose); --hl-ink: var(--rose-ink); }
+
+.share-card__backdrop { display: none; }
 
 .share-card__top {
     display: flex;
@@ -58,7 +90,7 @@
     font-size: calc(var(--u) * 3);
 }
 .share-card__brand { display: flex; align-items: center; gap: calc(var(--u) * 1.2); font-family: var(--font-display); font-size: calc(var(--u) * 4.4); font-style: italic; font-weight: 700; }
-.share-card__brand img { width: calc(var(--u) * 6); height: calc(var(--u) * 6); filter: var(--logo-filter); }
+.share-card__brand img { width: calc(var(--u) * 6); height: calc(var(--u) * 6); }
 .share-card__date { color: var(--dim); font-weight: 600; letter-spacing: 0.04em; }
 
 /* Capa como foto colada com fita */
@@ -69,7 +101,7 @@
     height: calc(var(--u) * 46);
     margin: calc(var(--u) * 4.5) 0 calc(var(--u) * 3);
     padding: calc(var(--u) * 1.6);
-    background: #fffaf0;
+    background: var(--sc-note-photo);
     border: calc(var(--u) * 0.3) solid var(--ink);
     box-shadow: calc(var(--u) * 1) calc(var(--u) * 1) 0 var(--ink);
     transform: rotate(-2.5deg);
@@ -80,8 +112,8 @@
     position: absolute;
     width: calc(var(--u) * 16);
     height: calc(var(--u) * 4.5);
-    background: rgba(236, 213, 143, 0.75);
-    border: 1px solid rgba(125, 95, 20, 0.35);
+    background: var(--sc-note-tape);
+    border: 1px solid var(--sc-note-tape-edge);
 }
 .share-card__photo::before { top: calc(var(--u) * -2.2); left: calc(var(--u) * -4); transform: rotate(-32deg); }
 .share-card__photo::after { right: calc(var(--u) * -4); bottom: calc(var(--u) * -2.2); transform: rotate(-32deg); }
@@ -95,7 +127,7 @@
     right: calc(var(--u) * -9);
     top: calc(var(--u) * 4);
     padding: calc(var(--u) * 1) calc(var(--u) * 2.2);
-    background: rgba(251, 246, 234, 0.92);
+    background: var(--sc-note-stamp-bg);
     border: calc(var(--u) * 0.6) solid var(--rose-ink);
     outline: calc(var(--u) * 0.2) solid var(--rose-ink);
     outline-offset: calc(var(--u) * 0.6);
@@ -164,10 +196,10 @@
     font-weight: 600;
 }
 .share-chip strong { font-size: calc(var(--u) * 3.8); font-weight: 900; font-variant-numeric: tabular-nums; }
-.share-chip[data-tone="good"] { background: #e3ecdd; color: var(--sage-ink); border-color: var(--sage-ink); }
-.share-chip[data-tone="ok"] { background: #f7ecc6; color: var(--butter-ink); border-color: var(--butter-ink); }
-.share-chip[data-tone="poor"] { background: #f5dfd6; color: var(--rose-ink); border-color: var(--rose-ink); }
-.share-chip[data-tone="pitch"] { background: #e6dff0; color: var(--lavender-ink); border-color: var(--lavender-ink); }
+.share-chip[data-tone="good"] { background: var(--sc-note-chip-good); color: var(--sage-ink); border-color: var(--sage-ink); }
+.share-chip[data-tone="ok"] { background: var(--sc-note-chip-ok); color: var(--butter-ink); border-color: var(--butter-ink); }
+.share-chip[data-tone="poor"] { background: var(--sc-note-chip-poor); color: var(--rose-ink); border-color: var(--rose-ink); }
+.share-chip[data-tone="pitch"] { background: var(--sc-note-chip-pitch); color: var(--lavender-ink); border-color: var(--lavender-ink); }
 
 .share-card__by { margin: calc(var(--u) * 2.5) 0 0; font-size: calc(var(--u) * 3.6); color: var(--dim); }
 .share-card__by strong { color: var(--ink); font-weight: 900; }
@@ -179,8 +211,175 @@
 .share-card__who { overflow: hidden; text-align: left; text-overflow: ellipsis; white-space: nowrap; }
 .share-card__pts { font-weight: 800; font-variant-numeric: tabular-nums; }
 
-.share-card__foot { width: 100%; margin-top: auto; padding-top: calc(var(--u) * 1.5); opacity: 0.55; }
-.share-card__foot img { display: block; width: 100%; height: calc(var(--u) * 4); object-fit: cover; }
+/* ---------------- Neon: letreiro de bar à noite ---------------- */
+.share-card[data-style="neon"] {
+    --ink: var(--sc-neon-text);
+    --dim: var(--sc-neon-dim);
+    --fold: var(--sc-neon-line);
+    padding: calc(var(--u) * 5) calc(var(--u) * 6) calc(var(--u) * 4);
+    background-color: var(--sc-neon-bg);
+    background-image:
+        radial-gradient(ellipse at 50% 0%, var(--sc-neon-haze) 0%, transparent 60%),
+        linear-gradient(to right, var(--sc-neon-grid) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--sc-neon-grid) 1px, transparent 1px);
+    background-size: 100% 100%, calc(var(--u) * 8) calc(var(--u) * 8), calc(var(--u) * 8) calc(var(--u) * 8);
+    border: calc(var(--u) * 0.45) solid var(--sc-neon-cyan);
+    border-radius: calc(var(--u) * 2.5);
+    box-shadow: 0 0 calc(var(--u) * 2.5) var(--sc-neon-cyan), 0 0 calc(var(--u) * 9) var(--sc-neon-violet);
+}
+.share-card[data-style="neon"] .share-card__top { border-bottom: calc(var(--u) * 0.3) solid var(--sc-neon-pink); }
+.share-card[data-style="neon"] .share-card__brand {
+    font-family: var(--font-ui);
+    font-style: normal;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    color: var(--sc-neon-pink);
+    text-shadow: 0 0 calc(var(--u) * 1.5) var(--sc-neon-pink);
+}
+.share-card[data-style="neon"] .share-card__brand img { filter: var(--sc-neon-logo-filter); }
+.share-card[data-style="neon"] .share-card__photo {
+    padding: 0;
+    overflow: hidden;
+    background: var(--sc-neon-bg);
+    border: calc(var(--u) * 0.45) solid var(--sc-neon-pink);
+    border-radius: calc(var(--u) * 2);
+    box-shadow: 0 0 calc(var(--u) * 2.5) var(--sc-neon-pink), 0 0 calc(var(--u) * 7) var(--sc-neon-violet);
+    transform: none;
+}
+.share-card[data-style="neon"] .share-card__photo::before,
+.share-card[data-style="neon"] .share-card__photo::after { display: none; }
+.share-card[data-style="neon"] .share-card__cover { filter: saturate(1.25) contrast(1.05); }
+.share-card[data-style="neon"] .share-card__stamp {
+    right: calc(var(--u) * 2);
+    top: calc(var(--u) * 2);
+    background: var(--sc-neon-bg);
+    border-color: var(--sc-neon-cyan);
+    outline: none;
+    color: var(--sc-neon-cyan);
+    text-shadow: 0 0 calc(var(--u) * 1.2) var(--sc-neon-cyan);
+    box-shadow: 0 0 calc(var(--u) * 2) var(--sc-neon-cyan);
+    transform: rotate(6deg);
+}
+.share-card[data-style="neon"] .share-card__title { text-shadow: 0 0 calc(var(--u) * 1.6) var(--sc-neon-pink); }
+.share-card[data-style="neon"] .share-card__score-num,
+.share-card[data-style="neon"] .share-card__score-pct {
+    font-family: var(--font-ui);
+    font-weight: 900;
+    color: var(--sc-neon-cyan);
+    background: none;
+    text-shadow: 0 0 calc(var(--u) * 1.5) var(--sc-neon-cyan), 0 0 calc(var(--u) * 5) var(--sc-neon-cyan);
+}
+.share-card[data-style="neon"] .share-card__rank-letter {
+    background: transparent;
+    border: calc(var(--u) * 0.5) solid var(--sc-neon-pink);
+    border-radius: 50%;
+    outline: none;
+    color: var(--sc-neon-pink);
+    font-family: var(--font-ui);
+    font-weight: 900;
+    text-shadow: 0 0 calc(var(--u) * 1.5) var(--sc-neon-pink);
+    box-shadow: 0 0 calc(var(--u) * 2.5) var(--sc-neon-pink);
+}
+.share-card[data-style="neon"] .share-card__rank-title { color: var(--sc-neon-pink); }
+.share-card[data-style="neon"] .share-chip { background: transparent; border-radius: calc(var(--u) * 5); }
+.share-card[data-style="neon"] .share-chip[data-tone="good"] { color: var(--sc-neon-green); border-color: var(--sc-neon-green); box-shadow: 0 0 calc(var(--u) * 1.5) var(--sc-neon-green); }
+.share-card[data-style="neon"] .share-chip[data-tone="ok"] { color: var(--sc-neon-yellow); border-color: var(--sc-neon-yellow); box-shadow: 0 0 calc(var(--u) * 1.5) var(--sc-neon-yellow); }
+.share-card[data-style="neon"] .share-chip[data-tone="poor"] { color: var(--sc-neon-pink); border-color: var(--sc-neon-pink); box-shadow: 0 0 calc(var(--u) * 1.5) var(--sc-neon-pink); }
+.share-card[data-style="neon"] .share-chip[data-tone="pitch"] { color: var(--sc-neon-cyan); border-color: var(--sc-neon-cyan); box-shadow: 0 0 calc(var(--u) * 1.5) var(--sc-neon-cyan); }
+
+/* ---------------- Vidro: capa desfocada atrás de painéis foscos ---------------- */
+.share-card[data-style="vidro"] {
+    --ink: var(--sc-glass-text);
+    --dim: var(--sc-glass-dim);
+    --fold: var(--sc-glass-edge);
+    padding: calc(var(--u) * 5) calc(var(--u) * 6) calc(var(--u) * 4);
+    background: var(--sc-glass-fallback);
+    border: 1px solid var(--sc-glass-edge);
+    border-radius: calc(var(--u) * 6);
+    box-shadow: 0 calc(var(--u) * 2) calc(var(--u) * 7) var(--sc-drop);
+    font-family: -apple-system, 'SF Pro Display', var(--font-ui);
+}
+.share-card[data-style="vidro"] > * { position: relative; z-index: 1; }
+.share-card[data-style="vidro"] > .share-card__backdrop {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+    display: block;
+    overflow: hidden;
+    background: var(--sc-glass-fallback);
+}
+.share-card[data-style="vidro"] .share-card__backdrop img {
+    position: absolute;
+    top: -15%;
+    left: -15%;
+    width: 130%;
+    height: 130%;
+    object-fit: cover;
+    filter: blur(calc(var(--u) * 6)) saturate(1.5) brightness(0.8);
+}
+.share-card[data-style="vidro"] .share-card__backdrop::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(to bottom, var(--sc-glass-shade-top), var(--sc-glass-shade-bottom));
+}
+.share-card[data-style="vidro"] .share-card__top { border-bottom: 1px solid var(--sc-glass-edge); }
+.share-card[data-style="vidro"] .share-card__brand { font-family: inherit; font-style: normal; font-weight: 700; }
+.share-card[data-style="vidro"] .share-card__brand img { filter: var(--sc-glass-logo-filter); }
+.share-card[data-style="vidro"] .share-card__photo {
+    padding: 0;
+    overflow: hidden;
+    background: transparent;
+    border: 1px solid var(--sc-glass-edge);
+    border-radius: calc(var(--u) * 4);
+    box-shadow: 0 calc(var(--u) * 2) calc(var(--u) * 6) var(--sc-drop);
+    transform: none;
+}
+.share-card[data-style="vidro"] .share-card__photo::before,
+.share-card[data-style="vidro"] .share-card__photo::after { display: none; }
+.share-card[data-style="vidro"] .share-card__cover { filter: none; }
+.share-card[data-style="vidro"] .share-card__stamp {
+    right: calc(var(--u) * 2);
+    top: calc(var(--u) * 2);
+    padding: calc(var(--u) * 0.8) calc(var(--u) * 2.2);
+    background: var(--sc-glass-tint-strong);
+    border: 1px solid var(--sc-glass-edge);
+    border-radius: calc(var(--u) * 5);
+    outline: none;
+    color: var(--sc-glass-text);
+    font-size: calc(var(--u) * 2.8);
+    letter-spacing: 0.06em;
+    transform: none;
+}
+.share-card[data-style="vidro"] .share-card__score-row {
+    padding: calc(var(--u) * 2) calc(var(--u) * 5);
+    background: var(--sc-glass-tint);
+    border: 1px solid var(--sc-glass-edge);
+    border-radius: calc(var(--u) * 5);
+}
+.share-card[data-style="vidro"] .share-card__score-num,
+.share-card[data-style="vidro"] .share-card__score-pct { font-family: inherit; font-weight: 700; letter-spacing: -0.03em; background: none; }
+.share-card[data-style="vidro"] .share-card__rank-letter {
+    background: var(--sc-glass-tint-strong);
+    border: 1px solid var(--sc-glass-edge);
+    border-radius: 50%;
+    outline: none;
+    font-family: inherit;
+    font-weight: 700;
+}
+.share-card[data-style="vidro"] .share-chip,
+.share-card[data-style="vidro"] .share-chip[data-tone] {
+    color: var(--sc-glass-text);
+    background: var(--sc-glass-tint);
+    border: 1px solid var(--sc-glass-edge);
+    border-radius: calc(var(--u) * 5);
+}
 
 /* botão da câmera no fim de jogo */
 .btn-share-card { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; }
@@ -197,7 +396,8 @@
 
 /* Fechar o cartão pelo controle remoto (só na TV; no celular toca-se na tela) */
 .share-card-close { display: none; }
-html.is-tv .share-card-close {
+html.is-tv .share-card-close,
+html.using-keys .share-card-close:focus {   /* o :focus da TV põe position: relative */
     position: absolute;
     top: 1rem;
     right: 1rem;

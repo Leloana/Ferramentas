@@ -184,8 +184,6 @@ html.is-tv #app[data-state="scoring"] .game-title { font-size: 1.3rem; }
 html.is-tv #app[data-state="singing"] .btn-change-cover,
 html.is-tv #app[data-state="scoring"] .btn-change-cover { display: none; }
 html.is-tv .song-progress-container { margin-bottom: 0.4rem; }
-/* cartão do fim de jogo: só o cartão, sem a faixa de pauta no pé */
-html.is-tv .share-card__foot { display: none; }
 html.is-tv #app[data-state="singing"] .game-layout,
 html.is-tv #app[data-state="scoring"] .game-layout { flex: 1 !important; min-height: 0 !important; gap: 1.5rem !important; }
 html.is-tv #app[data-state="singing"] .game-main-content,

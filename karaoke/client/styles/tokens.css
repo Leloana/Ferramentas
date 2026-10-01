@@ -75,6 +75,52 @@
     --shadow-glow: none;      /* legado */
     --shadow-premium: var(--shadow-sheet); /* legado */
 
+    /* Cartão de fim de música (share-card.css): paleta fixa de cada estilo,
+       igual no tema claro e no escuro (o cartão é uma "foto" para postar) */
+    --sc-drop: rgba(0, 0, 0, 0.35);
+    --sc-note-paper: #fbf7ec;
+    --sc-note-ink: #3b3024;
+    --sc-note-dim: #6b5a45;
+    --sc-note-fold: #d9c7a1;
+    --sc-note-rule: rgba(63, 97, 130, 0.22);
+    --sc-note-margin: rgba(196, 86, 70, 0.55);
+    --sc-note-photo: #fffaf0;
+    --sc-note-tape: rgba(236, 213, 143, 0.75);
+    --sc-note-tape-edge: rgba(125, 95, 20, 0.35);
+    --sc-note-stamp-bg: rgba(251, 246, 234, 0.92);
+    --sc-note-butter: #ecd58f; --sc-note-butter-ink: #7d5f14;
+    --sc-note-sage: #a8c3a0;   --sc-note-sage-ink: #466841;
+    --sc-note-blue: #a9c1d9;   --sc-note-blue-ink: #3f6182;
+    --sc-note-rose: #e3b5a4;   --sc-note-rose-ink: #9c4a3c;
+    --sc-note-lavender-ink: #5f4d80;
+    --sc-note-chip-good: #e3ecdd;
+    --sc-note-chip-ok: #f7ecc6;
+    --sc-note-chip-poor: #f5dfd6;
+    --sc-note-chip-pitch: #e6dff0;
+    --sc-neon-page: #07040f;
+    --sc-neon-bg: #0d0820;
+    --sc-neon-haze: rgba(138, 92, 255, 0.35);
+    --sc-neon-grid: rgba(63, 240, 255, 0.07);
+    --sc-neon-line: rgba(63, 240, 255, 0.3);
+    --sc-neon-text: #f4ecff;
+    --sc-neon-dim: rgba(244, 236, 255, 0.62);
+    --sc-neon-pink: #ff3fa4;
+    --sc-neon-cyan: #3ff0ff;
+    --sc-neon-violet: rgba(138, 92, 255, 0.55);
+    --sc-neon-green: #5dff9b;
+    --sc-neon-yellow: #ffe45c;
+    --sc-neon-logo-filter: invert(1) drop-shadow(0 0 4px #ff3fa4);
+    --sc-glass-page: #101016;
+    --sc-glass-fallback: linear-gradient(135deg, #4b3f8f 0%, #b0507a 55%, #f0a35c 100%);
+    --sc-glass-text: #ffffff;
+    --sc-glass-dim: rgba(255, 255, 255, 0.72);
+    --sc-glass-edge: rgba(255, 255, 255, 0.35);
+    --sc-glass-tint: rgba(255, 255, 255, 0.14);
+    --sc-glass-tint-strong: rgba(255, 255, 255, 0.24);
+    --sc-glass-shade-top: rgba(0, 0, 0, 0.05);
+    --sc-glass-shade-bottom: rgba(0, 0, 0, 0.45);
+    --sc-glass-logo-filter: invert(1);
+
     /* Texturas (arte em /assets/art, desenhada pelo Codex) */
     --tex-paper: url('/assets/art/paper-texture.svg');
     --staff-lines: repeating-linear-gradient(to bottom,

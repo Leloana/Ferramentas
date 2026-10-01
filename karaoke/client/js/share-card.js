@@ -1,6 +1,7 @@
-// Cartão de fim de música para print (Instagram/story): formato 4:5, estilo
-// partitura antiga. Abre por cima de tudo, sem botões dentro do cartão; tocar
-// em qualquer lugar (ou Voltar/Esc) fecha.
+// Cartão de fim de música para print (Instagram/story): formato 4:5, em três
+// estilos (caderno, neon, vidro) escolhidos na barra acima do cartão. Abre por
+// cima de tudo, sem botões dentro do cartão; tocar fora da barra (ou Voltar/Esc)
+// fecha. No controle remoto, ←/→ trocam o estilo.
 //
 // Usado no fim de jogo da TV (botão da câmera) e no celular de cada cantor,
 // com a nota dele. `data`:
@@ -31,6 +32,27 @@ export function splitSongTitle(full) {
     return { title: text.slice(0, idx), artist: text.slice(idx + 3) };
 }
 
+export const CARD_STYLES = [
+    { id: 'caderno', label: 'Caderno' },
+    { id: 'neon', label: 'Neon' },
+    { id: 'vidro', label: 'Vidro' },
+];
+const STYLE_KEY = 'karaoke_card_style';
+
+function savedStyle() {
+    let id = null;
+    try { id = localStorage.getItem(STYLE_KEY); } catch (e) { id = null; }
+    return CARD_STYLES.some(s => s.id === id) ? id : CARD_STYLES[0].id;
+}
+
+function saveStyle(id) {
+    try { localStorage.setItem(STYLE_KEY, id); } catch (e) { /* sem storage: só não lembra */ }
+}
+
+function coverUrl(songId) {
+    return `/api/songs/${encodeURIComponent(songId)}/cover`;
+}
+
 function today() {
     return new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
 }
@@ -42,12 +64,24 @@ function statChip(tone, count, label) {
     return chip;
 }
 
-export function buildShareCard(data) {
+export function buildShareCard(data, style) {
     const score = Math.max(0, Math.min(100, parseFloat(data.score) || 0));
     const rank = rankFor(score);
 
     const card = el('article', 'share-card');
     card.dataset.rank = rank.letter;
+    card.dataset.style = style || CARD_STYLES[0].id;
+
+    // fundo do estilo vidro: a capa ampliada e desfocada (os outros estilos escondem)
+    const backdrop = el('div', 'share-card__backdrop');
+    if (data.songId) {
+        const blur = el('img');
+        blur.alt = '';
+        blur.src = coverUrl(data.songId);
+        blur.onerror = () => blur.remove();
+        backdrop.append(blur);
+    }
+    card.append(backdrop);
 
     const top = el('header', 'share-card__top');
     const brand = el('span', 'share-card__brand');
@@ -62,7 +96,7 @@ export function buildShareCard(data) {
     if (data.songId) {
         const img = el('img', 'share-card__cover');
         img.alt = '';
-        img.src = `/api/songs/${encodeURIComponent(data.songId)}/cover`;
+        img.src = coverUrl(data.songId);
         img.onerror = () => { photo.classList.add('share-card__photo--empty'); img.remove(); };
         photo.append(img);
     } else {
@@ -114,9 +148,6 @@ export function buildShareCard(data) {
         card.append(by);
     }
 
-    const foot = el('footer', 'share-card__foot');
-    foot.insertAdjacentHTML('beforeend', '<img src="/assets/art/staff-divider.svg" alt="">');
-    card.append(foot);
     return card;
 }
 
@@ -124,7 +155,7 @@ export function closeShareCard() {
     const overlay = document.getElementById('share-card-overlay');
     if (overlay) overlay.remove();
     document.documentElement.classList.remove('share-card-open');
-    document.removeEventListener('keydown', onKey, true);
+    window.removeEventListener('keydown', onKey, true);
     // controle remoto: o foco volta para onde estava (o botão Cartão)
     const back = state.shareCardReturnFocus;
     state.shareCardReturnFocus = null;
@@ -138,12 +169,51 @@ const CLOSE_KEYS = ['Escape', 'Esc', 'Backspace', 'BrowserBack', 'GoBack', 'Ente
 const CLOSE_CODES = [10009, 461, 13, 32];
 const ARROW_KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Up', 'Down', 'Left', 'Right'];
 
+const PREV_KEYS = ['ArrowLeft', 'Left'];
+const NEXT_KEYS = ['ArrowRight', 'Right'];
+
 function onKey(e) {
     const close = CLOSE_KEYS.indexOf(e.key) !== -1 || CLOSE_CODES.indexOf(e.keyCode) !== -1;
     if (!close && ARROW_KEYS.indexOf(e.key) === -1) return;
     e.preventDefault();
     e.stopImmediatePropagation();
-    if (close) closeShareCard();
+    if (close) { closeShareCard(); return; }
+    const step = PREV_KEYS.indexOf(e.key) !== -1 ? -1 : NEXT_KEYS.indexOf(e.key) !== -1 ? 1 : 0;
+    if (step) {
+        const ids = CARD_STYLES.map(st => st.id);
+        const card = document.querySelector('#share-card-overlay .share-card');
+        const at = ids.indexOf(card ? card.dataset.style : ids[0]);
+        setCardStyle(ids[(at + step + ids.length) % ids.length]);
+    }
+}
+
+function setCardStyle(id) {
+    const overlay = document.getElementById('share-card-overlay');
+    if (!overlay) return;
+    const card = overlay.querySelector('.share-card');
+    if (card) card.dataset.style = id;
+    overlay.dataset.style = id;
+    overlay.querySelectorAll('.share-card-style').forEach(btn => {
+        btn.setAttribute('aria-checked', String(btn.dataset.style === id));
+    });
+    saveStyle(id);
+}
+
+function styleBar() {
+    const bar = el('div', 'share-card-bar');
+    bar.setAttribute('role', 'radiogroup');
+    bar.setAttribute('aria-label', 'Estilo do cartão');
+    CARD_STYLES.forEach(({ id, label }) => {
+        const btn = el('button', 'btn btn--sm share-card-style', label);
+        btn.type = 'button';
+        btn.dataset.style = id;
+        btn.setAttribute('role', 'radio');
+        btn.addEventListener('click', () => setCardStyle(id));
+        bar.append(btn);
+    });
+    // tocar na barra troca o estilo, não fecha o cartão
+    bar.addEventListener('click', (e) => e.stopPropagation());
+    return bar;
 }
 
 export function openShareCard(data) {
@@ -154,7 +224,8 @@ export function openShareCard(data) {
     overlay.setAttribute('role', 'dialog');
     overlay.setAttribute('aria-label', 'Cartão da música');
     overlay.tabIndex = -1;
-    overlay.append(buildShareCard(data));
+    const style = savedStyle();
+    overlay.append(styleBar(), buildShareCard(data, style));
     // TV: botão visível (share-card.css só mostra com html.is-tv)
     const closeBtn = el('button', 'btn share-card-close');
     closeBtn.type = 'button';
@@ -164,9 +235,10 @@ export function openShareCard(data) {
     // tocar em qualquer lugar fecha (o print é pelo botão do aparelho)
     overlay.addEventListener('click', closeShareCard);
     document.body.append(overlay);
+    setCardStyle(style);
     // esconde a página por trás: no TV Bro o cartão aparecia atrás do fim de jogo
     // na 1ª vez (camadas da GPU furavam o z-index)
     document.documentElement.classList.add('share-card-open');
-    document.addEventListener('keydown', onKey, true);
+    window.addEventListener('keydown', onKey, true);  // antes do tv-nav (document)
     overlay.focus();
 }
