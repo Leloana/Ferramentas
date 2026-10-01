@@ -1,0 +1,164 @@
+// Mensagens do servidor para o celular-microfone (WebSocket role=mic), uma
+// função por tipo: entrada com apelido, letra do verso, nota e fim de jogo.
+import { state, setAppState } from '../state.js';
+import { iconSvg } from '../icons.js';
+import { myRoom, savedMicName, saveMicName, micDeviceId } from '../config.js';
+import { showToast } from '../toast.js';
+import { dom } from '../dom.js';
+import { fillLine, setLyricsScriptAvailable } from '../lyrics-script.js';
+import { verseQuality, replayClass } from '../verse-stamp.js';
+import { escapeHtml } from '../html.js';
+import { onRequestsUpdate } from '../requests.js';
+import { showMicGameOver } from './mic-final.js';
+import { setMicStatus } from './mic-socket.js';
+
+function setRegisterButton(busy) {
+    if (!dom.btnMobileRegister) return;
+    dom.btnMobileRegister.disabled = busy;
+    dom.btnMobileRegister.innerText = busy ? "ENTRANDO..." : "Entrar";
+}
+
+function showNameInStatus(name) {
+    setMicStatus(`<span class="mic-status__name">${escapeHtml(name)}</span> · Sala ${escapeHtml(myRoom)}`);
+}
+
+// Aviso no lugar da letra (fora do verso: entrada no jogo, fim da música)
+function setLyricsNote(html) {
+    const lyrText = document.getElementById('mobile-lyrics-text');
+    if (!lyrText) return;
+    lyrText.classList.remove('lyrics-line');
+    lyrText.innerHTML = html;
+}
+
+// Nota deste celular no verso: a própria em disputa, a geral no solo
+function myVerseScore(data) {
+    const own = state.isActiveInGame && data.player_scores && state.mobileNickname && data.player_scores[state.mobileNickname];
+    if (own) return { score: own.score, total: own.total_score, pitch: own.pitch };
+    return { score: data.score, total: data.total_score, pitch: data.pitch };
+}
+
+const MIC_HANDLERS = {
+    register_request() {
+        setAppState('registering');
+        if (dom.mobileRegisterError) dom.mobileRegisterError.removeAttribute('data-visible');
+        // Já entrou antes neste celular: entra sozinho com o mesmo apelido
+        // (página recarregou, rede caiu). Se der erro, cai no formulário.
+        const saved = savedMicName();
+        if (saved && dom.mobileNicknameInput) dom.mobileNicknameInput.value = saved;
+        if (saved && !state.micAutoRegisterFailed && state.mobileWs && state.mobileWs.readyState === WebSocket.OPEN) {
+            state.micAutoRegistering = true;
+            setRegisterButton(true);
+            state.mobileWs.send(JSON.stringify({ type: "register_name", name: saved, device: micDeviceId() }));
+            return;
+        }
+        setRegisterButton(false);
+    },
+    register_wait(data) {
+        setAppState('waiting');
+        if (dom.mobileQueuePosition) {
+            dom.mobileQueuePosition.innerText = data.position;
+        }
+    },
+    registration_success(data) {
+        state.mobileNickname = data.name;
+        saveMicName(data.name);
+        const automatic = state.micAutoRegistering;
+        state.micAutoRegistering = false;
+        if (!automatic) showToast(`Registrado como "${data.name}"`, "success");
+        showNameInStatus(data.name);
+        setAppState('singing');
+    },
+    registration_error(data) {
+        // a entrada automática falhou (apelido pego por outro aparelho): formulário
+        if (state.micAutoRegistering) state.micAutoRegisterFailed = true;
+        state.micAutoRegistering = false;
+        setRegisterButton(false);
+        if (dom.mobileRegisterError) {
+            dom.mobileRegisterError.innerText = data.message;
+            dom.mobileRegisterError.setAttribute('data-visible', 'true');
+        }
+        showToast(data.message, "error");
+    },
+    requests_update(data) {
+        onRequestsUpdate(data.requests);
+    },
+    request_error(data) {
+        showToast(data.message, 'error');
+    },
+    game_started(data) {
+        const scoreLine = document.getElementById('mobile-score-text');
+        if (scoreLine) scoreLine.hidden = true;
+        const activePlayers = data.active_players || [];
+        state.isActiveInGame = activePlayers.includes(state.mobileNickname);
+        setLyricsNote(state.isActiveInGame
+            ? `<span class="mic-note mic-note--good">Você está no jogo</span>Prepare-se`
+            : `<span class="mic-note">Assistindo</span>Próxima rodada`);
+    },
+    pairing_status(data) {
+        if (data.status === 'paired') {
+            if (state.mobileNickname) showNameInStatus(state.mobileNickname);
+        } else if (data.status === 'unpaired') {
+            setMicStatus(`<span class="mic-status--error">TV desconectada (sala ${escapeHtml(myRoom)})</span>`);
+        }
+    },
+    singing_state(data) {
+        state.isSingingActive = state.isActiveInGame ? data.active : false;
+    },
+    segment_start(data) {
+        const lyrText = document.getElementById('mobile-lyrics-text');
+        if (lyrText) fillLine(lyrText, data.lyrics, data.lyrics_romaji);
+        // revezar versos: "Sua vez" / "Vez de Ana"
+        const turnEl = document.getElementById('mobile-turn');
+        if (turnEl) {
+            const turn = data.turn;
+            const mine = turn && state.mobileNickname && turn.indexOf(state.mobileNickname) !== -1;
+            turnEl.hidden = !turn;
+            turnEl.dataset.mine = mine ? 'true' : 'false';
+            turnEl.textContent = !turn ? '' : (mine ? 'Sua vez' : `Vez de ${turn.join(' + ')}`);
+        }
+        setLyricsScriptAvailable(data.lyrics_romaji);
+
+        const songTitle = document.getElementById('mobile-song-title');
+        if (songTitle && data.song_title) {
+            songTitle.innerText = data.song_title;
+        }
+    },
+    segment_result(data) {
+        // A nota chega quando o verso seguinte já começou: vai numa linha
+        // própria para não apagar a letra que o cantor está acompanhando.
+        const scoreLine = document.getElementById('mobile-score-text');
+        if (!scoreLine) return;
+        if (data.recalc) {
+            // voltou a música: atualiza só a média geral
+            const own = data.player_scores && state.mobileNickname && data.player_scores[state.mobileNickname];
+            document.getElementById('mobile-score-total').textContent = `${own ? own.total_score : data.total_score}%`;
+            return;
+        }
+        const mine = myVerseScore(data);
+        const lastEl = document.getElementById('mobile-score-last');
+        const quality = verseQuality(mine.score);
+        lastEl.textContent = typeof mine.pitch === 'number'
+            ? `${quality.word} ${mine.score}% · tom ${Math.round(mine.pitch)}%`
+            : `${quality.word} ${mine.score}%`;
+        lastEl.dataset.quality = quality.key;
+        replayClass(lastEl, 'seg-score--pulse');
+        document.getElementById('mobile-score-total').textContent = `${mine.total}%`;
+        scoreLine.hidden = false;
+    },
+    outro_start() {
+        const icon = iconSvg(state.isActiveInGame ? 'fermata' : 'double-bar');
+        setLyricsNote(`${icon} Fim da música<span class="mic-note">Calculando o placar</span>`);
+    },
+    game_over(data) {
+        showMicGameOver(data);
+    }
+};
+
+export function handleMicMessage(data) {
+    const handler = MIC_HANDLERS[data.type];
+    if (handler) {
+        handler(data);
+    } else {
+        console.warn(`Tipo de mensagem de microfone desconhecido recebido: ${data.type}`);
+    }
+}

@@ -161,7 +161,7 @@
 #mobile-active-controls { width: 100%; }
 .btn-mobile-mute--muted { background: var(--rose) !important; border-color: var(--rose-ink) !important; }
 
-/* Placar final no celular (ws-mic.js) */
+/* Placar final no celular (mobile/mic-final.js) */
 .mic-final { display: flex; flex-direction: column; gap: 0.6rem; width: 100%; align-items: center; }
 .mic-final__title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; }
 .mic-final__avg { font-size: 1rem; color: var(--dim); }

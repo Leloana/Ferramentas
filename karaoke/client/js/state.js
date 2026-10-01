@@ -33,7 +33,7 @@ export const state = {
     micSourceNode: null,
     micProcessorNode: null,
     mobileNickname: null,
-    micAutoRegistering: false,   // ws-mic.js: entrando sozinho com o apelido lembrado
+    micAutoRegistering: false,   // mobile/mic-messages.js: entrando sozinho com o apelido lembrado
     micAutoRegisterFailed: false, // ...e falhou (apelido em uso): mostra o formulário
     isActiveInGame: false,
     activePlayers: null,

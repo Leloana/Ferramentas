@@ -6,7 +6,7 @@ import { showToast } from './toast.js';
 import { resolvePublicOrigin } from './public-origin.js';
 import { updateMicStatusPanel, checkInitialMicPermission } from './mic-status.js';
 import { initSyncControls } from './sync.js';
-import { connectMobileMicrophoneWebSocket } from './ws-mic.js';
+import { connectMobileMicrophoneWebSocket } from './mobile/mic-socket.js';
 import { connectDisplayWebSocket } from './ws-display.js';
 import { initMobileMicView } from './mobile-mic-view.js';
 import { fetchSongs, initSearch, selectSong } from './selection-view.js';
