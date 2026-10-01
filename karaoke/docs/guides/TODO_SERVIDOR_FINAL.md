@@ -10,38 +10,56 @@ o microfone em página segura, e o certificado autoassinado (`server/key.pem`) d
 Celular/TV ──https/wss──> Cloudflare (TLS + Access) ──túnel──> cloudflared ──http──> uvicorn 127.0.0.1:8000
 ```
 
-## 1º teste: rodar `tools/validar_gpu.py` (2026-10-01)
+## 1º teste: rodar `tools/validar_gpu.py` (feito no servidor em 2026-10-01)
 
-Feitos e medidos em CPU. Falta GPU e música real. `tools/validar_gpu.py` roda cada um com um comando, do
-venv do servidor, de dentro de `karaoke/`, **com o servidor parado** (o script carrega o próprio Whisper e
-o MMS_FA na GPU). Relatórios JSON e os áudios para ouvir saem em `validacao_gpu/` (fora do git).
+`tools/validar_gpu.py` roda cada item com um comando, do venv do servidor, de dentro de `karaoke/`, **com o
+servidor parado** (o script carrega o próprio Whisper e o MMS_FA na GPU). Relatórios JSON e os áudios para
+ouvir saem em `validacao_gpu/` (fora do git). O código já está no `main`.
 
 ```powershell
-git fetch; git switch feat/karaoke-versoes-robustas
-python -m pytest -q tests/unit tests/flow                    # 1. suíte (261 testes em 2026-10-01)
-pip install audio-separator==0.47.0                           # 2. opcional: liga o RoFormer
+python -m pytest -q tests                                     # 1. suíte inteira (276 em 2026-10-01)
+pip install audio-separator==0.47.0 audioread                 # 2. liga o RoFormer; em seguida, OBRIGATÓRIO:
+pip install torch==2.6.0+cu124 torchaudio==2.6.0+cu124 torchvision==0.21.0+cu124 --index-url https://download.pytorch.org/whl/cu124 --extra-index-url https://pypi.org/simple
 python tools/validar_gpu.py ambiente                          # 3. GPU, versões, separador escolhido
 python tools/validar_gpu.py baixar-modelo                     # 4. ~600 MB, fora do lock da GPU
-python tools/validar_gpu.py separacao server/songs/<slug>/original.mp3 --com-whisper   # 5.
+python tools/validar_gpu.py separacao <audio original> --com-whisper   # 5. as pastas não guardam o original:
+                                                              #    baixar do youtube_vocal_url do meta.json com o yt-dlp
 python tools/validar_gpu.py versoes                           # 6. Holiday em 6 versões simuladas
-python tools/validar_gpu.py musica server/songs/<slug>        # 7. música real (repetir em 3–5)
+python tools/validar_gpu.py musica server/songs/<slug>        # 7. música real
 ```
 
-- [ ] **1. Suíte** — tudo verde com o torch cu124 (aqui foi o torch de CPU).
-- [ ] **3. Ambiente** — `fora_do_requirements` vazio depois do `pip install audio-separator`. Se ele subiu o
-      numpy ou o onnxruntime, rodar a suíte de novo e testar o VAD do Whisper ao vivo (usa o onnxruntime).
-      Se quebrar: `pip install -r requirements.txt` volta as versões e `KARAOKE_SEPARATOR=demucs` desliga.
-- [ ] **5. Separação** — RoFormer × Demucs na mesma música, com o Whisper carregado como no servidor:
-      tempo, pico de VRAM e `validacao_gpu/separacao-*/*-instrumental.wav` para ouvir (voz vazando,
-      pratos, reverb). Repetir em 3 músicas de estilos diferentes. VRAM pico + Whisper tem que caber com
-      folga: senão `KARAOKE_SEPARATOR=demucs`.
-- [ ] **6. Versões simuladas** — esperado (medido em CPU): PRO "agora" 39/39 em `orig`, `intro8` e `slow3`,
-      39/42 no `extrachorus`, e o `cutverse` sem as 6 linhas do verso 2. Modo rápido "agora" 39/39 no
-      `intro8` (antes 0/39) e 31/33 no `cutverse` (antes 11/33). Anotar o tempo do Whisper do stem: é o
-      custo extra de cada reinstall.
-- [ ] **7. Música real** — 3–5 músicas cuja versão do YouTube não é a de estúdio (ao vivo, radio edit,
-      intro longa). O comando mostra o encaixe, a estrutura, a concordância e o método escolhido, e grava
-      `validacao_gpu/<slug>.sync_preview.lrc` sem mexer no `lyrics.lrc`. Abrir no editor de letra e tocar.
+O `pip install audio-separator` troca o torch cu124 por um torch 2.14 **de CPU** (o `onnx2torch` puxa o
+`torchvision` mais novo) e o `librosa` 1.0 não traz mais o `audioread`, que ele importa. Por isso a 2ª linha.
+Depois dela: `pip check` limpo, numpy 2.4.6 e onnxruntime 1.26.0 iguais ao `requirements.txt`.
+
+- [x] **1. Suíte** — 261 de `tests/unit tests/flow` com torch cu124, antes e depois do audio-separator.
+      Inteira (`tests`, com o Escolta de Vagalumes na GPU e os 10 de UI com Playwright): 276 verdes.
+- [x] **3. Ambiente** — `fora_do_requirements` vazio, `separador_auto` = roformer.
+- [x] **5. Separação** — medido. Falta **ouvir** `validacao_gpu/separacao-*/*-instrumental.wav`.
+
+      | música (estilo, duração) | RoFormer | Demucs | VRAM pico (com Whisper) |
+      | :--- | ---: | ---: | :--- |
+      | Hysteria, Muse (rock, 3:47) | 65 s | 8,6 s | 5,2 GB × 3,6 GB |
+      | Construção, Chico (MPB/orquestra, 6:24) | 104 s | 34 s | 5,2 GB × 3,6 GB |
+      | Oh No!, Marina (pop, 3:00) | 66 s | 7,3 s | 5,2 GB × 3,6 GB |
+
+      Cabe com folga nos 12 GB (só o Whisper ocupa 2,7 GB). O RoFormer custa ~1 min a mais por música na
+      fila. O Whisper não reconhece nenhuma palavra no instrumental de nenhum dos dois: a diferença, se
+      houver, é de ouvido (voz de fundo, pratos, reverb). Se não compensar o tempo: `KARAOKE_SEPARATOR=demucs`.
+- [x] **6. Versões simuladas** — PRO "agora" 39/39 em `orig`, `intro8` e `slow3`, 38/39 no `cut5fast3`, 39/42
+      no `extrachorus` e 30/33 no `cutverse`, como na CPU. Rápido "agora" 39/39 no `intro8` (antes 0/39) e
+      30/33 no `cutverse` (CPU deu 31/33). Whisper do stem: 2,4–5,9 s por versão; PRO ~9–12 s.
+- [ ] **7. Música real** — rodado nas 57 músicas (`validacao_gpu/musicas.log` e um
+      `validacao_gpu/<slug>.sync_preview.lrc` por música; o `lyrics.lrc` não foi mexido). Whisper do stem:
+      4–9 s. Método escolhido: `lrc` em 39, `lrc+encaixe` em 10, `estrutura` em 8. Falta **tocar no editor
+      de letra** as que mudariam e conferir se a escolha está certa, a começar pelas suspeitas:
+      - `hey-pixies`: encaixe de +23,7 s com escala 1,08, concordância 0 e 5 linhas fora, e mesmo assim
+        `lrc+encaixe` (32 linhas mudam). A mais provável de estar errada.
+      - `dia-clarear-banda-do-mar` (encaixe −8,25 s, concordância 0 → estrutura), `hysteria-muse`
+        (concordância 0,05 → estrutura), `flores-astrais-ney-matogrosso` (escala 1,074 → estrutura).
+      - `insista-em-mim-ana-frango-eletrico` (+11,45 s) e `take-a-bite-beabadoobee` (+9,45 s): intro longa?
+      - `o-vira-ney-matogrosso` e `samurai-djavan`: 48 linhas a mais de 1 s do LRC atual.
+      - `dela-ana-frango-eletrico`: 10 linhas fora, 53% das palavras casadas, mas fica no `lrc`.
       Se o método errar, anotar a concordância e a cobertura: os limiares são `MIN_AGREEMENT` (0,6) e
       `PLAN_MIN_COVERAGE` (0,35) em `server/utils/lrc_sync.py`.
 - [ ] **8. Nota em ordem numa partida** — cantar uma música conhecida e conferir que verso certo continua
@@ -53,9 +71,9 @@ python tools/validar_gpu.py musica server/songs/<slug>        # 7. música real 
 
 ## Checklist
 
-- [ ] **Instalar o `cloudflared`** — `winget install --id Cloudflare.cloudflared` (mesmo passo do
+- [x] **Instalar o `cloudflared`** — `winget install --id Cloudflare.cloudflared` (mesmo passo do
       [guia do agent-remote](../../../agent-remote/GUIA_CLOUDFLARE.md)).
-- [ ] **Criar o túnel nomeado** e apontar o subdomínio:
+- [x] **Criar o túnel nomeado** (no servidor real é um túnel do painel, por token: só a *Public Hostname* `karaoke.myall.net.br → http://127.0.0.1:8000`; não rodar os comandos abaixo) e apontar o subdomínio:
       ```powershell
       cloudflared tunnel login
       cloudflared tunnel create karaoke
@@ -102,8 +120,9 @@ python tools/validar_gpu.py musica server/songs/<slug>        # 7. música real 
       `cache-control: no-cache` e `cf-cache-status` diferente de `HIT` (hoje: `REVALIDATED`).
 - [ ] **Teste no iPhone:** Safari → QR de pareamento → permitir microfone → cantar um verso inteiro.
       A nota de um verso cantado certinho deve chegar perto de 100 (antes do P0 o teto era 85).
-- [ ] **Tirar `server/key.pem` e `server/cert.pem` do git.** A chave privada está versionada. Com o
-      túnel ela não é mais usada. Quem quiser o modo LAN gera um par local, fora do repo.
+- [x] **Tirar `server/key.pem` e `server/cert.pem` do git** (2026-10-01). Saíram do índice e o `.gitignore`
+      cobre `server/*.pem`; os arquivos seguem no disco, então `karaoke -lan` funciona. A chave continua no
+      histórico do git: se o modo LAN voltar a ser usado, gerar um par novo.
 
 ## Validar no servidor (GPU + celulares de verdade)
 
@@ -111,8 +130,8 @@ O que foi feito em 2026-09-30 sem GPU nem áudio real e ainda precisa ser confer
 (com os cenários de gravação) em [PLANO_SERVIDOR.md](PLANO_SERVIDOR.md). Detalhes de cada
 item de áudio em [AUDIO_PIPELINE_MELHORIAS.md](AUDIO_PIPELINE_MELHORIAS.md).
 
-- [ ] **Suíte completa** — `python -m pytest -q tests` (inclui `tests/test_escolta_vagalumes.py`, que precisa de CUDA
-      e do áudio da música) e `python -m pytest tests/ui` (Playwright, se instalado).
+- [x] **Suíte completa** — `python -m pytest -q tests`: 276 verdes em 2026-10-01, com CUDA e Playwright
+      instalados no venv do servidor (`pip install playwright` + `python -m playwright install chromium`).
 - [ ] **Partida com 2–4 celulares** — nota por verso, duplas/trios, revezar versos ("Vez de…"), carimbo e
       "tom X%", cartão para print no fim (TV e cada celular), "Ouvir".
 - [ ] **Queda de rede** — derrubar o Wi-Fi da TV no meio da música: deve voltar sem zerar o placar. Celular que
