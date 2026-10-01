@@ -970,13 +970,25 @@ function getTranslationForLine(line) {
     const container = document.querySelector('.carousel-container');
     const inner = document.getElementById('carousel-inner');
     if (!container || !inner || !line) return 0;
-    
-    // Get the line's center relative to the top of carousel-inner
-    const lineCenter = line.offsetTop + line.offsetHeight / 2;
-    
-    // The container's center relative to its padding box is container.clientHeight / 2.
-    // So the translation to align the line center with the container center is:
-    return (container.clientHeight / 2) - lineCenter;
+
+    // Posição real na tela, não offsetTop: o carousel-inner é mais alto que o palco
+    // e transborda centralizado, e a conta por offsetTop errava conforme a altura das
+    // linhas (na TV a letra subia demais e descia de volta a cada verso).
+    // Novo deslocamento = deslocamento atual (mesmo no meio de uma transição) + o
+    // que falta para o centro da linha chegar ao centro do palco.
+    const box = container.getBoundingClientRect();
+    const rect = line.getBoundingClientRect();
+    const stageCenter = box.top + container.clientTop + container.clientHeight / 2;
+    return currentTranslateY(inner) + (stageCenter - (rect.top + rect.height / 2));
+}
+
+// translateY em vigor agora (a matriz calculada já reflete a transição em curso).
+function currentTranslateY(el) {
+    const t = getComputedStyle(el).transform;
+    if (!t || t === 'none') return 0;
+    const nums = t.slice(t.indexOf('(') + 1, -1).split(',').map(parseFloat);
+    if (t.indexOf('matrix3d') === 0) return nums[13] || 0;
+    return nums[5] || 0;
 }
 
 // Window resize handler to maintain active line centering
@@ -1072,16 +1084,30 @@ export function renderLyrics(data) {
         fillLine(lineUpcoming, data.next_lyrics, data.next_lyrics_romaji);
     }
 
-    // Calculate translation dynamically to center lineNext
-    const translation = getTranslationForLine(lineNext);
+    const addSlideClasses = () => {
+        linePrev.classList.add('line-prev-slide-out');
+        lineCurr.classList.add('line-curr-to-prev');
+        lineNext.classList.add('line-next-to-curr');
+        if (lineUpcoming) {
+            lineUpcoming.classList.add('line-upcoming-to-next');
+        }
+    };
 
-    // Start transition
-    carouselInner.style.transform = `translateY(${translation}px)`;
-    linePrev.classList.add('line-prev-slide-out');
-    lineCurr.classList.add('line-curr-to-prev');
-    lineNext.classList.add('line-next-to-curr');
-    if (lineUpcoming) {
-        lineUpcoming.classList.add('line-upcoming-to-next');
+    let translation;
+    if (isTvBrowser) {
+        // TV: o tamanho da fonte muda sem animação (tv.css). Mede o centro já com a
+        // próxima linha grande; medida antes, a letra subia demais e depois descia.
+        addSlideClasses();
+        carouselInner.offsetHeight; // força o layout com os tamanhos novos
+        translation = getTranslationForLine(lineNext);
+        carouselInner.style.transform = `translateY(${translation}px)`;
+    } else {
+        // Calculate translation dynamically to center lineNext
+        translation = getTranslationForLine(lineNext);
+
+        // Start transition
+        carouselInner.style.transform = `translateY(${translation}px)`;
+        addSlideClasses();
     }
 
     // Define cleanup function to commit DOM values
@@ -1101,16 +1127,18 @@ export function renderLyrics(data) {
             fillLine(lineUpcoming, data.upcoming_lyrics, data.upcoming_lyrics_romaji);
         }
 
-        // Reset transform to center the new current line (lineCurr) and remove transition classes
-        const steadyTranslation = getTranslationForLine(lineCurr);
-        carouselInner.style.transform = `translateY(${steadyTranslation}px)`;
-        
+        // Tira as classes de transição ANTES de medir: medida com elas, a nova linha
+        // atual ainda estava no tamanho de "anterior" e a letra pulava depois.
         linePrev.classList.remove('line-prev-slide-out');
         lineCurr.classList.remove('line-curr-to-prev');
         lineNext.classList.remove('line-next-to-curr');
         if (lineUpcoming) {
             lineUpcoming.classList.remove('line-upcoming-to-next');
         }
+
+        // Recentraliza a nova linha atual (lineCurr), já com os tamanhos finais
+        const steadyTranslation = getTranslationForLine(lineCurr);
+        carouselInner.style.transform = `translateY(${steadyTranslation}px)`;
 
         carouselInner.offsetHeight; // force reflow
         carouselInner.classList.remove('no-transition');

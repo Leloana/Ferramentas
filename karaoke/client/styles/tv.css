@@ -337,3 +337,28 @@ html.is-tv #app[data-state="game-over"] .main-card {
     min-height: 0 !important;
     padding: 1.2rem 2rem !important;
 }
+
+/* Troca de verso na TV: as classes de transição usam já os tamanhos finais (as
+   regras de tamanho da TV acima venciam as de game.css: durante o deslize a
+   próxima linha seguia pequena e a atual grande). game-view.js mede o centro
+   depois de aplicá-las, então o deslize vai direto ao lugar certo. */
+html.is-tv #app[data-state="singing"] .carousel-line.line-next-to-curr,
+html.is-tv #app[data-state="scoring"] .carousel-line.line-next-to-curr {
+    margin: 0.6rem 0 !important;
+    font-size: 3rem !important;
+    font-weight: 800 !important;
+    line-height: 1.25 !important;
+    color: var(--ink) !important;
+    opacity: 1 !important;
+}
+html.is-tv #app[data-state="singing"] .carousel-line.line-curr-to-prev,
+html.is-tv #app[data-state="scoring"] .carousel-line.line-curr-to-prev {
+    margin: 0.3rem 0 !important;
+    font-size: 1.8rem !important;
+    font-weight: 500 !important;
+}
+html.is-tv #app[data-state="singing"] .carousel-line.line-upcoming-to-next,
+html.is-tv #app[data-state="scoring"] .carousel-line.line-upcoming-to-next {
+    margin: 0.3rem 0 !important;
+    font-size: 1.8rem !important;
+}
