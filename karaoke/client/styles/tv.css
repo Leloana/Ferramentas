@@ -335,12 +335,15 @@ html.is-tv .rank-title { margin-bottom: 0.7rem; font-size: 1.1rem; }
 html.is-tv .score-box { margin-bottom: 0.8rem; padding: 0.5rem; }
 html.is-tv .score-box__value { font-size: 2rem; }
 
-/* Fim de jogo: a partida por trás também cabe na tela (rolava 57 px na TV) */
+/* Fim de jogo: a partida por trás também cabe na tela (rolava 57 px na TV) e fica
+   escondida — as regras de tamanho do canto deixam de valer no game-over e a tela
+   de trás pulava de tamanho atrás do modal. Fica só o modal sobre o fundo liso. */
 html.is-tv #app[data-state="game-over"] .app-header { display: none !important; }
 html.is-tv #app[data-state="game-over"] > .container {
     height: 100vh !important;
     min-height: 0 !important;
     overflow: hidden;
+    visibility: hidden;
 }
 html.is-tv #app[data-state="game-over"] .main-card {
     height: 100vh !important;
