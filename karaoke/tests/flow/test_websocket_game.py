@@ -457,5 +457,68 @@ class TestWebsocketGameFlow(unittest.TestCase):
                         self.assertIn("em uso", until(ws_other, "registration_error")["message"])
 
 
+    def _until(self, ws, kind, limit=20):
+        """Recebe até chegar `kind`; devolve (mensagem, tipos que vieram antes)."""
+        seen = []
+        for _ in range(limit):
+            msg = ws.receive_json()
+            if msg["type"] == kind:
+                return msg, seen
+            seen.append(msg["type"])
+        self.fail(f"{kind} não chegou (vieram {seen})")
+
+    def test_phone_back_mid_game_is_told_it_is_playing(self):
+        """Celular que recarrega no meio da música recebe game_started de novo.
+
+        Sem isso ele não sabia que estava no jogo e descartava o próprio áudio
+        (o "microfone desconectando" no Android).
+        """
+        from state import room_manager
+
+        with self.client.websocket_connect(f"/ws/room/midroom?role=display&song_id={self.song_slug}") as ws_tv:
+            with self.client.websocket_connect("/ws/room/midroom?role=mic") as ws_mic:
+                self._until(ws_mic, "register_request")
+                ws_mic.send_json({"type": "register_name", "name": "Ana", "device": "cel-1"})
+                self._until(ws_mic, "registration_success")
+                # sem partida: quem entra não recebe game_started (o pong vem antes)
+                ws_mic.send_json({"type": "ping"})
+                _, before_pong = self._until(ws_mic, "pong")
+                self.assertNotIn("game_started", before_pong)
+
+                ws_tv.send_json({"type": "start_game", "game_mode": "solo", "active_players": ["Ana"]})
+                # TestClient: a TV precisa ler o que recebeu, senão o envio para ela
+                # trava o broadcast antes de chegar ao celular
+                self._until(ws_tv, "game_started")
+                self._until(ws_mic, "game_started")
+
+            with self.client.websocket_connect("/ws/room/midroom?role=mic") as ws_back:
+                self._until(ws_back, "register_request")
+                ws_back.send_json({"type": "register_name", "name": "Ana", "device": "cel-1"})
+                self._until(ws_back, "registration_success")
+                resumed, _ = self._until(ws_back, "game_started")
+                self.assertTrue(resumed["resumed"])
+                self.assertEqual(resumed["active_players"], ["Ana"])
+                # ...e o estado de canto e o verso em andamento, não só o aviso
+                self._until(ws_back, "singing_state")
+                current, _ = self._until(ws_back, "segment_start")
+                self.assertEqual(current["id"], self.segments[0]["id"])
+
+                with self.client.websocket_connect("/ws/room/midroom?role=mic") as ws_bia:
+                    self._until(ws_bia, "register_request")
+                    ws_bia.send_json({"type": "register_name", "name": "Bia", "device": "cel-2"})
+                    self._until(ws_bia, "segment_start")
+                    # Ana liga o microfone (client_info): o verso vai só para ela
+                    ws_back.send_json({"type": "client_info", "sample_rate": 48000})
+                    self._until(ws_back, "segment_start")
+                    ws_bia.send_json({"type": "ping"})
+                    _, before_pong = self._until(ws_bia, "pong")
+                    self.assertNotIn("segment_start", before_pong)
+
+            # a saída do celular fica na gravação com o código de fechamento
+            room = room_manager.rooms["midroom"]
+            left = [e for e in room.recording.events if e["kind"] == "mic_left"]
+            self.assertEqual([e.get("code") for e in left], [1000, 1000, 1000])
+
+
 if __name__ == "__main__":
     unittest.main()

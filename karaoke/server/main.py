@@ -40,6 +40,9 @@ logger = logging.getLogger(__name__)
 
 CLIENT_DIR = Path(__file__).resolve().parent.parent / "client"
 STATIC_PREFIXES = ("/js/", "/styles/", "/assets/")
+# Espera do pong do WebSocket: o Wi-Fi do Android em economia atrasa a resposta, e
+# com o padrão de 20 s o celular caía com a tela apagada.
+WS_PING_TIMEOUT_SEC = 60
 
 app = FastAPI(title="Karaoke MVP Server")
 app.add_middleware(
@@ -93,8 +96,9 @@ if __name__ == "__main__":
             host=host,
             port=port,
             ssl_keyfile=str(ssl_key),
-            ssl_certfile=str(ssl_cert)
+            ssl_certfile=str(ssl_cert),
+            ws_ping_timeout=WS_PING_TIMEOUT_SEC,
         )
     else:
         logger.info(f"Iniciando servidor em modo HTTP padrão (sem SSL) em {host}:{port}.")
-        uvicorn.run(app, host=host, port=port)
+        uvicorn.run(app, host=host, port=port, ws_ping_timeout=WS_PING_TIMEOUT_SEC)

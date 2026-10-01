@@ -103,7 +103,7 @@ Servidor final via Cloudflare Tunnel (`karaoke.myall.net.br`): checklist pendent
 No Windows (PowerShell), execute o comando único abaixo para rodar o projeto. Ele irá encerrar qualquer processo ativo na porta 8000, ativar a `venv` e iniciar o servidor em HTTPS no IP `192.168.15.6:8000`:
 
 ```powershell
-Get-NetTCPConnection -LocalPort 8000 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }; .\venv\Scripts\Activate.ps1; uvicorn server.main:app --host 192.168.15.6 --port 8000 --reload --ssl-keyfile "server/key.pem" --ssl-certfile "server/cert.pem"
+Get-NetTCPConnection -LocalPort 8000 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }; .\venv\Scripts\Activate.ps1; uvicorn server.main:app --host 192.168.15.6 --port 8000 --ws-ping-timeout 60 --ssl-keyfile "server/key.pem" --ssl-certfile "server/cert.pem"
 ```
 
 > Troque `192.168.15.6` pelo IP da sua máquina na rede Wi-Fi (use `ipconfig` no Windows ou `hostname -I` no Linux).

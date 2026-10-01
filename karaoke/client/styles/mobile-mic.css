@@ -114,6 +114,12 @@
 .mic-button:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--ink); }
 .btn-mobile-activate--active { background: var(--sage); }
 .btn-mobile-activate--muted { background: var(--rose); }
+/* no jogo sem microfone (recarregou, o Android desligou a faixa): pede o toque */
+.btn-mobile-activate--attention { animation: mic-attention 1.2s ease-in-out infinite; }
+@keyframes mic-attention {
+    0%, 100% { box-shadow: 0 0 0 0 var(--accent); }
+    50% { box-shadow: 0 0 0 10px transparent; }
+}
 
 /* VU: halo quadrado atrás do botão (escala/opacidade vêm do JS) */
 #mobile-mic-vu {

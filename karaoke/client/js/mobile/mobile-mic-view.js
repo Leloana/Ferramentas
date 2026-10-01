@@ -6,6 +6,54 @@ import { dom } from '../core/dom.js';
 import { keepScreenOn } from '../core/wake-lock.js';
 import { deviceInfo } from '../game/game-events.js';
 import { micDeviceId, saveMicName } from '../core/config.js';
+import { watchMicHealth, stopMicHealth, micRunning, MAX_BUFFERED_BYTES } from './mic-health.js';
+
+const ATTENTION_CLASS = 'btn-mobile-activate--attention';
+
+function activateButton() {
+    return document.getElementById('btn-mobile-activate');
+}
+
+// Volta o botão para LIGAR MIC (o microfone só religa com um toque)
+function showMicOff() {
+    const btn = activateButton();
+    if (!btn) return;
+    btn.disabled = false;
+    btn.classList.remove('btn-mobile-activate--active', 'btn-mobile-activate--muted');
+    btn.innerHTML = `${iconSvg('mic')}<span>LIGAR MIC</span>`;
+    const box = document.getElementById('mobile-active-mic-container');
+    if (box) box.removeAttribute('data-mic-active');
+    // mudo não sobrevive à religada: senão o botão diz ATIVO e o áudio é descartado
+    state.micMuted = false;
+    const mute = document.getElementById('btn-mobile-mute');
+    if (mute) {
+        mute.innerHTML = `${iconSvg('mic-off')} Mutar microfone`;
+        mute.classList.remove('btn-mobile-mute--muted');
+    }
+    stopVu();
+}
+
+function stopVu() {
+    if (state.micVuFrame) {
+        cancelAnimationFrame(state.micVuFrame);
+        state.micVuFrame = null;
+    }
+}
+
+function onMicLost() {
+    showMicOff();
+    // a faixa acabou: pede o toque mesmo que o navegador ainda não a dê por encerrada
+    const btn = activateButton();
+    if (btn && state.isActiveInGame) btn.classList.add(ATTENTION_CLASS);
+    showToast('O microfone desligou. Toque em LIGAR MIC.', 'error');
+}
+
+// No jogo e sem microfone (página recarregou, faixa acabou): botão pulsando.
+export function remindMicIfOff() {
+    const btn = activateButton();
+    // espectador na rodada seguinte: o aviso sai
+    if (btn) btn.classList.toggle(ATTENTION_CLASS, state.isActiveInGame && !micRunning());
+}
 
 export function initMobileMicView() {
     const btnMobileActivate = document.getElementById('btn-mobile-activate');
@@ -45,6 +93,7 @@ export function initMobileMicView() {
             keepScreenOn();
 
             try {
+                stopMicHealth();
                 if (state.audioManager) {
                     await state.audioManager.destroy();
                     state.audioManager = null;
@@ -55,14 +104,18 @@ export function initMobileMicView() {
                     onAudioChunk: (data) => {
                         // Manda a música inteira, não só os versos: o servidor recorta a
                         // janela de cada verso e a gravação da partida fica completa.
-                        if (state.mobileWs && state.mobileWs.readyState === WebSocket.OPEN && !state.micMuted && state.isActiveInGame) {
-                            state.mobileWs.send(data);
-                        }
+                        const ws = state.mobileWs;
+                        if (!ws || ws.readyState !== WebSocket.OPEN || state.micMuted || !state.isActiveInGame) return;
+                        // rede lenta: descarta em vez de empilhar (a fila atrasa o pong e derruba o socket)
+                        if (ws.bufferedAmount > MAX_BUFFERED_BYTES) return;
+                        ws.send(data);
                     }
                 });
 
                 await state.audioManager.init();
                 await state.audioManager.start();
+                watchMicHealth(state.audioManager, onMicLost);
+                btnMobileActivate.classList.remove(ATTENTION_CLASS);
 
                 if (state.mobileWs && state.mobileWs.readyState === WebSocket.OPEN) {
                     state.mobileWs.send(JSON.stringify({
@@ -90,7 +143,7 @@ export function initMobileMicView() {
                             mobileMicVu.style.transform = 'scale(1.0)';
                             mobileMicVu.style.opacity = '0';
                         }
-                        requestAnimationFrame(drawVU);
+                        state.micVuFrame = requestAnimationFrame(drawVU);
                         return;
                     }
                     analyser.getByteFrequencyData(dataArray);
@@ -106,8 +159,10 @@ export function initMobileMicView() {
                         mobileMicVu.style.opacity = opacity;
                     }
 
-                    requestAnimationFrame(drawVU);
+                    state.micVuFrame = requestAnimationFrame(drawVU);
                 }
+                // um laço só: religar o microfone não deixa o anterior rodando
+                stopVu();
                 drawVU();
 
                 showToast("Microfone capturando áudio!", "success");
@@ -150,6 +205,7 @@ export function initMobileMicView() {
     if (btnLogout) {
         btnLogout.onclick = async () => {
             saveMicName('');  // não entra sozinho de novo com o apelido antigo
+            stopMicHealth();
             if (state.audioManager) {
                 await state.audioManager.destroy();
                 state.audioManager = null;
@@ -162,6 +218,7 @@ export function initMobileMicView() {
     if (btnMobileExitMic) {
         btnMobileExitMic.onclick = async () => {
             saveMicName('');  // saiu de propósito: não entra sozinho de novo
+            stopMicHealth();
             if (state.audioManager) {
                 await state.audioManager.destroy();
                 state.audioManager = null;

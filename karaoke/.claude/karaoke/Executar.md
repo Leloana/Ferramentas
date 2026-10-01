@@ -36,10 +36,13 @@ as rotas REST e o WebSocket da sala na **porta 8000**.
 O comando abaixo, em uma linha, executa três passos encadeados:
 1. **Libera a porta 8000**, encerrando qualquer processo que a esteja ocupando.
 2. **Ativa a `venv`**.
-3. **Inicia o Uvicorn** em HTTPS no IP da máquina na rede local, com `--reload`.
+3. **Inicia o Uvicorn** em HTTPS no IP da máquina na rede local, com folga de 60 s no ping do WebSocket.
+
+> Sem `--reload` na hora de cantar: ele reinicia o servidor a cada `.py` salvo e derruba
+> a TV e todos os celulares no meio da música. Use só para desenvolver.
 
 ```powershell
-Get-NetTCPConnection -LocalPort 8000 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }; .\venv\Scripts\Activate.ps1; uvicorn server.main:app --host 192.168.15.6 --port 8000 --reload --ssl-keyfile "server/key.pem" --ssl-certfile "server/cert.pem"
+Get-NetTCPConnection -LocalPort 8000 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }; .\venv\Scripts\Activate.ps1; uvicorn server.main:app --host 192.168.15.6 --port 8000 --ws-ping-timeout 60 --ssl-keyfile "server/key.pem" --ssl-certfile "server/cert.pem"
 ```
 
 > Troque `192.168.15.6` pelo IP real da sua máquina na rede Wi-Fi (veja a seção 3).
@@ -52,7 +55,7 @@ Get-NetTCPConnection -LocalPort 8000 -ErrorAction SilentlyContinue | Select-Obje
 ```bash
 # Libera a porta 8000 (se ocupada) e sobe o servidor
 fuser -k 8000/tcp 2>/dev/null
-uvicorn server.main:app --host 0.0.0.0 --port 8000 --reload \
+uvicorn server.main:app --host 0.0.0.0 --port 8000 --ws-ping-timeout 60 \
   --ssl-keyfile server/key.pem --ssl-certfile server/cert.pem
 ```
 
@@ -63,11 +66,11 @@ provê HTTPS na borda — defina a variável `KARAOKE_HTTP` e omita os flags de 
 
 ```bash
 # Linux / macOS
-KARAOKE_HTTP=1 uvicorn server.main:app --host 0.0.0.0 --port 8000 --reload
+KARAOKE_HTTP=1 uvicorn server.main:app --host 0.0.0.0 --port 8000 --ws-ping-timeout 60
 ```
 ```powershell
 # Windows PowerShell
-$env:KARAOKE_HTTP="1"; uvicorn server.main:app --host 0.0.0.0 --port 8000 --reload
+$env:KARAOKE_HTTP="1"; uvicorn server.main:app --host 0.0.0.0 --port 8000 --ws-ping-timeout 60
 ```
 
 Depois de subir, acesse `https://<IP>:8000` no display (TV) e leia o QR Code com o

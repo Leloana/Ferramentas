@@ -26,6 +26,9 @@ class KaraokeRoom:
         self.player_devices: dict[str, str] = {}
         self.unregistered_mics: list[WebSocket] = []
         self.active_players: list[str] = []
+        # Partida em andamento (start_game até game_over): celular que volta no meio
+        # recebe game_started de novo, senão descarta o próprio áudio.
+        self.in_game: bool = False
         self.game_mode: str = "solo"
         # Estilo de pontuação escolhido no lobby: "timing" (palavras + tempo
         # correto) ou "words" (somente palavras acertadas).

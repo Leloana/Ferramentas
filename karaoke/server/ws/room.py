@@ -99,6 +99,15 @@ async def _broadcast_segment_start(room, idx: int) -> None:
         await _send_segment_start(room.mic, room.segments, idx, room.song_title, turn)
 
 
+async def _send_current_segment(room, websocket) -> None:
+    """Verso em andamento (ou o primeiro, antes da partida) para um socket só."""
+    if not room.segments:
+        return
+    idx = min(room.current_segment_idx, len(room.segments) - 1) if room.in_game else 0
+    turn = turn_owner(room.segments, room.turn_order, idx)
+    await _send_segment_start(websocket, room.segments, idx, room.song_title, turn)
+
+
 async def _notify_mics_display_status(room, status: str) -> None:
     """Avisa os celulares (registrados ou na fila) se a TV está conectada."""
     targets = list(room.players.values()) + room.unregistered_mics
@@ -408,6 +417,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
         _track(room, asyncio.create_task(_load_pitch_reference(room, song_id)))
         room.song_id = song_id
         room.song_title = song_title
+        room.in_game = False
         room.segments = segments
         room.current_segment_idx = 0
         room.transcribed_segments = set()
@@ -460,9 +470,14 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
     except Exception as e:
         logger.debug(f"Falha ao enviar estado inicial: {e}")
 
+    close_code = None
     try:
         while True:
             message = await websocket.receive()
+            if message.get("type") == "websocket.disconnect":
+                close_code = message.get("code")
+                logger.info(f"Conexão do papel {role} desconectada (código {close_code}).")
+                break
 
             if "bytes" in message:
                 # Pacote do microfone (mic_stream.PACKET_HEADER + Int16 16 kHz) —
@@ -534,10 +549,25 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         
                         get_or_create_profile(name)
                         await websocket.send_json({"type": "registration_success", "name": name})
+                        if room.in_game:
+                            # voltou no meio da música (recarregou, rede caiu): sem isto o
+                            # celular não sabe que está no jogo e não manda o áudio
+                            await websocket.send_json({
+                                "type": "game_started",
+                                "game_mode": room.game_mode,
+                                "active_players": room.active_players,
+                                "resumed": True,
+                            })
+                            # o singing_state da conexão chegou antes de ele saber que está no jogo
+                            await websocket.send_json({"type": "singing_state", "active": room.is_singing_active})
+                            await _send_current_segment(room, websocket)
                         if room.recording:
                             room.recording.add_event("mic_joined", room.last_client_time, value=name)
                         await _notify_players_status(room)
                         await _advance_registration_queue(room)
+
+                elif msg_type == "ping":
+                    await websocket.send_json({"type": "pong"})
 
                 elif msg_type == "start_game" and queue_manager.alignment_busy():
                     # Mutex de GPU: gerando letra de uma música. Começar agora deixaria
@@ -597,6 +627,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                     room.current_segment_idx = 0
                     room.is_singing_active = False
 
+                    room.in_game = True
                     queue_manager.notify_game_started()
 
                     await room.broadcast({
@@ -656,8 +687,13 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         room.device_info[who] = info
                         if room.recording:
                             room.recording.set_device(who, info)
-                    # retomada: reenvia o verso atual, não o primeiro
-                    await _broadcast_segment_start(room, room.current_segment_idx if resuming else 0)
+                    if role == "mic":
+                        # celular que liga o microfone: o verso atual só para ele (antes ia
+                        # o 1º verso para todos, e no meio da música os outros celulares voltavam a ele)
+                        await _send_current_segment(room, websocket)
+                    else:
+                        # retomada: reenvia o verso atual, não o primeiro
+                        await _broadcast_segment_start(room, room.current_segment_idx if resuming else 0)
 
                 elif msg_type == "playback_time":
                     try:
@@ -811,6 +847,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         "records": records,
                         "verse_latencies": list(room.verse_latencies),
                     })
+                    room.in_game = False
                     await room.broadcast({
                         "type": "game_over",
                         "total_score": total_score_avg,
@@ -828,7 +865,10 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                     queue_manager.notify_game_ended()
                     break
 
-    except (WebSocketDisconnect, RuntimeError):
+    except WebSocketDisconnect as e:
+        close_code = e.code
+        logger.info(f"Conexão do papel {role} desconectada (código {e.code}).")
+    except RuntimeError:
         logger.info(f"Conexão do papel {role} desconectada.")
     except Exception as e:
         logger.error(f"Erro no WebSocket da sala {room_id}: {e}", exc_info=True)
@@ -842,7 +882,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                 # mesmo apelido, o áudio volta a pontuar e a nota entra no fim.
                 logger.info(f"Jogador {player_name} desconectado da sala.")
                 if room.recording:
-                    room.recording.add_event("mic_left", room.last_client_time, value=player_name)
+                    room.recording.add_event("mic_left", room.last_client_time, value=player_name, code=close_code)
             
             if websocket in room.unregistered_mics:
                 is_front = (room.unregistered_mics[0] == websocket)

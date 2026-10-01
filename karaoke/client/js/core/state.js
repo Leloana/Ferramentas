@@ -36,6 +36,13 @@ export const state = {
     micAutoRegistering: false,   // mobile/mic-messages.js: entrando sozinho com o apelido lembrado
     micAutoRegisterFailed: false, // ...e falhou (apelido em uso): mostra o formulário
     isActiveInGame: false,
+    micVuFrame: null,         // mobile/mobile-mic-view.js: laço do medidor de volume
+    micHealthCleanup: null,   // mobile/mic-health.js: tira os vigias do áudio do microfone
+    micHeartbeatTimer: null,  // mobile/mic-socket.js: ping a cada 10 s
+    micReconnectTimer: null,
+    micLastServerAt: 0,       // última mensagem do servidor (Date.now)
+    micVisibilityHooked: false,
+    micReplaced: false,       // 4002: outra aba assumiu o microfone, não reconecta
     activePlayers: null,
     gameMode: null,
     currentAppState: 'idle',

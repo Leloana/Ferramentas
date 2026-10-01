@@ -11,6 +11,8 @@ import { escapeHtml } from '../core/html.js';
 import { onRequestsUpdate } from '../lobby/requests.js';
 import { showMicGameOver } from './mic-final.js';
 import { setMicStatus } from './mic-socket.js';
+import { remindMicIfOff } from './mobile-mic-view.js';
+import { keepScreenOn } from '../core/wake-lock.js';
 
 function setRegisterButton(busy) {
     if (!dom.btnMobileRegister) return;
@@ -67,6 +69,8 @@ const MIC_HANDLERS = {
         if (!automatic) showToast(`Registrado como "${data.name}"`, "success");
         showNameInStatus(data.name);
         setAppState('singing');
+        // depois de recarregar a tela apagava antes do primeiro toque em LIGAR MIC
+        keepScreenOn();
     },
     registration_error(data) {
         // a entrada automática falhou (apelido pego por outro aparelho): formulário
@@ -93,6 +97,7 @@ const MIC_HANDLERS = {
         setLyricsNote(state.isActiveInGame
             ? `<span class="mic-note mic-note--good">Você está no jogo</span>Prepare-se`
             : `<span class="mic-note">Assistindo</span>Próxima rodada`);
+        remindMicIfOff();
     },
     pairing_status(data) {
         if (data.status === 'paired') {
@@ -151,6 +156,9 @@ const MIC_HANDLERS = {
     },
     game_over(data) {
         showMicGameOver(data);
+    },
+    pong() {
+        // resposta ao ping de mic-socket.js: só prova que a conexão está viva
     }
 };
 
