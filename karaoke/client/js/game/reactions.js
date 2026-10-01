@@ -8,6 +8,7 @@ export const REACTION_KINDS = ['heart', 'flame', 'star'];
 // TV fraca: acima disso a reação nova é descartada até alguma sair da tela
 const MAX_ON_SCREEN = 12;
 const FLOAT_MS = 2600;
+const SWAYS = ['left', 'straight', 'right'];
 
 let layer = null;
 
@@ -26,10 +27,11 @@ export function showReaction(kind, from) {
     const box = reactionLayer();
     if (box.childElementCount >= MAX_ON_SCREEN) return;
     const node = document.createElement('div');
-    node.className = `reaction reaction--${kind}`;
-    // posição e balanço sorteados: várias reações seguidas não sobem em fila
+    // posição e trajetória sorteadas: várias reações seguidas não sobem em fila.
+    // Trajetórias fixas no CSS: var() dentro de @keyframes pode tirar a animação
+    // da GPU no Chromium antigo da TV.
+    node.className = `reaction reaction--${kind} reaction--${SWAYS[Math.floor(Math.random() * SWAYS.length)]}`;
     node.style.left = `${6 + Math.random() * 88}%`;
-    node.style.setProperty('--sway', `${Math.round((Math.random() - 0.5) * 80)}px`);
     node.innerHTML = iconSvg(kind);
     if (from) {
         const name = document.createElement('span');

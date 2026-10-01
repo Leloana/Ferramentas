@@ -61,6 +61,8 @@ html.is-tv .word.active { transform: none; box-shadow: none; }
 /* exceção: as reações da plateia só existem subindo, e animam só transform e
    opacity (a GPU compõe, sem redesenhar); reactions.js limita a 12 na tela */
 html.is-tv .reaction { animation: reactionFloat 2.6s cubic-bezier(0.3, 0.6, 0.5, 1) forwards !important; }
+html.is-tv .reaction--left { animation-name: reactionFloatLeft !important; }
+html.is-tv .reaction--right { animation-name: reactionFloatRight !important; }
 
 /* ---------- TV: lobby e partida cabem na tela, sem rolagem ----------
    Lobby em duas colunas (música | cantores + INICIAR) com os ajustes numa

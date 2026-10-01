@@ -921,13 +921,29 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
-@keyframes reactionFloat {
+/* três trajetórias, sem var(): no Chromium antigo da TV a animação continua na GPU */
+@keyframes reactionFloatLeft {
     0%   { opacity: 0; transform: translate(-50%, 0) scale(0.6); }
     12%  { opacity: 1; transform: translate(-50%, -12vh) scale(1); }
-    50%  { transform: translate(calc(-50% + var(--sway, 0px)), -38vh) scale(1); }
+    50%  { transform: translate(calc(-50% - 36px), -38vh) scale(1); }
     80%  { opacity: 1; }
     100% { opacity: 0; transform: translate(-50%, -62vh) scale(0.9); }
 }
+@keyframes reactionFloat {
+    0%   { opacity: 0; transform: translate(-50%, 0) scale(0.6); }
+    12%  { opacity: 1; transform: translate(-50%, -12vh) scale(1); }
+    80%  { opacity: 1; }
+    100% { opacity: 0; transform: translate(-50%, -62vh) scale(0.9); }
+}
+@keyframes reactionFloatRight {
+    0%   { opacity: 0; transform: translate(-50%, 0) scale(0.6); }
+    12%  { opacity: 1; transform: translate(-50%, -12vh) scale(1); }
+    50%  { transform: translate(calc(-50% + 36px), -38vh) scale(1); }
+    80%  { opacity: 1; }
+    100% { opacity: 0; transform: translate(-50%, -62vh) scale(0.9); }
+}
+.reaction--left  { animation-name: reactionFloatLeft; }
+.reaction--right { animation-name: reactionFloatRight; }
 /* sem movimento: aparece e some no lugar (o base.css zera a duração das animações) */
 @keyframes reactionFade {
     0%, 100% { opacity: 0; transform: translate(-50%, -30vh); }
