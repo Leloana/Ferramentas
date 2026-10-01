@@ -122,14 +122,14 @@ export function updateScoreBars(playerScores, expected, renderHeard, opts) {
         const trans = bar.querySelector('.mp-player-transcription');
         if (trans) {
             if (group.mics.length === 1) {
-                renderHeard(trans, results[0].transcription || '', expected, true);
+                renderHeard(trans, results[0].transcription || '', expected, true, results[0].heard_hits);
             } else {
                 trans.replaceChildren();
                 group.mics.forEach((mic, i) => {
                     const line = el('div', 'heard-line');
                     const who = el('strong', null, `${micLabel(mic)}: `);
                     const words = el('span');
-                    renderHeard(words, results[i].transcription || '', expected, false);
+                    renderHeard(words, results[i].transcription || '', expected, false, results[i].heard_hits);
                     line.append(who, words);
                     trans.append(line);
                 });

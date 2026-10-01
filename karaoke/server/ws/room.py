@@ -258,6 +258,7 @@ async def process_segment_multiplayer(
                 "score": result["score"],
                 "total_score": running_avg,
                 "transcription": result.get("transcription", transcribed_text),
+                "heard_hits": result.get("heard_hits"),
                 # afinação: informativa por enquanto, fora da nota (calibrar no servidor)
                 "pitch": pitch,
                 "pitch_avg": pitch_avg,
@@ -297,6 +298,7 @@ async def process_segment_multiplayer(
         "type": "segment_result",
         "score": primary_res["score"],
         "transcription": primary_res["transcription"],
+        "heard_hits": primary_res.get("heard_hits"),
         "total_score": primary_res["total_score"],
         "pitch": primary_res.get("pitch"),
         "pitch_avg": primary_res.get("pitch_avg"),

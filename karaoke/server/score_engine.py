@@ -401,6 +401,9 @@ def calculate_score(expected_timed: list[dict], transcribed_words: list[dict], p
     return {
         "score": round(final_score, 1),
         "transcription": " ".join([w["word"] for w in transcribed_clean]),
+        # acerto de cada palavra ouvida, na ordem da transcrição: a TV pinta o "Ouvi:" por
+        # aqui (em japonês a comparação é em romaji e a letra na tela está em kanji)
+        "heard_hits": [j in consumed_indices for j in range(len(transcribed_clean))],
         "matched_words": len(consumed_indices) + rescued_count,
         "total_expected": len(expected_words),
         "tempo_factor": round(tempo_factor, 3),

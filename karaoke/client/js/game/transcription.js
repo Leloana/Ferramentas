@@ -22,7 +22,9 @@ function setHint(el, text, showHeader) {
     el.innerHTML = `${showHeader ? '<strong>Ouvi:</strong> ' : ''}<span class="muted">${text}</span>`;
 }
 
-export function renderTranscriptionInto(container, transcription, expectedNormalized, showHeader = true) {
+// hits (opcional, do servidor): acerto de cada palavra ouvida, na mesma ordem. Sem ele,
+// compara com a letra aqui (não serve para japonês, que o servidor casa em romaji).
+export function renderTranscriptionInto(container, transcription, expectedNormalized, showHeader = true, hits = null) {
     if (!container) return;
     container.innerHTML = '';
 
@@ -34,9 +36,10 @@ export function renderTranscriptionInto(container, transcription, expectedNormal
     if (showHeader) {
         container.innerHTML = '<strong>Ouvi:</strong> ';
     }
-    const words = transcription.split(/\s+/);
-    words.forEach(word => {
-        const isMatch = expectedNormalized.includes(normalizeWord(word));
+    const words = transcription.trim().split(/\s+/);
+    const useHits = Array.isArray(hits) && hits.length === words.length;
+    words.forEach((word, i) => {
+        const isMatch = useHits ? hits[i] : expectedNormalized.includes(normalizeWord(word));
         const span = document.createElement('span');
         span.innerText = word + ' ';
         span.className = isMatch ? 'heard-word heard-word--hit' : 'heard-word heard-word--miss';
@@ -57,11 +60,11 @@ export function listeningHint() {
 }
 
 // Resultado de um verso: fica na tela por HEARD_HOLD_MS e volta ao aviso de espera.
-export function showHeardResult(transcription, expectedNormalized) {
+export function showHeardResult(transcription, expectedNormalized, hits = null) {
     const el = transcriptionEl();
     if (!el) return;
     if (transcription && transcription.trim()) {
-        renderTranscriptionInto(el, transcription, expectedNormalized);
+        renderTranscriptionInto(el, transcription, expectedNormalized, true, hits);
     } else {
         setHint(el, '[Silêncio ou Incompreensível]', true);
     }

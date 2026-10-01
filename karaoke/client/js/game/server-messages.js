@@ -91,7 +91,7 @@ const DISPLAY_HANDLERS = {
             return;
         }
         showVerseScore(data);
-        showHeardResult(data.transcription, expectedWords(state.lastSegmentLyricsTimed));
+        showHeardResult(data.transcription, expectedWords(state.lastSegmentLyricsTimed), data.heard_hits);
         applyTotals(data);
         flashPerfBorder(data.score);
         updatePlayerBars(data);

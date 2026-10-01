@@ -192,6 +192,14 @@ class TestJapaneseScoring(unittest.TestCase):
         kanji = _pieces(["遠", "ざ", "かって", "いく", "日", "も", "見", "えない"])
         self.assertEqual(score_words(self.SEGMENT, None, kanji, "timing")["score"], 100.0)
 
+    def test_heard_words_come_marked_as_hits_for_the_tv(self):
+        # A TV pintava o "Ouvi:" comparando com a letra em kanji: tudo vermelho.
+        res = score_words(self.SEGMENT, None, _pieces(["遠", "ざ", "かって", "いく", "日", "も", "見", "えない"]), "timing")
+        self.assertEqual(len(res["heard_hits"]), len(res["transcription"].split()))
+        self.assertTrue(all(res["heard_hits"]))
+        wrong = score_words(self.SEGMENT, None, _pieces(["あの", "声", "は"]), "timing")
+        self.assertFalse(any(wrong["heard_hits"]))
+
     def test_sung_right_written_all_in_kana_still_scores_high(self):
         # Limite conhecido: em kana o MeCab divide diferente (いく / ひも) e lê o 日 da
         # letra pelo contexto (いく日も → ikukamo); a comparação pela leitura segura quase tudo.
