@@ -10,7 +10,12 @@ import { dom } from '../core/dom.js';
 import { sendPlayerEvent } from '../game/game-events.js';
 
 const STORAGE_KEY = 'karaoke_guide_volume';
-const MAX_DRIFT_SEC = 0.08;
+// Deriva da voz guia: até SOFT só acompanha; até HARD alcança mudando a velocidade
+// (sem pular, inaudível); acima disso salta. Antes saltava a partir de 80 ms, várias
+// vezes por música na TV, e cada salto engasgava o som.
+const SOFT_DRIFT_SEC = 0.04;
+const HARD_DRIFT_SEC = 0.5;
+const MAX_RATE_NUDGE = 0.05;
 
 export function savedGuideVolume() {
     try {
@@ -41,11 +46,28 @@ function follow(audio) {
     // o <audio> da voz guia é trocado por um clone a cada partida: sempre o atual
     const guide = () => dom.guidePlayer;
     const active = () => savedGuideVolume() > 0 && !!guide();
+    // salto: no play/seek do instrumental e quando a deriva passa de HARD_DRIFT_SEC
     const align = () => {
         const g = guide();
-        if (g && Math.abs(g.currentTime - audio.currentTime) > MAX_DRIFT_SEC) {
+        if (g && Math.abs(g.currentTime - audio.currentTime) > SOFT_DRIFT_SEC) {
             try { g.currentTime = audio.currentTime; } catch (e) { /* ainda sem metadados */ }
+            g.playbackRate = audio.playbackRate;
         }
+    };
+    // durante a música: velocidade proporcional à deriva (adiantada = mais devagar)
+    const nudge = () => {
+        const g = guide();
+        if (!g) return;
+        const drift = g.currentTime - audio.currentTime;
+        if (Math.abs(drift) > HARD_DRIFT_SEC) {
+            sendPlayerEvent('guide_resync', Math.round(drift * 1000));
+            align();
+            return;
+        }
+        const k = Math.abs(drift) > SOFT_DRIFT_SEC
+            ? Math.max(-MAX_RATE_NUDGE, Math.min(MAX_RATE_NUDGE, drift * 0.25)) : 0;
+        const rate = audio.playbackRate * (1 - k);
+        if (Math.abs(g.playbackRate - rate) > 0.001) g.playbackRate = rate;
     };
     const play = () => {
         const g = guide();
@@ -63,8 +85,8 @@ function follow(audio) {
     audio.addEventListener('ratechange', () => { if (guide()) guide().playbackRate = audio.playbackRate; });
     audio.addEventListener('timeupdate', () => {
         if (!active() || audio.paused) return;
-        if (guide().paused) play();
-        align();
+        if (guide().paused) { align(); play(); return; }
+        nudge();
     });
 }
 
