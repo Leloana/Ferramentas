@@ -4,6 +4,8 @@
 import { iconSvg } from '../core/icons.js';
 import { openAnnotationFor } from './annotate.js';
 import { toggleReplay, stopReplay } from '../audio/replay.js';
+import { showToast } from '../core/toast.js';
+import { avatarNode, fetchAvatarVersion, uploadAvatar, removeAvatar } from './avatar.js';
 
 function el(tag, cls, text) {
     const node = document.createElement(tag);
@@ -57,9 +59,11 @@ export function renderPlayersList(container, playersList, onPick) {
         const item = el('li');
         const row = el('button', 'player-row');
         row.type = 'button';
+        const who = el('span', 'player-row__who');
+        who.append(avatarNode(p.name, p.avatar, 'avatar--row'), el('span', 'player-row__name', p.name));
         row.append(
             el('span', 'player-row__place', `${idx + 1}º`),
-            el('span', 'player-row__name', p.name),
+            who,
             el('span', 'player-row__meta', `${p.games} ${p.games === 1 ? 'música' : 'músicas'}`),
             el('span', 'player-row__score', pct(p.avg)),
         );
@@ -70,18 +74,60 @@ export function renderPlayersList(container, playersList, onPick) {
     container.append(list);
 }
 
+// Topo do perfil: foto e apelido. `editable` (o próprio cantor, no celular) troca a foto.
+function renderHead(name, version, opts) {
+    const head = el('div', 'profile-head');
+    head.append(avatarNode(name, version, 'profile-head__avatar'), el('h3', 'profile-head__name', name));
+    if (!opts.editable) return head;
+
+    const input = el('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.hidden = true;
+    const pick = el('button', 'btn btn--ghost profile-photo-btn');
+    pick.type = 'button';
+    pick.insertAdjacentHTML('beforeend', iconSvg('camera'));
+    pick.append(el('span', null, version ? 'Trocar foto' : 'Pôr foto'));
+    pick.addEventListener('click', () => input.click());
+    input.addEventListener('change', async () => {
+        const file = input.files && input.files[0];
+        if (!file) return;
+        pick.disabled = true;
+        try {
+            await uploadAvatar(name, file);
+            if (opts.onChanged) opts.onChanged();
+        } catch (e) {
+            showToast(e.message, 'error');
+            pick.disabled = false;
+        }
+    });
+    const actions = el('div', 'profile-photo-actions');
+    actions.append(pick, input);
+    if (version) {
+        const drop = el('button', 'btn btn--ghost profile-photo-btn', 'Tirar');
+        drop.type = 'button';
+        drop.addEventListener('click', async () => {
+            await removeAvatar(name);
+            if (opts.onChanged) opts.onChanged();
+        });
+        actions.append(drop);
+    }
+    head.append(actions);
+    return head;
+}
+
 // Perfil completo: resumo, recordes por música e últimas partidas.
-export function renderProfile(container, detail) {
+// opts: { name, editable, onChanged } — no celular, o próprio cantor põe a foto
+// mesmo antes da primeira partida (sem `detail`).
+export async function renderProfile(container, detail, opts = {}) {
     stopReplay();
     container.replaceChildren();
     if (!detail) {
+        if (opts.name) container.append(renderHead(opts.name, await fetchAvatarVersion(opts.name), opts));
         container.append(el('p', 'profile-empty', 'Ainda sem partidas'));
         return;
     }
-    const head = el('div', 'profile-head');
-    head.insertAdjacentHTML('beforeend', iconSvg('user', 'profile-head__avatar'));
-    head.append(el('h3', 'profile-head__name', detail.name));
-    container.append(head);
+    container.append(renderHead(detail.name, detail.avatar, opts));
 
     const stats = el('div', 'profile-stats');
     stats.append(

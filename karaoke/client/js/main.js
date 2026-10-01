@@ -217,7 +217,8 @@ async function showMyProfile() {
         return;
     }
     try {
-        renderProfile(view, await fetchProfile(state.mobileNickname));
+        renderProfile(view, await fetchProfile(state.mobileNickname),
+            { name: state.mobileNickname, editable: true, onChanged: showMyProfile });
     } catch (e) {
         showToast(e.message, 'error');
     }

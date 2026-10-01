@@ -17,6 +17,33 @@ class PlayersTest(unittest.TestCase):
     def tearDown(self):
         self.patch.stop()
 
+    def _photo(self, size=(1200, 800), fmt="JPEG"):
+        from io import BytesIO
+        from PIL import Image
+        buf = BytesIO()
+        Image.new("RGB", size, (200, 120, 40)).save(buf, fmt)
+        return buf.getvalue()
+
+    def test_avatar_is_saved_square_and_small(self):
+        from PIL import Image
+        self.assertIsNone(players.avatar_version("Ana"))
+        version = players.save_avatar("Ana", self._photo())
+        self.assertIsNotNone(version)
+        with Image.open(players.avatar_path("Ana")) as img:
+            self.assertEqual(img.size, (players.AVATAR_SIZE, players.AVATAR_SIZE))
+        # aparece no ranking com a versão (cache do navegador por URL)
+        players.record_game("Ana", "geni", "Geni - Chico", 70.0)
+        self.assertEqual(players.list_profiles()[0]["avatar"], version)
+        players.delete_avatar("Ana")
+        self.assertIsNone(players.avatar_version("Ana"))
+
+    def test_avatar_rejects_what_is_not_an_image(self):
+        with self.assertRaises(ValueError):
+            players.save_avatar("Ana", b"not an image")
+        with self.assertRaises(ValueError):
+            players.save_avatar("../..", self._photo())  # sem apelido válido, sem pasta
+        self.assertFalse(players.avatar_path("Ana").exists())
+
     def test_record_and_personal_best(self):
         first = players.record_game("Ana", "geni", "Geni - Chico", 70.0, pitch=55.0)
         self.assertTrue(first["is_record"])

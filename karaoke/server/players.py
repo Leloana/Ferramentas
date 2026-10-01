@@ -28,6 +28,48 @@ def get_player_profile_path(name: str) -> Path:
     return PLAYERS_DIR / (profile_key(name) or "default_player") / "profile.json"
 
 
+# Foto de perfil: players/<apelido>/avatar.jpg, quadrada e pequena (a do celular vem com ~4 MB)
+AVATAR_FILE = "avatar.jpg"
+AVATAR_SIZE = 256
+AVATAR_MAX_UPLOAD_BYTES = 15 * 1024 * 1024
+
+
+def avatar_path(name: str) -> Path:
+    return get_player_profile_path(name).parent / AVATAR_FILE
+
+
+def avatar_version(name: str) -> Optional[int]:
+    """Muda quando a foto muda (vai na URL e o navegador não mostra a antiga); None sem foto."""
+    path = avatar_path(name)
+    return path.stat().st_mtime_ns // 1_000_000 if path.exists() else None
+
+
+def save_avatar(name: str, data: bytes) -> int:
+    """Grava a foto recortada no centro, AVATAR_SIZE² em JPEG. ValueError se não for imagem."""
+    from io import BytesIO
+
+    from PIL import Image, ImageOps
+
+    if not profile_key(name):
+        raise ValueError("Apelido inválido")
+    try:
+        img = Image.open(BytesIO(data))
+        img = ImageOps.exif_transpose(img)  # foto de celular deitada pelo EXIF
+        img = ImageOps.fit(img.convert("RGB"), (AVATAR_SIZE, AVATAR_SIZE), Image.Resampling.LANCZOS)
+    except Exception as e:
+        raise ValueError(f"Não é uma imagem válida: {e}") from e
+    path = avatar_path(name)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(".jpg.tmp")
+    img.save(tmp, "JPEG", quality=85)
+    os.replace(tmp, path)
+    return avatar_version(name)
+
+
+def delete_avatar(name: str) -> None:
+    avatar_path(name).unlink(missing_ok=True)
+
+
 def load_profile(name: str) -> Optional[dict]:
     """Perfil existente ou None (não cria nada)."""
     path = get_player_profile_path(name)
@@ -121,6 +163,7 @@ def summarize(profile: dict) -> dict:
         "best_song": best.get("name") if best else None,
         "avg_pitch": round(sum(pitches) / len(pitches), 1) if pitches else None,
         "last_date": max((e.get("date", "") for e in songs), default=None),
+        "avatar": avatar_version(profile.get("name", "")),
     }
 
 
