@@ -175,12 +175,6 @@ html.is-tv #app[data-state="scoring"] #game-area {
     display: flex !important;
     flex-direction: column !important;
 }
-html.is-tv #app[data-state="singing"] .game-header,
-html.is-tv #app[data-state="scoring"] .game-header { margin-bottom: 0.5rem; }
-html.is-tv #app[data-state="singing"] .song-cover,
-html.is-tv #app[data-state="scoring"] .song-cover { width: 2.8rem; height: 2.8rem; }
-html.is-tv #app[data-state="singing"] .game-title,
-html.is-tv #app[data-state="scoring"] .game-title { font-size: 1.3rem; }
 html.is-tv #app[data-state="singing"] .btn-change-cover,
 html.is-tv #app[data-state="scoring"] .btn-change-cover { display: none; }
 html.is-tv .song-progress-container { margin-bottom: 0.4rem; }
@@ -228,12 +222,12 @@ html.is-tv #app[data-state="scoring"] .game-score-sidebar { width: 6rem !importa
 html.is-tv #app[data-state="singing"] .score-sidebar-container,
 html.is-tv #app[data-state="scoring"] .score-sidebar-container { height: 100%; padding: 1rem 0.5rem !important; }
 
-/* Duelo/times na TV: barras de placar menores (em rem) e espaço reservado
-   para elas; o título da música sai para o palco caber. */
+/* Duelo/times na TV: as barras 1 e 2 ficam embaixo, lado a lado (em cima elas
+   cobriam a capa e o título; embaixo, os ajustes). 3 e 4 seguem nas laterais. */
 html.is-tv .mp-score-bar { padding: 0.4rem 0.8rem; gap: 0.25rem; }
-html.is-tv .mp-score-bar.horizontal-bar { width: 26rem; }
-html.is-tv .mp-score-bar.top-bar { top: 0.5rem; }
-html.is-tv .mp-score-bar.bottom-bar { bottom: 0.5rem; }
+html.is-tv .mp-score-bar.horizontal-bar { top: auto; bottom: 0.6rem; width: calc(50vw - 1.6rem); transform: none; }
+html.is-tv .mp-score-bar.bottom-bar { left: 1rem; }
+html.is-tv .mp-score-bar.top-bar { left: auto; right: 1rem; }
 html.is-tv .mp-score-bar.left-bar { left: 0.8rem; }
 html.is-tv .mp-score-bar.right-bar { right: 0.8rem; }
 html.is-tv .mp-score-bar.vertical-bar { width: 6.5rem; height: 40vh; padding: 0.6rem 0.4rem; }
@@ -241,12 +235,12 @@ html.is-tv .mp-progress-bg { height: 0.6rem; }
 html.is-tv .mp-player-transcription { margin-top: 0.15rem; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 html.is-tv .mp-score-bar.vertical-bar .mp-player-transcription { display: none; }
 
-html.is-tv #app[data-players="multi"][data-state="singing"] .game-header,
-html.is-tv #app[data-players="multi"][data-state="scoring"] .game-header { display: none; }
+/* espaço embaixo para a faixa das barras (time tem as linhas dos membros); em cima,
+   o mesmo respiro do solo (states.css reserva o topo para barras que lá não ficam mais) */
 html.is-tv #app[data-players="multi"][data-state="singing"] .main-card,
-html.is-tv #app[data-players="multi"][data-state="scoring"] .main-card { padding: 5rem 2rem !important; }
+html.is-tv #app[data-players="multi"][data-state="scoring"] .main-card { padding-top: 0.8rem !important; padding-bottom: 6.6rem !important; }
 html.is-tv #app[data-players="multi"][data-teams][data-state="singing"] .main-card,
-html.is-tv #app[data-players="multi"][data-teams][data-state="scoring"] .main-card { padding-top: 7rem !important; padding-bottom: 7rem !important; }
+html.is-tv #app[data-players="multi"][data-teams][data-state="scoring"] .main-card { padding-top: 0.8rem !important; padding-bottom: 10.2rem !important; }
 html.is-tv #app[data-players="multi"][data-player-count="3"][data-state="singing"] .main-card,
 html.is-tv #app[data-players="multi"][data-player-count="4"][data-state="singing"] .main-card,
 html.is-tv #app[data-players="multi"][data-player-count="3"][data-state="scoring"] .main-card,
@@ -296,13 +290,59 @@ html.is-tv #sync-controls .btn-control-small { min-width: 0; min-height: 0; heig
 html.is-tv #sync-controls .btn-sync-mode .ico { display: none; }
 html.is-tv .sync-control-value { font-size: 0.9rem; }
 
-/* Tela de canto: capa do tamanho do Voltar, alinhados */
+/* Tela de canto: capa grande ao lado do título, com a barra da música embaixo
+   dele. O #game-area vira grade e o cabeçalho some como caixa (display: contents)
+   para Voltar, capa e título entrarem direto nela:
+       [Voltar] [capa] [título · artista]
+       [Voltar] [capa] [tempo ── barra ── PAUSAR]
+       [barrinha do verso                       ]
+       [palco da letra                 | placar ]
+       [ajustes                                 ]                              */
+html.is-tv #app[data-state="singing"] #game-area,
+html.is-tv #app[data-state="scoring"] #game-area {
+    display: grid !important;
+    grid-template-columns: auto auto minmax(0, 1fr);
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+    column-gap: 1.1rem;
+}
 html.is-tv #app[data-state="singing"] .game-header,
-html.is-tv #app[data-state="scoring"] .game-header { align-items: center; }
+html.is-tv #app[data-state="scoring"] .game-header { display: contents; }
 html.is-tv #app[data-state="singing"] #btn-back,
-html.is-tv #app[data-state="scoring"] #btn-back { min-height: 0; height: 2.6rem; }
+html.is-tv #app[data-state="scoring"] #btn-back {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    align-self: center;
+    min-height: 0;
+    height: 2.6rem;
+}
 html.is-tv #app[data-state="singing"] .song-cover,
-html.is-tv #app[data-state="scoring"] .song-cover { width: 2.6rem; height: 2.6rem; }
+html.is-tv #app[data-state="scoring"] .song-cover {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    width: 7.5rem;
+    height: 7.5rem;
+    box-shadow: none;
+}
+html.is-tv #app[data-state="singing"] .game-header__text,
+html.is-tv #app[data-state="scoring"] .game-header__text { grid-column: 3; grid-row: 1; align-self: end; }
+html.is-tv #app[data-state="singing"] .game-title,
+html.is-tv #app[data-state="scoring"] .game-title {
+    overflow: hidden;
+    font-size: 2.5rem;
+    line-height: 1.1;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+html.is-tv #app[data-state="singing"] .game-artist,
+html.is-tv #app[data-state="scoring"] .game-artist { font-size: 1.15rem; }
+html.is-tv #app[data-state="singing"] .song-progress-container,
+html.is-tv #app[data-state="scoring"] .song-progress-container { grid-column: 3; grid-row: 2; align-self: start; margin: 0.35rem 0 0; }
+html.is-tv #app[data-state="singing"] #verse-progress-container,
+html.is-tv #app[data-state="scoring"] #verse-progress-container { grid-column: 1 / -1; grid-row: 3; margin-top: 0.6rem; }
+html.is-tv #app[data-state="singing"] .game-layout,
+html.is-tv #app[data-state="scoring"] .game-layout { grid-column: 1 / -1; grid-row: 4; }
+html.is-tv #app[data-state="singing"] #sync-controls,
+html.is-tv #app[data-state="scoring"] #sync-controls { grid-column: 1 / -1; grid-row: 5; }
 
 /* Lobby: faixa de ajustes fina, sem sobra embaixo */
 html.is-tv #app[data-state="waiting"] .main-card { padding-bottom: 0.5rem !important; }
