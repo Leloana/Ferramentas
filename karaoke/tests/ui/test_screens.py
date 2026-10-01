@@ -115,7 +115,7 @@ class ScreensTest(unittest.TestCase):
         page, errors = self.open()
         page.evaluate("""async () => {
             window.__xss = 0;
-            const gv = await import('/js/game-view.js');
+            const gv = await import('/js/game/server-messages.js');
             gv.handleServerMessage({type: 'game_over', total_score: 80,
                 player_scores: {'<img src=x onerror="window.__xss=1">': 80, 'Ana': 70},
                 player_stats: {'Ana': {good: 3, ok: 1, poor: 1}}, song_id: 'x', records: {}, leaderboard: []});

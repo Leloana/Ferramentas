@@ -1,6 +1,6 @@
 import { state } from './state.js';
 import { myRole, myRoom, DISPLAY_REPLACED_CODE } from './config.js';
-import { handleServerMessage } from './game-view.js';
+import { handleServerMessage } from './game/server-messages.js';
 
 export function connectDisplayWebSocket() {
     if (myRole !== 'display') return;
