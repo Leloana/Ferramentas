@@ -1,4 +1,6 @@
+import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -28,11 +30,98 @@ class SeparationTest(unittest.TestCase):
             return _Proc(1, "Traceback\nRuntimeError: CUDA out of memory")
 
         with patch.object(separation, "_best_device", return_value="cuda"), \
+                patch.object(separation, "SEPARATOR", "demucs"), \
                 patch.object(separation.subprocess, "run", side_effect=fake_run):
             with self.assertRaises(RuntimeError) as ctx:
                 separation.separate_stems(Path("/x/original.mp3"), Path("/x/out"))
         self.assertEqual(calls, ["cuda", "cpu"])
         self.assertIn("CUDA out of memory", str(ctx.exception))
+
+    def test_auto_picks_roformer_only_when_installed(self):
+        with patch.object(separation, "SEPARATOR", "auto"), \
+                patch.object(separation, "_best_device", return_value="cuda"):
+            with patch.object(separation, "roformer_available", return_value=True):
+                self.assertEqual(separation.separator_backend(), "roformer")
+            with patch.object(separation, "roformer_available", return_value=False):
+                self.assertEqual(separation.separator_backend(), "demucs")
+        with patch.object(separation, "SEPARATOR", "demucs"), \
+                patch.object(separation, "roformer_available", return_value=True):
+            self.assertEqual(separation.separator_backend(), "demucs")
+
+    def test_auto_without_gpu_stays_on_demucs(self):
+        with patch.object(separation, "SEPARATOR", "auto"), \
+                patch.object(separation, "_best_device", return_value="cpu"), \
+                patch.object(separation, "roformer_available", return_value=True):
+            self.assertEqual(separation.separator_backend(), "demucs")
+
+    def test_roformer_command_names_both_stems(self):
+        cmd = separation.roformer_command(Path("/x/original.mp3"), Path("/x/out"), model="m.ckpt")
+        self.assertEqual(cmd[0], sys.executable)
+        self.assertEqual(cmd[cmd.index("-m") + 1], "m.ckpt")
+        names = json.loads(cmd[cmd.index("--custom_output_names") + 1])
+        self.assertEqual(names, {"Vocals": "vocals", "Instrumental": "no_vocals"})
+
+    def test_roformer_failure_falls_back_to_demucs(self):
+        seen = []
+
+        def fake_run(cmd, env=None, **kw):
+            if "demucs.separate" in cmd:
+                seen.append(("demucs", cmd[cmd.index("-d") + 1]))
+                out = Path(cmd[cmd.index("-o") + 1]) / separation.DEMUCS_MODEL / "original"
+                out.mkdir(parents=True, exist_ok=True)
+                (out / "vocals.wav").write_bytes(b"v")
+                (out / "no_vocals.wav").write_bytes(b"i")
+                return _Proc(0)
+            # GPU e depois CPU (sem GPU visível) para o RoFormer
+            seen.append(("roformer", "cpu" if env and env.get("CUDA_VISIBLE_DEVICES") == "" else "cuda"))
+            return _Proc(1, "RuntimeError: CUDA out of memory")
+
+        with tempfile.TemporaryDirectory() as tmp, \
+                patch.object(separation, "_best_device", return_value="cuda"), \
+                patch.object(separation, "SEPARATOR", "roformer"), \
+                patch.object(separation.subprocess, "run", side_effect=fake_run):
+            vocals, no_vocals = separation.separate_stems(Path(tmp) / "original.mp3", Path(tmp) / "out")
+            self.assertTrue(vocals.exists() and no_vocals.exists())
+        # com GPU, o RoFormer não tenta a CPU: vai direto ao Demucs
+        self.assertEqual(seen, [("roformer", "cuda"), ("demucs", "cuda")])
+
+    def _demucs_only_run(self, seen):
+        def fake_run(cmd, env=None, **kw):
+            seen.append("demucs" if "demucs.separate" in cmd else "roformer")
+            if "demucs.separate" in cmd:
+                out = Path(cmd[cmd.index("-o") + 1]) / separation.DEMUCS_MODEL / "original"
+                out.mkdir(parents=True, exist_ok=True)
+                (out / "vocals.wav").write_bytes(b"v")
+                (out / "no_vocals.wav").write_bytes(b"i")
+            return _Proc(0)
+        return fake_run
+
+    def test_game_in_progress_uses_demucs(self):
+        seen = []
+        with tempfile.TemporaryDirectory() as tmp, \
+                patch.object(separation, "_best_device", return_value="cuda"), \
+                patch.object(separation, "SEPARATOR", "roformer"), \
+                patch.object(separation.subprocess, "run", side_effect=self._demucs_only_run(seen)):
+            separation.separate_stems(Path(tmp) / "original.mp3", Path(tmp) / "out", heavy_ok=lambda: False)
+        self.assertEqual(seen, ["demucs"])
+
+    def test_hung_separation_times_out_and_falls_back(self):
+        seen = []
+        demucs = self._demucs_only_run(seen)
+
+        def fake_run(cmd, env=None, timeout=None, **kw):
+            self.assertIsNotNone(timeout)
+            if "demucs.separate" not in cmd:
+                seen.append("roformer")
+                raise separation.subprocess.TimeoutExpired(cmd, timeout)
+            return demucs(cmd, env)
+
+        with tempfile.TemporaryDirectory() as tmp, \
+                patch.object(separation, "_best_device", return_value="cuda"), \
+                patch.object(separation, "SEPARATOR", "roformer"), \
+                patch.object(separation.subprocess, "run", side_effect=fake_run):
+            separation.separate_stems(Path(tmp) / "original.mp3", Path(tmp) / "out")
+        self.assertEqual(seen, ["roformer", "demucs"])
 
 
 if __name__ == "__main__":

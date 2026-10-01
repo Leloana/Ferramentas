@@ -1,4 +1,16 @@
-"""Separação voz × instrumental com o Demucs (um lugar só para fila e reinstall).
+"""Separação voz × instrumental (um lugar só para fila e reinstall).
+
+Dois separadores, escolhidos por `KARAOKE_SEPARATOR`:
+- `roformer`: BS-RoFormer pelo pacote opcional `audio-separator` (~+3,5 dB de
+  SDR na voz e ~+2 dB no instrumental sobre o htdemucs, MVSEP Multisong).
+- `demucs`: o htdemucs de sempre.
+- `auto` (padrão): RoFormer se o `audio-separator` estiver instalado e houver
+  GPU (na CPU um trecho de 30 s passou de 20 min), senão Demucs. Falha do RoFormer cai no Demucs (com GPU, sem tentar o RoFormer na CPU).
+
+O RoFormer é mais pesado na VRAM: quem separa durante uma partida (fase 1 da
+fila, fora do whisper_lock) passa `heavy_ok` e cai no Demucs enquanto houver
+jogo. Cada tentativa tem `SEPARATION_TIMEOUT_SEC`: separação travada não pode
+segurar o lock da GPU para sempre.
 
 - Uma separação por vez (`_SEPARATION_LOCK`): cada música adicionada disparava
   o seu Demucs na hora, e várias ao mesmo tempo na GPU (junto com o Whisper da
@@ -12,6 +24,8 @@
 """
 from __future__ import annotations
 
+import importlib.util
+import json
 import logging
 import os
 import subprocess
@@ -22,6 +36,12 @@ from pathlib import Path
 logger = logging.getLogger(__name__)
 
 DEMUCS_MODEL = os.environ.get("KARAOKE_DEMUCS_MODEL", "htdemucs")
+SEPARATOR = os.environ.get("KARAOKE_SEPARATOR", "auto").strip().lower()
+ROFORMER_MODEL = os.environ.get("KARAOKE_ROFORMER_MODEL", "model_bs_roformer_ep_317_sdr_12.9755.ckpt")
+SEPARATION_TIMEOUT_SEC = float(os.environ.get("KARAOKE_SEPARATION_TIMEOUT", "1200"))
+# fora do /tmp (padrão do audio-separator): o modelo tem ~600 MB e sumiria no reboot
+ROFORMER_MODEL_DIR = os.environ.get("KARAOKE_ROFORMER_MODEL_DIR",
+                                    str(Path.home() / ".cache" / "audio-separator-models"))
 MP3_BITRATE = os.environ.get("KARAOKE_MP3_BITRATE", "320k")
 
 _SEPARATION_LOCK = threading.Lock()
@@ -53,30 +73,101 @@ def _stderr_tail(text: str, lines: int = 8) -> str:
     return "\n".join((text or "").strip().splitlines()[-lines:])
 
 
-def separate_stems(audio_path: Path, out_dir: Path) -> tuple[Path, Path]:
-    """Roda o Demucs e devolve (vocals.wav, no_vocals.wav). Bloqueante: use em thread."""
-    audio_path = Path(audio_path)
-    out_dir = Path(out_dir)
-    device = _best_device()
-    with _SEPARATION_LOCK:
-        devices = [device] if device == "cpu" else [device, "cpu"]
-        last_error = ""
-        for dev in devices:
-            cmd = demucs_command(audio_path, out_dir, dev)
-            logger.info(f"[Demucs] modelo={DEMUCS_MODEL} device={dev}: {audio_path.name}")
-            proc = subprocess.run(cmd, capture_output=True, text=True)
-            if proc.returncode == 0:
-                break
-            last_error = _stderr_tail(proc.stderr)
-            logger.error(f"[Demucs] falhou em {dev} (exit {proc.returncode}):\n{last_error}")
-        else:
-            raise RuntimeError(f"Demucs falhou: {last_error.splitlines()[-1] if last_error else 'sem detalhes'}")
+def roformer_available() -> bool:
+    return importlib.util.find_spec("audio_separator") is not None
 
+
+def separator_backend() -> str:
+    """"roformer" ou "demucs", pelo KARAOKE_SEPARATOR (auto: RoFormer instalado e com GPU)."""
+    if SEPARATOR == "demucs":
+        return "demucs"
+    if SEPARATOR == "roformer" or (roformer_available() and _best_device() == "cuda"):
+        return "roformer"
+    return "demucs"
+
+
+def roformer_command(audio_path: Path, out_dir: Path, model: str = ROFORMER_MODEL) -> list[str]:
+    script = "from audio_separator.utils.cli import main; main()"
+    return [
+        sys.executable, "-c", script,
+        str(audio_path),
+        "-m", model,
+        "--model_file_dir", ROFORMER_MODEL_DIR,
+        "--output_dir", str(out_dir),
+        "--output_format", "WAV",
+        "--custom_output_names", json.dumps({"Vocals": "vocals", "Instrumental": "no_vocals"}),
+        "--log_level", "warning",
+        "--use_autocast",  # fp16 onde dá: ~metade da VRAM
+    ]
+
+
+def _run_on_devices(name: str, make_cmd, device: str, label: str, cpu_retry: bool = True) -> None:
+    """Roda o separador no device e, se falhar na GPU, de novo na CPU. Levanta na falha."""
+    devices = [device] if device == "cpu" or not cpu_retry else [device, "cpu"]
+    last_error = ""
+    for dev in devices:
+        cmd, env = make_cmd(dev)
+        logger.info(f"[{name}] device={dev}: {label}")
+        try:
+            proc = subprocess.run(cmd, capture_output=True, text=True, env=env, timeout=SEPARATION_TIMEOUT_SEC)
+        except subprocess.TimeoutExpired:  # o run mata o processo filho
+            last_error = f"passou de {SEPARATION_TIMEOUT_SEC:.0f}s"
+            logger.error(f"[{name}] {last_error} em {dev}")
+            continue
+        if proc.returncode == 0:
+            return
+        last_error = _stderr_tail(proc.stderr)
+        logger.error(f"[{name}] falhou em {dev} (exit {proc.returncode}):\n{last_error}")
+    raise RuntimeError(f"{name} falhou: {last_error.splitlines()[-1] if last_error else 'sem detalhes'}")
+
+
+def _separate_roformer(audio_path: Path, out_dir: Path, device: str) -> tuple[Path, Path]:
+    out = out_dir / "roformer" / audio_path.stem
+    out.mkdir(parents=True, exist_ok=True)
+
+    def make_cmd(dev):
+        env = dict(os.environ)
+        if dev == "cpu":
+            env["CUDA_VISIBLE_DEVICES"] = ""  # o audio-separator escolhe a GPU sozinho
+        return roformer_command(audio_path, out), env
+
+    logger.info(f"[RoFormer] modelo={ROFORMER_MODEL}")
+    # com GPU, falha vai direto ao Demucs: RoFormer na CPU levaria muitos minutos com o lock
+    _run_on_devices("RoFormer", make_cmd, device, audio_path.name, cpu_retry=False)
+    vocals, no_vocals = out / "vocals.wav", out / "no_vocals.wav"
+    if not vocals.exists() or not no_vocals.exists():
+        raise RuntimeError("RoFormer não gerou os arquivos separados.")
+    return vocals, no_vocals
+
+
+def _separate_demucs(audio_path: Path, out_dir: Path, device: str) -> tuple[Path, Path]:
+    logger.info(f"[Demucs] modelo={DEMUCS_MODEL}")
+    _run_on_devices("Demucs", lambda dev: (demucs_command(audio_path, out_dir, dev), None), device, audio_path.name)
     separated = out_dir / DEMUCS_MODEL / audio_path.stem
     vocals, no_vocals = separated / "vocals.wav", separated / "no_vocals.wav"
     if not vocals.exists() or not no_vocals.exists():
         raise RuntimeError("Demucs não gerou os arquivos separados.")
     return vocals, no_vocals
+
+
+def separate_stems(audio_path: Path, out_dir: Path, heavy_ok=True) -> tuple[Path, Path]:
+    """Separa e devolve (vocals.wav, no_vocals.wav). Bloqueante: use em thread.
+
+    `heavy_ok` (bool ou função): False enquanto uma partida usa a GPU, e aí vai o Demucs.
+    """
+    audio_path = Path(audio_path)
+    out_dir = Path(out_dir)
+    device = _best_device()
+    with _SEPARATION_LOCK:
+        heavy = heavy_ok() if callable(heavy_ok) else heavy_ok
+        if separator_backend() == "roformer" and not heavy:
+            logger.info("[RoFormer] partida em andamento: separando com o Demucs")
+        elif separator_backend() == "roformer":
+            try:
+                return _separate_roformer(audio_path, out_dir, device)
+            except Exception as e:
+                logger.warning(f"[RoFormer] {e}; separando com o Demucs")
+        return _separate_demucs(audio_path, out_dir, device)
 
 
 def export_mp3(src: Path, dst: Path) -> None:

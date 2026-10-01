@@ -206,6 +206,11 @@ class SongQueueManager:
                 if clean_lrc:
                     (song_dir / "lyrics.lrc").write_text("\n".join(clean_lrc) + "\n", encoding="utf-8")
                     logger.info(f"[QUEUE:{item.id}] lyrics.lrc salvo via synced LRC da API.")
+            if item.synced_lrc or item.plain_lyrics:
+                # a letra da fila vem do LRCLIB (modal de adicionar), buscada sem o áudio
+                from utils.song_paths import API_LYRICS_MARKER
+
+                (song_dir / API_LYRICS_MARKER).touch()
 
             meta = {
                 "meta": {
@@ -381,7 +386,9 @@ class SongQueueManager:
         from utils.separation import export_backing_mp3, export_mp3, separate_stems
 
         def _separate_and_export():
-            vocals_wav, no_vocals_wav = separate_stems(audio_path, song_dir / "demucs_output")
+            # RoFormer (pesado na VRAM) só sem partida: a fase 1 roda fora do whisper_lock
+            vocals_wav, no_vocals_wav = separate_stems(audio_path, song_dir / "demucs_output",
+                                                       heavy_ok=lambda: not self._gpu_game_active)
             # Exporta numa thread: leva segundos e a fase 1 roda durante a partida
             export_mp3(vocals_wav, song_dir / "vocal.mp3")
             # instrumental com volume normalizado (~−16 LUFS); falha só loga
