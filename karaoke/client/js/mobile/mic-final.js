@@ -80,6 +80,15 @@ function finalButtons(data, myTotalScore) {
     return buttons;
 }
 
+const FINAL_CLASS = 'mobile-lyrics--final';
+
+// O placar com os botões é mais alto que a caixa da letra (até 42vh): no fim a
+// caixa cresce e alinha pelo topo. A partida seguinte volta ao tamanho da letra.
+export function setFinalLayout(on) {
+    const box = document.getElementById('mobile-lyrics-container');
+    if (box) box.classList.toggle(FINAL_CLASS, on);
+}
+
 export function showMicGameOver(data) {
     const scoreLine = document.getElementById('mobile-score-text');
     if (scoreLine) scoreLine.hidden = true;
@@ -88,6 +97,7 @@ export function showMicGameOver(data) {
     lyrText.classList.remove('lyrics-line');
     const myTotalScore = myFinalScore(data);
     lyrText.innerHTML = finalHtml(data, myTotalScore);
+    setFinalLayout(true);
     if (state.isActiveInGame && state.mobileNickname) {
         const finalBox = lyrText.querySelector('.mic-final') || lyrText;
         finalButtons(data, myTotalScore).forEach((btn) => finalBox.append(btn));

@@ -9,7 +9,7 @@ import { fillLine, setLyricsScriptAvailable } from '../game/lyrics-script.js';
 import { verseQuality, replayClass } from '../game/verse-stamp.js';
 import { escapeHtml } from '../core/html.js';
 import { onRequestsUpdate } from '../lobby/requests.js';
-import { showMicGameOver } from './mic-final.js';
+import { showMicGameOver, setFinalLayout } from './mic-final.js';
 import { setMicStatus } from './mic-socket.js';
 import { remindMicIfOff } from './mobile-mic-view.js';
 import { keepScreenOn } from '../core/wake-lock.js';
@@ -94,6 +94,7 @@ const MIC_HANDLERS = {
         showToast(data.message, 'error');
     },
     game_started(data) {
+        setFinalLayout(false);
         const scoreLine = document.getElementById('mobile-score-text');
         if (scoreLine) scoreLine.hidden = true;
         const activePlayers = data.active_players || [];
@@ -115,6 +116,7 @@ const MIC_HANDLERS = {
         state.isSingingActive = state.isActiveInGame ? data.active : false;
     },
     segment_start(data) {
+        setFinalLayout(false);
         const lyrText = document.getElementById('mobile-lyrics-text');
         if (lyrText) fillLine(lyrText, data.lyrics, data.lyrics_romaji);
         // revezar versos: "Sua vez" / "Vez de Ana"

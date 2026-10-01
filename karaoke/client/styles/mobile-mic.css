@@ -151,6 +151,7 @@
     background-image: var(--staff-lines);
     border: var(--border);
 }
+#mobile-lyrics-container.mobile-lyrics--final { flex: none; align-items: flex-start; max-height: none; }
 #mobile-lyrics-text {
     margin: 0;
     font-family: var(--font-ui);
@@ -274,6 +275,6 @@
     35% { transform: scale(1.18); }
     100% { transform: scale(1); }
 }
-.mic-final__combo { display: flex; align-items: center; justify-content: center; gap: 0.3rem; color: var(--peach-ink); font-weight: 700; }
+.mic-final__combo { display: flex; align-items: center; justify-content: center; gap: 0.3rem; color: var(--peach-ink); font-size: 1rem; font-weight: 700; }
 .mic-final__combo .ico { width: 1.1em; height: 1.1em; }
 .mic-final__combo .ico path { fill: currentColor; }
