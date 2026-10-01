@@ -1,3 +1,6 @@
 
 # relatórios e áudios do tools/validar_gpu.py
 validacao_gpu/
+
+# Certificado autoassinado do modo LAN: gerar localmente, nunca versionar
+server/*.pem
