@@ -216,12 +216,29 @@ class TestScoreEngine(unittest.TestCase):
         self.assertLessEqual(calculate_score(expected, scrambled, language="en")["score"], 60.0)
         self.assertEqual(calculate_score(expected, self._line("a wolf at the door"), language="en")["score"], 100.0)
 
-    def test_repeated_word_pairs_with_its_own_occurrence(self):
-        # dois "the": cada um casa com o seu, em ordem
-        expected = self._line("the flan in the face")
-        res = calculate_score(expected, self._line("the flan in the face"), language="en")
-        self.assertEqual(res["score"], 100.0)
-        self.assertEqual(res["matched_words"], 5)
+    def test_word_heard_later_does_not_fill_an_earlier_gap(self):
+        # Wolf 35: o Whisper não ouviu "tells me all". Sem ordem, o "me" do fim
+        # casava com o 1º "me" e o sanduíche resgatava o resto (89,5)
+        expected = self._line("tells me all the ways that he is gonna mess me up")
+        heard = self._line("the ways that he is gonna mess me up", t0=3 * 0.4)
+        res = calculate_score(expected, heard, language="en")
+        self.assertEqual(res["matched_words"], 9)
+        self.assertLess(res["score"], 80.0)
+
+    def test_on_time_occurrence_is_preferred(self):
+        # "baby" ouvido também 3 s antes (vazamento): vale a cópia no tempo, não a 1ª
+        expected = self._line("baby come back to me now")
+        heard = [{"word": "baby", "start": -3.0, "end": -2.7}] + self._line("baby come back to me now")
+        self.assertEqual(calculate_score(expected, heard, language="en")["score"], 100.0)
+
+    def test_words_mode_also_keeps_the_order(self):
+        expected = self._line("a wolf at the door")
+        scrambled = self._line("door the at wolf the")
+        self.assertLessEqual(calculate_score(expected, scrambled, language="en", scoring_mode="words")["score"], 60.0)
+
+    def test_dp_edges(self):
+        self.assertEqual(calculate_score(self._line("hello"), [], language="en")["score"], 0)
+        self.assertEqual(calculate_score(self._line("hello"), self._line("hello"), language="en")["score"], 100.0)
 
     def test_weak_copy_of_a_word_the_lyrics_repeat_is_kept(self):
         # "The" fraco (0,05) + "the" confiável: a letra pede dois, então o fraco fica
