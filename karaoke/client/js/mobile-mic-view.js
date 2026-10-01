@@ -5,6 +5,7 @@ import { showToast } from './toast.js';
 import { dom } from './dom.js';
 import { keepScreenOn } from './wake-lock.js';
 import { deviceInfo } from './game-events.js';
+import { micDeviceId, saveMicName } from './config.js';
 
 export function initMobileMicView() {
     const btnMobileActivate = document.getElementById('btn-mobile-activate');
@@ -26,7 +27,8 @@ export function initMobileMicView() {
             btnMobileRegister.disabled = true;
             btnMobileRegister.innerText = "REGISTRANDO...";
             if (state.mobileWs && state.mobileWs.readyState === WebSocket.OPEN) {
-                state.mobileWs.send(JSON.stringify({ type: "register_name", name: name }));
+                state.micAutoRegisterFailed = false;
+                state.mobileWs.send(JSON.stringify({ type: "register_name", name: name, device: micDeviceId() }));
             } else {
                 showToast("Conexão indisponível. Tente novamente em instantes.", "error");
                 btnMobileRegister.disabled = false;
@@ -146,6 +148,7 @@ export function initMobileMicView() {
     const btnMobileExitMic = document.getElementById('btn-mobile-exit-mic');
     if (btnMobileExitMic) {
         btnMobileExitMic.onclick = async () => {
+            saveMicName('');  // saiu de propósito: não entra sozinho de novo
             if (state.audioManager) {
                 await state.audioManager.destroy();
                 state.audioManager = null;

@@ -4,6 +4,9 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 html { -webkit-text-size-adjust: 100%; }
+/* Sem "puxar para atualizar" do Chrome no celular: arrastar a tela para baixo
+   cantando recarregava a página e derrubava o microfone (e o registro). */
+html, body { overscroll-behavior-y: none; }
 
 body {
     margin: 0;

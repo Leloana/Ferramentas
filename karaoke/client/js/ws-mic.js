@@ -1,6 +1,6 @@
 import { state, setAppState } from './state.js';
 import { iconSvg } from './icons.js';
-import { myRoom } from './config.js';
+import { myRoom, MIC_REPLACED_CODE, savedMicName, saveMicName, micDeviceId } from './config.js';
 import { showToast } from './toast.js';
 import { dom } from './dom.js';
 import { fillLine, setLyricsScriptAvailable } from './lyrics-script.js';
@@ -27,11 +27,24 @@ export function connectMobileMicrophoneWebSocket() {
         register_request(data, context) {
             const { dom } = context;
             setAppState('registering');
+            if (dom.mobileRegisterError) dom.mobileRegisterError.removeAttribute('data-visible');
+            // Já entrou antes neste celular: entra sozinho com o mesmo apelido
+            // (página recarregou, rede caiu). Se der erro, cai no formulário.
+            const saved = savedMicName();
+            if (saved && dom.mobileNicknameInput) dom.mobileNicknameInput.value = saved;
+            if (saved && !state.micAutoRegisterFailed && state.mobileWs && state.mobileWs.readyState === WebSocket.OPEN) {
+                state.micAutoRegistering = true;
+                if (dom.btnMobileRegister) {
+                    dom.btnMobileRegister.disabled = true;
+                    dom.btnMobileRegister.innerText = "ENTRANDO...";
+                }
+                state.mobileWs.send(JSON.stringify({ type: "register_name", name: saved, device: micDeviceId() }));
+                return;
+            }
             if (dom.btnMobileRegister) {
                 dom.btnMobileRegister.disabled = false;
                 dom.btnMobileRegister.innerText = "Entrar";
             }
-            if (dom.mobileRegisterError) dom.mobileRegisterError.removeAttribute('data-visible');
         },
         register_wait(data, context) {
             const { dom } = context;
@@ -43,7 +56,10 @@ export function connectMobileMicrophoneWebSocket() {
         registration_success(data, context) {
             const { state, dom, myRoom } = context;
             state.mobileNickname = data.name;
-            showToast(`Registrado como "${data.name}"`, "success");
+            saveMicName(data.name);
+            const automatic = state.micAutoRegistering;
+            state.micAutoRegistering = false;
+            if (!automatic) showToast(`Registrado como "${data.name}"`, "success");
             
             const statusText = document.getElementById('mobile-status-text');
             if (statusText) {
@@ -54,6 +70,9 @@ export function connectMobileMicrophoneWebSocket() {
         },
         registration_error(data, context) {
             const { dom } = context;
+            // a entrada automática falhou (apelido pego por outro aparelho): formulário
+            if (state.micAutoRegistering) state.micAutoRegisterFailed = true;
+            state.micAutoRegistering = false;
             if (dom.btnMobileRegister) {
                 dom.btnMobileRegister.disabled = false;
                 dom.btnMobileRegister.innerText = "Entrar";
@@ -273,7 +292,12 @@ export function connectMobileMicrophoneWebSocket() {
         }
     };
 
-    state.mobileWs.onclose = () => {
+    state.mobileWs.onclose = (event) => {
+        if (event && event.code === MIC_REPLACED_CODE) {
+            // este celular entrou de novo por outra conexão (outra aba): não briga por ela
+            document.getElementById('mobile-status-text').innerHTML = `<span class="mic-status--error">Microfone aberto em outra aba</span>`;
+            return;
+        }
         document.getElementById('mobile-status-text').innerHTML = `<span class="mic-status--error">Conexão perdida. Reconectando...</span>`;
         setTimeout(connectMobileMicrophoneWebSocket, 3000);
     };

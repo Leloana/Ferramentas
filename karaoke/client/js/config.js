@@ -12,6 +12,37 @@ export const myRoom = urlParams.get('room') || activeRoomId;
 // Código de fechamento do servidor quando outra tela assume a sala (ws/room.py):
 // quem recebe não tenta reconectar, senão as duas telas se derrubam em loop.
 export const DISPLAY_REPLACED_CODE = 4001;
+// Celular: o mesmo aparelho reconectou em outra conexão e retomou o apelido.
+export const MIC_REPLACED_CODE = 4002;
+
+// Celular-microfone: apelido lembrado e id do aparelho. Se a página recarregar ou
+// a conexão cair, o celular entra sozinho de novo com o mesmo nome (ws-mic.js).
+const MIC_NAME_KEY = 'karaoke_mic_name';
+const MIC_DEVICE_KEY = 'karaoke_mic_device';
+
+export function savedMicName() {
+    try { return localStorage.getItem(MIC_NAME_KEY) || ''; } catch (e) { return ''; }
+}
+
+export function saveMicName(name) {
+    try {
+        if (name) localStorage.setItem(MIC_NAME_KEY, name);
+        else localStorage.removeItem(MIC_NAME_KEY);
+    } catch (e) { /* sem storage: só não lembra */ }
+}
+
+export function micDeviceId() {
+    try {
+        let id = localStorage.getItem(MIC_DEVICE_KEY);
+        if (!id) {
+            id = Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+            localStorage.setItem(MIC_DEVICE_KEY, id);
+        }
+        return id;
+    } catch (e) {
+        return '';
+    }
+}
 
 // Navegador de TV (Tizen, webOS, Android TV, Fire TV...) ou forçado com ?tv=1.
 // Liga a navegação por controle remoto com letras maiores (tv-nav.js / tv.css).

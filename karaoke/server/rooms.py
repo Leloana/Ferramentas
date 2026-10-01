@@ -21,6 +21,9 @@ class KaraokeRoom:
         self.mic: Optional[WebSocket] = None
         # Multiplayer properties
         self.players: dict[str, WebSocket] = {}
+        # apelido → id do aparelho (celular): o mesmo aparelho retoma o apelido ao
+        # reconectar (página recarregada, rede caiu) sem esbarrar em "já está em uso"
+        self.player_devices: dict[str, str] = {}
         self.unregistered_mics: list[WebSocket] = []
         self.active_players: list[str] = []
         self.game_mode: str = "solo"

@@ -421,5 +421,41 @@ class TestWebsocketGameFlow(unittest.TestCase):
                     self.assertTrue(any(is_display_status("paired")(m) for m in msgs), msgs)
 
 
+    def test_same_phone_reclaims_its_nickname(self):
+        """Página do celular recarregou: o mesmo aparelho retoma o apelido; outro não."""
+        from starlette.websockets import WebSocketDisconnect
+
+        def until(ws, kind, limit=20):
+            for _ in range(limit):
+                msg = ws.receive_json()
+                if msg["type"] == kind:
+                    return msg
+            self.fail(f"{kind} não chegou")
+
+        with self.client.websocket_connect(f"/ws/room/devroom?role=display&song_id={self.song_slug}") as ws_tv:
+            for expected_type in ("pairing_status", "players_update", "singing_state"):
+                self.assertEqual(ws_tv.receive_json()["type"], expected_type)
+            with self.client.websocket_connect("/ws/room/devroom?role=mic") as ws_old:
+                until(ws_old, "register_request")
+                ws_old.send_json({"type": "register_name", "name": "Eu", "device": "abc"})
+                until(ws_old, "registration_success")
+
+                with self.client.websocket_connect("/ws/room/devroom?role=mic") as ws_new:
+                    until(ws_new, "register_request")
+                    ws_new.send_json({"type": "register_name", "name": "Eu", "device": "abc"})
+                    self.assertEqual(until(ws_new, "registration_success")["name"], "Eu")
+
+                    # a conexão antiga foi fechada com o código de "substituído"
+                    with self.assertRaises(WebSocketDisconnect) as closed:
+                        for _ in range(20):
+                            ws_old.receive_json()
+                    self.assertEqual(closed.exception.code, 4002)
+
+                    with self.client.websocket_connect("/ws/room/devroom?role=mic") as ws_other:
+                        until(ws_other, "register_request")
+                        ws_other.send_json({"type": "register_name", "name": "Eu", "device": "xyz"})
+                        self.assertIn("em uso", until(ws_other, "registration_error")["message"])
+
+
 if __name__ == "__main__":
     unittest.main()

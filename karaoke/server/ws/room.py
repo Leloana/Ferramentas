@@ -366,6 +366,8 @@ def _dispatch_due_segments(room, current_time: float | None) -> None:
 
 
 DISPLAY_REPLACED_CODE = 4001
+# celular cujo apelido foi retomado pelo mesmo aparelho numa conexão nova: não reconecta
+MIC_REPLACED_CODE = 4002
 
 
 @router.websocket("/ws/room/{room_id}")
@@ -505,6 +507,17 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                     # sem caracteres de controle, tamanho do campo do celular (15)
                     name = "".join(c for c in name if c.isprintable())[:MAX_NICKNAME_LEN].strip()
                     sanitized = "".join(c for c in name if c.isalnum() or c in ("-", "_")).strip()
+                    device = str(data.get("device") or "")[:64]
+                    # Mesmo aparelho voltando (recarregou/caiu): a conexão antiga, que o
+                    # servidor talvez ainda não viu cair, sai e o apelido é retomado.
+                    old_ws = room.players.get(name)
+                    if old_ws is not None and old_ws is not websocket and device and room.player_devices.get(name) == device:
+                        room.players.pop(name, None)
+                        try:
+                            await old_ws.close(code=MIC_REPLACED_CODE, reason="Mesmo aparelho reconectou")
+                        except Exception:
+                            pass
+                        logger.info(f"Celular de {name} reconectou: apelido retomado")
                     if not name:
                         await websocket.send_json({"type": "registration_error", "message": "O apelido não pode ser vazio!"})
                     elif not sanitized:
@@ -514,6 +527,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                     else:
                         player_name = name
                         room.players[name] = websocket
+                        if device:
+                            room.player_devices[name] = device
                         if websocket in room.unregistered_mics:
                             room.unregistered_mics.remove(websocket)
                         
