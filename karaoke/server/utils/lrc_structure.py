@@ -31,7 +31,7 @@ from rapidfuzz import fuzz
 from rapidfuzz.process import cdist
 from unidecode import unidecode
 
-from lyrics_text import is_japanese, ja_reading, split_words
+from lyrics_text import is_japanese, ja_reading, regroup_timed_words, split_words
 
 logger = logging.getLogger(__name__)
 
@@ -288,6 +288,9 @@ def build_plan(lines: list[str], words: list[dict], language: str, audio_duratio
     `act`: atividade da voz por quadro de `hop` s (`utils.lrc_fit.vocal_activity`).
     """
     tokens, owner = tokenize_lines(lines, language)
+    # japonês: o Whisper devolve pedaços de 1–3 caracteres e a letra está em unidades
+    # (bunsetsu); sem regrupar nada casava (9% das palavras em "bloom", 3 de 35 linhas)
+    words = regroup_timed_words(words, language)
     heard = [w for w in words if _norm(w.get("word", ""), language)]
     if not tokens or len(heard) < 5:
         return None
