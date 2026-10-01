@@ -126,3 +126,7 @@
 }
 .profile-session:hover { background: var(--paper-2); }
 .profile-session__go { width: 1rem; height: 1rem; color: var(--ink-3); }
+.profile-session-item { display: flex; align-items: center; gap: 0.5rem; }
+.profile-session-item .profile-session { flex: 1; min-width: 0; }
+.profile-session__play { flex: none; width: 2.4rem; height: 2.4rem; min-height: 0; padding: 0; justify-content: center; }
+.profile-session__play .ico { width: 1.1rem; height: 1.1rem; }

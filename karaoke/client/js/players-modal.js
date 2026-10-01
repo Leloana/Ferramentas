@@ -2,6 +2,7 @@
 // para a lista; na lista, fecha.
 import { openModal, closeModal } from './modal.js';
 import { showToast } from './toast.js';
+import { stopReplay } from './replay.js';
 import { fetchPlayers, fetchProfile, renderPlayersList, renderProfile } from './profile-view.js';
 
 export function initPlayersModal() {
@@ -43,7 +44,8 @@ export function initPlayersModal() {
     };
 
     openBtn.addEventListener('click', () => {
-        openModal(modal);
+        // fechar o modal para a gravação que estiver tocando no perfil
+        openModal(modal, { onClose: stopReplay });
         showList();
     });
     back.addEventListener('click', () => {

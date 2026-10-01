@@ -3,6 +3,7 @@
 // Dados de /api/players (players.py no servidor).
 import { iconSvg } from './icons.js';
 import { openAnnotationFor } from './annotate.js';
+import { toggleReplay, stopReplay } from './replay.js';
 
 function el(tag, cls, text) {
     const node = document.createElement(tag);
@@ -44,6 +45,7 @@ export async function fetchProfile(name) {
 
 // Lista de cantores (ranking pela média); onPick(name) abre o perfil.
 export function renderPlayersList(container, playersList, onPick) {
+    stopReplay();  // saiu do perfil: a gravação que tocava para
     container.replaceChildren();
     if (!playersList.length) {
         container.append(el('p', 'profile-empty', 'Ninguém cantou ainda'));
@@ -70,6 +72,7 @@ export function renderPlayersList(container, playersList, onPick) {
 
 // Perfil completo: resumo, recordes por música e últimas partidas.
 export function renderProfile(container, detail) {
+    stopReplay();
     container.replaceChildren();
     if (!detail) {
         container.append(el('p', 'profile-empty', 'Ainda sem partidas'));
@@ -138,7 +141,27 @@ async function renderSessions(box, name) {
     box.append(el('h4', 'profile-section', 'Partidas gravadas'));
     const list = el('ol', 'profile-recent');
     games.slice(0, 30).forEach((g) => {
-        const li = el('li');
+        const li = el('li', 'profile-session-item');
+
+        // play: a voz gravada por cima do instrumental (mesmo "ouvir" do fim de jogo)
+        const play = el('button', 'btn btn--ghost btn-replay profile-session__play');
+        play.type = 'button';
+        play.title = 'Ouvir a apresentação';
+        play.setAttribute('aria-label', `Ouvir ${g.song_title}`);
+        play.innerHTML = iconSvg('play');
+        play.addEventListener('click', () => {
+            const starting = !play.classList.contains('is-playing');
+            toggleReplay({
+                recordingId: g.id,
+                player: name,
+                songId: g.song_id,
+                button: play,
+                onStop: () => { play.innerHTML = iconSvg('play'); },
+            });
+            if (starting) play.innerHTML = iconSvg('pause');
+        });
+        li.append(play);
+
         const row = el('button', 'profile-record profile-session');
         row.type = 'button';
         row.title = 'Ver os versos';

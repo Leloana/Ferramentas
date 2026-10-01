@@ -28,6 +28,7 @@ import { initPlayersModal } from './players-modal.js';
 import { initStatusPanel } from './status-panel.js';
 import { initCoverPicker } from './cover-picker.js';
 import { initTheme } from './theme.js';
+import { stopReplay } from './replay.js';
 
 function bootstrap() {
     const appEl = document.getElementById('app');
@@ -220,6 +221,7 @@ function initMicTabs() {
     });
     initTabs('mobile-mic-area', {
         onSelect: (tab) => {
+            stopReplay();  // gravação do perfil não segue tocando em outra aba
             appEl.setAttribute('data-mic-tab', tab);
             if (tab === 'profile') showMyProfile();
         },
