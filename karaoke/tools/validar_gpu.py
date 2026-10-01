@@ -360,7 +360,8 @@ def cmd_musica(args) -> None:
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    sys.stdout.reconfigure(encoding="utf-8")  # "→" e acentos com a saída redirecionada (cp1252 no Windows)
+    ap =argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("ambiente", help="GPU, versões e o que está instalado").set_defaults(fn=cmd_ambiente)
     sub.add_parser("baixar-modelo", help="baixa o modelo do RoFormer").set_defaults(fn=cmd_baixar_modelo)
