@@ -201,8 +201,9 @@ async function initHomeQrcode() {
         return;
     }
 
-    const homeUrl = `${await resolvePublicOrigin()}/?open=add-song`;
-    qrcodeImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(homeUrl)}`;
+    // Mesmo link do pareamento: o celular abre direto como microfone desta sala
+    const micUrl = `${await resolvePublicOrigin()}/?role=mic&room=${encodeURIComponent(myRoom)}`;
+    qrcodeImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(micUrl)}`;
 }
 
 // Aba "Perfil" do celular: o histórico do apelido registrado neste aparelho.

@@ -108,9 +108,9 @@ Depois dela: `pip check` limpo, numpy 2.4.6 e onnxruntime 1.26.0 iguais ao `requ
         `/api/songs/*/cover` (baixa a capa uma vez). Leves, mas usam a rede do servidor: decidir se entram no Access.
       - Na TV, logar uma vez abrindo `https://karaoke.myall.net.br/api/queue/status`. O cookie
         `CF_Authorization` vale para os `fetch` da página depois.
-      - **Decidir:** o QR da tela inicial abre `/?open=add-song` no celular, que usa `/api/queue/add`.
-        Protegido = o celular também faz login (OTP por e-mail). Público = qualquer um com a URL
-        enfileira download na GPU.
+      - **Decidir:** o QR do cabeçalho da TV abre o celular como microfone (`/?role=mic&room=…`, desde
+        2026-10-01), e a aba "Adicionar" do celular usa `/api/queue/add`. Protegido = o celular também faz
+        login (OTP por e-mail) para pedir música. Público = qualquer um com a URL enfileira download na GPU.
 - [x] **Cache Rule no Cloudflare** (feito em 2026-09-29). Sem ela o *Browser Cache TTL* da zona (4 h)
       troca o `no-cache` do servidor por `max-age=14400` e o celular fica com JS velho após uma
       atualização. *Bypass cache* **não** resolve (não mexe no TTL do navegador).
