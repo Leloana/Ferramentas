@@ -27,6 +27,9 @@ class SongManager:
 
             # Tenta carregar título e artista do meta.json
             meta_path = item / "meta.json"
+            # sobra de processamento cancelado (só demucs_output/capa): não é música
+            if not meta_path.exists() and not (item / "segments.json").exists():
+                continue
             title = None
             artist = None
             needs_review = False
