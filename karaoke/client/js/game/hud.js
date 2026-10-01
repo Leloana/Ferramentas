@@ -5,6 +5,8 @@ import { groupName, micLabel } from '../lobby/lobby.js';
 import { showScoreBars, hideScoreBars, updateScoreBars } from './score-bars.js';
 import { stampVerse, clearStamp, verseQuality, replayClass } from './verse-stamp.js';
 import { renderTranscriptionInto, expectedWords } from './transcription.js';
+import { clearCombos } from './combo.js';
+import { clearReactions } from './reactions.js';
 
 const PERF_BORDER_MS = 2000;
 
@@ -204,4 +206,6 @@ export function resetHud() {
 
     byId('silence-progress-fill').style.width = '0%';
     hideScoreBars();
+    clearCombos();
+    clearReactions();
 }

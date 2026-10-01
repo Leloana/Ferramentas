@@ -239,3 +239,41 @@
     .mic-header__logo { display: none; }
 }
 #mobile-score-last[data-quality] { background: transparent; font-weight: 800; }
+
+/* Reações da plateia (mobile/reactions-bar.js) */
+.mobile-reactions { display: flex; justify-content: center; gap: 1rem; }
+.mobile-reactions[hidden] { display: none; }
+.reaction-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4.2rem;
+    height: 4.2rem;
+    padding: 0;
+    background: var(--paper-light);
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    box-shadow: 3px 3px 0 var(--ink);
+    color: var(--ink);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+.reaction-btn .ico { width: 2.2rem; height: 2.2rem; stroke-width: 1.4; }
+.reaction-btn .ico path { fill: currentColor; }
+.reaction-btn--heart { color: var(--rose); }
+.reaction-btn--flame { color: var(--peach); }
+.reaction-btn--star { color: var(--butter); }
+:root[data-theme="dark"] .reaction-btn--heart { color: var(--rose-ink); }
+:root[data-theme="dark"] .reaction-btn--flame { color: var(--peach-ink); }
+:root[data-theme="dark"] .reaction-btn--star { color: var(--butter-ink); }
+.reaction-btn .ico { stroke: var(--ink); }
+.reaction-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+.reaction-btn--sent { animation: reactionSent 0.45s ease-out; }
+@keyframes reactionSent {
+    0% { transform: scale(1); }
+    35% { transform: scale(1.18); }
+    100% { transform: scale(1); }
+}
+.mic-final__combo { display: flex; align-items: center; justify-content: center; gap: 0.3rem; color: var(--peach-ink); font-weight: 700; }
+.mic-final__combo .ico { width: 1.1em; height: 1.1em; }
+.mic-final__combo .ico path { fill: currentColor; }

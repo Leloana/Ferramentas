@@ -13,6 +13,8 @@ import { showMicGameOver } from './mic-final.js';
 import { setMicStatus } from './mic-socket.js';
 import { remindMicIfOff } from './mobile-mic-view.js';
 import { keepScreenOn } from '../core/wake-lock.js';
+import { setReactionsVisible } from './reactions-bar.js';
+import { COMBO_MIN } from '../game/combo.js';
 
 function setRegisterButton(busy) {
     if (!dom.btnMobileRegister) return;
@@ -35,8 +37,8 @@ function setLyricsNote(html) {
 // Nota deste celular no verso: a própria em disputa, a geral no solo
 function myVerseScore(data) {
     const own = state.isActiveInGame && data.player_scores && state.mobileNickname && data.player_scores[state.mobileNickname];
-    if (own) return { score: own.score, total: own.total_score, pitch: own.pitch };
-    return { score: data.score, total: data.total_score, pitch: data.pitch };
+    if (own) return { score: own.score, total: own.total_score, pitch: own.pitch, combo: own.combo };
+    return { score: data.score, total: data.total_score, pitch: data.pitch, combo: data.combo };
 }
 
 const MIC_HANDLERS = {
@@ -69,6 +71,8 @@ const MIC_HANDLERS = {
         if (!automatic) showToast(`Registrado como "${data.name}"`, "success");
         showNameInStatus(data.name);
         setAppState('singing');
+        // reconectou: as reações voltam só com o game_started da partida em andamento
+        setReactionsVisible(false);
         // depois de recarregar a tela apagava antes do primeiro toque em LIGAR MIC
         keepScreenOn();
     },
@@ -96,7 +100,8 @@ const MIC_HANDLERS = {
         state.isActiveInGame = activePlayers.includes(state.mobileNickname);
         setLyricsNote(state.isActiveInGame
             ? `<span class="mic-note mic-note--good">Você está no jogo</span>Prepare-se`
-            : `<span class="mic-note">Assistindo</span>Próxima rodada`);
+            : `<span class="mic-note">Assistindo</span>Reaja na TV`);
+        setReactionsVisible(!state.isActiveInGame);
         remindMicIfOff();
     },
     pairing_status(data) {
@@ -142,9 +147,11 @@ const MIC_HANDLERS = {
         const mine = myVerseScore(data);
         const lastEl = document.getElementById('mobile-score-last');
         const quality = verseQuality(mine.score);
-        lastEl.textContent = typeof mine.pitch === 'number'
+        let text = typeof mine.pitch === 'number'
             ? `${quality.word} ${mine.score}% · tom ${Math.round(mine.pitch)}%`
             : `${quality.word} ${mine.score}%`;
+        if (mine.combo >= COMBO_MIN) text += ` · combo ×${mine.combo}`;
+        lastEl.textContent = text;
         lastEl.dataset.quality = quality.key;
         replayClass(lastEl, 'seg-score--pulse');
         document.getElementById('mobile-score-total').textContent = `${mine.total}%`;
@@ -155,6 +162,7 @@ const MIC_HANDLERS = {
         setLyricsNote(`${icon} Fim da música<span class="mic-note">Calculando o placar</span>`);
     },
     game_over(data) {
+        setReactionsVisible(false);
         showMicGameOver(data);
     },
     pong() {

@@ -7,6 +7,7 @@ import { keepScreenOn } from '../core/wake-lock.js';
 import { deviceInfo } from '../game/game-events.js';
 import { micDeviceId, saveMicName } from '../core/config.js';
 import { watchMicHealth, stopMicHealth, micRunning, MAX_BUFFERED_BYTES } from './mic-health.js';
+import { initReactionsBar } from './reactions-bar.js';
 
 const ATTENTION_CLASS = 'btn-mobile-activate--attention';
 
@@ -226,4 +227,5 @@ export function initMobileMicView() {
             window.location.href = window.location.origin + window.location.pathname;
         };
     }
+    initReactionsBar();
 }

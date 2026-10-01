@@ -817,3 +817,122 @@
 .start-block-note { width: 100%; margin: 0.4rem 0 0; color: var(--rose-ink); font-weight: 700; text-align: center; }
 .start-block-note[hidden] { display: none; }
 #btn-start[data-blocked] { opacity: 0.65; cursor: not-allowed; }
+
+/* ---------- Combo (combo.js) ---------- */
+.combo-badge {
+    position: absolute;
+    top: 0.9rem;
+    left: 1.1rem;
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.75rem;
+    background: var(--peach);
+    border: 2px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--ink);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    pointer-events: none;
+}
+.combo-badge[hidden] { display: none; }
+.combo-badge .ico { width: 1.15em; height: 1.15em; color: var(--peach-ink); }
+.combo-badge .ico path { fill: currentColor; }
+.combo-badge strong { font-size: 1.25em; }
+/* revezando versos o selo "Vez de" ocupa o canto: o combo desce */
+.turn-badge:not([hidden]) ~ .combo-badge { top: 3.4rem; }
+.combo-badge--up { animation: stampIn 0.35s cubic-bezier(0.2, 1.5, 0.4, 1); }
+
+.mp-combo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.1rem;
+    margin: 0 auto 0 0.45rem;
+    padding: 0 0.3rem;
+    background: var(--peach);
+    border: 1.5px solid var(--ink);
+    color: var(--ink);
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1.35;
+}
+.mp-combo .ico { width: 0.95em; height: 0.95em; color: var(--peach-ink); }
+.mp-combo .ico path { fill: currentColor; }
+.mp-score-info-vertical .mp-combo { margin: 0.15rem auto 0; }
+.mp-member__name .mp-combo { margin-left: 0.3rem; font-size: 0.85em; }
+.mp-combo--up { animation: stampIn 0.35s cubic-bezier(0.2, 1.5, 0.4, 1); }
+
+/* ---------- Reações da plateia (reactions.js) ---------- */
+.reaction-layer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 998;
+    overflow: hidden;
+    pointer-events: none;
+}
+.reaction {
+    position: absolute;
+    bottom: -4.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    transform: translateX(-50%);
+    animation: reactionFloat 2.6s cubic-bezier(0.3, 0.6, 0.5, 1) forwards;
+    will-change: transform, opacity;
+}
+.reaction .ico {
+    width: 3.2rem;
+    height: 3.2rem;
+    padding: 0.45rem;
+    background: var(--reaction-tint);
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    box-shadow: 3px 3px 0 var(--ink);
+    color: var(--reaction-ink);
+    stroke: var(--ink);
+    stroke-width: 1.4;
+}
+.reaction .ico path { fill: currentColor; }
+.reaction--heart { --reaction-tint: var(--paper-light); --reaction-ink: var(--rose); }
+.reaction--flame { --reaction-tint: var(--paper-light); --reaction-ink: var(--peach); }
+.reaction--star  { --reaction-tint: var(--paper-light); --reaction-ink: var(--butter); }
+/* no escuro os pastéis claros são as variantes -ink */
+:root[data-theme="dark"] .reaction--heart { --reaction-ink: var(--rose-ink); }
+:root[data-theme="dark"] .reaction--flame { --reaction-ink: var(--peach-ink); }
+:root[data-theme="dark"] .reaction--star { --reaction-ink: var(--butter-ink); }
+.reaction__name {
+    max-width: 8rem;
+    overflow: hidden;
+    padding: 0 0.35rem;
+    background: var(--paper-light);
+    border: 1.5px solid var(--ink);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    font-weight: 800;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+@keyframes reactionFloat {
+    0%   { opacity: 0; transform: translate(-50%, 0) scale(0.6); }
+    12%  { opacity: 1; transform: translate(-50%, -12vh) scale(1); }
+    50%  { transform: translate(calc(-50% + var(--sway, 0px)), -38vh) scale(1); }
+    80%  { opacity: 1; }
+    100% { opacity: 0; transform: translate(-50%, -62vh) scale(0.9); }
+}
+/* sem movimento: aparece e some no lugar (o base.css zera a duração das animações) */
+@keyframes reactionFade {
+    0%, 100% { opacity: 0; transform: translate(-50%, -30vh); }
+    15%, 80% { opacity: 1; transform: translate(-50%, -30vh); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .reaction { animation: reactionFade 2.6s linear forwards !important; }
+}

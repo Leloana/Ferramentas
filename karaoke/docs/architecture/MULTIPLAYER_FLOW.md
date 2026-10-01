@@ -125,7 +125,7 @@ The display sends `{"type": "start_game", "game_mode": "...", "active_players": 
   4. Whisper runs off the event loop (`asyncio.to_thread`) under `queue_manager.whisper_lock`: prompted with the expected lyrics, retried without the prompt when the words are low-confidence (`pick_transcription`); both runs go to the recording.
   5. `score_engine.py` normalizes both sides (accents, contractions, numbers, hyphen-split words, vocalizations, low-probability ghost copies).
   6. Scores `0.0`–`100.0` (RapidFuzz, timing penalties, sandwich recovery, previous-verse leakage removal); `pitch.py` adds an informative pitch score from `pitch.json`.
-  7. Broadcasts `{"type": "segment_result", "score", "pitch", "pitch_avg", "total_score", "player_scores": {name: {score, total_score, transcription, pitch, pitch_avg}}}`.
+  7. Broadcasts `{"type": "segment_result", "score", "pitch", "pitch_avg", "total_score", "combo", "player_scores": {name: {score, total_score, transcription, pitch, pitch_avg, combo}}}`. `combo` is the run of verses ≥ 85 in a row ending at the player's latest verse, in verse order (`server/combo.py`); the TV shows it from 2.
 
 ### 6. Seeking & Rewinding
 - If a user seeks backward on the Display timeline, the display broadcasts the new `playback_time`.
@@ -140,7 +140,12 @@ The display sends `{"type": "start_game", "game_mode": "...", "active_players": 
 - Once the backing track ends, the display sends `{"type": "audio_ended"}`.
 - The server halts inputs, awaits all running background transcription tasks, and calculates the final average score.
 - For each active player, the server appends the round's results to `profile.json` under `songs_sung` (`server/players.py`: `song_id`, score, pitch, mode, date) and computes the personal record.
-- Broadcasts `{"type": "game_over", "total_score", "player_scores", "player_pitch", "player_stats": {name: {good, ok, poor}}, "records": {name: {is_record, best_before, times_sung}}, "leaderboard", "song_id", "song_title", "recording_id"}`. The TV and each phone build the shareable card and the "Ouvir" (replay) button from it.
+- Broadcasts `{"type": "game_over", "total_score", "player_scores", "player_pitch", "player_stats": {name: {good, ok, poor, best_combo}}, "records": {name: {is_record, best_before, times_sung}}, "leaderboard", "song_id", "song_title", "recording_id"}`. The TV and each phone build the shareable card and the "Ouvir" (replay) button from it.
+
+### 7b. Audience Reactions
+- A registered phone that is not singing this song shows three buttons and sends `{"type": "reaction", "kind": "heart" | "flame" | "star"}`.
+- The server forwards `{"type": "reaction", "kind", "from"}` to the display only, while `room.in_game`, for players outside `active_players`, at most once per 0.4 s per phone (`REACTIONS`, `REACTION_MIN_INTERVAL_SEC` in `ws/room.py`). Anything else is dropped silently.
+- The TV floats the icon with the sender's nickname (`game/reactions.js`, at most 12 on screen).
 
 ### 8. Night Queue ("quero cantar")
 - A registered phone sends `{"type": "request_song", "song_id": "..."}` (the TV may send `"singer"` too); `{"type": "cancel_request", "id": "..."}` removes one (a phone only its own).

@@ -12,6 +12,8 @@ import { showHeardHint, showHeardResult, listeningHint, expectedWords } from './
 import { applyTotals, showVerseScore, flashPerfBorder, updatePlayerBars } from './hud.js';
 import { showGameOverModal, showGameOverExtras } from './game-over.js';
 import { resetGameState } from './session.js';
+import { showReaction } from './reactions.js';
+import { comboValue, showStageCombo, showBarCombos } from './combo.js';
 
 function setPairingStatus(paired) {
     state.isMobileMicrophoneConnected = paired;
@@ -25,6 +27,18 @@ function setPairingStatus(paired) {
     }
     if (paired) showToast("Microfone sem fio pareado e ativo!", "success");
     else showToast("Microfone sem fio desconectado.", "error");
+}
+
+// Combo: um cantor só no selo do palco, disputa nas barras.
+// quiet: recálculo depois de voltar a música, sem animar.
+function showCombos(data, quiet) {
+    const scores = data.player_scores || {};
+    if (state.activePlayers && state.activePlayers.length > 1) {
+        showBarCombos(scores);
+        return;
+    }
+    const keys = Object.keys(scores);
+    showStageCombo(keys.length === 1 ? comboValue(scores[keys[0]]) : comboValue(data), quiet);
 }
 
 const DISPLAY_HANDLERS = {
@@ -73,6 +87,7 @@ const DISPLAY_HANDLERS = {
         // Recálculo após voltar a música: só atualiza os totais, sem nota de verso
         if (data.recalc) {
             applyTotals(data);
+            showCombos(data, true);
             return;
         }
         showVerseScore(data);
@@ -80,6 +95,10 @@ const DISPLAY_HANDLERS = {
         applyTotals(data);
         flashPerfBorder(data.score);
         updatePlayerBars(data);
+        showCombos(data, false);
+    },
+    reaction(data) {
+        showReaction(data.kind, data.from);
     },
     game_over(data) {
         dom.audioPlayer.pause();

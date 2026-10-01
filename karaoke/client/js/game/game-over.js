@@ -8,6 +8,7 @@ import { openShareCard, rankFor } from './share-card.js';
 import { toggleReplay } from '../audio/replay.js';
 import { escapeHtml } from '../core/html.js';
 import { resetGameState } from './session.js';
+import { COMBO_MIN } from './combo.js';
 
 const RANK_TITLES = {
     S: 'PERFORMANCE LENDÁRIA!',
@@ -68,6 +69,16 @@ export function showGameOverExtras(data) {
         const r = records[name];
         if (r && r.is_record && r.times_sung > 1) lines.push(`Recorde pessoal de ${micLabel(name)}`);
     });
+    // maior combo da partida: o melhor entre os cantores, a partir de 2 seguidos
+    const stats = data.player_stats || {};
+    const top = Object.keys(stats).reduce((best, name) => {
+        const n = (stats[name] && stats[name].best_combo) || 0;
+        return n > best.n ? { name, n } : best;
+    }, { name: null, n: 0 });
+    if (top.n >= COMBO_MIN) {
+        const who = Object.keys(stats).length > 1 ? ` de ${micLabel(top.name)}` : '';
+        lines.push(`Maior combo${who}: ×${top.n}`);
+    }
     const board = data.leaderboard || [];
     if (board.length) lines.push(`Melhor da sala: ${board[0].name} · ${Math.round(board[0].best)}%`);
     box.textContent = lines.join('  ·  ');

@@ -11,6 +11,7 @@ import time
 import numpy as np
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
+from combo import combo_runs
 from mic_stream import STREAM_SR, MicTimeline, parse_packet, segment_window
 from recorder import GameRecording, recording_base_dir
 from segment_scoring import (
@@ -40,6 +41,10 @@ PENDING_TASKS_TIMEOUT_SEC = 10.0
 
 MAX_NICKNAME_LEN = 15
 RESERVED_NICKNAMES = ("solo", "local", "tv", "pc_local")
+# Reações da plateia na TV: os três ícones do celular e o intervalo mínimo por
+# aparelho (dedo rápido não enche a tela da TV, que é fraca).
+REACTIONS = ("heart", "flame", "star")
+REACTION_MIN_INTERVAL_SEC = 0.4
 
 
 def _nickname_taken(room, name: str, sanitized: str) -> bool:
@@ -221,6 +226,7 @@ async def process_segment_multiplayer(
             room.player_segment_scores[player_name][seg_idx] = result["score"]
 
             running_avg = round(sum(room.player_segment_scores[player_name].values()) / len(room.player_segment_scores[player_name]), 1)
+            combo, _ = _combo_for(room, player_name)
 
             pitch_avg = None
             if pitch is not None:
@@ -235,6 +241,7 @@ async def process_segment_multiplayer(
                 # afinação: informativa por enquanto, fora da nota (calibrar no servidor)
                 "pitch": pitch,
                 "pitch_avg": pitch_avg,
+                "combo": combo,
             }
 
         except Exception as e:
@@ -273,6 +280,7 @@ async def process_segment_multiplayer(
         "total_score": primary_res["total_score"],
         "pitch": primary_res.get("pitch"),
         "pitch_avg": primary_res.get("pitch_avg"),
+        "combo": primary_res.get("combo", 0),
         "player_scores": results
     })
 
@@ -326,6 +334,13 @@ def _verse_players(room, idx: int) -> list:
     if owner is None:
         return players
     return [p for p in players if p in owner]
+
+
+def _combo_for(room, player: str) -> tuple[int, int]:
+    """(combo atual, maior combo) do cantor. Os versos já fechados para ele entram
+    para que um verso ainda no Whisper quebre a sequência em vez de ser pulado."""
+    verses = {idx for idx in room.transcribed_segments if player in _verse_players(room, idx)}
+    return combo_runs(room.player_segment_scores.get(player, {}), verses)
 
 
 def _all_audio_arrived(room, t1: float, players: list | None = None) -> bool:
@@ -471,6 +486,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
         logger.debug(f"Falha ao enviar estado inicial: {e}")
 
     close_code = None
+    last_reaction = 0.0
     try:
         while True:
             message = await websocket.receive()
@@ -568,6 +584,19 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
 
                 elif msg_type == "ping":
                     await websocket.send_json({"type": "pong"})
+
+                elif msg_type == "reaction" and role == "mic":
+                    # plateia: só quem está na sala e não canta esta música
+                    kind = data.get("kind")
+                    now = time.monotonic()
+                    if (player_name and room.in_game and room.display and kind in REACTIONS
+                            and player_name not in room.active_players
+                            and now - last_reaction >= REACTION_MIN_INTERVAL_SEC):
+                        last_reaction = now
+                        try:
+                            await room.display.send_json({"type": "reaction", "kind": kind, "from": player_name})
+                        except Exception as e:
+                            logger.debug(f"Reação não chegou à TV: {e}")
 
                 elif msg_type == "start_game" and queue_manager.alignment_busy():
                     # Mutex de GPU: gerando letra de uma música. Começar agora deixaria
@@ -745,7 +774,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                                 p_scores_recalc[p] = {
                                     "score": 0.0,
                                     "total_score": p_avg,
-                                    "transcription": ""
+                                    "transcription": "",
+                                    "combo": _combo_for(room, p)[0],
                                 }
 
                             await room.broadcast({
@@ -830,6 +860,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                             "good": sum(1 for v in scores.values() if v >= 85),
                             "ok": sum(1 for v in scores.values() if 70 <= v < 85),
                             "poor": sum(1 for v in scores.values() if v < 70),
+                            "best_combo": _combo_for(room, p)[1],
                         }
                         for p, scores in room.player_segment_scores.items()
                     }

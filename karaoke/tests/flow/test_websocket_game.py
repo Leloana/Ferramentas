@@ -215,12 +215,16 @@ class TestWebsocketGameFlow(unittest.TestCase):
                 self.assertEqual(msg_score["type"], "segment_result")
                 self.assertEqual(msg_score["score"], 100.0)  # sem o deslocamento da janela daria 85
                 self.assertEqual(msg_score["transcription"], "hello world")
+                # verso "Na mosca": combo de 1, que a TV só mostra a partir de 2
+                self.assertEqual(msg_score["combo"], 1)
+                self.assertEqual(msg_score["player_scores"]["PlayerOne"]["combo"], 1)
 
                 # 5. End Audio
                 ws_display.send_json({"type": "audio_ended"})
                 msg_game_over = ws_display.receive_json()
                 self.assertEqual(msg_game_over["type"], "game_over")
                 self.assertGreaterEqual(msg_game_over["player_scores"]["PlayerOne"], 80.0)
+                self.assertEqual(msg_game_over["player_stats"]["PlayerOne"]["best_combo"], 1)
 
     @patch("ws.room.get_stt_engine")
     def test_last_verse_is_scored_when_audio_ends_inside_grace(self, mock_get_stt):
@@ -518,6 +522,60 @@ class TestWebsocketGameFlow(unittest.TestCase):
             room = room_manager.rooms["midroom"]
             left = [e for e in room.recording.events if e["kind"] == "mic_left"]
             self.assertEqual([e.get("code") for e in left], [1000, 1000, 1000])
+
+
+    def test_audience_reaction_reaches_only_the_tv(self):
+        """Celular da plateia reage: a TV recebe; quem canta, fora da partida, tipo
+        desconhecido e toque repetido em menos de 0,4 s não passam."""
+        with self.client.websocket_connect(f"/ws/room/reactroom?role=display&song_id={self.song_slug}") as ws_tv:
+            with self.client.websocket_connect("/ws/room/reactroom?role=mic") as ws_ana, \
+                    self.client.websocket_connect("/ws/room/reactroom?role=mic") as ws_bia:
+                self._until(ws_ana, "register_request")
+                ws_ana.send_json({"type": "register_name", "name": "Ana", "device": "cel-1"})
+                self._until(ws_ana, "registration_success")
+                self._until(ws_bia, "register_request")
+                ws_bia.send_json({"type": "register_name", "name": "Bia", "device": "cel-2"})
+                self._until(ws_bia, "registration_success")
+
+                def tv_reactions():
+                    # tudo o que a TV recebeu até o pong do ping de agora
+                    ws_tv.send_json({"type": "ping"})
+                    got = []
+                    for _ in range(30):
+                        msg = ws_tv.receive_json()
+                        if msg["type"] == "pong":
+                            return [m for m in got if m["type"] == "reaction"]
+                        got.append(msg)
+                    self.fail("pong da TV não chegou")
+
+                # antes da partida: nada
+                ws_bia.send_json({"type": "reaction", "kind": "heart"})
+                ws_bia.send_json({"type": "ping"})
+                self._until(ws_bia, "pong")
+                self.assertEqual(tv_reactions(), [])
+
+                ws_tv.send_json({"type": "start_game", "game_mode": "solo", "active_players": ["Ana"]})
+                self._until(ws_tv, "game_started")
+                self._until(ws_ana, "game_started")
+                self._until(ws_bia, "game_started")
+
+                time.sleep(0.45)
+                ws_bia.send_json({"type": "reaction", "kind": "flame"})
+                ws_bia.send_json({"type": "reaction", "kind": "star"})   # rápido demais
+                ws_ana.send_json({"type": "reaction", "kind": "heart"})  # está cantando
+                for ws in (ws_bia, ws_ana):
+                    ws.send_json({"type": "ping"})
+                    _, seen = self._until(ws, "pong")
+                    self.assertNotIn("reaction", seen)  # celular não recebe
+                self.assertEqual(tv_reactions(), [{"type": "reaction", "kind": "flame", "from": "Bia"}])
+
+                time.sleep(0.45)
+                # fora da lista: descartado sem gastar o intervalo, a estrela logo depois passa
+                ws_bia.send_json({"type": "reaction", "kind": "bomb"})
+                ws_bia.send_json({"type": "reaction", "kind": "star"})
+                ws_bia.send_json({"type": "ping"})
+                self._until(ws_bia, "pong")
+                self.assertEqual(tv_reactions(), [{"type": "reaction", "kind": "star", "from": "Bia"}])
 
 
 if __name__ == "__main__":

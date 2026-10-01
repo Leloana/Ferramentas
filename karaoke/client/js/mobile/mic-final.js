@@ -6,6 +6,7 @@ import { escapeHtml } from '../core/html.js';
 import { openShareCard, splitSongTitle } from '../game/share-card.js';
 import { toggleReplay } from '../audio/replay.js';
 import { openAnnotationFor } from '../players/annotate.js';
+import { COMBO_MIN } from '../game/combo.js';
 
 // Nota final deste celular (a geral quando o servidor não manda por jogador)
 function myFinalScore(data) {
@@ -20,6 +21,10 @@ function finalHtml(data, myTotalScore) {
     html += `<span class="mic-final__title">Placar final</span>`;
     if (state.isActiveInGame) {
         html += `<span class="mic-final__avg">Sua média: <strong>${myTotalScore.toFixed(1)}%</strong></span>`;
+        const mine = data.player_stats && data.player_stats[state.mobileNickname];
+        if (mine && mine.best_combo >= COMBO_MIN) {
+            html += `<span class="mic-final__combo">${iconSvg('flame')} Maior combo: <strong>×${mine.best_combo}</strong></span>`;
+        }
     }
     if (data.player_scores && Object.keys(data.player_scores).length > 0) {
         html += `<div class="mic-final__list">`;

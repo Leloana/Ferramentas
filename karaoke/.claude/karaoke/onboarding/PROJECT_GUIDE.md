@@ -77,6 +77,8 @@ karaoke/
 │       │   ├── turns.js                            # Revezar versos (duelo): dono de cada verso
 │       │   ├── lyrics-script.js                    # Japonês: original, romaji ou ambos
 │       │   ├── game-events.js                      # Eventos do player para a gravação da partida
+│       │   ├── combo.js                            # Combo: selo no palco (solo) e chip ×N nas barras
+│       │   ├── reactions.js                        # Reações da plateia subindo na TV (coração, fogo, estrela)
 │       │   └── share-card.js                       # Cartão 4:5 para print no fim de jogo (TV e celular)
 │       ├── lobby/                                  # Antes da partida: repertório, lobby, fila e biblioteca
 │       │   ├── selection-view.js                   # Repertório, busca e lobby da música (capa + cantor)
@@ -97,7 +99,8 @@ karaoke/
 │       │   ├── mobile-mic-view.js                  # Tela do microfone: VU, captura e controles
 │       │   ├── mic-socket.js                       # WebSocket role=mic e reconexão
 │       │   ├── mic-messages.js                     # Uma função por mensagem do servidor para o celular
-│       │   └── mic-final.js                        # Placar final e os botões Cartão, Anotar e Ouvir
+│       │   ├── mic-final.js                        # Placar final e os botões Cartão, Anotar e Ouvir
+│       │   └── reactions-bar.js                    # Três botões de reação para quem está assistindo
 │       └── worklets/
 │           └── audio-processor.js                  # AudioWorklet: 16 kHz Int16 em pacotes KM01 de 100 ms
 ├── server/                     # Servidor HTTP / WebSocket e Engenharia AI (Server-side)
@@ -106,6 +109,7 @@ karaoke/
 │   ├── rooms.py                # Modelagem da sala de canto (KaraokeRoom, RoomManager)
 │   ├── song_manager.py         # Gerenciamento de pastas de música no disco
 │   ├── score_engine.py         # Algoritmos de scoring, perdão de vazamento e normalização por idioma
+│   ├── combo.py                # Combo: versos "Na mosca" (≥ 85) seguidos por cantor
 │   ├── stt_engine.py           # Interface do Whisper, detecção de silêncio, CUDA fallback, duas passadas
 │   ├── mic_stream.py           # Pacote KM01, relógio da música, janelas disjuntas por verso
 │   ├── pitch.py                # Afinação (YIN): pitch.json e nota de tom por verso
