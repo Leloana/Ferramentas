@@ -124,6 +124,8 @@ The system can be configured using environment variables:
 | `PATH` | Server scans system PATH + localized directories to find `ffmpeg.exe` and Nvidia CUDA DLLs automatically. | — | — |
 | `KARAOKE_PUBLIC_URL` | Public URL used in QR codes behind the tunnel. | `https://karaoke.example` | — |
 | `KARAOKE_WHISPER_MODEL` / `_DEVICE` / `_COMPUTE` | faster-whisper model, device and compute type. | `small` / `cpu` / `int8` | `large-v3-turbo` / `auto` / per device |
+| `KARAOKE_SEPARATOR` | Vocal separator: `roformer` (needs the optional `audio-separator` package), `demucs`, or `auto` (RoFormer when installed). | `demucs` | `auto` |
+| `KARAOKE_ROFORMER_MODEL` / `_MODEL_DIR` | audio-separator model and its download folder. | `vocals_mel_band_roformer.ckpt` | `model_bs_roformer_ep_317_sdr_12.9755.ckpt` / `~/.cache/audio-separator-models` |
 | `KARAOKE_DEMUCS_MODEL` | Demucs model for vocal separation. | `htdemucs_ft` | `htdemucs` |
 | `KARAOKE_MP3_BITRATE` | Bitrate of vocal/backing MP3s. | `256k` | `320k` |
 | `KARAOKE_RECORD` / `KARAOKE_RECORD_DIR` | Record games for calibration (`0` disables). | `0` | on / `recordings/` |

@@ -132,9 +132,12 @@ karaoke/
 │       ├── lrc.py              # Parsing leve de headers LRC ([ti:], [ar:])
 │       ├── lrc_align.py        # Alinhador puro de letras planas vs Whisper
 │       ├── lrc_pro.py          # MMS_FA linha por linha (janela do LRC) com confiança por palavra
+│       ├── lrc_fit.py          # LRC de outra versão: escala + offset pela voz do stem
+│       ├── lrc_structure.py    # Onde cada linha foi cantada (Whisper × letra): pula/repete linhas
+│       ├── lrc_sync.py         # Escolhe o LRC deste áudio (encaixe × estrutura)
 │       ├── alignment_quality.py # Nota da sincronia → meta.json alignment_quality / needs_review
 │       ├── segment_timing.py   # match_words_in_order + finalize_segments (versos sem sobreposição)
-│       ├── separation.py       # Demucs (uma separação por vez), MP3 320k, instrumental normalizado
+│       ├── separation.py       # RoFormer (opcional) ou Demucs, uma separação por vez, MP3 320k, instrumental normalizado
 │       ├── loudness.py         # LUFS (BS.1770 em numpy) + limitador (~−16 LUFS)
 │       ├── cover.py            # Capa: iTunes + Deezer + YouTube, nota por artista/título, escolhível
 │       ├── song_paths.py       # safe_song_dir: slug do cliente nunca sai de songs/

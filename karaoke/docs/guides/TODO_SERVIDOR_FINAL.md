@@ -81,6 +81,12 @@ item de áudio em [AUDIO_PIPELINE_MELHORIAS.md](AUDIO_PIPELINE_MELHORIAS.md).
       fase 2 começa e o INICIAR mostra "GPU ocupada" até ela acabar.
 - [ ] **Alinhamento PRO** em 5–10 músicas com LRC do LRCLIB: sem estouro de memória, tempo por música,
       `alignment_quality` coerente (as ruins viram "Revisar").
+- [ ] **Versão do áudio × letra** — reinstalar 5 músicas de versão diferente da do LRCLIB (ao vivo, edit,
+      intro longa) e conferir no log `[LRC FIT]`, `[ESTRUTURA]` e `LRC para este áudio: <método>`. Medir o
+      tempo extra do Whisper do stem inteiro (estrutura) no modo rápido.
+- [ ] **RoFormer** — `pip install audio-separator==0.47.0` no venv (confere se não troca o numpy/onnxruntime
+      do `requirements.txt`), baixar o modelo antes (1ª separação baixa ~600 MB com o lock preso), reinstalar 5
+      músicas e ouvir o instrumental × Demucs. VRAM (com o Whisper carregado) e tempo por música.
 - [ ] **Volume** — ouvir antes/depois da normalização (limitador em faixas com muito pico); reinstalar as
       músicas antigas para nivelar.
 - [ ] **Afinação** — conferir se "tom X%" separa cantar afinado de desafinado antes de pensar em pôr na nota
@@ -97,6 +103,8 @@ item de áudio em [AUDIO_PIPELINE_MELHORIAS.md](AUDIO_PIPELINE_MELHORIAS.md).
 | `KARAOKE_HTTP` | `1` (só se rodar via `python server/main.py`) | Ignora `key.pem`/`cert.pem` |
 | `KARAOKE_HOST` | `127.0.0.1` (só via `python server/main.py`) | Endereço de escuta |
 | `KARAOKE_PORT` | `8000` | Porta de escuta |
-| `KARAOKE_DEMUCS_MODEL` | `htdemucs` (testar `htdemucs_ft`) | Modelo da separação voz × instrumental |
+| `KARAOKE_SEPARATOR` | `auto` (RoFormer se `pip install audio-separator==0.47.0`, senão Demucs) | Separador voz × instrumental |
+| `KARAOKE_ROFORMER_MODEL` | `model_bs_roformer_ep_317_sdr_12.9755.ckpt` | Modelo do RoFormer (~600 MB, baixa na 1ª vez) |
+| `KARAOKE_DEMUCS_MODEL` | `htdemucs` (testar `htdemucs_ft`) | Modelo do Demucs (fallback do RoFormer) |
 | `KARAOKE_MP3_BITRATE` | `320k` | Bitrate dos MP3 |
 | `KARAOKE_RECORD` / `KARAOKE_RECORD_DIR` | ligado | Grava as partidas para calibrar a nota |
