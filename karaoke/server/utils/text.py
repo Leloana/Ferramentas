@@ -42,8 +42,22 @@ def normalize_lyrics_text(text: str | None) -> str:
     return "\n".join(out).strip()
 
 
+# kana, kanji e a pontuação japonesa
+_JA_RUN = re.compile(r"[　-〿぀-ヿ㐀-䶿一-鿿＀-￯]+")
+
+
+def _ja_to_romaji(text: str) -> str:
+    """Trechos em japonês viram romaji ("青い、濃い" → "aoi koi"); o ASCII descartaria tudo."""
+    if not _JA_RUN.search(text):
+        return text
+    from lyrics_text import ja_romaji, split_words  # sob demanda: servidor e ferramentas têm server/ no path
+
+    return _JA_RUN.sub(lambda m: " " + " ".join(ja_romaji(w) for w in split_words(m.group(), "ja")) + " ", text)
+
+
 def slugify(text: str) -> str:
     """Converte texto para slug ASCII-safe (lowercase, sem acentos, com hífens)."""
+    text = _ja_to_romaji(text)
     text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")
     text = text.lower().strip()
     text = re.sub(r"[^\w\s-]", "", text)

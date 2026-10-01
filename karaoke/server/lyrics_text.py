@@ -247,6 +247,14 @@ def time_words_by_characters(text: str, language: str | None, asr_words: list[di
     # Interpolação das palavras sem casamento entre as vizinhas com tempo.
     known = [i for i, w in enumerate(timed) if w["start"] is not None]
     if not known:
+        # Nada da linha foi ouvido (só ruído/alucinação): palavras espalhadas pelo trecho do STT
+        if not timed or not asr_words:
+            return timed
+        lo, hi = float(asr_words[0]["start"]), max(float(asr_words[-1]["end"]), float(asr_words[0]["start"]))
+        step = (hi - lo) / len(timed)
+        for i, w in enumerate(timed):
+            w["start"] = round(lo + step * i, 3)
+            w["end"] = round(lo + step * (i + 1), 3)
         return timed
     for i, w in enumerate(timed):
         if w["start"] is not None:

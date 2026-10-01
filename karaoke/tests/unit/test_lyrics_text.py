@@ -58,6 +58,21 @@ class TestJapaneseWords(unittest.TestCase):
         self.assertEqual(starts, sorted(starts))
         self.assertTrue(all(s is not None for s in starts))
 
+    def test_line_with_nothing_heard_still_gets_times(self):
+        # Whisper ouviu só lixo em katakana: antes os tempos voltavam None e o prepare_song quebrava
+        timed = time_words_by_characters(LINE, "ja", _pieces(["コ", "シ", "カ"]))
+        starts = [w["start"] for w in timed]
+        self.assertTrue(all(s is not None for s in starts))
+        self.assertEqual(starts, sorted(starts))
+        self.assertLessEqual(timed[-1]["end"], 0.85)
+
+    def test_slug_of_a_japanese_title_is_romaji(self):
+        from utils.text import slugify
+        # antes: "-mass-of-the-fermenting-dregs" (o título sumia no ASCII)
+        self.assertEqual(slugify("青い、濃い、橙色の日-MASS OF THE FERMENTING DREGS"),
+                         "aoi-koi-daidaiirono-hi-mass-of-the-fermenting-dregs")
+        self.assertEqual(slugify("Construção-Chico Buarque"), "construcao-chico-buarque")
+
     def test_queue_switches_to_japanese_when_lyrics_have_kana(self):
         self.assertEqual(infer_language("[00:01.10] 待ちぼうけさ\n[00:04.20] 追い掛けても", "en"), "ja")
         self.assertEqual(infer_language("Joga pedra na Geni", "pt"), "pt")
