@@ -10,12 +10,14 @@ import { dom } from '../core/dom.js';
 import { sendPlayerEvent } from '../game/game-events.js';
 
 const STORAGE_KEY = 'karaoke_guide_volume';
-// Deriva da voz guia: até SOFT só acompanha; até HARD alcança mudando a velocidade
-// (sem pular, inaudível); acima disso salta. Antes saltava a partir de 80 ms, várias
-// vezes por música na TV, e cada salto engasgava o som.
-const SOFT_DRIFT_SEC = 0.04;
-const HARD_DRIFT_SEC = 0.5;
-const MAX_RATE_NUDGE = 0.05;
+// Deriva da voz guia: acima disso salta para a posição do instrumental. A velocidade
+// fica sempre igual à dele: alcançar mudando a velocidade deixou a voz audivelmente
+// adiantada na TV (Firefox Android). 80 ms com salto a cada conferência engasgava:
+// agora 150 ms e no máximo um salto a cada RESYNC_GAP_MS.
+const MAX_DRIFT_SEC = 0.15;
+const RESYNC_GAP_MS = 5000;
+// amostra da deriva na gravação da partida, para calibrar (event guide_drift, em ms)
+const DRIFT_SAMPLE_MS = 10000;
 
 export function savedGuideVolume() {
     try {
@@ -46,28 +48,30 @@ function follow(audio) {
     // o <audio> da voz guia é trocado por um clone a cada partida: sempre o atual
     const guide = () => dom.guidePlayer;
     const active = () => savedGuideVolume() > 0 && !!guide();
-    // salto: no play/seek do instrumental e quando a deriva passa de HARD_DRIFT_SEC
+    let lastResync = 0;
+    let lastSample = 0;
+    // play/seek do instrumental: salta sempre que estiver fora
     const align = () => {
         const g = guide();
-        if (g && Math.abs(g.currentTime - audio.currentTime) > SOFT_DRIFT_SEC) {
+        if (g && Math.abs(g.currentTime - audio.currentTime) > MAX_DRIFT_SEC) {
             try { g.currentTime = audio.currentTime; } catch (e) { /* ainda sem metadados */ }
-            g.playbackRate = audio.playbackRate;
+            lastResync = Date.now();
         }
     };
-    // durante a música: velocidade proporcional à deriva (adiantada = mais devagar)
-    const nudge = () => {
+    // durante a música: salta só com folga desde o último salto
+    const keepUp = () => {
         const g = guide();
         if (!g) return;
         const drift = g.currentTime - audio.currentTime;
-        if (Math.abs(drift) > HARD_DRIFT_SEC) {
+        const now = Date.now();
+        if (now - lastSample > DRIFT_SAMPLE_MS) {
+            lastSample = now;
+            sendPlayerEvent('guide_drift', Math.round(drift * 1000));
+        }
+        if (Math.abs(drift) > MAX_DRIFT_SEC && now - lastResync > RESYNC_GAP_MS) {
             sendPlayerEvent('guide_resync', Math.round(drift * 1000));
             align();
-            return;
         }
-        const k = Math.abs(drift) > SOFT_DRIFT_SEC
-            ? Math.max(-MAX_RATE_NUDGE, Math.min(MAX_RATE_NUDGE, drift * 0.25)) : 0;
-        const rate = audio.playbackRate * (1 - k);
-        if (Math.abs(g.playbackRate - rate) > 0.001) g.playbackRate = rate;
     };
     const play = () => {
         const g = guide();
@@ -86,7 +90,7 @@ function follow(audio) {
     audio.addEventListener('timeupdate', () => {
         if (!active() || audio.paused) return;
         if (guide().paused) { align(); play(); return; }
-        nudge();
+        keepUp();
     });
 }
 
