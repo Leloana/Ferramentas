@@ -23,6 +23,7 @@ async def queue_add_song(
     added_by: str = Form(""),
     align_lyrics: bool = Form(False),
     clean_existing: bool = Form(False),
+    duration_sec: Optional[float] = Form(None),  # do resultado da busca no YouTube: tempo estimado já de início
     vocal_file: Optional[UploadFile] = File(None),
     backing_file: Optional[UploadFile] = File(None),
 ):
@@ -142,6 +143,7 @@ async def queue_add_song(
             added_by=added_by.strip() or None,
             align_lyrics=align_lyrics,
             clean_existing=clean_existing,
+            audio_sec=duration_sec,
         )
         return {
             "success": True,

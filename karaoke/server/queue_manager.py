@@ -14,6 +14,7 @@ import contextlib
 import json
 import logging
 import shutil
+import time
 import uuid
 from dataclasses import dataclass, field
 from enum import Enum
@@ -52,7 +53,32 @@ class QueueItem:
     error_msg: Optional[str] = None
     added_by: Optional[str] = None
     clean_existing: bool = False
+    audio_sec: Optional[float] = None  # duração do áudio (YouTube, depois o arquivo baixado)
+    separator: str = "demucs"  # o que deve separar este áudio (estimativa de tempo)
+    stage_started: float = field(default_factory=time.monotonic)
     _task: Optional[asyncio.Task] = field(default=None, repr=False)
+
+    def eta_sec(self) -> Optional[int]:
+        """Segundos que faltam até a música ficar pronta (queue_eta.py). Sem partida no meio."""
+        import queue_eta
+
+        stages = ["download", f"separate_{self.separator}", "align_pro" if self.align_lyrics else "align_fast"]
+        current = {
+            QueueStatus.QUEUED: 0, QueueStatus.DOWNLOADING: 0, QueueStatus.SEPARATING: 1,
+            QueueStatus.AWAITING_ALIGNMENT: 2, QueueStatus.ALIGNING: 2, QueueStatus.FINALIZING: 2,
+        }.get(self.status)
+        if current is None:
+            return None
+        running = self.status in (QueueStatus.DOWNLOADING, QueueStatus.SEPARATING,
+                                  QueueStatus.ALIGNING, QueueStatus.FINALIZING)
+        total = 0.0
+        for i, stage in enumerate(stages[current:]):
+            est = queue_eta.estimate(stage, self.audio_sec)
+            if i == 0 and running:
+                # passou da conta: "quase lá" em vez de zero ou negativo
+                est = max(est * 0.1, est - (time.monotonic() - self.stage_started), 5.0)
+            total += est
+        return int(round(total))
 
     def to_dict(self) -> dict:
         return {
@@ -69,6 +95,8 @@ class QueueItem:
             "has_lrc": bool(self.synced_lrc),
             "has_plain_lyrics": bool(self.plain_lyrics) and not bool(self.synced_lrc),
             "clean_existing": self.clean_existing,
+            "audio_sec": self.audio_sec,
+            "eta_sec": self.eta_sec(),
         }
 
 
@@ -97,6 +125,7 @@ class SongQueueManager:
         added_by: Optional[str] = None,
         align_lyrics: bool = False,
         clean_existing: bool = False,
+        audio_sec: Optional[float] = None,
     ) -> QueueItem:
         """Adiciona música à fila e dispara Fase 1 imediatamente."""
         if len(self.queue) >= MAX_QUEUE_SIZE:
@@ -117,6 +146,8 @@ class SongQueueManager:
             align_lyrics=align_lyrics,
             added_by=added_by,
             clean_existing=clean_existing,
+            audio_sec=audio_sec if audio_sec and audio_sec > 0 else None,
+            separator=self._separator_now(),
         )
         self.queue.append(item)
         logger.info(f"[QUEUE] Música adicionada à fila: '{title}' por {added_by or 'anônimo'} (id={item.id})")
@@ -124,6 +155,12 @@ class SongQueueManager:
         # Dispara Fase 1 (download + separação) imediatamente
         item._task = asyncio.create_task(self._process_phase1(item))
         return item
+
+    def _separator_now(self) -> str:
+        """Separador que a fase 1 usaria agora (RoFormer só sem partida)."""
+        from utils.separation import separator_backend
+
+        return "demucs" if self._gpu_game_active else separator_backend()
 
     def get_queue_status(self) -> list[dict]:
         """Retorna status de todos os itens da fila."""
@@ -181,6 +218,7 @@ class SongQueueManager:
         try:
             # 1. Criar meta.json mínimo
             item.status = QueueStatus.DOWNLOADING
+            item.stage_started = time.monotonic()
             item.progress_pct = 5
             logger.info(f"[QUEUE:{item.id}] Fase 1 — Criando meta.json e iniciando download...")
 
@@ -260,11 +298,24 @@ class SongQueueManager:
                 success = await download_youtube_audio(item.youtube_url, original_audio, ffmpeg_bin_dir)
                 if not success or not original_audio.exists():
                     raise RuntimeError("Falha ao baixar áudio do YouTube.")
+                import queue_eta
+
+                queue_eta.record("download", time.monotonic() - item.stage_started, None)
 
             item.progress_pct = 35
 
+            # duração real do áudio: a estimativa das próximas etapas passa a valer para ele
+            import queue_eta
+            from state import ffmpeg_bin_dir as _ffmpeg_dir
+
+            probe_target = original_audio if original_audio.exists() else vocal_audio
+            if probe_target.exists():
+                item.audio_sec = await asyncio.to_thread(queue_eta.probe_duration, probe_target, _ffmpeg_dir) or item.audio_sec
+
             # 3. Demucs (separação vocal/instrumental) — roda na GPU, seguro em paralelo
             item.status = QueueStatus.SEPARATING
+            item.separator = self._separator_now()
+            item.stage_started = time.monotonic()
             item.progress_pct = 40
 
             if vocal_audio.exists() and backing_audio.exists():
@@ -273,6 +324,7 @@ class SongQueueManager:
                 logger.info(f"[QUEUE:{item.id}] Executando Demucs (separação de áudio)...")
                 target_audio = original_audio if original_audio.exists() else vocal_audio
                 await self._run_demucs(item, song_dir, target_audio)
+                queue_eta.record(f"separate_{item.separator}", time.monotonic() - item.stage_started, item.audio_sec)
 
             item.progress_pct = 70
 
@@ -313,6 +365,7 @@ class SongQueueManager:
             item.status = QueueStatus.ALIGNING
             item.progress_pct = 78
             async with self.gpu_job(item.title or item.slug):
+                item.stage_started = time.monotonic()
                 item.progress_pct = 80
                 logger.info(f"[QUEUE:{item.id}] Fase 2 — Whisper lock adquirido. Gerando LRC + alinhamento...")
 
@@ -333,6 +386,10 @@ class SongQueueManager:
 
                 if not success:
                     raise RuntimeError("Pipeline de alinhamento falhou.")
+                import queue_eta
+
+                queue_eta.record("align_pro" if align_lyrics else "align_fast",
+                                 time.monotonic() - item.stage_started, item.audio_sec)
 
                 item.status = QueueStatus.FINALIZING
                 item.progress_pct = 95

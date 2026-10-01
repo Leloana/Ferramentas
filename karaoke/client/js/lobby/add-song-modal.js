@@ -7,6 +7,7 @@ import { showToast } from '../core/toast.js';
 import { promptGenerationOptions } from './selection-view.js';
 import { openModal, closeModal } from '../ui/modal.js';
 import { initYoutubeSearch, resetYoutubeSearch, isYoutubeUrl } from './youtube-search.js';
+import { formatEta } from './queue-view.js';
 
 // --- Status de busca de letras (compartilhado entre os passos 2 e 3) ---
 
@@ -286,6 +287,10 @@ export function initAddSongModal() {
         const vocalUrlInput = document.getElementById('youtube-vocal-url');
         if (vocalUrlInput && vocalUrlInput.value.trim()) {
             formData.set('youtube_url', vocalUrlInput.value.trim());
+            const picked = state.pickedYoutube;
+            if (picked && picked.url === vocalUrlInput.value.trim() && picked.duration) {
+                formData.set('duration_sec', picked.duration);
+            }
         }
 
         // Inclui letras (synced LRC e/ou plain lyrics)
@@ -313,10 +318,11 @@ export function initAddSongModal() {
                 throw new Error(err.detail || "Erro desconhecido");
             }
 
-            await response.json();
+            const added = await response.json();
             stopLoadingOverlay(gen);
 
-            showToast("Música adicionada à fila com sucesso! O processamento rodará em segundo plano.", "success");
+            const eta = formatEta(added.item && added.item.eta_sec);
+            showToast(`Música adicionada à fila!${eta ? ` Pronta em ${eta}.` : ''}`, "success");
 
             closeModal(addSongModal);
 

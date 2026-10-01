@@ -15,7 +15,7 @@ import { state } from '../core/state.js';
 const STATUS_MAP = {
     queued:              { icon: 'hourglass', label: 'Na fila...' },
     downloading:         { icon: 'download', label: 'Baixando do YouTube...' },
-    separating:          { icon: 'split', label: 'Separando vocal (Demucs GPU)...' },
+    separating:          { icon: 'split', label: 'Separando voz e instrumental...' },
     awaiting_alignment:  { icon: 'pause', label: 'Aguardando GPU livre para alinhar...' },
     aligning:            { icon: 'target', label: 'Alinhando letra (Whisper + MMS)...' },
     finalizing:          { icon: 'seal', label: 'Finalizando segmentos...' },
@@ -26,6 +26,18 @@ const STATUS_MAP = {
 };
 
 let pollInterval = null;
+
+// "≈ 3 min" a partir do eta_sec do servidor (server/queue_eta.py); '' sem estimativa
+export function formatEta(sec) {
+    if (sec === null || sec === undefined) return '';
+    if (sec < 60) return 'menos de 1 min';
+    return `≈ ${Math.round(sec / 60)} min`;
+}
+
+function statusLabel(item, info) {
+    const eta = formatEta(item.eta_sec);
+    return eta ? `${info.label} · ${eta}` : info.label;
+}
 
 // Listas da fila: aba "Adicionar" da TV e aba "Adicionar" do celular-microfone.
 const LIST_IDS = ['queue-display-list', 'queue-mic-list'];
@@ -193,7 +205,7 @@ function createQueueItemCard(item) {
                 ${getLyricBadge(item)}
             </div>
             <div class="queue-item-status" data-status="${item.status}">
-                ${info.label}${item.error_msg ? ' — ' + escapeHtml(item.error_msg) : ''}
+                ${escapeHtml(statusLabel(item, info))}${item.error_msg ? ' — ' + escapeHtml(item.error_msg) : ''}
                 ${item.added_by ? ` <span class="muted">• ${escapeHtml(item.added_by)}</span>` : ''}
             </div>
         </div>
@@ -235,7 +247,7 @@ function updateQueueItemCard(container, item) {
     const statusEl = card.querySelector('.queue-item-status');
     if (statusEl) {
         statusEl.dataset.status = item.status;
-        let text = info.label;
+        let text = statusLabel(item, info);
         if (item.error_msg) text += ' — ' + item.error_msg;
         if (item.added_by) text += ` • ${item.added_by}`;
         statusEl.textContent = text;

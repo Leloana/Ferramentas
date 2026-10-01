@@ -86,6 +86,7 @@ async function runSearch(onPick) {
                 url: item.url,
                 artist: item.artist_guess,
                 title: item.title_guess,
+                duration: item.duration,  // tempo estimado da fila já ao adicionar
             }));
             results.append(row);
         });

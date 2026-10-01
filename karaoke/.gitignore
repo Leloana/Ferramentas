@@ -4,3 +4,6 @@ validacao_gpu/
 
 # Certificado autoassinado do modo LAN: gerar localmente, nunca versionar
 server/*.pem
+
+# médias de tempo da fila (server/queue_eta.py)
+server/queue_stats.json
