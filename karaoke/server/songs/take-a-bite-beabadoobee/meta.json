@@ -1,0 +1,256 @@
+{
+    "meta": {
+        "title": "Take A Bite",
+        "artist": "beabadoobee",
+        "language": "en",
+        "slug": "take-a-bite-beabadoobee"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=-DmixSHLIn0",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Sure, it's easy to talk\r\nBut I take it and I eat it with a cherry on top\r\nIndulging in situations that are fabricated imaginations\r\nMoments that cease to exist\r\nOnly wanna fix it with a kiss on the lips\r\n\r\nBut I think I might\r\nTake a bite\r\n\r\nI wanted to see the world in color\r\nThrough your eyes and through your mind\r\nI think that I like to sit and wonder\r\nThrough the night, I think I might\r\nWanna do it all over again\r\n\r\nIt gets harder to breathe\r\nBut I take it and I want it and I love when it bleeds\r\n'Cause I'm craving expectations that are unattainable temptations\r\nI guess I'll just take the hit\r\nBut what's the point of trying if it turns into this?\r\n\r\n'Cause I think I might\r\nTake a bite\r\n\r\nI wanted to see the world in color\r\nThrough your eyes and through your mind\r\nI think that I like to sit and wonder\r\nThrough the night, I think I might\r\nWanna do it all over again\r\n\r\nMoving backwards (I wanna do it all over again)\r\nStuck in reverse (I wanna do it all over again)\r\nSome things get in the way (I wanna do it)\r\n\r\nI wanted to see the world in color\r\nThrough your eyes and through your mind\r\nI think that I like to sit and wonder\r\nThrough the night, I think I might\r\nWanna do it all over again"
+    },
+    "loudness": {
+        "lufs_before": -10.09,
+        "gain_db": -5.91
+    },
+    "alignment_quality": {
+        "score": 31.8,
+        "flags": [
+            "confiança baixa em 77% das palavras",
+            "palavras empilhadas (9)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": 0.191,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 1,
+                "confidence": 0.206,
+                "flags": [
+                    "confiança baixa",
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 2,
+                "confidence": 0.383,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": 0.152,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 4,
+                "confidence": 0.279,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 5,
+                "confidence": 0.066,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 6,
+                "confidence": 0.17,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 7,
+                "confidence": 0.142,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 8,
+                "confidence": 0.143,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 9,
+                "confidence": 0.225,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 10,
+                "confidence": 0.102,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 11,
+                "confidence": 0.603,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": 0.339,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 13,
+                "confidence": 0.297,
+                "flags": [
+                    "confiança baixa",
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 14,
+                "confidence": 0.397,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": 0.266,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 16,
+                "confidence": 0.38,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": 0.061,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 18,
+                "confidence": 0.335,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 19,
+                "confidence": 0.165,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 20,
+                "confidence": 0.163,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 21,
+                "confidence": 0.204,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 22,
+                "confidence": 0.134,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 23,
+                "confidence": 0.736,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": 0.062,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 25,
+                "confidence": 0.03,
+                "flags": [
+                    "confiança baixa",
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 26,
+                "confidence": 0.077,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 27,
+                "confidence": 0.25,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 28,
+                "confidence": 0.233,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 29,
+                "confidence": 0.259,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 30,
+                "confidence": 0.149,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 31,
+                "confidence": 0.681,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 241,
+            "lines": 32,
+            "low_confidence": 0.768,
+            "median_confidence": 0.181,
+            "stacked": 9,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": true
+}
