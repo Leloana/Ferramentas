@@ -160,6 +160,10 @@ def prepare_song(song_dir, language="en", debug=False):
                     "expected_start": round(w["start"], 3),
                     "expected_end": round(w["end"], 3),
                 })
+            # a 1ª palavra começa no tempo do LRC: o Whisper costuma perder a 1ª sílaba e
+            # ela ficava interpolada junto da 2ª palavra, quase 1 s depois
+            if lyrics_timed:
+                lyrics_timed[0]["expected_start"] = 0.0
         elif words and len(words) > 0:
             # Temos timestamps do Whisper
             if len(words) == len(official_words):
@@ -202,7 +206,10 @@ def prepare_song(song_dir, language="en", debug=False):
         # 2. Os tempos expected_start sejam estritamente crescentes (monotônicos com delta de 50ms)
         #    para evitar que palavras posteriores acendam antes de palavras anteriores no frontend!
         # Ajustar o voice_delay para dar um respiro (margem inicial de 400ms) antes do início do canto
-        voice_delay = max(0.0, words[0]["start"] - 0.4) if words else 0.0
+        # Japonês: o verso fica no tempo do LRC. O Whisper perde a 1ª sílaba quando a voz
+        # entra junto do corte da janela ("待ちぼうけさ" vira "ち…"), e empurrar o verso para
+        # a 1ª sílaba ouvida deixava a letra ~0,8 s atrasada (medido cantando).
+        voice_delay = max(0.0, words[0]["start"] - 0.4) if words and not is_japanese(language) else 0.0
         if words:
             for w in lyrics_timed:
                 w["expected_start"] = max(0.0, round(w["expected_start"] - voice_delay, 3))
