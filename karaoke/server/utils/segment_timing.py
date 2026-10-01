@@ -90,8 +90,18 @@ def match_words_in_order(official_words: list[str], whisper_words: list[dict]) -
     return interpolate_missing_words(out)
 
 
+def has_lyrics(text) -> bool:
+    """Verso de verdade tem letra ou número; "♪", "♫", "*" etc. marcam trecho instrumental."""
+    return any(ch.isalnum() for ch in str(text or ""))
+
+
 def finalize_segments(segments: list[dict], total_duration: float | None = None) -> list[dict]:
-    """Ajusta sing_end/pausas: cobre a última palavra e não invade o próximo verso."""
+    """Ajusta sing_end/pausas: cobre a última palavra e não invade o próximo verso.
+
+    Tira da lista (no lugar: há quem ignore o retorno) os "versos" sem letra, como
+    o "♪" das letras do LRCLIB — viravam 1,7 s de canto pontuado no instrumental.
+    """
+    segments[:] = [seg for seg in segments if "lyrics" not in seg or has_lyrics(seg["lyrics"])]
     for idx, seg in enumerate(segments):
         start = seg["sing_start"]
         words = seg.get("lyrics_timed") or []

@@ -75,3 +75,18 @@ class ParseLrcTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class InstrumentalMarkersTest(unittest.TestCase):
+    """"♪" do LRCLIB não vira verso para cantar."""
+
+    def test_lines_without_lyrics_are_dropped(self):
+        segs = [
+            {"sing_start": 1.0, "sing_end": 3.0, "lyrics": "I'm going back", "lyrics_timed": []},
+            {"sing_start": 3.5, "sing_end": 5.2, "lyrics": "♪", "lyrics_timed": []},
+            {"sing_start": 9.0, "sing_end": 11.0, "lyrics": "Stop and wait", "lyrics_timed": []},
+        ]
+        out = finalize_segments(segs)
+        self.assertIs(out, segs)  # no lugar: song_manager ignora o retorno
+        self.assertEqual([s["lyrics"] for s in segs], ["I'm going back", "Stop and wait"])
+        self.assertLessEqual(segs[0]["pause_end"], 9.0)
