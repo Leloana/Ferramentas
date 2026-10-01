@@ -81,12 +81,8 @@ item de áudio em [AUDIO_PIPELINE_MELHORIAS.md](AUDIO_PIPELINE_MELHORIAS.md).
       fase 2 começa e o INICIAR mostra "GPU ocupada" até ela acabar.
 - [ ] **Alinhamento PRO** em 5–10 músicas com LRC do LRCLIB: sem estouro de memória, tempo por música,
       `alignment_quality` coerente (as ruins viram "Revisar").
-- [ ] **Versão do áudio × letra** — reinstalar 5 músicas de versão diferente da do LRCLIB (ao vivo, edit,
-      intro longa) e conferir no log `[LRC FIT]`, `[ESTRUTURA]` e `LRC para este áudio: <método>`. Medir o
-      tempo extra do Whisper do stem inteiro (estrutura) no modo rápido.
-- [ ] **RoFormer** — `pip install audio-separator==0.47.0` no venv (confere se não troca o numpy/onnxruntime
-      do `requirements.txt`), baixar o modelo antes (1ª separação baixa ~600 MB com o lock preso), reinstalar 5
-      músicas e ouvir o instrumental × Demucs. VRAM (com o Whisper carregado) e tempo por música.
+- [ ] **Versão do áudio × letra, nota em ordem e RoFormer** (branch `feat/karaoke-versoes-robustas`) —
+      roteiro pronto abaixo, em "Testes prontos para a máquina com GPU".
 - [ ] **Volume** — ouvir antes/depois da normalização (limitador em faixas com muito pico); reinstalar as
       músicas antigas para nivelar.
 - [ ] **Afinação** — conferir se "tom X%" separa cantar afinado de desafinado antes de pensar em pôr na nota
@@ -94,6 +90,47 @@ item de áudio em [AUDIO_PIPELINE_MELHORIAS.md](AUDIO_PIPELINE_MELHORIAS.md).
 - [ ] **Gravações novas** (formato 2, com as duas passadas do Whisper) → virar fixture com gabarito →
       calibrar `PROMPT_TRUST_MIN_PROB`, VAD, tolerância de tempo.
 - [ ] **Tela acesa** no celular-microfone durante uma música inteira (Android e iPhone).
+
+## Testes prontos para a máquina com GPU (2026-10-01)
+
+Feitos e medidos em CPU. Falta GPU e música real. `tools/validar_gpu.py` roda cada um com um comando, do
+venv do servidor, de dentro de `karaoke/`, **com o servidor parado** (o script carrega o próprio Whisper e
+o MMS_FA na GPU). Relatórios JSON e os áudios para ouvir saem em `validacao_gpu/` (fora do git).
+
+```powershell
+git fetch; git switch feat/karaoke-versoes-robustas
+python -m pytest -q tests/unit tests/flow                    # 1. suíte (261 testes em 2026-10-01)
+pip install audio-separator==0.47.0                           # 2. opcional: liga o RoFormer
+python tools/validar_gpu.py ambiente                          # 3. GPU, versões, separador escolhido
+python tools/validar_gpu.py baixar-modelo                     # 4. ~600 MB, fora do lock da GPU
+python tools/validar_gpu.py separacao server/songs/<slug>/original.mp3 --com-whisper   # 5.
+python tools/validar_gpu.py versoes                           # 6. Holiday em 6 versões simuladas
+python tools/validar_gpu.py musica server/songs/<slug>        # 7. música real (repetir em 3–5)
+```
+
+- [ ] **1. Suíte** — tudo verde com o torch cu124 (aqui foi o torch de CPU).
+- [ ] **3. Ambiente** — `fora_do_requirements` vazio depois do `pip install audio-separator`. Se ele subiu o
+      numpy ou o onnxruntime, rodar a suíte de novo e testar o VAD do Whisper ao vivo (usa o onnxruntime).
+      Se quebrar: `pip install -r requirements.txt` volta as versões e `KARAOKE_SEPARATOR=demucs` desliga.
+- [ ] **5. Separação** — RoFormer × Demucs na mesma música, com o Whisper carregado como no servidor:
+      tempo, pico de VRAM e `validacao_gpu/separacao-*/*-instrumental.wav` para ouvir (voz vazando,
+      pratos, reverb). Repetir em 3 músicas de estilos diferentes. VRAM pico + Whisper tem que caber com
+      folga: senão `KARAOKE_SEPARATOR=demucs`.
+- [ ] **6. Versões simuladas** — esperado (medido em CPU): PRO "agora" 39/39 em `orig`, `intro8` e `slow3`,
+      39/42 no `extrachorus`, e o `cutverse` sem as 6 linhas do verso 2. Modo rápido "agora" 39/39 no
+      `intro8` (antes 0/39) e 31/33 no `cutverse` (antes 11/33). Anotar o tempo do Whisper do stem: é o
+      custo extra de cada reinstall.
+- [ ] **7. Música real** — 3–5 músicas cuja versão do YouTube não é a de estúdio (ao vivo, radio edit,
+      intro longa). O comando mostra o encaixe, a estrutura, a concordância e o método escolhido, e grava
+      `validacao_gpu/<slug>.sync_preview.lrc` sem mexer no `lyrics.lrc`. Abrir no editor de letra e tocar.
+      Se o método errar, anotar a concordância e a cobertura: os limiares são `MIN_AGREEMENT` (0,6) e
+      `PLAN_MIN_COVERAGE` (0,35) em `server/utils/lrc_sync.py`.
+- [ ] **8. Nota em ordem numa partida** — cantar uma música conhecida e conferir que verso certo continua
+      perto de 100. Cantar embaralhado de propósito deve cair. Gravar a partida (formato 2) e anotar no
+      gabarito o verso 35 de Wolf at the Door (caiu de 89,5 para 72,7 porque o Whisper não ouviu "Tells me all").
+- [ ] **9. Reinstall de verdade** — reinstalar pela interface uma das músicas do item 7 no modo rápido e
+      uma no PRO. No log: `[LRC FIT]`, `[ESTRUTURA]`, `LRC para este áudio: <método>` e, no PRO,
+      `candidato ...: nota`. A 2ª vez da mesma música não deve transcrever de novo (`.structure_words.json`).
 
 ## Variáveis de ambiente
 

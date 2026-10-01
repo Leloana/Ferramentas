@@ -146,6 +146,7 @@ karaoke/
 ├── tools/                      # Scripts auxiliares e automações
 │   ├── prepare_song.py         # Alinhador word-level de áudio vocal com LRC para gerar segmentos
 │   ├── generate_lrc.py         # Gerador de LRC via Whisper puro
+│   ├── validar_gpu.py          # Testes prontos para o servidor com GPU (separação, versões, música real)
 │   ├── replay_recording.py     # Repassa uma partida gravada pelo Whisper com outros parâmetros
 │   └── preview_front.py        # Front sem GPU, com dados de exemplo
 └── docs/                       # Documentação técnica e especificações do projeto
