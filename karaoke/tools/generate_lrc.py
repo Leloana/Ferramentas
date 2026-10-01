@@ -9,6 +9,7 @@ carregar um segundo modelo na VRAM.
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -22,6 +23,7 @@ import torchaudio  # noqa: F401
 
 from stt_engine import get_stt_engine
 from utils.audio import load_audio_full
+from utils.transcript_lines import segments_to_lines
 from utils.whisper_params import TRANSCRIBE_KWARGS
 
 
@@ -30,6 +32,18 @@ def format_lrc_timestamp(seconds: float) -> str:
     minutes = int(seconds // 60)
     remaining_seconds = seconds % 60
     return f"[{minutes:02d}:{remaining_seconds:05.2f}]"
+
+
+def song_prompt(song_path: Path) -> str | None:
+    """Título e artista como dica para o Whisper: os nomes próprios da música saem
+    escritos certo ("Rap do Obito (Naruto)" → Uchiha, Obito, em vez de "Chihra", "Obitor")."""
+    try:
+        meta = json.loads((song_path / "meta.json").read_text(encoding="utf-8")).get("meta") or {}
+    except Exception:
+        return None
+    parts = [str(meta.get(k) or "").strip() for k in ("title", "artist")]
+    parts = [p for p in parts if p and p not in ("Música Desconhecida", "Artista Desconhecido")]
+    return " - ".join(parts) + "." if parts else None
 
 
 def generate_lrc(song_dir: str, language: str = "en", debug: bool = False) -> None:
@@ -62,6 +76,7 @@ def generate_lrc(song_dir: str, language: str = "en", debug: bool = False) -> No
     segments, _info = engine.model.transcribe(
         audio,
         language=language,
+        initial_prompt=song_prompt(song_path),
         **TRANSCRIBE_KWARGS,
     )
 
@@ -77,16 +92,12 @@ def generate_lrc(song_dir: str, language: str = "en", debug: bool = False) -> No
         text = segment.text.strip()
         if not text:
             continue
-        raw_segments.append({"start": segment.start, "end": segment.end, "text": text})
+        words = [{"word": w.word, "start": w.start, "end": w.end} for w in (segment.words or [])]
+        raw_segments.append({"start": segment.start, "end": segment.end, "text": text, "words": words})
 
-    # Mescla segmentos com gap de silêncio < 0.8s (evita fragmentos curtos demais).
-    merged: list[dict] = []
-    for seg in raw_segments:
-        if merged and (seg["start"] - merged[-1]["end"]) < 0.8:
-            merged[-1]["text"] += " " + seg["text"]
-            merged[-1]["end"] = seg["end"]
-        else:
-            merged.append({"start": seg["start"], "end": seg["end"], "text": seg["text"]})
+    # Versos cantáveis: trecho longo quebrado pelas palavras, só trecho curto é juntado
+    # (antes juntava tudo com menos de 0,8 s de pausa: rap virava um verso de 50 s).
+    merged = segments_to_lines(raw_segments)
 
     for seg in merged:
         lrc_lines.append(f"{format_lrc_timestamp(seg['start'])}{seg['text']}")
