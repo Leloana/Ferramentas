@@ -19,11 +19,20 @@ function ready(audio) {
     });
 }
 
+// Parar não basta: o áudio pausado segue baixando e prende uma das ~6 conexões
+// do navegador com o servidor; depois de alguns plays o próximo nunca carregava.
+function release(audio) {
+    audio.pause();
+    audio.removeAttribute('src');
+    audio.load();
+}
+
 function stop() {
     const r = state.replay;
     if (!r) return;
-    r.voice.pause();
-    r.backing.pause();
+    clearTimeout(r.endTimer);
+    release(r.voice);
+    release(r.backing);
     if (r.button) r.button.classList.remove('is-playing');
     if (r.onStop) r.onStop();
     state.replay = null;
@@ -61,12 +70,57 @@ export function toggleReplay({ recordingId, player, songId, button, onStop }) {
             backing.currentTime = voice.currentTime;
         }
     });
-    voice.addEventListener('ended', stop);
-    voice.addEventListener('error', stop);
+    const stopThis = () => { if (state.replay === replay) stop(); };
+    voice.addEventListener('ended', stopThis);
+    voice.addEventListener('error', stopThis);
 
     // só começa com os dois prontos para tocar, juntos do zero
     Promise.all([ready(voice), ready(backing)]).then(() => {
         if (state.replay !== replay) return;
         return Promise.all([voice.play(), backing.play()]);
     }).catch(() => { if (state.replay === replay) stop(); });
+}
+
+// Anotar versos: toca só um verso (voz + instrumental baixinho, para ouvir se
+// entrei no tempo), com folga antes e depois. Tocar de novo no mesmo verso para.
+const VERSE_BACKING_VOLUME = 0.3;
+const VERSE_LEAD_SEC = 0.6;
+const VERSE_TAIL_SEC = 0.8;
+
+function seekTo(audio, t) {
+    return new Promise((resolve) => {
+        if (Math.abs(audio.currentTime - t) < 0.01) { resolve(); return; }
+        audio.addEventListener('seeked', () => resolve(), { once: true });
+        audio.currentTime = t;
+    });
+}
+
+export function playVerse({ recordingId, player, songId, start, end, key, button, onStop }) {
+    const current = state.replay;
+    stop();
+    if (current && current.verseKey === key) return;
+
+    const voice = new Audio(`/api/recordings/${encodeURIComponent(recordingId)}/audio/${encodeURIComponent(player)}`);
+    const backing = new Audio(songId ? `/songs/${encodeURIComponent(songId)}/audio` : '');
+    backing.volume = VERSE_BACKING_VOLUME;
+    voice.preload = 'auto';
+    backing.preload = 'auto';
+    const replay = { voice, backing, player, recordingId, button, onStop, verseKey: key, endTimer: 0 };
+    state.replay = replay;
+    if (button) button.classList.add('is-playing');
+    const stopThis = () => { if (state.replay === replay) stop(); };
+    voice.addEventListener('ended', stopThis);
+    voice.addEventListener('error', stopThis);
+
+    const from = Math.max(0, start - VERSE_LEAD_SEC);
+    const durationMs = (Math.max(end, start + 1) + VERSE_TAIL_SEC - from) * 1000;
+    const sources = songId ? [voice, backing] : [voice];
+    Promise.all(sources.map(ready))
+        .then(() => Promise.all(sources.map(a => seekTo(a, from))))
+        .then(() => {
+            if (state.replay !== replay) return;
+            replay.endTimer = setTimeout(() => { if (state.replay === replay) stop(); }, durationMs);
+            return Promise.all(sources.map(a => a.play()));
+        })
+        .catch(() => { if (state.replay === replay) stop(); });
 }

@@ -148,6 +148,41 @@ class TestGabarito(unittest.TestCase):
             save_labels(self.tmp, "Lelo", {"1": "mais ou menos"})
 
 
+class TestWordTiming(unittest.TestCase):
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp(prefix="karaoke_tempo_"))
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+
+    def test_sung_times_are_in_song_time_and_skip_unheard_words(self):
+        from recorder import sung_word_times
+
+        seg = {"sing_start": 10.0, "lyrics_timed": [
+            {"word": "Hello", "expected_start": 0.0, "expected_end": 0.4},
+            {"word": "dark", "expected_start": 0.5, "expected_end": 0.9},
+            {"word": "night", "expected_start": 1.0, "expected_end": 1.5},
+        ]}
+        # janela começa 1,5 s antes do verso; o Whisper não ouviu "dark"
+        result = {"window": [8.5, 12.0], "words": [
+            {"word": "hello", "start": 1.6, "end": 2.0},
+            {"word": "night", "start": 3.2, "end": 3.6},
+        ]}
+        words = sung_word_times(seg, result)
+        self.assertEqual([w["expected"] for w in words], [10.0, 10.5, 11.0])
+        self.assertEqual([w["sung"] for w in words], [10.1, None, 11.7])
+
+    def test_timing_marks_replace_per_player_and_drop_empty_verses(self):
+        from recorder import load_timing_marks, save_timing_marks
+
+        save_timing_marks(self.tmp, "Lelo", {"3": [2, 0, 2], "4": []})
+        save_timing_marks(self.tmp, "Ana", {"1": [1]})
+        save_timing_marks(self.tmp, "Lelo", {"5": [0]})
+        self.assertEqual(load_timing_marks(self.tmp), {"Lelo": {"5": [0]}, "Ana": {"1": [1]}})
+        save_timing_marks(self.tmp, "Ana", {"2": [3, 1]})
+        self.assertEqual(load_timing_marks(self.tmp)["Ana"], {"2": [1, 3]})
+        with self.assertRaises(ValueError):
+            save_timing_marks(self.tmp, "Ana", {"x": [1]})
+
+
 class TestRoomSavesPartialGame(unittest.TestCase):
     def test_reset_saves_unfinished_game(self):
         from rooms import KaraokeRoom

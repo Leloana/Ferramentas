@@ -52,9 +52,21 @@ class TestRecordingsApi(unittest.TestCase):
         data = res.json()
         self.assertEqual(data["players"], ["Lelo"])
         self.assertEqual([v["n"] for v in data["verses"]], [1, 2])
-        self.assertEqual(data["verses"][0]["players"]["Lelo"], {"score": 95.0, "heard": "Joga pedra na Geni"})
+        lelo = data["verses"][0]["players"]["Lelo"]
+        self.assertEqual((lelo["score"], lelo["heard"]), (95.0, "Joga pedra na Geni"))
+        self.assertEqual([w["word"] for w in lelo["words"]], ["Joga"])
+        self.assertEqual(data["song_id"], "geni")
         self.assertEqual(data["verses"][1]["players"], {})  # verso sem nota (não chegou áudio)
         self.assertEqual(data["labels"], {})
+
+    def test_post_saves_words_with_wrong_timing(self):
+        res = self.client.post(f"/api/recordings/{self.rec_id}/tempo-palavras",
+                               json={"player": "Lelo", "marks": {"1": [0]}})
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(self.client.get(f"/api/recordings/{self.rec_id}").json()["timing_marks"], {"Lelo": {"1": [0]}})
+        bad = self.client.post(f"/api/recordings/{self.rec_id}/tempo-palavras",
+                               json={"player": "Lelo", "marks": {"1": [5]}})
+        self.assertEqual(bad.status_code, 400)
 
     def test_post_saves_gabarito_next_to_the_recording(self):
         res = self.client.post(f"/api/recordings/{self.rec_id}/gabarito",

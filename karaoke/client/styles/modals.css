@@ -387,11 +387,21 @@
 .annotate-row[data-label="errado"] { border-left-color: var(--rose-ink); }
 .annotate-row[data-label="cantarolei"] { border-left-color: var(--lavender-ink); }
 .annotate-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.1rem; }
-.annotate-lyrics { font-weight: 600; }
-.annotate-heard { font-family: var(--font-ui); font-size: 0.75rem; color: var(--dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.annotate-lyrics { font-weight: 600; line-height: 1.7; }
+.annotate-num { color: var(--dim); }
+/* palavra da letra: tocar marca tempo errado; sublinhado pontilhado = suspeita */
+.annotate-word { padding: 0 0.15rem; font: inherit; color: inherit; background: transparent; border: 1px solid transparent; border-radius: var(--radius); cursor: pointer; }
+.annotate-word.is-suspect { text-decoration: underline dotted var(--rose-ink); text-underline-offset: 3px; }
+.annotate-word[aria-pressed="true"] { color: var(--paper-light); background: var(--rose-ink); text-decoration: none; }
+.annotate-heard { font-family: var(--font-ui); font-size: 0.8rem; color: var(--dim); overflow-wrap: anywhere; }
 .annotate-choices { display: flex; gap: 0.25rem; flex-shrink: 0; }
 .annotate-choice {
-    padding: 0.3rem 0.45rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
     background: var(--paper);
     border: var(--hairline);
     border-radius: var(--radius);
@@ -402,6 +412,10 @@
     cursor: pointer;
 }
 .annotate-choice .ico { width: 18px; height: 18px; }
+.annotate-play { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0; color: var(--ink); background: transparent; border: var(--border); border-radius: var(--radius); cursor: pointer; }
+.annotate-play .ico { width: 18px; height: 18px; }
+.annotate-play.is-playing { background: var(--sage); border-color: var(--sage-ink); }
+.annotate-choice:disabled { visibility: hidden; }
 .annotate-choice[aria-pressed="true"] { filter: none; opacity: 1; border: var(--border); background: var(--butter); }
 .annotate-footer { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-top: 0.75rem; }
 .annotate-status { font-family: var(--font-ui); font-size: 0.85rem; color: var(--dim); }
@@ -419,6 +433,6 @@
     .yt-result__thumb { width: 80px; height: 45px; }
     .rank-seal { width: 108px; height: 108px; }
     .rank-badge { font-size: 4.2rem; }
-    .annotate-row { flex-wrap: wrap; }
-    .annotate-choices { width: 100%; justify-content: flex-end; }
+    .annotate-row { gap: 0.5rem; padding: 0.45rem 0.2rem; }
+    .annotate-card { padding: 1rem 0.9rem; }
 }

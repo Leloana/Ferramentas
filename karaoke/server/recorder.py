@@ -34,6 +34,7 @@ import numpy as np
 
 from mic_stream import STREAM_SR, MicTimeline
 from utils.jsonsafe import jsonable
+from utils.segment_timing import match_word_pairs
 
 logger = logging.getLogger(__name__)
 
@@ -47,6 +48,7 @@ NOISE_FRAME_SEC = 0.5
 
 # Gabarito anotado pelo cantor no fim da partida (botão discreto da tela final).
 GABARITO_FILE = "gabarito.json"
+TIMING_FILE = "tempo_palavras.json"  # palavras que o cantor marcou com tempo errado
 VERSE_LABELS = ("certo", "errado", "cantarolei")
 _RECORDING_ID_RE = re.compile(r"^[\w.-]+$")
 
@@ -161,6 +163,50 @@ def save_labels(session_dir: Path, player: str, labels: dict[str, str]) -> dict[
     payload = {"labels": all_labels, "updated_at": datetime.now().isoformat(timespec="seconds")}
     (session_dir / GABARITO_FILE).write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     return all_labels
+
+
+def load_timing_marks(session_dir: Path) -> dict[str, dict[str, list[int]]]:
+    """{jogador: {"3": [0, 2], ...}}: índices das palavras (a partir de 0) com tempo errado."""
+    path = session_dir / TIMING_FILE
+    if not path.exists():
+        return {}
+    return json.loads(path.read_text(encoding="utf-8")).get("marks", {})
+
+
+def save_timing_marks(session_dir: Path, player: str, marks: dict[str, list[int]]) -> dict[str, dict[str, list[int]]]:
+    """Substitui as palavras marcadas de `player`. Verso sem palavra marcada some."""
+    if any(not str(k).isdigit() for k in marks):
+        raise ValueError("Versos devem ser números")
+    clean = {}
+    for k, words in sorted(marks.items(), key=lambda kv: int(kv[0])):
+        idx = sorted({int(w) for w in words if int(w) >= 0})
+        if idx:
+            clean[str(int(k))] = idx
+    all_marks = load_timing_marks(session_dir)
+    all_marks[player] = clean
+    payload = {"marks": all_marks, "updated_at": datetime.now().isoformat(timespec="seconds")}
+    (session_dir / TIMING_FILE).write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    return all_marks
+
+
+def sung_word_times(segment: dict, result: dict) -> list[dict]:
+    """Cada palavra da letra do verso com o tempo esperado e o que o cantor cantou
+    (segundos da música; `sung` None quando o Whisper não ouviu a palavra)."""
+    timed = segment.get("lyrics_timed") or []
+    whisper = result.get("words") or []
+    pairs = match_word_pairs([w["word"] for w in timed], whisper) if whisper else {}
+    zero = float(result["window"][0]) if result.get("window") else float(segment["sing_start"])
+    out = []
+    for i, w in enumerate(timed):
+        sung = None
+        if i in pairs:
+            sung = round(zero + float(whisper[pairs[i]]["start"]), 2)
+        out.append({
+            "word": w["word"],
+            "expected": round(float(segment["sing_start"]) + float(w["expected_start"]), 2),
+            "sung": sung,
+        })
+    return out
 
 
 class GameRecording:

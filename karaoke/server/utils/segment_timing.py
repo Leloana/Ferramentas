@@ -36,12 +36,8 @@ def _similarity(a: str, b: str) -> float:
     return fuzz.ratio(a, b) / 100.0
 
 
-def match_words_in_order(official_words: list[str], whisper_words: list[dict]) -> list[dict]:
-    """Casa a letra com as palavras do Whisper sem inverter a ordem.
-
-    Devolve [{"word", "start", "end"}] com um item por palavra da letra, tempos
-    relativos ao mesmo zero das palavras do Whisper.
-    """
+def match_word_pairs(official_words: list[str], whisper_words: list[dict]) -> dict[int, int]:
+    """{índice na letra: índice no Whisper} só das palavras que casaram, sem inverter a ordem."""
     n, m = len(official_words), len(whisper_words)
     ref = [_norm(w) for w in official_words]
     hyp = [_norm(w.get("word", "")) for w in whisper_words]
@@ -68,7 +64,17 @@ def match_words_in_order(official_words: list[str], whisper_words: list[dict]) -
             i -= 1
         else:
             j -= 1
+    return pairs
 
+
+def match_words_in_order(official_words: list[str], whisper_words: list[dict]) -> list[dict]:
+    """Casa a letra com as palavras do Whisper sem inverter a ordem.
+
+    Devolve [{"word", "start", "end"}] com um item por palavra da letra, tempos
+    relativos ao mesmo zero das palavras do Whisper.
+    """
+    n = len(official_words)
+    pairs = match_word_pairs(official_words, whisper_words)
     out = []
     for k, word in enumerate(official_words):
         if k in pairs:
