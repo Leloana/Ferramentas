@@ -1,0 +1,195 @@
+{
+    "meta": {
+        "title": "the perfect pair",
+        "artist": "beabadoobee",
+        "language": "en",
+        "slug": "the-perfect-pair-beabadoobee"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=HwtEBQiuX-c",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "You ought to know that\r\nI think we're one and the same\r\nI don't think we could help it\r\nNo, don't think we could help it\r\nWe don't talk much\r\nGuess 'cause nothing has changed\r\nAnd I'm not sure I like it\r\nAnd I'm so tired of fighting\r\n\r\nIf I told you, you'd know how to\r\nGo and break my heart in two\r\n'Cause I wouldn't anyways\r\nWe'd end up like always\r\nYou know me, you better show me\r\nThat you can say it to my face\r\n'Cause you know we're the same\r\nThere's worse things I can take\r\n\r\nI know you hate it\r\nWhen there's nothing to say\r\nI'm not quite sure we'd fix it\r\nGuess we're so used to it\r\nWish I'd known this from the beginning\r\nWe find it hard to work out\r\nWhy we have all this doubt\r\n\r\nIf I told you, you'd know how to\r\nGo and break my heart in two\r\n'Cause I wouldn't anyways\r\nWe'd end up like always\r\nYou know me, you better show me\r\nThat you can say it to my face\r\n'Cause you know we're the same\r\nThere's worse things I can take"
+    },
+    "loudness": {
+        "lufs_before": -11.61,
+        "gain_db": -4.39
+    },
+    "alignment_quality": {
+        "score": 99.7,
+        "flags": [
+            "1% das palavras no silêncio da voz"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 193,
+            "lines": 31,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 1,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}

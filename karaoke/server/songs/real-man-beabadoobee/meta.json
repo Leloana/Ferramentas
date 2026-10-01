@@ -1,0 +1,205 @@
+{
+    "meta": {
+        "title": "Real Man",
+        "artist": "beabadoobee",
+        "language": "en",
+        "slug": "real-man-beabadoobee"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=RUA45gn7teU",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Why don't you just pull another?\r\nMy simple lover\r\nI'm not goin' for no other\r\nI told my mother what you did\r\nLike a kid\r\nAnd I already told you I just wanted to dance\r\nCould you see me standing out here with my outstretched hand?\r\nI guess no one ever taught you how to be a real man, ooh\r\n\r\nWalking as the morning beckon\r\nYou said you'll be a second\r\nLock the back door\r\nYeah, you should have mentioned\r\nGuess I should expect it\r\nI'm out here, blue\r\nWhat to do?\r\nAnd I already told you I'm not part of the band\r\nPlease forgive me just for thinking it's a fleetin' romance\r\nI guess no one ever taught you how to be a real man\r\nWould you hold it down and take it if I gave you a chance?\r\nNeed the reassureance, baby, not a silly romance\r\nGuess I'm used to being disappointed, falling too fast\r\nIf you want it, go and get it, and I hope you last\r\nIf you want it, go and get it, and I hope you last\r\nWould you hold it down and take it if I gave you a chance?\r\nNeed the reassureance, baby, not a silly romance\r\nGuess I'm used to being disappointed, falling too fast\r\nIf you want it, go and get it, and I hope you last\r\nIf you want it, go and get it, and I hope you last\r\nWould you hold it down and take it if I gave you a chance?\r\nNeed the reassureance, baby, not a silly romance\r\nGuess I'm used to being disappointed, falling too fast\r\nIf you want it, go and get it, and I hope you last\r\nIf you want it, go and get it, and I hope you last"
+    },
+    "loudness": {
+        "lufs_before": -13.38,
+        "gain_db": -2.62
+    },
+    "alignment_quality": {
+        "score": 97.8,
+        "flags": [
+            "palavras empilhadas (8)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            }
+        ],
+        "metrics": {
+            "words": 297,
+            "lines": 33,
+            "stacked": 8,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}
