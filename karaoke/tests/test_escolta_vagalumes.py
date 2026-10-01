@@ -1,6 +1,8 @@
 import os
 import sys
 import json
+import shutil
+import tempfile
 import time
 import unittest
 from pathlib import Path
@@ -137,11 +139,16 @@ class TestEscoltaVagalumesPipeline(unittest.TestCase):
     def test_05_prepare_song_integration(self):
         """Verifica que prepare_song roda sem erros no diretório do song."""
         print("\n--- Teste 05: Rodando prepare_song (Whisper-based alignment) ---")
+        # Numa cópia: o prepare_song reescreve segments.json e meta.json da música instalada.
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        song_dir = Path(tmp.name) / self.song_dir.name
+        shutil.copytree(self.song_dir, song_dir)
         try:
             # Roda prepare_song em modo não-debug (gera o segments.json final)
-            prepare_song(str(cls_dir := self.song_dir), language="pt", debug=False)
-            
-            segments_path = self.song_dir / "segments.json"
+            prepare_song(str(song_dir), language="pt", debug=False)
+
+            segments_path = song_dir / "segments.json"
             self.assertTrue(segments_path.exists(), "O arquivo segments.json não foi gerado pelo prepare_song!")
             
             with open(segments_path, "r", encoding="utf-8") as f:
