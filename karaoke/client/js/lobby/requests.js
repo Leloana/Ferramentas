@@ -9,6 +9,7 @@ import { iconSvg } from '../core/icons.js';
 import { showToast } from '../core/toast.js';
 import { micLabel, defaultMic, renderLobby } from './lobby.js';
 import { myRole } from '../core/config.js';
+import { songMatcher } from '../core/song-search.js';
 
 const AUTO_NEXT_SEC = 10;
 
@@ -170,14 +171,16 @@ async function loadMicSongs() {
 function renderMicSongs(query) {
     const list = document.getElementById('mic-request-songs');
     if (!list) return;
-    const q = (query || '').trim().toLowerCase();
-    const songs = (state.micSongs || []).filter((s) => !q || `${s.title} ${s.artist}`.toLowerCase().indexOf(q) !== -1);
+    // mesma busca da TV: sem acento, e japonês também em romaji
+    const songs = (state.micSongs || []).filter(songMatcher(query));
     list.replaceChildren();
     songs.slice(0, 40).forEach((song) => {
         const btn = el('button', 'request-song');
         btn.type = 'button';
         btn.insertAdjacentHTML('beforeend', iconSvg('note', 'request-song__icon'));
-        btn.append(el('span', 'request-song__title', song.title), el('span', 'request-song__artist', song.artist));
+        const title = el('span', 'request-song__title', song.title);
+        if (song.title_romaji) title.append(el('span', 'request-song__romaji', song.title_romaji));
+        btn.append(title, el('span', 'request-song__artist', song.artist));
         btn.insertAdjacentHTML('beforeend', iconSvg('add', 'request-song__add'));
         btn.addEventListener('click', () => {
             if (!state.mobileNickname) {

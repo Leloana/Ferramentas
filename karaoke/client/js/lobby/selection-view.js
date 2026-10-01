@@ -6,6 +6,7 @@ import { initTabs } from '../ui/tabs.js';
 import { ensureDefaultSeat } from './lobby.js';
 import { setGuideSong } from '../audio/guide-vocal.js';
 import { togglePreview, stopPreview } from '../audio/song-preview.js';
+import { songMatcher } from '../core/song-search.js';
 
 export async function fetchSongs() {
     try {
@@ -382,21 +383,9 @@ export function initSearch() {
     const input = document.getElementById('search-input');
     if (!input) return;
 
-    const normalizeText = (str) => {
-        return str ? str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() : "";
-    };
-
-    // Sem espaço nem pontuação: "aoi koi daidaiiro" acha "aoi koi daidaiirono hi"
-    const compact = (str) => normalizeText(str).replace(/[\s.,;:!?'"()\[\]\-_/·、。・]+/g, '');
-
     input.oninput = (e) => {
-        const query = normalizeText(e.target.value);
-        const q = compact(e.target.value);
-        // título/artista em japonês vêm também em romaji (song_manager.list_songs)
-        const fields = (song) => [song.title, song.artist, song.title_romaji, song.artist_romaji];
-        const filtered = state.allSongs.filter(song => fields(song).some(f =>
-            normalizeText(f).includes(query) || (q && compact(f).includes(q))
-        ));
+        const query = e.target.value.trim();
+        const filtered = state.allSongs.filter(songMatcher(query));
         renderArtistGroups(filtered, { expandAll: query.length > 0 });
     };
 

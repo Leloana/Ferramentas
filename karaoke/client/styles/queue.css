@@ -165,6 +165,8 @@
 .request-song__icon { grid-row: span 2; width: 18px; height: 18px; color: var(--dim); }
 .request-song__title { overflow: hidden; font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
 .request-song__artist { grid-column: 2; color: var(--dim); font-size: 0.85rem; }
+/* título japonês: romaji embaixo */
+.request-song__romaji { display: block; font-size: 0.8rem; font-weight: normal; color: var(--ink-3); }
 .request-song__add { grid-column: 3; grid-row: 1 / span 2; width: 22px; height: 22px; }
 
 /* fim de jogo */
