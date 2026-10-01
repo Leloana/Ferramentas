@@ -95,6 +95,8 @@
     text-overflow: ellipsis;
 }
 .song-card__artist { font-size: 0.9rem; color: var(--dim); }
+/* título japonês: o romaji embaixo do kanji/kana */
+.song-card__romaji { font-size: 0.85rem; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .song-card__leader {
     flex: 1;
     min-width: 1.5rem;

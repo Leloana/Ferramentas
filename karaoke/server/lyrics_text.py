@@ -155,6 +155,20 @@ def ja_romaji(word: str) -> str:
     return _kana_to_romaji("".join(g[3] for g in _ja_bunsetsu(word)), keep="'")
 
 
+# kana, kanji e a pontuação japonesa
+_JA_RANGES = ((0x3000, 0x303F), (0x3040, 0x30FF), (0x3400, 0x4DBF), (0x4E00, 0x9FFF), (0xFF00, 0xFFEF))
+_JA_RUN = re.compile("[%s]+" % "".join(f"{chr(a)}-{chr(b)}" for a, b in _JA_RANGES))
+
+
+def to_romaji(text: str) -> str:
+    """Texto com trechos em japonês em romaji, palavra a palavra ("青い、濃い、橙色の日" →
+    "aoi koi daidaiirono hi"). Sem japonês, volta igual."""
+    if not text or not _JA_RUN.search(text):
+        return text
+    out = _JA_RUN.sub(lambda m: " " + " ".join(ja_romaji(w) for w in split_words(m.group(), "ja")) + " ", text)
+    return re.sub(r"\s+", " ", out).strip()
+
+
 def add_romaji(segments: list[dict]) -> list[dict]:
     """Acrescenta o romaji aos versos escritos em kanji/kana (in place): `lyrics_romaji`
     na linha e `romaji` em cada palavra. Letra que já é romaji não ganha nada (não se

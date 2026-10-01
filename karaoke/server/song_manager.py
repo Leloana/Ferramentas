@@ -5,7 +5,7 @@ from utils.lrc import read_lrc_meta
 from utils.meta import get_meta_field
 from utils.segment_timing import finalize_segments
 from utils.song_paths import USER_EDITED_MARKER, safe_song_dir
-from lyrics_text import add_romaji
+from lyrics_text import add_romaji, to_romaji
 
 def _title_fallback(name: str) -> str:
     return name.replace("_", " ").replace("-", " ").title()
@@ -52,13 +52,19 @@ class SongManager:
             has_backing = (item / "backing_track.mp3").exists()
             is_ready = has_segments and has_backing
 
-            songs.append({
+            entry = {
                 "id": item.name,
                 "title": title,
                 "artist": artist or "Artista Desconhecido",
                 "is_ready": is_ready,
                 "needs_review": needs_review,
-            })
+            }
+            # japonês: romaji para mostrar embaixo e para a busca achar digitando em romaji
+            for key in ("title", "artist"):
+                romaji = to_romaji(entry[key] or "")
+                if romaji and romaji != entry[key]:
+                    entry[f"{key}_romaji"] = romaji
+            songs.append(entry)
 
         return songs
 

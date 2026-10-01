@@ -66,6 +66,12 @@ class TestJapaneseWords(unittest.TestCase):
         self.assertEqual(starts, sorted(starts))
         self.assertLessEqual(timed[-1]["end"], 0.85)
 
+    def test_song_list_brings_romaji_for_japanese_titles(self):
+        from lyrics_text import to_romaji
+
+        self.assertEqual(to_romaji("青い、濃い、橙色の日"), "aoi koi daidaiirono hi")
+        self.assertEqual(to_romaji("Construção"), "Construção")
+
     def test_slug_of_a_japanese_title_is_romaji(self):
         from utils.text import slugify
         # antes: "-mass-of-the-fermenting-dregs" (o título sumia no ASCII)

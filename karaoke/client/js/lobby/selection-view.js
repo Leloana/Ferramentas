@@ -189,6 +189,11 @@ export function renderArtistGroups(songsList, { expandAll = false } = {}) {
 
             titleEl.innerText = song.title;
             artistEl.innerText = song.artist || "Artista Desconhecido";
+            const romajiEl = frag.querySelector('.song-card__romaji');
+            if (romajiEl && song.title_romaji) {
+                romajiEl.textContent = song.title_romaji;
+                romajiEl.hidden = false;
+            }
 
             if (song.is_ready === false) {
                 // Música pendente: sem clique para jogar, com badge. Mantém só o reinstalar.
@@ -381,12 +386,17 @@ export function initSearch() {
         return str ? str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() : "";
     };
 
+    // Sem espaço nem pontuação: "aoi koi daidaiiro" acha "aoi koi daidaiirono hi"
+    const compact = (str) => normalizeText(str).replace(/[\s.,;:!?'"()\[\]\-_/·、。・]+/g, '');
+
     input.oninput = (e) => {
         const query = normalizeText(e.target.value);
-        const filtered = state.allSongs.filter(song =>
-            normalizeText(song.title).includes(query) ||
-            normalizeText(song.artist).includes(query)
-        );
+        const q = compact(e.target.value);
+        // título/artista em japonês vêm também em romaji (song_manager.list_songs)
+        const fields = (song) => [song.title, song.artist, song.title_romaji, song.artist_romaji];
+        const filtered = state.allSongs.filter(song => fields(song).some(f =>
+            normalizeText(f).includes(query) || (q && compact(f).includes(q))
+        ));
         renderArtistGroups(filtered, { expandAll: query.length > 0 });
     };
 
