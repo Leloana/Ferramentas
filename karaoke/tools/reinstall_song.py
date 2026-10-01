@@ -354,7 +354,8 @@ async def reinstall_song(
                     if fetched_synced_lrc is None and lrc_file.exists():
                         lrc_file.unlink()
                 new_plain = normalize_lyrics_text(by_duration.get("plainLyrics"))
-                if plain_from_api and new_plain and new_plain != plain_lyrics:
+                # sem letra nenhuma até aqui (a busca sem duração não achou): vale esta
+                if (plain_from_api or not plain_lyrics) and new_plain and new_plain != plain_lyrics:
                     # texto e sincronia da mesma versão (radio edit tira verso, ao vivo muda letra)
                     logger.info("Letra plana trocada pela da versão de duração mais próxima.")
                     plain_lyrics = new_plain

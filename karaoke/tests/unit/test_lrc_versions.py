@@ -115,6 +115,19 @@ class TestPickVersion(unittest.TestCase):
         self.assertEqual(res["plainLyrics"], "a")
         self.assertIsNone(res["syncedLyrics"])
 
+    def test_without_duration_search_rescues_a_missed_exact_get(self):
+        # "、" no título do YouTube × ", " no LRCLIB: o /api/get exato dá 404
+        cands = [
+            {"id": 7, "trackName": "青い, 濃い, 橙色の日", "artistName": "Mass Of The Fermenting Dregs",
+             "duration": 282.0, "plainLyrics": "待ちぼうけさ", "syncedLyrics": None},
+            {"id": 8, "trackName": "青い, 濃い, 橙色の日", "artistName": "MASS OF THE FERMENTING DREGS",
+             "duration": 282.0, "plainLyrics": "待ちぼうけさ", "syncedLyrics": "[00:10.00]待ちぼうけさ"},
+        ]
+        with patch.object(lyrics_fetcher, "_get_json", side_effect=[Exception("HTTP Error 404"), cands]) as get:
+            res = lyrics_fetcher.fetch_lyrics("MASS OF THE FERMENTING DREGS", "青い、濃い、橙色の日")
+        self.assertIn("/api/search", get.call_args[0][0])
+        self.assertEqual(res["syncedLyrics"], "[00:10.00]待ちぼうけさ")
+
 
 class TestGlobalFit(unittest.TestCase):
     def test_longer_intro_and_slower_tempo_are_fitted(self):

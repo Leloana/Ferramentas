@@ -4,6 +4,8 @@ Com a duração do áudio, o LRCLIB é consultado pelo `/api/search` e vence a
 versão de duração mais próxima: a mesma música costuma ter dezenas de entradas
 (estúdio, remaster, ao vivo, o álbum inteiro numa faixa só) e a sincronia de
 uma não serve para a outra. LRC de versão longe demais não volta (só o texto).
+Sem a duração (ao adicionar, antes do download) vale o `/api/get` exato e, se ele
+não achar (ex.: "、" no título × ", " no LRCLIB), o `/api/search`.
 """
 from __future__ import annotations
 
@@ -48,12 +50,13 @@ def _name_key(text: str) -> str:
     return re.sub(r"[^a-z0-9]+", " ", text).strip()
 
 
-def pick_lrclib_candidate(candidates: list, artist: str, track: str, duration: float) -> Optional[dict]:
+def pick_lrclib_candidate(candidates: list, artist: str, track: str, duration: Optional[float]) -> Optional[dict]:
     """Entrada do /api/search que serve para um áudio de `duration` segundos.
 
     Só a mesma música (nome parecido, não instrumental). Entre as sincronizadas,
     a de duração mais próxima. Nenhuma sincronizada perto: a de duração mais
     próxima com letra, sem o LRC (a sincronia seria de outra versão).
+    Sem `duration`: a 1ª sincronizada (o reinstall acerta a versão depois).
     """
     want_track, want_artist = _name_key(track), _name_key(artist)
     same = []
@@ -66,10 +69,13 @@ def pick_lrclib_candidate(candidates: list, artist: str, track: str, duration: f
             continue
         if fuzz.token_set_ratio(_name_key(c.get("artistName")), want_artist) < ARTIST_MIN_SIMILARITY:
             continue
-        diff = abs(float(c["duration"]) - duration) if c.get("duration") else float("inf")
+        diff = abs(float(c["duration"]) - duration) if c.get("duration") and duration else float("inf")
         same.append((diff, c))
     if not same:
         return None
+    if not duration:
+        best = next((c for _, c in same if (c.get("syncedLyrics") or "").strip()), same[0][1])
+        return {**best, "durationDiff": None}
     synced = sorted((x for x in same if (x[1].get("syncedLyrics") or "").strip()), key=lambda x: x[0])
     if synced and synced[0][0] <= SYNC_MAX_DURATION_DIFF_SEC:
         diff, best = synced[0]
@@ -78,11 +84,11 @@ def pick_lrclib_candidate(candidates: list, artist: str, track: str, duration: f
     return {**best, "syncedLyrics": None, "durationDiff": diff}
 
 
-def search_lyrics_lrclib(artist: str, track: str, duration: float) -> Optional[dict]:
+def search_lyrics_lrclib(artist: str, track: str, duration: Optional[float]) -> Optional[dict]:
     """LRCLIB /api/search + `pick_lrclib_candidate`. Mesmo formato de `fetch_lyrics_lrclib`."""
     params = urllib.parse.urlencode({"artist_name": artist, "track_name": track})
     url = f"{LRCLIB_SEARCH_API}?{params}"
-    logger.info(f"[LyricsFetcher] LRCLIB search: GET {url} (áudio de {duration:.1f}s)")
+    logger.info(f"[LyricsFetcher] LRCLIB search: GET {url} (áudio de {f'{duration:.1f}s' if duration else '? s'})")
     try:
         candidates = _get_json(url)
     except Exception as e:
@@ -94,8 +100,8 @@ def search_lyrics_lrclib(artist: str, track: str, duration: float) -> Optional[d
         return None
     synced = (best.get("syncedLyrics") or "").strip() or None
     logger.info(
-        "[LyricsFetcher] LRCLIB search: %d candidatos, escolhida id=%s (%ss, diferença %.1fs), syncedLyrics=%s",
-        len(candidates or []), best.get("id"), best.get("duration"), best["durationDiff"],
+        "[LyricsFetcher] LRCLIB search: %d candidatos, escolhida id=%s (%ss, diferença %ss), syncedLyrics=%s",
+        len(candidates or []), best.get("id"), best.get("duration"), None if best["durationDiff"] is None else round(best["durationDiff"], 1),
         "presente" if synced else "ausente (versão longe demais)",
     )
     return {
@@ -172,7 +178,8 @@ def fetch_lyrics(artist: str, track: str, duration: float | None = None) -> Opti
     """Orquestra a busca: LRCLIB primeiro, depois Lyrics.ovh como fallback.
 
     `duration` (segundos do áudio que vai tocar): escolhe a versão pelo
-    `/api/search`; sem resultado lá, cai no `/api/get` de sempre.
+    `/api/search`; sem resultado lá, cai no `/api/get` de sempre. Sem `duration`:
+    `/api/get` exato e, sem resultado, o `/api/search`.
     """
     result = search_lyrics_lrclib(artist, track, duration) if duration else None
     if not result:
@@ -182,6 +189,8 @@ def fetch_lyrics(artist: str, track: str, duration: float | None = None) -> Opti
             logger.info("[LyricsFetcher] LRC do /api/get é de outra versão (%ss × %.1fs): só o texto",
                         result["duration"], duration)
             result = {**result, "syncedLyrics": None}
+    if not result and not duration:
+        result = search_lyrics_lrclib(artist, track, None)
     if result:
         return result
     logger.info("[LyricsFetcher] LRCLIB sem resultado, tentando Lyrics.ovh...")
