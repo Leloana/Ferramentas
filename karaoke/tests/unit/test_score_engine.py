@@ -204,6 +204,33 @@ class TestScoreEngine(unittest.TestCase):
         # Sandwich recovery rescues "two" since it's surrounded by correct words
         self.assertGreater(res["score"], 80.0)
 
+    @staticmethod
+    def _line(text, step=0.4, t0=0.0):
+        return [{"word": w, "expected_start": t0 + i * step, "expected_end": t0 + i * step + 0.3,
+                 "start": t0 + i * step, "end": t0 + i * step + 0.3} for i, w in enumerate(text.split())]
+
+    def test_scrambled_words_do_not_score_as_the_line(self):
+        # mesmas palavras fora de ordem: sem a ordem tirava 77
+        expected = self._line("a wolf at the door")
+        scrambled = self._line("door the at wolf the")
+        self.assertLessEqual(calculate_score(expected, scrambled, language="en")["score"], 60.0)
+        self.assertEqual(calculate_score(expected, self._line("a wolf at the door"), language="en")["score"], 100.0)
+
+    def test_repeated_word_pairs_with_its_own_occurrence(self):
+        # dois "the": cada um casa com o seu, em ordem
+        expected = self._line("the flan in the face")
+        res = calculate_score(expected, self._line("the flan in the face"), language="en")
+        self.assertEqual(res["score"], 100.0)
+        self.assertEqual(res["matched_words"], 5)
+
+    def test_weak_copy_of_a_word_the_lyrics_repeat_is_kept(self):
+        # "The" fraco (0,05) + "the" confiável: a letra pede dois, então o fraco fica
+        expected = self._line("the flan in the face")
+        heard = self._line("the flan in the face")
+        for w, p in zip(heard, (0.05, 0.9, 0.9, 0.9, 0.9)):
+            w["probability"] = p
+        self.assertEqual(calculate_score(expected, heard, language="en")["score"], 100.0)
+
     def test_vocal_fragments(self):
         words = [
             {"word": "hello", "start": 1.0, "end": 1.5},

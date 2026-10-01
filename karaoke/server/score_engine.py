@@ -1,5 +1,6 @@
 import logging
 import re
+from collections import Counter
 
 from rapidfuzz import fuzz
 
@@ -173,19 +174,75 @@ DUPLICATE_LOW_PROB = 0.1
 DUPLICATE_TRUSTED_PROB = 0.3
 
 
-def drop_unreliable_duplicates(transcribed_words, language=None):
+def drop_unreliable_duplicates(transcribed_words, language=None, expected_words=None):
     """Tira palavra quase sem confiança (<0.1) quando a mesma palavra também
     aparece com confiança (>=0.3): o Whisper às vezes "ouve" o verso duas vezes
-    e a cópia fantasma disparava a penalidade de precisão."""
-    trusted = {
+    e a cópia fantasma disparava a penalidade de precisão.
+
+    `expected_words` (letra já limpa): palavra que a letra pede N vezes só perde
+    a cópia fraca quando já há N cópias confiáveis ("The flan in the face").
+    """
+    trusted = Counter(
         clean_text(w["word"], language)
         for w in transcribed_words
         if w.get("probability", 1.0) >= DUPLICATE_TRUSTED_PROB
-    }
+    )
+    wanted = Counter(expected_words or ())
     return [
         w for w in transcribed_words
-        if not (w.get("probability", 1.0) < DUPLICATE_LOW_PROB and clean_text(w["word"], language) in trusted)
+        if not (w.get("probability", 1.0) < DUPLICATE_LOW_PROB
+                and trusted[clean_text(w["word"], language)] >= max(1, wanted[clean_text(w["word"], language)]))
     ]
+
+
+def _word_points(ratio: float, expected_start: float, actual_start: float, apply_timing: bool) -> float:
+    """Pontos de um par letra × transcrição: acerto da palavra × penalidade de tempo."""
+    if ratio >= FUZZY_FULL_MATCH:
+        points = 1.0
+    elif ratio >= FUZZY_HALF_MATCH:
+        points = 0.5
+    else:
+        return 0.0
+    if apply_timing:
+        diff = abs(actual_start - expected_start)
+        if diff > TIMING_LENIENT_SEC:
+            points *= TIMING_PENALTY_FAR
+        elif diff >= TIMING_TOLERANT_SEC:
+            points *= TIMING_PENALTY_MID
+    return points
+
+
+def match_in_order(expected_words: list[str], expected_timed: list[dict],
+                   transcribed_clean: list[dict], apply_timing: bool) -> list[tuple[float, int]]:
+    """Casa a letra com a transcrição sem cruzar pares: (pontos, índice transcrito | -1) por palavra.
+
+    Programação dinâmica que maximiza a soma dos pontos com pares em ordem nos
+    dois lados. A versão gulosa pegava a melhor palavra em qualquer posição:
+    "door the at wolf the" tirava 97 em "a wolf at the door".
+    """
+    n, m = len(expected_words), len(transcribed_clean)
+    pts = [[0.0] * m for _ in range(n)]
+    for i in range(n):
+        for j in range(m):
+            ratio = fuzz.token_sort_ratio(expected_words[i], transcribed_clean[j]["word"])
+            pts[i][j] = _word_points(ratio, expected_timed[i]["expected_start"],
+                                     transcribed_clean[j]["start"], apply_timing)
+    best = [[0.0] * (m + 1) for _ in range(n + 1)]
+    for i in range(n - 1, -1, -1):
+        for j in range(m - 1, -1, -1):
+            take = pts[i][j] + best[i + 1][j + 1] if pts[i][j] > 0 else 0.0
+            best[i][j] = max(take, best[i + 1][j], best[i][j + 1])
+    out, i, j = [], 0, 0
+    while i < n:
+        if j < m and pts[i][j] > 0 and best[i][j] == pts[i][j] + best[i + 1][j + 1]:
+            out.append((pts[i][j], j))
+            i, j = i + 1, j + 1
+        elif j < m and best[i][j] == best[i][j + 1]:
+            j += 1
+        else:
+            out.append((0.0, -1))
+            i += 1
+    return out
 
 
 def calculate_score(expected_timed: list[dict], transcribed_words: list[dict], prev_expected_words: list[str] = None, language: str | None = None, scoring_mode: str = "timing") -> dict:
@@ -267,7 +324,9 @@ def calculate_score(expected_timed: list[dict], transcribed_words: list[dict], p
                 transcribed_words = transcribed_words[overlap_found:]
 
     # B. Palavras quebradas pelo hífen e cópias fantasma de baixa confiança
-    transcribed_words = drop_unreliable_duplicates(join_split_words(transcribed_words), language)
+    transcribed_words = drop_unreliable_duplicates(
+        join_split_words(transcribed_words), language,
+        [clean_text(w["word"], language) for w in expected_timed])
 
     # Merge de fragmentos vocálicos
     lyric_words = frozenset(
@@ -283,42 +342,11 @@ def calculate_score(expected_timed: list[dict], transcribed_words: list[dict], p
     consumed_indices = set()
     timing_pairs = []  # (expected_start, actual_start) das palavras casadas
 
-    for i, exp_word_data in enumerate(expected_timed):
-        exp_word = expected_words[i]
-        best_match_idx = -1
-        best_ratio = 0
-        
-        for j, trans_word_data in enumerate(transcribed_clean):
-            if j in consumed_indices:
-                continue
-            
-            # token_sort_ratio lida melhor com variações fonéticas
-            ratio = fuzz.token_sort_ratio(exp_word, trans_word_data["word"])
-            if ratio > best_ratio:
-                best_ratio = ratio
-                best_match_idx = j
-                if ratio == 100:
-                    break
-        
-        word_points = 0.0
-        if best_ratio >= FUZZY_FULL_MATCH:
-            word_points = 1.0
-            consumed_indices.add(best_match_idx)
-        elif best_ratio >= FUZZY_HALF_MATCH:
-            word_points = 0.5
-            consumed_indices.add(best_match_idx)
-
-        if word_points > 0 and best_match_idx != -1 and apply_timing:
-            actual_start = transcribed_clean[best_match_idx]["start"]
-            timing_pairs.append((exp_word_data["expected_start"], actual_start))
-            diff = abs(actual_start - exp_word_data["expected_start"])
-            if diff < TIMING_TOLERANT_SEC:
-                pass
-            elif diff <= TIMING_LENIENT_SEC:
-                word_points *= TIMING_PENALTY_MID
-            else:
-                word_points *= TIMING_PENALTY_FAR
-
+    for i, (word_points, j) in enumerate(match_in_order(expected_words, expected_timed, transcribed_clean, apply_timing)):
+        if j != -1:
+            consumed_indices.add(j)
+            if apply_timing:
+                timing_pairs.append((expected_timed[i]["expected_start"], transcribed_clean[j]["start"]))
         word_scores.append(word_points)
 
     # Sandwich Recovery: 1 ou 2 palavras erradas cercadas por corretas são "resgatadas"
