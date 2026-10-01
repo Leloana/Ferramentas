@@ -578,5 +578,49 @@ class TestWebsocketGameFlow(unittest.TestCase):
                 self.assertEqual(tv_reactions(), [{"type": "reaction", "kind": "star", "from": "Bia"}])
 
 
+    def test_tv_back_to_lobby_ends_the_game_for_the_phones(self):
+        """TV volta ao lobby no meio da música: os celulares recebem game_cancelled
+        (quem esperava destrava o microfone) e quem reconecta não volta "ao jogo"."""
+        from state import room_manager
+
+        with self.client.websocket_connect(f"/ws/room/cancelroom?role=display&song_id={self.song_slug}") as ws_tv:
+            with self.client.websocket_connect("/ws/room/cancelroom?role=mic") as ws_bia:
+                self._until(ws_bia, "register_request")
+                ws_bia.send_json({"type": "register_name", "name": "Bia", "device": "cel-2"})
+                self._until(ws_bia, "registration_success")
+                ws_tv.send_json({"type": "start_game", "game_mode": "solo", "active_players": ["Ana"]})
+                self._until(ws_tv, "game_started")
+                self._until(ws_bia, "game_started")
+
+                room = room_manager.rooms["cancelroom"]
+                game_before = room.game_id
+                self.assertIsNotNone(room.recording)
+                # celular que chegou com a partida rolando e ainda está na fila de registro
+                with self.client.websocket_connect("/ws/room/cancelroom?role=mic") as ws_queue, \
+                        self.client.websocket_connect("/ws/room/cancelroom?role=mic") as ws_queue2:
+                    self._until(ws_queue, "register_request")
+                    self._until(ws_queue2, "register_wait")
+                    with self.client.websocket_connect("/ws/room/cancelroom?role=display"):
+                        self._until(ws_bia, "game_cancelled")
+                        self._until(ws_queue, "game_cancelled")
+                        self._until(ws_queue2, "game_cancelled")
+                        self.assertFalse(room.in_game)
+                        # versos pendentes da partida cancelada não pontuam mais; gravação fechada
+                        self.assertGreater(room.game_id, game_before)
+                        self.assertIsNone(room.recording)
+                        from state import queue_manager
+                        self.assertFalse(queue_manager._gpu_game_active)
+
+                with self.client.websocket_connect("/ws/room/cancelroom?role=display"):
+
+                    with self.client.websocket_connect("/ws/room/cancelroom?role=mic") as ws_back:
+                        self._until(ws_back, "register_request")
+                        ws_back.send_json({"type": "register_name", "name": "Caio", "device": "cel-3"})
+                        self._until(ws_back, "registration_success")
+                        ws_back.send_json({"type": "ping"})
+                        _, before_pong = self._until(ws_back, "pong")
+                        self.assertNotIn("game_started", before_pong)
+
+
 if __name__ == "__main__":
     unittest.main()

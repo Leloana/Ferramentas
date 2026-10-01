@@ -11,7 +11,7 @@ import { escapeHtml } from '../core/html.js';
 import { onRequestsUpdate } from '../lobby/requests.js';
 import { showMicGameOver, setFinalLayout } from './mic-final.js';
 import { setMicStatus } from './mic-socket.js';
-import { remindMicIfOff } from './mobile-mic-view.js';
+import { remindMicIfOff, setMicLocked } from './mobile-mic-view.js';
 import { keepScreenOn } from '../core/wake-lock.js';
 import { setReactionsVisible } from './reactions-bar.js';
 import { COMBO_MIN } from '../game/combo.js';
@@ -103,6 +103,7 @@ const MIC_HANDLERS = {
             ? `<span class="mic-note mic-note--good">Você está no jogo</span>Prepare-se`
             : `<span class="mic-note">Assistindo</span>Reaja na TV`);
         setReactionsVisible(!state.isActiveInGame);
+        setMicLocked(!state.isActiveInGame);
         remindMicIfOff();
     },
     pairing_status(data) {
@@ -163,8 +164,17 @@ const MIC_HANDLERS = {
         const icon = iconSvg(state.isActiveInGame ? 'fermata' : 'double-bar');
         setLyricsNote(`${icon} Fim da música<span class="mic-note">Calculando o placar</span>`);
     },
+    game_cancelled() {
+        // a TV saiu da partida sem placar: quem esperava pode ligar o microfone
+        state.isActiveInGame = false;
+        state.isSingingActive = false;
+        setReactionsVisible(false);
+        setMicLocked(false);
+        setLyricsNote(`<span class="mic-note">Partida encerrada</span>Aguardando a TV`);
+    },
     game_over(data) {
         setReactionsVisible(false);
+        setMicLocked(false);
         showMicGameOver(data);
     },
     pong() {

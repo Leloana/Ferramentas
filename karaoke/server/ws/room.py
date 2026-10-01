@@ -113,6 +113,26 @@ async def _send_current_segment(room, websocket) -> None:
     await _send_segment_start(websocket, room.segments, idx, room.song_title, turn)
 
 
+async def _cancel_game(room) -> None:
+    """TV saiu da partida sem game_over (Voltar para o lobby, outra música):
+    os celulares que esperavam a partida acabar voltam a poder ligar o microfone."""
+    if not room.in_game:
+        return
+    room.in_game = False
+    room.is_singing_active = False
+    # versos ainda no Whisper são descartados (game_id) e a gravação fica salva como incompleta
+    room.game_id += 1
+    room.reset_audio()
+    # a fila de geração de letra estava pausada pela partida (mutex de GPU)
+    queue_manager.notify_game_ended()
+    # a fila de registro também recebeu o game_started e travou o botão
+    for ws in list(room.players.values()) + list(room.unregistered_mics):
+        try:
+            await ws.send_json({"type": "game_cancelled"})
+        except Exception as e:
+            logger.debug(f"Aviso de partida encerrada não chegou ao celular: {e}")
+
+
 async def _notify_mics_display_status(room, status: str) -> None:
     """Avisa os celulares (registrados ou na fila) se a TV está conectada."""
     targets = list(room.players.values()) + room.unregistered_mics
@@ -432,7 +452,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
         _track(room, asyncio.create_task(_load_pitch_reference(room, song_id)))
         room.song_id = song_id
         room.song_title = song_title
-        room.in_game = False
+        await _cancel_game(room)
         room.segments = segments
         room.current_segment_idx = 0
         room.transcribed_segments = set()
@@ -443,6 +463,10 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
         room.reset_audio()
         room.player_segment_scores.clear()
         room.is_singing_active = False
+
+    if role == "display" and not song_id:
+        # a TV voltou ao lobby: a partida em curso acabou sem placar
+        await _cancel_game(room)
 
     # Pareamento
     if role == "mic":

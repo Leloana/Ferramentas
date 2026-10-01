@@ -114,6 +114,8 @@
 .mic-button:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--ink); }
 .btn-mobile-activate--active { background: var(--sage); }
 .btn-mobile-activate--muted { background: var(--rose); }
+.btn-mobile-activate--locked { background: var(--paper-2); color: var(--ink-2); box-shadow: 3px 3px 0 var(--ink-3); cursor: default; }
+.btn-mobile-activate--locked:active { transform: none; box-shadow: 3px 3px 0 var(--ink-3); }
 /* o próprio botão muta: a dica diz o que o toque faz agora */
 .mic-button__hint { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.02em; text-transform: none; opacity: 0.8; }
 /* no jogo sem microfone (recarregou, o Android desligou a faixa): pede o toque */

@@ -23,6 +23,7 @@ export const state = {
     outroStartPlayerTime: 0,
     outroTotalDuration: 0,
     micMuted: false,
+    micLocked: false,         // mobile/mobile-mic-view.js: partida em curso sem este celular
     activeUploadTab: 'youtube',
     currentTranspose: 0,
     currentSpeed: 1.0,

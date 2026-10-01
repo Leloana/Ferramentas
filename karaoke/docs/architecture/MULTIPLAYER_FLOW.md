@@ -142,6 +142,10 @@ The display sends `{"type": "start_game", "game_mode": "...", "active_players": 
 - For each active player, the server appends the round's results to `profile.json` under `songs_sung` (`server/players.py`: `song_id`, score, pitch, mode, date) and computes the personal record.
 - Broadcasts `{"type": "game_over", "total_score", "player_scores", "player_pitch", "player_stats": {name: {good, ok, poor, best_combo}}, "records": {name: {is_record, best_before, times_sung}}, "leaderboard", "song_id", "song_title", "recording_id"}`. The TV and each phone build the shareable card and the "Ouvir" (replay) button from it.
 
+### 7a. Phones Outside the Game
+- While a game is running (`room.in_game`), a phone not in `active_players` cannot turn its mic on: the button shows "AGUARDE" until `game_over` (a mic left on from the lobby is released when `game_started` arrives).
+- If the TV leaves the game without `game_over` (back to the lobby, which reconnects without `song_id`, or another song), the server ends it (`_cancel_game`) and sends `{"type": "game_cancelled"}` to the phones, which unlock.
+
 ### 7b. Audience Reactions
 - A registered phone that is not singing this song shows three buttons and sends `{"type": "reaction", "kind": "heart" | "flame" | "star"}`.
 - The server forwards `{"type": "reaction", "kind", "from"}` to the display only, while `room.in_game`, for players outside `active_players`, at most once per 0.4 s per phone (`REACTIONS`, `REACTION_MIN_INTERVAL_SEC` in `ws/room.py`). Anything else is dropped silently.

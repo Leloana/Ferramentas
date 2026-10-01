@@ -10,6 +10,7 @@ import { watchMicHealth, stopMicHealth, micRunning, MAX_BUFFERED_BYTES } from '.
 import { initReactionsBar } from './reactions-bar.js';
 
 const ATTENTION_CLASS = 'btn-mobile-activate--attention';
+const LOCKED_CLASS = 'btn-mobile-activate--locked';
 
 function activateButton() {
     return document.getElementById('btn-mobile-activate');
@@ -27,6 +28,41 @@ function showMicOff() {
     // mudo não sobrevive à religada: senão o botão diz ATIVO e o áudio é descartado
     state.micMuted = false;
     stopVu();
+    if (state.micLocked) showLocked(btn);
+}
+
+// Partida em curso sem este celular: o botão espera o fim (quem entrou, entrou)
+function showLocked(btn) {
+    btn.disabled = true;
+    btn.classList.remove(ATTENTION_CLASS);
+    btn.classList.add(LOCKED_CLASS);
+    btn.innerHTML = `${iconSvg('hourglass')}<span>AGUARDE</span><small class="mic-button__hint">partida em andamento</small>`;
+}
+
+async function releaseMic() {
+    stopMicHealth();
+    if (state.audioManager) {
+        await state.audioManager.destroy();
+        state.audioManager = null;
+    }
+    showMicOff();
+}
+
+// game_started sem este celular: trava (e solta o microfone ligado no lobby);
+// game_over: destrava para a próxima partida
+export async function setMicLocked(locked) {
+    state.micLocked = locked;
+    const btn = activateButton();
+    if (!btn) return;
+    if (locked) {
+        if (micIsOn(btn)) await releaseMic();
+        else showLocked(btn);
+        return;
+    }
+    if (!btn.classList.contains(LOCKED_CLASS)) return;
+    btn.classList.remove(LOCKED_CLASS);
+    btn.disabled = false;
+    btn.innerHTML = `${iconSvg('mic')}<span>LIGAR MIC</span>`;
 }
 
 // Microfone ligado: o mesmo botão alterna ATIVO e MUDO
@@ -96,6 +132,7 @@ export function initMobileMicView() {
 
     if (btnMobileActivate) {
         btnMobileActivate.onclick = async () => {
+            if (state.micLocked) return;
             if (micIsOn(btnMobileActivate)) {
                 state.micMuted = !state.micMuted;
                 showMicOn(btnMobileActivate);
@@ -145,6 +182,11 @@ export function initMobileMicView() {
 
                 state.micMuted = false;
                 showMicOn(btnMobileActivate);
+                // a partida começou sem este celular enquanto o microfone ligava
+                if (state.micLocked) {
+                    await releaseMic();
+                    return;
+                }
 
                 const mobileActiveMicContainer = document.getElementById('mobile-active-mic-container');
                 if (mobileActiveMicContainer) {
@@ -185,6 +227,7 @@ export function initMobileMicView() {
                 showToast("Erro ao ativar microfone: " + e.message, "error");
                 btnMobileActivate.disabled = false;
                 btnMobileActivate.innerHTML = `${iconSvg('mic')}<span>LIGAR MIC</span>`;
+                if (state.micLocked) showLocked(btnMobileActivate);
             }
         };
     }
