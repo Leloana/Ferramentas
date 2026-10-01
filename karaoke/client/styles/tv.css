@@ -306,12 +306,14 @@ html.is-tv #app[data-state="waiting"] #sync-controls { margin-top: 0; padding: 0
 html.is-tv #app[data-state="waiting"] #verse-progress-container { display: none; }
 
 /* Troca de versos: só o que a GPU anima barato (deslocar e esmaecer), sem
-   transição de tamanho de fonte (recalcula o layout e engasgava na TV). */
-html.is-tv .carousel-inner {
+   transição de tamanho de fonte (recalcula o layout e engasgava na TV).
+   DESATIVADA: mesmo assim não ficou fluida na Google TV; a troca é instantânea
+   (regra "TV leve" acima). Para reativar, ponha a classe `tv-verse-anim` no <html>. */
+html.is-tv.tv-verse-anim .carousel-inner {
     transition: transform 0.35s ease-out !important;
     will-change: transform;
 }
-html.is-tv .carousel-line { transition: opacity 0.3s ease-out !important; }
+html.is-tv.tv-verse-anim .carousel-line { transition: opacity 0.3s ease-out !important; }
 
 /* Fim de jogo na TV: só Cartão e Cantar novamente (ouvir a apresentação fica no
    celular) e card compacto, que cabe na tela sem rolar. */
