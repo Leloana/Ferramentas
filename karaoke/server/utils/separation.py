@@ -21,6 +21,9 @@ segurar o lock da GPU para sempre.
   O MP3 saía no padrão do LAME (~128 kbps) depois de dois outros passos com
   perda; 320 kbps preserva pratos e reverb do instrumental.
 - Falha na GPU tenta de novo na CPU e o erro vem com o fim do stderr.
+- `cancel` (threading.Event, da fila): remover a música mata o separador na hora.
+  Antes o cancelamento só parava a tarefa da fila e a separação seguia na thread,
+  segurando a GPU e recriando a pasta da música depois de apagada.
 """
 from __future__ import annotations
 
@@ -30,7 +33,9 @@ import logging
 import os
 import subprocess
 import sys
+import tempfile
 import threading
+import time
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -45,6 +50,43 @@ ROFORMER_MODEL_DIR = os.environ.get("KARAOKE_ROFORMER_MODEL_DIR",
 MP3_BITRATE = os.environ.get("KARAOKE_MP3_BITRATE", "320k")
 
 _SEPARATION_LOCK = threading.Lock()
+# de quanto em quanto tempo o separador em andamento confere o cancelamento
+CANCEL_POLL_SEC = 0.5
+
+
+class SeparationCancelled(Exception):
+    """A música saiu da fila durante a separação."""
+
+
+def _check(cancel) -> None:
+    if cancel is not None and cancel.is_set():
+        raise SeparationCancelled()
+
+
+def _run_cmd(cmd: list[str], env, timeout: float, cancel=None):
+    """subprocess.run com cancelamento: com `cancel`, o processo morre quando ele é ligado."""
+    if cancel is None:
+        return subprocess.run(cmd, capture_output=True, text=True, env=env, timeout=timeout)
+    # stderr num arquivo: barra de progresso enche o pipe e travaria o processo
+    with tempfile.TemporaryFile(mode="w+", encoding="utf-8", errors="replace") as err:
+        proc = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=err, env=env)
+        deadline = time.monotonic() + timeout
+        try:
+            while True:
+                try:
+                    proc.wait(timeout=CANCEL_POLL_SEC)
+                    break
+                except subprocess.TimeoutExpired:
+                    if cancel.is_set():
+                        raise SeparationCancelled()
+                    if time.monotonic() > deadline:
+                        raise subprocess.TimeoutExpired(cmd, timeout)
+        except BaseException:
+            proc.kill()
+            proc.wait()
+            raise
+        err.seek(0)
+        return subprocess.CompletedProcess(cmd, proc.returncode, "", err.read())
 
 
 def _best_device() -> str:
@@ -101,16 +143,17 @@ def roformer_command(audio_path: Path, out_dir: Path, model: str = ROFORMER_MODE
     ]
 
 
-def _run_on_devices(name: str, make_cmd, device: str, label: str, cpu_retry: bool = True) -> None:
+def _run_on_devices(name: str, make_cmd, device: str, label: str, cpu_retry: bool = True, cancel=None) -> None:
     """Roda o separador no device e, se falhar na GPU, de novo na CPU. Levanta na falha."""
     devices = [device] if device == "cpu" or not cpu_retry else [device, "cpu"]
     last_error = ""
     for dev in devices:
+        _check(cancel)
         cmd, env = make_cmd(dev)
         logger.info(f"[{name}] device={dev}: {label}")
         try:
-            proc = subprocess.run(cmd, capture_output=True, text=True, env=env, timeout=SEPARATION_TIMEOUT_SEC)
-        except subprocess.TimeoutExpired:  # o run mata o processo filho
+            proc = _run_cmd(cmd, env, SEPARATION_TIMEOUT_SEC, cancel)
+        except subprocess.TimeoutExpired:  # o processo filho já morreu
             last_error = f"passou de {SEPARATION_TIMEOUT_SEC:.0f}s"
             logger.error(f"[{name}] {last_error} em {dev}")
             continue
@@ -121,7 +164,7 @@ def _run_on_devices(name: str, make_cmd, device: str, label: str, cpu_retry: boo
     raise RuntimeError(f"{name} falhou: {last_error.splitlines()[-1] if last_error else 'sem detalhes'}")
 
 
-def _separate_roformer(audio_path: Path, out_dir: Path, device: str) -> tuple[Path, Path]:
+def _separate_roformer(audio_path: Path, out_dir: Path, device: str, cancel=None) -> tuple[Path, Path]:
     out = out_dir / "roformer" / audio_path.stem
     out.mkdir(parents=True, exist_ok=True)
 
@@ -133,16 +176,17 @@ def _separate_roformer(audio_path: Path, out_dir: Path, device: str) -> tuple[Pa
 
     logger.info(f"[RoFormer] modelo={ROFORMER_MODEL}")
     # com GPU, falha vai direto ao Demucs: RoFormer na CPU levaria muitos minutos com o lock
-    _run_on_devices("RoFormer", make_cmd, device, audio_path.name, cpu_retry=False)
+    _run_on_devices("RoFormer", make_cmd, device, audio_path.name, cpu_retry=False, cancel=cancel)
     vocals, no_vocals = out / "vocals.wav", out / "no_vocals.wav"
     if not vocals.exists() or not no_vocals.exists():
         raise RuntimeError("RoFormer não gerou os arquivos separados.")
     return vocals, no_vocals
 
 
-def _separate_demucs(audio_path: Path, out_dir: Path, device: str) -> tuple[Path, Path]:
+def _separate_demucs(audio_path: Path, out_dir: Path, device: str, cancel=None) -> tuple[Path, Path]:
     logger.info(f"[Demucs] modelo={DEMUCS_MODEL}")
-    _run_on_devices("Demucs", lambda dev: (demucs_command(audio_path, out_dir, dev), None), device, audio_path.name)
+    _run_on_devices("Demucs", lambda dev: (demucs_command(audio_path, out_dir, dev), None), device, audio_path.name,
+                    cancel=cancel)
     separated = out_dir / DEMUCS_MODEL / audio_path.stem
     vocals, no_vocals = separated / "vocals.wav", separated / "no_vocals.wav"
     if not vocals.exists() or not no_vocals.exists():
@@ -150,24 +194,33 @@ def _separate_demucs(audio_path: Path, out_dir: Path, device: str) -> tuple[Path
     return vocals, no_vocals
 
 
-def separate_stems(audio_path: Path, out_dir: Path, heavy_ok=True) -> tuple[Path, Path]:
+def separate_stems(audio_path: Path, out_dir: Path, heavy_ok=True, cancel=None) -> tuple[Path, Path]:
     """Separa e devolve (vocals.wav, no_vocals.wav). Bloqueante: use em thread.
 
     `heavy_ok` (bool ou função): False enquanto uma partida usa a GPU, e aí vai o Demucs.
+    `cancel` (threading.Event): ligado, levanta SeparationCancelled e mata o separador.
     """
     audio_path = Path(audio_path)
     out_dir = Path(out_dir)
     device = _best_device()
-    with _SEPARATION_LOCK:
+    # esperando outra separação: confere o cancelamento enquanto espera a vez
+    while not _SEPARATION_LOCK.acquire(timeout=CANCEL_POLL_SEC):
+        _check(cancel)
+    try:
+        _check(cancel)
         heavy = heavy_ok() if callable(heavy_ok) else heavy_ok
         if separator_backend() == "roformer" and not heavy:
             logger.info("[RoFormer] partida em andamento: separando com o Demucs")
         elif separator_backend() == "roformer":
             try:
-                return _separate_roformer(audio_path, out_dir, device)
+                return _separate_roformer(audio_path, out_dir, device, cancel)
+            except SeparationCancelled:
+                raise
             except Exception as e:
                 logger.warning(f"[RoFormer] {e}; separando com o Demucs")
-        return _separate_demucs(audio_path, out_dir, device)
+        return _separate_demucs(audio_path, out_dir, device, cancel)
+    finally:
+        _SEPARATION_LOCK.release()
 
 
 def export_mp3(src: Path, dst: Path) -> None:

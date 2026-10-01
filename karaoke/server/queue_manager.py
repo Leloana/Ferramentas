@@ -14,6 +14,7 @@ import contextlib
 import json
 import logging
 import shutil
+import threading
 import time
 import uuid
 from dataclasses import dataclass, field
@@ -57,6 +58,8 @@ class QueueItem:
     separator: str = "demucs"  # o que deve separar este áudio (estimativa de tempo)
     stage_started: float = field(default_factory=time.monotonic)
     _task: Optional[asyncio.Task] = field(default=None, repr=False)
+    # ligado ao remover da fila: mata a separação que roda na thread (utils/separation.py)
+    _cancel: threading.Event = field(default_factory=threading.Event, repr=False)
 
     def eta_sec(self) -> Optional[int]:
         """Segundos que faltam até a música ficar pronta (queue_eta.py). Sem partida no meio."""
@@ -174,6 +177,7 @@ class SongQueueManager:
                 # soltaria o whisper_lock com a GPU ainda ocupada. Deixa terminar.
                 in_phase2 = item.status in (QueueStatus.ALIGNING, QueueStatus.FINALIZING)
                 if item._task and not item._task.done() and not in_phase2:
+                    item._cancel.set()
                     item._task.cancel()
                 self.queue.pop(i)
                 logger.info(f"[QUEUE] Item removido da fila: {item_id} ({item.title})")
@@ -440,12 +444,22 @@ class SongQueueManager:
 
     async def _run_demucs(self, item: QueueItem, song_dir: Path, audio_path: Path) -> None:
         """Separa vocal/instrumental (utils/separation.py: uma separação por vez)."""
-        from utils.separation import export_backing_mp3, export_mp3, separate_stems
+        from utils.separation import SeparationCancelled, export_backing_mp3, export_mp3, separate_stems
 
         def _separate_and_export():
             # RoFormer (pesado na VRAM) só sem partida: a fase 1 roda fora do whisper_lock
-            vocals_wav, no_vocals_wav = separate_stems(audio_path, song_dir / "demucs_output",
-                                                       heavy_ok=lambda: not self._gpu_game_active)
+            try:
+                vocals_wav, no_vocals_wav = separate_stems(audio_path, song_dir / "demucs_output",
+                                                           heavy_ok=lambda: not self._gpu_game_active,
+                                                           cancel=item._cancel)
+            except SeparationCancelled:
+                # a tarefa da fila já saiu; a thread limpa o que o separador deixou
+                shutil.rmtree(song_dir / "demucs_output", ignore_errors=True)
+                logger.info(f"[QUEUE:{item.id}] Separação interrompida (música removida da fila).")
+                raise
+            if item._cancel.is_set():
+                shutil.rmtree(song_dir / "demucs_output", ignore_errors=True)
+                raise SeparationCancelled()
             # Exporta numa thread: leva segundos e a fase 1 roda durante a partida
             export_mp3(vocals_wav, song_dir / "vocal.mp3")
             # instrumental com volume normalizado (~−16 LUFS); falha só loga

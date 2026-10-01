@@ -124,5 +124,35 @@ class SeparationTest(unittest.TestCase):
         self.assertEqual(seen, ["roformer", "demucs"])
 
 
+    def test_cancel_kills_the_running_separator(self):
+        # processo de verdade que demoraria 30 s: o cancelamento tem que matá-lo logo
+        import threading
+        import time
+
+        cancel = threading.Event()
+        slow = [sys.executable, "-c", "import time; time.sleep(30)"]
+        threading.Timer(0.3, cancel.set).start()
+        started = time.monotonic()
+        with patch.object(separation, "_best_device", return_value="cuda"), \
+                patch.object(separation, "SEPARATOR", "demucs"), \
+                patch.object(separation, "demucs_command", return_value=slow):
+            with self.assertRaises(separation.SeparationCancelled):
+                separation.separate_stems(Path("/x/original.mp3"), Path("/x/out"), cancel=cancel)
+        self.assertLess(time.monotonic() - started, 5)
+        self.assertFalse(separation._SEPARATION_LOCK.locked())  # a próxima música não fica esperando
+
+    def test_cancel_while_waiting_for_another_separation(self):
+        import threading
+
+        cancel = threading.Event()
+        cancel.set()
+        separation._SEPARATION_LOCK.acquire()
+        try:
+            with self.assertRaises(separation.SeparationCancelled):
+                separation.separate_stems(Path("/x/original.mp3"), Path("/x/out"), cancel=cancel)
+        finally:
+            separation._SEPARATION_LOCK.release()
+
+
 if __name__ == "__main__":
     unittest.main()
