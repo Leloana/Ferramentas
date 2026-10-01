@@ -96,6 +96,24 @@ class TestUploadPipelineFlow(unittest.TestCase):
             self.assertTrue(meta["status"]["has_vocal_file"])
             self.assertTrue(meta["status"]["has_backing_file"])
             self.assertTrue(meta["status"]["has_lrc_file"])
+        # LRC enviado pelo usuário: o reinstall mantém como veio (sem LRCLIB nem encaixe)
+        self.assertTrue((song_dir / ".lyrics_edited").exists())
+        self.assertFalse((song_dir / ".lyrics_api").exists())
+
+    @patch("routes.upload.run_reinstall_song")
+    @patch("routes.upload.fetch_lyrics")
+    def test_auto_fetched_lyrics_are_marked_as_api(self, mock_fetch, mock_run_reinstall):
+        mock_run_reinstall.return_value = True
+        mock_fetch.return_value = {"plainLyrics": "Hello world", "syncedLyrics": "[00:01.00]Hello world",
+                                   "source": "lrclib"}
+        data = {"title": "Api Song", "artist": "Test Artist", "language": "en", "align_lyrics": "false"}
+        files = {"vocal_file": ("vocal.mp3", b"v", "audio/mpeg"), "backing_file": ("b.mp3", b"b", "audio/mpeg")}
+        response = self.client.post("/api/upload-song", data=data, files=files)
+        self.assertEqual(response.status_code, 200)
+        song_dir = self.temp_dir / "api-song-test-artist"
+        # letra do LRCLIB sem o áudio: o reinstall pode trocar pela versão da duração certa
+        self.assertTrue((song_dir / ".lyrics_api").exists())
+        self.assertFalse((song_dir / ".lyrics_edited").exists())
 
     @patch("tools.reinstall_song.reinstall_song")
     def test_reinstall_song_success(self, mock_reinstall):

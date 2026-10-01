@@ -11,6 +11,9 @@ from typing import Optional
 
 # Marca na pasta da música: o lyrics.lrc foi salvo pelo editor (revisado à mão).
 USER_EDITED_MARKER = ".lyrics_edited"
+# Marca: letra (LRC e/ou texto) veio do LRCLIB sem o áudio, e não do usuário. O
+# reinstall pode trocá-la pela versão de duração mais próxima e encaixá-la no áudio.
+API_LYRICS_MARKER = ".lyrics_api"
 
 
 def safe_song_dir(songs_dir: Path, slug: str) -> Optional[Path]:

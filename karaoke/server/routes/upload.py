@@ -12,6 +12,7 @@ from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from state import SONGS_DIR, queue_manager
 from utils.lyrics_fetcher import fetch_lyrics
 from utils.prepare import run_reinstall_song
+from utils.song_paths import API_LYRICS_MARKER, USER_EDITED_MARKER
 from utils.text import normalize_lyrics_text, slugify
 from utils.youtube import get_youtube_video_info, search_youtube
 
@@ -114,6 +115,7 @@ async def upload_song(
         synced_lrc = (synced_lrc or "").strip() or None
 
         # Auto-fetch lyrics se o usuário não forneceu nem letra plana nem LRC
+        lyrics_from_api = False
         if not plain_lyrics and not synced_lrc:
             logger.info(f"[Upload] Buscando letra automaticamente para '{artist} - {title}'...")
             try:
@@ -121,6 +123,7 @@ async def upload_song(
                 if fetched:
                     plain_lyrics = normalize_lyrics_text(fetched.get("plainLyrics")) or None
                     synced_lrc = fetched.get("syncedLyrics")
+                    lyrics_from_api = True
                     logger.info(
                         "[Upload] Letra encontrada via %s: plain=%s, synced=%s",
                         fetched.get("source"), bool(plain_lyrics), bool(synced_lrc),
@@ -144,6 +147,9 @@ async def upload_song(
                     f.write("\n".join(clean_lines))
                 has_synced_lrc = True
                 logger.info("[Upload] lyrics.lrc salvo diretamente via synced LRC da API.")
+
+        if lyrics_from_api:
+            (song_dir / API_LYRICS_MARKER).touch()
 
         # 1. Build and save minimal meta.json
         meta = _build_meta(locals())
@@ -176,6 +182,10 @@ async def upload_song(
             with open(song_dir / "lyrics.lrc", "w", encoding="utf-8", newline="\n") as f:
                 f.write("\n".join(clean_lines))
             has_synced_lrc = True
+        if (lrc_file and lrc_file.filename) or (lrc_text and lrc_text.strip()):
+            # LRC do usuário: o reinstall mantém como veio (sem LRCLIB nem encaixe)
+            (song_dir / USER_EDITED_MARKER).touch()
+            (song_dir / API_LYRICS_MARKER).unlink(missing_ok=True)
 
         if plain_lyrics:
             # `plain_lyrics` já foi normalizado em normalize_lyrics_text acima.

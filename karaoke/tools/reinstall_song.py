@@ -37,10 +37,60 @@ from utils.meta import get_meta_field
 from utils.text import normalize_lyrics_text
 from utils.whisper_params import TRANSCRIBE_KWARGS
 from utils.separation import MP3_BITRATE, export_backing_mp3, separate_stems
-from utils.song_paths import USER_EDITED_MARKER
+from utils.song_paths import API_LYRICS_MARKER, USER_EDITED_MARKER
 from utils.youtube import download_youtube_audio
 from tools.generate_lrc import generate_lrc
 from tools.prepare_song import prepare_song
+
+
+STRUCTURE_WORDS_CACHE = ".structure_words.json"
+
+
+def _structure_transcriber(language: str, song_dir: Path | None = None):
+    """Whisper do stem de voz inteiro, palavra a palavra, para o plano por estrutura.
+
+    Sem a letra como dica: com ela o Whisper "ouve" linhas que a versão não canta.
+    Uma transcrição por áudio: memória na rodada e cache em `song_dir`, válido
+    enquanto o vocal.mp3 for o mesmo (tamanho + data). Cada passada é ~10–20 s
+    de GPU com o whisper_lock preso.
+    """
+    memo = {}
+
+    def _stamp():
+        vocal = song_dir / "vocal.mp3" if song_dir else None
+        if vocal is None or not vocal.exists():
+            return None
+        st = vocal.stat()
+        return [st.st_size, int(st.st_mtime)]
+
+    def transcribe(audio):
+        key = (len(audio), language)
+        if key in memo:
+            return memo[key]
+        stamp = _stamp()
+        cache = song_dir / STRUCTURE_WORDS_CACHE if song_dir else None
+        if cache is not None and stamp is not None and cache.exists():
+            try:
+                data = json.loads(cache.read_text(encoding="utf-8"))
+                if data.get("vocal") == stamp and data.get("language") == language:
+                    memo[key] = data["words"]
+                    return memo[key]
+            except Exception:
+                pass
+        from stt_engine import get_stt_engine
+
+        segments, _info = get_stt_engine().model.transcribe(audio, language=language, **TRANSCRIBE_KWARGS)
+        words = [{"word": w.word.strip(), "start": float(w.start), "end": float(w.end),
+                  "probability": float(w.probability)}
+                 for seg in segments for w in (seg.words or [])]
+        memo[key] = words
+        if cache is not None and stamp is not None:
+            try:
+                cache.write_text(json.dumps({"vocal": stamp, "language": language, "words": words}), encoding="utf-8")
+            except Exception as e:
+                logger.warning(f"Cache da transcrição não gravado: {e}")
+        return words
+    return transcribe
 
 
 async def reinstall_song(
@@ -104,9 +154,15 @@ async def reinstall_song(
             logger.warning(f"Erro ao buscar letras na API: {e}")
             
     # Se a música não tiver plain_lyrics no meta.json, mas encontramos na API, atualizamos no meta.json!
+    # letra que veio da API nesta rodada (não do usuário): pode ser trocada pela
+    # da versão certa quando a duração do áudio for conhecida
+    # letra gravada pelo upload/fila a partir do LRCLIB, antes de existir o áudio
+    api_lyrics = (song_dir / API_LYRICS_MARKER).exists()
+    plain_from_api = api_lyrics
     if not plain_lyrics and fetched_plain_lyrics:
         logger.info("Adicionando letra plana encontrada via API ao meta.json...")
         plain_lyrics = normalize_lyrics_text(fetched_plain_lyrics)
+        plain_from_api = True
         if "lyrics" not in meta or not isinstance(meta["lyrics"], dict):
             meta["lyrics"] = {}
         meta["lyrics"]["plain_lyrics"] = plain_lyrics
@@ -155,6 +211,9 @@ async def reinstall_song(
         except Exception as e:
             logger.warning(f"Não foi possível salvar a atualização no meta.json: {e}")
 
+    # LRC revisado/enviado pelo usuário vence a marca de "veio da API"
+    api_lyrics = api_lyrics and not user_edited_lrc
+
     # 3. Limpeza total da pasta da música (exceto meta.json) se clean_existing for True
     if clean_existing:
         logger.info("Limpando arquivos antigos da pasta...")
@@ -170,6 +229,8 @@ async def reinstall_song(
                 logger.warning(f"Não foi possível remover o arquivo residual {item.name}: {e}")
     else:
         logger.info("clean_existing=False. Preservando arquivos existentes na pasta para reaproveitamento inteligente.")
+    if api_lyrics:
+        (song_dir / API_LYRICS_MARKER).touch()
 
     # Garante que o arquivo lyrics.txt local exista e esteja atualizado com o plain_lyrics do meta.json
     if plain_lyrics and plain_lyrics.strip():
@@ -276,6 +337,58 @@ async def reinstall_song(
             except Exception:
                 pass
 
+    # Letra × versão do áudio. Com a duração real, o LRCLIB escolhe a versão mais
+    # próxima. O que ainda não bater (intro, andamento, refrão a mais, verso
+    # cortado) o utils/lrc_sync acerta pela voz e pela transcrição do stem.
+    audio_duration = len(vocal_audio) / 1000.0
+    if artist and title and audio_duration > 0 and not user_edited_lrc:
+        try:
+            from utils.lyrics_fetcher import fetch_lyrics
+            by_duration = await asyncio.to_thread(fetch_lyrics, artist, title, audio_duration)
+            if by_duration:
+                fetched_synced_lrc = by_duration.get("syncedLyrics")
+                if api_lyrics:
+                    # o LRC gravado pelo upload/fila é o do /api/get (sem duração): vale o
+                    # da versão escolhida agora, ou nenhum se ela não tem sincronia
+                    lrc_backup = fetched_synced_lrc
+                    if fetched_synced_lrc is None and lrc_file.exists():
+                        lrc_file.unlink()
+                new_plain = normalize_lyrics_text(by_duration.get("plainLyrics"))
+                if plain_from_api and new_plain and new_plain != plain_lyrics:
+                    # texto e sincronia da mesma versão (radio edit tira verso, ao vivo muda letra)
+                    logger.info("Letra plana trocada pela da versão de duração mais próxima.")
+                    plain_lyrics = new_plain
+                    meta.setdefault("lyrics", {})["plain_lyrics"] = plain_lyrics
+                    with open(meta_path, "w", encoding="utf-8", newline="\n") as f:
+                        json.dump(meta, f, indent=4, ensure_ascii=False)
+                    txt_file.write_text(plain_lyrics + "\n", encoding="utf-8")
+        except Exception as e:
+            logger.warning(f"Erro ao buscar a versão da letra pela duração: {e}")
+
+    vocal_16k = None
+    structure_transcriber = _structure_transcriber(song_lang, song_dir)
+
+    def _vocal_16k():
+        nonlocal vocal_16k
+        if vocal_16k is None:
+            vocal_16k = vocal_to_float32_mono_16k(vocal_audio)
+        return vocal_16k
+
+    async def _sync_for_audio(lrc_text):
+        """LRC não revisado encaixado neste áudio. Sem resultado: o texto como veio."""
+        try:
+            from utils.lrc_sync import sync_lrc
+
+            # a conversão para 16 kHz também fica fora do event loop
+            res = await asyncio.to_thread(lambda: sync_lrc(lrc_text, plain_lyrics, _vocal_16k(), song_lang,
+                                                           structure_transcriber))
+            if res.lrc_text:
+                logger.info(f"LRC para este áudio: {res.method}")
+                return res.lrc_text
+        except Exception as e:
+            logger.warning(f"Encaixe do LRC no áudio falhou ({e}); usando o LRC como veio")
+        return lrc_text
+
     # 4 - whisper percorre o arquivo vocal fazendo os tempos & 5 - Cria arquivo lyrics.lrc
     has_lrc = False
     
@@ -307,9 +420,9 @@ async def reinstall_song(
     if not has_lrc:
         # 1. Tenta usar o synced LRC obtido via API se align_lyrics=False
         if fetched_synced_lrc and not align_lyrics:
-            logger.info("synced LRC obtido via API. Salvando como lyrics.lrc e pulando Whisper...")
+            logger.info("synced LRC obtido via API. Encaixando no áudio e salvando como lyrics.lrc...")
             try:
-                lrc_file.write_text(fetched_synced_lrc, encoding="utf-8")
+                lrc_file.write_text(await _sync_for_audio(fetched_synced_lrc), encoding="utf-8")
                 has_lrc = True
             except Exception as e:
                 logger.error(f"Erro ao salvar synced LRC da API: {e}")
@@ -317,14 +430,18 @@ async def reinstall_song(
         elif lrc_backup is not None and not align_lyrics:
             logger.info("Restaurando backup local de letras sincronizadas (lyrics.lrc) já que align_lyrics=False...")
             try:
-                lrc_file.write_text(lrc_backup, encoding="utf-8")
+                lrc_file.write_text(await _sync_for_audio(lrc_backup), encoding="utf-8")
                 has_lrc = True
             except Exception as e:
                 logger.error(f"Erro ao restaurar backup de lyrics.lrc: {e}")
         # 3. Preserva LRC existente (ex: vindo de API LRCLIB) a menos que o
         # usuário tenha pedido explicitamente alinhamento forçado (PRO).
         elif lrc_file.exists() and not align_lyrics:
-            logger.info("lyrics.lrc já existe e align_lyrics=False. Mantendo lyrics.lrc existente.")
+            logger.info("lyrics.lrc já existe e align_lyrics=False. Encaixando o LRC existente no áudio.")
+            try:
+                lrc_file.write_text(await _sync_for_audio(lrc_file.read_text(encoding="utf-8")), encoding="utf-8")
+            except Exception as e:
+                logger.warning(f"Não foi possível encaixar o lyrics.lrc existente: {e}")
             has_lrc = True
         elif plain_lyrics and plain_lyrics.strip() and align_lyrics:
             logger.info("plain_lyrics disponível e align_lyrics=True. Executando Forced Alignment (PRO) com MMS_FA...")
@@ -344,6 +461,8 @@ async def reinstall_song(
                     language=song_lang,
                     device=device,
                     synced_lrc=synced_lrc,
+                    # letra revisada: o PRO só refina os tempos, a estrutura não tira linha
+                    transcribe_fn=None if user_edited_lrc else structure_transcriber,
                 )
                 
                 # Salva o lyrics.lrc
@@ -397,10 +516,28 @@ async def reinstall_song(
                         await asyncio.to_thread(generate_lrc, str(song_dir), language=song_lang, debug=False)
                         has_lrc = True
         else:
-            # Caso align_lyrics=False (FAST) ou plain_lyrics ausente
-            logger.info("Executando transcrição direta com Whisper (FAST)...")
+            # Caso align_lyrics=False (FAST) ou plain_lyrics ausente. Com a letra, o
+            # plano por estrutura (Whisper + letra) dá o LRC com o texto certo; sem
+            # plano confiável, o LRC é a própria transcrição.
+            lrc_from_plan = None
+            if plain_lyrics and plain_lyrics.strip():
+                try:
+                    from utils.lrc_sync import sync_lrc
+
+                    res = await asyncio.to_thread(lambda: sync_lrc(None, plain_lyrics, _vocal_16k(), song_lang,
+                                                                   structure_transcriber))
+                    lrc_from_plan = res.lrc_text
+                except Exception as e:
+                    logger.warning(f"Plano por estrutura falhou: {e}")
+            if lrc_from_plan:
+                logger.info("LRC gerado pela letra + transcrição (estrutura).")
+                lrc_file.write_text(lrc_from_plan, encoding="utf-8")
+                has_lrc = True
+            else:
+                logger.info("Executando transcrição direta com Whisper (FAST)...")
             try:
-                await asyncio.to_thread(generate_lrc, str(song_dir), language=song_lang, debug=False)
+                if not has_lrc:
+                    await asyncio.to_thread(generate_lrc, str(song_dir), language=song_lang, debug=False)
                 has_lrc = True
             except Exception as e:
                 logger.error(f"Erro ao gerar transcrição FAST com Whisper: {e}")

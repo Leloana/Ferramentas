@@ -417,11 +417,14 @@ def align_lyrics_forced(
     device: str = None,
     synced_lrc: str | None = None,
     align_fn: AlignFn | None = None,
+    transcribe_fn=None,
 ) -> tuple[list[dict], str]:
     """Alinha a letra ao stem de voz. Devolve (segments, lrc_text).
 
     `synced_lrc`: LRC com os inícios das linhas (LRCLIB, revisado ou anterior) —
     ativa o alinhamento por janela. `align_fn` substitui o MMS_FA (testes).
+    `transcribe_fn(audio) -> palavras do Whisper`: liga o encaixe e o plano por
+    estrutura (`utils/lrc_sync`), para LRC de outra versão do áudio.
     """
     from utils.audio import load_audio_full
 
@@ -429,23 +432,38 @@ def align_lyrics_forced(
     audio = load_audio_full(vocal_audio_path)  # 16 kHz mono
     audio_duration = len(audio) / SAMPLE_RATE
 
-    lines, starts, ends = lines_for_alignment(plain_lyrics, synced_lrc, language)
-    if not any(w["norm"] for line in lines for w in line):
+    candidates = _sync_candidates(synced_lrc, plain_lyrics, audio, language, transcribe_fn)
+    plans = [(label, lines_for_alignment(plain_lyrics, lrc, language)) for label, lrc in candidates]
+    if not any(w["norm"] for _, (lines, _, _) in plans for line in lines for w in line):
         raise ValueError("A letra fornecida não contém palavras válidas para alinhamento.")
 
     release = None
     try:
         if align_fn is None:
             logger.info(f"Executando Forced Alignment no dispositivo: {device or 'auto'} "
-                        f"({'por linha' if starts else 'letra inteira'})")
+                        f"({'por linha' if plans[0][1][1] else 'letra inteira'})")
             align_fn, release = mms_align_fn(audio, device)
-        pristine = copy.deepcopy(lines)
-        modes = align_lines(lines, audio_duration, align_fn, starts, ends)
-        segments = build_segments(lines, modes, audio_duration, language)
-        if starts and _looks_out_of_sync(segments):
-            # LRC fora de sincronia com este áudio (LRCLIB de outra versão): as janelas
-            # caem no lugar errado. Tenta a letra inteira e fica com a melhor nota.
-            segments = _best_of_global(segments, pristine, audio_duration, align_fn, language)
+        best = None
+        for label, (lines, starts, ends) in plans:
+            pristine = copy.deepcopy(lines)
+            modes = align_lines(lines, audio_duration, align_fn, starts, ends)
+            segments = build_segments(lines, modes, audio_duration, language)
+            if starts and _looks_out_of_sync(segments):
+                # LRC fora de sincronia com este áudio (LRCLIB de outra versão): as janelas
+                # caem no lugar errado. Tenta a letra inteira e fica com a melhor nota.
+                segments = _best_of_global(segments, pristine, audio_duration, align_fn, language)
+            if len(plans) > 1:
+                try:
+                    quality = _selection_score(segments, audio)
+                except Exception as e:
+                    logger.warning(f"[MMS_FA] nota do candidato {label} falhou: {e}")
+                    quality = float("-inf")
+                logger.info(f"[MMS_FA] candidato {label}: nota {quality:.1f}")
+                if best is None or quality > best[0]:
+                    best = (quality, segments)
+            else:
+                best = (None, segments)
+        segments = best[1]
     finally:
         if release is not None:
             logger.info("Limpando recursos e cache da GPU (Forced Alignment)...")
@@ -455,6 +473,38 @@ def align_lyrics_forced(
     if fallback:
         logger.warning(f"[MMS_FA] {fallback}/{len(segments)} linhas sem alinhamento (tempo por sílabas)")
     return segments, segments_to_lrc(segments)
+
+
+# peso da voz sem verso na escolha entre candidatos (plano tirou linha cantada)
+UNCOVERED_VOICE_WEIGHT = 60.0
+
+
+def _sync_candidates(synced_lrc, plain_lyrics, audio, language, transcribe_fn) -> list[tuple[str, str | None]]:
+    """LRCs a alinhar: o escolhido pelo lrc_sync e a alternativa dele. Sem transcrição: o LRC como veio."""
+    if transcribe_fn is None:
+        return [("lrc", synced_lrc)]
+    try:
+        from utils.lrc_sync import sync_lrc
+
+        res = sync_lrc(synced_lrc, plain_lyrics, audio, language, transcribe_fn)
+    except Exception as e:
+        logger.warning(f"[MMS_FA] encaixe/estrutura falhou ({e}); alinhando o LRC como veio")
+        return [("lrc", synced_lrc)]
+    out = [(res.method, res.lrc_text or synced_lrc)]
+    if res.alternative:
+        out.append(("lrc" if res.method == "estrutura" else "estrutura", res.alternative))
+    return out
+
+
+def _selection_score(segments: list[dict], audio: np.ndarray) -> float:
+    """Nota para escolher entre candidatos: qualidade do alinhamento − voz sem letra."""
+    from utils.alignment_quality import assess, rms_frames
+    from utils.lrc_fit import HOP_SEC, vocal_activity
+    from utils.lrc_sync import uncovered_voice
+
+    duration = len(audio) / SAMPLE_RATE
+    quality = assess(segments, duration, rms_frames(audio, SAMPLE_RATE))["score"]
+    return quality - UNCOVERED_VOICE_WEIGHT * uncovered_voice(segments, vocal_activity(audio), HOP_SEC)
 
 
 def _looks_out_of_sync(segments: list[dict]) -> bool:
