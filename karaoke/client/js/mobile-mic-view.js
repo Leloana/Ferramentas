@@ -145,6 +145,19 @@ export function initMobileMicView() {
         };
     }
 
+    // Perfil: sair do apelido e voltar à tela de nome, na mesma sala (trocar de cantor)
+    const btnLogout = document.getElementById('btn-mic-logout');
+    if (btnLogout) {
+        btnLogout.onclick = async () => {
+            saveMicName('');  // não entra sozinho de novo com o apelido antigo
+            if (state.audioManager) {
+                await state.audioManager.destroy();
+                state.audioManager = null;
+            }
+            window.location.reload();
+        };
+    }
+
     const btnMobileExitMic = document.getElementById('btn-mobile-exit-mic');
     if (btnMobileExitMic) {
         btnMobileExitMic.onclick = async () => {

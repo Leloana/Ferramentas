@@ -208,6 +208,8 @@ async function initHomeQrcode() {
 async function showMyProfile() {
     const view = document.getElementById('mic-profile-view');
     if (!view) return;
+    const logout = document.getElementById('btn-mic-logout');
+    if (logout) logout.hidden = !state.mobileNickname;
     if (!state.mobileNickname) {
         renderProfile(view, null);
         return;

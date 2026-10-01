@@ -65,6 +65,7 @@
 
 /* Aba do celular */
 .mic-profile-panel { width: 100%; max-width: 420px; margin: 0 auto; padding-top: 1rem; }
+.mic-profile-footer { padding: 1.25rem 0 0.5rem; text-align: center; }
 
 @media (max-width: 700px) {
     .header-players__label { display: none; }
