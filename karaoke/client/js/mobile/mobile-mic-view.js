@@ -26,12 +26,22 @@ function showMicOff() {
     if (box) box.removeAttribute('data-mic-active');
     // mudo não sobrevive à religada: senão o botão diz ATIVO e o áudio é descartado
     state.micMuted = false;
-    const mute = document.getElementById('btn-mobile-mute');
-    if (mute) {
-        mute.innerHTML = `${iconSvg('mic-off')} Mutar microfone`;
-        mute.classList.remove('btn-mobile-mute--muted');
-    }
     stopVu();
+}
+
+// Microfone ligado: o mesmo botão alterna ATIVO e MUDO
+function showMicOn(btn) {
+    btn.disabled = false;
+    btn.classList.toggle('btn-mobile-activate--active', !state.micMuted);
+    btn.classList.toggle('btn-mobile-activate--muted', state.micMuted);
+    btn.innerHTML = state.micMuted
+        ? `${iconSvg('mic-off')}<span>MUDO</span><small class="mic-button__hint">toque para voltar</small>`
+        : `${iconSvg('mic')}<span>ATIVO</span><small class="mic-button__hint">toque para mutar</small>`;
+}
+
+// ligado = ATIVO ou MUDO (showMicOff tira as duas classes quando a faixa cai)
+function micIsOn(btn) {
+    return btn.classList.contains('btn-mobile-activate--active') || btn.classList.contains('btn-mobile-activate--muted');
 }
 
 function stopVu() {
@@ -58,9 +68,7 @@ export function remindMicIfOff() {
 
 export function initMobileMicView() {
     const btnMobileActivate = document.getElementById('btn-mobile-activate');
-    const mobileActiveControls = document.getElementById('mobile-active-controls');
     const mobileLyricsContainer = document.getElementById('mobile-lyrics-container');
-    const btnMobileMute = document.getElementById('btn-mobile-mute');
     const mobileMicVu = document.getElementById('mobile-mic-vu');
 
     const btnMobileRegister = dom.btnMobileRegister;
@@ -88,6 +96,11 @@ export function initMobileMicView() {
 
     if (btnMobileActivate) {
         btnMobileActivate.onclick = async () => {
+            if (micIsOn(btnMobileActivate)) {
+                state.micMuted = !state.micMuted;
+                showMicOn(btnMobileActivate);
+                return;
+            }
             btnMobileActivate.disabled = true;
             btnMobileActivate.innerText = "ATIVANDO...";
             // pedido dentro do toque do usuário (exigência do Safari)
@@ -130,8 +143,8 @@ export function initMobileMicView() {
                 const bufferLength = analyser.frequencyBinCount;
                 const dataArray = new Uint8Array(bufferLength);
 
-                btnMobileActivate.innerHTML = `${iconSvg('mic')}<span>ATIVO</span>`;
-                btnMobileActivate.classList.add('btn-mobile-activate--active');
+                state.micMuted = false;
+                showMicOn(btnMobileActivate);
 
                 const mobileActiveMicContainer = document.getElementById('mobile-active-mic-container');
                 if (mobileActiveMicContainer) {
@@ -172,31 +185,6 @@ export function initMobileMicView() {
                 showToast("Erro ao ativar microfone: " + e.message, "error");
                 btnMobileActivate.disabled = false;
                 btnMobileActivate.innerHTML = `${iconSvg('mic')}<span>LIGAR MIC</span>`;
-            }
-        };
-    }
-
-    if (btnMobileMute) {
-        btnMobileMute.onclick = () => {
-            state.micMuted = !state.micMuted;
-            if (state.micMuted) {
-                btnMobileMute.innerHTML = `${iconSvg('mic')} Desmutar microfone`;
-                btnMobileMute.classList.add('btn-mobile-mute--muted');
-                if (btnMobileActivate) {
-                    btnMobileActivate.classList.remove('btn-mobile-activate--active');
-                    btnMobileActivate.classList.add('btn-mobile-activate--muted');
-                    const btnSpan = btnMobileActivate.querySelector('span');
-                    if (btnSpan) btnSpan.innerText = 'MUDO';
-                }
-            } else {
-                btnMobileMute.innerHTML = `${iconSvg('mic-off')} Mutar microfone`;
-                btnMobileMute.classList.remove('btn-mobile-mute--muted');
-                if (btnMobileActivate) {
-                    btnMobileActivate.classList.remove('btn-mobile-activate--muted');
-                    btnMobileActivate.classList.add('btn-mobile-activate--active');
-                    const btnSpan = btnMobileActivate.querySelector('span');
-                    if (btnSpan) btnSpan.innerText = 'ATIVO';
-                }
             }
         };
     }

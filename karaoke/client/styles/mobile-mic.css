@@ -114,6 +114,8 @@
 .mic-button:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--ink); }
 .btn-mobile-activate--active { background: var(--sage); }
 .btn-mobile-activate--muted { background: var(--rose); }
+/* o próprio botão muta: a dica diz o que o toque faz agora */
+.mic-button__hint { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.02em; text-transform: none; opacity: 0.8; }
 /* no jogo sem microfone (recarregou, o Android desligou a faixa): pede o toque */
 .btn-mobile-activate--attention { animation: mic-attention 1.2s ease-in-out infinite; }
 @keyframes mic-attention {
@@ -164,8 +166,6 @@
 .mobile-score__value { font-family: var(--font-ui); font-weight: 700; color: var(--ink); background: var(--marker); padding: 0 0.25em; }
 .mobile-score__total { font-weight: 500; }
 
-#mobile-active-controls { width: 100%; }
-.btn-mobile-mute--muted { background: var(--rose) !important; border-color: var(--rose-ink) !important; }
 
 /* Placar final no celular (mobile/mic-final.js) */
 .mic-final { display: flex; flex-direction: column; gap: 0.6rem; width: 100%; align-items: center; }

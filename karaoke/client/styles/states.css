@@ -71,11 +71,9 @@
 .modal-overlay { display: none !important; }
 .modal-overlay[data-open] { display: flex !important; }
 
-/* 5. Microfone ativo: controles só depois de ligar */
-#mobile-active-mic-container:not([data-mic-active="true"]) #mobile-active-controls,
+/* 5. Microfone ativo: letra e medidor só depois de ligar */
 #mobile-active-mic-container:not([data-mic-active="true"]) #mobile-lyrics-container,
 #mobile-active-mic-container:not([data-mic-active="true"]) #mobile-mic-vu { display: none !important; }
-#mobile-active-mic-container[data-mic-active="true"] #mobile-active-controls,
 #mobile-active-mic-container[data-mic-active="true"] #mobile-lyrics-container { display: flex !important; }
 #mobile-active-mic-container[data-mic-active="true"] #mobile-mic-vu { display: block !important; }
 /* com o mic ligado, o botão de sair do modo mic sai do caminho */
