@@ -42,6 +42,7 @@ for path in (PROJECT_ROOT, PROJECT_ROOT / "server"):
         sys.path.insert(0, str(path))
 
 import utils.cuda_bootstrap  # noqa: E402,F401  (registra as DLLs do CUDA antes do Whisper)
+import torch  # noqa: E402,F401  (cuDNN 9.1 do torch antes do 9.10 do ctranslate2: na ordem inversa a 1ª conv na GPU derruba o processo)
 
 import numpy as np  # noqa: E402
 

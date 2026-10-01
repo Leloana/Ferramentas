@@ -30,6 +30,7 @@ for p in (PROJECT_ROOT, PROJECT_ROOT / "server"):
         sys.path.insert(0, str(p))
 
 import utils.cuda_bootstrap  # noqa: E402,F401  (DLLs do CUDA no Windows antes do torch)
+import torch  # noqa: E402,F401  (cuDNN 9.1 do torch antes do 9.10 do ctranslate2: na ordem inversa a 1ª conv na GPU derruba o processo)
 
 OUT = PROJECT_ROOT / "validacao_gpu"
 HOLIDAY = PROJECT_ROOT / "docs" / "archive" / "holiday-green-day"
