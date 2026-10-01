@@ -13,7 +13,7 @@ import { fetchSongs, initSearch, selectSong } from './selection-view.js';
 import { initMicRequests, initNextUpButtons } from './requests.js';
 import { startKaraoke, resetGameState } from './game/session.js';
 import { initGameControls } from './game/controls.js';
-import { initModals } from './modals.js';
+import { initModals } from './lobby/modals.js';
 import { initQueueView } from './queue-view.js';
 import { openModal, closeModal } from './modal.js';
 import { initAnnotation } from './annotate.js';
