@@ -207,4 +207,7 @@ html.is-tv .share-card-close {
 }
 
 /* Cartão aberto: a página por trás some (share-card.js), nada fica na frente dele */
-html.share-card-open #app { visibility: hidden; }
+/* display:none (não só invisível): a página por trás deixava a rolagem ligada na TV */
+html.share-card-open #app { display: none; }
+html.share-card-open,
+html.share-card-open body { overflow: hidden; }

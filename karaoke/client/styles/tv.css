@@ -324,3 +324,16 @@ html.is-tv .rank-badge { font-size: 3.8rem; }
 html.is-tv .rank-title { margin-bottom: 0.7rem; font-size: 1.1rem; }
 html.is-tv .score-box { margin-bottom: 0.8rem; padding: 0.5rem; }
 html.is-tv .score-box__value { font-size: 2rem; }
+
+/* Fim de jogo: a partida por trás também cabe na tela (rolava 57 px na TV) */
+html.is-tv #app[data-state="game-over"] .app-header { display: none !important; }
+html.is-tv #app[data-state="game-over"] > .container {
+    height: 100vh !important;
+    min-height: 0 !important;
+    overflow: hidden;
+}
+html.is-tv #app[data-state="game-over"] .main-card {
+    height: 100vh !important;
+    min-height: 0 !important;
+    padding: 1.2rem 2rem !important;
+}
