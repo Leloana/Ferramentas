@@ -120,7 +120,12 @@ def prepare_song(song_dir, language="en", debug=False):
             end_sample = int(lrc_lines[i+1]["start"] * sample_rate)
         else:
             end_sample = len(full_audio)
-            
+        # marca vazia no LRC = fim do verso: o solo depois dele não entra. Sem isso o
+        # recorte ia até o próximo verso (My Iron Lung: 20 s de guitarra), o Whisper não
+        # ouvia nada e as palavras eram espalhadas pelo solo inteiro.
+        if line.get("end") is not None:
+            end_sample = max(start_sample + 1, min(end_sample, int(line["end"] * sample_rate)))
+
         print(f"Segmento {i+1}/{len(lrc_lines)}: [{line['start']:.2f}s] {line['text']}")
         
         # Se a linha da letra for vazia, pula a transcrição e registra o segmento vazio
