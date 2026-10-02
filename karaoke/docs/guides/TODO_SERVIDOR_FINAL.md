@@ -2,6 +2,8 @@
 
 > Pendente: fazer **na máquina que vai hospedar o karaokê**, não na de desenvolvimento.
 > O código já está pronto para o túnel (P0 de 2026-09-29). Falta só a infraestrutura abaixo.
+>
+> **Roteiro do que fazer agora no PC do servidor (ordem e comandos): [PLANO_PC_SERVIDOR.md](PLANO_PC_SERVIDOR.md).**
 
 O objetivo é servir o karaokê por HTTPS válido para os celulares, inclusive iPhone. O Safari só libera
 o microfone em página segura, e o certificado autoassinado (`server/key.pem`) dá atrito no iOS.
