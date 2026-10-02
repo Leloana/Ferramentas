@@ -51,6 +51,54 @@ class LyricsSitesTest(unittest.TestCase):
             self.assertIsNone(lf.fetch_lyrics("X", "Y"))
         self.assertEqual(calls, ["ovh", "letras"])  # Genius sem token nem tenta a rede
 
+    def test_every_source_comes_out_normalized(self):
+        raw = {"plainLyrics": "Linha 1\r\nLinha 2\r\n\r\n\r\n\r\nLinha 3  \r\n", "syncedLyrics": "  [00:01.00] a\r\n[00:02.00] b\r\n",
+               "source": "lrclib"}
+        with patch.object(lf, "search_lyrics_lrclib", return_value=None), \
+                patch.object(lf, "fetch_lyrics_lrclib", return_value=raw):
+            res = lf.fetch_lyrics("X", "Y")
+        self.assertNotIn("\r", res["plainLyrics"] + res["syncedLyrics"])
+        self.assertNotIn("\n\n\n", res["plainLyrics"])
+        self.assertEqual(res["syncedLyrics"], "[00:01.00] a\n[00:02.00] b")
+        # fonte que manda só espaço em branco conta como "não achei"
+        with patch.object(lf, "search_lyrics_lrclib", return_value=None), \
+                patch.object(lf, "fetch_lyrics_lrclib", return_value={"plainLyrics": " \n ", "syncedLyrics": None}), \
+                patch.object(lf, "fetch_lyrics_ovh", return_value=None), \
+                patch.object(lf, "fetch_lyrics_letras_br", return_value=None), \
+                patch.object(lf, "fetch_lyrics_genius", return_value=None):
+            self.assertIsNone(lf.fetch_lyrics("X", "Y"))
+
+    def test_genius_prefers_the_closest_title(self):
+        hits = {"response": {"hits": [
+            {"result": {"title": "bloom -Anime size-", "url": "https://genius.com/anime",
+                        "primary_artist": {"name": "ネクライトーキー (NECRY TALKIE)"}}},
+            {"result": {"title": "bloom", "url": "https://genius.com/full",
+                        "primary_artist": {"name": "ネクライトーキー (NECRY TALKIE)"}}},
+        ]}}
+        opened = []
+
+        class _Resp:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *a):
+                return False
+
+            def read(self):
+                import json
+                return json.dumps(hits).encode("utf-8")
+
+        def fake_page(url):
+            opened.append(url)
+            return GENIUS_PAGE
+
+        with patch.dict(lf.os.environ, {"KARAOKE_GENIUS_TOKEN": "t"}), \
+                patch.object(lf.urllib.request, "urlopen", return_value=_Resp()), \
+                patch.object(lf, "_get_page", side_effect=fake_page):
+            res = lf.fetch_lyrics_genius("NECRY TALKIE", "bloom")
+        self.assertEqual(opened, ["https://genius.com/full"])
+        self.assertEqual(res["source"], "genius")
+
     def test_title_variants(self):
         self.assertEqual(lf.title_variants("Rap do Obito (Naruto)"), ["Rap do Obito (Naruto)", "Rap do Obito"])
         self.assertEqual(lf.title_variants("Creep"), ["Creep"])

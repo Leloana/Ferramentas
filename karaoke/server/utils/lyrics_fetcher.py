@@ -203,7 +203,7 @@ def fetch_lyrics(artist: str, track: str, duration: float | None = None) -> Opti
     if not result and not duration:
         result = search_lyrics_lrclib(artist, track, None)
     if result:
-        return result
+        return _normalized(result)
     logger.info("[LyricsFetcher] LRCLIB sem resultado, tentando Lyrics.ovh e sites de letra...")
     # sites de letra: só o texto; o reinstall encaixa no áudio pela estrutura
     for source in (fetch_lyrics_ovh, fetch_lyrics_letras_br, fetch_lyrics_genius):
@@ -213,8 +213,21 @@ def fetch_lyrics(artist: str, track: str, duration: float | None = None) -> Opti
             logger.warning(f"[LyricsFetcher] {source.__name__} falhou: {e}")
             result = None
         if result:
-            return result
+            return _normalized(result)
     return None
+
+
+def _normalized(result: dict) -> Optional[dict]:
+    """Saída igual para toda fonte: letra normalizada (quebras de linha, linhas vazias)
+    e LRC sem espaço nas pontas. Antes só a rota de upload normalizava; a da fila
+    gravava no meta.json a letra como a fonte mandou."""
+    from utils.text import normalize_lyrics_text
+
+    plain = normalize_lyrics_text(result.get("plainLyrics")) or None
+    synced = "\n".join((result.get("syncedLyrics") or "").splitlines()).strip() or None
+    if not plain and not synced:
+        return None
+    return {**result, "plainLyrics": plain, "syncedLyrics": synced}
 
 
 BROWSER_UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -335,8 +348,10 @@ def fetch_lyrics_genius(artist: str, track: str) -> Optional[dict]:
         keys = [_name_key(name)] + [_name_key(p) for p in re.findall(r"[\(\[](.*?)[\)\]]", name or "")]
         return any(fuzz.token_set_ratio(k, want) >= minimum for k in keys if k)
 
-    for hit in hits[:5]:
-        song = hit.get("result") or {}
+    # título mais parecido primeiro: "bloom" casa também com "bloom -Anime size-"
+    candidates = [h.get("result") or {} for h in hits[:5]]
+    candidates.sort(key=lambda s: -fuzz.ratio(_name_key(s.get("title", "")), want_title))
+    for song in candidates:
         if not _close(song.get("title", ""), want_title, TRACK_MIN_SIMILARITY):
             continue
         if not _close((song.get("primary_artist") or {}).get("name", ""), want_artist, ARTIST_MIN_SIMILARITY):
