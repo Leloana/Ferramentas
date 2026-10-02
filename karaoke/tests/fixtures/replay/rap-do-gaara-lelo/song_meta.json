@@ -1,0 +1,387 @@
+{
+    "meta": {
+        "title": "Rap do Gaara (Naruto)",
+        "artist": "Player Tauz",
+        "language": "pt",
+        "slug": "rap-do-gaara-naruto-player-tauz"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=DElu_HhWECg",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Eu não sabia o que era amar, e nem ser amado\nPois não tinha ninguém, e sempre fui rejeitado\nNão conhecia a dor no corpo, só a dor no coração\nTinha somente a areia na minha solidão\nPerdi a minha mãe durante o meu nascimento\nE fui criado por meu pai, como um experimento\nUm demônio em mim selado, mas eu tenho sentimentos\nE isso meu causou muita dor e sofrimento\nEntão eu cresci, sem nenhum amigo\nAmaldiçoado, odiado e perseguido\nVisto como uma ameaça, por todos era temido\nMas eu não tive culpa do que fizeram comigo\nA minha tristeza a cada dia aumentava\nApenas o meu tio que comigo se importava\nMas por ordem do meu pai ele tentou me atacar\nE eu perdi a minha alma quando tive que o matar\n\nEnquanto eu viver\nA areia vai me proteger\nMas continuo a lutar sem saber o que é certo\nEu sou (eu sou)\nGaara do deserto\n\nEnquanto eu viver\nA areia vai me proteger\nMas continuo a lutar sem saber o que é certo\nEu sou (eu sou)\nGaara do deserto\n\nEntão eu me tornei um monstro sem piedade\nAgora tudo que falavam de mim, era verdade\nO meu coração era só pura maldade\nCruel e distante sem laços de amizade\nNa trilha do mal pensando que era o certo\nFiquei tão vazio da mesma forma que um deserto\nComo poderia amar, se sempre fui odiado?\nEscrevi amor em minha testa sem saber o significado\nEu não dava nenhuma chance\nSó queria saciar, a sede por sangue\nO que você faria em meu lugar, você já pensou?\nQuando escutasse que sua mãe, nunca te amou?\nAté mesmo o meu pai tentava me matar\nForam tantas vezes que eu nem pude contar\nDepois de tudo que passei eu perdi meus sentimentos\nVivendo só pra mim, e só amando a mim mesmo\n\nEnquanto eu viver\nA areia vai me proteger\nMas continuo a lutar sem saber o que é certo\nEu sou (eu sou)\nGaara do deserto\n\nEnquanto eu viver\nA areia vai me proteger\nMas continuo a lutar sem saber o que é certo\nEu sou (eu sou)\nGaara do deserto\n\nMas quem podia imaginar, que um dia tudo ia mudar\nNo dia que eu perdi, comecei a enxergar\nConheci Naruto, que enfrentou o que passei\nE com a sua história eu me identifiquei\nMesmo sendo iguais teve um caminho diferente\nE suas convicções me fez mudar a minha mente\nO que eu tinha maldade, converti para bondade\nE hoje na vila da areia sou o quinto Kazekage\n\nEnquanto eu viver\nA areia vai me proteger\nCom todas minhas forças vou lutar pelo que é certo\nEu sou (eu sou)\nGaara do deserto"
+    },
+    "loudness": {
+        "lufs_before": -12.44,
+        "gain_db": -3.56
+    },
+    "alignment_quality": {
+        "score": 95.7,
+        "flags": [
+            "palavras empilhadas (14)",
+            "palavras com menos de 80 ms (4)",
+            "palavras depois do fim do verso (3)",
+            "versos sobrepostos (2)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 49,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 50,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 51,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 52,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 53,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 54,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 55,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 56,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 57,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 58,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 59,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 60,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 61,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 62,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 63,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 64,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 65,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 458,
+            "lines": 66,
+            "stacked": 14,
+            "short": 4,
+            "past_end": 3,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 2
+        }
+    },
+    "needs_review": false
+}
