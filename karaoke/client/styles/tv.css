@@ -369,7 +369,19 @@ html.is-tv.tv-verse-anim .carousel-line { transition: opacity 0.3s ease-out !imp
 /* Fim de jogo na TV: o cartão e Cantar novamente (ouvir a apresentação fica no
    celular), num quadro que cabe na tela sem rolar. */
 html.is-tv #game-over-replay { display: none !important; }
-html.is-tv .game-over-card { padding: 1rem 1.4rem 1rem; }
+html.is-tv .game-over-card { position: relative; overflow: visible; padding: 1rem 1.4rem 1rem; }
+/* quadradinhos de estilo fora do quadro, numa coluna à direita (o quadro cabe na tela
+   sem rolar, então não precisa do overflow que cortaria a coluna) */
+html.is-tv .game-over-share .card-swatches {
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    margin: 0 0 0 1.6rem;
+    transform: translateY(-50%);
+}
+html.is-tv .game-over-share { margin-bottom: 0.9rem; }  /* sem os quadradinhos embaixo, o recorde colava no cartão */
 
 /* Fim de jogo: a partida por trás também cabe na tela (rolava 57 px na TV) e fica
    escondida — as regras de tamanho do canto deixam de valer no game-over e a tela
