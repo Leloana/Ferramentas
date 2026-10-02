@@ -188,6 +188,12 @@ com gabarito `20261001-231103_rap-do-gaara-naruto-player-tauz` (66 versos) e
       lift-radiohead (~16 s). Demais: a-flor-los-hermanos, bloom-necry-talkie, culpa-o-terno,
       insista-em-mim-ana-frango-eletrico, just-radiohead, man-of-war-radiohead, minas-gerais-o-terno,
       o-vira-ney-matogrosso, tenha-do-los-hermanos, vai-passar-chico-buarque.
+- [ ] **Reprocessar todas as músicas** — para todas ganharem as correções de 2026-10-01/02 (letra
+      normalizada, letra incompleta trocada pela inteira, OuvirMusica/letras.com.br/Genius, verso que
+      termina na marca do LRC, voz de apoio entre parênteses). Rodar fora de partida, uma por vez
+      (`/api/reinstall-song/<slug>` ou `tools/reinstall_song.py`), com backup de `server/songs/` antes.
+      Cuidados: música com `.lyrics_edited` mantém a letra revisada (Monster, Gaara, Óbito, Iron Lung);
+      alinhadas no PRO (segments com `align`) refazer no PRO; conferir depois a lista de "Revisar".
 - [ ] **Palavra partida entre linhas no LRC** ("My un-" / "cle Bill" no My Iron Lung, corrigido à mão)
       — juntar automaticamente linha que termina em hífen com a seguinte ao baixar a letra.
 - [ ] **Lista de LRC suspeitos** (hey-pixies e outras com "Revisar") — conferir uma a uma.
