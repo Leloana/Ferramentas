@@ -129,6 +129,53 @@ class ScreensTest(unittest.TestCase):
         self.assertEqual(page.locator("#share-card-overlay").count(), 0)
         self.assertEqual(errors, [])
 
+    def test_every_card_style_fits_on_phone_and_tv(self):
+        """Os nove estilos do cartão, solo e com pódio: nada sai do cartão nem da tela."""
+        solo = {"songId": "x", "title": "Agora o meu coração é um lixeiro azul", "artist": "Cidade Dormitório",
+                "score": 88.4, "pitch": 72, "name": "Marcelo Ferreira",
+                "stats": {"good": 41, "ok": 12, "poor": 13, "verses": [95] * 41 + [78] * 12 + [40] * 13},
+                "record": {"is_record": True, "times_sung": 3}}
+        duo = dict(solo, podium=[{"name": "Lelo", "score": 88}, {"name": "Ana", "score": 74},
+                                 {"name": "Marcelo", "score": 61}, {"name": "Bia", "score": 50}])
+        for path, viewport in (("/", PHONE), ("/?tv=1", {"width": 1920, "height": 1080})):
+            page, errors = self.open(path, viewport)
+            for data in (solo, duo):
+                out = page.evaluate("""async (data) => {
+                    const m = await import('/js/game/share-card.js');
+                    const res = [];
+                    for (const st of m.CARD_STYLES) {
+                        localStorage.setItem('karaoke_card_style', st.id);
+                        m.openShareCard(data);
+                        const card = document.querySelector('.share-card');
+                        const box = card.getBoundingClientRect();
+                        const cut = Array.from(card.querySelectorAll('*')).filter((n) => {
+                            const r = n.getBoundingClientRect();
+                            return r.height && (r.bottom > box.bottom + 1 || r.right > box.right + 1);
+                        }).map((n) => n.className);
+                        res.push({ style: card.dataset.style, cut, bottom: box.bottom, right: box.right });
+                        m.closeShareCard();
+                    }
+                    return res;
+                }""", data)
+                self.assertEqual([o["style"] for o in out], ["caderno", "neon", "vidro", "ingresso", "cupom",
+                                                             "vinil", "poster", "mosaico", "letreiro"])
+                for o in out:
+                    with self.subTest(path=path, style=o["style"], podium="podium" in data):
+                        self.assertEqual(o["cut"], [])
+                        self.assertLessEqual(o["bottom"], viewport["height"] + 1)
+                        self.assertLessEqual(o["right"], viewport["width"] + 1)
+            # controle remoto: seta para baixo vai ao próximo estilo e remonta o cartão
+            page.evaluate("""async (data) => {
+                localStorage.setItem('karaoke_card_style', 'vidro');
+                (await import('/js/game/share-card.js')).openShareCard(data);
+            }""", solo)
+            page.keyboard.press("ArrowDown")
+            self.assertEqual(page.locator(".share-card").get_attribute("data-style"), "ingresso")
+            self.assertEqual(page.locator(".sc-ticket__barcode span").count(), 66)
+            page.keyboard.press("Escape")
+            self.assertEqual(page.locator("#share-card-overlay").count(), 0)
+            self.assertEqual(errors, [])
+
     def _sing_long_verse(self, page):
         """Palco com um verso de rap de 148 palavras (letra gerada sem LRC)."""
         self.open_first_song(page)

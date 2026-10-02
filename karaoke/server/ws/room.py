@@ -898,6 +898,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                             "ok": sum(1 for v in scores.values() if 70 <= v < 85),
                             "poor": sum(1 for v in scores.values() if v < 70),
                             "best_combo": _combo_for(room, p)[1],
+                            # nota de cada verso cantado, na ordem da música (código de barras do cartão)
+                            "verses": [round(scores[i]) for i in sorted(scores)],
                         }
                         for p, scores in room.player_segment_scores.items()
                     }

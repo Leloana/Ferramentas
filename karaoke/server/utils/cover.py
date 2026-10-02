@@ -31,6 +31,9 @@ MISS_NAME = "cover.none"
 OPTIONS_NAME = "cover.options.json"
 CHOICE_NAME = "cover.choice.json"
 MAX_OPTIONS = 12
+# o cartão do fim estica a capa até ~1600 px num celular de tela densa: 600 ficava borrado
+ITUNES_SIZE = "1200x1200bb"
+_ITUNES_SIZE_RE = re.compile(r"/\d+x\d+bb\.jpg$")
 _YT_ID_RE = re.compile(r"(?:v=|youtu\.be/|/embed/|/shorts/)([\w-]{11})")
 # álbum que quase nunca é a capa certa da música original
 _BAD_ALBUM_RE = re.compile(
@@ -84,7 +87,7 @@ def _itunes(artist: str, title: str) -> list[dict]:
         if not art:
             continue
         out.append({
-            "url": art.replace("100x100bb", "600x600bb"),  # a URL aceita qualquer tamanho
+            "url": art.replace("100x100bb", ITUNES_SIZE),  # a URL aceita qualquer tamanho
             "thumb": art.replace("100x100bb", "200x200bb"),
             "source": "iTunes",
             "album": r.get("collectionName") or "",
@@ -163,6 +166,22 @@ def _save_options(song_dir: Path, options: list[dict]) -> None:
         pass
 
 
+def hd_url(url: str) -> str:
+    """Versão grande da mesma capa: iTunes em 1200 px, miniatura do YouTube em 1280x720
+    (a hqdefault tem 480x360 com faixas pretas). Outras URLs ficam como estão."""
+    if "mzstatic.com" in url:
+        return _ITUNES_SIZE_RE.sub(f"/{ITUNES_SIZE}.jpg", url)
+    if "i.ytimg.com" in url:
+        return url.replace("/hqdefault.jpg", "/maxresdefault.jpg")
+    return url
+
+
+def _download_best(url: str, dest: Path) -> bool:
+    """Baixa a versão grande; sem ela (vídeo sem maxres, 404), a URL original."""
+    big = hd_url(url)
+    return (big != url and _download(big, dest)) or _download(url, dest)
+
+
 def _download(url: str, dest: Path) -> bool:
     try:
         data = _get(url)
@@ -190,7 +209,7 @@ def find_cover(song_dir: Path) -> Path | None:
         if candidates:
             _save_options(song_dir, candidates)
             for cand in candidates:
-                if _download(cand["url"], cover):
+                if _download_best(cand["url"], cover):
                     break
         return cover
     if (song_dir / MISS_NAME).exists() or not song_dir.is_dir():
@@ -199,7 +218,7 @@ def find_cover(song_dir: Path) -> Path | None:
     candidates, had_error = collect_candidates(song_dir)
     _save_options(song_dir, candidates)
     for cand in candidates:
-        if _download(cand["url"], cover):
+        if _download_best(cand["url"], cover):
             return cover
         had_error = True
 
@@ -235,7 +254,7 @@ def choose_cover(song_dir: Path, url: str) -> bool:
     options = cover_options(song_dir)["options"]
     if not any(o["url"] == url for o in options):
         return False
-    if not _download(url, song_dir / COVER_NAME):
+    if not _download_best(url, song_dir / COVER_NAME):
         return False
     (song_dir / MISS_NAME).unlink(missing_ok=True)
     try:
@@ -243,3 +262,26 @@ def choose_cover(song_dir: Path, url: str) -> bool:
     except OSError:
         pass
     return True
+
+
+def current_cover_url(song_dir: Path) -> str | None:
+    """URL de onde veio a capa em disco: a escolhida na TV ou a 1ª opção da lista."""
+    try:
+        return json.loads((song_dir / CHOICE_NAME).read_text(encoding="utf-8")).get("url")
+    except (OSError, ValueError):
+        pass
+    try:
+        options = json.loads((song_dir / OPTIONS_NAME).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    return options[0]["url"] if options else None
+
+
+def upgrade_cover(song_dir: Path) -> bool:
+    """Troca uma capa baixada pequena (iTunes 600, YouTube 480) pela versão grande da
+    mesma imagem. True se trocou; sem rede ou sem versão grande, a capa fica."""
+    cover = song_dir / COVER_NAME
+    url = current_cover_url(song_dir) if cover.exists() else None
+    if not url or hd_url(url) == url:
+        return False
+    return _download(hd_url(url), cover)

@@ -225,6 +225,7 @@ class TestWebsocketGameFlow(unittest.TestCase):
                 self.assertEqual(msg_game_over["type"], "game_over")
                 self.assertGreaterEqual(msg_game_over["player_scores"]["PlayerOne"], 80.0)
                 self.assertEqual(msg_game_over["player_stats"]["PlayerOne"]["best_combo"], 1)
+                self.assertEqual(msg_game_over["player_stats"]["PlayerOne"]["verses"], [100])
 
     @patch("ws.room.get_stt_engine")
     def test_last_verse_is_scored_when_audio_ends_inside_grace(self, mock_get_stt):

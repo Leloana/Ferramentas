@@ -59,6 +59,7 @@ export const state = {
     wakeLockWanted: false,
     replay: null,             // replay.js (ouvir a apresentação)
     shareCardReturnFocus: null, // share-card.js: foco a devolver ao fechar o cartão
+    shareCardData: null,        // share-card.js: dados do cartão aberto (trocar de estilo remonta)
     lastGameOver: null,       // último game_over (cartão para print)
     lobbyTurns: false,        // revezar versos (lobby.js / turns.js)
     turnOrder: null,          // [[mics do time 1], ...] da partida em curso

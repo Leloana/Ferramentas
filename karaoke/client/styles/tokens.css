@@ -120,6 +120,46 @@
     --sc-glass-shade-top: rgba(0, 0, 0, 0.05);
     --sc-glass-shade-bottom: rgba(0, 0, 0, 0.45);
     --sc-glass-logo-filter: invert(1);
+    /* cartões com composição própria (share-card-styles.css) */
+    --font-sc-grotesk: 'Archivo', 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    --font-sc-mono: 'IBM Plex Mono', 'Courier New', monospace;
+    --font-sc-poster: 'Anton', 'Archivo', Impact, sans-serif;
+    --sc-ticket-page: #2a2420;
+    --sc-ticket-paper: #f1e7d2;
+    --sc-ticket-ink: #1d1a16;
+    --sc-ticket-dim: #6e6457;
+    --sc-ticket-red: #c4502f;
+    --sc-receipt-page: #2f3a33;
+    --sc-receipt-paper: #fbfaf5;
+    --sc-receipt-ink: #1f1f1c;
+    --sc-receipt-dim: #55554e;
+    --sc-vinyl-bg: #1b1714;
+    --sc-vinyl-groove: #121010;
+    --sc-vinyl-groove-2: #1f1c1a;
+    --sc-vinyl-text: #f4ecdf;
+    --sc-vinyl-dim: #c9b9a2;
+    --sc-vinyl-line: #4a413a;
+    --sc-vinyl-red: #c4502f;
+    --sc-vinyl-label-text: #fff7ec;
+    --sc-vinyl-good: #9cc48f;
+    --sc-vinyl-ok: #e8c96a;
+    --sc-vinyl-poor: #e0826b;
+    --sc-poster-paper: #f2c230;
+    --sc-poster-ink: #141210;
+    --sc-mosaic-fallback: #6b5a4a;
+    --sc-mosaic-veil: rgba(20, 14, 10, 0.28);
+    --sc-mosaic-panel: #1d1612;
+    --sc-mosaic-text: #fffaf2;
+    --sc-mosaic-dim: #d7c7b4;
+    --sc-mosaic-amber: #e9a04f;
+    --sc-board-bg: #121212;
+    --sc-board-tile: #272727;
+    --sc-board-tile-2: #1e1e1e;
+    --sc-board-gap: #0b0b0b;
+    --sc-board-edge: #2c2c2c;
+    --sc-board-text: #f4f1e8;
+    --sc-board-dim: #8d8a82;
+    --sc-board-amber: #f5b400;
 
     /* Texturas (arte em /assets/art, desenhada pelo Codex) */
     --tex-paper: url('/assets/art/paper-texture.svg');

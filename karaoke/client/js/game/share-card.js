@@ -1,16 +1,19 @@
-// Cartão de fim de música para print (Instagram/story): formato 4:5, em três
-// estilos (caderno, neon, vidro) escolhidos na barra acima do cartão. A capa ocupa
+// Cartão de fim de música para print (Instagram/story): formato 4:5, em nove
+// estilos escolhidos na barra acima do cartão (na TV, na lista ao lado). A capa ocupa
 // o alto, com o nome da música por cima; embaixo ficam a nota, o rank e a barra de
 // acertos. Cada estilo muda a composição, não só as cores. Abre por cima de tudo,
 // sem botões dentro do cartão; tocar fora da barra (ou Voltar/Esc) fecha. No
-// controle remoto, ←/→ trocam o estilo.
+// controle remoto, as setas trocam o estilo. Caderno, neon e vidro dividem o
+// esqueleto daqui; os outros montam o próprio (share-card-styles.js).
 //
 // Usado no fim de jogo da TV (botão da câmera) e no celular de cada cantor,
 // com a nota dele. `data`:
 //   { songId, title, artist, score, pitch, stats: {good, ok, poor}, name,
 //     record: {is_record, best_before, times_sung}, podium: [{name, score}] }
+// `stats.verses` (nota de cada verso, na ordem) desenha o código de barras.
 import { iconSvg } from '../core/icons.js';
 import { state } from '../core/state.js';
+import { buildStyledCard, hasOwnLayout } from './share-card-styles.js';
 
 function el(tag, cls, text) {
     const node = document.createElement(tag);
@@ -38,6 +41,12 @@ export const CARD_STYLES = [
     { id: 'caderno', label: 'Caderno' },
     { id: 'neon', label: 'Neon' },
     { id: 'vidro', label: 'Vidro' },
+    { id: 'ingresso', label: 'Ingresso' },
+    { id: 'cupom', label: 'Cupom' },
+    { id: 'vinil', label: 'Vinil' },
+    { id: 'poster', label: 'Pôster' },
+    { id: 'mosaico', label: 'Mosaico' },
+    { id: 'letreiro', label: 'Letreiro' },
 ];
 const STYLE_KEY = 'karaoke_card_style';
 
@@ -122,6 +131,9 @@ export function buildShareCard(data, style) {
     const card = el('article', 'share-card');
     card.dataset.rank = rank.letter;
     card.dataset.style = style || CARD_STYLES[0].id;
+    if (hasOwnLayout(card.dataset.style)) {
+        return buildStyledCard(card, card.dataset.style, data, { scoreInt: Math.round(score), rank });
+    }
     // pódio: quatro linhas a mais, a foto e a nota diminuem (share-card--podium)
     if (data.podium && data.podium.length > 1) card.classList.add('share-card--podium');
     card.append(artBlock(data));
@@ -180,6 +192,7 @@ export function closeShareCard() {
     // controle remoto: o foco volta para onde estava (o botão Cartão)
     const back = state.shareCardReturnFocus;
     state.shareCardReturnFocus = null;
+    state.shareCardData = null;
     if (overlay && back && document.body.contains(back)) back.focus();
 }
 
@@ -190,8 +203,8 @@ const CLOSE_KEYS = ['Escape', 'Esc', 'Backspace', 'BrowserBack', 'GoBack', 'Ente
 const CLOSE_CODES = [10009, 461, 13, 32];
 const ARROW_KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Up', 'Down', 'Left', 'Right'];
 
-const PREV_KEYS = ['ArrowLeft', 'Left'];
-const NEXT_KEYS = ['ArrowRight', 'Right'];
+const PREV_KEYS = ['ArrowLeft', 'Left', 'ArrowUp', 'Up'];
+const NEXT_KEYS = ['ArrowRight', 'Right', 'ArrowDown', 'Down'];
 
 function onKey(e) {
     const close = CLOSE_KEYS.indexOf(e.key) !== -1 || CLOSE_CODES.indexOf(e.keyCode) !== -1;
@@ -211,11 +224,19 @@ function onKey(e) {
 function setCardStyle(id) {
     const overlay = document.getElementById('share-card-overlay');
     if (!overlay) return;
+    // cada estilo tem a própria composição: o cartão é montado de novo
     const card = overlay.querySelector('.share-card');
-    if (card) card.dataset.style = id;
+    if (card && state.shareCardData) card.replaceWith(buildShareCard(state.shareCardData, id));
+    else if (card) card.dataset.style = id;
     overlay.dataset.style = id;
     overlay.querySelectorAll('.share-card-style').forEach(btn => {
-        btn.setAttribute('aria-checked', String(btn.dataset.style === id));
+        const on = btn.dataset.style === id;
+        btn.setAttribute('aria-checked', String(on));
+        // celular: a barra rola de lado, o estilo escolhido fica à vista
+        const bar = btn.parentNode;
+        if (on && bar.scrollWidth > bar.clientWidth) {
+            bar.scrollLeft = btn.offsetLeft - (bar.clientWidth - btn.offsetWidth) / 2;
+        }
     });
     saveStyle(id);
 }
@@ -240,6 +261,7 @@ function styleBar() {
 export function openShareCard(data) {
     closeShareCard();
     state.shareCardReturnFocus = document.activeElement;
+    state.shareCardData = data;
     const overlay = el('div', 'share-card-overlay');
     overlay.id = 'share-card-overlay';
     overlay.setAttribute('role', 'dialog');

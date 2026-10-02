@@ -1,0 +1,606 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
+/* ============================================================
+   Os seis cartões com composição própria (share-card-styles.js):
+   ingresso, cupom, vinil, pôster, mosaico e letreiro.
+   Mesmas regras do share-card.css: tudo em --u (1/100 da largura),
+   sem gap, inset, aspect-ratio nem desfoque (TV antiga), paleta
+   própria (tokens --sc-*) igual no tema claro e no escuro.
+   A capa nunca aparece maior que o arquivo: onde cobre o cartão
+   inteiro vira retícula (pôster) ou mosaico (mosaico).
+   ============================================================ */
+
+/* ---------------- Peças comuns ---------------- */
+.sc-cover { position: relative; overflow: hidden; background: rgba(0, 0, 0, 0.18); }
+.sc-cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.sc-ticket__title,
+.sc-mosaic__title { font-family: inherit; }
+.sc-label { font-family: var(--font-sc-mono); font-size: calc(var(--u) * 2.2); font-weight: 600; letter-spacing: 0.16em; }
+.sc-dim { color: var(--dim); }
+.sc-accent { color: var(--accent); }
+.sc-score { display: flex; align-items: flex-start; line-height: 0.82; }
+.sc-score__num { font-weight: 900; letter-spacing: -0.05em; }
+.sc-score__pct { font-weight: 900; }
+.sc-barcode { display: flex; align-items: flex-end; }
+.sc-barcode span { flex: 1 1 0; min-width: 1px; }
+.sc-barcode span + span { margin-left: calc(var(--u) * 0.35); }
+.sc-meter { display: flex; height: calc(var(--u) * 2); }
+.sc-meter span { flex-basis: 0; min-width: calc(var(--u) * 1.5); }
+.sc-meter span + span { margin-left: calc(var(--u) * 0.74); }
+.sc-meter [data-tone="good"] { background: var(--good); }
+.sc-meter [data-tone="ok"] { background: var(--ok); }
+.sc-meter [data-tone="poor"] { background: var(--poor); }
+.sc-legend { display: flex; justify-content: space-between; margin: calc(var(--u) * 1.8) 0 0; color: var(--dim); font-size: calc(var(--u) * 2.8); }
+.sc-legend strong { color: var(--ink); font-size: calc(var(--u) * 3.3); }
+.sc-legend [data-tone="good"] strong { color: var(--good); }
+.sc-legend [data-tone="ok"] strong { color: var(--ok); }
+.sc-legend [data-tone="poor"] strong { color: var(--poor); }
+.sc-by strong { color: var(--ink); }
+.sc-podium { margin: calc(var(--u) * 2) 0 0; padding: 0; list-style: none; }
+.sc-podium li {
+    display: flex;
+    align-items: center;
+    padding: calc(var(--u) * 0.9) 0;
+    border-top: 1px solid var(--line);
+    font-size: calc(var(--u) * 3.2);
+}
+.sc-podium__place { width: calc(var(--u) * 7); font-weight: 800; }
+.sc-podium__who { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-weight: 700; }
+.sc-podium__pts { font-weight: 800; }
+
+/* fundo da página atrás do cartão, por estilo */
+.share-card-overlay[data-style="ingresso"] { background-color: var(--sc-ticket-page); }
+.share-card-overlay[data-style="cupom"] { background-color: var(--sc-receipt-page); }
+.share-card-overlay[data-style="vinil"] { background-color: var(--sc-vinyl-bg); }
+.share-card-overlay[data-style="mosaico"] { background-color: var(--sc-glass-page); }
+.share-card-overlay[data-style="letreiro"] { background-color: var(--sc-board-bg); }
+
+/* ---------------- Ingresso: bilhete com picote, canhoto e código de barras por verso ---------------- */
+.share-card[data-style="ingresso"] {
+    --ink: var(--sc-ticket-ink);
+    --dim: var(--sc-ticket-dim);
+    --line: var(--sc-ticket-ink);
+    --accent: var(--sc-ticket-red);
+    background: var(--sc-ticket-page);
+    font-family: var(--font-sc-grotesk);
+    box-shadow: none;
+}
+.sc-ticket__main,
+.sc-ticket__stub { background: var(--sc-ticket-paper); }
+.sc-ticket__main {
+    position: relative;
+    flex-shrink: 0;
+    margin: calc(var(--u) * 3.7) calc(var(--u) * 3.7) 0;
+    padding: calc(var(--u) * 4.8) calc(var(--u) * 5.6) calc(var(--u) * 3);
+}
+.sc-ticket__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: calc(var(--u) * 1.8);
+    border-bottom: calc(var(--u) * 0.55) solid var(--ink);
+}
+.sc-ticket__brand { font-size: calc(var(--u) * 4.1); font-weight: 900; letter-spacing: 0.22em; }
+.sc-ticket__no { font-family: var(--font-sc-mono); font-size: calc(var(--u) * 2.4); font-weight: 600; letter-spacing: 0.08em; }
+.sc-ticket__act { display: flex; margin-top: calc(var(--u) * 3.3); }
+.sc-ticket__cover {
+    flex-shrink: 0;
+    width: calc(var(--u) * 31.5);
+    height: calc(var(--u) * 31.5);
+    border: calc(var(--u) * 0.55) solid var(--ink);
+    box-sizing: border-box;
+}
+.sc-ticket__info { display: flex; flex-direction: column; min-width: 0; margin-left: calc(var(--u) * 3.7); }
+.sc-ticket__title {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: calc(var(--u) * 0.8) 0 0;
+    font-size: calc(var(--u) * 7);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.01em;
+}
+.sc-ticket__artist { margin: calc(var(--u) * 1.2) 0 0; color: var(--dim); font-size: calc(var(--u) * 3.3); font-weight: 600; }
+.sc-ticket__fields {
+    display: flex;
+    margin-top: calc(var(--u) * 3.3);
+    border-top: calc(var(--u) * 0.28) solid var(--ink);
+    border-bottom: calc(var(--u) * 0.28) solid var(--ink);
+}
+.sc-ticket__field { display: flex; flex: 1 1 0; flex-direction: column; min-width: 0; padding: calc(var(--u) * 1.7) 0 calc(var(--u) * 1.7) calc(var(--u) * 2.6); }
+.sc-ticket__field:first-child { padding-left: 0; }
+.sc-ticket__field + .sc-ticket__field { border-left: calc(var(--u) * 0.28) solid var(--ink); }
+.sc-ticket__field .sc-label { color: var(--dim); font-size: calc(var(--u) * 2); }
+.sc-ticket__field strong {
+    margin-top: calc(var(--u) * 0.4);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: calc(var(--u) * 3);
+    font-weight: 800;
+}
+.sc-ticket__stamp {
+    position: absolute;
+    top: calc(var(--u) * 35);
+    right: calc(var(--u) * 5.6);
+    padding: calc(var(--u) * 0.9) calc(var(--u) * 2);
+    border: calc(var(--u) * 0.5) solid var(--accent);
+    color: var(--accent);
+    background: var(--sc-ticket-paper);
+    font-size: calc(var(--u) * 2.6);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transform: rotate(6deg);
+}
+/* picote: linha tracejada com os dois meios-círculos recortados nas bordas */
+.sc-ticket__perf {
+    position: relative;
+    flex-shrink: 0;
+    height: calc(var(--u) * 5.2);
+    margin: 0 calc(var(--u) * 3.7);
+    background:
+        radial-gradient(circle at 0 50%, var(--sc-ticket-page) calc(var(--u) * 2.6), transparent calc(var(--u) * 2.7)),
+        radial-gradient(circle at 100% 50%, var(--sc-ticket-page) calc(var(--u) * 2.6), transparent calc(var(--u) * 2.7)),
+        var(--sc-ticket-paper);
+}
+.sc-ticket__perf::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: calc(var(--u) * 4.4);
+    right: calc(var(--u) * 4.4);
+    border-top: calc(var(--u) * 0.37) dashed var(--ink);
+}
+.sc-ticket__stub {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 0;
+    margin: 0 calc(var(--u) * 3.7) calc(var(--u) * 3.7);
+    padding: calc(var(--u) * 1.5) calc(var(--u) * 5.6) calc(var(--u) * 4.4);
+}
+.sc-ticket__result { display: flex; align-items: center; justify-content: space-between; }
+.sc-ticket__score .sc-score__num { font-size: calc(var(--u) * 27.8); }
+.sc-ticket__score .sc-score__pct { margin: calc(var(--u) * 1.5) 0 0 calc(var(--u) * 0.7); font-size: calc(var(--u) * 8.1); }
+.sc-ticket__rank { display: flex; flex-direction: column; align-items: center; }
+.sc-ticket__rank-letter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(var(--u) * 17);
+    height: calc(var(--u) * 17);
+    margin-bottom: calc(var(--u) * 1.5);
+    border: calc(var(--u) * 0.74) solid var(--accent);
+    box-sizing: border-box;
+    color: var(--accent);
+    font-size: calc(var(--u) * 11.8);
+    font-weight: 900;
+}
+.sc-ticket__barcode { height: calc(var(--u) * 8.5); }
+.sc-ticket__barcode [data-tone="good"] { height: 100%; background: var(--ink); }
+.sc-ticket__barcode [data-tone="ok"] { height: 65%; background: var(--ink); }
+.sc-ticket__barcode [data-tone="poor"] { height: 35%; background: var(--accent); }
+.sc-ticket__legend {
+    display: flex;
+    justify-content: space-between;
+    margin-top: calc(var(--u) * 1.3);
+    font-family: var(--font-sc-mono);
+    font-size: calc(var(--u) * 2.3);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+}
+.sc-ticket__podium { margin-top: 0; }
+.sc-ticket--podium .sc-ticket__score .sc-score__num { font-size: calc(var(--u) * 19); }
+.sc-ticket--podium .sc-ticket__score .sc-score__pct { font-size: calc(var(--u) * 6); }
+.sc-ticket--podium .sc-ticket__rank-letter { width: calc(var(--u) * 12); height: calc(var(--u) * 12); margin-bottom: calc(var(--u) * 0.8); font-size: calc(var(--u) * 8); }
+.sc-ticket--podium .sc-ticket__podium li { padding: calc(var(--u) * 0.6) 0; font-size: calc(var(--u) * 2.9); }
+
+/* ---------------- Cupom: papel térmico torto sobre a mesa ---------------- */
+.share-card[data-style="cupom"] {
+    --ink: var(--sc-receipt-ink);
+    --dim: var(--sc-receipt-dim);
+    --line: var(--sc-receipt-ink);
+    align-items: center;
+    justify-content: center;
+    background: var(--sc-receipt-page);
+    font-family: var(--font-sc-mono);
+    box-shadow: none;
+}
+.sc-receipt__wrap { width: calc(var(--u) * 69); transform: rotate(-2deg); }
+.sc-receipt {
+    padding: calc(var(--u) * 4.8) calc(var(--u) * 5.2) calc(var(--u) * 3);
+    background: var(--sc-receipt-paper);
+    box-shadow: 0 calc(var(--u) * 3.3) calc(var(--u) * 7.4) rgba(0, 0, 0, 0.35);
+}
+.sc-receipt__tear {
+    height: calc(var(--u) * 2.6);
+    background:
+        linear-gradient(135deg, var(--sc-receipt-paper) 33%, transparent 33%) 0 0 / calc(var(--u) * 2.6) calc(var(--u) * 2.6) repeat-x,
+        linear-gradient(225deg, var(--sc-receipt-paper) 33%, transparent 33%) 0 0 / calc(var(--u) * 2.6) calc(var(--u) * 2.6) repeat-x;
+}
+.sc-receipt__head { display: flex; align-items: center; }
+.sc-receipt__cover { flex-shrink: 0; width: calc(var(--u) * 14); height: calc(var(--u) * 14); filter: grayscale(1) contrast(1.4); }
+.sc-receipt__who { display: flex; flex-direction: column; min-width: 0; margin-left: calc(var(--u) * 2.6); color: var(--dim); font-size: calc(var(--u) * 2.4); }
+.sc-receipt__brand { color: var(--ink); font-size: calc(var(--u) * 4.4); letter-spacing: 0.18em; }
+.sc-receipt__rule { margin: calc(var(--u) * 2.2) 0; border-top: calc(var(--u) * 0.37) dashed var(--ink); }
+.sc-receipt__item { display: flex; flex-direction: column; }
+.sc-receipt__item strong,
+.sc-receipt__item span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.sc-receipt__item strong { font-size: calc(var(--u) * 3.1); }
+.sc-receipt__item span { padding-left: 3ch; color: var(--dim); font-size: calc(var(--u) * 2.6); }
+.sc-receipt__lines { margin-top: calc(var(--u) * 1); }
+.sc-receipt__line { display: flex; justify-content: space-between; margin-top: calc(var(--u) * 0.9); font-size: calc(var(--u) * 2.8); }
+.sc-receipt__line span:first-child { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.sc-receipt__line span:last-child { flex-shrink: 0; margin-left: 2ch; font-weight: 600; }
+.sc-receipt__total { display: flex; align-items: baseline; justify-content: space-between; }
+.sc-receipt__total span { font-size: calc(var(--u) * 4); font-weight: 700; }
+.sc-receipt__total strong { font-size: calc(var(--u) * 11.8); line-height: 1; letter-spacing: -0.04em; }
+.sc-receipt__rank { align-items: center; margin-top: calc(var(--u) * 1.5); padding: calc(var(--u) * 1.5) calc(var(--u) * 2.2); color: var(--sc-receipt-paper); background: var(--ink); }
+.sc-receipt__rank span:first-child { letter-spacing: 0.14em; }
+.sc-receipt__rank span:last-child { font-size: calc(var(--u) * 3.1); font-weight: 700; letter-spacing: 0.06em; }
+.sc-receipt__note { margin: calc(var(--u) * 1.8) 0 0; font-size: calc(var(--u) * 2.4); font-weight: 700; text-align: center; }
+.sc-receipt__barcode { align-items: stretch; height: calc(var(--u) * 7.4); margin-top: calc(var(--u) * 2.2); }
+.sc-receipt__barcode span { background: var(--ink); }
+.sc-receipt__barcode span + span { margin-left: calc(var(--u) * 0.5); }
+.sc-receipt__barcode [data-tone="ok"] { flex-grow: 2; }
+.sc-receipt__barcode [data-tone="poor"] { flex-grow: 3; }
+.sc-receipt__thanks { margin: calc(var(--u) * 1.5) 0 0; color: var(--dim); font-size: calc(var(--u) * 2.2); letter-spacing: 0.3em; text-align: center; }
+
+/* ---------------- Vinil: capa do disco com o vinil saindo, a nota no selo ---------------- */
+.share-card[data-style="vinil"] {
+    --ink: var(--sc-vinyl-text);
+    --dim: var(--sc-vinyl-dim);
+    --line: var(--sc-vinyl-line);
+    --good: var(--sc-vinyl-good);
+    --ok: var(--sc-vinyl-ok);
+    --poor: var(--sc-vinyl-poor);
+    background: var(--sc-vinyl-bg);
+    font-family: var(--font-sc-grotesk);
+}
+.sc-vinyl__disc {
+    position: absolute;
+    top: calc(var(--u) * 7.6);
+    left: calc(var(--u) * 40);
+    width: calc(var(--u) * 56);
+    height: calc(var(--u) * 56);
+    border-radius: 50%;
+    background: repeating-radial-gradient(circle at center, var(--sc-vinyl-groove) 0, var(--sc-vinyl-groove) 1px,
+        var(--sc-vinyl-groove-2) 1px, var(--sc-vinyl-groove-2) 3px);
+    box-shadow: 0 calc(var(--u) * 1.8) calc(var(--u) * 5.5) rgba(0, 0, 0, 0.5);
+}
+.sc-vinyl__label {
+    position: absolute;
+    top: calc(var(--u) * 17);
+    left: calc(var(--u) * 17);
+    width: calc(var(--u) * 22);
+    height: calc(var(--u) * 22);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--sc-vinyl-label-text);
+    background: var(--sc-vinyl-red);
+}
+.sc-vinyl__label-num { font-size: calc(var(--u) * 9); font-weight: 900; line-height: 0.9; letter-spacing: -0.04em; }
+.sc-vinyl__label-rank { margin-top: calc(var(--u) * 0.7); font-size: calc(var(--u) * 2.1); font-weight: 800; letter-spacing: 0.2em; }
+.sc-vinyl__sleeve {
+    position: absolute;
+    top: calc(var(--u) * 8.1);
+    left: calc(var(--u) * 6.3);
+    width: calc(var(--u) * 52);
+    height: calc(var(--u) * 52);
+    overflow: visible;
+    box-shadow: calc(var(--u) * 1.5) calc(var(--u) * 2.2) calc(var(--u) * 5.2) rgba(0, 0, 0, 0.6);
+}
+.sc-vinyl__sticker {
+    position: absolute;
+    top: calc(var(--u) * 2.6);
+    right: calc(var(--u) * -2.6);
+    padding: calc(var(--u) * 1) calc(var(--u) * 2.2);
+    color: var(--sc-vinyl-label-text);
+    background: var(--sc-vinyl-red);
+    font-size: calc(var(--u) * 2.6);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transform: rotate(5deg);
+}
+.sc-vinyl__text {
+    position: absolute;
+    top: calc(var(--u) * 68);
+    right: calc(var(--u) * 6.3);
+    bottom: calc(var(--u) * 5.6);
+    left: calc(var(--u) * 6.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.sc-vinyl__song .sc-label { color: var(--dim); letter-spacing: 0.24em; }
+.sc-vinyl__title {
+    margin: calc(var(--u) * 1.1) 0 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-family: var(--font-display);
+    font-size: calc(var(--u) * 8.1);
+    font-weight: 700;
+    line-height: 1.05;
+}
+.sc-vinyl__artist { margin: calc(var(--u) * 0.7) 0 0; color: var(--dim); font-size: calc(var(--u) * 3.5); font-weight: 600; }
+.sc-vinyl__by {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-top: calc(var(--u) * 2.2);
+    padding-top: calc(var(--u) * 2.2);
+    border-top: 1px solid var(--line);
+    color: var(--dim);
+    font-size: calc(var(--u) * 3);
+}
+.sc-vinyl__rank { color: var(--sc-vinyl-red); font-size: calc(var(--u) * 2.6); font-weight: 800; letter-spacing: 0.16em; }
+
+/* ---------------- Pôster: cartaz em retícula, a nota em letra gigante ----------------
+   A capa vira pontos de impressão sobre a cor do papel: a resolução não importa. */
+.share-card[data-style="poster"] {
+    --ink: var(--sc-poster-ink);
+    color: var(--ink);
+    background: var(--sc-poster-paper);
+    font-family: var(--font-sc-grotesk);
+}
+.sc-poster__art { position: absolute; top: 0; left: 0; width: 100%; height: calc(var(--u) * 74); overflow: hidden; background: var(--sc-poster-paper); }
+.sc-poster__cover {
+    position: absolute;
+    top: calc(var(--u) * -13);
+    left: 0;
+    width: 100%;
+    height: calc(var(--u) * 100);
+    background: transparent;
+    filter: grayscale(1) brightness(1.3) contrast(1.7);
+    mix-blend-mode: multiply;
+}
+.sc-poster__dots {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, transparent 0, transparent calc(var(--u) * 0.5), var(--sc-poster-paper) calc(var(--u) * 0.62))
+        0 0 / calc(var(--u) * 1.4) calc(var(--u) * 1.4);
+}
+.sc-poster__top {
+    position: absolute;
+    top: calc(var(--u) * 4);
+    left: calc(var(--u) * 4.8);
+    right: calc(var(--u) * 4.8);
+    display: flex;
+    justify-content: space-between;
+}
+.sc-poster__tag {
+    padding: calc(var(--u) * 0.74) calc(var(--u) * 1.5);
+    color: var(--sc-poster-paper);
+    background: var(--ink);
+    font-size: calc(var(--u) * 2.4);
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    white-space: nowrap;
+}
+.sc-poster__num {
+    position: absolute;
+    top: calc(var(--u) * 46);
+    left: calc(var(--u) * 2.6);
+    font-family: var(--font-sc-poster);
+    font-size: calc(var(--u) * 55.5);
+    line-height: 0.82;
+    letter-spacing: -0.02em;
+}
+.sc-poster__side {
+    position: absolute;
+    top: calc(var(--u) * 50);
+    right: calc(var(--u) * 4.4);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.sc-poster__side .sc-poster__tag { margin-top: calc(var(--u) * 1.1); font-size: calc(var(--u) * 3); letter-spacing: 0.12em; }
+.sc-poster__pct { font-family: var(--font-sc-poster); font-size: calc(var(--u) * 17.8); line-height: 0.9; }
+.sc-poster__foot {
+    position: absolute;
+    left: calc(var(--u) * 4.8);
+    right: calc(var(--u) * 4.8);
+    bottom: calc(var(--u) * 4.4);
+    padding-top: calc(var(--u) * 2.2);
+    border-top: calc(var(--u) * 0.74) solid var(--ink);
+}
+.sc-poster__title {
+    margin: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-family: var(--font-sc-poster);
+    font-size: calc(var(--u) * 9.3);
+    font-weight: 400;
+    line-height: 1.05;
+    text-transform: uppercase;
+}
+.sc-poster__sub {
+    display: flex;
+    justify-content: space-between;
+    margin-top: calc(var(--u) * 1.1);
+    font-size: calc(var(--u) * 2.8);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+.sc-poster__sub span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.sc-poster__sub span + span { flex-shrink: 0; max-width: 60%; margin-left: calc(var(--u) * 2); text-align: right; }
+
+/* ---------------- Mosaico: o vidro sem esticar a capa ----------------
+   O fundo é a capa em 12x15 quadrados (canvas pixelado de propósito); a capa nítida
+   fica no meio, em 48% da largura — no máximo ~900 px num celular de tela densa. */
+.share-card[data-style="mosaico"] {
+    --ink: var(--sc-mosaic-text);
+    --dim: var(--sc-mosaic-dim);
+    --line: rgba(255, 255, 255, 0.2);
+    --good: var(--sc-vinyl-good);
+    --ok: var(--sc-vinyl-ok);
+    --poor: var(--sc-vinyl-poor);
+    --accent: var(--sc-mosaic-amber);
+    color: var(--ink);
+    background: var(--sc-mosaic-fallback);
+    font-family: var(--font-sc-grotesk);
+}
+.sc-mosaic__tiles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+}
+.sc-mosaic__veil { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--sc-mosaic-veil); }
+.sc-mosaic__top {
+    position: absolute;
+    top: calc(var(--u) * 4.4);
+    left: calc(var(--u) * 5.2);
+    right: calc(var(--u) * 5.2);
+    display: flex;
+    justify-content: space-between;
+    font-size: calc(var(--u) * 2.6);
+    font-weight: 800;
+    letter-spacing: 0.2em;
+}
+.sc-mosaic__cover {
+    position: absolute;
+    top: calc(var(--u) * 13);
+    left: calc(var(--u) * 26);
+    width: calc(var(--u) * 48);
+    height: calc(var(--u) * 48);
+    border: calc(var(--u) * 1.1) solid var(--ink);
+    box-shadow: 0 calc(var(--u) * 3) calc(var(--u) * 6.3) rgba(0, 0, 0, 0.45);
+}
+.sc-mosaic__badge {
+    position: absolute;
+    top: calc(var(--u) * 13);
+    right: calc(var(--u) * 5.2);
+    max-width: calc(var(--u) * 19);
+    padding: calc(var(--u) * 1) calc(var(--u) * 1.8);
+    color: var(--sc-mosaic-panel);
+    background: var(--accent);
+    font-size: calc(var(--u) * 2.4);
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+.sc-mosaic__song { position: absolute; top: calc(var(--u) * 66); left: calc(var(--u) * 5.2); right: calc(var(--u) * 5.2); text-align: center; }
+.sc-mosaic__title,
+.sc-mosaic__artist { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-shadow: 0 calc(var(--u) * 0.4) calc(var(--u) * 2) rgba(0, 0, 0, 0.5); }
+.sc-mosaic__title { margin: 0; font-size: calc(var(--u) * 6.7); font-weight: 900; line-height: 1.1; }
+.sc-mosaic__artist { margin: calc(var(--u) * 0.7) 0 0; color: var(--dim); font-size: calc(var(--u) * 3.3); font-weight: 600; }
+.sc-mosaic__panel {
+    position: absolute;
+    left: calc(var(--u) * 5.2);
+    right: calc(var(--u) * 5.2);
+    bottom: calc(var(--u) * 5.2);
+    padding: calc(var(--u) * 3.3) calc(var(--u) * 4);
+    background: var(--sc-mosaic-panel);
+}
+.sc-mosaic__result { display: flex; align-items: center; justify-content: space-between; }
+.sc-mosaic__score .sc-score__num { font-size: calc(var(--u) * 17); }
+.sc-mosaic__score .sc-score__pct { margin: calc(var(--u) * 1.1) 0 0 calc(var(--u) * 0.6); font-size: calc(var(--u) * 5.6); }
+.sc-mosaic__rank { display: flex; flex-direction: column; align-items: flex-end; color: var(--accent); }
+.sc-mosaic__rank-letter { font-size: calc(var(--u) * 8.9); font-weight: 900; line-height: 1; }
+.sc-mosaic__panel .sc-meter { margin-top: calc(var(--u) * 2.2); height: calc(var(--u) * 1.85); }
+.sc-mosaic__foot { display: flex; justify-content: space-between; margin-top: calc(var(--u) * 2.2); color: var(--dim); font-size: calc(var(--u) * 2.6); }
+.sc-mosaic__podium { margin-top: calc(var(--u) * 1.5); }
+
+/* ---------------- Letreiro: painel de aeroporto com plaquinhas ---------------- */
+.share-card[data-style="letreiro"] {
+    line-height: 1.25;
+    --ink: var(--sc-board-text);
+    --dim: var(--sc-board-dim);
+    --line: var(--sc-board-edge);
+    --accent: var(--sc-board-amber);
+    box-sizing: border-box;
+    padding: calc(var(--u) * 5.6) calc(var(--u) * 6.3);
+    color: var(--ink);
+    background: var(--sc-board-bg);
+    font-family: var(--font-sc-mono);
+}
+.sc-board__head { flex-shrink: 0; display: flex; align-items: flex-start; justify-content: space-between; }
+.sc-board__brand { display: flex; flex-direction: column; min-width: 0; }
+.sc-board__brand strong { color: var(--accent); font-size: calc(var(--u) * 4.1); letter-spacing: 0.24em; }
+.sc-board__brand .sc-label { margin-top: calc(var(--u) * 0.7); color: var(--dim); font-size: calc(var(--u) * 2.4); font-weight: 500; letter-spacing: 0.1em; }
+.sc-board__cover { flex-shrink: 0; width: calc(var(--u) * 17); height: calc(var(--u) * 17); border: calc(var(--u) * 0.55) solid var(--line); box-sizing: border-box; }
+.sc-board__row { margin-top: calc(var(--u) * 2.6); }
+.sc-board__row .sc-label { color: var(--dim); font-size: calc(var(--u) * 2.2); letter-spacing: 0.2em; }
+.sc-board__flaps,
+.sc-board__big { display: flex; margin-top: calc(var(--u) * 1.1); }
+.sc-flap {
+    position: relative;
+    display: flex;
+    flex: 1 1 0;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    height: calc(var(--u) * 7.2);
+    background: linear-gradient(to bottom, var(--sc-board-tile) 0, var(--sc-board-tile) 50%, var(--sc-board-tile-2) 50%, var(--sc-board-tile-2) 100%);
+    font-size: calc(var(--u) * 4.6);
+    font-weight: 700;
+    line-height: 1;
+    white-space: pre;
+}
+.sc-flap + .sc-flap { margin-left: calc(var(--u) * 0.55); }
+.sc-flap::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: calc(var(--u) * 0.37);
+    margin-top: calc(var(--u) * -0.18);
+    background: var(--sc-board-gap);
+}
+.sc-board__flaps[data-tone="accent"] .sc-flap { color: var(--accent); }
+.sc-board__result { display: flex; align-items: flex-end; margin-top: auto; }
+.sc-board__col { display: flex; flex-direction: column; }
+.sc-board__col .sc-label { color: var(--dim); font-size: calc(var(--u) * 2.2); letter-spacing: 0.2em; }
+.sc-board__col--rank { flex: 1; margin-left: calc(var(--u) * 2.6); }
+.sc-board__big .sc-flap { flex: none; width: calc(var(--u) * 17); height: calc(var(--u) * 23); color: var(--accent); font-size: calc(var(--u) * 19); }
+.sc-board__big .sc-flap + .sc-flap { margin-left: calc(var(--u) * 0.74); }
+.sc-board__col--rank .sc-flap { flex: 1 1 0; width: auto; color: var(--ink); }
+.sc-board__big .sc-flap::after { height: calc(var(--u) * 0.55); margin-top: calc(var(--u) * -0.27); }
+.sc-board__foot {
+    display: flex;
+    justify-content: space-between;
+    margin-top: calc(var(--u) * 3.3);
+    padding-top: calc(var(--u) * 2.2);
+    border-top: 1px solid var(--line);
+    font-size: calc(var(--u) * 2.6);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+}
+.sc-board__status { color: var(--accent); }
+.sc-board__foot .sc-dim { overflow: hidden; margin-left: calc(var(--u) * 2); white-space: nowrap; text-overflow: ellipsis; }
+
+/* ---------------- Barra de estilos com nove opções ----------------
+   Celular: uma linha que rola de lado. TV: lista em pé ao lado do cartão. */
+.share-card-bar { gap: 0; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; box-sizing: border-box; padding: 0 1rem; }
+.share-card-bar .share-card-style { flex-shrink: 0; min-width: 0; white-space: nowrap; }
+.share-card-bar .share-card-style + .share-card-style { margin-left: 0.5rem; }
+.share-card-bar .share-card-style:first-child { margin-left: auto; }
+.share-card-bar .share-card-style:last-child { margin-right: auto; }
+html.is-tv .share-card-overlay { --u: 0.7vh; flex-direction: row-reverse; }
+html.is-tv .share-card-bar {
+    flex-direction: column;
+    max-width: none;
+    margin: 0 0 0 5vw;
+    padding: 0;
+    overflow: visible;
+}
+html.is-tv .share-card-bar .share-card-style { min-width: 13rem; margin: 0 0 0.5rem; text-align: left; }
