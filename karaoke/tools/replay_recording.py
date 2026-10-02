@@ -49,6 +49,7 @@ import numpy as np  # noqa: E402
 from mic_stream import segment_window  # noqa: E402
 from recorder import DEFAULT_RECORD_DIR, GABARITO_FILE, SESSION_FILE, covered_mask, read_wav  # noqa: E402
 import segment_scoring  # noqa: E402
+from lyrics_text import is_backing_only  # noqa: E402
 
 
 
@@ -106,6 +107,8 @@ def replay_player(session: dict, audio: np.ndarray, covered: np.ndarray, stt, sc
     sr = session["sample_rate"]
     results = {}
     for idx, segment in enumerate(segments):
+        if is_backing_only(segment["lyrics"]):
+            continue  # só voz de apoio: o servidor não pontua
         t0, t1 = segment_window(segments, idx, pre_sec, post_sec)
         lo, hi = int(round(t0 * sr)), int(round(t1 * sr))
         window_audio = np.zeros(hi - lo, dtype=np.float32)

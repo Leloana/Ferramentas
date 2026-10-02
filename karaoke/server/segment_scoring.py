@@ -6,7 +6,8 @@ from __future__ import annotations
 import re
 
 from lyrics_text import (
-    has_japanese_script, is_japanese, project_onto_romaji_lyrics, regroup_timed_words, split_words,
+    has_japanese_script, is_japanese, lead_words, project_onto_romaji_lyrics, regroup_timed_words,
+    split_words, strip_backing,
 )
 from score_engine import calculate_score
 
@@ -51,13 +52,16 @@ def score_whisper_free(segment: dict, rms: float) -> dict:
     if is_vocalize(segment["lyrics"]):
         score, transcription, matched, total = score_vocalize(segment["lyrics"], rms)
         return {"score": score, "transcription": transcription, "matched_words": matched, "total_expected": total}
-    return {"score": 0.0, "transcription": "", "matched_words": 0, "total_expected": len(segment["lyrics_timed"])}
+    return {"score": 0.0, "transcription": "", "matched_words": 0, "total_expected": len(lead_words(segment["lyrics_timed"]))}
 
 
 def transcribe_kwargs(segment: dict) -> dict:
-    """Argumentos do STTEngine.transcribe para o verso (sem o áudio)."""
-    expected = [w["word"] for w in segment["lyrics_timed"]] if segment["lyrics_timed"] else None
-    return {"language": segment["language"], "initial_prompt": segment["lyrics"], "expected_words": expected}
+    """Argumentos do STTEngine.transcribe para o verso (sem o áudio).
+
+    A voz de apoio (entre parênteses) fica fora: o cantor não a canta."""
+    expected = [w["word"] for w in lead_words(segment["lyrics_timed"] or [])] or None
+    prompt = strip_backing(segment["lyrics"]) or segment["lyrics"]
+    return {"language": segment["language"], "initial_prompt": prompt, "expected_words": expected}
 
 
 def score_words(segment: dict, prev_segment: dict | None, words: list[dict], scoring_mode: str) -> dict:
@@ -72,6 +76,6 @@ def score_words(segment: dict, prev_segment: dict | None, words: list[dict], sco
         # Japonês: o Whisper devolve pedaços de 1–3 caracteres; regrupa nas unidades da letra.
         words = regroup_timed_words(words, language)
     return calculate_score(
-        segment["lyrics_timed"], words,
+        lead_words(segment["lyrics_timed"]), words,
         prev_expected_words=prev_lyrics, language=segment["language"], scoring_mode=scoring_mode,
     )

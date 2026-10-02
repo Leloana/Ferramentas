@@ -959,6 +959,10 @@
 .lyrics-word rt { font-size: 0.42em; font-weight: 600; letter-spacing: 0.02em; opacity: 0.75; text-transform: none; }
 .lyrics-romaji-line { display: block; font-size: 0.55em; font-weight: 600; opacity: 0.7; margin-top: 0.15em; }
 .lyrics-script-control[hidden], .lyrics-script-group[hidden] { display: none !important; }
+
+/* Voz de apoio (entre parênteses na letra, game/backing-vocals.js): aparece, mas não é do cantor */
+.lyrics-backing { font-style: italic; opacity: 0.55; }
+.word.lyrics-backing.active { opacity: 0.8; }
 .lyrics-script-group { display: flex; gap: 0.3rem; }
 .lyrics-script-choice { width: auto !important; padding: 0.3rem 0.65rem !important; font-size: 0.8rem !important; font-weight: 700; white-space: nowrap; opacity: 0.6; }
 .lyrics-script-choice[aria-pressed="true"] { opacity: 1; background: var(--butter) !important; border-color: var(--ink) !important; }

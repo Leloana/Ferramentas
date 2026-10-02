@@ -345,3 +345,42 @@ def regroup_timed_words(words: list[dict], language: str | None) -> list[dict]:
             "probability": sum(w.get("probability", 1.0) for w in covered) / len(covered),
         })
     return out
+
+
+# Voz de apoio: o que está entre parênteses na letra — "(eu sei)", o refrão em
+# inglês do back vocal "(Monster)" — aparece na tela, mas o cantor não precisa
+# cantar: fica fora da nota. Verso inteiro entre parênteses não é pontuado.
+_OPEN, _CLOSE = "(（", ")）"
+
+
+def backing_flags(words: list[str]) -> list[bool]:
+    """Para cada palavra da letra: está dentro de parênteses (voz de apoio)?"""
+    flags, depth = [], 0
+    for word in words:
+        opens = sum(word.count(c) for c in _OPEN)
+        closes = sum(word.count(c) for c in _CLOSE)
+        # a palavra que abre ou fecha o parêntese também é de apoio
+        flags.append(depth > 0 or opens > 0)
+        depth = max(0, depth + opens - closes)
+    return flags
+
+
+def lead_words(timed: list[dict]) -> list[dict]:
+    """Palavras do cantor principal (sem a voz de apoio)."""
+    flags = backing_flags([w["word"] for w in timed])
+    return [w for w, backing in zip(timed, flags) if not backing]
+
+
+def strip_backing(text: str | None) -> str:
+    """A linha sem os trechos entre parênteses."""
+    return " ".join(re.sub(r"[(（][^)）]*[)）]?", " ", text or "").split())
+
+
+def has_lead_vocals(text: str | None) -> bool:
+    """O verso tem algo para o cantor principal (não é vazio nem só voz de apoio)?"""
+    return bool(re.search(r"\w", strip_backing(text)))
+
+
+def is_backing_only(text: str | None) -> bool:
+    """Verso com letra, mas toda entre parênteses: só voz de apoio, sem nota."""
+    return bool((text or "").strip()) and not has_lead_vocals(text)

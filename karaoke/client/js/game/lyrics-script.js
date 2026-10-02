@@ -7,6 +7,7 @@
 // redesenhar o que está na tela sem esperar o próximo verso.
 import { state } from '../core/state.js';
 import { fitLongVerse } from './long-verse.js';
+import { splitBacking } from './backing-vocals.js';
 
 const STORAGE_KEY = 'karaoke_lyrics_script';
 const MODES = ['original', 'romaji', 'both'];
@@ -43,19 +44,34 @@ function paintWord(span) {
     }
 }
 
+// Texto com a voz de apoio (entre parênteses) num span apagado.
+function appendWithBacking(el, text) {
+    splitBacking(text).forEach((part) => {
+        if (!part.backing) {
+            el.append(part.text);
+            return;
+        }
+        const span = document.createElement('span');
+        span.className = 'lyrics-backing';
+        span.textContent = part.text;
+        el.append(span);
+    });
+}
+
 function paintLine(el) {
     const { original, romaji } = el.dataset;
     const mode = getLyricsScript();
     el.replaceChildren();
     if (!romaji || mode === 'original') {
-        el.textContent = original;
+        appendWithBacking(el, original);
     } else if (mode === 'romaji') {
-        el.textContent = romaji;
+        appendWithBacking(el, romaji);
     } else {
         const sub = document.createElement('span');
         sub.className = 'lyrics-romaji-line';
-        sub.textContent = romaji;
-        el.append(original, sub);
+        appendWithBacking(sub, romaji);
+        appendWithBacking(el, original);
+        el.append(sub);
     }
 }
 

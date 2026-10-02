@@ -12,6 +12,7 @@ import numpy as np
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 from combo import combo_runs
+from lyrics_text import has_lead_vocals, is_backing_only
 from mic_stream import STREAM_SR, MicTimeline, parse_packet, segment_window
 from recorder import GameRecording, recording_base_dir
 from segment_scoring import (
@@ -339,18 +340,21 @@ def _late_packet_grace(room) -> float:
 
 def turn_owner(segments: list, turn_order: list | None, idx: int) -> list | None:
     """Revezar versos: o k-ésimo verso com letra é do time k % n (None = todos).
+    Verso só de voz de apoio (entre parênteses) não é de ninguém.
 
     Mesma regra do front (client/js/game/turns.js)."""
     if not turn_order or len(turn_order) < 2 or not (0 <= idx < len(segments)):
         return None
-    if not str(segments[idx].get("lyrics") or "").strip():
+    if not has_lead_vocals(segments[idx].get("lyrics")):
         return None
-    k = sum(1 for seg in segments[:idx] if str(seg.get("lyrics") or "").strip())
+    k = sum(1 for seg in segments[:idx] if has_lead_vocals(seg.get("lyrics")))
     return turn_order[k % len(turn_order)]
 
 
 def _verse_players(room, idx: int) -> list:
-    """Quem é pontuado neste verso (no revezamento, só o time da vez)."""
+    """Quem é pontuado neste verso (no revezamento, só o time da vez; voz de apoio: ninguém)."""
+    if is_backing_only(room.segments[idx].get("lyrics")):
+        return []
     players = room.active_players or ["Solo"]
     owner = turn_owner(room.segments, room.turn_order, idx)
     if owner is None:
@@ -853,16 +857,18 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         except asyncio.TimeoutError:
                             logger.warning(f"Timeout aguardando transcrições pendentes na sala {room_id}")
                     
-                    total_score_avg = round(room.total_score / max(1, len(room.segments)), 1)
+                    # verso só de voz de apoio não é pontuado nem entra na média
+                    scored_verses = [i for i, seg in enumerate(room.segments) if not is_backing_only(seg.get("lyrics"))]
+                    total_score_avg = round(room.total_score / max(1, len(scored_verses)), 1)
 
                     player_final_scores = {}
                     records = {}
                     for p in room.active_players:
                         if p in room.player_segment_scores:
                             # no revezamento, cada um é medido só nos versos dele
-                            own = len(room.segments)
+                            own = len(scored_verses)
                             if room.turn_order:
-                                own = sum(1 for i in range(len(room.segments))
+                                own = sum(1 for i in scored_verses
                                           if p in (turn_owner(room.segments, room.turn_order, i) or []))
                             p_score = round(sum(room.player_segment_scores[p].values()) / max(1, own), 1)
                             player_final_scores[p] = p_score

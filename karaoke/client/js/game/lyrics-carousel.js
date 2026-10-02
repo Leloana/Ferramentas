@@ -5,6 +5,7 @@ import { dom } from '../core/dom.js';
 import { isTvBrowser } from '../core/config.js';
 import { fillLine, fillWord, setLyricsScriptAvailable } from './lyrics-script.js';
 import { fitLongVerse } from './long-verse.js';
+import { backingFlags } from './backing-vocals.js';
 
 const SLIDE_MS = 400;
 
@@ -33,9 +34,10 @@ function fillVerseLine(el, data) {
         return;
     }
     clearLine(el);
+    const backing = backingFlags(data.lyrics_timed.map(item => item.word));
     data.lyrics_timed.forEach((item, idx) => {
         const span = document.createElement('span');
-        span.className = 'word';
+        span.className = backing[idx] ? 'word lyrics-backing' : 'word';
         fillWord(span, item.word, item.romaji, wordSeparator(data.language, item.word, (data.lyrics_timed[idx + 1] || {}).word));
         span.id = `word-${idx}`;
         el.appendChild(span);
