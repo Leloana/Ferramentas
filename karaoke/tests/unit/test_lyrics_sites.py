@@ -46,10 +46,11 @@ class LyricsSitesTest(unittest.TestCase):
         with patch.object(lf, "search_lyrics_lrclib", return_value=None), \
                 patch.object(lf, "fetch_lyrics_lrclib", return_value=None), \
                 patch.object(lf, "fetch_lyrics_ovh", side_effect=lambda a, t: calls.append("ovh")), \
+                patch.object(lf, "fetch_lyrics_ouvirmusica", side_effect=lambda a, t: calls.append("ouvir")), \
                 patch.object(lf, "fetch_lyrics_letras_br", side_effect=lambda a, t: calls.append("letras")), \
                 patch.dict(lf.os.environ, {"KARAOKE_GENIUS_TOKEN": ""}):
             self.assertIsNone(lf.fetch_lyrics("X", "Y"))
-        self.assertEqual(calls, ["ovh", "letras"])  # Genius sem token nem tenta a rede
+        self.assertEqual(calls, ["ovh", "ouvir", "letras"])  # Genius sem token nem tenta a rede
 
     def test_every_source_comes_out_normalized(self):
         raw = {"plainLyrics": "Linha 1\r\nLinha 2\r\n\r\n\r\n\r\nLinha 3  \r\n", "syncedLyrics": "  [00:01.00] a\r\n[00:02.00] b\r\n",
@@ -64,6 +65,7 @@ class LyricsSitesTest(unittest.TestCase):
         with patch.object(lf, "search_lyrics_lrclib", return_value=None), \
                 patch.object(lf, "fetch_lyrics_lrclib", return_value={"plainLyrics": " \n ", "syncedLyrics": None}), \
                 patch.object(lf, "fetch_lyrics_ovh", return_value=None), \
+                patch.object(lf, "fetch_lyrics_ouvirmusica", return_value=None), \
                 patch.object(lf, "fetch_lyrics_letras_br", return_value=None), \
                 patch.object(lf, "fetch_lyrics_genius", return_value=None):
             self.assertIsNone(lf.fetch_lyrics("X", "Y"))
@@ -98,6 +100,30 @@ class LyricsSitesTest(unittest.TestCase):
             res = lf.fetch_lyrics_genius("NECRY TALKIE", "bloom")
         self.assertEqual(opened, ["https://genius.com/full"])
         self.assertEqual(res["source"], "genius")
+
+    def test_ouvirmusica_page_keeps_only_the_lyrics(self):
+        page = ('<div class="x">MHRAP</div><div id="lyric-container" class="lyrics16"> O mais luxuoso <br>'
+                ' Meu clã é o mais brabo <br><b class="disclaimer"></b> <div id="pub_8"><div>anúncio</div></div>'
+                ' <br> Não olhe em meus olhos <br> </div><div>Compositor: fulano</div>')
+        self.assertEqual(lf.clean_web_lyrics(lf.letras_lyrics_from_html(page)).splitlines(),
+                         ["O mais luxuoso", "Meu clã é o mais brabo", "", "Não olhe em meus olhos"])
+
+    def test_pick_song_slug_adds_the_anime_but_not_a_sequel(self):
+        links = ["o-rap-mais-insano-do-madara-uchira-naruto-shippuden", "o-rap-mais-insano-dos-uchihas-naruto",
+                 "renegado-2-naruto", "renegado-naruto-trap", "tipo-madara-2-naruto", "tipo-madara-naruto"]
+        self.assertEqual(lf.pick_song_slug("o-rap-mais-insano-dos-uchihas", links), "o-rap-mais-insano-dos-uchihas-naruto")
+        self.assertEqual(lf.pick_song_slug("renegado", links), "renegado-naruto-trap")
+        self.assertEqual(lf.pick_song_slug("tipo-madara", links), "tipo-madara-naruto")
+        self.assertEqual(lf.pick_song_slug("renegado-2", links), "renegado-2-naruto")
+        self.assertIsNone(lf.pick_song_slug("rap-do-gaara", links))
+
+    def test_partial_lyrics_are_detected_by_letters(self):
+        heard = [{"word": "palavra"}] * 100  # 700 letras cantadas
+        self.assertTrue(lf.lyrics_look_partial("[02:25.00]Totsuka que sela\n[02:27.00]Kamui", heard))
+        self.assertFalse(lf.lyrics_look_partial("palavra " * 90, heard))
+        self.assertFalse(lf.lyrics_look_partial("pouco", [{"word": "oi"}] * 20))  # pouca voz: não julga
+        # japonês: o Whisper devolve pedaços, a letra não tem espaço — conta por letra
+        self.assertFalse(lf.lyrics_look_partial("遠ざかっていく日も見えない" * 20, [{"word": "遠ざ"}] * 130))
 
     def test_title_variants(self):
         self.assertEqual(lf.title_variants("Rap do Obito (Naruto)"), ["Rap do Obito (Naruto)", "Rap do Obito"])

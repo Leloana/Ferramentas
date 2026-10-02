@@ -206,7 +206,7 @@ def fetch_lyrics(artist: str, track: str, duration: float | None = None) -> Opti
         return _normalized(result)
     logger.info("[LyricsFetcher] LRCLIB sem resultado, tentando Lyrics.ovh e sites de letra...")
     # sites de letra: só o texto; o reinstall encaixa no áudio pela estrutura
-    for source in (fetch_lyrics_ovh, fetch_lyrics_letras_br, fetch_lyrics_genius):
+    for source in (fetch_lyrics_ovh, fetch_lyrics_ouvirmusica, fetch_lyrics_letras_br, fetch_lyrics_genius):
         try:
             result = source(artist, track)
         except Exception as e:
@@ -280,6 +280,117 @@ def fetch_lyrics_letras_br(artist: str, track: str) -> Optional[dict]:
         if plain:
             logger.info("[LyricsFetcher] letras.com.br sucesso: %s (%d chars)", url, len(plain))
             return {"plainLyrics": plain, "syncedLyrics": None, "source": "letras.com.br"}
+    return None
+
+
+OUVIRMUSICA = "https://www.ouvirmusica.com.br"
+
+
+class _LetrasLyrics(HTMLParser):
+    """Texto do <div id="lyric-container"> (Letras/OuvirMusica): <br> é quebra de
+    linha; os blocos de anúncio no meio (<div>, <b>) ficam de fora."""
+
+    def __init__(self):
+        super().__init__()
+        self.depth = 0   # <div> abertos a partir do container
+        self.skip = 0    # dentro de anúncio
+        self.out: list[str] = []
+
+    def handle_starttag(self, tag, attrs):
+        if not self.depth:
+            if tag == "div" and dict(attrs).get("id") == "lyric-container":
+                self.depth = 1
+            return
+        if tag == "br":
+            if not self.skip:
+                self.out.append("\n")
+        elif tag in ("div", "b", "script", "style"):
+            self.skip += 1
+            if tag == "div":
+                self.depth += 1
+
+    def handle_endtag(self, tag):
+        if not self.depth or tag == "br":
+            return
+        if tag in ("div", "b", "script", "style") and self.skip:
+            self.skip -= 1
+            if tag == "div":
+                self.depth -= 1
+        elif tag == "div":
+            self.depth = 0  # fim do container
+
+    def handle_data(self, data):
+        if self.depth and not self.skip:
+            self.out.append(data)
+
+
+def letras_lyrics_from_html(page: str) -> str:
+    parser = _LetrasLyrics()
+    parser.feed(page)
+    return "\n".join(ln.strip() for ln in "".join(parser.out).splitlines())
+
+
+def pick_song_slug(title_slug: str, links: list[str]) -> Optional[str]:
+    """Música do artista com o título pedido: o Letras acrescenta o anime no endereço
+    ("o-rap-mais-insano-dos-uchihas-naruto"). Continuação ("renegado-2-naruto") não
+    serve para um título sem número."""
+    if title_slug in links:
+        return title_slug
+    best = None
+    for slug in links:
+        if not slug.startswith(title_slug + "-"):
+            continue
+        extra = slug[len(title_slug) + 1:]
+        if re.search(r"(^|-)v?\d+(-|$)", extra) and not re.search(r"\d", title_slug):
+            continue
+        cand = (len(extra), slug)
+        best = min(best, cand) if best else cand
+    if best:
+        return best[1]
+    ratio, slug = max(((fuzz.ratio(title_slug, s), s) for s in links), default=(0, None))
+    return slug if ratio >= 90 else None
+
+
+def fetch_lyrics_ouvirmusica(artist: str, track: str) -> Optional[dict]:
+    """OuvirMusica (mesmo acervo e endereços do letras.mus.br, que barra robôs com 403).
+    Endereço direto pelo slug; sem ele, a música mais parecida da página do artista."""
+    from utils.text import slugify
+
+    artist_slug = slugify(artist)
+    urls = [f"{OUVIRMUSICA}/{artist_slug}/{slugify(t)}/" for t in title_variants(track)]
+    for attempt in range(2):
+        for url in urls:
+            page = _get_page(url)
+            plain = clean_web_lyrics(letras_lyrics_from_html(page)) if page else None
+            if plain:
+                logger.info("[LyricsFetcher] ouvirmusica sucesso: %s (%d chars)", url, len(plain))
+                return {"plainLyrics": plain, "syncedLyrics": None, "source": "ouvirmusica"}
+        if attempt:
+            break
+        artist_page = _get_page(f"{OUVIRMUSICA}/{artist_slug}/")
+        if not artist_page:
+            return None
+        links = list(dict.fromkeys(re.findall(rf'href="/{re.escape(artist_slug)}/([a-z0-9-]+)/"', artist_page)))
+        picks = [p for p in (pick_song_slug(slugify(t), links) for t in title_variants(track)) if p]
+        urls = [f"{OUVIRMUSICA}/{artist_slug}/{p}/" for p in dict.fromkeys(picks)
+                if f"{OUVIRMUSICA}/{artist_slug}/{p}/" not in urls]
+        if not urls:
+            return None
+    return None
+
+
+def fetch_web_lyrics(artist: str, track: str) -> Optional[dict]:
+    """Só os sites de letra (texto sem tempo), na ordem de confiança."""
+    for source in (fetch_lyrics_ouvirmusica, fetch_lyrics_letras_br, fetch_lyrics_genius):
+        try:
+            result = source(artist, track)
+        except Exception as e:
+            logger.warning(f"[LyricsFetcher] {source.__name__} falhou: {e}")
+            result = None
+        if result:
+            normalized = _normalized(result)
+            if normalized:
+                return normalized
     return None
 
 
@@ -363,3 +474,21 @@ def fetch_lyrics_genius(artist: str, track: str) -> Optional[dict]:
             return {"plainLyrics": plain, "syncedLyrics": None, "source": "genius"}
     logger.info("[LyricsFetcher] Genius: nenhum resultado da mesma música.")
     return None
+
+
+# Letra com menos que isso do que a voz canta (em letras escritas) está incompleta.
+PARTIAL_LYRICS_RATIO = 0.55
+
+
+def _letter_count(text: str) -> int:
+    text = re.sub(r"\[\d+:\d+(?:\.\d+)?\]", " ", text or "")  # marcas de tempo do LRC
+    return sum(ch.isalnum() for ch in text)
+
+
+def lyrics_look_partial(lyrics: str, heard_words: list[dict]) -> bool:
+    """A letra cobre bem menos do que o Whisper ouviu na voz? Conta letras, não
+    palavras: japonês não separa palavras e o Whisper o devolve em pedaços."""
+    heard = sum(_letter_count(w.get("word", "")) for w in heard_words or [])
+    if heard < 200:  # pouca voz transcrita: não dá para julgar
+        return False
+    return _letter_count(lyrics) < PARTIAL_LYRICS_RATIO * heard

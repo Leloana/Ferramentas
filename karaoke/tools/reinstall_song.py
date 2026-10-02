@@ -390,6 +390,32 @@ async def reinstall_song(
             logger.warning(f"Encaixe do LRC no áudio falhou ({e}); usando o LRC como veio")
         return lrc_text
 
+    # Letra incompleta: o LRCLIB às vezes tem só um trecho (O Rap Mais Insano dos
+    # Uchihas veio com 21 de 124 linhas, e o começo da música ficou sem letra).
+    # Bem menos palavras que a voz canta → a letra inteira dos sites, pela estrutura.
+    if artist and title and not user_edited_lrc and not align_lyrics:
+        try:
+            from utils.lyrics_fetcher import fetch_web_lyrics, lyrics_look_partial
+
+            current = plain_lyrics or fetched_synced_lrc or lrc_backup or ""
+            heard = await asyncio.to_thread(lambda: structure_transcriber(_vocal_16k()))
+            if current and heard and lyrics_look_partial(current, heard):
+                web = await asyncio.to_thread(fetch_web_lyrics, artist, title)
+                if web and not lyrics_look_partial(web["plainLyrics"], heard):
+                    logger.info(f"Letra incompleta ({len(heard)} palavras cantadas): "
+                                f"trocada pela de {web.get('source')}.")
+                    plain_lyrics = web["plainLyrics"]
+                    meta.setdefault("lyrics", {})["plain_lyrics"] = plain_lyrics
+                    with open(meta_path, "w", encoding="utf-8", newline="\n") as f:
+                        json.dump(meta, f, indent=4, ensure_ascii=False)
+                    txt_file.write_text(plain_lyrics + "\n", encoding="utf-8")
+                    # sem o LRC do trecho: a letra inteira é encaixada pela estrutura
+                    fetched_synced_lrc = lrc_backup = None
+                    if lrc_file.exists():
+                        lrc_file.unlink()
+        except Exception as e:
+            logger.warning(f"Conferência de letra incompleta falhou: {e}")
+
     # 4 - whisper percorre o arquivo vocal fazendo os tempos & 5 - Cria arquivo lyrics.lrc
     has_lrc = False
     
