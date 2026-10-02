@@ -151,6 +151,60 @@ item de áudio em [AUDIO_PIPELINE_MELHORIAS.md](AUDIO_PIPELINE_MELHORIAS.md).
       calibrar `PROMPT_TRUST_MIN_PROB`, VAD, tolerância de tempo.
 - [ ] **Tela acesa** no celular-microfone durante uma música inteira (Android e iPhone).
 
+## Próximos afazeres (anotado em 2026-10-02)
+
+Medir sempre com as partidas gravadas antes de mudar a nota: `tools/replay_recording.py` (ou um
+script que troque a regra e repasse o áudio), comparando a nota e o erro contra o gabarito.
+Gravações de referência em `karaoke/recordings/`:
+raps `20261001-234606_tipo-madara-mhrap`, `20261001-235019_renegado-mhrap`,
+`20261002-000811_o-rap-mais-insano-dos-uchihas-mhrap`; `20261002-002922_my-iron-lung-radiohead`;
+com gabarito `20261001-231103_rap-do-gaara-naruto-player-tauz` (66 versos) e
+`20261001-195510_aoi-koi-daidaiirono-hi-mass-of-the-fermenting-dregs` (33 versos).
+
+### Nota
+- [ ] **Comparação fonética na nota** — o Whisper escreve uma palavra parecida com a cantada e ela vale 0:
+      "belly shot"/"bella shot" × "Belisha", "Colby"/"Kobe" × "uncle Bill", "amanteira" × "Amaterasu",
+      "Della" × "The head"; no rap, palavras emendadas ("praquefazer" × "pra que fazer"). Ideia: além do
+      `fuzz.ratio` da escrita, comparar a pronúncia (o Double Metaphone já existe em
+      `utils/lrc_realign.py`, só para inglês; português precisa de regra própria: unidecode + trocas de
+      som como ch/x, ç/ss, lh/li, nh/ni, rr/r, s/z entre vogais) e aceitar trechos emendados (juntar 2–3
+      palavras ouvidas contra 2–3 da letra). Validar: os raps e o My Iron Lung sobem, o gabarito do
+      Gaara e da japonesa não piora e cantarolado não vira acerto.
+- [ ] **Rap muito rápido (Uchihas, ~18 letras/s)** — a folga de 0,4 s (`FAST_VERSE_TAIL_SEC`, commit
+      702ed83) levou Madara 50→65 e Renegado 71→83, mas a Uchihas só 68→72: o Whisper erra as palavras,
+      não a janela. Testar transcrever 3–4 versos rápidos juntos (~8 s de contexto) e repartir as
+      palavras por verso.
+- [ ] **Gabarito dos raps** — anotar no celular ("Anotar meus versos") Madara, Renegado, Uchihas e
+      My Iron Lung, e exportar como fixture (`tools/export_recordings.py`) para os testes de regressão.
+- [ ] **Alucinação no silêncio em japonês** — o Whisper inventa "ご視聴ありがとうございました"
+      ("goshichoo arigatoo gozaimashita") em trecho sem voz; filtrar frases-fantasma conhecidas.
+
+### Letras e músicas
+- [ ] **Reprocessar 16 músicas com verso que engole o solo** — o `prepare_song` ignorava a marca de fim
+      do LRC (corrigido em e33111f); só vale ao gerar de novo (`python tools/prepare_song.py
+      server/songs/<slug> --lang <idioma>`, ~1 min cada, fora de partida). Piores: fala-ney-matogrosso
+      (72 s), dela-ana-frango-eletrico (37 s), you-radiohead (36 s),
+      agora-o-meu-coracao-e-um-lixeiro-azul-vazio-escroto-cidade-dormitorio (31 s), teen-idle-marina e
+      lift-radiohead (~16 s). Demais: a-flor-los-hermanos, bloom-necry-talkie, culpa-o-terno,
+      insista-em-mim-ana-frango-eletrico, just-radiohead, man-of-war-radiohead, minas-gerais-o-terno,
+      o-vira-ney-matogrosso, tenha-do-los-hermanos, vai-passar-chico-buarque.
+- [ ] **Palavra partida entre linhas no LRC** ("My un-" / "cle Bill" no My Iron Lung, corrigido à mão)
+      — juntar automaticamente linha que termina em hífen com a seguinte ao baixar a letra.
+- [ ] **Lista de LRC suspeitos** (hey-pixies e outras com "Revisar") — conferir uma a uma.
+- [ ] **Romaji** — "idaitara" aparece como "daitara" em aoi-koi; "だいったら" ouvido errado (65 pontos).
+
+### Servidor
+- [ ] **Fila de processamento some quando o servidor reinicia** (fica só na memória): a Tipo Madara
+      ficou "pendente" sem segments. Gravar a fila em disco e retomar o item interrompido na subida.
+- [ ] **Servidor fora do Claude Code** — iniciado pelo Claude ele cai no limite de 2 h da tarefa em
+      segundo plano. Rodar como serviço do Windows (NSSM ou Agendador de Tarefas) com reinício automático.
+- [ ] **Cloudflare Access** — upload/apagar/fila continuam públicos.
+
+### Interface
+- [ ] **Foto de perfil** também no lobby e nas barras de nota durante a música.
+- [ ] **Modo treino** — tocar a 75–85% da velocidade sem mudar o tom, para aprender rap.
+- [ ] **Ouvir os instrumentais do RoFormer** e comparar com o Demucs.
+
 ## Variáveis de ambiente
 
 | Variável | Servidor final | Função |
