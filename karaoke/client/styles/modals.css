@@ -261,104 +261,15 @@
 
 /* ---------- Fim de jogo ---------- */
 .game-over-modal { z-index: 1000; }
+/* o cartão (share-card.css) dita a largura: o quadro só o envolve */
 .game-over-card {
-    width: 92%;
-    max-width: 440px;
-    max-height: 94vh;
+    width: auto;
+    max-width: 96vw;
+    max-height: 96vh;
     overflow-y: auto;
-    padding: 2.25rem 2rem 2rem;
+    padding: 1.25rem 1.25rem 1.1rem;
     text-align: center;
 }
-.game-over-title { margin: 0; font-size: 2.3rem; font-style: italic; }
-.game-over-subtitle {
-    margin: 0.2rem 0 1.25rem;
-    font-family: var(--font-ui);
-    font-size: 0.8rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--dim);
-}
-/* Rank como "marca de ensaio" de partitura: letra num quadrado de traço firme */
-.rank-seal {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 132px;
-    height: 132px;
-    margin: 0.5rem auto 1rem;
-    background: var(--paper-light);
-    border: 4px solid var(--ink);
-    outline: 1px solid var(--ink);
-    outline-offset: 5px;
-}
-.rank-badge {
-    font-family: var(--font-display);
-    font-size: 5.2rem;
-    font-weight: 700;
-    line-height: 1;
-    color: var(--rank-color, var(--ink));
-}
-.rank-badge[data-rank="S"] { --rank-color: var(--butter-ink); }
-.rank-badge[data-rank="A"] { --rank-color: var(--blue-ink); }
-.rank-badge[data-rank="B"] { --rank-color: var(--sage-ink); }
-.rank-badge[data-rank="C"] { --rank-color: var(--rose-ink); }
-.rank-title { margin-bottom: 1.5rem; font-size: 1.25rem; font-weight: 700; letter-spacing: 0.04em; }
-
-.score-box { margin-bottom: 1.75rem; padding: 1rem; background: var(--paper); border: var(--border); }
-.score-box__label { font-family: var(--font-ui); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
-.score-box__value { font-family: var(--font-ui); font-variant-numeric: tabular-nums; font-size: 2.4rem; font-weight: 900; color: var(--ink); }
-
-/* Placar por jogador (solo) */
-.mp-breakdown {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    max-height: 180px;
-    margin-top: 1rem;
-    padding-top: 0.8rem;
-    overflow-y: auto;
-    border-top: var(--hairline);
-    text-align: left;
-}
-.mp-breakdown__row { display: flex; justify-content: space-between; font-weight: 700; }
-.mp-breakdown__row span:last-child, .score-num { font-family: var(--font-ui); color: var(--ink); }
-
-/* Pódio (multiplayer) */
-.podium-container { display: flex; flex-direction: column; align-items: center; width: 100%; margin: 0.5rem 0 1.5rem; }
-.podium-columns { display: flex; align-items: flex-end; justify-content: center; gap: 10px; width: 100%; height: 190px; margin-bottom: 0.75rem; }
-.podium-col { display: flex; flex-direction: column; align-items: center; width: 96px; }
-.podium-col--spacer { visibility: hidden; }
-.podium-name { width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 800; }
-.podium-members { display: block; margin-bottom: 2px; font-size: 0.72rem; line-height: 1.25; color: var(--dim); text-align: center; }
-.podium-score { margin-bottom: 6px; font-family: var(--font-ui); font-size: 0.85rem; color: var(--dim); }
-.podium-pedestal {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    border: var(--border);
-    border-bottom: none;
-    font-family: var(--font-display);
-    font-weight: 700;
-    color: var(--ink);
-}
-.podium-1st .podium-pedestal { height: 100px; background: var(--butter); font-size: 2.2rem; }
-.podium-2nd .podium-pedestal { height: 70px; background: var(--blue); font-size: 1.8rem; }
-.podium-3rd .podium-pedestal { height: 46px; background: var(--peach); font-size: 1.5rem; }
-.podium-crown .ico { width: 26px; height: 26px; color: var(--butter-ink); }
-.podium-crown { margin-bottom: 2px; animation: crownFloat 2s ease-in-out infinite alternate; }
-@keyframes crownFloat { from { transform: translateY(0); } to { transform: translateY(-4px); } }
-.podium-extra-list { display: flex; flex-direction: column; gap: 0.5rem; width: 100%; margin-top: 0.5rem; }
-.podium-extra-item {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    padding: 0.5rem 0.9rem;
-    background: var(--paper);
-    border: var(--hairline);
-    font-weight: 700;
-}
-
 /* ---------- Anotação dos versos (gabarito do score) ---------- */
 .annotate-trigger {
     position: absolute;
@@ -429,11 +340,8 @@
     .segmented { flex-direction: column; }
     .segmented__btn { border-right: none; border-bottom: var(--border); }
     .segmented__btn:last-child { border-bottom: none; }
-    .game-over-card { padding: 1.75rem 1.25rem 1.5rem; }
     .yt-search { flex-direction: column; }
     .yt-result__thumb { width: 80px; height: 45px; }
-    .rank-seal { width: 108px; height: 108px; }
-    .rank-badge { font-size: 4.2rem; }
     .annotate-row { gap: 0.5rem; padding: 0.45rem 0.2rem; }
     .annotate-card { padding: 1rem 0.9rem; }
 }

@@ -1,18 +1,15 @@
 // Cartão de fim de música para print (Instagram/story): formato 4:5, em nove
-// estilos escolhidos na barra acima do cartão (na TV, na lista ao lado). A capa ocupa
-// o alto, com o nome da música por cima; embaixo ficam a nota, o rank e a barra de
-// acertos. Cada estilo muda a composição, não só as cores. Abre por cima de tudo,
-// sem botões dentro do cartão; tocar fora da barra (ou Voltar/Esc) fecha. No
-// controle remoto, as setas trocam o estilo. Caderno, neon e vidro dividem o
-// esqueleto daqui; os outros montam o próprio (share-card-styles.js).
+// estilos. A capa ocupa o alto, com o nome da música por cima; embaixo ficam a
+// nota, o rank e a barra de acertos. Cada estilo muda a composição, não só as
+// cores. Caderno, neon e vidro dividem o esqueleto daqui; os outros montam o
+// próprio (share-card-styles.js).
 //
-// Usado no fim de jogo da TV (botão da câmera) e no celular de cada cantor,
-// com a nota dele. `data`:
+// É o próprio placar do fim de jogo (TV) e da tela final do celular de quem
+// cantou (`mountShareCard`): o cartão e, embaixo, uma fileira de quadradinhos
+// coloridos sem texto, um por estilo — a pessoa toca e vê qual é qual. `data`:
 //   { songId, title, artist, score, pitch, stats: {good, ok, poor}, name,
 //     record: {is_record, best_before, times_sung}, podium: [{name, score}] }
-// `stats.verses` (nota de cada verso, na ordem) desenha o código de barras.
 import { iconSvg } from '../core/icons.js';
-import { state } from '../core/state.js';
 import { buildStyledCard, hasOwnLayout } from './share-card-styles.js';
 
 function el(tag, cls, text) {
@@ -184,104 +181,38 @@ export function buildShareCard(data, style) {
     return card;
 }
 
-export function closeShareCard() {
-    const overlay = document.getElementById('share-card-overlay');
-    if (overlay) overlay.remove();
-    document.documentElement.classList.remove('share-card-open');
-    window.removeEventListener('keydown', onKey, true);
-    // controle remoto: o foco volta para onde estava (o botão Cartão)
-    const back = state.shareCardReturnFocus;
-    state.shareCardReturnFocus = null;
-    state.shareCardData = null;
-    if (overlay && back && document.body.contains(back)) back.focus();
-}
-
-// Controle remoto: OK/Enter e as teclas de voltar (Android/Google TV, Tizen,
-// webOS) fecham; setas não vazam para a tela de fim de jogo escondida atrás.
-// No TV Bro o Voltar nem chega à página — o OK era a única saída e não fechava.
-const CLOSE_KEYS = ['Escape', 'Esc', 'Backspace', 'BrowserBack', 'GoBack', 'Enter', ' '];
-const CLOSE_CODES = [10009, 461, 13, 32];
-const ARROW_KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Up', 'Down', 'Left', 'Right'];
-
-const PREV_KEYS = ['ArrowLeft', 'Left', 'ArrowUp', 'Up'];
-const NEXT_KEYS = ['ArrowRight', 'Right', 'ArrowDown', 'Down'];
-
-function onKey(e) {
-    const close = CLOSE_KEYS.indexOf(e.key) !== -1 || CLOSE_CODES.indexOf(e.keyCode) !== -1;
-    if (!close && ARROW_KEYS.indexOf(e.key) === -1) return;
-    e.preventDefault();
-    e.stopImmediatePropagation();
-    if (close) { closeShareCard(); return; }
-    const step = PREV_KEYS.indexOf(e.key) !== -1 ? -1 : NEXT_KEYS.indexOf(e.key) !== -1 ? 1 : 0;
-    if (step) {
-        const ids = CARD_STYLES.map(st => st.id);
-        const card = document.querySelector('#share-card-overlay .share-card');
-        const at = ids.indexOf(card ? card.dataset.style : ids[0]);
-        setCardStyle(ids[(at + step + ids.length) % ids.length]);
-    }
-}
-
-function setCardStyle(id) {
-    const overlay = document.getElementById('share-card-overlay');
-    if (!overlay) return;
-    // cada estilo tem a própria composição: o cartão é montado de novo
-    const card = overlay.querySelector('.share-card');
-    if (card && state.shareCardData) card.replaceWith(buildShareCard(state.shareCardData, id));
-    else if (card) card.dataset.style = id;
-    overlay.dataset.style = id;
-    overlay.querySelectorAll('.share-card-style').forEach(btn => {
-        const on = btn.dataset.style === id;
-        btn.setAttribute('aria-checked', String(on));
-        // celular: a barra rola de lado, o estilo escolhido fica à vista
-        const bar = btn.parentNode;
-        if (on && bar.scrollWidth > bar.clientWidth) {
-            bar.scrollLeft = btn.offsetLeft - (bar.clientWidth - btn.offsetWidth) / 2;
-        }
-    });
-    saveStyle(id);
-}
-
-function styleBar() {
-    const bar = el('div', 'share-card-bar');
-    bar.setAttribute('role', 'radiogroup');
-    bar.setAttribute('aria-label', 'Estilo do cartão');
+// Fileira de quadradinhos: cada um com as cores do estilo (share-card.css), sem texto
+function swatches(current, onPick) {
+    const row = el('div', 'card-swatches');
+    row.setAttribute('role', 'radiogroup');
+    row.setAttribute('aria-label', 'Estilo do cartão');
     CARD_STYLES.forEach(({ id, label }) => {
-        const btn = el('button', 'btn btn--sm share-card-style', label);
+        const btn = el('button', 'card-swatch');
         btn.type = 'button';
         btn.dataset.style = id;
         btn.setAttribute('role', 'radio');
-        btn.addEventListener('click', () => setCardStyle(id));
-        bar.append(btn);
+        btn.setAttribute('aria-label', label);
+        btn.setAttribute('aria-checked', String(id === current));
+        btn.addEventListener('click', () => onPick(id));
+        row.append(btn);
     });
-    // tocar na barra troca o estilo, não fecha o cartão
-    bar.addEventListener('click', (e) => e.stopPropagation());
-    return bar;
+    return row;
 }
 
-export function openShareCard(data) {
-    closeShareCard();
-    state.shareCardReturnFocus = document.activeElement;
-    state.shareCardData = data;
-    const overlay = el('div', 'share-card-overlay');
-    overlay.id = 'share-card-overlay';
-    overlay.setAttribute('role', 'dialog');
-    overlay.setAttribute('aria-label', 'Cartão da música');
-    overlay.tabIndex = -1;
-    const style = savedStyle();
-    overlay.append(styleBar(), buildShareCard(data, style));
-    // TV: botão visível (share-card.css só mostra com html.is-tv)
-    const closeBtn = el('button', 'btn share-card-close');
-    closeBtn.type = 'button';
-    closeBtn.innerHTML = iconSvg('close');
-    closeBtn.append(document.createTextNode(' Fechar'));
-    overlay.append(closeBtn);
-    // tocar em qualquer lugar fecha (o print é pelo botão do aparelho)
-    overlay.addEventListener('click', closeShareCard);
-    document.body.append(overlay);
-    setCardStyle(style);
-    // esconde a página por trás: no TV Bro o cartão aparecia atrás do fim de jogo
-    // na 1ª vez (camadas da GPU furavam o z-index)
-    document.documentElement.classList.add('share-card-open');
-    window.addEventListener('keydown', onKey, true);  // antes do tv-nav (document)
-    overlay.focus();
+// Monta o cartão (no estilo da última escolha) e os quadradinhos dentro de `container`
+export function mountShareCard(container, data) {
+    const frame = el('div', 'share-card-frame');
+    let style = savedStyle();
+    frame.append(buildShareCard(data, style));
+    const row = swatches(style, (id) => {
+        if (id === style) return;
+        style = id;
+        // cada estilo tem a própria composição: o cartão é montado de novo
+        frame.firstChild.replaceWith(buildShareCard(data, id));
+        row.querySelectorAll('.card-swatch').forEach((btn) => {
+            btn.setAttribute('aria-checked', String(btn.dataset.style === id));
+        });
+        saveStyle(id);
+    });
+    container.replaceChildren(frame, row);
 }

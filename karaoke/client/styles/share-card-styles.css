@@ -47,13 +47,6 @@
 .sc-podium__who { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-weight: 700; }
 .sc-podium__pts { font-weight: 800; }
 
-/* fundo da página atrás do cartão, por estilo */
-.share-card-overlay[data-style="ingresso"] { background-color: var(--sc-ticket-page); }
-.share-card-overlay[data-style="cupom"] { background-color: var(--sc-receipt-page); }
-.share-card-overlay[data-style="vinil"] { background-color: var(--sc-vinyl-bg); }
-.share-card-overlay[data-style="mosaico"] { background-color: var(--sc-glass-page); }
-.share-card-overlay[data-style="letreiro"] { background-color: var(--sc-board-bg); }
-
 /* ---------------- Ingresso: bilhete com picote, canhoto e código de barras por verso ---------------- */
 .share-card[data-style="ingresso"] {
     --ink: var(--sc-ticket-ink);
@@ -587,20 +580,3 @@
 }
 .sc-board__status { color: var(--accent); }
 .sc-board__foot .sc-dim { overflow: hidden; margin-left: calc(var(--u) * 2); white-space: nowrap; text-overflow: ellipsis; }
-
-/* ---------------- Barra de estilos com nove opções ----------------
-   Celular: uma linha que rola de lado. TV: lista em pé ao lado do cartão. */
-.share-card-bar { gap: 0; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; box-sizing: border-box; padding: 0 1rem; }
-.share-card-bar .share-card-style { flex-shrink: 0; min-width: 0; white-space: nowrap; }
-.share-card-bar .share-card-style + .share-card-style { margin-left: 0.5rem; }
-.share-card-bar .share-card-style:first-child { margin-left: auto; }
-.share-card-bar .share-card-style:last-child { margin-right: auto; }
-html.is-tv .share-card-overlay { --u: 0.7vh; flex-direction: row-reverse; }
-html.is-tv .share-card-bar {
-    flex-direction: column;
-    max-width: none;
-    margin: 0 0 0 5vw;
-    padding: 0;
-    overflow: visible;
-}
-html.is-tv .share-card-bar .share-card-style { min-width: 13rem; margin: 0 0 0.5rem; text-align: left; }

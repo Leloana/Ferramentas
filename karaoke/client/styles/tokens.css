@@ -97,7 +97,6 @@
     --sc-note-chip-ok: #f7ecc6;
     --sc-note-chip-poor: #f5dfd6;
     --sc-note-chip-pitch: #e6dff0;
-    --sc-neon-page: #07040f;
     --sc-neon-bg: #0d0820;
     --sc-neon-haze: rgba(138, 92, 255, 0.35);
     --sc-neon-grid: rgba(63, 240, 255, 0.07);
@@ -110,7 +109,6 @@
     --sc-neon-green: #5dff9b;
     --sc-neon-yellow: #ffe45c;
     --sc-neon-logo-filter: invert(1) drop-shadow(0 0 4px #ff3fa4);
-    --sc-glass-page: #101016;
     --sc-glass-fallback: linear-gradient(135deg, #4b3f8f 0%, #b0507a 55%, #f0a35c 100%);
     --sc-glass-text: #ffffff;
     --sc-glass-dim: rgba(255, 255, 255, 0.72);

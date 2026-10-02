@@ -1,18 +1,7 @@
-<!-- Fim de jogo: rank (solo) ou pódio (multiplayer, montado em game/game-over.js) -->
+<!-- Fim de jogo: o cartão para print é o placar (game/game-over.js monta com share-card.js) -->
 <div id="game-over-modal" class="modal-overlay game-over-modal">
-    <div class="modal-content paper-card game-over-card">
-        <h2 class="game-over-title">Fim de jogo</h2>
-        <p class="game-over-subtitle">Desempenho geral</p>
-
-        <div class="rank-seal">
-            <div id="rank-badge" class="rank-badge" data-rank="S">S</div>
-        </div>
-        <div id="rank-title" class="rank-title">PERFORMANCE LENDÁRIA!</div>
-
-        <div class="score-box">
-            <div class="score-box__label">Pontuação média</div>
-            <div id="modal-score" class="score-box__value">0.0%</div>
-        </div>
+    <div class="modal-content paper-card game-over-card" role="dialog" aria-label="Fim de jogo">
+        <div id="game-over-share" class="game-over-share"></div>
 
         <div id="game-over-record" class="game-over-record" hidden></div>
 
@@ -31,7 +20,6 @@
         </div>
 
         <div class="game-over-actions">
-            <button id="btn-share-card" type="button" class="btn btn--lg btn-share-card"><i data-icon="camera"></i> Cartão</button>
             <button id="btn-restart-game" class="btn btn--primary btn--lg">CANTAR NOVAMENTE</button>
         </div>
 

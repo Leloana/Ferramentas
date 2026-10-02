@@ -104,7 +104,7 @@ const DISPLAY_HANDLERS = {
         dom.audioPlayer.pause();
         setAppState('game-over');
         state.lastGameOver = data;
-        showGameOverModal(parseFloat(data.total_score) || 0, data.player_scores);
+        showGameOverModal(data);
         showGameOverExtras(data);
         showNextUp();
         showAnnotationButton(data.recording_id);

@@ -122,59 +122,76 @@ class ScreensTest(unittest.TestCase):
         }""")
         page.wait_for_timeout(300)
         self.assertEqual(page.evaluate("window.__xss"), 0)
-        page.locator("#btn-share-card").click()
-        box = page.locator(".share-card").bounding_box()
+        # o cartão é o próprio placar: sem botão "Cartão", com os quadradinhos sem texto
+        self.assertEqual(page.locator("#btn-share-card").count(), 0)
+        box = page.locator("#game-over-share .share-card").bounding_box()
         self.assertLessEqual(box["y"] + box["height"], DESKTOP["height"] + 1)
-        page.mouse.click(5, 5)
-        self.assertEqual(page.locator("#share-card-overlay").count(), 0)
+        self.assertEqual(page.locator("#game-over-share .card-swatch").count(), 9)
+        self.assertEqual(page.locator("#game-over-share .card-swatches").inner_text().strip(), "")
         self.assertEqual(errors, [])
 
     def test_every_card_style_fits_on_phone_and_tv(self):
-        """Os nove estilos do cartão, solo e com pódio: nada sai do cartão nem da tela."""
-        solo = {"songId": "x", "title": "Agora o meu coração é um lixeiro azul", "artist": "Cidade Dormitório",
-                "score": 88.4, "pitch": 72, "name": "Marcelo Ferreira",
-                "stats": {"good": 41, "ok": 12, "poor": 13, "verses": [95] * 41 + [78] * 12 + [40] * 13},
-                "record": {"is_record": True, "times_sung": 3}}
-        duo = dict(solo, podium=[{"name": "Lelo", "score": 88}, {"name": "Ana", "score": 74},
-                                 {"name": "Marcelo", "score": 61}, {"name": "Bia", "score": 50}])
+        """Os nove estilos no fim de jogo, solo e com pódio: nada sai do cartão nem da tela."""
+        stats = {"good": 41, "ok": 12, "poor": 13, "verses": [95] * 41 + [78] * 12 + [40] * 13}
+        solo = {"type": "game_over", "total_score": 88.4, "song_id": "x", "player_scores": {"Marcelo Ferreira": 88.4},
+                "player_stats": {"Marcelo Ferreira": stats}, "player_pitch": {"Marcelo Ferreira": 72},
+                "records": {"Marcelo Ferreira": {"is_record": True, "times_sung": 3}}, "leaderboard": []}
+        duo = dict(solo, player_scores={"Lelo": 88, "Ana": 74, "Marcelo": 61, "Bia": 50},
+                   player_stats={n: stats for n in ("Lelo", "Ana", "Marcelo", "Bia")})
         for path, viewport in (("/", PHONE), ("/?tv=1", {"width": 1920, "height": 1080})):
             page, errors = self.open(path, viewport)
-            for data in (solo, duo):
-                out = page.evaluate("""async (data) => {
-                    const m = await import('/js/game/share-card.js');
+            for msg in (solo, duo):
+                out = page.evaluate("""async (msg) => {
+                    document.getElementById('current-song-title').textContent = 'Agora o meu coração é um lixeiro azul';
+                    document.getElementById('current-song-artist').textContent = 'Cidade Dormitório';
+                    (await import('/js/game/server-messages.js')).handleServerMessage(msg);
                     const res = [];
-                    for (const st of m.CARD_STYLES) {
-                        localStorage.setItem('karaoke_card_style', st.id);
-                        m.openShareCard(data);
-                        const card = document.querySelector('.share-card');
+                    for (const sw of document.querySelectorAll('#game-over-share .card-swatch')) {
+                        sw.click();
+                        const card = document.querySelector('#game-over-share .share-card');
                         const box = card.getBoundingClientRect();
                         const cut = Array.from(card.querySelectorAll('*')).filter((n) => {
                             const r = n.getBoundingClientRect();
                             return r.height && (r.bottom > box.bottom + 1 || r.right > box.right + 1);
                         }).map((n) => n.className);
-                        res.push({ style: card.dataset.style, cut, bottom: box.bottom, right: box.right });
-                        m.closeShareCard();
+                        res.push({ style: card.dataset.style, picked: sw.getAttribute('aria-checked'), cut,
+                                   bottom: box.bottom, right: box.right });
                     }
                     return res;
-                }""", data)
+                }""", msg)
                 self.assertEqual([o["style"] for o in out], ["caderno", "neon", "vidro", "ingresso", "cupom",
                                                              "vinil", "poster", "mosaico", "letreiro"])
                 for o in out:
-                    with self.subTest(path=path, style=o["style"], podium="podium" in data):
+                    with self.subTest(path=path, style=o["style"], podium=len(msg["player_scores"]) > 1):
+                        self.assertEqual(o["picked"], "true")
                         self.assertEqual(o["cut"], [])
                         self.assertLessEqual(o["bottom"], viewport["height"] + 1)
                         self.assertLessEqual(o["right"], viewport["width"] + 1)
-            # controle remoto: seta para baixo vai ao próximo estilo e remonta o cartão
-            page.evaluate("""async (data) => {
-                localStorage.setItem('karaoke_card_style', 'vidro');
-                (await import('/js/game/share-card.js')).openShareCard(data);
-            }""", solo)
-            page.keyboard.press("ArrowDown")
-            self.assertEqual(page.locator(".share-card").get_attribute("data-style"), "ingresso")
-            self.assertEqual(page.locator(".sc-ticket__barcode span").count(), 66)
-            page.keyboard.press("Escape")
-            self.assertEqual(page.locator("#share-card-overlay").count(), 0)
+            # a escolha fica guardada: o próximo fim de jogo já abre no último estilo
+            self.assertEqual(page.evaluate("localStorage.getItem('karaoke_card_style')"), "letreiro")
             self.assertEqual(errors, [])
+            page.close()
+
+    def test_phone_final_screen_is_the_singers_card(self):
+        page, errors = self.open("/?role=mic&room=1234", viewport=PHONE)
+        page.evaluate("""async () => {
+            const { state } = await import('/js/core/state.js');
+            state.isActiveInGame = true;
+            state.mobileNickname = 'Ana';
+            document.getElementById('app').setAttribute('data-state', 'singing');  // o celular termina cantando
+            document.getElementById('mobile-active-mic-container').setAttribute('data-mic-active', 'true');
+            (await import('/js/mobile/mic-final.js')).showMicGameOver({song_id: 'x', song_title: '505 - Arctic Monkeys',
+                total_score: 80, player_scores: {Ana: 81.5, Lelo: 70},
+                player_stats: {Ana: {good: 5, ok: 1, poor: 1, verses: [90, 90, 90, 90, 90, 75, 40]}}, recording_id: 'r1'});
+        }""")
+        page.wait_for_timeout(300)
+        self.assertEqual(page.locator(".mic-final__share .share-card").count(), 1)
+        self.assertEqual(page.locator(".mic-final__share .card-swatch").count(), 9)
+        self.assertEqual(page.locator(".mic-final .btn-replay").count(), 2)  # anotar e ouvir
+        page.locator(".mic-final__share .card-swatch[data-style='ingresso']").click()
+        self.assertEqual(page.locator(".sc-ticket__barcode span").count(), 7)
+        self.no_horizontal_scroll(page)
+        self.assertEqual(errors, [])
 
     def _sing_long_verse(self, page):
         """Palco com um verso de rap de 148 palavras (letra gerada sem LRC)."""
