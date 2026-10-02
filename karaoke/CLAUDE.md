@@ -29,7 +29,7 @@ Este arquivo resume os detalhes técnicos específicos do subprojeto **Karaoke A
 | ├─ `state.py` | Singletons compartilhados (`room_manager`, etc.) | **Use para evitar imports circulares** entre routers e websockets. |
 | ├─ `rooms.py` | Modelo da sala de canto (`KaraokeRoom`) | Gerencia buffers em memória por jogador e por segmento. |
 | ├─ `queue_manager.py` | Fila de downloads/processamento da GPU | Garante que processos pesados de IA aguardem ocioso da GPU. |
-| ├─ `score_engine.py` | Motor de cálculo de notas do cantor | Fuzzy tokens (rapidfuzz), normalização por idioma (contrações, números, hífen) e penalidades de tempo. O Double Metaphone só existe no `lrc_realign.py`, não na nota. |
+| ├─ `score_engine.py` | Motor de cálculo de notas do cantor | Fuzzy tokens (rapidfuzz), normalização por idioma (contrações, números, hífen) e penalidades de tempo. Pronúncia (`phonetic.py`: Double Metaphone no inglês, regras de som no português) e emendas de até 3 palavras contra 1 ("belly shot"×"Belisha") — fora do japonês. Mexeu? Meça também o canto de um verso contra a letra de outro (falso positivo). |
 | ├─ `pitch.py` | Afinação: YIN em numpy, `pitch.json` da voz separada, nota de tom por verso | Informativa (fora da nota) até calibrar; oitava livre; nota mostrada já desconta o acaso (~30). |
 | ├─ `song_requests.py` | Fila da noite por sala (pedidos "quero cantar") | Limites: 30 pedidos, 3 por cantor. Some quando a sala fecha. |
 | ├─ `players.py` | Perfis dos cantores (`players/<apelido>/profile.json`), recordes, ranking | `KARAOKE_PLAYERS_DIR` troca a pasta (os testes usam uma temporária via `tests/conftest.py`). |

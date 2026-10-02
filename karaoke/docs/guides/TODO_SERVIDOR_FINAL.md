@@ -162,7 +162,11 @@ com gabarito `20261001-231103_rap-do-gaara-naruto-player-tauz` (66 versos) e
 `20261001-195510_aoi-koi-daidaiirono-hi-mass-of-the-fermenting-dregs` (33 versos).
 
 ### Nota
-- [ ] **Comparação fonética na nota** — o Whisper escreve uma palavra parecida com a cantada e ela vale 0:
+- [x] **Comparação fonética na nota** (2026-10-02: `server/phonetic.py` + emendas em
+      `score_engine.match_in_order`; "belly shot"×"Belisha", "praquefazer", "xuva"×"chuva" valem.
+      Gaara, partidas gravadas e 746 pares de letra trocada sem piora; "Colby"×"uncle Bill" e
+      "Della"×"The head" ficaram de fora — longe demais até pelo som. **Falta conferir nos raps e
+      no My Iron Lung**, que só estão no PC do servidor: `tools/replay_recording.py`.) — o Whisper escreve uma palavra parecida com a cantada e ela vale 0:
       "belly shot"/"bella shot" × "Belisha", "Colby"/"Kobe" × "uncle Bill", "amanteira" × "Amaterasu",
       "Della" × "The head"; no rap, palavras emendadas ("praquefazer" × "pra que fazer"). Ideia: além do
       `fuzz.ratio` da escrita, comparar a pronúncia (o Double Metaphone já existe em
@@ -176,7 +180,7 @@ com gabarito `20261001-231103_rap-do-gaara-naruto-player-tauz` (66 versos) e
       palavras por verso.
 - [ ] **Gabarito dos raps** — anotar no celular ("Anotar meus versos") Madara, Renegado, Uchihas e
       My Iron Lung, e exportar como fixture (`tools/export_recordings.py`) para os testes de regressão.
-- [ ] **Alucinação no silêncio em japonês** — o Whisper inventa "ご視聴ありがとうございました"
+- [x] **Alucinação no silêncio em japonês** (2026-10-02: `stt_engine._HALLUCINATION_RE`) — o Whisper inventa "ご視聴ありがとうございました"
       ("goshichoo arigatoo gozaimashita") em trecho sem voz; filtrar frases-fantasma conhecidas.
 
 ### Letras e músicas
@@ -194,13 +198,14 @@ com gabarito `20261001-231103_rap-do-gaara-naruto-player-tauz` (66 versos) e
       (`/api/reinstall-song/<slug>` ou `tools/reinstall_song.py`), com backup de `server/songs/` antes.
       Cuidados: música com `.lyrics_edited` mantém a letra revisada (Monster, Gaara, Óbito, Iron Lung);
       alinhadas no PRO (segments com `align`) refazer no PRO; conferir depois a lista de "Revisar".
-- [ ] **Palavra partida entre linhas no LRC** ("My un-" / "cle Bill" no My Iron Lung, corrigido à mão)
+- [x] **Palavra partida entre linhas no LRC** (2026-10-02: `utils/text.join_split_words`) ("My un-" / "cle Bill" no My Iron Lung, corrigido à mão)
       — juntar automaticamente linha que termina em hífen com a seguinte ao baixar a letra.
 - [ ] **Lista de LRC suspeitos** (hey-pixies e outras com "Revisar") — conferir uma a uma.
 - [ ] **Romaji** — "idaitara" aparece como "daitara" em aoi-koi; "だいったら" ouvido errado (65 pontos).
 
 ### Servidor
-- [ ] **Fila de processamento some quando o servidor reinicia** (fica só na memória): a Tipo Madara
+- [x] **Fila de processamento some quando o servidor reinicia** (2026-10-02: `songs/.queue.json`,
+      retomada no startup) (fica só na memória): a Tipo Madara
       ficou "pendente" sem segments. Gravar a fila em disco e retomar o item interrompido na subida.
 - [ ] **Servidor fora do Claude Code** — iniciado pelo Claude ele cai no limite de 2 h da tarefa em
       segundo plano. Rodar como serviço do Windows (NSSM ou Agendador de Tarefas) com reinício automático.

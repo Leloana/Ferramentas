@@ -1,10 +1,12 @@
 import logging
 import re
 from collections import Counter
+from functools import lru_cache
 
 from rapidfuzz import fuzz
 
 from lyrics_text import is_japanese, ja_reading
+from phonetic import phonetic_key
 
 logger = logging.getLogger(__name__)
 
@@ -23,6 +25,22 @@ TIMING_PENALTY_MID = 0.85
 TIMING_PENALTY_FAR = 0.65
 SANDWICH_THRESHOLD = 0.4
 MAX_LEAKAGE_LOOKBACK = 6
+
+# Pronúncia (phonetic.py): o Whisper escreve parecido com o que foi cantado
+# ("chuva"→"xuva", "Belisha"→"belly shot"). Chaves de som com PHONETIC_MATCH ou
+# mais valem palavra certa; chave curta ("the", "a") não decide nada.
+PHONETIC_MATCH = 85
+PHONETIC_MIN_KEY = 3
+# ...e a escrita não pode estar longe demais: o Metaphone joga fora as vogais e
+# "smacks you in" emendado soava como "magazine" (escrita 42; "belly shot" ×
+# "Belisha" tem 62, "still" × "steel" 60, "xuva" × "chuva" 67)
+PHONETIC_MIN_SPELLING = 55
+# Emendas: até SPAN_MAX palavras de um lado contra uma do outro ("praquefazer" ×
+# "pra que fazer", "belly shot" × "Belisha"). Só trechos longos e que batem forte:
+# "a mim" × "mim" ganharia o "a" de graça.
+SPAN_MAX = 3
+SPAN_MIN_LETTERS = 7
+SPAN_MATCH = 85
 
 # Penalidade de andamento global: pune comprimir/esticar a linha inteira
 # (ex.: ler todas as palavras correndo no início). Compara o "vão" de tempo
@@ -212,40 +230,96 @@ def _word_points(ratio: float, expected_start: float, actual_start: float, apply
     return points
 
 
+@lru_cache(maxsize=4096)
+def _key(text: str, language: str | None) -> str:
+    return phonetic_key(text, language)
+
+
+def _sounds_alike(a: str, b: str, language: str | None) -> bool:
+    if fuzz.ratio(a, b) < PHONETIC_MIN_SPELLING:
+        return False
+    ka, kb = _key(a, language), _key(b, language)
+    return len(ka) >= PHONETIC_MIN_KEY and len(kb) >= PHONETIC_MIN_KEY and fuzz.ratio(ka, kb) >= PHONETIC_MATCH
+
+
+def _span_matches(joined_expected: str, joined_heard: str, language: str | None) -> bool:
+    """Trecho emendado de um lado × palavras soltas do outro, comparados sem espaço."""
+    a, b = len(joined_expected), len(joined_heard)
+    if a < SPAN_MIN_LETTERS or b < SPAN_MIN_LETTERS or min(a, b) < 0.7 * max(a, b):
+        return False
+    return fuzz.ratio(joined_expected, joined_heard) >= SPAN_MATCH or _sounds_alike(joined_expected, joined_heard, language)
+
+
 def match_in_order(expected_words: list[str], expected_timed: list[dict],
                    transcribed_clean: list[dict], apply_timing: bool,
-                   alternatives: list[tuple[str, ...]] | None = None) -> list[tuple[float, int]]:
-    """Casa a letra com a transcrição sem cruzar pares: (pontos, índice transcrito | -1) por palavra.
+                   alternatives: list[tuple[str, ...]] | None = None,
+                   language: str | None = None) -> list[tuple[float, tuple[int, ...]]]:
+    """Casa a letra com a transcrição sem cruzar pares: (pontos, índices transcritos) por palavra.
 
     Programação dinâmica que maximiza a soma dos pontos com pares em ordem nos
     dois lados. A versão gulosa pegava a melhor palavra em qualquer posição:
     "door the at wolf the" tirava 97 em "a wolf at the door".
+    Além do par 1×1 (escrita ou pronúncia), aceita emendas de até SPAN_MAX
+    palavras contra uma (fora do japonês, que já compara pela leitura).
     """
     n, m = len(expected_words), len(transcribed_clean)
+    sound = not is_japanese(language)
+    heard = [w["word"] for w in transcribed_clean]
     pts = [[0.0] * m for _ in range(n)]
     for i in range(n):
         for j in range(m):
-            heard = transcribed_clean[j]["word"]
-            ratio = fuzz.token_sort_ratio(expected_words[i], heard)
+            ratio = fuzz.token_sort_ratio(expected_words[i], heard[j])
             if alternatives:  # japonês: outra leitura do mesmo kanji (lyrics_text.ja_readings)
-                ratio = max([ratio] + [fuzz.token_sort_ratio(a, heard) for a in alternatives[i]])
+                ratio = max([ratio] + [fuzz.token_sort_ratio(a, heard[j]) for a in alternatives[i]])
+            if sound and ratio < FUZZY_FULL_MATCH and _sounds_alike(expected_words[i], heard[j], language):
+                ratio = FUZZY_FULL_MATCH
             pts[i][j] = _word_points(ratio, expected_timed[i]["expected_start"],
                                      transcribed_clean[j]["start"], apply_timing)
+
+    def span_points(i: int, j: int, a: int, b: int) -> float:
+        """Pontos de `a` palavras da letra emendadas contra `b` ouvidas (uma das duas é 1)."""
+        if i + a > n or j + b > m:
+            return 0.0
+        # uma parte já bate sozinha com o outro lado ("felizes" × "E felizes"): a emenda
+        # só ganharia de graça a palavra do lado
+        parts = ([(expected_words[i + k], heard[j]) for k in range(a)] if a > 1
+                 else [(expected_words[i], heard[j + k]) for k in range(b)])
+        if any(fuzz.token_sort_ratio(x, y) >= FUZZY_FULL_MATCH for x, y in parts):
+            return 0.0
+        if not _span_matches("".join(expected_words[i:i + a]), "".join(heard[j:j + b]), language):
+            return 0.0
+        return a * _word_points(100, expected_timed[i]["expected_start"], transcribed_clean[j]["start"], apply_timing)
+
+    spans = [(1, k) for k in range(2, SPAN_MAX + 1)] + [(k, 1) for k in range(2, SPAN_MAX + 1)] if sound else []
     best = [[0.0] * (m + 1) for _ in range(n + 1)]
+    move = [[None] * (m + 1) for _ in range(n + 1)]
     for i in range(n - 1, -1, -1):
         for j in range(m - 1, -1, -1):
-            take = pts[i][j] + best[i + 1][j + 1] if pts[i][j] > 0 else 0.0
-            best[i][j] = max(take, best[i + 1][j], best[i][j + 1])
+            # empate: casa o par, depois a emenda, depois pula a ouvida e por último a da
+            # letra (a falta fica no fim do verso, como sempre foi — o "sanduíche" abaixo
+            # resgataria uma falta no meio)
+            options = []
+            if pts[i][j] > 0:
+                options.append((pts[i][j] + best[i + 1][j + 1], (1, 1, pts[i][j])))
+            for a, b in spans:
+                got = span_points(i, j, a, b)
+                if got > 0:
+                    options.append((got + best[i + a][j + b], (a, b, got / a)))
+            options += [(best[i][j + 1], "skip_heard"), (best[i + 1][j], "skip_expected")]
+            best[i][j], move[i][j] = max(options, key=lambda o: o[0])
     out, i, j = [], 0, 0
     while i < n:
-        if j < m and pts[i][j] > 0 and best[i][j] == pts[i][j] + best[i + 1][j + 1]:
-            out.append((pts[i][j], j))
-            i, j = i + 1, j + 1
-        elif j < m and best[i][j] == best[i][j + 1]:
+        step = move[i][j] if j < m else "skip_expected"
+        if step == "skip_heard":
             j += 1
-        else:
-            out.append((0.0, -1))
+        elif step == "skip_expected":
+            out.append((0.0, ()))
             i += 1
+        else:
+            a, b, each = step
+            used = tuple(range(j, j + b))
+            out.extend([(each, used)] * a)
+            i, j = i + a, j + b
     return out
 
 
@@ -345,18 +419,21 @@ def calculate_score(expected_timed: list[dict], transcribed_words: list[dict], p
     word_scores = []
     consumed_indices = set()
     timing_pairs = []  # (expected_start, actual_start) das palavras casadas
+    spans_heard = set()  # emendas "belly shot" × "Belisha": várias ouvidas valem uma
 
     alternatives = None
     if is_japanese(language):
         from lyrics_text import ja_readings
 
         alternatives = [ja_readings(w["word"]) for w in expected_timed]
-    for i, (word_points, j) in enumerate(match_in_order(expected_words, expected_timed, transcribed_clean,
-                                                        apply_timing, alternatives)):
-        if j != -1:
-            consumed_indices.add(j)
+    for i, (word_points, used) in enumerate(match_in_order(expected_words, expected_timed, transcribed_clean,
+                                                           apply_timing, alternatives, language)):
+        if used:
+            consumed_indices.update(used)
+            if len(used) > 1:
+                spans_heard.add(used)
             if apply_timing:
-                timing_pairs.append((expected_timed[i]["expected_start"], transcribed_clean[j]["start"]))
+                timing_pairs.append((expected_timed[i]["expected_start"], transcribed_clean[used[0]]["start"]))
         word_scores.append(word_points)
 
     # Sandwich Recovery: 1 ou 2 palavras erradas cercadas por corretas são "resgatadas"
@@ -399,7 +476,7 @@ def calculate_score(expected_timed: list[dict], transcribed_words: list[dict], p
     # frase). Até expected * PRECISION_ALLOWANCE palavras passam sem punição.
     precision_factor = 1.0
     n_expected = len(expected_words)
-    n_transcribed = len(transcribed_clean)
+    n_transcribed = len(transcribed_clean) - sum(len(used) - 1 for used in spans_heard)
     if n_expected > 0 and n_transcribed > n_expected * PRECISION_ALLOWANCE:
         precision_factor = max(
             PRECISION_MIN_FACTOR,
