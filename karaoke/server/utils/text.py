@@ -27,6 +27,7 @@ def normalize_lyrics_text(text: str | None) -> str:
         return ""
     # Normaliza line endings
     text = text.replace("\r\n", "\n").replace("\r", "\n")
+    text = join_split_words(text)
     # Strip por linha + colapsa linhas vazias consecutivas
     lines = [ln.strip() for ln in text.split("\n")]
     out: list[str] = []
@@ -40,6 +41,31 @@ def normalize_lyrics_text(text: str | None) -> str:
             prev_blank = False
         out.append(ln)
     return "\n".join(out).strip()
+
+
+_LRC_TAGS_RE = re.compile(r"^((?:\s*\[\d+:\d+(?:[.:]\d+)?\])*)(.*)$")
+_SPLIT_END_RE = re.compile(r"[^\W\d_]-$")
+
+
+def join_split_words(text: str) -> str:
+    """Junta a palavra partida entre duas linhas ("My un-" / "cle Bill" → "My uncle Bill").
+
+    Vale para letra simples e LRC: a linha que termina em letra + hífen e a seguinte
+    começa com minúscula viram uma só, com o tempo da primeira. Um travessão solto
+    ("vai -") ou a marca vazia de fim de verso do LRC não juntam nada.
+    """
+    lines = text.split("\n")
+    out: list[str] = []
+    for line in lines:
+        if out:
+            tags, prev = _LRC_TAGS_RE.match(out[-1]).groups()
+            rest = _LRC_TAGS_RE.match(line).group(2).strip()
+            prev = prev.rstrip()
+            if _SPLIT_END_RE.search(prev) and rest[:1].islower():
+                out[-1] = f"{tags}{prev[:-1]}{rest}"
+                continue
+        out.append(line)
+    return "\n".join(out)
 
 
 def slugify(text: str) -> str:

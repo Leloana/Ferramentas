@@ -219,12 +219,12 @@ def fetch_lyrics(artist: str, track: str, duration: float | None = None) -> Opti
 
 def _normalized(result: dict) -> Optional[dict]:
     """Saída igual para toda fonte: letra normalizada (quebras de linha, linhas vazias)
-    e LRC sem espaço nas pontas. Antes só a rota de upload normalizava; a da fila
-    gravava no meta.json a letra como a fonte mandou."""
-    from utils.text import normalize_lyrics_text
+    e LRC sem espaço nas pontas e sem palavra partida entre linhas. Antes só a rota
+    de upload normalizava; a da fila gravava no meta.json a letra como a fonte mandou."""
+    from utils.text import join_split_words, normalize_lyrics_text
 
     plain = normalize_lyrics_text(result.get("plainLyrics")) or None
-    synced = "\n".join((result.get("syncedLyrics") or "").splitlines()).strip() or None
+    synced = join_split_words("\n".join((result.get("syncedLyrics") or "").splitlines())).strip() or None
     if not plain and not synced:
         return None
     return {**result, "plainLyrics": plain, "syncedLyrics": synced}
