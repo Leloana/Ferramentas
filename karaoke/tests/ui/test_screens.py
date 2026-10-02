@@ -129,6 +129,45 @@ class ScreensTest(unittest.TestCase):
         self.assertEqual(page.locator("#share-card-overlay").count(), 0)
         self.assertEqual(errors, [])
 
+    def _sing_long_verse(self, page):
+        """Palco com um verso de rap de 148 palavras (letra gerada sem LRC)."""
+        self.open_first_song(page)
+        page.evaluate("""async () => {
+            document.getElementById('app').setAttribute('data-state', 'singing');
+            const { state } = await import('/js/core/state.js');
+            const { renderLyrics } = await import('/js/game/lyrics-carousel.js');
+            const words = Array.from({length: 148}, (_, i) => ({word: 'palavra' + i, expected_start: i * 0.35, expected_end: i * 0.35 + 0.3}));
+            state.isFirstSegment = true;
+            state.syncMode = 'word';
+            renderLyrics({id: 2, sing_start: 0, sing_end: 52, language: 'pt', lyrics: words.map(w => w.word).join(' '),
+                lyrics_timed: words, prev_lyrics: 'Da morte eu voltei', next_lyrics: 'Lágrimas, lua, se encheram de sangue',
+                upcoming_lyrics: 'Obito'});
+        }""")
+        page.wait_for_timeout(200)
+
+    def test_long_verse_shrinks_and_scrolls_inside_the_stage(self):
+        for path in ("/", "/?tv=1"):
+            with self.subTest(path=path):
+                page, errors = self.open(path)
+                self._sing_long_verse(page)
+                curr = page.locator("#line-curr")
+                self.assertIn("is-scroll", curr.get_attribute("class"))
+                box = page.locator(".carousel-container").bounding_box()
+                line = curr.bounding_box()
+                self.assertLessEqual(line["height"], box["height"])  # cabe no palco, não estoura
+                # a palavra cantada lá no fim do verso aparece: a janela rolou até ela
+                page.evaluate("""async () => {
+                    const { followWord } = await import('/js/game/long-verse.js');
+                    const el = document.getElementById('word-140');
+                    followWord(el.parentElement, el);
+                }""")
+                page.wait_for_timeout(600)
+                word = page.locator("#word-140").bounding_box()
+                self.assertGreaterEqual(word["y"], line["y"] - 1)
+                self.assertLessEqual(word["y"] + word["height"], line["y"] + line["height"] + 1)
+                self.assertEqual(errors, [])
+                page.close()
+
     def test_phone_layouts_have_no_horizontal_scroll(self):
         page, errors = self.open(viewport=PHONE)
         self.no_horizontal_scroll(page)

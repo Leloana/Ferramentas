@@ -962,3 +962,18 @@
 .lyrics-script-group { display: flex; gap: 0.3rem; }
 .lyrics-script-choice { width: auto !important; padding: 0.3rem 0.65rem !important; font-size: 0.8rem !important; font-weight: 700; white-space: nowrap; opacity: 0.6; }
 .lyrics-script-choice[aria-pressed="true"] { opacity: 1; background: var(--butter) !important; border-color: var(--ink) !important; }
+
+/* ---------- Verso comprido (game/long-verse.js) ----------
+   is-long: o verso atual passou de 2 linhas e encolhe. is-scroll: ainda passa de 3 e
+   vira uma janela de 3 linhas que rola acompanhando a palavra cantada. */
+.carousel-line { position: relative; }  /* offsetTop das palavras relativo à linha */
+.curr-line.is-long { height: auto; font-size: clamp(1.5rem, 3.4vw, 2.3rem) !important; line-height: 1.25; }
+.curr-line.is-scroll {
+    max-height: calc(3 * 1.25em + 16px);
+    overflow: hidden;
+    align-content: flex-start;
+    scroll-behavior: auto;
+}
+/* anterior/próximo nunca empurram o palco: no máximo 2 linhas */
+.prev-line, .next-line, .upcoming-line { max-height: calc(2 * 1.3em + 16px); }
+.carousel-line.line-next-to-curr { max-height: none; }

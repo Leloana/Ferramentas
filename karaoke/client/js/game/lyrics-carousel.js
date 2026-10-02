@@ -4,6 +4,7 @@ import { state } from '../core/state.js';
 import { dom } from '../core/dom.js';
 import { isTvBrowser } from '../core/config.js';
 import { fillLine, fillWord, setLyricsScriptAvailable } from './lyrics-script.js';
+import { fitLongVerse } from './long-verse.js';
 
 const SLIDE_MS = 400;
 
@@ -82,6 +83,7 @@ function snapTo(inner, line) {
 window.addEventListener('resize', () => {
     if (state.isSingingActive || (state.currentSegmentData && state.currentAppState !== 'idle')) {
         const inner = carouselInner();
+        fitLongVerse(dom.lyricsDisplay);
         if (inner) snapTo(inner, state.slideTransitionCleanup ? dom.nextLyricsDisplay : dom.lyricsDisplay);
     }
 });
@@ -182,6 +184,7 @@ export function renderLyrics(data) {
         if (lineUpcoming) {
             lineUpcoming.classList.remove('line-upcoming-to-next');
         }
+        fitLongVerse(lineCurr);  // verso comprido: encolhe ou vira janela que rola
 
         // Recentraliza a nova linha atual, já com os tamanhos finais
         inner.style.transform = `translateY(${getTranslationForLine(lineCurr)}px)`;
@@ -207,6 +210,7 @@ function updateLyricsDOM(data) {
         fillLine(dom.upcomingLyricsDisplay, data.upcoming_lyrics, data.upcoming_lyrics_romaji);
     }
     fillVerseLine(dom.lyricsDisplay, data);
+    fitLongVerse(dom.lyricsDisplay);
 }
 
 const LINE_CLASSES = {

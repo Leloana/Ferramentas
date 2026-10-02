@@ -154,6 +154,9 @@
     border: var(--border);
 }
 #mobile-lyrics-container.mobile-lyrics--final { flex: none; align-items: flex-start; max-height: none; }
+/* verso comprido: a caixa rola (safe: o começo do texto não some para cima ao centralizar) */
+#mobile-lyrics-container { overflow-y: auto; align-items: safe center; }
+#mobile-lyrics-text.is-long { font-size: 1.15rem; line-height: 1.3; }
 #mobile-lyrics-text {
     margin: 0;
     font-family: var(--font-ui);

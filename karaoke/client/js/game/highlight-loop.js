@@ -6,6 +6,7 @@ import { isTvBrowser } from '../core/config.js';
 import { turnOwner } from './turns.js';
 import { sendPlayerEvent } from './game-events.js';
 import { renderLyrics } from './lyrics-carousel.js';
+import { followWord, followProgress } from './long-verse.js';
 import { showHeardHint, listeningHint } from './transcription.js';
 import { showTurn, setCountdown, setSilence, setSilenceProgress, setVerseProgress, setOutroProgress } from './hud.js';
 
@@ -165,7 +166,10 @@ function highlightWords(segData, virtualTime) {
     const relativeTime = virtualTime - segData.sing_start;
     if (state.syncMode === 'verse') {
         const lineCurr = document.getElementById('line-curr');
-        if (lineCurr) lineCurr.classList.toggle('verse-active', relativeTime >= 0 && virtualTime <= segData.sing_end);
+        if (lineCurr) {
+            lineCurr.classList.toggle('verse-active', relativeTime >= 0 && virtualTime <= segData.sing_end);
+            followProgress(lineCurr, relativeTime / Math.max(0.1, segData.sing_end - segData.sing_start));
+        }
         return;
     }
     if (!segData.lyrics_timed) return;
@@ -177,6 +181,7 @@ function highlightWords(segData, virtualTime) {
         const active = reached && (!nextItem || relativeTime < nextItem.expected_start);
         el.classList.toggle('active', active);
         el.classList.toggle('passed', reached && !active);
+        if (active) followWord(el.parentElement, el);  // verso comprido: a janela acompanha
     });
 }
 

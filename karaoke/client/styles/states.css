@@ -224,6 +224,9 @@
     }
     #app[data-state="singing"] .upcoming-line,
     #app[data-state="scoring"] .upcoming-line { font-size: clamp(1.3rem, 2.4vw, 1.8rem) !important; }
+    /* verso comprido (game/long-verse.js): menor, e a janela de 3 linhas rola */
+    #app[data-state="singing"] .curr-line.is-long,
+    #app[data-state="scoring"] .curr-line.is-long { min-height: 0 !important; font-size: clamp(1.8rem, 3vw, 2.6rem) !important; }
 
     #app[data-state="singing"] .game-score-sidebar,
     #app[data-state="scoring"] .game-score-sidebar,

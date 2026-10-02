@@ -421,3 +421,11 @@ html.is-tv #app[data-state="scoring"] .carousel-line.line-upcoming-to-next {
 @media (prefers-reduced-motion: reduce) {
     html.is-tv .reaction { animation: reactionFade 2.6s linear forwards !important; }
 }
+
+/* Verso comprido na TV (game/long-verse.js): sem animação de rolagem */
+html.is-tv #app[data-state="singing"] .curr-line.is-long,
+html.is-tv #app[data-state="scoring"] .curr-line.is-long { font-size: 2.1rem !important; }
+html.is-tv #app[data-state="singing"] .prev-line,
+html.is-tv #app[data-state="singing"] .next-line,
+html.is-tv #app[data-state="scoring"] .prev-line,
+html.is-tv #app[data-state="scoring"] .next-line { max-height: calc(2 * 1.3em + 0.6rem); overflow: hidden; }

@@ -6,6 +6,7 @@
 // Cada elemento guarda o original e o romaji em data-* para a troca de modo
 // redesenhar o que está na tela sem esperar o próximo verso.
 import { state } from '../core/state.js';
+import { fitLongVerse } from './long-verse.js';
 
 const STORAGE_KEY = 'karaoke_lyrics_script';
 const MODES = ['original', 'romaji', 'both'];
@@ -93,6 +94,7 @@ export function setLyricsScript(mode) {
     try { localStorage.setItem(STORAGE_KEY, mode); } catch (e) { /* sem armazenamento: vale só nesta aba */ }
     syncButtons();
     repaintAll();
+    fitLongVerse(document.getElementById('line-curr'));  // romaji muda o tamanho do verso
 }
 
 // Mostra o seletor só quando o verso tem romaji gerado pelo servidor: letra em

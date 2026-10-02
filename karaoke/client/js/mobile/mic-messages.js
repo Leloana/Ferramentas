@@ -119,7 +119,13 @@ const MIC_HANDLERS = {
     segment_start(data) {
         setFinalLayout(false);
         const lyrText = document.getElementById('mobile-lyrics-text');
-        if (lyrText) fillLine(lyrText, data.lyrics, data.lyrics_romaji);
+        if (lyrText) {
+            fillLine(lyrText, data.lyrics, data.lyrics_romaji);
+            // verso comprido (rap): letra menor e a caixa rola, em vez de estourar a tela
+            lyrText.classList.toggle('is-long', (data.lyrics || '').length > 70);
+            const box = lyrText.parentElement;
+            if (box) box.scrollTop = 0;
+        }
         // revezar versos: "Sua vez" / "Vez de Ana"
         const turnEl = document.getElementById('mobile-turn');
         if (turnEl) {
