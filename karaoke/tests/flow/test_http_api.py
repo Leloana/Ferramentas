@@ -171,6 +171,44 @@ class TestHttpApiFlow(unittest.TestCase):
             content = f.read()
             self.assertIn("Hello brand new world", content)
 
+    @patch("routes.lyrics.run_prepare_song")
+    @patch("routes.lyrics.lrc_from_plain")
+    def test_save_lyrics_rebuilds_the_lrc_when_the_lyrics_changed(self, mock_from_plain, mock_prepare):
+        # letra nova colada na aba "Letra", LRC antigo intocado: o LRC é refeito pelo áudio
+        mock_from_plain.return_value = "[00:02.00]Letra certa\n[00:05.00]Segunda linha"
+        meta = {"meta": {"title": "Mock Song", "artist": "Artist", "language": "en", "slug": self.song_slug},
+                "lyrics": {"plain_lyrics": "Letra certa\nSegunda linha"}}
+        old_lrc = "[00:01.00]Letra errada\n[00:03.00]Outra"
+        resp = self.client.post("/api/save-lyrics", data={
+            "slug": self.song_slug, "language": "en", "lyrics_lrc": old_lrc, "meta_json": json.dumps(meta)})
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(mock_from_plain.call_args[0][1], "Letra certa\nSegunda linha")
+        self.assertIn("Letra certa", (self.song_dir / "lyrics.lrc").read_text(encoding="utf-8"))
+        self.assertIn("Letra certa", resp.json()["lyrics"])
+        mock_prepare.assert_called_once()
+
+        # LRC mexido à mão: vale o LRC, mesmo com a letra diferente
+        mock_from_plain.reset_mock()
+        resp = self.client.post("/api/save-lyrics", data={
+            "slug": self.song_slug, "language": "en", "lyrics_lrc": "[00:01.00]Letra certa\n[00:04.00]Linha nova",
+            "meta_json": json.dumps(meta), "lrc_edited": "true"})
+        self.assertEqual(resp.status_code, 200)
+        mock_from_plain.assert_not_called()
+        self.assertIn("Linha nova", (self.song_dir / "lyrics.lrc").read_text(encoding="utf-8"))
+
+        # não deu para encaixar: avisa em vez de gerar com a letra velha
+        mock_from_plain.return_value = None
+        resp = self.client.post("/api/save-lyrics", data={
+            "slug": self.song_slug, "language": "en", "lyrics_lrc": old_lrc, "meta_json": json.dumps(meta)})
+        self.assertEqual(resp.status_code, 422)
+
+    def test_plain_differs_from_lrc_ignores_repeats_and_punctuation(self):
+        from utils.lyrics_resync import plain_differs_from_lrc
+        lrc = "[00:01.00]Enquanto eu viver\n[00:02.00]Enquanto eu viver\n[00:03.00]Eu sou (eu sou)\n[00:04.00]"
+        self.assertFalse(plain_differs_from_lrc(lrc, "[Refrão]\nEnquanto eu viver,\n\nEu sou (eu sou)"))
+        self.assertTrue(plain_differs_from_lrc(lrc, "Enquanto eu viver\nEu sou (eu sou)\nGaara do deserto"))
+        self.assertFalse(plain_differs_from_lrc(lrc, ""))  # sem letra: nada a refazer
+
     def test_song_routes_reject_path_traversal(self):
         # slug vindo do cliente não pode sair de songs/ (delete, save-meta, get-lyrics)
         outside = self.temp_dir.parent / "fora-de-songs"

@@ -308,7 +308,9 @@ export async function loadAndOpenLrcEditor(slug) {
         if (data.success) {
             document.getElementById('editor-slug').value = slug;
             document.getElementById('editor-language').value = data.language;
-            document.getElementById('editor-textarea').value = data.lyrics || '';
+            const lrcArea = document.getElementById('editor-textarea');
+            lrcArea.value = data.lyrics || '';
+            lrcArea.dataset.edited = '';  // LRC mexido à mão nesta abertura?
 
             // Parse meta JSON para popular campos
             let metaParsed = null;

@@ -10,6 +10,7 @@ from fastapi import APIRouter, Form, HTTPException, Response
 
 from state import SONGS_DIR, queue_manager
 from utils.http import set_no_cache
+from utils.lyrics_resync import lrc_from_plain, plain_differs_from_lrc
 from utils.prepare import run_prepare_song
 from utils.song_paths import USER_EDITED_MARKER, safe_song_dir
 from utils.text import normalize_lyrics_text, slugify
@@ -129,7 +130,10 @@ async def save_lyrics(
     language: str = Form("en"),
     lyrics_lrc: str = Form(...),
     meta_json: Optional[str] = Form(None),
+    lrc_edited: bool = Form(False),
 ):
+    """Salva a letra e refaz os segments. Se a letra (aba "Letra") mudou e o LRC
+    não foi mexido à mão, o LRC também é refeito: a letra nova encaixada no áudio."""
     try:
         song_dir = safe_song_dir(SONGS_DIR, slug)
         if song_dir is None or not song_dir.exists():
@@ -163,22 +167,41 @@ async def save_lyrics(
             if meta_lang:
                 language = meta_lang
 
-        clean_lines = [line.strip() for line in lyrics_lrc.splitlines() if line.strip()]
-        lrc_path = song_dir / "lyrics.lrc"
-        with open(lrc_path, "w", encoding="utf-8", newline="\n") as f:
-            f.write("\n".join(clean_lines))
-        # Letra revisada à mão: o reinstall sem alinhamento forçado mantém esta
-        # versão em vez de trocar pela do LRCLIB ou de um backup antigo.
-        (song_dir / USER_EDITED_MARKER).touch()
+        plain = ""
+        try:
+            meta_now = json.loads((song_dir / "meta.json").read_text(encoding="utf-8"))
+            plain = ((meta_now.get("lyrics") or {}).get("plain_lyrics") or "")
+        except Exception:
+            pass
 
         import asyncio
-        # prepare_song usa o Whisper: só com o lock da GPU
+        # Whisper/MMS: só com o lock da GPU (LRC novo e segments na mesma vez)
         async with queue_manager.gpu_job(f"Letra de {slug}"):
+            if not lrc_edited and plain_differs_from_lrc(lyrics_lrc, plain):
+                logger.info(f"[{slug}] letra diferente do LRC: refazendo o LRC pela letra")
+                new_lrc = await asyncio.to_thread(lrc_from_plain, song_dir, plain, language)
+                if not new_lrc:
+                    raise HTTPException(status_code=422, detail=(
+                        "Não consegui encaixar a letra no áudio. Confira a letra ou ajuste o LRC à mão."))
+                lyrics_lrc = new_lrc
+            _write_lrc(song_dir, lyrics_lrc)
             await asyncio.to_thread(run_prepare_song, str(song_dir), language)
-        return {"success": True}
+        return {"success": True, "lyrics": _clean_lrc(lyrics_lrc)}
 
     except HTTPException:
         raise
     except Exception as e:
         logger.error(f"Erro ao salvar letras e processar alinhamento: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))
+
+
+def _clean_lrc(lyrics_lrc: str) -> str:
+    return "\n".join(line.strip() for line in lyrics_lrc.splitlines() if line.strip())
+
+
+def _write_lrc(song_dir, lyrics_lrc: str) -> None:
+    with open(song_dir / "lyrics.lrc", "w", encoding="utf-8", newline="\n") as f:
+        f.write(_clean_lrc(lyrics_lrc))
+    # Letra revisada à mão: o reinstall sem alinhamento forçado mantém esta
+    # versão em vez de trocar pela do LRCLIB ou de um backup antigo.
+    (song_dir / USER_EDITED_MARKER).touch()
