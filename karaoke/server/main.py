@@ -66,6 +66,18 @@ app.mount("/styles", StaticFiles(directory=str(CLIENT_DIR / "styles")), name="st
 app.mount("/js", StaticFiles(directory=str(CLIENT_DIR / "js")), name="js")
 app.mount("/assets", StaticFiles(directory=str(CLIENT_DIR / "assets")), name="assets")
 
+
+
+@app.on_event("startup")
+async def resume_processing_queue():
+    """Músicas que estavam na fila quando o servidor caiu continuam de onde pararam."""
+    from state import queue_manager
+
+    resumed = queue_manager.resume_saved()
+    if resumed:
+        logger.info(f"[QUEUE] {resumed} música(s) retomada(s) da fila gravada.")
+
+
 app.include_router(songs_router)
 app.include_router(lyrics_router)
 app.include_router(upload_router)

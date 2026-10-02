@@ -2,6 +2,9 @@
 """Unit tests for the SongQueueManager class."""
 
 import asyncio
+import json
+import os
+import tempfile
 import unittest
 from unittest.mock import AsyncMock, MagicMock, patch
 from pathlib import Path
@@ -17,7 +20,9 @@ from queue_manager import SongQueueManager, QueueStatus, QueueItem
 class TestSongQueueManager(unittest.IsolatedAsyncioTestCase):
 
     def setUp(self):
-        self.songs_dir = Path("/tmp/mock_songs")
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        self.songs_dir = Path(tmp.name)  # a fila agora é gravada na pasta das músicas
         self.manager = SongQueueManager(self.songs_dir)
 
     def test_queue_item_init_and_to_dict(self):
@@ -172,6 +177,69 @@ class TestSongQueueManager(unittest.IsolatedAsyncioTestCase):
         
         await self.manager._try_process_pending()
         mock_create_task.assert_called_once()
+
+class TestQueueOnDisk(unittest.IsolatedAsyncioTestCase):
+    """A Tipo Madara ficou "pendente" sem segments: o servidor reiniciou com ela na fila,
+    que só existia na memória."""
+
+    def setUp(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        self.songs_dir = Path(tmp.name)
+        self.saved = self.songs_dir / ".queue.json"
+
+    @patch("asyncio.create_task")
+    async def test_queue_survives_a_restart(self, mock_create_task):
+        mock_create_task.return_value = MagicMock()
+        first = SongQueueManager(self.songs_dir)
+        item = await first.enqueue(title="Tipo Madara", artist="MHRAP", language="pt",
+                                   youtube_url="https://youtu.be/x", synced_lrc="[00:01.00] a",
+                                   align_lyrics=True, added_by="Lelo")
+        item.status = QueueStatus.SEPARATING  # caiu no meio da fase 1
+
+        mock_create_task.reset_mock()
+        with patch.dict(os.environ, {"KARAOKE_QUEUE_RESUME": "1"}):
+            second = SongQueueManager(self.songs_dir)
+            self.assertEqual(second.resume_saved(), 1)
+        back = second.queue[0]
+        self.assertEqual((back.id, back.slug, back.title, back.synced_lrc, back.align_lyrics, back.added_by),
+                         (item.id, item.slug, "Tipo Madara", "[00:01.00] a", True, "Lelo"))
+        self.assertEqual(back.status, QueueStatus.QUEUED)
+        mock_create_task.assert_called_once()  # a fase 1 recomeça (e pula o que já baixou)
+
+    @patch("asyncio.create_task")
+    async def test_done_removed_and_failed_items_do_not_come_back(self, mock_create_task):
+        mock_create_task.return_value = MagicMock()
+        manager = SongQueueManager(self.songs_dir)
+        a = await manager.enqueue(title="A", artist="X", language="pt", youtube_url="u1")
+        b = await manager.enqueue(title="B", artist="X", language="pt", youtube_url="u2")
+        self.assertEqual([d["id"] for d in json.loads(self.saved.read_text(encoding="utf-8"))], [a.id, b.id])
+        a.status = QueueStatus.READY
+        b.status = QueueStatus.ERROR
+        manager._save()
+        self.assertFalse(self.saved.exists())
+        c = await manager.enqueue(title="C", artist="X", language="pt", youtube_url="u3")
+        manager.remove_item(c.id)
+        self.assertFalse(self.saved.exists())
+
+    @patch("asyncio.create_task")
+    async def test_reinstall_cleans_only_once(self, mock_create_task):
+        mock_create_task.return_value = MagicMock()
+        manager = SongQueueManager(self.songs_dir)
+        item = await manager.enqueue(title="A", artist="X", language="pt", youtube_url="u", clean_existing=True)
+        self.assertTrue(json.loads(self.saved.read_text(encoding="utf-8"))[0]["clean_existing"])
+        item.clean_existing = False  # o que a fase 1 faz depois de limpar a pasta
+        manager._save()
+        self.assertFalse(json.loads(self.saved.read_text(encoding="utf-8"))[0]["clean_existing"])
+
+    def test_resume_is_off_in_tests_and_tolerates_a_broken_file(self):
+        self.saved.write_text("[{", encoding="utf-8")
+        manager = SongQueueManager(self.songs_dir)
+        self.assertEqual(manager.resume_saved(), 0)  # conftest: KARAOKE_QUEUE_RESUME=0
+        with patch.dict(os.environ, {"KARAOKE_QUEUE_RESUME": "1"}):
+            self.assertEqual(manager.resume_saved(), 0)
+        self.assertEqual(manager.queue, [])
+
 
 if __name__ == "__main__":
     unittest.main()

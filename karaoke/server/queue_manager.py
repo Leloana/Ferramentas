@@ -6,6 +6,10 @@ Estratégia "Download eager, Process lazy":
 
 O `whisper_lock` é compartilhado com o game loop (ws/room.py) para garantir
 que o singleton CTranslate2 do Whisper nunca seja chamado em paralelo.
+
+A fila é gravada em `songs/.queue.json` a cada mudança e retomada quando o servidor
+sobe (`resume_saved`): antes ela só existia na memória e uma música ficava pela
+metade, sem segments.json, se o servidor caísse no meio.
 """
 from __future__ import annotations
 
@@ -13,6 +17,7 @@ import asyncio
 import contextlib
 import json
 import logging
+import os
 import shutil
 import threading
 import time
@@ -25,6 +30,10 @@ from typing import Optional
 logger = logging.getLogger(__name__)
 
 MAX_QUEUE_SIZE = 5
+QUEUE_FILE = ".queue.json"
+# campos que bastam para refazer o item depois de reiniciar (o resto é estado da execução)
+_SAVED_FIELDS = ("id", "slug", "title", "artist", "language", "youtube_url", "plain_lyrics",
+                 "synced_lrc", "align_lyrics", "added_by", "clean_existing", "audio_sec")
 
 
 class QueueStatus(str, Enum):
@@ -53,7 +62,7 @@ class QueueItem:
     progress_pct: int = 0
     error_msg: Optional[str] = None
     added_by: Optional[str] = None
-    clean_existing: bool = False
+    clean_existing: bool = False  # reinstalação: limpa a pasta antes (só uma vez, ver _save)
     audio_sec: Optional[float] = None  # duração do áudio (YouTube, depois o arquivo baixado)
     separator: str = "demucs"  # o que deve separar este áudio (estimativa de tempo)
     stage_started: float = field(default_factory=time.monotonic)
@@ -114,6 +123,55 @@ class SongQueueManager:
         self._gpu_jobs: list[str] = []
 
     # ------------------------------------------------------------------
+    # Fila em disco
+    # ------------------------------------------------------------------
+
+    def _save(self) -> None:
+        """Grava o que ainda falta fazer (pronto e erro não voltam ao reiniciar)."""
+        pending = [
+            {k: getattr(item, k) for k in _SAVED_FIELDS}
+            for item in self.queue if item.status not in (QueueStatus.READY, QueueStatus.ERROR)
+        ]
+        path = self.songs_dir / QUEUE_FILE
+        try:
+            if not pending:
+                path.unlink(missing_ok=True)
+                return
+            tmp = path.with_suffix(".tmp")
+            tmp.write_text(json.dumps(pending, ensure_ascii=False, indent=1), encoding="utf-8")
+            tmp.replace(path)
+        except OSError as e:
+            logger.warning(f"[QUEUE] Não foi possível gravar a fila em disco: {e}")
+
+    def resume_saved(self) -> int:
+        """Retoma a fila gravada (servidor reiniciado no meio). Devolve quantos voltaram.
+        A fase 1 pula o que já foi baixado/separado, então retomar é barato.
+        KARAOKE_QUEUE_RESUME=0 desliga (os testes usam)."""
+        if os.environ.get("KARAOKE_QUEUE_RESUME", "1") == "0":
+            return 0
+        try:
+            saved = json.loads((self.songs_dir / QUEUE_FILE).read_text(encoding="utf-8"))
+        except FileNotFoundError:
+            return 0
+        except (OSError, ValueError) as e:
+            logger.warning(f"[QUEUE] Fila gravada ilegível, ignorada: {e}")
+            return 0
+        known = {item.id for item in self.queue}
+        resumed = 0
+        for data in saved[:MAX_QUEUE_SIZE]:
+            fields = {k: data.get(k) for k in _SAVED_FIELDS}
+            if not fields["id"] or not fields["slug"] or fields["id"] in known:
+                continue
+            fields["align_lyrics"] = bool(fields["align_lyrics"])
+            fields["clean_existing"] = bool(fields["clean_existing"])
+            item = QueueItem(**fields, separator=self._separator_now())
+            self.queue.append(item)
+            item._task = asyncio.create_task(self._process_phase1(item))
+            resumed += 1
+            logger.info(f"[QUEUE] Retomando da fila gravada: '{item.title}' (id={item.id})")
+        return resumed
+
+    # ------------------------------------------------------------------
     # Public API
     # ------------------------------------------------------------------
 
@@ -153,6 +211,7 @@ class SongQueueManager:
             separator=self._separator_now(),
         )
         self.queue.append(item)
+        self._save()
         logger.info(f"[QUEUE] Música adicionada à fila: '{title}' por {added_by or 'anônimo'} (id={item.id})")
 
         # Dispara Fase 1 (download + separação) imediatamente
@@ -180,6 +239,7 @@ class SongQueueManager:
                     item._cancel.set()
                     item._task.cancel()
                 self.queue.pop(i)
+                self._save()
                 logger.info(f"[QUEUE] Item removido da fila: {item_id} ({item.title})")
                 return True
         return False
@@ -240,6 +300,9 @@ class SongQueueManager:
                             sub.unlink()
                     except Exception as e:
                         logger.warning(f"Não foi possível remover arquivo residual {sub.name} na limpeza da fila: {e}")
+                # retomado depois de reiniciar, não limpa de novo (apagaria o download)
+                item.clean_existing = False
+                self._save()
 
             # Se temos synced LRC (ex: LRCLIB), salva diretamente.
             # O reinstall_song preserva lyrics.lrc existente quando align_lyrics=False.
@@ -349,6 +412,7 @@ class SongQueueManager:
             logger.error(f"[QUEUE:{item.id}] Erro na Fase 1: {e}", exc_info=True)
             item.status = QueueStatus.ERROR
             item.error_msg = str(e)
+            self._save()
         finally:
             # Saída do Demucs (~80 MB de WAV) sai também em erro/cancelamento.
             # O original.mp3 só sai depois de separado: numa nova tentativa ele
@@ -402,6 +466,7 @@ class SongQueueManager:
             item.status = QueueStatus.READY
             item.progress_pct = 100
             logger.info(f"[QUEUE:{item.id}] ✅ Música '{item.title}' pronta para cantar!")
+            self._save()
 
             # Agenda a remoção automática após 10 segundos
             asyncio.create_task(self._delayed_remove(item.id, delay=10.0))
@@ -414,6 +479,7 @@ class SongQueueManager:
             logger.error(f"[QUEUE:{item.id}] Erro na Fase 2: {e}", exc_info=True)
             item.status = QueueStatus.ERROR
             item.error_msg = str(e)
+            self._save()
         finally:
             if not self._gpu_game_active:
                 await self._try_process_pending()
