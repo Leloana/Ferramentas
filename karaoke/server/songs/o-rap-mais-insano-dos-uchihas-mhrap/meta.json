@@ -1,0 +1,636 @@
+{
+    "meta": {
+        "title": "O RAP MAIS INSANO DOS UCHIHAS",
+        "artist": "MHRAP",
+        "language": "pt",
+        "slug": "o-rap-mais-insano-dos-uchihas-mhrap"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=hUjBZjqgKMY",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "O mais luxuoso e você sabia\nMeu clã é o mais brabo e mais hype da vila\nLinhagem sanguínea tipo hereditária\nE meu ancestral descendente de Indra\nMaldição do ódio que gera chacina\nJá sente o genjutsu olhando a retina\nIlusão que afeta o psicomental\nE te dá uma descarga de adrenalina\n\nNão olhe em meus olhos que eu tô pique Uchiha\nPosso copiar e prever numa briga\nPoder ocular, tipo Kekkei genkai\nMatando os meus amigos sou mais forte ainda\nVírgulas aumentam o poder da minha ira\nE o Amaterasu põe fogo no clima\nMeu Mangekyo já é carnificina\nDomina a Kurama e destrói essa vila\n\nQuanto mais poder mais ódio consome\nTrás o Susano'o que o inimigo some\nEu sou aquele que chamam de lenda\nE o mundo verá o meu Tsukuyomi\nDo meu poder eles querem a fonte\nEles me temem só pelo meu nome\nSe até Tobirama temia o poder\nÉ porque o Uchiha é o mais brabo do bonde\n\nShinobi temido mora em Konohagakure\nNunca venceram a intangibilidade\nFerido não espere que a Sakura cure\nLixos bem piores até que o Kakashi\nEle nem é Uchiha de verdade\nVai de Izanami ou só de Izanagi\nAtiva o Kotoamatsukami\nPra manipular essa mentalidade\n\nEles só vão entender meu poder\nQuando estiverem num looping infinito\nE quando as dores do mundo é real\nEstiverem a frente do mundo em que vivo\nForam mil anos aqui vendo você se corroer\nSofrendo do início ao fim apenas por mero capricho\nE no mundo real o tempo em que\nEu o fiz sofrer até deixar em coma\nFoi apenas um segundinho\n\nA cúpula inteira não pode deter\nTipo vingador e de ódio faminto\nEm busca daquele que me fez sofrer\nE do real culpado do clã ser extinto\nHachibi sentiu a pressão do poder\nDanzou vai temer por ainda estar vivo\nKarin não se mova! Isso não vai doer\nÉ menos um culpado traíra maldito!\n\nAntes Madara mas agora Tobi\nDeixando inimigos em estado de Obito\nNinja flex veja o Sharingan\nEsses Meteoros os faram extintos\nSinta a fúria do Black Chidori\nNão da pro Rasengan vai ser oprimido\nEu não temo seu Byakugan\nRinnegans no páreo eu já aniquilo\nInimigos perdem os sentidos\nDesde os ancestrais nós somos destemidos\nConte com a vitória bem antes da hora\nMas a sua arte não passa de um lixo\nFiz a escolha e mesmo que eu morra\nVivi pela Folha e fiz meu sacrifício\nAté posso restaurar meu clã\nRevive os Hokage que nóis é o bixo!\n\nSaindo de cena sem que possam ver, vai acontecer\nE do início da guerra já foi dado o aviso\nToda aliança Shinobi vai temer meu poder\nE meu Edo Tensei full power revivido\nOs figurantes já pensam eu tô fudido\nO Hashirama era só um iludido\nMy nigga que eu sou mestre das ilusões\nE se achou que no vale eu teria morrido?\n\nE no campo de batalha o poder se propaga, eles vão pra vala\nPerecendo ao avistar a minha habilidade rara\nQue não para repara que meu Kamui não dá falha\nO espaço tempo distorce e Bijus são capturadas\nKatana parte e retalha, Susano'o surge do nada\nKirin acerta o inimigo Chidori Nagashi mata\nIlusão foi aplicada, eles não entendem nada\nE quando se derem conta, perderam só na encarada\n\nQuem é o mais brabo do clã?\nSinta meu poder ocular eterno\nÉ só meu Mangekyo Sharingan\nSeu passaporte de ida pro inferno\nO Katon é quente mas não chega perto\nO Amaterasu até se aproxima\nQue venha aliança, todas as aldeias\nQue unam nações mas eu sou um Uchiha\n\nNinja Lendário ninguém se equipara\nPoder que para qualquer figurante\nTenho o Susano'o completo e a espada\nTotsukarara que sela os infames\nSe não a afeta a intangibilidade\nKamui entre Espaço/Tempo e avante\nRinneSharingan é genjutsu dark\nMaldição do ódio filtrada no sangue!\n\nAntes Madara mas agora Tobi\nDeixando inimigos em estado de Obito\nNinja flex veja o Sharingan\nEsses Meteoros os faram extintos\nSinta a fúria do Black Chidori\nNão da pro Rasengan vai ser oprimido\nEu não temo seu Byakugan\nRinnegans no páreo eu já aniquilo\nInimigos perdem os sentidos\nDesde os ancestrais nós somos destemidos\nConte com a vitória bem antes da hora\nMas a sua arte não passa de um lixo\nFiz a escolha e mesmo que eu morra\nVivi pela Folha e fiz meu sacrifício\nAté posso restaurar meu clã\nReviver os Hokages que nóis é o bixo!!!"
+    },
+    "loudness": {
+        "lufs_before": -14.23,
+        "gain_db": -1.77
+    },
+    "alignment_quality": {
+        "score": 94.5,
+        "flags": [
+            "palavras empilhadas (39)",
+            "palavras com menos de 80 ms (7)",
+            "palavras depois do fim do verso (5)",
+            "versos sobrepostos (2)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 49,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 50,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 51,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 52,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 53,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 54,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 55,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 56,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 57,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 58,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 59,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 60,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 61,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 62,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 63,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 64,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 65,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 66,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 67,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 68,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 69,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 70,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 71,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 72,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 73,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 74,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 75,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 76,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 77,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 78,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 79,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 80,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 81,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 82,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 83,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 84,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 85,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 86,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 87,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 88,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 89,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 90,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 91,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 92,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 93,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 94,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 95,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 96,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 97,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 98,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 99,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 100,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 101,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 102,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 103,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 104,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 105,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 106,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 107,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 108,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 109,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 110,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 111,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 112,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 750,
+            "lines": 113,
+            "stacked": 39,
+            "short": 7,
+            "past_end": 5,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 2
+        }
+    },
+    "needs_review": false
+}

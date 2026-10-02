@@ -1,0 +1,215 @@
+{
+    "meta": {
+        "title": "bloom",
+        "artist": "NECRY TALKIE",
+        "language": "ja",
+        "slug": "bloom-necry-talkie"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=HW-MMu4GLWk",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "なんだかキャビの匂いがしてるガレージで yeah\nまともじゃない夢ばかり見てた\nもう少し眠っていたいな\n砂利がカラカラだった道端にある\n二、三転がるゴミが見えてる\nあれが今は美しく見えた それだけさ\nどうでもいい話だった\nまぁ 捻くれてるねってだけさ\n\n清算もしないままただ\nわがままなふりをして\nあの頃ぼくらって上手に話できていたかな\n\n芽吹くような君の髪色が何だろうと\n夕暮れになれば陽に染まっていく、茜色だな\n消えない心があるならば\nサビのついちまった四弦のフレットさ\nビッグマフで誤魔化せるかい？\n\nなんだか嫌になればなるほど言えなくなる\n言葉じゃない毒ばかり来てらァ\nそんな顔でこっち見ないで\n風がカラカラ吹いた\n\n君の髪色が何だろうと\n雪が降ったなら昏い白に隠れていくよ\n消えない痛みがあるならば\n土のついちまった憧憬の思い出さ\nそのファズでオクターヴギターを弾け！\n\n君の髪色が何だろうと\n月が照らすなら鈍い青が纏うのだろう\n美しい歪みがあるならば\n聞かせてくれ yeah\n芽吹くような\n\n君の髪色が何だろうと\nこのステージからはどこに行っても見つけるだろう\n消えない心があるならば\nサビのついちまった四弦のフレットさ\nビッグマフで誤魔化せるかい？"
+    },
+    "loudness": {
+        "lufs_before": -11.18,
+        "gain_db": -4.82
+    },
+    "alignment_quality": {
+        "score": 98.9,
+        "flags": [
+            "versos com mais de 12 s (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [
+                    "longo"
+                ]
+            }
+        ],
+        "metrics": {
+            "words": 141,
+            "lines": 35,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 1,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}

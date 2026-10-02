@@ -1,23 +1,27 @@
 {
     "meta": {
-        "title": "My Iron Lung",
-        "artist": "Radiohead",
-        "language": "en",
-        "slug": "my-iron-lung-radiohead"
+        "title": "Rap do Gaara (Naruto)",
+        "artist": "Player Tauz",
+        "language": "pt",
+        "slug": "rap-do-gaara-naruto-player-tauz"
     },
     "audio": {
-        "youtube_vocal_url": "https://youtu.be/eHK67LiMI8k?list=PLITJX_bIpkUWRXkTNLALt4XDE92tt-iSV",
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=DElu_HhWECg",
         "youtube_backing_url": ""
     },
     "lyrics": {
-        "plain_lyrics": "Faith\r\nYou're driving me away\r\nYou do it everyday\r\nYou don't mean it\r\nBut it hurts like hell\r\nMy brain\r\nSays I'm receiving pain\r\nA lack of oxygen\r\nFrom my life support\r\nMy iron lung\r\n\r\nWe're\r\nToo young to fall asleep\r\nToo cynical to speak\r\nWe are losing it\r\nCan't you tell?\r\nThe scratch\r\nOur eternal itch\r\nA twentieth century bitch\r\nAnd we are grateful for\r\nOur iron lung\r\n\r\nThe headshrinkers\r\nThey want everything\r\nMy uncle Bill\r\nMy Belisha beacon\r\nThe headshrinkers\r\nThey want everything\r\nMy uncle Bill\r\nMy Belisha beacon\r\n\r\nSuck\r\nSuck your teenage thumb\r\nToilet-trained and dumb\r\nWhen the power runs out\r\nWe'll just hum\r\nThis\r\nThis is our new song\r\nJust like the last one\r\nA total waste of time\r\nMy iron lung\r\nThe headshrinkers\r\nThey want everything\r\nMy uncle Bill\r\nMy Belisha beacon\r\nThe headshrinkers\r\nThey want everything\r\nMy uncle Bill\r\nMy Belisha beacon\r\n\r\nAnd if you're frightened\r\nYou can be frightened\r\nYou can be, it's okay\r\nAnd if you're frightened\r\nYou can be frightened\r\nYou can be, it's okay\r\n\r\nThe headshrinkers\r\nThey want everything\r\nMy uncle Bill\r\nMy Belisha beacon\r\nThe headshrinkers\r\nThey want everything\r\nMy uncle Bill\r\nMy Belisha beacon"
+        "plain_lyrics": "Eu não sabia o que era amar, e nem ser amado\nPois não tinha ninguém, e sempre fui rejeitado\nNão conhecia a dor no corpo, só a dor no coração\nTinha somente a areia na minha solidão\nPerdi a minha mãe durante o meu nascimento\nE fui criado por meu pai, como um experimento\nUm demônio em mim selado, mas eu tenho sentimentos\nE isso meu causou muita dor e sofrimento\nEntão eu cresci, sem nenhum amigo\nAmaldiçoado, odiado e perseguido\nVisto como uma ameaça, por todos era temido\nMas eu não tive culpa do que fizeram comigo\nA minha tristeza a cada dia aumentava\nApenas o meu tio que comigo se importava\nMas por ordem do meu pai ele tentou me atacar\nE eu perdi a minha alma quando tive que o matar\n\nEnquanto eu viver\nA areia vai me proteger\nMas continuo a lutar sem saber o que é certo\nEu sou (eu sou)\nGaara do deserto\n\nEnquanto eu viver\nA areia vai me proteger\nMas continuo a lutar sem saber o que é certo\nEu sou (eu sou)\nGaara do deserto\n\nEntão eu me tornei um monstro sem piedade\nAgora tudo que falavam de mim, era verdade\nO meu coração era só pura maldade\nCruel e distante sem laços de amizade\nNa trilha do mal pensando que era o certo\nFiquei tão vazio da mesma forma que um deserto\nComo poderia amar, se sempre fui odiado?\nEscrevi amor em minha testa sem saber o significado\nEu não dava nenhuma chance\nSó queria saciar, a sede por sangue\nO que você faria em meu lugar, você já pensou?\nQuando escutasse que sua mãe, nunca te amou?\nAté mesmo o meu pai tentava me matar\nForam tantas vezes que eu nem pude contar\nDepois de tudo que passei eu perdi meus sentimentos\nVivendo só pra mim, e só amando a mim mesmo\n\nEnquanto eu viver\nA areia vai me proteger\nMas continuo a lutar sem saber o que é certo\nEu sou (eu sou)\nGaara do deserto\n\nEnquanto eu viver\nA areia vai me proteger\nMas continuo a lutar sem saber o que é certo\nEu sou (eu sou)\nGaara do deserto\n\nMas quem podia imaginar, que um dia tudo ia mudar\nNo dia que eu perdi, comecei a enxergar\nConheci Naruto, que enfrentou o que passei\nE com a sua história eu me identifiquei\nMesmo sendo iguais teve um caminho diferente\nE suas convicções me fez mudar a minha mente\nO que eu tinha maldade, converti para bondade\nE hoje na vila da areia sou o quinto Kazekage\n\nEnquanto eu viver\nA areia vai me proteger\nCom todas minhas forças vou lutar pelo que é certo\nEu sou (eu sou)\nGaara do deserto"
+    },
+    "loudness": {
+        "lufs_before": -12.44,
+        "gain_db": -3.56
     },
     "alignment_quality": {
-        "score": 96.8,
+        "score": 95.7,
         "flags": [
-            "palavras empilhadas (3)",
-            "palavras com menos de 80 ms (2)",
-            "palavras depois do fim do verso (2)",
+            "palavras empilhadas (14)",
+            "palavras com menos de 80 ms (4)",
+            "palavras depois do fim do verso (3)",
             "versos sobrepostos (2)"
         ],
         "lines": [
@@ -149,7 +153,9 @@
             {
                 "idx": 25,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "empilhadas"
+                ]
             },
             {
                 "idx": 26,
@@ -254,7 +260,9 @@
             {
                 "idx": 46,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "empilhadas"
+                ]
             },
             {
                 "idx": 47,
@@ -269,19 +277,25 @@
             {
                 "idx": 49,
                 "confidence": null,
-                "flags": [
-                    "empilhadas"
-                ]
+                "flags": []
             },
             {
                 "idx": 50,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
             },
             {
                 "idx": 51,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ]
             },
             {
                 "idx": 52,
@@ -316,17 +330,13 @@
             {
                 "idx": 58,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 59,
                 "confidence": null,
                 "flags": [
-                    "sobreposto"
+                    "empilhadas"
                 ]
             },
             {
@@ -337,7 +347,9 @@
             {
                 "idx": 61,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "palavras curtas"
+                ]
             },
             {
                 "idx": 62,
@@ -347,10 +359,7 @@
             {
                 "idx": 63,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas"
-                ]
+                "flags": []
             },
             {
                 "idx": 64,
@@ -364,11 +373,11 @@
             }
         ],
         "metrics": {
-            "words": 202,
+            "words": 458,
             "lines": 66,
-            "stacked": 3,
-            "short": 2,
-            "past_end": 2,
+            "stacked": 14,
+            "short": 4,
+            "past_end": 3,
             "silence": 0,
             "long_verses": 0,
             "overlaps": 2

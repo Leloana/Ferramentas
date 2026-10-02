@@ -1,0 +1,743 @@
+{
+    "meta": {
+        "title": "Tipo Madara",
+        "artist": "MHRAP",
+        "language": "pt",
+        "slug": "tipo-madara-mhrap"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=wCMzj9Gzyt0",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Eles disseram que meu ego é grande\r\nQue eu sou um ninja do tipo arrongante\r\nQue sentem medo só pelo semblante\r\n(Yeh yeh)\r\n\r\nNinja, shinobi lendário\r\nP'ra que fazer jutsu se eu tenho uma peça\r\n(Woo)\r\nMetendo bala na cara desses figurantes no meio da guerra\r\n(Yea)\r\nNo mano a mano o olhar vibra\r\nSabe que eu posso prever e te ferrar nessa briga\r\nPor que eu 'tô te perfurando e sigo flex na esquiva\r\n'Tá ligado mano, é o renegado na fita\r\n\r\nYayaya\r\nÉ que eu sou Nukenin\r\nKunoichi gosta assim\r\nE vem falar pra mim\r\nMestre dos Shinobi\r\nVocês nem são Chunnin\r\nVem pro vale do fim\r\nVê se ganha de mim\r\nCorrendo pra linha de frente\r\nCom meu traje de batalha\r\nE essa marra que acaba com seu exército ninja\r\nNa treta nós é potente\r\nE eu piso na sua cara\r\nE a espada parte tanto que até vira chacina\r\n\r\nÉ que eu sou ninja, my nigga, no CAP\r\nMetendo kunai bem no peito dos cria\r\nSó chute duplo, pega o papel bomba!\r\nKaton na sua face, a katana mutila\r\nÉ que eu tô de volta na cena, e eu sei que muitos dúvida\r\nBem overpower, muita areia pro teu porte\r\nSe é edo tensei eu já não sei, no hype chibaku tensei\r\nEles só sabem que eu já retornei da morte\r\n\r\nFracos demais\r\nNão adianta\r\nEu lapido a paz\r\n'Cê sabe da fama\r\nE meus ideias\r\nÉ assim que se alcança\r\nBusquei na cabeça dos kages e da aliança\r\n'Tá tudo vermelho, isso nem é Sharingan\r\nMas se eu ativar é o olho que tudo vê\r\nEra só um meteoro mas minha mente vilã\r\n'Tá fazendo eu mandar 2, já tô cansado de você\r\n\r\nÉ que eu sou brabo, nigga, no CAP\r\nE a logo do clã é grife dos ninjas\r\nÉ que pra mim isso já é uma festa\r\nÉ o retorno da lenda divindade Uchiha\r\nSó desviando, girando, cortando\r\nGuenjustu hard que te paraliza\r\nNão me encara se não é jutsu bola de fire\r\nPor que eu 'tô tacando fogo nas kunoichi safadinha\r\n\r\nSe eu 'tô manipulando eles sempre fazem o que eu falo\r\n(Nunca fazem o que eu faço)\r\nEu nunca posso ser comparado\r\nO meu nível é muito mais alto\r\nMuito luxo, Nukenin de grife\r\nE o meu nome pra sempre será lembrado\r\nComo o lendário renegado\r\nOutro patamar\r\n\r\nSou\r\nVi-si-o-nário\r\n\r\nNinja voando\r\nPego pescoço e acelera\r\nMatando esses pela\r\nE eu tô só começando\r\nJá 'tô no ódio e se avistar figurantes mortos\r\nFoi só eu passando\r\nEles disseram que isso não era guerra\r\nAchavam que eu tava brincando\r\nSabe que eu 'tô te matando\r\n\r\nGang gang\r\nGang gang\r\nSou minha própria gang\r\nGang gang\r\nYeye\r\n\r\nEu sou minha própria gang\r\nGang gang\r\nGang gang\r\nSou minha própria gang\r\nGang gang\r\nYeye\r\n\r\nCom Susano'o ou sem\r\nÉ que sou ninja, my neega, no CAP\r\nMetendo kunai bem no peito dos cria\r\nSó chute duplo, pega o papel bomba\r\nKaton na sua face, a katana mutila\r\nChega de selo, correndo bolado\r\nCom a mão pra trás, o taijustu é pica\r\nPode avisar que agora o Deus da guerra\r\nNão é só história de mitologia\r\n\r\nÉ que eu sou brabo, my neega, no CAP\r\nE a logo do clã é a grife dos ninjas\r\nÉ que pra mim isso já é uma festa\r\nRetorno da lenda divindade Uchiha\r\nSó desviando, girando, cortando\r\nGuenjustu hard que te paraliza\r\nNão me encara se não toma justu bola de fire\r\nPor que eu 'tô tacando fogo nas kunoichi safadinha\r\n\r\nTô tipo Madara\r\nTô tipo Madara\r\nUchiha Madara\r\nEu sou Uchiha Madara\r\n('Tô tipo Uchiha Madara, figurante não me para\r\nMeu Sharingan te devasta... Uo uo)"
+    },
+    "loudness": {
+        "lufs_before": -17.16,
+        "gain_db": 1.16
+    },
+    "alignment_quality": {
+        "score": 77.3,
+        "flags": [
+            "palavras empilhadas (37)",
+            "palavras com menos de 80 ms (60)",
+            "palavras depois do fim do verso (50)",
+            "versos sobrepostos (29)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 49,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 50,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 51,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 52,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 53,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 54,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 55,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 56,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 57,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 58,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 59,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 60,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 61,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 62,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 63,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 64,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 65,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 66,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 67,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 68,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 69,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 70,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 71,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 72,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 73,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 74,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 75,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 76,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 77,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 78,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 79,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 80,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 81,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 82,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 83,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 84,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 85,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 86,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 87,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 88,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 89,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 90,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 91,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 92,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 93,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 94,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 95,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 96,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 97,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 98,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 99,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 100,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 101,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 102,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 103,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 104,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 105,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 106,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 619,
+            "lines": 107,
+            "stacked": 37,
+            "short": 60,
+            "past_end": 50,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 29
+        }
+    },
+    "needs_review": false
+}

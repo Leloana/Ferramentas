@@ -1,25 +1,24 @@
 {
     "meta": {
-        "title": "My Iron Lung",
-        "artist": "Radiohead",
-        "language": "en",
-        "slug": "my-iron-lung-radiohead"
+        "title": "Rap do Obito (Naruto)",
+        "artist": "Player Tauz",
+        "language": "pt",
+        "slug": "tauz-raptributo-38-rap-do-obito-naruto"
     },
     "audio": {
-        "youtube_vocal_url": "https://youtu.be/eHK67LiMI8k?list=PLITJX_bIpkUWRXkTNLALt4XDE92tt-iSV",
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=U2Inn_QfPDg",
         "youtube_backing_url": ""
     },
     "lyrics": {
-        "plain_lyrics": "Faith\r\nYou're driving me away\r\nYou do it everyday\r\nYou don't mean it\r\nBut it hurts like hell\r\nMy brain\r\nSays I'm receiving pain\r\nA lack of oxygen\r\nFrom my life support\r\nMy iron lung\r\n\r\nWe're\r\nToo young to fall asleep\r\nToo cynical to speak\r\nWe are losing it\r\nCan't you tell?\r\nThe scratch\r\nOur eternal itch\r\nA twentieth century bitch\r\nAnd we are grateful for\r\nOur iron lung\r\n\r\nThe headshrinkers\r\nThey want everything\r\nMy uncle Bill\r\nMy Belisha beacon\r\nThe headshrinkers\r\nThey want everything\r\nMy uncle Bill\r\nMy Belisha beacon\r\n\r\nSuck\r\nSuck your teenage thumb\r\nToilet-trained and dumb\r\nWhen the power runs out\r\nWe'll just hum\r\nThis\r\nThis is our new song\r\nJust like the last one\r\nA total waste of time\r\nMy iron lung\r\nThe headshrinkers\r\nThey want everything\r\nMy uncle Bill\r\nMy Belisha beacon\r\nThe headshrinkers\r\nThey want everything\r\nMy uncle Bill\r\nMy Belisha beacon\r\n\r\nAnd if you're frightened\r\nYou can be frightened\r\nYou can be, it's okay\r\nAnd if you're frightened\r\nYou can be frightened\r\nYou can be, it's okay\r\n\r\nThe headshrinkers\r\nThey want everything\r\nMy uncle Bill\r\nMy Belisha beacon\r\nThe headshrinkers\r\nThey want everything\r\nMy uncle Bill\r\nMy Belisha beacon"
+        "plain_lyrics": "Player tauz\nComo eu era tolo uma criança inocente\nAcreditava que podia ter um mundo diferente\nDa morte eu voltei\nE desse mundo cansei\nA máscara esconde a revolta de um ninja\nObito\nObito uchiha\nPra eles eu morri durante aquela guerra\nQuando tive o meu corpo enterrado com as pedras\nNem deu para dizer a rin o quanto eu a amava\nMas fui salvo e treinado por uchiha madara\nPartes do meu corpo foi regenerado\nEu fui escolhido para seguir o seu legado\nE assim eu me tornei o ninja mascarado\nMas antes vou te lembrar minha história no passado\nComo eu era tolo uma criança inocente\nAcreditava que podia ter um mundo diferente\nSem habilidade mas cheio de bondade\nE também como naruto eu sonhava em ser hokage\nMas algo aconteceu para eu mudar tao de repente\nFoi quando vi kakashi matar rin em minha frente\nUma fúria incontrolável despertei mangekyou\nE a esperança que tinha nesse mundo se acabou\nDa morte eu voltei\nE desse mundo cansei\nA máscara esconde a revolta de um ninja\nObito\nObito uchiha\nDa morte eu voltei\nE desse mundo cansei\nA máscara esconde a revolta de um ninja\nObito\nObito uchiha\nDe volta como madara me chame de tobi\nMantenho o segredo do meu verdadeiro nome\nCom seu plano em ação a partir de hoje\nEsse mundo vai sentir a fúria de um shinobi\nSe existe vencedor\nTambém há perdedor\nVivemos num inferno nele sempre terá dor\nNum mundo dos sonho no plano olho da lua\nLá não terá dor, tristeza e amargura\nFaço oque for preciso me desculpe konan\nPreciso ir em frente então me de o rinnegan\nEu não sou ninguém, não quero ser ninguém\nSó quero cumprir o plano que no fundo é pelo bem\nE se ninguém quiser entender\nFuja do meu caminho pois senão ira morrer\nA máscara esconde a revolta de um ninja\nObito uchiha\nDa morte eu voltei\nE desse mundo cansei\nA máscara esconde a revolta de um ninja\nObito\nObito uchiha\nDa morte eu voltei\nE desse mundo cansei\nA máscara esconde a revolta de um ninja\nObito\nObito uchiha\nLágrimas, lua, encheram de, de sangue\nNão há mais aqui nenhuma chance\nEu já não sou mais o mesmo de antes\nFiquei tao vazio cada dia mais distante\nMas posso te convencer\nEntão me escute\nEu manipulei toda akatsuki\nVeja o meu jutsu da transportação\nVocê só pode me atingir em outra dimensão\nAbra o meu peito não tenho mais coração\nTudo oque restou foi só escuridão\nA máscara esconde a revolta de um ninja\nObito uchiha\nDa morte voltei\nE desse mundo cansei\nA máscara esconde a revolta de um ninja\nObito\nObito uchiha\nDa morte voltei\nE desse mundo cansei\nA máscara esconde a revolta de um ninja\nObito\nObito uchiha\nObito\nObito uchiha\nA história de um ninja\nQue no fim sacrificou a sua vida\nObito uchiha\nPlayer tauz\nMais uma semana\nTamo junto"
+    },
+    "loudness": {
+        "lufs_before": -13.08,
+        "gain_db": -2.92
     },
     "alignment_quality": {
-        "score": 96.8,
-        "flags": [
-            "palavras empilhadas (3)",
-            "palavras com menos de 80 ms (2)",
-            "palavras depois do fim do verso (2)",
-            "versos sobrepostos (2)"
-        ],
+        "score": 100.0,
+        "flags": [],
         "lines": [
             {
                 "idx": 0,
@@ -269,9 +268,7 @@
             {
                 "idx": 49,
                 "confidence": null,
-                "flags": [
-                    "empilhadas"
-                ]
+                "flags": []
             },
             {
                 "idx": 50,
@@ -316,18 +313,12 @@
             {
                 "idx": 58,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 59,
                 "confidence": null,
-                "flags": [
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 60,
@@ -347,10 +338,7 @@
             {
                 "idx": 63,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas"
-                ]
+                "flags": []
             },
             {
                 "idx": 64,
@@ -361,17 +349,147 @@
                 "idx": 65,
                 "confidence": null,
                 "flags": []
+            },
+            {
+                "idx": 66,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 67,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 68,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 69,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 70,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 71,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 72,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 73,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 74,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 75,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 76,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 77,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 78,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 79,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 80,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 81,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 82,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 83,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 84,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 85,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 86,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 87,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 88,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 89,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 90,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 91,
+                "confidence": null,
+                "flags": []
             }
         ],
         "metrics": {
-            "words": 202,
-            "lines": 66,
-            "stacked": 3,
-            "short": 2,
-            "past_end": 2,
+            "words": 495,
+            "lines": 92,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
             "silence": 0,
             "long_verses": 0,
-            "overlaps": 2
+            "overlaps": 0
         }
     },
     "needs_review": false

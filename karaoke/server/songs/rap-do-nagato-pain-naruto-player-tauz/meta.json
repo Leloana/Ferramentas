@@ -1,0 +1,672 @@
+{
+    "meta": {
+        "title": "Rap do Nagato / Pain (Naruto)",
+        "artist": "Player Tauz",
+        "language": "pt",
+        "slug": "rap-do-nagato-pain-naruto-player-tauz"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=IfXZWup8LMs",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Eu era bem pequeno, mas ainda me lembro\nDaquele momento, a dor e o desespero\nDentro de nossa casa, totalmente indefesos\nVendo com meus olhos, tanto sofrimento\nMeu pai reagiu pra tentar nos proteger\nA dor daquela noite eu não consigo esquecer\nVer meu pais e mãe morrer foi uma dor pra vida toda\nMortos por engano por ninjas de Konoha\nTempos de guerra, não havia paz\nTive que enterra, os meus próprios pais\nSai da minha casa a procura de alimentos\nPois já tinha acabado, todos os mantimentos\nAo longo do caminho, a comida acabando\nNão sobrou mais nada para ir me alimentando\nNão tinha mais forças, nem pra caminhar\nSerá que vou morrer, aqui nesse lugar?\nSalvo por um cachorrinho\nQue apelidei \"Chibi\", meu amigo\nNão tinha comida, também não tinha abrigo\nE mesmo assim ele quis ficar com migo\nEu tinha que pedir algo pra nos alimentar\nMas a resposta, sempre a mesma, eu posso lembrar\n\"Senhor, por favor, tem alimento pra me dar?\"\n\"Não, não temos nada, vá pedir em outro lugar!\"\n\nEssa é a dor que eu passei\nA dor que só eu sei\nA dor que me transformei\nDe Nagato para para Pain!\nEssa é a dor que eu passei\nA dor que só eu sei\nA dor que me transformei\nDe Nagato para Pain!\n\nMas quem vai perceber as minhas lágrimas na chuva?\nContinuo a caminhar mesmo sem ter força nenhuma\nSomente um sofredor pra entender um sofredor\nPor isso eu busco paz nem que ela venha pela dor\nSomos movidos por vingança em nomes da justiça\nEm ciclo de ódio, que não, nunca termina\nNagato eu busco a paz também\nPela dor o meu nome é Pain!\nFui salvo por mais uma vez\nDividi com Chibi, o pão que eu ganhei\nÓrfãos da guerra, assim como eu\nQue perderam tudo com aguerra que acendeu\nKonan e Yahiko, fiz novos amigos\nMuitos planos pro futuro pra mudar nosso destino\nA paz no mundo inteiro, sim a gente sonha\nMas destroem nossos sonhos explodindo com uma bomba\nBoom, voltando pra realidade\nA guerra continua e não tem piedade\nEram tempos difíceis, assim como a chuva\nQue caia sobre nós, e não parava nunca\nHanzou e os Sannins batalhavam em todo tempo\nLevantei pra ver o que estava acontecendo:\n\"Ah meu Deus, não pode ser, Chibi está morrendo\n... Por favor, alguém ajuda, ele não tá me respondendo!\"\n\nEssa é a dor que eu passei\nA dor que só eu sei\nA dor que me transformei\nDe Nagato para para Pain!\nEssa é a dor que eu passei\nA dor que só eu sei\nA dor que me transformei\nDe Nagato para Pain!\n\nMas quem vai perceber as minhas lágrimas na chuva?\nContinuo a caminhar mesmo sem ter força nenhuma\nSomente um sofredor pra entender um sofredor\nPor isso eu busco paz nem que ela venha pela dor\nSomos movidos por vingança em nomes da justiça\nEm ciclo de ódio, que não, nunca termina\nNagato, eu busco a paz também\nPela dor, o meu nome é Pain!\nFomos treinados por Jiraiya\nQue também nos adotava\nAprendemos a lutar\nE ele teve, teve que nos deixar\nAkatsuki, um grupo de Honra\nLutando pela paz, sem uso da força\nO povo aprovava e veio reconhecimento\nHanzou nos contratou, pois também ficou sabendo\nFechamos um acordo e caímos em armadilha\nPensaram que poder era o que a gente queria\nConsigo ainda sentir, a dor daquele dia\nE também lembrar das palavras que ouvia:\n\"Mate o seu líder e então vocês podem ir\nOu então eu mato ela, o que vai decidir?\"\nDestruíram nossos sonhos, e nosso destino\nE fizeram eu tirar, a vida do meu amigo\n\nEssa é a dor que eu passei\nA dor que só eu sei\nA dor que me transformei\nDe Nagato para para Pain!\nEssa é a dor que eu passei\nA dor que só eu sei\nA dor que me transformei\nDe Nagato para Pain!\n\nMas quem vai perceber as minhas lágrimas na chuva?\nContinuo a caminhar mesmo sem ter força nenhuma\nSomente um sofredor pra entender um sofredor\nPor isso eu busco paz nem que ela venha pela dor\nSomos movidos por vingança em nomes da justiça\nEm ciclo de ódio, que não, nunca termina\nNagato, eu busco a paz também\nPela dor, o meu nome é Pain!"
+    },
+    "loudness": {
+        "lufs_before": -14.76,
+        "gain_db": -1.24
+    },
+    "alignment_quality": {
+        "score": 73.7,
+        "flags": [
+            "confiança baixa em 33% das palavras",
+            "palavras empilhadas (64)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": 0.647,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": 0.597,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 2,
+                "confidence": 0.929,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": 0.844,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": 0.535,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": 0.528,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 6,
+                "confidence": 0.608,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 7,
+                "confidence": 0.616,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": 0.614,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": 0.439,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": 0.548,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": 0.746,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 12,
+                "confidence": 0.732,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": 0.702,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": 0.629,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": 0.514,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": 0.496,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": 0.559,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": 0.624,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": 0.489,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": 0.57,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": 0.804,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": 0.678,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": 0.652,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": 0.394,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": 0.157,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 26,
+                "confidence": 0.122,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 27,
+                "confidence": 0.195,
+                "flags": [
+                    "confiança baixa",
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 28,
+                "confidence": 0.177,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 29,
+                "confidence": 0.149,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 30,
+                "confidence": 0.387,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": 0.228,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 32,
+                "confidence": 0.225,
+                "flags": [
+                    "confiança baixa",
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 33,
+                "confidence": 0.196,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 34,
+                "confidence": 0.463,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": 0.354,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": 0.509,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": 0.448,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": 0.425,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": 0.432,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": 0.531,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": 0.558,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": 0.633,
+                "flags": []
+            },
+            {
+                "idx": 43,
+                "confidence": 0.609,
+                "flags": []
+            },
+            {
+                "idx": 44,
+                "confidence": 0.62,
+                "flags": []
+            },
+            {
+                "idx": 45,
+                "confidence": 0.437,
+                "flags": []
+            },
+            {
+                "idx": 46,
+                "confidence": 0.537,
+                "flags": []
+            },
+            {
+                "idx": 47,
+                "confidence": 0.621,
+                "flags": []
+            },
+            {
+                "idx": 48,
+                "confidence": 0.664,
+                "flags": []
+            },
+            {
+                "idx": 49,
+                "confidence": 0.702,
+                "flags": []
+            },
+            {
+                "idx": 50,
+                "confidence": 0.742,
+                "flags": []
+            },
+            {
+                "idx": 51,
+                "confidence": 0.676,
+                "flags": []
+            },
+            {
+                "idx": 52,
+                "confidence": 0.712,
+                "flags": []
+            },
+            {
+                "idx": 53,
+                "confidence": 0.592,
+                "flags": []
+            },
+            {
+                "idx": 54,
+                "confidence": 0.377,
+                "flags": []
+            },
+            {
+                "idx": 55,
+                "confidence": 0.666,
+                "flags": []
+            },
+            {
+                "idx": 56,
+                "confidence": 0.541,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 57,
+                "confidence": 0.668,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 58,
+                "confidence": 0.485,
+                "flags": []
+            },
+            {
+                "idx": 59,
+                "confidence": 0.23,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 60,
+                "confidence": 0.083,
+                "flags": [
+                    "confiança baixa",
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 61,
+                "confidence": 0.416,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 62,
+                "confidence": 0.231,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 63,
+                "confidence": 0.137,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 64,
+                "confidence": 0.179,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 65,
+                "confidence": 0.163,
+                "flags": [
+                    "confiança baixa",
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 66,
+                "confidence": 0.057,
+                "flags": [
+                    "confiança baixa",
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 67,
+                "confidence": 0.395,
+                "flags": []
+            },
+            {
+                "idx": 68,
+                "confidence": 0.526,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 69,
+                "confidence": 0.304,
+                "flags": [
+                    "confiança baixa",
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 70,
+                "confidence": 0.477,
+                "flags": []
+            },
+            {
+                "idx": 71,
+                "confidence": 0.476,
+                "flags": []
+            },
+            {
+                "idx": 72,
+                "confidence": 0.47,
+                "flags": []
+            },
+            {
+                "idx": 73,
+                "confidence": 0.39,
+                "flags": []
+            },
+            {
+                "idx": 74,
+                "confidence": 0.43,
+                "flags": []
+            },
+            {
+                "idx": 75,
+                "confidence": 0.51,
+                "flags": []
+            },
+            {
+                "idx": 76,
+                "confidence": 0.679,
+                "flags": []
+            },
+            {
+                "idx": 77,
+                "confidence": 0.541,
+                "flags": []
+            },
+            {
+                "idx": 78,
+                "confidence": 0.917,
+                "flags": []
+            },
+            {
+                "idx": 79,
+                "confidence": 0.334,
+                "flags": [
+                    "confiança baixa",
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 80,
+                "confidence": 0.395,
+                "flags": []
+            },
+            {
+                "idx": 81,
+                "confidence": 0.772,
+                "flags": []
+            },
+            {
+                "idx": 82,
+                "confidence": 0.448,
+                "flags": []
+            },
+            {
+                "idx": 83,
+                "confidence": 0.354,
+                "flags": []
+            },
+            {
+                "idx": 84,
+                "confidence": 0.331,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 85,
+                "confidence": 0.916,
+                "flags": []
+            },
+            {
+                "idx": 86,
+                "confidence": 0.697,
+                "flags": []
+            },
+            {
+                "idx": 87,
+                "confidence": 0.594,
+                "flags": []
+            },
+            {
+                "idx": 88,
+                "confidence": 0.485,
+                "flags": []
+            },
+            {
+                "idx": 89,
+                "confidence": 0.812,
+                "flags": []
+            },
+            {
+                "idx": 90,
+                "confidence": 0.778,
+                "flags": []
+            },
+            {
+                "idx": 91,
+                "confidence": 0.744,
+                "flags": []
+            },
+            {
+                "idx": 92,
+                "confidence": 0.441,
+                "flags": []
+            },
+            {
+                "idx": 93,
+                "confidence": 0.146,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 94,
+                "confidence": 0.253,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 95,
+                "confidence": 0.421,
+                "flags": []
+            },
+            {
+                "idx": 96,
+                "confidence": 0.305,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 97,
+                "confidence": 0.143,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 98,
+                "confidence": 0.348,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 99,
+                "confidence": 0.11,
+                "flags": [
+                    "confiança baixa",
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 100,
+                "confidence": 0.105,
+                "flags": [
+                    "confiança baixa",
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 101,
+                "confidence": 0.104,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 102,
+                "confidence": 0.549,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 103,
+                "confidence": 0.323,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 104,
+                "confidence": 0.522,
+                "flags": []
+            },
+            {
+                "idx": 105,
+                "confidence": 0.435,
+                "flags": []
+            },
+            {
+                "idx": 106,
+                "confidence": 0.482,
+                "flags": []
+            },
+            {
+                "idx": 107,
+                "confidence": 0.371,
+                "flags": []
+            },
+            {
+                "idx": 108,
+                "confidence": 0.567,
+                "flags": []
+            },
+            {
+                "idx": 109,
+                "confidence": 0.502,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 763,
+            "lines": 110,
+            "low_confidence": 0.327,
+            "median_confidence": 0.508,
+            "stacked": 64,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}

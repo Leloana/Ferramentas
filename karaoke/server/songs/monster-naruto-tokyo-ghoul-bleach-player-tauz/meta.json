@@ -1,23 +1,27 @@
 {
     "meta": {
-        "title": "My Iron Lung",
-        "artist": "Radiohead",
-        "language": "en",
-        "slug": "my-iron-lung-radiohead"
+        "title": "Monster (Naruto, Tokyo Ghoul, Bleach)",
+        "artist": "Player Tauz",
+        "language": "pt",
+        "slug": "monster-naruto-tokyo-ghoul-bleach-player-tauz"
     },
     "audio": {
-        "youtube_vocal_url": "https://youtu.be/eHK67LiMI8k?list=PLITJX_bIpkUWRXkTNLALt4XDE92tt-iSV",
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=-buBeFO4SPE",
         "youtube_backing_url": ""
     },
     "lyrics": {
-        "plain_lyrics": "Faith\r\nYou're driving me away\r\nYou do it everyday\r\nYou don't mean it\r\nBut it hurts like hell\r\nMy brain\r\nSays I'm receiving pain\r\nA lack of oxygen\r\nFrom my life support\r\nMy iron lung\r\n\r\nWe're\r\nToo young to fall asleep\r\nToo cynical to speak\r\nWe are losing it\r\nCan't you tell?\r\nThe scratch\r\nOur eternal itch\r\nA twentieth century bitch\r\nAnd we are grateful for\r\nOur iron lung\r\n\r\nThe headshrinkers\r\nThey want everything\r\nMy uncle Bill\r\nMy Belisha beacon\r\nThe headshrinkers\r\nThey want everything\r\nMy uncle Bill\r\nMy Belisha beacon\r\n\r\nSuck\r\nSuck your teenage thumb\r\nToilet-trained and dumb\r\nWhen the power runs out\r\nWe'll just hum\r\nThis\r\nThis is our new song\r\nJust like the last one\r\nA total waste of time\r\nMy iron lung\r\nThe headshrinkers\r\nThey want everything\r\nMy uncle Bill\r\nMy Belisha beacon\r\nThe headshrinkers\r\nThey want everything\r\nMy uncle Bill\r\nMy Belisha beacon\r\n\r\nAnd if you're frightened\r\nYou can be frightened\r\nYou can be, it's okay\r\nAnd if you're frightened\r\nYou can be frightened\r\nYou can be, it's okay\r\n\r\nThe headshrinkers\r\nThey want everything\r\nMy uncle Bill\r\nMy Belisha beacon\r\nThe headshrinkers\r\nThey want everything\r\nMy uncle Bill\r\nMy Belisha beacon"
+        "plain_lyrics": "(Monster)\n(How should I feel?)\n(Creatures lie here)\n(Looking through the windows)\n(Monster)\n(How should I feel?)\n(Creatures lie here)\n(Looking through the windows)\nEu era alguém, que acreditava só no bem\nLutava e buscava o certo como ninguém\nMas veja bem, a verdade é que eu sempre fracassei\nE também doeu em mim no dia que eu te deixei\nPor anos eu tentei, mas sei que eu falhei\nNão pude cumprir tudo aquilo que jurei\nE eu sei (eu sei) fui tão longe que cheguei\nAo ponto de ser a dor da pessoa que eu mais amei\n(Monster) olha o que eu me tornei\nO tipo de pessoa que eu nunca imaginei\nO mal que estava escondido alimentei\nE agora sinto que esse monstro não dominei\nE quem vai entender? (E quem vai entender?)\nSe quero pra mim morrer (se quero pra mim morrer)\nEu odeio o que virei, mas me faz sentir tão bem\nPois quando estou nas sombras sou forte como ninguém\n(Monster)\n(How should I feel?)\n(Creatures lie here)\n(Looking through the windows)\n(Monster)\n(How should I feel?)\n(Creatures lie here)\n(Looking through the windows)\nMe vejo no espelho, mas não me reconheço\nConfesso que até de mim, as vezes eu tenho medo\nNenhum sentimento, nem arrependimento\nTudo se perdeu como folhas para o vento\nSe sobrou algo de mim, no fundo, lá dentro\nLuto pra encontrar mas no fim eu nunca venço\nE eu tento, mas é só perda de tempo\nCada dia estou mais frio, perdido nos meus pensamentos\nNão preciso de razão\nEu escolhi cair pra dar de cara no chão\nNo meio da multidão, percebo a solidão\nDepois que você foi aqui virou escuridão\nE quem vai entender? (E quem vai entender?)\nSe quero pra mim morrer (se quero pra mim morrer)\nTanto faz, não importa mais nada e mais ninguém\nNão estou me importando nem comigo também\n(Monster)\n(How should I feel?)\n(Creatures lie here)\n(Looking through the windows)\n(Monster)\n(How should I feel?)\n(Creatures lie here)\n(Looking through the windows)\nMe sinto quebrado\nCaindo em pedaços\nPorque eu sei que estou fora e não consigo voltar\nToda minha insanidade eu preciso provar\nNão dá, não dá, eu já deixei me dominar\nUma fera fora da jaula, quem pode controlar?\nSinto que estou mais forte e nem eu posso parar\nVocê não pode mais me ver pois tem alguém no meu lugar\n(Monster)\nCheguei a um extremo\nPosso até estar morrendo e eu já quero isso mesmo\nO errado é tão certo e o certo é tão errado\nO mal que me faz bem é o que me deixa alucinado\nE quem vai entender? (E quem vai entender?)\nSe quero pra mim morrer (se quero pra mim morrer)\nEu odeio o que virei mas me faz sentir tão bem\nPois quando estou nas sombras sou forte como ninguém\n(Monster)\n(How should I feel?)\n(Creatures lie here)\n(Looking through the windows)\n(Monster)\n(How should I feel?)\n(Creatures lie here)\n(Looking through the windows)"
+    },
+    "loudness": {
+        "lufs_before": -14.57,
+        "gain_db": -1.43
     },
     "alignment_quality": {
-        "score": 96.8,
+        "score": 93.3,
         "flags": [
-            "palavras empilhadas (3)",
+            "palavras empilhadas (34)",
             "palavras com menos de 80 ms (2)",
-            "palavras depois do fim do verso (2)",
+            "palavras depois do fim do verso (1)",
             "versos sobrepostos (2)"
         ],
         "lines": [
@@ -74,12 +78,16 @@
             {
                 "idx": 10,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "empilhadas"
+                ]
             },
             {
                 "idx": 11,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "empilhadas"
+                ]
             },
             {
                 "idx": 12,
@@ -99,17 +107,23 @@
             {
                 "idx": 15,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "empilhadas"
+                ]
             },
             {
                 "idx": 16,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "palavras curtas"
+                ]
             },
             {
                 "idx": 17,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "empilhadas"
+                ]
             },
             {
                 "idx": 18,
@@ -124,7 +138,9 @@
             {
                 "idx": 20,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "empilhadas"
+                ]
             },
             {
                 "idx": 21,
@@ -214,7 +230,9 @@
             {
                 "idx": 38,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "empilhadas"
+                ]
             },
             {
                 "idx": 39,
@@ -254,7 +272,9 @@
             {
                 "idx": 46,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "empilhadas"
+                ]
             },
             {
                 "idx": 47,
@@ -269,9 +289,7 @@
             {
                 "idx": 49,
                 "confidence": null,
-                "flags": [
-                    "empilhadas"
-                ]
+                "flags": []
             },
             {
                 "idx": 50,
@@ -316,18 +334,12 @@
             {
                 "idx": 58,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 59,
                 "confidence": null,
-                "flags": [
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 60,
@@ -337,7 +349,9 @@
             {
                 "idx": 61,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "empilhadas"
+                ]
             },
             {
                 "idx": 62,
@@ -347,10 +361,7 @@
             {
                 "idx": 63,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas"
-                ]
+                "flags": []
             },
             {
                 "idx": 64,
@@ -360,15 +371,100 @@
             {
                 "idx": 65,
                 "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 66,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 67,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 68,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 69,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 70,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 71,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 72,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 73,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 74,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 75,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 76,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 77,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 78,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 79,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 80,
+                "confidence": null,
                 "flags": []
             }
         ],
         "metrics": {
-            "words": 202,
-            "lines": 66,
-            "stacked": 3,
+            "words": 501,
+            "lines": 81,
+            "stacked": 34,
             "short": 2,
-            "past_end": 2,
+            "past_end": 1,
             "silence": 0,
             "long_verses": 0,
             "overlaps": 2
