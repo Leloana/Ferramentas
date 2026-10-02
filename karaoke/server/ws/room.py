@@ -400,7 +400,12 @@ def _dispatch_due_segments(room, current_time: float | None) -> None:
                 continue
             audio, covered = timeline.extract(t0, t1)
             if not room.recording:  # a gravação guarda a música inteira
-                timeline.prune_before(t1)
+                # verso rápido invade o próximo (segment_window): guarda o que ele ainda usa
+                keep_from = t1
+                if idx + 1 < len(room.segments):
+                    keep_from = min(t1, segment_window(room.segments, idx + 1, PRE_SING_BUFFER_SEC,
+                                                       POST_SING_BUFFER_SEC)[0])
+                timeline.prune_before(keep_from)
             if covered.any():
                 rms = float(np.sqrt(np.mean(audio[covered] ** 2)))
                 active_audio[player] = (audio, rms)

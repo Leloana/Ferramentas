@@ -231,11 +231,33 @@ class MicTimeline:
         self.chunks = [c for c in self.chunks if self._chunk_span(*c)[0] < t]
 
 
+# Verso rápido (rap): letras da letra por segundo de verso. Rap fica em 12–18,
+# o resto em 2–8 (medido nas partidas gravadas, 2026-10-02).
+FAST_VERSE_LETTERS_PER_SEC = 11.0
+# Folga depois do fim do verso rápido, mesmo invadindo o próximo: quem canta vem
+# 0,2–0,4 s atrás da letra e, com versos emendados, as últimas palavras caíam na
+# janela seguinte (os dois versos perdiam). Replay: Madara 50→70, Renegado 71→84.
+FAST_VERSE_TAIL_SEC = 0.4
+
+
+def is_fast_verse(segment: dict) -> bool:
+    """Verso cantado depressa (rap): muitas letras para a duração do verso."""
+    from lyrics_text import lead_words  # import tardio: lyrics_text puxa o MeCab
+
+    words = lead_words(segment.get("lyrics_timed") or [])
+    if not words:
+        return False
+    letters = sum(ch.isalnum() for w in words for ch in w["word"])
+    duration = max(0.3, float(segment["sing_end"]) - float(segment["sing_start"]))
+    return letters / duration >= FAST_VERSE_LETTERS_PER_SEC
+
+
 def segment_window(segments: list[dict], idx: int, pre_sec: float, post_sec: float) -> tuple[float, float]:
     """Janela de captura [t0, t1) do verso `idx`, disjunta das vizinhas.
 
     Antes o pré-roll de um verso incluía o fim do anterior e o mesmo áudio era
-    pontuado duas vezes (o "vazamento do verso anterior").
+    pontuado duas vezes (o "vazamento do verso anterior"). Exceção: verso rápido
+    ganha FAST_VERSE_TAIL_SEC depois do fim, por cima do começo do próximo.
     """
 
     def end_of(i: int) -> float:
@@ -248,4 +270,7 @@ def segment_window(segments: list[dict], idx: int, pre_sec: float, post_sec: flo
     t0 = max(0.0, segments[idx]["sing_start"] - pre_sec)
     if idx > 0:
         t0 = max(t0, end_of(idx - 1))
-    return t0, end_of(idx)
+    t1 = end_of(idx)
+    if is_fast_verse(segments[idx]):
+        t1 = max(t1, segments[idx]["sing_end"] + FAST_VERSE_TAIL_SEC)
+    return t0, t1

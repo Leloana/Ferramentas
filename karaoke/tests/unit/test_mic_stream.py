@@ -17,6 +17,8 @@ from mic_stream import (  # noqa: E402
     SongClock,
     build_packet,
     parse_packet,
+    FAST_VERSE_TAIL_SEC,
+    is_fast_verse,
     segment_window,
 )
 from score_engine import calculate_score  # noqa: E402
@@ -212,6 +214,27 @@ class TestSegmentWindow(unittest.TestCase):
         self.assertEqual(windows[2], (13.5, 20.5))
         for (_, end), (start, _) in zip(windows, windows[1:]):
             self.assertLessEqual(end, start)
+
+    def test_fast_verse_gets_a_tail_over_the_next_one(self):
+        # rap: quem canta vem atrás da letra; o fim do verso emendado caía na janela seguinte
+        def verse(start, end, text):
+            words = text.split()
+            step = (end - start) / len(words)
+            return {"sing_start": start, "sing_end": end, "lyrics": text,
+                    "lyrics_timed": [{"word": w, "expected_start": i * step} for i, w in enumerate(words)]}
+
+        rap = [verse(10.0, 11.5, "Maldição do ódio que gera chacina"),          # 28 letras / 1,5 s
+               verse(11.5, 13.0, "Já sente o genjutsu olhando a retina")]
+        self.assertTrue(is_fast_verse(rap[0]))
+        (_, end0), (start1, _) = segment_window(rap, 0, 1.5, 0.5), segment_window(rap, 1, 1.5, 0.5)
+        self.assertAlmostEqual(end0, 11.5 + FAST_VERSE_TAIL_SEC)
+        self.assertEqual(start1, 11.5)  # o próximo continua começando onde começa
+
+        slow = [verse(10.0, 14.0, "This is the place"), verse(14.0, 18.0, "Where we used to go")]
+        self.assertFalse(is_fast_verse(slow[0]))
+        self.assertEqual(segment_window(slow, 0, 1.5, 0.5), (8.5, 14.0))
+        # voz de apoio não conta como palavra cantada
+        self.assertFalse(is_fast_verse(verse(10.0, 11.0, "(Monster monster monster)")))
 
 
 class TestTimingReference(unittest.TestCase):
