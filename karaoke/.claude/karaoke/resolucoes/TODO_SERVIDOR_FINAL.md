@@ -164,3 +164,4 @@ item de áudio em [AUDIO_PIPELINE_MELHORIAS.md](AUDIO_PIPELINE_MELHORIAS.md).
 | `KARAOKE_DEMUCS_MODEL` | `htdemucs` (testar `htdemucs_ft`) | Modelo do Demucs (fallback do RoFormer) |
 | `KARAOKE_MP3_BITRATE` | `320k` | Bitrate dos MP3 |
 | `KARAOKE_RECORD` / `KARAOKE_RECORD_DIR` | ligado | Grava as partidas para calibrar a nota |
+| `KARAOKE_GENIUS_TOKEN` | no `karaoke/.env` (fora do git) | Client Access Token do Genius: letra do site quando o LRCLIB não tem |

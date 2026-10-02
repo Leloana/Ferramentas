@@ -1,4 +1,9 @@
-"""Busca letras de música via LRCLIB (primário) e Lyrics.ovh (fallback).
+"""Busca letras de música via LRCLIB (primário) e, sem ele, sites de letra.
+
+Ordem: LRCLIB (única com tempos) → Lyrics.ovh → letras.com.br → Genius (busca
+pela API oficial com KARAOKE_GENIUS_TOKEN do .env, letra lida da página). Os sites
+dão só o texto: o reinstall encaixa no áudio pela estrutura (lrc_sync). Letras.com
+e Cifra Club bloqueiam robôs ("Access Denied") e ficam de fora.
 
 Com a duração do áudio, o LRCLIB é consultado pelo `/api/search` e vence a
 versão de duração mais próxima: a mesma música costuma ter dezenas de entradas
@@ -9,17 +14,23 @@ não achar (ex.: "、" no título × ", " no LRCLIB), o `/api/search`.
 """
 from __future__ import annotations
 
+import html
 import json
 import logging
+import os
 import re
 import urllib.parse
 import urllib.request
+from html.parser import HTMLParser
 from typing import Optional
 
 from rapidfuzz import fuzz
 from unidecode import unidecode
 
+from utils.env_file import load_env_file
+
 logger = logging.getLogger(__name__)
+load_env_file()  # KARAOKE_GENIUS_TOKEN
 
 LRCLIB_API = "https://lrclib.net/api/get"
 LRCLIB_SEARCH_API = "https://lrclib.net/api/search"
@@ -193,5 +204,147 @@ def fetch_lyrics(artist: str, track: str, duration: float | None = None) -> Opti
         result = search_lyrics_lrclib(artist, track, None)
     if result:
         return result
-    logger.info("[LyricsFetcher] LRCLIB sem resultado, tentando Lyrics.ovh...")
-    return fetch_lyrics_ovh(artist, track)
+    logger.info("[LyricsFetcher] LRCLIB sem resultado, tentando Lyrics.ovh e sites de letra...")
+    # sites de letra: só o texto; o reinstall encaixa no áudio pela estrutura
+    for source in (fetch_lyrics_ovh, fetch_lyrics_letras_br, fetch_lyrics_genius):
+        try:
+            result = source(artist, track)
+        except Exception as e:
+            logger.warning(f"[LyricsFetcher] {source.__name__} falhou: {e}")
+            result = None
+        if result:
+            return result
+    return None
+
+
+BROWSER_UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+              "(KHTML, like Gecko) Chrome/130 Safari/537.36")
+LETRAS_BR = "https://www.letras.com.br"
+GENIUS_SEARCH_API = "https://api.genius.com/search"
+
+
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    """letras.com.br manda música inexistente para outra página: isso é "não achei"."""
+
+    def redirect_request(self, *args, **kwargs):
+        return None
+
+
+def _get_page(url: str) -> Optional[str]:
+    req = urllib.request.Request(url, headers={"User-Agent": BROWSER_UA})
+    try:
+        with urllib.request.build_opener(_NoRedirect).open(req, timeout=REQUEST_TIMEOUT) as resp:
+            return resp.read().decode("utf-8", errors="replace")
+    except Exception as e:
+        logger.info(f"[LyricsFetcher] {url}: {e}")
+        return None
+
+
+def clean_web_lyrics(text: str) -> Optional[str]:
+    """Texto de site: sem marcação de seção ([Refrão], [Verso 1]) e sem linhas vazias repetidas."""
+    lines = [ln.strip() for ln in html.unescape(text or "").splitlines()]
+    lines = [ln for ln in lines if not re.fullmatch(r"\[[^\]]*\]", ln)]
+    out = re.sub(r"\n{3,}", "\n\n", "\n".join(lines)).strip()
+    return out if len(out) >= 40 else None
+
+
+def title_variants(track: str) -> list[str]:
+    """"Rap do Obito (Naruto)" também como "Rap do Obito"; "X - Remastered 2009" como "X"."""
+    base = re.sub(r"\s*[\(\[].*?[\)\]]", "", track or "").strip()
+    base = re.sub(r"\s+-\s+.*$", "", base).strip()
+    return [v for v in dict.fromkeys([(track or "").strip(), base]) if v]
+
+
+def fetch_lyrics_letras_br(artist: str, track: str) -> Optional[dict]:
+    """letras.com.br/<artista>/<música>: o endereço é o slug dos dois (o site não tem busca aberta)."""
+    from utils.text import slugify
+
+    for title in title_variants(track):
+        url = f"{LETRAS_BR}/{slugify(artist)}/{slugify(title)}"
+        page = _get_page(url)
+        m = re.search(r':lyrics="`(.*?)`"', page or "", re.S)
+        plain = clean_web_lyrics(m.group(1)) if m else None
+        if plain:
+            logger.info("[LyricsFetcher] letras.com.br sucesso: %s (%d chars)", url, len(plain))
+            return {"plainLyrics": plain, "syncedLyrics": None, "source": "letras.com.br"}
+    return None
+
+
+class _GeniusLyrics(HTMLParser):
+    """Texto dos <div data-lyrics-container="true"> (a página quebra a letra em vários)."""
+
+    def __init__(self):
+        super().__init__()
+        self.depth = 0   # profundidade de <div> dentro de um container de letra
+        self.skip = 0    # dentro de trecho excluído da seleção (cabeçalho, anúncio)
+        self.out: list[str] = []
+
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        if not self.depth:
+            if tag == "div" and a.get("data-lyrics-container") == "true":
+                self.depth = 1
+                self.out.append("\n")
+            return
+        if tag == "br":
+            if not self.skip:
+                self.out.append("\n")
+            return
+        if self.skip or "data-exclude-from-selection" in a:
+            self.skip += 1
+        if tag == "div":
+            self.depth += 1
+
+    def handle_endtag(self, tag):
+        if not self.depth or tag == "br":
+            return
+        if self.skip:
+            self.skip -= 1
+        if tag == "div":
+            self.depth -= 1
+
+    def handle_data(self, data):
+        if self.depth and not self.skip:
+            self.out.append(data)
+
+
+def genius_lyrics_from_html(page: str) -> str:
+    parser = _GeniusLyrics()
+    parser.feed(page)
+    return "".join(parser.out)
+
+
+def fetch_lyrics_genius(artist: str, track: str) -> Optional[dict]:
+    """Genius: acha a música pela API oficial (token do .env) e lê a letra da página."""
+    token = os.environ.get("KARAOKE_GENIUS_TOKEN", "").strip()
+    if not token:
+        return None
+    title = title_variants(track)[-1]
+    url = f"{GENIUS_SEARCH_API}?{urllib.parse.urlencode({'q': f'{artist} {title}'})}"
+    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Authorization": f"Bearer {token}"})
+    try:
+        with urllib.request.urlopen(req, timeout=REQUEST_TIMEOUT) as resp:
+            hits = (json.loads(resp.read().decode("utf-8")).get("response") or {}).get("hits") or []
+    except Exception as e:
+        logger.warning(f"[LyricsFetcher] Genius busca falhou: {e}")
+        return None
+    want_title, want_artist = _name_key(title), _name_key(artist)
+
+    def _close(name: str, want: str, minimum: int) -> bool:
+        # "ネクライトーキー (NECRY TALKIE)": o nome entre parênteses também vale
+        keys = [_name_key(name)] + [_name_key(p) for p in re.findall(r"[\(\[](.*?)[\)\]]", name or "")]
+        return any(fuzz.token_set_ratio(k, want) >= minimum for k in keys if k)
+
+    for hit in hits[:5]:
+        song = hit.get("result") or {}
+        if not _close(song.get("title", ""), want_title, TRACK_MIN_SIMILARITY):
+            continue
+        if not _close((song.get("primary_artist") or {}).get("name", ""), want_artist, ARTIST_MIN_SIMILARITY):
+            continue
+        page = _get_page(song.get("url", ""))
+        plain = clean_web_lyrics(genius_lyrics_from_html(page)) if page else None
+        if plain:
+            logger.info("[LyricsFetcher] Genius sucesso: %s (%d chars)", song.get("url"), len(plain))
+            return {"plainLyrics": plain, "syncedLyrics": None, "source": "genius"}
+    logger.info("[LyricsFetcher] Genius: nenhum resultado da mesma música.")
+    return None
