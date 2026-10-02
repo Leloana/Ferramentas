@@ -75,6 +75,30 @@ class TestPromptHallucination(unittest.TestCase):
         self.assertEqual([w["word"] for w in words], ["Um", "dia", "surgiu"])
 
 
+class TestPhantomPhrases(unittest.TestCase):
+    """Trecho sem voz em música japonesa (aoi-koi, 2026-10-01): o Whisper inventou
+    "ご視聴ありがとうございました" ("obrigado por assistir") e o verso pontuou lixo."""
+
+    def _run(self, heard):
+        import numpy as np
+        from stt_engine import STTEngine
+        engine = STTEngine.__new__(STTEngine)
+        engine.model = _FakeWhisper(prompted=heard, unprompted=heard)
+        return engine.transcribe(np.full(16000, 0.1, dtype=np.float32), language="ja")
+
+    def test_known_phantom_phrases_are_dropped(self):
+        for phrase in ("ご視聴ありがとうございました", "ご清聴ありがとうございました",
+                       "チャンネル登録よろしくお願いします", "goshichoo arigatoo gozaimashita",
+                       "Obrigado por assistir", "Inscreva-se no canal"):
+            with self.subTest(phrase=phrase):
+                _, words = self._run([(phrase, 0.9)])
+                self.assertEqual(words, [])
+
+    def test_real_lyrics_with_arigatou_are_kept(self):
+        _, words = self._run([("ありがとう", 0.9), ("さよなら", 0.9)])
+        self.assertEqual([w["word"] for w in words], ["ありがとう", "さよなら"])
+
+
 class TestCudaFallback(unittest.TestCase):
     def test_cublas_error_reloads_on_cpu_and_retries(self):
         import numpy as np

@@ -19,7 +19,11 @@ _HALLUCINATION_RE = re.compile(
     r"legendas\s+por|"
     r"subtitles\s+by|"
     r"translated\s+by|"
-    r"watching\s+this\s+video",
+    r"watching\s+this\s+video|"
+    # japonês: "ご視聴ありがとうございました" (obrigado por assistir) e parentes, que o
+    # Whisper inventa em trecho sem voz (aoi-koi, 2026-10-01); também em romaji
+    r"ご視聴|ご清聴|チャンネル登録|go\s*shi\s*ch[oō]+u?\s*arigat|"
+    r"obrigad[oa]\s+por\s+assistir|inscreva-se\s+no\s+canal",
     re.IGNORECASE,
 )
 
