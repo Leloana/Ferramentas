@@ -14,7 +14,7 @@ git pull
 python -m pytest -q tests          # 276 em 2026-10-01; agora ~290 (cartões, fila, pronúncia, frases-fantasma)
 ```
 
-Tudo verde antes de seguir. Nenhuma dependência nova: a pronúncia usa o `Metaphone` que já estava no
+Tudo verde antes de seguir. *(2026-10-05: 337 passaram, 1 pulado.)* Nenhuma dependência nova: a pronúncia usa o `Metaphone` que já estava no
 `requirements.txt`. Os testes de japonês precisam de `fugashi`, `pykakasi` e `unidic-lite` (já no requirements).
 
 ## 1. O que entrou desde a última vez e precisa ser conferido de verdade
@@ -25,7 +25,8 @@ Tudo verde antes de seguir. Nenhuma dependência nova: a pronúncia usa o `Metap
 python tools/upgrade_covers.py      # troca as capas de 600 px pela versão grande da mesma imagem
 ```
 
-- [ ] Saída: "N capa(s) trocada(s)". Música que a pessoa escolheu outra capa na TV continua com a escolhida.
+- [x] Saída: "N capa(s) trocada(s)". Música que a pessoa escolheu outra capa na TV continua com a escolhida.
+      *(2026-10-05: 25 de 66 trocadas.)*
 - [ ] Abrir o cartão do fim (estilo **Vidro**) numa música qualquer na TV: a capa não pode ficar borrada.
 
 ### 1.2 Cartões novos na TV e no celular (10 min, numa partida curta)
@@ -56,12 +57,20 @@ python tools/replay_recording.py recordings/20261001-234606_tipo-madara-mhrap re
 python tools/replay_recording.py <as mesmas 4 pastas> --set score_engine.PHONETIC_MATCH=1000 --set score_engine.SPAN_MAX=1 --json pron_off.json
 ```
 
-- [ ] Os 4 sobem com a pronúncia (referência sem ela: Madara 65, Renegado 83, Uchihas 72).
-- [ ] My Iron Lung: os versos "My Belisha beacon" passam a pontuar.
+- [x] Os 4 sobem com a pronúncia (referência sem ela: Madara 65, Renegado 83, Uchihas 72).
+      *(2026-10-05, sem → com: Madara 65,5 → 65,5 · Renegado 83,0 → 82,8 · Uchihas 72,6 → 72,9 ·
+      Iron Lung 73,3 → 73,9 (erro vs gabarito 23,4 → 23,2). Quase tudo que mudou nos raps foi o Whisper
+      transcrevendo diferente entre as duas rodadas, não a pronúncia: ele não é determinístico entre
+      rodadas. Com a MESMA transcrição, só mudaram: Iron Lung 26/48/54 (Belisha, abaixo), Uchihas #65
+      "eh o bicho" 88 → 100 (certo) e Uchihas #38 0 → 9 (texto sem relação, ganho desprezível).)*
+- [x] My Iron Lung: os versos "My Belisha beacon" passam a pontuar.
+      *(26 → 65 "my bella shot be con", 33 → 67 "my belly shot", 26 → 39 "my belly shot that can".)*
 - [ ] Olhar os versos que **mais** subiram: o que o Whisper ouviu é mesmo o verso cantado? Se aparecer
       um falso acerto (palavra sem relação valendo), anotar o par — os limiares são `PHONETIC_MATCH` (85),
       `PHONETIC_MIN_SPELLING` (55) e `SPAN_MATCH` (85) em `server/score_engine.py`.
-- [ ] Repetir com a japonesa `20261001-195510_aoi-koi-...` — tem que dar **igual** (a pronúncia não vale no japonês).
+- [x] Repetir com a japonesa `20261001-195510_aoi-koi-...` — tem que dar **igual** (a pronúncia não vale no japonês).
+      *(72,2 → 73,5, mas só nos versos 27 e 28, onde o Whisper ouviu outra coisa em cada rodada; com a
+      mesma transcrição a nota é igual.)*
 
 ### 1.4 Gabarito dos raps (15 min, celular)
 
@@ -84,10 +93,11 @@ python -m pytest -q tests/unit/test_recorded_sessions.py
 
 ### 1.6 Frases-fantasma em japonês e palavra partida no LRC (5 min)
 
-- [ ] Replay da aoi-koi: os versos onde aparecia "ご視聴ありがとうございました" agora vêm vazios (log
-      "Alucinação do Whisper detectada e expurgada").
-- [ ] Reinstalar o My Iron Lung **sem** a letra revisada (ou baixar a letra de novo numa cópia): "My un-" /
-      "cle Bill" tem que chegar como "My uncle Bill".
+- [x] Replay da aoi-koi: os versos onde aparecia "ご視聴ありがとうございました" agora vêm vazios (log
+      "Alucinação do Whisper detectada e expurgada"). *(2026-10-05: a frase estava no session.json gravado e
+      sumiu no replay.)*
+- [x] Reinstalar o My Iron Lung **sem** a letra revisada (ou baixar a letra de novo numa cópia): "My un-" /
+      "cle Bill" tem que chegar como "My uncle Bill". *(2026-10-05: `fetch_lyrics` no lrclib → 6× "My uncle Bill".)*
 
 ## 2. Áudio (separação, volume, letra no tempo)
 
