@@ -117,6 +117,14 @@ class ScreensTest(unittest.TestCase):
                 page.locator(".playlist-item__check").first.uncheck()
                 self.assertEqual(page.text_content("#btn-submit-song").strip(), "Adicionar 2 à fila")
                 page.wait_for_function("document.getElementById('playlist-summary').textContent.indexOf('2 de 4') === 0")
+                # sem artista da maioria, "Artista" troca o de todas as marcadas
+                page.locator("#btn-playlist-artist").click()
+                page.wait_for_function("document.querySelector('[data-step]').getAttribute('data-step') === 'playlist-artist'")
+                page.fill("#playlist-artist-input", "Banda Única")
+                page.keyboard.press("Enter")
+                page.wait_for_function("document.querySelector('[data-step]').getAttribute('data-step') === 'playlist'")
+                artists = page.eval_on_selector_all(".playlist-item__fields .input:nth-child(2)", "els => els.map(e => e.value)")
+                self.assertEqual(artists, ["Banda 1", "Banda 2", "Banda Única", "Banda Única"])  # 1ª e 2ª desmarcadas
                 page.locator("#btn-playlist-toggle-all").click()
                 self.assertEqual(page.locator(".playlist-item__check:checked").count(), 4)
                 page.locator(".playlist-item__title-input").nth(1).fill("")

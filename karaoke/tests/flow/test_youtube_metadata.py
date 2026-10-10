@@ -75,6 +75,28 @@ class TestYouTubePlaylistFlow(unittest.TestCase):
         for channel, artist in cases.items():
             self.assertEqual(split_artist_title("Mad Sounds", fallback_artist=channel)["artist"], artist, channel)
 
+    def test_album_titles_find_the_artist_in_any_position(self):
+        from utils.youtube import _fix_playlist_guesses, split_artist_title
+
+        def run(titles):
+            items = [dict(title=t, **{k + "_guess": v for k, v in split_artist_title(t).items()}) for t in titles]
+            _fix_playlist_guesses(items)
+            return [(i["artist_guess"], i["title_guess"]) for i in items]
+
+        # upload de fã: "N. Música - Artista - Álbum +lyrics"
+        self.assertEqual(run([
+            "1. Do I Wanna Know? - Arctic Monkeys - AM +lyrics",
+            "2. R U Mine? - Arctic Monkeys - AM +lyrics",
+            "3. One for the Road - Arctic Monkeys - AM +lyrics",
+        ]), [("Arctic Monkeys", "Do I Wanna Know?"), ("Arctic Monkeys", "R U Mine?"),
+             ("Arctic Monkeys", "One for the Road")])
+        # formato normal continua igual, e "- Remastered" não entra no título
+        self.assertEqual(run(["Oasis - Wonderwall", "Oasis - Live Forever - Remastered", "Oasis - Whatever"]),
+                         [("Oasis", "Wonderwall"), ("Oasis", "Live Forever"), ("Oasis", "Whatever")])
+        # mix com vários artistas: fica o palpite de cada vídeo
+        self.assertEqual(run(["Oasis - Wonderwall", "Radiohead - Creep", "Blur - Song 2"]),
+                         [("Oasis", "Wonderwall"), ("Radiohead", "Creep"), ("Blur", "Song 2")])
+
     def test_rejects_a_link_that_is_not_a_playlist(self):
         response = self.client.get("/api/youtube-playlist?url=https://youtube.com/watch?v=abcdefghijk")
         self.assertEqual(response.status_code, 400)

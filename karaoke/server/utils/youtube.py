@@ -195,6 +195,51 @@ def _entry_to_result(entry: dict) -> dict | None:
     }
 
 
+# "1. Música", "01 - Música", "1) Música": número da faixa no começo do título
+_TRACK_NUMBER_RE = r"^\s*\d{1,2}\s*[.)\-]\s*"
+# sobras comuns no fim de uploads de fã: "+lyrics", "(lyrics)" já sai em _VIDEO_TAG_RE
+_TRAILING_JUNK_RE = r"\s*\+\s*(lyrics|letra|legendado)\s*$"
+
+
+def _fix_playlist_guesses(results: list[dict]) -> None:
+    """Acerta artista/título olhando a playlist inteira (álbum).
+
+    Uploads de fã vêm como "1. Música - Artista - Álbum +lyrics": o palpite
+    de vídeo a vídeo tomava a música pelo artista. Numa playlist, a parte que
+    se repete na maioria dos títulos é o artista (ou o álbum); o título é a
+    primeira parte que muda de vídeo para vídeo."""
+    import re
+    from collections import Counter
+
+    if len(results) < 2:
+        return
+    split = []
+    for item in results:
+        raw = re.sub(_VIDEO_TAG_RE, "", item["title"], flags=re.IGNORECASE)
+        raw = re.sub(_TRAILING_JUNK_RE, "", raw, flags=re.IGNORECASE)
+        split.append([part.strip() for part in raw.split(" - ") if part.strip()])
+
+    needed = len(results) * 0.6
+    constant: dict[int, str] = {}  # posição -> valor que se repete
+    for pos in range(max(len(parts) for parts in split)):
+        values = Counter(parts[pos].lower() for parts in split if len(parts) > pos)
+        if values:
+            value, count = values.most_common(1)[0]
+            if count >= needed:
+                constant[pos] = value
+    if not constant:
+        return
+    artist_pos = min(constant)  # artista antes do álbum ("Música - Artista - Álbum")
+    for item, parts in zip(results, split):
+        if len(parts) <= artist_pos or parts[artist_pos].lower() != constant[artist_pos]:
+            continue  # foge do padrão (faixa bônus, outro artista): fica o palpite do vídeo
+        title = next((part for pos, part in enumerate(parts) if pos not in constant), "")
+        title = re.sub(_TRACK_NUMBER_RE, "", title).strip().strip("\"'")
+        if title:
+            item["artist_guess"] = parts[artist_pos]
+            item["title_guess"] = title
+
+
 async def list_youtube_playlist(url: str, limit: int = PLAYLIST_LIMIT) -> dict:
     """Vídeos de uma playlist (sem baixar): {"title", "results", "truncated"}."""
     import yt_dlp
@@ -222,4 +267,5 @@ async def list_youtube_playlist(url: str, limit: int = PLAYLIST_LIMIT) -> dict:
         if item and item["id"] not in seen:
             seen.add(item["id"])
             results.append(item)
+    _fix_playlist_guesses(results)
     return {"title": info.get("title") or "", "results": results, "truncated": len(entries) > limit}

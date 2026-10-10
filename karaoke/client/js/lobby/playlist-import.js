@@ -59,17 +59,22 @@ export function playlistNeedsArtist() {
     return !!(pl && dominantArtist(pl.items).name);
 }
 
-// Preenche a tela do artista com o palpite da maioria.
+// Preenche a tela do artista com o palpite da maioria. Sem maioria (mix, palpites
+// errados), o nome digitado vale para todas as marcadas.
 export function preparePlaylistArtist() {
     const pl = state.playlistImport;
     if (!pl) return;
     const dominant = dominantArtist(pl.items);
-    pl.artistKey = dominant.key;
+    pl.artistKey = dominant.key || null;
     const input = document.getElementById('playlist-artist-input');
     const album = document.getElementById('playlist-artist-album');
     const count = document.getElementById('playlist-artist-count');
     if (album) album.textContent = pl.title || 'Playlist';
-    if (count) count.textContent = `${dominant.count} de ${pl.items.length} músicas`;
+    if (count) {
+        count.textContent = dominant.key
+            ? `${dominant.count} de ${pl.items.length} músicas`
+            : `${selectedItems().length} músicas marcadas`;
+    }
     if (input) {
         input.value = dominant.name;
         setTimeout(() => { input.focus(); input.select(); }, 0);
@@ -88,7 +93,8 @@ export function applyPlaylistArtist() {
         return false;
     }
     pl.items.forEach((item) => {
-        if (artistKey(item.artist_guess) === pl.artistKey) item.artist_guess = name;
+        const target = pl.artistKey === null ? item.checked : artistKey(item.artist_guess) === pl.artistKey;
+        if (target) item.artist_guess = name;
     });
     renderList();
     return true;
