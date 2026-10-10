@@ -480,3 +480,21 @@ acompanha: string vale pra todos os planos da frase, lista escolhe por plano (`n
 O formato antigo (uma string por frase) continua valendo — projeto antigo não precisa
 de nada. E a ordem de geração não importa mais: quem serve de âncora pra outro plano
 é gerado primeiro, então a frase 1 pode reusar o rosto definido num plano da frase 6.
+
+## 20. Refino ecoando as regras em massa — `--sem-refino` resolve
+
+No `Video_15` (Guerra do Paraguai, 2026-10-10, ComfyUI subido direto via
+`main.py`), 15 de 28 imagens do Krea2 saíram com o mesmo defeito do item 7:
+blocos de texto garranchado ecoando "No On-Screen Text", "Faithfulness
+First", "Style Planning of Structure", às vezes como painéis repetidos.
+Duas saíram como anime (item 8). Os prompts estavam todos em inglês, com o
+sufixo também em inglês. Reescrever 15 prompts como cenas estáticas e
+simples e tirar números ("1860s") só consertou 4 delas.
+
+**O que resolveu**: `gerar_imagens.py --sem-refino`, que desliga o
+`Refine Prompt` (`30:24`) e manda o prompt escrito à mão direto pro
+encoder. Das 5 frases regeradas assim, 4 saíram limpas e fiéis ao prompt.
+A quinta saiu girada 90°, que é o defeito do item 3 e não tem relação com
+o refino. Com `texto_prompts.json` já escrito como cena concreta, o refino
+não acrescenta nada. Se a taxa de defeito do lote passar de ~2-3 imagens,
+regere com `--sem-refino` em vez de seguir trocando seed ou prompt.

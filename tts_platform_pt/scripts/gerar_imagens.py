@@ -184,6 +184,7 @@ def gerar_imagem(
     timeout_s: float = 600,
     referencia_imagem: str | None = None,
     referencia_denoise: float = 0.5,
+    refinar: bool = True,
 ) -> dict:
     wf = copy.deepcopy(workflow)
     prompt_final = montar_prompt(texto)
@@ -198,7 +199,10 @@ def gerar_imagem(
     )
     if eh_krea2:
         wf[_NODE_PROMPT]["inputs"]["value"] = prompt_final
-        wf[_NODE_REFINAR]["inputs"]["value"] = True
+        # Sem refino o texto vai direto pro encoder: útil quando o prompt já é
+        # uma cena concreta escrita à mão e o refino começa a ecoar as próprias
+        # regras como texto na imagem (GOTCHAS.md itens 7 e 20).
+        wf[_NODE_REFINAR]["inputs"]["value"] = refinar
         wf[_NODE_SISTEMA_REFINO]["inputs"]["value"] += _REGRA_SEM_TEXTO + _REGRA_PROMPT_CURTO
         wf[_NODE_RESOLUCAO]["inputs"]["aspect_ratio"] = aspect_ratio
         wf[_NODE_SAMPLER]["inputs"]["seed"] = random.randint(0, 2**32 - 1)
@@ -308,6 +312,10 @@ def main():
     ap.add_argument("--referencia-workflow", type=Path, default=WORKFLOW_I2I_PADRAO, help=(
         "Workflow do ComfyUI usado pras frases com --referencia. Só é lido do disco se "
         "--referencia for passado."
+    ))
+    ap.add_argument("--sem-refino", action="store_true", help=(
+        "Krea2: desliga o Refine Prompt (TextGenerate) e manda o prompt direto pro encoder. "
+        "Use quando o refino ecoar as regras como texto garranchado (GOTCHAS.md item 20)."
     ))
     args = ap.parse_args()
 
@@ -426,7 +434,7 @@ def main():
             print(f"  [{n}/{len(tarefas)}] frase {j} plano {tarefa['plano']} -> {destino.name}")
             caminho_ref = tarefa["referencia"]
             if caminho_ref is None:
-                info = gerar_imagem(args.server, workflow, texto, args.aspect_ratio, destino)
+                info = gerar_imagem(args.server, workflow, texto, args.aspect_ratio, destino, refinar=not args.sem_refino)
                 resultado.append({"frase": j, "plano": tarefa["plano"], "arquivo": destino.name, **info})
             else:
                 if not caminho_ref.exists():
@@ -441,6 +449,7 @@ def main():
                 info = gerar_imagem(
                     args.server, workflow_i2i, texto, args.aspect_ratio, destino,
                     referencia_imagem=cache_upload[caminho_ref], referencia_denoise=args.referencia_denoise,
+                    refinar=not args.sem_refino,
                 )
                 registro = {
                     "frase": j, "plano": tarefa["plano"], "arquivo": destino.name, **info,
