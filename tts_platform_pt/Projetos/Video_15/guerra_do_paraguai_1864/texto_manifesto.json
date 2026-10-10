@@ -1,0 +1,1655 @@
+{
+  "gerado_em": "2026-10-09T23:54:41",
+  "roteiro": "Projetos\\Video_15\\guerra_do_paraguai_1864\\texto.md",
+  "voz": "eleven:7i7dgyCkKt4c16dLtwT3",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.0,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 131.0,
+  "texto_usado": "Crianças com barbas pintadas no rosto marcharam pra enfrentar o exército brasileiro. Era 1869, e o Paraguai já não tinha homens adultos pra mandar pra frente de batalha. Como um país chegou a esse ponto? Tudo começou cinco anos antes. Em 1864, o Brasil interveio numa guerra civil no Uruguai. O ditador paraguaio, Francisco Solano López, viu nisso uma ameaça. Ele capturou um navio brasileiro no rio Paraguai e invadiu o Mato Grosso. Depois, mandou suas tropas atravessarem o território argentino. Foi o erro que mudou tudo. Brasil, Argentina e Uruguai assinaram a Tríplice Aliança — três países contra um. Em 1865, na batalha naval do Riachuelo, a esquadra brasileira destruiu a frota paraguaia. Um ano depois, veio Tuiuti, a maior batalha campal da história da América do Sul. Mas o Paraguai não se rendeu. Em Curupaiti, os aliados atacaram trincheiras fortificadas e perderam milhares de homens numa única tarde. A guerra empacou. Só com Duque de Caxias no comando o avanço recomeçou. A fortaleza de Humaitá caiu em 1868. Assunção foi ocupada no ano seguinte. López fugiu pro interior com o que restava do exército: velhos, feridos e meninos. Em Acosta Ñu, esses meninos lutaram com barbas falsas, pra parecerem soldados de verdade de longe. A batalha virou um massacre. Em 1870, López foi cercado em Cerro Corá e morto às margens de um riacho. A guerra tinha acabado. Mas o preço foi devastador. Estimativas apontam que o Paraguai perdeu mais da metade da sua população. Entre os homens, a perda pode ter chegado a setenta por cento. Do lado brasileiro, dezenas de milhares de soldados nunca voltaram pra casa. Foi o conflito mais sangrento da história da América do Sul — e quase apagou um país inteiro do mapa.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Crianças com barbas pintadas no rosto marcharam pra enfrentar o exército brasileiro.",
+      "inicio_s": 0.0,
+      "fim_s": 5.44,
+      "palavras": [
+        {
+          "texto": "Crianças",
+          "inicio_s": 0.0,
+          "fim_s": 0.48
+        },
+        {
+          "texto": "com",
+          "inicio_s": 0.56,
+          "fim_s": 0.64
+        },
+        {
+          "texto": "barbas",
+          "inicio_s": 0.72,
+          "fim_s": 1.12
+        },
+        {
+          "texto": "pintadas",
+          "inicio_s": 1.16,
+          "fim_s": 1.68
+        },
+        {
+          "texto": "no",
+          "inicio_s": 1.76,
+          "fim_s": 1.84
+        },
+        {
+          "texto": "rosto",
+          "inicio_s": 1.92,
+          "fim_s": 2.32
+        },
+        {
+          "texto": "marcharam",
+          "inicio_s": 2.36,
+          "fim_s": 2.96
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 3.04,
+          "fim_s": 3.12
+        },
+        {
+          "texto": "enfrentar",
+          "inicio_s": 3.2,
+          "fim_s": 3.6
+        },
+        {
+          "texto": "o",
+          "inicio_s": 3.68,
+          "fim_s": 3.72
+        },
+        {
+          "texto": "exército",
+          "inicio_s": 3.76,
+          "fim_s": 4.32
+        },
+        {
+          "texto": "brasileiro",
+          "inicio_s": 4.44,
+          "fim_s": 4.96
+        }
+      ]
+    },
+    {
+      "texto": "Era 1869, e o Paraguai já não tinha homens adultos pra mandar pra frente de batalha.",
+      "inicio_s": 5.48,
+      "fim_s": 12.8,
+      "palavras": [
+        {
+          "texto": "Era",
+          "inicio_s": 5.48,
+          "fim_s": 5.76
+        },
+        {
+          "texto": "1869",
+          "inicio_s": 5.88,
+          "fim_s": 7.68
+        },
+        {
+          "texto": "e",
+          "inicio_s": 8.2,
+          "fim_s": 8.24
+        },
+        {
+          "texto": "o",
+          "inicio_s": 8.28,
+          "fim_s": 8.32
+        },
+        {
+          "texto": "Paraguai",
+          "inicio_s": 8.4,
+          "fim_s": 8.88
+        },
+        {
+          "texto": "já",
+          "inicio_s": 8.96,
+          "fim_s": 9.04
+        },
+        {
+          "texto": "não",
+          "inicio_s": 9.12,
+          "fim_s": 9.28
+        },
+        {
+          "texto": "tinha",
+          "inicio_s": 9.32,
+          "fim_s": 9.6
+        },
+        {
+          "texto": "homens",
+          "inicio_s": 9.68,
+          "fim_s": 9.92
+        },
+        {
+          "texto": "adultos",
+          "inicio_s": 10.0,
+          "fim_s": 10.48
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 10.56,
+          "fim_s": 10.64
+        },
+        {
+          "texto": "mandar",
+          "inicio_s": 10.76,
+          "fim_s": 10.96
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 11.04,
+          "fim_s": 11.12
+        },
+        {
+          "texto": "frente",
+          "inicio_s": 11.28,
+          "fim_s": 11.52
+        },
+        {
+          "texto": "de",
+          "inicio_s": 11.6,
+          "fim_s": 11.64
+        },
+        {
+          "texto": "batalha",
+          "inicio_s": 11.68,
+          "fim_s": 12.16
+        }
+      ]
+    },
+    {
+      "texto": "Como um país chegou a esse ponto?",
+      "inicio_s": 12.92,
+      "fim_s": 15.28,
+      "palavras": [
+        {
+          "texto": "Como",
+          "inicio_s": 12.92,
+          "fim_s": 13.04
+        },
+        {
+          "texto": "um",
+          "inicio_s": 13.12,
+          "fim_s": 13.2
+        },
+        {
+          "texto": "país",
+          "inicio_s": 13.28,
+          "fim_s": 13.6
+        },
+        {
+          "texto": "chegou",
+          "inicio_s": 13.64,
+          "fim_s": 13.92
+        },
+        {
+          "texto": "a",
+          "inicio_s": 14.0,
+          "fim_s": 14.08
+        },
+        {
+          "texto": "esse",
+          "inicio_s": 14.16,
+          "fim_s": 14.24
+        },
+        {
+          "texto": "ponto",
+          "inicio_s": 14.32,
+          "fim_s": 14.64
+        }
+      ]
+    },
+    {
+      "texto": "Tudo começou cinco anos antes.",
+      "inicio_s": 15.36,
+      "fim_s": 17.84,
+      "palavras": [
+        {
+          "texto": "Tudo",
+          "inicio_s": 15.36,
+          "fim_s": 15.52
+        },
+        {
+          "texto": "começou",
+          "inicio_s": 15.68,
+          "fim_s": 16.24
+        },
+        {
+          "texto": "cinco",
+          "inicio_s": 16.32,
+          "fim_s": 16.56
+        },
+        {
+          "texto": "anos",
+          "inicio_s": 16.64,
+          "fim_s": 16.96
+        },
+        {
+          "texto": "antes",
+          "inicio_s": 17.04,
+          "fim_s": 17.36
+        }
+      ]
+    },
+    {
+      "texto": "Em 1864, o Brasil interveio numa guerra civil no Uruguai.",
+      "inicio_s": 17.92,
+      "fim_s": 23.44,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 17.92,
+          "fim_s": 18.0
+        },
+        {
+          "texto": "1864",
+          "inicio_s": 18.08,
+          "fim_s": 19.84
+        },
+        {
+          "texto": "o",
+          "inicio_s": 20.2,
+          "fim_s": 20.24
+        },
+        {
+          "texto": "Brasil",
+          "inicio_s": 20.32,
+          "fim_s": 20.64
+        },
+        {
+          "texto": "interveio",
+          "inicio_s": 20.84,
+          "fim_s": 21.28
+        },
+        {
+          "texto": "numa",
+          "inicio_s": 21.36,
+          "fim_s": 21.52
+        },
+        {
+          "texto": "guerra",
+          "inicio_s": 21.6,
+          "fim_s": 21.92
+        },
+        {
+          "texto": "civil",
+          "inicio_s": 22.12,
+          "fim_s": 22.32
+        },
+        {
+          "texto": "no",
+          "inicio_s": 22.4,
+          "fim_s": 22.48
+        },
+        {
+          "texto": "Uruguai",
+          "inicio_s": 22.52,
+          "fim_s": 22.96
+        }
+      ]
+    },
+    {
+      "texto": "O ditador paraguaio, Francisco Solano López, viu nisso uma ameaça.",
+      "inicio_s": 23.52,
+      "fim_s": 28.8,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 23.52,
+          "fim_s": 23.56
+        },
+        {
+          "texto": "ditador",
+          "inicio_s": 23.6,
+          "fim_s": 24.0
+        },
+        {
+          "texto": "paraguaio",
+          "inicio_s": 24.08,
+          "fim_s": 24.72
+        },
+        {
+          "texto": "Francisco",
+          "inicio_s": 25.04,
+          "fim_s": 25.52
+        },
+        {
+          "texto": "Solano",
+          "inicio_s": 25.6,
+          "fim_s": 25.92
+        },
+        {
+          "texto": "López",
+          "inicio_s": 26.0,
+          "fim_s": 26.48
+        },
+        {
+          "texto": "viu",
+          "inicio_s": 26.8,
+          "fim_s": 26.96
+        },
+        {
+          "texto": "nisso",
+          "inicio_s": 27.04,
+          "fim_s": 27.36
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 27.52,
+          "fim_s": 27.68
+        },
+        {
+          "texto": "ameaça",
+          "inicio_s": 27.8,
+          "fim_s": 28.32
+        }
+      ]
+    },
+    {
+      "texto": "Ele capturou um navio brasileiro no rio Paraguai e invadiu o Mato Grosso.",
+      "inicio_s": 28.92,
+      "fim_s": 33.76,
+      "palavras": [
+        {
+          "texto": "Ele",
+          "inicio_s": 28.92,
+          "fim_s": 29.04
+        },
+        {
+          "texto": "capturou",
+          "inicio_s": 29.16,
+          "fim_s": 29.52
+        },
+        {
+          "texto": "um",
+          "inicio_s": 29.56,
+          "fim_s": 29.6
+        },
+        {
+          "texto": "navio",
+          "inicio_s": 29.72,
+          "fim_s": 30.0
+        },
+        {
+          "texto": "brasileiro",
+          "inicio_s": 30.12,
+          "fim_s": 30.64
+        },
+        {
+          "texto": "no",
+          "inicio_s": 30.72,
+          "fim_s": 30.8
+        },
+        {
+          "texto": "rio",
+          "inicio_s": 30.88,
+          "fim_s": 30.96
+        },
+        {
+          "texto": "Paraguai",
+          "inicio_s": 31.04,
+          "fim_s": 31.52
+        },
+        {
+          "texto": "e",
+          "inicio_s": 31.76,
+          "fim_s": 31.84
+        },
+        {
+          "texto": "invadiu",
+          "inicio_s": 31.92,
+          "fim_s": 32.48
+        },
+        {
+          "texto": "o",
+          "inicio_s": 32.52,
+          "fim_s": 32.56
+        },
+        {
+          "texto": "Mato",
+          "inicio_s": 32.6,
+          "fim_s": 32.8
+        },
+        {
+          "texto": "Grosso",
+          "inicio_s": 32.88,
+          "fim_s": 33.28
+        }
+      ]
+    },
+    {
+      "texto": "Depois, mandou suas tropas atravessarem o território argentino.",
+      "inicio_s": 33.88,
+      "fim_s": 38.32,
+      "palavras": [
+        {
+          "texto": "Depois",
+          "inicio_s": 33.88,
+          "fim_s": 34.32
+        },
+        {
+          "texto": "mandou",
+          "inicio_s": 34.68,
+          "fim_s": 34.96
+        },
+        {
+          "texto": "suas",
+          "inicio_s": 35.04,
+          "fim_s": 35.28
+        },
+        {
+          "texto": "tropas",
+          "inicio_s": 35.32,
+          "fim_s": 35.68
+        },
+        {
+          "texto": "atravessarem",
+          "inicio_s": 35.8,
+          "fim_s": 36.48
+        },
+        {
+          "texto": "o",
+          "inicio_s": 36.52,
+          "fim_s": 36.56
+        },
+        {
+          "texto": "território",
+          "inicio_s": 36.64,
+          "fim_s": 37.12
+        },
+        {
+          "texto": "argentino",
+          "inicio_s": 37.32,
+          "fim_s": 37.76
+        }
+      ]
+    },
+    {
+      "texto": "Foi o erro que mudou tudo.",
+      "inicio_s": 38.36,
+      "fim_s": 40.16,
+      "palavras": [
+        {
+          "texto": "Foi",
+          "inicio_s": 38.36,
+          "fim_s": 38.48
+        },
+        {
+          "texto": "o",
+          "inicio_s": 38.56,
+          "fim_s": 38.64
+        },
+        {
+          "texto": "erro",
+          "inicio_s": 38.72,
+          "fim_s": 38.96
+        },
+        {
+          "texto": "que",
+          "inicio_s": 39.04,
+          "fim_s": 39.12
+        },
+        {
+          "texto": "mudou",
+          "inicio_s": 39.2,
+          "fim_s": 39.52
+        },
+        {
+          "texto": "tudo",
+          "inicio_s": 39.76,
+          "fim_s": 40.08
+        }
+      ]
+    },
+    {
+      "texto": "Brasil, Argentina e Uruguai assinaram a Tríplice Aliança — três países contra um.",
+      "inicio_s": 40.56,
+      "fim_s": 47.12,
+      "palavras": [
+        {
+          "texto": "Brasil",
+          "inicio_s": 40.56,
+          "fim_s": 41.12
+        },
+        {
+          "texto": "Argentina",
+          "inicio_s": 41.36,
+          "fim_s": 42.08
+        },
+        {
+          "texto": "e",
+          "inicio_s": 42.16,
+          "fim_s": 42.24
+        },
+        {
+          "texto": "Uruguai",
+          "inicio_s": 42.32,
+          "fim_s": 42.8
+        },
+        {
+          "texto": "assinaram",
+          "inicio_s": 42.96,
+          "fim_s": 43.52
+        },
+        {
+          "texto": "a",
+          "inicio_s": 43.6,
+          "fim_s": 43.68
+        },
+        {
+          "texto": "Tríplice",
+          "inicio_s": 43.76,
+          "fim_s": 44.16
+        },
+        {
+          "texto": "Aliança",
+          "inicio_s": 44.24,
+          "fim_s": 44.8
+        },
+        {
+          "texto": "três",
+          "inicio_s": 45.307,
+          "fim_s": 45.44
+        },
+        {
+          "texto": "países",
+          "inicio_s": 45.6,
+          "fim_s": 46.08
+        },
+        {
+          "texto": "contra",
+          "inicio_s": 46.16,
+          "fim_s": 46.4
+        },
+        {
+          "texto": "um",
+          "inicio_s": 46.56,
+          "fim_s": 46.64
+        }
+      ]
+    },
+    {
+      "texto": "Em 1865, na batalha naval do Riachuelo, a esquadra brasileira destruiu a frota paraguaia.",
+      "inicio_s": 47.2,
+      "fim_s": 55.04,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 47.2,
+          "fim_s": 47.28
+        },
+        {
+          "texto": "1865",
+          "inicio_s": 47.36,
+          "fim_s": 49.12
+        },
+        {
+          "texto": "na",
+          "inicio_s": 49.4,
+          "fim_s": 49.44
+        },
+        {
+          "texto": "batalha",
+          "inicio_s": 49.52,
+          "fim_s": 49.84
+        },
+        {
+          "texto": "naval",
+          "inicio_s": 49.92,
+          "fim_s": 50.32
+        },
+        {
+          "texto": "do",
+          "inicio_s": 50.36,
+          "fim_s": 50.4
+        },
+        {
+          "texto": "Riachuelo",
+          "inicio_s": 50.48,
+          "fim_s": 51.12
+        },
+        {
+          "texto": "a",
+          "inicio_s": 51.48,
+          "fim_s": 51.52
+        },
+        {
+          "texto": "esquadra",
+          "inicio_s": 51.64,
+          "fim_s": 52.0
+        },
+        {
+          "texto": "brasileira",
+          "inicio_s": 52.08,
+          "fim_s": 52.64
+        },
+        {
+          "texto": "destruiu",
+          "inicio_s": 52.8,
+          "fim_s": 53.44
+        },
+        {
+          "texto": "a",
+          "inicio_s": 53.48,
+          "fim_s": 53.52
+        },
+        {
+          "texto": "frota",
+          "inicio_s": 53.6,
+          "fim_s": 53.92
+        },
+        {
+          "texto": "paraguaia",
+          "inicio_s": 54.0,
+          "fim_s": 54.56
+        }
+      ]
+    },
+    {
+      "texto": "Um ano depois, veio Tuiuti, a maior batalha campal da história da América do Sul.",
+      "inicio_s": 55.12,
+      "fim_s": 60.72,
+      "palavras": [
+        {
+          "texto": "Um",
+          "inicio_s": 55.12,
+          "fim_s": 55.2
+        },
+        {
+          "texto": "ano",
+          "inicio_s": 55.28,
+          "fim_s": 55.44
+        },
+        {
+          "texto": "depois",
+          "inicio_s": 55.52,
+          "fim_s": 56.0
+        },
+        {
+          "texto": "veio",
+          "inicio_s": 56.24,
+          "fim_s": 56.48
+        },
+        {
+          "texto": "Tuiuti",
+          "inicio_s": 56.64,
+          "fim_s": 57.2
+        },
+        {
+          "texto": "a",
+          "inicio_s": 57.52,
+          "fim_s": 57.56
+        },
+        {
+          "texto": "maior",
+          "inicio_s": 57.6,
+          "fim_s": 58.0
+        },
+        {
+          "texto": "batalha",
+          "inicio_s": 58.08,
+          "fim_s": 58.48
+        },
+        {
+          "texto": "campal",
+          "inicio_s": 58.56,
+          "fim_s": 59.04
+        },
+        {
+          "texto": "da",
+          "inicio_s": 59.12,
+          "fim_s": 59.2
+        },
+        {
+          "texto": "história",
+          "inicio_s": 59.36,
+          "fim_s": 59.68
+        },
+        {
+          "texto": "da",
+          "inicio_s": 59.76,
+          "fim_s": 59.84
+        },
+        {
+          "texto": "América",
+          "inicio_s": 59.92,
+          "fim_s": 60.24
+        },
+        {
+          "texto": "do",
+          "inicio_s": 60.32,
+          "fim_s": 60.4
+        },
+        {
+          "texto": "Sul",
+          "inicio_s": 60.48,
+          "fim_s": 60.64
+        }
+      ]
+    },
+    {
+      "texto": "Mas o Paraguai não se rendeu.",
+      "inicio_s": 61.2,
+      "fim_s": 62.96,
+      "palavras": [
+        {
+          "texto": "Mas",
+          "inicio_s": 61.2,
+          "fim_s": 61.36
+        },
+        {
+          "texto": "o",
+          "inicio_s": 61.44,
+          "fim_s": 61.48
+        },
+        {
+          "texto": "Paraguai",
+          "inicio_s": 61.52,
+          "fim_s": 62.0
+        },
+        {
+          "texto": "não",
+          "inicio_s": 62.16,
+          "fim_s": 62.24
+        },
+        {
+          "texto": "se",
+          "inicio_s": 62.32,
+          "fim_s": 62.48
+        },
+        {
+          "texto": "rendeu",
+          "inicio_s": 62.6,
+          "fim_s": 62.88
+        }
+      ]
+    },
+    {
+      "texto": "Em Curupaiti, os aliados atacaram trincheiras fortificadas e perderam milhares de homens numa única tarde.",
+      "inicio_s": 63.36,
+      "fim_s": 71.04,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 63.36,
+          "fim_s": 63.52
+        },
+        {
+          "texto": "Curupaiti",
+          "inicio_s": 63.6,
+          "fim_s": 64.24
+        },
+        {
+          "texto": "os",
+          "inicio_s": 64.56,
+          "fim_s": 64.64
+        },
+        {
+          "texto": "aliados",
+          "inicio_s": 64.76,
+          "fim_s": 65.2
+        },
+        {
+          "texto": "atacaram",
+          "inicio_s": 65.32,
+          "fim_s": 65.76
+        },
+        {
+          "texto": "trincheiras",
+          "inicio_s": 65.8,
+          "fim_s": 66.4
+        },
+        {
+          "texto": "fortificadas",
+          "inicio_s": 66.48,
+          "fim_s": 67.36
+        },
+        {
+          "texto": "e",
+          "inicio_s": 67.6,
+          "fim_s": 67.68
+        },
+        {
+          "texto": "perderam",
+          "inicio_s": 67.76,
+          "fim_s": 68.16
+        },
+        {
+          "texto": "milhares",
+          "inicio_s": 68.24,
+          "fim_s": 68.8
+        },
+        {
+          "texto": "de",
+          "inicio_s": 68.88,
+          "fim_s": 68.96
+        },
+        {
+          "texto": "homens",
+          "inicio_s": 69.04,
+          "fim_s": 69.44
+        },
+        {
+          "texto": "numa",
+          "inicio_s": 69.52,
+          "fim_s": 69.68
+        },
+        {
+          "texto": "única",
+          "inicio_s": 69.76,
+          "fim_s": 70.08
+        },
+        {
+          "texto": "tarde",
+          "inicio_s": 70.24,
+          "fim_s": 70.56
+        }
+      ]
+    },
+    {
+      "texto": "A guerra empacou.",
+      "inicio_s": 71.12,
+      "fim_s": 72.32,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 71.12,
+          "fim_s": 71.2
+        },
+        {
+          "texto": "guerra",
+          "inicio_s": 71.28,
+          "fim_s": 71.6
+        },
+        {
+          "texto": "empacou",
+          "inicio_s": 71.72,
+          "fim_s": 72.24
+        }
+      ]
+    },
+    {
+      "texto": "Só com Duque de Caxias no comando o avanço recomeçou.",
+      "inicio_s": 72.72,
+      "fim_s": 76.16,
+      "palavras": [
+        {
+          "texto": "Só",
+          "inicio_s": 72.72,
+          "fim_s": 72.88
+        },
+        {
+          "texto": "com",
+          "inicio_s": 72.96,
+          "fim_s": 73.12
+        },
+        {
+          "texto": "Duque",
+          "inicio_s": 73.2,
+          "fim_s": 73.44
+        },
+        {
+          "texto": "de",
+          "inicio_s": 73.52,
+          "fim_s": 73.56
+        },
+        {
+          "texto": "Caxias",
+          "inicio_s": 73.6,
+          "fim_s": 74.08
+        },
+        {
+          "texto": "no",
+          "inicio_s": 74.12,
+          "fim_s": 74.16
+        },
+        {
+          "texto": "comando",
+          "inicio_s": 74.24,
+          "fim_s": 74.72
+        },
+        {
+          "texto": "o",
+          "inicio_s": 74.88,
+          "fim_s": 74.92
+        },
+        {
+          "texto": "avanço",
+          "inicio_s": 74.96,
+          "fim_s": 75.44
+        },
+        {
+          "texto": "recomeçou",
+          "inicio_s": 75.52,
+          "fim_s": 76.08
+        }
+      ]
+    },
+    {
+      "texto": "A fortaleza de Humaitá caiu em 1868.",
+      "inicio_s": 76.56,
+      "fim_s": 80.88,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 76.56,
+          "fim_s": 76.64
+        },
+        {
+          "texto": "fortaleza",
+          "inicio_s": 76.72,
+          "fim_s": 77.28
+        },
+        {
+          "texto": "de",
+          "inicio_s": 77.36,
+          "fim_s": 77.413
+        },
+        {
+          "texto": "Humaitá",
+          "inicio_s": 77.467,
+          "fim_s": 77.92
+        },
+        {
+          "texto": "caiu",
+          "inicio_s": 78.0,
+          "fim_s": 78.32
+        },
+        {
+          "texto": "em",
+          "inicio_s": 78.4,
+          "fim_s": 78.48
+        },
+        {
+          "texto": "1868",
+          "inicio_s": 78.56,
+          "fim_s": 80.4
+        }
+      ]
+    },
+    {
+      "texto": "Assunção foi ocupada no ano seguinte.",
+      "inicio_s": 80.96,
+      "fim_s": 83.6,
+      "palavras": [
+        {
+          "texto": "Assunção",
+          "inicio_s": 80.96,
+          "fim_s": 81.52
+        },
+        {
+          "texto": "foi",
+          "inicio_s": 81.6,
+          "fim_s": 81.72
+        },
+        {
+          "texto": "ocupada",
+          "inicio_s": 81.76,
+          "fim_s": 82.24
+        },
+        {
+          "texto": "no",
+          "inicio_s": 82.32,
+          "fim_s": 82.4
+        },
+        {
+          "texto": "ano",
+          "inicio_s": 82.48,
+          "fim_s": 82.56
+        },
+        {
+          "texto": "seguinte",
+          "inicio_s": 82.64,
+          "fim_s": 83.12
+        }
+      ]
+    },
+    {
+      "texto": "López fugiu pro interior com o que restava do exército: velhos, feridos e meninos.",
+      "inicio_s": 83.68,
+      "fim_s": 89.36,
+      "palavras": [
+        {
+          "texto": "López",
+          "inicio_s": 83.68,
+          "fim_s": 84.08
+        },
+        {
+          "texto": "fugiu",
+          "inicio_s": 84.12,
+          "fim_s": 84.48
+        },
+        {
+          "texto": "pro",
+          "inicio_s": 84.56,
+          "fim_s": 84.64
+        },
+        {
+          "texto": "interior",
+          "inicio_s": 84.8,
+          "fim_s": 85.2
+        },
+        {
+          "texto": "com",
+          "inicio_s": 85.28,
+          "fim_s": 85.36
+        },
+        {
+          "texto": "o",
+          "inicio_s": 85.4,
+          "fim_s": 85.44
+        },
+        {
+          "texto": "que",
+          "inicio_s": 85.48,
+          "fim_s": 85.52
+        },
+        {
+          "texto": "restava",
+          "inicio_s": 85.6,
+          "fim_s": 86.08
+        },
+        {
+          "texto": "do",
+          "inicio_s": 86.16,
+          "fim_s": 86.2
+        },
+        {
+          "texto": "exército",
+          "inicio_s": 86.24,
+          "fim_s": 86.8
+        },
+        {
+          "texto": "velhos",
+          "inicio_s": 87.28,
+          "fim_s": 87.76
+        },
+        {
+          "texto": "feridos",
+          "inicio_s": 88.04,
+          "fim_s": 88.56
+        },
+        {
+          "texto": "e",
+          "inicio_s": 88.64,
+          "fim_s": 88.72
+        },
+        {
+          "texto": "meninos",
+          "inicio_s": 88.84,
+          "fim_s": 89.28
+        }
+      ]
+    },
+    {
+      "texto": "Em Acosta Ñu, esses meninos lutaram com barbas falsas, pra parecerem soldados de verdade de longe.",
+      "inicio_s": 89.76,
+      "fim_s": 96.72,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 89.76,
+          "fim_s": 89.92
+        },
+        {
+          "texto": "Acosta",
+          "inicio_s": 90.04,
+          "fim_s": 90.48
+        },
+        {
+          "texto": "Ñu",
+          "inicio_s": 90.56,
+          "fim_s": 90.72
+        },
+        {
+          "texto": "esses",
+          "inicio_s": 91.16,
+          "fim_s": 91.28
+        },
+        {
+          "texto": "meninos",
+          "inicio_s": 91.36,
+          "fim_s": 91.76
+        },
+        {
+          "texto": "lutaram",
+          "inicio_s": 91.88,
+          "fim_s": 92.24
+        },
+        {
+          "texto": "com",
+          "inicio_s": 92.32,
+          "fim_s": 92.48
+        },
+        {
+          "texto": "barbas",
+          "inicio_s": 92.56,
+          "fim_s": 92.96
+        },
+        {
+          "texto": "falsas",
+          "inicio_s": 93.04,
+          "fim_s": 93.52
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 93.76,
+          "fim_s": 93.84
+        },
+        {
+          "texto": "parecerem",
+          "inicio_s": 93.92,
+          "fim_s": 94.4
+        },
+        {
+          "texto": "soldados",
+          "inicio_s": 94.56,
+          "fim_s": 95.04
+        },
+        {
+          "texto": "de",
+          "inicio_s": 95.08,
+          "fim_s": 95.12
+        },
+        {
+          "texto": "verdade",
+          "inicio_s": 95.2,
+          "fim_s": 95.76
+        },
+        {
+          "texto": "de",
+          "inicio_s": 95.8,
+          "fim_s": 95.84
+        },
+        {
+          "texto": "longe",
+          "inicio_s": 95.92,
+          "fim_s": 96.32
+        }
+      ]
+    },
+    {
+      "texto": "A batalha virou um massacre.",
+      "inicio_s": 96.76,
+      "fim_s": 98.88,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 96.76,
+          "fim_s": 96.8
+        },
+        {
+          "texto": "batalha",
+          "inicio_s": 96.88,
+          "fim_s": 97.36
+        },
+        {
+          "texto": "virou",
+          "inicio_s": 97.44,
+          "fim_s": 97.6
+        },
+        {
+          "texto": "um",
+          "inicio_s": 97.68,
+          "fim_s": 97.76
+        },
+        {
+          "texto": "massacre",
+          "inicio_s": 97.96,
+          "fim_s": 98.48
+        }
+      ]
+    },
+    {
+      "texto": "Em 1870, López foi cercado em Cerro Corá e morto às margens de um riacho.",
+      "inicio_s": 98.96,
+      "fim_s": 105.36,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 98.96,
+          "fim_s": 99.04
+        },
+        {
+          "texto": "1870",
+          "inicio_s": 99.12,
+          "fim_s": 100.56
+        },
+        {
+          "texto": "López",
+          "inicio_s": 100.88,
+          "fim_s": 101.2
+        },
+        {
+          "texto": "foi",
+          "inicio_s": 101.28,
+          "fim_s": 101.4
+        },
+        {
+          "texto": "cercado",
+          "inicio_s": 101.44,
+          "fim_s": 102.0
+        },
+        {
+          "texto": "em",
+          "inicio_s": 102.04,
+          "fim_s": 102.08
+        },
+        {
+          "texto": "Cerro",
+          "inicio_s": 102.24,
+          "fim_s": 102.48
+        },
+        {
+          "texto": "Corá",
+          "inicio_s": 102.6,
+          "fim_s": 102.88
+        },
+        {
+          "texto": "e",
+          "inicio_s": 103.04,
+          "fim_s": 103.12
+        },
+        {
+          "texto": "morto",
+          "inicio_s": 103.28,
+          "fim_s": 103.6
+        },
+        {
+          "texto": "às",
+          "inicio_s": 103.64,
+          "fim_s": 103.76
+        },
+        {
+          "texto": "margens",
+          "inicio_s": 103.84,
+          "fim_s": 104.24
+        },
+        {
+          "texto": "de",
+          "inicio_s": 104.32,
+          "fim_s": 104.36
+        },
+        {
+          "texto": "um",
+          "inicio_s": 104.4,
+          "fim_s": 104.44
+        },
+        {
+          "texto": "riacho",
+          "inicio_s": 104.48,
+          "fim_s": 104.96
+        }
+      ]
+    },
+    {
+      "texto": "A guerra tinha acabado.",
+      "inicio_s": 105.4,
+      "fim_s": 107.36,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 105.4,
+          "fim_s": 105.44
+        },
+        {
+          "texto": "guerra",
+          "inicio_s": 105.6,
+          "fim_s": 105.92
+        },
+        {
+          "texto": "tinha",
+          "inicio_s": 106.08,
+          "fim_s": 106.24
+        },
+        {
+          "texto": "acabado",
+          "inicio_s": 106.4,
+          "fim_s": 106.96
+        }
+      ]
+    },
+    {
+      "texto": "Mas o preço foi devastador.",
+      "inicio_s": 107.44,
+      "fim_s": 109.76,
+      "palavras": [
+        {
+          "texto": "Mas",
+          "inicio_s": 107.44,
+          "fim_s": 107.52
+        },
+        {
+          "texto": "o",
+          "inicio_s": 107.6,
+          "fim_s": 107.68
+        },
+        {
+          "texto": "preço",
+          "inicio_s": 107.76,
+          "fim_s": 108.08
+        },
+        {
+          "texto": "foi",
+          "inicio_s": 108.16,
+          "fim_s": 108.32
+        },
+        {
+          "texto": "devastador",
+          "inicio_s": 108.48,
+          "fim_s": 109.36
+        }
+      ]
+    },
+    {
+      "texto": "Estimativas apontam que o Paraguai perdeu mais da metade da sua população.",
+      "inicio_s": 109.84,
+      "fim_s": 114.64,
+      "palavras": [
+        {
+          "texto": "Estimativas",
+          "inicio_s": 109.84,
+          "fim_s": 110.48
+        },
+        {
+          "texto": "apontam",
+          "inicio_s": 110.6,
+          "fim_s": 111.04
+        },
+        {
+          "texto": "que",
+          "inicio_s": 111.08,
+          "fim_s": 111.12
+        },
+        {
+          "texto": "o",
+          "inicio_s": 111.16,
+          "fim_s": 111.2
+        },
+        {
+          "texto": "Paraguai",
+          "inicio_s": 111.28,
+          "fim_s": 111.76
+        },
+        {
+          "texto": "perdeu",
+          "inicio_s": 111.84,
+          "fim_s": 112.16
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 112.24,
+          "fim_s": 112.48
+        },
+        {
+          "texto": "da",
+          "inicio_s": 112.52,
+          "fim_s": 112.56
+        },
+        {
+          "texto": "metade",
+          "inicio_s": 112.64,
+          "fim_s": 113.2
+        },
+        {
+          "texto": "da",
+          "inicio_s": 113.24,
+          "fim_s": 113.28
+        },
+        {
+          "texto": "sua",
+          "inicio_s": 113.36,
+          "fim_s": 113.52
+        },
+        {
+          "texto": "população",
+          "inicio_s": 113.6,
+          "fim_s": 114.24
+        }
+      ]
+    },
+    {
+      "texto": "Entre os homens, a perda pode ter chegado a setenta por cento.",
+      "inicio_s": 114.76,
+      "fim_s": 118.88,
+      "palavras": [
+        {
+          "texto": "Entre",
+          "inicio_s": 114.76,
+          "fim_s": 114.88
+        },
+        {
+          "texto": "os",
+          "inicio_s": 114.96,
+          "fim_s": 115.04
+        },
+        {
+          "texto": "homens",
+          "inicio_s": 115.12,
+          "fim_s": 115.44
+        },
+        {
+          "texto": "a",
+          "inicio_s": 115.72,
+          "fim_s": 115.76
+        },
+        {
+          "texto": "perda",
+          "inicio_s": 115.92,
+          "fim_s": 116.24
+        },
+        {
+          "texto": "pode",
+          "inicio_s": 116.293,
+          "fim_s": 116.4
+        },
+        {
+          "texto": "ter",
+          "inicio_s": 116.48,
+          "fim_s": 116.64
+        },
+        {
+          "texto": "chegado",
+          "inicio_s": 116.68,
+          "fim_s": 117.04
+        },
+        {
+          "texto": "a",
+          "inicio_s": 117.12,
+          "fim_s": 117.2
+        },
+        {
+          "texto": "setenta",
+          "inicio_s": 117.28,
+          "fim_s": 117.76
+        },
+        {
+          "texto": "por",
+          "inicio_s": 117.92,
+          "fim_s": 118.08
+        },
+        {
+          "texto": "cento",
+          "inicio_s": 118.24,
+          "fim_s": 118.48
+        }
+      ]
+    },
+    {
+      "texto": "Do lado brasileiro, dezenas de milhares de soldados nunca voltaram pra casa.",
+      "inicio_s": 118.96,
+      "fim_s": 124.32,
+      "palavras": [
+        {
+          "texto": "Do",
+          "inicio_s": 118.96,
+          "fim_s": 119.04
+        },
+        {
+          "texto": "lado",
+          "inicio_s": 119.12,
+          "fim_s": 119.28
+        },
+        {
+          "texto": "brasileiro",
+          "inicio_s": 119.4,
+          "fim_s": 119.84
+        },
+        {
+          "texto": "dezenas",
+          "inicio_s": 120.16,
+          "fim_s": 120.72
+        },
+        {
+          "texto": "de",
+          "inicio_s": 120.8,
+          "fim_s": 120.88
+        },
+        {
+          "texto": "milhares",
+          "inicio_s": 120.96,
+          "fim_s": 121.44
+        },
+        {
+          "texto": "de",
+          "inicio_s": 121.52,
+          "fim_s": 121.6
+        },
+        {
+          "texto": "soldados",
+          "inicio_s": 121.68,
+          "fim_s": 122.32
+        },
+        {
+          "texto": "nunca",
+          "inicio_s": 122.48,
+          "fim_s": 122.8
+        },
+        {
+          "texto": "voltaram",
+          "inicio_s": 122.92,
+          "fim_s": 123.28
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 123.36,
+          "fim_s": 123.44
+        },
+        {
+          "texto": "casa",
+          "inicio_s": 123.52,
+          "fim_s": 123.84
+        }
+      ]
+    },
+    {
+      "texto": "Foi o conflito mais sangrento da história da América do Sul — e quase apagou um país inteiro do mapa.",
+      "inicio_s": 124.36,
+      "fim_s": 131.04,
+      "palavras": [
+        {
+          "texto": "Foi",
+          "inicio_s": 124.36,
+          "fim_s": 124.48
+        },
+        {
+          "texto": "o",
+          "inicio_s": 124.56,
+          "fim_s": 124.64
+        },
+        {
+          "texto": "conflito",
+          "inicio_s": 124.72,
+          "fim_s": 125.28
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 125.32,
+          "fim_s": 125.52
+        },
+        {
+          "texto": "sangrento",
+          "inicio_s": 125.6,
+          "fim_s": 126.187
+        },
+        {
+          "texto": "da",
+          "inicio_s": 126.213,
+          "fim_s": 126.24
+        },
+        {
+          "texto": "história",
+          "inicio_s": 126.32,
+          "fim_s": 126.72
+        },
+        {
+          "texto": "da",
+          "inicio_s": 126.8,
+          "fim_s": 126.88
+        },
+        {
+          "texto": "América",
+          "inicio_s": 126.96,
+          "fim_s": 127.28
+        },
+        {
+          "texto": "do",
+          "inicio_s": 127.36,
+          "fim_s": 127.44
+        },
+        {
+          "texto": "Sul",
+          "inicio_s": 127.52,
+          "fim_s": 127.68
+        },
+        {
+          "texto": "e",
+          "inicio_s": 128.16,
+          "fim_s": 128.32
+        },
+        {
+          "texto": "quase",
+          "inicio_s": 128.36,
+          "fim_s": 128.64
+        },
+        {
+          "texto": "apagou",
+          "inicio_s": 128.72,
+          "fim_s": 129.12
+        },
+        {
+          "texto": "um",
+          "inicio_s": 129.2,
+          "fim_s": 129.28
+        },
+        {
+          "texto": "país",
+          "inicio_s": 129.36,
+          "fim_s": 129.68
+        },
+        {
+          "texto": "inteiro",
+          "inicio_s": 129.92,
+          "fim_s": 130.32
+        },
+        {
+          "texto": "do",
+          "inicio_s": 130.4,
+          "fim_s": 130.48
+        },
+        {
+          "texto": "mapa",
+          "inicio_s": 130.64,
+          "fim_s": 130.88
+        }
+      ]
+    }
+  ]
+}
