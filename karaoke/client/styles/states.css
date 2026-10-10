@@ -264,8 +264,37 @@
         flex: none !important;
         height: calc(100vh - 35rem) !important;
         min-height: 190px;
-        padding: 1.25rem !important;
+        padding: 0.75rem 1.25rem !important;
+        --stage-anchor: 0.38;  /* linha atual mais para cima (lyrics-carousel.js) */
     }
+    /* O palco fica baixo (≈200 px numa tela de notebook) e a linha atual, centrada,
+       tomava tudo: a próxima sumia. Sem a anterior, com fonte e margens menores,
+       a próxima cabe embaixo da atual. */
+    #app[data-players="multi"][data-state="singing"] .prev-line,
+    #app[data-players="multi"][data-state="scoring"] .prev-line {
+        height: 0 !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        opacity: 0 !important;
+    }
+    #app[data-players="multi"][data-state="singing"] .curr-line,
+    #app[data-players="multi"][data-state="scoring"] .curr-line {
+        min-height: 0 !important;
+        margin: 0.35rem 0 !important;
+        font-size: clamp(1.9rem, 3.8vw, 3.4rem) !important;
+        line-height: 1.2 !important;
+    }
+    #app[data-players="multi"][data-state="singing"] .next-line,
+    #app[data-players="multi"][data-state="scoring"] .next-line {
+        height: auto !important;  /* os 85 px fixos não cabiam no palco baixo */
+        padding: 0 !important;
+        margin: 0.35rem 0 !important;
+        font-size: clamp(1.3rem, 2.3vw, 2rem) !important;
+        line-height: 1.2 !important;
+    }
+    #app[data-players="multi"][data-state="singing"] .curr-line.is-long,
+    #app[data-players="multi"][data-state="scoring"] .curr-line.is-long { font-size: clamp(1.4rem, 2.3vw, 2.1rem) !important; }
     /* barras de time (com membros) são mais altas */
     #app[data-players="multi"][data-teams][data-state="singing"] .main-card,
     #app[data-players="multi"][data-teams][data-state="scoring"] .main-card { padding-top: 132px !important; padding-bottom: 140px !important; }

@@ -60,8 +60,14 @@ function getTranslationForLine(line) {
     // que falta para o centro da linha chegar ao centro do palco.
     const box = container.getBoundingClientRect();
     const rect = line.getBoundingClientRect();
-    const stageCenter = box.top + container.clientTop + container.clientHeight / 2;
-    return currentTranslateY(inner) + (stageCenter - (rect.top + rect.height / 2));
+    // --stage-anchor (states.css): onde fica a linha atual no palco, 0.5 = no meio.
+    // Com vários cantores o palco é baixo e ela sobe, para a próxima caber embaixo.
+    const anchor = parseFloat(getComputedStyle(container).getPropertyValue('--stage-anchor')) || 0.5;
+    const stageCenter = box.top + container.clientTop + container.clientHeight * anchor;
+    // verso alto (várias linhas) não passa do topo do palco: o começo dele é o que se canta
+    const stageTop = box.top + container.clientTop + (parseFloat(getComputedStyle(container).paddingTop) || 0);
+    const lineTop = Math.max(stageCenter - rect.height / 2, stageTop);
+    return currentTranslateY(inner) + (lineTop - rect.top);
 }
 
 // translateY em vigor agora (a matriz calculada já reflete a transição em curso).
