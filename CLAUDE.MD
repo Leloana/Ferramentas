@@ -16,7 +16,7 @@ Este repositório (`Ferramentas`) agrupa scripts, automações e ecossistemas in
 * **Documentação:** [`agent-remote/README.md`](agent-remote/README.md), [`agent-remote/ARQUITETURA.md`](agent-remote/ARQUITETURA.md), [`agent-remote/GUIA_CLOUDFLARE.md`](agent-remote/GUIA_CLOUDFLARE.md).
 
 #### 2. 🗣️🎬 Plataforma de TTS e Vídeos (`/tts_platform_pt`)
-* **Descrição:** Plataforma de síntese de voz em português com **XTTS-v2** (Coqui, clonagem zero-shot) com normalização via Ollama, geração de imagens com consistência de personagem no ComfyUI (**Qwen-Image-2.1 INT8**) e pipeline orquestrador completo ([`scripts/executar_projeto.py`](tts_platform_pt/scripts/executar_projeto.py)) para produção em lote de vídeos verticais (9:16) para TikTok, Reels e Shorts.
+* **Descrição:** Plataforma de síntese de voz em português com **ElevenLabs** (padrão dos vídeos, voz grave "David"; chave em `tts_platform_pt/.env`) e **XTTS-v2** local (Coqui, clonagem zero-shot) com normalização via Ollama, geração de imagens com consistência de personagem no ComfyUI (**Qwen-Image-2.1 INT8**) e pipeline orquestrador completo ([`scripts/executar_projeto.py`](tts_platform_pt/scripts/executar_projeto.py)) para produção em lote de vídeos verticais (9:16) para TikTok, Reels e Shorts.
 * **Stack:** FastAPI, Vanilla JS, PyTorch (CUDA), Coqui XTTS-v2, ComfyUI API, FFmpeg.
 * **Guia de Execução:** [`tts_platform_pt/FLUXO_RECOMENDADO.md`](tts_platform_pt/FLUXO_RECOMENDADO.md).
 
