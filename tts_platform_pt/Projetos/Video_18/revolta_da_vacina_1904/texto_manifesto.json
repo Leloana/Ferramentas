@@ -1,0 +1,1516 @@
+{
+  "gerado_em": "2026-10-10T13:00:41",
+  "roteiro": "Projetos\\Video_18\\revolta_da_vacina_1904\\texto.md",
+  "voz": "eleven:7i7dgyCkKt4c16dLtwT3",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.0,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 119.8,
+  "texto_usado": "Em 1904, o Rio de Janeiro virou um campo de batalha. Bondes foram incendiados, ruas viraram trincheiras, e o motivo foi uma vacina. O Rio era a capital do Brasil e tinha fama de cidade doente. Febre amarela, peste bubônica e varíola matavam milhares todos os anos. Navios estrangeiros evitavam o porto. O presidente Rodrigues Alves decidiu mudar isso à força. O prefeito Pereira Passos derrubou cortiços pra abrir grandes avenidas, e milhares de famílias pobres foram despejadas sem ter pra onde ir. Muitas subiram os morros. O médico Oswaldo Cruz ficou com a saúde. Brigadas sanitárias entravam nas casas sem pedir licença, caçando ratos e mosquitos. A população já estava revoltada quando veio a gota d'água. Em outubro de 1904, foi aprovada a vacinação obrigatória contra a varíola. Corria o boato de que a vacina deixava as pessoas com cara de bezerro. E a ideia de agentes do governo entrando nas casas pra vacinar mulheres enquanto os maridos trabalhavam enfureceu a cidade. No dia dez de novembro, começaram os protestos. Em poucos dias, a revolta tomou o centro. A população arrancou paralelepípedos, virou bondes e quebrou postes de iluminação. No bairro da Saúde, ergueram barricadas. Até cadetes da Escola Militar se rebelaram e tentaram derrubar o presidente. O governo declarou estado de sítio. Houve dezenas de mortos e centenas de presos. Muitos foram mandados pro Acre, sem julgamento. A vacinação obrigatória acabou suspensa. Mas a história tem uma reviravolta. Em 1908, uma nova epidemia de varíola matou milhares de pessoas no Rio. E dessa vez, a população fez fila pra se vacinar.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Em 1904, o Rio de Janeiro virou um campo de batalha.",
+      "inicio_s": 0.0,
+      "fim_s": 4.56,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 0.0,
+          "fim_s": 0.16
+        },
+        {
+          "texto": "1904",
+          "inicio_s": 0.24,
+          "fim_s": 1.52
+        },
+        {
+          "texto": "o",
+          "inicio_s": 1.84,
+          "fim_s": 1.88
+        },
+        {
+          "texto": "Rio",
+          "inicio_s": 1.92,
+          "fim_s": 2.08
+        },
+        {
+          "texto": "de",
+          "inicio_s": 2.16,
+          "fim_s": 2.24
+        },
+        {
+          "texto": "Janeiro",
+          "inicio_s": 2.4,
+          "fim_s": 2.72
+        },
+        {
+          "texto": "virou",
+          "inicio_s": 2.8,
+          "fim_s": 2.96
+        },
+        {
+          "texto": "um",
+          "inicio_s": 3.04,
+          "fim_s": 3.2
+        },
+        {
+          "texto": "campo",
+          "inicio_s": 3.36,
+          "fim_s": 3.52
+        },
+        {
+          "texto": "de",
+          "inicio_s": 3.6,
+          "fim_s": 3.68
+        },
+        {
+          "texto": "batalha",
+          "inicio_s": 3.813,
+          "fim_s": 4.24
+        }
+      ]
+    },
+    {
+      "texto": "Bondes foram incendiados, ruas viraram trincheiras, e o motivo foi uma vacina.",
+      "inicio_s": 4.88,
+      "fim_s": 10.64,
+      "palavras": [
+        {
+          "texto": "Bondes",
+          "inicio_s": 4.88,
+          "fim_s": 5.36
+        },
+        {
+          "texto": "foram",
+          "inicio_s": 5.44,
+          "fim_s": 5.6
+        },
+        {
+          "texto": "incendiados",
+          "inicio_s": 5.68,
+          "fim_s": 6.48
+        },
+        {
+          "texto": "ruas",
+          "inicio_s": 6.88,
+          "fim_s": 7.2
+        },
+        {
+          "texto": "viraram",
+          "inicio_s": 7.28,
+          "fim_s": 7.6
+        },
+        {
+          "texto": "trincheiras",
+          "inicio_s": 7.68,
+          "fim_s": 8.4
+        },
+        {
+          "texto": "e",
+          "inicio_s": 8.76,
+          "fim_s": 8.8
+        },
+        {
+          "texto": "o",
+          "inicio_s": 8.84,
+          "fim_s": 8.88
+        },
+        {
+          "texto": "motivo",
+          "inicio_s": 9.0,
+          "fim_s": 9.44
+        },
+        {
+          "texto": "foi",
+          "inicio_s": 9.68,
+          "fim_s": 9.8
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 9.84,
+          "fim_s": 10.0
+        },
+        {
+          "texto": "vacina",
+          "inicio_s": 10.16,
+          "fim_s": 10.56
+        }
+      ]
+    },
+    {
+      "texto": "O Rio era a capital do Brasil e tinha fama de cidade doente.",
+      "inicio_s": 11.28,
+      "fim_s": 15.44,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 11.28,
+          "fim_s": 11.36
+        },
+        {
+          "texto": "Rio",
+          "inicio_s": 11.44,
+          "fim_s": 11.76
+        },
+        {
+          "texto": "era",
+          "inicio_s": 11.84,
+          "fim_s": 11.92
+        },
+        {
+          "texto": "a",
+          "inicio_s": 11.96,
+          "fim_s": 12.0
+        },
+        {
+          "texto": "capital",
+          "inicio_s": 12.24,
+          "fim_s": 12.48
+        },
+        {
+          "texto": "do",
+          "inicio_s": 12.56,
+          "fim_s": 12.6
+        },
+        {
+          "texto": "Brasil",
+          "inicio_s": 12.64,
+          "fim_s": 13.12
+        },
+        {
+          "texto": "e",
+          "inicio_s": 13.36,
+          "fim_s": 13.52
+        },
+        {
+          "texto": "tinha",
+          "inicio_s": 13.6,
+          "fim_s": 13.76
+        },
+        {
+          "texto": "fama",
+          "inicio_s": 13.92,
+          "fim_s": 14.16
+        },
+        {
+          "texto": "de",
+          "inicio_s": 14.24,
+          "fim_s": 14.32
+        },
+        {
+          "texto": "cidade",
+          "inicio_s": 14.4,
+          "fim_s": 14.8
+        },
+        {
+          "texto": "doente",
+          "inicio_s": 14.88,
+          "fim_s": 15.36
+        }
+      ]
+    },
+    {
+      "texto": "Febre amarela, peste bubônica e varíola matavam milhares todos os anos.",
+      "inicio_s": 16.0,
+      "fim_s": 21.32,
+      "palavras": [
+        {
+          "texto": "Febre",
+          "inicio_s": 16.0,
+          "fim_s": 16.28
+        },
+        {
+          "texto": "amarela",
+          "inicio_s": 16.32,
+          "fim_s": 16.88
+        },
+        {
+          "texto": "peste",
+          "inicio_s": 17.2,
+          "fim_s": 17.44
+        },
+        {
+          "texto": "bubônica",
+          "inicio_s": 17.52,
+          "fim_s": 18.16
+        },
+        {
+          "texto": "e",
+          "inicio_s": 18.2,
+          "fim_s": 18.24
+        },
+        {
+          "texto": "varíola",
+          "inicio_s": 18.32,
+          "fim_s": 18.8
+        },
+        {
+          "texto": "matavam",
+          "inicio_s": 18.92,
+          "fim_s": 19.28
+        },
+        {
+          "texto": "milhares",
+          "inicio_s": 19.36,
+          "fim_s": 20.0
+        },
+        {
+          "texto": "todos",
+          "inicio_s": 20.16,
+          "fim_s": 20.48
+        },
+        {
+          "texto": "os",
+          "inicio_s": 20.56,
+          "fim_s": 20.64
+        },
+        {
+          "texto": "anos",
+          "inicio_s": 20.72,
+          "fim_s": 21.04
+        }
+      ]
+    },
+    {
+      "texto": "Navios estrangeiros evitavam o porto.",
+      "inicio_s": 21.6,
+      "fim_s": 24.08,
+      "palavras": [
+        {
+          "texto": "Navios",
+          "inicio_s": 21.6,
+          "fim_s": 22.0
+        },
+        {
+          "texto": "estrangeiros",
+          "inicio_s": 22.08,
+          "fim_s": 22.8
+        },
+        {
+          "texto": "evitavam",
+          "inicio_s": 22.84,
+          "fim_s": 23.44
+        },
+        {
+          "texto": "o",
+          "inicio_s": 23.48,
+          "fim_s": 23.52
+        },
+        {
+          "texto": "porto",
+          "inicio_s": 23.6,
+          "fim_s": 24.0
+        }
+      ]
+    },
+    {
+      "texto": "O presidente Rodrigues Alves decidiu mudar isso à força.",
+      "inicio_s": 24.56,
+      "fim_s": 28.0,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 24.56,
+          "fim_s": 24.64
+        },
+        {
+          "texto": "presidente",
+          "inicio_s": 24.72,
+          "fim_s": 25.2
+        },
+        {
+          "texto": "Rodrigues",
+          "inicio_s": 25.28,
+          "fim_s": 25.76
+        },
+        {
+          "texto": "Alves",
+          "inicio_s": 25.84,
+          "fim_s": 26.24
+        },
+        {
+          "texto": "decidiu",
+          "inicio_s": 26.32,
+          "fim_s": 26.64
+        },
+        {
+          "texto": "mudar",
+          "inicio_s": 26.68,
+          "fim_s": 27.04
+        },
+        {
+          "texto": "isso",
+          "inicio_s": 27.12,
+          "fim_s": 27.28
+        },
+        {
+          "texto": "à",
+          "inicio_s": 27.36,
+          "fim_s": 27.44
+        },
+        {
+          "texto": "força",
+          "inicio_s": 27.52,
+          "fim_s": 27.92
+        }
+      ]
+    },
+    {
+      "texto": "O prefeito Pereira Passos derrubou cortiços pra abrir grandes avenidas, e milhares de famílias pobres foram despejadas sem ter pra onde ir.",
+      "inicio_s": 28.4,
+      "fim_s": 37.6,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 28.4,
+          "fim_s": 28.48
+        },
+        {
+          "texto": "prefeito",
+          "inicio_s": 28.56,
+          "fim_s": 28.96
+        },
+        {
+          "texto": "Pereira",
+          "inicio_s": 29.04,
+          "fim_s": 29.36
+        },
+        {
+          "texto": "Passos",
+          "inicio_s": 29.44,
+          "fim_s": 29.84
+        },
+        {
+          "texto": "derrubou",
+          "inicio_s": 29.92,
+          "fim_s": 30.32
+        },
+        {
+          "texto": "cortiços",
+          "inicio_s": 30.36,
+          "fim_s": 31.04
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 31.12,
+          "fim_s": 31.2
+        },
+        {
+          "texto": "abrir",
+          "inicio_s": 31.28,
+          "fim_s": 31.6
+        },
+        {
+          "texto": "grandes",
+          "inicio_s": 31.76,
+          "fim_s": 32.16
+        },
+        {
+          "texto": "avenidas",
+          "inicio_s": 32.32,
+          "fim_s": 32.8
+        },
+        {
+          "texto": "e",
+          "inicio_s": 33.2,
+          "fim_s": 33.28
+        },
+        {
+          "texto": "milhares",
+          "inicio_s": 33.4,
+          "fim_s": 33.84
+        },
+        {
+          "texto": "de",
+          "inicio_s": 33.92,
+          "fim_s": 34.0
+        },
+        {
+          "texto": "famílias",
+          "inicio_s": 34.08,
+          "fim_s": 34.48
+        },
+        {
+          "texto": "pobres",
+          "inicio_s": 34.56,
+          "fim_s": 34.96
+        },
+        {
+          "texto": "foram",
+          "inicio_s": 35.04,
+          "fim_s": 35.28
+        },
+        {
+          "texto": "despejadas",
+          "inicio_s": 35.4,
+          "fim_s": 36.16
+        },
+        {
+          "texto": "sem",
+          "inicio_s": 36.32,
+          "fim_s": 36.56
+        },
+        {
+          "texto": "ter",
+          "inicio_s": 36.64,
+          "fim_s": 36.8
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 36.88,
+          "fim_s": 37.04
+        },
+        {
+          "texto": "onde",
+          "inicio_s": 37.16,
+          "fim_s": 37.28
+        },
+        {
+          "texto": "ir",
+          "inicio_s": 37.36,
+          "fim_s": 37.52
+        }
+      ]
+    },
+    {
+      "texto": "Muitas subiram os morros.",
+      "inicio_s": 38.16,
+      "fim_s": 40.16,
+      "palavras": [
+        {
+          "texto": "Muitas",
+          "inicio_s": 38.16,
+          "fim_s": 38.64
+        },
+        {
+          "texto": "subiram",
+          "inicio_s": 38.8,
+          "fim_s": 39.2
+        },
+        {
+          "texto": "os",
+          "inicio_s": 39.28,
+          "fim_s": 39.36
+        },
+        {
+          "texto": "morros",
+          "inicio_s": 39.44,
+          "fim_s": 39.92
+        }
+      ]
+    },
+    {
+      "texto": "O médico Oswaldo Cruz ficou com a saúde.",
+      "inicio_s": 40.4,
+      "fim_s": 43.12,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 40.4,
+          "fim_s": 40.48
+        },
+        {
+          "texto": "médico",
+          "inicio_s": 40.56,
+          "fim_s": 40.88
+        },
+        {
+          "texto": "Oswaldo",
+          "inicio_s": 40.96,
+          "fim_s": 41.36
+        },
+        {
+          "texto": "Cruz",
+          "inicio_s": 41.44,
+          "fim_s": 41.84
+        },
+        {
+          "texto": "ficou",
+          "inicio_s": 42.0,
+          "fim_s": 42.24
+        },
+        {
+          "texto": "com",
+          "inicio_s": 42.32,
+          "fim_s": 42.4
+        },
+        {
+          "texto": "a",
+          "inicio_s": 42.48,
+          "fim_s": 42.52
+        },
+        {
+          "texto": "saúde",
+          "inicio_s": 42.56,
+          "fim_s": 43.04
+        }
+      ]
+    },
+    {
+      "texto": "Brigadas sanitárias entravam nas casas sem pedir licença, caçando ratos e mosquitos.",
+      "inicio_s": 43.6,
+      "fim_s": 49.64,
+      "palavras": [
+        {
+          "texto": "Brigadas",
+          "inicio_s": 43.6,
+          "fim_s": 44.0
+        },
+        {
+          "texto": "sanitárias",
+          "inicio_s": 44.08,
+          "fim_s": 44.72
+        },
+        {
+          "texto": "entravam",
+          "inicio_s": 44.8,
+          "fim_s": 45.28
+        },
+        {
+          "texto": "nas",
+          "inicio_s": 45.4,
+          "fim_s": 45.52
+        },
+        {
+          "texto": "casas",
+          "inicio_s": 45.6,
+          "fim_s": 46.0
+        },
+        {
+          "texto": "sem",
+          "inicio_s": 46.08,
+          "fim_s": 46.24
+        },
+        {
+          "texto": "pedir",
+          "inicio_s": 46.32,
+          "fim_s": 46.56
+        },
+        {
+          "texto": "licença",
+          "inicio_s": 46.64,
+          "fim_s": 47.2
+        },
+        {
+          "texto": "caçando",
+          "inicio_s": 47.52,
+          "fim_s": 47.92
+        },
+        {
+          "texto": "ratos",
+          "inicio_s": 48.0,
+          "fim_s": 48.48
+        },
+        {
+          "texto": "e",
+          "inicio_s": 48.56,
+          "fim_s": 48.6
+        },
+        {
+          "texto": "mosquitos",
+          "inicio_s": 48.64,
+          "fim_s": 49.36
+        }
+      ]
+    },
+    {
+      "texto": "A população já estava revoltada quando veio a gota d'água.",
+      "inicio_s": 49.92,
+      "fim_s": 53.6,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 49.92,
+          "fim_s": 50.0
+        },
+        {
+          "texto": "população",
+          "inicio_s": 50.08,
+          "fim_s": 50.64
+        },
+        {
+          "texto": "já",
+          "inicio_s": 50.72,
+          "fim_s": 50.8
+        },
+        {
+          "texto": "estava",
+          "inicio_s": 50.88,
+          "fim_s": 51.12
+        },
+        {
+          "texto": "revoltada",
+          "inicio_s": 51.28,
+          "fim_s": 52.0
+        },
+        {
+          "texto": "quando",
+          "inicio_s": 52.16,
+          "fim_s": 52.32
+        },
+        {
+          "texto": "veio",
+          "inicio_s": 52.48,
+          "fim_s": 52.64
+        },
+        {
+          "texto": "a",
+          "inicio_s": 52.68,
+          "fim_s": 52.72
+        },
+        {
+          "texto": "gota",
+          "inicio_s": 52.8,
+          "fim_s": 53.12
+        },
+        {
+          "texto": "d",
+          "inicio_s": 53.2,
+          "fim_s": 53.24
+        },
+        {
+          "texto": "água",
+          "inicio_s": 53.28,
+          "fim_s": 53.52
+        }
+      ]
+    },
+    {
+      "texto": "Em outubro de 1904, foi aprovada a vacinação obrigatória contra a varíola.",
+      "inicio_s": 54.08,
+      "fim_s": 59.76,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 54.08,
+          "fim_s": 54.24
+        },
+        {
+          "texto": "outubro",
+          "inicio_s": 54.36,
+          "fim_s": 54.72
+        },
+        {
+          "texto": "de",
+          "inicio_s": 54.8,
+          "fim_s": 54.88
+        },
+        {
+          "texto": "1904",
+          "inicio_s": 54.96,
+          "fim_s": 56.16
+        },
+        {
+          "texto": "foi",
+          "inicio_s": 56.52,
+          "fim_s": 56.6
+        },
+        {
+          "texto": "aprovada",
+          "inicio_s": 56.64,
+          "fim_s": 57.2
+        },
+        {
+          "texto": "a",
+          "inicio_s": 57.24,
+          "fim_s": 57.28
+        },
+        {
+          "texto": "vacinação",
+          "inicio_s": 57.36,
+          "fim_s": 57.92
+        },
+        {
+          "texto": "obrigatória",
+          "inicio_s": 58.0,
+          "fim_s": 58.72
+        },
+        {
+          "texto": "contra",
+          "inicio_s": 58.88,
+          "fim_s": 59.12
+        },
+        {
+          "texto": "a",
+          "inicio_s": 59.16,
+          "fim_s": 59.2
+        },
+        {
+          "texto": "varíola",
+          "inicio_s": 59.28,
+          "fim_s": 59.68
+        }
+      ]
+    },
+    {
+      "texto": "Corria o boato de que a vacina deixava as pessoas com cara de bezerro.",
+      "inicio_s": 60.24,
+      "fim_s": 64.48,
+      "palavras": [
+        {
+          "texto": "Corria",
+          "inicio_s": 60.24,
+          "fim_s": 60.56
+        },
+        {
+          "texto": "o",
+          "inicio_s": 60.64,
+          "fim_s": 60.72
+        },
+        {
+          "texto": "boato",
+          "inicio_s": 60.8,
+          "fim_s": 61.2
+        },
+        {
+          "texto": "de",
+          "inicio_s": 61.24,
+          "fim_s": 61.28
+        },
+        {
+          "texto": "que",
+          "inicio_s": 61.36,
+          "fim_s": 61.44
+        },
+        {
+          "texto": "a",
+          "inicio_s": 61.467,
+          "fim_s": 61.493
+        },
+        {
+          "texto": "vacina",
+          "inicio_s": 61.52,
+          "fim_s": 61.92
+        },
+        {
+          "texto": "deixava",
+          "inicio_s": 62.0,
+          "fim_s": 62.32
+        },
+        {
+          "texto": "as",
+          "inicio_s": 62.4,
+          "fim_s": 62.48
+        },
+        {
+          "texto": "pessoas",
+          "inicio_s": 62.56,
+          "fim_s": 62.96
+        },
+        {
+          "texto": "com",
+          "inicio_s": 63.04,
+          "fim_s": 63.12
+        },
+        {
+          "texto": "cara",
+          "inicio_s": 63.28,
+          "fim_s": 63.44
+        },
+        {
+          "texto": "de",
+          "inicio_s": 63.52,
+          "fim_s": 63.6
+        },
+        {
+          "texto": "bezerro",
+          "inicio_s": 63.68,
+          "fim_s": 64.24
+        }
+      ]
+    },
+    {
+      "texto": "E a ideia de agentes do governo entrando nas casas pra vacinar mulheres enquanto os maridos trabalhavam enfureceu a cidade.",
+      "inicio_s": 64.72,
+      "fim_s": 72.56,
+      "palavras": [
+        {
+          "texto": "E",
+          "inicio_s": 64.72,
+          "fim_s": 64.8
+        },
+        {
+          "texto": "a",
+          "inicio_s": 64.84,
+          "fim_s": 64.88
+        },
+        {
+          "texto": "ideia",
+          "inicio_s": 65.0,
+          "fim_s": 65.2
+        },
+        {
+          "texto": "de",
+          "inicio_s": 65.28,
+          "fim_s": 65.36
+        },
+        {
+          "texto": "agentes",
+          "inicio_s": 65.52,
+          "fim_s": 65.76
+        },
+        {
+          "texto": "do",
+          "inicio_s": 65.84,
+          "fim_s": 65.92
+        },
+        {
+          "texto": "governo",
+          "inicio_s": 65.96,
+          "fim_s": 66.48
+        },
+        {
+          "texto": "entrando",
+          "inicio_s": 66.6,
+          "fim_s": 66.88
+        },
+        {
+          "texto": "nas",
+          "inicio_s": 66.96,
+          "fim_s": 67.12
+        },
+        {
+          "texto": "casas",
+          "inicio_s": 67.2,
+          "fim_s": 67.6
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 67.68,
+          "fim_s": 67.76
+        },
+        {
+          "texto": "vacinar",
+          "inicio_s": 67.84,
+          "fim_s": 68.24
+        },
+        {
+          "texto": "mulheres",
+          "inicio_s": 68.36,
+          "fim_s": 68.88
+        },
+        {
+          "texto": "enquanto",
+          "inicio_s": 69.12,
+          "fim_s": 69.44
+        },
+        {
+          "texto": "os",
+          "inicio_s": 69.52,
+          "fim_s": 69.6
+        },
+        {
+          "texto": "maridos",
+          "inicio_s": 69.68,
+          "fim_s": 70.0
+        },
+        {
+          "texto": "trabalhavam",
+          "inicio_s": 70.08,
+          "fim_s": 70.72
+        },
+        {
+          "texto": "enfureceu",
+          "inicio_s": 71.04,
+          "fim_s": 71.84
+        },
+        {
+          "texto": "a",
+          "inicio_s": 71.88,
+          "fim_s": 71.92
+        },
+        {
+          "texto": "cidade",
+          "inicio_s": 72.0,
+          "fim_s": 72.48
+        }
+      ]
+    },
+    {
+      "texto": "No dia dez de novembro, começaram os protestos.",
+      "inicio_s": 73.04,
+      "fim_s": 76.24,
+      "palavras": [
+        {
+          "texto": "No",
+          "inicio_s": 73.04,
+          "fim_s": 73.2
+        },
+        {
+          "texto": "dia",
+          "inicio_s": 73.28,
+          "fim_s": 73.36
+        },
+        {
+          "texto": "dez",
+          "inicio_s": 73.52,
+          "fim_s": 73.68
+        },
+        {
+          "texto": "de",
+          "inicio_s": 73.76,
+          "fim_s": 73.84
+        },
+        {
+          "texto": "novembro",
+          "inicio_s": 73.92,
+          "fim_s": 74.4
+        },
+        {
+          "texto": "começaram",
+          "inicio_s": 74.8,
+          "fim_s": 75.28
+        },
+        {
+          "texto": "os",
+          "inicio_s": 75.36,
+          "fim_s": 75.44
+        },
+        {
+          "texto": "protestos",
+          "inicio_s": 75.52,
+          "fim_s": 76.16
+        }
+      ]
+    },
+    {
+      "texto": "Em poucos dias, a revolta tomou o centro.",
+      "inicio_s": 76.64,
+      "fim_s": 79.6,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 76.64,
+          "fim_s": 76.88
+        },
+        {
+          "texto": "poucos",
+          "inicio_s": 76.92,
+          "fim_s": 77.2
+        },
+        {
+          "texto": "dias",
+          "inicio_s": 77.28,
+          "fim_s": 77.68
+        },
+        {
+          "texto": "a",
+          "inicio_s": 77.92,
+          "fim_s": 77.96
+        },
+        {
+          "texto": "revolta",
+          "inicio_s": 78.0,
+          "fim_s": 78.48
+        },
+        {
+          "texto": "tomou",
+          "inicio_s": 78.56,
+          "fim_s": 78.96
+        },
+        {
+          "texto": "o",
+          "inicio_s": 79.04,
+          "fim_s": 79.12
+        },
+        {
+          "texto": "centro",
+          "inicio_s": 79.2,
+          "fim_s": 79.52
+        }
+      ]
+    },
+    {
+      "texto": "A população arrancou paralelepípedos, virou bondes e quebrou postes de iluminação.",
+      "inicio_s": 80.08,
+      "fim_s": 85.6,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 80.08,
+          "fim_s": 80.16
+        },
+        {
+          "texto": "população",
+          "inicio_s": 80.24,
+          "fim_s": 80.8
+        },
+        {
+          "texto": "arrancou",
+          "inicio_s": 80.88,
+          "fim_s": 81.2
+        },
+        {
+          "texto": "paralelepípedos",
+          "inicio_s": 81.36,
+          "fim_s": 82.4
+        },
+        {
+          "texto": "virou",
+          "inicio_s": 82.72,
+          "fim_s": 82.96
+        },
+        {
+          "texto": "bondes",
+          "inicio_s": 83.04,
+          "fim_s": 83.6
+        },
+        {
+          "texto": "e",
+          "inicio_s": 83.68,
+          "fim_s": 83.72
+        },
+        {
+          "texto": "quebrou",
+          "inicio_s": 83.76,
+          "fim_s": 84.08
+        },
+        {
+          "texto": "postes",
+          "inicio_s": 84.24,
+          "fim_s": 84.64
+        },
+        {
+          "texto": "de",
+          "inicio_s": 84.72,
+          "fim_s": 84.8
+        },
+        {
+          "texto": "iluminação",
+          "inicio_s": 84.84,
+          "fim_s": 85.52
+        }
+      ]
+    },
+    {
+      "texto": "No bairro da Saúde, ergueram barricadas.",
+      "inicio_s": 86.08,
+      "fim_s": 88.96,
+      "palavras": [
+        {
+          "texto": "No",
+          "inicio_s": 86.08,
+          "fim_s": 86.16
+        },
+        {
+          "texto": "bairro",
+          "inicio_s": 86.24,
+          "fim_s": 86.48
+        },
+        {
+          "texto": "da",
+          "inicio_s": 86.56,
+          "fim_s": 86.64
+        },
+        {
+          "texto": "Saúde",
+          "inicio_s": 86.72,
+          "fim_s": 87.12
+        },
+        {
+          "texto": "ergueram",
+          "inicio_s": 87.44,
+          "fim_s": 87.92
+        },
+        {
+          "texto": "barricadas",
+          "inicio_s": 87.973,
+          "fim_s": 88.72
+        }
+      ]
+    },
+    {
+      "texto": "Até cadetes da Escola Militar se rebelaram e tentaram derrubar o presidente.",
+      "inicio_s": 89.2,
+      "fim_s": 94.08,
+      "palavras": [
+        {
+          "texto": "Até",
+          "inicio_s": 89.2,
+          "fim_s": 89.48
+        },
+        {
+          "texto": "cadetes",
+          "inicio_s": 89.52,
+          "fim_s": 90.08
+        },
+        {
+          "texto": "da",
+          "inicio_s": 90.12,
+          "fim_s": 90.16
+        },
+        {
+          "texto": "Escola",
+          "inicio_s": 90.24,
+          "fim_s": 90.56
+        },
+        {
+          "texto": "Militar",
+          "inicio_s": 90.64,
+          "fim_s": 91.04
+        },
+        {
+          "texto": "se",
+          "inicio_s": 91.12,
+          "fim_s": 91.28
+        },
+        {
+          "texto": "rebelaram",
+          "inicio_s": 91.32,
+          "fim_s": 91.92
+        },
+        {
+          "texto": "e",
+          "inicio_s": 92.08,
+          "fim_s": 92.16
+        },
+        {
+          "texto": "tentaram",
+          "inicio_s": 92.24,
+          "fim_s": 92.64
+        },
+        {
+          "texto": "derrubar",
+          "inicio_s": 92.8,
+          "fim_s": 93.28
+        },
+        {
+          "texto": "o",
+          "inicio_s": 93.32,
+          "fim_s": 93.36
+        },
+        {
+          "texto": "presidente",
+          "inicio_s": 93.48,
+          "fim_s": 94.0
+        }
+      ]
+    },
+    {
+      "texto": "O governo declarou estado de sítio.",
+      "inicio_s": 94.56,
+      "fim_s": 97.28,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 94.56,
+          "fim_s": 94.64
+        },
+        {
+          "texto": "governo",
+          "inicio_s": 94.72,
+          "fim_s": 95.2
+        },
+        {
+          "texto": "declarou",
+          "inicio_s": 95.28,
+          "fim_s": 95.68
+        },
+        {
+          "texto": "estado",
+          "inicio_s": 95.92,
+          "fim_s": 96.16
+        },
+        {
+          "texto": "de",
+          "inicio_s": 96.24,
+          "fim_s": 96.4
+        },
+        {
+          "texto": "sítio",
+          "inicio_s": 96.44,
+          "fim_s": 96.8
+        }
+      ]
+    },
+    {
+      "texto": "Houve dezenas de mortos e centenas de presos.",
+      "inicio_s": 97.32,
+      "fim_s": 100.88,
+      "palavras": [
+        {
+          "texto": "Houve",
+          "inicio_s": 97.32,
+          "fim_s": 97.6
+        },
+        {
+          "texto": "dezenas",
+          "inicio_s": 97.72,
+          "fim_s": 98.24
+        },
+        {
+          "texto": "de",
+          "inicio_s": 98.28,
+          "fim_s": 98.32
+        },
+        {
+          "texto": "mortos",
+          "inicio_s": 98.4,
+          "fim_s": 98.96
+        },
+        {
+          "texto": "e",
+          "inicio_s": 99.0,
+          "fim_s": 99.04
+        },
+        {
+          "texto": "centenas",
+          "inicio_s": 99.12,
+          "fim_s": 99.76
+        },
+        {
+          "texto": "de",
+          "inicio_s": 99.8,
+          "fim_s": 99.84
+        },
+        {
+          "texto": "presos",
+          "inicio_s": 99.92,
+          "fim_s": 100.4
+        }
+      ]
+    },
+    {
+      "texto": "Muitos foram mandados pro Acre, sem julgamento.",
+      "inicio_s": 100.96,
+      "fim_s": 104.4,
+      "palavras": [
+        {
+          "texto": "Muitos",
+          "inicio_s": 100.96,
+          "fim_s": 101.36
+        },
+        {
+          "texto": "foram",
+          "inicio_s": 101.44,
+          "fim_s": 101.6
+        },
+        {
+          "texto": "mandados",
+          "inicio_s": 101.72,
+          "fim_s": 102.08
+        },
+        {
+          "texto": "pro",
+          "inicio_s": 102.16,
+          "fim_s": 102.32
+        },
+        {
+          "texto": "Acre",
+          "inicio_s": 102.4,
+          "fim_s": 102.72
+        },
+        {
+          "texto": "sem",
+          "inicio_s": 103.04,
+          "fim_s": 103.2
+        },
+        {
+          "texto": "julgamento",
+          "inicio_s": 103.28,
+          "fim_s": 103.92
+        }
+      ]
+    },
+    {
+      "texto": "A vacinação obrigatória acabou suspensa.",
+      "inicio_s": 104.48,
+      "fim_s": 107.68,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 104.48,
+          "fim_s": 104.52
+        },
+        {
+          "texto": "vacinação",
+          "inicio_s": 104.56,
+          "fim_s": 105.12
+        },
+        {
+          "texto": "obrigatória",
+          "inicio_s": 105.2,
+          "fim_s": 106.0
+        },
+        {
+          "texto": "acabou",
+          "inicio_s": 106.12,
+          "fim_s": 106.48
+        },
+        {
+          "texto": "suspensa",
+          "inicio_s": 106.56,
+          "fim_s": 107.2
+        }
+      ]
+    },
+    {
+      "texto": "Mas a história tem uma reviravolta.",
+      "inicio_s": 107.76,
+      "fim_s": 110.32,
+      "palavras": [
+        {
+          "texto": "Mas",
+          "inicio_s": 107.76,
+          "fim_s": 107.92
+        },
+        {
+          "texto": "a",
+          "inicio_s": 107.96,
+          "fim_s": 108.0
+        },
+        {
+          "texto": "história",
+          "inicio_s": 108.16,
+          "fim_s": 108.64
+        },
+        {
+          "texto": "tem",
+          "inicio_s": 108.72,
+          "fim_s": 108.8
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 108.88,
+          "fim_s": 108.96
+        },
+        {
+          "texto": "reviravolta",
+          "inicio_s": 109.04,
+          "fim_s": 109.84
+        }
+      ]
+    },
+    {
+      "texto": "Em 1908, uma nova epidemia de varíola matou milhares de pessoas no Rio.",
+      "inicio_s": 110.44,
+      "fim_s": 116.32,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 110.44,
+          "fim_s": 110.56
+        },
+        {
+          "texto": "1908",
+          "inicio_s": 110.64,
+          "fim_s": 111.76
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 112.12,
+          "fim_s": 112.24
+        },
+        {
+          "texto": "nova",
+          "inicio_s": 112.32,
+          "fim_s": 112.56
+        },
+        {
+          "texto": "epidemia",
+          "inicio_s": 112.64,
+          "fim_s": 113.12
+        },
+        {
+          "texto": "de",
+          "inicio_s": 113.2,
+          "fim_s": 113.28
+        },
+        {
+          "texto": "varíola",
+          "inicio_s": 113.4,
+          "fim_s": 113.84
+        },
+        {
+          "texto": "matou",
+          "inicio_s": 113.96,
+          "fim_s": 114.24
+        },
+        {
+          "texto": "milhares",
+          "inicio_s": 114.36,
+          "fim_s": 114.88
+        },
+        {
+          "texto": "de",
+          "inicio_s": 114.92,
+          "fim_s": 114.96
+        },
+        {
+          "texto": "pessoas",
+          "inicio_s": 115.04,
+          "fim_s": 115.52
+        },
+        {
+          "texto": "no",
+          "inicio_s": 115.56,
+          "fim_s": 115.6
+        },
+        {
+          "texto": "Rio",
+          "inicio_s": 115.68,
+          "fim_s": 116.24
+        }
+      ]
+    },
+    {
+      "texto": "E dessa vez, a população fez fila pra se vacinar.",
+      "inicio_s": 116.4,
+      "fim_s": 119.76,
+      "palavras": [
+        {
+          "texto": "E",
+          "inicio_s": 116.4,
+          "fim_s": 116.48
+        },
+        {
+          "texto": "dessa",
+          "inicio_s": 116.56,
+          "fim_s": 116.72
+        },
+        {
+          "texto": "vez",
+          "inicio_s": 116.8,
+          "fim_s": 117.36
+        },
+        {
+          "texto": "a",
+          "inicio_s": 117.44,
+          "fim_s": 117.48
+        },
+        {
+          "texto": "população",
+          "inicio_s": 117.52,
+          "fim_s": 118.08
+        },
+        {
+          "texto": "fez",
+          "inicio_s": 118.16,
+          "fim_s": 118.4
+        },
+        {
+          "texto": "fila",
+          "inicio_s": 118.56,
+          "fim_s": 118.8
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 118.88,
+          "fim_s": 118.96
+        },
+        {
+          "texto": "se",
+          "inicio_s": 119.04,
+          "fim_s": 119.12
+        },
+        {
+          "texto": "vacinar",
+          "inicio_s": 119.2,
+          "fim_s": 119.6
+        }
+      ]
+    }
+  ]
+}
