@@ -1,0 +1,1582 @@
+{
+  "gerado_em": "2026-10-10T13:01:07",
+  "roteiro": "Projetos\\Video_19\\epidemia_de_danca_1518\\texto.md",
+  "voz": "eleven:7i7dgyCkKt4c16dLtwT3",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.0,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 119.3,
+  "texto_usado": "Em julho de 1518, uma mulher saiu de casa em Estrasburgo e começou a dançar no meio da rua. E não parou mais. O nome dela era Frau Troffea. Não havia música. Ela dançava em silêncio, por horas, até desmaiar de exaustão. Quando acordava, voltava a dançar. Depois de uma semana, mais de trinta pessoas tinham se juntado a ela. Em agosto, eram centenas. Elas pulavam e se contorciam sob o sol de verão, com os pés sangrando, sem conseguir parar. Os médicos da cidade estudaram o caso e deram o diagnóstico: sangue quente demais. E a cura? Mais dança. As autoridades mandaram montar um palco de madeira, contrataram músicos e até homens fortes pra segurar os doentes de pé. A ideia era que eles dançassem até a febre passar. Só piorou. Mais gente aderiu. Relatos da época dizem que alguns morreram de exaustão, embora os números sejam incertos. Então a cidade mudou de ideia. Proibiu a música e as danças em público. Os dançarinos foram levados de carroça até um santuário nas montanhas, dedicado a São Vito. Ali, receberam sapatos vermelhos e participaram de rituais. E, aos poucos, a epidemia acabou. Até hoje, ninguém sabe ao certo o que aconteceu. Uma teoria fala de um fungo do centeio, o ergot, que causa convulsões e alucinações. Mas esse fungo dificilmente deixaria alguém dançar por dias. A explicação mais aceita é outra: histeria coletiva. Estrasburgo vivia anos de fome, doença e medo. E muita gente acreditava na maldição de São Vito, que obrigava os pecadores a dançar. Quando o corpo e a mente chegam ao limite, o medo pode se espalhar como uma doença.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Em julho de 1518, uma mulher saiu de casa em Estrasburgo e começou a dançar no meio da rua.",
+      "inicio_s": 0.0,
+      "fim_s": 7.6,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 0.0,
+          "fim_s": 0.24
+        },
+        {
+          "texto": "julho",
+          "inicio_s": 0.28,
+          "fim_s": 0.56
+        },
+        {
+          "texto": "de",
+          "inicio_s": 0.64,
+          "fim_s": 0.72
+        },
+        {
+          "texto": "1518",
+          "inicio_s": 0.8,
+          "fim_s": 2.16
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 2.56,
+          "fim_s": 2.64
+        },
+        {
+          "texto": "mulher",
+          "inicio_s": 2.72,
+          "fim_s": 3.04
+        },
+        {
+          "texto": "saiu",
+          "inicio_s": 3.08,
+          "fim_s": 3.36
+        },
+        {
+          "texto": "de",
+          "inicio_s": 3.44,
+          "fim_s": 3.52
+        },
+        {
+          "texto": "casa",
+          "inicio_s": 3.6,
+          "fim_s": 3.84
+        },
+        {
+          "texto": "em",
+          "inicio_s": 3.88,
+          "fim_s": 3.92
+        },
+        {
+          "texto": "Estrasburgo",
+          "inicio_s": 4.0,
+          "fim_s": 4.72
+        },
+        {
+          "texto": "e",
+          "inicio_s": 4.96,
+          "fim_s": 5.04
+        },
+        {
+          "texto": "começou",
+          "inicio_s": 5.12,
+          "fim_s": 5.44
+        },
+        {
+          "texto": "a",
+          "inicio_s": 5.48,
+          "fim_s": 5.52
+        },
+        {
+          "texto": "dançar",
+          "inicio_s": 5.6,
+          "fim_s": 6.08
+        },
+        {
+          "texto": "no",
+          "inicio_s": 6.2,
+          "fim_s": 6.32
+        },
+        {
+          "texto": "meio",
+          "inicio_s": 6.4,
+          "fim_s": 6.56
+        },
+        {
+          "texto": "da",
+          "inicio_s": 6.64,
+          "fim_s": 6.72
+        },
+        {
+          "texto": "rua",
+          "inicio_s": 6.8,
+          "fim_s": 7.04
+        }
+      ]
+    },
+    {
+      "texto": "E não parou mais.",
+      "inicio_s": 7.64,
+      "fim_s": 9.36,
+      "palavras": [
+        {
+          "texto": "E",
+          "inicio_s": 7.64,
+          "fim_s": 7.68
+        },
+        {
+          "texto": "não",
+          "inicio_s": 7.92,
+          "fim_s": 8.08
+        },
+        {
+          "texto": "parou",
+          "inicio_s": 8.16,
+          "fim_s": 8.48
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 8.56,
+          "fim_s": 8.88
+        }
+      ]
+    },
+    {
+      "texto": "O nome dela era Frau Troffea.",
+      "inicio_s": 9.4,
+      "fim_s": 12.08,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 9.4,
+          "fim_s": 9.44
+        },
+        {
+          "texto": "nome",
+          "inicio_s": 9.52,
+          "fim_s": 9.68
+        },
+        {
+          "texto": "dela",
+          "inicio_s": 9.76,
+          "fim_s": 10.24
+        },
+        {
+          "texto": "era",
+          "inicio_s": 10.32,
+          "fim_s": 10.4
+        },
+        {
+          "texto": "Frau",
+          "inicio_s": 10.64,
+          "fim_s": 10.88
+        },
+        {
+          "texto": "Troffea",
+          "inicio_s": 10.96,
+          "fim_s": 11.52
+        }
+      ]
+    },
+    {
+      "texto": "Não havia música.",
+      "inicio_s": 12.16,
+      "fim_s": 13.44,
+      "palavras": [
+        {
+          "texto": "Não",
+          "inicio_s": 12.16,
+          "fim_s": 12.24
+        },
+        {
+          "texto": "havia",
+          "inicio_s": 12.28,
+          "fim_s": 12.56
+        },
+        {
+          "texto": "música",
+          "inicio_s": 12.64,
+          "fim_s": 13.04
+        }
+      ]
+    },
+    {
+      "texto": "Ela dançava em silêncio, por horas, até desmaiar de exaustão.",
+      "inicio_s": 13.48,
+      "fim_s": 18.4,
+      "palavras": [
+        {
+          "texto": "Ela",
+          "inicio_s": 13.48,
+          "fim_s": 13.68
+        },
+        {
+          "texto": "dançava",
+          "inicio_s": 13.8,
+          "fim_s": 14.16
+        },
+        {
+          "texto": "em",
+          "inicio_s": 14.24,
+          "fim_s": 14.32
+        },
+        {
+          "texto": "silêncio",
+          "inicio_s": 14.44,
+          "fim_s": 14.96
+        },
+        {
+          "texto": "por",
+          "inicio_s": 15.28,
+          "fim_s": 15.36
+        },
+        {
+          "texto": "horas",
+          "inicio_s": 15.44,
+          "fim_s": 15.84
+        },
+        {
+          "texto": "até",
+          "inicio_s": 16.24,
+          "fim_s": 16.48
+        },
+        {
+          "texto": "desmaiar",
+          "inicio_s": 16.56,
+          "fim_s": 17.12
+        },
+        {
+          "texto": "de",
+          "inicio_s": 17.2,
+          "fim_s": 17.28
+        },
+        {
+          "texto": "exaustão",
+          "inicio_s": 17.32,
+          "fim_s": 17.84
+        }
+      ]
+    },
+    {
+      "texto": "Quando acordava, voltava a dançar.",
+      "inicio_s": 18.44,
+      "fim_s": 21.28,
+      "palavras": [
+        {
+          "texto": "Quando",
+          "inicio_s": 18.44,
+          "fim_s": 18.64
+        },
+        {
+          "texto": "acordava",
+          "inicio_s": 18.68,
+          "fim_s": 19.28
+        },
+        {
+          "texto": "voltava",
+          "inicio_s": 19.76,
+          "fim_s": 20.16
+        },
+        {
+          "texto": "a",
+          "inicio_s": 20.2,
+          "fim_s": 20.24
+        },
+        {
+          "texto": "dançar",
+          "inicio_s": 20.32,
+          "fim_s": 20.72
+        }
+      ]
+    },
+    {
+      "texto": "Depois de uma semana, mais de trinta pessoas tinham se juntado a ela.",
+      "inicio_s": 21.4,
+      "fim_s": 26.16,
+      "palavras": [
+        {
+          "texto": "Depois",
+          "inicio_s": 21.4,
+          "fim_s": 21.68
+        },
+        {
+          "texto": "de",
+          "inicio_s": 21.72,
+          "fim_s": 21.76
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 21.84,
+          "fim_s": 22.0
+        },
+        {
+          "texto": "semana",
+          "inicio_s": 22.12,
+          "fim_s": 22.48
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 22.88,
+          "fim_s": 23.04
+        },
+        {
+          "texto": "de",
+          "inicio_s": 23.12,
+          "fim_s": 23.36
+        },
+        {
+          "texto": "trinta",
+          "inicio_s": 23.4,
+          "fim_s": 23.68
+        },
+        {
+          "texto": "pessoas",
+          "inicio_s": 23.76,
+          "fim_s": 24.32
+        },
+        {
+          "texto": "tinham",
+          "inicio_s": 24.4,
+          "fim_s": 24.64
+        },
+        {
+          "texto": "se",
+          "inicio_s": 24.68,
+          "fim_s": 24.72
+        },
+        {
+          "texto": "juntado",
+          "inicio_s": 24.8,
+          "fim_s": 25.28
+        },
+        {
+          "texto": "a",
+          "inicio_s": 25.32,
+          "fim_s": 25.36
+        },
+        {
+          "texto": "ela",
+          "inicio_s": 25.52,
+          "fim_s": 25.68
+        }
+      ]
+    },
+    {
+      "texto": "Em agosto, eram centenas.",
+      "inicio_s": 26.24,
+      "fim_s": 28.8,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 26.24,
+          "fim_s": 26.32
+        },
+        {
+          "texto": "agosto",
+          "inicio_s": 26.4,
+          "fim_s": 26.88
+        },
+        {
+          "texto": "eram",
+          "inicio_s": 27.2,
+          "fim_s": 27.44
+        },
+        {
+          "texto": "centenas",
+          "inicio_s": 27.52,
+          "fim_s": 28.32
+        }
+      ]
+    },
+    {
+      "texto": "Elas pulavam e se contorciam sob o sol de verão, com os pés sangrando, sem conseguir parar.",
+      "inicio_s": 28.84,
+      "fim_s": 35.44,
+      "palavras": [
+        {
+          "texto": "Elas",
+          "inicio_s": 28.84,
+          "fim_s": 29.12
+        },
+        {
+          "texto": "pulavam",
+          "inicio_s": 29.2,
+          "fim_s": 29.68
+        },
+        {
+          "texto": "e",
+          "inicio_s": 29.76,
+          "fim_s": 29.84
+        },
+        {
+          "texto": "se",
+          "inicio_s": 29.92,
+          "fim_s": 30.0
+        },
+        {
+          "texto": "contorciam",
+          "inicio_s": 30.12,
+          "fim_s": 30.88
+        },
+        {
+          "texto": "sob",
+          "inicio_s": 30.933,
+          "fim_s": 31.04
+        },
+        {
+          "texto": "o",
+          "inicio_s": 31.12,
+          "fim_s": 31.2
+        },
+        {
+          "texto": "sol",
+          "inicio_s": 31.32,
+          "fim_s": 31.44
+        },
+        {
+          "texto": "de",
+          "inicio_s": 31.48,
+          "fim_s": 31.52
+        },
+        {
+          "texto": "verão",
+          "inicio_s": 31.6,
+          "fim_s": 31.92
+        },
+        {
+          "texto": "com",
+          "inicio_s": 32.24,
+          "fim_s": 32.32
+        },
+        {
+          "texto": "os",
+          "inicio_s": 32.4,
+          "fim_s": 32.48
+        },
+        {
+          "texto": "pés",
+          "inicio_s": 32.56,
+          "fim_s": 32.8
+        },
+        {
+          "texto": "sangrando",
+          "inicio_s": 32.84,
+          "fim_s": 33.44
+        },
+        {
+          "texto": "sem",
+          "inicio_s": 33.76,
+          "fim_s": 34.0
+        },
+        {
+          "texto": "conseguir",
+          "inicio_s": 34.08,
+          "fim_s": 34.48
+        },
+        {
+          "texto": "parar",
+          "inicio_s": 34.56,
+          "fim_s": 34.96
+        }
+      ]
+    },
+    {
+      "texto": "Os médicos da cidade estudaram o caso e deram o diagnóstico: sangue quente demais.",
+      "inicio_s": 35.52,
+      "fim_s": 41.64,
+      "palavras": [
+        {
+          "texto": "Os",
+          "inicio_s": 35.52,
+          "fim_s": 35.6
+        },
+        {
+          "texto": "médicos",
+          "inicio_s": 35.68,
+          "fim_s": 36.08
+        },
+        {
+          "texto": "da",
+          "inicio_s": 36.12,
+          "fim_s": 36.16
+        },
+        {
+          "texto": "cidade",
+          "inicio_s": 36.24,
+          "fim_s": 36.72
+        },
+        {
+          "texto": "estudaram",
+          "inicio_s": 36.8,
+          "fim_s": 37.28
+        },
+        {
+          "texto": "o",
+          "inicio_s": 37.36,
+          "fim_s": 37.44
+        },
+        {
+          "texto": "caso",
+          "inicio_s": 37.6,
+          "fim_s": 37.84
+        },
+        {
+          "texto": "e",
+          "inicio_s": 37.92,
+          "fim_s": 38.08
+        },
+        {
+          "texto": "deram",
+          "inicio_s": 38.16,
+          "fim_s": 38.4
+        },
+        {
+          "texto": "o",
+          "inicio_s": 38.44,
+          "fim_s": 38.48
+        },
+        {
+          "texto": "diagnóstico",
+          "inicio_s": 38.52,
+          "fim_s": 39.28
+        },
+        {
+          "texto": "sangue",
+          "inicio_s": 39.84,
+          "fim_s": 40.24
+        },
+        {
+          "texto": "quente",
+          "inicio_s": 40.4,
+          "fim_s": 40.8
+        },
+        {
+          "texto": "demais",
+          "inicio_s": 40.92,
+          "fim_s": 41.36
+        }
+      ]
+    },
+    {
+      "texto": "E a cura?",
+      "inicio_s": 41.92,
+      "fim_s": 42.96,
+      "palavras": [
+        {
+          "texto": "E",
+          "inicio_s": 41.92,
+          "fim_s": 42.0
+        },
+        {
+          "texto": "a",
+          "inicio_s": 42.04,
+          "fim_s": 42.08
+        },
+        {
+          "texto": "cura",
+          "inicio_s": 42.16,
+          "fim_s": 42.48
+        }
+      ]
+    },
+    {
+      "texto": "Mais dança.",
+      "inicio_s": 43.04,
+      "fim_s": 44.32,
+      "palavras": [
+        {
+          "texto": "Mais",
+          "inicio_s": 43.04,
+          "fim_s": 43.36
+        },
+        {
+          "texto": "dança",
+          "inicio_s": 43.48,
+          "fim_s": 43.84
+        }
+      ]
+    },
+    {
+      "texto": "As autoridades mandaram montar um palco de madeira, contrataram músicos e até homens fortes pra segurar os doentes de pé.",
+      "inicio_s": 44.4,
+      "fim_s": 52.16,
+      "palavras": [
+        {
+          "texto": "As",
+          "inicio_s": 44.4,
+          "fim_s": 44.48
+        },
+        {
+          "texto": "autoridades",
+          "inicio_s": 44.6,
+          "fim_s": 45.2
+        },
+        {
+          "texto": "mandaram",
+          "inicio_s": 45.32,
+          "fim_s": 45.68
+        },
+        {
+          "texto": "montar",
+          "inicio_s": 45.8,
+          "fim_s": 46.0
+        },
+        {
+          "texto": "um",
+          "inicio_s": 46.08,
+          "fim_s": 46.24
+        },
+        {
+          "texto": "palco",
+          "inicio_s": 46.32,
+          "fim_s": 46.56
+        },
+        {
+          "texto": "de",
+          "inicio_s": 46.6,
+          "fim_s": 46.64
+        },
+        {
+          "texto": "madeira",
+          "inicio_s": 46.8,
+          "fim_s": 47.12
+        },
+        {
+          "texto": "contrataram",
+          "inicio_s": 47.56,
+          "fim_s": 48.08
+        },
+        {
+          "texto": "músicos",
+          "inicio_s": 48.12,
+          "fim_s": 48.64
+        },
+        {
+          "texto": "e",
+          "inicio_s": 48.72,
+          "fim_s": 48.8
+        },
+        {
+          "texto": "até",
+          "inicio_s": 48.92,
+          "fim_s": 49.12
+        },
+        {
+          "texto": "homens",
+          "inicio_s": 49.2,
+          "fim_s": 49.52
+        },
+        {
+          "texto": "fortes",
+          "inicio_s": 49.6,
+          "fim_s": 50.0
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 50.08,
+          "fim_s": 50.24
+        },
+        {
+          "texto": "segurar",
+          "inicio_s": 50.32,
+          "fim_s": 50.72
+        },
+        {
+          "texto": "os",
+          "inicio_s": 50.8,
+          "fim_s": 50.88
+        },
+        {
+          "texto": "doentes",
+          "inicio_s": 50.96,
+          "fim_s": 51.36
+        },
+        {
+          "texto": "de",
+          "inicio_s": 51.4,
+          "fim_s": 51.44
+        },
+        {
+          "texto": "pé",
+          "inicio_s": 51.52,
+          "fim_s": 51.76
+        }
+      ]
+    },
+    {
+      "texto": "A ideia era que eles dançassem até a febre passar.",
+      "inicio_s": 52.2,
+      "fim_s": 55.84,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 52.2,
+          "fim_s": 52.24
+        },
+        {
+          "texto": "ideia",
+          "inicio_s": 52.32,
+          "fim_s": 52.72
+        },
+        {
+          "texto": "era",
+          "inicio_s": 52.96,
+          "fim_s": 53.12
+        },
+        {
+          "texto": "que",
+          "inicio_s": 53.16,
+          "fim_s": 53.2
+        },
+        {
+          "texto": "eles",
+          "inicio_s": 53.24,
+          "fim_s": 53.44
+        },
+        {
+          "texto": "dançassem",
+          "inicio_s": 53.56,
+          "fim_s": 54.16
+        },
+        {
+          "texto": "até",
+          "inicio_s": 54.28,
+          "fim_s": 54.48
+        },
+        {
+          "texto": "a",
+          "inicio_s": 54.56,
+          "fim_s": 54.64
+        },
+        {
+          "texto": "febre",
+          "inicio_s": 54.72,
+          "fim_s": 55.04
+        },
+        {
+          "texto": "passar",
+          "inicio_s": 55.16,
+          "fim_s": 55.52
+        }
+      ]
+    },
+    {
+      "texto": "Só piorou.",
+      "inicio_s": 56.16,
+      "fim_s": 57.12,
+      "palavras": [
+        {
+          "texto": "Só",
+          "inicio_s": 56.16,
+          "fim_s": 56.32
+        },
+        {
+          "texto": "piorou",
+          "inicio_s": 56.4,
+          "fim_s": 56.88
+        }
+      ]
+    },
+    {
+      "texto": "Mais gente aderiu.",
+      "inicio_s": 57.36,
+      "fim_s": 58.48,
+      "palavras": [
+        {
+          "texto": "Mais",
+          "inicio_s": 57.36,
+          "fim_s": 57.6
+        },
+        {
+          "texto": "gente",
+          "inicio_s": 57.68,
+          "fim_s": 57.92
+        },
+        {
+          "texto": "aderiu",
+          "inicio_s": 58.0,
+          "fim_s": 58.4
+        }
+      ]
+    },
+    {
+      "texto": "Relatos da época dizem que alguns morreram de exaustão, embora os números sejam incertos.",
+      "inicio_s": 58.96,
+      "fim_s": 64.4,
+      "palavras": [
+        {
+          "texto": "Relatos",
+          "inicio_s": 58.96,
+          "fim_s": 59.44
+        },
+        {
+          "texto": "da",
+          "inicio_s": 59.48,
+          "fim_s": 59.52
+        },
+        {
+          "texto": "época",
+          "inicio_s": 59.6,
+          "fim_s": 60.0
+        },
+        {
+          "texto": "dizem",
+          "inicio_s": 60.08,
+          "fim_s": 60.32
+        },
+        {
+          "texto": "que",
+          "inicio_s": 60.4,
+          "fim_s": 60.44
+        },
+        {
+          "texto": "alguns",
+          "inicio_s": 60.48,
+          "fim_s": 60.88
+        },
+        {
+          "texto": "morreram",
+          "inicio_s": 60.92,
+          "fim_s": 61.36
+        },
+        {
+          "texto": "de",
+          "inicio_s": 61.4,
+          "fim_s": 61.44
+        },
+        {
+          "texto": "exaustão",
+          "inicio_s": 61.52,
+          "fim_s": 62.0
+        },
+        {
+          "texto": "embora",
+          "inicio_s": 62.44,
+          "fim_s": 62.72
+        },
+        {
+          "texto": "os",
+          "inicio_s": 62.8,
+          "fim_s": 62.88
+        },
+        {
+          "texto": "números",
+          "inicio_s": 62.96,
+          "fim_s": 63.28
+        },
+        {
+          "texto": "sejam",
+          "inicio_s": 63.36,
+          "fim_s": 63.6
+        },
+        {
+          "texto": "incertos",
+          "inicio_s": 63.68,
+          "fim_s": 64.32
+        }
+      ]
+    },
+    {
+      "texto": "Então a cidade mudou de ideia.",
+      "inicio_s": 64.8,
+      "fim_s": 67.04,
+      "palavras": [
+        {
+          "texto": "Então",
+          "inicio_s": 64.8,
+          "fim_s": 65.28
+        },
+        {
+          "texto": "a",
+          "inicio_s": 65.44,
+          "fim_s": 65.52
+        },
+        {
+          "texto": "cidade",
+          "inicio_s": 65.6,
+          "fim_s": 66.0
+        },
+        {
+          "texto": "mudou",
+          "inicio_s": 66.04,
+          "fim_s": 66.4
+        },
+        {
+          "texto": "de",
+          "inicio_s": 66.48,
+          "fim_s": 66.56
+        },
+        {
+          "texto": "ideia",
+          "inicio_s": 66.68,
+          "fim_s": 66.96
+        }
+      ]
+    },
+    {
+      "texto": "Proibiu a música e as danças em público.",
+      "inicio_s": 67.36,
+      "fim_s": 70.0,
+      "palavras": [
+        {
+          "texto": "Proibiu",
+          "inicio_s": 67.36,
+          "fim_s": 67.92
+        },
+        {
+          "texto": "a",
+          "inicio_s": 67.96,
+          "fim_s": 68.0
+        },
+        {
+          "texto": "música",
+          "inicio_s": 68.08,
+          "fim_s": 68.56
+        },
+        {
+          "texto": "e",
+          "inicio_s": 68.64,
+          "fim_s": 68.72
+        },
+        {
+          "texto": "as",
+          "inicio_s": 68.8,
+          "fim_s": 68.88
+        },
+        {
+          "texto": "danças",
+          "inicio_s": 68.96,
+          "fim_s": 69.28
+        },
+        {
+          "texto": "em",
+          "inicio_s": 69.36,
+          "fim_s": 69.52
+        },
+        {
+          "texto": "público",
+          "inicio_s": 69.56,
+          "fim_s": 69.92
+        }
+      ]
+    },
+    {
+      "texto": "Os dançarinos foram levados de carroça até um santuário nas montanhas, dedicado a São Vito.",
+      "inicio_s": 70.4,
+      "fim_s": 76.8,
+      "palavras": [
+        {
+          "texto": "Os",
+          "inicio_s": 70.4,
+          "fim_s": 70.56
+        },
+        {
+          "texto": "dançarinos",
+          "inicio_s": 70.64,
+          "fim_s": 71.2
+        },
+        {
+          "texto": "foram",
+          "inicio_s": 71.28,
+          "fim_s": 71.52
+        },
+        {
+          "texto": "levados",
+          "inicio_s": 71.6,
+          "fim_s": 72.0
+        },
+        {
+          "texto": "de",
+          "inicio_s": 72.04,
+          "fim_s": 72.08
+        },
+        {
+          "texto": "carroça",
+          "inicio_s": 72.16,
+          "fim_s": 72.72
+        },
+        {
+          "texto": "até",
+          "inicio_s": 72.88,
+          "fim_s": 73.08
+        },
+        {
+          "texto": "um",
+          "inicio_s": 73.12,
+          "fim_s": 73.2
+        },
+        {
+          "texto": "santuário",
+          "inicio_s": 73.28,
+          "fim_s": 73.84
+        },
+        {
+          "texto": "nas",
+          "inicio_s": 73.92,
+          "fim_s": 74.0
+        },
+        {
+          "texto": "montanhas",
+          "inicio_s": 74.08,
+          "fim_s": 74.64
+        },
+        {
+          "texto": "dedicado",
+          "inicio_s": 74.96,
+          "fim_s": 75.52
+        },
+        {
+          "texto": "a",
+          "inicio_s": 75.56,
+          "fim_s": 75.6
+        },
+        {
+          "texto": "São",
+          "inicio_s": 75.76,
+          "fim_s": 75.92
+        },
+        {
+          "texto": "Vito",
+          "inicio_s": 76.0,
+          "fim_s": 76.32
+        }
+      ]
+    },
+    {
+      "texto": "Ali, receberam sapatos vermelhos e participaram de rituais.",
+      "inicio_s": 76.88,
+      "fim_s": 80.96,
+      "palavras": [
+        {
+          "texto": "Ali",
+          "inicio_s": 76.88,
+          "fim_s": 77.2
+        },
+        {
+          "texto": "receberam",
+          "inicio_s": 77.6,
+          "fim_s": 78.0
+        },
+        {
+          "texto": "sapatos",
+          "inicio_s": 78.12,
+          "fim_s": 78.48
+        },
+        {
+          "texto": "vermelhos",
+          "inicio_s": 78.56,
+          "fim_s": 79.2
+        },
+        {
+          "texto": "e",
+          "inicio_s": 79.28,
+          "fim_s": 79.36
+        },
+        {
+          "texto": "participaram",
+          "inicio_s": 79.44,
+          "fim_s": 80.16
+        },
+        {
+          "texto": "de",
+          "inicio_s": 80.2,
+          "fim_s": 80.24
+        },
+        {
+          "texto": "rituais",
+          "inicio_s": 80.32,
+          "fim_s": 80.88
+        }
+      ]
+    },
+    {
+      "texto": "E, aos poucos, a epidemia acabou.",
+      "inicio_s": 81.36,
+      "fim_s": 84.08,
+      "palavras": [
+        {
+          "texto": "E",
+          "inicio_s": 81.36,
+          "fim_s": 81.52
+        },
+        {
+          "texto": "aos",
+          "inicio_s": 81.88,
+          "fim_s": 82.0
+        },
+        {
+          "texto": "poucos",
+          "inicio_s": 82.08,
+          "fim_s": 82.48
+        },
+        {
+          "texto": "a",
+          "inicio_s": 82.84,
+          "fim_s": 82.88
+        },
+        {
+          "texto": "epidemia",
+          "inicio_s": 82.96,
+          "fim_s": 83.52
+        },
+        {
+          "texto": "acabou",
+          "inicio_s": 83.6,
+          "fim_s": 84.0
+        }
+      ]
+    },
+    {
+      "texto": "Até hoje, ninguém sabe ao certo o que aconteceu.",
+      "inicio_s": 84.56,
+      "fim_s": 87.52,
+      "palavras": [
+        {
+          "texto": "Até",
+          "inicio_s": 84.56,
+          "fim_s": 84.8
+        },
+        {
+          "texto": "hoje",
+          "inicio_s": 84.88,
+          "fim_s": 85.12
+        },
+        {
+          "texto": "ninguém",
+          "inicio_s": 85.48,
+          "fim_s": 85.76
+        },
+        {
+          "texto": "sabe",
+          "inicio_s": 85.92,
+          "fim_s": 86.08
+        },
+        {
+          "texto": "ao",
+          "inicio_s": 86.16,
+          "fim_s": 86.24
+        },
+        {
+          "texto": "certo",
+          "inicio_s": 86.4,
+          "fim_s": 86.68
+        },
+        {
+          "texto": "o",
+          "inicio_s": 86.72,
+          "fim_s": 86.76
+        },
+        {
+          "texto": "que",
+          "inicio_s": 86.8,
+          "fim_s": 86.84
+        },
+        {
+          "texto": "aconteceu",
+          "inicio_s": 86.88,
+          "fim_s": 87.44
+        }
+      ]
+    },
+    {
+      "texto": "Uma teoria fala de um fungo do centeio, o ergot, que causa convulsões e alucinações.",
+      "inicio_s": 88.0,
+      "fim_s": 94.32,
+      "palavras": [
+        {
+          "texto": "Uma",
+          "inicio_s": 88.0,
+          "fim_s": 88.16
+        },
+        {
+          "texto": "teoria",
+          "inicio_s": 88.24,
+          "fim_s": 88.72
+        },
+        {
+          "texto": "fala",
+          "inicio_s": 88.8,
+          "fim_s": 88.96
+        },
+        {
+          "texto": "de",
+          "inicio_s": 89.04,
+          "fim_s": 89.12
+        },
+        {
+          "texto": "um",
+          "inicio_s": 89.16,
+          "fim_s": 89.2
+        },
+        {
+          "texto": "fungo",
+          "inicio_s": 89.36,
+          "fim_s": 89.64
+        },
+        {
+          "texto": "do",
+          "inicio_s": 89.68,
+          "fim_s": 89.76
+        },
+        {
+          "texto": "centeio",
+          "inicio_s": 89.84,
+          "fim_s": 90.4
+        },
+        {
+          "texto": "o",
+          "inicio_s": 90.68,
+          "fim_s": 90.72
+        },
+        {
+          "texto": "ergot",
+          "inicio_s": 90.8,
+          "fim_s": 91.28
+        },
+        {
+          "texto": "que",
+          "inicio_s": 91.64,
+          "fim_s": 91.68
+        },
+        {
+          "texto": "causa",
+          "inicio_s": 91.76,
+          "fim_s": 92.08
+        },
+        {
+          "texto": "convulsões",
+          "inicio_s": 92.16,
+          "fim_s": 92.96
+        },
+        {
+          "texto": "e",
+          "inicio_s": 93.04,
+          "fim_s": 93.12
+        },
+        {
+          "texto": "alucinações",
+          "inicio_s": 93.2,
+          "fim_s": 94.08
+        }
+      ]
+    },
+    {
+      "texto": "Mas esse fungo dificilmente deixaria alguém dançar por dias.",
+      "inicio_s": 94.56,
+      "fim_s": 98.56,
+      "palavras": [
+        {
+          "texto": "Mas",
+          "inicio_s": 94.56,
+          "fim_s": 94.8
+        },
+        {
+          "texto": "esse",
+          "inicio_s": 94.92,
+          "fim_s": 95.04
+        },
+        {
+          "texto": "fungo",
+          "inicio_s": 95.12,
+          "fim_s": 95.44
+        },
+        {
+          "texto": "dificilmente",
+          "inicio_s": 95.52,
+          "fim_s": 96.4
+        },
+        {
+          "texto": "deixaria",
+          "inicio_s": 96.48,
+          "fim_s": 96.96
+        },
+        {
+          "texto": "alguém",
+          "inicio_s": 97.04,
+          "fim_s": 97.28
+        },
+        {
+          "texto": "dançar",
+          "inicio_s": 97.4,
+          "fim_s": 97.68
+        },
+        {
+          "texto": "por",
+          "inicio_s": 97.84,
+          "fim_s": 98.0
+        },
+        {
+          "texto": "dias",
+          "inicio_s": 98.08,
+          "fim_s": 98.48
+        }
+      ]
+    },
+    {
+      "texto": "A explicação mais aceita é outra: histeria coletiva.",
+      "inicio_s": 99.04,
+      "fim_s": 103.2,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 99.04,
+          "fim_s": 99.12
+        },
+        {
+          "texto": "explicação",
+          "inicio_s": 99.2,
+          "fim_s": 99.76
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 99.84,
+          "fim_s": 100.08
+        },
+        {
+          "texto": "aceita",
+          "inicio_s": 100.24,
+          "fim_s": 100.64
+        },
+        {
+          "texto": "é",
+          "inicio_s": 100.8,
+          "fim_s": 100.88
+        },
+        {
+          "texto": "outra",
+          "inicio_s": 100.96,
+          "fim_s": 101.28
+        },
+        {
+          "texto": "histeria",
+          "inicio_s": 101.72,
+          "fim_s": 102.4
+        },
+        {
+          "texto": "coletiva",
+          "inicio_s": 102.48,
+          "fim_s": 103.12
+        }
+      ]
+    },
+    {
+      "texto": "Estrasburgo vivia anos de fome, doença e medo.",
+      "inicio_s": 103.68,
+      "fim_s": 107.52,
+      "palavras": [
+        {
+          "texto": "Estrasburgo",
+          "inicio_s": 103.68,
+          "fim_s": 104.48
+        },
+        {
+          "texto": "vivia",
+          "inicio_s": 104.56,
+          "fim_s": 104.88
+        },
+        {
+          "texto": "anos",
+          "inicio_s": 104.96,
+          "fim_s": 105.28
+        },
+        {
+          "texto": "de",
+          "inicio_s": 105.36,
+          "fim_s": 105.48
+        },
+        {
+          "texto": "fome",
+          "inicio_s": 105.6,
+          "fim_s": 105.92
+        },
+        {
+          "texto": "doença",
+          "inicio_s": 106.28,
+          "fim_s": 106.8
+        },
+        {
+          "texto": "e",
+          "inicio_s": 106.96,
+          "fim_s": 107.04
+        },
+        {
+          "texto": "medo",
+          "inicio_s": 107.12,
+          "fim_s": 107.44
+        }
+      ]
+    },
+    {
+      "texto": "E muita gente acreditava na maldição de São Vito, que obrigava os pecadores a dançar.",
+      "inicio_s": 107.92,
+      "fim_s": 113.44,
+      "palavras": [
+        {
+          "texto": "E",
+          "inicio_s": 107.92,
+          "fim_s": 108.08
+        },
+        {
+          "texto": "muita",
+          "inicio_s": 108.16,
+          "fim_s": 108.48
+        },
+        {
+          "texto": "gente",
+          "inicio_s": 108.64,
+          "fim_s": 108.88
+        },
+        {
+          "texto": "acreditava",
+          "inicio_s": 108.96,
+          "fim_s": 109.6
+        },
+        {
+          "texto": "na",
+          "inicio_s": 109.64,
+          "fim_s": 109.68
+        },
+        {
+          "texto": "maldição",
+          "inicio_s": 109.76,
+          "fim_s": 110.32
+        },
+        {
+          "texto": "de",
+          "inicio_s": 110.4,
+          "fim_s": 110.44
+        },
+        {
+          "texto": "São",
+          "inicio_s": 110.48,
+          "fim_s": 110.64
+        },
+        {
+          "texto": "Vito",
+          "inicio_s": 110.72,
+          "fim_s": 111.04
+        },
+        {
+          "texto": "que",
+          "inicio_s": 111.36,
+          "fim_s": 111.4
+        },
+        {
+          "texto": "obrigava",
+          "inicio_s": 111.44,
+          "fim_s": 111.92
+        },
+        {
+          "texto": "os",
+          "inicio_s": 112.0,
+          "fim_s": 112.08
+        },
+        {
+          "texto": "pecadores",
+          "inicio_s": 112.16,
+          "fim_s": 112.72
+        },
+        {
+          "texto": "a",
+          "inicio_s": 112.8,
+          "fim_s": 112.84
+        },
+        {
+          "texto": "dançar",
+          "inicio_s": 112.88,
+          "fim_s": 113.36
+        }
+      ]
+    },
+    {
+      "texto": "Quando o corpo e a mente chegam ao limite, o medo pode se espalhar como uma doença.",
+      "inicio_s": 113.84,
+      "fim_s": 119.28,
+      "palavras": [
+        {
+          "texto": "Quando",
+          "inicio_s": 113.84,
+          "fim_s": 114.08
+        },
+        {
+          "texto": "o",
+          "inicio_s": 114.16,
+          "fim_s": 114.24
+        },
+        {
+          "texto": "corpo",
+          "inicio_s": 114.32,
+          "fim_s": 114.64
+        },
+        {
+          "texto": "e",
+          "inicio_s": 114.68,
+          "fim_s": 114.72
+        },
+        {
+          "texto": "a",
+          "inicio_s": 114.76,
+          "fim_s": 114.8
+        },
+        {
+          "texto": "mente",
+          "inicio_s": 114.88,
+          "fim_s": 115.2
+        },
+        {
+          "texto": "chegam",
+          "inicio_s": 115.28,
+          "fim_s": 115.6
+        },
+        {
+          "texto": "ao",
+          "inicio_s": 115.68,
+          "fim_s": 115.76
+        },
+        {
+          "texto": "limite",
+          "inicio_s": 115.88,
+          "fim_s": 116.24
+        },
+        {
+          "texto": "o",
+          "inicio_s": 116.6,
+          "fim_s": 116.64
+        },
+        {
+          "texto": "medo",
+          "inicio_s": 116.8,
+          "fim_s": 117.12
+        },
+        {
+          "texto": "pode",
+          "inicio_s": 117.16,
+          "fim_s": 117.36
+        },
+        {
+          "texto": "se",
+          "inicio_s": 117.44,
+          "fim_s": 117.48
+        },
+        {
+          "texto": "espalhar",
+          "inicio_s": 117.52,
+          "fim_s": 118.08
+        },
+        {
+          "texto": "como",
+          "inicio_s": 118.16,
+          "fim_s": 118.32
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 118.4,
+          "fim_s": 118.48
+        },
+        {
+          "texto": "doença",
+          "inicio_s": 118.56,
+          "fim_s": 119.04
+        }
+      ]
+    }
+  ]
+}
