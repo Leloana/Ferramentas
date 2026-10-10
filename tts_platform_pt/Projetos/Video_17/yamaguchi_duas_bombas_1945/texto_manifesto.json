@@ -1,0 +1,1534 @@
+{
+  "gerado_em": "2026-10-10T13:00:17",
+  "roteiro": "Projetos\\Video_17\\yamaguchi_duas_bombas_1945\\texto.md",
+  "voz": "eleven:7i7dgyCkKt4c16dLtwT3",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.0,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 109.3,
+  "texto_usado": "Ele sobreviveu à bomba atômica de Hiroshima. Três dias depois, estava em Nagasaki. Tsutomu Yamaguchi era engenheiro naval da Mitsubishi. Em agosto de 1945, ele estava em Hiroshima a trabalho, terminando um projeto de três meses. Era o último dia dele na cidade. Na manhã do dia seis, ele caminhava pro estaleiro quando ouviu o ronco de um avião. Olhou pra cima e viu dois pequenos paraquedas descendo. Depois, um clarão gigantesco. Ele estava a uns três quilômetros do ponto da explosão. A onda de choque o jogou longe. Os tímpanos romperam, e o lado esquerdo do corpo ficou queimado. Ele passou a noite num abrigo antiaéreo. No dia seguinte, atravessou a cidade destruída até a estação, cruzando um rio cheio de corpos. E pegou o trem de volta pra casa. Pra Nagasaki. Mesmo enfaixado, no dia nove ele foi trabalhar. O chefe não acreditava na história. Uma única bomba destruir uma cidade inteira? Impossível. Enquanto Yamaguchi descrevia o clarão, a sala se iluminou de novo. A segunda bomba tinha explodido, outra vez a uns três quilômetros dele. Ele sobreviveu de novo. A esposa e o filho também. Por anos, ele quase não falou sobre o que viveu. Só em 2009 o governo japonês o reconheceu oficialmente como sobrevivente das duas explosões. Ele foi o único a receber esse reconhecimento. Na velhice, virou ativista contra as armas nucleares e chegou a discursar nas Nações Unidas. Tsutomu Yamaguchi morreu em 2010, aos noventa e três anos. Viveu o bastante pra contar uma história que ninguém deveria viver nem uma vez. Ele viveu duas.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Ele sobreviveu à bomba atômica de Hiroshima.",
+      "inicio_s": 0.0,
+      "fim_s": 3.04,
+      "palavras": [
+        {
+          "texto": "Ele",
+          "inicio_s": 0.0,
+          "fim_s": 0.24
+        },
+        {
+          "texto": "sobreviveu",
+          "inicio_s": 0.293,
+          "fim_s": 0.88
+        },
+        {
+          "texto": "à",
+          "inicio_s": 0.92,
+          "fim_s": 0.96
+        },
+        {
+          "texto": "bomba",
+          "inicio_s": 1.04,
+          "fim_s": 1.28
+        },
+        {
+          "texto": "atômica",
+          "inicio_s": 1.4,
+          "fim_s": 1.76
+        },
+        {
+          "texto": "de",
+          "inicio_s": 1.84,
+          "fim_s": 1.92
+        },
+        {
+          "texto": "Hiroshima",
+          "inicio_s": 1.96,
+          "fim_s": 2.56
+        }
+      ]
+    },
+    {
+      "texto": "Três dias depois, estava em Nagasaki.",
+      "inicio_s": 3.12,
+      "fim_s": 6.24,
+      "palavras": [
+        {
+          "texto": "Três",
+          "inicio_s": 3.12,
+          "fim_s": 3.28
+        },
+        {
+          "texto": "dias",
+          "inicio_s": 3.36,
+          "fim_s": 3.6
+        },
+        {
+          "texto": "depois",
+          "inicio_s": 3.68,
+          "fim_s": 4.16
+        },
+        {
+          "texto": "estava",
+          "inicio_s": 4.48,
+          "fim_s": 4.8
+        },
+        {
+          "texto": "em",
+          "inicio_s": 4.84,
+          "fim_s": 4.88
+        },
+        {
+          "texto": "Nagasaki",
+          "inicio_s": 4.92,
+          "fim_s": 5.6
+        }
+      ]
+    },
+    {
+      "texto": "Tsutomu Yamaguchi era engenheiro naval da Mitsubishi.",
+      "inicio_s": 6.32,
+      "fim_s": 10.0,
+      "palavras": [
+        {
+          "texto": "Tsutomu",
+          "inicio_s": 6.32,
+          "fim_s": 6.76
+        },
+        {
+          "texto": "Yamaguchi",
+          "inicio_s": 6.8,
+          "fim_s": 7.52
+        },
+        {
+          "texto": "era",
+          "inicio_s": 7.6,
+          "fim_s": 7.76
+        },
+        {
+          "texto": "engenheiro",
+          "inicio_s": 7.84,
+          "fim_s": 8.24
+        },
+        {
+          "texto": "naval",
+          "inicio_s": 8.32,
+          "fim_s": 8.64
+        },
+        {
+          "texto": "da",
+          "inicio_s": 8.72,
+          "fim_s": 8.8
+        },
+        {
+          "texto": "Mitsubishi",
+          "inicio_s": 8.84,
+          "fim_s": 9.52
+        }
+      ]
+    },
+    {
+      "texto": "Em agosto de 1945, ele estava em Hiroshima a trabalho, terminando um projeto de três meses.",
+      "inicio_s": 10.08,
+      "fim_s": 17.44,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 10.08,
+          "fim_s": 10.16
+        },
+        {
+          "texto": "agosto",
+          "inicio_s": 10.28,
+          "fim_s": 10.64
+        },
+        {
+          "texto": "de",
+          "inicio_s": 10.72,
+          "fim_s": 10.8
+        },
+        {
+          "texto": "1945",
+          "inicio_s": 10.88,
+          "fim_s": 12.48
+        },
+        {
+          "texto": "ele",
+          "inicio_s": 12.88,
+          "fim_s": 12.96
+        },
+        {
+          "texto": "estava",
+          "inicio_s": 13.08,
+          "fim_s": 13.28
+        },
+        {
+          "texto": "em",
+          "inicio_s": 13.36,
+          "fim_s": 13.44
+        },
+        {
+          "texto": "Hiroshima",
+          "inicio_s": 13.48,
+          "fim_s": 14.0
+        },
+        {
+          "texto": "a",
+          "inicio_s": 14.08,
+          "fim_s": 14.16
+        },
+        {
+          "texto": "trabalho",
+          "inicio_s": 14.2,
+          "fim_s": 14.64
+        },
+        {
+          "texto": "terminando",
+          "inicio_s": 15.04,
+          "fim_s": 15.36
+        },
+        {
+          "texto": "um",
+          "inicio_s": 15.44,
+          "fim_s": 15.52
+        },
+        {
+          "texto": "projeto",
+          "inicio_s": 15.64,
+          "fim_s": 16.0
+        },
+        {
+          "texto": "de",
+          "inicio_s": 16.08,
+          "fim_s": 16.24
+        },
+        {
+          "texto": "três",
+          "inicio_s": 16.32,
+          "fim_s": 16.48
+        },
+        {
+          "texto": "meses",
+          "inicio_s": 16.64,
+          "fim_s": 17.04
+        }
+      ]
+    },
+    {
+      "texto": "Era o último dia dele na cidade.",
+      "inicio_s": 17.48,
+      "fim_s": 20.0,
+      "palavras": [
+        {
+          "texto": "Era",
+          "inicio_s": 17.48,
+          "fim_s": 17.68
+        },
+        {
+          "texto": "o",
+          "inicio_s": 17.72,
+          "fim_s": 17.76
+        },
+        {
+          "texto": "último",
+          "inicio_s": 17.84,
+          "fim_s": 18.24
+        },
+        {
+          "texto": "dia",
+          "inicio_s": 18.32,
+          "fim_s": 18.56
+        },
+        {
+          "texto": "dele",
+          "inicio_s": 18.64,
+          "fim_s": 18.8
+        },
+        {
+          "texto": "na",
+          "inicio_s": 18.88,
+          "fim_s": 18.96
+        },
+        {
+          "texto": "cidade",
+          "inicio_s": 19.04,
+          "fim_s": 19.52
+        }
+      ]
+    },
+    {
+      "texto": "Na manhã do dia seis, ele caminhava pro estaleiro quando ouviu o ronco de um avião.",
+      "inicio_s": 20.04,
+      "fim_s": 25.04,
+      "palavras": [
+        {
+          "texto": "Na",
+          "inicio_s": 20.04,
+          "fim_s": 20.08
+        },
+        {
+          "texto": "manhã",
+          "inicio_s": 20.16,
+          "fim_s": 20.4
+        },
+        {
+          "texto": "do",
+          "inicio_s": 20.48,
+          "fim_s": 20.56
+        },
+        {
+          "texto": "dia",
+          "inicio_s": 20.64,
+          "fim_s": 20.72
+        },
+        {
+          "texto": "seis",
+          "inicio_s": 20.88,
+          "fim_s": 21.2
+        },
+        {
+          "texto": "ele",
+          "inicio_s": 21.48,
+          "fim_s": 21.6
+        },
+        {
+          "texto": "caminhava",
+          "inicio_s": 21.68,
+          "fim_s": 22.08
+        },
+        {
+          "texto": "pro",
+          "inicio_s": 22.16,
+          "fim_s": 22.24
+        },
+        {
+          "texto": "estaleiro",
+          "inicio_s": 22.32,
+          "fim_s": 22.88
+        },
+        {
+          "texto": "quando",
+          "inicio_s": 22.92,
+          "fim_s": 23.04
+        },
+        {
+          "texto": "ouviu",
+          "inicio_s": 23.12,
+          "fim_s": 23.44
+        },
+        {
+          "texto": "o",
+          "inicio_s": 23.52,
+          "fim_s": 23.6
+        },
+        {
+          "texto": "ronco",
+          "inicio_s": 23.68,
+          "fim_s": 23.92
+        },
+        {
+          "texto": "de",
+          "inicio_s": 24.0,
+          "fim_s": 24.04
+        },
+        {
+          "texto": "um",
+          "inicio_s": 24.08,
+          "fim_s": 24.16
+        },
+        {
+          "texto": "avião",
+          "inicio_s": 24.28,
+          "fim_s": 24.56
+        }
+      ]
+    },
+    {
+      "texto": "Olhou pra cima e viu dois pequenos paraquedas descendo.",
+      "inicio_s": 25.12,
+      "fim_s": 28.96,
+      "palavras": [
+        {
+          "texto": "Olhou",
+          "inicio_s": 25.12,
+          "fim_s": 25.36
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 25.48,
+          "fim_s": 25.6
+        },
+        {
+          "texto": "cima",
+          "inicio_s": 25.76,
+          "fim_s": 26.08
+        },
+        {
+          "texto": "e",
+          "inicio_s": 26.16,
+          "fim_s": 26.24
+        },
+        {
+          "texto": "viu",
+          "inicio_s": 26.28,
+          "fim_s": 26.56
+        },
+        {
+          "texto": "dois",
+          "inicio_s": 26.64,
+          "fim_s": 26.8
+        },
+        {
+          "texto": "pequenos",
+          "inicio_s": 26.88,
+          "fim_s": 27.36
+        },
+        {
+          "texto": "paraquedas",
+          "inicio_s": 27.44,
+          "fim_s": 28.0
+        },
+        {
+          "texto": "descendo",
+          "inicio_s": 28.12,
+          "fim_s": 28.56
+        }
+      ]
+    },
+    {
+      "texto": "Depois, um clarão gigantesco.",
+      "inicio_s": 29.08,
+      "fim_s": 31.84,
+      "palavras": [
+        {
+          "texto": "Depois",
+          "inicio_s": 29.08,
+          "fim_s": 29.52
+        },
+        {
+          "texto": "um",
+          "inicio_s": 29.8,
+          "fim_s": 29.84
+        },
+        {
+          "texto": "clarão",
+          "inicio_s": 29.92,
+          "fim_s": 30.32
+        },
+        {
+          "texto": "gigantesco",
+          "inicio_s": 30.48,
+          "fim_s": 31.36
+        }
+      ]
+    },
+    {
+      "texto": "Ele estava a uns três quilômetros do ponto da explosão.",
+      "inicio_s": 31.92,
+      "fim_s": 35.28,
+      "palavras": [
+        {
+          "texto": "Ele",
+          "inicio_s": 31.92,
+          "fim_s": 32.0
+        },
+        {
+          "texto": "estava",
+          "inicio_s": 32.12,
+          "fim_s": 32.4
+        },
+        {
+          "texto": "a",
+          "inicio_s": 32.44,
+          "fim_s": 32.48
+        },
+        {
+          "texto": "uns",
+          "inicio_s": 32.6,
+          "fim_s": 32.72
+        },
+        {
+          "texto": "três",
+          "inicio_s": 32.8,
+          "fim_s": 33.04
+        },
+        {
+          "texto": "quilômetros",
+          "inicio_s": 33.12,
+          "fim_s": 33.68
+        },
+        {
+          "texto": "do",
+          "inicio_s": 33.76,
+          "fim_s": 33.84
+        },
+        {
+          "texto": "ponto",
+          "inicio_s": 33.92,
+          "fim_s": 34.16
+        },
+        {
+          "texto": "da",
+          "inicio_s": 34.2,
+          "fim_s": 34.24
+        },
+        {
+          "texto": "explosão",
+          "inicio_s": 34.32,
+          "fim_s": 34.8
+        }
+      ]
+    },
+    {
+      "texto": "A onda de choque o jogou longe.",
+      "inicio_s": 35.32,
+      "fim_s": 37.52,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 35.32,
+          "fim_s": 35.36
+        },
+        {
+          "texto": "onda",
+          "inicio_s": 35.44,
+          "fim_s": 35.68
+        },
+        {
+          "texto": "de",
+          "inicio_s": 35.72,
+          "fim_s": 35.76
+        },
+        {
+          "texto": "choque",
+          "inicio_s": 35.92,
+          "fim_s": 36.24
+        },
+        {
+          "texto": "o",
+          "inicio_s": 36.28,
+          "fim_s": 36.32
+        },
+        {
+          "texto": "jogou",
+          "inicio_s": 36.36,
+          "fim_s": 36.64
+        },
+        {
+          "texto": "longe",
+          "inicio_s": 36.72,
+          "fim_s": 37.12
+        }
+      ]
+    },
+    {
+      "texto": "Os tímpanos romperam, e o lado esquerdo do corpo ficou queimado.",
+      "inicio_s": 37.6,
+      "fim_s": 41.92,
+      "palavras": [
+        {
+          "texto": "Os",
+          "inicio_s": 37.6,
+          "fim_s": 37.68
+        },
+        {
+          "texto": "tímpanos",
+          "inicio_s": 37.84,
+          "fim_s": 38.24
+        },
+        {
+          "texto": "romperam",
+          "inicio_s": 38.32,
+          "fim_s": 38.8
+        },
+        {
+          "texto": "e",
+          "inicio_s": 39.16,
+          "fim_s": 39.2
+        },
+        {
+          "texto": "o",
+          "inicio_s": 39.24,
+          "fim_s": 39.28
+        },
+        {
+          "texto": "lado",
+          "inicio_s": 39.36,
+          "fim_s": 39.52
+        },
+        {
+          "texto": "esquerdo",
+          "inicio_s": 39.6,
+          "fim_s": 40.0
+        },
+        {
+          "texto": "do",
+          "inicio_s": 40.08,
+          "fim_s": 40.16
+        },
+        {
+          "texto": "corpo",
+          "inicio_s": 40.24,
+          "fim_s": 40.56
+        },
+        {
+          "texto": "ficou",
+          "inicio_s": 40.64,
+          "fim_s": 40.8
+        },
+        {
+          "texto": "queimado",
+          "inicio_s": 40.88,
+          "fim_s": 41.44
+        }
+      ]
+    },
+    {
+      "texto": "Ele passou a noite num abrigo antiaéreo.",
+      "inicio_s": 42.04,
+      "fim_s": 44.48,
+      "palavras": [
+        {
+          "texto": "Ele",
+          "inicio_s": 42.04,
+          "fim_s": 42.16
+        },
+        {
+          "texto": "passou",
+          "inicio_s": 42.24,
+          "fim_s": 42.4
+        },
+        {
+          "texto": "a",
+          "inicio_s": 42.48,
+          "fim_s": 42.56
+        },
+        {
+          "texto": "noite",
+          "inicio_s": 42.64,
+          "fim_s": 42.88
+        },
+        {
+          "texto": "num",
+          "inicio_s": 42.96,
+          "fim_s": 43.04
+        },
+        {
+          "texto": "abrigo",
+          "inicio_s": 43.12,
+          "fim_s": 43.44
+        },
+        {
+          "texto": "antiaéreo",
+          "inicio_s": 43.52,
+          "fim_s": 44.08
+        }
+      ]
+    },
+    {
+      "texto": "No dia seguinte, atravessou a cidade destruída até a estação, cruzando um rio cheio de corpos.",
+      "inicio_s": 44.56,
+      "fim_s": 50.84,
+      "palavras": [
+        {
+          "texto": "No",
+          "inicio_s": 44.56,
+          "fim_s": 44.64
+        },
+        {
+          "texto": "dia",
+          "inicio_s": 44.72,
+          "fim_s": 44.8
+        },
+        {
+          "texto": "seguinte",
+          "inicio_s": 44.88,
+          "fim_s": 45.36
+        },
+        {
+          "texto": "atravessou",
+          "inicio_s": 45.72,
+          "fim_s": 46.16
+        },
+        {
+          "texto": "a",
+          "inicio_s": 46.2,
+          "fim_s": 46.24
+        },
+        {
+          "texto": "cidade",
+          "inicio_s": 46.32,
+          "fim_s": 46.64
+        },
+        {
+          "texto": "destruída",
+          "inicio_s": 46.72,
+          "fim_s": 47.36
+        },
+        {
+          "texto": "até",
+          "inicio_s": 47.48,
+          "fim_s": 47.64
+        },
+        {
+          "texto": "a",
+          "inicio_s": 47.68,
+          "fim_s": 47.72
+        },
+        {
+          "texto": "estação",
+          "inicio_s": 47.76,
+          "fim_s": 48.32
+        },
+        {
+          "texto": "cruzando",
+          "inicio_s": 48.6,
+          "fim_s": 49.04
+        },
+        {
+          "texto": "um",
+          "inicio_s": 49.08,
+          "fim_s": 49.12
+        },
+        {
+          "texto": "rio",
+          "inicio_s": 49.2,
+          "fim_s": 49.44
+        },
+        {
+          "texto": "cheio",
+          "inicio_s": 49.6,
+          "fim_s": 49.84
+        },
+        {
+          "texto": "de",
+          "inicio_s": 49.92,
+          "fim_s": 50.08
+        },
+        {
+          "texto": "corpos",
+          "inicio_s": 50.2,
+          "fim_s": 50.64
+        }
+      ]
+    },
+    {
+      "texto": "E pegou o trem de volta pra casa.",
+      "inicio_s": 51.04,
+      "fim_s": 53.04,
+      "palavras": [
+        {
+          "texto": "E",
+          "inicio_s": 51.04,
+          "fim_s": 51.12
+        },
+        {
+          "texto": "pegou",
+          "inicio_s": 51.2,
+          "fim_s": 51.44
+        },
+        {
+          "texto": "o",
+          "inicio_s": 51.52,
+          "fim_s": 51.6
+        },
+        {
+          "texto": "trem",
+          "inicio_s": 51.68,
+          "fim_s": 51.84
+        },
+        {
+          "texto": "de",
+          "inicio_s": 51.92,
+          "fim_s": 52.0
+        },
+        {
+          "texto": "volta",
+          "inicio_s": 52.08,
+          "fim_s": 52.24
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 52.32,
+          "fim_s": 52.4
+        },
+        {
+          "texto": "casa",
+          "inicio_s": 52.56,
+          "fim_s": 52.88
+        }
+      ]
+    },
+    {
+      "texto": "Pra Nagasaki.",
+      "inicio_s": 53.2,
+      "fim_s": 54.16,
+      "palavras": [
+        {
+          "texto": "Pra",
+          "inicio_s": 53.2,
+          "fim_s": 53.36
+        },
+        {
+          "texto": "Nagasaki",
+          "inicio_s": 53.4,
+          "fim_s": 54.08
+        }
+      ]
+    },
+    {
+      "texto": "Mesmo enfaixado, no dia nove ele foi trabalhar.",
+      "inicio_s": 54.72,
+      "fim_s": 57.6,
+      "palavras": [
+        {
+          "texto": "Mesmo",
+          "inicio_s": 54.72,
+          "fim_s": 54.96
+        },
+        {
+          "texto": "enfaixado",
+          "inicio_s": 55.04,
+          "fim_s": 55.68
+        },
+        {
+          "texto": "no",
+          "inicio_s": 56.0,
+          "fim_s": 56.08
+        },
+        {
+          "texto": "dia",
+          "inicio_s": 56.16,
+          "fim_s": 56.24
+        },
+        {
+          "texto": "nove",
+          "inicio_s": 56.4,
+          "fim_s": 56.64
+        },
+        {
+          "texto": "ele",
+          "inicio_s": 56.72,
+          "fim_s": 56.8
+        },
+        {
+          "texto": "foi",
+          "inicio_s": 56.88,
+          "fim_s": 57.0
+        },
+        {
+          "texto": "trabalhar",
+          "inicio_s": 57.04,
+          "fim_s": 57.52
+        }
+      ]
+    },
+    {
+      "texto": "O chefe não acreditava na história.",
+      "inicio_s": 58.0,
+      "fim_s": 60.08,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 58.0,
+          "fim_s": 58.08
+        },
+        {
+          "texto": "chefe",
+          "inicio_s": 58.24,
+          "fim_s": 58.56
+        },
+        {
+          "texto": "não",
+          "inicio_s": 58.64,
+          "fim_s": 58.72
+        },
+        {
+          "texto": "acreditava",
+          "inicio_s": 58.8,
+          "fim_s": 59.44
+        },
+        {
+          "texto": "na",
+          "inicio_s": 59.48,
+          "fim_s": 59.52
+        },
+        {
+          "texto": "história",
+          "inicio_s": 59.6,
+          "fim_s": 60.0
+        }
+      ]
+    },
+    {
+      "texto": "Uma única bomba destruir uma cidade inteira?",
+      "inicio_s": 60.48,
+      "fim_s": 63.2,
+      "palavras": [
+        {
+          "texto": "Uma",
+          "inicio_s": 60.48,
+          "fim_s": 60.72
+        },
+        {
+          "texto": "única",
+          "inicio_s": 60.8,
+          "fim_s": 61.12
+        },
+        {
+          "texto": "bomba",
+          "inicio_s": 61.28,
+          "fim_s": 61.52
+        },
+        {
+          "texto": "destruir",
+          "inicio_s": 61.6,
+          "fim_s": 62.0
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 62.08,
+          "fim_s": 62.16
+        },
+        {
+          "texto": "cidade",
+          "inicio_s": 62.24,
+          "fim_s": 62.56
+        },
+        {
+          "texto": "inteira",
+          "inicio_s": 62.64,
+          "fim_s": 63.12
+        }
+      ]
+    },
+    {
+      "texto": "Impossível.",
+      "inicio_s": 63.6,
+      "fim_s": 64.48,
+      "palavras": [
+        {
+          "texto": "Impossível",
+          "inicio_s": 63.6,
+          "fim_s": 64.4
+        }
+      ]
+    },
+    {
+      "texto": "Enquanto Yamaguchi descrevia o clarão, a sala se iluminou de novo.",
+      "inicio_s": 64.88,
+      "fim_s": 69.36,
+      "palavras": [
+        {
+          "texto": "Enquanto",
+          "inicio_s": 64.88,
+          "fim_s": 65.28
+        },
+        {
+          "texto": "Yamaguchi",
+          "inicio_s": 65.32,
+          "fim_s": 65.92
+        },
+        {
+          "texto": "descrevia",
+          "inicio_s": 66.04,
+          "fim_s": 66.48
+        },
+        {
+          "texto": "o",
+          "inicio_s": 66.52,
+          "fim_s": 66.56
+        },
+        {
+          "texto": "clarão",
+          "inicio_s": 66.64,
+          "fim_s": 66.96
+        },
+        {
+          "texto": "a",
+          "inicio_s": 67.36,
+          "fim_s": 67.44
+        },
+        {
+          "texto": "sala",
+          "inicio_s": 67.52,
+          "fim_s": 67.84
+        },
+        {
+          "texto": "se",
+          "inicio_s": 67.88,
+          "fim_s": 67.92
+        },
+        {
+          "texto": "iluminou",
+          "inicio_s": 68.0,
+          "fim_s": 68.48
+        },
+        {
+          "texto": "de",
+          "inicio_s": 68.52,
+          "fim_s": 68.56
+        },
+        {
+          "texto": "novo",
+          "inicio_s": 68.64,
+          "fim_s": 68.96
+        }
+      ]
+    },
+    {
+      "texto": "A segunda bomba tinha explodido, outra vez a uns três quilômetros dele.",
+      "inicio_s": 69.4,
+      "fim_s": 74.4,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 69.4,
+          "fim_s": 69.44
+        },
+        {
+          "texto": "segunda",
+          "inicio_s": 69.6,
+          "fim_s": 70.0
+        },
+        {
+          "texto": "bomba",
+          "inicio_s": 70.16,
+          "fim_s": 70.4
+        },
+        {
+          "texto": "tinha",
+          "inicio_s": 70.48,
+          "fim_s": 70.64
+        },
+        {
+          "texto": "explodido",
+          "inicio_s": 70.72,
+          "fim_s": 71.28
+        },
+        {
+          "texto": "outra",
+          "inicio_s": 71.72,
+          "fim_s": 72.0
+        },
+        {
+          "texto": "vez",
+          "inicio_s": 72.08,
+          "fim_s": 72.32
+        },
+        {
+          "texto": "a",
+          "inicio_s": 72.36,
+          "fim_s": 72.4
+        },
+        {
+          "texto": "uns",
+          "inicio_s": 72.52,
+          "fim_s": 72.64
+        },
+        {
+          "texto": "três",
+          "inicio_s": 72.72,
+          "fim_s": 72.96
+        },
+        {
+          "texto": "quilômetros",
+          "inicio_s": 73.04,
+          "fim_s": 73.6
+        },
+        {
+          "texto": "dele",
+          "inicio_s": 73.68,
+          "fim_s": 73.92
+        }
+      ]
+    },
+    {
+      "texto": "Ele sobreviveu de novo.",
+      "inicio_s": 74.52,
+      "fim_s": 76.16,
+      "palavras": [
+        {
+          "texto": "Ele",
+          "inicio_s": 74.52,
+          "fim_s": 74.64
+        },
+        {
+          "texto": "sobreviveu",
+          "inicio_s": 74.68,
+          "fim_s": 75.28
+        },
+        {
+          "texto": "de",
+          "inicio_s": 75.36,
+          "fim_s": 75.44
+        },
+        {
+          "texto": "novo",
+          "inicio_s": 75.48,
+          "fim_s": 75.76
+        }
+      ]
+    },
+    {
+      "texto": "A esposa e o filho também.",
+      "inicio_s": 76.2,
+      "fim_s": 78.48,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 76.2,
+          "fim_s": 76.24
+        },
+        {
+          "texto": "esposa",
+          "inicio_s": 76.32,
+          "fim_s": 76.8
+        },
+        {
+          "texto": "e",
+          "inicio_s": 77.04,
+          "fim_s": 77.08
+        },
+        {
+          "texto": "o",
+          "inicio_s": 77.12,
+          "fim_s": 77.2
+        },
+        {
+          "texto": "filho",
+          "inicio_s": 77.28,
+          "fim_s": 77.52
+        },
+        {
+          "texto": "também",
+          "inicio_s": 77.6,
+          "fim_s": 77.92
+        }
+      ]
+    },
+    {
+      "texto": "Por anos, ele quase não falou sobre o que viveu.",
+      "inicio_s": 78.56,
+      "fim_s": 81.84,
+      "palavras": [
+        {
+          "texto": "Por",
+          "inicio_s": 78.56,
+          "fim_s": 78.64
+        },
+        {
+          "texto": "anos",
+          "inicio_s": 78.72,
+          "fim_s": 79.04
+        },
+        {
+          "texto": "ele",
+          "inicio_s": 79.4,
+          "fim_s": 79.52
+        },
+        {
+          "texto": "quase",
+          "inicio_s": 79.56,
+          "fim_s": 79.84
+        },
+        {
+          "texto": "não",
+          "inicio_s": 80.0,
+          "fim_s": 80.16
+        },
+        {
+          "texto": "falou",
+          "inicio_s": 80.24,
+          "fim_s": 80.56
+        },
+        {
+          "texto": "sobre",
+          "inicio_s": 80.64,
+          "fim_s": 80.8
+        },
+        {
+          "texto": "o",
+          "inicio_s": 80.84,
+          "fim_s": 80.88
+        },
+        {
+          "texto": "que",
+          "inicio_s": 80.92,
+          "fim_s": 80.96
+        },
+        {
+          "texto": "viveu",
+          "inicio_s": 81.04,
+          "fim_s": 81.36
+        }
+      ]
+    },
+    {
+      "texto": "Só em 2009 o governo japonês o reconheceu oficialmente como sobrevivente das duas explosões.",
+      "inicio_s": 81.92,
+      "fim_s": 88.8,
+      "palavras": [
+        {
+          "texto": "Só",
+          "inicio_s": 81.92,
+          "fim_s": 82.0
+        },
+        {
+          "texto": "em",
+          "inicio_s": 82.08,
+          "fim_s": 82.16
+        },
+        {
+          "texto": "2009",
+          "inicio_s": 82.24,
+          "fim_s": 82.4
+        },
+        {
+          "texto": "o",
+          "inicio_s": 82.56,
+          "fim_s": 82.933
+        },
+        {
+          "texto": "governo",
+          "inicio_s": 83.36,
+          "fim_s": 83.84
+        },
+        {
+          "texto": "japonês",
+          "inicio_s": 83.88,
+          "fim_s": 84.4
+        },
+        {
+          "texto": "o",
+          "inicio_s": 84.44,
+          "fim_s": 84.48
+        },
+        {
+          "texto": "reconheceu",
+          "inicio_s": 84.56,
+          "fim_s": 85.12
+        },
+        {
+          "texto": "oficialmente",
+          "inicio_s": 85.2,
+          "fim_s": 85.92
+        },
+        {
+          "texto": "como",
+          "inicio_s": 86.0,
+          "fim_s": 86.16
+        },
+        {
+          "texto": "sobrevivente",
+          "inicio_s": 86.24,
+          "fim_s": 87.04
+        },
+        {
+          "texto": "das",
+          "inicio_s": 87.16,
+          "fim_s": 87.28
+        },
+        {
+          "texto": "duas",
+          "inicio_s": 87.36,
+          "fim_s": 87.6
+        },
+        {
+          "texto": "explosões",
+          "inicio_s": 87.68,
+          "fim_s": 88.4
+        }
+      ]
+    },
+    {
+      "texto": "Ele foi o único a receber esse reconhecimento.",
+      "inicio_s": 88.92,
+      "fim_s": 91.76,
+      "palavras": [
+        {
+          "texto": "Ele",
+          "inicio_s": 88.92,
+          "fim_s": 89.04
+        },
+        {
+          "texto": "foi",
+          "inicio_s": 89.08,
+          "fim_s": 89.2
+        },
+        {
+          "texto": "o",
+          "inicio_s": 89.28,
+          "fim_s": 89.36
+        },
+        {
+          "texto": "único",
+          "inicio_s": 89.48,
+          "fim_s": 89.68
+        },
+        {
+          "texto": "a",
+          "inicio_s": 89.76,
+          "fim_s": 89.8
+        },
+        {
+          "texto": "receber",
+          "inicio_s": 89.84,
+          "fim_s": 90.24
+        },
+        {
+          "texto": "esse",
+          "inicio_s": 90.32,
+          "fim_s": 90.4
+        },
+        {
+          "texto": "reconhecimento",
+          "inicio_s": 90.48,
+          "fim_s": 91.28
+        }
+      ]
+    },
+    {
+      "texto": "Na velhice, virou ativista contra as armas nucleares e chegou a discursar nas Nações Unidas.",
+      "inicio_s": 91.84,
+      "fim_s": 98.0,
+      "palavras": [
+        {
+          "texto": "Na",
+          "inicio_s": 91.84,
+          "fim_s": 91.92
+        },
+        {
+          "texto": "velhice",
+          "inicio_s": 92.0,
+          "fim_s": 92.48
+        },
+        {
+          "texto": "virou",
+          "inicio_s": 92.8,
+          "fim_s": 92.96
+        },
+        {
+          "texto": "ativista",
+          "inicio_s": 93.16,
+          "fim_s": 93.68
+        },
+        {
+          "texto": "contra",
+          "inicio_s": 93.8,
+          "fim_s": 93.92
+        },
+        {
+          "texto": "as",
+          "inicio_s": 94.0,
+          "fim_s": 94.08
+        },
+        {
+          "texto": "armas",
+          "inicio_s": 94.16,
+          "fim_s": 94.4
+        },
+        {
+          "texto": "nucleares",
+          "inicio_s": 94.44,
+          "fim_s": 95.12
+        },
+        {
+          "texto": "e",
+          "inicio_s": 95.28,
+          "fim_s": 95.36
+        },
+        {
+          "texto": "chegou",
+          "inicio_s": 95.4,
+          "fim_s": 95.6
+        },
+        {
+          "texto": "a",
+          "inicio_s": 95.68,
+          "fim_s": 95.76
+        },
+        {
+          "texto": "discursar",
+          "inicio_s": 95.88,
+          "fim_s": 96.4
+        },
+        {
+          "texto": "nas",
+          "inicio_s": 96.48,
+          "fim_s": 96.56
+        },
+        {
+          "texto": "Nações",
+          "inicio_s": 96.64,
+          "fim_s": 96.96
+        },
+        {
+          "texto": "Unidas",
+          "inicio_s": 97.04,
+          "fim_s": 97.52
+        }
+      ]
+    },
+    {
+      "texto": "Tsutomu Yamaguchi morreu em 2010, aos noventa e três anos.",
+      "inicio_s": 98.08,
+      "fim_s": 102.8,
+      "palavras": [
+        {
+          "texto": "Tsutomu",
+          "inicio_s": 98.08,
+          "fim_s": 98.507
+        },
+        {
+          "texto": "Yamaguchi",
+          "inicio_s": 98.533,
+          "fim_s": 99.2
+        },
+        {
+          "texto": "morreu",
+          "inicio_s": 99.28,
+          "fim_s": 99.52
+        },
+        {
+          "texto": "em",
+          "inicio_s": 99.6,
+          "fim_s": 99.68
+        },
+        {
+          "texto": "2010",
+          "inicio_s": 99.76,
+          "fim_s": 100.64
+        },
+        {
+          "texto": "aos",
+          "inicio_s": 100.88,
+          "fim_s": 101.04
+        },
+        {
+          "texto": "noventa",
+          "inicio_s": 101.16,
+          "fim_s": 101.52
+        },
+        {
+          "texto": "e",
+          "inicio_s": 101.6,
+          "fim_s": 101.68
+        },
+        {
+          "texto": "três",
+          "inicio_s": 101.72,
+          "fim_s": 101.84
+        },
+        {
+          "texto": "anos",
+          "inicio_s": 102.0,
+          "fim_s": 102.4
+        }
+      ]
+    },
+    {
+      "texto": "Viveu o bastante pra contar uma história que ninguém deveria viver nem uma vez.",
+      "inicio_s": 102.88,
+      "fim_s": 107.84,
+      "palavras": [
+        {
+          "texto": "Viveu",
+          "inicio_s": 102.88,
+          "fim_s": 103.147
+        },
+        {
+          "texto": "o",
+          "inicio_s": 103.173,
+          "fim_s": 103.2
+        },
+        {
+          "texto": "bastante",
+          "inicio_s": 103.28,
+          "fim_s": 103.84
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 103.92,
+          "fim_s": 104.0
+        },
+        {
+          "texto": "contar",
+          "inicio_s": 104.12,
+          "fim_s": 104.32
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 104.4,
+          "fim_s": 104.48
+        },
+        {
+          "texto": "história",
+          "inicio_s": 104.6,
+          "fim_s": 104.96
+        },
+        {
+          "texto": "que",
+          "inicio_s": 105.04,
+          "fim_s": 105.12
+        },
+        {
+          "texto": "ninguém",
+          "inicio_s": 105.2,
+          "fim_s": 105.6
+        },
+        {
+          "texto": "deveria",
+          "inicio_s": 105.68,
+          "fim_s": 106.0
+        },
+        {
+          "texto": "viver",
+          "inicio_s": 106.08,
+          "fim_s": 106.48
+        },
+        {
+          "texto": "nem",
+          "inicio_s": 106.64,
+          "fim_s": 106.8
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 106.88,
+          "fim_s": 107.04
+        },
+        {
+          "texto": "vez",
+          "inicio_s": 107.12,
+          "fim_s": 107.44
+        }
+      ]
+    },
+    {
+      "texto": "Ele viveu duas.",
+      "inicio_s": 107.92,
+      "fim_s": 109.28,
+      "palavras": [
+        {
+          "texto": "Ele",
+          "inicio_s": 107.92,
+          "fim_s": 108.0
+        },
+        {
+          "texto": "viveu",
+          "inicio_s": 108.08,
+          "fim_s": 108.48
+        },
+        {
+          "texto": "duas",
+          "inicio_s": 108.56,
+          "fim_s": 109.04
+        }
+      ]
+    }
+  ]
+}
