@@ -8,6 +8,9 @@ from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
+DOWNLOAD_ATTEMPTS = 3
+DOWNLOAD_RETRY_DELAY_SEC = 5.0
+
 
 async def download_youtube_audio(url: str, output_path: Path, ffmpeg_bin_dir: str | None = None) -> bool:
     """Baixa o áudio de `url` e salva como MP3 em `output_path`.
@@ -39,13 +42,19 @@ async def download_youtube_audio(url: str, output_path: Path, ffmpeg_bin_dir: st
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
 
-    try:
-        await asyncio.to_thread(_download)
-    except Exception as e:
-        logger.warning(f"Aviso nao-critico durante download do YouTube: {e}")
-
     expected_file = output_path.with_suffix(".mp3")
-    if not (expected_file.exists() and expected_file.stat().st_size > 1000):
+    # O YouTube às vezes recusa um pedido no meio de vários seguidos (playlist):
+    # a mesma URL baixa normal logo depois. Tenta de novo antes de dar erro.
+    for attempt in range(1, DOWNLOAD_ATTEMPTS + 1):
+        try:
+            await asyncio.to_thread(_download)
+        except Exception as e:
+            logger.warning(f"Aviso nao-critico durante download do YouTube (tentativa {attempt}): {e}")
+        if expected_file.exists() and expected_file.stat().st_size > 1000:
+            break
+        if attempt < DOWNLOAD_ATTEMPTS:
+            await asyncio.sleep(DOWNLOAD_RETRY_DELAY_SEC * attempt)
+    else:
         return False
 
     if expected_file != output_path:
