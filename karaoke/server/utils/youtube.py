@@ -103,6 +103,22 @@ _TITLE_SEPARATORS = [" - ", " – ", " — ", " | ", " ~ ", " : "]
 _VIDEO_TAG_RE = r"\s*[\(\[][^)]*?(official|oficial|video|vídeo|clip|clipe|audio|áudio|lyric|karaoke|instrumental|legendado|cover|lyrics|4k|hd|subtitles|traducao|tradução|ao vivo|live)[^)]*?[\)\]]"
 
 
+# Nome do canal → nome do artista: "Official Arctic Monkeys", "Oasis - Topic", "AdeleVEVO".
+# Com o nome do canal a busca da letra (LRCLIB) falhava ou vinha sem sincronia.
+_CHANNEL_PREFIX_RE = r"^\s*(official|oficial)\s+"
+_CHANNEL_SUFFIX_RE = r"\s*(-\s*topic|vevo|official|oficial|official channel|canal oficial)\s*$"
+
+
+def _clean_channel(channel: str) -> str:
+    import re
+
+    name = channel or ""
+    for _ in range(2):  # "Official Artist Official Channel"
+        name = re.sub(_CHANNEL_PREFIX_RE, "", name, flags=re.IGNORECASE)
+        name = re.sub(_CHANNEL_SUFFIX_RE, "", name, flags=re.IGNORECASE)
+    return name.strip() or (channel or "").strip()
+
+
 def split_artist_title(raw_title: str, fallback_artist: str = "") -> dict:
     """Separa "Artista - Título" e limpa tags de vídeo; sem separador, usa o canal."""
     import re
@@ -114,7 +130,7 @@ def split_artist_title(raw_title: str, fallback_artist: str = "") -> dict:
             artist, title = (part.strip() for part in title.split(sep, 1))
             break
     if not artist and fallback_artist:
-        artist = re.sub(r"\s*(- Topic|VEVO|Official)$", "", fallback_artist, flags=re.IGNORECASE).strip()
+        artist = _clean_channel(fallback_artist)
 
     title = re.sub(_VIDEO_TAG_RE, "", title, flags=re.IGNORECASE).strip().strip("\"'")
     artist = re.sub(_VIDEO_TAG_RE, "", artist, flags=re.IGNORECASE).strip().strip("\"'")

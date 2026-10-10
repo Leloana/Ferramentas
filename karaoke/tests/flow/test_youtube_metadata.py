@@ -61,6 +61,20 @@ class TestYouTubePlaylistFlow(unittest.TestCase):
         self.assertFalse(is_playlist_url("https://www.youtube.com/watch?v=abcdefghijk"))
         self.assertFalse(is_playlist_url("oasis wonderwall"))
 
+    def test_channel_name_becomes_the_artist(self):
+        from utils.youtube import split_artist_title
+
+        cases = {
+            "Official Arctic Monkeys": "Arctic Monkeys",  # álbum: sem a letra sincronizada no LRCLIB
+            "Sir Chloe - Topic": "Sir Chloe",
+            "AdeleVEVO": "Adele",
+            "Anitta Canal Oficial": "Anitta",
+            "MTV": "MTV",
+            "Official": "Official",  # não sobra nada: fica o nome do canal
+        }
+        for channel, artist in cases.items():
+            self.assertEqual(split_artist_title("Mad Sounds", fallback_artist=channel)["artist"], artist, channel)
+
     def test_rejects_a_link_that_is_not_a_playlist(self):
         response = self.client.get("/api/youtube-playlist?url=https://youtube.com/watch?v=abcdefghijk")
         self.assertEqual(response.status_code, 400)
