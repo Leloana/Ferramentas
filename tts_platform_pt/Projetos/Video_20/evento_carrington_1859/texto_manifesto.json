@@ -1,0 +1,1545 @@
+{
+  "gerado_em": "2026-10-10T13:01:33",
+  "roteiro": "Projetos\\Video_20\\evento_carrington_1859\\texto.md",
+  "voz": "eleven:7i7dgyCkKt4c16dLtwT3",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.0,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 118.8,
+  "texto_usado": "Em setembro de 1859, o céu do Caribe e do Havaí ficou vermelho e verde durante a noite. Era uma aurora, num lugar onde ela quase nunca aparece. Tudo começou um dia antes, na Inglaterra. No dia primeiro de setembro, o astrônomo Richard Carrington projetava a imagem do Sol numa tela pra desenhar as manchas solares. De repente, viu dois pontos de luz branca e intensa surgirem sobre elas. Durou uns cinco minutos. Carrington tinha acabado de ver a primeira explosão solar já registrada. Essa explosão lançou uma nuvem gigantesca de partículas em direção à Terra. Uma viagem que normalmente leva dias foi feita em cerca de dezessete horas. Quando a nuvem chegou, o campo magnético do planeta foi sacudido como nunca. As auroras foram tão fortes que, nas Montanhas Rochosas, mineiros acordaram de madrugada achando que já era manhã e começaram a preparar o café. Dava pra ler o jornal à noite, só com a luz do céu. Mas o mais estranho aconteceu nos telégrafos, a internet da época. Os fios ficaram carregados de eletricidade. Operadores levaram choques. Saíam faíscas dos aparelhos, e papéis pegaram fogo. Em algumas linhas, os operadores desligaram as baterias e continuaram mandando mensagens só com a corrente que vinha do céu. Em 1859, o mundo quase não dependia de eletricidade, então o estrago foi pequeno. Hoje seria diferente. Uma tempestade do mesmo tamanho poderia queimar transformadores, derrubar redes elétricas, satélites e GPS, e deixar regiões inteiras no escuro por semanas. E não é questão de se, mas de quando. Em 2012, uma explosão parecida cruzou a órbita da Terra. Por apenas nove dias, nós não estávamos no caminho.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Em setembro de 1859, o céu do Caribe e do Havaí ficou vermelho e verde durante a noite.",
+      "inicio_s": 0.0,
+      "fim_s": 7.76,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 0.0,
+          "fim_s": 0.16
+        },
+        {
+          "texto": "setembro",
+          "inicio_s": 0.24,
+          "fim_s": 0.72
+        },
+        {
+          "texto": "de",
+          "inicio_s": 0.8,
+          "fim_s": 0.88
+        },
+        {
+          "texto": "1859",
+          "inicio_s": 0.96,
+          "fim_s": 2.72
+        },
+        {
+          "texto": "o",
+          "inicio_s": 3.2,
+          "fim_s": 3.28
+        },
+        {
+          "texto": "céu",
+          "inicio_s": 3.36,
+          "fim_s": 3.52
+        },
+        {
+          "texto": "do",
+          "inicio_s": 3.6,
+          "fim_s": 3.68
+        },
+        {
+          "texto": "Caribe",
+          "inicio_s": 3.8,
+          "fim_s": 4.16
+        },
+        {
+          "texto": "e",
+          "inicio_s": 4.24,
+          "fim_s": 4.28
+        },
+        {
+          "texto": "do",
+          "inicio_s": 4.32,
+          "fim_s": 4.4
+        },
+        {
+          "texto": "Havaí",
+          "inicio_s": 4.48,
+          "fim_s": 4.8
+        },
+        {
+          "texto": "ficou",
+          "inicio_s": 4.92,
+          "fim_s": 5.12
+        },
+        {
+          "texto": "vermelho",
+          "inicio_s": 5.2,
+          "fim_s": 5.84
+        },
+        {
+          "texto": "e",
+          "inicio_s": 5.88,
+          "fim_s": 5.92
+        },
+        {
+          "texto": "verde",
+          "inicio_s": 6.08,
+          "fim_s": 6.48
+        },
+        {
+          "texto": "durante",
+          "inicio_s": 6.56,
+          "fim_s": 6.8
+        },
+        {
+          "texto": "a",
+          "inicio_s": 6.88,
+          "fim_s": 6.92
+        },
+        {
+          "texto": "noite",
+          "inicio_s": 6.96,
+          "fim_s": 7.28
+        }
+      ]
+    },
+    {
+      "texto": "Era uma aurora, num lugar onde ela quase nunca aparece.",
+      "inicio_s": 7.8,
+      "fim_s": 12.08,
+      "palavras": [
+        {
+          "texto": "Era",
+          "inicio_s": 7.8,
+          "fim_s": 8.0
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 8.08,
+          "fim_s": 8.16
+        },
+        {
+          "texto": "aurora",
+          "inicio_s": 8.28,
+          "fim_s": 8.72
+        },
+        {
+          "texto": "num",
+          "inicio_s": 9.04,
+          "fim_s": 9.12
+        },
+        {
+          "texto": "lugar",
+          "inicio_s": 9.16,
+          "fim_s": 9.52
+        },
+        {
+          "texto": "onde",
+          "inicio_s": 9.64,
+          "fim_s": 9.76
+        },
+        {
+          "texto": "ela",
+          "inicio_s": 9.88,
+          "fim_s": 10.0
+        },
+        {
+          "texto": "quase",
+          "inicio_s": 10.08,
+          "fim_s": 10.48
+        },
+        {
+          "texto": "nunca",
+          "inicio_s": 10.64,
+          "fim_s": 10.88
+        },
+        {
+          "texto": "aparece",
+          "inicio_s": 10.96,
+          "fim_s": 11.52
+        }
+      ]
+    },
+    {
+      "texto": "Tudo começou um dia antes, na Inglaterra.",
+      "inicio_s": 12.16,
+      "fim_s": 15.04,
+      "palavras": [
+        {
+          "texto": "Tudo",
+          "inicio_s": 12.16,
+          "fim_s": 12.32
+        },
+        {
+          "texto": "começou",
+          "inicio_s": 12.4,
+          "fim_s": 12.8
+        },
+        {
+          "texto": "um",
+          "inicio_s": 12.88,
+          "fim_s": 12.96
+        },
+        {
+          "texto": "dia",
+          "inicio_s": 13.12,
+          "fim_s": 13.28
+        },
+        {
+          "texto": "antes",
+          "inicio_s": 13.48,
+          "fim_s": 13.68
+        },
+        {
+          "texto": "na",
+          "inicio_s": 13.92,
+          "fim_s": 14.0
+        },
+        {
+          "texto": "Inglaterra",
+          "inicio_s": 14.08,
+          "fim_s": 14.56
+        }
+      ]
+    },
+    {
+      "texto": "No dia primeiro de setembro, o astrônomo Richard Carrington projetava a imagem do Sol numa tela pra desenhar as manchas solares.",
+      "inicio_s": 15.12,
+      "fim_s": 23.12,
+      "palavras": [
+        {
+          "texto": "No",
+          "inicio_s": 15.12,
+          "fim_s": 15.2
+        },
+        {
+          "texto": "dia",
+          "inicio_s": 15.28,
+          "fim_s": 15.36
+        },
+        {
+          "texto": "primeiro",
+          "inicio_s": 15.44,
+          "fim_s": 15.84
+        },
+        {
+          "texto": "de",
+          "inicio_s": 15.92,
+          "fim_s": 16.0
+        },
+        {
+          "texto": "setembro",
+          "inicio_s": 16.08,
+          "fim_s": 16.56
+        },
+        {
+          "texto": "o",
+          "inicio_s": 16.84,
+          "fim_s": 16.88
+        },
+        {
+          "texto": "astrônomo",
+          "inicio_s": 17.04,
+          "fim_s": 17.52
+        },
+        {
+          "texto": "Richard",
+          "inicio_s": 17.6,
+          "fim_s": 18.0
+        },
+        {
+          "texto": "Carrington",
+          "inicio_s": 18.04,
+          "fim_s": 18.64
+        },
+        {
+          "texto": "projetava",
+          "inicio_s": 18.72,
+          "fim_s": 19.2
+        },
+        {
+          "texto": "a",
+          "inicio_s": 19.24,
+          "fim_s": 19.28
+        },
+        {
+          "texto": "imagem",
+          "inicio_s": 19.36,
+          "fim_s": 19.76
+        },
+        {
+          "texto": "do",
+          "inicio_s": 19.84,
+          "fim_s": 19.92
+        },
+        {
+          "texto": "Sol",
+          "inicio_s": 20.0,
+          "fim_s": 20.16
+        },
+        {
+          "texto": "numa",
+          "inicio_s": 20.24,
+          "fim_s": 20.4
+        },
+        {
+          "texto": "tela",
+          "inicio_s": 20.56,
+          "fim_s": 20.88
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 20.96,
+          "fim_s": 21.04
+        },
+        {
+          "texto": "desenhar",
+          "inicio_s": 21.12,
+          "fim_s": 21.52
+        },
+        {
+          "texto": "as",
+          "inicio_s": 21.6,
+          "fim_s": 21.68
+        },
+        {
+          "texto": "manchas",
+          "inicio_s": 21.76,
+          "fim_s": 22.08
+        },
+        {
+          "texto": "solares",
+          "inicio_s": 22.24,
+          "fim_s": 22.64
+        }
+      ]
+    },
+    {
+      "texto": "De repente, viu dois pontos de luz branca e intensa surgirem sobre elas.",
+      "inicio_s": 23.2,
+      "fim_s": 28.8,
+      "palavras": [
+        {
+          "texto": "De",
+          "inicio_s": 23.2,
+          "fim_s": 23.28
+        },
+        {
+          "texto": "repente",
+          "inicio_s": 23.4,
+          "fim_s": 24.08
+        },
+        {
+          "texto": "viu",
+          "inicio_s": 24.16,
+          "fim_s": 24.48
+        },
+        {
+          "texto": "dois",
+          "inicio_s": 24.56,
+          "fim_s": 24.88
+        },
+        {
+          "texto": "pontos",
+          "inicio_s": 24.96,
+          "fim_s": 25.28
+        },
+        {
+          "texto": "de",
+          "inicio_s": 25.32,
+          "fim_s": 25.36
+        },
+        {
+          "texto": "luz",
+          "inicio_s": 25.44,
+          "fim_s": 25.6
+        },
+        {
+          "texto": "branca",
+          "inicio_s": 25.76,
+          "fim_s": 26.24
+        },
+        {
+          "texto": "e",
+          "inicio_s": 26.28,
+          "fim_s": 26.32
+        },
+        {
+          "texto": "intensa",
+          "inicio_s": 26.4,
+          "fim_s": 27.04
+        },
+        {
+          "texto": "surgirem",
+          "inicio_s": 27.12,
+          "fim_s": 27.68
+        },
+        {
+          "texto": "sobre",
+          "inicio_s": 27.76,
+          "fim_s": 27.92
+        },
+        {
+          "texto": "elas",
+          "inicio_s": 28.0,
+          "fim_s": 28.32
+        }
+      ]
+    },
+    {
+      "texto": "Durou uns cinco minutos.",
+      "inicio_s": 28.88,
+      "fim_s": 30.88,
+      "palavras": [
+        {
+          "texto": "Durou",
+          "inicio_s": 28.88,
+          "fim_s": 29.12
+        },
+        {
+          "texto": "uns",
+          "inicio_s": 29.2,
+          "fim_s": 29.44
+        },
+        {
+          "texto": "cinco",
+          "inicio_s": 29.52,
+          "fim_s": 29.76
+        },
+        {
+          "texto": "minutos",
+          "inicio_s": 29.84,
+          "fim_s": 30.32
+        }
+      ]
+    },
+    {
+      "texto": "Carrington tinha acabado de ver a primeira explosão solar já registrada.",
+      "inicio_s": 30.92,
+      "fim_s": 35.84,
+      "palavras": [
+        {
+          "texto": "Carrington",
+          "inicio_s": 30.92,
+          "fim_s": 31.44
+        },
+        {
+          "texto": "tinha",
+          "inicio_s": 31.48,
+          "fim_s": 31.6
+        },
+        {
+          "texto": "acabado",
+          "inicio_s": 31.68,
+          "fim_s": 32.24
+        },
+        {
+          "texto": "de",
+          "inicio_s": 32.32,
+          "fim_s": 32.4
+        },
+        {
+          "texto": "ver",
+          "inicio_s": 32.48,
+          "fim_s": 32.56
+        },
+        {
+          "texto": "a",
+          "inicio_s": 32.64,
+          "fim_s": 32.72
+        },
+        {
+          "texto": "primeira",
+          "inicio_s": 32.8,
+          "fim_s": 33.28
+        },
+        {
+          "texto": "explosão",
+          "inicio_s": 33.4,
+          "fim_s": 33.84
+        },
+        {
+          "texto": "solar",
+          "inicio_s": 33.92,
+          "fim_s": 34.4
+        },
+        {
+          "texto": "já",
+          "inicio_s": 34.48,
+          "fim_s": 34.64
+        },
+        {
+          "texto": "registrada",
+          "inicio_s": 34.72,
+          "fim_s": 35.44
+        }
+      ]
+    },
+    {
+      "texto": "Essa explosão lançou uma nuvem gigantesca de partículas em direção à Terra.",
+      "inicio_s": 35.92,
+      "fim_s": 40.88,
+      "palavras": [
+        {
+          "texto": "Essa",
+          "inicio_s": 35.92,
+          "fim_s": 36.08
+        },
+        {
+          "texto": "explosão",
+          "inicio_s": 36.16,
+          "fim_s": 36.64
+        },
+        {
+          "texto": "lançou",
+          "inicio_s": 36.76,
+          "fim_s": 37.04
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 37.12,
+          "fim_s": 37.28
+        },
+        {
+          "texto": "nuvem",
+          "inicio_s": 37.36,
+          "fim_s": 37.68
+        },
+        {
+          "texto": "gigantesca",
+          "inicio_s": 37.76,
+          "fim_s": 38.56
+        },
+        {
+          "texto": "de",
+          "inicio_s": 38.64,
+          "fim_s": 38.72
+        },
+        {
+          "texto": "partículas",
+          "inicio_s": 38.8,
+          "fim_s": 39.44
+        },
+        {
+          "texto": "em",
+          "inicio_s": 39.48,
+          "fim_s": 39.52
+        },
+        {
+          "texto": "direção",
+          "inicio_s": 39.6,
+          "fim_s": 40.0
+        },
+        {
+          "texto": "à",
+          "inicio_s": 40.08,
+          "fim_s": 40.16
+        },
+        {
+          "texto": "Terra",
+          "inicio_s": 40.267,
+          "fim_s": 40.48
+        }
+      ]
+    },
+    {
+      "texto": "Uma viagem que normalmente leva dias foi feita em cerca de dezessete horas.",
+      "inicio_s": 40.92,
+      "fim_s": 46.48,
+      "palavras": [
+        {
+          "texto": "Uma",
+          "inicio_s": 40.92,
+          "fim_s": 41.04
+        },
+        {
+          "texto": "viagem",
+          "inicio_s": 41.12,
+          "fim_s": 41.6
+        },
+        {
+          "texto": "que",
+          "inicio_s": 41.68,
+          "fim_s": 41.76
+        },
+        {
+          "texto": "normalmente",
+          "inicio_s": 41.84,
+          "fim_s": 42.4
+        },
+        {
+          "texto": "leva",
+          "inicio_s": 42.48,
+          "fim_s": 42.72
+        },
+        {
+          "texto": "dias",
+          "inicio_s": 42.88,
+          "fim_s": 43.28
+        },
+        {
+          "texto": "foi",
+          "inicio_s": 43.52,
+          "fim_s": 43.76
+        },
+        {
+          "texto": "feita",
+          "inicio_s": 43.8,
+          "fim_s": 44.0
+        },
+        {
+          "texto": "em",
+          "inicio_s": 44.08,
+          "fim_s": 44.16
+        },
+        {
+          "texto": "cerca",
+          "inicio_s": 44.24,
+          "fim_s": 44.48
+        },
+        {
+          "texto": "de",
+          "inicio_s": 44.56,
+          "fim_s": 44.72
+        },
+        {
+          "texto": "dezessete",
+          "inicio_s": 44.84,
+          "fim_s": 45.52
+        },
+        {
+          "texto": "horas",
+          "inicio_s": 45.6,
+          "fim_s": 46.08
+        }
+      ]
+    },
+    {
+      "texto": "Quando a nuvem chegou, o campo magnético do planeta foi sacudido como nunca.",
+      "inicio_s": 46.52,
+      "fim_s": 51.76,
+      "palavras": [
+        {
+          "texto": "Quando",
+          "inicio_s": 46.52,
+          "fim_s": 46.72
+        },
+        {
+          "texto": "a",
+          "inicio_s": 46.747,
+          "fim_s": 46.773
+        },
+        {
+          "texto": "nuvem",
+          "inicio_s": 46.8,
+          "fim_s": 47.12
+        },
+        {
+          "texto": "chegou",
+          "inicio_s": 47.16,
+          "fim_s": 47.44
+        },
+        {
+          "texto": "o",
+          "inicio_s": 47.84,
+          "fim_s": 48.0
+        },
+        {
+          "texto": "campo",
+          "inicio_s": 48.12,
+          "fim_s": 48.24
+        },
+        {
+          "texto": "magnético",
+          "inicio_s": 48.32,
+          "fim_s": 48.96
+        },
+        {
+          "texto": "do",
+          "inicio_s": 49.0,
+          "fim_s": 49.04
+        },
+        {
+          "texto": "planeta",
+          "inicio_s": 49.12,
+          "fim_s": 49.6
+        },
+        {
+          "texto": "foi",
+          "inicio_s": 49.64,
+          "fim_s": 49.84
+        },
+        {
+          "texto": "sacudido",
+          "inicio_s": 49.88,
+          "fim_s": 50.56
+        },
+        {
+          "texto": "como",
+          "inicio_s": 50.68,
+          "fim_s": 50.8
+        },
+        {
+          "texto": "nunca",
+          "inicio_s": 50.96,
+          "fim_s": 51.36
+        }
+      ]
+    },
+    {
+      "texto": "As auroras foram tão fortes que, nas Montanhas Rochosas, mineiros acordaram de madrugada achando que já era manhã e começaram a preparar o café.",
+      "inicio_s": 51.84,
+      "fim_s": 61.12,
+      "palavras": [
+        {
+          "texto": "As",
+          "inicio_s": 51.84,
+          "fim_s": 51.92
+        },
+        {
+          "texto": "auroras",
+          "inicio_s": 52.0,
+          "fim_s": 52.48
+        },
+        {
+          "texto": "foram",
+          "inicio_s": 52.56,
+          "fim_s": 52.88
+        },
+        {
+          "texto": "tão",
+          "inicio_s": 52.933,
+          "fim_s": 53.04
+        },
+        {
+          "texto": "fortes",
+          "inicio_s": 53.2,
+          "fim_s": 53.68
+        },
+        {
+          "texto": "que",
+          "inicio_s": 53.92,
+          "fim_s": 54.0
+        },
+        {
+          "texto": "nas",
+          "inicio_s": 54.107,
+          "fim_s": 54.16
+        },
+        {
+          "texto": "Montanhas",
+          "inicio_s": 54.24,
+          "fim_s": 54.64
+        },
+        {
+          "texto": "Rochosas",
+          "inicio_s": 54.68,
+          "fim_s": 55.28
+        },
+        {
+          "texto": "mineiros",
+          "inicio_s": 55.6,
+          "fim_s": 56.08
+        },
+        {
+          "texto": "acordaram",
+          "inicio_s": 56.16,
+          "fim_s": 56.72
+        },
+        {
+          "texto": "de",
+          "inicio_s": 56.76,
+          "fim_s": 56.8
+        },
+        {
+          "texto": "madrugada",
+          "inicio_s": 56.88,
+          "fim_s": 57.44
+        },
+        {
+          "texto": "achando",
+          "inicio_s": 57.56,
+          "fim_s": 57.84
+        },
+        {
+          "texto": "que",
+          "inicio_s": 57.92,
+          "fim_s": 58.0
+        },
+        {
+          "texto": "já",
+          "inicio_s": 58.04,
+          "fim_s": 58.16
+        },
+        {
+          "texto": "era",
+          "inicio_s": 58.24,
+          "fim_s": 58.32
+        },
+        {
+          "texto": "manhã",
+          "inicio_s": 58.44,
+          "fim_s": 58.72
+        },
+        {
+          "texto": "e",
+          "inicio_s": 58.96,
+          "fim_s": 59.04
+        },
+        {
+          "texto": "começaram",
+          "inicio_s": 59.12,
+          "fim_s": 59.6
+        },
+        {
+          "texto": "a",
+          "inicio_s": 59.68,
+          "fim_s": 59.76
+        },
+        {
+          "texto": "preparar",
+          "inicio_s": 59.84,
+          "fim_s": 60.16
+        },
+        {
+          "texto": "o",
+          "inicio_s": 60.24,
+          "fim_s": 60.28
+        },
+        {
+          "texto": "café",
+          "inicio_s": 60.32,
+          "fim_s": 60.64
+        }
+      ]
+    },
+    {
+      "texto": "Dava pra ler o jornal à noite, só com a luz do céu.",
+      "inicio_s": 61.2,
+      "fim_s": 64.32,
+      "palavras": [
+        {
+          "texto": "Dava",
+          "inicio_s": 61.2,
+          "fim_s": 61.44
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 61.52,
+          "fim_s": 61.6
+        },
+        {
+          "texto": "ler",
+          "inicio_s": 61.68,
+          "fim_s": 61.76
+        },
+        {
+          "texto": "o",
+          "inicio_s": 61.8,
+          "fim_s": 61.84
+        },
+        {
+          "texto": "jornal",
+          "inicio_s": 61.92,
+          "fim_s": 62.24
+        },
+        {
+          "texto": "à",
+          "inicio_s": 62.28,
+          "fim_s": 62.32
+        },
+        {
+          "texto": "noite",
+          "inicio_s": 62.4,
+          "fim_s": 62.8
+        },
+        {
+          "texto": "só",
+          "inicio_s": 63.12,
+          "fim_s": 63.28
+        },
+        {
+          "texto": "com",
+          "inicio_s": 63.36,
+          "fim_s": 63.44
+        },
+        {
+          "texto": "a",
+          "inicio_s": 63.52,
+          "fim_s": 63.56
+        },
+        {
+          "texto": "luz",
+          "inicio_s": 63.6,
+          "fim_s": 63.76
+        },
+        {
+          "texto": "do",
+          "inicio_s": 63.84,
+          "fim_s": 63.92
+        },
+        {
+          "texto": "céu",
+          "inicio_s": 64.0,
+          "fim_s": 64.24
+        }
+      ]
+    },
+    {
+      "texto": "Mas o mais estranho aconteceu nos telégrafos, a internet da época.",
+      "inicio_s": 64.8,
+      "fim_s": 69.52,
+      "palavras": [
+        {
+          "texto": "Mas",
+          "inicio_s": 64.8,
+          "fim_s": 64.96
+        },
+        {
+          "texto": "o",
+          "inicio_s": 65.04,
+          "fim_s": 65.12
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 65.2,
+          "fim_s": 65.44
+        },
+        {
+          "texto": "estranho",
+          "inicio_s": 65.56,
+          "fim_s": 66.0
+        },
+        {
+          "texto": "aconteceu",
+          "inicio_s": 66.12,
+          "fim_s": 66.56
+        },
+        {
+          "texto": "nos",
+          "inicio_s": 66.64,
+          "fim_s": 66.8
+        },
+        {
+          "texto": "telégrafos",
+          "inicio_s": 66.92,
+          "fim_s": 67.6
+        },
+        {
+          "texto": "a",
+          "inicio_s": 67.88,
+          "fim_s": 67.92
+        },
+        {
+          "texto": "internet",
+          "inicio_s": 68.24,
+          "fim_s": 68.56
+        },
+        {
+          "texto": "da",
+          "inicio_s": 68.64,
+          "fim_s": 68.72
+        },
+        {
+          "texto": "época",
+          "inicio_s": 68.8,
+          "fim_s": 69.12
+        }
+      ]
+    },
+    {
+      "texto": "Os fios ficaram carregados de eletricidade.",
+      "inicio_s": 69.6,
+      "fim_s": 72.64,
+      "palavras": [
+        {
+          "texto": "Os",
+          "inicio_s": 69.6,
+          "fim_s": 69.76
+        },
+        {
+          "texto": "fios",
+          "inicio_s": 69.84,
+          "fim_s": 70.16
+        },
+        {
+          "texto": "ficaram",
+          "inicio_s": 70.24,
+          "fim_s": 70.56
+        },
+        {
+          "texto": "carregados",
+          "inicio_s": 70.64,
+          "fim_s": 71.36
+        },
+        {
+          "texto": "de",
+          "inicio_s": 71.4,
+          "fim_s": 71.44
+        },
+        {
+          "texto": "eletricidade",
+          "inicio_s": 71.52,
+          "fim_s": 72.32
+        }
+      ]
+    },
+    {
+      "texto": "Operadores levaram choques.",
+      "inicio_s": 72.72,
+      "fim_s": 74.72,
+      "palavras": [
+        {
+          "texto": "Operadores",
+          "inicio_s": 72.72,
+          "fim_s": 73.36
+        },
+        {
+          "texto": "levaram",
+          "inicio_s": 73.44,
+          "fim_s": 73.84
+        },
+        {
+          "texto": "choques",
+          "inicio_s": 73.92,
+          "fim_s": 74.4
+        }
+      ]
+    },
+    {
+      "texto": "Saíam faíscas dos aparelhos, e papéis pegaram fogo.",
+      "inicio_s": 74.8,
+      "fim_s": 78.64,
+      "palavras": [
+        {
+          "texto": "Saíam",
+          "inicio_s": 74.8,
+          "fim_s": 75.12
+        },
+        {
+          "texto": "faíscas",
+          "inicio_s": 75.24,
+          "fim_s": 75.76
+        },
+        {
+          "texto": "dos",
+          "inicio_s": 75.84,
+          "fim_s": 75.92
+        },
+        {
+          "texto": "aparelhos",
+          "inicio_s": 76.0,
+          "fim_s": 76.56
+        },
+        {
+          "texto": "e",
+          "inicio_s": 76.8,
+          "fim_s": 76.88
+        },
+        {
+          "texto": "papéis",
+          "inicio_s": 76.92,
+          "fim_s": 77.36
+        },
+        {
+          "texto": "pegaram",
+          "inicio_s": 77.44,
+          "fim_s": 77.84
+        },
+        {
+          "texto": "fogo",
+          "inicio_s": 77.88,
+          "fim_s": 78.24
+        }
+      ]
+    },
+    {
+      "texto": "Em algumas linhas, os operadores desligaram as baterias e continuaram mandando mensagens só com a corrente que vinha do céu.",
+      "inicio_s": 78.72,
+      "fim_s": 86.48,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 78.72,
+          "fim_s": 78.8
+        },
+        {
+          "texto": "algumas",
+          "inicio_s": 78.88,
+          "fim_s": 79.2
+        },
+        {
+          "texto": "linhas",
+          "inicio_s": 79.28,
+          "fim_s": 79.6
+        },
+        {
+          "texto": "os",
+          "inicio_s": 79.88,
+          "fim_s": 79.92
+        },
+        {
+          "texto": "operadores",
+          "inicio_s": 80.0,
+          "fim_s": 80.64
+        },
+        {
+          "texto": "desligaram",
+          "inicio_s": 80.72,
+          "fim_s": 81.28
+        },
+        {
+          "texto": "as",
+          "inicio_s": 81.32,
+          "fim_s": 81.36
+        },
+        {
+          "texto": "baterias",
+          "inicio_s": 81.44,
+          "fim_s": 82.16
+        },
+        {
+          "texto": "e",
+          "inicio_s": 82.24,
+          "fim_s": 82.32
+        },
+        {
+          "texto": "continuaram",
+          "inicio_s": 82.48,
+          "fim_s": 82.96
+        },
+        {
+          "texto": "mandando",
+          "inicio_s": 83.08,
+          "fim_s": 83.36
+        },
+        {
+          "texto": "mensagens",
+          "inicio_s": 83.52,
+          "fim_s": 84.16
+        },
+        {
+          "texto": "só",
+          "inicio_s": 84.2,
+          "fim_s": 84.32
+        },
+        {
+          "texto": "com",
+          "inicio_s": 84.4,
+          "fim_s": 84.48
+        },
+        {
+          "texto": "a",
+          "inicio_s": 84.56,
+          "fim_s": 84.64
+        },
+        {
+          "texto": "corrente",
+          "inicio_s": 84.72,
+          "fim_s": 85.12
+        },
+        {
+          "texto": "que",
+          "inicio_s": 85.2,
+          "fim_s": 85.28
+        },
+        {
+          "texto": "vinha",
+          "inicio_s": 85.36,
+          "fim_s": 85.52
+        },
+        {
+          "texto": "do",
+          "inicio_s": 85.6,
+          "fim_s": 85.68
+        },
+        {
+          "texto": "céu",
+          "inicio_s": 85.76,
+          "fim_s": 86.4
+        }
+      ]
+    },
+    {
+      "texto": "Em 1859, o mundo quase não dependia de eletricidade, então o estrago foi pequeno.",
+      "inicio_s": 86.56,
+      "fim_s": 94.08,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 86.56,
+          "fim_s": 86.64
+        },
+        {
+          "texto": "1859",
+          "inicio_s": 86.72,
+          "fim_s": 88.48
+        },
+        {
+          "texto": "o",
+          "inicio_s": 88.84,
+          "fim_s": 88.88
+        },
+        {
+          "texto": "mundo",
+          "inicio_s": 88.96,
+          "fim_s": 89.28
+        },
+        {
+          "texto": "quase",
+          "inicio_s": 89.36,
+          "fim_s": 89.68
+        },
+        {
+          "texto": "não",
+          "inicio_s": 89.84,
+          "fim_s": 90.0
+        },
+        {
+          "texto": "dependia",
+          "inicio_s": 90.2,
+          "fim_s": 90.56
+        },
+        {
+          "texto": "de",
+          "inicio_s": 90.64,
+          "fim_s": 90.68
+        },
+        {
+          "texto": "eletricidade",
+          "inicio_s": 90.72,
+          "fim_s": 91.52
+        },
+        {
+          "texto": "então",
+          "inicio_s": 91.84,
+          "fim_s": 92.32
+        },
+        {
+          "texto": "o",
+          "inicio_s": 92.36,
+          "fim_s": 92.4
+        },
+        {
+          "texto": "estrago",
+          "inicio_s": 92.48,
+          "fim_s": 92.96
+        },
+        {
+          "texto": "foi",
+          "inicio_s": 93.0,
+          "fim_s": 93.12
+        },
+        {
+          "texto": "pequeno",
+          "inicio_s": 93.2,
+          "fim_s": 93.6
+        }
+      ]
+    },
+    {
+      "texto": "Hoje seria diferente.",
+      "inicio_s": 94.16,
+      "fim_s": 95.92,
+      "palavras": [
+        {
+          "texto": "Hoje",
+          "inicio_s": 94.16,
+          "fim_s": 94.56
+        },
+        {
+          "texto": "seria",
+          "inicio_s": 94.64,
+          "fim_s": 94.88
+        },
+        {
+          "texto": "diferente",
+          "inicio_s": 94.92,
+          "fim_s": 95.52
+        }
+      ]
+    },
+    {
+      "texto": "Uma tempestade do mesmo tamanho poderia queimar transformadores, derrubar redes elétricas, satélites e GPS, e deixar regiões inteiras no escuro por semanas.",
+      "inicio_s": 95.96,
+      "fim_s": 107.52,
+      "palavras": [
+        {
+          "texto": "Uma",
+          "inicio_s": 95.96,
+          "fim_s": 96.16
+        },
+        {
+          "texto": "tempestade",
+          "inicio_s": 96.24,
+          "fim_s": 96.88
+        },
+        {
+          "texto": "do",
+          "inicio_s": 96.92,
+          "fim_s": 96.96
+        },
+        {
+          "texto": "mesmo",
+          "inicio_s": 97.12,
+          "fim_s": 97.44
+        },
+        {
+          "texto": "tamanho",
+          "inicio_s": 97.52,
+          "fim_s": 98.0
+        },
+        {
+          "texto": "poderia",
+          "inicio_s": 98.04,
+          "fim_s": 98.4
+        },
+        {
+          "texto": "queimar",
+          "inicio_s": 98.48,
+          "fim_s": 98.88
+        },
+        {
+          "texto": "transformadores",
+          "inicio_s": 98.96,
+          "fim_s": 99.84
+        },
+        {
+          "texto": "derrubar",
+          "inicio_s": 100.16,
+          "fim_s": 100.64
+        },
+        {
+          "texto": "redes",
+          "inicio_s": 100.72,
+          "fim_s": 100.96
+        },
+        {
+          "texto": "elétricas",
+          "inicio_s": 101.04,
+          "fim_s": 101.6
+        },
+        {
+          "texto": "satélites",
+          "inicio_s": 101.92,
+          "fim_s": 102.72
+        },
+        {
+          "texto": "e",
+          "inicio_s": 102.8,
+          "fim_s": 102.88
+        },
+        {
+          "texto": "GPS",
+          "inicio_s": 102.96,
+          "fim_s": 103.6
+        },
+        {
+          "texto": "e",
+          "inicio_s": 103.96,
+          "fim_s": 104.0
+        },
+        {
+          "texto": "deixar",
+          "inicio_s": 104.04,
+          "fim_s": 104.4
+        },
+        {
+          "texto": "regiões",
+          "inicio_s": 104.52,
+          "fim_s": 104.96
+        },
+        {
+          "texto": "inteiras",
+          "inicio_s": 105.16,
+          "fim_s": 105.6
+        },
+        {
+          "texto": "no",
+          "inicio_s": 105.68,
+          "fim_s": 105.76
+        },
+        {
+          "texto": "escuro",
+          "inicio_s": 105.88,
+          "fim_s": 106.24
+        },
+        {
+          "texto": "por",
+          "inicio_s": 106.32,
+          "fim_s": 106.4
+        },
+        {
+          "texto": "semanas",
+          "inicio_s": 106.48,
+          "fim_s": 107.12
+        }
+      ]
+    },
+    {
+      "texto": "E não é questão de se, mas de quando.",
+      "inicio_s": 107.56,
+      "fim_s": 110.4,
+      "palavras": [
+        {
+          "texto": "E",
+          "inicio_s": 107.56,
+          "fim_s": 107.6
+        },
+        {
+          "texto": "não",
+          "inicio_s": 107.68,
+          "fim_s": 107.76
+        },
+        {
+          "texto": "é",
+          "inicio_s": 107.8,
+          "fim_s": 107.84
+        },
+        {
+          "texto": "questão",
+          "inicio_s": 107.92,
+          "fim_s": 108.24
+        },
+        {
+          "texto": "de",
+          "inicio_s": 108.32,
+          "fim_s": 108.48
+        },
+        {
+          "texto": "se",
+          "inicio_s": 108.56,
+          "fim_s": 108.64
+        },
+        {
+          "texto": "mas",
+          "inicio_s": 109.12,
+          "fim_s": 109.28
+        },
+        {
+          "texto": "de",
+          "inicio_s": 109.36,
+          "fim_s": 109.44
+        },
+        {
+          "texto": "quando",
+          "inicio_s": 109.52,
+          "fim_s": 109.92
+        }
+      ]
+    },
+    {
+      "texto": "Em 2012, uma explosão parecida cruzou a órbita da Terra.",
+      "inicio_s": 110.52,
+      "fim_s": 115.04,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 110.52,
+          "fim_s": 110.64
+        },
+        {
+          "texto": "2012",
+          "inicio_s": 110.68,
+          "fim_s": 111.52
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 111.84,
+          "fim_s": 111.92
+        },
+        {
+          "texto": "explosão",
+          "inicio_s": 112.0,
+          "fim_s": 112.48
+        },
+        {
+          "texto": "parecida",
+          "inicio_s": 112.6,
+          "fim_s": 113.12
+        },
+        {
+          "texto": "cruzou",
+          "inicio_s": 113.2,
+          "fim_s": 113.6
+        },
+        {
+          "texto": "a",
+          "inicio_s": 113.68,
+          "fim_s": 113.76
+        },
+        {
+          "texto": "órbita",
+          "inicio_s": 113.88,
+          "fim_s": 114.16
+        },
+        {
+          "texto": "da",
+          "inicio_s": 114.2,
+          "fim_s": 114.24
+        },
+        {
+          "texto": "Terra",
+          "inicio_s": 114.4,
+          "fim_s": 114.64
+        }
+      ]
+    },
+    {
+      "texto": "Por apenas nove dias, nós não estávamos no caminho.",
+      "inicio_s": 115.12,
+      "fim_s": 118.8,
+      "palavras": [
+        {
+          "texto": "Por",
+          "inicio_s": 115.12,
+          "fim_s": 115.2
+        },
+        {
+          "texto": "apenas",
+          "inicio_s": 115.28,
+          "fim_s": 115.68
+        },
+        {
+          "texto": "nove",
+          "inicio_s": 115.76,
+          "fim_s": 116.08
+        },
+        {
+          "texto": "dias",
+          "inicio_s": 116.24,
+          "fim_s": 116.56
+        },
+        {
+          "texto": "nós",
+          "inicio_s": 116.88,
+          "fim_s": 117.12
+        },
+        {
+          "texto": "não",
+          "inicio_s": 117.2,
+          "fim_s": 117.36
+        },
+        {
+          "texto": "estávamos",
+          "inicio_s": 117.52,
+          "fim_s": 118.0
+        },
+        {
+          "texto": "no",
+          "inicio_s": 118.08,
+          "fim_s": 118.16
+        },
+        {
+          "texto": "caminho",
+          "inicio_s": 118.2,
+          "fim_s": 118.64
+        }
+      ]
+    }
+  ]
+}
