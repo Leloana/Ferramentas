@@ -88,6 +88,16 @@
                 </div>
             </div>
 
+            <!-- Álbum: confirma o artista de todas antes da lista (playlist-import.js) -->
+            <div id="upload-step-playlist-artist">
+                <p id="playlist-artist-album" class="playlist-head__title"></p>
+                <div class="form-group">
+                    <label for="playlist-artist-input">Artista</label>
+                    <input type="text" id="playlist-artist-input" class="input" autocomplete="off">
+                </div>
+                <p id="playlist-artist-count" class="playlist-head__summary"></p>
+            </div>
+
             <!-- Playlist: marcar, corrigir artista/título e enfileirar de uma vez -->
             <div id="upload-step-playlist">
                 <div class="playlist-head">
@@ -95,7 +105,10 @@
                         <p id="playlist-title" class="playlist-head__title"></p>
                         <p id="playlist-summary" class="playlist-head__summary" aria-live="polite"></p>
                     </div>
-                    <button type="button" id="btn-playlist-toggle-all" class="btn btn--ghost btn--sm">Marcar todas</button>
+                    <div class="playlist-head__actions">
+                        <button type="button" id="btn-playlist-artist" class="btn btn--ghost btn--sm">Artista</button>
+                        <button type="button" id="btn-playlist-toggle-all" class="btn btn--ghost btn--sm">Marcar todas</button>
+                    </div>
                 </div>
                 <div id="playlist-items" class="playlist-items"></div>
             </div>

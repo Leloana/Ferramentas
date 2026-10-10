@@ -9,7 +9,10 @@ import { promptGenerationOptions } from './selection-view.js';
 import { openModal, closeModal } from '../ui/modal.js';
 import { initYoutubeSearch, resetYoutubeSearch, isYoutubeUrl } from './youtube-search.js';
 import { formatEta } from './queue-view.js';
-import { initPlaylistImport, openPlaylist, closePlaylist, submitPlaylist, isPlaylistUrl } from './playlist-import.js';
+import {
+    initPlaylistImport, openPlaylist, closePlaylist, submitPlaylist, isPlaylistUrl,
+    playlistNeedsArtist, preparePlaylistArtist, applyPlaylistArtist, updateSubmitLabel,
+} from './playlist-import.js';
 
 // --- Status de busca de letras (compartilhado entre os passos 2 e 3) ---
 
@@ -50,7 +53,7 @@ export function initAddSongModal() {
     if (!btnOpenAddSong) return;
 
 
-    let currentStep = 1;  // 1, 2, 3 ou 'playlist'
+    let currentStep = 1;  // 1, 2, 3, 'playlist-artist' (álbum) ou 'playlist'
     let fetchedLyrics = null;  // resultado do /api/fetch-lyrics
 
     const setStep = (step) => {
@@ -59,16 +62,31 @@ export function initAddSongModal() {
         const scroller = addSongModal.querySelector('.modal-content');
         if (scroller) scroller.scrollTop = 0; // cada passo começa do topo
         const btnSubmit = document.getElementById('btn-submit-song');
-        if (btnSubmit && step !== 'playlist') {  // a playlist escreve "Adicionar N à fila"
+        if (btnSubmit && step === 'playlist-artist') {
+            btnSubmit.innerText = 'Confirmar';
+            btnSubmit.disabled = false;
+        } else if (step === 'playlist') {
+            updateSubmitLabel();  // "Adicionar N à fila"
+        } else if (btnSubmit) {
             btnSubmit.innerText = (step === 3) ? 'Adicionar à fila' : 'Avançar';
         }
-        if (step !== 'playlist') closePlaylist();
+        if (step !== 'playlist' && step !== 'playlist-artist') closePlaylist();
     };
 
+    let artistBackStep = 1;  // aberta pelo botão "Artista" da lista: Voltar volta para a lista
+    const askPlaylistArtist = () => {
+        artistBackStep = currentStep === 'playlist' ? 'playlist' : 1;
+        preparePlaylistArtist();
+        setStep('playlist-artist');
+    };
     const showPlaylist = async (url) => {
-        if (await openPlaylist(url)) setStep('playlist');
+        if (!(await openPlaylist(url))) return;
+        if (playlistNeedsArtist()) askPlaylistArtist();  // álbum: confirma o artista antes
+        else setStep('playlist');
     };
     initPlaylistImport();
+    const btnPlaylistArtist = document.getElementById('btn-playlist-artist');
+    if (btnPlaylistArtist) btnPlaylistArtist.onclick = askPlaylistArtist;
 
     const step2StatusEls = {
         box: document.getElementById('lyrics-fetch-status'),
@@ -83,7 +101,8 @@ export function initAddSongModal() {
     const btnBackStep1 = document.getElementById('btn-back-step-1');
     if (btnBackStep1) {
         btnBackStep1.onclick = () => {
-            if (currentStep === 2 || currentStep === 'playlist') setStep(1);
+            if (currentStep === 'playlist-artist') setStep(artistBackStep);
+            else if (currentStep === 2 || currentStep === 'playlist') setStep(1);
             else if (currentStep === 3) setStep(2);
         };
     }
@@ -146,6 +165,11 @@ export function initAddSongModal() {
 
     addSongForm.onsubmit = async (e) => {
         e.preventDefault();
+
+        if (currentStep === 'playlist-artist') {
+            if (applyPlaylistArtist()) setStep('playlist');
+            return;
+        }
 
         if (currentStep === 'playlist') {
             if (await submitPlaylist()) {

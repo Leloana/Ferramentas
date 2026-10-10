@@ -128,6 +128,45 @@ class ScreensTest(unittest.TestCase):
                 self.assertEqual(page.locator(".playlist-item").count(), 0)
                 self.assertEqual(errors, [])
 
+    def test_album_asks_the_artist_once_for_all_songs(self):
+        import preview_front
+        from unittest.mock import patch
+
+        songs = ["Arabella", "R U Mine?", "Fireside", "Mad Sounds", "Feat"]
+        fake = {"title": "AM", "truncated": False, "results": [
+            {"id": f"a{i}", "url": f"https://www.youtube.com/watch?v=a{i}", "title": t, "channel": "Official Arctic Monkeys",
+             "duration": 200, "thumbnail": "", "title_guess": t, "status": "new",
+             "artist_guess": "Convidado" if t == "Feat" else "Official Arctic Monkeys"} for i, t in enumerate(songs)]}
+        step = "document.querySelector('[data-step]').getAttribute('data-step') === '%s'"
+        with patch.object(preview_front, "youtube_playlist", lambda url: fake):
+            page, errors = self.open("/", PHONE)
+            page.locator("#tab-btn-queue").click()
+            page.locator("#btn-open-add-song").click()
+            page.fill("#youtube-search-input", "https://www.youtube.com/playlist?list=OLAK5uy")
+            page.locator("#btn-youtube-search").click()
+            page.wait_for_function(step % "playlist-artist")
+            self.assertEqual(page.input_value("#playlist-artist-input"), "Official Arctic Monkeys")
+            self.assertEqual(page.text_content("#btn-submit-song").strip(), "Confirmar")
+            page.fill("#playlist-artist-input", "")
+            page.locator("#btn-submit-song").click()  # vazio: fica na tela
+            page.wait_for_function(step % "playlist-artist")
+            page.fill("#playlist-artist-input", "Arctic Monkeys")
+            page.keyboard.press("Enter")
+            page.wait_for_function(step % "playlist")
+            artists = page.eval_on_selector_all(".playlist-item__fields .input:nth-child(2)", "els => els.map(e => e.value)")
+            # a do convidado não muda
+            self.assertEqual(artists, ["Arctic Monkeys"] * 4 + ["Convidado"])
+            self.assertEqual(page.text_content("#btn-submit-song").strip(), "Adicionar 5 à fila")
+            # "Artista" reabre a tela; Voltar volta para a lista, não para a busca
+            page.locator("#btn-playlist-artist").click()
+            page.wait_for_function(step % "playlist-artist")
+            self.assertEqual(page.input_value("#playlist-artist-input"), "Arctic Monkeys")
+            page.keyboard.press("Escape")
+            page.wait_for_function(step % "playlist")
+            self.assertEqual(page.text_content("#btn-submit-song").strip(), "Adicionar 5 à fila")
+            self.no_horizontal_scroll(page)
+            self.assertEqual(errors, [])
+
     def test_players_ranking_and_profile(self):
         page, errors = self.open()
         page.locator("#btn-open-players").click()

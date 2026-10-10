@@ -1,5 +1,7 @@
 // Playlist do YouTube no "Adicionar música": lista as músicas, deixa marcar e
 // corrigir artista/título de cada uma e enfileira as marcadas de uma vez.
+// Álbum (a maioria com o mesmo artista): antes da lista, uma tela só para
+// confirmar o artista — o palpite vem do canal ("Official Arctic Monkeys").
 //
 // O tempo estimado vem de POST /api/queue/estimate (fila atual + as marcadas),
 // recalculado a cada mudança na seleção.
@@ -11,6 +13,8 @@ import { formatEta } from './queue-view.js';
 
 const PLAYLIST_RE = /(youtube\.com|youtu\.be)\/.*[?&]list=[\w-]+/i;
 const ESTIMATE_DELAY_MS = 350;
+// fração das músicas com o mesmo artista para tratar a playlist como álbum
+const ALBUM_SHARE = 0.6;
 
 export function isPlaylistUrl(text) {
     return PLAYLIST_RE.test(text || '');
@@ -31,12 +35,71 @@ function formatDuration(sec) {
 
 const STATUS_LABEL = { library: 'Já na biblioteca', queue: 'Já na fila' };
 
+function artistKey(name) {
+    return (name || '').trim().toLowerCase();
+}
+
+// Artista da maioria das músicas: { name, count } (name vazio se não houver maioria).
+function dominantArtist(items) {
+    const counts = {};
+    let best = { key: '', name: '', count: 0 };
+    items.forEach((item) => {
+        const key = artistKey(item.artist_guess);
+        if (!key) return;
+        counts[key] = (counts[key] || 0) + 1;
+        if (counts[key] > best.count) best = { key, name: item.artist_guess.trim(), count: counts[key] };
+    });
+    if (items.length < 2 || best.count < items.length * ALBUM_SHARE) return { key: '', name: '', count: 0 };
+    return best;
+}
+
+// Playlist com cara de álbum: vale abrir a tela de confirmar o artista.
+export function playlistNeedsArtist() {
+    const pl = state.playlistImport;
+    return !!(pl && dominantArtist(pl.items).name);
+}
+
+// Preenche a tela do artista com o palpite da maioria.
+export function preparePlaylistArtist() {
+    const pl = state.playlistImport;
+    if (!pl) return;
+    const dominant = dominantArtist(pl.items);
+    pl.artistKey = dominant.key;
+    const input = document.getElementById('playlist-artist-input');
+    const album = document.getElementById('playlist-artist-album');
+    const count = document.getElementById('playlist-artist-count');
+    if (album) album.textContent = pl.title || 'Playlist';
+    if (count) count.textContent = `${dominant.count} de ${pl.items.length} músicas`;
+    if (input) {
+        input.value = dominant.name;
+        setTimeout(() => { input.focus(); input.select(); }, 0);
+    }
+}
+
+// Troca o artista de todas as que tinham o artista da maioria. false se o campo está vazio.
+export function applyPlaylistArtist() {
+    const pl = state.playlistImport;
+    const input = document.getElementById('playlist-artist-input');
+    const name = input ? input.value.trim() : '';
+    if (!pl) return false;
+    if (!name) {
+        showToast('Digite o nome do artista.', 'error');
+        if (input) input.focus();
+        return false;
+    }
+    pl.items.forEach((item) => {
+        if (artistKey(item.artist_guess) === pl.artistKey) item.artist_guess = name;
+    });
+    renderList();
+    return true;
+}
+
 function selectedItems() {
     const pl = state.playlistImport;
     return pl ? pl.items.filter((item) => item.checked) : [];
 }
 
-function updateSubmitLabel() {
+export function updateSubmitLabel() {
     const btn = document.getElementById('btn-submit-song');
     if (!btn) return;
     const n = selectedItems().length;

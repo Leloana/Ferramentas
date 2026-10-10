@@ -142,8 +142,10 @@
 .yt-result__meta { font-size: 0.8rem; color: var(--dim); }
 
 /* Playlist (passo "playlist" do Adicionar música) */
-.playlist-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.6rem; }
-.playlist-head__info { min-width: 0; }
+.playlist-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 0.5rem 0.75rem; margin-bottom: 0.6rem; }
+.playlist-head__info { flex: 1 1 14rem; min-width: 0; }
+.playlist-head__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.4rem; flex-shrink: 0; }
+#playlist-artist-album { margin-bottom: 0.75rem; }
 .playlist-head__title { margin: 0; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .playlist-head__summary { margin: 0.15rem 0 0; font-size: 0.85rem; color: var(--dim); }
 .playlist-items { display: flex; flex-direction: column; gap: 0.4rem; max-height: 52vh; overflow-y: auto; }
