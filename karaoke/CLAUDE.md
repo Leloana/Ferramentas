@@ -221,6 +221,7 @@ Armazena a nota histórica de cada sessão.
 *   **Texto de usuário no front:** apelidos, títulos e transcrições nunca vão crus para `innerHTML` — use `textContent` ou `escapeHtml` (`js/core/html.js`). `showToast` já é texto puro.
 *   **Reconexão da TV:** o jogo reconecta com `resume=1` (o servidor não reseta a sala) e o código de fechamento 4001 (`DISPLAY_REPLACED_CODE`) significa "outra tela assumiu" — não reconectar. Resultados de Whisper conferem `room.game_id` antes de gravar.
 *   **Letra revisada à mão:** o `save-lyrics` grava `songs/<slug>/.lyrics_edited`; o reinstall sem alinhamento forçado mantém esse `lyrics.lrc` em vez do backup/LRCLIB.
+*   **Tela de cantar nunca rola:** cabe na janela em qualquer tela (notebook baixo, TV 960×540) e nº de cantores. Sempre ficam a nota de quem canta (mesmo mínima) e a letra legível com a próxima linha; para caber, sacrifique o resto (ajustes, "Ouvi:", linha anterior, espaçamentos). Layout em `states.css` §14 (altura da janela, palco `flex: 1`, fonte por `vh`) e `tv.css`. Mexeu? `tests/ui/test_screens.py::test_singing_screen_fits`.
 *   **Testes das telas:** `tests/ui/test_screens.py` (Playwright sobre o preview; pulado sem Playwright). Mexeu em tela? Rode `python -m pytest tests/ui`.
 *   **Hallucinações no Silêncio:**
     *   Trechos silenciosos longos fazem o Whisper gerar alucinações repetitivas. Garanta que o gate de áudio de RMS (`rms_threshold` em `stt_engine.py`) rejeite transcrição abaixo de `0.0018` de energia média.

@@ -156,14 +156,16 @@
 #app[data-state="game-over"] #btn-exit-sidebar { display: flex !important; }
 #app[data-players="multi"] .game-score-sidebar { display: none !important; }
 
-/* 14. Palco em tela cheia durante a partida (PC/TV) */
+/* 14. Palco em tela cheia durante a partida (PC/TV)
+   Regra da tela de cantar: cabe na janela, sem rolar. A altura é a da janela e o
+   palco da letra fica com o que sobra; a fonte encolhe pela altura também. Em tela
+   baixa (e com vários cantores) saem primeiro os ajustes e o "Ouvi:" — a nota de
+   quem canta e a letra com a próxima linha ficam sempre. tests/ui: test_singing_screen_fits. */
 @media (min-width: 601px) {
     #app[data-state="singing"] .app-header,
     #app[data-state="scoring"] .app-header,
     #app[data-state="game-over"] .app-header { display: none !important; }
 
-    #app[data-state="singing"] > .container,
-    #app[data-state="scoring"] > .container,
     #app[data-state="game-over"] > .container {
         display: flex !important;
         flex-direction: column !important;
@@ -171,6 +173,17 @@
         min-height: 100vh !important;
         padding: 0 !important;
         margin: 0 !important;
+    }
+    #app[data-state="singing"] > .container,
+    #app[data-state="scoring"] > .container {
+        display: flex !important;
+        flex-direction: column !important;
+        max-width: none !important;
+        height: 100vh !important;
+        min-height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: hidden !important;
     }
 
     #app[data-state="singing"] .main-card,
@@ -187,65 +200,89 @@
         background-color: var(--paper) !important;
         background-image: var(--tex-paper) !important;
     }
+    #app[data-state="singing"] .main-card,
+    #app[data-state="scoring"] .main-card {
+        height: 100vh !important;
+        min-height: 0 !important;
+        padding: 1.25rem 2.5rem !important;
+    }
 
-    #app[data-state="singing"] #game-area,
-    #app[data-state="scoring"] #game-area,
+    #app[data-role="display"][data-state="singing"] #game-area,
+    #app[data-role="display"][data-state="scoring"] #game-area,
     #app[data-state="game-over"] #game-area {
         flex: 1 !important;
+        min-height: 0 !important;
         display: flex !important;
         flex-direction: column !important;
     }
 
     #app[data-state="singing"] .game-layout,
     #app[data-state="scoring"] .game-layout,
-    #app[data-state="game-over"] .game-layout { flex: 1 !important; gap: 2.5rem !important; }
+    #app[data-state="game-over"] .game-layout { flex: 1 !important; min-height: 0 !important; gap: 2rem !important; }
 
     #app[data-state="singing"] .game-main-content,
     #app[data-state="scoring"] .game-main-content,
-    #app[data-state="singing"] #canto-screen,
-    #app[data-state="scoring"] #canto-screen {
+    #app[data-role="display"][data-state="singing"] #canto-screen,
+    #app[data-role="display"][data-state="scoring"] #canto-screen {
         flex: 1 !important;
+        min-height: 0 !important;
         display: flex !important;
         flex-direction: column !important;
     }
 
     #app[data-state="singing"] .carousel-container,
     #app[data-state="scoring"] .carousel-container {
-        flex: 1 !important;
+        flex: 1 1 0 !important;
         justify-content: center !important;
-        height: 480px !important;
-        padding: 3rem !important;
-        margin: 0.75rem 0 !important;
+        height: auto !important;
+        min-height: 0 !important;
+        padding: 1rem 2rem !important;
+        margin: 0.5rem 0 !important;
     }
 
-    /* Letra grande para ler do sofá */
+    /* Letra grande para ler do sofá, sem passar da altura do palco */
+    #app[data-state="singing"] .carousel-line,
+    #app[data-state="scoring"] .carousel-line { height: auto !important; min-height: 0 !important; padding: 0.15em 0 !important; }
     #app[data-state="singing"] .curr-line,
     #app[data-state="scoring"] .curr-line {
-        height: auto !important;
-        min-height: 120px !important;
-        margin: 1.25rem 0 !important;
-        font-size: clamp(2.8rem, 5.4vw, 4.8rem) !important;
-        line-height: 1.3 !important;
+        margin: 0.6rem 0 !important;
+        font-size: clamp(1.6rem, 5.4vw, 4.8rem) !important;
+        line-height: 1.25 !important;
     }
     #app[data-state="singing"] .prev-line,
     #app[data-state="singing"] .next-line,
     #app[data-state="scoring"] .prev-line,
     #app[data-state="scoring"] .next-line {
-        margin: 0.75rem 0 !important;
-        font-size: clamp(1.7rem, 3.1vw, 2.5rem) !important;
+        margin: 0.4rem 0 !important;
+        font-size: clamp(1.1rem, 3.1vw, 2.5rem) !important;
+        line-height: 1.2 !important;
     }
     #app[data-state="singing"] .upcoming-line,
-    #app[data-state="scoring"] .upcoming-line { font-size: clamp(1.3rem, 2.4vw, 1.8rem) !important; }
+    #app[data-state="scoring"] .upcoming-line { font-size: clamp(1.1rem, 2.4vw, 1.8rem) !important; }
     /* verso comprido (game/long-verse.js): menor, e a janela de 3 linhas rola */
     #app[data-state="singing"] .curr-line.is-long,
-    #app[data-state="scoring"] .curr-line.is-long { min-height: 0 !important; font-size: clamp(1.8rem, 3vw, 2.6rem) !important; }
+    #app[data-state="scoring"] .curr-line.is-long { font-size: clamp(1.3rem, 3vw, 2.6rem) !important; }
+    @supports (width: min(1px, 2px)) {
+        #app[data-state="singing"] .curr-line,
+        #app[data-state="scoring"] .curr-line { font-size: clamp(1.6rem, min(5.4vw, 7.5vh), 4.8rem) !important; }
+        #app[data-state="singing"] .prev-line,
+        #app[data-state="singing"] .next-line,
+        #app[data-state="scoring"] .prev-line,
+        #app[data-state="scoring"] .next-line { font-size: clamp(1.1rem, min(3.1vw, 4.2vh), 2.5rem) !important; }
+        #app[data-state="singing"] .curr-line.is-long,
+        #app[data-state="scoring"] .curr-line.is-long { font-size: clamp(1.3rem, min(3vw, 4.6vh), 2.6rem) !important; }
+    }
 
     #app[data-state="singing"] .game-score-sidebar,
     #app[data-state="scoring"] .game-score-sidebar,
     #app[data-state="game-over"] .game-score-sidebar { width: 120px !important; }
+    #app[data-state="singing"] .game-score-sidebar,
+    #app[data-state="scoring"] .game-score-sidebar { min-height: 0 !important; }
     #app[data-state="singing"] .score-sidebar-container,
     #app[data-state="scoring"] .score-sidebar-container,
     #app[data-state="game-over"] .score-sidebar-container { padding: 2rem 0.8rem !important; }
+    #app[data-state="singing"] .score-sidebar-container,
+    #app[data-state="scoring"] .score-sidebar-container { min-height: 0 !important; padding: 1rem 0.6rem !important; }
     #app[data-state="singing"] .score-value-large,
     #app[data-state="scoring"] .score-value-large,
     #app[data-state="game-over"] .score-value-large { font-size: 1.8rem !important; }
@@ -255,71 +292,62 @@
 
     #app[data-state="singing"] .transcription-debug { font-size: 1.1rem !important; padding: 0.8rem 1.2rem !important; }
 
-    /* Multiplayer: espaço para as barras de placar nas bordas não cobrirem letra/controles.
-       O palco tem altura calculada: 100vh menos barras + cabeçalho + controles (≈35rem). */
+    /* Tela baixa: saem os ajustes e o "Ouvi:" (o palco é o que importa) */
+    @media (max-height: 880px) {
+        #app[data-role="display"][data-state="singing"] #sync-controls,
+        #app[data-state="singing"] #transcription-text,
+        #app[data-state="scoring"] #transcription-text { display: none !important; }
+    }
+    /* Bem baixa (notebook pequeno, janela): espaçamentos mínimos em volta do palco */
+    @media (max-height: 720px) {
+        #app[data-state="singing"] .song-progress-container,
+        #app[data-state="scoring"] .song-progress-container { margin-bottom: 0.4rem !important; }
+        #app[data-state="singing"] .controls,
+        #app[data-state="scoring"] .controls { margin-top: 0.4rem !important; }
+        #app[data-state="singing"] .carousel-container,
+        #app[data-state="scoring"] .carousel-container { margin: 0.3rem 0 !important; }
+    }
+
+    /* Vários cantores: barras nas bordas (game/score-bars.js) e sem os ajustes.
+       2 times = esquerda e direita; 3–4 = baixo, topo, esquerda e direita. */
+    #app[data-players="multi"][data-role="display"][data-state="singing"] #sync-controls { display: none !important; }
     #app[data-players="multi"][data-state="singing"] .main-card,
-    #app[data-players="multi"][data-state="scoring"] .main-card { padding-top: 104px !important; padding-bottom: 112px !important; }
+    #app[data-players="multi"][data-state="scoring"] .main-card { padding: 1.25rem 170px !important; }
+    #app[data-players="multi"][data-player-count="3"][data-state="singing"] .main-card,
+    #app[data-players="multi"][data-player-count="4"][data-state="singing"] .main-card,
+    #app[data-players="multi"][data-player-count="3"][data-state="scoring"] .main-card,
+    #app[data-players="multi"][data-player-count="4"][data-state="scoring"] .main-card { padding: 104px 150px 112px !important; }
+    /* barras de time (com membros) são mais altas */
+    #app[data-players="multi"][data-teams][data-player-count="3"][data-state="singing"] .main-card,
+    #app[data-players="multi"][data-teams][data-player-count="4"][data-state="singing"] .main-card,
+    #app[data-players="multi"][data-teams][data-player-count="3"][data-state="scoring"] .main-card,
+    #app[data-players="multi"][data-teams][data-player-count="4"][data-state="scoring"] .main-card { padding-top: 132px !important; padding-bottom: 140px !important; }
     #app[data-players="multi"][data-state="singing"] .carousel-container,
     #app[data-players="multi"][data-state="scoring"] .carousel-container {
-        flex: none !important;
-        height: calc(100vh - 35rem) !important;
-        min-height: 190px;
         padding: 0.75rem 1.25rem !important;
         --stage-anchor: 0.38;  /* linha atual mais para cima (lyrics-carousel.js) */
     }
-    /* O palco fica baixo (≈200 px numa tela de notebook) e a linha atual, centrada,
-       tomava tudo: a próxima sumia. Sem a anterior, com fonte e margens menores,
-       a próxima cabe embaixo da atual. */
+    /* Com vários cantores o palco é mais baixo: sem a linha anterior e com fonte
+       menor, a próxima cabe embaixo da atual */
     #app[data-players="multi"][data-state="singing"] .prev-line,
     #app[data-players="multi"][data-state="scoring"] .prev-line {
         height: 0 !important;
-        min-height: 0 !important;
         margin: 0 !important;
         padding: 0 !important;
         opacity: 0 !important;
     }
     #app[data-players="multi"][data-state="singing"] .curr-line,
-    #app[data-players="multi"][data-state="scoring"] .curr-line {
-        min-height: 0 !important;
-        margin: 0.35rem 0 !important;
-        font-size: clamp(1.9rem, 3.8vw, 3.4rem) !important;
-        line-height: 1.2 !important;
-    }
+    #app[data-players="multi"][data-state="scoring"] .curr-line { margin: 0.35rem 0 !important; font-size: clamp(1.5rem, 3.8vw, 3.4rem) !important; line-height: 1.2 !important; }
     #app[data-players="multi"][data-state="singing"] .next-line,
-    #app[data-players="multi"][data-state="scoring"] .next-line {
-        height: auto !important;  /* os 85 px fixos não cabiam no palco baixo */
-        padding: 0 !important;
-        margin: 0.35rem 0 !important;
-        font-size: clamp(1.3rem, 2.3vw, 2rem) !important;
-        line-height: 1.2 !important;
-    }
+    #app[data-players="multi"][data-state="scoring"] .next-line { margin: 0.35rem 0 !important; font-size: clamp(1.05rem, 2.3vw, 2rem) !important; }
     #app[data-players="multi"][data-state="singing"] .curr-line.is-long,
-    #app[data-players="multi"][data-state="scoring"] .curr-line.is-long { font-size: clamp(1.4rem, 2.3vw, 2.1rem) !important; }
-    /* barras de time (com membros) são mais altas */
-    #app[data-players="multi"][data-teams][data-state="singing"] .main-card,
-    #app[data-players="multi"][data-teams][data-state="scoring"] .main-card { padding-top: 132px !important; padding-bottom: 140px !important; }
-    #app[data-players="multi"][data-teams][data-state="singing"] .carousel-container,
-    #app[data-players="multi"][data-teams][data-state="scoring"] .carousel-container { height: calc(100vh - 38.5rem) !important; }
-    #app[data-players="multi"][data-player-count="3"][data-state="singing"] .main-card,
-    #app[data-players="multi"][data-player-count="4"][data-state="singing"] .main-card,
-    #app[data-players="multi"][data-player-count="3"][data-state="scoring"] .main-card,
-    #app[data-players="multi"][data-player-count="4"][data-state="scoring"] .main-card { padding-left: 150px !important; padding-right: 150px !important; }
-
-    /* 2 jogadores: barras na esquerda e na direita (game/score-bars.js), sem as
-       configurações (volume, voz guia, tom...) — a altura toda fica para a letra */
-    #app[data-players="multi"][data-player-count="2"][data-state="singing"] .main-card,
-    #app[data-players="multi"][data-player-count="2"][data-state="scoring"] .main-card {
-        padding-top: 2rem !important;
-        padding-bottom: 1.5rem !important;
-        padding-left: 170px !important;
-        padding-right: 170px !important;
+    #app[data-players="multi"][data-state="scoring"] .curr-line.is-long { font-size: clamp(1.25rem, 2.3vw, 2.1rem) !important; }
+    @supports (width: min(1px, 2px)) {
+        #app[data-players="multi"][data-state="singing"] .curr-line,
+        #app[data-players="multi"][data-state="scoring"] .curr-line { font-size: clamp(1.5rem, min(3.8vw, 6.5vh), 3.4rem) !important; }
+        #app[data-players="multi"][data-state="singing"] .next-line,
+        #app[data-players="multi"][data-state="scoring"] .next-line { font-size: clamp(1.05rem, min(2.3vw, 3.8vh), 2rem) !important; }
+        #app[data-players="multi"][data-state="singing"] .curr-line.is-long,
+        #app[data-players="multi"][data-state="scoring"] .curr-line.is-long { font-size: clamp(1.25rem, min(2.3vw, 4vh), 2.1rem) !important; }
     }
-    #app[data-players="multi"][data-player-count="2"][data-state="singing"] .carousel-container,
-    #app[data-players="multi"][data-player-count="2"][data-state="scoring"] .carousel-container {
-        /* tela menos título/barra de tempo (~12rem) e Pausar/Sair (~7rem) */
-        height: calc(100vh - 19rem) !important;
-        min-height: 220px;
-    }
-    #app[data-players="multi"][data-player-count="2"][data-state="singing"] #sync-controls,
-    #app[data-players="multi"][data-player-count="2"][data-state="scoring"] #sync-controls { display: none !important; }
 }

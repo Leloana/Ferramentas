@@ -275,6 +275,81 @@ class ScreensTest(unittest.TestCase):
             self.assertEqual(errors, [])
             page.close()
 
+    # Tela de cantar: cabe na janela sem rolar. Sempre: a nota de quem canta, a letra
+    # legível e a próxima linha inteira no palco; nada cobre letra, título, tempo ou Pausar.
+    FIT_MEASURE = r"""async ({n, teams, text}) => {
+  const { state } = await import('/js/core/state.js');
+  const hud = await import('/js/game/hud.js');
+  const app = document.getElementById('app');
+  app.setAttribute('data-state', 'singing');
+  if (n > 1) {
+    const names = ['Lelo', 'Aninha', 'Bia', 'Duda', 'Edu', 'Fê', 'Gabi', 'Hugo'];
+    let groups;
+    if (teams) groups = [0, 1].map((t) => ({ team: 'AB'[t], mics: names.slice(t * 2, t * 2 + 2) }));
+    else groups = names.slice(0, n).map((m, i) => ({ team: 'ABCD'[i], mics: [m] }));
+    const mics = [].concat(...groups.map((g) => g.mics));
+    hud.setPlayersLayout({ mics, mode: teams ? 'teams' : '1v1', groups });
+  }
+  state.isSingingActive = true;
+  document.querySelector('.prev-line').textContent = 'Verso anterior que já passou';
+  document.querySelector('.curr-line').textContent = text;
+  document.querySelector('.next-line').textContent = 'Mando notícias nessa fita, se eu não lhe faço uma visita';
+  window.dispatchEvent(new Event('resize'));
+  await new Promise((r) => setTimeout(r, 700));
+  const R = (el) => { if (!el) return null; const x = el.getBoundingClientRect(); return { l: x.left, t: x.top, r: x.right, b: x.bottom, w: x.width, h: x.height }; };
+  const vis = (el) => el && getComputedStyle(el).display !== 'none' && el.getBoundingClientRect().height > 0;
+  const W = innerWidth, H = innerHeight;
+  const inView = (x) => x && x.t >= -1 && x.l >= -1 && x.b <= H + 1 && x.r <= W + 1;
+  const inside = (x, s) => x && s && x.t >= s.t - 1 && x.b <= s.b + 1;
+  const overlap = (a, b) => a && b && a.l < b.r - 1 && a.r > b.l + 1 && a.t < b.b - 1 && a.b > b.t + 1;
+  const stage = R(document.querySelector('.carousel-container'));
+  const curr = R(document.querySelector('.curr-line'));
+  const next = R(document.querySelector('.next-line'));
+  const problems = [];
+  const scroll = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) - H;
+  if (scroll > 1) problems.push(`rola ${Math.round(scroll)}px`);
+  const hscroll = document.documentElement.scrollWidth - W;
+  if (hscroll > 1) problems.push(`rola de lado ${Math.round(hscroll)}px`);
+  if (!inView(stage)) problems.push('palco fora da tela');
+  if (!inside(curr, stage)) problems.push('verso atual cortado');
+  if (!inside(next, stage)) problems.push('próximo cortado');
+  if (!vis(document.querySelector('.next-line')) || !next || next.h < 10) problems.push('sem próximo');
+  const scores = n > 1
+    ? Array.from(document.querySelectorAll('.mp-score-bar[data-active="true"]')).map((b) => [b.id, R(b), vis(b)])
+    : [['solo', R(document.getElementById('score-percentage-text')), vis(document.getElementById('score-percentage-text'))]];
+  scores.forEach(([id, r, v]) => {
+    if (!v) problems.push(`${id} escondido`);
+    else if (!inView(r)) problems.push(`${id} fora da tela`);
+    else if (overlap(r, stage)) problems.push(`${id} cobre a letra`);
+  });
+  const others = [['título', document.querySelector('.game-header')], ['tempo', document.querySelector('.song-progress-container')],
+                  ['pausar', document.getElementById('btn-pause-play')]].filter(([, el]) => vis(el)).map(([k, el]) => [k, R(el)]);
+  scores.forEach(([id, r, v]) => { if (v) others.forEach(([k, o]) => { if (overlap(r, o)) problems.push(`${id} cobre ${k}`); }); });
+  const pause = document.getElementById('btn-pause-play');
+  if (!vis(pause) || !inView(R(pause))) problems.push('sem pausar');
+  const fs = parseFloat(getComputedStyle(document.querySelector('.curr-line')).fontSize);
+  const nfs = parseFloat(getComputedStyle(document.querySelector('.next-line')).fontSize);
+  if (fs < 22) problems.push(`letra pequena ${fs}px`);
+  if (nfs < 16) problems.push(`próximo pequeno ${nfs}px`);
+  return { problems, stage: stage && [Math.round(stage.t), Math.round(stage.b)], fs, nfs };
+}"""
+
+    def test_singing_screen_fits(self):
+        screens = [("/", 1366, 768), ("/", 1280, 600), ("/?tv=1", 1920, 1080), ("/?tv=1", 960, 540)]
+        cases = [(1, False), (2, False), (2, True), (4, False)]
+        texts = ["Agora o meu coração é um lixeiro azul que ninguém quer esvaziar",
+                 "Meu caro amigo, me perdoe, por favor, se eu não lhe faço uma visita, "
+                 "mas como agora apareceu um portador, mando notícias nessa fita"]
+        for path, w, h in screens:
+            for n, teams in cases:
+                for text in texts:
+                    page, errors = self.open(path, {"width": w, "height": h})
+                    out = page.evaluate(self.FIT_MEASURE, {"n": n, "teams": teams, "text": text})
+                    with self.subTest(tela=f"{path} {w}x{h}", cantores=n, duplas=teams, verso=len(text)):
+                        self.assertEqual(out["problems"], [])
+                        self.assertEqual(errors, [])
+                    page.close()
+
     def test_phone_ignores_the_other_singers_verse(self):
         """Revezar versos: o servidor só manda a nota de quem cantou; o celular de quem
         não cantava mostrava essa nota ("falha 0%") como se fosse a dele."""
@@ -315,7 +390,7 @@ class ScreensTest(unittest.TestCase):
             }""", n)
             self.assertEqual(out["bars"], sides)
             self.assertEqual(out["first"], "Lelo")
-            self.assertEqual(out["settings"] == "none", n == 2)
+            self.assertEqual(out["settings"], "none")  # com vários cantores os ajustes saem
             self.assertEqual(errors, [])
             page.close()
 

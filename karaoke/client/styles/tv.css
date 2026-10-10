@@ -250,6 +250,14 @@ html.is-tv #app[data-players="multi"][data-player-count="3"][data-state="singing
 html.is-tv #app[data-players="multi"][data-player-count="4"][data-state="singing"] .main-card,
 html.is-tv #app[data-players="multi"][data-player-count="3"][data-state="scoring"] .main-card,
 html.is-tv #app[data-players="multi"][data-player-count="4"][data-state="scoring"] .main-card { padding-left: 8.5rem !important; padding-right: 8.5rem !important; }
+/* 2 times: as duas barras nas laterais (game/score-bars.js), nada embaixo */
+html.is-tv #app[data-players="multi"][data-player-count="2"][data-state="singing"] .main-card,
+html.is-tv #app[data-players="multi"][data-player-count="2"][data-state="scoring"] .main-card,
+html.is-tv #app[data-players="multi"][data-teams][data-player-count="2"][data-state="singing"] .main-card,
+html.is-tv #app[data-players="multi"][data-teams][data-player-count="2"][data-state="scoring"] .main-card {
+    padding: 0.8rem 9rem !important;
+}
+html.is-tv #app[data-players="multi"][data-teams][data-player-count="2"] .vertical-bar.mp-score-bar--team { width: 7.4rem; }
 html.is-tv #app[data-players="multi"][data-state="singing"] .carousel-container,
 html.is-tv #app[data-players="multi"][data-state="scoring"] .carousel-container,
 html.is-tv #app[data-players="multi"][data-teams][data-state="singing"] .carousel-container,
