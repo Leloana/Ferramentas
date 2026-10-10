@@ -80,16 +80,44 @@ class TestQueueEta(unittest.TestCase):
         self.assertLess(etas["i1"], etas["i2"])
         self.assertEqual(manager.get_queue_status()[2]["eta_sec"], etas["i2"])
 
-    def test_only_the_first_separating_item_counts_down(self):
+    def test_only_the_item_holding_the_separation_counts_down(self):
         manager = SongQueueManager(Path(tempfile.mkdtemp()))
         long_ago = time.monotonic() - 10_000
         for i in range(3):
             manager.queue.append(self._item(id=f"s{i}", status=QueueStatus.SEPARATING,
                                             separator="demucs", stage_started=long_ago))
+        manager.queue[1]._separating = True  # a 2ª ganhou o lock primeiro
         _, jobs = manager._pending_jobs()
         full = queue_eta.estimate("separate_demucs", 180)
-        self.assertLess(jobs[0][0][1], full)       # a que está separando: quase lá
-        self.assertEqual(jobs[1][0][1], full)      # as outras só esperam o lock
+        self.assertLess(jobs[1][0][1], full)       # a que está separando: quase lá
+        self.assertEqual(jobs[0][0][1], full)      # as outras só esperam o lock
+        self.assertEqual(jobs[2][0][1], full)
+
+    def test_separation_time_counts_from_the_lock_not_the_wait(self):
+        """Antes o cronômetro começava ao entrar em SEPARATING: a espera pelas outras
+        separações entrava na média (90 s/min medidos contra ~20 s/min reais)."""
+        import asyncio
+        from utils import separation
+
+        manager = SongQueueManager(Path(tempfile.mkdtemp()))
+        item = self._item(status=QueueStatus.SEPARATING, stage_started=time.monotonic() - 500)
+        manager.queue.append(item)
+        seen = {}
+
+        def fake_separate(audio, out, heavy_ok=True, cancel=None, on_start=None):
+            seen["before"] = item._separating
+            on_start()
+            seen["during"] = item._separating
+            seen["elapsed"] = time.monotonic() - item.stage_started
+            raise separation.SeparationCancelled()
+
+        with patch.object(separation, "separate_stems", fake_separate):
+            with self.assertRaises(separation.SeparationCancelled):
+                asyncio.run(manager._run_demucs(item, Path(tempfile.mkdtemp()), Path("x.mp3")))
+        self.assertEqual((seen["before"], seen["during"]), (False, True))
+        self.assertLess(seen["elapsed"], 5)          # não os 500 s de espera
+        self.assertFalse(item._separating)
+        self.assertEqual(manager._separations_started, 1)
 
     def test_estimate_batch_adds_the_current_queue(self):
         manager = SongQueueManager(Path(tempfile.mkdtemp()))

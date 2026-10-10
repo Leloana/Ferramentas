@@ -194,11 +194,13 @@ def _separate_demucs(audio_path: Path, out_dir: Path, device: str, cancel=None) 
     return vocals, no_vocals
 
 
-def separate_stems(audio_path: Path, out_dir: Path, heavy_ok=True, cancel=None) -> tuple[Path, Path]:
+def separate_stems(audio_path: Path, out_dir: Path, heavy_ok=True, cancel=None, on_start=None) -> tuple[Path, Path]:
     """Separa e devolve (vocals.wav, no_vocals.wav). Bloqueante: use em thread.
 
     `heavy_ok` (bool ou função): False enquanto uma partida usa a GPU, e aí vai o Demucs.
     `cancel` (threading.Event): ligado, levanta SeparationCancelled e mata o separador.
+    `on_start` (função): chamada quando esta separação ganha a vez (a fila mede o
+    tempo dela daí, sem a espera pelas outras).
     """
     audio_path = Path(audio_path)
     out_dir = Path(out_dir)
@@ -208,6 +210,8 @@ def separate_stems(audio_path: Path, out_dir: Path, heavy_ok=True, cancel=None) 
         _check(cancel)
     try:
         _check(cancel)
+        if on_start:
+            on_start()
         heavy = heavy_ok() if callable(heavy_ok) else heavy_ok
         if separator_backend() == "roformer" and not heavy:
             logger.info("[RoFormer] partida em andamento: separando com o Demucs")

@@ -71,6 +71,8 @@ class QueueItem:
     _task: Optional[asyncio.Task] = field(default=None, repr=False)
     # ligado ao remover da fila: mata a separação que roda na thread (utils/separation.py)
     _cancel: threading.Event = field(default_factory=threading.Event, repr=False)
+    # separando de fato (com o lock da separação); em SEPARATING sem isso, só espera a vez
+    _separating: bool = field(default=False, repr=False)
 
     def remaining_stages(self, running: Optional[bool] = None) -> list[tuple[str, float]]:
         """Etapas que faltam como (etapa, segundos estimados) — queue_eta.py.
@@ -139,6 +141,9 @@ class SongQueueManager:
 
         # uma playlist inteira na fila não abre dezenas de yt-dlp de uma vez
         self._download_slots = asyncio.Semaphore(queue_eta.DOWNLOAD_SLOTS)
+        # separações que já começaram: a letra só entra na média do tempo se nenhuma
+        # rodou junto (as duas dividem a GPU e a letra chegava a levar 6× mais)
+        self._separations_started = 0
 
     # ------------------------------------------------------------------
     # Fila em disco
@@ -245,13 +250,11 @@ class SongQueueManager:
     def _pending_jobs(self) -> tuple[list[QueueItem], list[list[tuple[str, float]]]]:
         """Itens ainda em processamento e as etapas que faltam a cada um, na ordem da fila."""
         items, jobs = [], []
-        separating_seen = False
         for item in self.queue:
             running = None
             if item.status == QueueStatus.SEPARATING:
-                # vários ficam em SEPARATING esperando o lock; só o primeiro está separando
-                running = not separating_seen
-                separating_seen = True
+                # vários ficam em SEPARATING esperando o lock; só um está separando
+                running = item._separating
             stages = item.remaining_stages(running)
             if stages:
                 items.append(item)
@@ -283,6 +286,9 @@ class SongQueueManager:
         total = max(queue_eta.pipeline_finish(jobs + new), default=0.0)
         own = max(queue_eta.pipeline_finish(new), default=0.0)
         return {"total_sec": int(round(total)), "own_sec": int(round(own)), "queued": len(jobs)}
+
+    def _separation_busy(self) -> bool:
+        return any(item._separating for item in self.queue)
 
     def item_status(self, item: QueueItem) -> dict:
         """to_dict do item com o tempo já contando a fila da frente."""
@@ -504,6 +510,8 @@ class SongQueueManager:
             item.progress_pct = 78
             async with self.gpu_job(item.title or item.slug):
                 item.stage_started = time.monotonic()
+                separations_before = self._separations_started
+                shared_gpu = self._separation_busy()
                 item.progress_pct = 80
                 logger.info(f"[QUEUE:{item.id}] Fase 2 — Whisper lock adquirido. Gerando LRC + alinhamento...")
 
@@ -526,8 +534,11 @@ class SongQueueManager:
                     raise RuntimeError("Pipeline de alinhamento falhou.")
                 import queue_eta
 
-                queue_eta.record("align_pro" if align_lyrics else "align_fast",
-                                 time.monotonic() - item.stage_started, item.audio_sec)
+                shared_gpu = (shared_gpu or self._separation_busy()
+                              or self._separations_started != separations_before)
+                if not shared_gpu:
+                    queue_eta.record("align_pro" if align_lyrics else "align_fast",
+                                     time.monotonic() - item.stage_started, item.audio_sec)
 
                 item.status = QueueStatus.FINALIZING
                 item.progress_pct = 95
@@ -582,12 +593,24 @@ class SongQueueManager:
         """Separa vocal/instrumental (utils/separation.py: uma separação por vez)."""
         from utils.separation import SeparationCancelled, export_backing_mp3, export_mp3, separate_stems
 
+        def _started():
+            # ganhou a vez: o tempo da separação conta daqui (queue_eta.record)
+            item.stage_started = time.monotonic()
+            item._separating = True
+            self._separations_started += 1
+
         def _separate_and_export():
+            try:
+                _separate_export_pitch()
+            finally:
+                item._separating = False
+
+        def _separate_export_pitch():
             # RoFormer (pesado na VRAM) só sem partida: a fase 1 roda fora do whisper_lock
             try:
                 vocals_wav, no_vocals_wav = separate_stems(audio_path, song_dir / "demucs_output",
                                                            heavy_ok=lambda: not self._gpu_game_active,
-                                                           cancel=item._cancel)
+                                                           cancel=item._cancel, on_start=_started)
             except SeparationCancelled:
                 # a tarefa da fila já saiu; a thread limpa o que o separador deixou
                 shutil.rmtree(song_dir / "demucs_output", ignore_errors=True)
