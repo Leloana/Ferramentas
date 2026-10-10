@@ -498,3 +498,9 @@ A quinta saiu girada 90°, que é o defeito do item 3 e não tem relação com
 o refino. Com `texto_prompts.json` já escrito como cena concreta, o refino
 não acrescenta nada. Se a taxa de defeito do lote passar de ~2-3 imagens,
 regere com `--sem-refino` em vez de seguir trocando seed ou prompt.
+
+Adendo (Video_15, 2026-10-10): `gerar_capa.py` agora também aceita `--sem-refino`.
+Com o refino ligado, um prompt de capa com "child soldier" fez o refino vazar as
+regras inteiras como texto na imagem; sem o refino, a capa saiu limpa. A rotação
+de 90° (item 3) se repetiu numa cena de "coluna marchando pela planície"; reescrever
+o prompt com a tropa vindo de frente pra câmera resolveu na primeira tentativa.

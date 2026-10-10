@@ -52,8 +52,8 @@
     "frase": 8,
     "plano": 1,
     "arquivo": "texto_08.png",
-    "prompt_final": "a long column of infantry soldiers in red shirts and white trousers marching across a flat grassland under a hot sun, nineteenth-century South America, photorealistic cinematic photography, not a painting, not an illustration, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "Krea2_turbo_00033_.png"
+    "prompt_final": "a column of infantry soldiers in red shirts and white trousers marching straight toward the camera on a dirt road through flat grassland, seen from the front at eye level, upright vertical framing, hot sun, nineteenth-century South America, photorealistic cinematic photography, not a painting, not an illustration, fully clothed, appropriate attire, no nudity",
+    "arquivo_comfy": "Krea2_turbo_00056_.png"
   },
   {
     "frase": 9,
@@ -81,7 +81,7 @@
     "plano": 1,
     "arquivo": "texto_12.png",
     "prompt_final": "a huge battle on a flat marshy plain, cavalry and infantry clashing, cannon smoke covering the horizon, wide shot, nineteenth-century South America, photorealistic cinematic photography, not a painting, not an illustration, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "Krea2_turbo_00036_.png"
+    "arquivo_comfy": "Krea2_turbo_00050_.png"
   },
   {
     "frase": 13,
@@ -102,7 +102,7 @@
     "plano": 1,
     "arquivo": "texto_15.png",
     "prompt_final": "tired soldiers sitting in a flooded muddy trench under grey rain, rifles leaning on the wall, nineteenth-century South America, photorealistic cinematic photography, not a painting, not an illustration, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "Krea2_turbo_00037_.png"
+    "arquivo_comfy": "Krea2_turbo_00051_.png"
   },
   {
     "frase": 16,
@@ -116,7 +116,7 @@
     "plano": 1,
     "arquivo": "texto_17.png",
     "prompt_final": "a ruined stone fortress on a riverbank with old cannons pointing at the water, smoke rising, nineteenth-century South America, photorealistic cinematic photography, not a painting, not an illustration, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "Krea2_turbo_00038_.png"
+    "arquivo_comfy": "Krea2_turbo_00052_.png"
   },
   {
     "frase": 18,
@@ -130,7 +130,7 @@
     "plano": 1,
     "arquivo": "texto_19.png",
     "prompt_final": "a ragged column of old men, bandaged wounded soldiers and teenage boys walking on a muddy jungle path, nineteenth-century South America, photorealistic cinematic photography, not a painting, not an illustration, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "Krea2_turbo_00040_.png"
+    "arquivo_comfy": "Krea2_turbo_00053_.png"
   },
   {
     "frase": 20,
@@ -158,7 +158,7 @@
     "plano": 1,
     "arquivo": "texto_23.png",
     "prompt_final": "a silent empty battlefield at sunrise with broken cannons and a torn plain cloth on the ground, golden mist, nineteenth-century South America, photorealistic cinematic photography, not a painting, not an illustration, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "Krea2_turbo_00042_.png"
+    "arquivo_comfy": "Krea2_turbo_00054_.png"
   },
   {
     "frase": 24,
@@ -193,6 +193,6 @@
     "plano": 1,
     "arquivo": "texto_28.png",
     "prompt_final": "a torn faded old map on a wooden table beside a candle burning out, dark room, nineteenth-century South America, photorealistic cinematic photography, not a painting, not an illustration, fully clothed, appropriate attire, no nudity",
-    "arquivo_comfy": "Krea2_turbo_00043_.png"
+    "arquivo_comfy": "Krea2_turbo_00055_.png"
   }
 ]

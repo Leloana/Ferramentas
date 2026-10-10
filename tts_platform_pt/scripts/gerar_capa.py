@@ -235,6 +235,10 @@ def main():
     ap.add_argument("--server", default="http://127.0.0.1:8188")
     ap.add_argument("--proporcao", choices=sorted(_RESOLUCOES), default="9:16", help="Resolução final da capa (canvas do Pillow)")
     ap.add_argument("--saida", type=Path, default=None)
+    ap.add_argument("--sem-refino", action="store_true", help=(
+        "Krea2: desliga o Refine Prompt (TextGenerate) e manda o --prompt direto pro encoder. "
+        "Use quando o refino ecoar as regras como texto garranchado (GOTCHAS.md item 20)."
+    ))
     args = ap.parse_args()
 
     if not args.manifesto.exists():
@@ -267,7 +271,10 @@ def main():
         imagem_fundo = projeto / "capa_fundo.png"
         print("Gerando fundo de capa no ComfyUI...")
         try:
-            info = gerar_imagem(args.server, workflow, args.prompt, args.aspect_ratio, imagem_fundo)
+            info = gerar_imagem(
+                args.server, workflow, args.prompt, args.aspect_ratio, imagem_fundo,
+                refinar=not args.sem_refino,
+            )
         except requests.exceptions.ConnectionError as e:
             raise SystemExit(f"Não consegui falar com o ComfyUI em {args.server}. Ele está aberto?") from e
         (projeto / "capa_manifesto.json").write_text(
