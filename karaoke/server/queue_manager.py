@@ -29,7 +29,9 @@ from typing import Optional
 
 logger = logging.getLogger(__name__)
 
-MAX_QUEUE_SIZE = 5
+# cabe uma playlist inteira (utils/youtube.PLAYLIST_LIMIT) e mais algumas avulsas.
+# Os downloads andam queue_eta.DOWNLOAD_SLOTS por vez; separação e letra, uma por vez.
+MAX_QUEUE_SIZE = 60
 QUEUE_FILE = ".queue.json"
 # campos que bastam para refazer o item depois de reiniciar (o resto é estado da execução)
 _SAVED_FIELDS = ("id", "slug", "title", "artist", "language", "youtube_url", "plain_lyrics",
@@ -70,8 +72,11 @@ class QueueItem:
     # ligado ao remover da fila: mata a separação que roda na thread (utils/separation.py)
     _cancel: threading.Event = field(default_factory=threading.Event, repr=False)
 
-    def eta_sec(self) -> Optional[int]:
-        """Segundos que faltam até a música ficar pronta (queue_eta.py). Sem partida no meio."""
+    def remaining_stages(self, running: Optional[bool] = None) -> list[tuple[str, float]]:
+        """Etapas que faltam como (etapa, segundos estimados) — queue_eta.py.
+
+        `running`: a etapa atual já está rodando (desconta o tempo passado). None
+        deduz pelo status; a fila passa False para quem só espera a vez de separar."""
         import queue_eta
 
         stages = ["download", f"separate_{self.separator}", "align_pro" if self.align_lyrics else "align_fast"]
@@ -80,19 +85,28 @@ class QueueItem:
             QueueStatus.AWAITING_ALIGNMENT: 2, QueueStatus.ALIGNING: 2, QueueStatus.FINALIZING: 2,
         }.get(self.status)
         if current is None:
-            return None
-        running = self.status in (QueueStatus.DOWNLOADING, QueueStatus.SEPARATING,
-                                  QueueStatus.ALIGNING, QueueStatus.FINALIZING)
-        total = 0.0
+            return []
+        if running is None:
+            running = self.status in (QueueStatus.DOWNLOADING, QueueStatus.SEPARATING,
+                                      QueueStatus.ALIGNING, QueueStatus.FINALIZING)
+        out = []
         for i, stage in enumerate(stages[current:]):
             est = queue_eta.estimate(stage, self.audio_sec)
             if i == 0 and running:
                 # passou da conta: "quase lá" em vez de zero ou negativo
                 est = max(est * 0.1, est - (time.monotonic() - self.stage_started), 5.0)
-            total += est
-        return int(round(total))
+            out.append((stage, est))
+        return out
 
-    def to_dict(self) -> dict:
+    def eta_sec(self) -> Optional[int]:
+        """Segundos que esta música leva sozinha (sem esperar as outras nem partida)."""
+        stages = self.remaining_stages()
+        if not stages:
+            return None
+        return int(round(sum(sec for _, sec in stages)))
+
+    def to_dict(self, eta_sec: Optional[int] = None) -> dict:
+        """`eta_sec`: tempo já contando a espera na fila (SongQueueManager.etas)."""
         return {
             "id": self.id,
             "slug": self.slug,
@@ -108,7 +122,7 @@ class QueueItem:
             "has_plain_lyrics": bool(self.plain_lyrics) and not bool(self.synced_lrc),
             "clean_existing": self.clean_existing,
             "audio_sec": self.audio_sec,
-            "eta_sec": self.eta_sec(),
+            "eta_sec": eta_sec if eta_sec is not None else self.eta_sec(),
         }
 
 
@@ -121,6 +135,10 @@ class SongQueueManager:
         # Trabalhos longos de GPU fora da partida (gerar letra, recalcular
         # segmentos): enquanto houver um, a TV não inicia partida (mutex de GPU)
         self._gpu_jobs: list[str] = []
+        import queue_eta
+
+        # uma playlist inteira na fila não abre dezenas de yt-dlp de uma vez
+        self._download_slots = asyncio.Semaphore(queue_eta.DOWNLOAD_SLOTS)
 
     # ------------------------------------------------------------------
     # Fila em disco
@@ -224,9 +242,56 @@ class SongQueueManager:
 
         return "demucs" if self._gpu_game_active else separator_backend()
 
+    def _pending_jobs(self) -> tuple[list[QueueItem], list[list[tuple[str, float]]]]:
+        """Itens ainda em processamento e as etapas que faltam a cada um, na ordem da fila."""
+        items, jobs = [], []
+        separating_seen = False
+        for item in self.queue:
+            running = None
+            if item.status == QueueStatus.SEPARATING:
+                # vários ficam em SEPARATING esperando o lock; só o primeiro está separando
+                running = not separating_seen
+                separating_seen = True
+            stages = item.remaining_stages(running)
+            if stages:
+                items.append(item)
+                jobs.append(stages)
+        return items, jobs
+
+    def etas(self) -> dict[str, int]:
+        """Segundos até cada item ficar pronto, contando a espera pelos da frente."""
+        import queue_eta
+
+        items, jobs = self._pending_jobs()
+        finish = queue_eta.pipeline_finish(jobs)
+        return {item.id: int(round(t)) for item, t in zip(items, finish)}
+
+    def estimate_batch(self, durations: list[Optional[float]], align_lyrics: bool = False) -> dict:
+        """Tempo para a fila atual mais as músicas `durations` (ex.: uma playlist).
+
+        Devolve {"total_sec": tudo pronto, "own_sec": só as novas, sem a fila, "queued"}."""
+        import queue_eta
+
+        _, jobs = self._pending_jobs()
+        separator = self._separator_now()
+        align = "align_pro" if align_lyrics else "align_fast"
+        new = [
+            [(stage, queue_eta.estimate(stage, d if d and d > 0 else None))
+             for stage in ("download", f"separate_{separator}", align)]
+            for d in durations
+        ]
+        total = max(queue_eta.pipeline_finish(jobs + new), default=0.0)
+        own = max(queue_eta.pipeline_finish(new), default=0.0)
+        return {"total_sec": int(round(total)), "own_sec": int(round(own)), "queued": len(jobs)}
+
+    def item_status(self, item: QueueItem) -> dict:
+        """to_dict do item com o tempo já contando a fila da frente."""
+        return item.to_dict(self.etas().get(item.id))
+
     def get_queue_status(self) -> list[dict]:
         """Retorna status de todos os itens da fila."""
-        return [item.to_dict() for item in self.queue]
+        etas = self.etas()
+        return [item.to_dict(etas.get(item.id)) for item in self.queue]
 
     def remove_item(self, item_id: str) -> bool:
         """Remove item da fila. Cancela task se estiver rodando."""
@@ -361,8 +426,13 @@ class SongQueueManager:
             if not skip_download:
                 from state import ffmpeg_bin_dir
                 from utils.youtube import download_youtube_audio
-                logger.info(f"[QUEUE:{item.id}] Baixando áudio do YouTube...")
-                success = await download_youtube_audio(item.youtube_url, original_audio, ffmpeg_bin_dir)
+
+                item.status = QueueStatus.QUEUED  # espera a vez de baixar
+                async with self._download_slots:
+                    item.status = QueueStatus.DOWNLOADING
+                    item.stage_started = time.monotonic()
+                    logger.info(f"[QUEUE:{item.id}] Baixando áudio do YouTube...")
+                    success = await download_youtube_audio(item.youtube_url, original_audio, ffmpeg_bin_dir)
                 if not success or not original_audio.exists():
                     raise RuntimeError("Falha ao baixar áudio do YouTube.")
                 import queue_eta

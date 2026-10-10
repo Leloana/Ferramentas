@@ -1,10 +1,12 @@
 // Busca no YouTube pelo nome da música (passo 1 do "Adicionar música").
 //
 // O usuário digita o nome, escolhe um resultado e o fluxo segue para o passo 2
-// com artista/título já sugeridos. Colar um link direto continua funcionando.
+// com artista/título já sugeridos. Colar um link direto continua funcionando;
+// link de playlist abre a lista de músicas (playlist-import.js).
 
 import { state } from '../core/state.js';
 import { showToast } from '../core/toast.js';
+import { isPlaylistUrl } from './playlist-import.js';
 
 const YT_URL_RE = /(youtube\.com\/|youtu\.be\/)/i;
 
@@ -40,12 +42,17 @@ function renderMessage(results, text) {
     results.replaceChildren(el('p', 'yt-results__msg', text));
 }
 
-async function runSearch(onPick) {
+async function runSearch(onPick, onPlaylist) {
     const input = document.getElementById('youtube-search-input');
     const results = document.getElementById('youtube-results');
     const btn = document.getElementById('btn-youtube-search');
     const query = input.value.trim();
 
+    // Colou link de playlist: escolhe várias de uma vez
+    if (isPlaylistUrl(query) && onPlaylist) {
+        onPlaylist(query);
+        return;
+    }
     // Colou um link: usa direto
     if (isYoutubeUrl(query)) {
         onPick({ url: query });
@@ -100,7 +107,8 @@ async function runSearch(onPick) {
 }
 
 // onPick({url, artist?, title?}) — chamado ao escolher um resultado ou colar um link.
-export function initYoutubeSearch(onPick) {
+// onPlaylist(url) — chamado ao colar o link de uma playlist.
+export function initYoutubeSearch(onPick, onPlaylist) {
     const input = document.getElementById('youtube-search-input');
     const btn = document.getElementById('btn-youtube-search');
     if (!input || !btn) return;
@@ -111,12 +119,12 @@ export function initYoutubeSearch(onPick) {
         onPick(choice);
     };
 
-    btn.addEventListener('click', () => runSearch(pick));
+    btn.addEventListener('click', () => runSearch(pick, onPlaylist));
     // Enter no campo busca (não envia o formulário)
     input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
-            runSearch(pick);
+            runSearch(pick, onPlaylist);
         }
     });
 }

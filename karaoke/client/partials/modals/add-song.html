@@ -1,4 +1,4 @@
-<!-- Adicionar música: 1) origem · 2) artista/título · 3) revisão da letra -->
+<!-- Adicionar música: 1) origem · 2) artista/título · 3) revisão da letra · playlist: escolher várias -->
 <div id="add-song-modal" class="modal-overlay">
     <div class="modal-content admin-modal">
         <h2 class="modal-title"><button type="button" class="modal-back" id="btn-add-song-back" aria-label="Voltar" title="Voltar"><i data-icon="back"></i></button>Adicionar música</h2>
@@ -20,7 +20,7 @@
                         <label for="youtube-search-input">Buscar no YouTube</label>
                         <div class="yt-search">
                             <input type="search" id="youtube-search-input" class="input" autocomplete="off"
-                                placeholder="Música ou artista">
+                                placeholder="Música, artista ou link de playlist">
                             <button type="button" id="btn-youtube-search" class="btn btn--primary">
                                 <i data-icon="search"></i> Buscar
                             </button>
@@ -86,6 +86,18 @@
                     <textarea id="lyrics-step3-textarea" rows="10" class="input input--area input--tall"
                         placeholder="Letra (opcional)"></textarea>
                 </div>
+            </div>
+
+            <!-- Playlist: marcar, corrigir artista/título e enfileirar de uma vez -->
+            <div id="upload-step-playlist">
+                <div class="playlist-head">
+                    <div class="playlist-head__info">
+                        <p id="playlist-title" class="playlist-head__title"></p>
+                        <p id="playlist-summary" class="playlist-head__summary" aria-live="polite"></p>
+                    </div>
+                    <button type="button" id="btn-playlist-toggle-all" class="btn btn--ghost btn--sm">Marcar todas</button>
+                </div>
+                <div id="playlist-items" class="playlist-items"></div>
             </div>
 
             <div class="modal-buttons">

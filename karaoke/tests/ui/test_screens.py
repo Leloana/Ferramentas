@@ -93,6 +93,41 @@ class ScreensTest(unittest.TestCase):
         self.assertTrue(page.url.startswith(self.base))  # "voltar" não saiu do app
         self.assertEqual(errors, [])
 
+    def test_add_playlist_pick_edit_and_estimate(self):
+        import preview_front
+        from unittest.mock import patch
+
+        fake = {"title": "Rock 90", "truncated": False, "results": [
+            {"id": f"v{i}", "url": f"https://www.youtube.com/watch?v=v{i}", "title": f"Banda {i} - Som {i}",
+             "channel": "Canal", "duration": 240, "thumbnail": "", "artist_guess": f"Banda {i}",
+             "title_guess": f"Som {i}", "status": "library" if i == 2 else "new"} for i in range(1, 5)]}
+        for path, viewport in (("/", PHONE), ("/", DESKTOP)):  # na TV a aba Adicionar fica oculta
+            with patch.object(preview_front, "youtube_playlist", lambda url: fake):
+                page, errors = self.open(path, viewport)
+                page.locator("#tab-btn-queue").click()
+                page.locator("#btn-open-add-song").click()
+                page.fill("#youtube-search-input", "https://www.youtube.com/playlist?list=PLabc")
+                page.locator("#btn-youtube-search").click()
+                page.wait_for_function("document.querySelector('[data-step]').getAttribute('data-step') === 'playlist'")
+                self.assertEqual(page.locator(".playlist-item").count(), 4)
+                # a já baixada vem desmarcada
+                self.assertEqual(page.locator(".playlist-item__check:checked").count(), 3)
+                self.assertEqual(page.text_content("#btn-submit-song").strip(), "Adicionar 3 à fila")
+                page.wait_for_function("document.getElementById('playlist-summary').textContent.indexOf('prontas em') >= 0")
+                page.locator(".playlist-item__check").first.uncheck()
+                self.assertEqual(page.text_content("#btn-submit-song").strip(), "Adicionar 2 à fila")
+                page.wait_for_function("document.getElementById('playlist-summary').textContent.indexOf('2 de 4') === 0")
+                page.locator("#btn-playlist-toggle-all").click()
+                self.assertEqual(page.locator(".playlist-item__check:checked").count(), 4)
+                page.locator(".playlist-item__title-input").nth(1).fill("")
+                page.locator("#btn-submit-song").click()  # título vazio: não envia
+                self.assertEqual(page.locator("#add-song-form[data-step='playlist']").count(), 1)
+                self.no_horizontal_scroll(page)
+                page.keyboard.press("Escape")
+                page.wait_for_function("document.querySelector('[data-step]').getAttribute('data-step') === '1'")
+                self.assertEqual(page.locator(".playlist-item").count(), 0)
+                self.assertEqual(errors, [])
+
     def test_players_ranking_and_profile(self):
         page, errors = self.open()
         page.locator("#btn-open-players").click()

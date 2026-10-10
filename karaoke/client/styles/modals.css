@@ -141,6 +141,30 @@
 .yt-result__title { font-weight: 700; font-size: 0.95rem; line-height: 1.3; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
 .yt-result__meta { font-size: 0.8rem; color: var(--dim); }
 
+/* Playlist (passo "playlist" do Adicionar música) */
+.playlist-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.6rem; }
+.playlist-head__info { min-width: 0; }
+.playlist-head__title { margin: 0; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.playlist-head__summary { margin: 0.15rem 0 0; font-size: 0.85rem; color: var(--dim); }
+.playlist-items { display: flex; flex-direction: column; gap: 0.4rem; max-height: 52vh; overflow-y: auto; }
+.playlist-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.4rem;
+    background: var(--paper);
+    border: var(--hairline);
+    border-radius: var(--radius);
+}
+.playlist-item.is-off { opacity: 0.55; }
+.playlist-item__check { width: 22px; height: 22px; flex-shrink: 0; accent-color: var(--ink); cursor: pointer; }
+.playlist-item__thumb { width: 72px; height: 40px; flex-shrink: 0; object-fit: cover; background: var(--paper-3); border: 1px solid var(--fold); }
+.playlist-item__fields { display: flex; flex-direction: column; gap: 0.25rem; flex: 1; min-width: 0; }
+.playlist-item__fields .input { min-height: 32px; padding: 0.25rem 0.5rem; font-size: 0.88rem; }
+.playlist-item__title-input { font-weight: 700; }
+.playlist-item__meta { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; color: var(--dim); min-width: 0; }
+.playlist-item__orig { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+
 /* Escolha de microfone (lobby) */
 .mic-options { display: flex; flex-direction: column; gap: 0.5rem; }
 .mic-option {
@@ -342,6 +366,7 @@
     .segmented__btn:last-child { border-bottom: none; }
     .yt-search { flex-direction: column; }
     .yt-result__thumb { width: 80px; height: 45px; }
+    .playlist-item__thumb { display: none; }
     .annotate-row { gap: 0.5rem; padding: 0.45rem 0.2rem; }
     .annotate-card { padding: 1rem 0.9rem; }
 }

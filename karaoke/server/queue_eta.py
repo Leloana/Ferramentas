@@ -29,6 +29,8 @@ DEFAULTS = {
     "align_pro": 25.0,
 }
 PER_MINUTE = {"separate_roformer", "separate_demucs", "align_fast", "align_pro"}
+# downloads ao mesmo tempo na fila (queue_manager usa o mesmo número)
+DOWNLOAD_SLOTS = 2
 
 _lock = threading.Lock()
 
@@ -62,6 +64,34 @@ def record(stage: str, seconds: float, audio_sec: float | None) -> None:
             STATS_FILE.write_text(json.dumps(data, indent=2), encoding="utf-8")
         except OSError as e:
             logger.warning(f"[ETA] não gravou {STATS_FILE.name}: {e}")
+
+
+def pipeline_finish(jobs: list[list[tuple[str, float]]], download_slots: int = DOWNLOAD_SLOTS) -> list[float]:
+    """Segundos até cada música da fila ficar pronta, na ordem da fila.
+
+    `jobs` traz, por música, as etapas que faltam como (etapa, segundos). A fila
+    baixa `download_slots` por vez, separa uma por vez (utils/separation.py) e
+    gera uma letra por vez (whisper_lock) — a separação de uma anda junto com a
+    letra da anterior. Por isso o total de uma playlist não é a soma de tudo.
+    """
+    slots = [0.0] * max(1, download_slots)
+    separate_free = align_free = 0.0
+    finish = []
+    for stages in jobs:
+        t = 0.0
+        for stage, sec in stages:
+            if stage == "download":
+                slot = slots.index(min(slots))
+                t = max(t, slots[slot]) + sec
+                slots[slot] = t
+            elif stage.startswith("separate_"):
+                t = max(t, separate_free) + sec
+                separate_free = t
+            else:
+                t = max(t, align_free) + sec
+                align_free = t
+        finish.append(t)
+    return finish
 
 
 def probe_duration(path: Path, ffmpeg_bin_dir: str | None) -> float | None:

@@ -92,6 +92,12 @@
 #add-song-form[data-step="3"] #upload-step-2,
 #add-song-form[data-step="3"] #btn-close-add-song { display: none !important; }
 #add-song-form[data-step="3"] #upload-step-3 { display: block !important; }
+#add-song-form:not([data-step="playlist"]) #upload-step-playlist { display: none !important; }
+#add-song-form[data-step="playlist"] #upload-step-1,
+#add-song-form[data-step="playlist"] #upload-step-2,
+#add-song-form[data-step="playlist"] #upload-step-3,
+#add-song-form[data-step="playlist"] #btn-close-add-song { display: none !important; }
+#add-song-form[data-step="playlist"] #upload-step-playlist { display: block !important; }
 
 /* 7. Origem do upload (YouTube × arquivo) */
 #add-song-form[data-upload-tab="youtube"] #section-local-upload,

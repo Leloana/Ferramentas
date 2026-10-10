@@ -193,6 +193,7 @@ karaoke/
 │   │   │   ├── requests.js                         # Fila da noite: "Próximas" na TV, "Pedir música" no celular
 │   │   │   ├── cover-picker.js                     # Trocar a capa entre as opções encontradas
 │   │   │   ├── youtube-search.js                   # Busca no YouTube pelo nome
+│   │   │   ├── playlist-import.js                  # Playlist inteira: marcar, editar, tempo total
 │   │   │   ├── modals.js                           # Liga os três modais abaixo
 │   │   │   ├── pairing-modal.js                    # QR Code e link de pareamento do celular
 │   │   │   ├── add-song-modal.js                   # "Adicionar música" em três passos

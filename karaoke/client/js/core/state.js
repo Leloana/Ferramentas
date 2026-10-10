@@ -72,6 +72,7 @@ export const state = {
     lobbySeats: [],        // lobby: [{ mic, team }] — mesmo time = dupla/trio (lobby.js)
     lobbyMics: [],         // celulares registrados na sala
     scoreGroups: null,     // times da partida em curso [{ team, mics }] (score-bars.js)
+    playlistImport: null,  // playlist aberta no Adicionar música: { title, items } (playlist-import.js)
     pickedYoutube: null,   // resultado escolhido na busca do YouTube (youtube-search.js) // último card de música focado pelo controle remoto (tv-nav.js)
 };
 

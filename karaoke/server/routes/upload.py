@@ -14,7 +14,7 @@ from utils.lyrics_fetcher import fetch_lyrics
 from utils.prepare import run_reinstall_song
 from utils.song_paths import API_LYRICS_MARKER, USER_EDITED_MARKER
 from utils.text import normalize_lyrics_text, slugify
-from utils.youtube import get_youtube_video_info, search_youtube
+from utils.youtube import get_youtube_video_info, is_playlist_url, list_youtube_playlist, search_youtube
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -70,6 +70,61 @@ async def youtube_search(q: str, limit: int = 8):
         logger.error(f"Erro na busca do YouTube: {e}", exc_info=True)
         raise HTTPException(status_code=502, detail="Não foi possível buscar no YouTube agora.")
     return {"results": results}
+
+
+def _video_id(url: str) -> str:
+    """ID do vídeo num link do YouTube (watch?v=, youtu.be/, shorts/); "" se não achar."""
+    import re
+
+    m = re.search(r"(?:[?&]v=|youtu\.be/|/shorts/)([\w-]{11})", url or "")
+    return m.group(1) if m else ""
+
+
+def _known_videos() -> tuple[dict[str, str], set[str]]:
+    """Vídeos já na biblioteca ({id: slug}, pelos meta.json) e slugs na biblioteca."""
+    by_id: dict[str, str] = {}
+    slugs: set[str] = set()
+    for meta_path in SONGS_DIR.glob("*/meta.json"):
+        slug = meta_path.parent.name
+        if not (meta_path.parent / "segments.json").exists():
+            continue  # pasta pela metade (fila, erro): não conta como baixada
+        slugs.add(slug)
+        try:
+            meta = json.loads(meta_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        vid = _video_id((meta.get("audio") or {}).get("youtube_vocal_url") or "")
+        if vid:
+            by_id[vid] = slug
+    return by_id, slugs
+
+
+@router.get("/api/youtube-playlist")
+async def youtube_playlist(url: str):
+    """Músicas de uma playlist do YouTube para escolher e enfileirar de uma vez.
+
+    Cada resultado vem como na busca, mais `status`: "library" (já baixada),
+    "queue" (já na fila) ou "new"."""
+    url = (url or "").strip()
+    if not is_playlist_url(url):
+        raise HTTPException(status_code=400, detail="Cole o link de uma playlist do YouTube.")
+    try:
+        playlist = await list_youtube_playlist(url)
+    except Exception as e:
+        logger.error(f"Erro ao ler playlist do YouTube: {e}", exc_info=True)
+        raise HTTPException(status_code=502, detail="Não foi possível ler a playlist agora.")
+
+    by_id, slugs = await asyncio.to_thread(_known_videos)
+    queued_ids = {_video_id(item.youtube_url) for item in queue_manager.queue}
+    for item in playlist["results"]:
+        slug = slugify(f"{item['title_guess']}-{item['artist_guess']}")
+        if item["id"] in queued_ids:
+            item["status"] = "queue"
+        elif item["id"] in by_id or slug in slugs:
+            item["status"] = "library"
+        else:
+            item["status"] = "new"
+    return playlist
 
 
 @router.get("/api/fetch-lyrics")

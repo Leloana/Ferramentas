@@ -74,6 +74,7 @@ graph TD
   - `POST /api/reinstall-song/{song_id}`: Cleans the song folder and regenerates all tracks and alignments.
   - `GET /api/youtube-metadata`: Retrieves title/artist from a YouTube URL.
   - `GET /api/youtube-search`: Search YouTube by name (add-song step 1).
+  - `GET /api/youtube-playlist` · `POST /api/queue/estimate`: list a playlist (up to 50) and estimate how long the queue plus the picked songs take.
   - `POST /api/queue/add` · `GET /api/queue/status`: processing queue; status includes `alignment_busy` (GPU mutex: TV blocks INICIAR).
   - `GET /api/songs/{id}/cover` · `GET /api/songs/{id}/cover/options` · `POST /api/songs/{id}/cover`: album art (auto best candidate from iTunes/Deezer/YouTube, or a chosen option).
   - `GET /songs/{id}/vocal`: separated vocal (guide vocal).

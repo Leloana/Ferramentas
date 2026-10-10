@@ -11,7 +11,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 sys.path.insert(0, str(PROJECT_ROOT / "server"))
 
 import queue_eta  # noqa: E402
-from queue_manager import QueueItem, QueueStatus  # noqa: E402
+from queue_manager import QueueItem, QueueStatus, SongQueueManager  # noqa: E402
 
 
 class TestQueueEta(unittest.TestCase):
@@ -56,6 +56,53 @@ class TestQueueEta(unittest.TestCase):
     def test_running_stage_counts_down_but_never_hits_zero(self):
         item = self._item(status=QueueStatus.ALIGNING, stage_started=time.monotonic() - 10_000)
         self.assertGreaterEqual(item.eta_sec(), 5)
+
+    def test_pipeline_overlaps_separation_with_the_previous_alignment(self):
+        song = [("download", 10.0), ("separate_demucs", 20.0), ("align_fast", 30.0)]
+        finish = queue_eta.pipeline_finish([song, song, song], download_slots=2)
+        # 1ª: 10+20+30. A 2ª separa enquanto a 1ª gera a letra e espera a letra dela.
+        self.assertEqual(finish, [60.0, 90.0, 120.0])
+        # bem menos que a soma de tudo (3 × 60)
+        self.assertLess(finish[-1], 3 * 60)
+
+    def test_pipeline_downloads_only_a_few_at_a_time(self):
+        song = [("download", 100.0), ("separate_demucs", 1.0), ("align_fast", 1.0)]
+        finish = queue_eta.pipeline_finish([song] * 4, download_slots=2)
+        self.assertEqual(finish[0], 102.0)
+        self.assertGreaterEqual(finish[2], 200.0)  # 3ª espera um download terminar
+
+    def test_manager_eta_counts_the_songs_ahead(self):
+        manager = SongQueueManager(Path(tempfile.mkdtemp()))
+        for i in range(3):
+            manager.queue.append(self._item(id=f"i{i}", separator="demucs"))
+        etas = manager.etas()
+        self.assertLess(etas["i0"], etas["i1"])
+        self.assertLess(etas["i1"], etas["i2"])
+        self.assertEqual(manager.get_queue_status()[2]["eta_sec"], etas["i2"])
+
+    def test_only_the_first_separating_item_counts_down(self):
+        manager = SongQueueManager(Path(tempfile.mkdtemp()))
+        long_ago = time.monotonic() - 10_000
+        for i in range(3):
+            manager.queue.append(self._item(id=f"s{i}", status=QueueStatus.SEPARATING,
+                                            separator="demucs", stage_started=long_ago))
+        _, jobs = manager._pending_jobs()
+        full = queue_eta.estimate("separate_demucs", 180)
+        self.assertLess(jobs[0][0][1], full)       # a que está separando: quase lá
+        self.assertEqual(jobs[1][0][1], full)      # as outras só esperam o lock
+
+    def test_estimate_batch_adds_the_current_queue(self):
+        manager = SongQueueManager(Path(tempfile.mkdtemp()))
+        with patch.object(SongQueueManager, "_separator_now", return_value="demucs"):
+            alone = manager.estimate_batch([200.0, 200.0, None])
+            self.assertEqual(alone["total_sec"], alone["own_sec"])
+            self.assertEqual(alone["queued"], 0)
+            manager.queue.append(self._item(id="busy", separator="demucs"))
+            busy = manager.estimate_batch([200.0, 200.0, None])
+        self.assertGreater(busy["total_sec"], alone["total_sec"])
+        self.assertEqual(busy["own_sec"], alone["own_sec"])
+        self.assertEqual(busy["queued"], 1)
+        self.assertEqual(manager.estimate_batch([])["own_sec"], 0)
 
 
 if __name__ == "__main__":

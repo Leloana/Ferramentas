@@ -89,6 +89,23 @@ def youtube_search(query: str) -> list[dict]:
                  "thumbnail": "", "artist_guess": "Artista", "title_guess": query} for i in range(1, 4)]
 
 
+def youtube_playlist(url: str) -> dict:
+    """Playlist real se o yt-dlp estiver instalado; senão, uma fictícia. Nada marcado como já baixado."""
+    try:
+        import asyncio
+        from utils.youtube import list_youtube_playlist
+        data = asyncio.run(list_youtube_playlist(url))
+    except ImportError:
+        data = {"title": "Playlist de exemplo", "truncated": False,
+                "results": [{"id": f"demo{i}", "url": f"https://www.youtube.com/watch?v=demo{i}",
+                             "title": f"Artista {i} - Música {i}", "channel": "Canal", "duration": 200 + i,
+                             "thumbnail": "", "artist_guess": f"Artista {i}", "title_guess": f"Música {i}"}
+                            for i in range(1, 6)]}
+    for i, item in enumerate(data["results"]):
+        item["status"] = "library" if i == 1 else "new"  # uma já baixada, para ver o selo
+    return data
+
+
 class Handler(BaseHTTPRequestHandler):
     def log_message(self, fmt, *args):  # silencioso
         pass
@@ -138,6 +155,9 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/youtube-search":
             query = (parse_qs(urlparse(self.path).query).get("q") or [""])[0]
             return self._json({"results": youtube_search(query)})
+        if path == "/api/youtube-playlist":
+            url = (parse_qs(urlparse(self.path).query).get("url") or [""])[0]
+            return self._json(youtube_playlist(url))
         if path == "/api/fetch-lyrics":
             return self._json({"success": False})
         if path == "/api/status":
@@ -170,6 +190,13 @@ class Handler(BaseHTTPRequestHandler):
             body = json.loads(self.rfile.read(length) or b"{}")
             ok = SONGS_DIR.resolve() in song_dir.parents and choose_cover(song_dir, body.get("url", ""))
             return self._json({"success": bool(ok)}, 200 if ok else 400)
+        if path == "/api/queue/estimate":
+            # mesma conta do servidor, sem fila
+            from queue_manager import SongQueueManager
+            length = int(self.headers.get("Content-Length") or 0)
+            body = json.loads(self.rfile.read(length) or b"{}")
+            manager = SongQueueManager(SONGS_DIR)
+            return self._json(manager.estimate_batch(body.get("durations") or [], bool(body.get("align_lyrics"))))
         self._json({"success": False, "detail": "preview: somente leitura"}, 400)
 
     do_DELETE = do_POST

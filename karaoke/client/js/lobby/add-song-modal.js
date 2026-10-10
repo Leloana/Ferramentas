@@ -1,5 +1,6 @@
 // Modal "Adicionar música" em três passos: escolher o vídeo, confirmar
 // título e artista (busca a letra) e revisar a letra antes de enfileirar.
+// Link de playlist vai para o passo "playlist" (playlist-import.js).
 import { state } from '../core/state.js';
 import { iconSvg } from '../core/icons.js';
 import { dom, startLoadingOverlay, stopLoadingOverlay } from '../core/dom.js';
@@ -8,6 +9,7 @@ import { promptGenerationOptions } from './selection-view.js';
 import { openModal, closeModal } from '../ui/modal.js';
 import { initYoutubeSearch, resetYoutubeSearch, isYoutubeUrl } from './youtube-search.js';
 import { formatEta } from './queue-view.js';
+import { initPlaylistImport, openPlaylist, closePlaylist, submitPlaylist, isPlaylistUrl } from './playlist-import.js';
 
 // --- Status de busca de letras (compartilhado entre os passos 2 e 3) ---
 
@@ -48,7 +50,7 @@ export function initAddSongModal() {
     if (!btnOpenAddSong) return;
 
 
-    let currentStep = 1;
+    let currentStep = 1;  // 1, 2, 3 ou 'playlist'
     let fetchedLyrics = null;  // resultado do /api/fetch-lyrics
 
     const setStep = (step) => {
@@ -57,10 +59,16 @@ export function initAddSongModal() {
         const scroller = addSongModal.querySelector('.modal-content');
         if (scroller) scroller.scrollTop = 0; // cada passo começa do topo
         const btnSubmit = document.getElementById('btn-submit-song');
-        if (btnSubmit) {
+        if (btnSubmit && step !== 'playlist') {  // a playlist escreve "Adicionar N à fila"
             btnSubmit.innerText = (step === 3) ? 'Adicionar à fila' : 'Avançar';
         }
+        if (step !== 'playlist') closePlaylist();
     };
+
+    const showPlaylist = async (url) => {
+        if (await openPlaylist(url)) setStep('playlist');
+    };
+    initPlaylistImport();
 
     const step2StatusEls = {
         box: document.getElementById('lyrics-fetch-status'),
@@ -75,7 +83,7 @@ export function initAddSongModal() {
     const btnBackStep1 = document.getElementById('btn-back-step-1');
     if (btnBackStep1) {
         btnBackStep1.onclick = () => {
-            if (currentStep === 2) setStep(1);
+            if (currentStep === 2 || currentStep === 'playlist') setStep(1);
             else if (currentStep === 3) setStep(2);
         };
     }
@@ -102,7 +110,7 @@ export function initAddSongModal() {
     initYoutubeSearch(() => {
         const btnSubmit = document.getElementById('btn-submit-song');
         if (btnSubmit && !btnSubmit.disabled) btnSubmit.click();
-    });
+    }, showPlaylist);
 
     const btnToggleAdvanced = document.getElementById('btn-toggle-advanced');
     const advancedOptionsContainer = document.getElementById('advanced-options-container');
@@ -122,7 +130,7 @@ export function initAddSongModal() {
 
     // Esc / Voltar da TV / botão do navegador recuam um passo antes de fechar
     addSongModal._onBack = () => {
-        if (currentStep <= 1) return false;
+        if (currentStep === 1) return false;
         document.getElementById('btn-back-step-1').click();
         return true;
     };
@@ -131,7 +139,7 @@ export function initAddSongModal() {
     const btnAddSongBack = document.getElementById('btn-add-song-back');
     if (btnAddSongBack) {
         btnAddSongBack.onclick = () => {
-            if (currentStep > 1) document.getElementById('btn-back-step-1').click();
+            if (currentStep !== 1) document.getElementById('btn-back-step-1').click();
             else closeModal(addSongModal);
         };
     }
@@ -139,10 +147,24 @@ export function initAddSongModal() {
     addSongForm.onsubmit = async (e) => {
         e.preventDefault();
 
+        if (currentStep === 'playlist') {
+            if (await submitPlaylist()) {
+                closeModal(addSongModal);
+                setStep(1);
+                const tabQueue = document.getElementById('tab-btn-queue');
+                if (tabQueue) tabQueue.click();
+            }
+            return;
+        }
+
         if (currentStep === 1) {
             {
                 const vocalUrlInput = document.getElementById('youtube-vocal-url');
                 const searchInput = document.getElementById('youtube-search-input');
+                if (searchInput && isPlaylistUrl(searchInput.value.trim())) {
+                    await showPlaylist(searchInput.value.trim());
+                    return;
+                }
                 if (!vocalUrlInput.value.trim() && searchInput && isYoutubeUrl(searchInput.value.trim())) {
                     vocalUrlInput.value = searchInput.value.trim();
                 }

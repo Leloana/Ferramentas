@@ -4,6 +4,7 @@ import shutil
 from typing import Optional
 
 from fastapi import APIRouter, Form, HTTPException, UploadFile, File
+from pydantic import BaseModel
 
 from state import queue_manager, SONGS_DIR
 
@@ -147,7 +148,7 @@ async def queue_add_song(
         )
         return {
             "success": True,
-            "item": item.to_dict(),
+            "item": queue_manager.item_status(item),
             "message": f"'{title}' adicionada à fila! Processamento iniciado.",
         }
     except ValueError as e:
@@ -155,6 +156,19 @@ async def queue_add_song(
     except Exception as e:
         logger.error(f"Erro ao adicionar à fila: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))
+
+
+class BatchEstimate(BaseModel):
+    durations: list[Optional[float]] = []  # segundos de cada música (None = não sabe)
+    align_lyrics: bool = False
+
+
+@router.post("/api/queue/estimate")
+async def queue_estimate(body: BatchEstimate):
+    """Quanto tempo até a fila atual mais estas músicas ficarem prontas (playlist)."""
+    if len(body.durations) > 200:
+        raise HTTPException(status_code=400, detail="Músicas demais.")
+    return queue_manager.estimate_batch(body.durations, body.align_lyrics)
 
 
 @router.get("/api/queue/status")

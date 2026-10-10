@@ -49,7 +49,8 @@ Este arquivo resume os detalhes técnicos específicos do subprojeto **Karaoke A
 *   **Listar músicas no disco:** `server/routes/songs.py` (usa o `song_manager` de `server/song_manager.py`).
 *   **Loop de Jogo & Handshake (WebSockets):** `server/ws/room.py` (Display + Mics na mesma sala).
 *   **Adicionar música (Upload / YouTube):** `server/routes/upload.py` (inicia pipeline de download e alinhamento).
-*   **Fila de processamento em segundo plano:** `server/routes/queue.py` (adiciona tarefas ao `queue_manager.py`).
+*   **Fila de processamento em segundo plano:** `server/routes/queue.py` (adiciona tarefas ao `queue_manager.py`). Até 60 itens (cabe uma playlist); baixa 2 por vez (`queue_eta.DOWNLOAD_SLOTS`), separa uma por vez e gera uma letra por vez. O `eta_sec` da fila já conta a espera pelos da frente (`SongQueueManager.etas`, simulação em `queue_eta.pipeline_finish`).
+*   **Playlist inteira:** link com `list=` no "Adicionar música" abre o passo `playlist` (`client/js/lobby/playlist-import.js`): marcar/desmarcar, corrigir título e artista de cada uma, tempo total estimado; envia um `/api/queue/add` por música (cada uma busca a própria letra; modo rápido).
 *   **Tratamento de áudio/resampling:** ao vivo o celular já manda 16 kHz (`worklets/audio-processor.js`). Offline, `server/utils/audio.py` converte arquivos para 16kHz Mono.
 *   **Áudio ao vivo → verso:** `server/mic_stream.py` (âncora por jogador, `segment_window`, tempos do Whisper relativos à janela).
 *   **Cálculo da Pontuação:** `server/score_engine.py` (fuzzy matching, normalização e atrasos). Letra × transcrição casadas em ordem (`match_in_order`, programação dinâmica): palavra fora de ordem não pontua.
@@ -166,6 +167,8 @@ Armazena a nota histórica de cada sessão.
 | `GET` | `/api/status` | — | Painel de saúde: GPU, fila, salas (tempo até a nota), disco |
 | `GET` | `/api/youtube-search` | `q: str`, `limit: int` (Query) | `{"results": [{"url", "title", "channel", "duration", "thumbnail", "artist_guess", "title_guess"}]}` |
 | `POST` | `/api/upload-song` | Form (`title`, `artist`, `language`, files/URLs) | `{"success": true, "lyrics_status": "draft", "draft_lrc": "...", "slug": "..."}` |
+| `GET` | `/api/youtube-playlist` | `url: str` (Query, link com `list=`) | `{"title", "truncated", "results": [... como a busca, + "status": "new"\|"library"\|"queue"]}` (até 50; `utils/youtube.PLAYLIST_LIMIT`) |
+| `POST` | `/api/queue/estimate` | JSON `{"durations": [seg\|null], "align_lyrics"}` | `{"total_sec", "own_sec", "queued"}` — tempo até a fila atual + estas ficarem prontas (`queue_eta.pipeline_finish`) |
 | `POST` | `/api/queue/add` | Form (`title`, `artist`, `youtube_url`, etc.) | `{"success": true, "item": {...}}` (Entra na fila) |
 | `GET` | `/api/queue/status` | — | `{"queue": [...], "gpu_busy": bool}` |
 | `DELETE`| `/api/queue/remove/{item_id}`| — | `{"success": true, "message": "..."}` |

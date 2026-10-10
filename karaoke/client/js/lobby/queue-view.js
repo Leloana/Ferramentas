@@ -31,7 +31,10 @@ let pollInterval = null;
 export function formatEta(sec) {
     if (sec === null || sec === undefined) return '';
     if (sec < 60) return 'menos de 1 min';
-    return `≈ ${Math.round(sec / 60)} min`;
+    const min = Math.round(sec / 60);
+    if (min < 60) return `≈ ${min} min`;
+    const rest = min % 60;
+    return `≈ ${Math.floor(min / 60)} h${rest ? ` ${rest} min` : ''}`;
 }
 
 function statusLabel(item, info) {

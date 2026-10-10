@@ -130,19 +130,71 @@ async def search_youtube(query: str, limit: int = 8) -> list[dict]:
     info = await asyncio.to_thread(_search)
     results = []
     for entry in (info or {}).get("entries") or []:
-        video_id = entry.get("id")
-        if not video_id or entry.get("ie_key") not in (None, "Youtube"):
-            continue
-        channel = entry.get("channel") or entry.get("uploader") or ""
-        guess = split_artist_title(entry.get("title") or "", fallback_artist=channel)
-        results.append({
-            "id": video_id,
-            "url": f"https://www.youtube.com/watch?v={video_id}",
-            "title": entry.get("title") or "",
-            "channel": channel,
-            "duration": entry.get("duration"),
-            "thumbnail": f"https://i.ytimg.com/vi/{video_id}/mqdefault.jpg",
-            "artist_guess": guess["artist"],
-            "title_guess": guess["title"],
-        })
+        item = _entry_to_result(entry)
+        if item:
+            results.append(item)
     return results
+
+
+# Mix automático do YouTube (list=RD...) não tem fim: corta aqui
+PLAYLIST_LIMIT = 50
+# vídeos que a playlist ainda lista mas não dá para baixar
+_UNAVAILABLE_TITLES = {"[private video]", "[deleted video]", "[vídeo privado]", "[vídeo excluído]"}
+
+
+def is_playlist_url(url: str) -> bool:
+    """Link de playlist do YouTube / YouTube Music (tem `list=`)."""
+    import re
+
+    return bool(re.search(r"(youtube\.com|youtu\.be)/.*[?&]list=[\w-]+", url or "", re.IGNORECASE))
+
+
+def _entry_to_result(entry: dict) -> dict | None:
+    """Item da listagem (busca ou playlist) no formato do front; None se não for um vídeo baixável."""
+    video_id = entry.get("id")
+    if not video_id or entry.get("ie_key") not in (None, "Youtube"):
+        return None
+    if (entry.get("title") or "").strip().lower() in _UNAVAILABLE_TITLES:
+        return None
+    channel = entry.get("channel") or entry.get("uploader") or ""
+    guess = split_artist_title(entry.get("title") or "", fallback_artist=channel)
+    return {
+        "id": video_id,
+        "url": f"https://www.youtube.com/watch?v={video_id}",
+        "title": entry.get("title") or "",
+        "channel": channel,
+        "duration": entry.get("duration"),
+        "thumbnail": f"https://i.ytimg.com/vi/{video_id}/mqdefault.jpg",
+        "artist_guess": guess["artist"],
+        "title_guess": guess["title"],
+    }
+
+
+async def list_youtube_playlist(url: str, limit: int = PLAYLIST_LIMIT) -> dict:
+    """Vídeos de uma playlist (sem baixar): {"title", "results", "truncated"}."""
+    import yt_dlp
+
+    ydl_opts: dict = {
+        "quiet": True,
+        "no_warnings": True,
+        "skip_download": True,
+        "extract_flat": "in_playlist",
+        "noplaylist": False,
+        # um a mais só para saber se a playlist foi cortada
+        "playlistend": limit + 1,
+    }
+
+    def _extract() -> dict:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            return ydl.extract_info(url, download=False)
+
+    info = await asyncio.to_thread(_extract) or {}
+    results: list[dict] = []
+    seen: set[str] = set()
+    entries = list(info.get("entries") or [])
+    for entry in entries[:limit]:
+        item = _entry_to_result(entry or {})
+        if item and item["id"] not in seen:
+            seen.add(item["id"])
+            results.append(item)
+    return {"title": info.get("title") or "", "results": results, "truncated": len(entries) > limit}
