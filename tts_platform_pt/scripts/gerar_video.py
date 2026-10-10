@@ -10,12 +10,12 @@ Fluxo:
 2. Guarda no manifesto a duração medida e os timestamps por frase (usados
    depois por gerar_imagens.py e montar_video.py).
 
-Voz padrão é a masculina (Dionisio Schuyler) — a versão feminina só é
-gerada se pedida explicitamente com --voz. Velocidade padrão é 1.20 (speed
-nativo do XTTS-v2, ver server/engine/tts_engine.py) — cadência mais ágil que
-o 1.0 "neutro" do modelo, escolhida ouvindo amostras lado a lado (ver
-Projetos/testes_velocidade/); passe --velocidade 1.0 pra voltar ao padrão do
-modelo.
+Voz padrão é a da ElevenLabs "David" (eleven:7i7dgyCkKt4c16dLtwT3, narrador
+grave). As do XTTS-v2 local continuam disponíveis com --voz "Dionisio Schuyler"
+/ "Ana Florence". Velocidade padrão: 1.0 na ElevenLabs (faixa 0.7-1.2) e 1.20
+no XTTS-v2 (speed nativo, ver server/engine/tts_engine.py — cadência mais ágil
+que o 1.0 "neutro" do modelo, escolhida ouvindo amostras lado a lado em
+Projetos/testes_velocidade/).
 
 Requer o servidor da plataforma rodando (`uvicorn server.main:app --port 8011`).
 """
@@ -29,8 +29,9 @@ from pathlib import Path
 
 import requests
 
-_VOZ_PADRAO = "Dionisio Schuyler"
-_VELOCIDADE_PADRAO = 1.20
+_VOZ_PADRAO = "eleven:7i7dgyCkKt4c16dLtwT3"
+_VELOCIDADE_PADRAO_XTTS = 1.20
+_VELOCIDADE_PADRAO_ELEVEN = 1.0
 
 
 def duracao_wav(caminho: Path) -> float:
@@ -59,16 +60,19 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("roteiro", type=Path, help="Caminho do .md/.txt com o texto da narração")
     ap.add_argument("--voz", default=_VOZ_PADRAO,
-                     help='Nome do locutor embutido ou "custom:<arquivo>.wav" '
-                          f'(padrão: "{_VOZ_PADRAO}", voz masculina; passe --voz "Ana Florence" '
-                          'pra gerar a versão feminina)')
+                     help='"eleven:<voice_id>" (ElevenLabs), locutor embutido do XTTS-v2 ou "custom:<arquivo>.wav" '
+                          f'(padrão: "{_VOZ_PADRAO}", narrador grave da ElevenLabs)')
     ap.add_argument("--idioma", default="pt")
     ap.add_argument("--normalizar", action="store_true", help="Ativa a normalização via Ollama (desativada por padrão)")
-    ap.add_argument("--velocidade", type=float, default=_VELOCIDADE_PADRAO,
-                     help=f"speed nativo do XTTS-v2, ~0.7-1.3 sem degradar a voz (padrão: {_VELOCIDADE_PADRAO})")
+    ap.add_argument("--velocidade", type=float, default=None,
+                     help=f"ElevenLabs: 0.7-1.2 (padrão {_VELOCIDADE_PADRAO_ELEVEN}); "
+                          f"XTTS-v2: ~0.7-1.3 sem degradar a voz (padrão {_VELOCIDADE_PADRAO_XTTS})")
     ap.add_argument("--server", default="http://127.0.0.1:8011")
     ap.add_argument("--saida", type=Path, default=None, help="Pasta do projeto (padrão: pasta do roteiro)")
     args = ap.parse_args()
+
+    if args.velocidade is None:
+        args.velocidade = _VELOCIDADE_PADRAO_ELEVEN if args.voz.startswith("eleven:") else _VELOCIDADE_PADRAO_XTTS
 
     if not args.roteiro.exists():
         raise SystemExit(f"Roteiro não encontrado: {args.roteiro}")

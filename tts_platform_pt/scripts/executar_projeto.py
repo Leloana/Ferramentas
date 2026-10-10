@@ -25,12 +25,14 @@ def resolver_voz(pasta_projeto: Path, voz_arg: str | None) -> str | None:
         return None
 
     conteudo = arquivo_vozes.read_text(encoding="utf-8").strip()
-    # Tenta pegar a primeira voz recomendada no vozes.md
+    # Só uma voz da ElevenLabs ("Narrador: eleven:<id>") é usada daqui; vozes.md
+    # antigos (só "Mulher:/Homem:" do XTTS-v2) caem no padrão do gerar_video.py,
+    # que é a ElevenLabs. XTTS-v2 agora só com --voz explícito.
     for linha in conteudo.splitlines():
-        linha = linha.strip()
         if ":" in linha:
             _, nome = linha.split(":", 1)
-            return nome.strip()
+            if nome.strip().startswith("eleven:"):
+                return nome.strip()
     return None
 
 
@@ -53,8 +55,8 @@ def main():
     parser.add_argument(
         "--velocidade",
         type=float,
-        default=1.20,
-        help="Velocidade da narração (padrão: 1.20)",
+        default=None,
+        help="Velocidade da narração (padrão do gerar_video.py: 1.0 na ElevenLabs, 1.20 no XTTS-v2)",
     )
     parser.add_argument(
         "--workflow-t2i",
@@ -121,11 +123,11 @@ def main():
             sys.executable,
             "scripts/gerar_video.py",
             str(roteiro),
-            "--velocidade",
-            str(args.velocidade),
             "--server",
             args.server,
         ]
+        if args.velocidade is not None:
+            cmd_audio.extend(["--velocidade", str(args.velocidade)])
         if voz:
             cmd_audio.extend(["--voz", voz])
 

@@ -5,6 +5,7 @@ import re
 
 from fastapi import APIRouter, File, HTTPException, UploadFile
 
+import config
 from engine.text_preprocessor import pick_num_ctx
 from state import CUSTOM_VOICES_DIR, get_tts_engine
 
@@ -19,6 +20,7 @@ def list_voices():
     embutidas = engine.list_builtin_speakers()
     personalizadas = sorted(p.name for p in CUSTOM_VOICES_DIR.glob("*.wav"))
     return {
+        "eleven": [{"nome": nome, "id": f"eleven:{vid}"} for nome, vid in config.ELEVEN_VOZES.items()],
         "embutidas": embutidas,
         "personalizadas": personalizadas,
         # Foto do num_ctx que seria escolhido agora, dado o estado atual da

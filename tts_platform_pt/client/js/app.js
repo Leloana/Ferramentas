@@ -75,6 +75,12 @@ async function carregarVozes() {
     if (!resp.ok) throw new Error(data.detail || "Falha ao carregar vozes.");
 
     vozEl.innerHTML = "";
+    for (const voz of data.eleven || []) {
+      const opt = document.createElement("option");
+      opt.value = voz.id;
+      opt.textContent = `☁️ ${voz.nome} — ElevenLabs`;
+      vozEl.appendChild(opt);
+    }
     for (const nome of data.embutidas) {
       const opt = document.createElement("option");
       opt.value = nome;

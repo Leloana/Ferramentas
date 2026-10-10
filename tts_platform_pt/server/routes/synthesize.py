@@ -1,4 +1,4 @@
-"""Rota POST /api/synthesize: pré-processa o texto (opcional) e sintetiza com XTTS-v2."""
+"""Rota POST /api/synthesize: pré-processa o texto (opcional) e sintetiza com XTTS-v2 ou ElevenLabs (voice_id "eleven:<id>")."""
 from __future__ import annotations
 
 import logging
@@ -8,6 +8,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
 import config
+from engine import eleven_engine
 from engine.text_preprocessor import normalize
 from state import CUSTOM_VOICES_DIR, OUTPUT_DIR, get_tts_engine
 
@@ -35,6 +36,22 @@ def synthesize(req: SynthesizeRequest):
         texto_usado, aviso_normalizacao = normalize(texto)
     else:
         texto_usado = texto
+
+    if req.voice_id and req.voice_id.startswith("eleven:"):
+        output_path = OUTPUT_DIR / f"{uuid.uuid4().hex}.wav"
+        try:
+            _, frases = eleven_engine.synthesize(
+                texto_usado, output_path, req.voice_id.split(":", 1)[1], language=req.language, speed=req.speed
+            )
+        except eleven_engine.ElevenError as e:
+            logger.error(str(e))
+            raise HTTPException(status_code=502, detail=str(e)) from e
+        return {
+            "audio_url": f"/audio/{output_path.name}",
+            "texto_usado": texto_usado,
+            "aviso_normalizacao": aviso_normalizacao,
+            "frases": frases,
+        }
 
     speaker = None
     speaker_wav = None

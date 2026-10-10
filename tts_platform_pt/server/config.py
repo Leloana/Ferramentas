@@ -37,3 +37,25 @@ OLLAMA_NUM_CTX_CPU_FALLBACK = 8192
 
 CUSTOM_VOICES_DIR.mkdir(parents=True, exist_ok=True)
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+# ElevenLabs (nuvem, pago por caractere). Chave em `tts_platform_pt/.env`
+# (ELEVENLABS_API_KEY=..., gitignored) ou na variável de ambiente. voice_id no
+# formato "eleven:<id>" vai pra cá em vez do XTTS-v2.
+ENV_FILE = SERVER_DIR.parent / ".env"
+ELEVEN_MODEL = "eleven_v4"
+# Vozes da biblioteca pública (dá pra usar o id direto, sem adicionar na conta).
+# A primeira é a padrão de `scripts/gerar_video.py`: grave e rouca, feita pra
+# trailer/narração épica — prende atenção em vídeo curto de história.
+ELEVEN_VOZES = {
+    "David (grave, rouca, épica)": "7i7dgyCkKt4c16dLtwT3",
+    "Eliel (grave, rouca, imponente)": "y3X5crcIDtFawPx7bcNq",
+    "Adriano (grave, rústica)": "hwnuNyWkl9DjdTFykrN6",
+    "Lucas (grave, documentário)": "GIuLCSVfgJaUuh7hYOY8",
+    "Victor Power (dramática, sábia)": "YNOujSUmHtgN6anjqXPf",
+}
+ELEVEN_AJUSTES = {"stability": 0.4, "similarity_boost": 0.75, "style": 0.35}
+# Faixa aceita pelo `voice_settings.speed` da API; fora disso ela devolve 400.
+ELEVEN_SPEED_MIN, ELEVEN_SPEED_MAX = 0.7, 1.2
+# Limite de caracteres por chamada com folga (v3/v4 aceitam ~5000). Texto
+# maior é dividido em blocos de frases inteiras.
+ELEVEN_MAX_CHARS = 4500

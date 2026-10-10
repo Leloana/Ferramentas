@@ -45,6 +45,24 @@ original); GPU CUDA recomendada (fallback automático para CPU, mais lento).
   mudança de pitch) — faixa segura ~0.7-1.3, fora disso a voz degrada
   (artefatos, cadência robótica). `scripts/gerar_video.py` usa 1.20 como
   padrão (ver abaixo); `POST /api/synthesize` aceita `speed` no corpo.
+- `server/engine/eleven_engine.py` — **ElevenLabs (nuvem, motor padrão dos
+  vídeos)**. `voice_id` no formato `"eleven:<id>"` cai aqui em vez do XTTS-v2
+  (`routes/synthesize.py`). Chave em `tts_platform_pt/.env`
+  (`ELEVENLABS_API_KEY=...`, gitignored; a mesma do projeto receba_royale) ou
+  na variável de ambiente. Usa `/v1/text-to-speech/<voz>/with-timestamps`,
+  que devolve o tempo de cada caractere: `frases`/`palavras` saem direto
+  disso, no mesmo formato do XTTS-v2 (sem MMS_FA, sem síntese frase a
+  frase, sem os workarounds de "ponto"/203 caracteres/datas compostas, que
+  são do XTTS). Texto acima de `ELEVEN_MAX_CHARS` (4500) vai em blocos de
+  frases inteiras, com `previous_text`/`next_text` pra manter a entonação.
+  Modelo, ajustes (`stability`/`style`) e vozes curadas em `config.py`
+  (`ELEVEN_MODEL`, `ELEVEN_AJUSTES`, `ELEVEN_VOZES`); vozes da biblioteca
+  pública funcionam pelo id direto, sem adicionar na conta. Padrão: "David"
+  (`7i7dgyCkKt4c16dLtwT3`, grave e rouca, feita pra trailer/narração épica).
+  `speed` vai pro `voice_settings.speed` (faixa 0.7-1.2, valores fora são
+  limitados). Amostras das 5 vozes curadas em
+  `Projetos/testes_vozes_eleven/`. A chave não tem permissão de
+  `models_read`/`user_read` — não dá pra consultar a cota pela API.
 - `server/engine/forced_aligner.py` — `ForcedAligner.align(wav, sample_rate,
   palavras)`, alinhamento forçado por palavra via `torchaudio.pipelines.MMS_FA`,
   sempre em CPU (ver Gotchas). Chamado por `TTSEngine.synthesize` uma vez por
@@ -272,10 +290,13 @@ cortar em blocos) usando o servidor local via HTTP.
 - Saída em `<pasta-do-roteiro>/audio/<nome>.wav`, mais um
   `<nome>_manifesto.json` com texto, aviso de normalização, duração e
   timestamps por frase.
-- **Voz padrão é `"Dionisio Schuyler"` (masculina)** — `--voz` só precisa
-  ser passado pra gerar a versão feminina (`"Ana Florence"`) ou testar outro
-  locutor embutido/clonado (`"custom:<arquivo>.wav"`).
-- **Velocidade padrão é `1.20`** (`--velocidade`, speed nativo do XTTS-v2,
+- **Voz padrão é `"eleven:7i7dgyCkKt4c16dLtwT3"` (David, ElevenLabs)** — o
+  XTTS-v2 local continua disponível com `--voz "Dionisio Schuyler"` /
+  `"Ana Florence"` / `"custom:<arquivo>.wav"`. `executar_projeto.py` só lê
+  do `vozes.md` uma linha `Narrador: eleven:<id>`; `vozes.md` antigos (só
+  `Mulher:/Homem:` do XTTS) caem no padrão ElevenLabs.
+- **Velocidade padrão é `1.0` na ElevenLabs e `1.20` no XTTS-v2** — o 1.20
+  abaixo vale só pro XTTS-v2 (`--velocidade`, speed nativo do XTTS-v2,
   ver `tts_engine.py` acima) — escolhida ouvindo amostras de 0.85 a 1.30 lado
   a lado no mesmo texto/voz (ver `Projetos/testes_velocidade/`); `--velocidade
   1.0` volta pro ritmo "neutro" do modelo. Gravado no manifesto (`velocidade`)

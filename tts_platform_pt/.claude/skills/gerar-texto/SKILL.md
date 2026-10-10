@@ -167,11 +167,11 @@ Em cada pasta (ou subpasta de parte), crie três arquivos:
   partes, mais 3-5 hashtags específicas de cada parte. É o bloco-base repetido que faz a série ficar
   linkada nas buscas por hashtag — não varie entre partes.
 
-**`vozes.md`** — sempre com o par padrão da plataforma:
+**`vozes.md`** — sempre com o narrador padrão da plataforma (ElevenLabs, voz "David", grave;
+`executar_projeto.py` só lê linhas `eleven:`):
 
 ```
-Mulher: Ana Florence
-Homem: Dionisio Schuyler
+Narrador: eleven:7i7dgyCkKt4c16dLtwT3
 ```
 
 ## 6. Depois de gerar
