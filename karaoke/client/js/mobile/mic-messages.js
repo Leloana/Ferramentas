@@ -34,10 +34,15 @@ function setLyricsNote(html) {
     lyrText.innerHTML = html;
 }
 
-// Nota deste celular no verso: a própria em disputa, a geral no solo
+// Nota deste celular no verso: a própria em disputa, a geral no solo. null = o verso
+// era de outro cantor (revezar versos): o servidor só manda a nota de quem cantou, e
+// cair na geral mostrava a nota do outro ("falha 0%") como se fosse a deste celular.
 function myVerseScore(data) {
-    const own = state.isActiveInGame && data.player_scores && state.mobileNickname && data.player_scores[state.mobileNickname];
+    const scores = data.player_scores || {};
+    const own = state.isActiveInGame && state.mobileNickname && scores[state.mobileNickname];
     if (own) return { score: own.score, total: own.total_score, pitch: own.pitch, combo: own.combo };
+    const names = Object.keys(scores);
+    if (state.isActiveInGame && names.length && names.indexOf('Solo') === -1) return null;
     return { score: data.score, total: data.total_score, pitch: data.pitch, combo: data.combo };
 }
 
@@ -154,6 +159,7 @@ const MIC_HANDLERS = {
             return;
         }
         const mine = myVerseScore(data);
+        if (!mine) return;  // verso do outro: fica a última nota deste cantor
         const lastEl = document.getElementById('mobile-score-last');
         const quality = verseQuality(mine.score);
         let text = typeof mine.pitch === 'number'

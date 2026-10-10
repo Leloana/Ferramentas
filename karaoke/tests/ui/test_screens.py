@@ -275,6 +275,50 @@ class ScreensTest(unittest.TestCase):
             self.assertEqual(errors, [])
             page.close()
 
+    def test_phone_ignores_the_other_singers_verse(self):
+        """Revezar versos: o servidor só manda a nota de quem cantou; o celular de quem
+        não cantava mostrava essa nota ("falha 0%") como se fosse a dele."""
+        page, errors = self.open("/?role=mic&room=1234", viewport=PHONE)
+        out = page.evaluate("""async () => {
+            const { state } = await import('/js/core/state.js');
+            state.isActiveInGame = true;
+            state.mobileNickname = 'Aninha';
+            const { handleMicMessage } = await import('/js/mobile/mic-messages.js');
+            const last = () => document.getElementById('mobile-score-last').textContent;
+            handleMicMessage({type: 'segment_result', score: 90, total_score: 90,
+                player_scores: {Aninha: {score: 90, total_score: 90}}});
+            const mine = last();
+            handleMicMessage({type: 'segment_result', score: 0, total_score: 45,
+                player_scores: {Lelo: {score: 0, total_score: 45}}});
+            return [mine, last(), document.getElementById('mobile-score-total').textContent];
+        }""")
+        self.assertIn("90%", out[0])
+        self.assertEqual(out[1], out[0])   # o verso do Lelo não muda a nota da Aninha
+        self.assertEqual(out[2], "90%")
+        self.assertEqual(errors, [])
+
+    def test_two_players_bars_on_the_sides_without_settings(self):
+        for n, sides in ((2, ["mp-score-bar-p3", "mp-score-bar-p4"]),
+                         (4, ["mp-score-bar-p1", "mp-score-bar-p2", "mp-score-bar-p3", "mp-score-bar-p4"])):
+            page, errors = self.open("/", {"width": 1366, "height": 768})
+            out = page.evaluate("""async (n) => {
+                const hud = await import('/js/game/hud.js');
+                document.getElementById('app').setAttribute('data-state', 'singing');
+                const names = ['Lelo', 'Aninha', 'Bia', 'Duda'].slice(0, n);
+                hud.setPlayersLayout({mics: names, mode: '1v1',
+                    groups: names.map((m, i) => ({team: 'ABCD'[i], mics: [m]}))});
+                return {
+                    bars: Array.from(document.querySelectorAll('.mp-score-bar[data-active="true"]')).map((b) => b.id),
+                    first: document.querySelector('#mp-score-bar-' + (n === 2 ? 'p3' : 'p1') + ' .mp-player-name').textContent,
+                    settings: getComputedStyle(document.getElementById('sync-controls')).display,
+                };
+            }""", n)
+            self.assertEqual(out["bars"], sides)
+            self.assertEqual(out["first"], "Lelo")
+            self.assertEqual(out["settings"] == "none", n == 2)
+            self.assertEqual(errors, [])
+            page.close()
+
     def test_phone_final_screen_is_the_singers_card(self):
         page, errors = self.open("/?role=mic&room=1234", viewport=PHONE)
         page.evaluate("""async () => {

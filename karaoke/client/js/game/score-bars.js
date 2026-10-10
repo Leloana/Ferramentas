@@ -1,6 +1,7 @@
 // Barras de placar nas bordas da TV durante a partida com mais de um microfone.
 //
-// Uma barra por time (até 4: baixo, topo, esquerda, direita). Time com mais de
+// Uma barra por time: 2 times ficam na esquerda e na direita (sobra altura para a
+// letra); 3 ou 4, embaixo, no topo, na esquerda e na direita. Time com mais de
 // um cantor (dupla/trio) mostra a nota do time em destaque — média dos membros —
 // e, embaixo, uma barra discreta com a nota de cada membro.
 
@@ -11,8 +12,14 @@ import { stampVerse, clearStamp, replayClass, verseQuality } from './verse-stamp
 const SLOTS = ['p1', 'p2', 'p3', 'p4'];
 const TEAMS = ['A', 'B', 'C', 'D'];
 
-function barOf(idx) {
-    return document.getElementById(`mp-score-bar-${SLOTS[idx]}`);
+// p1 baixo, p2 topo, p3 esquerda, p4 direita (partials/score-bars.html)
+const SIDES_ONLY = ['p3', 'p4'];
+
+// Barra do time `idx` da escalação em curso (state.scoreGroups)
+export function barOf(idx) {
+    const groups = state.scoreGroups || [];
+    const slots = groups.length === 2 ? SIDES_ONLY : SLOTS;
+    return slots[idx] ? document.getElementById(`mp-score-bar-${slots[idx]}`) : null;
 }
 
 function setFill(bar, selector, pct) {

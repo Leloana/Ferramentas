@@ -2,7 +2,7 @@
 // desempenho, selo "Vez de ..." e as barras de progresso do verso e do solo.
 import { state } from '../core/state.js';
 import { groupName, micLabel } from '../lobby/lobby.js';
-import { showScoreBars, hideScoreBars, updateScoreBars } from './score-bars.js';
+import { showScoreBars, hideScoreBars, updateScoreBars, barOf } from './score-bars.js';
 import { stampVerse, clearStamp, verseQuality, replayClass } from './verse-stamp.js';
 import { renderTranscriptionInto, expectedWords } from './transcription.js';
 import { clearCombos } from './combo.js';
@@ -81,7 +81,7 @@ export function showTurn(owner) {
     badge.hidden = false;
     replayClass(badge, 'turn-badge--in');
     groups.forEach((g, i) => {
-        const bar = byId(`mp-score-bar-p${i + 1}`);
+        const bar = barOf(i);
         if (!bar) return;
         bar.classList.toggle('mp-score-bar--turn', i === gi);
         bar.classList.toggle('mp-score-bar--waiting', i !== gi);

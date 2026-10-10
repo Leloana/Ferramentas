@@ -304,4 +304,22 @@
     #app[data-players="multi"][data-player-count="4"][data-state="singing"] .main-card,
     #app[data-players="multi"][data-player-count="3"][data-state="scoring"] .main-card,
     #app[data-players="multi"][data-player-count="4"][data-state="scoring"] .main-card { padding-left: 150px !important; padding-right: 150px !important; }
+
+    /* 2 jogadores: barras na esquerda e na direita (game/score-bars.js), sem as
+       configurações (volume, voz guia, tom...) — a altura toda fica para a letra */
+    #app[data-players="multi"][data-player-count="2"][data-state="singing"] .main-card,
+    #app[data-players="multi"][data-player-count="2"][data-state="scoring"] .main-card {
+        padding-top: 2rem !important;
+        padding-bottom: 1.5rem !important;
+        padding-left: 170px !important;
+        padding-right: 170px !important;
+    }
+    #app[data-players="multi"][data-player-count="2"][data-state="singing"] .carousel-container,
+    #app[data-players="multi"][data-player-count="2"][data-state="scoring"] .carousel-container {
+        /* tela menos título/barra de tempo (~12rem) e Pausar/Sair (~7rem) */
+        height: calc(100vh - 19rem) !important;
+        min-height: 220px;
+    }
+    #app[data-players="multi"][data-player-count="2"][data-state="singing"] #sync-controls,
+    #app[data-players="multi"][data-player-count="2"][data-state="scoring"] #sync-controls { display: none !important; }
 }
