@@ -1,20 +1,11 @@
-// Fim de jogo na TV: o cartão para print é o placar (nota e rank, ou pódio na
-// disputa), com recordes, botões "Ouvir" e "Cantar novamente" embaixo.
+// Fim de jogo na TV: o cartão para print é o placar — um por cantor, da maior
+// nota para a menor — com recordes e "Cantar novamente" embaixo. Ouvir a própria
+// voz fica no celular de cada um (mobile/mic-final.js).
 import { state } from '../core/state.js';
-import { iconSvg } from '../core/icons.js';
-import { micLabel, groupName, PC_MIC } from '../lobby/lobby.js';
-import { groupFinalScores } from './score-bars.js';
-import { mountShareCard } from './share-card.js';
-import { toggleReplay } from '../audio/replay.js';
+import { micLabel, PC_MIC } from '../lobby/lobby.js';
+import { mountShareCards } from './share-card.js';
 import { resetGameState } from './session.js';
 import { COMBO_MIN } from './combo.js';
-
-const MAX_REPLAY_BUTTONS = 4;
-
-// Nome de um time no placar: "Dupla A" ou o apelido de quem cantou sozinho
-function teamLabel(result) {
-    return result.members.length > 1 ? `${groupName(result.members.length)} ${result.group.team}` : micLabel(result.members[0].mic);
-}
 
 // Chave de um jogador nas notas do servidor ("Solo" quando não há escalação)
 function soloKey(data) {
@@ -22,37 +13,8 @@ function soloKey(data) {
     return keys.length === 1 ? keys[0] : null;
 }
 
-// Botões "ouvir" (um por cantor com voz gravada)
-function showReplayButtons(data) {
-    const box = document.getElementById('game-over-replay');
-    if (!box) return;
-    box.replaceChildren();
-    const players = Object.keys(data.player_stats || {});
-    if (!data.recording_id || !players.length) {
-        box.hidden = true;
-        return;
-    }
-    players.slice(0, MAX_REPLAY_BUTTONS).forEach((player) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'btn btn--ghost btn-replay';
-        const label = players.length > 1 ? `Ouvir ${micLabel(player)}` : 'Ouvir a apresentação';
-        btn.innerHTML = `${iconSvg('headphones')}<span></span>`;
-        btn.querySelector('span').textContent = label;
-        btn.addEventListener('click', () => toggleReplay({
-            recordingId: data.recording_id,
-            player,
-            songId: data.song_id || state.selectedSongId,
-            button: btn,
-        }));
-        box.append(btn);
-    });
-    box.hidden = false;
-}
-
 // Recorde pessoal / melhor da sala abaixo da nota do fim de jogo
 export function showGameOverExtras(data) {
-    showReplayButtons(data);
     const box = document.getElementById('game-over-record');
     if (!box) return;
     const lines = [];
@@ -77,40 +39,44 @@ export function showGameOverExtras(data) {
     box.hidden = !lines.length;
 }
 
-// Monta os dados do cartão para print a partir do game_over.
-function shareDataFromGameOver(data) {
+// Cartão de um cantor (`key` como o servidor manda: apelido, PC_MIC ou "Solo")
+function playerCard(data, key, score) {
     const title = document.getElementById('current-song-title');
     const artist = document.getElementById('current-song-artist');
-    const scores = data.player_scores || {};
-    const names = Object.keys(scores);
-    const key = soloKey(data);
-    const teams = groupFinalScores(scores);
-    let podium = null;
-    if (teams && teams.length > 1) {
-        podium = teams.map((t) => ({ name: teamLabel(t), score: t.score }));
-    } else if (names.length > 1) {
-        podium = names.map((n) => ({ name: micLabel(n), score: scores[n] })).sort((a, b) => b.score - a.score);
-    }
-    const pitchValues = Object.keys(data.player_pitch || {}).map((k) => data.player_pitch[k]);
-    const one = key && key !== 'Solo' && key !== PC_MIC ? key : null;
+    const named = key && key !== 'Solo' ? key : null;
+    const pitch = key && data.player_pitch ? data.player_pitch[key] : undefined;
     return {
         songId: data.song_id || state.selectedSongId,
         title: title ? title.textContent : '',
         artist: artist ? artist.textContent : '',
-        score: podium ? podium[0].score : (parseFloat(data.total_score) || 0),
-        pitch: key && data.player_pitch && typeof data.player_pitch[key] === 'number'
-            ? data.player_pitch[key]
-            : (pitchValues.length === 1 ? pitchValues[0] : undefined),
-        stats: key ? data.player_stats[key] : null,
-        name: one,
-        record: one && data.records ? data.records[one] : null,
-        podium,
+        score,
+        pitch: typeof pitch === 'number' ? pitch : undefined,
+        stats: key && data.player_stats ? data.player_stats[key] || null : null,
+        name: named ? micLabel(named) : null,
+        record: named && named !== PC_MIC && data.records ? data.records[named] : null,
     };
+}
+
+// Cartões do game_over: um por cantor, da maior nota para a menor
+function shareCardsFromGameOver(data) {
+    const scores = data.player_scores || {};
+    const names = Object.keys(scores);
+    if (names.length > 1) {
+        return names
+            .sort((a, b) => scores[b] - scores[a])
+            .map((name) => playerCard(data, name, scores[name]));
+    }
+    const key = soloKey(data) || names[0] || null;
+    const card = playerCard(data, key, parseFloat(data.total_score) || 0);
+    const pitchValues = Object.keys(data.player_pitch || {}).map((k) => data.player_pitch[k]);
+    if (card.pitch === undefined && pitchValues.length === 1) card.pitch = pitchValues[0];
+    if (key === PC_MIC) card.name = null;  // cantou sozinho no PC: sem "cantado por Local"
+    return [card];
 }
 
 export function showGameOverModal(data) {
     const modal = document.getElementById('game-over-modal');
-    mountShareCard(document.getElementById('game-over-share'), shareDataFromGameOver(data));
+    mountShareCards(document.getElementById('game-over-share'), shareCardsFromGameOver(data));
     modal.setAttribute('data-open', 'true');
 
     document.getElementById('btn-restart-game').onclick = () => {

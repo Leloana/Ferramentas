@@ -13,6 +13,23 @@
 @supports (width: min(1px, 2px)) {
     .share-card-frame { --u: min(0.72vw, 0.5vh); }
 }
+/* Um cartão por cantor (mountShareCards), numa fileira: --u diminui para caberem
+   até 4 lado a lado (o 5º em diante quebra a linha) */
+.share-cards { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
+.share-cards[data-count="2"] .share-card-frame { --u: 0.45vh; }
+.share-cards[data-count="3"] .share-card-frame { --u: 0.36vh; }
+.share-cards[data-count="4"] .share-card-frame { --u: 0.27vh; }
+@supports (width: min(1px, 2px)) {
+    .share-cards[data-count="2"] .share-card-frame { --u: min(0.42vw, 0.5vh); }
+    .share-cards[data-count="3"] .share-card-frame { --u: min(0.28vw, 0.5vh); }
+    .share-cards[data-count="4"] .share-card-frame { --u: min(0.21vw, 0.5vh); }
+}
+/* tela estreita (celular fazendo de TV): um embaixo do outro no tamanho normal, e o
+   quadro do fim de jogo rola — lado a lado o cartão ficava pequeno demais */
+@media (max-width: 600px) {
+    .share-cards { flex-direction: column; align-items: center; gap: 0.8rem; }
+    .share-cards[data-count] .share-card-frame { --u: 0.72vw; }
+}
 
 /* Quadradinhos de estilo: sem texto, cada um com as duas cores do seu cartão */
 .card-swatches { display: flex; flex-wrap: wrap; justify-content: center; margin: 0.8rem 0 0.3rem; }
@@ -448,7 +465,6 @@ html.is-tv .card-swatch { width: 2.8rem; height: 2.8rem; margin: 0.35rem; }
 .game-over-actions { display: flex; gap: 0.6rem; width: 100%; }
 .game-over-actions #btn-restart-game { flex: 1; }
 .game-over-record { margin: 0.2rem 0 0.8rem; color: var(--lavender-ink); font-weight: 700; text-align: center; }
-.game-over-replay { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-bottom: 0.8rem; }
 .btn-replay { display: inline-flex; align-items: center; gap: 0.45rem; }
 .btn-replay.is-playing { background: var(--sage); border-color: var(--sage-ink); }
 .mic-final .btn-replay { margin-top: 0.4rem; }

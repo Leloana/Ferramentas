@@ -6,7 +6,8 @@
 //
 // É o próprio placar do fim de jogo (TV) e da tela final do celular de quem
 // cantou (`mountShareCard`): o cartão e, embaixo, uma fileira de quadradinhos
-// coloridos sem texto, um por estilo — a pessoa toca e vê qual é qual. `data`:
+// coloridos sem texto, um por estilo — a pessoa toca e vê qual é qual. Com vários
+// cantores a TV mostra um cartão por pessoa (`mountShareCards`). `data`:
 //   { songId, title, artist, score, pitch, stats: {good, ok, poor}, name,
 //     record: {is_record, best_before, times_sung}, podium: [{name, score}] }
 import { iconSvg } from '../core/icons.js';
@@ -201,18 +202,34 @@ function swatches(current, onPick) {
 
 // Monta o cartão (no estilo da última escolha) e os quadradinhos dentro de `container`
 export function mountShareCard(container, data) {
-    const frame = el('div', 'share-card-frame');
+    mountShareCards(container, [data]);
+}
+
+// Um cartão por cantor (`list`, já na ordem de exibição), todos no mesmo estilo e
+// com uma fileira só de quadradinhos. O tamanho sai de `data-count` (share-card.css).
+export function mountShareCards(container, list) {
     let style = savedStyle();
-    frame.append(buildShareCard(data, style));
+    const frames = list.map((data) => {
+        const frame = el('div', 'share-card-frame');
+        frame.append(buildShareCard(data, style));
+        return frame;
+    });
     const row = swatches(style, (id) => {
         if (id === style) return;
         style = id;
-        // cada estilo tem a própria composição: o cartão é montado de novo
-        frame.firstChild.replaceWith(buildShareCard(data, id));
+        // cada estilo tem a própria composição: os cartões são montados de novo
+        frames.forEach((frame, idx) => frame.firstChild.replaceWith(buildShareCard(list[idx], id)));
         row.querySelectorAll('.card-swatch').forEach((btn) => {
             btn.setAttribute('aria-checked', String(btn.dataset.style === id));
         });
         saveStyle(id);
     });
-    container.replaceChildren(frame, row);
+    if (frames.length === 1) {
+        container.replaceChildren(frames[0], row);
+        return;
+    }
+    const group = el('div', 'share-cards');
+    group.dataset.count = String(Math.min(frames.length, 4));
+    frames.forEach((frame) => group.append(frame));
+    container.replaceChildren(group, row);
 }

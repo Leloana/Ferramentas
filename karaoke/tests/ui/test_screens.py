@@ -206,14 +206,20 @@ class ScreensTest(unittest.TestCase):
         self.assertEqual(page.evaluate("window.__xss"), 0)
         # o cartão é o próprio placar: sem botão "Cartão", com os quadradinhos sem texto
         self.assertEqual(page.locator("#btn-share-card").count(), 0)
-        box = page.locator("#game-over-share .share-card").bounding_box()
-        self.assertLessEqual(box["y"] + box["height"], DESKTOP["height"] + 1)
+        # um cartão por cantor, da maior nota para a menor; uma fileira só de estilos
+        self.assertEqual(page.locator("#game-over-share .share-card").count(), 2)
+        self.assertIn("Ana", page.locator("#game-over-share .share-card").nth(1).inner_text())
+        for i in range(2):
+            box = page.locator("#game-over-share .share-card").nth(i).bounding_box()
+            self.assertLessEqual(box["y"] + box["height"], DESKTOP["height"] + 1)
+        # ouvir a apresentação só no celular de cada um
+        self.assertEqual(page.locator("#game-over-modal .btn-replay").count(), 0)
         self.assertEqual(page.locator("#game-over-share .card-swatch").count(), 9)
         self.assertEqual(page.locator("#game-over-share .card-swatches").inner_text().strip(), "")
         self.assertEqual(errors, [])
 
     def test_every_card_style_fits_on_phone_and_tv(self):
-        """Os nove estilos no fim de jogo, solo e com pódio: nada sai do cartão nem da tela."""
+        """Os nove estilos no fim de jogo, solo e com 4 cantores (um cartão cada): nada sai do cartão nem da tela."""
         stats = {"good": 41, "ok": 12, "poor": 13, "verses": [95] * 41 + [78] * 12 + [40] * 13}
         solo = {"type": "game_over", "total_score": 88.4, "song_id": "x", "player_scores": {"Marcelo Ferreira": 88.4},
                 "player_stats": {"Marcelo Ferreira": stats}, "player_pitch": {"Marcelo Ferreira": 72},
@@ -230,24 +236,39 @@ class ScreensTest(unittest.TestCase):
                     const res = [];
                     for (const sw of document.querySelectorAll('#game-over-share .card-swatch')) {
                         sw.click();
-                        const card = document.querySelector('#game-over-share .share-card');
-                        const box = card.getBoundingClientRect();
-                        const cut = Array.from(card.querySelectorAll('*')).filter((n) => {
-                            const r = n.getBoundingClientRect();
-                            return r.height && (r.bottom > box.bottom + 1 || r.right > box.right + 1);
-                        }).map((n) => n.className);
-                        res.push({ style: card.dataset.style, picked: sw.getAttribute('aria-checked'), cut,
-                                   bottom: box.bottom, right: box.right });
+                        const cards = Array.from(document.querySelectorAll('#game-over-share .share-card'));
+                        let cut = [];
+                        let bottom = 0;
+                        let right = 0;
+                        cards.forEach((card) => {
+                            const box = card.getBoundingClientRect();
+                            cut = cut.concat(Array.from(card.querySelectorAll('*')).filter((n) => {
+                                const r = n.getBoundingClientRect();
+                                return r.height && (r.bottom > box.bottom + 1 || r.right > box.right + 1);
+                            }).map((n) => n.className));
+                            bottom = Math.max(bottom, box.bottom);
+                            right = Math.max(right, box.right);
+                        });
+                        const styles = cards.map((c) => c.dataset.style);
+                        const swatches = document.querySelector('#game-over-share .card-swatches').getBoundingClientRect();
+                        res.push({ style: styles[0], same: styles.every((x) => x === styles[0]), count: cards.length,
+                                   picked: sw.getAttribute('aria-checked'), cut, bottom, right,
+                                   swatchRight: swatches.right });
                     }
                     return res;
                 }""", msg)
                 self.assertEqual([o["style"] for o in out], ["caderno", "neon", "vidro", "ingresso", "cupom",
                                                              "vinil", "poster", "mosaico", "letreiro"])
                 for o in out:
-                    with self.subTest(path=path, style=o["style"], podium=len(msg["player_scores"]) > 1):
+                    with self.subTest(path=path, style=o["style"], cantores=len(msg["player_scores"])):
+                        self.assertEqual(o["count"], len(msg["player_scores"]))
+                        self.assertTrue(o["same"])  # trocar o estilo troca o de todos
+                        self.assertLessEqual(o["swatchRight"], viewport["width"] + 1)
                         self.assertEqual(o["picked"], "true")
                         self.assertEqual(o["cut"], [])
-                        self.assertLessEqual(o["bottom"], viewport["height"] + 1)
+                        if viewport is not PHONE or o["count"] == 1:
+                            # no celular vários cartões ficam em coluna e o quadro rola
+                            self.assertLessEqual(o["bottom"], viewport["height"] + 1)
                         self.assertLessEqual(o["right"], viewport["width"] + 1)
             # a escolha fica guardada: o próximo fim de jogo já abre no último estilo
             self.assertEqual(page.evaluate("localStorage.getItem('karaoke_card_style')"), "letreiro")
