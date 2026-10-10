@@ -1,0 +1,1609 @@
+{
+  "gerado_em": "2026-10-10T12:59:55",
+  "roteiro": "Projetos\\Video_16\\inundacao_de_melaco_1919\\texto.md",
+  "voz": "eleven:7i7dgyCkKt4c16dLtwT3",
+  "idioma": "pt",
+  "normalizar": false,
+  "velocidade": 1.0,
+  "arquivo": "audio/texto.wav",
+  "duracao_s": 118.6,
+  "texto_usado": "Uma onda de oito metros de altura varreu as ruas de Boston a mais de cinquenta quilômetros por hora. Mas não era água. Era melaço. Em quinze de janeiro de 1919, um tanque gigante no bairro de North End guardava mais de oito milhões de litros de melaço, usado pra fabricar álcool industrial. O tanque tinha sido construído às pressas, poucos anos antes, e ninguém testou se ele aguentava. Vazava tanto que a empresa pintou o tanque de marrom, pra esconder as manchas. Os moradores ouviam o metal rangendo. Naquele dia, fazia um calor fora de época pro inverno. Pouco depois do meio-dia, os rebites estouraram como tiros de metralhadora, e o tanque se abriu. A onda escura derrubou casas, entortou os trilhos do trem elevado e arrastou carroças, cavalos e pessoas. Quem foi pego não conseguia nadar. O melaço é grosso demais. Quanto mais a vítima lutava, mais afundava. E quando a noite chegou, o frio fez o líquido endurecer, prendendo quem ainda estava vivo. Marinheiros de um navio ancorado ali perto correram pra ajudar. Equipes de resgate passaram dias cavando na lama pegajosa. Vinte e uma pessoas morreram, e cerca de cento e cinquenta ficaram feridas. Muitos cavalos presos no melaço tiveram que ser sacrificados. A limpeza levou semanas. Usaram água salgada do porto pra lavar as ruas, e a baía ficou marrom até o verão. A empresa culpou anarquistas por uma suposta sabotagem. O tribunal não acreditou. Depois de anos de processo, ela foi obrigada a indenizar as vítimas. O desastre mudou as leis: obras assim passaram a exigir cálculos assinados por engenheiros. E os moradores mais antigos juravam que, nos dias quentes, o bairro ainda cheirava a melaço décadas depois.",
+  "aviso_normalizacao": null,
+  "frases": [
+    {
+      "texto": "Uma onda de oito metros de altura varreu as ruas de Boston a mais de cinquenta quilômetros por hora.",
+      "inicio_s": 0.0,
+      "fim_s": 6.56,
+      "palavras": [
+        {
+          "texto": "Uma",
+          "inicio_s": 0.0,
+          "fim_s": 0.2
+        },
+        {
+          "texto": "onda",
+          "inicio_s": 0.24,
+          "fim_s": 0.5
+        },
+        {
+          "texto": "de",
+          "inicio_s": 0.56,
+          "fim_s": 0.74
+        },
+        {
+          "texto": "oito",
+          "inicio_s": 0.8,
+          "fim_s": 1.067
+        },
+        {
+          "texto": "metros",
+          "inicio_s": 1.12,
+          "fim_s": 1.533
+        },
+        {
+          "texto": "de",
+          "inicio_s": 1.6,
+          "fim_s": 1.66
+        },
+        {
+          "texto": "altura",
+          "inicio_s": 1.68,
+          "fim_s": 2.16
+        },
+        {
+          "texto": "varreu",
+          "inicio_s": 2.24,
+          "fim_s": 2.56
+        },
+        {
+          "texto": "as",
+          "inicio_s": 2.64,
+          "fim_s": 2.72
+        },
+        {
+          "texto": "ruas",
+          "inicio_s": 2.8,
+          "fim_s": 3.04
+        },
+        {
+          "texto": "de",
+          "inicio_s": 3.12,
+          "fim_s": 3.2
+        },
+        {
+          "texto": "Boston",
+          "inicio_s": 3.44,
+          "fim_s": 3.68
+        },
+        {
+          "texto": "a",
+          "inicio_s": 3.76,
+          "fim_s": 3.84
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 3.92,
+          "fim_s": 4.08
+        },
+        {
+          "texto": "de",
+          "inicio_s": 4.16,
+          "fim_s": 4.32
+        },
+        {
+          "texto": "cinquenta",
+          "inicio_s": 4.44,
+          "fim_s": 4.88
+        },
+        {
+          "texto": "quilômetros",
+          "inicio_s": 4.96,
+          "fim_s": 5.52
+        },
+        {
+          "texto": "por",
+          "inicio_s": 5.6,
+          "fim_s": 5.76
+        },
+        {
+          "texto": "hora",
+          "inicio_s": 5.88,
+          "fim_s": 6.0
+        }
+      ]
+    },
+    {
+      "texto": "Mas não era água.",
+      "inicio_s": 6.76,
+      "fim_s": 8.64,
+      "palavras": [
+        {
+          "texto": "Mas",
+          "inicio_s": 6.76,
+          "fim_s": 6.96
+        },
+        {
+          "texto": "não",
+          "inicio_s": 7.28,
+          "fim_s": 7.44
+        },
+        {
+          "texto": "era",
+          "inicio_s": 7.56,
+          "fim_s": 7.68
+        },
+        {
+          "texto": "água",
+          "inicio_s": 7.84,
+          "fim_s": 8.08
+        }
+      ]
+    },
+    {
+      "texto": "Era melaço.",
+      "inicio_s": 8.68,
+      "fim_s": 10.16,
+      "palavras": [
+        {
+          "texto": "Era",
+          "inicio_s": 8.68,
+          "fim_s": 8.88
+        },
+        {
+          "texto": "melaço",
+          "inicio_s": 8.92,
+          "fim_s": 9.6
+        }
+      ]
+    },
+    {
+      "texto": "Em quinze de janeiro de 1919, um tanque gigante no bairro de North End guardava mais de oito milhões de litros de melaço, usado pra fabricar álcool industrial.",
+      "inicio_s": 10.28,
+      "fim_s": 22.24,
+      "palavras": [
+        {
+          "texto": "Em",
+          "inicio_s": 10.28,
+          "fim_s": 10.4
+        },
+        {
+          "texto": "quinze",
+          "inicio_s": 10.48,
+          "fim_s": 10.64
+        },
+        {
+          "texto": "de",
+          "inicio_s": 10.72,
+          "fim_s": 10.8
+        },
+        {
+          "texto": "janeiro",
+          "inicio_s": 10.88,
+          "fim_s": 11.28
+        },
+        {
+          "texto": "de",
+          "inicio_s": 11.36,
+          "fim_s": 11.44
+        },
+        {
+          "texto": "1919",
+          "inicio_s": 11.6,
+          "fim_s": 13.04
+        },
+        {
+          "texto": "um",
+          "inicio_s": 13.48,
+          "fim_s": 13.52
+        },
+        {
+          "texto": "tanque",
+          "inicio_s": 13.68,
+          "fim_s": 13.92
+        },
+        {
+          "texto": "gigante",
+          "inicio_s": 14.0,
+          "fim_s": 14.56
+        },
+        {
+          "texto": "no",
+          "inicio_s": 14.64,
+          "fim_s": 14.72
+        },
+        {
+          "texto": "bairro",
+          "inicio_s": 14.88,
+          "fim_s": 15.04
+        },
+        {
+          "texto": "de",
+          "inicio_s": 15.12,
+          "fim_s": 15.2
+        },
+        {
+          "texto": "North",
+          "inicio_s": 15.28,
+          "fim_s": 15.52
+        },
+        {
+          "texto": "End",
+          "inicio_s": 15.6,
+          "fim_s": 15.84
+        },
+        {
+          "texto": "guardava",
+          "inicio_s": 16.08,
+          "fim_s": 16.64
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 16.68,
+          "fim_s": 16.88
+        },
+        {
+          "texto": "de",
+          "inicio_s": 16.96,
+          "fim_s": 17.12
+        },
+        {
+          "texto": "oito",
+          "inicio_s": 17.2,
+          "fim_s": 17.44
+        },
+        {
+          "texto": "milhões",
+          "inicio_s": 17.6,
+          "fim_s": 18.08
+        },
+        {
+          "texto": "de",
+          "inicio_s": 18.12,
+          "fim_s": 18.16
+        },
+        {
+          "texto": "litros",
+          "inicio_s": 18.24,
+          "fim_s": 18.56
+        },
+        {
+          "texto": "de",
+          "inicio_s": 18.64,
+          "fim_s": 18.72
+        },
+        {
+          "texto": "melaço",
+          "inicio_s": 18.76,
+          "fim_s": 19.28
+        },
+        {
+          "texto": "usado",
+          "inicio_s": 19.68,
+          "fim_s": 20.0
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 20.08,
+          "fim_s": 20.16
+        },
+        {
+          "texto": "fabricar",
+          "inicio_s": 20.24,
+          "fim_s": 20.72
+        },
+        {
+          "texto": "álcool",
+          "inicio_s": 20.84,
+          "fim_s": 21.04
+        },
+        {
+          "texto": "industrial",
+          "inicio_s": 21.12,
+          "fim_s": 21.76
+        }
+      ]
+    },
+    {
+      "texto": "O tanque tinha sido construído às pressas, poucos anos antes, e ninguém testou se ele aguentava.",
+      "inicio_s": 22.28,
+      "fim_s": 28.56,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 22.28,
+          "fim_s": 22.32
+        },
+        {
+          "texto": "tanque",
+          "inicio_s": 22.48,
+          "fim_s": 22.8
+        },
+        {
+          "texto": "tinha",
+          "inicio_s": 22.84,
+          "fim_s": 23.04
+        },
+        {
+          "texto": "sido",
+          "inicio_s": 23.12,
+          "fim_s": 23.28
+        },
+        {
+          "texto": "construído",
+          "inicio_s": 23.36,
+          "fim_s": 23.84
+        },
+        {
+          "texto": "às",
+          "inicio_s": 23.88,
+          "fim_s": 24.0
+        },
+        {
+          "texto": "pressas",
+          "inicio_s": 24.08,
+          "fim_s": 24.56
+        },
+        {
+          "texto": "poucos",
+          "inicio_s": 24.84,
+          "fim_s": 25.2
+        },
+        {
+          "texto": "anos",
+          "inicio_s": 25.32,
+          "fim_s": 25.44
+        },
+        {
+          "texto": "antes",
+          "inicio_s": 25.52,
+          "fim_s": 25.84
+        },
+        {
+          "texto": "e",
+          "inicio_s": 26.2,
+          "fim_s": 26.24
+        },
+        {
+          "texto": "ninguém",
+          "inicio_s": 26.32,
+          "fim_s": 26.72
+        },
+        {
+          "texto": "testou",
+          "inicio_s": 26.88,
+          "fim_s": 27.2
+        },
+        {
+          "texto": "se",
+          "inicio_s": 27.28,
+          "fim_s": 27.36
+        },
+        {
+          "texto": "ele",
+          "inicio_s": 27.4,
+          "fim_s": 27.44
+        },
+        {
+          "texto": "aguentava",
+          "inicio_s": 27.52,
+          "fim_s": 28.08
+        }
+      ]
+    },
+    {
+      "texto": "Vazava tanto que a empresa pintou o tanque de marrom, pra esconder as manchas.",
+      "inicio_s": 28.64,
+      "fim_s": 33.2,
+      "palavras": [
+        {
+          "texto": "Vazava",
+          "inicio_s": 28.64,
+          "fim_s": 29.2
+        },
+        {
+          "texto": "tanto",
+          "inicio_s": 29.307,
+          "fim_s": 29.52
+        },
+        {
+          "texto": "que",
+          "inicio_s": 29.76,
+          "fim_s": 29.84
+        },
+        {
+          "texto": "a",
+          "inicio_s": 29.88,
+          "fim_s": 29.92
+        },
+        {
+          "texto": "empresa",
+          "inicio_s": 30.12,
+          "fim_s": 30.32
+        },
+        {
+          "texto": "pintou",
+          "inicio_s": 30.4,
+          "fim_s": 30.72
+        },
+        {
+          "texto": "o",
+          "inicio_s": 30.76,
+          "fim_s": 30.8
+        },
+        {
+          "texto": "tanque",
+          "inicio_s": 30.88,
+          "fim_s": 31.12
+        },
+        {
+          "texto": "de",
+          "inicio_s": 31.2,
+          "fim_s": 31.28
+        },
+        {
+          "texto": "marrom",
+          "inicio_s": 31.4,
+          "fim_s": 31.68
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 31.96,
+          "fim_s": 32.0
+        },
+        {
+          "texto": "esconder",
+          "inicio_s": 32.08,
+          "fim_s": 32.48
+        },
+        {
+          "texto": "as",
+          "inicio_s": 32.56,
+          "fim_s": 32.64
+        },
+        {
+          "texto": "manchas",
+          "inicio_s": 32.72,
+          "fim_s": 33.12
+        }
+      ]
+    },
+    {
+      "texto": "Os moradores ouviam o metal rangendo.",
+      "inicio_s": 33.6,
+      "fim_s": 36.08,
+      "palavras": [
+        {
+          "texto": "Os",
+          "inicio_s": 33.6,
+          "fim_s": 33.76
+        },
+        {
+          "texto": "moradores",
+          "inicio_s": 33.84,
+          "fim_s": 34.4
+        },
+        {
+          "texto": "ouviam",
+          "inicio_s": 34.52,
+          "fim_s": 34.8
+        },
+        {
+          "texto": "o",
+          "inicio_s": 34.88,
+          "fim_s": 34.92
+        },
+        {
+          "texto": "metal",
+          "inicio_s": 34.96,
+          "fim_s": 35.36
+        },
+        {
+          "texto": "rangendo",
+          "inicio_s": 35.52,
+          "fim_s": 36.0
+        }
+      ]
+    },
+    {
+      "texto": "Naquele dia, fazia um calor fora de época pro inverno.",
+      "inicio_s": 36.4,
+      "fim_s": 39.84,
+      "palavras": [
+        {
+          "texto": "Naquele",
+          "inicio_s": 36.4,
+          "fim_s": 36.8
+        },
+        {
+          "texto": "dia",
+          "inicio_s": 36.88,
+          "fim_s": 37.12
+        },
+        {
+          "texto": "fazia",
+          "inicio_s": 37.44,
+          "fim_s": 37.68
+        },
+        {
+          "texto": "um",
+          "inicio_s": 37.76,
+          "fim_s": 37.84
+        },
+        {
+          "texto": "calor",
+          "inicio_s": 37.92,
+          "fim_s": 38.16
+        },
+        {
+          "texto": "fora",
+          "inicio_s": 38.32,
+          "fim_s": 38.56
+        },
+        {
+          "texto": "de",
+          "inicio_s": 38.64,
+          "fim_s": 38.72
+        },
+        {
+          "texto": "época",
+          "inicio_s": 38.8,
+          "fim_s": 39.12
+        },
+        {
+          "texto": "pro",
+          "inicio_s": 39.2,
+          "fim_s": 39.28
+        },
+        {
+          "texto": "inverno",
+          "inicio_s": 39.36,
+          "fim_s": 39.76
+        }
+      ]
+    },
+    {
+      "texto": "Pouco depois do meio-dia, os rebites estouraram como tiros de metralhadora, e o tanque se abriu.",
+      "inicio_s": 40.24,
+      "fim_s": 46.56,
+      "palavras": [
+        {
+          "texto": "Pouco",
+          "inicio_s": 40.24,
+          "fim_s": 40.56
+        },
+        {
+          "texto": "depois",
+          "inicio_s": 40.64,
+          "fim_s": 40.88
+        },
+        {
+          "texto": "do",
+          "inicio_s": 40.96,
+          "fim_s": 41.0
+        },
+        {
+          "texto": "meio-dia",
+          "inicio_s": 41.04,
+          "fim_s": 41.52
+        },
+        {
+          "texto": "os",
+          "inicio_s": 41.84,
+          "fim_s": 41.92
+        },
+        {
+          "texto": "rebites",
+          "inicio_s": 42.0,
+          "fim_s": 42.48
+        },
+        {
+          "texto": "estouraram",
+          "inicio_s": 42.6,
+          "fim_s": 43.12
+        },
+        {
+          "texto": "como",
+          "inicio_s": 43.2,
+          "fim_s": 43.36
+        },
+        {
+          "texto": "tiros",
+          "inicio_s": 43.52,
+          "fim_s": 43.84
+        },
+        {
+          "texto": "de",
+          "inicio_s": 43.88,
+          "fim_s": 43.92
+        },
+        {
+          "texto": "metralhadora",
+          "inicio_s": 44.0,
+          "fim_s": 44.72
+        },
+        {
+          "texto": "e",
+          "inicio_s": 45.0,
+          "fim_s": 45.04
+        },
+        {
+          "texto": "o",
+          "inicio_s": 45.08,
+          "fim_s": 45.12
+        },
+        {
+          "texto": "tanque",
+          "inicio_s": 45.28,
+          "fim_s": 45.6
+        },
+        {
+          "texto": "se",
+          "inicio_s": 45.64,
+          "fim_s": 45.68
+        },
+        {
+          "texto": "abriu",
+          "inicio_s": 45.76,
+          "fim_s": 46.08
+        }
+      ]
+    },
+    {
+      "texto": "A onda escura derrubou casas, entortou os trilhos do trem elevado e arrastou carroças, cavalos e pessoas.",
+      "inicio_s": 46.64,
+      "fim_s": 54.2,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 46.64,
+          "fim_s": 46.72
+        },
+        {
+          "texto": "onda",
+          "inicio_s": 46.84,
+          "fim_s": 46.96
+        },
+        {
+          "texto": "escura",
+          "inicio_s": 47.08,
+          "fim_s": 47.44
+        },
+        {
+          "texto": "derrubou",
+          "inicio_s": 47.48,
+          "fim_s": 47.84
+        },
+        {
+          "texto": "casas",
+          "inicio_s": 48.0,
+          "fim_s": 48.48
+        },
+        {
+          "texto": "entortou",
+          "inicio_s": 48.84,
+          "fim_s": 49.28
+        },
+        {
+          "texto": "os",
+          "inicio_s": 49.36,
+          "fim_s": 49.44
+        },
+        {
+          "texto": "trilhos",
+          "inicio_s": 49.52,
+          "fim_s": 49.84
+        },
+        {
+          "texto": "do",
+          "inicio_s": 49.92,
+          "fim_s": 50.0
+        },
+        {
+          "texto": "trem",
+          "inicio_s": 50.08,
+          "fim_s": 50.24
+        },
+        {
+          "texto": "elevado",
+          "inicio_s": 50.28,
+          "fim_s": 50.8
+        },
+        {
+          "texto": "e",
+          "inicio_s": 51.04,
+          "fim_s": 51.12
+        },
+        {
+          "texto": "arrastou",
+          "inicio_s": 51.2,
+          "fim_s": 51.6
+        },
+        {
+          "texto": "carroças",
+          "inicio_s": 51.72,
+          "fim_s": 52.32
+        },
+        {
+          "texto": "cavalos",
+          "inicio_s": 52.52,
+          "fim_s": 53.12
+        },
+        {
+          "texto": "e",
+          "inicio_s": 53.2,
+          "fim_s": 53.28
+        },
+        {
+          "texto": "pessoas",
+          "inicio_s": 53.36,
+          "fim_s": 54.0
+        }
+      ]
+    },
+    {
+      "texto": "Quem foi pego não conseguia nadar.",
+      "inicio_s": 54.4,
+      "fim_s": 56.64,
+      "palavras": [
+        {
+          "texto": "Quem",
+          "inicio_s": 54.4,
+          "fim_s": 54.56
+        },
+        {
+          "texto": "foi",
+          "inicio_s": 54.64,
+          "fim_s": 54.8
+        },
+        {
+          "texto": "pego",
+          "inicio_s": 54.88,
+          "fim_s": 55.2
+        },
+        {
+          "texto": "não",
+          "inicio_s": 55.44,
+          "fim_s": 55.6
+        },
+        {
+          "texto": "conseguia",
+          "inicio_s": 55.68,
+          "fim_s": 56.08
+        },
+        {
+          "texto": "nadar",
+          "inicio_s": 56.16,
+          "fim_s": 56.56
+        }
+      ]
+    },
+    {
+      "texto": "O melaço é grosso demais.",
+      "inicio_s": 57.04,
+      "fim_s": 59.04,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 57.04,
+          "fim_s": 57.12
+        },
+        {
+          "texto": "melaço",
+          "inicio_s": 57.16,
+          "fim_s": 57.6
+        },
+        {
+          "texto": "é",
+          "inicio_s": 57.68,
+          "fim_s": 57.76
+        },
+        {
+          "texto": "grosso",
+          "inicio_s": 57.84,
+          "fim_s": 58.16
+        },
+        {
+          "texto": "demais",
+          "inicio_s": 58.24,
+          "fim_s": 58.8
+        }
+      ]
+    },
+    {
+      "texto": "Quanto mais a vítima lutava, mais afundava.",
+      "inicio_s": 59.28,
+      "fim_s": 62.32,
+      "palavras": [
+        {
+          "texto": "Quanto",
+          "inicio_s": 59.28,
+          "fim_s": 59.6
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 59.68,
+          "fim_s": 59.92
+        },
+        {
+          "texto": "a",
+          "inicio_s": 59.96,
+          "fim_s": 60.0
+        },
+        {
+          "texto": "vítima",
+          "inicio_s": 60.08,
+          "fim_s": 60.4
+        },
+        {
+          "texto": "lutava",
+          "inicio_s": 60.52,
+          "fim_s": 60.96
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 61.36,
+          "fim_s": 61.6
+        },
+        {
+          "texto": "afundava",
+          "inicio_s": 61.68,
+          "fim_s": 62.24
+        }
+      ]
+    },
+    {
+      "texto": "E quando a noite chegou, o frio fez o líquido endurecer, prendendo quem ainda estava vivo.",
+      "inicio_s": 62.72,
+      "fim_s": 68.64,
+      "palavras": [
+        {
+          "texto": "E",
+          "inicio_s": 62.72,
+          "fim_s": 62.88
+        },
+        {
+          "texto": "quando",
+          "inicio_s": 62.92,
+          "fim_s": 63.04
+        },
+        {
+          "texto": "a",
+          "inicio_s": 63.12,
+          "fim_s": 63.16
+        },
+        {
+          "texto": "noite",
+          "inicio_s": 63.2,
+          "fim_s": 63.44
+        },
+        {
+          "texto": "chegou",
+          "inicio_s": 63.52,
+          "fim_s": 63.84
+        },
+        {
+          "texto": "o",
+          "inicio_s": 64.28,
+          "fim_s": 64.32
+        },
+        {
+          "texto": "frio",
+          "inicio_s": 64.48,
+          "fim_s": 64.72
+        },
+        {
+          "texto": "fez",
+          "inicio_s": 64.8,
+          "fim_s": 64.96
+        },
+        {
+          "texto": "o",
+          "inicio_s": 65.0,
+          "fim_s": 65.04
+        },
+        {
+          "texto": "líquido",
+          "inicio_s": 65.12,
+          "fim_s": 65.44
+        },
+        {
+          "texto": "endurecer",
+          "inicio_s": 65.52,
+          "fim_s": 66.16
+        },
+        {
+          "texto": "prendendo",
+          "inicio_s": 66.64,
+          "fim_s": 67.04
+        },
+        {
+          "texto": "quem",
+          "inicio_s": 67.12,
+          "fim_s": 67.28
+        },
+        {
+          "texto": "ainda",
+          "inicio_s": 67.4,
+          "fim_s": 67.6
+        },
+        {
+          "texto": "estava",
+          "inicio_s": 67.68,
+          "fim_s": 68.0
+        },
+        {
+          "texto": "vivo",
+          "inicio_s": 68.08,
+          "fim_s": 68.4
+        }
+      ]
+    },
+    {
+      "texto": "Marinheiros de um navio ancorado ali perto correram pra ajudar.",
+      "inicio_s": 68.88,
+      "fim_s": 72.32,
+      "palavras": [
+        {
+          "texto": "Marinheiros",
+          "inicio_s": 68.88,
+          "fim_s": 69.44
+        },
+        {
+          "texto": "de",
+          "inicio_s": 69.52,
+          "fim_s": 69.56
+        },
+        {
+          "texto": "um",
+          "inicio_s": 69.6,
+          "fim_s": 69.64
+        },
+        {
+          "texto": "navio",
+          "inicio_s": 69.68,
+          "fim_s": 70.0
+        },
+        {
+          "texto": "ancorado",
+          "inicio_s": 70.08,
+          "fim_s": 70.48
+        },
+        {
+          "texto": "ali",
+          "inicio_s": 70.6,
+          "fim_s": 70.72
+        },
+        {
+          "texto": "perto",
+          "inicio_s": 70.76,
+          "fim_s": 71.12
+        },
+        {
+          "texto": "correram",
+          "inicio_s": 71.2,
+          "fim_s": 71.68
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 71.72,
+          "fim_s": 71.76
+        },
+        {
+          "texto": "ajudar",
+          "inicio_s": 71.84,
+          "fim_s": 72.24
+        }
+      ]
+    },
+    {
+      "texto": "Equipes de resgate passaram dias cavando na lama pegajosa.",
+      "inicio_s": 72.72,
+      "fim_s": 76.64,
+      "palavras": [
+        {
+          "texto": "Equipes",
+          "inicio_s": 72.72,
+          "fim_s": 73.2
+        },
+        {
+          "texto": "de",
+          "inicio_s": 73.24,
+          "fim_s": 73.28
+        },
+        {
+          "texto": "resgate",
+          "inicio_s": 73.36,
+          "fim_s": 73.92
+        },
+        {
+          "texto": "passaram",
+          "inicio_s": 74.04,
+          "fim_s": 74.4
+        },
+        {
+          "texto": "dias",
+          "inicio_s": 74.48,
+          "fim_s": 74.8
+        },
+        {
+          "texto": "cavando",
+          "inicio_s": 74.88,
+          "fim_s": 75.36
+        },
+        {
+          "texto": "na",
+          "inicio_s": 75.44,
+          "fim_s": 75.52
+        },
+        {
+          "texto": "lama",
+          "inicio_s": 75.6,
+          "fim_s": 75.76
+        },
+        {
+          "texto": "pegajosa",
+          "inicio_s": 75.84,
+          "fim_s": 76.56
+        }
+      ]
+    },
+    {
+      "texto": "Vinte e uma pessoas morreram, e cerca de cento e cinquenta ficaram feridas.",
+      "inicio_s": 77.04,
+      "fim_s": 81.84,
+      "palavras": [
+        {
+          "texto": "Vinte",
+          "inicio_s": 77.04,
+          "fim_s": 77.36
+        },
+        {
+          "texto": "e",
+          "inicio_s": 77.4,
+          "fim_s": 77.44
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 77.52,
+          "fim_s": 77.6
+        },
+        {
+          "texto": "pessoas",
+          "inicio_s": 77.68,
+          "fim_s": 78.16
+        },
+        {
+          "texto": "morreram",
+          "inicio_s": 78.2,
+          "fim_s": 78.64
+        },
+        {
+          "texto": "e",
+          "inicio_s": 79.0,
+          "fim_s": 79.04
+        },
+        {
+          "texto": "cerca",
+          "inicio_s": 79.12,
+          "fim_s": 79.36
+        },
+        {
+          "texto": "de",
+          "inicio_s": 79.44,
+          "fim_s": 79.6
+        },
+        {
+          "texto": "cento",
+          "inicio_s": 79.68,
+          "fim_s": 79.973
+        },
+        {
+          "texto": "e",
+          "inicio_s": 80.027,
+          "fim_s": 80.08
+        },
+        {
+          "texto": "cinquenta",
+          "inicio_s": 80.16,
+          "fim_s": 80.56
+        },
+        {
+          "texto": "ficaram",
+          "inicio_s": 80.64,
+          "fim_s": 80.96
+        },
+        {
+          "texto": "feridas",
+          "inicio_s": 81.04,
+          "fim_s": 81.6
+        }
+      ]
+    },
+    {
+      "texto": "Muitos cavalos presos no melaço tiveram que ser sacrificados.",
+      "inicio_s": 82.08,
+      "fim_s": 85.92,
+      "palavras": [
+        {
+          "texto": "Muitos",
+          "inicio_s": 82.08,
+          "fim_s": 82.4
+        },
+        {
+          "texto": "cavalos",
+          "inicio_s": 82.48,
+          "fim_s": 82.96
+        },
+        {
+          "texto": "presos",
+          "inicio_s": 83.04,
+          "fim_s": 83.36
+        },
+        {
+          "texto": "no",
+          "inicio_s": 83.4,
+          "fim_s": 83.44
+        },
+        {
+          "texto": "melaço",
+          "inicio_s": 83.52,
+          "fim_s": 84.0
+        },
+        {
+          "texto": "tiveram",
+          "inicio_s": 84.08,
+          "fim_s": 84.4
+        },
+        {
+          "texto": "que",
+          "inicio_s": 84.48,
+          "fim_s": 84.56
+        },
+        {
+          "texto": "ser",
+          "inicio_s": 84.64,
+          "fim_s": 84.72
+        },
+        {
+          "texto": "sacrificados",
+          "inicio_s": 84.8,
+          "fim_s": 85.68
+        }
+      ]
+    },
+    {
+      "texto": "A limpeza levou semanas.",
+      "inicio_s": 86.16,
+      "fim_s": 88.2,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 86.16,
+          "fim_s": 86.24
+        },
+        {
+          "texto": "limpeza",
+          "inicio_s": 86.32,
+          "fim_s": 86.88
+        },
+        {
+          "texto": "levou",
+          "inicio_s": 86.96,
+          "fim_s": 87.2
+        },
+        {
+          "texto": "semanas",
+          "inicio_s": 87.28,
+          "fim_s": 88.0
+        }
+      ]
+    },
+    {
+      "texto": "Usaram água salgada do porto pra lavar as ruas, e a baía ficou marrom até o verão.",
+      "inicio_s": 88.4,
+      "fim_s": 94.08,
+      "palavras": [
+        {
+          "texto": "Usaram",
+          "inicio_s": 88.4,
+          "fim_s": 88.8
+        },
+        {
+          "texto": "água",
+          "inicio_s": 88.88,
+          "fim_s": 89.12
+        },
+        {
+          "texto": "salgada",
+          "inicio_s": 89.24,
+          "fim_s": 89.6
+        },
+        {
+          "texto": "do",
+          "inicio_s": 89.64,
+          "fim_s": 89.68
+        },
+        {
+          "texto": "porto",
+          "inicio_s": 89.84,
+          "fim_s": 90.16
+        },
+        {
+          "texto": "pra",
+          "inicio_s": 90.24,
+          "fim_s": 90.32
+        },
+        {
+          "texto": "lavar",
+          "inicio_s": 90.36,
+          "fim_s": 90.64
+        },
+        {
+          "texto": "as",
+          "inicio_s": 90.72,
+          "fim_s": 90.8
+        },
+        {
+          "texto": "ruas",
+          "inicio_s": 90.88,
+          "fim_s": 91.2
+        },
+        {
+          "texto": "e",
+          "inicio_s": 91.52,
+          "fim_s": 91.56
+        },
+        {
+          "texto": "a",
+          "inicio_s": 91.6,
+          "fim_s": 91.64
+        },
+        {
+          "texto": "baía",
+          "inicio_s": 91.68,
+          "fim_s": 92.08
+        },
+        {
+          "texto": "ficou",
+          "inicio_s": 92.16,
+          "fim_s": 92.4
+        },
+        {
+          "texto": "marrom",
+          "inicio_s": 92.52,
+          "fim_s": 92.8
+        },
+        {
+          "texto": "até",
+          "inicio_s": 92.88,
+          "fim_s": 93.16
+        },
+        {
+          "texto": "o",
+          "inicio_s": 93.2,
+          "fim_s": 93.28
+        },
+        {
+          "texto": "verão",
+          "inicio_s": 93.36,
+          "fim_s": 93.6
+        }
+      ]
+    },
+    {
+      "texto": "A empresa culpou anarquistas por uma suposta sabotagem.",
+      "inicio_s": 94.12,
+      "fim_s": 97.92,
+      "palavras": [
+        {
+          "texto": "A",
+          "inicio_s": 94.12,
+          "fim_s": 94.16
+        },
+        {
+          "texto": "empresa",
+          "inicio_s": 94.24,
+          "fim_s": 94.64
+        },
+        {
+          "texto": "culpou",
+          "inicio_s": 94.72,
+          "fim_s": 95.04
+        },
+        {
+          "texto": "anarquistas",
+          "inicio_s": 95.12,
+          "fim_s": 95.84
+        },
+        {
+          "texto": "por",
+          "inicio_s": 95.92,
+          "fim_s": 96.0
+        },
+        {
+          "texto": "uma",
+          "inicio_s": 96.08,
+          "fim_s": 96.24
+        },
+        {
+          "texto": "suposta",
+          "inicio_s": 96.36,
+          "fim_s": 96.8
+        },
+        {
+          "texto": "sabotagem",
+          "inicio_s": 96.88,
+          "fim_s": 97.52
+        }
+      ]
+    },
+    {
+      "texto": "O tribunal não acreditou.",
+      "inicio_s": 98.0,
+      "fim_s": 100.0,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 98.0,
+          "fim_s": 98.04
+        },
+        {
+          "texto": "tribunal",
+          "inicio_s": 98.08,
+          "fim_s": 98.64
+        },
+        {
+          "texto": "não",
+          "inicio_s": 98.72,
+          "fim_s": 98.88
+        },
+        {
+          "texto": "acreditou",
+          "inicio_s": 98.96,
+          "fim_s": 99.52
+        }
+      ]
+    },
+    {
+      "texto": "Depois de anos de processo, ela foi obrigada a indenizar as vítimas.",
+      "inicio_s": 100.08,
+      "fim_s": 104.64,
+      "palavras": [
+        {
+          "texto": "Depois",
+          "inicio_s": 100.08,
+          "fim_s": 100.4
+        },
+        {
+          "texto": "de",
+          "inicio_s": 100.48,
+          "fim_s": 100.56
+        },
+        {
+          "texto": "anos",
+          "inicio_s": 100.64,
+          "fim_s": 100.88
+        },
+        {
+          "texto": "de",
+          "inicio_s": 100.96,
+          "fim_s": 101.04
+        },
+        {
+          "texto": "processo",
+          "inicio_s": 101.32,
+          "fim_s": 101.72
+        },
+        {
+          "texto": "ela",
+          "inicio_s": 101.96,
+          "fim_s": 102.08
+        },
+        {
+          "texto": "foi",
+          "inicio_s": 102.12,
+          "fim_s": 102.24
+        },
+        {
+          "texto": "obrigada",
+          "inicio_s": 102.32,
+          "fim_s": 102.8
+        },
+        {
+          "texto": "a",
+          "inicio_s": 102.84,
+          "fim_s": 102.88
+        },
+        {
+          "texto": "indenizar",
+          "inicio_s": 103.04,
+          "fim_s": 103.52
+        },
+        {
+          "texto": "as",
+          "inicio_s": 103.6,
+          "fim_s": 103.68
+        },
+        {
+          "texto": "vítimas",
+          "inicio_s": 103.72,
+          "fim_s": 104.16
+        }
+      ]
+    },
+    {
+      "texto": "O desastre mudou as leis: obras assim passaram a exigir cálculos assinados por engenheiros.",
+      "inicio_s": 104.68,
+      "fim_s": 111.36,
+      "palavras": [
+        {
+          "texto": "O",
+          "inicio_s": 104.68,
+          "fim_s": 104.72
+        },
+        {
+          "texto": "desastre",
+          "inicio_s": 104.8,
+          "fim_s": 105.36
+        },
+        {
+          "texto": "mudou",
+          "inicio_s": 105.44,
+          "fim_s": 105.76
+        },
+        {
+          "texto": "as",
+          "inicio_s": 105.84,
+          "fim_s": 105.92
+        },
+        {
+          "texto": "leis",
+          "inicio_s": 106.0,
+          "fim_s": 106.32
+        },
+        {
+          "texto": "obras",
+          "inicio_s": 106.88,
+          "fim_s": 107.2
+        },
+        {
+          "texto": "assim",
+          "inicio_s": 107.32,
+          "fim_s": 107.76
+        },
+        {
+          "texto": "passaram",
+          "inicio_s": 107.92,
+          "fim_s": 108.24
+        },
+        {
+          "texto": "a",
+          "inicio_s": 108.32,
+          "fim_s": 108.36
+        },
+        {
+          "texto": "exigir",
+          "inicio_s": 108.4,
+          "fim_s": 108.88
+        },
+        {
+          "texto": "cálculos",
+          "inicio_s": 108.92,
+          "fim_s": 109.36
+        },
+        {
+          "texto": "assinados",
+          "inicio_s": 109.52,
+          "fim_s": 110.08
+        },
+        {
+          "texto": "por",
+          "inicio_s": 110.12,
+          "fim_s": 110.16
+        },
+        {
+          "texto": "engenheiros",
+          "inicio_s": 110.24,
+          "fim_s": 110.96
+        }
+      ]
+    },
+    {
+      "texto": "E os moradores mais antigos juravam que, nos dias quentes, o bairro ainda cheirava a melaço décadas depois.",
+      "inicio_s": 111.4,
+      "fim_s": 118.64,
+      "palavras": [
+        {
+          "texto": "E",
+          "inicio_s": 111.4,
+          "fim_s": 111.44
+        },
+        {
+          "texto": "os",
+          "inicio_s": 111.52,
+          "fim_s": 111.6
+        },
+        {
+          "texto": "moradores",
+          "inicio_s": 111.68,
+          "fim_s": 112.16
+        },
+        {
+          "texto": "mais",
+          "inicio_s": 112.2,
+          "fim_s": 112.4
+        },
+        {
+          "texto": "antigos",
+          "inicio_s": 112.56,
+          "fim_s": 113.12
+        },
+        {
+          "texto": "juravam",
+          "inicio_s": 113.2,
+          "fim_s": 113.76
+        },
+        {
+          "texto": "que",
+          "inicio_s": 113.84,
+          "fim_s": 114.08
+        },
+        {
+          "texto": "nos",
+          "inicio_s": 114.16,
+          "fim_s": 114.32
+        },
+        {
+          "texto": "dias",
+          "inicio_s": 114.36,
+          "fim_s": 114.64
+        },
+        {
+          "texto": "quentes",
+          "inicio_s": 114.72,
+          "fim_s": 115.36
+        },
+        {
+          "texto": "o",
+          "inicio_s": 115.44,
+          "fim_s": 115.52
+        },
+        {
+          "texto": "bairro",
+          "inicio_s": 115.72,
+          "fim_s": 115.92
+        },
+        {
+          "texto": "ainda",
+          "inicio_s": 116.04,
+          "fim_s": 116.24
+        },
+        {
+          "texto": "cheirava",
+          "inicio_s": 116.32,
+          "fim_s": 116.72
+        },
+        {
+          "texto": "a",
+          "inicio_s": 116.76,
+          "fim_s": 116.8
+        },
+        {
+          "texto": "melaço",
+          "inicio_s": 116.88,
+          "fim_s": 117.44
+        },
+        {
+          "texto": "décadas",
+          "inicio_s": 117.52,
+          "fim_s": 117.92
+        },
+        {
+          "texto": "depois",
+          "inicio_s": 118.0,
+          "fim_s": 118.48
+        }
+      ]
+    }
+  ]
+}
