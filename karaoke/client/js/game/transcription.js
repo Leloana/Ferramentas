@@ -1,5 +1,6 @@
-// Faixa "Ouvi:" da TV: o que o Whisper entendeu no último verso, com acerto e
-// erro por palavra, e o aviso de espera entre um verso e outro.
+// O que o Whisper entendeu em cada verso. A faixa "Ouvi:" saiu da tela (#transcription-text
+// não existe mais): o texto fica no console da TV para depuração (e nos logs do servidor).
+// As funções continuam aqui e não fazem nada sem o elemento.
 import { state } from '../core/state.js';
 
 const HEARD_HOLD_MS = 3500;
@@ -61,6 +62,7 @@ export function listeningHint() {
 
 // Resultado de um verso: fica na tela por HEARD_HOLD_MS e volta ao aviso de espera.
 export function showHeardResult(transcription, expectedNormalized, hits = null) {
+    console.debug(`[Ouvi] ${transcription && transcription.trim() ? transcription : '(silêncio)'}`);
     const el = transcriptionEl();
     if (!el) return;
     if (transcription && transcription.trim()) {

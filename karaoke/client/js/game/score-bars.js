@@ -129,7 +129,8 @@ export function updateScoreBars(playerScores, expected, renderHeard, opts) {
         replayClass(bar, 'mp-score-bar--flash');
         stampVerse(bar.querySelector('.verse-stamp'), verseScore);
 
-        // "Ouvi": uma linha por membro quando é time
+        // "Ouvi" saiu das barras: o que cada um cantou fica no console da TV (depuração)
+        mics.forEach((mic, i) => console.debug(`[Ouvi] ${mic}: ${results[i].transcription || '(silêncio)'}`));
         const trans = bar.querySelector('.mp-player-transcription');
         if (trans) {
             if (group.mics.length === 1) {

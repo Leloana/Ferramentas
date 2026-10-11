@@ -10,10 +10,9 @@ import { dom } from '../core/dom.js';
 import { myRole } from '../core/config.js';
 import { availableMics, renderLobby } from './lobby.js';
 import { stopAutoNext } from './requests.js';
-import { changeTranspose, changeSpeed, togglePause, setScoreMode, currentScoringMode, SPEED_STEP } from '../game/controls.js';
+import { changeTranspose, changeSpeed, togglePause, setScoreMode, currentScoringMode } from '../game/controls.js';
 
 const PUBLISH_DEBOUNCE_MS = 150;
-const VOLUME_STEP = 0.1;
 // volume da música e da voz guia: os mesmos sliders da TV (net/sync.js, audio/guide-vocal.js)
 const VOLUME_SLIDERS = { volume: 'backing-volume-slider', guide_volume: 'guide-volume-slider' };
 const PLAYING_SCREENS = ['singing', 'scoring'];
@@ -41,14 +40,13 @@ function sliderValue(id) {
     return slider ? parseFloat(slider.value) || 0 : null;
 }
 
-// Mexe no slider da TV e dispara o 'input': mesmo efeito do dedo (salva, grava o evento)
-function nudgeSlider(id, delta) {
+// Põe o slider da TV no valor e dispara o 'input': mesmo efeito do dedo (salva, grava o evento)
+function setSlider(id, value) {
     const slider = document.getElementById(id);
     if (!slider) return;
     const min = parseFloat(slider.min || '0');
     const max = parseFloat(slider.max || '1');
-    const next = Math.min(max, Math.max(min, Math.round((parseFloat(slider.value) + delta * VOLUME_STEP) * 100) / 100));
-    slider.value = String(next);
+    slider.value = String(Math.min(max, Math.max(min, value)));
     slider.dispatchEvent(new Event('input'));
 }
 
@@ -141,14 +139,16 @@ export async function handleRemote(cmd) {
             setScoreMode(cmd.value);
             break;
         case 'transpose':
-            changeTranspose(cmd.delta);
+            if (cmd.value !== state.currentTranspose) changeTranspose(cmd.value - state.currentTranspose);
             break;
-        case 'speed':
-            changeSpeed(cmd.delta * SPEED_STEP);
+        case 'speed': {
+            const delta = Math.round((cmd.value - state.currentSpeed) * 100) / 100;
+            if (delta) changeSpeed(delta);
             break;
+        }
         case 'volume':
         case 'guide_volume':
-            nudgeSlider(VOLUME_SLIDERS[cmd.action], cmd.delta);
+            setSlider(VOLUME_SLIDERS[cmd.action], cmd.value);
             break;
         case 'pause':
             if (isPlaying()) togglePause();

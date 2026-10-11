@@ -310,21 +310,7 @@
     background: linear-gradient(transparent 58%, var(--marker) 58%, var(--marker) 92%, transparent 92%);
 }
 
-/* Transcrição ("Ouvi:") */
-.transcription-debug {
-    width: 100%;
-    margin-top: 0.75rem;
-    padding: 0.6rem 0.9rem;
-    border-left: 4px solid var(--blue);
-    background: var(--paper);
-    color: var(--dim);
-    text-align: left;
-}
-.transcription-debug strong { font-style: normal; color: var(--ink); font-family: var(--font-ui); font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.08em; }
-.heard-word { font-weight: 700; font-style: normal; }
-.heard-word--hit { color: var(--sage-ink); }
-.heard-word--miss { color: var(--rose-ink); text-decoration: line-through; text-decoration-thickness: 1px; }
-.heard-line { font-size: 0.8rem; }
+
 
 /* Sobreposições do palco (solo instrumental / final) */
 .stage-overlay {
@@ -634,8 +620,8 @@
 .vertical-bar .mp-member__track { display: none; }
 .vertical-bar.mp-score-bar--team { width: 128px; }
 
-.mp-player-transcription { margin-top: 4px; font-size: 0.8rem; line-height: 1.35; color: var(--dim); text-align: center; word-break: break-word; }
-.mp-score-bar.vertical-bar .mp-player-transcription { position: absolute; top: 100%; left: 50%; width: 170px; margin-top: 10px; transform: translateX(-50%); }
+
+
 
 /* ---------- Telas estreitas ---------- */
 @media (max-width: 1024px) {

@@ -33,6 +33,15 @@ function setLyricsNote(html) {
     if (!lyrText) return;
     lyrText.classList.remove('lyrics-line');
     lyrText.innerHTML = html;
+    const next = document.getElementById('mobile-lyrics-next');
+    if (next) next.hidden = true;
+    setLyricsLive(false);
+}
+
+// Caixa da letra acesa = hora de cantar este verso (singing_state do servidor)
+function setLyricsLive(active) {
+    const box = document.getElementById('mobile-lyrics-container');
+    if (box) box.classList.toggle('is-live', !!active);
 }
 
 // Nota deste celular no verso: a própria em disputa, a geral no solo. null = o verso
@@ -130,6 +139,7 @@ const MIC_HANDLERS = {
     },
     singing_state(data) {
         state.isSingingActive = state.isActiveInGame ? data.active : false;
+        setLyricsLive(data.active);
     },
     segment_start(data) {
         setFinalLayout(false);
@@ -141,6 +151,12 @@ const MIC_HANDLERS = {
             const box = lyrText.parentElement;
             if (box) box.scrollTop = 0;
         }
+        // próximo verso, menor: dá para se preparar sem olhar a TV
+        const nextEl = document.getElementById('mobile-lyrics-next');
+        if (nextEl) {
+            nextEl.textContent = data.next_lyrics || '';
+            nextEl.hidden = !data.next_lyrics;
+        }
         // revezar versos: "Sua vez" / "Vez de Ana"
         const turnEl = document.getElementById('mobile-turn');
         if (turnEl) {
@@ -149,6 +165,9 @@ const MIC_HANDLERS = {
             turnEl.hidden = !turn;
             turnEl.dataset.mine = mine ? 'true' : 'false';
             turnEl.textContent = !turn ? '' : (mine ? 'Sua vez' : `Vez de ${turn.join(' + ')}`);
+            // verso de outro cantor: a letra fica esmaecida
+            const lyricsBox = document.getElementById('mobile-lyrics-container');
+            if (lyricsBox) lyricsBox.classList.toggle('is-other-turn', !!turn && !mine);
         }
         setLyricsScriptAvailable(data.lyrics_romaji);
 

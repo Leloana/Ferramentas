@@ -22,6 +22,8 @@ ACTIONS = ("select_song", "seats", "turns", "scoring_mode", "transpose", "speed"
            "pause", "stop", "start")
 # só fora da partida: mudam quem canta, a música ou como pontua
 LOCKED_WHILE_PLAYING = ("select_song", "seats", "turns", "scoring_mode", "start")
+# ajustes de som (controle de arrastar no celular): faixa de valores aceitos
+SOUND_RANGES = {"transpose": (-6, 6), "speed": (0.75, 1.5), "volume": (0.0, 1.0), "guide_volume": (0.0, 1.0)}
 # precisam de uma partida em andamento
 ONLY_WHILE_PLAYING = ("pause", "stop")
 
@@ -77,11 +79,13 @@ def clean_command(action: str, data: dict, players: list[str], ready_song_ids) -
         if mode not in ("timing", "words"):
             return None, "Forma de pontuação inválida."
         return {"action": action, "value": mode}, None
-    if action in ("transpose", "speed", "volume", "guide_volume"):
-        delta = data.get("delta")
-        if delta not in (-1, 1):
+    if action in SOUND_RANGES:
+        low, high = SOUND_RANGES[action]
+        value = data.get("value")
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not low <= value <= high:
             return None, "Ajuste inválido."
-        return {"action": action, "delta": delta}, None
+        value = int(round(value)) if action == "transpose" else round(float(value), 2)
+        return {"action": action, "value": value}, None
     return {"action": action}, None
 
 

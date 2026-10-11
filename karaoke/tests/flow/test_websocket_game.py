@@ -684,7 +684,7 @@ class TestWebsocketGameFlow(unittest.TestCase):
                         self.assertEqual(command(ws_ana, action=action, song_id=self.song_slug,
                                                  seats=[{"mic": "Ana", "team": "A"}]),
                                          "Espere a música acabar.")
-                    command(ws_ana, **{"action": "transpose", "delta": 1})
+                    command(ws_ana, **{"action": "transpose", "value": 1})
                     cmd, _ = self._until(ws_game, "remote")
                     self.assertEqual(cmd["action"], "transpose")
                     # a TV não conseguiu: o aviso vai só para quem mandou

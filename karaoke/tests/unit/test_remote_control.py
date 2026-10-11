@@ -41,10 +41,12 @@ class CleanCommandTest(unittest.TestCase):
         self.assertEqual(clean_command("select_song", {"song_id": "x"}, [], {"reptilia"})[1], "Música não encontrada.")
 
     def test_only_known_fields_reach_the_tv(self):
-        cmd, err = clean_command("transpose", {"delta": 1, "evil": "<script>"}, [], set())
-        self.assertEqual((cmd, err), ({"action": "transpose", "delta": 1}, None))
-        self.assertIsNotNone(clean_command("speed", {"delta": 5}, [], set())[1])
-        self.assertEqual(clean_command("guide_volume", {"delta": -1}, [], set())[0], {"action": "guide_volume", "delta": -1})
+        cmd, err = clean_command("transpose", {"value": 2.2, "evil": "<script>"}, [], set())
+        self.assertEqual((cmd, err), ({"action": "transpose", "value": 2}, None))
+        self.assertIsNotNone(clean_command("speed", {"value": 5}, [], set())[1])     # fora da faixa
+        self.assertIsNotNone(clean_command("volume", {"value": "alto"}, [], set())[1])
+        self.assertIsNotNone(clean_command("volume", {"value": True}, [], set())[1])
+        self.assertEqual(clean_command("guide_volume", {"value": 0.35}, [], set())[0], {"action": "guide_volume", "value": 0.35})
         self.assertEqual(clean_command("scoring_mode", {"value": "words"}, [], set())[0]["value"], "words")
         self.assertEqual(clean_command("turns", {"value": 1}, [], set())[0], {"action": "turns", "value": True})
 

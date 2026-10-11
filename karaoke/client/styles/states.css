@@ -159,7 +159,7 @@
 /* 14. Palco em tela cheia durante a partida (PC/TV)
    Regra da tela de cantar: cabe na janela, sem rolar. A altura é a da janela e o
    palco da letra fica com o que sobra; a fonte encolhe pela altura também. Em tela
-   baixa (e com vários cantores) saem primeiro os ajustes e o "Ouvi:" — a nota de
+   baixa (e com vários cantores) saem primeiro os ajustes — a nota de
    quem canta e a letra com a próxima linha ficam sempre. tests/ui: test_singing_screen_fits. */
 @media (min-width: 601px) {
     #app[data-state="singing"] .app-header,
@@ -290,9 +290,7 @@
     #app[data-state="scoring"] .stat-value-compact,
     #app[data-state="game-over"] .stat-value-compact { font-size: 1.4rem !important; }
 
-    #app[data-state="singing"] .transcription-debug { font-size: 1.1rem !important; padding: 0.8rem 1.2rem !important; }
-
-    /* Tela baixa: saem os ajustes e o "Ouvi:" (o palco é o que importa) */
+    /* Tela baixa: saem os ajustes (o palco é o que importa) */
     @media (max-height: 880px) {
         #app[data-role="display"][data-state="singing"] #sync-controls,
         #app[data-state="singing"] #transcription-text,

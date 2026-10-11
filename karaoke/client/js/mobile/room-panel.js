@@ -226,22 +226,56 @@ function renderSettings() {
         scoring.innerHTML = iconSvg(words ? 'score-words' : 'metronome');
         scoring.append(el('span', null, words ? 'Só palavras' : 'Palavras + tempo'));
     }
-    const transpose = byId('room-transpose');
-    if (transpose) {
-        const t = s.transpose || 0;
-        transpose.textContent = t === 0 ? 'Normal' : `${t > 0 ? '+' : ''}${t}`;
-    }
-    const speed = byId('room-speed');
-    if (speed) speed.textContent = `${(s.speed || 1).toFixed(2)}x`;
-    const pctText = (v) => (typeof v === 'number' ? `${Math.round(v * 100)}%` : '—');
-    const volume = byId('room-volume');
-    if (volume) volume.textContent = pctText(s.volume);
-    const guide = byId('room-guide-volume');
-    if (guide) guide.textContent = pctText(s.guide_volume);
+    // sliders: o que está sendo arrastado agora não é sobrescrito pelo eco da TV
+    document.querySelectorAll('#room-settings-modal [data-sound]').forEach((slider) => {
+        const key = slider.dataset.sound;
+        const value = s[key];
+        if (typeof value !== 'number' || slider === state.roomSliderDragging) return;
+        slider.value = String(value);
+        paintSoundValue(key, value);
+    });
     const actions = byId('room-playing-actions');
     if (actions) actions.hidden = !locked;
     const pause = byId('room-pause-label');
     if (pause) pause.textContent = s.paused ? 'Retomar' : 'Pausar';
+}
+
+const SOUND_SEND_MS = 150;
+
+function soundLabel(key, value) {
+    if (key === 'transpose') return value === 0 ? 'Normal' : `${value > 0 ? '+' : ''}${value}`;
+    if (key === 'speed') return `${value.toFixed(2)}x`;
+    return `${Math.round(value * 100)}%`;
+}
+
+function paintSoundValue(key, value) {
+    const label = document.querySelector(`#room-settings-modal [data-sound-value="${key}"]`);
+    if (label) label.textContent = soundLabel(key, value);
+}
+
+// Arrastar: manda o valor no máximo a cada SOUND_SEND_MS enquanto arrasta e o final ao soltar
+function initSoundSliders() {
+    document.querySelectorAll('#room-settings-modal [data-sound]').forEach((slider) => {
+        const key = slider.dataset.sound;
+        const read = () => (key === 'transpose' ? parseInt(slider.value, 10) : parseFloat(slider.value));
+        const send = () => {
+            slider._lastSent = Date.now();
+            remote(key, { value: read() });
+        };
+        slider.addEventListener('input', () => {
+            state.roomSliderDragging = slider;
+            paintSoundValue(key, read());
+            clearTimeout(slider._sendTimer);
+            const wait = SOUND_SEND_MS - (Date.now() - (slider._lastSent || 0));
+            if (wait <= 0) send();
+            else slider._sendTimer = setTimeout(send, wait);
+        });
+        slider.addEventListener('change', () => {
+            clearTimeout(slider._sendTimer);
+            send();
+            state.roomSliderDragging = null;
+        });
+    });
 }
 
 // --- painel ---
@@ -316,9 +350,7 @@ export function initRoomPanel() {
 
     byId('btn-room-turns').addEventListener('click', () => remote('turns', { value: !rs().turns }));
     byId('btn-room-scoring').addEventListener('click', () => remote('scoring_mode', { value: rs().scoring_mode === 'words' ? 'timing' : 'words' }));
-    document.querySelectorAll('#room-settings-modal [data-step]').forEach((btn) => {
-        btn.addEventListener('click', () => remote(btn.dataset.step, { delta: parseInt(btn.dataset.delta, 10) }));
-    });
+    initSoundSliders();
     byId('btn-room-pause').addEventListener('click', () => remote('pause'));
     byId('btn-room-stop').addEventListener('click', () => {
         if (confirm('Encerrar a música agora? A nota desta partida não é salva.')) remote('stop');

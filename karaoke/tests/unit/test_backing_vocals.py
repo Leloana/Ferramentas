@@ -50,6 +50,30 @@ class BackingScoreTest(unittest.TestCase):
         self.assertEqual(res["total_expected"], 4)
         self.assertGreaterEqual(res["score"], 90)
 
+    def test_singing_the_backing_too_is_not_penalized(self):
+        """Cantar junto o trecho entre parênteses dá a mesma nota de não cantar."""
+        cases = [
+            ("If you want to destroy my sweater (whoa, whoa, whoa)", "If you want to destroy my sweater whoa whoa whoa"),
+            ("Hold this thread as I walk away (as I walk away)", "Hold this thread as I walk away as I walk away"),
+            ("I don't want to destroy your tank top (if you want to destroy my sweater)",
+             "I don't want to destroy your tank top if you want to destroy my sweater"),
+        ]
+        for lyrics, sung in cases:
+            seg = {"lyrics": lyrics, "lyrics_timed": _timed(lyrics), "language": "en", "sing_start": 0}
+            lead = " ".join(w for w in sung.split()[:len(strip_backing(lyrics).split())])
+            for mode in ("timing", "words"):
+                with self.subTest(lyrics=lyrics, mode=mode):
+                    only_lead = score_words(seg, None, _heard(lead), mode)["score"]
+                    with_backing = score_words(seg, None, _heard(sung), mode)["score"]
+                    self.assertEqual(only_lead, 100.0)
+                    self.assertGreaterEqual(with_backing, 99.0)
+
+    def test_backing_words_do_not_steal_the_lead(self):
+        """Só a parte principal cantada, com palavras iguais às do parêntese: nota cheia."""
+        lyrics = "Hold this thread as I walk away (as I walk away)"
+        seg = {"lyrics": lyrics, "lyrics_timed": _timed(lyrics), "language": "en", "sing_start": 0}
+        self.assertEqual(score_words(seg, None, _heard("Hold this thread as I walk away"), "words")["score"], 100.0)
+
     def test_whisper_hint_has_only_the_lead(self):
         kw = transcribe_kwargs(self.SEG)
         self.assertEqual(kw["initial_prompt"], "E eu sei fui")

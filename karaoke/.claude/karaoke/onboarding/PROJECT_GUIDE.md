@@ -69,7 +69,7 @@ karaoke/
 │       │   ├── highlight-loop.js                   # Laço da letra: acende palavras, troca verso, conta o fim do solo
 │       │   ├── lyrics-carousel.js                  # As quatro linhas da letra e o deslize entre versos
 │       │   ├── hud.js                              # Nota do verso, nota geral, moldura, selo da vez, barras de progresso
-│       │   ├── transcription.js                    # Faixa "Ouvi:" com acerto e erro por palavra
+│       │   ├── transcription.js                    # O que o Whisper ouviu: só no console da TV (o "Ouvi:" saiu da tela)
 │       │   ├── game-over.js                        # Fim de jogo: rank ou pódio, recordes, botões de ouvir
 │       │   ├── controls.js                         # Tom, velocidade, pausa, barra da música e modos
 │       │   ├── score-bars.js                       # Barras de placar por time nas bordas

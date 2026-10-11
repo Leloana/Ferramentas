@@ -86,6 +86,12 @@ const FINAL_CLASS = 'mobile-lyrics--final';
 export function setFinalLayout(on) {
     const box = document.getElementById('mobile-lyrics-container');
     if (box) box.classList.toggle(FINAL_CLASS, on);
+    if (on) {
+        // placar no lugar da letra: sem próximo verso nem destaque de "hora de cantar"
+        if (box) box.classList.remove('is-live', 'is-other-turn');
+        const next = document.getElementById('mobile-lyrics-next');
+        if (next) next.hidden = true;
+    }
 }
 
 export function showMicGameOver(data) {

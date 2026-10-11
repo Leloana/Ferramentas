@@ -5,11 +5,15 @@ from __future__ import annotations
 
 import re
 
+import logging
+
 from lyrics_text import (
-    has_japanese_script, is_japanese, lead_words, project_onto_romaji_lyrics, regroup_timed_words,
-    split_words, strip_backing,
+    backing_flags, has_japanese_script, is_japanese, lead_words, project_onto_romaji_lyrics,
+    regroup_timed_words, split_words, strip_backing,
 )
-from score_engine import calculate_score
+from score_engine import calculate_score, clean_text, match_in_order
+
+logger = logging.getLogger(__name__)
 
 # Trechos não-lexicais que pulam o Whisper e são pontuados só por energia (RMS).
 VOCALIZE_WORDS = {
@@ -75,7 +79,39 @@ def score_words(segment: dict, prev_segment: dict | None, words: list[dict], sco
     else:
         # Japonês: o Whisper devolve pedaços de 1–3 caracteres; regrupa nas unidades da letra.
         words = regroup_timed_words(words, language)
-    return calculate_score(
-        lead_words(segment["lyrics_timed"]), words,
-        prev_expected_words=prev_lyrics, language=segment["language"], scoring_mode=scoring_mode,
+    lead = lead_words(segment["lyrics_timed"])
+    result = calculate_score(
+        lead, words, prev_expected_words=prev_lyrics, language=language, scoring_mode=scoring_mode,
     )
+    # Voz de apoio (entre parênteses): cantar ou não cantar dá a mesma nota. Sem a
+    # parte dela, a nota só conta a voz principal; quem cantou junto também não perde
+    # pelas palavras a mais (eram 9 a 31 pontos a menos).
+    if len(lead) < len(segment["lyrics_timed"] or []) and words:
+        trimmed = drop_backing_heard(segment["lyrics_timed"], words, language)
+        if len(trimmed) < len(words):
+            alt = calculate_score(
+                lead, trimmed, prev_expected_words=prev_lyrics, language=language, scoring_mode=scoring_mode,
+            )
+            if alt["score"] > result["score"]:
+                logger.info(f"🎶 [Voz de apoio] {len(words) - len(trimmed)} palavra(s) do trecho entre "
+                            f"parênteses fora da nota: {result['score']} → {alt['score']}")
+                alt["transcription"] = result.get("transcription", alt.get("transcription"))
+                result = alt
+    return result
+
+
+def drop_backing_heard(timed: list[dict], words: list[dict], language: str | None) -> list[dict]:
+    """O que o Whisper ouviu menos as palavras que casam com a voz de apoio da letra.
+
+    Casa a letra inteira (principal + parênteses) com o ouvido, em ordem, e tira as
+    ouvidas que caíram num trecho entre parênteses. Quem chama compara com a nota
+    sem tirar nada e fica com a maior: se o casamento errar de lado, não piora."""
+    flags = backing_flags([w["word"] for w in timed])
+    expected = [clean_text(w["word"], language) for w in timed]
+    heard = [{"word": clean_text(w["word"], language), "start": w.get("start", 0.0)} for w in words]
+    pairs = match_in_order(expected, timed, heard, apply_timing=False, language=language)
+    drop = set()
+    for is_backing, (points, used) in zip(flags, pairs):
+        if is_backing and points > 0:
+            drop.update(used)
+    return [w for j, w in enumerate(words) if j not in drop]

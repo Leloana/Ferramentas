@@ -20,31 +20,28 @@
         </div>
 
         <h3 class="room-settings__title">Som</h3>
-        <div class="room-steppers">
-            <div class="room-stepper">
-                <span class="room-stepper__label">Tom</span>
-                <button type="button" class="room-stepper__btn" data-step="transpose" data-delta="-1" aria-label="Baixar o tom">−</button>
-                <span id="room-transpose" class="room-stepper__value">Normal</span>
-                <button type="button" class="room-stepper__btn" data-step="transpose" data-delta="1" aria-label="Subir o tom">+</button>
-            </div>
-            <div class="room-stepper">
-                <span class="room-stepper__label">Velocidade</span>
-                <button type="button" class="room-stepper__btn" data-step="speed" data-delta="-1" aria-label="Mais devagar">−</button>
-                <span id="room-speed" class="room-stepper__value">1.00x</span>
-                <button type="button" class="room-stepper__btn" data-step="speed" data-delta="1" aria-label="Mais rápido">+</button>
-            </div>
-            <div class="room-stepper">
-                <span class="room-stepper__label">Música</span>
-                <button type="button" class="room-stepper__btn" data-step="volume" data-delta="-1" aria-label="Música mais baixa">−</button>
-                <span id="room-volume" class="room-stepper__value">100%</span>
-                <button type="button" class="room-stepper__btn" data-step="volume" data-delta="1" aria-label="Música mais alta">+</button>
-            </div>
-            <div class="room-stepper">
-                <span class="room-stepper__label">Voz guia</span>
-                <button type="button" class="room-stepper__btn" data-step="guide_volume" data-delta="-1" aria-label="Voz guia mais baixa">−</button>
-                <span id="room-guide-volume" class="room-stepper__value">0%</span>
-                <button type="button" class="room-stepper__btn" data-step="guide_volume" data-delta="1" aria-label="Voz guia mais alta">+</button>
-            </div>
+        <!-- Arrastar: o valor vai para a TV enquanto arrasta (mobile/room-panel.js) -->
+        <div class="room-sliders">
+            <label class="room-slider">
+                <span class="room-slider__label">Tom</span>
+                <input type="range" data-sound="transpose" min="-6" max="6" step="1" value="0" aria-label="Tom">
+                <span class="room-slider__value" data-sound-value="transpose">Normal</span>
+            </label>
+            <label class="room-slider">
+                <span class="room-slider__label">Velocidade</span>
+                <input type="range" data-sound="speed" min="0.75" max="1.5" step="0.05" value="1" aria-label="Velocidade">
+                <span class="room-slider__value" data-sound-value="speed">1.00x</span>
+            </label>
+            <label class="room-slider">
+                <span class="room-slider__label">Música</span>
+                <input type="range" data-sound="volume" min="0" max="1" step="0.05" value="1" aria-label="Volume da música">
+                <span class="room-slider__value" data-sound-value="volume">100%</span>
+            </label>
+            <label class="room-slider">
+                <span class="room-slider__label">Voz guia</span>
+                <input type="range" data-sound="guide_volume" min="0" max="1" step="0.05" value="0" aria-label="Volume da voz guia">
+                <span class="room-slider__value" data-sound-value="guide_volume">0%</span>
+            </label>
         </div>
         <div id="room-playing-actions" class="room-playing-actions" hidden>
             <button type="button" id="btn-room-pause" class="btn btn--ghost"><i data-icon="pause"></i> <span id="room-pause-label">Pausar</span></button>
