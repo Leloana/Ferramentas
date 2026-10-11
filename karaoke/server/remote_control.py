@@ -10,7 +10,7 @@ Travas (mutex):
 - música tocando: trocar a música, mexer nos cantores/times, revezar versos,
   forma de pontuação e iniciar outra ficam bloqueados até ela acabar;
 - GPU gerando letra: não inicia (a nota de cada verso esperaria o Whisper);
-- tom, velocidade, pausar e encerrar valem sempre.
+- tom, velocidade, volume da música e da voz guia, pausar e encerrar valem sempre.
 """
 from __future__ import annotations
 
@@ -18,7 +18,8 @@ MAX_SEATS = 6
 TEAMS = ("A", "B", "C", "D")
 PC_MIC = "PC_Local"
 
-ACTIONS = ("select_song", "seats", "turns", "scoring_mode", "transpose", "speed", "pause", "stop", "start")
+ACTIONS = ("select_song", "seats", "turns", "scoring_mode", "transpose", "speed", "volume", "guide_volume",
+           "pause", "stop", "start")
 # só fora da partida: mudam quem canta, a música ou como pontua
 LOCKED_WHILE_PLAYING = ("select_song", "seats", "turns", "scoring_mode", "start")
 # precisam de uma partida em andamento
@@ -76,7 +77,7 @@ def clean_command(action: str, data: dict, players: list[str], ready_song_ids) -
         if mode not in ("timing", "words"):
             return None, "Forma de pontuação inválida."
         return {"action": action, "value": mode}, None
-    if action in ("transpose", "speed"):
+    if action in ("transpose", "speed", "volume", "guide_volume"):
         delta = data.get("delta")
         if delta not in (-1, 1):
             return None, "Ajuste inválido."

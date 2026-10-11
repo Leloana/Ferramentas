@@ -31,17 +31,38 @@
 .player-row__meta { color: var(--dim); font-size: 0.85rem; }
 .player-row__score { font-weight: 900; font-size: 1.1rem; text-align: right; font-variant-numeric: tabular-nums; }
 
-/* Perfil */
-.profile-head { display: flex; align-items: center; gap: 0.75rem; }
+/* Perfil: foto em destaque no centro (profile-view.js renderHead) */
+.profile-hero { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; padding: 0.5rem 0 0.25rem; text-align: center; }
+.profile-hero__photo { position: relative; }
+.profile-hero__avatar { width: 128px; height: 128px; font-size: 3.4rem; border-width: 3px; box-shadow: var(--shadow-lift); }
+.profile-hero__camera {
+    position: absolute;
+    right: -2px;
+    bottom: 2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: var(--border);
+    border-radius: 50%;
+    background: var(--butter);
+    color: var(--ink);
+    cursor: pointer;
+}
+.profile-hero__camera .ico { width: 20px; height: 20px; }
+/* apelido inteiro: quebra só entre palavras (o "anywhere" partia "Lelo" em "Le/lo") */
+.profile-hero__name { max-width: 100%; margin: 0.25rem 0 0; font-family: var(--font-ui); font-size: 1.9rem; font-weight: 900; line-height: 1.15; overflow-wrap: break-word; word-break: normal; }
+.profile-hero__drop { padding: 0.2rem 0.4rem; background: none; border: none; color: var(--dim); font-family: var(--font-ui); font-size: 0.85rem; text-decoration: underline; cursor: pointer; }
 /* Foto de perfil (players/avatar.js): redonda; sem foto, a inicial do apelido */
 .avatar { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 50%; object-fit: cover; border: var(--border); background: var(--lavender); color: var(--ink); font-weight: 900; }
 .avatar--row { width: 2rem; height: 2rem; font-size: 0.95rem; }
 .player-row__who { display: flex; align-items: center; gap: 0.5rem; min-width: 0; }
-.profile-head__avatar { width: 64px; height: 64px; font-size: 1.8rem; }
-.profile-photo-actions { display: flex; gap: 0.4rem; margin-left: auto; }
-.profile-photo-btn { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0.7rem; font-size: 0.85rem; }
-.profile-head__name { margin: 0; font-family: var(--font-ui); font-size: 1.5rem; font-weight: 900; overflow-wrap: anywhere; }
-.profile-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 0.5rem; }
+.profile-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; }
+.profile-pitch { display: flex; align-items: center; gap: 0.5rem; margin: 0; padding: 0.5rem 0.8rem; border: var(--hairline); font-family: var(--font-ui); }
+.profile-pitch .ico { width: 18px; height: 18px; color: var(--dim); }
+.profile-pitch span { flex: 1; color: var(--dim); }
 .profile-stat {
     display: flex;
     flex-direction: column;
@@ -55,6 +76,46 @@
 .profile-stat__value { font-family: var(--font-ui); font-size: 1.4rem; font-weight: 900; font-variant-numeric: tabular-nums; }
 .profile-stat__label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
 .profile-section { margin: 0.5rem 0 0; font-size: 1rem; }
+
+/* Melhor música: o destaque do resumo */
+.profile-best {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.65rem 0.8rem;
+    background: var(--butter);
+    border: var(--border);
+    font-family: var(--font-ui);
+}
+.profile-best__icon { width: 24px; height: 24px; flex-shrink: 0; color: var(--butter-ink); }
+.profile-best__text { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.profile-best__label { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); }
+.profile-best__song { overflow: hidden; font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
+.profile-best__score { font-size: 1.3rem; font-weight: 900; font-variant-numeric: tabular-nums; }
+
+/* Ver mais: detalhes em listas recolhíveis */
+.profile-more { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; }
+.profile-more .ico { width: 18px; height: 18px; }
+.profile-details { display: flex; flex-direction: column; gap: 0.5rem; }
+.profile-details[hidden] { display: none; }
+.profile-collapse { border: var(--border); background: var(--paper-light); }
+.profile-collapse__head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 0.8rem;
+    font-family: var(--font-ui);
+    font-weight: 800;
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+}
+.profile-collapse__head::-webkit-details-marker { display: none; }
+.profile-collapse__title { flex: 1; }
+.profile-collapse__count { min-width: 1.6rem; padding: 0 0.35rem; border: 1px solid var(--ink-3); font-size: 0.75rem; text-align: center; color: var(--dim); }
+.profile-collapse__chevron { width: 18px; height: 18px; transition: transform 0.2s; }
+.profile-collapse[open] .profile-collapse__chevron { transform: rotate(180deg); }
+.profile-collapse > ol { padding: 0 0.8rem 0.5rem; }
 .profile-records, .profile-recent { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; border-top: var(--hairline); }
 .profile-record {
     display: grid;

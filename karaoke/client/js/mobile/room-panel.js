@@ -4,7 +4,8 @@
 // 1) Música da vez: busca pelo nome; trava enquanto ela toca. Quando acaba, a
 //    1ª da fila entra no lugar (a TV faz isso no fim de jogo) e basta dar play.
 // 2) Configuração da sala: cantores (microfones conectados), times, revezar
-//    versos, pontuação; tom, velocidade, pausar e encerrar valem tocando.
+//    versos, pontuação; tom, velocidade, volume da música e da voz guia,
+//    pausar e encerrar valem tocando.
 // 3) Iniciar: bloqueado com o motivo (TV fora, música tocando, GPU gerando letra,
 //    sem música ou sem cantor). O servidor confere as mesmas travas.
 import { state } from '../core/state.js';
@@ -232,6 +233,11 @@ function renderSettings() {
     }
     const speed = byId('room-speed');
     if (speed) speed.textContent = `${(s.speed || 1).toFixed(2)}x`;
+    const pctText = (v) => (typeof v === 'number' ? `${Math.round(v * 100)}%` : '—');
+    const volume = byId('room-volume');
+    if (volume) volume.textContent = pctText(s.volume);
+    const guide = byId('room-guide-volume');
+    if (guide) guide.textContent = pctText(s.guide_volume);
     const actions = byId('room-playing-actions');
     if (actions) actions.hidden = !locked;
     const pause = byId('room-pause-label');

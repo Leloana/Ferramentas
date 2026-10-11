@@ -1,5 +1,5 @@
 <!-- Configuração da sala pelo celular (mobile/room-panel.js): cantores, times e ajustes.
-     Com música tocando, só tom, velocidade, pausar e encerrar (o servidor também trava). -->
+     Com música tocando, só tom, velocidade, volumes, pausar e encerrar (o servidor também trava). -->
 <div id="room-settings-modal" class="modal-overlay">
     <div class="modal-content admin-modal modal-content--sm room-settings">
         <h2 class="modal-title"><button type="button" class="modal-back" data-close aria-label="Voltar" title="Voltar"><i data-icon="back"></i></button>Configuração da sala</h2>
@@ -32,6 +32,18 @@
                 <button type="button" class="room-stepper__btn" data-step="speed" data-delta="-1" aria-label="Mais devagar">−</button>
                 <span id="room-speed" class="room-stepper__value">1.00x</span>
                 <button type="button" class="room-stepper__btn" data-step="speed" data-delta="1" aria-label="Mais rápido">+</button>
+            </div>
+            <div class="room-stepper">
+                <span class="room-stepper__label">Música</span>
+                <button type="button" class="room-stepper__btn" data-step="volume" data-delta="-1" aria-label="Música mais baixa">−</button>
+                <span id="room-volume" class="room-stepper__value">100%</span>
+                <button type="button" class="room-stepper__btn" data-step="volume" data-delta="1" aria-label="Música mais alta">+</button>
+            </div>
+            <div class="room-stepper">
+                <span class="room-stepper__label">Voz guia</span>
+                <button type="button" class="room-stepper__btn" data-step="guide_volume" data-delta="-1" aria-label="Voz guia mais baixa">−</button>
+                <span id="room-guide-volume" class="room-stepper__value">0%</span>
+                <button type="button" class="room-stepper__btn" data-step="guide_volume" data-delta="1" aria-label="Voz guia mais alta">+</button>
             </div>
         </div>
         <div id="room-playing-actions" class="room-playing-actions" hidden>

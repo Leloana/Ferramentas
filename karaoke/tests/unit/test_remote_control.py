@@ -11,7 +11,7 @@ class CheckRemoteTest(unittest.TestCase):
     def test_locked_while_playing(self):
         for action in ("select_song", "seats", "turns", "scoring_mode", "start"):
             self.assertEqual(check_remote(action, True, None, True), "Espere a música acabar.")
-        for action in ("transpose", "speed", "pause", "stop"):
+        for action in ("transpose", "speed", "volume", "guide_volume", "pause", "stop"):
             self.assertIsNone(check_remote(action, True, None, True))
 
     def test_gpu_busy_blocks_only_start(self):
@@ -44,6 +44,7 @@ class CleanCommandTest(unittest.TestCase):
         cmd, err = clean_command("transpose", {"delta": 1, "evil": "<script>"}, [], set())
         self.assertEqual((cmd, err), ({"action": "transpose", "delta": 1}, None))
         self.assertIsNotNone(clean_command("speed", {"delta": 5}, [], set())[1])
+        self.assertEqual(clean_command("guide_volume", {"delta": -1}, [], set())[0], {"action": "guide_volume", "delta": -1})
         self.assertEqual(clean_command("scoring_mode", {"value": "words"}, [], set())[0]["value"], "words")
         self.assertEqual(clean_command("turns", {"value": 1}, [], set())[0], {"action": "turns", "value": True})
 

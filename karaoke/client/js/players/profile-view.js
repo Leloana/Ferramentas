@@ -74,20 +74,24 @@ export function renderPlayersList(container, playersList, onPick) {
     container.append(list);
 }
 
-// Topo do perfil: foto e apelido. `editable` (o próprio cantor, no celular) troca a foto.
+// Topo do perfil: foto grande no centro e o apelido embaixo. `editable` (o próprio
+// cantor, no celular): botão de câmera sobre a foto troca; "Tirar foto" embaixo.
 function renderHead(name, version, opts) {
-    const head = el('div', 'profile-head');
-    head.append(avatarNode(name, version, 'profile-head__avatar'), el('h3', 'profile-head__name', name));
+    const head = el('div', 'profile-hero');
+    const photo = el('div', 'profile-hero__photo');
+    photo.append(avatarNode(name, version, 'profile-hero__avatar'));
+    head.append(photo, el('h3', 'profile-hero__name', name));
     if (!opts.editable) return head;
 
     const input = el('input');
     input.type = 'file';
     input.accept = 'image/*';
     input.hidden = true;
-    const pick = el('button', 'btn btn--ghost profile-photo-btn');
+    const pick = el('button', 'profile-hero__camera');
     pick.type = 'button';
-    pick.insertAdjacentHTML('beforeend', iconSvg('camera'));
-    pick.append(el('span', null, version ? 'Trocar foto' : 'Pôr foto'));
+    pick.title = version ? 'Trocar foto' : 'Pôr foto';
+    pick.setAttribute('aria-label', pick.title);
+    pick.innerHTML = iconSvg('camera');
     pick.addEventListener('click', () => input.click());
     input.addEventListener('change', async () => {
         const file = input.files && input.files[0];
@@ -101,22 +105,47 @@ function renderHead(name, version, opts) {
             pick.disabled = false;
         }
     });
-    const actions = el('div', 'profile-photo-actions');
-    actions.append(pick, input);
+    photo.append(pick, input);
     if (version) {
-        const drop = el('button', 'btn btn--ghost profile-photo-btn', 'Tirar');
+        const drop = el('button', 'profile-hero__drop', 'Tirar foto');
         drop.type = 'button';
         drop.addEventListener('click', async () => {
             await removeAvatar(name);
             if (opts.onChanged) opts.onChanged();
         });
-        actions.append(drop);
+        head.append(drop);
     }
-    head.append(actions);
     return head;
 }
 
-// Perfil completo: resumo, recordes por música e últimas partidas.
+// Lista que abre e fecha (details/summary: o Enter do controle da TV também abre)
+function collapsible(title, count, content, open) {
+    const box = el('details', 'profile-collapse');
+    if (open) box.open = true;
+    const head = el('summary', 'profile-collapse__head');
+    head.tabIndex = 0;
+    head.append(el('span', 'profile-collapse__title', title), el('span', 'profile-collapse__count', String(count)));
+    head.insertAdjacentHTML('beforeend', iconSvg('chevron-down', 'profile-collapse__chevron'));
+    box.append(head, content);
+    return box;
+}
+
+function scoreList(rows) {
+    const list = el('ol', 'profile-records');
+    rows.forEach((r) => {
+        const li = el('li', 'profile-record');
+        li.append(
+            el('span', 'profile-record__name', r.name),
+            el('span', 'profile-record__times', r.meta || ''),
+            el('span', 'profile-record__best', pct(r.score)),
+        );
+        list.append(li);
+    });
+    return list;
+}
+
+// Perfil: foto e apelido em destaque, três números e a melhor música. "Ver mais"
+// abre os detalhes em listas recolhíveis (recordes, partidas gravadas, últimas).
 // opts: { name, editable, onChanged } — no celular, o próprio cantor põe a foto
 // mesmo antes da primeira partida (sem `detail`).
 export async function renderProfile(container, detail, opts = {}) {
@@ -135,43 +164,56 @@ export async function renderProfile(container, detail, opts = {}) {
         stat('média', pct(detail.avg), 'gauge'),
         stat('recorde', pct(detail.best), 'trophy'),
     );
-    if (typeof detail.avg_pitch === 'number') stats.append(stat('tom', pct(detail.avg_pitch), 'pitch'));
     container.append(stats);
 
-    if (detail.records && detail.records.length) {
-        container.append(el('h4', 'profile-section', 'Recordes'));
-        const list = el('ol', 'profile-records');
-        detail.records.slice(0, 12).forEach((r) => {
-            const li = el('li', 'profile-record');
-            li.append(
-                el('span', 'profile-record__name', r.name || r.song_id),
-                el('span', 'profile-record__times', r.times > 1 ? `${r.times}×` : ''),
-                el('span', 'profile-record__best', pct(r.best)),
-            );
-            list.append(li);
-        });
-        container.append(list);
+    const records = detail.records || [];
+    if (records.length) {
+        const top = records[0];
+        const best = el('div', 'profile-best');
+        best.insertAdjacentHTML('beforeend', iconSvg('crown', 'profile-best__icon'));
+        const text = el('span', 'profile-best__text');
+        text.append(el('span', 'profile-best__label', 'Melhor música'), el('span', 'profile-best__song', top.name || top.song_id));
+        best.append(text, el('span', 'profile-best__score', pct(top.best)));
+        container.append(best);
     }
 
+    const details = el('div', 'profile-details');
+    details.hidden = true;
+    if (typeof detail.avg_pitch === 'number') {
+        const pitch = el('p', 'profile-pitch');
+        pitch.insertAdjacentHTML('beforeend', iconSvg('pitch'));
+        pitch.append(el('span', null, 'Afinação média'), el('strong', null, pct(detail.avg_pitch)));
+        details.append(pitch);
+    }
+    if (records.length) {
+        details.append(collapsible('Recordes', Math.min(records.length, 30), scoreList(records.slice(0, 30).map((r) => ({
+            name: r.name || r.song_id, meta: r.times > 1 ? `${r.times}×` : '', score: r.best,
+        })))));
+    }
     // Partidas gravadas: tocar abre a análise verso a verso (a mesma do fim de jogo)
     const sessions = el('div', 'profile-sessions');
-    container.append(sessions);
+    details.append(sessions);
     renderSessions(sessions, detail.name);
-
     if (detail.recent && detail.recent.length) {
-        container.append(el('h4', 'profile-section', 'Últimas'));
-        const list = el('ol', 'profile-recent');
-        detail.recent.forEach((r) => {
-            const li = el('li', 'profile-record');
-            li.append(
-                el('span', 'profile-record__name', r.name),
-                el('span', 'profile-record__times', formatDate(r.date)),
-                el('span', 'profile-record__best', pct(r.score)),
-            );
-            list.append(li);
-        });
-        container.append(list);
+        details.append(collapsible('Últimas', detail.recent.length, scoreList(detail.recent.map((r) => ({
+            name: r.name, meta: formatDate(r.date), score: r.score,
+        })))));
     }
+
+    const more = el('button', 'btn btn--ghost btn--block profile-more');
+    more.type = 'button';
+    more.setAttribute('aria-expanded', 'false');
+    const paintMore = () => {
+        more.innerHTML = iconSvg(details.hidden ? 'chevron-down' : 'chevron-up');
+        more.append(el('span', null, details.hidden ? 'Ver mais' : 'Ver menos'));
+    };
+    paintMore();
+    more.addEventListener('click', () => {
+        details.hidden = !details.hidden;
+        more.setAttribute('aria-expanded', String(!details.hidden));
+        paintMore();
+    });
+    container.append(more, details);
 }
 
 async function renderSessions(box, name) {
@@ -184,7 +226,6 @@ async function renderSessions(box, name) {
         return;  // sem gravações: a seção simplesmente não aparece
     }
     if (!games.length) return;
-    box.append(el('h4', 'profile-section', 'Partidas gravadas'));
     const list = el('ol', 'profile-recent');
     games.slice(0, 30).forEach((g) => {
         const li = el('li', 'profile-session-item');
@@ -221,5 +262,5 @@ async function renderSessions(box, name) {
         li.append(row);
         list.append(li);
     });
-    box.append(list);
+    box.append(collapsible('Partidas gravadas', Math.min(games.length, 30), list));
 }

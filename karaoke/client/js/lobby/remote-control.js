@@ -13,6 +13,9 @@ import { stopAutoNext } from './requests.js';
 import { changeTranspose, changeSpeed, togglePause, setScoreMode, currentScoringMode, SPEED_STEP } from '../game/controls.js';
 
 const PUBLISH_DEBOUNCE_MS = 150;
+const VOLUME_STEP = 0.1;
+// volume da música e da voz guia: os mesmos sliders da TV (net/sync.js, audio/guide-vocal.js)
+const VOLUME_SLIDERS = { volume: 'backing-volume-slider', guide_volume: 'guide-volume-slider' };
 const PLAYING_SCREENS = ['singing', 'scoring'];
 
 function send(msg) {
@@ -33,6 +36,22 @@ function songInfo(id) {
     return song ? { id: song.id, title: song.title, artist: song.artist || '' } : { id, title: id, artist: '' };
 }
 
+function sliderValue(id) {
+    const slider = document.getElementById(id);
+    return slider ? parseFloat(slider.value) || 0 : null;
+}
+
+// Mexe no slider da TV e dispara o 'input': mesmo efeito do dedo (salva, grava o evento)
+function nudgeSlider(id, delta) {
+    const slider = document.getElementById(id);
+    if (!slider) return;
+    const min = parseFloat(slider.min || '0');
+    const max = parseFloat(slider.max || '1');
+    const next = Math.min(max, Math.max(min, Math.round((parseFloat(slider.value) + delta * VOLUME_STEP) * 100) / 100));
+    slider.value = String(next);
+    slider.dispatchEvent(new Event('input'));
+}
+
 function lobbyStateMessage() {
     return {
         type: 'lobby_state',
@@ -44,6 +63,8 @@ function lobbyStateMessage() {
         scoring_mode: currentScoringMode(),
         transpose: state.currentTranspose || 0,
         speed: state.currentSpeed || 1,
+        volume: sliderValue(VOLUME_SLIDERS.volume),
+        guide_volume: sliderValue(VOLUME_SLIDERS.guide_volume),
         paused: isPlaying() && !!dom.audioPlayer && dom.audioPlayer.paused,
     };
 }
@@ -125,6 +146,10 @@ export async function handleRemote(cmd) {
         case 'speed':
             changeSpeed(cmd.delta * SPEED_STEP);
             break;
+        case 'volume':
+        case 'guide_volume':
+            nudgeSlider(VOLUME_SLIDERS[cmd.action], cmd.delta);
+            break;
         case 'pause':
             if (isPlaying()) togglePause();
             break;
@@ -149,6 +174,11 @@ export async function handleRemote(cmd) {
 export function initRemoteControl() {
     if (myRole !== 'display') return;
     state.publishLobbyState = publishLobbyState;
+    // volume mexido na própria TV: o celular acompanha
+    Object.keys(VOLUME_SLIDERS).forEach((key) => {
+        const slider = document.getElementById(VOLUME_SLIDERS[key]);
+        if (slider) slider.addEventListener('input', publishLobbyState);
+    });
     const app = document.getElementById('app');
     if (app && window.MutationObserver) {
         new MutationObserver(publishLobbyState).observe(app, { attributes: true, attributeFilter: ['data-state'] });
