@@ -179,86 +179,130 @@ export function renderArtistGroups(songsList, { expandAll = false } = {}) {
         const songsGrid = document.createElement('div');
         songsGrid.className = 'artist-group__songs';
 
-        group.songs.forEach(song => {
-            const frag = tpl.content.cloneNode(true);
-            const card = frag.querySelector('.song-card');
-            const titleEl = frag.querySelector('.song-card__title');
-            const artistEl = frag.querySelector('.song-card__artist');
-            const editBtn = frag.querySelector('.song-card__edit-btn');
-            const deleteBtn = frag.querySelector('.song-card__delete-btn');
-            const previewBtn = frag.querySelector('.song-card__preview-btn');
-
-            titleEl.innerText = song.title;
-            artistEl.innerText = song.artist || "Artista Desconhecido";
-            const romajiEl = frag.querySelector('.song-card__romaji');
-            if (romajiEl && song.title_romaji) {
-                romajiEl.textContent = song.title_romaji;
-                romajiEl.hidden = false;
-            }
-
-            if (song.is_ready === false) {
-                // Música pendente: sem clique para jogar, com badge. Mantém só o reinstalar.
-                card.classList.add('song-card--pending');
-                card.removeAttribute('role');
-                card.tabIndex = -1;
-
-                const badge = document.createElement('span');
-                badge.innerText = 'Pendente';
-                badge.className = 'chip';
-                badge.dataset.tone = 'peach';
-                titleEl.appendChild(badge);
-
-                // Música ainda processando: sem editar/apagar/ouvir
-                if (previewBtn) previewBtn.remove();
-                if (editBtn) editBtn.remove();
-                if (deleteBtn) deleteBtn.remove();
-            } else {
-                if (song.needs_review) {
-                    // letra com alinhamento fraco: dá para cantar, mas vale abrir o editor
-                    const review = document.createElement('span');
-                    review.innerText = 'Revisar';
-                    review.className = 'chip';
-                    review.dataset.tone = 'rose';
-                    review.title = 'Letra com sincronia duvidosa';
-                    titleEl.appendChild(review);
-                }
-                // Música pronta: comportamento normal
-                card.addEventListener('click', () => selectSong(song));
-
-                previewBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    togglePreview(song.id, previewBtn);
-                });
-
-                editBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    loadAndOpenLrcEditor(song.id);
-                });
-
-                deleteBtn.addEventListener('click', async (e) => {
-                    e.stopPropagation();
-                    if (confirm(`Tem certeza que deseja excluir permanentemente a música "${song.title}"? Todos os arquivos de áudio, letras e segmentos serão apagados do servidor!`)) {
-                        try {
-                            const resp = await fetch(`/api/delete-song/${song.id}`, { method: 'DELETE' });
-                            if (!resp.ok) {
-                                const err = await resp.json();
-                                throw new Error(err.detail || "Erro ao excluir música");
-                            }
-                            showToast(`Música "${song.title}" excluída com sucesso!`, "success");
-                            fetchSongs();
-                        } catch (err) {
-                            showToast(`Erro ao excluir música: ${err.message}`, "error");
-                        }
-                    }
-                });
-            }
-
-            songsGrid.appendChild(frag);
+        albumSections(group.songs).forEach((section) => {
+            if (section.name !== null) songsGrid.appendChild(albumHeading(section));
+            section.songs.forEach((song) => songsGrid.appendChild(buildSongCard(song, tpl)));
         });
 
         groupDiv.appendChild(songsGrid);
         columns[groupIdx < half ? 0 : 1].appendChild(groupDiv);
     });
+}
+
+/* ── Álbuns dentro do artista ─────────────────────────────────── */
+
+const OTHER_ALBUM = 'Singles e outras';
+
+// Seções do artista: álbuns por ano (faixas na ordem do disco) e, no fim, as
+// sem álbum (single ou sem informação). Artista sem nenhum álbum (ou com uma
+// música só) fica numa seção sem título, como antes.
+function albumSections(songs) {
+    const withAlbum = songs.filter((s) => s.album);
+    if (withAlbum.length === 0 || songs.length < 2) return [{ name: null, songs }];
+    const byName = {};
+    const order = [];
+    withAlbum.forEach((s) => {
+        if (!byName[s.album]) { byName[s.album] = { name: s.album, year: s.album_year || null, songs: [] }; order.push(byName[s.album]); }
+        byName[s.album].songs.push(s);
+    });
+    order.sort((a, b) => (a.year || 9999) - (b.year || 9999) || a.name.localeCompare(b.name, 'pt-BR'));
+    order.forEach((a) => a.songs.sort((x, y) => (x.track || 999) - (y.track || 999)
+        || x.title.localeCompare(y.title, 'pt-BR', { sensitivity: 'base' })));
+    const rest = songs.filter((s) => !s.album);
+    if (rest.length) order.push({ name: OTHER_ALBUM, year: null, songs: rest });
+    return order;
+}
+
+function albumHeading(section) {
+    const h = document.createElement('div');
+    h.className = 'artist-group__album';
+    const name = document.createElement('span');
+    name.className = 'artist-group__album-name';
+    name.textContent = section.name;
+    h.appendChild(name);
+    if (section.year) {
+        const year = document.createElement('span');
+        year.className = 'artist-group__album-year';
+        year.textContent = String(section.year);
+        h.appendChild(year);
+    }
+    return h;
+}
+
+function buildSongCard(song, tpl) {
+    const frag = tpl.content.cloneNode(true);
+    const card = frag.querySelector('.song-card');
+    const titleEl = frag.querySelector('.song-card__title');
+    const artistEl = frag.querySelector('.song-card__artist');
+    const editBtn = frag.querySelector('.song-card__edit-btn');
+    const deleteBtn = frag.querySelector('.song-card__delete-btn');
+    const previewBtn = frag.querySelector('.song-card__preview-btn');
+
+    titleEl.innerText = song.title;
+    artistEl.innerText = song.artist || "Artista Desconhecido";
+    const romajiEl = frag.querySelector('.song-card__romaji');
+    if (romajiEl && song.title_romaji) {
+        romajiEl.textContent = song.title_romaji;
+        romajiEl.hidden = false;
+    }
+
+    if (song.is_ready === false) {
+        // Música pendente: sem clique para jogar, com badge. Mantém só o reinstalar.
+        card.classList.add('song-card--pending');
+        card.removeAttribute('role');
+        card.tabIndex = -1;
+
+        const badge = document.createElement('span');
+        badge.innerText = 'Pendente';
+        badge.className = 'chip';
+        badge.dataset.tone = 'peach';
+        titleEl.appendChild(badge);
+
+        // Música ainda processando: sem editar/apagar/ouvir
+        if (previewBtn) previewBtn.remove();
+        if (editBtn) editBtn.remove();
+        if (deleteBtn) deleteBtn.remove();
+    } else {
+        if (song.needs_review) {
+            // letra com alinhamento fraco: dá para cantar, mas vale abrir o editor
+            const review = document.createElement('span');
+            review.innerText = 'Revisar';
+            review.className = 'chip';
+            review.dataset.tone = 'rose';
+            review.title = 'Letra com sincronia duvidosa';
+            titleEl.appendChild(review);
+        }
+        // Música pronta: comportamento normal
+        card.addEventListener('click', () => selectSong(song));
+
+        previewBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            togglePreview(song.id, previewBtn);
+        });
+
+        editBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            loadAndOpenLrcEditor(song.id);
+        });
+
+        deleteBtn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            if (confirm(`Tem certeza que deseja excluir permanentemente a música "${song.title}"? Todos os arquivos de áudio, letras e segmentos serão apagados do servidor!`)) {
+                try {
+                    const resp = await fetch(`/api/delete-song/${song.id}`, { method: 'DELETE' });
+                    if (!resp.ok) {
+                        const err = await resp.json();
+                        throw new Error(err.detail || "Erro ao excluir música");
+                    }
+                    showToast(`Música "${song.title}" excluída com sucesso!`, "success");
+                    fetchSongs();
+                } catch (err) {
+                    showToast(`Erro ao excluir música: ${err.message}`, "error");
+                }
+            }
+        });
+    }
+    return frag;
 }
 
 // Capa do álbum no lobby (GET /api/songs/<id>/cover); some se não houver

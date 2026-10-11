@@ -1,6 +1,6 @@
 // Busca de música no repertório (lista da TV e pedido pelo celular).
 // Sem acento e sem diferença de maiúsculas; títulos em japonês valem também em
-// romaji (title_romaji/artist_romaji de /api/songs), e espaço/pontuação não contam:
+// romaji (title_romaji/artist_romaji de /api/songs), o álbum também conta, e espaço/pontuação não contam:
 // "aoi koi daidaiiro" acha "青い、濃い、橙色の日".
 
 // acentos latinos combinantes (U+0300–U+036F): o dakuten do japonês fica (が ≠ か)
@@ -20,7 +20,7 @@ export function songMatcher(query) {
     const packed = compact(query);
     return (song) => {
         if (!plain) return true;
-        return [song.title, song.artist, song.title_romaji, song.artist_romaji].some((f) =>
+        return [song.title, song.artist, song.album, song.title_romaji, song.artist_romaji].some((f) =>
             normalizeText(f).indexOf(plain) !== -1 || (packed && compact(f).indexOf(packed) !== -1));
     };
 }

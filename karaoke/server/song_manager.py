@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 
+from utils.album import album_of
 from utils.lrc import read_lrc_meta
 from utils.meta import get_meta_field
 from utils.segment_timing import finalize_segments
@@ -33,6 +34,7 @@ class SongManager:
             title = None
             artist = None
             needs_review = False
+            album = None
             if meta_path.exists():
                 try:
                     with open(meta_path, "r", encoding="utf-8") as f:
@@ -42,6 +44,7 @@ class SongManager:
                         # alinhamento fraco (utils/alignment_quality.py): a lista mostra "Revisar",
                         # a menos que a letra já tenha sido revisada à mão no editor
                         needs_review = bool(meta.get("needs_review")) and not (item / USER_EDITED_MARKER).exists()
+                        album = album_of(meta)
                 except Exception:
                     pass
 
@@ -62,6 +65,11 @@ class SongManager:
                 "is_ready": is_ready,
                 "needs_review": needs_review,
             }
+            # agrupamento por álbum na lista (utils/album.py); sem álbum = "Singles e outras"
+            if album and album.get("kind") == "album" and album.get("name"):
+                entry["album"] = album["name"]
+                entry["album_year"] = album.get("year")
+                entry["track"] = album.get("track")
             # japonês: romaji para mostrar embaixo e para a busca achar digitando em romaji
             for key in ("title", "artist"):
                 romaji = to_romaji(entry[key] or "")

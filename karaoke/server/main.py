@@ -78,6 +78,25 @@ async def resume_processing_queue():
         logger.info(f"[QUEUE] {resumed} música(s) retomada(s) da fila gravada.")
 
 
+@app.on_event("startup")
+async def fill_missing_albums():
+    """Álbum de cada música (lista agrupada por álbum): as que ainda não têm, em segundo plano."""
+    import asyncio
+
+    from state import SONGS_DIR
+    from utils.album import fill_missing_albums as fill
+
+    async def run():
+        try:
+            filled = await asyncio.to_thread(fill, SONGS_DIR)
+            if filled:
+                logger.info(f"[Álbum] {filled} música(s) com álbum preenchido.")
+        except Exception as e:  # opcional: a lista só não agrupa
+            logger.warning(f"[Álbum] Falha ao preencher os álbuns: {e}")
+
+    app.state.album_task = asyncio.create_task(run())  # referência forte
+
+
 app.include_router(songs_router)
 app.include_router(lyrics_router)
 app.include_router(upload_router)

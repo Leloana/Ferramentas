@@ -141,6 +141,7 @@ karaoke/
 │       ├── separation.py       # RoFormer (opcional) ou Demucs, uma separação por vez, MP3 320k, instrumental normalizado
 │       ├── loudness.py         # LUFS (BS.1770 em numpy) + limitador (~−16 LUFS)
 │       ├── cover.py            # Capa: iTunes + Deezer + YouTube, nota por artista/título, escolhível
+│       ├── album.py            # Álbum (nome, ano, faixa) pelo iTunes → meta.json["album"]; lista agrupa por álbum
 │       ├── song_paths.py       # safe_song_dir: slug do cliente nunca sai de songs/
 │       ├── youtube.py          # Wrapper yt-dlp assíncrono com limpeza de residuais
 │       └── prepare.py          # Adaptador dinâmico para invocar a tool prepare_song
@@ -243,7 +244,7 @@ Cada música adicionada no sistema reside em uma pasta dedicada correspondente a
 *   `lyrics.lrc`: Letra da música com tags de tempo simplificadas por linha `[mm:ss.xx] Texto`.
 *   `segments.json`: O arquivo de definição de jogabilidade. É gerado automaticamente pelo alinhador.
 *   Opcionais: `cover.jpg` (+ `cover.options.json` com os candidatos e `cover.choice.json` quando alguém escolheu), `pitch.json` (melodia de referência, 10 ms por quadro), `.lyrics_edited` (a letra foi revisada no editor: o reinstall sem alinhamento forçado a mantém).
-*   Campos do `meta.json` gerados pelo pipeline: `alignment_quality` (`{score, flags, lines}`), `needs_review` (nota < 70 → "Revisar" na lista) e `loudness` (`{lufs_before, gain_db}`).
+*   Campos do `meta.json` gerados pelo pipeline: `alignment_quality` (`{score, flags, lines}`), `needs_review` (nota < 70 → "Revisar" na lista), `loudness` (`{lufs_before, gain_db}`) e `album` (`{name, year, track, kind}`; sem álbum → "Singles e outras" na lista).
 
 ### B. Contrato do Arquivo `segments.json`
 O frontend lê e interpreta este arquivo JSON para orquestrar as telas, carrosséis de letras e sincronismo de canto. Cada entrada do array de segmentos deve obedecer rigorosamente a este formato:

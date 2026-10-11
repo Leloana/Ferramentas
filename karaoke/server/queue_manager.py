@@ -543,6 +543,13 @@ class SongQueueManager:
                 item.status = QueueStatus.FINALIZING
                 item.progress_pct = 95
 
+            # Álbum para a lista (rede, opcional): sem ele a música fica em "Singles e outras"
+            try:
+                from utils.album import fill_album
+                await asyncio.to_thread(fill_album, song_dir)
+            except Exception as e:
+                logger.info(f"[QUEUE:{item.id}] Álbum não encontrado: {e}")
+
             # Sucesso!
             item.status = QueueStatus.READY
             item.progress_pct = 100
