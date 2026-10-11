@@ -102,14 +102,18 @@ export function updateScoreBars(playerScores, expected, renderHeard, opts) {
     groups.slice(0, SLOTS.length).forEach((group, idx) => {
         const bar = barOf(idx);
         if (!bar) return;
-        const results = group.mics.map((mic) => playerScores[mic] || {});
-        const avg = (key) => results.reduce((sum, r) => sum + (r[key] || 0), 0) / Math.max(1, results.length);
+        // Só quem foi pontuado neste verso: no revezamento o servidor manda só o time
+        // da vez, e o outro time não pode levar "Fora" nem ver o total zerar.
+        const mics = group.mics.filter((mic) => playerScores[mic]);
+        if (!mics.length) return;
+        const results = mics.map((mic) => playerScores[mic]);
+        const avg = (key) => results.reduce((sum, r) => sum + (r[key] || 0), 0) / results.length;
         const total = avg('total_score');
 
         bar.querySelector('.mp-player-pct').textContent = total.toFixed(1) + '%';
         setFill(bar, '.mp-progress-fill, .mp-progress-fill-vertical', total);
 
-        group.mics.forEach((mic, i) => {
+        mics.forEach((mic, i) => {
             const row = bar.querySelector(`.mp-member[data-mic="${CSS.escape ? CSS.escape(mic) : mic}"]`);
             if (!row) return;
             const value = results[i].total_score || 0;
@@ -132,7 +136,7 @@ export function updateScoreBars(playerScores, expected, renderHeard, opts) {
                 renderHeard(trans, results[0].transcription || '', expected, true, results[0].heard_hits);
             } else {
                 trans.replaceChildren();
-                group.mics.forEach((mic, i) => {
+                mics.forEach((mic, i) => {
                     const line = el('div', 'heard-line');
                     const who = el('strong', null, `${micLabel(mic)}: `);
                     const words = el('span');
