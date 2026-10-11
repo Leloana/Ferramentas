@@ -1,0 +1,295 @@
+{
+    "meta": {
+        "title": "Undone (The Sweater Song) (2024 Remaster)",
+        "artist": "Weezer",
+        "language": "en",
+        "slug": "undone-the-sweater-song-2024-remaster-weezer"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=mLawKw3Qgig",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Hey brah, how are you doing, man?\nAlright\nIt's been a while man, life's so rad\nThis band's my favorite man, don't ya love them?\nYeah\n\nAw man, you want a beer?\nAll right\nAw man, hell brah, this is the best, man\nI'm so glad we're all back together and stuff\nThis is great, man\n\nYeah\nHey, did you know about the party after the show?\nYeah\nAw man, it's gonna be the best\nI'm so stoked, take it easy, brah\n\nI'm me, me be, goddamn, I am\nI can sing and hear me, know me\n\nIf you want to destroy my sweater\nHold this thread as I walk away\n\nHey, what's up?\nNot much\nUm, did you hear about the party?\nYeah\nI think I'm gonna go, but um\nMy friends don't really wanna go, could I get a ride?\n\nOh no, it go, it gone, bye-bye (bye)\nWho I? I think, I sink, and I die\n\nIf you want to destroy my sweater (whoa, whoa, whoa, whoa)\nHold this thread as I walk away (as I walk away)\nWatch me unravel, I'll soon be naked\nLying on the floor, lying on the floor, I've come undone\n\nIf you want to destroy my sweater (whoa, whoa, whoa)\nHold this thread as I walk away (as I walk away)\nWatch me unravel, I'll soon be naked\nLying on the floor, lying on the floor, I've come undone\n\nI don't want to destroy your tank top (if you want to destroy my sweater)\nLet's be friends and just walk away (hold this thread as I walk away)\nHate to see you lying there in your Superman skivvies (watch me unravel, I'll soon be naked)\nLying on the floor, lying on the floor, I've come undone"
+    },
+    "loudness": {
+        "lufs_before": -12.87,
+        "gain_db": -3.13
+    },
+    "alignment_quality": {
+        "score": 64.5,
+        "flags": [
+            "palavras empilhadas (86)",
+            "palavras com menos de 80 ms (15)",
+            "palavras depois do fim do verso (13)",
+            "2% das palavras no silêncio da voz",
+            "versos com mais de 12 s (1)",
+            "versos sobrepostos (6)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "no silêncio",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "no silêncio",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [
+                    "longo",
+                    "no silêncio",
+                    "sobreposto"
+                ]
+            }
+        ],
+        "metrics": {
+            "words": 295,
+            "lines": 39,
+            "stacked": 86,
+            "short": 15,
+            "past_end": 13,
+            "silence": 6,
+            "long_verses": 1,
+            "overlaps": 6
+        }
+    },
+    "needs_review": true
+}

@@ -11,5 +11,126 @@
     },
     "lyrics": {
         "plain_lyrics": "Não vou mais te perdoar, você foi longe demais\nMeu amor, não sou tão só assim\nNão consigo entender me trocar por outro alguém\nTraição jé é demais, entao você me diz\n\nQue me ama, que sem mim você não vive\nQue foi apenas um deslize, que você preza pelo meu amor\nTenha dó, não mereces o afago nem de Deus nem do Diabo\nQuanto mais da mão que um dia eu dei pra ti\n\nA saudade vai bater mas o meu amor se vai\nTempo vôa e quando vê já foi\nNão me fale de nós dois, não preciso mais saber\nIndo embora, deixo-te um adeus ao vir dizer\n\nQue me ama, que sem mim você não vive\nQue foi apenas um deslize, que você preza pelo meu amor\nTenha dó, não mereces o afago nem de Deus nem do Diabo\nQuanto mais da mão que um dia eu dei pra ti\n\nLaia-laia-laia\nLaraia\nLaia-laia-laia\nLaraia"
-    }
+    },
+    "alignment_quality": {
+        "score": 99.7,
+        "flags": [
+            "palavras com menos de 80 ms (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 157,
+            "lines": 20,
+            "stacked": 0,
+            "short": 1,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
 }

@@ -11,5 +11,297 @@
     },
     "lyrics": {
         "plain_lyrics": "O gato preto cruzou a estrada\r\nPassou por debaixo da escada\r\nE lá no fundo azul\r\nNa noite da floresta\r\nA lua iluminou\r\nA dança, a roda, a festa...\r\n\r\nVira! Vira! Vira!\r\nVira! Vira!\r\nVira Homem\r\nVira! Vira!\r\nVira! Vira!\r\nLobisomem\r\nVira! Vira! Vira!\r\nVira! Vira!\r\nVira Homem\r\nVira! Vira!...\r\n\r\nBailam corujas e pirilampos\r\nEntre os sacis e as fadas\r\nE lá no fundo azul\r\nNa noite da floresta\r\nA lua iluminou\r\nA dança, a roda, a festa...\r\n\r\nVira! Vira! Vira!\r\nVira! Vira!\r\nVira Homem\r\nVira! Vira!\r\nVira! Vira!\r\nLobisomem\r\nVira! Vira! Vira!\r\nVira! Vira!\r\nVira Homem\r\nVira! Vira!...\r\n\r\nBailam corujas e pirilampos\r\nEntre os sacis e as fadas\r\nE lá no fundo azul\r\nNa noite da floresta\r\nA lua iluminou\r\nA dança, a roda, a festa...\r\n\r\nVira! Vira! Vira!\r\nVira! Vira!\r\nVira Homem\r\nVira! Vira!\r\nVira! Vira!\r\nLobisomem\r\nVira! Vira! Vira!\r\nVira! Vira!\r\nVira Homem\r\nVira! Vira!..."
-    }
+    },
+    "alignment_quality": {
+        "score": 85.4,
+        "flags": [
+            "palavras empilhadas (17)",
+            "palavras com menos de 80 ms (7)",
+            "palavras depois do fim do verso (4)",
+            "3% das palavras no silêncio da voz",
+            "versos com mais de 12 s (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [
+                    "longo",
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 148,
+            "lines": 48,
+            "stacked": 17,
+            "short": 7,
+            "past_end": 4,
+            "silence": 4,
+            "long_verses": 1,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
 }

@@ -1,0 +1,396 @@
+{
+    "meta": {
+        "title": "PUPPET",
+        "artist": "Tyler, The Creator",
+        "language": "en",
+        "slug": "puppet-tyler-the-creator"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=OZzfUagtyPE",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Ayo\n\nI wanna talk, I wanna call you and talk\nI wanna walk to your front door and knock\nAfter I start my vehicle, drive to your city 'cause we live an hour apart\nLand at your driveway and put it in park\nThen do the third line of this verse\nThen back to my house and we pack up our bikes\nAnd we ride through the park, chase the sun\n\nGod, that's all I want, other than air\nOxygen and financial freedom, yeah\nI want your company, I need your company\nI want you to want for me\nI can't maneuver without you next to me\nIt's so complex to me\n\nWhat do you need?\nDo you need bread? Do you need this?\nDo you need a hug? Do you need to be alone?\nI could wrap this up and get the fuck away instead\nWhat is your wish? It can be granted\n\nYou're number one, one on my list\nSee, I am Santa\nWhere is Rudolph? You're parasitic\nI do not have self-control\nI am startin' to wonder\nIs this my free will or yours? (Yours, yours, yours)\n\nI'm your puppet, you control me\nI'm your puppet, I don't know me\n(Did I wait too long?) I'm your puppet\n(Did I wait too long?) You control me\n(Did I wait too long?) I'm your puppet\n(Did I wait too long?) I don't know me\n\n'Cause I'm your puppet (puppet, oh)\nYou control me (puppet, control me)\nI'm your puppet (puppet)\nI don't know\nI'm your puppet (Did I wait too long?)\nYou control me\n(Puppet, oh)\n\nYou lost, son, and you've been tryna find your way to me (oh)\nAye, to me, he's on somethin' that I hate to see (oh)\nA-Z, come son, I'm gonna take a breathe\nRun a 'thon, I just stopped and I'ma take a breathe\n\n(You got me by a string)\n(You got me by a string)\nYou got me by a string, oh lawd\n\n(La, la, la, la)\n(La, la, la-la) breathe on the song\n(La, la, la) breathe on the song\n(La, la, la, la)\n(La, la, la-la) breathe on the song\n(Cut me loose)\n\n(La, la, la)\n(La-la, la-la)\n(La, la, la-la)\n(Cut me loose, yeah-ah, yeah-ah, yeah-ah, yeah)\n\nBut at some point, you come to your senses"
+    },
+    "loudness": {
+        "lufs_before": -13.93,
+        "gain_db": -2.07
+    },
+    "alignment_quality": {
+        "score": 78.7,
+        "flags": [
+            "palavras empilhadas (47)",
+            "palavras com menos de 80 ms (21)",
+            "palavras depois do fim do verso (19)",
+            "1% das palavras no silêncio da voz",
+            "versos com mais de 12 s (1)",
+            "versos sobrepostos (9)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 49,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 50,
+                "confidence": null,
+                "flags": [
+                    "longo"
+                ]
+            },
+            {
+                "idx": 51,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 52,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 53,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 54,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 55,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 388,
+            "lines": 56,
+            "stacked": 47,
+            "short": 21,
+            "past_end": 19,
+            "silence": 2,
+            "long_verses": 1,
+            "overlaps": 9
+        }
+    },
+    "needs_review": false
+}

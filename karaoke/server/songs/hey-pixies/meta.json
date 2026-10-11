@@ -11,5 +11,213 @@
     },
     "lyrics": {
         "plain_lyrics": "[offset:-14]\r\n\r\n 作词 : Black Francis\r\n 作曲 : Black Francis\r\nHey\r\nBeen trying to meet you\r\nHey\r\nMust be a devil between us\r\nOr whores in my head\r\nWhores at my door\r\nWhores in my bed\r\nBut hey\r\nWhere\r\nHave you\r\nBeen if you go i will surely die\r\nWe're chained  Uh...\r\nWe're chained  Uh...\r\nWe're chained  Uh...\r\nUh...  Uh...  Uh...\r\nMusic\r\nUh！\r\nSaid the man to the lady\r\nUh...\r\nsaid the lady to the man she adored\r\nAnd the whores like a choir\r\nGo uh all night\r\nAnd mary ain't you tired of this\r\nUh\r\nIs\r\nThe\r\nSound\r\nThat the mother makes when the baby breaks\r\nWe're chained\r\nUh...  Uh...  Uh..."
-    }
+    },
+    "alignment_quality": {
+        "score": 83.3,
+        "flags": [
+            "palavras empilhadas (9)",
+            "palavras com menos de 80 ms (2)",
+            "14% das palavras no silêncio da voz",
+            "versos com mais de 12 s (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [
+                    "longo",
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            }
+        ],
+        "metrics": {
+            "words": 110,
+            "lines": 32,
+            "stacked": 9,
+            "short": 2,
+            "past_end": 0,
+            "silence": 15,
+            "long_verses": 1,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
 }

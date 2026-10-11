@@ -11,5 +11,131 @@
     },
     "lyrics": {
         "plain_lyrics": "É, morena, tá tudo bem\nSereno é quem tem\nA paz de estar em par com Deus\nPode rir agora\nQue o fio da maldade se enrola\n\nPra nós todo o amor do mundo\nPra eles, o outro lado\nEu digo mal-me-quer\nNinguém escapa o peso de viver assim\n\nSer assim, eu não\nPrefiro assim com você\nJuntinho, sem caber de imaginar\nAté o fim raiar\n\nPra nós todo o amor do mundo\nPra eles, o outro lado\nEu digo mal-me-quer\nNinguém escapa o peso de viver assim\n\nSer assim, eu não\nPrefiro assim com você\nJuntinho, sem caber de imaginar\nAté o fim raiar"
-    }
+    },
+    "alignment_quality": {
+        "score": 92.0,
+        "flags": [
+            "confiança baixa em 13% das palavras"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": 0.7,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": 0.528,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": 0.574,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": 0.605,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": 0.5,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": 0.566,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": 0.554,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": 0.509,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": 0.794,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": 0.585,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": 0.742,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": 0.586,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": 0.551,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": 0.559,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": 0.692,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": 0.52,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": 0.538,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": 0.493,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": 0.914,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": 0.527,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": 0.571,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 105,
+            "lines": 21,
+            "low_confidence": 0.133,
+            "median_confidence": 0.616,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
 }

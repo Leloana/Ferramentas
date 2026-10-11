@@ -11,5 +11,158 @@
     },
     "lyrics": {
         "plain_lyrics": "Eu amo sua voz\nSeu quadril e sua boca em mim\nSeus pais, seus irmãos\nTudo que faz você feliz\nEu amo suas mãos\nQue desenham seu ex\nEu amo seus pés\nQue viajam sem mim\nPegue o que quiser de mim\nMe plante agora em seu jardim\nE se eu murchar, me regue\nInsista em mim\nEu amo sua voz\nSeu quadril e sua boca em mim\nSeus pais, seus irmãos\nTudo que faz você feliz\nEu amo suas mãos\nQue desenham seu ex\nEu amo seus pés\nQue viajam sem mim\nPegue o que quiser de mim\nMe plante agora em seu jardim\nE se eu murchar, me regue\nInsista em mim"
-    }
+    },
+    "alignment_quality": {
+        "score": 88.9,
+        "flags": [
+            "palavras empilhadas (15)",
+            "2% das palavras no silêncio da voz"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 124,
+            "lines": 25,
+            "stacked": 15,
+            "short": 0,
+            "past_end": 0,
+            "silence": 3,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
 }

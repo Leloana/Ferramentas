@@ -11,5 +11,307 @@
     },
     "lyrics": {
         "plain_lyrics": "Pai, afasta de mim esse cálice\r\nPai, afasta de mim esse cálice\r\nPai, afasta de mim esse cálice\r\nDe vinho tinto de sangue\r\n\r\nPai, afasta de mim esse cálice, pai\r\nAfasta de mim esse cálice\r\nPai, afasta de mim esse cálice\r\nDe vinho tinto de sangue\r\n\r\nComo beber dessa bebida amarga\r\nTragar a dor, engolir a labuta\r\nMesmo calada a boca, resta o peito\r\nSilêncio na cidade não se escuta\r\n\r\nDe que me vale ser filho da santa\r\nMelhor seria ser filho da outra\r\nOutra realidade menos morta\r\nTanta mentira, tanta força bruta\r\n\r\nPai (pai)\r\nAfasta de mim esse cálice (pai)\r\nAfasta de mim esse cálice (pai)\r\nAfasta de mim esse cálice\r\nDe vinho tinto de sangue\r\n\r\nComo é difícil acordar calado\r\nSe na calada da noite eu me dano\r\nQuero lançar um grito desumano\r\nQue é uma maneira de ser escutado\r\n\r\nEsse silêncio todo me atordoa\r\nAtordoado eu permaneço atento\r\nNa arquibancada pra qualquer momento\r\nVer emergir o monstro da lagoa\r\n\r\nPai (pai)\r\nAfasta de mim esse cálice (pai)\r\nAfasta de mim esse cálice (pai)\r\nAfasta de mim esse cálice\r\nDe vinho tinto de sangue\r\n\r\nDe muito gorda a porca já não anda (cálice)\r\nDe muito usada a faca já não corta\r\nComo é difícil, pai (pai), abrir a porta (cálice)\r\nEssa palavra presa na garganta\r\n\r\nEsse pileque homérico no mundo\r\nDe que adianta ter boa vontade\r\nMesmo calado o peito, resta a cuca\r\nDos bêbados do centro da cidade\r\n\r\nPai (pai)\r\nAfasta de mim esse cálice (pai)\r\nAfasta de mim esse cálice (pai)\r\nAfasta de mim esse cálice\r\nDe vinho tinto de sangue\r\n\r\nTalvez o mundo não seja pequeno (cálice)\r\nNem seja a vida um fato consumado (cálice, cálice)\r\nQuero inventar o meu próprio pecado\r\n(Cálice, cálice, cálice)\r\nQuero morrer do meu próprio veneno\r\n(Pai, cálice, cálice, cálice)\r\n\r\nQuero perder de vez tua cabeça (cálice)\r\nMinha cabeça perder teu juízo (cálice)\r\nQuero cheirar fumaça de óleo diesel (cálice)\r\nMe embriagar até que alguém me esqueça (cálice)"
-    }
+    },
+    "alignment_quality": {
+        "score": 93.1,
+        "flags": [
+            "confiança baixa em 12% das palavras"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": 0.627,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": 0.645,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": 0.684,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": 0.718,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": 0.564,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": 0.634,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": 0.535,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": 0.926,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": 0.699,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": 0.841,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": 0.719,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": 0.866,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": 0.724,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": 0.854,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": 0.752,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": 0.769,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": 0.228,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 17,
+                "confidence": 0.656,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": 0.485,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": 0.688,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": 0.938,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": 0.997,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": 0.732,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": 0.929,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": 0.881,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": 0.712,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": 0.847,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": 0.689,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": 0.924,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": 0.293,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 30,
+                "confidence": 0.648,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": 0.614,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": 0.587,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": 0.895,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": 0.656,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": 0.676,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": 0.567,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": 0.865,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": 0.545,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": 0.626,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": 0.724,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": 0.966,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": 0.1,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 43,
+                "confidence": 0.472,
+                "flags": []
+            },
+            {
+                "idx": 44,
+                "confidence": 0.56,
+                "flags": []
+            },
+            {
+                "idx": 45,
+                "confidence": 0.896,
+                "flags": []
+            },
+            {
+                "idx": 46,
+                "confidence": 0.402,
+                "flags": []
+            },
+            {
+                "idx": 47,
+                "confidence": 0.724,
+                "flags": []
+            },
+            {
+                "idx": 48,
+                "confidence": 0.703,
+                "flags": []
+            },
+            {
+                "idx": 49,
+                "confidence": 0.991,
+                "flags": []
+            },
+            {
+                "idx": 50,
+                "confidence": 0.904,
+                "flags": []
+            },
+            {
+                "idx": 51,
+                "confidence": 0.765,
+                "flags": []
+            },
+            {
+                "idx": 52,
+                "confidence": 0.763,
+                "flags": []
+            },
+            {
+                "idx": 53,
+                "confidence": 0.556,
+                "flags": []
+            },
+            {
+                "idx": 54,
+                "confidence": 0.603,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 321,
+            "lines": 55,
+            "low_confidence": 0.115,
+            "median_confidence": 0.779,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
 }

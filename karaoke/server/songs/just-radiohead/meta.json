@@ -11,5 +11,222 @@
     },
     "lyrics": {
         "plain_lyrics": "Can't get the stink off\r\nHe's been hanging 'round for days\r\nComes like a comet\r\nSuckered you, but not your friends\r\n\r\nOne day he'll get to you\r\nAnd teach you how to be a holy cow\r\n\r\nYou do it to yourself, you do\r\nAnd that's what really hurts\r\nIs that you do it to yourself, just you\r\nYou and no one else\r\nYou do it to yourself\r\nYou do it to yourself\r\n\r\nDon't get my sympathy\r\nHanging out the fifteenth floor\r\nYou've changed the locks three times\r\nHe still come reeling through the door\r\n\r\nOne day I'll get to you\r\nAnd teach you how to get to purest hell\r\n\r\nYou do it to yourself, you do\r\nAnd that's what really hurts\r\nYou do it to yourself, just you\r\nYou and no one else\r\nYou do it to yourself\r\nYou do it to yourself\r\n\r\nYou do it to yourself, you do\r\nAnd that's what really hurts\r\nIs that you do it to yourself, just you\r\nYou and no one else\r\nYou do it to yourself\r\nYou do it to yourself, ah\r\n\r\nSelf\r\n\r\nYou do it to yourself\r\nYou do it to yourself\r\nJust you\r\nYou do it to yourself\r\nJust you\r\nYou do it to yourself"
-    }
+    },
+    "alignment_quality": {
+        "score": 92.8,
+        "flags": [
+            "palavras empilhadas (16)",
+            "palavras com menos de 80 ms (1)",
+            "palavras depois do fim do verso (1)",
+            "1% das palavras no silêncio da voz"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 205,
+            "lines": 37,
+            "stacked": 16,
+            "short": 1,
+            "past_end": 1,
+            "silence": 2,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
 }

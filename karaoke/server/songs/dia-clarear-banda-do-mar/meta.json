@@ -16,5 +16,128 @@
         "has_vocal_file": false,
         "has_backing_file": false,
         "has_lrc_file": true
-    }
+    },
+    "alignment_quality": {
+        "score": 92.4,
+        "flags": [
+            "versos com mais de 12 s (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": 0.684,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": 0.41,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": 0.929,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": 0.475,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": 0.824,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": 0.503,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": 0.649,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": 0.573,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": 0.729,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": 0.822,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": 0.892,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": 0.548,
+                "flags": [
+                    "longo"
+                ]
+            },
+            {
+                "idx": 12,
+                "confidence": 0.715,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": 0.584,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": 0.506,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": 0.536,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": 0.602,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": 0.577,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": 0.541,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": 0.621,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 162,
+            "lines": 20,
+            "low_confidence": 0.093,
+            "median_confidence": 0.643,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 1,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
 }

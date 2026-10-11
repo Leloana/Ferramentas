@@ -11,5 +11,52 @@
     },
     "lyrics": {
         "plain_lyrics": "Um grito de estrelas vem do infinito\r\nE um bando de luz repete o grito\r\nTodas as cores e outras mais\r\nProcriam flores astrais\r\nUm verme passeia na lua cheia\r\nUm verme passeia na lua cheia"
-    }
+    },
+    "alignment_quality": {
+        "score": 100.0,
+        "flags": [],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 36,
+            "lines": 6,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
 }

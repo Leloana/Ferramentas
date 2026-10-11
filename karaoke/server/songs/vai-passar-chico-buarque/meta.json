@@ -11,5 +11,593 @@
     },
     "lyrics": {
         "plain_lyrics": "Vai passar\r\nNessa avenida um samba popular\r\nCada paralelepípedo da velha cidade\r\nEssa noite vai se arrepiar\r\n\r\nAo lembrar\r\nQue aqui passaram sambas imortais\r\nQue aqui sangraram pelos nossos pés\r\nQue aqui sambaram nossos ancestrais\r\n\r\nNum tempo\r\nPágina infeliz da nossa história\r\nPassagem desbotada na memória\r\nDas nossas novas gerações\r\n\r\nDormia\r\nA nossa pátria-mãe tão distraída\r\nSem perceber que era subtraída\r\nEm tenebrosas transações\r\n\r\nSeus filhos\r\nErravam cegos pelo continente\r\nLevavam pedras feito penitentes\r\nErguendo estranhas catedrais\r\n\r\nE um dia afinal\r\nTinham o direito a uma alegria fugaz\r\nUma ofegante epidemia\r\nQue se chamava carnaval\r\n\r\nO carnaval, o carnaval (Vai passar)\r\nPalmas pra ala dos barões famintos\r\nO bloco dos napoleões retintos\r\nE os pigmeus do Boulevard\r\n\r\nMeu Deus, vem olhar\r\nVem ver de perto uma cidade a cantar\r\nA evolução da liberdade\r\nAté o dia clarear\r\n\r\nAi que vida boa, ô lerê\r\nAi que vida boa, ô lará\r\nO estandarte do sanatório geral vai passar\r\n\r\nAi que vida boa, ô lerê\r\nAi que vida boa, ô lará\r\nO estandarte do sanatório geral\r\nVai passar\r\n\r\nVai passar\r\nNessa avenida um samba popular\r\nCada paralelepípedo da velha cidade\r\nEssa noite vai se arrepiar\r\n\r\nAo lembrar\r\nQue aqui passaram sambas imortais\r\nQue aqui sangraram pelos nossos pés\r\nQue aqui sambaram nossos ancestrais\r\n\r\nNo tempo\r\nPágina infeliz da nossa história\r\nPassagem desbotada na memória\r\nDas nossas novas gerações\r\n\r\nDormia\r\nA nossa pátria-mãe tão distraída\r\nSem perceber que era subtraída\r\nEm tenebrosas transações\r\n\r\nSeus filhos\r\nErravam cegos pelo continente\r\nLevavam pedras feito penitentes\r\nErguendo estranhas catedrais\r\n\r\nE um dia afinal\r\nTinham direito a uma alegria fugaz\r\nUma ofegante epidemia\r\nQue se chamava carnaval\r\n\r\nO carnaval, o carnaval (Vai passar)\r\nPalmas pra ala dos barões famintos\r\nO bloco dos napoleões retintos\r\nE os pigmeus do Boulevard\r\n\r\nMeus Deus, vem olhar\r\nVem ver de perto uma cidade a cantar\r\nA evolução da liberdade\r\nAté o dia clarear\r\n\r\nAi que vida boa, ô lêrê\r\nAi que vida boa, ô lará\r\nO estandarte do sanatório geral vai passar\r\n\r\nAi que vida boa, ô lêrê\r\nAi que vida boa, ô lará\r\nO estandarte do sanatório geral\r\nVai passar\r\n\r\nVai passar\r\nNessa avenida um samba popular\r\nCada paralelepípedo da velha cidade\r\nEssa noite vai se arrepiar\r\n\r\nAo lembrar\r\nQue aqui passaram sambas imortais\r\nQue aqui sangraram pelos nossos pés\r\nQue aqui sambaram nossos ancestrais\r\n\r\nNo tempo\r\nPágina infeliz da nossa história\r\nPassagem desbotada na memória\r\nDas nossas novas gerações\r\n\r\nDormia\r\nA nossa pátria-mãe tão distraída\r\nSem perceber que era subtraída\r\nEm tenebrosas transações\r\n\r\nSeus filhos\r\nErravam cegos pelo continente\r\nLevavam pedras feito penitentes\r\nErguendo estranhas catedrais\r\n\r\nE um dia afinal\r\nTinham direito a uma alegria fugaz\r\nUma ofegante epidemia\r\nQue se chamava carnaval\r\n\r\nO carnaval, o carnaval (Vai passar)\r\nPalmas pra ala dos barões famintos\r\nO bloco dos napoleões retintos\r\nE os pigmeus do Boulevard\r\n\r\nMeu Deus, vem olhar\r\nVem ver de perto uma cidade a cantar\r\nA evolução da liberdade\r\nAté o dia clarear"
-    }
+    },
+    "alignment_quality": {
+        "score": 96.1,
+        "flags": [
+            "palavras empilhadas (22)",
+            "palavras com menos de 80 ms (1)",
+            "palavras depois do fim do verso (1)",
+            "0% das palavras no silêncio da voz"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 49,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 50,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 51,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 52,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 53,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 54,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 55,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 56,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 57,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 58,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 59,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 60,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 61,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 62,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 63,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 64,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 65,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 66,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 67,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 68,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 69,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 70,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 71,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 72,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 73,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 74,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 75,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 76,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 77,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 78,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 79,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 80,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 81,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 82,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 83,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 84,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 85,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 86,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 87,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 88,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 89,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 90,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 91,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 92,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 93,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 94,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 95,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 96,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 97,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 98,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 99,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 100,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 101,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 102,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 103,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 104,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 105,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 106,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 107,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 108,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 109,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            }
+        ],
+        "metrics": {
+            "words": 485,
+            "lines": 110,
+            "stacked": 22,
+            "short": 1,
+            "past_end": 1,
+            "silence": 1,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
 }

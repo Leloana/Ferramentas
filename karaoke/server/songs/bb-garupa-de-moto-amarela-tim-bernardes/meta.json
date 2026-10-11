@@ -11,5 +11,132 @@
     },
     "lyrics": {
         "plain_lyrics": "Tudo em volta tem me confirmado, bebê\nQue eu e você somos coisa de alma\nO universo tem deixado claro, bebê\nSó quem não quer ver não enxerga\nNamora comigo, eu namoro com você\nGarupa de moto amarela\nÉ meu feriado favorito, você\nQuem eu quero ser tem que estar do seu lado\nJá me apaixonei ficando cego, bebê\nCom você, eu sonho de olho aberto, bebê\nQuero amar e sempre ver de perto você\nVamos explorar Santa Cecília, bebê\nEu sigo você sossegado\nPode me seguir também, vou te fazer bem\nPodemos curtir de mãos dadas\nVocê muda tudo e tudo fica tão bem\nMil cores, melhores amigos\nNós não vamos mais ser tão sozinhos, bebê\nConto com você, pode contar comigo\nJá me apaixonei ficando cego, bebê\nCom você eu sonho de olho aberto, bebê\nQuero amar e sempre ver de perto você"
-    }
+    },
+    "alignment_quality": {
+        "score": 100.0,
+        "flags": [],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 145,
+            "lines": 22,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
 }

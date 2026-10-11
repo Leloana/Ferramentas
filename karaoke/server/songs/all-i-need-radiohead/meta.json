@@ -1,0 +1,140 @@
+{
+    "meta": {
+        "title": "All I Need",
+        "artist": "Radiohead",
+        "language": "en",
+        "slug": "all-i-need-radiohead"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=FM7ALFsOH4g",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "I'm the next act waiting in the wings\nI'm an animal trapped in your hot car\nI am all the days that you choose to ignore\nYou are all I need\nYou're all I need\nI'm in the middle of your picture\nLying in the reeds\nI am a moth who just wants to share your light\nI'm just an insect trying to get out of the night\nI only stick with you because there are no others\nYou are all I need\nYou're all I need\nI'm in the middle of your picture\nLying in the reeds\n...\nIt's all wrong, it's all wrong, it's all wrong\nIt's alright, it's alright, it's alright\nIt's all wrong, it's alright\nIt's alright, it's alright"
+    },
+    "loudness": {
+        "lufs_before": -12.77,
+        "gain_db": -3.23
+    },
+    "alignment_quality": {
+        "score": 78.5,
+        "flags": [
+            "palavras empilhadas (19)",
+            "3% das palavras no silêncio da voz",
+            "versos com mais de 12 s (3)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [
+                    "longo"
+                ]
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [
+                    "longo"
+                ]
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [
+                    "longo"
+                ]
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 118,
+            "lines": 17,
+            "stacked": 19,
+            "short": 0,
+            "past_end": 0,
+            "silence": 3,
+            "long_verses": 3,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}

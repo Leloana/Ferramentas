@@ -17,11 +17,11 @@
         "gain_db": 1.16
     },
     "alignment_quality": {
-        "score": 77.3,
+        "score": 77.7,
         "flags": [
             "palavras empilhadas (37)",
-            "palavras com menos de 80 ms (60)",
-            "palavras depois do fim do verso (50)",
+            "palavras com menos de 80 ms (57)",
+            "palavras depois do fim do verso (47)",
             "versos sobrepostos (29)"
         ],
         "lines": [
@@ -186,8 +186,6 @@
                 "idx": 21,
                 "confidence": null,
                 "flags": [
-                    "fora do verso",
-                    "palavras curtas",
                     "sobreposto"
                 ]
             },
@@ -732,8 +730,8 @@
             "words": 619,
             "lines": 107,
             "stacked": 37,
-            "short": 60,
-            "past_end": 50,
+            "short": 57,
+            "past_end": 47,
             "silence": 0,
             "long_verses": 0,
             "overlaps": 29

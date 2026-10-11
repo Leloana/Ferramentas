@@ -11,5 +11,208 @@
     },
     "lyrics": {
         "plain_lyrics": "Bandido, bandido corazón .\r\nNo deja de te amar\r\nBandido, bandido corazón\r\nNo puedo controlar\r\n\r\nQuero te pedir minhas desculpas\r\nIsso sempre acontece\r\nTenho um coração que é desvairado\r\nE nunca me obedece\r\nEu já sou um cara meio estranho\r\nAlguém me disse isso uma vez\r\nMeu coração é de cigano\r\nMas o que salva é a minha insensatez\r\n\r\nBandido, bandido corazón\r\nNo deja de te amar\r\nBandido, bandido corazón\r\nNo puedo controlar\r\n\r\nEu que sempre fui chegado\r\nA um romance e aventura\r\nEu talvez seja condenado\r\nA viver perto da loucura\r\nPor isso quero te pedir minhas desculpas\r\nEu canto mais uma vez\r\nMeu coração é desvairado, eu sei\r\nMas o que estraga é a sua timidez\r\n\r\nBandido, bandido corazón\r\nNo deja de te amar\r\nAiaia, aiaia, aiaia\r\n\r\nBandido, bandido\r\nBandido, bandido corazón\r\nNo deja de te amar\r\nBandido, bandido\r\nBandido, bandido\r\nAiaia, aiaia, aiaia\r\nBandido, bandido"
-    }
+    },
+    "alignment_quality": {
+        "score": 94.7,
+        "flags": [
+            "palavras com menos de 80 ms (4)",
+            "palavras depois do fim do verso (4)",
+            "1% das palavras no silêncio da voz",
+            "versos sobrepostos (2)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 148,
+            "lines": 34,
+            "stacked": 0,
+            "short": 4,
+            "past_end": 4,
+            "silence": 2,
+            "long_verses": 0,
+            "overlaps": 2
+        }
+    },
+    "needs_review": false
 }

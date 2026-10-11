@@ -22,255 +22,232 @@
         "gain_db": 0.8
     },
     "alignment_quality": {
-        "score": 69.1,
+        "score": 97.2,
         "flags": [
-            "confiança baixa em 41% das palavras",
-            "palavras empilhadas (3)"
+            "palavras empilhadas (6)",
+            "palavras com menos de 80 ms (1)",
+            "palavras depois do fim do verso (1)"
         ],
         "lines": [
             {
                 "idx": 0,
-                "confidence": 0.478,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 1,
-                "confidence": 0.587,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 2,
-                "confidence": 0.759,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 3,
-                "confidence": 0.508,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 4,
-                "confidence": 0.305,
-                "flags": [
-                    "confiança baixa"
-                ]
+                "confidence": null,
+                "flags": []
             },
             {
                 "idx": 5,
-                "confidence": 0.638,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 6,
-                "confidence": 0.712,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 7,
-                "confidence": 0.615,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 8,
-                "confidence": 0.667,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 9,
-                "confidence": 0.591,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 10,
-                "confidence": 0.571,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 11,
-                "confidence": 0.377,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 12,
-                "confidence": 0.047,
-                "flags": [
-                    "confiança baixa"
-                ]
+                "confidence": null,
+                "flags": []
             },
             {
                 "idx": 13,
-                "confidence": 0.346,
-                "flags": [
-                    "confiança baixa",
-                    "empilhadas"
-                ]
+                "confidence": null,
+                "flags": []
             },
             {
                 "idx": 14,
-                "confidence": 0.407,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 15,
-                "confidence": 0.228,
-                "flags": [
-                    "confiança baixa"
-                ]
+                "confidence": null,
+                "flags": []
             },
             {
                 "idx": 16,
-                "confidence": 0.556,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 17,
-                "confidence": 0.385,
-                "flags": []
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
             },
             {
                 "idx": 18,
-                "confidence": 0.352,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 19,
-                "confidence": 0.502,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 20,
-                "confidence": 0.426,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 21,
-                "confidence": 0.69,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 22,
-                "confidence": 0.611,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 23,
-                "confidence": 0.517,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 24,
-                "confidence": 0.636,
-                "flags": []
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
             },
             {
                 "idx": 25,
-                "confidence": 0.425,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 26,
-                "confidence": 0.643,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 27,
-                "confidence": 0.308,
-                "flags": [
-                    "confiança baixa"
-                ]
+                "confidence": null,
+                "flags": []
             },
             {
                 "idx": 28,
-                "confidence": 0.123,
-                "flags": [
-                    "confiança baixa"
-                ]
+                "confidence": null,
+                "flags": []
             },
             {
                 "idx": 29,
-                "confidence": 0.261,
-                "flags": [
-                    "confiança baixa"
-                ]
+                "confidence": null,
+                "flags": []
             },
             {
                 "idx": 30,
-                "confidence": 0.441,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 31,
-                "confidence": 0.324,
-                "flags": [
-                    "confiança baixa"
-                ]
+                "confidence": null,
+                "flags": []
             },
             {
                 "idx": 32,
-                "confidence": 0.325,
-                "flags": [
-                    "confiança baixa"
-                ]
+                "confidence": null,
+                "flags": []
             },
             {
                 "idx": 33,
-                "confidence": 0.197,
+                "confidence": null,
                 "flags": [
-                    "confiança baixa"
+                    "fora do verso",
+                    "palavras curtas"
                 ]
             },
             {
                 "idx": 34,
-                "confidence": 0.323,
-                "flags": [
-                    "confiança baixa"
-                ]
+                "confidence": null,
+                "flags": []
             },
             {
                 "idx": 35,
-                "confidence": 0.158,
-                "flags": [
-                    "confiança baixa"
-                ]
+                "confidence": null,
+                "flags": []
             },
             {
                 "idx": 36,
-                "confidence": 0.434,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 37,
-                "confidence": 0.378,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 38,
-                "confidence": 0.393,
+                "confidence": null,
                 "flags": []
             },
             {
                 "idx": 39,
-                "confidence": 0.175,
-                "flags": [
-                    "confiança baixa"
-                ]
+                "confidence": null,
+                "flags": []
             },
             {
                 "idx": 40,
-                "confidence": 0.269,
-                "flags": [
-                    "confiança baixa"
-                ]
+                "confidence": null,
+                "flags": []
             }
         ],
         "metrics": {
             "words": 198,
             "lines": 41,
-            "low_confidence": 0.414,
-            "median_confidence": 0.419,
-            "stacked": 3,
-            "short": 0,
-            "past_end": 0,
+            "stacked": 6,
+            "short": 1,
+            "past_end": 1,
             "silence": 0,
             "long_verses": 0,
             "overlaps": 0

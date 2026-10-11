@@ -11,5 +11,120 @@
     },
     "lyrics": {
         "plain_lyrics": "Eu não sei dizer nada por dizer\r\nEntão eu escuto\r\nSe você disser tudo o que quiser\r\nEntão eu escuto\r\n\r\nFala\r\nLalalalalalalalalá\r\nFala\r\n\r\nSe eu não entender, não vou responder\r\nEntão eu escuto\r\nEu só vou falar na hora de falar\r\nEntão eu escuto\r\n\r\nFala"
-    }
+    },
+    "alignment_quality": {
+        "score": 93.5,
+        "flags": [
+            "confiança baixa em 11% das palavras"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": 0.902,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": 0.477,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": 0.409,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": 0.491,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": 0.683,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": 0.871,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": 0.236,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 7,
+                "confidence": 0.56,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": 0.621,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": 0.557,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": 0.426,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": 0.585,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": 0.812,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": 0.392,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": 0.59,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": 0.383,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": 0.536,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": 0.32,
+                "flags": [
+                    "confiança baixa"
+                ]
+            }
+        ],
+        "metrics": {
+            "words": 83,
+            "lines": 18,
+            "low_confidence": 0.108,
+            "median_confidence": 0.609,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
 }

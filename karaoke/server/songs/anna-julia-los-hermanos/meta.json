@@ -11,5 +11,177 @@
     },
     "lyrics": {
         "plain_lyrics": "Quem te vê passar assim por mim\r\nNão sabe o que é sofrer\r\nTer que ver você, assim, sempre tão linda\r\nContemplar o sol do teu olhar, perder você no ar\r\n\r\nNa certeza de um amor\r\nMe achar um nada\r\nPois sem ter teu carinho\r\nEu me sinto sozinho\r\nEu me afogo em solidão\r\n\r\nOh, Anna Júlia\r\nOh, Anna Júlia\r\n\r\nNunca acreditei na ilusão de ter você pra mim\r\nMe atormenta a previsão do nosso destino\r\nEu passando o dia a te esperar\r\nVocê sem me notar\r\nQuando tudo tiver fim\r\n\r\nVocê vai estar com um cara\r\nUm alguém sem carinho\r\nSerá sempre um espinho\r\nDentro do meu coração\r\n\r\nOh, Anna Júlia\r\nOh, Anna Júlia\r\n\r\nSei que você já não quer o meu amor\r\nSei que você já não gosta de mim\r\nEu sei que eu não sou quem você sempre sonhou\r\nMas vou reconquistar o seu amor todo pra mim\r\n\r\nOh, Anna Júlia\r\nOh, Anna Júlia\r\nOh, Anna Júlia\r\nOh, Anna Júlia, Júlia, Júlia\r\nÔ-ô-ô"
-    }
+    },
+    "alignment_quality": {
+        "score": 100.0,
+        "flags": [],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 166,
+            "lines": 31,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
 }

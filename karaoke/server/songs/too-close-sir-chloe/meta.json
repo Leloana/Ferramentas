@@ -1,0 +1,231 @@
+{
+    "meta": {
+        "title": "Too Close",
+        "artist": "Sir Chloe",
+        "language": "en",
+        "slug": "too-close-sir-chloe"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=x8t9SRkQYK8",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "He's so beautiful\r\nMakes me wanna believe\r\nHe's got a heart of gold\r\nThat nobody can see\r\n\r\nBringing party favors\r\nDollar bills rolled nice and neat\r\nParty boy, you took too much\r\nIt's time for you to leave\r\n\r\nI want to want you, baby\r\nBut you're making it so hard\r\nI tried to bite the bullet\r\nAnd just take you as you are\r\n\r\nYou get to close\r\nTake the one I love the most\r\nI think it's time for you to go\r\nMake it so hard you know you've gone too far\r\nI think it's time for you to go\r\n\r\nSo predictable just like what they told me\r\nHe's staring at the floor tail between your knees\r\n\r\nFragile like I've never seen\r\nYou're pretty when you do not speak\r\nFragile like I've never seen\r\nYou're pretty when you do not speak\r\nYou're so unsure\r\nYou're so afraid\r\nDon't tell me to listen when you got nothing to say\r\n\r\nYou get to close\r\nTake the one I love the most\r\nI think it's time for you to go\r\nMake it so hard you know you've gone too far and\r\nI think it's time for you to go\r\n\r\nYou're so unsure\r\nYou're so afraid\r\nDon't tell me to listen when you got nothing to say"
+    },
+    "loudness": {
+        "lufs_before": -13.93,
+        "gain_db": -2.07
+    },
+    "alignment_quality": {
+        "score": 88.7,
+        "flags": [
+            "palavras empilhadas (12)",
+            "palavras com menos de 80 ms (6)",
+            "palavras depois do fim do verso (5)",
+            "versos sobrepostos (4)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 213,
+            "lines": 34,
+            "stacked": 12,
+            "short": 6,
+            "past_end": 5,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 4
+        }
+    },
+    "needs_review": false
+}

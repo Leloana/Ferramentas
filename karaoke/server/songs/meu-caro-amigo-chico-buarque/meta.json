@@ -11,5 +11,266 @@
     },
     "lyrics": {
         "plain_lyrics": "Meu caro amigo, me perdoe, por favor\r\nSe eu não lhe faço uma visita\r\nMas como agora apareceu um portador\r\nMando notícias nessa fita\r\n\r\nAqui na terra, tão jogando futebol\r\nTem muito samba, muito choro e rock'n'roll\r\nUns dias chove, noutros dias bate sol\r\nMas o que eu quero é lhe dizer que a coisa aqui tá preta\r\n\r\nMuita mutreta pra levar a situação\r\nQue a gente vai levando de teimoso e de pirraça\r\nQue a gente vai tomando e também sem a cachaça\r\nNinguém segura esse rojão\r\n\r\nMeu caro amigo, eu não pretendo provocar\r\nNem atiçar suas saudades\r\nMas acontece que não posso me furtar\r\nA lhe contar as novidades\r\n\r\nAqui na terra, tão jogando futebol\r\nTem muito samba, muito choro e rock'n'roll\r\nUns dias chove, noutros dias bate sol\r\nMas o que eu quero é lhe dizer que a coisa aqui tá preta\r\n\r\nÉ pirueta pra cavar o ganha-pão\r\nQue a gente vai cavando só de birra, só de sarro\r\nQue a gente vai fumando e também sem um cigarro\r\nNinguém segura esse rojão\r\n\r\nMeu caro amigo, eu quis até telefonar\r\nMas a tarifa não tem graça\r\nEu ando aflito pra fazer você ficar\r\nA par de tudo que se passa\r\n\r\nAqui na terra, tão jogando futebol\r\nTem muito samba, muito choro e rock'n'roll\r\nUns dias chove, noutros dias bate sol\r\nMas o que eu quero é lhe dizer que a coisa aqui tá preta\r\n\r\nMuita careta pra engolir a transação\r\nE a gente tá engolindo cada sapo no caminho\r\nE a gente vai se amando que também sem um carinho\r\nNinguém segura esse rojão\r\n\r\nMeu caro amigo, eu bem queria lhe escrever\r\nMas o correio andou arisco\r\nSe me permitem, vou tentar lhe remeter\r\nNotícias frescas nesse disco\r\n\r\nAqui na terra, tão jogando futebol\r\nTem muito samba, muito choro e rock'n'roll\r\nUns dias chove, noutros dias bate sol\r\nMas o que eu quero é lhe dizer que a coisa aqui tá preta\r\n\r\nA Marieta manda um beijo para os seus\r\nUm beijo na família, na Cecília e nas crianças\r\nO Francis aproveita pra também mandar lembranças\r\nA todo o pessoal, adeus"
-    }
+    },
+    "alignment_quality": {
+        "score": 89.5,
+        "flags": [
+            "confiança baixa em 18% das palavras"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": 0.564,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": 0.44,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": 0.975,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": 0.795,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": 0.757,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": 0.445,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": 0.73,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": 0.419,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": 0.94,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": 0.78,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": 0.655,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": 0.565,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": 0.615,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": 0.65,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": 0.961,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": 0.942,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": 0.875,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": 0.533,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": 0.779,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": 0.573,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": 0.781,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": 0.819,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": 0.789,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": 0.752,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": 0.572,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": 0.749,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": 0.909,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": 0.57,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": 0.924,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": 0.57,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": 0.41,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": 0.518,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": 0.818,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": 0.83,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": 0.526,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": 0.441,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": 0.383,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": 0.633,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": 0.655,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": 0.65,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": 0.886,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": 0.582,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": 0.479,
+                "flags": []
+            },
+            {
+                "idx": 43,
+                "confidence": 0.47,
+                "flags": []
+            },
+            {
+                "idx": 44,
+                "confidence": 0.776,
+                "flags": []
+            },
+            {
+                "idx": 45,
+                "confidence": 0.71,
+                "flags": []
+            },
+            {
+                "idx": 46,
+                "confidence": 0.525,
+                "flags": []
+            },
+            {
+                "idx": 47,
+                "confidence": 0.918,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 354,
+            "lines": 48,
+            "low_confidence": 0.175,
+            "median_confidence": 0.726,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
 }
