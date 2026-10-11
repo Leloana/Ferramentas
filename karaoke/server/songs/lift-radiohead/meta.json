@@ -255,5 +255,12 @@
             "overlaps": 0
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "OK Computer OKNOTOK 1997 2017",
+        "year": 2017,
+        "track": 3,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

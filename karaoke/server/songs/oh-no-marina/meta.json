@@ -317,5 +317,12 @@
             "overlaps": 0
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "The Family Jewels",
+        "year": 2010,
+        "track": 11,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

@@ -278,5 +278,12 @@
             "overlaps": 0
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "Luz",
+        "year": 1982,
+        "track": 1,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

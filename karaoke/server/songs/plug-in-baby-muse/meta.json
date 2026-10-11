@@ -165,5 +165,12 @@
             "overlaps": 0
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "Origin of Symmetry",
+        "year": 2001,
+        "track": 5,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

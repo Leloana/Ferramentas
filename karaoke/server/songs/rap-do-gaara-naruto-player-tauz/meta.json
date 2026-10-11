@@ -383,5 +383,12 @@
             "overlaps": 2
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": null,
+        "year": null,
+        "track": null,
+        "kind": "unknown",
+        "source": "itunes"
+    }
 }

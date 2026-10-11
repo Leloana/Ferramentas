@@ -219,5 +219,12 @@
             "overlaps": 0
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "Doolittle",
+        "year": 1989,
+        "track": 13,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

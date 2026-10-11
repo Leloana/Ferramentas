@@ -297,5 +297,12 @@
             "overlaps": 0
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "Construção",
+        "year": 1971,
+        "track": 4,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

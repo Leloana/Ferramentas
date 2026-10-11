@@ -599,5 +599,12 @@
             "overlaps": 0
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "O Sambista",
+        "year": 1994,
+        "track": 14,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

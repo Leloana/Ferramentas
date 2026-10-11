@@ -123,5 +123,12 @@
             "overlaps": 0
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "Coisa Mais Linda Season 1 (Original Music from the Netflix Series)",
+        "year": 2019,
+        "track": 1,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

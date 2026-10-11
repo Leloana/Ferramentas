@@ -207,5 +207,12 @@
             "overlaps": 2
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "This Is How Tomorrow Moves",
+        "year": 2024,
+        "track": 1,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

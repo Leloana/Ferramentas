@@ -259,5 +259,12 @@
             "overlaps": 0
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "Hail to the Thief",
+        "year": 2003,
+        "track": 14,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

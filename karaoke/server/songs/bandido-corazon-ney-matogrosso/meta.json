@@ -214,5 +214,12 @@
             "overlaps": 2
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "Bandido (1976)",
+        "year": 1976,
+        "track": 1,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

@@ -313,5 +313,12 @@
             "overlaps": 0
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "Chico Buarque",
+        "year": 1978,
+        "track": 2,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

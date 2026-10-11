@@ -164,5 +164,12 @@
             "overlaps": 0
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "Me Chama De Gato Que Eu Sou Sua",
+        "year": 2023,
+        "track": 7,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

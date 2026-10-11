@@ -308,5 +308,12 @@
             "overlaps": 2
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "Melhor do Que Parece",
+        "year": 2016,
+        "track": 1,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

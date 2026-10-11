@@ -327,5 +327,12 @@
             "overlaps": 8
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "O My Heart",
+        "year": 2008,
+        "track": 7,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

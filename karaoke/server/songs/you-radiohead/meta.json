@@ -94,5 +94,12 @@
             "overlaps": 0
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "Pablo Honey",
+        "year": 1993,
+        "track": 1,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

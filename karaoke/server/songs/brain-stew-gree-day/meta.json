@@ -142,5 +142,12 @@
             "overlaps": 0
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "Insomniac",
+        "year": 1995,
+        "track": 10,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

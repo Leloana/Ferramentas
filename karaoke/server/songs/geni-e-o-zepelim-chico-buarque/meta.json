@@ -542,5 +542,12 @@
             "overlaps": 0
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "Chico 50 Anos - O Cronista",
+        "year": 1994,
+        "track": 8,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

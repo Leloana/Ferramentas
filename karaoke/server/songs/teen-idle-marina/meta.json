@@ -323,5 +323,12 @@
             "overlaps": 2
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "Electra Heart",
+        "year": 2012,
+        "track": 9,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

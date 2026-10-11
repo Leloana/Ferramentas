@@ -132,5 +132,12 @@
             "overlaps": 0
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "Los Hermanos",
+        "year": 1999,
+        "track": 1,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

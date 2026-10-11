@@ -206,5 +206,12 @@
             "overlaps": 0
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "ゼロコンマ、色とりどりの世界",
+        "year": 2010,
+        "track": 3,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

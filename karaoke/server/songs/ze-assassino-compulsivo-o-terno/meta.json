@@ -182,5 +182,12 @@
             "overlaps": 0
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "66",
+        "year": 2012,
+        "track": 5,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

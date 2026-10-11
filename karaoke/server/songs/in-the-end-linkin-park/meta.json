@@ -312,5 +312,12 @@
             "overlaps": 0
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "Hybrid Theory",
+        "year": 2000,
+        "track": 8,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

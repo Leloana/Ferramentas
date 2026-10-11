@@ -274,5 +274,12 @@
             "overlaps": 0
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "Weezer",
+        "year": 1994,
+        "track": 4,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

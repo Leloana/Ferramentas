@@ -301,5 +301,12 @@
             "overlaps": 0
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "O Mito",
+        "year": 1959,
+        "track": 4,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

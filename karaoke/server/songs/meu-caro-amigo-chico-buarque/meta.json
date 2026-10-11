@@ -272,5 +272,12 @@
             "overlaps": 0
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "Meus Caros Amigos",
+        "year": 1976,
+        "track": 10,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

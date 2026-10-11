@@ -301,5 +301,12 @@
             "overlaps": 4
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "Sábado À Noite",
+        "year": 1992,
+        "track": 3,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

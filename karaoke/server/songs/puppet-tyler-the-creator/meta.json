@@ -374,5 +374,12 @@
             "overlaps": 8
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "IGOR",
+        "year": 2019,
+        "track": 8,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

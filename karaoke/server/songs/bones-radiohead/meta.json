@@ -107,5 +107,12 @@
             "overlaps": 0
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "The Bends",
+        "year": 1995,
+        "track": 5,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

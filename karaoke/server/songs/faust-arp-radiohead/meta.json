@@ -177,5 +177,12 @@
             "overlaps": 2
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "In Rainbows",
+        "year": 2007,
+        "track": 6,
+        "kind": "album",
+        "source": "itunes"
+    }
 }

@@ -253,5 +253,12 @@
             "overlaps": 0
         }
     },
-    "needs_review": false
+    "needs_review": false,
+    "album": {
+        "name": "Little Electric Chicken Heart",
+        "year": 2019,
+        "track": 2,
+        "kind": "album",
+        "source": "itunes"
+    }
 }
