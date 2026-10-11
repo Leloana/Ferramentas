@@ -981,3 +981,47 @@
 /* anterior/próximo nunca empurram o palco: no máximo 2 linhas */
 .prev-line, .next-line, .upcoming-line { max-height: calc(2 * 1.3em + 16px); }
 .carousel-line.line-next-to-curr { max-height: none; }
+
+/* ---------- Lembrete de microfone desligado (game/mic-reminder.js) ----------
+   Fixo no topo: não muda o layout da tela de cantar (que nunca rola). */
+.mic-off-reminder {
+    position: fixed;
+    top: 0.75rem;
+    left: 50%;
+    z-index: 1200;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    max-width: calc(100vw - 2rem);
+    padding: 0.5rem 1rem;
+    transform: translateX(-50%);
+    background: var(--rose);
+    border: 2px solid var(--rose-ink);
+    box-shadow: 3px 3px 0 var(--ink);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: 1.05rem;
+    font-weight: 900;
+    pointer-events: none;
+    animation: micReminderPulse 1.6s ease-in-out infinite;
+}
+.mic-off-reminder[hidden] { display: none; }
+.mic-off-reminder .ico { width: 22px; height: 22px; flex-shrink: 0; color: var(--rose-ink); }
+@keyframes micReminderPulse { 50% { box-shadow: 3px 3px 0 var(--ink), 0 0 0 6px rgba(156, 74, 60, 0.25); } }
+
+/* vaga do lobby com o microfone desligado */
+.seat--mic-off { border-style: dashed; }
+.seat__mic-off {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: 0.2rem;
+    padding: 0.1rem 0.4rem;
+    background: var(--rose);
+    border: 1px solid var(--rose-ink);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+.seat__mic-off .ico { width: 13px; height: 13px; }

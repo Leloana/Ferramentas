@@ -1,5 +1,5 @@
-<!-- Celular como microfone (?role=mic). Duas abas no rodapé: Microfone e Adicionar
-     (fila + "Adicionar música" padrão). -->
+<!-- Celular como microfone (?role=mic). Abas no rodapé: Microfone, Sala (comandar a
+     TV: música da vez, sala, iniciar, fila, nova música) e Perfil. -->
 <section id="mobile-mic-area" data-tabs="mic-tab">
     <header class="mic-header">
         <div class="brand brand--sm mic-header__logo">
@@ -68,22 +68,65 @@
         </div>
     </div>
 
-    <!-- Aba "Adicionar": mesmo fluxo padrão da TV + fila -->
+    <!-- Aba "Sala": comandar a TV pelo celular (mobile/room-panel.js; servidor: remote_control.py).
+         1) música da vez · 2) configuração da sala · 3) iniciar · fila · nova música -->
     <div id="mic-queue-panel" class="mic-queue-panel">
-        <!-- Fila da noite: pedir uma música pronta para cantar (requests.js) -->
-        <div class="queue-tab-header"><span class="queue-items-title">Próximas</span></div>
-        <ol id="mic-requests" class="mic-requests"></ol>
-        <div class="queue-tab-header"><span class="queue-items-title">Pedir música</span></div>
-        <input type="search" id="mic-request-search" class="input" placeholder="Buscar música" aria-label="Buscar música para pedir">
-        <div id="mic-request-songs" class="request-songs"></div>
-        <div class="queue-tab-header"><span class="queue-items-title">Nova música</span></div>
-        <button type="button" class="btn btn--primary btn--lg btn--block js-open-add-song">
-            <i data-icon="add"></i> Adicionar música
-        </button>
-        <div class="queue-tab-header">
-            <span class="queue-items-title">Em processamento</span>
-        </div>
-        <div id="queue-mic-list" class="queue-items-list"></div>
+        <section class="room-card">
+            <div class="room-card__head">
+                <span class="room-card__kicker">Música da vez</span>
+                <span id="room-status" class="chip room-status" hidden></span>
+            </div>
+            <div id="room-song-picker" class="song-picker">
+                <button type="button" id="room-song-current" class="song-picker__current" aria-expanded="false">
+                    <span class="song-picker__text">
+                        <span id="room-song-title" class="song-picker__title">Escolher música</span>
+                        <span id="room-song-artist" class="song-picker__artist"></span>
+                    </span>
+                    <i data-icon="search" class="song-picker__icon"></i>
+                </button>
+                <div id="room-song-drop" class="song-picker__drop" hidden>
+                    <input type="search" id="room-song-search" class="input" placeholder="Buscar pelo nome" aria-label="Buscar música da vez" autocomplete="off">
+                    <div id="room-song-results" class="request-songs song-picker__results"></div>
+                </div>
+            </div>
+            <button type="button" id="btn-room-settings" class="room-settings-btn">
+                <i data-icon="users"></i>
+                <span class="room-settings-btn__text">
+                    <span class="room-settings-btn__label">Configuração da sala</span>
+                    <span id="room-settings-summary" class="room-settings-btn__summary"></span>
+                </span>
+                <i data-icon="next"></i>
+            </button>
+            <button type="button" id="btn-room-start" class="btn btn--primary btn--lg btn--block room-start">
+                <i data-icon="play"></i> <span id="room-start-label">Iniciar</span>
+            </button>
+            <p id="room-start-note" class="room-note" hidden></p>
+        </section>
+
+        <!-- Fila da noite: quando a música da vez acaba, a 1ª da fila entra no lugar dela (requests.js) -->
+        <section class="room-section">
+            <div class="queue-tab-header">
+                <span class="queue-items-title">Fila</span>
+                <button type="button" id="btn-room-queue-add" class="btn btn--ghost btn--sm" aria-expanded="false">
+                    <i data-icon="add"></i> Pôr na fila
+                </button>
+            </div>
+            <div id="room-queue-add" class="room-queue-add" hidden>
+                <input type="search" id="mic-request-search" class="input" placeholder="Buscar pelo nome" aria-label="Buscar música para a fila" autocomplete="off">
+                <div id="mic-request-songs" class="request-songs"></div>
+            </div>
+            <ol id="mic-requests" class="mic-requests"></ol>
+        </section>
+
+        <section class="room-section">
+            <button type="button" class="btn btn--ghost btn--block js-open-add-song">
+                <i data-icon="download"></i> Nova música
+            </button>
+            <div class="queue-tab-header">
+                <span class="queue-items-title">Em processamento</span>
+            </div>
+            <div id="queue-mic-list" class="queue-items-list"></div>
+        </section>
     </div>
 
     <!-- Aba "Perfil": histórico e recordes do apelido deste celular -->
@@ -102,7 +145,7 @@
                 <i data-icon="mic"></i><span class="tab-btn__label">Microfone</span>
             </button>
             <button type="button" data-tab="queue" class="tab-btn" role="tab">
-                <i data-icon="add-box"></i><span class="tab-btn__label">Adicionar</span>
+                <i data-icon="songs"></i><span class="tab-btn__label">Sala</span>
             </button>
             <button type="button" data-tab="profile" class="tab-btn" role="tab">
                 <i data-icon="user"></i><span class="tab-btn__label">Perfil</span>

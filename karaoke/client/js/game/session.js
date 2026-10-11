@@ -101,6 +101,7 @@ export async function resetGameState() {
     allowScreenOff();
     stopReplay();
     stopAutoNext();
+    state.remoteStartFrom = null;
     showTurn(null);
     state.turnOrder = null;
     closeRoomSocket();
@@ -219,7 +220,8 @@ function connectGameWebSocket(game, attempt) {
         ws.send(JSON.stringify(startGameMessage(game)));
         state.isFirstSegment = true;
         state.currentSegmentData = null;
-        dom.audioPlayer.play();
+        const playing = dom.audioPlayer.play();
+        if (playing && playing.catch) playing.catch(soundBlocked);
         startTimeSync();
         setAppState('singing');
         startHighlightLoop();
@@ -234,7 +236,12 @@ function connectGameWebSocket(game, attempt) {
     ws.onclose = (event) => {
         console.warn("Game WebSocket fechado. Tentando reconectar...");
         if (game.cancelled()) return;
-        if (state.currentAppState === 'idle' || state.currentAppState === 'game-over') return;
+        if (state.currentAppState === 'idle') return;
+        if (state.currentAppState === 'game-over') {
+            // o servidor fecha o jogo no game_over: o lobby volta a ouvir os celulares
+            connectDisplayWebSocket();
+            return;
+        }
         if (event && event.code === DISPLAY_REPLACED_CODE) {
             // outra tela assumiu a sala: não briga por ela
             showToast('Outra tela assumiu esta sala.', 'error');
@@ -257,6 +264,13 @@ function connectGameWebSocket(game, attempt) {
     };
 }
 
+// Navegador da TV sem um toque na página não deixa tocar som (autoplay)
+function soundBlocked() {
+    const message = 'A TV bloqueou o som: toque uma vez na tela da TV e inicie de novo.';
+    showToast(message, 'error');
+    if (state.remoteStartFrom) sendToRoom({ type: 'remote_reply', to: state.remoteStartFrom, message });
+}
+
 export async function startKaraoke() {
     const songId = state.selectedSongId;
     const generation = ++state.gameGeneration;
@@ -276,6 +290,10 @@ export async function startKaraoke() {
     // TV: nunca abre o microfone dela (só celulares cantam)
     const captureMic = !isTvBrowser && !!(state.localStreamForced || !state.isMobileMicrophoneConnected || lineup.mics.indexOf(PC_MIC) !== -1);
     await startGameAudio(captureMic);
+    if (state.audioContext && state.audioContext.state === 'suspended') {
+        try { await state.audioContext.resume(); } catch (e) { }
+        if (state.audioContext.state === 'suspended') soundBlocked();
+    }
 
     if (cancelled()) {
         await destroyAudio();

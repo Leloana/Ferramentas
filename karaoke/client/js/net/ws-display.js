@@ -14,6 +14,7 @@ export function connectDisplayWebSocket() {
 
     state.ws.onopen = () => {
         console.log("WebSocket do Display conectado na sala:", myRoom);
+        if (state.publishLobbyState) state.publishLobbyState();
     };
 
     state.ws.onmessage = (event) => {
@@ -26,7 +27,7 @@ export function connectDisplayWebSocket() {
         console.log("WebSocket do Display desconectado. Tentando reconectar...");
         // outra aba/tela assumiu a sala: reconectar derrubaria a outra, em loop
         if (event && event.code === DISPLAY_REPLACED_CODE) return;
-        if (state.currentAppState === 'idle') {
+        if (['idle', 'waiting', 'game-over'].indexOf(state.currentAppState) !== -1) {
             setTimeout(connectDisplayWebSocket, 3000);
         }
     };

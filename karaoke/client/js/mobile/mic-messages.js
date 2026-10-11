@@ -9,9 +9,10 @@ import { fillLine, setLyricsScriptAvailable } from '../game/lyrics-script.js';
 import { verseQuality, replayClass } from '../game/verse-stamp.js';
 import { escapeHtml } from '../core/html.js';
 import { onRequestsUpdate } from '../lobby/requests.js';
+import { onRemoteState } from './room-panel.js';
 import { showMicGameOver, setFinalLayout } from './mic-final.js';
 import { setMicStatus } from './mic-socket.js';
-import { remindMicIfOff, setMicLocked } from './mobile-mic-view.js';
+import { remindMicIfOff, setMicLocked, reportMicState } from './mobile-mic-view.js';
 import { keepScreenOn } from '../core/wake-lock.js';
 import { setReactionsVisible } from './reactions-bar.js';
 import { COMBO_MIN } from '../game/combo.js';
@@ -76,6 +77,7 @@ const MIC_HANDLERS = {
         if (!automatic) showToast(`Registrado como "${data.name}"`, "success");
         showNameInStatus(data.name);
         setAppState('singing');
+        reportMicState();  // a TV sabe de cara se este microfone está ligado
         // reconectou: as reações voltam só com o game_started da partida em andamento
         setReactionsVisible(false);
         // depois de recarregar a tela apagava antes do primeiro toque em LIGAR MIC
@@ -97,6 +99,14 @@ const MIC_HANDLERS = {
     },
     request_error(data) {
         showToast(data.message, 'error');
+    },
+    // aba Sala: estado da TV (música da vez, cantores, ajustes) e comando recusado
+    remote_state(data) {
+        onRemoteState(data);
+    },
+    remote_error(data) {
+        showToast(data.message, 'error');
+        onRemoteState(state.remoteState || {});
     },
     game_started(data) {
         setFinalLayout(false);

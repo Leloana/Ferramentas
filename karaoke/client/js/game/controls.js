@@ -9,7 +9,12 @@ import { sendToRoom } from './session.js';
 const TRANSPOSE_LIMIT = 6;
 const SPEED_MIN = 0.75;
 const SPEED_MAX = 1.5;
-const SPEED_STEP = 0.05;
+export const SPEED_STEP = 0.05;
+
+// Controle pelo celular (lobby/remote-control.js): republica o estado a cada ajuste
+function notifyLobby() {
+    if (state.publishLobbyState) state.publishLobbyState();
+}
 
 function updateAudioGraph(transpose) {
     if (state.audioManager) {
@@ -47,7 +52,7 @@ function updateSyncModeButton() {
     }
 }
 
-function setScoreMode(mode) {
+export function setScoreMode(mode) {
     const btn = dom.btnScoreMode;
     if (!btn) return;
     const normalized = mode === 'words' ? 'words' : 'timing';
@@ -61,25 +66,28 @@ function setScoreMode(mode) {
     }
     btn.classList.toggle('btn-score-mode--active', normalized === 'words');
     localStorage.setItem('karaoke_scoring_mode', normalized);
+    notifyLobby();
 }
 
 export function currentScoringMode() {
     return (dom.btnScoreMode && dom.btnScoreMode.getAttribute('data-mode')) || 'timing';
 }
 
-function changeTranspose(delta) {
+export function changeTranspose(delta) {
     const next = state.currentTranspose + delta;
     if (next < -TRANSPOSE_LIMIT || next > TRANSPOSE_LIMIT) return;
     state.currentTranspose = next;
     updatePitchUI();
     updateAudioGraph(state.currentTranspose);
+    notifyLobby();
 }
 
-function changeSpeed(delta) {
+export function changeSpeed(delta) {
     if (delta < 0 ? state.currentSpeed <= SPEED_MIN : state.currentSpeed >= SPEED_MAX) return;
     state.currentSpeed = Math.round((state.currentSpeed + delta) * 100) / 100;
     updateSpeedUI();
     dom.audioPlayer.playbackRate = state.currentSpeed;
+    notifyLobby();
 }
 
 function setPauseButton(paused) {
@@ -89,7 +97,7 @@ function setPauseButton(paused) {
     else dom.btnPausePlay.removeAttribute('data-paused');
 }
 
-function togglePause() {
+export function togglePause() {
     if (dom.audioPlayer.paused) {
         dom.audioPlayer.play();
         setPauseButton(false);
@@ -100,6 +108,7 @@ function togglePause() {
         dom.audioPlayer.pause();
         setPauseButton(true);
     }
+    notifyLobby();
 }
 
 function initProgressSlider(slider) {

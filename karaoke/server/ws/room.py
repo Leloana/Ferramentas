@@ -22,6 +22,7 @@ from state import room_manager, song_manager, queue_manager
 from pitch import load_or_build_reference, verse_pitch_score
 from players import get_or_create_profile, record_game, song_leaderboard
 from song_requests import add_request, remove_request, requests_payload
+from remote_control import check_remote, clean_command, remote_state_payload
 from stt_engine import get_stt_engine
 from utils.audio import load_audio_full
 
@@ -132,6 +133,40 @@ async def _cancel_game(room) -> None:
             await ws.send_json({"type": "game_cancelled"})
         except Exception as e:
             logger.debug(f"Aviso de partida encerrada não chegou ao celular: {e}")
+    await _send_remote_state(room)
+
+
+# chaves do lobby_state da TV que vão para os celulares (o resto é descartado)
+LOBBY_STATE_KEYS = ("screen", "song", "seats", "mics", "turns", "scoring_mode", "transpose", "speed", "paused")
+
+
+async def _send_remote_state(room, targets=None) -> None:
+    """Controle pelo celular: estado da sala (lobby da TV + partida + GPU) para os celulares."""
+    payload = remote_state_payload(room.lobby_state, room.in_game, queue_manager.alignment_busy(),
+                                   room.display is not None)
+    for ws in (targets if targets is not None else list(room.players.values())):
+        try:
+            await ws.send_json(payload)
+        except Exception as e:
+            logger.debug(f"Estado da sala não chegou ao celular: {e}")
+
+
+MIC_STATES = ("on", "muted", "off")
+
+
+def _mic_states(room) -> dict:
+    """Microfone de cada celular registrado (sem aviso = desligado)."""
+    return {name: room.mic_states.get(name, "off") for name in room.players}
+
+
+async def _send_mic_states(room) -> None:
+    """Lembrete na TV quando um celular liga, desliga ou muta o microfone."""
+    if not room.display:
+        return
+    try:
+        await room.display.send_json({"type": "mic_states", "states": _mic_states(room)})
+    except Exception as e:
+        logger.debug(f"Estado dos microfones não chegou à TV: {e}")
 
 
 async def _notify_mics_display_status(room, status: str) -> None:
@@ -156,7 +191,8 @@ async def _notify_players_status(room) -> None:
     await room.broadcast({
         "type": "players_update",
         "players": list(room.players.keys()),
-        "queue_count": len(room.unregistered_mics)
+        "queue_count": len(room.unregistered_mics),
+        "mic_states": _mic_states(room),  # lembrete de microfone desligado na TV
     })
 
 
@@ -512,6 +548,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
         await _notify_players_status(room)
         # Celular que viu "TV Desconectada" numa troca de página volta a "pareado".
         await _notify_mics_display_status(room, "paired")
+        await _send_remote_state(room)
 
     try:
         await websocket.send_json({"type": "singing_state", "active": room.is_singing_active})
@@ -600,6 +637,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         
                         get_or_create_profile(name)
                         await websocket.send_json({"type": "registration_success", "name": name})
+                        await _send_remote_state(room, [websocket])
                         if room.in_game:
                             # voltou no meio da música (recarregou, rede caiu): sem isto o
                             # celular não sabe que está no jogo e não manda o áudio
@@ -699,6 +737,49 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         "game_mode": room.game_mode,
                         "active_players": room.active_players
                     })
+                    await _send_remote_state(room)
+
+                elif msg_type == "mic_state" and role == "mic":
+                    # celular ligou, desligou ou mutou o microfone
+                    value = str(data.get("state") or "")
+                    if player_name and value in MIC_STATES and room.mic_states.get(player_name) != value:
+                        room.mic_states[player_name] = value
+                        await _send_mic_states(room)
+
+                elif msg_type == "lobby_state" and role == "display":
+                    # TV publicou o lobby (música, cantores, ajustes): espelha nos celulares
+                    room.lobby_state = {k: data.get(k) for k in LOBBY_STATE_KEYS if k in data}
+                    await _send_remote_state(room)
+
+                elif msg_type == "remote" and role == "mic":
+                    # Controle pelo celular: confere as travas aqui e a TV executa
+                    action = str(data.get("action") or "")
+                    error = None if player_name else "Entre com um apelido primeiro."
+                    error = error or check_remote(action, room.in_game, queue_manager.alignment_busy(),
+                                                  room.display is not None)
+                    command = None
+                    if not error:
+                        ready = {s_["id"] for s_ in song_manager.list_songs() if s_.get("is_ready")}                             if action == "select_song" else set()
+                        command, error = clean_command(action, data, list(room.players.keys()), ready)
+                    if error:
+                        await websocket.send_json({"type": "remote_error", "message": error})
+                    else:
+                        logger.info(f"Controle pelo celular ({player_name}): {command}")
+                        try:
+                            await room.display.send_json({"type": "remote", "from": player_name, **command})
+                        except Exception as e:
+                            logger.debug(f"Comando do celular não chegou à TV: {e}")
+                            await websocket.send_json({"type": "remote_error", "message": "TV desconectada."})
+
+                elif msg_type == "remote_reply" and role == "display":
+                    # a TV não conseguiu executar o comando: avisa quem mandou
+                    target = room.players.get(str(data.get("to") or ""))
+                    if target is not None:
+                        try:
+                            await target.send_json({"type": "remote_error",
+                                                    "message": str(data.get("message") or "")[:200]})
+                        except Exception:
+                            pass
 
                 elif msg_type == "request_song":
                     # "Quero cantar": celular registrado pede para si; a TV pode pedir para qualquer mic
@@ -933,6 +1014,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                     })
 
                     queue_manager.notify_game_ended()
+                    await _send_remote_state(room)
                     break
 
     except WebSocketDisconnect as e:
@@ -948,6 +1030,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
             # reconectou com o mesmo nome já registrou o socket novo.
             if player_name and room.players.get(player_name) is websocket:
                 room.players.pop(player_name, None)
+                room.mic_states.pop(player_name, None)
                 # Continua em active_players: se o celular voltar e registrar o
                 # mesmo apelido, o áudio volta a pontuar e a nota entra no fim.
                 logger.info(f"Jogador {player_name} desconectado da sala.")
@@ -976,6 +1059,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
             room.display = None
             queue_manager.notify_game_ended()
             await _notify_mics_display_status(room, "unpaired")
+            await _send_remote_state(room)
 
         try:
             await websocket.close()

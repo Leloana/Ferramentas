@@ -41,13 +41,15 @@ export function cancelRequest(id) {
 // --- TV ---
 
 // Abre o pedido no lobby: música selecionada e quem pediu no 1º lugar.
-export function startRequest(req) {
+// keepSeats (próxima automática no fim da partida): a sala já montada continua;
+// só sem ninguém escalado entra quem pediu.
+export function startRequest(req, keepSeats) {
     const song = (state.allSongs || []).find((s) => s.id === req.song_id);
     if (!song || !state.selectSongFn) return;
     cancelRequest(req.id);
     state.selectSongFn(song);
     const mic = (state.lobbyMics || []).indexOf(req.singer) !== -1 ? req.singer : defaultMic();
-    state.lobbySeats = mic ? [{ mic, team: 'A' }] : [];
+    if (!(keepSeats && state.lobbySeats.length)) state.lobbySeats = mic ? [{ mic, team: 'A' }] : [];
     renderLobby();
 }
 
@@ -113,7 +115,7 @@ async function goNext() {
     const next = (state.songRequests || [])[0];
     if (!next || !state.resetGameFn) return;
     await state.resetGameFn();
-    startRequest(next);
+    startRequest(next, true);
 }
 
 export function initNextUpButtons() {
@@ -156,7 +158,7 @@ function renderMicPanel() {
     });
 }
 
-async function loadMicSongs() {
+export async function loadMicSongs() {
     if (state.micSongs) return state.micSongs;
     try {
         const resp = await fetch('/api/songs');
@@ -187,7 +189,11 @@ function renderMicSongs(query) {
                 showToast('Entre com um apelido primeiro.', 'error');
                 return;
             }
-            requestSong(song.id);
+            // pedido feito: a busca fecha e a fila (logo acima) mostra a música
+            if (requestSong(song.id)) {
+                const box = document.getElementById('room-queue-add');
+                if (box) box.hidden = true;
+            }
         });
         list.append(btn);
     });

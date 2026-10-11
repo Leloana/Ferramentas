@@ -45,7 +45,7 @@ function micWithIcon(cls, mic) {
 
 // Na TV não há microfone local: só celulares (o mic do controle chega mudo e
 // pedir permissão a cada partida atrapalhava).
-function availableMics() {
+export function availableMics() {
     return (isTvBrowser ? [] : [PC_MIC]).concat(state.lobbyMics || []);
 }
 
@@ -158,6 +158,15 @@ export function renderLobby() {
         main.dataset.seatKey = `mic-${idx}`;
         main.title = 'Trocar o microfone deste cantor';
         main.append(el('span', 'seat__num', `Cantor ${idx + 1}`), micWithIcon('seat__mic', seat.mic));
+        // lembrete: celular escalado com o microfone desligado ou no mudo (game/mic-reminder.js)
+        const micState = seat.mic === PC_MIC ? 'on' : ((state.micStates && state.micStates[seat.mic]) || 'off');
+        if (micState !== 'on') {
+            card.classList.add('seat--mic-off');
+            const warn = el('span', 'seat__mic-off');
+            warn.innerHTML = iconSvg('mic-off');
+            warn.append(document.createTextNode(micState === 'muted' ? ' Mudo' : ' Mic desligado'));
+            main.append(warn);
+        }
         main.addEventListener('click', () => openPicker(idx));
 
         const team = el('button', 'seat__team');
@@ -207,6 +216,9 @@ export function renderLobby() {
         turns.hidden = groupsOf(seats).length < 2;
         turns.setAttribute('aria-pressed', String(!!state.lobbyTurns));
     }
+
+    // celulares veem a mesma sala (lobby/remote-control.js)
+    if (state.publishLobbyState) state.publishLobbyState();
 
     // mantém o foco do controle remoto no mesmo botão após re-renderizar
     if (focused !== undefined) {

@@ -13,6 +13,8 @@ import { applyTotals, showVerseScore, flashPerfBorder, updatePlayerBars } from '
 import { showGameOverModal, showGameOverExtras } from './game-over.js';
 import { resetGameState } from './session.js';
 import { showReaction } from './reactions.js';
+import { handleRemote } from '../lobby/remote-control.js';
+import { onMicStates, updateMicReminder } from './mic-reminder.js';
 import { comboValue, showStageCombo, showBarCombos } from './combo.js';
 
 function setPairingStatus(paired) {
@@ -57,7 +59,10 @@ const DISPLAY_HANDLERS = {
         if (dom.mpConnectedCount) dom.mpConnectedCount.innerText = data.players.length;
         if (dom.mpQueueCount) dom.mpQueueCount.innerText = data.queue_count;
         // Microfones disponíveis para as vagas do lobby
+        // microfone de cada celular antes de renderizar as vagas (selo "Mic desligado")
+        if (data.mic_states) state.micStates = data.mic_states;
         setAvailableMics(data.players);
+        updateMicReminder();
     },
     pairing_status(data) {
         if (data.status === 'paired') setPairingStatus(true);
@@ -99,6 +104,12 @@ const DISPLAY_HANDLERS = {
     },
     reaction(data) {
         showReaction(data.kind, data.from);
+    },
+    remote(data) {
+        handleRemote(data);
+    },
+    mic_states(data) {
+        onMicStates(data.states);
     },
     game_over(data) {
         dom.audioPlayer.pause();

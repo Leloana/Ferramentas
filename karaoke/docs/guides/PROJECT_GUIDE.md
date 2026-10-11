@@ -79,6 +79,7 @@ karaoke/
 │       │   ├── game-events.js                      # Eventos do player para a gravação da partida
 │       │   ├── combo.js                            # Combo: selo no palco (solo) e chip ×N nas barras
 │       │   ├── reactions.js                        # Reações da plateia subindo na TV (coração, fogo, estrela)
+│       │   ├── mic-reminder.js                     # Lembrete na TV: cantor com o microfone do celular desligado
 │       │   └── share-card.js                       # Cartão 4:5 para print no fim de jogo (TV e celular)
 │       ├── lobby/                                  # Antes da partida: repertório, lobby, fila e biblioteca
 │       │   ├── selection-view.js                   # Repertório, busca e lobby da música (capa + cantor)
@@ -88,6 +89,7 @@ karaoke/
 │       │   ├── cover-picker.js                     # Trocar a capa entre as opções encontradas
 │       │   ├── youtube-search.js                   # Busca no YouTube pelo nome
 │       │   ├── playlist-import.js                  # Playlist inteira: marcar, editar, tempo total
+│       │   ├── remote-control.js                   # TV executa os comandos da aba "Sala" e publica o lobby
 │       │   ├── modals.js                           # Liga os três modais abaixo
 │       │   ├── pairing-modal.js                    # QR Code e link de pareamento do celular
 │       │   ├── add-song-modal.js                   # "Adicionar música" em três passos
@@ -101,6 +103,7 @@ karaoke/
 │       │   ├── mic-socket.js                       # WebSocket role=mic e reconexão
 │       │   ├── mic-messages.js                     # Uma função por mensagem do servidor para o celular
 │       │   ├── mic-final.js                        # Placar final e os botões Cartão, Anotar e Ouvir
+│       │   ├── room-panel.js                       # Aba "Sala": música da vez, configuração, iniciar, fila
 │       │   └── reactions-bar.js                    # Três botões de reação para quem está assistindo
 │       └── worklets/
 │           └── audio-processor.js                  # AudioWorklet: 16 kHz Int16 em pacotes KM01 de 100 ms
@@ -116,6 +119,7 @@ karaoke/
 │   ├── pitch.py                # Afinação (YIN): pitch.json e nota de tom por verso
 │   ├── players.py              # Perfis, recordes e ranking (KARAOKE_PLAYERS_DIR)
 │   ├── song_requests.py        # Fila da noite por sala ("quero cantar")
+│   ├── remote_control.py       # Aba "Sala" do celular: travas e validação dos comandos para a TV
 │   ├── recorder.py             # Gravação das partidas (formato 2: as duas passadas do Whisper)
 │   ├── routes/                 # Handlers HTTP REST
 │   │   ├── songs.py            # Listagem, reprodução de backing e deleção de músicas
@@ -297,6 +301,8 @@ O frontend lê e interpreta este arquivo JSON para orquestrar as telas, carross�
 ### D. Recursos de festa (TV + celulares)
 *   **Lobby**: vagas com "+" (microfone próprio, time A–D; mesmo time = dupla/trio), "Sortear" e "Revezar versos". Forma de pontuação abaixo do quadro dos cantores. O mic da própria TV/PC aparece como **"Local"**.
 *   **Revezar versos**: o k-ésimo verso com letra é do time `k % n` (`turns.js` × `ws/room.turn_owner`); a média de cada um é só sobre os próprios versos.
+*   **Aba "Sala" do celular** (controle pela TV sem tocar nela): música da vez (busca), configuração da sala (cantores, times, revezar, pontuação, tom, velocidade, pausar/encerrar), INICIAR, fila e "Nova música". Mensagens: `remote` (celular→servidor→TV, validado em `remote_control.py`), `lobby_state` (TV) → `remote_state` (celulares), `remote_reply` → `remote_error`. Música tocando trava o que muda a partida; GPU gerando letra trava o iniciar.
+*   **Lembrete de microfone**: `mic_state` do celular → `room.mic_states` → `players_update.mic_states` / `mic_states` na TV (selo "Mic desligado"/"Mudo" no lobby e aviso no topo durante a música).
 *   **Fila da noite**: mensagens `request_song` / `cancel_request` → `requests_update` (limites: 30 pedidos, 3 por cantor). No fim de jogo, "Próxima" com 10 s abre a música no lobby com quem pediu.
 *   **Fim de jogo**: `game_over` traz `player_stats` (versos na mosca/quase/fora), `player_pitch`, `records` (recorde pessoal), `leaderboard`, `song_id`; a TV e cada celular montam o cartão para print e o "Ouvir".
 *   **Perfis**: `players/<apelido>/profile.json` (`songs_sung[]` com `song_id`, `score`, `pitch`, `mode`, `date`).

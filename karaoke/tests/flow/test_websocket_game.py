@@ -622,6 +622,102 @@ class TestWebsocketGameFlow(unittest.TestCase):
                         _, before_pong = self._until(ws_back, "pong")
                         self.assertNotIn("game_started", before_pong)
 
+    def test_phone_controls_the_room_through_the_tv(self):
+        """Controle pelo celular: a TV recebe o comando já validado e publica o lobby,
+        que volta para os celulares; com música tocando ou GPU ocupada, o servidor recusa."""
+        from state import queue_manager
+
+        def command(ws, **msg):
+            """Manda o comando e devolve o remote_error que ele causou (ou None)."""
+            ws.send_json({"type": "remote", **msg})
+            ws.send_json({"type": "ping"})
+            error = None
+            for _ in range(20):
+                got = ws.receive_json()
+                if got["type"] == "pong":
+                    return error
+                if got["type"] == "remote_error":
+                    error = got["message"]
+            self.fail("pong não chegou")
+
+        with self.client.websocket_connect("/ws/room/remoteroom?role=display") as ws_tv:
+            with self.client.websocket_connect("/ws/room/remoteroom?role=mic") as ws_ana:
+                self._until(ws_ana, "register_request")
+                ws_ana.send_json({"type": "register_name", "name": "Ana", "device": "cel-1"})
+                self._until(ws_ana, "registration_success")
+                state_msg, _ = self._until(ws_ana, "remote_state")
+                self.assertTrue(state_msg["has_display"])
+                self.assertFalse(state_msg["in_game"])
+
+                command(ws_ana, **{"action": "select_song", "song_id": self.song_slug})
+                cmd, _ = self._until(ws_tv, "remote")
+                self.assertEqual(cmd, {"type": "remote", "from": "Ana", "action": "select_song",
+                                       "song_id": self.song_slug})
+                self.assertEqual(command(ws_ana, action="select_song", song_id="nao-existe"),
+                                 "Música não encontrada.")
+
+                # a TV publica o lobby: o celular vê a música e os cantores
+                ws_tv.send_json({"type": "lobby_state", "screen": "waiting", "seats": [{"mic": "Ana", "team": "A"}],
+                                 "song": {"id": self.song_slug, "title": "WS Song"}, "lixo": "x" * 10})
+                mirrored, _ = self._until(ws_ana, "remote_state")
+                self.assertEqual(mirrored["song"]["title"], "WS Song")
+                self.assertNotIn("lixo", mirrored)
+
+                # GPU gerando letra: não inicia
+                queue_manager._gpu_jobs.append("Outra - Música")
+                try:
+                    self.assertIn("GPU ocupada", command(ws_ana, action="start"))
+                finally:
+                    queue_manager._gpu_jobs.remove("Outra - Música")
+
+                command(ws_ana, **{"action": "start"})
+                self._until(ws_tv, "remote")
+
+                # a TV liga a partida (game WS com a música): o resto trava, tom continua
+                with self.client.websocket_connect(f"/ws/room/remoteroom?role=display&song_id={self.song_slug}") as ws_game:
+                    ws_game.send_json({"type": "start_game", "game_mode": "solo", "active_players": ["Ana"]})
+                    self._until(ws_game, "game_started")
+                    playing, _ = self._until(ws_ana, "remote_state")
+                    while not playing["in_game"]:
+                        playing, _ = self._until(ws_ana, "remote_state")
+                    for action in ("select_song", "seats", "start"):
+                        self.assertEqual(command(ws_ana, action=action, song_id=self.song_slug,
+                                                 seats=[{"mic": "Ana", "team": "A"}]),
+                                         "Espere a música acabar.")
+                    command(ws_ana, **{"action": "transpose", "delta": 1})
+                    cmd, _ = self._until(ws_game, "remote")
+                    self.assertEqual(cmd["action"], "transpose")
+                    # a TV não conseguiu: o aviso vai só para quem mandou
+                    ws_game.send_json({"type": "remote_reply", "to": "Ana", "message": "Toque na TV"})
+                    ws_game.send_json({"type": "ping"})
+                    self._until(ws_game, "pong")
+                    err, _ = self._until(ws_ana, "remote_error")
+                    self.assertEqual(err["message"], "Toque na TV")
+
+    def test_tv_sees_which_phone_mic_is_off(self):
+        """Lembrete na TV: celular registrado começa desligado; ligar/mutar atualiza;
+        estado inválido é ignorado; quem sai some da lista."""
+        with self.client.websocket_connect("/ws/room/microom?role=display") as ws_tv:
+            with self.client.websocket_connect("/ws/room/microom?role=mic") as ws_ana:
+                self._until(ws_ana, "register_request")
+                ws_ana.send_json({"type": "register_name", "name": "Ana", "device": "cel-1"})
+                self._until(ws_ana, "registration_success")
+                msg, _ = self._until(ws_tv, "players_update")
+                while "Ana" not in msg["players"]:  # o 1º é o da própria TV conectando
+                    msg, _ = self._until(ws_tv, "players_update")
+                self.assertEqual(msg["mic_states"], {"Ana": "off"})
+
+                for value in ("on", "banana", "muted"):
+                    ws_ana.send_json({"type": "mic_state", "state": value})
+                    ws_ana.send_json({"type": "ping"})
+                    self._until(ws_ana, "pong")
+                msg, _ = self._until(ws_tv, "mic_states")
+                self.assertEqual(msg["states"], {"Ana": "on"})
+                msg, _ = self._until(ws_tv, "mic_states")
+                self.assertEqual(msg["states"], {"Ana": "muted"})
+            msg, _ = self._until(ws_tv, "players_update")
+            self.assertEqual(msg["mic_states"], {})
+
 
 if __name__ == "__main__":
     unittest.main()

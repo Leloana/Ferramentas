@@ -355,6 +355,7 @@ function showSongCover(songId) {
 export function selectSong(song) {
     stopPreview();
     state.selectedSongId = song.id;
+    state.remoteSongId = song.id;  // "música da vez" do controle pelo celular
     document.getElementById('current-song-title').innerText = song.title;
     document.getElementById('current-song-artist').innerText = song.artist || '';
     showSongCover(song.id);

@@ -16,6 +16,16 @@ function activateButton() {
     return document.getElementById('btn-mobile-activate');
 }
 
+// Conta para a TV se o microfone está ligado, mudo ou desligado: lá aparece o
+// lembrete de quem está escalado e esqueceu de ligar (server: mic_states)
+export function reportMicState() {
+    const btn = activateButton();
+    const ws = state.mobileWs;
+    if (!btn || !ws || ws.readyState !== WebSocket.OPEN || !state.mobileNickname) return;
+    const value = !micIsOn(btn) ? 'off' : (state.micMuted ? 'muted' : 'on');
+    ws.send(JSON.stringify({ type: 'mic_state', state: value }));
+}
+
 // Volta o botão para LIGAR MIC (o microfone só religa com um toque)
 function showMicOff() {
     const btn = activateButton();
@@ -29,6 +39,7 @@ function showMicOff() {
     state.micMuted = false;
     stopVu();
     if (state.micLocked) showLocked(btn);
+    reportMicState();
 }
 
 // Partida em curso sem este celular: o botão espera o fim (quem entrou, entrou)
@@ -73,6 +84,7 @@ function showMicOn(btn) {
     btn.innerHTML = state.micMuted
         ? `${iconSvg('mic-off')}<span>MUDO</span><small class="mic-button__hint">toque para voltar</small>`
         : `${iconSvg('mic')}<span>ATIVO</span><small class="mic-button__hint">toque para mutar</small>`;
+    reportMicState();
 }
 
 // ligado = ATIVO ou MUDO (showMicOff tira as duas classes quando a faixa cai)

@@ -1,0 +1,46 @@
+<!-- Configuração da sala pelo celular (mobile/room-panel.js): cantores, times e ajustes.
+     Com música tocando, só tom, velocidade, pausar e encerrar (o servidor também trava). -->
+<div id="room-settings-modal" class="modal-overlay">
+    <div class="modal-content admin-modal modal-content--sm room-settings">
+        <h2 class="modal-title"><button type="button" class="modal-back" data-close aria-label="Voltar" title="Voltar"><i data-icon="back"></i></button>Configuração da sala</h2>
+        <p id="room-settings-lock" class="room-note room-note--lock" hidden><i data-icon="hourglass"></i> Música tocando: cantores e pontuação depois que ela acabar</p>
+
+        <h3 class="room-settings__title">Cantores</h3>
+        <ol id="room-seats" class="room-seats"></ol>
+        <div id="room-free-mics" class="room-free-mics"></div>
+
+        <h3 class="room-settings__title">Partida</h3>
+        <div class="room-toggles">
+            <button type="button" id="btn-room-turns" class="room-toggle" aria-pressed="false">
+                <i data-icon="split"></i><span>Revezar versos</span>
+            </button>
+            <button type="button" id="btn-room-scoring" class="room-toggle" aria-pressed="false">
+                <i data-icon="metronome"></i><span id="room-scoring-label">Palavras + tempo</span>
+            </button>
+        </div>
+
+        <h3 class="room-settings__title">Som</h3>
+        <div class="room-steppers">
+            <div class="room-stepper">
+                <span class="room-stepper__label">Tom</span>
+                <button type="button" class="room-stepper__btn" data-step="transpose" data-delta="-1" aria-label="Baixar o tom">−</button>
+                <span id="room-transpose" class="room-stepper__value">Normal</span>
+                <button type="button" class="room-stepper__btn" data-step="transpose" data-delta="1" aria-label="Subir o tom">+</button>
+            </div>
+            <div class="room-stepper">
+                <span class="room-stepper__label">Velocidade</span>
+                <button type="button" class="room-stepper__btn" data-step="speed" data-delta="-1" aria-label="Mais devagar">−</button>
+                <span id="room-speed" class="room-stepper__value">1.00x</span>
+                <button type="button" class="room-stepper__btn" data-step="speed" data-delta="1" aria-label="Mais rápido">+</button>
+            </div>
+        </div>
+        <div id="room-playing-actions" class="room-playing-actions" hidden>
+            <button type="button" id="btn-room-pause" class="btn btn--ghost"><i data-icon="pause"></i> <span id="room-pause-label">Pausar</span></button>
+            <button type="button" id="btn-room-stop" class="btn btn--danger"><i data-icon="close"></i> Encerrar música</button>
+        </div>
+
+        <div class="modal-buttons">
+            <button type="button" class="btn btn--primary btn--block" data-close>Pronto</button>
+        </div>
+    </div>
+</div>

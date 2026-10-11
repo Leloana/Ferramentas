@@ -15,6 +15,9 @@ import { startKaraoke, resetGameState } from './game/session.js';
 import { initGameControls } from './game/controls.js';
 import { initModals } from './lobby/modals.js';
 import { initQueueView } from './lobby/queue-view.js';
+import { initRemoteControl } from './lobby/remote-control.js';
+import { initRoomPanel } from './mobile/room-panel.js';
+import { initMicReminder } from './game/mic-reminder.js';
 import { openModal, closeModal } from './ui/modal.js';
 import { initAnnotation } from './players/annotate.js';
 import { initLyricsScriptControls } from './game/lyrics-script.js';
@@ -47,6 +50,7 @@ function bootstrap() {
         setAppState('registering');
         initMicTabs();
         initMicRequests();
+        initRoomPanel();
         initAnnotation();  // cada cantor anota os próprios versos no fim
         initModals(); // "Adicionar música" padrão também no celular-microfone
 
@@ -112,6 +116,8 @@ function bootstrap() {
     initGameControls();
     initModals();
     initLobby();
+    initRemoteControl();
+    initMicReminder();
     initAnnotation();
     initLyricsScriptControls();
     initSearch();

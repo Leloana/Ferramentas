@@ -91,7 +91,10 @@ let _previousReadyCount = 0;
 // Mutex de GPU: enquanto uma música gera a letra, o INICIAR fica bloqueado
 // com o motivo e volta sozinho quando termina (o servidor também recusa).
 export function applyStartBlock(busyLabel) {
+    const changed = state.gpuBlock !== busyLabel;
     state.gpuBlock = busyLabel;
+    // aba Sala do celular (mobile/room-panel.js)
+    if (changed && state.onGpuBlockChange) state.onGpuBlockChange();
     const btn = document.getElementById('btn-start');
     const note = document.getElementById('start-block-note');
     if (!btn) return;

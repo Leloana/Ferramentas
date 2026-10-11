@@ -58,6 +58,10 @@ class KaraokeRoom:
         # transposto pela TV e nota de afinação por jogador e verso.
         self.pitch_reference: Optional[dict] = None
         self.transpose = 0.0
+        # o que a TV publicou do lobby (música, cantores, ajustes): espelhado nos celulares
+        self.lobby_state: dict | None = None
+        # microfone de cada celular: "on" | "muted" | "off" (lembrete na TV de quem esqueceu de ligar)
+        self.mic_states: dict[str, str] = {}
         self.player_pitch_scores: dict = {}
         # Aparelho de cada celular (client_info): vai para a gravação da partida
         self.device_info: dict = {}
