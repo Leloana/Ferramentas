@@ -78,7 +78,7 @@
     align-items: baseline;
     gap: 0.5rem;
     margin-top: 0.4rem;
-    padding: 0.35rem 0.4rem 0.2rem 2rem;
+    padding: 0.45rem 0.4rem 0.35rem 1.4rem;
     border-bottom: 1px solid var(--fold);
     font-family: var(--font-ui);
     font-size: 0.8rem;
@@ -89,7 +89,15 @@
 }
 .artist-group__album-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .artist-group__album-year { color: var(--ink-3); font-weight: 400; }
-@media (max-width: 700px) { .artist-group__album { padding-left: 1.2rem; } }
+.artist-group__album { cursor: pointer; user-select: none; transition: background-color 0.15s; }
+.artist-group__album:hover { background: rgba(236, 213, 143, 0.25); }
+.artist-group__album-chevron { width: 13px; height: 13px; flex-shrink: 0; align-self: center; transition: transform 0.2s; }
+.album-section--open .artist-group__album-chevron { transform: rotate(90deg); }
+.artist-group__album-count { margin-left: auto; color: var(--ink-3); font-weight: 400; letter-spacing: 0; }
+/* álbum fechado: só o título (selection-view.js albumSection) */
+.album-section__songs { display: none; }
+.album-section--open .album-section__songs { display: block; }
+@media (max-width: 700px) { .artist-group__album { padding-left: 0.8rem; } }
 
 /* ---------- Card de música (linha de índice) ---------- */
 .song-card {

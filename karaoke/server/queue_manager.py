@@ -407,6 +407,14 @@ class SongQueueManager:
             with open(meta_path, "w", encoding="utf-8") as f:
                 json.dump(meta, f, indent=4, ensure_ascii=False)
 
+            # Álbum já na entrada: a música pendente aparece no álbum dela na lista,
+            # não em "Singles e outras" (rede, opcional; o fim da fase 2 tenta de novo)
+            try:
+                from utils.album import fill_album
+                await asyncio.to_thread(fill_album, song_dir)
+            except Exception as e:
+                logger.info(f"[QUEUE:{item.id}] Álbum não encontrado: {e}")
+
             # Salvar lyrics.txt se fornecido (mesmo com synced LRC, para referência)
             if item.plain_lyrics and item.plain_lyrics.strip():
                 from utils.text import normalize_lyrics_text

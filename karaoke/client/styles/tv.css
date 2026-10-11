@@ -12,7 +12,8 @@ html.using-keys :focus {
     z-index: 5;
 }
 html.using-keys .song-card:focus,
-html.using-keys .artist-group__header:focus { background: rgba(236, 213, 143, 0.55); outline-offset: -3px !important; box-shadow: none !important; }
+html.using-keys .artist-group__header:focus,
+html.using-keys .artist-group__album:focus { background: rgba(236, 213, 143, 0.55); outline-offset: -3px !important; box-shadow: none !important; }
 html.using-keys .tab-btn:focus { background: var(--butter); color: var(--ink); }
 html.using-keys input[type="range"]:focus { outline-offset: 6px !important; }
 

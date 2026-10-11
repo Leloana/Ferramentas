@@ -56,6 +56,12 @@ function normalizeArtist(name) {
         .replace(/\s+/g, ' ');
 }
 
+const ARTIST_STOPWORDS = ['the', 'a', 'an', 'of', 'and', 'o', 'os', 'as', 'de', 'da', 'do', 'das', 'dos', 'e', 'los', 'las', 'la', 'el'];
+
+function artistWords(name) {
+    return name.split(/[\s,.&·/+-]+/).filter((w) => w && ARTIST_STOPWORDS.indexOf(w) === -1);
+}
+
 function artistSimilarity(a, b) {
     const na = normalizeArtist(a);
     const nb = normalizeArtist(b);
@@ -64,13 +70,16 @@ function artistSimilarity(a, b) {
     // Se um contém o outro completamente, considera similar
     if (na.includes(nb) || nb.includes(na)) return true;
 
-    // Interseção de palavras > 50%
-    const wordsA = na.split(/\s+/);
-    const wordsB = nb.split(/\s+/);
+    // Metade das palavras em comum ("Gree Day" × "Green Day"), contando pelo nome mais
+    // longo e sem artigos: "The Strokes" e "Tyler, The Creator" dividiam só o "the",
+    // "João Gilberto" e "João Erbetta · Leandro Lima" só o "joão"
+    const wordsA = artistWords(na);
+    const wordsB = artistWords(nb);
+    if (!wordsA.length || !wordsB.length) return false;
     const shorter = wordsA.length <= wordsB.length ? wordsA : wordsB;
     const longer = wordsA.length <= wordsB.length ? wordsB : wordsA;
     const intersection = shorter.filter(w => longer.includes(w));
-    if (intersection.length / shorter.length >= 0.5) return true;
+    if (intersection.length / longer.length >= 0.5) return true;
 
     return false;
 }
@@ -179,9 +188,15 @@ export function renderArtistGroups(songsList, { expandAll = false } = {}) {
         const songsGrid = document.createElement('div');
         songsGrid.className = 'artist-group__songs';
 
-        albumSections(group.songs).forEach((section) => {
-            if (section.name !== null) songsGrid.appendChild(albumHeading(section));
-            section.songs.forEach((song) => songsGrid.appendChild(buildSongCard(song, tpl)));
+        const sections = albumSections(group.songs);
+        sections.forEach((section) => {
+            if (section.name === null) {
+                section.songs.forEach((song) => songsGrid.appendChild(buildSongCard(song, tpl)));
+                return;
+            }
+            // álbum fechado por padrão (navegar no controle da TV); numa busca ou
+            // quando o artista só tem um álbum, já abre
+            songsGrid.appendChild(albumSection(section, tpl, expandAll || sections.length === 1));
         });
 
         groupDiv.appendChild(songsGrid);
@@ -213,9 +228,16 @@ function albumSections(songs) {
     return order;
 }
 
-function albumHeading(section) {
+function albumSection(section, tpl, open) {
+    const wrap = document.createElement('div');
+    wrap.className = open ? 'album-section album-section--open' : 'album-section';
+
     const h = document.createElement('div');
     h.className = 'artist-group__album';
+    h.tabIndex = 0;
+    h.setAttribute('role', 'button');
+    h.setAttribute('aria-expanded', String(open));
+    h.innerHTML = '<svg class="artist-group__album-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>';
     const name = document.createElement('span');
     name.className = 'artist-group__album-name';
     name.textContent = section.name;
@@ -226,7 +248,22 @@ function albumHeading(section) {
         year.textContent = String(section.year);
         h.appendChild(year);
     }
-    return h;
+    const count = document.createElement('span');
+    count.className = 'artist-group__album-count';
+    count.textContent = String(section.songs.length);
+    h.appendChild(count);
+    h.addEventListener('click', () => {
+        const opening = !wrap.classList.contains('album-section--open');
+        wrap.classList.toggle('album-section--open', opening);
+        h.setAttribute('aria-expanded', String(opening));
+    });
+    wrap.appendChild(h);
+
+    const songs = document.createElement('div');
+    songs.className = 'album-section__songs';
+    section.songs.forEach((song) => songs.appendChild(buildSongCard(song, tpl)));
+    wrap.appendChild(songs);
+    return wrap;
 }
 
 function buildSongCard(song, tpl) {
