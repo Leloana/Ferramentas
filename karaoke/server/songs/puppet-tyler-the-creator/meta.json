@@ -17,14 +17,14 @@
         "gain_db": -2.07
     },
     "alignment_quality": {
-        "score": 78.7,
+        "score": 84.0,
         "flags": [
-            "palavras empilhadas (47)",
-            "palavras com menos de 80 ms (21)",
-            "palavras depois do fim do verso (19)",
+            "palavras empilhadas (34)",
+            "palavras com menos de 80 ms (11)",
+            "palavras depois do fim do verso (11)",
             "1% das palavras no silêncio da voz",
             "versos com mais de 12 s (1)",
-            "versos sobrepostos (9)"
+            "versos sobrepostos (8)"
         ],
         "lines": [
             {
@@ -35,48 +35,27 @@
             {
                 "idx": 1,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 2,
                 "confidence": null,
-                "flags": [
-                    "empilhadas",
-                    "fora do verso",
-                    "palavras curtas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 3,
                 "confidence": null,
-                "flags": [
-                    "empilhadas",
-                    "fora do verso",
-                    "palavras curtas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 4,
                 "confidence": null,
-                "flags": [
-                    "empilhadas",
-                    "fora do verso",
-                    "palavras curtas"
-                ]
+                "flags": []
             },
             {
                 "idx": 5,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas"
-                ]
+                "flags": []
             },
             {
                 "idx": 6,
@@ -99,16 +78,12 @@
             {
                 "idx": 8,
                 "confidence": null,
-                "flags": [
-                    "empilhadas"
-                ]
+                "flags": []
             },
             {
                 "idx": 9,
                 "confidence": null,
-                "flags": [
-                    "palavras curtas"
-                ]
+                "flags": []
             },
             {
                 "idx": 10,
@@ -168,18 +143,25 @@
             {
                 "idx": 19,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
             },
             {
                 "idx": 20,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
             },
             {
                 "idx": 21,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "sobreposto"
                 ]
             },
             {
@@ -384,12 +366,12 @@
         "metrics": {
             "words": 388,
             "lines": 56,
-            "stacked": 47,
-            "short": 21,
-            "past_end": 19,
+            "stacked": 34,
+            "short": 11,
+            "past_end": 11,
             "silence": 2,
             "long_verses": 1,
-            "overlaps": 9
+            "overlaps": 8
         }
     },
     "needs_review": false

@@ -253,3 +253,14 @@ lote, guarde backup e só aceite o resultado se a nota não piorar.
 Outra causa de letra errada: o LRCLIB traz um bloco que a gravação não canta (*O Pato*: 3
 linhas de "Quém" depois do 1º verso, 7 no final em vez de 6). Aí a estrutura certa só sai
 editando o LRC (fica marcado com `.lyrics_edited`).
+
+### Quando nem FAST nem PRO resolvem (2026-10)
+
+Undone, Puppet, Tipo Madara e All I Need pioravam nos dois modos. Nelas o LRC do LRCLIB
+estava deslocado de forma sistemática (0,4–1,5 s; em All I Need até 12 s e faltando o
+"Lying in the reeds" do 1º refrão). Correção: puxar o início de cada verso para a âncora do
+`build_plan` quando ≥ 75% das palavras casam (desvio ≤ 3 s), usar a mediana dos vizinhos nas
+linhas sem âncora, e salvar pelo `/api/save-lyrics` com `lrc_edited=true`. Cuidado: o Whisper
+puxa a 1ª palavra de uma frase para trás depois de uma pausa ("What@24.9 do@27.6"), então
+âncora que adianta muito o verso precisa ser conferida. Em All I Need (voz lenta, Whisper
+fraco) o LRC foi montado à mão pela atividade da voz (78→100).

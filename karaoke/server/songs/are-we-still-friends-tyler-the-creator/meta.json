@@ -17,13 +17,12 @@
         "gain_db": -0.39
     },
     "alignment_quality": {
-        "score": 87.7,
+        "score": 90.5,
         "flags": [
-            "palavras empilhadas (25)",
-            "palavras com menos de 80 ms (4)",
-            "palavras depois do fim do verso (4)",
-            "versos com mais de 12 s (1)",
-            "versos sobrepostos (2)"
+            "palavras empilhadas (26)",
+            "palavras com menos de 80 ms (1)",
+            "palavras depois do fim do verso (1)",
+            "versos com mais de 12 s (1)"
         ],
         "lines": [
             {
@@ -204,18 +203,12 @@
             {
                 "idx": 32,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 33,
                 "confidence": null,
-                "flags": [
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 34,
@@ -238,12 +231,12 @@
         "metrics": {
             "words": 256,
             "lines": 37,
-            "stacked": 25,
-            "short": 4,
-            "past_end": 4,
+            "stacked": 26,
+            "short": 1,
+            "past_end": 1,
             "silence": 0,
             "long_verses": 1,
-            "overlaps": 2
+            "overlaps": 0
         }
     },
     "needs_review": false

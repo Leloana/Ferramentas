@@ -13,13 +13,14 @@
         "plain_lyrics": "O gato preto cruzou a estrada\r\nPassou por debaixo da escada\r\nE lá no fundo azul\r\nNa noite da floresta\r\nA lua iluminou\r\nA dança, a roda, a festa...\r\n\r\nVira! Vira! Vira!\r\nVira! Vira!\r\nVira Homem\r\nVira! Vira!\r\nVira! Vira!\r\nLobisomem\r\nVira! Vira! Vira!\r\nVira! Vira!\r\nVira Homem\r\nVira! Vira!...\r\n\r\nBailam corujas e pirilampos\r\nEntre os sacis e as fadas\r\nE lá no fundo azul\r\nNa noite da floresta\r\nA lua iluminou\r\nA dança, a roda, a festa...\r\n\r\nVira! Vira! Vira!\r\nVira! Vira!\r\nVira Homem\r\nVira! Vira!\r\nVira! Vira!\r\nLobisomem\r\nVira! Vira! Vira!\r\nVira! Vira!\r\nVira Homem\r\nVira! Vira!...\r\n\r\nBailam corujas e pirilampos\r\nEntre os sacis e as fadas\r\nE lá no fundo azul\r\nNa noite da floresta\r\nA lua iluminou\r\nA dança, a roda, a festa...\r\n\r\nVira! Vira! Vira!\r\nVira! Vira!\r\nVira Homem\r\nVira! Vira!\r\nVira! Vira!\r\nLobisomem\r\nVira! Vira! Vira!\r\nVira! Vira!\r\nVira Homem\r\nVira! Vira!..."
     },
     "alignment_quality": {
-        "score": 85.4,
+        "score": 89.9,
         "flags": [
-            "palavras empilhadas (17)",
+            "palavras empilhadas (3)",
             "palavras com menos de 80 ms (7)",
-            "palavras depois do fim do verso (4)",
+            "palavras depois do fim do verso (3)",
             "3% das palavras no silêncio da voz",
-            "versos com mais de 12 s (1)"
+            "versos com mais de 12 s (1)",
+            "versos sobrepostos (4)"
         ],
         "lines": [
             {
@@ -35,10 +36,7 @@
             {
                 "idx": 2,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas"
-                ]
+                "flags": []
             },
             {
                 "idx": 3,
@@ -73,20 +71,27 @@
             {
                 "idx": 9,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "palavras curtas"
+                ]
             },
             {
                 "idx": 10,
                 "confidence": null,
                 "flags": [
+                    "empilhadas",
                     "fora do verso",
-                    "palavras curtas"
+                    "palavras curtas",
+                    "sobreposto"
                 ]
             },
             {
                 "idx": 11,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ]
             },
             {
                 "idx": 12,
@@ -97,13 +102,17 @@
                 "idx": 13,
                 "confidence": null,
                 "flags": [
-                    "palavras curtas"
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
                 ]
             },
             {
                 "idx": 14,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "sobreposto"
+                ]
             },
             {
                 "idx": 15,
@@ -123,9 +132,7 @@
             {
                 "idx": 18,
                 "confidence": null,
-                "flags": [
-                    "empilhadas"
-                ]
+                "flags": []
             },
             {
                 "idx": 19,
@@ -140,9 +147,7 @@
             {
                 "idx": 21,
                 "confidence": null,
-                "flags": [
-                    "empilhadas"
-                ]
+                "flags": []
             },
             {
                 "idx": 22,
@@ -205,9 +210,7 @@
             {
                 "idx": 32,
                 "confidence": null,
-                "flags": [
-                    "empilhadas"
-                ]
+                "flags": []
             },
             {
                 "idx": 33,
@@ -222,9 +225,7 @@
             {
                 "idx": 35,
                 "confidence": null,
-                "flags": [
-                    "empilhadas"
-                ]
+                "flags": []
             },
             {
                 "idx": 36,
@@ -281,10 +282,7 @@
             {
                 "idx": 46,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas"
-                ]
+                "flags": []
             },
             {
                 "idx": 47,
@@ -295,12 +293,12 @@
         "metrics": {
             "words": 148,
             "lines": 48,
-            "stacked": 17,
+            "stacked": 3,
             "short": 7,
-            "past_end": 4,
+            "past_end": 3,
             "silence": 4,
             "long_verses": 1,
-            "overlaps": 0
+            "overlaps": 4
         }
     },
     "needs_review": false

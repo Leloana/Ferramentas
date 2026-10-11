@@ -17,29 +17,23 @@
         "gain_db": 1.16
     },
     "alignment_quality": {
-        "score": 77.7,
+        "score": 90.2,
         "flags": [
-            "palavras empilhadas (37)",
-            "palavras com menos de 80 ms (57)",
-            "palavras depois do fim do verso (47)",
-            "versos sobrepostos (29)"
+            "palavras empilhadas (26)",
+            "palavras com menos de 80 ms (27)",
+            "palavras depois do fim do verso (20)",
+            "versos sobrepostos (9)"
         ],
         "lines": [
             {
                 "idx": 0,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 1,
                 "confidence": null,
-                "flags": [
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 2,
@@ -102,41 +96,33 @@
             {
                 "idx": 11,
                 "confidence": null,
-                "flags": [
-                    "palavras curtas"
-                ]
+                "flags": []
             },
             {
                 "idx": 12,
                 "confidence": null,
                 "flags": [
-                    "empilhadas",
-                    "fora do verso",
-                    "palavras curtas"
-                ]
-            },
-            {
-                "idx": 13,
-                "confidence": null,
-                "flags": []
-            },
-            {
-                "idx": 14,
-                "confidence": null,
-                "flags": [
-                    "empilhadas",
                     "fora do verso",
                     "palavras curtas",
                     "sobreposto"
                 ]
             },
             {
-                "idx": 15,
+                "idx": 13,
                 "confidence": null,
                 "flags": [
-                    "empilhadas",
                     "sobreposto"
                 ]
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
             },
             {
                 "idx": 16,
@@ -149,45 +135,32 @@
             {
                 "idx": 17,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 18,
                 "confidence": null,
                 "flags": [
-                    "sobreposto"
+                    "fora do verso",
+                    "palavras curtas"
                 ]
             },
             {
                 "idx": 19,
                 "confidence": null,
-                "flags": [
-                    "empilhadas",
-                    "fora do verso",
-                    "palavras curtas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 20,
                 "confidence": null,
                 "flags": [
-                    "empilhadas",
-                    "fora do verso",
-                    "palavras curtas",
-                    "sobreposto"
+                    "palavras curtas"
                 ]
             },
             {
                 "idx": 21,
                 "confidence": null,
-                "flags": [
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 22,
@@ -197,28 +170,17 @@
             {
                 "idx": 23,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas"
-                ]
+                "flags": []
             },
             {
                 "idx": 24,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 25,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 26,
@@ -228,27 +190,19 @@
             {
                 "idx": 27,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 28,
                 "confidence": null,
                 "flags": [
-                    "palavras curtas",
-                    "sobreposto"
+                    "palavras curtas"
                 ]
             },
             {
                 "idx": 29,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas"
-                ]
+                "flags": []
             },
             {
                 "idx": 30,
@@ -258,10 +212,7 @@
             {
                 "idx": 31,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas"
-                ]
+                "flags": []
             },
             {
                 "idx": 32,
@@ -271,26 +222,19 @@
             {
                 "idx": 33,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "empilhadas"
+                ]
             },
             {
                 "idx": 34,
                 "confidence": null,
-                "flags": [
-                    "empilhadas",
-                    "fora do verso",
-                    "palavras curtas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 35,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 36,
@@ -305,25 +249,21 @@
             {
                 "idx": 38,
                 "confidence": null,
-                "flags": [
-                    "empilhadas",
-                    "fora do verso",
-                    "palavras curtas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 39,
                 "confidence": null,
                 "flags": [
-                    "empilhadas",
-                    "sobreposto"
+                    "palavras curtas"
                 ]
             },
             {
                 "idx": 40,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "empilhadas"
+                ]
             },
             {
                 "idx": 41,
@@ -338,19 +278,12 @@
             {
                 "idx": 43,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 44,
                 "confidence": null,
-                "flags": [
-                    "palavras curtas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 45,
@@ -360,10 +293,7 @@
             {
                 "idx": 46,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas"
-                ]
+                "flags": []
             },
             {
                 "idx": 47,
@@ -373,17 +303,13 @@
             {
                 "idx": 48,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 49,
                 "confidence": null,
                 "flags": [
-                    "sobreposto"
+                    "palavras curtas"
                 ]
             },
             {
@@ -394,9 +320,7 @@
             {
                 "idx": 51,
                 "confidence": null,
-                "flags": [
-                    "empilhadas"
-                ]
+                "flags": []
             },
             {
                 "idx": 52,
@@ -417,18 +341,26 @@
                 "flags": [
                     "empilhadas",
                     "fora do verso",
-                    "palavras curtas"
+                    "palavras curtas",
+                    "sobreposto"
                 ]
             },
             {
                 "idx": 55,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
             },
             {
                 "idx": 56,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "sobreposto"
+                ]
             },
             {
                 "idx": 57,
@@ -438,18 +370,12 @@
             {
                 "idx": 58,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 59,
                 "confidence": null,
-                "flags": [
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 60,
@@ -481,14 +407,16 @@
                 "confidence": null,
                 "flags": [
                     "fora do verso",
-                    "palavras curtas"
+                    "palavras curtas",
+                    "sobreposto"
                 ]
             },
             {
                 "idx": 66,
                 "confidence": null,
                 "flags": [
-                    "palavras curtas"
+                    "palavras curtas",
+                    "sobreposto"
                 ]
             },
             {
@@ -499,20 +427,21 @@
             {
                 "idx": 68,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "empilhadas"
+                ]
             },
             {
                 "idx": 69,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "empilhadas"
+                ]
             },
             {
                 "idx": 70,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas"
-                ]
+                "flags": []
             },
             {
                 "idx": 71,
@@ -557,9 +486,7 @@
             {
                 "idx": 79,
                 "confidence": null,
-                "flags": [
-                    "palavras curtas"
-                ]
+                "flags": []
             },
             {
                 "idx": 80,
@@ -624,22 +551,18 @@
                 "confidence": null,
                 "flags": [
                     "fora do verso",
-                    "palavras curtas",
-                    "sobreposto"
+                    "palavras curtas"
                 ]
             },
             {
                 "idx": 92,
                 "confidence": null,
-                "flags": [
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 93,
                 "confidence": null,
                 "flags": [
-                    "empilhadas",
                     "fora do verso",
                     "palavras curtas",
                     "sobreposto"
@@ -655,18 +578,12 @@
             {
                 "idx": 95,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "palavras curtas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 96,
                 "confidence": null,
-                "flags": [
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 97,
@@ -677,9 +594,7 @@
                 "idx": 98,
                 "confidence": null,
                 "flags": [
-                    "empilhadas",
-                    "fora do verso",
-                    "palavras curtas"
+                    "empilhadas"
                 ]
             },
             {
@@ -729,12 +644,12 @@
         "metrics": {
             "words": 619,
             "lines": 107,
-            "stacked": 37,
-            "short": 57,
-            "past_end": 47,
+            "stacked": 26,
+            "short": 27,
+            "past_end": 20,
             "silence": 0,
             "long_verses": 0,
-            "overlaps": 29
+            "overlaps": 9
         }
     },
     "needs_review": false

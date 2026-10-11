@@ -17,41 +17,28 @@
         "gain_db": -3.23
     },
     "alignment_quality": {
-        "score": 78.5,
-        "flags": [
-            "palavras empilhadas (19)",
-            "3% das palavras no silêncio da voz",
-            "versos com mais de 12 s (3)"
-        ],
+        "score": 100.0,
+        "flags": [],
         "lines": [
             {
                 "idx": 0,
                 "confidence": null,
-                "flags": [
-                    "empilhadas"
-                ]
+                "flags": []
             },
             {
                 "idx": 1,
                 "confidence": null,
-                "flags": [
-                    "empilhadas",
-                    "no silêncio"
-                ]
+                "flags": []
             },
             {
                 "idx": 2,
                 "confidence": null,
-                "flags": [
-                    "longo"
-                ]
+                "flags": []
             },
             {
                 "idx": 3,
                 "confidence": null,
-                "flags": [
-                    "longo"
-                ]
+                "flags": []
             },
             {
                 "idx": 4,
@@ -66,16 +53,12 @@
             {
                 "idx": 6,
                 "confidence": null,
-                "flags": [
-                    "empilhadas"
-                ]
+                "flags": []
             },
             {
                 "idx": 7,
                 "confidence": null,
-                "flags": [
-                    "longo"
-                ]
+                "flags": []
             },
             {
                 "idx": 8,
@@ -105,9 +88,7 @@
             {
                 "idx": 13,
                 "confidence": null,
-                "flags": [
-                    "empilhadas"
-                ]
+                "flags": []
             },
             {
                 "idx": 14,
@@ -123,16 +104,21 @@
                 "idx": 16,
                 "confidence": null,
                 "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
             }
         ],
         "metrics": {
-            "words": 118,
-            "lines": 17,
-            "stacked": 19,
+            "words": 122,
+            "lines": 18,
+            "stacked": 0,
             "short": 0,
             "past_end": 0,
-            "silence": 3,
-            "long_verses": 3,
+            "silence": 0,
+            "long_verses": 0,
             "overlaps": 0
         }
     },

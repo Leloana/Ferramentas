@@ -17,14 +17,14 @@
         "gain_db": -3.13
     },
     "alignment_quality": {
-        "score": 64.5,
+        "score": 84.4,
         "flags": [
-            "palavras empilhadas (86)",
-            "palavras com menos de 80 ms (15)",
-            "palavras depois do fim do verso (13)",
+            "palavras empilhadas (32)",
+            "palavras com menos de 80 ms (10)",
+            "palavras depois do fim do verso (8)",
             "2% das palavras no silêncio da voz",
             "versos com mais de 12 s (1)",
-            "versos sobrepostos (6)"
+            "versos sobrepostos (2)"
         ],
         "lines": [
             {
@@ -35,21 +35,19 @@
             {
                 "idx": 1,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "no silêncio"
+                ]
             },
             {
                 "idx": 2,
                 "confidence": null,
-                "flags": [
-                    "empilhadas"
-                ]
+                "flags": []
             },
             {
                 "idx": 3,
                 "confidence": null,
-                "flags": [
-                    "empilhadas"
-                ]
+                "flags": []
             },
             {
                 "idx": 4,
@@ -59,19 +57,12 @@
             {
                 "idx": 5,
                 "confidence": null,
-                "flags": [
-                    "fora do verso",
-                    "no silêncio",
-                    "palavras curtas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 6,
                 "confidence": null,
-                "flags": [
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 7,
@@ -81,40 +72,37 @@
             {
                 "idx": 8,
                 "confidence": null,
-                "flags": [
-                    "empilhadas"
-                ]
+                "flags": []
             },
             {
                 "idx": 9,
                 "confidence": null,
-                "flags": [
-                    "empilhadas"
-                ]
+                "flags": []
             },
             {
                 "idx": 10,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "no silêncio",
+                    "palavras curtas"
+                ]
             },
             {
                 "idx": 11,
                 "confidence": null,
-                "flags": [
-                    "empilhadas"
-                ]
+                "flags": []
             },
             {
                 "idx": 12,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "no silêncio"
+                ]
             },
             {
                 "idx": 13,
                 "confidence": null,
-                "flags": [
-                    "empilhadas"
-                ]
+                "flags": []
             },
             {
                 "idx": 14,
@@ -129,21 +117,12 @@
             {
                 "idx": 16,
                 "confidence": null,
-                "flags": [
-                    "empilhadas",
-                    "fora do verso",
-                    "no silêncio",
-                    "palavras curtas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 17,
                 "confidence": null,
-                "flags": [
-                    "empilhadas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 18,
@@ -154,13 +133,15 @@
                 "idx": 19,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "no silêncio"
                 ]
             },
             {
                 "idx": 20,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "no silêncio"
+                ]
             },
             {
                 "idx": 21,
@@ -176,15 +157,14 @@
                 "idx": 23,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "fora do verso",
+                    "palavras curtas"
                 ]
             },
             {
                 "idx": 24,
                 "confidence": null,
-                "flags": [
-                    "empilhadas"
-                ]
+                "flags": []
             },
             {
                 "idx": 25,
@@ -194,19 +174,21 @@
             {
                 "idx": 26,
                 "confidence": null,
-                "flags": [
-                    "empilhadas"
-                ]
+                "flags": []
             },
             {
                 "idx": 27,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "palavras curtas"
+                ]
             },
             {
                 "idx": 28,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "empilhadas"
+                ]
             },
             {
                 "idx": 29,
@@ -216,9 +198,7 @@
             {
                 "idx": 30,
                 "confidence": null,
-                "flags": [
-                    "empilhadas"
-                ]
+                "flags": []
             },
             {
                 "idx": 31,
@@ -229,16 +209,13 @@
                 "idx": 32,
                 "confidence": null,
                 "flags": [
-                    "empilhadas",
-                    "no silêncio"
+                    "empilhadas"
                 ]
             },
             {
                 "idx": 33,
                 "confidence": null,
-                "flags": [
-                    "empilhadas"
-                ]
+                "flags": []
             },
             {
                 "idx": 34,
@@ -258,7 +235,8 @@
                 "idx": 36,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "empilhadas",
+                    "no silêncio"
                 ]
             },
             {
@@ -283,13 +261,13 @@
         "metrics": {
             "words": 295,
             "lines": 39,
-            "stacked": 86,
-            "short": 15,
-            "past_end": 13,
-            "silence": 6,
+            "stacked": 32,
+            "short": 10,
+            "past_end": 8,
+            "silence": 7,
             "long_verses": 1,
-            "overlaps": 6
+            "overlaps": 2
         }
     },
-    "needs_review": true
+    "needs_review": false
 }

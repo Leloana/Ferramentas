@@ -17,12 +17,12 @@
         "gain_db": -2.07
     },
     "alignment_quality": {
-        "score": 88.7,
+        "score": 93.1,
         "flags": [
-            "palavras empilhadas (12)",
-            "palavras com menos de 80 ms (6)",
-            "palavras depois do fim do verso (5)",
-            "versos sobrepostos (4)"
+            "palavras empilhadas (9)",
+            "palavras com menos de 80 ms (3)",
+            "palavras depois do fim do verso (3)",
+            "versos sobrepostos (2)"
         ],
         "lines": [
             {
@@ -93,6 +93,16 @@
             {
                 "idx": 13,
                 "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
                 "flags": [
                     "empilhadas",
                     "fora do verso",
@@ -101,22 +111,12 @@
                 ]
             },
             {
-                "idx": 14,
+                "idx": 16,
                 "confidence": null,
                 "flags": [
                     "empilhadas",
                     "sobreposto"
                 ]
-            },
-            {
-                "idx": 15,
-                "confidence": null,
-                "flags": []
-            },
-            {
-                "idx": 16,
-                "confidence": null,
-                "flags": []
             },
             {
                 "idx": 17,
@@ -151,9 +151,7 @@
             {
                 "idx": 23,
                 "confidence": null,
-                "flags": [
-                    "empilhadas"
-                ]
+                "flags": []
             },
             {
                 "idx": 24,
@@ -174,24 +172,21 @@
                 "idx": 27,
                 "confidence": null,
                 "flags": [
-                    "empilhadas",
                     "fora do verso",
-                    "palavras curtas",
-                    "sobreposto"
+                    "palavras curtas"
                 ]
             },
             {
                 "idx": 28,
                 "confidence": null,
-                "flags": [
-                    "empilhadas",
-                    "sobreposto"
-                ]
+                "flags": []
             },
             {
                 "idx": 29,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "empilhadas"
+                ]
             },
             {
                 "idx": 30,
@@ -201,9 +196,7 @@
             {
                 "idx": 31,
                 "confidence": null,
-                "flags": [
-                    "empilhadas"
-                ]
+                "flags": []
             },
             {
                 "idx": 32,
@@ -219,12 +212,12 @@
         "metrics": {
             "words": 213,
             "lines": 34,
-            "stacked": 12,
-            "short": 6,
-            "past_end": 5,
+            "stacked": 9,
+            "short": 3,
+            "past_end": 3,
             "silence": 0,
             "long_verses": 0,
-            "overlaps": 4
+            "overlaps": 2
         }
     },
     "needs_review": false
