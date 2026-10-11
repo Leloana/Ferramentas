@@ -228,3 +228,28 @@ Se depois de 3-4 ajustes o LRC ainda está ruim, provavelmente o problema NÃO e
 - **Letra com versos muito repetidos sem variação** (ex: "na na na na" 20 vezes): nenhum algoritmo word-matching vai resolver. Edite à mão.
 
 O LRC pode ser editado depois pela UI (`/api/save-lyrics`) — o `prepare_song` é rodado automaticamente e re-gera `segments.json` com o alinhamento word-level fino.
+
+---
+
+## LRC do LRCLIB "da mesma versão, mas desleixado" (2026-10)
+
+Sintoma: a letra segue a estrutura certa, mas cada linha entra 1–2 s fora e as palavras ficam
+"empilhadas" (nota do `alignment_quality` ~35–55). Caso real: *Meu Caro Amigo* — o synced do
+LRCLIB tem linhas espaçadas por igual (~2,7 s); o `lrc_sync` (modo FAST) o mantém porque a
+concordância com a estrutura passa de `MIN_AGREEMENT` (73% ≥ 60%), embora o plano pela voz
+tenha ancorado 48/48 linhas com 97% das palavras.
+
+Correção: reinstalar em **PRO** (`align_lyrics=True`, sem baixar áudio:
+`reinstall_song(..., clean_existing=False, align_lyrics=True)`). O PRO alinha os dois
+candidatos (LRC e plano) com MMS_FA e fica com a melhor nota (Meu Caro Amigo: 35 → 88).
+
+Cuidado: o MMS_FA vai mal em **inglês** (Radiohead, Weezer, Tyler etc. caíram para 10–40,
+"confiança baixa em 90% das palavras"). Na regeneração das músicas de maio–setembro (sem
+`alignment_quality` no meta.json, palavras empilhadas), o **FAST atual** (`align_lyrics=False`,
+LRC antigo apagado antes para não servir de dica) foi o melhor em quase todas (Bones 60 → 98,
+Vai Passar 54 → 96, Construção 72 → 99); o PRO só ganhou em Meu Caro Amigo. Ao regenerar em
+lote, guarde backup e só aceite o resultado se a nota não piorar.
+
+Outra causa de letra errada: o LRCLIB traz um bloco que a gravação não canta (*O Pato*: 3
+linhas de "Quém" depois do 1º verso, 7 no final em vez de 6). Aí a estrutura certa só sai
+editando o LRC (fica marcado com `.lyrics_edited`).
