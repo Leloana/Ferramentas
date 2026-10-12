@@ -83,3 +83,6 @@ tts_platform_pt/comfy/*.log
 # TTS Platform: progresso e logs do produzir_lote.py
 tts_platform_pt/Projetos/_lote_resumo.json
 tts_platform_pt/Projetos/_lote_logs/
+
+# Crash dumps do Git Bash
+*.stackdump
