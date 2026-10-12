@@ -19,6 +19,7 @@ Para especificações detalhadas, diagramas de componentes e contratos, consulte
 - [docs/guides/LRC_ALIGNMENT_TUNING.md](docs/guides/LRC_ALIGNMENT_TUNING.md) (Playbook de Solução de Timestamps e Ajuste LRC)
 - [docs/guides/PLANO_SERVIDOR.md](docs/guides/PLANO_SERVIDOR.md) (Roteiro no servidor: preparar, reprocessar o acervo, sessões de teste gravadas e anotadas)
 - [docs/guides/AUDIO_PIPELINE_MELHORIAS.md](docs/guides/AUDIO_PIPELINE_MELHORIAS.md) (Revisão do pipeline de áudio: o que já foi feito e o que calibrar no servidor)
+- [docs/guides/BENCHMARK_CPU_SERVIDOR.md](docs/guides/BENCHMARK_CPU_SERVIDOR.md) (Benchmark só CPU no servidor: tempo por verso, acerto por modelo, Demucs e o que mudar no código)
 - [docs/archive/FRONT_REDESIGN_2026-09.md](docs/archive/FRONT_REDESIGN_2026-09.md) (Histórico do redesign do front e dos recursos de festa)
 
 ---
