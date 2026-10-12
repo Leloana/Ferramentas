@@ -1,0 +1,184 @@
+{
+    "meta": {
+        "title": "O Fantasma",
+        "artist": "Kamaitachi",
+        "language": "pt",
+        "slug": "o-fantasma-kamaitachi"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=-VQmZRrhN90",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Quando eu chegar em casa\nVou tirar o meu eu dentro de mim\nE enterrar a mais de mil pés desse chão de barro\nPara que o meu fantasma vá embora daqui\nEu nunca fui um anjo\nNem sequer tive\nAsas para voar para longe\nDo que me aflige\nMas já fui um demônio\nE tive que morrer\nPra aprender a viver como ser humano\nQuando eu chegar em casa\nVou arrancar o meu eu dentro de mim\nMe afogar nessas águas salgadas já passadas\nDeixar meu fantasma ir\nDesculpa meu bem\nPor trazer a tempestade\nO frio e o inverno, para o nosso aconchegante lar\nPrometo vou mudar\nE não deixar esses raios do passado\nAfetar a minha vida\nE a de todos nós (todos nós)\nE a de todos nós (todos nós)\nE a de todos nós (todos nós)\nE a de todos nós (todos nós)\nE a de todos nós (todos nós)\nE a de todos nós (todos nós)\nE a de todos nós (todos nós)\nE a de todos nós"
+    },
+    "album": {
+        "name": null,
+        "year": null,
+        "track": null,
+        "kind": "single",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -19.49,
+        "gain_db": 3.49
+    },
+    "alignment_quality": {
+        "score": 95.5,
+        "flags": [
+            "palavras empilhadas (9)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 160,
+            "lines": 27,
+            "stacked": 9,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}

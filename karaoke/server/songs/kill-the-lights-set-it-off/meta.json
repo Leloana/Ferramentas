@@ -1,0 +1,265 @@
+{
+    "meta": {
+        "title": "Kill the Lights",
+        "artist": "Set It Off",
+        "language": "en",
+        "slug": "kill-the-lights-set-it-off"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=oR_iQomHOZQ",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "You reside in grand disguises\nJust to get, get away from it all\nFalsify the life you're hiding\nJust to get, get away from it all\nBut the truth we pursue as we all beg you to\n\nKill the lights, kill the actor, kill the actress\nI'm afraid that the spotlight dried you up, whoa, whoa, oh\n\nShut your mouth, you make me sick with\nAll the lies, all the lies that you spill\nSlip and fall, I'll watch you drown in\nAll the lies, all the lies that you spill\n\nAs you're tongue-tied, did you believe it?\nFalse pride never existed\nNow, I am cutting ties clean off\nAnd I can breathe at last\nSo we all stand enthralled by this bland curtain call\nAnd the truth we pursue as we all, we all beg you to\n\nKill the lights, kill the actor, kill the actress\nI'm afraid that the spotlight dried you up, whoa, whoa, oh\nDon't even think about it\nDon't even think about it, no\nWe're begging you\nTo kill the lights, kill the actor, kill the actress\nOr kill us all\n\nStop there and peer inside of me\nYou'll find a man once lost at sea\nBut all the while I would think to myself\nIt's not the end, it's not the end at all\nSo sick of nothing going right\nSail on along into the night\nNot even death could stand in the way\nYou never even tried in the first place\n\nKill the lights, kill the actor, kill the actress\nI'm afraid that the spotlight dried you up, whoa, whoa, oh\nDon't even think about it (don't even think about)\nDon't even think about it, no (don't even think about)\nWe're begging you\nTo kill the lights, kill the actor, kill the actress\nOr kill us all\n\nOr kill us all, ooh-ooh-ooh\nOr kill us all"
+    },
+    "album": {
+        "name": "Cinematics",
+        "year": 2013,
+        "track": 14,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -14.17,
+        "gain_db": -1.83
+    },
+    "alignment_quality": {
+        "score": 93.5,
+        "flags": [
+            "palavras empilhadas (8)",
+            "palavras com menos de 80 ms (6)",
+            "palavras depois do fim do verso (6)",
+            "versos sobrepostos (3)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 313,
+            "lines": 41,
+            "stacked": 8,
+            "short": 6,
+            "past_end": 6,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 3
+        }
+    },
+    "needs_review": false
+}

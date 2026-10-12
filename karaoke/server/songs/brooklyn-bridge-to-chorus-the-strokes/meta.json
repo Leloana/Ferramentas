@@ -1,0 +1,268 @@
+{
+    "meta": {
+        "title": "Brooklyn Bridge To Chorus",
+        "artist": "The Strokes",
+        "language": "en",
+        "slug": "brooklyn-bridge-to-chorus-the-strokes"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=2jna3dWEnzo",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "One shot is never enough\nI just wait for us to go in circles\nA lifetime of giving my all for you\n(Hostile, give me a break)\n(Don't say it's in the bottle of air)\n\nAt first he would tell me I'm his friend\nActually no thanks, I'm okay\nAnd then he would send weird looks my way\n\nI want new friends, but they don't want me\nThey're making plans while I watch TV\nThought it was you, but maybe it's me\nI want new friends, but they don't want me\n\nAnd the 80s song yeah, how did it go?\nWhen they said, \"This is the beginning of the best years\"\nEven though\nFalse, break\n\nOne shot is never enough\nI just wait for this to go into circles\nAnd the distance from my room, is anything so necessary?\nI was thinking about that thing that you said last night\nSo boring\n\nAnd the 80s bands, oh where did they go?\nCan we switch into the chorus right now?\n\nI want new friends, but they don't want me\nThey have some fun, but then they just leave\nIs it just them, or maybe all me?\nWhy my new friends don't seem to want me\n\nHurts my case but that's okay\nIt hurts my case but that's okay\nWe're dancing on a moonbeam\nOn and on and on and on and on\n\nThe deeper I get, the less that I know\nThat's the way that it goes\nThe less that I know, the deeper I go\nJuliet, I adore\nThe deeper I get, the less that I know\nDiminishing returns\n\nOh that's how it goes\nAll I wanna say\nOh, another song\nOh, another day\nOh, another song\nOh, another day\nOh, another song\nOh, another break"
+    },
+    "loudness": {
+        "lufs_before": -11.67,
+        "gain_db": -4.33
+    },
+    "album": {
+        "name": "The New Abnormal",
+        "year": 2020,
+        "track": 3,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "alignment_quality": {
+        "score": 100.0,
+        "flags": [],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 296,
+            "lines": 45,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}

@@ -1,0 +1,187 @@
+{
+    "meta": {
+        "title": "Under Control",
+        "artist": "The Strokes",
+        "language": "en",
+        "slug": "under-control-the-strokes"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=4895ajU27b0",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "I don't wanna waste your time\nI don't wanna waste your time\nI just want to say, I've got to say\n\nWe worked hard, darling\nWe don't have no control\nWe're under control\nI don't wanna do it your way\nI don't wanna do it your way\nI don't wanna give it to you, your way\nI don't want to know\n\nI don't want to change your mind\nI don't wanna change the world\nI just wanna watch it go by\nI just wanna watch you go by\nWe were young, darling\nWe don't have no control\nWe're out of control\n\nI don't wanna do it your way\nI don't wanna do it your way\nI don't wanna give it to you, your way\nI don't want to know\n\nI don't wanna change your mind\nI don't wanna waste your time\nI just wanna know you're alright\nI've got to know you're alright\nYou are young, darling\nFor now, but not for long\nUnder control"
+    },
+    "loudness": {
+        "lufs_before": -12.28,
+        "gain_db": -3.72
+    },
+    "album": {
+        "name": "Room On Fire",
+        "year": 2003,
+        "track": 8,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "alignment_quality": {
+        "score": 99.6,
+        "flags": [
+            "1% das palavras no silêncio da voz"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            }
+        ],
+        "metrics": {
+            "words": 165,
+            "lines": 28,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 1,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}

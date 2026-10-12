@@ -1,0 +1,303 @@
+{
+    "meta": {
+        "title": "Problematic",
+        "artist": "Get Scared",
+        "language": "en",
+        "slug": "problematic-get-scared"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=EJbiAJbs2ZQ",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "I got a lot to learn\nBut I learn a lot, I'm not concerned\nYou've got a lot of burns\nFrom all this past misuse and\nMiscommunication\nMiss, you kept me waiting\nAnd I'm sha-sh-sh-shaking\nEmotions dislocated\n\nFake apologies (fake apologies)\nCan I just call it quits?\nI can't take all of this\nFighting all of me (fighting all of me)\nI want a second chance\nBut I'm still broken\n\nI'm growing madder by the day\nIt doesn't matter anyway\nOverdramatic and insane\nYou look at me so differently\nOh, me specifically\n'Cause I've got all these little things\nLaughing at each tragedy\n\nFake apologies (fake apologies)\nCan I just call it quits?\nI can't take all of this\nFighting all of me (fighting all of me)\nI want a second chance\nBut I'm still broken\n\nYeah, I would give up everything to know\nJust for a fact it won't come back\nAnd I would give up everything to know\nJust for a fact it won't come back\n\nSo much more\nSo much more\nSo much more\n\nFake apologies (fake apologies)\nCan I just call it quits?\nI can't take all of this\nFighting all of me (fighting all of me)\nI want a second chance\nBut I'm still broken\n\nFake apologies (fake apologies)\nCan I just call it quits?\nI can't take all of this\nFighting all of me, ooh-ooh-oh\nI want a second chance\nBut I'm still broken\n\nAnd I've got a lot to learn\nBut it's okay, I'm not concerned\nNo\nOkay, I'm concerned"
+    },
+    "album": {
+        "name": "Built for Blame, Laced With Shame (EP)",
+        "year": 2012,
+        "track": 2,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -10.81,
+        "gain_db": -5.19
+    },
+    "alignment_quality": {
+        "score": 94.7,
+        "flags": [
+            "palavras empilhadas (17)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 49,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 257,
+            "lines": 50,
+            "stacked": 17,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}

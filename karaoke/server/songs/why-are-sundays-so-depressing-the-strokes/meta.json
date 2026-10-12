@@ -1,0 +1,320 @@
+{
+    "meta": {
+        "title": "Why Are Sundays So Depressing",
+        "artist": "The Strokes",
+        "language": "en",
+        "slug": "why-are-sundays-so-depressing-the-strokes"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=2KSpDNlsVF4",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "I sing a song, I paint a picture\nMy baby's gone, but I don't miss her\nLike a swan, I don't miss swimming\nAll my friends left, and they don't miss me\n\nCan't take it, babe\nYour body talks to me\nLike in a movie, babe\nI let it resonate, yeah\n\nI want your time (time, time)\nDon't ask me questions (questions, questions)\nThat you don't want (want, want)\nThe answers to (to, to)\n\nI love you in the morning, so you know it's no lie\nYou're hidin' in the background but you wanna be found\nYou've got me on my back and now I've gotta think fast\nYou're hidin' in the background but you wanna be found\n\nI take it easy, babe, I\nI get down, it's automatic, uh\nI've come to believin' that\nThat too much time is evil\n\nI transition in\nI'm making your body wait\nLike on an aeroplane\nPlease, baby, take me away, yeah\n\nI want your time (time, time)\nDon't ask me questions (questions, questions)\nThat you don't want (want, want)\nThe answers to (to, to)\n\nI know\nI know\nI know\nI know\n\nI kinda miss the nine to five, yeah\nDo not think that you can hide\nI scramble, fight just like a child\nHey, nah, nah, nah, nah, nah, nah, nah, nah\nI'm stayin' hungry, I'm stayin' hungry\nI'm stayin' hungry, I'm stayin' hungry\nNot gettin' angry, I'm stayin' hungry\nNot gettin' angry, still stayin' hungry\nYeah\n\n(Hold on, hold on, hold)\n(The click was always in you Fab)\n(It was never on)\n(It was never on)"
+    },
+    "loudness": {
+        "lufs_before": -12.22,
+        "gain_db": -3.78
+    },
+    "album": {
+        "name": "The New Abnormal",
+        "year": 2020,
+        "track": 7,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "alignment_quality": {
+        "score": 80.6,
+        "flags": [
+            "palavras empilhadas (33)",
+            "palavras com menos de 80 ms (10)",
+            "palavras depois do fim do verso (7)",
+            "3% das palavras no silêncio da voz",
+            "versos sobrepostos (6)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": [
+                    "no silêncio",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "no silêncio",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            }
+        ],
+        "metrics": {
+            "words": 266,
+            "lines": 45,
+            "stacked": 33,
+            "short": 10,
+            "past_end": 7,
+            "silence": 7,
+            "long_verses": 0,
+            "overlaps": 6
+        }
+    },
+    "needs_review": false
+}

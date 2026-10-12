@@ -1,0 +1,207 @@
+{
+    "meta": {
+        "title": "Wonderwall",
+        "artist": "Oasis",
+        "language": "en",
+        "slug": "wonderwall-oasis"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=bx1Bh8ZvH84",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Today is gonna be the day that they're gonna throw it back to you\r\nAnd by now, you should've somehow realised what you gotta do\r\nI don't believe that anybody feels the way I do about you now\r\n\r\nAnd backbeat, the word is on the street that the fire in your heart is out\r\nI'm sure you've heard it all before, but you never really had a doubt\r\nI don't believe that anybody feels the way I do about you now\r\n\r\nAnd all the roads we have to walk are winding\r\nAnd all the lights that lead us there are blinding\r\nThere are many things that I would like to say to you, but I don't know how\r\n\r\nBecause maybe\r\nYou're gonna be the one that saves me\r\nAnd after all\r\n\r\nYou're my wonderwall\r\n\r\nToday was gonna be the day, but they'll never throw it back to you\r\nAnd by now, you should've somehow realised what you're not to do\r\nI don't believe that anybody feels the way I do about you now\r\n\r\nAnd all the roads that lead you there were winding\r\nAnd all the lights that light the way are blinding\r\nThere are many things that I would like to say to you, but I don't know how\r\n\r\nI said maybe\r\nYou're gonna be the one that saves me\r\n\r\nAnd after all\r\n\r\nYou're my wonderwall\r\n\r\nI said maybe (I said maybe)\r\nYou're gonna be the one that saves me\r\nAnd after all\r\n\r\nYou're my wonderwall\r\n\r\nI said maybe (I said maybe)\r\nYou're gonna be the one that saves me (saves me)\r\nYou're gonna be the one that saves me (saves me)\r\nYou're gonna be the one that saves me (saves me)"
+    },
+    "loudness": {
+        "lufs_before": -15.38,
+        "gain_db": -0.62
+    },
+    "alignment_quality": {
+        "score": 97.5,
+        "flags": [
+            "palavras empilhadas (8)",
+            "0% das palavras no silêncio da voz"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 283,
+            "lines": 31,
+            "stacked": 8,
+            "short": 0,
+            "past_end": 0,
+            "silence": 1,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false,
+    "album": {
+        "name": "(What's The Story) Morning Glory?",
+        "year": 1995,
+        "track": 3,
+        "kind": "album",
+        "source": "itunes"
+    }
+}

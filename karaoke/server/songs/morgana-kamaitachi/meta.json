@@ -1,0 +1,373 @@
+{
+    "meta": {
+        "title": "Morgana",
+        "artist": "Kamaitachi",
+        "language": "pt",
+        "slug": "morgana-kamaitachi"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=4kCsA87jXFk",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Ela vem pra cá pra casa\nMexe nas minhas coisas, fica viajando\nCom meus livros de São Cipriano\nEla é arrogante, ignorante, tolerante, estressante\nFlores mortas que caem\nEm grandes árvores na estação de outono\n\nEla gosta muito desse lance de falar com espíritos\nTem um ponteiro de Ouija pendurado em seu cordão\nOs postergeist nos assombram com copos de vidros\nTodos os teus demônios dormem te dando as mãos\n\nEla é problemática e eu também\nE é por isso que nós dois juntos se dá muito bem\nEla surta e eu também\nA raiva de nós dois juntos\nFaz criar um buraco em Setealém\n\nEla fica linda com esse vestidinho preto\nEsse tênis All Star, essa platinada no cabelo\nAs coisas que ela gosta é Crowley e Marilyn Manson\nTem o inferno de Dante\nEstampado bem no meio dos seus seios\n\nFica linda com esse sorrisinho meigo\nEsse piercing no septo, bracelete de esqueleto\nGosta dos filmes de terror, mas só os que dão medo\nNunca desejaria bons sonhos, sempre será bons pesadelos\n\nFaz suspense como nos filmes do Hitchcock\nTeu olhar tão penetrante faz lembrar de Psicose\nTeu humor é metamorfose, mas teu amor é overdose\nTomei pra livrar do estresse que vem em uma virose\n\nArrebenta a porta do meu coração com um machado\nNão sou bom samaritano, mas eu sou O Iluminado\nOs vizinhos dizem: vocês moram igual Nosferato\nSomos um conto Castlevaniaco nosso castelo ao contrário\n\nEla é problemática e eu também\nE é por isso que nós dois juntos se da muito bem\nEla surta e eu também\nA raiva de nós dois juntos\nFaz criar um buraco em Setealém\n\nEla fica linda com esse vestidinho preto\nEsse tênis All Star, essa platinada no cabelo\nAs coisas que ela gosta é Crowley e Marilyn Manson\nTem o inferno de Dante\nEstampado bem no meio dos seus seios\n\nEla é a imperatriz dos contos de fadas\nSó que as fadas estão enjauladas com tuas asas cortadas\nTodas as rainhas más estão enterradas\nJunto com essas princesas dessa fantasia inventada"
+    },
+    "album": {
+        "name": null,
+        "year": null,
+        "track": null,
+        "kind": "single",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -14.8,
+        "gain_db": -1.2
+    },
+    "alignment_quality": {
+        "score": 57.5,
+        "flags": [
+            "palavras empilhadas (107)",
+            "palavras com menos de 80 ms (16)",
+            "palavras depois do fim do verso (16)",
+            "4% das palavras no silêncio da voz",
+            "versos sobrepostos (13)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "no silêncio",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": [
+                    "no silêncio",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            }
+        ],
+        "metrics": {
+            "words": 344,
+            "lines": 46,
+            "stacked": 107,
+            "short": 16,
+            "past_end": 16,
+            "silence": 15,
+            "long_verses": 0,
+            "overlaps": 13
+        }
+    },
+    "needs_review": true
+}

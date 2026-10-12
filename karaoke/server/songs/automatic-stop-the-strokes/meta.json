@@ -1,0 +1,163 @@
+{
+    "meta": {
+        "title": "Automatic Stop",
+        "artist": "The Strokes",
+        "language": "en",
+        "slug": "automatic-stop-the-strokes"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=wveUjX6KFR8",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "So many fish there in the sea\nI wanted you, you wanted me\nThat's just a phase, it's got to pass\nI was a train moving too fast\n\nDidn't understand what to see\nYeah, then I got a different view\nIt's you, no\n\nWait, I'm not gonna give it a break\nI'm not your friend, I never was\nI said, wait, I'm not gonna give it a break\nI'm not your friend, I never was, no\n\nSo many fish there in the sea\nShe wanted him, he wanted me\nThat's just a phase, it's got to pass\nI was a train moving too fast\n\nYeah, I know you warned me\nBut this is too important\nAnd now I got a different view\nIt's you...\nWhy can't you wait?\nI'm not gonna give it a break\nI'm not your friend, I never was\nI said you, wait, I'm not gonna give it a break\nI'm not your friend, I never was"
+    },
+    "loudness": {
+        "lufs_before": -11.53,
+        "gain_db": -4.47
+    },
+    "alignment_quality": {
+        "score": 100.0,
+        "flags": [],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 160,
+            "lines": 24,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false,
+    "album": {
+        "name": "Room On Fire",
+        "year": 2003,
+        "track": 3,
+        "kind": "album",
+        "source": "itunes"
+    }
+}

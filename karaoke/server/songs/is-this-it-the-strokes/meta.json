@@ -1,0 +1,173 @@
+{
+    "meta": {
+        "title": "Is This It",
+        "artist": "The Strokes",
+        "language": "en",
+        "slug": "is-this-it-the-strokes"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=1t2ioP2tu3E",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Can't you see I'm trying?\nI don't even like it\nI just lied to get to your apartment\nNow, I'm staying there just for a while\nI can't think 'cause I'm just way too tired\n\nIs this it?\nIs this it?\nIs this it?\n\nSaid they'd give you anything you ever wanted\nWhen they lied, I knew it was just stable\nChildren trying hard not to realize\nI was sitting right behind you\n\nDear, can't you see?\nIt's them, it's not me\nWe're not enemies, we just disagree\nIf I was like him, all pissed in this bar\nHe changes his mind, says I went too far\nWe all disagree, I think we should disagree, yeah\n\nIs this it?\nIs this it?\nIs this it?\n\nCan't you see I'm trying?\nI don't even like it\nI just lied to get to your apartment\nNow. I'm staying there just for a while\nI can't think 'cause I'm just way too tired"
+    },
+    "loudness": {
+        "lufs_before": -19.32,
+        "gain_db": 3.32
+    },
+    "alignment_quality": {
+        "score": 100.0,
+        "flags": [],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 160,
+            "lines": 26,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false,
+    "album": {
+        "name": "Is This It",
+        "year": 2001,
+        "track": 1,
+        "kind": "album",
+        "source": "itunes"
+    }
+}

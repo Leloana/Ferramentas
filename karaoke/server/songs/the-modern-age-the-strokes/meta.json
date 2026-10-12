@@ -1,0 +1,218 @@
+{
+    "meta": {
+        "title": "The Modern Age",
+        "artist": "The Strokes",
+        "language": "en",
+        "slug": "the-modern-age-the-strokes"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=Y3J4SAwQ4B0",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Up on a hill is where we begin\nThis little story a long time ago\n\nStart to pretend, stop pretending\nIt seems this game is simply never ending\n\nOh, in the sun, sun, having fun\nIt's in my blood, I just can't help it\nDon't want you here right now, let me go\nOh, let me g-g-g-g-g-g-g-go\n\nLeaving just in time\nStaying for a while\nRolling in the ocean\nTrying to catch her eye\n\nWork hard and say it's easy\nDo it just to please me\nTomorrow will be different\nSo I pretend I'm leavin'\n\nOur fears are different now\nWe train an AVA\nI wish you hadn't stayed\nMy vision's clearer now but I'm unafraid\n\nFlying overseas\nNo time to feel the breeze\nI took too many varieties\n\nOh, in the sunshine having fun\nIt's in my blood, I just can't help it\nDon't want you here right now. let me go, woo\nDarlin', let me g-g-g-g-g-g-go\n\nLeaving just in time\nStaying for a while\nRollin' in the ocean\nTryin' to catch her eye\n\nWork hard and say it's easy\nDo it just to please me\nTomorrow will be different\nSo this is why I'm leavin'"
+    },
+    "loudness": {
+        "lufs_before": -12.79,
+        "gain_db": -3.21
+    },
+    "album": {
+        "name": "Is This It",
+        "year": 2001,
+        "track": 2,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "alignment_quality": {
+        "score": 100.0,
+        "flags": [],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 197,
+            "lines": 35,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}

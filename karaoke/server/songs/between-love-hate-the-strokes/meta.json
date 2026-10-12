@@ -1,0 +1,227 @@
+{
+    "meta": {
+        "title": "Between Love & Hate",
+        "artist": "The Strokes",
+        "language": "en",
+        "slug": "between-love-hate-the-strokes"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=b2A4gJnHsVg",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Watched her as she wiped her eyes\nYou don't make me sorry now I know\nThat you never listened listen\nThinking about that high school dance\nWorrying about the finals\nYes I know\nYou're feeling lonely\nOh lonely, so lonely\nNever needed anybody, I never needed anybody\nI never needed anybody, I never needed nobody\nDon't worry about it, honey\nI never needed anybody\nI never needed anybody, it won't change now\nAm I wrong?\nDon't sing along with me\nI said I was fine\nIt's just the second time\nWe lost the war\nShe'd be in the kitchen\nI would start the fire\nThose days are gone\nBut you know I can't give up give up\nP.S. if I may ask why\nWhen will they get tired\nWe've stayed up\nAll night tryin' tryin'\nNever needed anybody, I never needed nobody\nI never needed anybody, I never needed anybody\nDon't worry about it, honey\nI never needed anybody\nI never needed anybody, it won't change now\nAm I wrong?\nDon't sing along with me\nI said I was fine\nThe second time\nWe lost the war"
+    },
+    "loudness": {
+        "lufs_before": -12.42,
+        "gain_db": -3.58
+    },
+    "album": {
+        "name": "Room On Fire",
+        "year": 2003,
+        "track": 6,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "alignment_quality": {
+        "score": 97.9,
+        "flags": [
+            "palavras empilhadas (5)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 187,
+            "lines": 36,
+            "stacked": 5,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}

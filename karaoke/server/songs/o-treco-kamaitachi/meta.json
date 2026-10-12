@@ -1,0 +1,358 @@
+{
+    "meta": {
+        "title": "O Treco",
+        "artist": "Kamaitachi",
+        "language": "pt",
+        "slug": "o-treco-kamaitachi"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=0R0yi_3CD-8",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "O homem bateu em minha porta, e eu abri\nSenhoras e senhores alertaram desse ser\nSeu chapéu cobria seus olhos fundos\nSeu jeito esquisito era estranho de olhar\nParecia que tinha ratos mortos no bolso\n\nSeu cheiro de carniça era impossível inalar\nNem pé, nem cabeça, traje elegante, um pouco louco\nSua voz me convenceu a convidá-lo a entrar\nTinha lábia e fome, sabia dialogar\nMas não disse seu nomе, parecia familiar\n\nEu vi em seus olhos sortе, com toque mínimo de azar\nE um pouco de morte trazido de outro lugar\nO homem bateu em minha porta e eu abri\n\nSentou com cheiro de inferno nesse meu sofá\nDizia ter o mundo, e nele minha casa\nE com seus dedos mágicos veio a pincelar\n\nTudo que apontava, dançava conforme frevo\nEscadas no teto, eu tombei nesse enfermo\nEscutei a vovó, mesmo partindo faz tempo\nVômitos de sangue\nAcho que engoli um prego\nAcho que engoli um prego\nAcho que engoli um prego\nAcho que engo... (argh)\n\nOlhos do abismo, diga quem és\nPois se tu for trevas, eu cruzo os dedos\nIsso não tem graça, volte pro inferno\nDeixe minha casa, maldito treco\n\nO homem bateu em minha porta e eu abri\nSenhoras e senhores alertaram desse ser\nSeu cheiro de merda tomava minha sala\nSeu jeito esquisito era estranho de encarar\n\nParecia que tinha um inferno no corpo\nOlhava minha sala e resmungava sem parar\nDizia ser Deus, mais, Deus absoluto\nBabava em sua mala e chorava sem parar\nTinha lábia e fome, sabia dialogar\nMas não disse seu nome, parecia familiar\n\nEu vi em seus olhos sorte, com toque máximo de azar\nUm grande grau de morte trazido de outro lugar\nDeus bateu em minha porta e eu abri\n\nTrazendo a cabeça do meu filho de presente\nE ele ainda chorava, como no seu nascimento\nE eu me distanciava e corria do tormento\n\nE tudo que tocava, dançava conforme o frevo\nEscadas no teto, desabei nesse enfermo\nEscutei a vovó, mesmo morta já faz tempo\nVômitos de sangue\n\nAcho que engoli um prego\nAcho que engoli um prego\nAcho que engoli um prego\nAcho que engo... (argh)\n\nOlhos do abismo, diga quem és\nPois se tu for trevas, eu cruzo os dedos\nPara com essa merda maldito inferno\nDeixe minha casa, maldito treco\n\nOlhos do abismo, diga quem és\nPois se tu for trevas, eu cruzo os dedos\nIsso não tem graça, volte pro inferno\nDeixe minha casa, maldito treco"
+    },
+    "album": {
+        "name": null,
+        "year": null,
+        "track": null,
+        "kind": "single",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -14.5,
+        "gain_db": -1.5
+    },
+    "alignment_quality": {
+        "score": 97.5,
+        "flags": [
+            "palavras empilhadas (3)",
+            "palavras com menos de 80 ms (3)",
+            "palavras depois do fim do verso (3)",
+            "versos sobrepostos (2)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 49,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 50,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 51,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 52,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 53,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 54,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 55,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 56,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 57,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 58,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 59,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 413,
+            "lines": 60,
+            "stacked": 3,
+            "short": 3,
+            "past_end": 3,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 2
+        }
+    },
+    "needs_review": false
+}

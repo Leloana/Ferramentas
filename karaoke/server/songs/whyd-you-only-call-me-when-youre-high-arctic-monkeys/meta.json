@@ -1,0 +1,183 @@
+{
+    "meta": {
+        "title": "Why'd You Only Call Me When You're High?",
+        "artist": "Arctic Monkeys",
+        "language": "en",
+        "slug": "whyd-you-only-call-me-when-youre-high-arctic-monkeys"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=VsxlqmSDmBU",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "The mirror's image, it tells me it's home time\nBut I'm not finished, 'cause you're not by my side\nAnd as I arrived I thought I saw you leavin', carryin' your shoes\nDecided that once again I was just dreamin' of bumpin' into you\n\nNow it's three in the mornin' and I'm tryin' to change your mind\nLeft you multiple missed calls and to my message, you reply\n\"Why'd you only call me when you're high?\"\n\"Hi, why'd you only call me when you're high?\"\n\nSomewhere darker, talkin' the same shite\nI need a partner, well, are you out tonight?\nIt's harder and harder to get you to listen\nMore I get through the gears\nIncapable of makin' alright decisions, and havin' bad ideas\n\nNow it's three in the mornin' and I'm tryin' to change your mind\nLeft you multiple missed calls and to my message you reply\n\"Why'd you only call me when you're high?\"\n\"Hi, why'd you only call me when you're high?\"\n\nAnd I can't see you here, wonderin' where am I\nIt sort of feels like I'm runnin' out of time\nI haven't found all I was hopin' to find\nYou said you gotta be up in the mornin'\nGonna have an early night\nAnd you're startin' to bore me, baby\nWhy'd you only call me when you're high?\n\n\"Why'd you only ever phone me when you're high?\"\n\"Why'd you only ever phone me when you're high?\"\n\"Why'd you only ever phone me when you're high?\"\n\"Why'd you only ever phone me when you're high?\""
+    },
+    "loudness": {
+        "lufs_before": -13.01,
+        "gain_db": -2.99
+    },
+    "alignment_quality": {
+        "score": 100.0,
+        "flags": [],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 259,
+            "lines": 28,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false,
+    "album": {
+        "name": "AM",
+        "year": 2013,
+        "track": 9,
+        "kind": "album",
+        "source": "itunes"
+    }
+}

@@ -1,0 +1,173 @@
+{
+    "meta": {
+        "title": "House Of Cards",
+        "artist": "Radiohead",
+        "language": "en",
+        "slug": "house-of-cards-radiohead"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=Nng0aSsq_XE",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "I don't want to be your friend\nI just want to be your lover\nNo matter how it ends\nNo matter how it starts\n\nForget about your house of cards\nAnd I'll do mine\nForget about your house of cards\nAnd I'll do mine\n\nFall off the table\nAnd get swept under\n\nDenial, denial\n\nThe infrastructure will collapse\nFrom voltage spikes\nThrow your keys in the bowl\nKiss your husband goodnight\n\nForget about your house of cards\nAnd I'll do mine\nForget about your house of cards\nAnd I'll do mine\n\nFall off the table\nAnd get swept under\nDenial, denial\nDenial, denial\n(Your ears should be burning)\nDenial, denial\n(Your ears should be burning)"
+    },
+    "loudness": {
+        "lufs_before": -13.03,
+        "gain_db": -2.97
+    },
+    "alignment_quality": {
+        "score": 100.0,
+        "flags": [],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 115,
+            "lines": 26,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false,
+    "album": {
+        "name": "In Rainbows",
+        "year": 2007,
+        "track": 8,
+        "kind": "album",
+        "source": "itunes"
+    }
+}

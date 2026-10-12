@@ -1,0 +1,424 @@
+{
+    "meta": {
+        "title": "Eternal Summer",
+        "artist": "The Strokes",
+        "language": "en",
+        "slug": "eternal-summer-the-strokes"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=5c3EjeP2x-Q",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "This, and I never let it happen\nHey, yeah, oh\nHey, yeah, oh\n\nWhen I think of you\nIt's always on my mind\nIs that story true?\nNo one saves the day (hey, yeah, oh)\n\nDon't you want the truth?\nIgnore reality\nSee, I love that feeling too\nNobody's gonna stop right now (hey, yeah, oh)\n\nSummer is coming, won't go away\nSummer is coming, it's here to stay (hey, yeah, oh)\n\nI can't believe it\nThis is the eleventh hour\nPsychedelic\nLife is such a funny journey\nHercules, your silence is no longer needed\nIt's just like make-believe (hey, yeah, oh)\n\nThey got the remedy\nBut they won't let it happen\nYeah, they got the remedy\nBut they won't let it happen\n(Hey, yeah, oh)\n\nNow that you heard the truth\nAll I need a friendly face\nI hate that feeling too\nBut no one's unafraid (hey, yeah, oh)\n\nDon't expect the truth\nThis is a fantasy\nI fight that feeling too\nBut nobody's gonna stop us now (hey, yeah, oh)\n\nSummer is coming, won't go away\nSummer is coming, it's here to stay (hey, yeah, oh)\nLo and behold the salt of the city\nPillars like time are fading away\nSymphony building up to a future\nMystery to solve for somebody else (hey, yeah, oh)\n\nI can't believe it\nLife is such a funny journey\nPsychedelic\nThis is the eleventh hour\nHercules, your silence is no longer needed\nIt's just like make-believe\n\nThey got the remedy\nBut they won't let it happen\nYeah, they got the remedy\nBut they won't let it happen\n\nEverybody's on the take\nTell me, are you on the take too?\nEverybody's on the take\nTell me, are you on the take too?\n\nHey, yeah, oh\n\nLook up on the bright side\nI'm not gonna give it to ya\nLook at it on the bright side (hey, yeah, oh)\nLook up on the bright side\nI'm not gonna give it to ya\nLook at it on the bright side (hey, yeah, oh)\n\nLook up on the bright side\nI'm not gonna give it to ya\nLook at it on the bright side (hey, yeah, oh)\nLook up on the bright side\nI'm not gonna give it to ya\nLook at it on the bright side (hey, yeah, oh)"
+    },
+    "loudness": {
+        "lufs_before": -11.03,
+        "gain_db": -4.97
+    },
+    "album": {
+        "name": "The New Abnormal",
+        "year": 2020,
+        "track": 5,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "alignment_quality": {
+        "score": 83.5,
+        "flags": [
+            "palavras empilhadas (46)",
+            "11% das palavras no silêncio da voz"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 49,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 50,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 51,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 52,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 53,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 54,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 55,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 56,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 57,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 58,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 59,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 60,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 61,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 62,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 63,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 64,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "no silêncio"
+                ]
+            }
+        ],
+        "metrics": {
+            "words": 384,
+            "lines": 65,
+            "stacked": 46,
+            "short": 0,
+            "past_end": 0,
+            "silence": 44,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}

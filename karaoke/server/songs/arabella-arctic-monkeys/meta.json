@@ -1,0 +1,208 @@
+{
+    "meta": {
+        "title": "Arabella",
+        "artist": "Arctic Monkeys",
+        "language": "en",
+        "slug": "arabella-arctic-monkeys"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=80oOFk5tYps",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Arabella's got some interstellar gator skin boots\nAnd a helter-skelter 'round her little finger, and I ride it endlessly\nShe's got a Barbarella silver swimsuit\nAnd when she needs to shelter from reality, she takes a dip in my daydreams\n\nMy days end best when the sunset gets itself behind\nThat little lady sittin' on the passenger side\nIt's much less picturesque without her catchin' the light\nThe horizon tries, but it's just not as kind on the eyes\nAs Arabella, oh\nAs Arabella\n\nJust might've tapped into your mind and soul\nYou can't be sure\n\nArabella's got a '70s head\nBut she's a modern lover, it's an exploration she's made of outer space\nAnd her lips are like the galaxy's edge\nAnd her kiss the colour of a constellation fallin' into place\n\nMy days end best when the sunset gets itself behind\nThat little lady sittin' on the passenger side\nIt's much less picturesque without her catchin' the light\nThe horizon tries, but it's just not as kind on the eyes\nAs Arabella, oh\nAs Arabella\n\nJust might've tapped into your mind and soul\nYou can't be sure\n\n(That's magic) in a cheetah print coat\n(Just a slip) underneath it, I hope\n(Askin' if) I can have one of those\n(Organic) cigarettes that she smokes\n(Wraps her lips) 'round a Mexican Coke\n(Makes you wish) that you were the bottle\n(Takes a sip) of your soul, and it sounds like\n\nJust might've tapped into your mind and soul\nYou can't be sure"
+    },
+    "loudness": {
+        "lufs_before": -12.88,
+        "gain_db": -3.12
+    },
+    "alignment_quality": {
+        "score": 100.0,
+        "flags": [],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 253,
+            "lines": 33,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false,
+    "album": {
+        "name": "AM",
+        "year": 2013,
+        "track": 4,
+        "kind": "album",
+        "source": "itunes"
+    }
+}

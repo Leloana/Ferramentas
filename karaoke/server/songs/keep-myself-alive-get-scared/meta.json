@@ -1,0 +1,298 @@
+{
+    "meta": {
+        "title": "Keep Myself Alive",
+        "artist": "Get Scared",
+        "language": "en",
+        "slug": "keep-myself-alive-get-scared"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=5PegbGOF9ho",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "I always ask myself\n\"How could this darker cloud make me stronger now?\"\nI always ask myself\n\"When will this go away?\"\n\n\"When will this change?\nOh, I don't wanna, wanna wait\nAll of this pain\nOh, will it, will it go away?\"\nI ask myself this everyday\n\nI just wanna leave this place behind\nEvery time I see your face in mine\nI just wanna leave this place behind\nEvery time I see your face in mine\n\nI sink and drink myself to sleep\nI could just think I'm a lot stronger now\nI gotta catch myself\nTo kick this over, make it go away\n\nWhen will this change?\nNo, I don't wanna, wanna wait\nAll of this pain\nOh, will it, will it go away?\nI broke apart to play the game\n\nI just wanna leave this place behind\nEvery time I see your face in mine\nI just wanna leave this place behind\nEvery time I see your face in mine\n\nSo, what's your inner thought?\nYou left me high, you left me dry\nSo, what's your life look like?\nJust don't fix mine, you're all you've got\n\nNever gazing in my head\nKeeping me alive from my death\nI keep singing, la-la-la-la-la\nI keep singing just to keep myself alive\nAlive, just to keep myself alive\n\nI just wanna leave this place behind\nEvery time I see your face in mine\nI just wanna leave this place behind\nEvery time I see your face in mine\n\nI just wanna leave this place behind\nEvery time I see your face in mine\nI just wanna leave this place behind\nEvery time I see your face in mine\n\nSo, what's your inner thought?\nYou left me high, you left me dry\nSo, what your life looks like?\nJust don't fix mine, you're all you've got\nYou're all you've got\nYou're all you've got"
+    },
+    "album": {
+        "name": "Built for Blame, Laced With Shame (EP)",
+        "year": 2012,
+        "track": 4,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -12.25,
+        "gain_db": -3.75
+    },
+    "alignment_quality": {
+        "score": 95.4,
+        "flags": [
+            "palavras empilhadas (18)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 315,
+            "lines": 49,
+            "stacked": 18,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}

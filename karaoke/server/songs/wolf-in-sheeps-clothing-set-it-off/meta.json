@@ -1,0 +1,322 @@
+{
+    "meta": {
+        "title": "Wolf in Sheep's Clothing",
+        "artist": "Set It Off",
+        "language": "en",
+        "slug": "wolf-in-sheeps-clothing-set-it-off"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=1KBfl-2mvxA",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Beware, beware, be skeptical\nOf their smiles, their smiles of plated gold\nDeceit so natural\nBut a wolf in sheep's clothing is more than a warning\n\nBla-bla-black sheep, have you any soul?\nNo sir, by the way, what the hell are morals\nJack, be nimble, Jack, be quick\nJill's a little whore and her alibis are dirty tricks\n\nSo could you\nTell me how you're sleeping easy\nHow you're only thinking of yourself\nShow me how you justify\nTelling all your lies like second nature\nListen, mark my words, one day\nYou will pay, you will pay\nKarma's gonna come collect your debt\n\nAware, aware, you stalk your prey\nWith criminal mentality\nYou sink your teeth into the people you depend on\nInfecting everyone, you're quite the problem\n\nFeefifofum, you better run and hide\nI smell the blood of a petty little coward\nJack, be lethal, Jack, be slick\nJill will leave you lonely dying in a filthy ditch\n\nSo could you\nTell me how you're sleeping easy\nHow you're only thinking of yourself\nShow me how you justify\nTelling all your lies like second nature\nListen, mark my words, one day\nYou will pay, you will pay\nKarma's gonna come collect your debt\n\nMaybe you'll change\nAbandon all your wicked ways\nMake amends and start anew again\nMaybe you'll see\nAll the wrongs you did to me\nAnd start all over, start all over again\n\nWho am I kidding\nNow, let's not get overzealous here\nYou've always been a huge piece of shit\nIf I could kill you I would\nBut it's frowned upon in all fifty states\nHaving said that, burn in hell\n\nSo tell me how you're sleeping easy\nHow you're only thinking of yourself\nShow me how you justify\nTelling all your lies like second nature\nListen, mark my words, one day\nYou will pay, you will pay\nKarma's gonna come collect your debt\n\nKarma's gonna come collect your debt\nKarma's gonna come collect your debt"
+    },
+    "album": {
+        "name": "Duality",
+        "year": 2014,
+        "track": 8,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -13.36,
+        "gain_db": -2.64
+    },
+    "alignment_quality": {
+        "score": 97.9,
+        "flags": [
+            "palavras empilhadas (5)",
+            "palavras com menos de 80 ms (4)",
+            "palavras depois do fim do verso (3)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 49,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 50,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 51,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 52,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 330,
+            "lines": 53,
+            "stacked": 5,
+            "short": 4,
+            "past_end": 3,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}

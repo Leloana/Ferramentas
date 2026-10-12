@@ -1,0 +1,233 @@
+{
+    "meta": {
+        "title": "Fireside",
+        "artist": "Arctic Monkeys",
+        "language": "en",
+        "slug": "fireside-arctic-monkeys"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=8-LewaeKejM",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "I can't explain but I wanna try\nThere's this image of you and I\nAnd it goes dancin' by\nIn the mornin' and in the night time\n\nThere's all these secrets that I can't keep\nLike in my heart there's that hotel suite\nAnd you lived there so long\nIt's kind of strange now you're gone\n\nI'm not sure if I should\nShow you what I've found\nHas it gone for good\nOr is it comin' back around?\nIsn't it hard to make up your mind\nWhen you're losin'\nAnd your fuse is fireside?\n\nThere's all those places we used to go\nAnd I suspect you already know\nBut that place on Memory Lane you like\nStill looks the same\nBut somethin' about it's changed\n\nI'm not sure if I should\nShow you what I've found\nHas it gone for good\nOr is it comin' back around?\nIsn't it hard to make up your mind\nWhen you're losin'\nAnd your fuse is fireside?\n\nAnd I thought I was yours forever\nOr maybe I was mistaken\nBut I just cannot manage\nTo make it through the day without thinkin' of you lately\n\nI'm not sure if I should\nShow you what I've found\nHas it gone for good\nOr is it comin' back around?\nIsn't it hard to make up your mind\nWhen you're losin'\nAnd your fuse is fireside?"
+    },
+    "loudness": {
+        "lufs_before": -12.47,
+        "gain_db": -3.53
+    },
+    "alignment_quality": {
+        "score": 100.0,
+        "flags": [],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 229,
+            "lines": 38,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false,
+    "album": {
+        "name": "AM",
+        "year": 2013,
+        "track": 8,
+        "kind": "album",
+        "source": "itunes"
+    }
+}

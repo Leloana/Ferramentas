@@ -1,0 +1,226 @@
+{
+    "meta": {
+        "title": "The End Has No End",
+        "artist": "The Strokes",
+        "language": "en",
+        "slug": "the-end-has-no-end-the-strokes"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=HR_Pw_Ew868",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "One by one, ticking time bombs won\nIt's not the secrets of the government\nThat's keeping you dumb\nOh, it's the other way around\nWait, what's that sound?\nOne by one, baby, here they come\nHe wants it easy, he want it relaxed\nSaid I can do a lot of things, but I can't do that\nTwo steps forward, then three steps back\nAlright\n\nWon't you take a walk outside? (Oh no)\n\"Can't you find some other guy? (Oh no)\n1, 9, 6, 9, what's that sound? (Oh no)\nKeeping down the underground\nOh no\n\nThe end has no end, the end has no end\nThe end has no end, the end has no end\n\nHe want it easy, he want it relaxed\nSaid I can do a lot of things, but I can't do that\nTwo steps forward, then three steps back\nIt won't be easy\n\nWon't you take a walk outside? (Oh no)\nCan't you find another guy? (Oh no)\n1, 9, 6, 3, what's that sound? (Oh no)\nKeeping down the underground\nOh no\n\nThe end has no end, the end has no end\nThe end has no end, the end has no end\nThe end has no end, the end has no end\nThe end has no end, the end has no end"
+    },
+    "loudness": {
+        "lufs_before": -12.36,
+        "gain_db": -3.64
+    },
+    "album": {
+        "name": "Room On Fire",
+        "year": 2003,
+        "track": 10,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "alignment_quality": {
+        "score": 80.0,
+        "flags": [
+            "palavras empilhadas (34)",
+            "palavras com menos de 80 ms (10)",
+            "palavras depois do fim do verso (9)",
+            "versos com mais de 12 s (1)",
+            "versos sobrepostos (2)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [
+                    "longo"
+                ]
+            }
+        ],
+        "metrics": {
+            "words": 217,
+            "lines": 30,
+            "stacked": 34,
+            "short": 10,
+            "past_end": 9,
+            "silence": 0,
+            "long_verses": 1,
+            "overlaps": 2
+        }
+    },
+    "needs_review": false
+}

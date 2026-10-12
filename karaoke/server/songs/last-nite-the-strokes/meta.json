@@ -1,0 +1,188 @@
+{
+    "meta": {
+        "title": "Last Nite",
+        "artist": "The Strokes",
+        "language": "en",
+        "slug": "last-nite-the-strokes"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=6rkLF0zxp7E",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Last night she said\n\"Oh, baby, I feel so down\"\n\"Oh, it turn' me off when I feel left out\"\nSo I, I turned 'round\nOh, baby, don't care no more\nI know this for sure, I'm walking out that door\n\nWell, I've been in town for just about fifteen, oh, minutes now\nOh baby, I feel so down, and I don't know why\nI keep walking for miles\n\nAnd see, people, they don't understand\nYour girlfriends, they can't understand\nYour grandsons, they won't understand\nOn top of this, I ain't ever gonna understand\n\nLast night she said\n\"Oh, baby, don't feel so down\"\n\"Oh, it turn' me off when I feel left out\"\nSo I, I turned 'round\nOh, baby, gonna be alright\nIt was a great big lie, 'cause I left that night, yeah\n\nOh, people, they don't understand\nNo, girlfriends, they don't understand\nIn spaceships, they won't understand\nAnd me, I ain't ever gonna understand\n\nLast night she said\n\"Oh, baby, I feel so down\"\n\"See, it turn' me off when I feel left out\"\nSo I, I turned 'round\nOh, little girl, I don't care no more\nI know this for sure, I'm walking out that door, yeah"
+    },
+    "loudness": {
+        "lufs_before": -13.23,
+        "gain_db": -2.77
+    },
+    "alignment_quality": {
+        "score": 100.0,
+        "flags": [],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 202,
+            "lines": 29,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false,
+    "album": {
+        "name": "Is This It",
+        "year": 2001,
+        "track": 7,
+        "kind": "album",
+        "source": "itunes"
+    }
+}

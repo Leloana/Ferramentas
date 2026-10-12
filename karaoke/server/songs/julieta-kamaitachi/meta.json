@@ -1,0 +1,279 @@
+{
+    "meta": {
+        "title": "Julieta",
+        "artist": "Kamaitachi",
+        "language": "pt",
+        "slug": "julieta-kamaitachi"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=qGCq4wrQhSg",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Anda de jeito desleixado\nSua playlist vai de black metal ao clássico\nEu curto Eyeless e ela Can You Feel My Heart\nEu juro a lua e ela coloniza marte\n\nSe apresenta como sentença\nEla faz peças se tornando a Julieta\nDestruo o mundo enquanto ela conserta\nEla protagoniza as fábulas incertas\n\nE acerta bem cheio, no meio\nComo um franco atirador\nA mira travada no peito\nPuxou o gatilho e acertou\n\nTu fala e eu fico sem jeito\nSeu jeito já me deslocou\nTu mostra um sorriso de canto\nPro mundo além desse eu vou\n\nVocê faz eu dar atenção às cores\nMesmo viciada em Mayhem, em Mayhem\nEu juro, tô querendo ver sua peça\nMas ainda não arranjei passagem para o trem\n\nEu vou de bicicleta\nPedalar em direção a sua peça\nPorque assim meu coração fica em festa\nDança conforme você se reinventa\nEnquanto gira o vento do seu amor me leva\n\nFaça eu flutuar, Jasmim\nQue eu toco pra você Os Mutantes\nMostra pra mim que existe a quarta dimensão pra ir\n\nEu sou um morto escolhido\nUpa minha destreza, minha firekeeper\nSabemos que o mundo é nosso\nPois só caminhamos em solo firme\n\nJasmim, me mostra o que tem por aí\nFaça assim: me passa teu número\nClaro, ou sim?\nQue eu te mando o link da minha playlist\nTu faz Julieta, eu lembro Tchaikovsky\n\nJasmim\nUm dia te encontro além dos meus sonhos\nUm dia te encontro além dos meus sonhos\nJasmim\nUm dia te encontro além dos meus sonhos\n\nJasmim\nUm dia te encontro além dos meus sonhos\nJasmim\nUm dia te encontro além dos meus sonhos"
+    },
+    "album": {
+        "name": null,
+        "year": null,
+        "track": null,
+        "kind": "single",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -14.04,
+        "gain_db": -1.96
+    },
+    "alignment_quality": {
+        "score": 98.0,
+        "flags": [
+            "palavras empilhadas (7)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            }
+        ],
+        "metrics": {
+            "words": 274,
+            "lines": 46,
+            "stacked": 7,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}

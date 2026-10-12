@@ -1,0 +1,231 @@
+{
+    "meta": {
+        "title": "Soma",
+        "artist": "The Strokes",
+        "language": "en",
+        "slug": "soma-the-strokes"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=QsaPivEyqAM",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Soma is what they would take when\nHard times opened their eyes\nSaw pain in a new way\nHigh stakes for a few names\nRacing against sunbeams\nLosing against fig dreams\nIn your eyes\n\nAnd I am\nStop\nAnd go\nIn your eyes\nSaid I am\nStop\nAnd go\nIn your eyes\n\nLet's go\n\nWhen I saw her for the first time\nLips moved as her eyes closed\nHeard something in his voice\n\"And I'll be there,\" he says\nThen he walks out\nSomehow he was trying too hard\nTo be like them\n\nWell I am\nStop\nAnd go\nIn your eyes\nAnd I am\nStop\nOh, darling let me go\n\nTried it once and they liked it\nThen tried to hide it\nSays, \"I've been doing this twenty-five years\"\nWell I'm not listening no more\nAnd these friends, they keep asking for more\nOh yeah, oh but that's it"
+    },
+    "album": {
+        "name": "Is This It",
+        "year": 2001,
+        "track": 3,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -12.43,
+        "gain_db": -3.57
+    },
+    "alignment_quality": {
+        "score": 98.4,
+        "flags": [
+            "3% das palavras no silêncio da voz"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 150,
+            "lines": 36,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 4,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}

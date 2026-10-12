@@ -1,0 +1,302 @@
+{
+    "meta": {
+        "title": "The Adults Are Talking",
+        "artist": "The Strokes",
+        "language": "en",
+        "slug": "the-adults-are-talking-the-strokes"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=o4qsjmLxhow",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "They've been saying you're sophisticated\nThey're complaining, overeducated\nYou are saying all the words I'm dreaming\nSay it after me\n\nSay it after me\nThey will blame us, crucify and shame us\nWe can't help it if we are a problem\nWe are tryin' hard to get your attention\nI'm climbin' up your wall\n\nClimbin' up your walls\nAnd don't go there 'cause you'll never return\nI know you think of me when you think of her\nBut then it don't make sense when you're trying hard\nTo do the right thing but without recompense\nThen you did something wrong, and you said it was great\nAnd now you don't know how you could ever complain\nBecause you're all confused, 'cause you want me to\nBut then you want me to do it the same as you\n\nYou were waitin' for the elevator\nYou were sayin' all the words I'm dreaming\nNo more askin' questions or excuses\nInformation's here\n\nHere and everywhere\n\nAnd don't go there 'cause you'll never return\nI know you think of me when you think of her\nBut then it don't make sense when you're trying hard\nTo do the right thing but without recompense\nAnd then you did something wrong, and you said it was great\nAnd now you don't know how you could ever complain\nBecause you're all confused, 'cause you want me to\nBut then you want me to do it the same way as you, but\nI don't, I don't want anything\nI know it's not, it's not your fault\nI don't want anyone\nAs I do, it's not for you\nAh, ah-ah-ah-ah, ah-ah, ooh-ooh\n\nStockholders\n\nSame shit, a different life\nI'll get it right sometime\nOh, maybe not tonight\nOh, maybe not tonight\nOh, maybe not tonight\nOh, maybe not tonight\nOh, maybe not tonight\n\nYeah, boys, here we go\nAnd a one, and a two, and a three\nHere we go, friends (hold on, I can't)\nMaybe that's a kooky situation\nSo let's go back to the old key, old tempo and everything"
+    },
+    "loudness": {
+        "lufs_before": -11.4,
+        "gain_db": -4.6
+    },
+    "album": {
+        "name": "The New Abnormal",
+        "year": 2020,
+        "track": 1,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "alignment_quality": {
+        "score": 96.6,
+        "flags": [
+            "palavras empilhadas (10)",
+            "2% das palavras no silêncio da voz"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 343,
+            "lines": 49,
+            "stacked": 10,
+            "short": 0,
+            "past_end": 0,
+            "silence": 6,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}

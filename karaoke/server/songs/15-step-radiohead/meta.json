@@ -1,0 +1,172 @@
+{
+    "meta": {
+        "title": "15 Step",
+        "artist": "Radiohead",
+        "language": "en",
+        "slug": "15-step-radiohead"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=bgsmr7t8zGE",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "How come I end up where I started?\nHow come I end up where I went wrong?\nWon't take my eyes off the ball again\nYou reel me out then you cut the string\n\nHow come I end up where I started?\nHow come I end up where I went wrong?\nWon't take my eyes off the ball again\nFirst you reel me out and then you cut the string\n\nYou used to be alright\nWhat happened?\nDid the cat get your tongue?\nDid your string come undone?\n\nOne by one\nOne by one\nIt comes to us all\nIt's as soft as your pillow\n\nYou used to be alright\nWhat happened?\nEt cetera, et cetera\nFads for whatever\n15 steps, then a sheer drop\n\nHow come I end up where I started?\nHow come I end up where I went wrong?\nWon't take my eyes off the ball again\nYou reel me out then you cut the string"
+    },
+    "loudness": {
+        "lufs_before": -12.89,
+        "gain_db": -3.11
+    },
+    "alignment_quality": {
+        "score": 98.5,
+        "flags": [
+            "palavras empilhadas (3)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 159,
+            "lines": 25,
+            "stacked": 3,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false,
+    "album": {
+        "name": "In Rainbows",
+        "year": 2007,
+        "track": 1,
+        "kind": "album",
+        "source": "itunes"
+    }
+}

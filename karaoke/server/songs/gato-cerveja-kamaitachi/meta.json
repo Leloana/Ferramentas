@@ -1,0 +1,248 @@
+{
+    "meta": {
+        "title": "Gato Cerveja",
+        "artist": "Kamaitachi",
+        "language": "pt",
+        "slug": "gato-cerveja-kamaitachi"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=GqSjAF41aDU",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Se eu ando por essas ruas me perco\nNão tenho dono nem coleira\nMe acho nas latas dos becos\nMe encontro melhor com os meus\n\nQue anda sem receber nome\nO nome se faz caminhando\nOnde quem não corre se esconde\nOnde a dor tem nome de fome\n\nEu sou um gato brabo\nAmarelo, pelagem de grado\nEu sou um gato brabo\nHumanos me chamam de cerveja\n\nEu sou um gato brabo\nAmarelo, pelagem de grado\nEu sou um gato brabo\nHumanos me chama cerveja\n\nTudo, que eu desejar eu consigo\nNada pra gente é difícil\nEu não me contento com pouco (an, an)\nEu tô longe de aceitar isso\n\nRevirando a sacola de lixo\nA noite é o dia dos bichos\nEu sou o rei desse covil\n(Todos me conhecem como um)\n\nGato mal e brabo\nAmarelo, pelagem de grado\nEu sou um gato brabo\nHumanos me chamam de cerveja\n\nEu sou um gato brabo\nAmarelo, pelagem de grado\nEu sou um gato brabo\nHumanos me chamam de cerveja\nHumanos me chamam de cerveja\n\nEu sou um gato brabo\nAmarelo, pelagem de grado\nEu sou um gato brabo\nHumanos me chamam de cerveja\n\nEu sou um gato brabo\nAmarelo, pelagem de grado\nEu sou um gato brabo\nHumanos me chamam de cerveja"
+    },
+    "album": {
+        "name": null,
+        "year": null,
+        "track": null,
+        "kind": "single",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -16.77,
+        "gain_db": 0.77
+    },
+    "alignment_quality": {
+        "score": 100.0,
+        "flags": [],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 213,
+            "lines": 41,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}

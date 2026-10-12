@@ -1,0 +1,158 @@
+{
+    "meta": {
+        "title": "Selfless",
+        "artist": "The Strokes",
+        "language": "en",
+        "slug": "selfless-the-strokes"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=1-W6whvn8Bs",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Can the dark side light my way? Oh, yeah, yeah\nLay your hand across my face, yeah, yeah\nTime we lost, that's all my fault\n\nPlease don't be long, 'cause I want your love\nI don't have love without your arm\nLife is too short, but I will live for you\n\nHow did this fit in your story? Yeah\nWhy'd you let them judge your body? Yeah\nI'll be waitin' there outside, yeah\n\nPlease don't be long, 'cause I want your arm\nI don't have fun without your love\nLife is too short, but I will live for you\nYou're mucking off, but I will live for you, my selfless love\n\nBite my tongue and wait my turn\nI waited for a century\nWaste my breath, no lessons learned\nI turn and face the enemy\nI'm not scared, just don't care\nI'm not listening, you hear?\nHe's never dead, but I don't care\nI can't tell you what and where\n\nYeah\nYeah"
+    },
+    "loudness": {
+        "lufs_before": -11.46,
+        "gain_db": -4.54
+    },
+    "album": {
+        "name": "The New Abnormal",
+        "year": 2020,
+        "track": 2,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "alignment_quality": {
+        "score": 100.0,
+        "flags": [],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 162,
+            "lines": 23,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}

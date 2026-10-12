@@ -1,0 +1,270 @@
+{
+    "meta": {
+        "title": "Built For Blame",
+        "artist": "Get Scared",
+        "language": "en",
+        "slug": "built-for-blame-get-scared"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=GKsQ6NmH554",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Eyes can only see what they want\nWhen they're open-minded to the thought\nOf getting hurt again\nBeaten to the bone\nWith the thought of all your worst events\n\nYou said just look\nYou just look, don't touch\nOh, you think you know\nIt's exactly what you want for love, love\n\nYour heart without a key and just a lock to bleed\nThis wreck you've made, it's all you'll need\n\nThis is what it takes to breathe (we're getting up again)\nThis is what it takes to fake a smile and say\nThat everything's okay\nAs long as I take blame\n\nPicture perfect down the drain again and again\nI'm really tired of these stupid little people\nKnocking you to the ground\nYou would've never found the mess you made\nI hope it's worth all of the shame\n\nThis is what it takes to breathe (we're getting up again)\nThis is what it takes to fake a smile and say\nThat everything's okay\nAs long as I take blame\n\nWe sit inside our heads\n'Cause this is such a curse!\nWe sit inside our heads\n'Cause nothing ever worked\nNothing ever works\n\n'Cause what if this doesn't work?\nWe sit inside our heads! (Ok?)\nThis is such a curse!\nAnd it never ever worked!\n\nThis is what it takes to breathe\nThis is what it takes to fake a smile and say\nThat everything's okay\nAs long as I take blame\n\nThis is what it takes to breathe (we're getting up again)\nThis is what it takes to fake a smile and say\nThat everything's okay\nAs long as I take blame\n\nGuess I'm the one to blame"
+    },
+    "album": {
+        "name": "Built for Blame, Laced With Shame (EP)",
+        "year": 2012,
+        "track": 1,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -11.72,
+        "gain_db": -4.28
+    },
+    "alignment_quality": {
+        "score": 89.8,
+        "flags": [
+            "palavras empilhadas (34)",
+            "1% das palavras no silêncio da voz"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 278,
+            "lines": 42,
+            "stacked": 34,
+            "short": 0,
+            "past_end": 0,
+            "silence": 2,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}

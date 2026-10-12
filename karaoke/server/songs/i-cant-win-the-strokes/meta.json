@@ -1,0 +1,224 @@
+{
+    "meta": {
+        "title": "I Can't Win",
+        "artist": "The Strokes",
+        "language": "en",
+        "slug": "i-cant-win-the-strokes"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=LPNGT5BE6RU",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "That was you up on the mountain\nAll alone and all surrounded\nWalking on the ground you're breaking\nLaughing at the life you're wasting\nOne, two tries won't do it\nYou do it all your life and you never get through it\nEverything they had to say\nHad been erased in just one day\n\nGood try\nWe don't like it\nGood try\nWe won't take that shit\nOh, I can't win\n\nThings in bars that people do\nWhen no one wants to talk to you\nFailing can be quite a breeze\nHe told me that these girls were easy\nHappy that you said you'd mount me\nFelt unlucky when you found me\nSome nights come up empty handed\nYes, I'll take it\n\nWait now\nBy the sidewalk\nHold on\nYes, I'll be right back\nOh, I can't win\n\nYeah, I\nWait for something\nCool it\nWe won't take that shit\nGood try\nWe don't like it\nHold on\nYes, I'll be right back"
+    },
+    "loudness": {
+        "lufs_before": -11.17,
+        "gain_db": -4.83
+    },
+    "album": {
+        "name": "Room On Fire",
+        "year": 2003,
+        "track": 11,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "alignment_quality": {
+        "score": 98.8,
+        "flags": [
+            "palavras com menos de 80 ms (3)",
+            "palavras depois do fim do verso (2)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 163,
+            "lines": 34,
+            "stacked": 0,
+            "short": 3,
+            "past_end": 2,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}

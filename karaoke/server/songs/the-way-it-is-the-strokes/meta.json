@@ -1,0 +1,199 @@
+{
+    "meta": {
+        "title": "The Way It Is",
+        "artist": "The Strokes",
+        "language": "en",
+        "slug": "the-way-it-is-the-strokes"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=Kj1a7WQta4w",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "She was still sleeping\nThe problem will stay\nOne more day\nSaid she's not sorry\nThe wind blows her way\nAccidents happen\nThere's one planned today\nOh, you see\n\nI wish it was not true\nBut that's the way it is\nIt's not your fault\nThat's the way it is\nI'm sick of you\nAnd that's the way it is\nAnd will always be\n\nWednesday is over\nIt's over again\nSaid my goodbyes\nTo the life we won't spend\nTogether\n\nI wish it was not true\nBut that's the way it is\nIt's not your fault\nThat's the way it is\nI'm sick of you\nAnd that's the way it is\n\nBut that's not your problem\nThat's not a problem\nThat's not my problem\nThat's not your problem"
+    },
+    "album": {
+        "name": "Room On Fire",
+        "year": 2003,
+        "track": 9,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -11.07,
+        "gain_db": -4.93
+    },
+    "alignment_quality": {
+        "score": 99.4,
+        "flags": [
+            "palavras com menos de 80 ms (1)",
+            "palavras depois do fim do verso (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 128,
+            "lines": 30,
+            "stacked": 0,
+            "short": 1,
+            "past_end": 1,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}

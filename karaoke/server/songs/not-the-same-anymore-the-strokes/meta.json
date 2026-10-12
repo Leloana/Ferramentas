@@ -1,0 +1,237 @@
+{
+    "meta": {
+        "title": "Not The Same Anymore",
+        "artist": "The Strokes",
+        "language": "en",
+        "slug": "not-the-same-anymore-the-strokes"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=EzrlnUiOMhc",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "You're not the same anymore\nDon't wanna play that game anymore\nYou'd make a better window than a door\n\nAll the strangers, they implore\nThey get so easy to ignore\nJust like the girl next door\n\nUncle's house, it was noon\nSorry boy, I can't implore ya\nYou are strange but I like you\nSorry, this is overdue\nI promised I would do it right\nHer and a boy on a Saturday night\n\nAnd now the door slams shut\nThe child prisoner grows up\nTo seek his enemies' throat cut\nI'm on and on it, on and on and on it\n\nWe're on the way, fuel the jet\nCan see that what he wants, he gets\nWhat does your sworn enemy regret?\n\nI didn't know, I didn't care\nI don't even understand\nDid somethin' wrong, I wasn't sure\nStay on top of this horse\nI was afraid, I fucked up\nYeah, yeah, yeah\nI couldn't change, it's too late\n\nAnd now it's time to show up\nI'm late again, I can't grow up\nAnd now it's on me, they've given up\n\nUncle's house, I forget\nViolent tendencies I give\nYour timing sucks, she went overboard\nDon't forget, you are insured\nI didn't know, I wasn't sure\nCan't remember all that well\nI couldn't change, was too late\nYeah, yeah, yeah"
+    },
+    "loudness": {
+        "lufs_before": -11.07,
+        "gain_db": -4.93
+    },
+    "album": {
+        "name": "The New Abnormal",
+        "year": 2020,
+        "track": 8,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "alignment_quality": {
+        "score": 97.5,
+        "flags": [
+            "palavras empilhadas (6)",
+            "0% das palavras no silêncio da voz"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            }
+        ],
+        "metrics": {
+            "words": 220,
+            "lines": 37,
+            "stacked": 6,
+            "short": 0,
+            "past_end": 0,
+            "silence": 1,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}

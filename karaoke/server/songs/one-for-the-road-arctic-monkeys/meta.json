@@ -1,0 +1,269 @@
+{
+    "meta": {
+        "title": "One For The Road",
+        "artist": "Arctic Monkeys",
+        "language": "en",
+        "slug": "one-for-the-road-arctic-monkeys"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=C4qJ4y-rDgs",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "One for the road, ooh-ooh\nOne for the road, ooh-ooh\n\nFrom the bottom of your heart, the relegation zone\nI saw this coming from the start\nThe shake, rattle and roll\nAll the cracks in blackout blinds cast patterns on the ceiling\nBut you're feeling fine\nI thought it was dark outside\nI thought it was dark outside\n\n(One for the road)\nSo we all get back to yours and you sit and talk to me on the floor\nThere's no need to show me 'round, baby\nI feel like I've been here before\nI've been wonderin' whether later, when you tell everybody to go\nWill you pour me one for the road?\n\nI knew this would be on the cards\nI knew you wouldn't fold\nI saw this comin' from the start\nThe shake, rattle and roll\n\n(One for the road)\nSo we all get back to yours and you sit and talk to me on the floor\nThere's no need to show me 'round, baby\nI feel like I've been here before\nI've been wonderin' whether later, when you tell everybody to go\nWill you pour me one for the road?\n\nThe mixture hits you hard\nDon't get that sinking feeling, don't fall apart\nSome out of tune guitar\nSoundtrack to disaster\n\nOoh-ooh, one for the road\nOoh-ooh, one for the road\nOoh-ooh, one for the road\nOoh-ooh, one for the road\nOoh-ooh\nOoh-ooh\nOoh-ooh\nOoh-ooh\n\n(One for the road)\nSo we all get back to yours and you sit and talk to me on the floor\nThere's no need to show me 'round, baby\nI feel like I've been here before\nI've been wonderin' whether later, when you tell everybody to go\nWill you pour me one for the road?"
+    },
+    "loudness": {
+        "lufs_before": -13.21,
+        "gain_db": -2.79
+    },
+    "alignment_quality": {
+        "score": 99.4,
+        "flags": [
+            "palavras com menos de 80 ms (3)",
+            "0% das palavras no silêncio da voz"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 293,
+            "lines": 43,
+            "stacked": 0,
+            "short": 3,
+            "past_end": 0,
+            "silence": 1,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false,
+    "album": {
+        "name": "AM",
+        "year": 2013,
+        "track": 3,
+        "kind": "album",
+        "source": "itunes"
+    }
+}

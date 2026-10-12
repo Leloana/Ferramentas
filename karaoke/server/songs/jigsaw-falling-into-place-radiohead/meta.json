@@ -1,0 +1,264 @@
+{
+    "meta": {
+        "title": "Jigsaw Falling Into Place",
+        "artist": "Radiohead",
+        "language": "en",
+        "slug": "jigsaw-falling-into-place-radiohead"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=CvjRlYpXS5U",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Just as you take my hand\nJust as you write my number down\nJust as the drinks arrive\nJust as they play your favorite song\nAs your blather disappears\nNo longer wound up like a spring\nBefore you've had too much\nCome back in focus again\nThe walls are bending shape\nThey got a cheshire cat grin\nAll blurring into one\nThis place is on a mission\nBefore the night owl\nBefore the animal noises\nClosed circuit cameras\nBefore you're comatose\nBefore you run away from me\nBefore you're lost between the notes\nThe beat goes round and round\nThe beat goes round and round\nI never really got there\nI just pretended that I had\nWords are blunt instruments\nWords are sawed off shotguns\nCome on and let it out\nCome on and let it out\nCome on and let it out\nCome on and let it out\nBefore you run away from me\nBefore you're lost between the notes\nJust as you take the mic\nJust as you dance, dance, dance\nJigsaw falling into place\nSo there is nothing to explain\nRegard each other as you pass\nShe looks back, you look back\nNot just once\nNot just twice\nWish away nightmare\nWish away nightmare\nYou got a light you can feel it on your back\nA light you can feel it on your back\nJigsaw falling into place"
+    },
+    "loudness": {
+        "lufs_before": -13.09,
+        "gain_db": -2.91
+    },
+    "alignment_quality": {
+        "score": 97.2,
+        "flags": [
+            "palavras empilhadas (8)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 231,
+            "lines": 43,
+            "stacked": 8,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false,
+    "album": {
+        "name": "In Rainbows",
+        "year": 2007,
+        "track": 9,
+        "kind": "album",
+        "source": "itunes"
+    }
+}

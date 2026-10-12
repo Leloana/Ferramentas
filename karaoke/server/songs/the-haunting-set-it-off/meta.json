@@ -1,0 +1,287 @@
+{
+    "meta": {
+        "title": "The Haunting",
+        "artist": "Set It Off",
+        "language": "en",
+        "slug": "the-haunting-set-it-off"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=4U3urg6-6R8",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "\"Come on in, boy\" said the skeletons\nSitting by her closet door\nDirty secrets, empty memories\nAnd broken hearts across the floor\nI was knocked out, heels over head\nSo you dragged me by my feet\nTo a ghost town, where you buried me\nNo wonder no one heard my screams\n\nLove's so alive, but it died in it's sleep\nAnd now that it's dead\nI live in your head\nAnd I will haunt your fucking dreams\n\nNo one will love you like I did\nWill treat you like I did\nSo go on, wear that scarlet letter\nNo one will love you like I did\nWill touch you like I did\nSo good luck finding something better\n\nRun away, boy, if you couldn't tell\nBaby's got a thirst for blood\nA subtle system, wicked melodies\nCraving bullets from her gun\nSo I tripped, stayed, follow every word\nLittle spirals in their eyes\nCatch a lover, turn an enemy\nJust to watch them burn alive\n\nNo one will love you like I did\nWill treat you like I did\nSo go on, wear that scarlet letter\nNo one will love you like I did\nWill touch you like I did\nSo good luck finding something better\n\nSomeday you may find that picture perfect guy\nAnd I'll chase my words with poison\nUntil that day arrives, and swine take to the sky\nFill your void with open thighs so\n\nNo one will love you like I did\nWill treat you like I did\nSo go on, wear that scarlet letter\nNo one will love you like I did\nWill touch you like I did\nSo good luck finding something better\n\nNo one will love you like I did\nWill treat you like I did\nSo go on, wear that scarlet letter\nNo one will love you like I did\nWill fuck you like I did\nSo good luck finding something better"
+    },
+    "album": {
+        "name": "Duality",
+        "year": 2014,
+        "track": 1,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -11.63,
+        "gain_db": -4.37
+    },
+    "alignment_quality": {
+        "score": 99.9,
+        "flags": [
+            "palavras com menos de 80 ms (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 320,
+            "lines": 48,
+            "stacked": 0,
+            "short": 1,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}

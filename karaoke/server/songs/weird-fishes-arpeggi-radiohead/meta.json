@@ -1,0 +1,203 @@
+{
+    "meta": {
+        "title": "Weird Fishes / Arpeggi",
+        "artist": "Radiohead",
+        "language": "en",
+        "slug": "weird-fishes-arpeggi-radiohead"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=LUjGtyYEi90",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "In the deepest ocean\nThe bottom of the sea\nYour eyes\nThey turn me\n\nWhy should I stay here?\nWhy should I stay?\n\nI'd be crazy not to follow\nFollow where you lead\nYour eyes\nThey turn me\nTurn me into phantoms\nI follow to the edge\nOf the earth\nAnd fall off\n\nYeah, everybody leaves\nIf they get the chance\nAnd this...\nIs my chance\n\nI get eaten by the worms\nAnd weird fishes\nPicked over by the worms\nAnd weird fishes\n\nWeird fishes\nWeird fishes\n\nYeah I, I'll hit the bottom\nHit the bottom and escape\nEscape\n\nI, I hit the bottom\nHit the bottom and escape\nEscape"
+    },
+    "loudness": {
+        "lufs_before": -12.24,
+        "gain_db": -3.76
+    },
+    "alignment_quality": {
+        "score": 95.4,
+        "flags": [
+            "5% das palavras no silêncio da voz",
+            "versos com mais de 12 s (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [
+                    "longo",
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 110,
+            "lines": 30,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 6,
+            "long_verses": 1,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false,
+    "album": {
+        "name": "In Rainbows",
+        "year": 2007,
+        "track": 4,
+        "kind": "album",
+        "source": "itunes"
+    }
+}

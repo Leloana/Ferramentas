@@ -1,0 +1,257 @@
+{
+    "meta": {
+        "title": "Ode To The Mets",
+        "artist": "The Strokes",
+        "language": "en",
+        "slug": "ode-to-the-mets-the-strokes"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=LNq4xox99HY",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Up on his horse, up on his horse\nNot gonna wake up here anymore\nListen one time, it's not the truth\nIt's just the story I tell to you\n\nEasy to say, easy to do\nBut it's not easy, well maybe for you\nHope that you find it, hope that it's good\nHope that you read it, think that you should\n\nCuts you some slack as he sits back\nSizes you up, plans his attack\nDrums please, Fab\n\nAnd I got it all, I got it all\nWaitin' for me down on the street\nBut now you gotta do somethin' special for me\nI'm gonna say what's on my mind\nThen I'll walk out, then I'll feel fine\n\nYeah, I'm under his thumb, I'm on his back\nI will not show my teeth too quick\nI needed you there, I needed you there\nBut I didn't know, I didn't know\n\nBack from his trip, he's at the door\nWhen he gets back, he's on the phone\nInnocent eye, innocent heart\nNo, it's not wrong, but it's not right\n\nInnocent time, out on his own\nNot gonna do that, fuck, I'm out of control\nI was just bored, playin' the guitar\nLearned all your tricks, wasn't too hard\n\nIt's the last one now, I can promise you that\nI'm gonna find out the truth when I get back\n\nGone now are the old times\nForgotten, time to hold on the railing\nThe Rubik's Cube isn't solving for us\nOld friends, long forgotten\nThey all wait at the bottom of\nThe ocean now has swallowed\n\nThe only thing that's left is us\nSo pardon the silence that you're hearing\nIs turnin' into a deafening\nPainful, shameful roar"
+    },
+    "loudness": {
+        "lufs_before": -12.76,
+        "gain_db": -3.24
+    },
+    "album": {
+        "name": "The New Abnormal",
+        "year": 2020,
+        "track": 9,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "alignment_quality": {
+        "score": 96.9,
+        "flags": [
+            "palavras empilhadas (9)",
+            "palavras com menos de 80 ms (2)",
+            "palavras depois do fim do verso (2)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 285,
+            "lines": 40,
+            "stacked": 9,
+            "short": 2,
+            "past_end": 2,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0
+        }
+    },
+    "needs_review": false
+}

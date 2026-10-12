@@ -1,0 +1,317 @@
+{
+    "meta": {
+        "title": "Don't You Dare Forget The Sun",
+        "artist": "Get Scared",
+        "language": "en",
+        "slug": "dont-you-dare-forget-the-sun-get-scared"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=BV3LMSMz9WI",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "You're a mess, tangled with your confidence\nYou think you haven't sinned\nWell, you're unstoppable\nYour walls are impassible\n\nOh, I think you're better off looking alone\n'Cause the boys that chase your hips can just go find their way home\nAnd at the end of the day you think to yourself\n\"My body is a product being sold on a shelf\"\nTell me I can change\nTell me I can change\n\nWell, I know you lay in bed\nContemplating your own death\nWell, just look at what you've done\nDon't you dare forget the sun, love\n\nDon't forget\n\nCold white walls, keep you from your pad and pen\nYou just wanna stab again\nI can't believe it's half this hard\nYou never knew your mind was dark, no\n\nWell, I think you're better off looking alone\n'Cause the boys that chase your hips can just go find their way home\nYou can dig so deep for scars\nYou never knew your mind was dark\nCome on and breathe with me, oh\nBreathe with me, oh\n\nWell, I know you lay in bed\nContemplating your own death\nWell, just look at what you've done\nDon't you dare forget the sun, love\n\nYou look down on me so casually\nIn everything I know\nYou look down on me, but not right on me\nDid I wreck this broken home?\n\nDear diary\nLife is trying me\nCan I get a sign?\nOr a two of mine, a piece of mind\nOh, can I get a sign? (A sign)\nCan I get a sign? (I know)\n\nWell, I know you lay in bed (in bed)\nContemplating your own death\nWell, just look at what you've done\nDon't you dare forget the sun, love!\n\nYou look down on me, so casually\nIn everything I know\nYou look down on me, but not right on me\nIs it plain to see, that life is trying me?\n\nOh, life is trying me\nLife is trying\nCan I think of something?\nGotta think of something!"
+    },
+    "album": {
+        "name": "Built for Blame, Laced With Shame (EP)",
+        "year": 2012,
+        "track": 6,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -10.52,
+        "gain_db": -5.48
+    },
+    "alignment_quality": {
+        "score": 94.5,
+        "flags": [
+            "palavras empilhadas (14)",
+            "palavras com menos de 80 ms (3)",
+            "palavras depois do fim do verso (2)",
+            "versos sobrepostos (2)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 49,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 50,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 338,
+            "lines": 51,
+            "stacked": 14,
+            "short": 3,
+            "past_end": 2,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 2
+        }
+    },
+    "needs_review": false
+}

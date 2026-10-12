@@ -1,0 +1,344 @@
+{
+    "meta": {
+        "title": "Freak Show",
+        "artist": "Set It Off",
+        "language": "en",
+        "slug": "freak-show-set-it-off"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=KFVNo3Hhh8o",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "I am a circus freak\nCaught in a cage, caught in a cage\nStaring without a blink\nSwallow me whole, swallow me whole\n\nI am a circus freak\nCut out my heart, cut out my heart\nLoveless and watch me bleed\nTear me apart, tear me apart\nYeah!\n\nI've lost myself in make-believe\nI don't wanna go, I don't wanna go, make me\nOver and over I've deceived\nI don't wanna go, I don't want to go\nYou want reform? I can't conform\n'Cause I can't take anymore of your tainted bliss cause\nI've lost myself in make-believe\nYou can't break me\n\nI am a circus freak\nSo many scars, so many scars\nI'm just the common creep\nSomething to watch, something to watch\nOh, you know you can't break me\n\nI've lost myself in make-believe\nI don't wanna go, I don't wanna go, make me\nOver and over I've deceived\nI don't wanna go, I don't want to go\nYou want reform? I can't conform\n'Cause I can't take anymore of your tainted bliss cause\nI've lost myself in make-believe\nYou can't break me\n\n\"Come one, come all!\nStep right up for the one, the lonely\nCircus freak!\"\n\nYou'll never break me\nYou'll never change me, no\nLa, da, da, da, da\nLa, da, da, da\n\nYou'll never break me\nYou'll never change me, no\nLa, da, da, da, da\nLa, da, da da\n\nI've waited 10 long years just to look in the mirror\nAnd to find just what I'm staring at\nI've waited 10 long years just to tell you I'm fearless\nYou don't understand, I've become who I am!\nOh!\nYou know you can't break me\n\nI've lost myself in make-believe\nI don't wanna go, I don't wanna go, make me\nOver and over I've deceived\nI don't wanna go, I don't wanna go\nYou want reform? I can't conform\n'Cause I can't take anymore of your tainted bliss cause\nI've lost myself in make-believe\nYou can't break me"
+    },
+    "album": {
+        "name": "Cinematics",
+        "year": 2012,
+        "track": 8,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -12.2,
+        "gain_db": -3.8
+    },
+    "alignment_quality": {
+        "score": 94.1,
+        "flags": [
+            "palavras empilhadas (8)",
+            "palavras com menos de 80 ms (5)",
+            "palavras depois do fim do verso (4)",
+            "versos sobrepostos (4)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 49,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 50,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 51,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 52,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 53,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 54,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 333,
+            "lines": 55,
+            "stacked": 8,
+            "short": 5,
+            "past_end": 4,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 4
+        }
+    },
+    "needs_review": false
+}

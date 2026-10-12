@@ -1,0 +1,414 @@
+{
+    "meta": {
+        "title": "Killer In The Mirror",
+        "artist": "Set It Off",
+        "language": "en",
+        "slug": "killer-in-the-mirror-set-it-off"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=oniytGOUi3c",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Look out, they're closing in on you now\nWake up, or you'll wake up six feet down\nNobody's got your back in this town\nKnock 'em in the teeth now\n\nOut here, there's no negotiation\nNo room to start a conversation\nBefore you get a taste, it's taken\nNever let your guard down\n\nGet back, put your hands up, kinda messed up, but it's tough luck\nAnd I'm sorry, but I don't feel bad for you\n'Cause I know if you could switch this\nYou'd be dishing out the same shit\nSaying sorry, but I don't feel bad\n\nNow I know there's no one I can trust\nI used to think there was\nTell me that I'm cutthroat\nI think you got your eyes closed\n\nFeel the fear and swallow back the tears\nLet weakness disappear\nThere's nobody but me here\nThe killer in the mirror\n\nKiller in the, killer in the, killer in the mirror\nKiller in the, killer in the, killer in the mirror\n\nWhere did all of the good people go?\nThey hide behind the bars on windows\nIn hopes they can forget we're close\nTryna get some of what they've got\n\n'Cause I used to believe in justice\nA place where there was better judgment\nBut now I'm feeling so disgusted\nBy the \"have its\" and the \"have nots\"\n\nGet back, put your hands up, kinda messed up, but it's tough luck\nAnd I'm sorry, but I don't feel bad for you\n'Cause I know if you could switch this\nYou'd be dishing out the same shit\nSaying sorry, but I don't feel bad\n\nNow I know there's no one I can trust\nI used to think there was\nTell me that I'm cutthroat\nI think you got your eyes closed\n\nFeel the fear and swallow back the tears\nLet weakness disappear\nThere's nobody but me here\nThe killer in the mirror\n\nKiller in the, killer in the, killer in the mirror\nKiller in the, killer in the, killer in the mirror\n\nKnock 'em in the teeth now\nNever let your guard down\nGet some of what they've got\n\"Have its\" and the \"have nots\"\nKnock 'em in the teeth now\nNever let your guard down\nWhen they step in your house\nKnock, knock, knock, knock 'em all the fuck out\n\nNow I know there's no one I can trust\nI used to think there was\nTell me that I'm cutthroat (yeah, tell me that I'm cutthroat)\nI think you got your eyes closed (I think you got your eyes closed)\n\nFeel the fear and swallow back the tears\nLet weakness disappear\nThere's nobody but me here\nThe killer in the mirror\n\nKiller in the, killer in the, killer in the mirror (killer in the mirror)\nKiller in the, killer in the, killer in the mirror (kill, oh yeah)\n\nFeel the fear and swallow back the tears\nLet weakness disappear\nThere's nobody but me here\nThe killer in the mirror\n\nKiller in the, killer in the, killer in the mirror\nKiller in the, killer in the, killer in the mirror"
+    },
+    "album": {
+        "name": "Midnight",
+        "year": 2018,
+        "track": 1,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -13.9,
+        "gain_db": -2.1
+    },
+    "alignment_quality": {
+        "score": 94.0,
+        "flags": [
+            "palavras empilhadas (30)",
+            "palavras com menos de 80 ms (1)",
+            "palavras depois do fim do verso (1)",
+            "versos sobrepostos (2)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 49,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 50,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 51,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 52,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 53,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 54,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 55,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 56,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 57,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 58,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 59,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 60,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 61,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 62,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 63,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 64,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 65,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 66,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 67,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 68,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 69,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 514,
+            "lines": 70,
+            "stacked": 30,
+            "short": 1,
+            "past_end": 1,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 2
+        }
+    },
+    "needs_review": false
+}
