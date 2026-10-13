@@ -27,6 +27,13 @@ NEGATIVO_PADRAO = (
     "pc game, console game, video game, cartoon, childish, ugly, "
     "voiceover, narration, narrator reading, spoken text, person talking, speech, subtitles"
 )
+# Negativo oficial do Wan (em chines, como o modelo foi treinado). Com os LoRAs
+# de 4 passos o CFG fica em 1 e ele quase nao pesa, mas nao atrapalha.
+NEGATIVO_WAN = (
+    "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，"
+    "JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，"
+    "形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走"
+)
 
 
 def arredondar_32(valor: int) -> int:
@@ -86,7 +93,35 @@ def enviar_imagem(host: str, caminho_imagem: Path) -> str:
     return info["name"]
 
 
+def dimensoes_wan(imagem: Path, max_lado: int) -> tuple[int, int]:
+    """Mantem a proporcao da imagem, lado maior = max_lado, multiplos de 16."""
+    from PIL import Image
+
+    with Image.open(imagem) as img:
+        w, h = img.size
+    escala = max_lado / max(w, h)
+    return max(16, round(w * escala / 16) * 16), max(16, round(h * escala / 16) * 16)
+
+
+def montar_workflow_wan22(args) -> dict:
+    workflow = json.loads((WORKFLOWS_DIR / "wan22_i2v.json").read_text(encoding="utf-8"))
+    largura, altura = dimensoes_wan(args.imagem, args.max_lado)
+    # Wan gera 4k+1 frames
+    frames = (max(args.frames, 5) - 1) // 4 * 4 + 1
+
+    workflow["8"]["inputs"]["text"] = args.prompt
+    workflow["9"]["inputs"]["text"] = args.negativo or NEGATIVO_WAN
+    workflow["11"]["inputs"]["image"] = enviar_imagem(args.host, args.imagem)
+    workflow["12"]["inputs"].update(width=largura, height=altura, length=frames)
+    workflow["13"]["inputs"]["noise_seed"] = args.seed if args.seed is not None else random.randint(0, 2**48)
+    workflow["16"]["inputs"]["fps"] = args.fps
+    print(f"Wan 2.2 14B: {largura}x{altura}, {frames} frames a {args.fps} fps (~{frames / args.fps:.1f}s)")
+    return workflow
+
+
 def montar_workflow(args) -> dict:
+    if args.modelo == "wan22":
+        return montar_workflow_wan22(args)
     sufixo = "qualidade" if args.qualidade else "distilled"
     nome_arquivo = f"{args.modo}_{sufixo}.json"
     workflow = json.loads((WORKFLOWS_DIR / nome_arquivo).read_text(encoding="utf-8"))
@@ -144,7 +179,13 @@ def extrair_video(entrada_historico: dict) -> tuple[str, str]:
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--prompt", required=True, help="Descricao do video a gerar")
-    parser.add_argument("--modo", choices=["t2v", "i2v"], default="t2v")
+    parser.add_argument(
+        "--modelo",
+        choices=["wan22", "ltx"],
+        default="wan22",
+        help="wan22 (padrao, Wan 2.2 14B imagem->video) ou ltx (Sulphur-2, descontinuado)",
+    )
+    parser.add_argument("--modo", choices=["t2v", "i2v"], default="t2v", help="Somente --modelo ltx")
     parser.add_argument(
         "--qualidade",
         action="store_true",
@@ -152,17 +193,24 @@ def main():
     )
     parser.add_argument("--imagem", type=Path, help="Imagem inicial (obrigatorio para --modo i2v)")
     parser.add_argument("--negativo", default=None, help="Prompt negativo (padrao interno se omitido)")
-    parser.add_argument("--frames", type=int, default=241, help="Numero de frames (padrao 241, ~10s a 24fps)")
-    parser.add_argument("--fps", type=int, default=24)
+    parser.add_argument("--frames", type=int, default=None, help="Numero de frames (padrao: wan22 81 = 5s a 16fps; ltx 241 = 10s a 24fps)")
+    parser.add_argument("--fps", type=int, default=None, help="Padrao: wan22 16, ltx 24")
     parser.add_argument("--largura", type=int, default=768, help="Somente --modo t2v")
     parser.add_argument("--altura", type=int, default=512, help="Somente --modo t2v")
-    parser.add_argument("--max-lado", type=int, default=1024, dest="max_lado", help="Somente --modo i2v: redimensiona a imagem para este lado maior")
+    parser.add_argument("--max-lado", type=int, default=None, dest="max_lado", help="Imagem->video: lado maior do video (padrao: wan22 832, ltx 1024)")
     parser.add_argument("--seed", type=int, default=None)
     parser.add_argument("--saida", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--host", default="127.0.0.1:8188")
     parser.add_argument("--comfyui-output", type=Path, default=DEFAULT_COMFYUI_OUTPUT)
     parser.add_argument("--timeout-min", type=int, default=60)
     args = parser.parse_args()
+
+    wan = args.modelo == "wan22"
+    if wan:
+        args.modo = "i2v"  # o kit wan22 so tem imagem->video
+    args.frames = args.frames or (81 if wan else 241)
+    args.fps = args.fps or (16 if wan else 24)
+    args.max_lado = args.max_lado or (832 if wan else 1024)
 
     if args.modo == "i2v" and not args.imagem:
         parser.error("--imagem e obrigatorio quando --modo i2v")

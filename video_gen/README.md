@@ -1,8 +1,32 @@
-# video_gen — Gerador de vídeo local (Sulphur-2 / LTX-2.3 via ComfyUI)
+# video_gen — Gerador de vídeo local via ComfyUI
+
+## Padrão: Wan 2.2 14B imagem→vídeo (desde 2026-10-13)
+
+Imagem (ex.: gerada no Z-Image/Krea2) + prompt → vídeo de ~5s, usando o Wan
+2.2 14B I2V fp8 (dois modelos, high/low noise) com os LoRAs lightx2v de 4
+passos. Só imagem→vídeo; texto→vídeo continua só no kit LTX abaixo.
+
+```powershell
+cd video_gen
+.\venv\Scripts\python.exe setup_models.py -y      # ~35GB, uma vez (kit wan22)
+# com o Comfy Desktop aberto ("Comfy Desktop\Comfy Desktop.exe", NAO o ComfyUI.exe antigo)
+.\venv\Scripts\python.exe gerar_video.py --imagem foto.png --prompt "descreva o movimento, em ingles"
+```
+
+Opções: `--max-lado` (padrão 832), `--frames` (padrão 81 = 5s a 16fps,
+arredonda pra 4k+1), `--fps`, `--seed`, `--negativo`.
+
+Medições na RTX 4070 12GB + 32GB RAM:
+- **464x832, 81 frames: 2,7 min** no total (inclusive carregar os modelos). Boa
+  movimentação, sem o "slow motion" típico.
+- **720x1280: >12 min e ainda não tinha terminado** (cancelado). GPU a 100%, mas
+  o modelo (13,6GB) não cabe na VRAM e a RAM fica com ~5GB livres — **o PC
+  inteiro trava durante a geração**. Não gere vídeo enquanto usa o PC.
+
+## Legado: Sulphur-2 / LTX-2.3 (`--modelo ltx`, kit `--kit ltx`)
 
 > [!WARNING]
-> **PROJETO DESCONTINUADO / PAUSADO**
-> Este projeto foi pausado e marcado como descontinuado porque a qualidade do modelo gerador (Sulphur-2 / LTX-2.3) se mostrou insatisfatória em testes práticos. Vale a pena retomar este pipeline apenas no futuro quando surgir um novo modelo de geração de vídeo open-source de alta fidelidade e viável para GPUs de 12GB de VRAM. Todo o código permanece intacto para referência.
+> Descontinuado: a qualidade do Sulphur-2 / LTX-2.3 se mostrou insatisfatória em testes práticos. Código mantido para referência.
 
 Gera vídeos (texto→vídeo e imagem→vídeo, com áudio sincronizado) usando o
 [Sulphur-2-base](https://huggingface.co/SulphurAI/Sulphur-2-base), um fine-tune

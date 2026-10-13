@@ -1,7 +1,11 @@
-"""Baixa os pesos do Sulphur-2 (LTX-2.3) para a pasta de modelos do ComfyUI.
+"""Baixa os pesos de video para a pasta de modelos do ComfyUI.
+
+Kits: wan22 (padrao, Wan 2.2 14B imagem->video + LoRAs de 4 passos) e ltx
+(Sulphur-2 / LTX-2.3, descontinuado).
 
 Uso:
     python setup_models.py
+    python setup_models.py --kit ltx
     python setup_models.py --comfyui-models "D:\\outro_caminho\\ComfyUI\\models"
 """
 import argparse
@@ -19,8 +23,19 @@ DEFAULT_COMFYUI_MODELS = (
     / "models"
 )
 
+WAN22 = "Comfy-Org/Wan_2.2_ComfyUI_Repackaged"
+
 # (repo_id, filename no repo, subpasta de destino em models/, tamanho aproximado em GB)
-ARQUIVOS = [
+KITS = {}
+KITS["wan22"] = [
+    (WAN22, "split_files/diffusion_models/wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors", "diffusion_models", 13.3),
+    (WAN22, "split_files/diffusion_models/wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors", "diffusion_models", 13.3),
+    (WAN22, "split_files/loras/wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors", "loras", 1.1),
+    (WAN22, "split_files/loras/wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors", "loras", 1.1),
+    (WAN22, "split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors", "text_encoders", 6.3),
+    (WAN22, "split_files/vae/wan_2.1_vae.safetensors", "vae", 0.2),
+]
+KITS["ltx"] = [
     ("SulphurAI/Sulphur-2-base", "sulphur_dev_fp8mixed.safetensors", "checkpoints", 29.2),
     (
         "SulphurAI/Sulphur-2-base",
@@ -42,7 +57,9 @@ def main():
         default=DEFAULT_COMFYUI_MODELS,
         help="Caminho para a pasta models/ do ComfyUI (padrao: instalacao do ComfyUI Desktop)",
     )
+    parser.add_argument("--kit", choices=list(KITS), default="wan22", help="Conjunto de modelos (padrao: wan22)")
     parser.add_argument("--sim", action="store_true", help="Mostra o plano sem baixar nada")
+    parser.add_argument("-y", "--yes", action="store_true", help="Nao pergunta antes de baixar")
     args = parser.parse_args()
 
     models_dir = args.comfyui_models
@@ -54,7 +71,7 @@ def main():
     print(f"Pasta de modelos do ComfyUI: {models_dir}\n")
     total_gb = 0.0
     plano = []
-    for repo_id, filename, subpasta, tamanho_gb in ARQUIVOS:
+    for repo_id, filename, subpasta, tamanho_gb in KITS[args.kit]:
         dest_dir = models_dir / subpasta
         dest_name = Path(filename).name
         dest_path = dest_dir / dest_name
@@ -70,7 +87,7 @@ def main():
     if args.sim:
         return
 
-    if total_gb > 0:
+    if total_gb > 0 and not args.yes:
         resposta = input("Continuar com o download? [s/N] ").strip().lower()
         if resposta != "s":
             print("Cancelado.")
