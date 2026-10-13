@@ -51,7 +51,7 @@ Este repositório (`Ferramentas`) agrupa scripts, automações e ecossistemas in
 
 * **Ecossistema Híbrido (`/ecosistema`):** *Descontinuado*. Dependia de alterar/remover permissões de sistema no Android que acabavam quebrando tokens NFC e serviços essenciais do celular.
 * **Agentic CLI (`/wincli`):** *Descontinuado*. Substituído pelo uso do **Antigravity CLI (`agy`)**.
-* **Video Gen (`/video_gen`):** *Descontinuado / Pausado*. A qualidade do modelo LTX-2.3/Sulphur-2 se mostrou insatisfatória em testes práticos. Pausado aguardando novos modelos de vídeo open-source viáveis para 12GB de VRAM.
+* **Video Gen (`/video_gen`):** *Retomado em 2026-10-13 com Wan 2.2 14B imagem→vídeo* (LTX-2.3/Sulphur-2 segue descontinuado como `--modelo ltx`). 464x832 leva ~3 min; 720p trava o PC. Ver [`video_gen/README.md`](video_gen/README.md).
 
 ---
 
