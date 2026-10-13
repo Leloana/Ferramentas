@@ -23,6 +23,25 @@ Medições na RTX 4070 12GB + 32GB RAM:
   o modelo (13,6GB) não cabe na VRAM e a RAM fica com ~5GB livres — **o PC
   inteiro trava durante a geração**. Não gere vídeo enquanto usa o PC.
 
+## Vários personagens → vídeo (Qwen-Image 2.1 + Wan 2.2)
+
+Workflow de UI `workflows/ui/Personagens-para-Video-Qwen2.1+Wan2.2.json`,
+também copiado para a lista de workflows do ComfyUI (ao lado dos do Qwen).
+`workflows/personagens_i2v.json` é o mesmo grafo em formato API.
+
+1. **Referências**: um `LoadImage` por personagem/cenário (image1, image2, image3;
+   image4 já ligado mas desativado — Ctrl+B). O `TextEncodeQwenImage21` aceita até
+   16; para mais, duplique um `LoadImage` e ligue no próximo `image_N` livre.
+2. **Cena**: o Qwen-Image 2.1 (int8 + LoRA Turbo, 8 passos) compõe o 1º quadro
+   (768x1376) a partir de um prompt que cita as imagens como `<image1>`, `<image2>`...
+   (convenção do próprio Qwen 2.1 para multi-imagem). Seed *fixed*: mudar só o
+   prompt do movimento reaproveita a cena.
+3. **Vídeo**: o Wan 2.2 anima esse quadro (464x832, 81 frames) com um prompt de
+   movimento separado.
+
+Modelos: `setup_models.py --kit personagens -y` (Wan 2.2 + Qwen 2.1; pula o que já existe).
+Ainda não testado ponta a ponta (validado só contra o `object_info` do ComfyUI 0.37.2).
+
 ## Legado: Sulphur-2 / LTX-2.3 (`--modelo ltx`, kit `--kit ltx`)
 
 > [!WARNING]

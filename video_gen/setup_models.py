@@ -35,6 +35,15 @@ KITS["wan22"] = [
     (WAN22, "split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors", "text_encoders", 6.3),
     (WAN22, "split_files/vae/wan_2.1_vae.safetensors", "vae", 0.2),
 ]
+# Qwen-Image 2.1 edit: compoe a 1a cena a partir de N imagens de referencia
+# (personagens/cenario), que depois o Wan 2.2 anima (workflows/personagens_i2v.json).
+QWEN21 = "Comfy-Org/Qwen-Image-2.1"
+KITS["personagens"] = KITS["wan22"] + [
+    (QWEN21, "diffusion_models/qwen_image_2.1_int8_convrot.safetensors", "diffusion_models", 6.8),
+    (QWEN21, "text_encoders/qwen3vl_8b_int8_convrot.safetensors", "text_encoders", 8.7),
+    (QWEN21, "vae/qwen_image_2.1_vae_bf16.safetensors", "vae", 0.6),
+    (QWEN21, "loras/qwen_image_2.1_turbo_lora_avg_rank_178_bf16.safetensors", "loras", 0.9),
+]
 KITS["ltx"] = [
     ("SulphurAI/Sulphur-2-base", "sulphur_dev_fp8mixed.safetensors", "checkpoints", 29.2),
     (
