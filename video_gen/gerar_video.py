@@ -186,6 +186,18 @@ def fps_do_video(video: Path, padrao: float) -> float:
         return padrao
 
 
+CRF_INTERMEDIARIO = 10  # quando ainda vai passar por upscale/interpolacao: evita comprimir duas vezes
+
+
+def definir_crf(workflow: dict, crf: float) -> dict:
+    """O SaveVideo do ComfyUI usa CRF 23 por padrao: ~2,4 Mbps em 720p, borra
+    detalhe fino (pior ainda depois da interpolacao, com o dobro de quadros)."""
+    for no in workflow.values():
+        if no["class_type"] == "SaveVideo" and no["inputs"].get("format.codec") == "h264":
+            no["inputs"].update({"format.codec.encoding": "re-encode", "format.codec.encoding.crf": float(crf)})
+    return workflow
+
+
 def executar(host: str, workflow: dict, timeout_min: int) -> tuple[str, str]:
     """Envia o workflow, espera terminar e devolve (arquivo, subpasta) do video gerado."""
     resposta = chamar_api(host, "/prompt", {"prompt": workflow, "client_id": str(uuid.uuid4())}, metodo="POST")
@@ -318,6 +330,12 @@ def main():
         metavar="N",
         help="RIFE: multiplica o fps por N (padrao wan22 2 -> 16 vira 32fps; 5B/ltx 1 = desligado)",
     )
+    parser.add_argument(
+        "--crf",
+        type=float,
+        default=14,
+        help="Qualidade do mp4 final (H.264): menor = mais nitido e maior. Padrao 14 (~7 Mbps em 720p); o ComfyUI usa 23",
+    )
     parser.add_argument("--seed", type=int, default=None)
     parser.add_argument("--saida", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--host", default="127.0.0.1:8188")
@@ -351,7 +369,9 @@ def main():
             origem, nome_arquivo = args.video, args.video.name
             fps = fps_do_video(args.video, args.fps)
         else:
-            nome_arquivo, subpasta = executar(args.host, montar_workflow(args), args.timeout_min)
+            tem_pos = bool(args.upscale) or args.interpolar > 1
+            workflow = definir_crf(montar_workflow(args), CRF_INTERMEDIARIO if tem_pos else args.crf)
+            nome_arquivo, subpasta = executar(args.host, workflow, args.timeout_min)
             origem = args.comfyui_output / subpasta / nome_arquivo
             fps = args.fps
 
@@ -361,7 +381,12 @@ def main():
             # tira o modelo de video da RAM/VRAM antes: o upscale de 81 quadros ocupa varios GB
             chamar_api(args.host, "/free", {"unload_models": True, "free_memory": True}, metodo="POST")
             nome_arquivo, subpasta = executar(
-                args.host, montar_workflow_upscale(args.host, origem, largura, altura), args.timeout_min
+                args.host,
+                definir_crf(
+                    montar_workflow_upscale(args.host, origem, largura, altura),
+                    CRF_INTERMEDIARIO if args.interpolar > 1 else args.crf,
+                ),
+                args.timeout_min,
             )
             origem = args.comfyui_output / subpasta / nome_arquivo
 
@@ -369,7 +394,9 @@ def main():
             print(f"Interpolando {fps:g} -> {fps * args.interpolar:g} fps (RIFE)...")
             chamar_api(args.host, "/free", {"unload_models": True, "free_memory": True}, metodo="POST")
             nome_arquivo, subpasta = executar(
-                args.host, montar_workflow_interpolar(args.host, origem, args.interpolar, fps), args.timeout_min
+                args.host,
+                definir_crf(montar_workflow_interpolar(args.host, origem, args.interpolar, fps), args.crf),
+                args.timeout_min,
             )
             origem = args.comfyui_output / subpasta / nome_arquivo
 
