@@ -20,7 +20,7 @@ Medições na RTX 4070 12GB + 32GB RAM:
 - **464x832, 81 frames: 2,7 min** no total (inclusive carregar os modelos). Boa
   movimentação, sem o "slow motion" típico.
 - **720p: ver a seção abaixo** — em 2026-10-13 travou o PC; em 2026-10-14
-  rodou em 7,6 min (1280x720, 16:9).
+  rodou em 7,6 min (1280x720 e 720x1280). Use `--max-lado 1280`.
 
 ## 720p (testado em 2026-10-14)
 
@@ -33,6 +33,8 @@ mesmo prompt e seed, três caminhos:
 | 5B nativo 1280x704 | `gerar_video.py --modelo wan22-5b --imagem x.png --prompt "..."` | 7,4 min | Funciona e cabe nos 12GB, 121 quadros a 24fps, mas mais "mole" e o sol estourou e apagou os rostos no meio |
 | **14B nativo 1280x720 (melhor)** | `gerar_video.py --imagem x.png --prompt "..." --max-lado 1280` | **7,6 min** | Melhor qualidade: detalhe real (tecido, pelo do cachorro), cachorro mais vivo. ~62s por passo; RAM livre nunca abaixo de 5,7GB, PC não travou |
 
+- **Vertical 720x1280 (Reels/Shorts)** com o 14B nativo também rodou: 7,6 min,
+  RAM livre mínima 5,6GB (moça correndo na praia com border collie, imagem 9:16 do Krea2).
 - `--upscale LxA` roda uma 2ª passada no ComfyUI (`workflows/upscale_video.json`):
   4x-UltraSharp quadro a quadro e reduz para LxA. Antes disso o script chama
   `/free` para tirar o Wan da RAM.
