@@ -29,7 +29,9 @@ passa o vídeo pelo **RIFE 4.9** (`workflows/interpolar_video.json`), que cria u
 quadro entre cada par: **16 → 32 fps**, mesma duração, ~15 s a mais em 720p.
 Os quadros inventados saem limpos (sem fantasma em pernas/guia/cachorro).
 
-- `--interpolar 3` → 48 fps; `--interpolar 1` desliga. O 5B (24 fps) e o LTX vêm desligados.
+- `--interpolar 3` → 48 fps (~25 s em 720p); `--interpolar 1` desliga. Testado com
+  um arqueiro soltando a flecha (objeto rápido): nos quadros criados a flecha
+  avança em posições intermediárias, sem duplicar nem deixar rastro. O 5B (24 fps) e o LTX vêm desligados.
 - Corrigir vídeo antigo sem gerar de novo: `gerar_video.py --video output/x.mp4`
   (dá pra combinar com `--upscale 1280x720`).
 - Precisa do custom node [ComfyUI-Frame-Interpolation](https://github.com/Fannovel16/ComfyUI-Frame-Interpolation)
