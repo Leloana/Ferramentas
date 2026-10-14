@@ -34,6 +34,14 @@ KITS["wan22"] = [
     (WAN22, "split_files/loras/wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors", "loras", 1.1),
     (WAN22, "split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors", "text_encoders", 6.3),
     (WAN22, "split_files/vae/wan_2.1_vae.safetensors", "vae", 0.2),
+    # --upscale (ex.: 832x464 -> 1280x720)
+    ("lokCX/4x-Ultrasharp", "4x-UltraSharp.pth", "upscale_models", 0.07),
+]
+# Wan 2.2 5B (TI2V): 720p nativo (1280x704, 24fps) e cabe inteiro nos 12GB
+KITS["wan22-5b"] = [
+    (WAN22, "split_files/diffusion_models/wan2.2_ti2v_5B_fp16.safetensors", "diffusion_models", 10.0),
+    (WAN22, "split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors", "text_encoders", 6.3),
+    (WAN22, "split_files/vae/wan2.2_vae.safetensors", "vae", 1.4),
 ]
 # Qwen-Image 2.1 edit: compoe a 1a cena a partir de N imagens de referencia
 # (personagens/cenario), que depois o Wan 2.2 anima (workflows/personagens_i2v.json).

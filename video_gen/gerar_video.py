@@ -48,7 +48,8 @@ def chamar_api(host: str, caminho: str, dados: dict | None = None, metodo: str =
         req.add_header("Content-Type", "application/json")
     try:
         with urllib.request.urlopen(req, timeout=30) as resp:
-            return json.loads(resp.read())
+            conteudo = resp.read()
+            return json.loads(conteudo) if conteudo.strip() else {}  # /free responde vazio
     except urllib.error.HTTPError as e:
         # ComfyUI respondeu (servidor no ar), mas rejeitou o pedido - o corpo
         # traz o motivo (ex.: workflow invalido, modelo faltando).
@@ -93,14 +94,15 @@ def enviar_imagem(host: str, caminho_imagem: Path) -> str:
     return info["name"]
 
 
-def dimensoes_wan(imagem: Path, max_lado: int) -> tuple[int, int]:
-    """Mantem a proporcao da imagem, lado maior = max_lado, multiplos de 16."""
+def dimensoes_wan(imagem: Path, max_lado: int, multiplo: int = 16) -> tuple[int, int]:
+    """Mantem a proporcao da imagem, lado maior = max_lado, multiplos de `multiplo`."""
     from PIL import Image
 
     with Image.open(imagem) as img:
         w, h = img.size
     escala = max_lado / max(w, h)
-    return max(16, round(w * escala / 16) * 16), max(16, round(h * escala / 16) * 16)
+    m = multiplo
+    return max(m, round(w * escala / m) * m), max(m, round(h * escala / m) * m)
 
 
 def montar_workflow_wan22(args) -> dict:
@@ -119,9 +121,57 @@ def montar_workflow_wan22(args) -> dict:
     return workflow
 
 
+def montar_workflow_wan22_5b(args) -> dict:
+    """Wan 2.2 5B (TI2V): feito para 720p nativo (1280x704) a 24fps e cabe nos 12GB."""
+    workflow = json.loads((WORKFLOWS_DIR / "wan22_5b_i2v.json").read_text(encoding="utf-8"))
+    largura, altura = dimensoes_wan(args.imagem, args.max_lado, multiplo=32)
+    frames = (max(args.frames, 5) - 1) // 4 * 4 + 1
+
+    workflow["8"]["inputs"]["text"] = args.prompt
+    workflow["9"]["inputs"]["text"] = args.negativo or NEGATIVO_WAN
+    workflow["11"]["inputs"]["image"] = enviar_imagem(args.host, args.imagem)
+    workflow["12"]["inputs"].update(width=largura, height=altura, length=frames)
+    workflow["13"]["inputs"]["seed"] = args.seed if args.seed is not None else random.randint(0, 2**48)
+    workflow["13"]["inputs"]["steps"] = args.passos or 20
+    workflow["16"]["inputs"]["fps"] = args.fps
+    print(f"Wan 2.2 5B: {largura}x{altura}, {frames} frames a {args.fps} fps (~{frames / args.fps:.1f}s)")
+    return workflow
+
+
+def montar_workflow_upscale(host: str, video: Path, largura: int, altura: int) -> dict:
+    """Segunda passada: 4x-UltraSharp quadro a quadro e reduz para largura x altura."""
+    workflow = json.loads((WORKFLOWS_DIR / "upscale_video.json").read_text(encoding="utf-8"))
+    workflow["1"]["inputs"]["file"] = enviar_imagem(host, video)
+    workflow["5"]["inputs"].update(width=largura, height=altura)
+    return workflow
+
+
+def executar(host: str, workflow: dict, timeout_min: int) -> tuple[str, str]:
+    """Envia o workflow, espera terminar e devolve (arquivo, subpasta) do video gerado."""
+    resposta = chamar_api(host, "/prompt", {"prompt": workflow, "client_id": str(uuid.uuid4())}, metodo="POST")
+
+    if "error" in resposta:
+        print("[erro] ComfyUI rejeitou o workflow:")
+        print(json.dumps(resposta["error"], indent=2, ensure_ascii=False))
+        node_errors = resposta.get("node_errors", {})
+        if node_errors:
+            print("\nDetalhes por no:")
+            print(json.dumps(node_errors, indent=2, ensure_ascii=False))
+        print(
+            "\nSe o erro mencionar um arquivo de modelo faltando, rode "
+            "`python setup_models.py` primeiro."
+        )
+        sys.exit(1)
+
+    entrada = aguardar_conclusao(host, resposta["prompt_id"], timeout_min)
+    return extrair_video(entrada)
+
+
 def montar_workflow(args) -> dict:
     if args.modelo == "wan22":
         return montar_workflow_wan22(args)
+    if args.modelo == "wan22-5b":
+        return montar_workflow_wan22_5b(args)
     sufixo = "qualidade" if args.qualidade else "distilled"
     nome_arquivo = f"{args.modo}_{sufixo}.json"
     workflow = json.loads((WORKFLOWS_DIR / nome_arquivo).read_text(encoding="utf-8"))
@@ -169,10 +219,10 @@ def aguardar_conclusao(host: str, prompt_id: str, timeout_min: int) -> dict:
 def extrair_video(entrada_historico: dict) -> tuple[str, str]:
     for saida in entrada_historico.get("outputs", {}).values():
         for chave in ("videos", "images", "gifs"):
-            itens = saida.get(chave)
-            if itens:
-                item = itens[0]
-                return item["filename"], item.get("subfolder", "")
+            # LoadVideo tambem aparece nas saidas, com type "input"
+            for item in saida.get(chave) or []:
+                if item.get("type", "output") == "output":
+                    return item["filename"], item.get("subfolder", "")
     raise RuntimeError("Nenhum arquivo de video encontrado na saida do ComfyUI.")
 
 
@@ -181,9 +231,9 @@ def main():
     parser.add_argument("--prompt", required=True, help="Descricao do video a gerar")
     parser.add_argument(
         "--modelo",
-        choices=["wan22", "ltx"],
+        choices=["wan22", "wan22-5b", "ltx"],
         default="wan22",
-        help="wan22 (padrao, Wan 2.2 14B imagem->video) ou ltx (Sulphur-2, descontinuado)",
+        help="wan22 (padrao, Wan 2.2 14B imagem->video), wan22-5b (720p nativo) ou ltx (Sulphur-2, descontinuado)",
     )
     parser.add_argument("--modo", choices=["t2v", "i2v"], default="t2v", help="Somente --modelo ltx")
     parser.add_argument(
@@ -198,6 +248,14 @@ def main():
     parser.add_argument("--largura", type=int, default=768, help="Somente --modo t2v")
     parser.add_argument("--altura", type=int, default=512, help="Somente --modo t2v")
     parser.add_argument("--max-lado", type=int, default=None, dest="max_lado", help="Imagem->video: lado maior do video (padrao: wan22 832, ltx 1024)")
+    parser.add_argument("--passos", type=int, default=None, help="Somente wan22-5b: passos do sampler (padrao 20)")
+    parser.add_argument(
+        "--upscale",
+        type=lambda v: tuple(int(x) for x in v.lower().split("x")),
+        default=None,
+        metavar="LxA",
+        help="Depois de gerar, amplia com 4x-UltraSharp para LxA (ex.: 1280x720). Jeito leve de ter 720p com o 14B",
+    )
     parser.add_argument("--seed", type=int, default=None)
     parser.add_argument("--saida", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--host", default="127.0.0.1:8188")
@@ -205,12 +263,13 @@ def main():
     parser.add_argument("--timeout-min", type=int, default=60)
     args = parser.parse_args()
 
-    wan = args.modelo == "wan22"
+    wan = args.modelo.startswith("wan22")
+    cinco_b = args.modelo == "wan22-5b"
     if wan:
-        args.modo = "i2v"  # o kit wan22 so tem imagem->video
-    args.frames = args.frames or (81 if wan else 241)
-    args.fps = args.fps or (16 if wan else 24)
-    args.max_lado = args.max_lado or (832 if wan else 1024)
+        args.modo = "i2v"  # os kits wan22 so tem imagem->video
+    args.frames = args.frames or (121 if cinco_b else 81 if wan else 241)
+    args.fps = args.fps or (24 if cinco_b else 16 if wan else 24)
+    args.max_lado = args.max_lado or (1280 if cinco_b else 832 if wan else 1024)
 
     if args.modo == "i2v" and not args.imagem:
         parser.error("--imagem e obrigatorio quando --modo i2v")
@@ -220,32 +279,25 @@ def main():
     try:
         workflow = montar_workflow(args)
 
-        client_id = str(uuid.uuid4())
-        resposta = chamar_api(args.host, "/prompt", {"prompt": workflow, "client_id": client_id}, metodo="POST")
-
-        if "error" in resposta:
-            print("[erro] ComfyUI rejeitou o workflow:")
-            print(json.dumps(resposta["error"], indent=2, ensure_ascii=False))
-            node_errors = resposta.get("node_errors", {})
-            if node_errors:
-                print("\nDetalhes por no:")
-                print(json.dumps(node_errors, indent=2, ensure_ascii=False))
-            print(
-                "\nSe o erro mencionar um arquivo de modelo faltando, rode "
-                "`python setup_models.py` primeiro."
-            )
-            sys.exit(1)
-
-        prompt_id = resposta["prompt_id"]
-        entrada = aguardar_conclusao(args.host, prompt_id, args.timeout_min)
-        nome_arquivo, subpasta = extrair_video(entrada)
-
+        inicio = time.time()
+        nome_arquivo, subpasta = executar(args.host, workflow, args.timeout_min)
         origem = args.comfyui_output / subpasta / nome_arquivo
+
+        if args.upscale:
+            largura, altura = args.upscale
+            print(f"Upscale para {largura}x{altura} (4x-UltraSharp)...")
+            # tira o modelo de video da RAM/VRAM antes: o upscale de 81 quadros ocupa varios GB
+            chamar_api(args.host, "/free", {"unload_models": True, "free_memory": True}, metodo="POST")
+            nome_arquivo, subpasta = executar(
+                args.host, montar_workflow_upscale(args.host, origem, largura, altura), args.timeout_min
+            )
+            origem = args.comfyui_output / subpasta / nome_arquivo
+
         args.saida.mkdir(parents=True, exist_ok=True)
         destino = args.saida / nome_arquivo
         destino.write_bytes(origem.read_bytes())
 
-        print(f"\nVideo salvo em: {destino}")
+        print(f"\nVideo salvo em: {destino} ({(time.time() - inicio) / 60:.1f} min)")
 
     except ConnectionError as e:
         print(f"[erro] {e}")
