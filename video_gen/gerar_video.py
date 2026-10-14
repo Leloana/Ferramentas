@@ -171,6 +171,24 @@ def montar_workflow_interpolar(host: str, video: Path, multiplicador: int, fps: 
     return workflow
 
 
+def gerar_cena(host: str, prompt: str, vertical: bool, seed: int | None, timeout_min: int, comfyui_output: Path, destino: Path) -> Path:
+    """1o quadro com Qwen-Image 2.1 (int8 + LoRA Turbo, 8 passos), a 1664x928:
+    maior que o video, entao chega nitido ao 720p. ~10s com o modelo carregado."""
+    workflow = json.loads((WORKFLOWS_DIR / "qwen21_t2i.json").read_text(encoding="utf-8"))
+    workflow["25"]["inputs"]["prompt"] = prompt
+    if vertical:
+        workflow["26"]["inputs"].update(width=928, height=1664)
+    workflow["27"]["inputs"]["seed"] = seed if seed is not None else random.randint(0, 2**32 - 1)
+    resposta = chamar_api(host, "/prompt", {"prompt": workflow, "client_id": str(uuid.uuid4())}, metodo="POST")
+    if "error" in resposta:
+        raise RuntimeError(f"ComfyUI rejeitou o workflow da cena: {resposta['error']} {resposta.get('node_errors', '')}")
+    entrada = aguardar_conclusao(host, resposta["prompt_id"], timeout_min)
+    imagem = entrada["outputs"]["29"]["images"][0]
+    destino.parent.mkdir(parents=True, exist_ok=True)
+    destino.write_bytes((comfyui_output / imagem.get("subfolder", "") / imagem["filename"]).read_bytes())
+    return destino
+
+
 def adicionar_audio(host: str, video: Path, prompt_som: str, seed: int | None, timeout_min: int, comfyui_output: Path) -> Path:
     """MMAudio "assiste" o video e gera som sincronizado (efeitos/ambiente, nao fala).
     O ComfyUI so gera o .flac; o ffmpeg junta copiando o video, sem recomprimir."""
@@ -337,7 +355,12 @@ def main():
         action="store_true",
         help="Usa a receita de sampling completa (CFG real + 50 passos na primeira fase) em vez da distilled. Mais nitido, bem mais lento.",
     )
-    parser.add_argument("--imagem", type=Path, help="Imagem inicial (obrigatorio para --modo i2v)")
+    parser.add_argument("--imagem", type=Path, help="Imagem inicial (obrigatorio para --modo i2v, exceto com --cena)")
+    parser.add_argument(
+        "--cena",
+        help="Gera a imagem inicial com Qwen-Image 2.1 a partir deste texto (em vez de --imagem)",
+    )
+    parser.add_argument("--vertical", action="store_true", help="Com --cena: imagem 9:16 em vez de 16:9")
     parser.add_argument("--negativo", default=None, help="Prompt negativo (padrao interno se omitido)")
     parser.add_argument("--frames", type=int, default=None, help="Numero de frames (padrao: wan22 81 = 5s a 16fps; ltx 241 = 10s a 24fps)")
     parser.add_argument("--fps", type=int, default=None, help="Padrao: wan22 16, ltx 24")
@@ -394,6 +417,19 @@ def main():
     args.max_lado = args.max_lado or (1280 if cinco_b else 832 if wan else 1024)
     if args.interpolar is None:
         args.interpolar = 2 if wan and not cinco_b else 1
+
+    if args.cena and not args.video:
+        if args.imagem:
+            parser.error("use --cena ou --imagem, nao os dois")
+        try:
+            args.imagem = gerar_cena(
+                args.host, args.cena, args.vertical, args.seed, args.timeout_min, args.comfyui_output,
+                args.saida / f"cena_{time.strftime('%Y%m%d_%H%M%S')}.png",
+            )
+        except (ConnectionError, RuntimeError, TimeoutError) as e:
+            print(f"[erro] {e}")
+            sys.exit(1)
+        print(f"Cena (Qwen-Image 2.1): {args.imagem}")
 
     if args.video:
         if not args.video.exists():

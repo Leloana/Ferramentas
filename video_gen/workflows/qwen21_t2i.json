@@ -1,0 +1,12 @@
+{
+  "20": {"class_type": "UNETLoader", "inputs": {"unet_name": "qwen_image_2.1_int8_convrot.safetensors", "weight_dtype": "default"}},
+  "21": {"class_type": "LoraLoaderModelOnly", "inputs": {"model": ["20", 0], "lora_name": "qwen_image_2.1_turbo_lora_avg_rank_178_bf16.safetensors", "strength_model": 1.0}},
+  "22": {"class_type": "QwenImage21Cache", "inputs": {"model": ["21", 0], "device": "auto", "dtype": "default"}},
+  "23": {"class_type": "CLIPLoader", "inputs": {"clip_name": "qwen3vl_8b_int8_convrot.safetensors", "type": "qwen_image", "device": "default"}},
+  "24": {"class_type": "VAELoader", "inputs": {"vae_name": "qwen_image_2.1_vae_bf16.safetensors"}},
+  "25": {"class_type": "TextEncodeQwenImage21", "inputs": {"clip": ["23", 0], "vae": ["24", 0], "prompt": "", "negative_prompt": "", "resolution": 1024}},
+  "26": {"class_type": "EmptyLatentImage", "inputs": {"width": 1664, "height": 928, "batch_size": 1}},
+  "27": {"class_type": "KSampler", "inputs": {"model": ["22", 0], "positive": ["25", 0], "negative": ["25", 1], "latent_image": ["26", 0], "seed": 0, "steps": 8, "cfg": 1.0, "sampler_name": "euler", "scheduler": "simple", "denoise": 1.0}},
+  "28": {"class_type": "VAEDecode", "inputs": {"samples": ["27", 0], "vae": ["24", 0]}},
+  "29": {"class_type": "SaveImage", "inputs": {"images": ["28", 0], "filename_prefix": "video/cena_qwen21"}}
+}
