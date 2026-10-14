@@ -105,19 +105,35 @@ def dimensoes_wan(imagem: Path, max_lado: int, multiplo: int = 16) -> tuple[int,
     return max(m, round(w * escala / m) * m), max(m, round(h * escala / m) * m)
 
 
+LADO_BASE_WAN = 832  # acima disso o 14B com 81 quadros treme; o hi-res fix gera o movimento aqui
+
+
 def montar_workflow_wan22(args) -> dict:
-    workflow = json.loads((WORKFLOWS_DIR / "wan22_i2v.json").read_text(encoding="utf-8"))
-    largura, altura = dimensoes_wan(args.imagem, args.max_lado)
+    # Hi-res fix: o 14B direto em 720p x 81 quadros sai com a camera tremendo
+    # (medido em 2026-10-14). Entao o movimento e gerado em 832 e o modelo low
+    # noise so refina em alta resolucao (re-ruido a partir do passo 2 de 4).
+    hires = args.max_lado > LADO_BASE_WAN and not args.nativo
+    nome = "wan22_i2v_hires.json" if hires else "wan22_i2v.json"
+    workflow = json.loads((WORKFLOWS_DIR / nome).read_text(encoding="utf-8"))
+    largura, altura = dimensoes_wan(args.imagem, LADO_BASE_WAN if hires else args.max_lado)
     # Wan gera 4k+1 frames
     frames = (max(args.frames, 5) - 1) // 4 * 4 + 1
+    seed = args.seed if args.seed is not None else random.randint(0, 2**48)
 
     workflow["8"]["inputs"]["text"] = args.prompt
     workflow["9"]["inputs"]["text"] = args.negativo or NEGATIVO_WAN
     workflow["11"]["inputs"]["image"] = enviar_imagem(args.host, args.imagem)
     workflow["12"]["inputs"].update(width=largura, height=altura, length=frames)
-    workflow["13"]["inputs"]["noise_seed"] = args.seed if args.seed is not None else random.randint(0, 2**48)
+    workflow["13"]["inputs"]["noise_seed"] = seed
     workflow["16"]["inputs"]["fps"] = args.fps
-    print(f"Wan 2.2 14B: {largura}x{altura}, {frames} frames a {args.fps} fps (~{frames / args.fps:.1f}s)")
+    descricao = f"{largura}x{altura}"
+    if hires:
+        final_l, final_a = dimensoes_wan(args.imagem, args.max_lado)
+        workflow["20"]["inputs"].update(width=final_l, height=final_a)
+        workflow["22"]["inputs"].update(width=final_l, height=final_a, length=frames)
+        workflow["23"]["inputs"]["noise_seed"] = seed + 1
+        descricao += f" -> refino em {final_l}x{final_a}"
+    print(f"Wan 2.2 14B: {descricao}, {frames} frames a {args.fps} fps (~{frames / args.fps:.1f}s)")
     return workflow
 
 
@@ -282,6 +298,11 @@ def main():
     parser.add_argument("--largura", type=int, default=768, help="Somente --modo t2v")
     parser.add_argument("--altura", type=int, default=512, help="Somente --modo t2v")
     parser.add_argument("--max-lado", type=int, default=None, dest="max_lado", help="Imagem->video: lado maior do video (padrao: wan22 832, ltx 1024)")
+    parser.add_argument(
+        "--nativo",
+        action="store_true",
+        help="wan22 com --max-lado > 832: gera direto na resolucao final, sem hi-res fix (treme com 81 quadros)",
+    )
     parser.add_argument("--passos", type=int, default=None, help="Somente wan22-5b: passos do sampler (padrao 20)")
     parser.add_argument(
         "--upscale",

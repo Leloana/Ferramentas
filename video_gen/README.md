@@ -48,8 +48,16 @@ mesmo prompt e seed, três caminhos:
 |---|---|---|---|
 | 14B 832x464 + upscale | `gerar_video.py --imagem x.png --prompt "..." --upscale 1280x720` | 2,1 + 2,8 = **4,9 min** | Bom e mais rápido: luz estável, movimento natural, mas o UltraSharp deixa textura meio "pintada" |
 | 5B nativo 1280x704 | `gerar_video.py --modelo wan22-5b --imagem x.png --prompt "..."` | 7,4 min | Funciona e cabe nos 12GB, 121 quadros a 24fps, mas mais "mole" e o sol estourou e apagou os rostos no meio |
-| **14B nativo 1280x720 (melhor)** | `gerar_video.py --imagem x.png --prompt "..." --max-lado 1280` | **7,6 min** | Melhor qualidade: detalhe real (tecido, pelo do cachorro), cachorro mais vivo. ~62s por passo; RAM livre nunca abaixo de 5,7GB, PC não travou |
+| **14B hi-res fix (padrão p/ `--max-lado` > 832)** | `gerar_video.py --imagem x.png --prompt "..." --max-lado 1280` | **6,4 min** | **Melhor**: movimento gerado em 832 (estável) + refino em 720p com o low noise (re-ruído do passo 2 de 4). Detalhe real e câmera firme |
+| 14B nativo 1280x720 (`--nativo`) | `... --max-lado 1280 --nativo` | 7,6 min | Detalhe bom, mas **a câmera treme** com 81 quadros (ver abaixo) |
 
+- **Tremor do 14B nativo em 720p** (medido com phase correlation, tudo reduzido a 832):
+  a "aceleração" da câmera quadro a quadro foi 0,5–5,3 nos três vídeos nativos de
+  81 quadros, contra 0,07–0,13 nos de 832, no 720p nativo com só 33 quadros e no
+  hi-res fix. 8 passos ou shift 8 no nativo não resolvem o problema na raiz. Não é
+  a interpolação nem o VAE em pedaços (não houve fallback de memória).
+  O hi-res fix também deixou a ação melhor: a flecha do arqueiro sai voando,
+  enquanto no nativo ela some.
 - **Vertical 720x1280 (Reels/Shorts)** com o 14B nativo também rodou: 7,6 min,
   RAM livre mínima 5,6GB (moça correndo na praia com border collie, imagem 9:16 do Krea2).
 - `--upscale LxA` roda uma 2ª passada no ComfyUI (`workflows/upscale_video.json`):
