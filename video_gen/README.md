@@ -39,6 +39,36 @@ Os quadros inventados saem limpos (sem fantasma em pernas/guia/cachorro).
   estavam na venv do ComfyUI). O peso `rife49.pth` baixa sozinho no 1º uso.
   O `rife426.pth` baixado pelo nó **não carrega** (state_dict com chaves `teacher.*`).
 
+## Áudio: MMAudio (`--audio`)
+
+O Wan não gera som. `--audio` passa o vídeo pronto pelo **MMAudio** (large 44k v2),
+que olha os quadros e gera efeitos/ambiente sincronizados (impacto do skate ao
+aterrissar, fogo, cascos). Não faz fala nem música boa. ~25 s por vídeo de 5 s.
+
+```powershell
+gerar_video.py --imagem x.png --max-lado 1280 --prompt "..." --audio "fire crackling, sizzling pan"
+gerar_video.py --video output/x.mp4 --interpolar 1 --audio      # só põe som num vídeo pronto
+```
+
+- O texto do `--audio` é opcional (em inglês). O negativo fixo evita música e voz.
+- O ComfyUI gera só o `.flac` (`workflows/audio_mmaudio.json`); o ffmpeg junta
+  com `-c:v copy`, sem recomprimir o vídeo.
+- Instalação: custom node [kijai/ComfyUI-MMAudio](https://github.com/kijai/ComfyUI-MMAudio)
+  (`pip install -r requirements.txt` na venv do ComfyUI, não mexe no torch) e os 4
+  arquivos fp16 de `Kijai/MMAudio_safetensors` em
+  `ComfyUI-Installs\ComfyUI\ComfyUI\models\mmaudio` (~5GB; essa pasta não está no
+  yaml de modelos compartilhados). O vocoder BigVGAN baixa sozinho no 1º uso.
+
+## Nitidez / CRF
+
+O `SaveVideo` do ComfyUI salva com CRF 23 (~2,4 Mbps em 720p). Com a
+interpolação dobrando os quadros, o vídeo final perdia ~30% de nitidez
+(variância do Laplaciano). Agora as etapas intermediárias saem com CRF 10 e o
+final com `--crf 14` (~7–10 Mbps). Nem tudo vem daí: o próprio Wan amolece o
+detalhe ao longo do vídeo (o quadro 0 é a imagem) e o Krea2 tende a fundo
+desfocado "cinematográfico" — peça `sharp focus, deep depth of field` na imagem
+(evite "8k", gerou faixa colorida). CAS/unsharp/UltraSharp no final ajudaram pouco.
+
 ## 720p (testado em 2026-10-14)
 
 Mesma imagem (casal passeando com golden retriever, gerada no Krea2 em 16:9),

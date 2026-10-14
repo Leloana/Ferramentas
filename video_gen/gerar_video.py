@@ -171,6 +171,40 @@ def montar_workflow_interpolar(host: str, video: Path, multiplicador: int, fps: 
     return workflow
 
 
+def adicionar_audio(host: str, video: Path, prompt_som: str, seed: int | None, timeout_min: int, comfyui_output: Path) -> Path:
+    """MMAudio "assiste" o video e gera som sincronizado (efeitos/ambiente, nao fala).
+    O ComfyUI so gera o .flac; o ffmpeg junta copiando o video, sem recomprimir."""
+    import subprocess
+
+    duracao = float(
+        subprocess.run(
+            ["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(video)],
+            capture_output=True, text=True, check=True,
+        ).stdout
+    )
+    workflow = json.loads((WORKFLOWS_DIR / "audio_mmaudio.json").read_text(encoding="utf-8"))
+    workflow["1"]["inputs"]["file"] = enviar_imagem(host, video)
+    workflow["5"]["inputs"].update(
+        duration=round(duracao, 2),
+        prompt=prompt_som,
+        seed=seed if seed is not None else random.randint(0, 2**32 - 1),
+    )
+    resposta = chamar_api(host, "/prompt", {"prompt": workflow, "client_id": str(uuid.uuid4())}, metodo="POST")
+    if "error" in resposta:
+        raise RuntimeError(f"ComfyUI rejeitou o workflow de audio: {resposta['error']} {resposta.get('node_errors', '')}")
+    entrada = aguardar_conclusao(host, resposta["prompt_id"], timeout_min)
+    audio = entrada["outputs"]["7"]["audio"][0]
+    flac = comfyui_output / audio.get("subfolder", "") / audio["filename"]
+
+    saida = video.with_name(f"{video.stem}_audio.mp4")
+    subprocess.run(
+        ["ffmpeg", "-v", "error", "-y", "-i", str(video), "-i", str(flac), "-map", "0:v", "-map", "1:a",
+         "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-shortest", str(saida)],
+        check=True,
+    )
+    return saida
+
+
 def fps_do_video(video: Path, padrao: float) -> float:
     import subprocess
 
@@ -336,6 +370,14 @@ def main():
         default=14,
         help="Qualidade do mp4 final (H.264): menor = mais nitido e maior. Padrao 14 (~7 Mbps em 720p); o ComfyUI usa 23",
     )
+    parser.add_argument(
+        "--audio",
+        nargs="?",
+        const="",
+        default=None,
+        metavar="SONS",
+        help='Adiciona som com MMAudio (le o video). Opcional: descreva os sons em ingles, ex.: --audio "fire crackling, sizzling pan"',
+    )
     parser.add_argument("--seed", type=int, default=None)
     parser.add_argument("--saida", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--host", default="127.0.0.1:8188")
@@ -402,7 +444,18 @@ def main():
 
         args.saida.mkdir(parents=True, exist_ok=True)
         destino = args.saida / nome_arquivo
-        destino.write_bytes(origem.read_bytes())
+        if destino.resolve() != Path(origem).resolve():
+            destino.write_bytes(origem.read_bytes())
+
+        if args.audio is not None:
+            print("Gerando audio (MMAudio)...")
+            chamar_api(args.host, "/free", {"unload_models": True, "free_memory": True}, metodo="POST")
+            com_audio = adicionar_audio(
+                args.host, destino, args.audio, args.seed, args.timeout_min, args.comfyui_output
+            )
+            if not args.video or destino.resolve() != args.video.resolve():
+                destino.unlink()  # fica so a versao com som (mas nunca apaga o --video de entrada)
+            destino = com_audio
 
         print(f"\nVideo salvo em: {destino} ({(time.time() - inicio) / 60:.1f} min)")
 
