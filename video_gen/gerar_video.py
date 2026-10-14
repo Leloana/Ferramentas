@@ -146,6 +146,30 @@ def montar_workflow_upscale(host: str, video: Path, largura: int, altura: int) -
     return workflow
 
 
+def montar_workflow_interpolar(host: str, video: Path, multiplicador: int, fps: float) -> dict:
+    """RIFE 4.9: cria (multiplicador-1) quadros entre cada par; fps final = fps * multiplicador."""
+    workflow = json.loads((WORKFLOWS_DIR / "interpolar_video.json").read_text(encoding="utf-8"))
+    workflow["1"]["inputs"]["file"] = enviar_imagem(host, video)
+    workflow["3"]["inputs"]["multiplier"] = multiplicador
+    workflow["6"]["inputs"]["fps"] = fps * multiplicador
+    return workflow
+
+
+def fps_do_video(video: Path, padrao: float) -> float:
+    import subprocess
+
+    try:
+        saida = subprocess.run(
+            ["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=r_frame_rate",
+             "-of", "csv=p=0", str(video)],
+            capture_output=True, text=True, timeout=30,
+        ).stdout.strip()
+        num, den = saida.split("/")
+        return float(num) / float(den)
+    except (OSError, ValueError, ZeroDivisionError, subprocess.SubprocessError):
+        return padrao
+
+
 def executar(host: str, workflow: dict, timeout_min: int) -> tuple[str, str]:
     """Envia o workflow, espera terminar e devolve (arquivo, subpasta) do video gerado."""
     resposta = chamar_api(host, "/prompt", {"prompt": workflow, "client_id": str(uuid.uuid4())}, metodo="POST")
@@ -211,7 +235,12 @@ def aguardar_conclusao(host: str, prompt_id: str, timeout_min: int) -> dict:
             if status.get("completed"):
                 return entrada
             if status.get("status_str") == "error":
-                raise RuntimeError(f"ComfyUI reportou erro na geracao: {status}")
+                erros = [
+                    f"{m[1].get('node_type')}: {m[1].get('exception_message', '').strip()[:500]}"
+                    for m in status.get("messages", [])
+                    if m[0] == "execution_error"
+                ]
+                raise RuntimeError(f"ComfyUI reportou erro na geracao: {'; '.join(erros) or status}")
         time.sleep(3)
     raise TimeoutError(f"Geracao nao terminou em {timeout_min} minutos.")
 
@@ -228,7 +257,12 @@ def extrair_video(entrada_historico: dict) -> tuple[str, str]:
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--prompt", required=True, help="Descricao do video a gerar")
+    parser.add_argument("--prompt", help="Descricao do video a gerar (obrigatorio, exceto com --video)")
+    parser.add_argument(
+        "--video",
+        type=Path,
+        help="Nao gera nada: so aplica --upscale/--interpolar num video que ja existe",
+    )
     parser.add_argument(
         "--modelo",
         choices=["wan22", "wan22-5b", "ltx"],
@@ -256,6 +290,13 @@ def main():
         metavar="LxA",
         help="Depois de gerar, amplia com 4x-UltraSharp para LxA (ex.: 1280x720). Jeito leve de ter 720p com o 14B",
     )
+    parser.add_argument(
+        "--interpolar",
+        type=int,
+        default=None,
+        metavar="N",
+        help="RIFE: multiplica o fps por N (padrao wan22 2 -> 16 vira 32fps; 5B/ltx 1 = desligado)",
+    )
     parser.add_argument("--seed", type=int, default=None)
     parser.add_argument("--saida", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--host", default="127.0.0.1:8188")
@@ -270,18 +311,28 @@ def main():
     args.frames = args.frames or (121 if cinco_b else 81 if wan else 241)
     args.fps = args.fps or (24 if cinco_b else 16 if wan else 24)
     args.max_lado = args.max_lado or (1280 if cinco_b else 832 if wan else 1024)
+    if args.interpolar is None:
+        args.interpolar = 2 if wan and not cinco_b else 1
 
-    if args.modo == "i2v" and not args.imagem:
+    if args.video:
+        if not args.video.exists():
+            parser.error(f"Video nao encontrado: {args.video}")
+    elif not args.prompt:
+        parser.error("--prompt e obrigatorio (ou use --video para so pos-processar)")
+    elif args.modo == "i2v" and not args.imagem:
         parser.error("--imagem e obrigatorio quando --modo i2v")
-    if args.modo == "i2v" and not args.imagem.exists():
+    if not args.video and args.modo == "i2v" and not args.imagem.exists():
         parser.error(f"Imagem nao encontrada: {args.imagem}")
 
     try:
-        workflow = montar_workflow(args)
-
         inicio = time.time()
-        nome_arquivo, subpasta = executar(args.host, workflow, args.timeout_min)
-        origem = args.comfyui_output / subpasta / nome_arquivo
+        if args.video:
+            origem, nome_arquivo = args.video, args.video.name
+            fps = fps_do_video(args.video, args.fps)
+        else:
+            nome_arquivo, subpasta = executar(args.host, montar_workflow(args), args.timeout_min)
+            origem = args.comfyui_output / subpasta / nome_arquivo
+            fps = args.fps
 
         if args.upscale:
             largura, altura = args.upscale
@@ -290,6 +341,14 @@ def main():
             chamar_api(args.host, "/free", {"unload_models": True, "free_memory": True}, metodo="POST")
             nome_arquivo, subpasta = executar(
                 args.host, montar_workflow_upscale(args.host, origem, largura, altura), args.timeout_min
+            )
+            origem = args.comfyui_output / subpasta / nome_arquivo
+
+        if args.interpolar > 1:
+            print(f"Interpolando {fps:g} -> {fps * args.interpolar:g} fps (RIFE)...")
+            chamar_api(args.host, "/free", {"unload_models": True, "free_memory": True}, metodo="POST")
+            nome_arquivo, subpasta = executar(
+                args.host, montar_workflow_interpolar(args.host, origem, args.interpolar, fps), args.timeout_min
             )
             origem = args.comfyui_output / subpasta / nome_arquivo
 

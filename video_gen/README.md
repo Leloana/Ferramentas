@@ -13,7 +13,7 @@ cd video_gen
 .\venv\Scripts\python.exe gerar_video.py --imagem foto.png --prompt "descreva o movimento, em ingles"
 ```
 
-Opções: `--max-lado` (padrão 832), `--upscale 1280x720` (720p, ver abaixo), `--frames` (padrão 81 = 5s a 16fps,
+Opções: `--max-lado` (padrão 832), `--upscale 1280x720` (720p, ver abaixo), `--interpolar N` (padrão 2 → 32fps), `--frames` (padrão 81 = 5s a 16fps,
 arredonda pra 4k+1), `--fps`, `--seed`, `--negativo`.
 
 Medições na RTX 4070 12GB + 32GB RAM:
@@ -21,6 +21,21 @@ Medições na RTX 4070 12GB + 32GB RAM:
   movimentação, sem o "slow motion" típico.
 - **720p: ver a seção abaixo** — em 2026-10-13 travou o PC; em 2026-10-14
   rodou em 7,6 min (1280x720 e 720x1280). Use `--max-lado 1280`.
+
+## Fluidez: interpolação RIFE (padrão, desde 2026-10-14)
+
+O Wan 2.2 14B gera a 16 fps, o que fica travado. Por padrão o script agora
+passa o vídeo pelo **RIFE 4.9** (`workflows/interpolar_video.json`), que cria um
+quadro entre cada par: **16 → 32 fps**, mesma duração, ~15 s a mais em 720p.
+Os quadros inventados saem limpos (sem fantasma em pernas/guia/cachorro).
+
+- `--interpolar 3` → 48 fps; `--interpolar 1` desliga. O 5B (24 fps) e o LTX vêm desligados.
+- Corrigir vídeo antigo sem gerar de novo: `gerar_video.py --video output/x.mp4`
+  (dá pra combinar com `--upscale 1280x720`).
+- Precisa do custom node [ComfyUI-Frame-Interpolation](https://github.com/Fannovel16/ComfyUI-Frame-Interpolation)
+  em `ComfyUI-Installs\ComfyUI\ComfyUI\custom_nodes` (`git clone`; as dependências já
+  estavam na venv do ComfyUI). O peso `rife49.pth` baixa sozinho no 1º uso.
+  O `rife426.pth` baixado pelo nó **não carrega** (state_dict com chaves `teacher.*`).
 
 ## 720p (testado em 2026-10-14)
 
