@@ -98,6 +98,7 @@ function setPauseButton(paused) {
 }
 
 export function togglePause() {
+    if (state.introCountdownTimer) return;  // a música ainda nem começou
     if (dom.audioPlayer.paused) {
         dom.audioPlayer.play();
         setPauseButton(false);

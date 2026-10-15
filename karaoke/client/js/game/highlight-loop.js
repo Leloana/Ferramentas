@@ -201,7 +201,8 @@ function frame() {
     const segData = state.currentSegmentData;
     if (!segData || typeof segData.sing_start !== 'number') return;
 
-    updatePause(virtualTime);
+    // contagem do início (session.js) é dona do 3-2-1 até o play
+    if (!state.introCountdownTimer) updatePause(virtualTime);
     setVerseProgress(virtualTime, segData.sing_start, segData.sing_end);
     highlightWords(segData, virtualTime);
 }

@@ -15,6 +15,7 @@ export const state = {
     isFirstSegment: true,
     totalPauseDuration: 0,
     pauseStartTarget: 0,
+    introCountdownTimer: null, // game/session.js: contagem 3-2-1 antes do play
     isMobileMicrophoneConnected: false,
     localStreamForced: false,
     micSourceMode: 'pc',

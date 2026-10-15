@@ -19,10 +19,11 @@ import { handleServerMessage } from './server-messages.js';
 import { startHighlightLoop, cancelLyricsFrame } from './highlight-loop.js';
 import { resetCarousel } from './lyrics-carousel.js';
 import { showHeardHint, clearHeardTimer } from './transcription.js';
-import { showTurn, setPlayersLayout, resetHud } from './hud.js';
+import { showTurn, setPlayersLayout, resetHud, setCountdown } from './hud.js';
 import { currentScoringMode, resetControls } from './controls.js';
 
 const MAX_RECONNECT_ATTEMPTS = 5;
+const INTRO_COUNTDOWN_SEC = 3;
 
 // Envia JSON pelo WebSocket da sala, se ele estiver aberto
 export function sendToRoom(message) {
@@ -98,6 +99,7 @@ export async function resetGameState() {
         state.gameReconnectTimer = null;
     }
     stopTimeSync();
+    stopIntroCountdown();
     allowScreenOff();
     stopReplay();
     stopAutoNext();
@@ -214,17 +216,16 @@ function connectGameWebSocket(game, attempt) {
         attempt = 0;
         ws.send(JSON.stringify({ type: "client_info", sample_rate: game.sampleRate, ...deviceInfo(state.localStream) }));
         if (resuming) {
-            startTimeSync();
+            // caiu durante a contagem do início: o play dela liga o relógio
+            if (!state.introCountdownTimer) startTimeSync();
             return;
         }
         ws.send(JSON.stringify(startGameMessage(game)));
         state.isFirstSegment = true;
         state.currentSegmentData = null;
-        const playing = dom.audioPlayer.play();
-        if (playing && playing.catch) playing.catch(soundBlocked);
-        startTimeSync();
         setAppState('singing');
         startHighlightLoop();
+        playAfterCountdown(game);
     };
 
     ws.onmessage = (event) => {
@@ -262,6 +263,36 @@ function connectGameWebSocket(game, attempt) {
     ws.onerror = (err) => {
         console.error("Erro no WebSocket do jogo:", err);
     };
+}
+
+function stopIntroCountdown() {
+    if (state.introCountdownTimer) {
+        clearTimeout(state.introCountdownTimer);
+        state.introCountdownTimer = null;
+    }
+    setCountdown(null);
+}
+
+// 3… 2… 1 com a primeira linha já na tela, depois o play: em música que abre
+// cantando (ex. "Promessas e Previsões") não havia tempo de se preparar. O
+// playback_time só sai no play: antes disso o servidor descarta os microfones.
+function playAfterCountdown(game) {
+    stopIntroCountdown();
+    let n = INTRO_COUNTDOWN_SEC;
+    const tick = () => {
+        state.introCountdownTimer = null;
+        if (game.cancelled()) return;
+        if (n > 0) {
+            setCountdown(n--);
+            state.introCountdownTimer = setTimeout(tick, 1000);
+            return;
+        }
+        setCountdown(null);
+        const playing = dom.audioPlayer.play();
+        if (playing && playing.catch) playing.catch(soundBlocked);
+        startTimeSync();
+    };
+    tick();
 }
 
 // Navegador da TV sem um toque na página não deixa tocar som (autoplay)
