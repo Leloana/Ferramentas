@@ -1,0 +1,616 @@
+{
+ "nome": "trilha",
+ "seed": 2026,
+ "estilo_cena": "Cinematic film still, natural colors, sharp focus, highly detailed, photorealistic.",
+ "estilo_movimento": "Cinematic, natural motion.",
+ "personagens": {
+  "lia": {
+   "prompt": "Character sheet of a young woman hiker: auburn wavy hair in a low ponytail, freckles, green eyes, bright red hiking jacket, grey t-shirt, dark green hiking pants, brown boots, tan backpack, plain grey background"
+  },
+  "bento": {
+   "prompt": "Full body reference photo of a black and white border collie dog with a red collar in side view, plain light grey background"
+  }
+ },
+ "tomadas": [
+  {
+   "id": "01",
+   "tipo": "nova",
+   "refs": [],
+   "cena": "Wide shot at dawn of a small wooden cabin in the mountains, mist over the valley, pink sky, no people.",
+   "movimento": "The camera slowly pushes in toward the cabin as mist drifts over the valley and the sky brightens.",
+   "som": "birds at dawn, gentle wind"
+  },
+  {
+   "id": "02",
+   "tipo": "nova",
+   "refs": [
+    "lia",
+    "bento"
+   ],
+   "cena": "the young woman from {lia} steps out of the wooden cabin door onto the porch at dawn, the border collie dog from {bento} beside her wagging its tail. Only one person and one dog in the scene. Medium shot, soft pink dawn light.",
+   "movimento": "The woman steps out onto the porch and stretches her arms, the dog wags its tail and looks up at her.",
+   "som": "wooden door creak, footsteps on wooden porch, birds"
+  },
+  {
+   "id": "03",
+   "tipo": "continua",
+   "movimento": "The woman zips up her red jacket and adjusts her backpack straps, the dog sits and waits.",
+   "som": "jacket zipper, birds chirping"
+  },
+  {
+   "id": "04",
+   "tipo": "nova",
+   "refs": [
+    "lia"
+   ],
+   "cena": "Close-up of the young woman from {lia} looking toward distant mountain peaks at sunrise, her face lit by warm light, determined smile. Only one person.",
+   "movimento": "She smiles softly and takes a deep breath, a light breeze moves her hair.",
+   "som": "soft wind, distant birds"
+  },
+  {
+   "id": "05",
+   "tipo": "nova",
+   "refs": [
+    "lia",
+    "bento"
+   ],
+   "cena": "Wide shot from behind: the young woman from {lia} and the border collie dog from {bento} walk away from the cabin down a dirt path toward the misty forest at sunrise. Only one person and one dog in the scene.",
+   "movimento": "The woman and the dog walk away from the camera down the path toward the forest.",
+   "som": "footsteps on dirt path, birds",
+   "lugar": "01"
+  },
+  {
+   "id": "06",
+   "tipo": "nova",
+   "refs": [
+    "lia",
+    "bento"
+   ],
+   "cena": "the young woman from {lia} walks along a forest trail among tall pine trees in golden morning light with the border collie dog from {bento} beside her. Only one person and one dog in the scene. Wide shot.",
+   "movimento": "The woman walks toward the camera along the trail, the dog trots beside her, sunbeams shine through the trees.",
+   "som": "footsteps on forest floor, birds, leaves rustling"
+  },
+  {
+   "id": "07",
+   "tipo": "nova",
+   "refs": [
+    "bento"
+   ],
+   "cena": "Low angle close-up of the border collie dog from {bento} sniffing the mossy forest ground on a pine forest trail, morning light.",
+   "movimento": "The dog sniffs the ground eagerly, its nose moves, then it lifts its head and looks ahead.",
+   "som": "dog sniffing, forest ambience",
+   "lugar": "06"
+  },
+  {
+   "id": "08",
+   "tipo": "continua",
+   "movimento": "The dog runs ahead along the trail and turns back to look, tail wagging.",
+   "som": "dog paws running on dirt, birds"
+  },
+  {
+   "id": "09",
+   "tipo": "nova",
+   "refs": [
+    "lia"
+   ],
+   "cena": "Medium tracking shot of the young woman from {lia} hiking through the pine forest, smiling, sunbeams behind her. Only one person.",
+   "movimento": "She walks forward smiling, the camera tracks backward in front of her, sunbeams flicker through the trees.",
+   "som": "footsteps, forest birds",
+   "lugar": "06"
+  },
+  {
+   "id": "10",
+   "tipo": "nova",
+   "refs": [
+    "lia",
+    "bento"
+   ],
+   "cena": "the young woman from {lia} catches up with the border collie dog from {bento} on the trail in the pine forest and kneels to pet the dog. Only one person and one dog in the scene.",
+   "movimento": "The woman kneels and pets the head of the dog, the dog licks her hand happily.",
+   "som": "dog panting, soft laugh, forest ambience",
+   "lugar": "06"
+  },
+  {
+   "id": "11",
+   "tipo": "nova",
+   "refs": [],
+   "cena": "A clear mountain stream flowing over smooth stones in a forest clearing, morning sunlight sparkling on the water, no people.",
+   "movimento": "The water flows and sparkles over the stones, small ripples, the camera slowly pans right.",
+   "som": "stream flowing over rocks, birds"
+  },
+  {
+   "id": "12",
+   "tipo": "nova",
+   "refs": [
+    "bento"
+   ],
+   "cena": "the border collie dog from {bento} hops across stepping stones over a clear mountain stream in the forest, splashing water.",
+   "movimento": "The dog jumps from stone to stone across the stream, splashing water.",
+   "som": "water splashing, stream flowing",
+   "lugar": "11"
+  },
+  {
+   "id": "13",
+   "tipo": "nova",
+   "refs": [
+    "lia"
+   ],
+   "cena": "the young woman from {lia} carefully crosses a clear mountain stream stepping on stones, arms out for balance. Only one person. Medium shot.",
+   "movimento": "She steps carefully from stone to stone with her arms out for balance and reaches the other side.",
+   "som": "footsteps on wet stones, stream flowing",
+   "lugar": "11"
+  },
+  {
+   "id": "14",
+   "tipo": "nova",
+   "refs": [
+    "bento"
+   ],
+   "cena": "the border collie dog from {bento} standing on the bank of a mountain stream, wet fur, about to shake off water, sunny.",
+   "movimento": "The wet dog shakes its whole body vigorously, water droplets fly everywhere in the sunlight.",
+   "som": "dog shaking water off, water droplets, stream",
+   "lugar": "11"
+  },
+  {
+   "id": "15",
+   "tipo": "nova",
+   "refs": [
+    "lia",
+    "bento"
+   ],
+   "cena": "the young woman from {lia} laughing on the bank of the stream as water droplets fly, the border collie dog from {bento} next to her. Only one person and one dog in the scene.",
+   "movimento": "The woman laughs and wipes water from her face, the dog jumps playfully around her.",
+   "som": "woman laughing, dog barking happily, stream",
+   "lugar": "11"
+  },
+  {
+   "id": "16",
+   "tipo": "nova",
+   "refs": [],
+   "cena": "A wide alpine meadow full of yellow and purple wildflowers with snowy mountains behind, bright late morning, no people.",
+   "movimento": "Wildflowers sway in the breeze, clouds drift slowly over the mountains, the camera glides forward.",
+   "som": "wind over meadow, bees buzzing"
+  },
+  {
+   "id": "17",
+   "tipo": "nova",
+   "refs": [
+    "bento"
+   ],
+   "cena": "the border collie dog from {bento} running joyfully through a meadow of wildflowers, snowy mountains behind, bright sun.",
+   "movimento": "The dog runs fast through the flowers toward the camera, ears flapping.",
+   "som": "dog running through grass, panting, wind",
+   "lugar": "16"
+  },
+  {
+   "id": "18",
+   "tipo": "nova",
+   "refs": [
+    "lia"
+   ],
+   "cena": "the young woman from {lia} walks through the alpine wildflower meadow, brushing the flowers with her hand. Only one person. Medium shot, bright sun.",
+   "movimento": "She walks slowly, her hand brushes the tops of the flowers, a butterfly flies past.",
+   "som": "grass rustling, bees, light wind",
+   "lugar": "16"
+  },
+  {
+   "id": "19",
+   "tipo": "nova",
+   "refs": [
+    "lia",
+    "bento"
+   ],
+   "cena": "the young woman from {lia} sits on a rock in the wildflower meadow drinking water from a metal bottle, the border collie dog from {bento} sitting next to her. Only one person and one dog in the scene.",
+   "movimento": "She drinks from the bottle, then pours a little water into her hand for the dog, the dog drinks.",
+   "som": "water pouring, dog lapping water, wind",
+   "lugar": "16"
+  },
+  {
+   "id": "20",
+   "tipo": "continua",
+   "movimento": "The woman screws the cap back on, stands up and the dog jumps up excited.",
+   "som": "bottle cap, footsteps on grass, wind"
+  },
+  {
+   "id": "21",
+   "tipo": "nova",
+   "refs": [
+    "lia",
+    "bento"
+   ],
+   "cena": "the young woman from {lia} climbs a steep rocky mountain trail using her hands on the rocks, the border collie dog from {bento} climbing just ahead. Only one person and one dog in the scene. Wide shot, midday sun.",
+   "movimento": "She climbs up the rocks step by step, the dog leaps up to the next ledge.",
+   "som": "footsteps on rocks, small stones falling, heavy breathing"
+  },
+  {
+   "id": "22",
+   "tipo": "nova",
+   "refs": [
+    "lia"
+   ],
+   "cena": "Close-up of the hand of the young woman from {lia} gripping a rough granite rock on a mountain trail, red jacket sleeve. Only one person.",
+   "movimento": "Her hand grips the rock firmly and pulls, small pebbles roll down.",
+   "som": "hand on rock, pebbles rolling"
+  },
+  {
+   "id": "23",
+   "tipo": "nova",
+   "refs": [
+    "bento"
+   ],
+   "cena": "the border collie dog from {bento} standing on a rocky ledge high on a mountain, looking back down, wind in its fur, wide valley behind.",
+   "movimento": "The dog looks back down and barks once, its fur blows in the wind.",
+   "som": "dog bark echo, strong wind",
+   "lugar": "21"
+  },
+  {
+   "id": "24",
+   "tipo": "nova",
+   "refs": [
+    "lia"
+   ],
+   "cena": "the young woman from {lia} stops on the rocky trail and looks out over a huge green valley far below, catching her breath. Only one person. Wide shot from behind her.",
+   "movimento": "She catches her breath and gazes at the valley, the camera slowly rises to reveal the view.",
+   "som": "wind, distant eagle cry",
+   "lugar": "21"
+  },
+  {
+   "id": "25",
+   "tipo": "continua",
+   "movimento": "She turns around and keeps climbing up the trail.",
+   "som": "footsteps on rocks, wind"
+  },
+  {
+   "id": "26",
+   "tipo": "nova",
+   "refs": [],
+   "cena": "Dark storm clouds rolling over rocky mountain peaks, first rain starting, dramatic grey light, no people.",
+   "movimento": "Dark clouds roll quickly over the peaks, rain begins to fall, a flash of lightning in the distance.",
+   "som": "thunder rumbling, wind, rain starting"
+  },
+  {
+   "id": "27",
+   "tipo": "nova",
+   "refs": [
+    "lia",
+    "bento"
+   ],
+   "cena": "the young woman from {lia} pulls the hood of her red jacket over her head as rain starts on a rocky mountain trail, the border collie dog from {bento} next to her. Only one person and one dog in the scene. Grey stormy light.",
+   "movimento": "She pulls up her hood as rain falls harder, the dog lowers its ears.",
+   "som": "rain, wind gusts, thunder",
+   "lugar": "21"
+  },
+  {
+   "id": "28",
+   "tipo": "nova",
+   "refs": [
+    "lia",
+    "bento"
+   ],
+   "cena": "the young woman from {lia} and the border collie dog from {bento} run through the rain toward a large overhanging rock on the mountain. Only one person and one dog in the scene. Wide shot, heavy rain, grey stormy light.",
+   "movimento": "The woman and the dog run through the rain toward the rock shelter.",
+   "som": "heavy rain, running footsteps, thunder"
+  },
+  {
+   "id": "29",
+   "tipo": "nova",
+   "refs": [
+    "lia",
+    "bento"
+   ],
+   "cena": "the young woman from {lia} sits sheltered under a large overhanging rock while heavy rain falls outside, the border collie dog from {bento} curled up against her. Only one person and one dog in the scene.",
+   "movimento": "Rain pours outside the shelter, she hugs the dog close, the dog snuggles against her.",
+   "som": "heavy rain on rocks, thunder"
+  },
+  {
+   "id": "30",
+   "tipo": "continua",
+   "movimento": "Lightning flashes outside, the woman strokes the head of the dog calmly.",
+   "som": "thunder clap, rain"
+  },
+  {
+   "id": "31",
+   "tipo": "nova",
+   "refs": [],
+   "cena": "A rainbow over a green mountain valley after the rain, sunlight breaking through clouds, wet rocks shining, no people.",
+   "movimento": "Sunlight breaks through the clouds and the rainbow brightens, mist rises from the valley.",
+   "som": "dripping water, birds returning"
+  },
+  {
+   "id": "32",
+   "tipo": "nova",
+   "refs": [
+    "lia",
+    "bento"
+   ],
+   "cena": "the young woman from {lia} steps out from under a rock shelter after the rain and smiles at a rainbow, the border collie dog from {bento} beside her. Only one person and one dog in the scene. Wet rocks shining.",
+   "movimento": "She steps out, pushes back her hood and smiles up at the rainbow, the dog shakes off water.",
+   "som": "dripping water, soft wind, birds",
+   "lugar": "31"
+  },
+  {
+   "id": "33",
+   "tipo": "nova",
+   "refs": [
+    "bento"
+   ],
+   "cena": "the border collie dog from {bento} jumps over a puddle on a wet rocky mountain trail, splash, sunlight after rain.",
+   "movimento": "The dog leaps over the puddle and splashes water, then runs on.",
+   "som": "water splash, dog paws on wet rock",
+   "lugar": "32"
+  },
+  {
+   "id": "34",
+   "tipo": "nova",
+   "refs": [
+    "lia",
+    "bento"
+   ],
+   "cena": "the young woman from {lia} walks along a wet rocky ridge trail in fresh sunlight after rain, the border collie dog from {bento} ahead of her. Only one person and one dog in the scene. Wide shot.",
+   "movimento": "She walks along the ridge, the dog runs ahead, clouds clear behind them.",
+   "som": "footsteps on wet gravel, wind",
+   "lugar": "32"
+  },
+  {
+   "id": "35",
+   "tipo": "continua",
+   "movimento": "They keep walking along the ridge as the sun lowers and the light turns golden.",
+   "som": "footsteps, wind"
+  },
+  {
+   "id": "36",
+   "tipo": "nova",
+   "refs": [
+    "lia",
+    "bento"
+   ],
+   "cena": "the young woman from {lia} reaches a mountain summit at golden sunset, sea of clouds below, the border collie dog from {bento} beside her. Only one person and one dog in the scene. Wide shot from behind.",
+   "movimento": "She steps onto the summit and raises both arms in triumph, the dog barks happily.",
+   "som": "strong wind on summit, dog bark"
+  },
+  {
+   "id": "37",
+   "tipo": "nova",
+   "refs": [
+    "lia"
+   ],
+   "cena": "Close-up of the young woman from {lia} at a mountain summit at sunset, golden light on her face, eyes glistening with emotion, wind in her hair. Only one person.",
+   "movimento": "She smiles with emotion, the wind moves strands of her hair, warm light flickers.",
+   "som": "wind"
+  },
+  {
+   "id": "38",
+   "tipo": "nova",
+   "refs": [
+    "lia",
+    "bento"
+   ],
+   "cena": "the young woman from {lia} sits on the summit rock at sunset with her arm around the border collie dog from {bento}, both looking at the sea of clouds. Only one person and one dog in the scene. View from behind.",
+   "movimento": "The camera slowly orbits around them as the sun sinks into the clouds.",
+   "som": "wind, calm ambience",
+   "lugar": "36"
+  },
+  {
+   "id": "39",
+   "tipo": "nova",
+   "refs": [],
+   "cena": "Golden sun setting into a sea of clouds seen from a mountain summit, orange and purple sky, no people.",
+   "movimento": "The sun slowly sinks into the clouds, the colors deepen, clouds drift.",
+   "som": "soft wind",
+   "lugar": "36"
+  },
+  {
+   "id": "40",
+   "tipo": "nova",
+   "refs": [
+    "lia",
+    "bento"
+   ],
+   "cena": "Silhouette of the young woman from {lia} and the border collie dog from {bento} standing on the mountain summit against an orange sunset sky. Only one person and one dog in the scene.",
+   "movimento": "The silhouettes stand still while clouds drift behind them and the light fades.",
+   "som": "wind",
+   "lugar": "36"
+  },
+  {
+   "id": "41",
+   "tipo": "nova",
+   "refs": [
+    "lia",
+    "bento"
+   ],
+   "cena": "the young woman from {lia} sets up a small orange tent on a grassy flat area near the summit at dusk, the border collie dog from {bento} watching. Only one person and one dog in the scene.",
+   "movimento": "She pulls the tent fabric over the poles and the tent pops up, the dog tilts its head.",
+   "som": "tent fabric rustling, wind"
+  },
+  {
+   "id": "42",
+   "tipo": "nova",
+   "refs": [
+    "bento"
+   ],
+   "cena": "the border collie dog from {bento} lying on the grass near a small orange tent at dusk, head on its paws, watching.",
+   "movimento": "The dog lifts its head, tilts it curiously and wags its tail.",
+   "som": "calm wind, crickets starting",
+   "lugar": "41"
+  },
+  {
+   "id": "43",
+   "tipo": "nova",
+   "refs": [
+    "lia"
+   ],
+   "cena": "the young woman from {lia} kneels and strikes a match to light a small campfire of sticks near a tent at dusk. Only one person. Close medium shot.",
+   "movimento": "She strikes the match, a flame flares and the dry sticks catch fire.",
+   "som": "match strike, fire crackling",
+   "lugar": "41"
+  },
+  {
+   "id": "44",
+   "tipo": "continua",
+   "movimento": "The campfire grows and sparks rise into the air, she blows gently on the flames.",
+   "som": "fire crackling, sparks"
+  },
+  {
+   "id": "45",
+   "tipo": "nova",
+   "refs": [],
+   "cena": "Close-up of a crackling campfire at dusk, sparks rising into a deep blue sky, no people.",
+   "movimento": "Flames dance and sparks rise into the sky.",
+   "som": "campfire crackling"
+  },
+  {
+   "id": "46",
+   "tipo": "nova",
+   "refs": [
+    "lia",
+    "bento"
+   ],
+   "cena": "the young woman from {lia} sitting by a campfire at night eating from a small metal pot with a spoon, the border collie dog from {bento} lying next to her, warm firelight. Only one person and one dog in the scene.",
+   "movimento": "She eats a spoonful and smiles at the dog, the firelight flickers on their faces.",
+   "som": "fire crackling, spoon on metal, crickets",
+   "lugar": "41"
+  },
+  {
+   "id": "47",
+   "tipo": "nova",
+   "refs": [
+    "bento"
+   ],
+   "cena": "Close-up of the border collie dog from {bento} lying by a campfire at night, firelight reflecting in its eyes, cozy.",
+   "movimento": "The eyes of the dog slowly close as it relaxes, its ear twitches.",
+   "som": "fire crackling, crickets",
+   "lugar": "46"
+  },
+  {
+   "id": "48",
+   "tipo": "nova",
+   "refs": [
+    "lia",
+    "bento"
+   ],
+   "cena": "the young woman from {lia} gently pets the border collie dog from {bento} beside a campfire at night, warm firelight, tent in background. Only one person and one dog in the scene.",
+   "movimento": "She strokes the back of the dog slowly, the dog rolls onto its side happily.",
+   "som": "fire crackling, crickets, soft breathing",
+   "lugar": "46"
+  },
+  {
+   "id": "49",
+   "tipo": "nova",
+   "refs": [
+    "lia"
+   ],
+   "cena": "Close-up of the young woman from {lia} by the campfire at night, firelight on her face, she looks up at the sky with wonder. Only one person.",
+   "movimento": "She looks up, her eyes widen with wonder, the firelight flickers on her face.",
+   "som": "fire crackling, night crickets"
+  },
+  {
+   "id": "50",
+   "tipo": "nova",
+   "refs": [],
+   "cena": "Night sky full of stars and the Milky Way above dark mountain silhouettes, no people.",
+   "movimento": "The stars twinkle and a shooting star streaks across the sky, the camera slowly tilts up.",
+   "som": "night ambience, crickets"
+  },
+  {
+   "id": "51",
+   "tipo": "nova",
+   "refs": [
+    "lia",
+    "bento"
+   ],
+   "cena": "the young woman from {lia} lying on a blanket on the grass at night looking up at the Milky Way, the border collie dog from {bento} lying beside her, campfire glow nearby. Only one person and one dog in the scene. Wide shot.",
+   "movimento": "They lie still as the stars glitter, a shooting star crosses the sky, she points at it.",
+   "som": "crickets, distant owl"
+  },
+  {
+   "id": "52",
+   "tipo": "continua",
+   "movimento": "She lowers her arm and turns her head to smile at the dog, the dog moves closer.",
+   "som": "crickets, soft wind"
+  },
+  {
+   "id": "53",
+   "tipo": "nova",
+   "refs": [
+    "lia"
+   ],
+   "cena": "Close-up of the young woman from {lia} lying on her back at night, starlight on her face, smiling peacefully. Only one person.",
+   "movimento": "She smiles peacefully and slowly closes her eyes.",
+   "som": "crickets, soft wind"
+  },
+  {
+   "id": "54",
+   "tipo": "nova",
+   "refs": [],
+   "cena": "The campfire burning down to glowing embers at night next to a small orange tent, no people.",
+   "movimento": "The embers glow and pulse, a last small flame flickers out, smoke curls up.",
+   "som": "embers crackling softly, crickets",
+   "lugar": "41"
+  },
+  {
+   "id": "55",
+   "tipo": "nova",
+   "refs": [],
+   "cena": "The Milky Way slowly rotating above a small orange tent on a mountain at night, no people.",
+   "movimento": "The stars slowly rotate across the sky above the tent, the glow fades.",
+   "som": "night silence, distant wind",
+   "lugar": "41"
+  },
+  {
+   "id": "56",
+   "tipo": "nova",
+   "refs": [],
+   "cena": "Sunrise over a sea of clouds seen from a mountain camp, a small orange tent in the foreground, golden light, no people.",
+   "movimento": "The sun rises above the clouds and golden light spreads over the tent.",
+   "som": "morning birds, wind",
+   "lugar": "41"
+  },
+  {
+   "id": "57",
+   "tipo": "nova",
+   "refs": [
+    "lia",
+    "bento"
+   ],
+   "cena": "the border collie dog from {bento} pokes its head into a small orange tent at sunrise and licks the face of the young woman from {lia}, who wakes up laughing. Only one person and one dog in the scene.",
+   "movimento": "The dog licks her face, she wakes up and laughs, pushing the dog away playfully.",
+   "som": "woman laughing, dog panting, birds"
+  },
+  {
+   "id": "58",
+   "tipo": "nova",
+   "refs": [
+    "lia",
+    "bento"
+   ],
+   "cena": "the young woman from {lia} stands outside the tent stretching at sunrise holding a steaming metal cup of coffee, the border collie dog from {bento} beside her. Only one person and one dog in the scene.",
+   "movimento": "She sips the coffee, steam rises from the cup, she looks at the view and smiles.",
+   "som": "sipping, birds, wind",
+   "lugar": "56"
+  },
+  {
+   "id": "59",
+   "tipo": "nova",
+   "refs": [
+    "lia",
+    "bento"
+   ],
+   "cena": "the young woman from {lia} with her backpack and the border collie dog from {bento} start walking down the mountain trail at sunrise, wide shot from behind. Only one person and one dog in the scene.",
+   "movimento": "They walk away down the trail into the golden morning light.",
+   "som": "footsteps on gravel, birds, wind",
+   "lugar": "56"
+  },
+  {
+   "id": "60",
+   "tipo": "nova",
+   "refs": [
+    "lia",
+    "bento"
+   ],
+   "cena": "Very wide aerial shot of tiny figures of the young woman from {lia} and the border collie dog from {bento} walking on a long mountain ridge trail at sunrise above the clouds. Only one person and one dog in the scene.",
+   "movimento": "The camera slowly pulls back and rises, revealing the vast mountains and sea of clouds.",
+   "som": "wind, distant birds"
+  }
+ ],
+ "estilo_personagens": "The woman always wears her red hiking jacket, dark green pants and brown boots; the dog always has its red collar."
+}
