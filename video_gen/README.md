@@ -39,6 +39,37 @@ Os quadros inventados saem limpos (sem fantasma em pernas/guia/cachorro).
   estavam na venv do ComfyUI). O peso `rife49.pth` baixa sozinho no 1º uso.
   O `rife426.pth` baixado pelo nó **não carrega** (state_dict com chaves `teacher.*`).
 
+## Filme longo com continuidade (`filme.py`)
+
+```powershell
+.\venv\Scripts\python.exe filme.py filme/trilha.json            # 60 tomadas = 5 min (~7,6 min por tomada)
+.\venv\Scripts\python.exe filme.py filme/trilha.json --ate 5    # piloto
+```
+
+Roteiro em JSON (`filme/trilha.json`: uma trilheira e seu border collie, do
+amanhecer ao amanhecer seguinte). Cada tomada de ~5s:
+
+- `"tipo": "nova"` — o 1º quadro é composto pelo **Qwen-Image 2.1** a partir das
+  referências dos personagens (`refs`), escritas no texto como `{lia}`, `{bento}`
+  (viram `<image1>`, `<image2>`). `"lugar": "06"` passa também o último quadro da
+  tomada 06 como referência de cenário (a cabana da 01 reaparece igual na 05).
+- `"tipo": "continua"` — começa do último quadro da tomada anterior (ação contínua).
+- Depois: Wan 2.2 hi-res 720p → RIFE 32fps → MMAudio com o `som` da tomada.
+
+Saída em `output/filme_<nome>/`: `refs/`, `quadros/`, `brutos/`, `tomadas/`,
+`previa.mp4` (atualizada a cada tomada, sem recomprimir) e o filme final com
+fade curto no áudio de cada corte. **Retomável**: o que existe é pulado; para
+refazer uma tomada, apague `tomadas/NN.mp4` (e `quadros/NN.png` para nova imagem).
+
+Lições do piloto:
+- Duas imagens da mesma pessoa como referências separadas → o Qwen desenha **duas
+  pessoas**. Use uma "ficha" única (retrato + corpo inteiro lado a lado) e escreva
+  "Only one person in the scene".
+- Texto descrevendo a roupa da personagem em tomada sem personagens faz o Qwen
+  inventar uma (por isso `estilo_personagens` só entra quando há `refs`).
+- O quadro de lugar costuma conter os personagens; o script avisa ao Qwen para
+  usá-lo só como cenário/luz.
+
 ## Áudio: MMAudio (`--audio`)
 
 O Wan não gera som. `--audio` passa o vídeo pronto pelo **MMAudio** (large 44k v2),
