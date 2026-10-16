@@ -23,8 +23,11 @@ export function attachPlayerEvents() {
     const audio = dom.audioPlayer;
     if (!audio || audio._eventsAttached) return;
     audio._eventsAttached = true;
-    audio.addEventListener('play', () => sendPlayerEvent('play'));
-    audio.addEventListener('pause', () => sendPlayerEvent('pause'));
+    // celulares: a letra palavra a palavra para na pausa (mobile/mic-words.js);
+    // sem republicar, o "pausado" da contagem 3-2-1 ficava valendo a música toda
+    const publish = () => { if (state.publishLobbyState) state.publishLobbyState(); };
+    audio.addEventListener('play', () => { sendPlayerEvent('play'); publish(); });
+    audio.addEventListener('pause', () => { sendPlayerEvent('pause'); publish(); });
     audio.addEventListener('seeked', () => sendPlayerEvent('seek', Math.round(audio.currentTime * 1000) / 1000));
     audio.addEventListener('ratechange', () => sendPlayerEvent('rate', audio.playbackRate));
     audio.addEventListener('stalled', () => sendPlayerEvent('stalled'));

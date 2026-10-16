@@ -742,6 +742,13 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         "game_mode": room.game_mode,
                         "active_players": room.active_players
                     })
+                    # o 1º verso saiu no client_info da TV, antes do game_started, e o
+                    # "Prepare-se" do celular o apagava: o celular só via a letra no 2º
+                    for ws in list(room.players.values()):
+                        try:
+                            await _send_current_segment(room, ws)
+                        except Exception as e:
+                            logger.debug(f"Falha ao reenviar o 1º verso a um celular: {e}")
                     await _send_remote_state(room)
 
                 elif msg_type == "mic_state" and role == "mic":

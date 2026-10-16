@@ -24,6 +24,7 @@ import { currentScoringMode, resetControls } from './controls.js';
 
 const MAX_RECONNECT_ATTEMPTS = 5;
 const INTRO_COUNTDOWN_SEC = 3;
+const RESUME_WAIT_MS = 1500;
 
 // Envia JSON pelo WebSocket da sala, se ele estiver aberto
 export function sendToRoom(message) {
@@ -322,7 +323,10 @@ export async function startKaraoke() {
     const captureMic = !isTvBrowser && !!(state.localStreamForced || !state.isMobileMicrophoneConnected || lineup.mics.indexOf(PC_MIC) !== -1);
     await startGameAudio(captureMic);
     if (state.audioContext && state.audioContext.state === 'suspended') {
-        try { await state.audioContext.resume(); } catch (e) { }
+        // sem toque na TV desde que a página abriu (INICIAR pelo celular) o resume()
+        // fica pendente para sempre: a TV parava em "PREPARANDO..."
+        const resumed = state.audioContext.resume().catch(() => { });
+        await Promise.race([resumed, new Promise((done) => setTimeout(done, RESUME_WAIT_MS))]);
         if (state.audioContext.state === 'suspended') soundBlocked();
     }
 
