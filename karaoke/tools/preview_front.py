@@ -160,6 +160,9 @@ class Handler(BaseHTTPRequestHandler):
             return self._json(youtube_playlist(url))
         if path == "/api/fetch-lyrics":
             return self._json({"success": False})
+        if path == "/api/rooms":
+            return self._json({"rooms": [{"id": "1234", "song": "Geni e o Zepelim - Chico Buarque", "players": 2},
+                                         {"id": "Casa do Lelo", "song": None, "players": 0}]})
         if path == "/api/status":
             return self._json({
                 "gpu": {"locked": False, "game_active": False, "whisper_model": "large-v3-turbo (preview)"},

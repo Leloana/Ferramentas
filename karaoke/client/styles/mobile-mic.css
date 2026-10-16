@@ -405,3 +405,49 @@
     35% { transform: scale(1.18); }
     100% { transform: scale(1); }
 }
+
+/* ---------- Entrada do celular: Jogador / Sala (partials/entry.html) ---------- */
+.room-entry {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: calc(0.75rem + env(safe-area-inset-top, 0px)) 1rem calc(1rem + env(safe-area-inset-bottom, 0px));
+    background-color: var(--paper);
+    background-image: var(--tex-paper);
+}
+.room-entry__brand { padding-bottom: 0.6rem; border-bottom: 4px double var(--ink-2); }
+.room-entry__brand .brand__name { margin: 0; }
+.room-entry__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+}
+.room-entry__form { display: flex; flex-direction: column; gap: 1rem; }
+.room-entry__form[hidden] { display: none; }
+.entry-toggle { display: grid; grid-template-columns: 1fr 1fr; border: var(--border); }
+.entry-toggle__btn {
+    min-height: 48px;
+    padding: 0.5rem;
+    background: var(--paper-2);
+    border: none;
+    border-radius: var(--radius);
+    color: var(--ink-2);
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+.entry-toggle__btn + .entry-toggle__btn { border-left: var(--border); }
+.entry-toggle__btn[aria-selected="true"] { background: var(--ink); color: var(--paper-light); }
+.entry-rooms[hidden] { display: none; }
+.entry-rooms__head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+.entry-rooms__list { display: flex; flex-direction: column; gap: 0.5rem; }
+.entry-room { display: flex; flex-direction: column; align-items: flex-start; gap: 0.15rem; width: 100%; min-height: 52px; padding: 0.6rem 0.8rem; text-align: left; }
+.entry-room__name { font-family: var(--font-ui); font-size: 1.05rem; font-weight: 800; }
+.entry-room__song { font-family: var(--font-ui); font-size: 0.85rem; color: var(--dim); }

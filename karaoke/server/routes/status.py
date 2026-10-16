@@ -19,6 +19,13 @@ def _percentile(values: list[float], q: float) -> float | None:
     return ordered[min(len(ordered) - 1, int(round(q * (len(ordered) - 1))))]
 
 
+@router.get("/api/rooms")
+async def api_rooms(response: Response):
+    """Salas com tela ligada: o celular entra como jogador escolhendo pelo nome."""
+    set_no_cache(response)
+    return {"rooms": room_manager.open_rooms()}
+
+
 @router.get("/api/status")
 async def api_status(response: Response):
     set_no_cache(response)

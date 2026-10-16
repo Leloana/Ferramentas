@@ -19,6 +19,7 @@ from segment_scoring import (
     needs_whisper, score_whisper_free, score_words, shift_words, transcribe_kwargs,
 )
 from state import room_manager, song_manager, queue_manager
+from rooms import display_conflict, room_key, room_name
 from pitch import load_or_build_reference, verse_pitch_score
 from players import get_or_create_profile, record_game, song_leaderboard
 from song_requests import add_request, remove_request, requests_payload
@@ -470,6 +471,11 @@ def _dispatch_due_segments(room, current_time: float | None) -> None:
 
 
 DISPLAY_REPLACED_CODE = 4001
+# conexão velha da mesma tela (chegou depois da nova) ou trocada por uma nova da
+# mesma tela: o cliente só não reconecta, sem aviso
+DISPLAY_STALE_CODE = 4003
+# nome de sala já usado pela tela de outro aparelho
+ROOM_TAKEN_CODE = 4004
 # celular cujo apelido foi retomado pelo mesmo aparelho numa conexão nova: não reconecta
 MIC_REPLACED_CODE = 4002
 
@@ -478,7 +484,20 @@ MIC_REPLACED_CODE = 4002
 async def websocket_endpoint(websocket: WebSocket, room_id: str):
     await websocket.accept()
 
+    # sala pelo nome (celular no modo Sala) ou pelo número da TV; sem caixa
+    room_label = room_name(room_id)
+    room_id = room_key(room_id)
+    if not room_id:
+        await websocket.close(code=1008, reason="Sala sem nome")
+        return
+
     role = websocket.query_params.get("role", "display")
+    # aparelho e ordem da conexão da tela (rooms.display_conflict)
+    device = (websocket.query_params.get("device") or "")[:64]
+    try:
+        seq = int(websocket.query_params.get("seq") or 0)
+    except ValueError:
+        seq = 0
     song_id = websocket.query_params.get("song_id")
     # Display que caiu no meio da música e voltou: mantém placar e gravação.
     resume = websocket.query_params.get("resume") == "1"
@@ -496,7 +515,15 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
         title = song_data.get("title", "")
         song_title = f"{title} - {artist}" if artist else title
 
-    room = room_manager.get_or_create_room(room_id, song_id or "", segments)
+    room = room_manager.get_or_create_room(room_id, song_id or "", segments, room_label)
+    if role != "mic":
+        conflict = display_conflict(room, device, seq)
+        if conflict:
+            # antes de qualquer reset: a partida da tela atual segue intacta
+            logger.info(f"Display recusado na sala {room_id}: {conflict}")
+            code = DISPLAY_STALE_CODE if conflict == "stale" else ROOM_TAKEN_CODE
+            await websocket.close(code=code, reason="Sala em uso" if conflict == "taken" else "Conexão antiga")
+            return
     if song_title:
         room.song_title = song_title
 
@@ -551,12 +578,17 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
             return
     else:
         if room.display:
+            # mesma tela numa conexão nova (lobby → jogo, reconexão): fecha sem aviso.
+            # 4001 só quando é outro aparelho (tela antiga sem id).
+            same_screen = bool(device) and device == room.display_device
             try:
-                # 4001: o cliente sabe que foi substituído e não tenta reconectar
-                await room.display.close(code=DISPLAY_REPLACED_CODE, reason="Novo display conectado")
+                await room.display.close(code=DISPLAY_STALE_CODE if same_screen else DISPLAY_REPLACED_CODE,
+                                         reason="Novo display conectado")
             except Exception as e:
                 logger.debug(f"Falha ao fechar display anterior: {e}")
         room.display = websocket
+        room.display_device = device
+        room.display_seq = seq
         logger.info(f"Display (TV) conectado para a sala: {room_id}")
         await _notify_players_status(room)
         # Celular que viu "TV Desconectada" numa troca de página volta a "pareado".

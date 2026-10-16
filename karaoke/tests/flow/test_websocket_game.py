@@ -719,5 +719,47 @@ class TestWebsocketGameFlow(unittest.TestCase):
             self.assertEqual(msg["mic_states"], {})
 
 
+    def test_late_lobby_socket_of_same_tv_does_not_end_the_game(self):
+        """INICIAR com o lobby ainda conectando: a conexão do lobby (mais velha) chega
+        depois da do jogo. Antes ela tomava a sala, cancelava a partida e a TV mostrava
+        "outra tela assumiu"; agora é recusada (4003) e a partida segue."""
+        from state import room_manager
+        from starlette.websockets import WebSocketDisconnect
+
+        game_url = f"/ws/room/lateroom?role=display&song_id={self.song_slug}&device=tv-1&seq=200"
+        with self.client.websocket_connect(game_url) as ws_game:
+            ws_game.send_json({"type": "start_game", "game_mode": "solo", "active_players": ["Ana"]})
+            self._until(ws_game, "game_started")
+            room = room_manager.rooms["lateroom"]
+
+            with self.client.websocket_connect("/ws/room/lateroom?role=display&device=tv-1&seq=100") as ws_late:
+                with self.assertRaises(WebSocketDisconnect) as closed:
+                    ws_late.receive_json()
+                self.assertEqual(closed.exception.code, 4003)
+            self.assertTrue(room.in_game)
+            self.assertEqual(room.display_seq, 200)
+
+            # outro aparelho com o mesmo nome de sala: recusado, a TV fica
+            with self.client.websocket_connect("/ws/room/LateRoom?role=display&device=cel-9&seq=999") as ws_other:
+                with self.assertRaises(WebSocketDisconnect) as closed:
+                    ws_other.receive_json()
+                self.assertEqual(closed.exception.code, 4004)
+            self.assertTrue(room.in_game)
+
+            ws_game.send_json({"type": "ping"})
+            self._until(ws_game, "pong")
+
+    def test_open_rooms_lists_rooms_with_a_screen(self):
+        with self.client.websocket_connect("/ws/room/Casa%20do%20Lelo?role=display&device=cel-1&seq=1") as ws_tv:
+            self._until(ws_tv, "singing_state")
+            rooms = self.client.get("/api/rooms").json()["rooms"]
+            self.assertIn("Casa do Lelo", [r["id"] for r in rooms])
+            # mesmo nome com outra caixa/espaços é a mesma sala
+            with self.client.websocket_connect("/ws/room/casa%20%20do%20lelo?role=mic") as ws_mic:
+                self._until(ws_mic, "register_request")
+                ws_mic.send_json({"type": "register_name", "name": "Lelo", "device": "cel-2"})
+                self._until(ws_mic, "registration_success")
+
+
 if __name__ == "__main__":
     unittest.main()

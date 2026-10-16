@@ -9,6 +9,7 @@ import { initSyncControls } from './net/sync.js';
 import { connectMobileMicrophoneWebSocket } from './mobile/mic-socket.js';
 import { connectDisplayWebSocket } from './net/ws-display.js';
 import { initMobileMicView } from './mobile/mobile-mic-view.js';
+import { initEntry } from './mobile/entry.js';
 import { fetchSongs, initSearch, selectSong } from './lobby/selection-view.js';
 import { initMicRequests, initNextUpButtons } from './lobby/requests.js';
 import { startKaraoke, resetGameState, unlockSongAudio } from './game/session.js';
@@ -46,6 +47,11 @@ function bootstrap() {
     initTheme();
     enhanceSelects();
     initTvNav();
+
+    if (myRole === 'entry') {
+        initEntry();  // celular: Jogador ou Sala, pelo nome
+        return;
+    }
 
     if (myRole === 'mic') {
         setAppState('registering');

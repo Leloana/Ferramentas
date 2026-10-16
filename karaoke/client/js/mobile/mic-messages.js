@@ -2,7 +2,7 @@
 // função por tipo: entrada com apelido, letra do verso, nota e fim de jogo.
 import { state, setAppState } from '../core/state.js';
 import { iconSvg } from '../core/icons.js';
-import { myRoom, savedMicName, saveMicName, micDeviceId } from '../core/config.js';
+import { myRoom, savedMicName, saveMicName, deviceId } from '../core/config.js';
 import { showToast } from '../core/toast.js';
 import { dom } from '../core/dom.js';
 import { fillLine, setLyricsScriptAvailable } from '../game/lyrics-script.js';
@@ -70,7 +70,7 @@ const MIC_HANDLERS = {
         if (saved && !state.micAutoRegisterFailed && state.mobileWs && state.mobileWs.readyState === WebSocket.OPEN) {
             state.micAutoRegistering = true;
             setRegisterButton(true);
-            state.mobileWs.send(JSON.stringify({ type: "register_name", name: saved, device: micDeviceId() }));
+            state.mobileWs.send(JSON.stringify({ type: "register_name", name: saved, device: deviceId() }));
             return;
         }
         setRegisterButton(false);

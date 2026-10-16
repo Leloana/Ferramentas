@@ -14,10 +14,45 @@ from recorder import GameRecording
 logger = logging.getLogger(__name__)
 
 
+ROOM_NAME_MAX = 24
+
+
+def room_name(raw: str) -> str:
+    """Nome da sala como foi digitado, sem espaço sobrando (sala do celular)."""
+    return " ".join((raw or "").split())[:ROOM_NAME_MAX]
+
+
+def room_key(raw: str) -> str:
+    """Chave da sala: "Casa do Lelo" e "casa  do lelo" são a mesma sala."""
+    return room_name(raw).casefold()
+
+
+def display_conflict(room: "KaraokeRoom", device: str, seq: int) -> str | None:
+    """Conexão de tela (display) nova numa sala que já tem tela.
+
+    - "stale": é a mesma tela, mas uma conexão mais velha que a atual chegou
+      atrasada (a do lobby, cancelada no INICIAR, depois da do jogo). Descarta
+      sem mexer na sala: antes ela fechava a partida e mostrava "outra tela assumiu".
+    - "taken": a sala é de outro aparelho (nome de sala já em uso).
+    - None: pode assumir (mesma tela reconectando, ou tela antiga sem id).
+    """
+    if room.display is None or not device or not room.display_device:
+        return None
+    if device != room.display_device:
+        return "taken"
+    if seq < room.display_seq:
+        return "stale"
+    return None
+
+
 class KaraokeRoom:
     def __init__(self, song_id: str):
         self.song_id = song_id
+        self.name = ""  # como foi digitado (a chave em RoomManager é sem caixa)
         self.display: Optional[WebSocket] = None
+        # aparelho da tela e ordem da conexão dela (display_conflict)
+        self.display_device = ""
+        self.display_seq = 0
         self.mic: Optional[WebSocket] = None
         # Multiplayer properties
         self.players: dict[str, WebSocket] = {}
@@ -127,10 +162,11 @@ class RoomManager:
     def __init__(self):
         self.rooms: dict[str, KaraokeRoom] = {}
 
-    def get_or_create_room(self, room_id: str, song_id: str, segments: list) -> KaraokeRoom:
+    def get_or_create_room(self, room_id: str, song_id: str, segments: list, name: str = "") -> KaraokeRoom:
         if room_id not in self.rooms:
             room = KaraokeRoom(song_id)
             room.segments = segments
+            room.name = name or room_id
             self.rooms[room_id] = room
             logger.info(f"Sala de Karaokê criada: {room_id} para a música {song_id}")
         return self.rooms[room_id]
@@ -141,3 +177,10 @@ class RoomManager:
             if not room.display and not room.mic and not room.players and not room.unregistered_mics:
                 del self.rooms[room_id]
                 logger.info(f"Sala de Karaokê removida por inatividade: {room_id}")
+
+    def open_rooms(self) -> list[dict]:
+        """Salas com tela ligada, para o celular entrar pelo nome."""
+        return sorted(
+            ({"id": room.name or key, "song": room.song_title or None, "players": len(room.players)}
+             for key, room in self.rooms.items() if room.display is not None),
+            key=lambda r: r["id"].casefold())

@@ -1,0 +1,28 @@
+<!-- Celular sem ?role: entra como Jogador (microfone numa sala aberta) ou como Sala
+     (a tela da música neste celular), pelo nome. mobile/entry.js; modo e nomes
+     ficam lembrados neste aparelho. -->
+<section id="room-entry" class="room-entry">
+    <div class="brand brand--sm room-entry__brand">
+        <img class="brand__mark" src="/assets/art/logo-mark.svg" alt="" width="28" height="28">
+        <span class="brand__name">Karaoke</span>
+    </div>
+    <div class="room-entry__body">
+        <div class="entry-toggle" role="tablist" aria-label="Entrar como">
+            <button type="button" class="entry-toggle__btn" role="tab" data-entry-mode="player" aria-selected="true">Jogador</button>
+            <button type="button" class="entry-toggle__btn" role="tab" data-entry-mode="room" aria-selected="false">Sala</button>
+        </div>
+        <form id="entry-form" class="room-entry__form" novalidate>
+            <input type="text" id="entry-name" class="input input--lg" placeholder="Seu apelido" aria-label="Seu apelido" maxlength="15" autocomplete="nickname">
+            <button type="submit" id="btn-entry" class="btn btn--primary btn--block btn--lg">Entrar</button>
+            <div id="entry-error" class="form-error"></div>
+        </form>
+        <!-- Jogador com mais de uma sala aberta: escolhe pelo nome -->
+        <div id="entry-rooms" class="entry-rooms" hidden>
+            <div class="entry-rooms__head">
+                <button type="button" id="btn-entry-rooms-back" class="btn btn--ghost btn--sm" aria-label="Voltar" title="Voltar"><i data-icon="back"></i></button>
+                <span class="queue-items-title">Salas</span>
+            </div>
+            <div id="entry-rooms-list" class="entry-rooms__list"></div>
+        </div>
+    </div>
+</section>

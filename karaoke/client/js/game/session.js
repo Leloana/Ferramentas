@@ -2,7 +2,7 @@
 // WebSocket do jogo (com reconexão no meio da música) e desmonta tudo no fim.
 import { state, setAppState } from '../core/state.js';
 import { dom } from '../core/dom.js';
-import { myRoom, DISPLAY_REPLACED_CODE, isTvBrowser } from '../core/config.js';
+import { myRoom, DISPLAY_REPLACED_CODE, DISPLAY_STALE_CODE, ROOM_TAKEN_CODE, isTvBrowser, displaySocketParams } from '../core/config.js';
 import { lobbyLineup, validateLobby, PC_MIC } from '../lobby/lobby.js';
 import { keepScreenOn, allowScreenOff } from '../core/wake-lock.js';
 import { attachGuideSync, savedGuideVolume } from '../audio/guide-vocal.js';
@@ -211,7 +211,7 @@ function connectGameWebSocket(game, attempt) {
     if (game.cancelled()) return;
     const resuming = attempt > 0;
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${protocol}//${window.location.host}/ws/room/${encodeURIComponent(myRoom)}?role=display&song_id=${encodeURIComponent(game.songId)}${resuming ? '&resume=1' : ''}`;
+    const wsUrl = `${protocol}//${window.location.host}/ws/room/${encodeURIComponent(myRoom)}?role=display&song_id=${encodeURIComponent(game.songId)}${resuming ? '&resume=1' : ''}&${displaySocketParams()}`;
     const ws = new WebSocket(wsUrl);
     state.ws = ws;
     ws.binaryType = 'arraybuffer';
@@ -247,9 +247,11 @@ function connectGameWebSocket(game, attempt) {
             connectDisplayWebSocket();
             return;
         }
-        if (event && event.code === DISPLAY_REPLACED_CODE) {
+        // conexão trocada por uma mais nova desta mesma tela: a nova segue a partida
+        if (event && event.code === DISPLAY_STALE_CODE) return;
+        if (event && (event.code === DISPLAY_REPLACED_CODE || event.code === ROOM_TAKEN_CODE)) {
             // outra tela assumiu a sala: não briga por ela
-            showToast('Outra tela assumiu esta sala.', 'error');
+            showToast(event.code === ROOM_TAKEN_CODE ? 'Este nome de sala já está em uso.' : 'Outra tela assumiu esta sala.', 'error');
             resetGameState();
             return;
         }

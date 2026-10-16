@@ -1,5 +1,4 @@
 export const urlParams = new URLSearchParams(window.location.search);
-export const myRole = urlParams.get('role') || 'display';
 
 let _roomId = localStorage.getItem('karaoke_room_id');
 if (!_roomId) {
@@ -14,9 +13,14 @@ export const myRoom = urlParams.get('room') || activeRoomId;
 export const DISPLAY_REPLACED_CODE = 4001;
 // Celular: o mesmo aparelho reconectou em outra conexão e retomou o apelido.
 export const MIC_REPLACED_CODE = 4002;
+// Conexão velha da mesma tela (ou trocada pela nova dela): só não reconecta.
+export const DISPLAY_STALE_CODE = 4003;
+// Nome de sala já usado pela tela de outro aparelho.
+export const ROOM_TAKEN_CODE = 4004;
 
 // Celular-microfone: apelido lembrado e id do aparelho. Se a página recarregar ou
 // a conexão cair, o celular entra sozinho de novo com o mesmo nome (mobile/mic-messages.js).
+// A TV usa o mesmo id para o servidor saber que duas conexões são da mesma tela.
 const MIC_NAME_KEY = 'karaoke_mic_name';
 const MIC_DEVICE_KEY = 'karaoke_mic_device';
 
@@ -31,7 +35,7 @@ export function saveMicName(name) {
     } catch (e) { /* sem storage: só não lembra */ }
 }
 
-export function micDeviceId() {
+export function deviceId() {
     try {
         let id = localStorage.getItem(MIC_DEVICE_KEY);
         if (!id) {
@@ -71,4 +75,37 @@ export const isTvBrowser = _tvOverride === '1' ||
 export const deviceKind = isTvBrowser ? 'tv' :
     ((/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768) ? 'mobile' : 'desktop');
 
+// Papel deste aparelho: 'mic' (celular-microfone), 'display' (TV, PC ou celular no
+// modo Sala) ou 'entry': celular aberto sem papel nem sala escolhe Jogador / Sala
+// (mobile/entry.js). Link com ?room= sem papel continua abrindo a tela, como antes.
+export const myRole = urlParams.get('role') ||
+    (deviceKind === 'mobile' && !urlParams.get('room') ? 'entry' : 'display');
+
 export const isSoloMobileMode = (myRole === 'display') && deviceKind === 'mobile';
+
+// Ordem das conexões de tela desta página: o servidor descarta a mais velha
+// quando ela chega depois da nova (lobby cancelado no INICIAR × jogo).
+const displaySeq = { last: 0 };
+export function displaySocketParams() {
+    displaySeq.last = Math.max(Date.now(), displaySeq.last + 1);
+    return `device=${encodeURIComponent(deviceId())}&seq=${displaySeq.last}`;
+}
+
+// Tela de entrada do celular: último modo (Jogador / Sala), nome da sala e a última
+// sala em que entrou como jogador. O apelido é o mesmo do microfone (savedMicName).
+const ENTRY_KEY = 'karaoke_entry';
+
+export function savedEntry() {
+    try {
+        const raw = JSON.parse(localStorage.getItem(ENTRY_KEY) || '{}');
+        return raw && typeof raw === 'object' ? raw : {};
+    } catch (e) {
+        return {};
+    }
+}
+
+export function saveEntry(changes) {
+    try {
+        localStorage.setItem(ENTRY_KEY, JSON.stringify(Object.assign(savedEntry(), changes)));
+    } catch (e) { /* sem storage: só não lembra */ }
+}

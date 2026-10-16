@@ -8,6 +8,11 @@
 
 /* 1. Papéis: TV/PC (display) × celular-microfone (mic) */
 #app[data-role="display"] #mobile-mic-area { display: none !important; }
+/* tela de entrada do celular (Jogador / Sala): só ela */
+#app:not([data-role="entry"]) #room-entry { display: none !important; }
+#app[data-role="entry"] .app-header,
+#app[data-role="entry"] > .container,
+#app[data-role="entry"] #mobile-mic-area { display: none !important; }
 #app[data-role="mic"] .app-header,
 #app[data-role="mic"] > .container { display: none !important; }
 

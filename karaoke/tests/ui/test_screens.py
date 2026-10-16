@@ -101,7 +101,7 @@ class ScreensTest(unittest.TestCase):
             {"id": f"v{i}", "url": f"https://www.youtube.com/watch?v=v{i}", "title": f"Banda {i} - Som {i}",
              "channel": "Canal", "duration": 240, "thumbnail": "", "artist_guess": f"Banda {i}",
              "title_guess": f"Som {i}", "status": "library" if i == 2 else "new"} for i in range(1, 5)]}
-        for path, viewport in (("/", PHONE), ("/", DESKTOP)):  # na TV a aba Adicionar fica oculta
+        for path, viewport in (("/?role=display", PHONE), ("/", DESKTOP)):  # na TV a aba Adicionar fica oculta
             with patch.object(preview_front, "youtube_playlist", lambda url: fake):
                 page, errors = self.open(path, viewport)
                 page.locator("#tab-btn-queue").click()
@@ -226,7 +226,7 @@ class ScreensTest(unittest.TestCase):
                 "records": {"Marcelo Ferreira": {"is_record": True, "times_sung": 3}}, "leaderboard": []}
         duo = dict(solo, player_scores={"Lelo": 88, "Ana": 74, "Marcelo": 61, "Bia": 50},
                    player_stats={n: stats for n in ("Lelo", "Ana", "Marcelo", "Bia")})
-        for path, viewport in (("/", PHONE), ("/?tv=1", {"width": 1920, "height": 1080})):
+        for path, viewport in (("/?role=display", PHONE), ("/?tv=1", {"width": 1920, "height": 1080})):
             page, errors = self.open(path, viewport)
             for msg in (solo, duo):
                 out = page.evaluate("""async (msg) => {
@@ -483,8 +483,23 @@ class ScreensTest(unittest.TestCase):
                 self.assertEqual(errors, [])
                 page.close()
 
-    def test_phone_layouts_have_no_horizontal_scroll(self):
+    def test_phone_opens_on_player_or_room_entry(self):
+        """Celular sem ?role: escolhe Jogador ou Sala, e o campo muda de apelido para nome da sala."""
         page, errors = self.open(viewport=PHONE)
+        self.assertEqual(page.locator("#app").get_attribute("data-role"), "entry")
+        self.assertTrue(page.locator("#room-entry").is_visible())
+        self.assertFalse(page.locator(".app-header").is_visible())
+        self.assertEqual(page.locator("#entry-name").get_attribute("placeholder"), "Seu apelido")
+        page.locator("[data-entry-mode='room']").click()
+        self.assertEqual(page.locator("#entry-name").get_attribute("placeholder"), "Nome da sala")
+        self.no_horizontal_scroll(page)
+        page.locator("#btn-entry").click()
+        self.assertEqual(page.locator("#entry-error").inner_text(), "Digite o nome da sala")
+        self.assertEqual(errors, [])
+        page.close()
+
+    def test_phone_layouts_have_no_horizontal_scroll(self):
+        page, errors = self.open("/?role=display", viewport=PHONE)
         self.no_horizontal_scroll(page)
         self.open_first_song(page)
         self.no_horizontal_scroll(page)

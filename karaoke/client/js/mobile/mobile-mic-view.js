@@ -5,7 +5,7 @@ import { showToast } from '../core/toast.js';
 import { dom } from '../core/dom.js';
 import { keepScreenOn } from '../core/wake-lock.js';
 import { deviceInfo } from '../game/game-events.js';
-import { micDeviceId, saveMicName } from '../core/config.js';
+import { deviceId, saveMicName, saveEntry } from '../core/config.js';
 import { watchMicHealth, stopMicHealth, micRunning, MAX_BUFFERED_BYTES } from './mic-health.js';
 import { initReactionsBar } from './reactions-bar.js';
 
@@ -133,7 +133,7 @@ export function initMobileMicView() {
             btnMobileRegister.innerText = "REGISTRANDO...";
             if (state.mobileWs && state.mobileWs.readyState === WebSocket.OPEN) {
                 state.micAutoRegisterFailed = false;
-                state.mobileWs.send(JSON.stringify({ type: "register_name", name: name, device: micDeviceId() }));
+                state.mobileWs.send(JSON.stringify({ type: "register_name", name: name, device: deviceId() }));
             } else {
                 showToast("Conexão indisponível. Tente novamente em instantes.", "error");
                 btnMobileRegister.disabled = false;
@@ -262,6 +262,7 @@ export function initMobileMicView() {
     if (btnMobileExitMic) {
         btnMobileExitMic.onclick = async () => {
             saveMicName('');  // saiu de propósito: não entra sozinho de novo
+            saveEntry({ mode: 'room' });  // a entrada já abre no modo Sala
             stopMicHealth();
             if (state.audioManager) {
                 await state.audioManager.destroy();
