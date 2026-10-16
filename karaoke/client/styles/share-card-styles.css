@@ -580,3 +580,13 @@
 }
 .sc-board__status { color: var(--accent); }
 .sc-board__foot .sc-dim { overflow: hidden; margin-left: calc(var(--u) * 2); white-space: nowrap; text-overflow: ellipsis; }
+
+/* ---------------- Destaques da partida dentro do cartão (vários cantores) ---------------- */
+.sc-extras { display: flex; flex-wrap: wrap; justify-content: space-between; color: var(--dim); font-size: calc(var(--u) * 2.8); }
+.sc-extras strong { color: var(--ink); }
+.share-card__extras { margin: calc(var(--u) * 2.2) 0 0; font-size: calc(var(--u) * 3); }
+.sc-ticket__extras { margin-top: calc(var(--u) * 1.6); font-size: calc(var(--u) * 2.4); letter-spacing: 0.06em; text-transform: uppercase; }
+.sc-vinyl__extras { margin-top: calc(var(--u) * 1.6); }
+.sc-mosaic__extras { margin-top: calc(var(--u) * 1.6); font-size: calc(var(--u) * 2.6); }
+.sc-board__extras { margin-top: calc(var(--u) * 1.6); font-size: calc(var(--u) * 2.4); letter-spacing: 0.08em; text-transform: uppercase; }
+.sc-board__extras strong { color: var(--accent); }

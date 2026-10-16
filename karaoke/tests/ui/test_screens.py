@@ -214,8 +214,8 @@ class ScreensTest(unittest.TestCase):
             self.assertLessEqual(box["y"] + box["height"], DESKTOP["height"] + 1)
         # ouvir a apresentação só no celular de cada um
         self.assertEqual(page.locator("#game-over-modal .btn-replay").count(), 0)
-        self.assertEqual(page.locator("#game-over-share .card-swatch").count(), 9)
-        self.assertEqual(page.locator("#game-over-share .card-swatches").inner_text().strip(), "")
+        self.assertEqual(page.locator("#game-over-modal .card-swatch").count(), 9)
+        self.assertEqual(page.locator("#game-over-modal .card-swatches").inner_text().strip(), "")
         self.assertEqual(errors, [])
 
     def test_every_card_style_fits_on_phone_and_tv(self):
@@ -234,7 +234,7 @@ class ScreensTest(unittest.TestCase):
                     document.getElementById('current-song-artist').textContent = 'Cidade Dormitório';
                     (await import('/js/game/server-messages.js')).handleServerMessage(msg);
                     const res = [];
-                    for (const sw of document.querySelectorAll('#game-over-share .card-swatch')) {
+                    for (const sw of document.querySelectorAll('#game-over-modal .card-swatch')) {
                         sw.click();
                         const cards = Array.from(document.querySelectorAll('#game-over-share .share-card'));
                         let cut = [];
@@ -250,7 +250,7 @@ class ScreensTest(unittest.TestCase):
                             right = Math.max(right, box.right);
                         });
                         const styles = cards.map((c) => c.dataset.style);
-                        const swatches = document.querySelector('#game-over-share .card-swatches').getBoundingClientRect();
+                        const swatches = document.querySelector('#game-over-modal .card-swatches').getBoundingClientRect();
                         res.push({ style: styles[0], same: styles.every((x) => x === styles[0]), count: cards.length,
                                    picked: sw.getAttribute('aria-checked'), cut, bottom, right,
                                    swatchRight: swatches.right });

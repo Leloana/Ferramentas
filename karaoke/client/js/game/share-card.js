@@ -11,7 +11,7 @@
 //   { songId, title, artist, score, pitch, stats: {good, ok, poor}, name,
 //     record: {is_record, best_before, times_sung}, podium: [{name, score}] }
 import { iconSvg } from '../core/icons.js';
-import { buildStyledCard, hasOwnLayout } from './share-card-styles.js';
+import { buildStyledCard, hasOwnLayout, extrasLine } from './share-card-styles.js';
 
 function el(tag, cls, text) {
     const node = document.createElement(tag);
@@ -163,6 +163,8 @@ export function buildShareCard(data, style) {
         body.append(legend);
     }
 
+    if (data.extras && data.extras.length) body.append(extrasLine(data, 'share-card__extras'));
+
     if (podiumRows) {
         const podium = el('ol', 'share-card__podium');
         data.podium.slice(0, 4).forEach((p, idx) => {
@@ -207,7 +209,9 @@ export function mountShareCard(container, data) {
 
 // Um cartão por cantor (`list`, já na ordem de exibição), todos no mesmo estilo e
 // com uma fileira só de quadradinhos. O tamanho sai de `data-count` (share-card.css).
-export function mountShareCards(container, list) {
+// `swatchHost`: onde vão os quadradinhos (fim de jogo da TV: na coluna dos botões);
+// sem ele, embaixo dos cartões.
+export function mountShareCards(container, list, swatchHost) {
     let style = savedStyle();
     const frames = list.map((data) => {
         const frame = el('div', 'share-card-frame');
@@ -224,12 +228,16 @@ export function mountShareCards(container, list) {
         });
         saveStyle(id);
     });
-    if (frames.length === 1) {
-        container.replaceChildren(frames[0], row);
-        return;
+    let cards = frames[0];
+    if (frames.length > 1) {
+        cards = el('div', 'share-cards');
+        cards.dataset.count = String(Math.min(frames.length, 4));
+        frames.forEach((frame) => cards.append(frame));
     }
-    const group = el('div', 'share-cards');
-    group.dataset.count = String(Math.min(frames.length, 4));
-    frames.forEach((frame) => group.append(frame));
-    container.replaceChildren(group, row);
+    if (swatchHost) {
+        container.replaceChildren(cards);
+        swatchHost.replaceChildren(row);
+    } else {
+        container.replaceChildren(cards, row);
+    }
 }

@@ -122,6 +122,22 @@ function field(label, value, cls) {
     return box;
 }
 
+// Destaques da partida dentro do cartão (fim de jogo com vários cantores):
+// [{label, value}] em data.extras, ex. Combo ×5 · Melhor da sala Ana · 96%
+export function extrasLine(data, cls) {
+    const box = el('p', `sc-extras${cls ? ' ' + cls : ''}`);
+    (data.extras || []).forEach(({ label, value }) => {
+        const item = el('span');
+        item.append(document.createTextNode(`${label} `), el('strong', null, value));
+        box.append(item);
+    });
+    return box;
+}
+
+function hasExtras(data) {
+    return !!(data.extras && data.extras.length);
+}
+
 function singerLabel(data) {
     if (hasPodium(data)) return `${data.podium.length} cantores`;
     return data.name || '–';
@@ -163,6 +179,7 @@ function ingresso(card, data, ctx) {
         if (pitchText(data)) legend.append(el('span', 'sc-dim', `TOM ${pitchText(data)}`));
         stub.append(barcode(data, 'sc-barcode sc-ticket__barcode'), legend);
     }
+    if (hasExtras(data)) stub.append(extrasLine(data, 'sc-ticket__extras'));
     card.append(main, el('div', 'sc-ticket__perf'), stub);
 }
 
@@ -191,6 +208,7 @@ function cupom(card, data, ctx) {
             receiptLine('VERSOS FORA', String(s.poor)));
         if (pitchText(data)) lines.append(receiptLine('TOM', pitchText(data)));
     }
+    (data.extras || []).forEach(({ label, value }) => lines.append(receiptLine(label.toUpperCase(), value.toUpperCase())));
     const total = el('div', 'sc-receipt__total');
     total.append(el('span', null, 'TOTAL'), el('strong', null, `${ctx.scoreInt}%`));
     const rank = receiptLine('RANK', `${ctx.rank.letter} · ${ctx.rank.title.toUpperCase()}`, 'sc-receipt__rank');
@@ -246,7 +264,9 @@ function vinil(card, data, ctx) {
     } else {
         const by = el('div', 'sc-vinyl__by');
         by.append(sungBy(data), el('span', 'sc-vinyl__rank', ctx.rank.title.toUpperCase()));
-        foot.append(meter(data), legendLine(data), by);
+        foot.append(meter(data), legendLine(data));
+        if (hasExtras(data)) foot.append(extrasLine(data, 'sc-vinyl__extras'));
+        foot.append(by);
     }
     text.append(song, foot);
     card.append(disc, sleeve, text);
@@ -262,6 +282,7 @@ function poster(card, data, ctx) {
     side.append(el('span', 'sc-poster__pct', '%'), el('span', 'sc-poster__tag', `${ctx.rank.letter} · ${ctx.rank.title.toUpperCase()}`));
     const badge = badgeText(data);
     if (badge) side.append(el('span', 'sc-poster__tag', badge.toUpperCase()));
+    (data.extras || []).forEach(({ label, value }) => side.append(el('span', 'sc-poster__tag', `${label} ${value}`.toUpperCase())));
     const foot = el('div', 'sc-poster__foot');
     const sub = el('div', 'sc-poster__sub');
     const who = hasPodium(data)
@@ -323,6 +344,7 @@ function mosaico(card, data, ctx) {
         foot.append(el('span', null, `${s.good} na mosca · ${s.ok} quase · ${s.poor} fora`), sungBy(data));
         panel.append(meter(data), foot);
     }
+    if (hasExtras(data)) panel.append(extrasLine(data, 'sc-mosaic__extras'));
     card.append(canvas, el('div', 'sc-mosaic__veil'), top, front, song, panel);
     const badge = badgeText(data);
     if (badge) card.append(el('span', 'sc-mosaic__badge', badge));
@@ -370,6 +392,7 @@ function letreiro(card, data, ctx) {
     const badge = badgeText(data);
     foot.append(el('span', 'sc-board__status', (badge || ctx.rank.title).toUpperCase()), el('span', 'sc-dim', detail));
     card.append(result, foot);
+    if (hasExtras(data)) card.append(extrasLine(data, 'sc-board__extras'));
 }
 
 const BUILDERS = { ingresso, cupom, vinil, poster, mosaico, letreiro };

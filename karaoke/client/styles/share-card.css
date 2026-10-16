@@ -461,10 +461,88 @@ html.is-tv .card-swatch { width: 2.8rem; height: 2.8rem; margin: 0.35rem; }
 .share-card[data-style="vidro"] .share-card__seg { border-radius: calc(var(--u) * 2); }
 .share-card[data-style="vidro"] .share-card__meter { margin-top: calc(var(--u) * 3); }
 
-/* fim de jogo: botões e linha de recorde */
+/* ---------- Fim de jogo (game-over.js) ----------
+   Tela estreita ou vários cantores: cartão(ões), destaques numa linha, estilos,
+   próxima da fila e o botão, um embaixo do outro. */
 .game-over-actions { display: flex; gap: 0.6rem; width: 100%; }
 .game-over-actions #btn-restart-game { flex: 1; }
-.game-over-record { margin: 0.2rem 0 0.8rem; color: var(--lavender-ink); font-weight: 700; text-align: center; }
+.game-over-record { display: flex; flex-wrap: wrap; justify-content: center; margin: 0.2rem 0 0.8rem; color: var(--lavender-ink); font-weight: 700; }
+.game-over-record[hidden] { display: none; }
+.game-over-stat { margin: 0 0.7rem; }
+.game-over-stat__value { margin-left: 0.35em; color: var(--ink); }
+.game-over-side { display: flex; flex-direction: column; width: 100%; }
+.game-over-styles { order: -1; }
+.game-over-styles .card-swatches { margin-top: 0; }
+
+/* Tela larga com um cantor: o cartão grande no meio, os destaques à esquerda e
+   botão, próxima da fila e estilos à direita. As colunas 1fr mantêm o cartão no
+   centro mesmo com um lado vazio. */
+@media (min-width: 900px) and (min-aspect-ratio: 4/3) {
+    .game-over-card[data-cards="1"] {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        grid-template-areas: "record share side";
+        align-items: center;
+        column-gap: 3vw;
+        width: 96vw;
+        max-width: none;
+        height: 94vh;
+        max-height: none;
+        overflow: hidden;
+        padding: 3vh 2.5vw;
+    }
+    .game-over-card[data-cards="1"] .game-over-share { grid-area: share; margin: 0; }
+    .game-over-card[data-cards="1"] .share-card-frame { --u: 0.7vh; }
+    .game-over-card[data-cards="1"] .game-over-record {
+        grid-area: record;
+        justify-self: end;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: flex-end;
+        margin: 0;
+        text-align: right;
+    }
+    .game-over-card[data-cards="1"] .game-over-stat {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        margin: 0 0 4vh;
+        padding-right: 1.1vw;
+        border-right: 3px solid var(--ink);
+    }
+    .game-over-card[data-cards="1"] .game-over-stat:last-child { margin-bottom: 0; }
+    .game-over-card[data-cards="1"] .game-over-stat__label {
+        color: var(--dim);
+        font-size: 1.6vh;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+    }
+    .game-over-card[data-cards="1"] .game-over-stat__value {
+        margin: 0.4vh 0 0;
+        font-family: var(--font-ui);
+        font-size: 4vh;
+        font-weight: 800;
+        line-height: 1.1;
+    }
+    .game-over-card[data-cards="1"] .game-over-side {
+        grid-area: side;
+        justify-self: start;
+        width: auto;
+        max-width: 100%;
+    }
+    .game-over-card[data-cards="1"] .game-over-styles { order: 2; margin-top: 3vh; }
+    /* 3x3 quadradinhos, alinhados com o botão */
+    .game-over-card[data-cards="1"] .card-swatches { justify-content: flex-start; width: 10.5rem; margin: 0; }
+    html.is-tv .game-over-card[data-cards="1"] .card-swatches { width: 12.6rem; }
+    .game-over-card[data-cards="1"] .game-over-next { margin-bottom: 3vh; }
+    .game-over-card[data-cards="1"] #btn-restart-game { min-height: 9vh; padding: 0 2.4vw; font-size: 2.4vh; }
+}
+@supports (width: min(1px, 2px)) {
+    @media (min-width: 900px) and (min-aspect-ratio: 4/3) {
+        /* telas quase 4:3: o cartão encolhe para sobrar espaço dos lados */
+        .game-over-card[data-cards="1"] .share-card-frame { --u: min(0.7vh, 0.4vw); }
+    }
+}
 .btn-replay { display: inline-flex; align-items: center; gap: 0.45rem; }
 .btn-replay.is-playing { background: var(--sage); border-color: var(--sage-ink); }
 .mic-final .btn-replay { margin-top: 0.4rem; }
