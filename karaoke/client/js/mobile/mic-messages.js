@@ -164,7 +164,7 @@ const MIC_HANDLERS = {
         // próximo verso, menor: dá para se preparar sem olhar a TV
         const nextEl = document.getElementById('mobile-lyrics-next');
         if (nextEl) {
-            nextEl.textContent = data.next_lyrics || '';
+            fillLine(nextEl, data.next_lyrics, data.next_lyrics_romaji);  // segue original/romaji/ambos
             nextEl.hidden = !data.next_lyrics;
         }
         // revezar versos: "Sua vez" / "Vez de Ana"
@@ -179,7 +179,7 @@ const MIC_HANDLERS = {
             const lyricsBox = document.getElementById('mobile-lyrics-container');
             if (lyricsBox) lyricsBox.classList.toggle('is-other-turn', !!turn && !mine);
         }
-        setLyricsScriptAvailable(data.lyrics_romaji);
+        setLyricsScriptAvailable(data.japanese_script);
     },
     segment_result(data) {
         // A nota chega quando o verso seguinte já começou: vai numa linha

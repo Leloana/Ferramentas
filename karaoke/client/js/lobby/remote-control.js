@@ -32,7 +32,9 @@ function isPlaying() {
 function songInfo(id) {
     if (!id) return null;
     const song = (state.allSongs || []).find((s) => s.id === id);
-    return song ? { id: song.id, title: song.title, artist: song.artist || '' } : { id, title: id, artist: '' };
+    return song
+        ? { id: song.id, title: song.title, artist: song.artist || '', japanese_script: !!song.japanese_script }
+        : { id, title: id, artist: '' };
 }
 
 function sliderValue(id) {

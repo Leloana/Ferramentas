@@ -184,7 +184,6 @@
 /* revezar: verso de outro cantor */
 #mobile-lyrics-container.is-other-turn #mobile-lyrics-text { opacity: 0.45; }
 #mobile-lyrics-container.is-other-turn.is-live { box-shadow: none; border-color: var(--ink); }
-.mobile-lyrics-script { justify-content: center; margin-top: 0; }
 
 #mobile-score-text { margin: 0; color: var(--dim); font-size: 0.95rem; text-align: center; }
 .mobile-score__value { font-family: var(--font-ui); font-weight: 700; color: var(--ink); background: var(--marker); padding: 0 0.25em; }
@@ -318,6 +317,8 @@
 .room-free-mic { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.45rem 0.7rem; border-style: dashed; font-weight: 700; }
 .room-free-mic .ico { width: 14px; height: 14px; }
 .room-toggles { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.room-script { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; }
+.room-script .room-toggle { white-space: nowrap; }
 .room-toggle { display: flex; align-items: center; justify-content: center; gap: 0.4rem; min-height: 46px; padding: 0.5rem; font-weight: 700; }
 .room-toggle .ico { width: 18px; height: 18px; flex-shrink: 0; }
 .room-toggle[aria-pressed="true"] { background: var(--sage); border-color: var(--sage-ink); }

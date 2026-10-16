@@ -113,10 +113,15 @@ export function setLyricsScript(mode) {
     fitLongVerse(document.getElementById('line-curr'));  // romaji muda o tamanho do verso
 }
 
-// Mostra o seletor só quando o verso tem romaji gerado pelo servidor: letra em
-// kanji/kana. Letra colada em romaji não tem o que alternar (chamado a cada verso).
-export function setLyricsScriptAvailable(romaji) {
-    document.querySelectorAll('.lyrics-script-control').forEach(el => { el.hidden = !romaji; });
+// Mostra o seletor quando a música tem letra em kanji/kana (o servidor gera o
+// romaji). Vale para a música inteira: verso em inglês ou sem kana não o esconde.
+// Letra colada em romaji não tem o que alternar.
+export function setLyricsScriptAvailable(available) {
+    document.querySelectorAll('.lyrics-script-control').forEach(el => { el.hidden = !available; });
+}
+
+export function songHasRomaji(segments) {
+    return (segments || []).some(seg => seg && seg.lyrics_romaji);
 }
 
 export function initLyricsScriptControls() {

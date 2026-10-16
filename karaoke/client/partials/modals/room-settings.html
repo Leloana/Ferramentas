@@ -19,6 +19,17 @@
             </button>
         </div>
 
+        <!-- Escrita da letra neste celular (game/lyrics-script.js): só em música japonesa,
+             vale também durante a música -->
+        <div class="lyrics-script-control" hidden>
+            <h3 class="room-settings__title">Letra</h3>
+            <div class="room-script lyrics-script-group" role="group" aria-label="Escrita da letra">
+                <button type="button" class="room-toggle lyrics-script-choice" data-script="original" aria-pressed="false">あ Original</button>
+                <button type="button" class="room-toggle lyrics-script-choice" data-script="romaji" aria-pressed="false">Aa Romaji</button>
+                <button type="button" class="room-toggle lyrics-script-choice" data-script="both" aria-pressed="false">Ambos</button>
+            </div>
+        </div>
+
         <h3 class="room-settings__title">Som</h3>
         <!-- Arrastar: o valor vai para a TV enquanto arrasta (mobile/room-panel.js) -->
         <div class="room-sliders">

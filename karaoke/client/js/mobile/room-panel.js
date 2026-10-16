@@ -14,6 +14,7 @@ import { showToast } from '../core/toast.js';
 import { openModal } from '../ui/modal.js';
 import { songMatcher } from '../core/song-search.js';
 import { micLabel } from '../lobby/lobby.js';
+import { setLyricsScriptAvailable } from '../game/lyrics-script.js';
 import { loadMicSongs } from '../lobby/requests.js';
 
 const TEAMS = ['A', 'B', 'C', 'D'];
@@ -301,6 +302,7 @@ export function renderRoomPanel() {
     if (playing()) closePicker();
 
     byId('room-settings-summary').textContent = seatsSummary(s.seats || []);
+    setLyricsScriptAvailable(!!(song && song.japanese_script));
 
     const start = byId('btn-room-start');
     const label = byId('room-start-label');

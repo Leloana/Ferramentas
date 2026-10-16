@@ -90,7 +90,7 @@ export function changeSpeed(delta) {
     notifyLobby();
 }
 
-function setPauseButton(paused) {
+export function setPauseButton(paused) {
     if (!dom.btnPausePlay) return;
     dom.btnPausePlay.innerText = paused ? 'RETOMAR' : 'PAUSAR';
     if (paused) dom.btnPausePlay.setAttribute('data-paused', 'true');

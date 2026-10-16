@@ -6,6 +6,7 @@ import { initTabs } from '../ui/tabs.js';
 import { ensureDefaultSeat } from './lobby.js';
 import { setGuideSong } from '../audio/guide-vocal.js';
 import { togglePreview, stopPreview } from '../audio/song-preview.js';
+import { setLyricsScriptAvailable } from '../game/lyrics-script.js';
 import { songMatcher } from '../core/song-search.js';
 
 export async function fetchSongs() {
@@ -363,6 +364,7 @@ export function selectSong(song) {
     ensureDefaultSeat();
     dom.audioPlayer.src = `/songs/${song.id}/audio`;
     setGuideSong(song.id);
+    setLyricsScriptAvailable(!!song.japanese_script);  // original/romaji/ambos já no lobby
 
     const savedVolume = localStorage.getItem('karaoke_backing_volume');
     if (savedVolume !== null) {

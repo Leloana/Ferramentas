@@ -6,7 +6,7 @@ from utils.lrc import read_lrc_meta
 from utils.meta import get_meta_field
 from utils.segment_timing import finalize_segments
 from utils.song_paths import USER_EDITED_MARKER, safe_song_dir
-from lyrics_text import add_romaji, to_romaji
+from lyrics_text import add_romaji, has_japanese_script, is_japanese, to_romaji
 
 def _title_fallback(name: str) -> str:
     return name.replace("_", " ").replace("-", " ").title()
@@ -35,6 +35,7 @@ class SongManager:
             artist = None
             needs_review = False
             album = None
+            japanese_script = False
             if meta_path.exists():
                 try:
                     with open(meta_path, "r", encoding="utf-8") as f:
@@ -45,6 +46,9 @@ class SongManager:
                         # a menos que a letra já tenha sido revisada à mão no editor
                         needs_review = bool(meta.get("needs_review")) and not (item / USER_EDITED_MARKER).exists()
                         album = album_of(meta)
+                        # letra em kanji/kana: a tela oferece original/romaji/ambos já no lobby
+                        japanese_script = is_japanese(get_meta_field(meta, "meta", "language")) and has_japanese_script(
+                            get_meta_field(meta, "lyrics", "plain_lyrics") or title)
                 except Exception:
                     pass
 
@@ -64,6 +68,7 @@ class SongManager:
                 "artist": artist or "Artista Desconhecido",
                 "is_ready": is_ready,
                 "needs_review": needs_review,
+                "japanese_script": japanese_script,
             }
             # agrupamento por álbum na lista (utils/album.py); sem álbum = "Singles e outras"
             if album and album.get("kind") == "album" and album.get("name"):

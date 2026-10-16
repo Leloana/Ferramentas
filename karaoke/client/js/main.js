@@ -11,7 +11,7 @@ import { connectDisplayWebSocket } from './net/ws-display.js';
 import { initMobileMicView } from './mobile/mobile-mic-view.js';
 import { fetchSongs, initSearch, selectSong } from './lobby/selection-view.js';
 import { initMicRequests, initNextUpButtons } from './lobby/requests.js';
-import { startKaraoke, resetGameState } from './game/session.js';
+import { startKaraoke, resetGameState, unlockSongAudio } from './game/session.js';
 import { initGameControls } from './game/controls.js';
 import { initModals } from './lobby/modals.js';
 import { initQueueView } from './lobby/queue-view.js';
@@ -140,6 +140,7 @@ function bootstrap() {
             if (state.gpuBlock) return;  // mutex de GPU (queue-view.js)
             dom.btnStart.disabled = true;
             dom.btnStart.innerText = 'PREPARANDO...';
+            unlockSongAudio();  // ainda dentro do clique: a TV só toca com um toque
             try {
                 await startKaraoke();
             } catch (e) {

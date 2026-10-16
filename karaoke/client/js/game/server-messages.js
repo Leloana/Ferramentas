@@ -7,6 +7,7 @@ import { showToast } from '../core/toast.js';
 import { updateMicStatusPanel } from '../audio/mic-status.js';
 import { showAnnotationButton } from '../players/annotate.js';
 import { renderLyrics } from './lyrics-carousel.js';
+import { setLyricsScriptAvailable } from './lyrics-script.js';
 import { startHighlightLoop } from './highlight-loop.js';
 import { showHeardHint, showHeardResult, listeningHint, expectedWords } from './transcription.js';
 import { applyTotals, showVerseScore, flashPerfBorder, updatePlayerBars } from './hud.js';
@@ -78,6 +79,7 @@ const DISPLAY_HANDLERS = {
     segment_start(data) {
         if (state.currentSegments) return;
         showHeardHint('[Solo Instrumental...]');
+        setLyricsScriptAvailable(data.japanese_script);
         renderLyrics(data);
         startHighlightLoop();
     },

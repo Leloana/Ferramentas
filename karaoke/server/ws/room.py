@@ -71,6 +71,9 @@ async def _send_segment_start(ws: WebSocket, segments: list, idx: int, song_titl
     next_lyrics = segments[idx + 1]["lyrics"] if idx < len(segments) - 1 else ""
     upcoming_lyrics = segments[idx + 2]["lyrics"] if idx < len(segments) - 2 else ""
 
+    def romaji_at(i: int):
+        return segments[i].get("lyrics_romaji") if 0 <= i < len(segments) else None
+
     await ws.send_json({
         "type": "segment_start",
         "id": segment["id"],
@@ -81,9 +84,16 @@ async def _send_segment_start(ws: WebSocket, segments: list, idx: int, song_titl
         "lyrics_timed": segment["lyrics_timed"],
         "language": segment.get("language"),  # japonês junta as palavras sem espaço
         "lyrics_romaji": segment.get("lyrics_romaji"),  # só em japonês (celular)
+        # a música tem verso em kanji/kana: o seletor original/romaji/ambos fica fixo
+        # a partida toda, mesmo nos versos em inglês ou sem kana
+        "japanese_script": any(s.get("lyrics_romaji") for s in segments),
         "prev_lyrics": prev_lyrics,
         "next_lyrics": next_lyrics,
         "upcoming_lyrics": upcoming_lyrics,
+        # japonês: as linhas vizinhas também seguem o modo escolhido (original/romaji/ambos)
+        "prev_lyrics_romaji": romaji_at(idx - 1),
+        "next_lyrics_romaji": romaji_at(idx + 1),
+        "upcoming_lyrics_romaji": romaji_at(idx + 2),
         "song_title": song_title,
         "turn": turn,  # revezar versos: de quem é este verso (None = todos)
         "song_time": song_time,  # celular acende a palavra (mobile/mic-words.js)

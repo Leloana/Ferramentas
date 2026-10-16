@@ -3,7 +3,7 @@
 import { state } from '../core/state.js';
 import { dom } from '../core/dom.js';
 import { isTvBrowser } from '../core/config.js';
-import { fillLine, fillWord, setLyricsScriptAvailable } from './lyrics-script.js';
+import { fillLine, fillWord } from './lyrics-script.js';
 import { fitLongVerse } from './long-verse.js';
 import { backingFlags } from './backing-vocals.js';
 
@@ -102,7 +102,6 @@ window.addEventListener('resize', () => {
 });
 
 export function renderLyrics(data) {
-    setLyricsScriptAvailable(data.lyrics_romaji);
     const virtualTime = dom.audioPlayer.currentTime + state.syncOffset;
     const pauseTime = data.sing_start - virtualTime;
 
@@ -216,7 +215,6 @@ export function renderLyrics(data) {
 }
 
 function updateLyricsDOM(data) {
-    setLyricsScriptAvailable(data.lyrics_romaji);
     fillLine(dom.prevLyricsDisplay, data.prev_lyrics, data.prev_lyrics_romaji);
     fillLine(dom.nextLyricsDisplay, data.next_lyrics, data.next_lyrics_romaji);
     if (dom.upcomingLyricsDisplay) {

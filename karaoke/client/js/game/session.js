@@ -18,9 +18,10 @@ import { showAnnotationButton } from '../players/annotate.js';
 import { handleServerMessage } from './server-messages.js';
 import { startHighlightLoop, cancelLyricsFrame } from './highlight-loop.js';
 import { resetCarousel } from './lyrics-carousel.js';
+import { setLyricsScriptAvailable, songHasRomaji } from './lyrics-script.js';
 import { showHeardHint, clearHeardTimer } from './transcription.js';
 import { showTurn, setPlayersLayout, resetHud, setCountdown } from './hud.js';
-import { currentScoringMode, resetControls } from './controls.js';
+import { currentScoringMode, resetControls, setPauseButton } from './controls.js';
 
 const MAX_RECONNECT_ATTEMPTS = 5;
 const INTRO_COUNTDOWN_SEC = 3;
@@ -131,6 +132,7 @@ export async function resetGameState() {
 
     state.selectedSongId = null;
     state.currentSegments = null;
+    setLyricsScriptAvailable(false);
     state.currentSegmentData = null;
     state.lastSegmentLyricsTimed = null;
     state.syncOffset = 0;
@@ -150,6 +152,7 @@ async function loadSegments(songId) {
         if (!resp.ok) throw new Error("Falha ao carregar os segmentos da música");
         const songData = await resp.json();
         state.currentSegments = songData.segments;
+        setLyricsScriptAvailable(songHasRomaji(state.currentSegments));
         console.log(`Carregados ${state.currentSegments.length} segmentos para a música localmente.`);
     } catch (err) {
         console.error("Erro ao pré-carregar os segmentos:", err);
@@ -266,6 +269,22 @@ function connectGameWebSocket(game, attempt) {
     };
 }
 
+// Navegador de TV (WebView) só deixa um <audio> tocar se o play() vier de um
+// toque; o play() de verdade só roda depois do WebSocket do jogo abrir e da contagem 3-2-1,
+// segundos depois, e aí já não conta como toque. Um play()+pause() no próprio
+// clique do INICIAR libera o elemento para os play() seguintes (no PC o
+// navegador lembra do clique na página e isso não fazia falta).
+export function unlockSongAudio() {
+    [dom.audioPlayer, dom.guidePlayer].forEach((el) => {
+        if (!el || !el.getAttribute('src')) return;
+        try {
+            const p = el.play();
+            el.pause();
+            if (p && p.catch) p.catch(() => { /* pause() interrompe este play(): esperado */ });
+        } catch (e) { /* sem mídia ainda: o play() da partida tenta de novo */ }
+    });
+}
+
 function stopIntroCountdown() {
     if (state.introCountdownTimer) {
         clearTimeout(state.introCountdownTimer);
@@ -298,7 +317,9 @@ function playAfterCountdown(game) {
 
 // Navegador da TV sem um toque na página não deixa tocar som (autoplay)
 function soundBlocked() {
-    const message = 'A TV bloqueou o som: toque uma vez na tela da TV e inicie de novo.';
+    // a partida fica pausada com RETOMAR, que é um toque e libera o som
+    setPauseButton(true);
+    const message = 'A TV bloqueou o som: aperte RETOMAR na TV.';
     showToast(message, 'error');
     if (state.remoteStartFrom) sendToRoom({ type: 'remote_reply', to: state.remoteStartFrom, message });
 }
