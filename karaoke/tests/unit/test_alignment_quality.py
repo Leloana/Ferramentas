@@ -86,7 +86,9 @@ class SyntheticTest(unittest.TestCase):
         q = aq.assess(stacked)
         self.assertEqual(q["metrics"]["stacked"], 5)
         self.assertEqual(q["metrics"]["short"], 4)
-        self.assertEqual(q["lines"][0]["flags"], ["empilhadas", "palavras curtas"])
+        # todas as palavras do verso grudadas: problema grave do verso
+        self.assertEqual(q["lines"][0]["flags"], ["empilhadas", "grudadas", "palavras curtas"])
+        self.assertEqual(q["severe_lines"], [0])
         long_verse = [_seg(10.0, [(0.1, 0.6), (6.0, 6.5), (13.0, 13.5)])]
         self.assertEqual(aq.assess(long_verse)["metrics"]["long_verses"], 1)
         self.assertLess(aq.assess(stacked)["score"], 70)
@@ -113,6 +115,41 @@ class SyntheticTest(unittest.TestCase):
         self.assertIn("no silêncio", q["lines"][7]["flags"])
         self.assertNotIn("no silêncio", q["lines"][0]["flags"])
         self.assertLess(q["score"], aq.assess(segs, 60.0)["score"])
+
+    def test_words_spread_evenly(self):
+        # "Zero" (Liniker): alinhador desistiu e repartiu o verso em passos de 3 s
+        segs = _good_song()
+        segs[4] = _seg(26.0, [(0.05, 0.5), (3.0, 3.5), (6.0, 6.5), (9.0, 9.5), (12.0, 12.5), (15.0, 15.5)])
+        q = aq.assess(segs)
+        self.assertEqual(q["metrics"]["uniform_lines"], 1)
+        self.assertIn("espalhadas por igual", q["lines"][4]["flags"])
+        self.assertEqual(q["severe_lines"], [4])
+        # um verso só em dez não manda a música para revisão
+        self.assertFalse(aq.needs_review(q))
+
+    def test_displaced_against_vocal_stem(self):
+        segs = _good_song()
+        stem = []
+        for i, seg in enumerate(segs):
+            # o stem canta os versos 3 e 7 1,5 s depois do que a letra diz
+            shift = 1.5 if i in (3, 7) else 0.02
+            for w in seg["lyrics_timed"]:
+                t = seg["sing_start"] + w["expected_start"] + shift
+                stem.append({"word": w["word"], "start": t, "end": t + 0.3})
+        q = aq.assess(segs, stem_words=stem)
+        self.assertEqual(q["metrics"]["displaced_lines"], 2)
+        self.assertIn("deslocado", q["lines"][3]["flags"])
+        self.assertEqual(q["lines"][3]["stem_offset"], 1.5)
+        self.assertNotIn("deslocado", q["lines"][0]["flags"])
+        self.assertFalse(aq.needs_review(q))  # 2 versos: abaixo do mínimo
+        segs_bad = copy.deepcopy(segs)
+        for i in (1, 5):
+            for w in stem:
+                if segs_bad[i]["sing_start"] <= w["start"] - 0.02 < segs_bad[i]["sing_end"]:
+                    w["start"] += 1.48
+        q = aq.assess(segs_bad, stem_words=stem)
+        self.assertEqual(sorted(q["severe_lines"]), [1, 3, 5, 7])
+        self.assertTrue(aq.needs_review(q))
 
     def test_empty(self):
         self.assertEqual(aq.assess([])["score"], 0.0)
