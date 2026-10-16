@@ -27,21 +27,26 @@ function wordSeparator(language, word, nextWord) {
     return ' ';
 }
 
+// Um span.word por palavra de lyrics_timed (TV e letra do celular); devolve os spans
+export function fillTimedWords(el, data) {
+    clearLine(el);
+    const backing = backingFlags(data.lyrics_timed.map(item => item.word));
+    return data.lyrics_timed.map((item, idx) => {
+        const span = document.createElement('span');
+        span.className = backing[idx] ? 'word lyrics-backing' : 'word';
+        fillWord(span, item.word, item.romaji, wordSeparator(data.language, item.word, (data.lyrics_timed[idx + 1] || {}).word));
+        el.appendChild(span);
+        return span;
+    });
+}
+
 // Linha do verso: inteira no modo "verso", palavra por palavra (#word-N) no modo "palavra"
 function fillVerseLine(el, data) {
     if (state.syncMode === 'verse') {
         fillLine(el, data.lyrics, data.lyrics_romaji);
         return;
     }
-    clearLine(el);
-    const backing = backingFlags(data.lyrics_timed.map(item => item.word));
-    data.lyrics_timed.forEach((item, idx) => {
-        const span = document.createElement('span');
-        span.className = backing[idx] ? 'word lyrics-backing' : 'word';
-        fillWord(span, item.word, item.romaji, wordSeparator(data.language, item.word, (data.lyrics_timed[idx + 1] || {}).word));
-        span.id = `word-${idx}`;
-        el.appendChild(span);
-    });
+    fillTimedWords(el, data).forEach((span, idx) => { span.id = `word-${idx}`; });
 }
 
 function carouselInner() {

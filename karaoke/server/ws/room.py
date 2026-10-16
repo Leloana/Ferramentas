@@ -62,7 +62,7 @@ def _nickname_taken(room, name: str, sanitized: str) -> bool:
 
 
 async def _send_segment_start(ws: WebSocket, segments: list, idx: int, song_title: str = "",
-                              turn: list | None = None) -> None:
+                              turn: list | None = None, song_time: float | None = None) -> None:
     if not segments or idx < 0 or idx >= len(segments):
         logger.warning(f"Tentativa de enviar segment_start com idx {idx} inválido ou sem segmentos carregados.")
         return
@@ -86,6 +86,7 @@ async def _send_segment_start(ws: WebSocket, segments: list, idx: int, song_titl
         "upcoming_lyrics": upcoming_lyrics,
         "song_title": song_title,
         "turn": turn,  # revezar versos: de quem é este verso (None = todos)
+        "song_time": song_time,  # celular acende a palavra (mobile/mic-words.js)
     })
 
 
@@ -94,16 +95,17 @@ async def _broadcast_segment_start(room, idx: int) -> None:
         logger.warning(f"Tentativa de broadcast_segment_start com idx {idx} inválido ou sem segmentos carregados na sala {room.song_id}.")
         return
     turn = turn_owner(room.segments, room.turn_order, idx)
+    song_time = room.song_clock.now()
     if room.display:
         await _send_segment_start(room.display, room.segments, idx, room.song_title, turn)
     # list(): um celular pode entrar/sair durante o await e mudar o dict
     for ws in list(room.players.values()):
         try:
-            await _send_segment_start(ws, room.segments, idx, room.song_title, turn)
+            await _send_segment_start(ws, room.segments, idx, room.song_title, turn, song_time)
         except Exception as e:
             logger.debug(f"Falha ao enviar segment_start a um celular: {e}")
     if room.mic:
-        await _send_segment_start(room.mic, room.segments, idx, room.song_title, turn)
+        await _send_segment_start(room.mic, room.segments, idx, room.song_title, turn, song_time)
 
 
 async def _send_current_segment(room, websocket) -> None:
@@ -112,7 +114,7 @@ async def _send_current_segment(room, websocket) -> None:
         return
     idx = min(room.current_segment_idx, len(room.segments) - 1) if room.in_game else 0
     turn = turn_owner(room.segments, room.turn_order, idx)
-    await _send_segment_start(websocket, room.segments, idx, room.song_title, turn)
+    await _send_segment_start(websocket, room.segments, idx, room.song_title, turn, room.song_clock.now())
 
 
 async def _cancel_game(room) -> None:
@@ -552,7 +554,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
         await _send_remote_state(room)
 
     try:
-        await websocket.send_json({"type": "singing_state", "active": room.is_singing_active})
+        await websocket.send_json({"type": "singing_state", "active": room.is_singing_active,
+                                   "song_time": room.song_clock.now()})
         if room.song_requests:  # fila da noite já em andamento: quem chega vê
             await websocket.send_json(requests_payload(room))
     except Exception as e:
@@ -649,7 +652,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                                 "resumed": True,
                             })
                             # o singing_state da conexão chegou antes de ele saber que está no jogo
-                            await websocket.send_json({"type": "singing_state", "active": room.is_singing_active})
+                            await websocket.send_json({"type": "singing_state", "active": room.is_singing_active,
+                                                       "song_time": room.song_clock.now()})
                             await _send_current_segment(room, websocket)
                         if room.recording:
                             room.recording.add_event("mic_joined", room.last_client_time, value=name)
@@ -923,7 +927,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
 
                     if is_singing != room.is_singing_active:
                         room.is_singing_active = is_singing
-                        await room.broadcast({"type": "singing_state", "active": is_singing})
+                        await room.broadcast({"type": "singing_state", "active": is_singing, "song_time": current_time})
 
                     _dispatch_due_segments(room, current_time)
 

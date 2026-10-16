@@ -65,6 +65,10 @@ export const state = {
     songRequests: [],         // fila da noite (requests.js)
     autoNextTimer: null,
     micSongs: null,           // músicas prontas para pedir no celular
+    micVerse: null,           // mobile/mic-words.js: verso com palavras acompanhadas
+    micSongAnchor: null,      // { t: tempo da música, at: performance.now() }
+    micServerClock: false,    // servidor manda song_time (senão âncora no singing_state)
+    micWordsFrame: null,
     preview: null,            // trecho tocando na lista (song-preview.js)
     gpuBlock: null,           // nome da música gerando letra (bloqueia o INICIAR)
     annotateOnlyPlayer: null, // celular: anotação só do próprio cantor

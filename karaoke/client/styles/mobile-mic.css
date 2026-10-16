@@ -12,36 +12,27 @@
     background-image: var(--tex-paper);
 }
 
-/* ---------- Cabeçalho ---------- */
+/* ---------- Cabeçalho: uma linha (marca à esquerda, apelido · sala à direita) ---------- */
 .mic-header {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 0.35rem;
-    padding-bottom: 0.75rem;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding-bottom: 0.6rem;
     border-bottom: 4px double var(--ink-2);
-    text-align: center;
 }
-.mic-header__logo { justify-content: center; }
-.mic-header__info { display: flex; flex-direction: column; align-items: center; gap: 0.15rem; width: 100%; }
-.mic-header__kicker {
-    font-family: var(--font-ui);
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--lavender-ink);
-}
-.mic-header__title {
-    max-width: 100%;
+.mic-header__brand { flex-shrink: 0; }
+.mic-header__brand .brand__name { margin: 0; }
+.mic-header__status {
+    min-width: 0;
     margin: 0;
-    font-family: var(--font-ui);
-    font-size: 1.3rem;
-    font-weight: 800;
-    line-height: 1.2;
-    overflow-wrap: anywhere;
+    overflow: hidden;
+    font-size: 0.9rem;
+    color: var(--dim);
+    text-align: right;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
-.mic-header__status { margin: 0; font-size: 0.9rem; color: var(--dim); }
 #mobile-room-id { font-family: var(--font-ui); font-weight: 700; color: var(--ink); }
 
 /* ---------- Corpo ---------- */
@@ -376,7 +367,6 @@
     .mic-button { width: 104px; height: 104px; }
     .mic-button .ico { width: 30px; height: 30px; }
     #mobile-lyrics-container { min-height: 90px; }
-    .mic-header__logo { display: none; }
 }
 #mobile-score-last[data-quality] { background: transparent; font-weight: 800; }
 

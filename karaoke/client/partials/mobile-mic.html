@@ -1,16 +1,13 @@
 <!-- Celular como microfone (?role=mic). Abas no rodapé: Microfone, Sala (comandar a
      TV: música da vez, sala, iniciar, fila, nova música) e Perfil. -->
 <section id="mobile-mic-area" data-tabs="mic-tab">
+    <!-- Uma linha: marca "Microfone" e, à direita, apelido · sala (mic-socket.js setMicStatus) -->
     <header class="mic-header">
-        <div class="brand brand--sm mic-header__logo">
+        <div class="brand brand--sm mic-header__brand">
             <img class="brand__mark" src="/assets/art/logo-mark.svg" alt="" width="28" height="28">
-            <span class="brand__name">Karaoke</span>
+            <h1 class="brand__name">Microfone</h1>
         </div>
-        <div class="mic-header__info">
-            <span class="mic-header__kicker">Microfone</span>
-            <h1 id="mobile-song-title" class="mic-header__title">Conectando...</h1>
-            <p id="mobile-status-text" class="mic-header__status">Sala <span id="mobile-room-id">0000</span></p>
-        </div>
+        <p id="mobile-status-text" class="mic-header__status">Sala <span id="mobile-room-id">0000</span></p>
     </header>
 
     <div class="mic-body">

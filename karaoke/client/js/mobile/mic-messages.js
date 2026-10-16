@@ -16,6 +16,8 @@ import { remindMicIfOff, setMicLocked, reportMicState } from './mobile-mic-view.
 import { keepScreenOn } from '../core/wake-lock.js';
 import { setReactionsVisible } from './reactions-bar.js';
 import { COMBO_MIN } from '../game/combo.js';
+import { fillTimedWords } from '../game/lyrics-carousel.js';
+import { followVerse, stopFollowing, onSingingState } from './mic-words.js';
 
 function setRegisterButton(busy) {
     if (!dom.btnMobileRegister) return;
@@ -31,6 +33,7 @@ function showNameInStatus(name) {
 function setLyricsNote(html) {
     const lyrText = document.getElementById('mobile-lyrics-text');
     if (!lyrText) return;
+    stopFollowing();
     lyrText.classList.remove('lyrics-line');
     lyrText.innerHTML = html;
     const next = document.getElementById('mobile-lyrics-next');
@@ -140,12 +143,19 @@ const MIC_HANDLERS = {
     singing_state(data) {
         state.isSingingActive = state.isActiveInGame ? data.active : false;
         setLyricsLive(data.active);
+        onSingingState(data);
     },
     segment_start(data) {
         setFinalLayout(false);
         const lyrText = document.getElementById('mobile-lyrics-text');
         if (lyrText) {
-            fillLine(lyrText, data.lyrics, data.lyrics_romaji);
+            // palavra por palavra (acende como na TV); sem tempos, a linha inteira
+            if (data.lyrics_timed && data.lyrics_timed.length) {
+                followVerse(data, fillTimedWords(lyrText, data));
+            } else {
+                fillLine(lyrText, data.lyrics, data.lyrics_romaji);
+                followVerse(data, null);
+            }
             // verso comprido (rap): letra menor e a caixa rola, em vez de estourar a tela
             lyrText.classList.toggle('is-long', (data.lyrics || '').length > 70);
             const box = lyrText.parentElement;
@@ -170,11 +180,6 @@ const MIC_HANDLERS = {
             if (lyricsBox) lyricsBox.classList.toggle('is-other-turn', !!turn && !mine);
         }
         setLyricsScriptAvailable(data.lyrics_romaji);
-
-        const songTitle = document.getElementById('mobile-song-title');
-        if (songTitle && data.song_title) {
-            songTitle.innerText = data.song_title;
-        }
     },
     segment_result(data) {
         // A nota chega quando o verso seguinte já começou: vai numa linha
@@ -214,6 +219,7 @@ const MIC_HANDLERS = {
         setLyricsNote(`<span class="mic-note">Partida encerrada</span>Aguardando a TV`);
     },
     game_over(data) {
+        stopFollowing();
         setReactionsVisible(false);
         setMicLocked(false);
         showMicGameOver(data);

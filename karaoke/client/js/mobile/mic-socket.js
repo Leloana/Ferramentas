@@ -79,7 +79,6 @@ export function connectMobileMicrophoneWebSocket() {
     ws.onopen = () => {
         if (state.mobileWs !== ws) return;
         state.micLastServerAt = Date.now();
-        document.getElementById('mobile-song-title').innerText = "Karaoke";
         setMicStatus(`Sala <span class="mic-status__name">${escapeHtml(myRoom)}</span>`);
     };
 
