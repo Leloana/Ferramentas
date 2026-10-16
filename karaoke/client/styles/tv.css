@@ -373,7 +373,8 @@ html.is-tv.tv-verse-anim .carousel-line { transition: opacity 0.3s ease-out !imp
 
 /* Fim de jogo na TV: o cartão e Cantar novamente (ouvir a apresentação fica no
    celular), num quadro que cabe na tela sem rolar. */
-html.is-tv .game-over-card { position: relative; overflow: visible; padding: 1rem 1.4rem 1rem; }
+html.is-tv .game-over-card { position: relative; overflow: visible; padding: 3.6rem 1.4rem 1rem; }
+html.is-tv .game-over-card[data-cards="1"] { padding: 3vh 2.5vw; }
 html.is-tv .game-over-share { margin-bottom: 0.9rem; }
 html.is-tv .game-over-card[data-cards="1"] .game-over-share { margin-bottom: 0; }
 

@@ -70,11 +70,10 @@ function el(tag, className, text) {
     return node;
 }
 
-// Mostra o lápis só quando a partida foi gravada (o servidor manda o id no game_over).
+// Gravação da última partida (o servidor manda o id no game_over). O lápis da tela
+// final da TV saiu: anota-se pelo celular ("Anotar meus versos") e pelo perfil.
 export function showAnnotationButton(recordingId) {
     state.annotateRecordingId = recordingId || null;
-    const btn = document.getElementById('btn-annotate-verses');
-    if (btn) btn.hidden = !state.annotateRecordingId;
 }
 
 function renderList(data, player) {
@@ -230,9 +229,7 @@ async function saveAnnotation() {
 }
 
 export function initAnnotation() {
-    const trigger = document.getElementById('btn-annotate-verses');
-    if (!trigger) return;
-    trigger.addEventListener('click', openAnnotation);
+    if (!document.getElementById('annotate-modal')) return;
     document.getElementById('btn-annotate-close').addEventListener('click', () => closeModal('annotate-modal'));
     document.getElementById('btn-annotate-save').addEventListener('click', saveAnnotation);
     document.getElementById('annotate-player').addEventListener('change', (e) => {

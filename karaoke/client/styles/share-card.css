@@ -462,10 +462,11 @@ html.is-tv .card-swatch { width: 2.8rem; height: 2.8rem; margin: 0.35rem; }
 .share-card[data-style="vidro"] .share-card__meter { margin-top: calc(var(--u) * 3); }
 
 /* ---------- Fim de jogo (game-over.js) ----------
-   Tela estreita ou vários cantores: cartão(ões), destaques numa linha, estilos,
-   próxima da fila e o botão, um embaixo do outro. */
-.game-over-actions { display: flex; gap: 0.6rem; width: 100%; }
-.game-over-actions #btn-restart-game { flex: 1; }
+   Tela estreita ou vários cantores: cartão(ões), destaques numa linha, estilos e
+   próxima da fila, um embaixo do outro; a seta de voltar no canto, por cima. */
+.game-over-card { position: relative; padding-top: 3.6rem; }
+/* id: o foco da TV (tv.css, html.using-keys :focus) põe position: relative e a seta caía */
+#btn-restart-game.game-over-back { position: absolute; top: 0.9rem; left: 0.9rem; z-index: 6; }
 .game-over-record { display: flex; flex-wrap: wrap; justify-content: center; margin: 0.2rem 0 0.8rem; color: var(--lavender-ink); font-weight: 700; }
 .game-over-record[hidden] { display: none; }
 .game-over-stat { margin: 0 0.7rem; }
@@ -475,8 +476,8 @@ html.is-tv .card-swatch { width: 2.8rem; height: 2.8rem; margin: 0.35rem; }
 .game-over-styles .card-swatches { margin-top: 0; }
 
 /* Tela larga com um cantor: o cartão grande no meio, os destaques à esquerda e
-   botão, próxima da fila e estilos à direita. As colunas 1fr mantêm o cartão no
-   centro mesmo com um lado vazio. */
+   próxima da fila e estilos centrados à direita. As colunas 1fr mantêm o cartão
+   no centro mesmo com um lado vazio. */
 @media (min-width: 900px) and (min-aspect-ratio: 4/3) {
     .game-over-card[data-cards="1"] {
         display: grid;
@@ -526,16 +527,16 @@ html.is-tv .card-swatch { width: 2.8rem; height: 2.8rem; margin: 0.35rem; }
     }
     .game-over-card[data-cards="1"] .game-over-side {
         grid-area: side;
-        justify-self: start;
+        justify-self: center;
+        align-items: center;
         width: auto;
         max-width: 100%;
     }
-    .game-over-card[data-cards="1"] .game-over-styles { order: 2; margin-top: 3vh; }
-    /* 3x3 quadradinhos, alinhados com o botão */
-    .game-over-card[data-cards="1"] .card-swatches { justify-content: flex-start; width: 10.5rem; margin: 0; }
+    .game-over-card[data-cards="1"] .game-over-styles { order: 2; }
+    /* 3x3 quadradinhos */
+    .game-over-card[data-cards="1"] .card-swatches { justify-content: center; width: 10.5rem; margin: 0; }
     html.is-tv .game-over-card[data-cards="1"] .card-swatches { width: 12.6rem; }
     .game-over-card[data-cards="1"] .game-over-next { margin-bottom: 3vh; }
-    .game-over-card[data-cards="1"] #btn-restart-game { min-height: 9vh; padding: 0 2.4vw; font-size: 2.4vh; }
 }
 @supports (width: min(1px, 2px)) {
     @media (min-width: 900px) and (min-aspect-ratio: 4/3) {

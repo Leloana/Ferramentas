@@ -297,20 +297,6 @@
     text-align: center;
 }
 /* ---------- Anotação dos versos (gabarito do score) ---------- */
-.annotate-trigger {
-    position: absolute;
-    right: 0.9rem;
-    bottom: 0.7rem;
-    padding: 0.25rem;
-    background: none;
-    border: none;
-    color: var(--dim);
-    font-size: 0.85rem;
-    line-height: 1;
-    opacity: 0.18;
-    cursor: pointer;
-}
-.annotate-trigger:hover, .annotate-trigger:focus-visible { opacity: 0.8; }
 .annotate-modal { z-index: 1100; }
 .annotate-card { display: flex; flex-direction: column; width: min(720px, 100%); max-height: 90vh; padding: 1.25rem 1.5rem; text-align: left; }
 .annotate-header { display: flex; align-items: center; gap: 0.75rem; }
