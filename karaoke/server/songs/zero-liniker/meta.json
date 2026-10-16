@@ -1,0 +1,273 @@
+{
+    "meta": {
+        "title": "Zero",
+        "artist": "Liniker",
+        "language": "pt",
+        "slug": "zero-liniker"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=J_Mhx5hLZN8",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "A gente fica mordido, num fica?\r\nDente, lábio, teu jeito de olhar\r\nMe lembro do beijo em teu pescoço\r\nDo meu toque grosso, com medo de te transpassar\r\n\r\nA gente fica mordido, não fica?\r\nDente, lábio, teu jeito de olhar\r\nMe lembro do beijo em teu pescoço\r\nDo meu toque grosso, com medo de te transpassar\r\n\r\nA gente fica mordido, num fica?\r\nDente, lábio, teu jeito de olhar\r\nMe lembro do beijo em teu pescoço\r\nDo meu toque grosso, com medo de te transpassar\r\n\r\nPeguei até o que era mais normal de nós\r\nE coube tudo na malinha de mão do meu coração\r\nPeguei até o que era mais normal de nós\r\nE coube tudo na malinha de mão do meu coração\r\n\r\nA gente fica mordido, não fica?\r\nDente, lábio, teu jeito de olhar\r\nMe lembro do beijo em teu pescoço\r\nDo meu toque grosso, com medo de te transpassar\r\n\r\nA gente fica mordido, num fica?\r\nDente, lábio, teu jeito de olhar\r\nMe lembro do beijo em teu pescoço\r\nDo meu toque grosso, com medo de te transpassar\r\n\r\nPeguei até o que era mais normal de nós\r\nE coube tudo na malinha de mão do meu coração\r\nPeguei até o que era mais normal de nós, hey\r\nE coube tudo na malinha de mão do meu coração, uh!\r\n\r\nDeixa eu bagunçar você, deixa eu bagunçar você\r\nDeixa eu bagunçar você, deixa eu bagunçar você\r\nDeixa eu bagunçar você, deixa eu bagunçar você\r\nDeixa eu bagunçar você, deixa eu bagunçar você\r\n\r\nA gente fica mordido, num fica?"
+    },
+    "album": {
+        "name": "Remonta",
+        "year": 2016,
+        "track": 12,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -14.85,
+        "gain_db": -1.15
+    },
+    "alignment_quality": {
+        "score": 74.6,
+        "flags": [
+            "palavras empilhadas (12)",
+            "4% das palavras no silêncio da voz",
+            "versos com mais de 12 s (3)",
+            "versos com palavras espalhadas por igual (3)",
+            "versos fora do tempo do canto (4)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "espalhadas por igual",
+                    "longo",
+                    "no silêncio"
+                ],
+                "stem_offset": 19.04
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "espalhadas por igual",
+                    "longo",
+                    "no silêncio"
+                ],
+                "stem_offset": 21.84
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "espalhadas por igual"
+                ],
+                "stem_offset": 2.72
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.36
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ]
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.15
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [
+                    "fora do ritmo",
+                    "longo"
+                ],
+                "stem_offset": -0.12
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            }
+        ],
+        "metrics": {
+            "words": 248,
+            "lines": 32,
+            "stacked": 12,
+            "short": 0,
+            "past_end": 0,
+            "silence": 9,
+            "long_verses": 3,
+            "overlaps": 0,
+            "uniform_lines": 3,
+            "stem_checked_lines": 31,
+            "displaced_lines": 4
+        },
+        "severe_lines": [
+            4,
+            16,
+            25,
+            27,
+            28,
+            30
+        ]
+    },
+    "needs_review": true
+}

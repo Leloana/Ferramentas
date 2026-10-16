@@ -24,116 +24,139 @@
         "source": "itunes"
     },
     "alignment_quality": {
-        "score": 96.6,
+        "score": 93.8,
         "flags": [
             "palavras empilhadas (10)",
-            "2% das palavras no silêncio da voz"
+            "2% das palavras no silêncio da voz",
+            "versos com palavras espalhadas por igual (1)",
+            "versos fora do tempo do canto (1)"
         ],
         "lines": [
             {
                 "idx": 0,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 1,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.3
             },
             {
                 "idx": 2,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 3,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.05
             },
             {
                 "idx": 4,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.06
             },
             {
                 "idx": 5,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 6,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 7,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 8,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.06
             },
             {
                 "idx": 9,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.14
             },
             {
                 "idx": 10,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.05
             },
             {
                 "idx": 11,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 12,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 13,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 14,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.0
             },
             {
                 "idx": 15,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 16,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.0
             },
             {
                 "idx": 17,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 18,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.09
             },
             {
                 "idx": 19,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 20,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 21,
@@ -143,76 +166,94 @@
             {
                 "idx": 22,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 23,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 24,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 25,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 26,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 27,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 28,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 29,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 30,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 31,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
-                ]
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": 0.15
             },
             {
                 "idx": 32,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
-                ]
+                    "deslocado",
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": 0.81
             },
             {
                 "idx": 33,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.13
             },
             {
                 "idx": 34,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.18
             },
             {
                 "idx": 35,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "espalhadas por igual"
+                ]
             },
             {
                 "idx": 36,
@@ -222,49 +263,58 @@
             {
                 "idx": 37,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 38,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 39,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 40,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 41,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.05
             },
             {
                 "idx": 42,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.05
             },
             {
                 "idx": 43,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.07
             },
             {
                 "idx": 44,
                 "confidence": null,
                 "flags": [
                     "no silêncio"
-                ]
+                ],
+                "stem_offset": -0.04
             },
             {
                 "idx": 45,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.07
             },
             {
                 "idx": 46,
@@ -279,12 +329,14 @@
                 "confidence": null,
                 "flags": [
                     "no silêncio"
-                ]
+                ],
+                "stem_offset": -0.03
             },
             {
                 "idx": 48,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             }
         ],
         "metrics": {
@@ -295,8 +347,16 @@
             "past_end": 0,
             "silence": 6,
             "long_verses": 0,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 1,
+            "stem_checked_lines": 45,
+            "displaced_lines": 1
+        },
+        "severe_lines": [
+            31,
+            32,
+            35
+        ]
     },
     "needs_review": false
 }

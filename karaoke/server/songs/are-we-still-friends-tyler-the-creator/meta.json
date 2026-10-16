@@ -17,12 +17,13 @@
         "gain_db": -0.39
     },
     "alignment_quality": {
-        "score": 90.5,
+        "score": 88.9,
         "flags": [
             "palavras empilhadas (26)",
             "palavras com menos de 80 ms (1)",
             "palavras depois do fim do verso (1)",
-            "versos com mais de 12 s (1)"
+            "versos com mais de 12 s (1)",
+            "versos com palavras espalhadas por igual (1)"
         ],
         "lines": [
             {
@@ -39,7 +40,8 @@
                 "idx": 2,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "empilhadas",
+                    "grudadas"
                 ]
             },
             {
@@ -50,12 +52,14 @@
             {
                 "idx": 4,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.08
             },
             {
                 "idx": 5,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 6,
@@ -65,54 +69,65 @@
             {
                 "idx": 7,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 8,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.01
             },
             {
                 "idx": 9,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
-                ]
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": 0.55
             },
             {
                 "idx": 10,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 11,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 12,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.07
             },
             {
                 "idx": 13,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.02
             },
             {
                 "idx": 14,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 15,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 16,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.1
             },
             {
                 "idx": 17,
@@ -133,7 +148,8 @@
                 "idx": 20,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "empilhadas",
+                    "grudadas"
                 ]
             },
             {
@@ -147,50 +163,60 @@
                 "idx": 22,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "empilhadas",
+                    "grudadas"
                 ]
             },
             {
                 "idx": 23,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
-                ]
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.46
             },
             {
                 "idx": 24,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.2
             },
             {
                 "idx": 25,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.0
             },
             {
                 "idx": 26,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.0
             },
             {
                 "idx": 27,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 28,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 29,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.01
             },
             {
                 "idx": 30,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.01
             },
             {
                 "idx": 31,
@@ -198,7 +224,8 @@
                 "flags": [
                     "fora do verso",
                     "palavras curtas"
-                ]
+                ],
+                "stem_offset": -0.11
             },
             {
                 "idx": 32,
@@ -208,7 +235,8 @@
             {
                 "idx": 33,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 34,
@@ -224,6 +252,7 @@
                 "idx": 36,
                 "confidence": null,
                 "flags": [
+                    "espalhadas por igual",
                     "longo"
                 ]
             }
@@ -236,10 +265,21 @@
             "past_end": 1,
             "silence": 0,
             "long_verses": 1,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 1,
+            "stem_checked_lines": 22,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            2,
+            9,
+            20,
+            22,
+            23,
+            36
+        ]
     },
-    "needs_review": false,
+    "needs_review": true,
     "album": {
         "name": "IGOR",
         "year": 2019,

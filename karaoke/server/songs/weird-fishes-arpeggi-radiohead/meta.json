@@ -17,24 +17,30 @@
         "gain_db": -3.76
     },
     "alignment_quality": {
-        "score": 95.4,
+        "score": 90.7,
         "flags": [
             "5% das palavras no silêncio da voz",
-            "versos com mais de 12 s (1)"
+            "versos com mais de 12 s (1)",
+            "versos com palavras espalhadas por igual (1)",
+            "versos fora do tempo do canto (1)"
         ],
         "lines": [
             {
                 "idx": 0,
                 "confidence": null,
                 "flags": [
+                    "deslocado",
+                    "espalhadas por igual",
                     "longo",
                     "no silêncio"
-                ]
+                ],
+                "stem_offset": 18.8
             },
             {
                 "idx": 1,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.02
             },
             {
                 "idx": 2,
@@ -51,17 +57,20 @@
             {
                 "idx": 4,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 5,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.05
             },
             {
                 "idx": 6,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 7,
@@ -83,17 +92,20 @@
             {
                 "idx": 10,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.05
             },
             {
                 "idx": 11,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.06
             },
             {
                 "idx": 12,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.1
             },
             {
                 "idx": 13,
@@ -108,7 +120,8 @@
             {
                 "idx": 15,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 16,
@@ -123,7 +136,8 @@
             {
                 "idx": 18,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 19,
@@ -133,7 +147,8 @@
             {
                 "idx": 20,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.17
             },
             {
                 "idx": 21,
@@ -158,7 +173,8 @@
             {
                 "idx": 25,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 26,
@@ -168,12 +184,14 @@
             {
                 "idx": 27,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.13
             },
             {
                 "idx": 28,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.06
             },
             {
                 "idx": 29,
@@ -189,8 +207,14 @@
             "past_end": 0,
             "silence": 6,
             "long_verses": 1,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 1,
+            "stem_checked_lines": 14,
+            "displaced_lines": 1
+        },
+        "severe_lines": [
+            0
+        ]
     },
     "needs_review": false,
     "album": {

@@ -13,50 +13,60 @@
         "plain_lyrics": "O gato preto cruzou a estrada\r\nPassou por debaixo da escada\r\nE lá no fundo azul\r\nNa noite da floresta\r\nA lua iluminou\r\nA dança, a roda, a festa...\r\n\r\nVira! Vira! Vira!\r\nVira! Vira!\r\nVira Homem\r\nVira! Vira!\r\nVira! Vira!\r\nLobisomem\r\nVira! Vira! Vira!\r\nVira! Vira!\r\nVira Homem\r\nVira! Vira!...\r\n\r\nBailam corujas e pirilampos\r\nEntre os sacis e as fadas\r\nE lá no fundo azul\r\nNa noite da floresta\r\nA lua iluminou\r\nA dança, a roda, a festa...\r\n\r\nVira! Vira! Vira!\r\nVira! Vira!\r\nVira Homem\r\nVira! Vira!\r\nVira! Vira!\r\nLobisomem\r\nVira! Vira! Vira!\r\nVira! Vira!\r\nVira Homem\r\nVira! Vira!...\r\n\r\nBailam corujas e pirilampos\r\nEntre os sacis e as fadas\r\nE lá no fundo azul\r\nNa noite da floresta\r\nA lua iluminou\r\nA dança, a roda, a festa...\r\n\r\nVira! Vira! Vira!\r\nVira! Vira!\r\nVira Homem\r\nVira! Vira!\r\nVira! Vira!\r\nLobisomem\r\nVira! Vira! Vira!\r\nVira! Vira!\r\nVira Homem\r\nVira! Vira!..."
     },
     "alignment_quality": {
-        "score": 89.9,
+        "score": 81.6,
         "flags": [
             "palavras empilhadas (3)",
             "palavras com menos de 80 ms (7)",
             "palavras depois do fim do verso (3)",
             "3% das palavras no silêncio da voz",
             "versos com mais de 12 s (1)",
-            "versos sobrepostos (4)"
+            "versos sobrepostos (4)",
+            "versos fora do tempo do canto (5)"
         ],
         "lines": [
             {
                 "idx": 0,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 1,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.05
             },
             {
                 "idx": 2,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 3,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 4,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 5,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.05
             },
             {
                 "idx": 6,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 1.76
             },
             {
                 "idx": 7,
@@ -96,7 +106,10 @@
             {
                 "idx": 12,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 1.01
             },
             {
                 "idx": 13,
@@ -122,37 +135,46 @@
             {
                 "idx": 16,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 17,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 18,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 19,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 20,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.05
             },
             {
                 "idx": 21,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.05
             },
             {
                 "idx": 22,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 1.91
             },
             {
                 "idx": 23,
@@ -185,7 +207,8 @@
             {
                 "idx": 28,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.21
             },
             {
                 "idx": 29,
@@ -210,37 +233,46 @@
             {
                 "idx": 32,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 33,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 34,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 35,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 36,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 37,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.05
             },
             {
                 "idx": 38,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 1.85
             },
             {
                 "idx": 39,
@@ -272,7 +304,10 @@
             {
                 "idx": 44,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 1.36
             },
             {
                 "idx": 45,
@@ -298,10 +333,20 @@
             "past_end": 3,
             "silence": 4,
             "long_verses": 1,
-            "overlaps": 4
-        }
+            "overlaps": 4,
+            "uniform_lines": 0,
+            "stem_checked_lines": 24,
+            "displaced_lines": 5
+        },
+        "severe_lines": [
+            6,
+            12,
+            22,
+            38,
+            44
+        ]
     },
-    "needs_review": false,
+    "needs_review": true,
     "album": {
         "name": "Sábado À Noite",
         "year": 1992,

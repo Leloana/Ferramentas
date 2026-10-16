@@ -17,14 +17,15 @@
         "gain_db": -2.51
     },
     "alignment_quality": {
-        "score": 93.4,
+        "score": 92.3,
         "flags": [
             "palavras empilhadas (14)",
             "palavras com menos de 80 ms (1)",
             "palavras depois do fim do verso (1)",
             "1% das palavras no silêncio da voz",
             "versos com mais de 12 s (2)",
-            "versos sobrepostos (2)"
+            "versos sobrepostos (2)",
+            "versos com palavras espalhadas por igual (1)"
         ],
         "lines": [
             {
@@ -96,7 +97,8 @@
                 "idx": 13,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "empilhadas",
+                    "grudadas"
                 ]
             },
             {
@@ -183,6 +185,7 @@
                 "idx": 30,
                 "confidence": null,
                 "flags": [
+                    "espalhadas por igual",
                     "longo"
                 ]
             },
@@ -200,7 +203,8 @@
                 "idx": 33,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "empilhadas",
+                    "grudadas"
                 ]
             },
             {
@@ -217,7 +221,8 @@
                 "idx": 36,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "empilhadas",
+                    "grudadas"
                 ]
             },
             {
@@ -265,6 +270,7 @@
                 "confidence": null,
                 "flags": [
                     "empilhadas",
+                    "grudadas",
                     "sobreposto"
                 ]
             },
@@ -320,8 +326,16 @@
             "past_end": 1,
             "silence": 2,
             "long_verses": 2,
-            "overlaps": 2
-        }
+            "overlaps": 2,
+            "uniform_lines": 1
+        },
+        "severe_lines": [
+            13,
+            30,
+            33,
+            36,
+            44
+        ]
     },
     "needs_review": false,
     "album": {

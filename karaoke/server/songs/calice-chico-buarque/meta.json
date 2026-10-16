@@ -21,82 +21,98 @@
             {
                 "idx": 0,
                 "confidence": 0.627,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.11
             },
             {
                 "idx": 1,
                 "confidence": 0.645,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.18
             },
             {
                 "idx": 2,
                 "confidence": 0.684,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.17
             },
             {
                 "idx": 3,
                 "confidence": 0.718,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.17
             },
             {
                 "idx": 4,
                 "confidence": 0.564,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.11
             },
             {
                 "idx": 5,
                 "confidence": 0.634,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.17
             },
             {
                 "idx": 6,
                 "confidence": 0.535,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.17
             },
             {
                 "idx": 7,
                 "confidence": 0.926,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.19
             },
             {
                 "idx": 8,
                 "confidence": 0.699,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.15
             },
             {
                 "idx": 9,
                 "confidence": 0.841,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.05
             },
             {
                 "idx": 10,
                 "confidence": 0.719,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.08
             },
             {
                 "idx": 11,
                 "confidence": 0.866,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.14
             },
             {
                 "idx": 12,
                 "confidence": 0.724,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.09
             },
             {
                 "idx": 13,
                 "confidence": 0.854,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.14
             },
             {
                 "idx": 14,
                 "confidence": 0.752,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.35
             },
             {
                 "idx": 15,
                 "confidence": 0.769,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.14
             },
             {
                 "idx": 16,
@@ -108,62 +124,74 @@
             {
                 "idx": 17,
                 "confidence": 0.656,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.16
             },
             {
                 "idx": 18,
                 "confidence": 0.485,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.11
             },
             {
                 "idx": 19,
                 "confidence": 0.688,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.1
             },
             {
                 "idx": 20,
                 "confidence": 0.938,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.15
             },
             {
                 "idx": 21,
                 "confidence": 0.997,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.1
             },
             {
                 "idx": 22,
                 "confidence": 0.732,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.08
             },
             {
                 "idx": 23,
                 "confidence": 0.929,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.14
             },
             {
                 "idx": 24,
                 "confidence": 0.881,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.08
             },
             {
                 "idx": 25,
                 "confidence": 0.712,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.13
             },
             {
                 "idx": 26,
                 "confidence": 0.847,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.07
             },
             {
                 "idx": 27,
                 "confidence": 0.689,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.12
             },
             {
                 "idx": 28,
                 "confidence": 0.924,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.09
             },
             {
                 "idx": 29,
@@ -175,62 +203,74 @@
             {
                 "idx": 30,
                 "confidence": 0.648,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.16
             },
             {
                 "idx": 31,
                 "confidence": 0.614,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.15
             },
             {
                 "idx": 32,
                 "confidence": 0.587,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.08
             },
             {
                 "idx": 33,
                 "confidence": 0.895,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.18
             },
             {
                 "idx": 34,
                 "confidence": 0.656,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.1
             },
             {
                 "idx": 35,
                 "confidence": 0.676,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.11
             },
             {
                 "idx": 36,
                 "confidence": 0.567,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.13
             },
             {
                 "idx": 37,
                 "confidence": 0.865,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.16
             },
             {
                 "idx": 38,
                 "confidence": 0.545,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.11
             },
             {
                 "idx": 39,
                 "confidence": 0.626,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.14
             },
             {
                 "idx": 40,
                 "confidence": 0.724,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.07
             },
             {
                 "idx": 41,
                 "confidence": 0.966,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.13
             },
             {
                 "idx": 42,
@@ -242,62 +282,74 @@
             {
                 "idx": 43,
                 "confidence": 0.472,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.13
             },
             {
                 "idx": 44,
                 "confidence": 0.56,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.12
             },
             {
                 "idx": 45,
                 "confidence": 0.896,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.11
             },
             {
                 "idx": 46,
                 "confidence": 0.402,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.17
             },
             {
                 "idx": 47,
                 "confidence": 0.724,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.14
             },
             {
                 "idx": 48,
                 "confidence": 0.703,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.12
             },
             {
                 "idx": 49,
                 "confidence": 0.991,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.08
             },
             {
                 "idx": 50,
                 "confidence": 0.904,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.1
             },
             {
                 "idx": 51,
                 "confidence": 0.765,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.09
             },
             {
                 "idx": 52,
                 "confidence": 0.763,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.19
             },
             {
                 "idx": 53,
                 "confidence": 0.556,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.11
             },
             {
                 "idx": 54,
                 "confidence": 0.603,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.07
             }
         ],
         "metrics": {
@@ -310,8 +362,12 @@
             "past_end": 0,
             "silence": 0,
             "long_verses": 0,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 52,
+            "displaced_lines": 0
+        },
+        "severe_lines": []
     },
     "needs_review": false,
     "album": {

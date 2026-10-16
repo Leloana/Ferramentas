@@ -22,52 +22,62 @@
         "gain_db": 0.8
     },
     "alignment_quality": {
-        "score": 97.2,
+        "score": 90.8,
         "flags": [
             "palavras empilhadas (6)",
             "palavras com menos de 80 ms (1)",
-            "palavras depois do fim do verso (1)"
+            "palavras depois do fim do verso (1)",
+            "versos com palavras espalhadas por igual (3)",
+            "versos fora do tempo do canto (1)"
         ],
         "lines": [
             {
                 "idx": 0,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 1,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 2,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 3,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.05
             },
             {
                 "idx": 4,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 5,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 6,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 7,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.05
             },
             {
                 "idx": 8,
@@ -77,17 +87,21 @@
             {
                 "idx": 9,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.09
             },
             {
                 "idx": 10,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 11,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "espalhadas por igual"
+                ]
             },
             {
                 "idx": 12,
@@ -97,17 +111,20 @@
             {
                 "idx": 13,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.02
             },
             {
                 "idx": 14,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 15,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.14
             },
             {
                 "idx": 16,
@@ -118,7 +135,8 @@
                 "idx": 17,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "empilhadas",
+                    "grudadas"
                 ]
             },
             {
@@ -129,44 +147,54 @@
             {
                 "idx": 19,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 20,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.0
             },
             {
                 "idx": 21,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 22,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 23,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 24,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "empilhadas",
+                    "grudadas"
                 ]
             },
             {
                 "idx": 25,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "espalhadas por igual"
+                ]
             },
             {
                 "idx": 26,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "espalhadas por igual"
+                ]
             },
             {
                 "idx": 27,
@@ -191,12 +219,14 @@
             {
                 "idx": 31,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.0
             },
             {
                 "idx": 32,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.17
             },
             {
                 "idx": 33,
@@ -224,22 +254,28 @@
             {
                 "idx": 37,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.19
             },
             {
                 "idx": 38,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -1.14
             },
             {
                 "idx": 39,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 40,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.0
             }
         ],
         "metrics": {
@@ -250,10 +286,21 @@
             "past_end": 1,
             "silence": 0,
             "long_verses": 0,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 3,
+            "stem_checked_lines": 24,
+            "displaced_lines": 1
+        },
+        "severe_lines": [
+            11,
+            17,
+            24,
+            25,
+            26,
+            38
+        ]
     },
-    "needs_review": false,
+    "needs_review": true,
     "album": {
         "name": "Little Electric Chicken Heart",
         "year": 2019,

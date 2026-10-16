@@ -24,61 +24,73 @@
         "source": "itunes"
     },
     "alignment_quality": {
-        "score": 80.0,
+        "score": 72.6,
         "flags": [
             "palavras empilhadas (34)",
             "palavras com menos de 80 ms (10)",
             "palavras depois do fim do verso (9)",
             "versos com mais de 12 s (1)",
-            "versos sobrepostos (2)"
+            "versos sobrepostos (2)",
+            "versos com palavras espalhadas por igual (1)",
+            "versos fora do tempo do canto (2)"
         ],
         "lines": [
             {
                 "idx": 0,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
-                ]
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.05
             },
             {
                 "idx": 1,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 2,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 3,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 4,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 5,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.05
             },
             {
                 "idx": 6,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 7,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.0
             },
             {
                 "idx": 8,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 9,
@@ -88,12 +100,14 @@
             {
                 "idx": 10,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 11,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 12,
@@ -105,7 +119,8 @@
             {
                 "idx": 13,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.18
             },
             {
                 "idx": 14,
@@ -115,14 +130,19 @@
             {
                 "idx": 15,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 3.39
             },
             {
                 "idx": 16,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
-                ]
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": 0.06
             },
             {
                 "idx": 17,
@@ -130,6 +150,7 @@
                 "flags": [
                     "empilhadas",
                     "fora do verso",
+                    "grudadas",
                     "palavras curtas",
                     "sobreposto"
                 ]
@@ -145,22 +166,29 @@
             {
                 "idx": 19,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 20,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "deslocado",
+                    "espalhadas por igual"
+                ],
+                "stem_offset": -1.14
             },
             {
                 "idx": 21,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 22,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.01
             },
             {
                 "idx": 23,
@@ -172,7 +200,8 @@
             {
                 "idx": 24,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 25,
@@ -183,7 +212,8 @@
                 "idx": 26,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "empilhadas",
+                    "grudadas"
                 ]
             },
             {
@@ -192,7 +222,8 @@
                 "flags": [
                     "fora do verso",
                     "palavras curtas"
-                ]
+                ],
+                "stem_offset": -0.02
             },
             {
                 "idx": 28,
@@ -200,15 +231,18 @@
                 "flags": [
                     "empilhadas",
                     "fora do verso",
+                    "grudadas",
                     "palavras curtas"
-                ]
+                ],
+                "stem_offset": -0.01
             },
             {
                 "idx": 29,
                 "confidence": null,
                 "flags": [
                     "longo"
-                ]
+                ],
+                "stem_offset": -0.02
             }
         ],
         "metrics": {
@@ -219,8 +253,20 @@
             "past_end": 9,
             "silence": 0,
             "long_verses": 1,
-            "overlaps": 2
-        }
+            "overlaps": 2,
+            "uniform_lines": 1,
+            "stem_checked_lines": 22,
+            "displaced_lines": 2
+        },
+        "severe_lines": [
+            0,
+            15,
+            16,
+            17,
+            20,
+            26,
+            28
+        ]
     },
-    "needs_review": false
+    "needs_review": true
 }

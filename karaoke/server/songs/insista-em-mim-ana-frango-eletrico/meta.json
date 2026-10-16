@@ -13,53 +13,63 @@
         "plain_lyrics": "Eu amo sua voz\nSeu quadril e sua boca em mim\nSeus pais, seus irmãos\nTudo que faz você feliz\nEu amo suas mãos\nQue desenham seu ex\nEu amo seus pés\nQue viajam sem mim\nPegue o que quiser de mim\nMe plante agora em seu jardim\nE se eu murchar, me regue\nInsista em mim\nEu amo sua voz\nSeu quadril e sua boca em mim\nSeus pais, seus irmãos\nTudo que faz você feliz\nEu amo suas mãos\nQue desenham seu ex\nEu amo seus pés\nQue viajam sem mim\nPegue o que quiser de mim\nMe plante agora em seu jardim\nE se eu murchar, me regue\nInsista em mim"
     },
     "alignment_quality": {
-        "score": 88.9,
+        "score": 82.5,
         "flags": [
             "palavras empilhadas (15)",
-            "2% das palavras no silêncio da voz"
+            "2% das palavras no silêncio da voz",
+            "versos fora do tempo do canto (2)"
         ],
         "lines": [
             {
                 "idx": 0,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 1,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 2,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.0
             },
             {
                 "idx": 3,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.04
             },
             {
                 "idx": 4,
                 "confidence": null,
                 "flags": [
+                    "deslocado",
                     "no silêncio"
-                ]
+                ],
+                "stem_offset": -1.89
             },
             {
                 "idx": 5,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.07
             },
             {
                 "idx": 6,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 7,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 8,
@@ -71,19 +81,22 @@
             {
                 "idx": 9,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.21
             },
             {
                 "idx": 10,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "empilhadas",
+                    "grudadas"
                 ]
             },
             {
                 "idx": 11,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.11
             },
             {
                 "idx": 12,
@@ -108,19 +121,24 @@
             {
                 "idx": 16,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.07
             },
             {
                 "idx": 17,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
-                ]
+                    "deslocado",
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.91
             },
             {
                 "idx": 18,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 19,
@@ -130,22 +148,26 @@
             {
                 "idx": 20,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.02
             },
             {
                 "idx": 21,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 22,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 23,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 24,
@@ -161,10 +183,18 @@
             "past_end": 0,
             "silence": 3,
             "long_verses": 0,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 17,
+            "displaced_lines": 2
+        },
+        "severe_lines": [
+            4,
+            10,
+            17
+        ]
     },
-    "needs_review": false,
+    "needs_review": true,
     "album": {
         "name": "Me Chama De Gato Que Eu Sou Sua",
         "year": 2023,

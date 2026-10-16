@@ -21,107 +21,128 @@
             {
                 "idx": 0,
                 "confidence": 0.7,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.22
             },
             {
                 "idx": 1,
                 "confidence": 0.528,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.24
             },
             {
                 "idx": 2,
                 "confidence": 0.574,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.24
             },
             {
                 "idx": 3,
                 "confidence": 0.605,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.33
             },
             {
                 "idx": 4,
                 "confidence": 0.5,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.13
             },
             {
                 "idx": 5,
                 "confidence": 0.566,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.16
             },
             {
                 "idx": 6,
                 "confidence": 0.554,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.37
             },
             {
                 "idx": 7,
                 "confidence": 0.509,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.08
             },
             {
                 "idx": 8,
                 "confidence": 0.794,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.12
             },
             {
                 "idx": 9,
                 "confidence": 0.585,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.8
             },
             {
                 "idx": 10,
                 "confidence": 0.742,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.42
             },
             {
                 "idx": 11,
                 "confidence": 0.586,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.15
             },
             {
                 "idx": 12,
                 "confidence": 0.551,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.28
             },
             {
                 "idx": 13,
                 "confidence": 0.559,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.23
             },
             {
                 "idx": 14,
                 "confidence": 0.692,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.15
             },
             {
                 "idx": 15,
                 "confidence": 0.52,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.1
             },
             {
                 "idx": 16,
                 "confidence": 0.538,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.11
             },
             {
                 "idx": 17,
                 "confidence": 0.493,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.33
             },
             {
                 "idx": 18,
                 "confidence": 0.914,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.28
             },
             {
                 "idx": 19,
                 "confidence": 0.527,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.13
             },
             {
                 "idx": 20,
                 "confidence": 0.571,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.24
             }
         ],
         "metrics": {
@@ -134,8 +155,12 @@
             "past_end": 0,
             "silence": 0,
             "long_verses": 0,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 21,
+            "displaced_lines": 0
+        },
+        "severe_lines": []
     },
     "needs_review": false,
     "album": {

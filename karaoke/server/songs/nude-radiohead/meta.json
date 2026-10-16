@@ -17,10 +17,11 @@
         "gain_db": -1.64
     },
     "alignment_quality": {
-        "score": 93.0,
+        "score": 81.0,
         "flags": [
             "palavras empilhadas (4)",
-            "3% das palavras no silêncio da voz"
+            "3% das palavras no silêncio da voz",
+            "versos com palavras espalhadas por igual (3)"
         ],
         "lines": [
             {
@@ -33,7 +34,9 @@
             {
                 "idx": 1,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "espalhadas por igual"
+                ]
             },
             {
                 "idx": 2,
@@ -43,7 +46,9 @@
             {
                 "idx": 3,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "espalhadas por igual"
+                ]
             },
             {
                 "idx": 4,
@@ -90,13 +95,16 @@
             {
                 "idx": 12,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "espalhadas por igual"
+                ]
             },
             {
                 "idx": 13,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "empilhadas",
+                    "grudadas"
                 ]
             },
             {
@@ -113,10 +121,19 @@
             "past_end": 0,
             "silence": 2,
             "long_verses": 0,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 3,
+            "stem_checked_lines": 0,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            1,
+            3,
+            12,
+            13
+        ]
     },
-    "needs_review": false,
+    "needs_review": true,
     "album": {
         "name": "In Rainbows",
         "year": 2007,

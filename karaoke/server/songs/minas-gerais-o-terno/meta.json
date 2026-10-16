@@ -18,31 +18,42 @@
         "has_lrc_file": true
     },
     "alignment_quality": {
-        "score": 90.2,
+        "score": 55.4,
         "flags": [
             "palavras empilhadas (12)",
-            "versos com mais de 12 s (1)"
+            "versos com mais de 12 s (1)",
+            "versos com palavras espalhadas por igual (3)",
+            "versos fora do tempo do canto (6)"
         ],
         "lines": [
             {
                 "idx": 0,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.05
             },
             {
                 "idx": 1,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 2,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 1.05
             },
             {
                 "idx": 3,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "deslocado",
+                    "espalhadas por igual"
+                ],
+                "stem_offset": -1.13
             },
             {
                 "idx": 4,
@@ -52,19 +63,23 @@
             {
                 "idx": 5,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.06
             },
             {
                 "idx": 6,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
-                ]
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": 0.03
             },
             {
                 "idx": 7,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 8,
@@ -74,32 +89,44 @@
             {
                 "idx": 9,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 10,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "deslocado",
+                    "espalhadas por igual"
+                ],
+                "stem_offset": -2.4
             },
             {
                 "idx": 11,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.05
             },
             {
                 "idx": 12,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 13,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.09
             },
             {
                 "idx": 14,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "deslocado",
+                    "espalhadas por igual"
+                ],
+                "stem_offset": -1.83
             },
             {
                 "idx": 15,
@@ -109,21 +136,27 @@
             {
                 "idx": 16,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 17,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
-                ]
+                    "deslocado",
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.89
             },
             {
                 "idx": 18,
                 "confidence": null,
                 "flags": [
+                    "deslocado",
                     "longo"
-                ]
+                ],
+                "stem_offset": -3.17
             }
         ],
         "metrics": {
@@ -134,10 +167,22 @@
             "past_end": 0,
             "silence": 0,
             "long_verses": 1,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 3,
+            "stem_checked_lines": 16,
+            "displaced_lines": 6
+        },
+        "severe_lines": [
+            2,
+            3,
+            6,
+            10,
+            14,
+            17,
+            18
+        ]
     },
-    "needs_review": false,
+    "needs_review": true,
     "album": {
         "name": "Melhor do Que Parece",
         "year": 2016,

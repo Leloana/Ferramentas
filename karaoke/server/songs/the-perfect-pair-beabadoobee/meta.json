@@ -188,8 +188,10 @@
             "past_end": 0,
             "silence": 1,
             "long_verses": 0,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 0
+        },
+        "severe_lines": []
     },
     "needs_review": false,
     "album": {

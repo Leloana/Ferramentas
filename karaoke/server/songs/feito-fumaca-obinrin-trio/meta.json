@@ -1,0 +1,186 @@
+{
+    "meta": {
+        "title": "Feito Fumaça",
+        "artist": "Obinrin Trio",
+        "language": "pt",
+        "slug": "feito-fumaca-obinrin-trio"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=9PT9lyfF9Xs",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "E da vez que eu me perdi no caminho\r\nsó consigo lembrar de tu me sorrindo sentada no portão da tua casa\r\nLembro do CD de coco do café caboclo\r\nda vontade absurda de sentir teu gosto\r\nFeito fumaça num quarto fechado tu tomou conta dos quatro cantos\r\nacende o cigarro, queima a brasa eu sou o quarto, tu a fumaça\r\nE os cigarros foram tantos\r\nFeito fumaça num quarto fechado tu\r\ntomou conta dos quatro cantos\r\nacende o cigarro, queima a brasa eu sou o quarto, tu a fumaça\r\nE os cigarros foram tantos\r\nE da vez que eu me perdi no caminho\r\nsó consigo lembrar de tu me sorrindo sentada no portão da tua casa\r\nLembro do CD de coco do café caboclo\r\nda vontade absurda de sentir teu gosto\r\nFeito fumaça num quarto fechado tu tomou conta dos quatro cantos\r\nacende o cigarro, queima a brasa eu sou o quarto, tu a fumaça\r\nE os cigarros foram tantos\r\nFeito fumaça num quarto fechado tu tomou conta dos quatro cantos\r\nacende o cigarro, queima a brasa eu sou o quarto, tu a fumaça\r\nE os cigarros foram tantos\r\nwaya waya..."
+    },
+    "album": {
+        "name": "Origem",
+        "year": 2020,
+        "track": 5,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -14.64,
+        "gain_db": -1.36
+    },
+    "alignment_quality": {
+        "score": 90.9,
+        "flags": [
+            "confiança baixa em 15% das palavras"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": 0.392,
+                "flags": [],
+                "stem_offset": -0.12
+            },
+            {
+                "idx": 1,
+                "confidence": 0.891,
+                "flags": [],
+                "stem_offset": -0.19
+            },
+            {
+                "idx": 2,
+                "confidence": 0.842,
+                "flags": [],
+                "stem_offset": -0.15
+            },
+            {
+                "idx": 3,
+                "confidence": 0.829,
+                "flags": [],
+                "stem_offset": -0.15
+            },
+            {
+                "idx": 4,
+                "confidence": 0.548,
+                "flags": [],
+                "stem_offset": -0.1
+            },
+            {
+                "idx": 5,
+                "confidence": 0.697,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 6,
+                "confidence": 0.747,
+                "flags": [],
+                "stem_offset": -0.09
+            },
+            {
+                "idx": 7,
+                "confidence": 0.507,
+                "flags": [],
+                "stem_offset": -0.11
+            },
+            {
+                "idx": 8,
+                "confidence": 0.305,
+                "flags": [
+                    "confiança baixa"
+                ],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 9,
+                "confidence": 0.658,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 10,
+                "confidence": 0.434,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 11,
+                "confidence": 0.483,
+                "flags": [],
+                "stem_offset": -0.14
+            },
+            {
+                "idx": 12,
+                "confidence": 0.784,
+                "flags": [],
+                "stem_offset": -0.14
+            },
+            {
+                "idx": 13,
+                "confidence": 0.679,
+                "flags": [],
+                "stem_offset": -0.13
+            },
+            {
+                "idx": 14,
+                "confidence": 0.825,
+                "flags": [],
+                "stem_offset": -0.15
+            },
+            {
+                "idx": 15,
+                "confidence": 0.648,
+                "flags": [],
+                "stem_offset": -0.09
+            },
+            {
+                "idx": 16,
+                "confidence": 0.632,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 17,
+                "confidence": 0.285,
+                "flags": [
+                    "confiança baixa"
+                ],
+                "stem_offset": -0.11
+            },
+            {
+                "idx": 18,
+                "confidence": 0.672,
+                "flags": [],
+                "stem_offset": -0.11
+            },
+            {
+                "idx": 19,
+                "confidence": 0.535,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 20,
+                "confidence": 0.467,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 21,
+                "confidence": 0.597,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 192,
+            "lines": 22,
+            "low_confidence": 0.151,
+            "median_confidence": 0.673,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 21,
+            "displaced_lines": 0
+        },
+        "severe_lines": []
+    },
+    "needs_review": false
+}

@@ -17,58 +17,76 @@
         "gain_db": -2.97
     },
     "alignment_quality": {
-        "score": 100.0,
-        "flags": [],
+        "score": 80.0,
+        "flags": [
+            "versos com palavras espalhadas por igual (6)",
+            "versos fora do tempo do canto (2)"
+        ],
         "lines": [
             {
                 "idx": 0,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 1,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 2,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.13
             },
             {
                 "idx": 3,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.05
             },
             {
                 "idx": 4,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 5,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "espalhadas por igual"
+                ]
             },
             {
                 "idx": 6,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.07
             },
             {
                 "idx": 7,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "espalhadas por igual"
+                ]
             },
             {
                 "idx": 8,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.07
             },
             {
                 "idx": 9,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "deslocado",
+                    "espalhadas por igual"
+                ],
+                "stem_offset": -1.81
             },
             {
                 "idx": 10,
@@ -78,7 +96,8 @@
             {
                 "idx": 11,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.15
             },
             {
                 "idx": 12,
@@ -88,22 +107,26 @@
             {
                 "idx": 13,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.02
             },
             {
                 "idx": 14,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.05
             },
             {
                 "idx": 15,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.09
             },
             {
                 "idx": 16,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.17
             },
             {
                 "idx": 17,
@@ -113,7 +136,11 @@
             {
                 "idx": 18,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "deslocado",
+                    "espalhadas por igual"
+                ],
+                "stem_offset": -1.91
             },
             {
                 "idx": 19,
@@ -138,7 +165,9 @@
             {
                 "idx": 23,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "espalhadas por igual"
+                ]
             },
             {
                 "idx": 24,
@@ -148,7 +177,9 @@
             {
                 "idx": 25,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "espalhadas por igual"
+                ]
             }
         ],
         "metrics": {
@@ -159,10 +190,21 @@
             "past_end": 0,
             "silence": 0,
             "long_verses": 0,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 6,
+            "stem_checked_lines": 14,
+            "displaced_lines": 2
+        },
+        "severe_lines": [
+            5,
+            7,
+            9,
+            18,
+            23,
+            25
+        ]
     },
-    "needs_review": false,
+    "needs_review": true,
     "album": {
         "name": "In Rainbows",
         "year": 2007,

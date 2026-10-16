@@ -21,22 +21,26 @@
             {
                 "idx": 0,
                 "confidence": 0.775,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.1
             },
             {
                 "idx": 1,
                 "confidence": 0.713,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.14
             },
             {
                 "idx": 2,
                 "confidence": 0.599,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.28
             },
             {
                 "idx": 3,
                 "confidence": 0.556,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.13
             },
             {
                 "idx": 4,
@@ -46,7 +50,8 @@
             {
                 "idx": 5,
                 "confidence": 0.871,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.21
             },
             {
                 "idx": 6,
@@ -56,7 +61,8 @@
             {
                 "idx": 7,
                 "confidence": 0.912,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.13
             },
             {
                 "idx": 8,
@@ -66,24 +72,28 @@
             {
                 "idx": 9,
                 "confidence": 0.589,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.29
             },
             {
                 "idx": 10,
                 "confidence": 0.53,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.25
             },
             {
                 "idx": 11,
                 "confidence": 0.742,
                 "flags": [
                     "longo"
-                ]
+                ],
+                "stem_offset": -0.28
             },
             {
                 "idx": 12,
                 "confidence": 0.865,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.13
             },
             {
                 "idx": 13,
@@ -93,7 +103,8 @@
             {
                 "idx": 14,
                 "confidence": 0.553,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.09
             },
             {
                 "idx": 15,
@@ -103,47 +114,56 @@
             {
                 "idx": 16,
                 "confidence": 0.831,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.23
             },
             {
                 "idx": 17,
                 "confidence": 0.706,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.21
             },
             {
                 "idx": 18,
                 "confidence": 0.692,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.51
             },
             {
                 "idx": 19,
                 "confidence": 0.521,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.26
             },
             {
                 "idx": 20,
                 "confidence": 0.667,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.45
             },
             {
                 "idx": 21,
                 "confidence": 0.67,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.14
             },
             {
                 "idx": 22,
                 "confidence": 0.692,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.2
             },
             {
                 "idx": 23,
                 "confidence": 0.602,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.2
             },
             {
                 "idx": 24,
                 "confidence": 0.728,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.2
             },
             {
                 "idx": 25,
@@ -153,17 +173,20 @@
             {
                 "idx": 26,
                 "confidence": 0.643,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.12
             },
             {
                 "idx": 27,
                 "confidence": 0.673,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.22
             },
             {
                 "idx": 28,
                 "confidence": 0.746,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.19
             },
             {
                 "idx": 29,
@@ -183,8 +206,12 @@
             "past_end": 0,
             "silence": 0,
             "long_verses": 2,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 23,
+            "displaced_lines": 0
+        },
+        "severe_lines": []
     },
     "needs_review": false,
     "album": {

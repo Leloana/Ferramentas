@@ -13,10 +13,12 @@
         "plain_lyrics": "This\nIs the place\nSit down\nYou're safe now\n\nYou've been stuck\nIn a lift\nWe've been trying\nTo reach you, Thom\n\nThis\nIs the place\nIt won't hurt\nEver again\n\n(Yeah...)\nThe smell of air conditioning\nThe fish are belly up\n(Yeah...)\nEmpty all your pockets\nBecause it's time...\nTo come home\n\nThis\nIs the place\nRemember me?\nI'm the face\nYou always see\n\nYou've been stuck\nIn a lift\nIn the belly of a whale\nAt the bottom\nOf the ocean...\n(Yeah...)\nThe smell of air conditioning\nThe fish are belly up\n(Yeah...)\nEmpty all your pockets\nBecause it's time...\nTo come home\n(Yeah...)\nThe smell of air conditioning\nThe fish are belly up... (Yeah...)\nLet it go\n\nToday\nIs the first day\nOf the rest of your days...\n\nSo lighten up, squirt"
     },
     "alignment_quality": {
-        "score": 98.6,
+        "score": 93.6,
         "flags": [
             "1% das palavras no silêncio da voz",
-            "versos com mais de 12 s (1)"
+            "versos com mais de 12 s (1)",
+            "versos com palavras espalhadas por igual (1)",
+            "versos fora do tempo do canto (2)"
         ],
         "lines": [
             {
@@ -27,7 +29,8 @@
             {
                 "idx": 1,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.07
             },
             {
                 "idx": 2,
@@ -37,12 +40,14 @@
             {
                 "idx": 3,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.31
             },
             {
                 "idx": 4,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.07
             },
             {
                 "idx": 5,
@@ -54,12 +59,14 @@
             {
                 "idx": 6,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.0
             },
             {
                 "idx": 7,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.14
             },
             {
                 "idx": 8,
@@ -74,7 +81,8 @@
             {
                 "idx": 10,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.15
             },
             {
                 "idx": 11,
@@ -94,7 +102,10 @@
             {
                 "idx": 14,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -0.81
             },
             {
                 "idx": 15,
@@ -104,12 +115,14 @@
             {
                 "idx": 16,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.55
             },
             {
                 "idx": 17,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.14
             },
             {
                 "idx": 18,
@@ -134,12 +147,16 @@
             {
                 "idx": 22,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.03
             },
             {
                 "idx": 23,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -1.01
             },
             {
                 "idx": 24,
@@ -149,7 +166,8 @@
             {
                 "idx": 25,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.21
             },
             {
                 "idx": 26,
@@ -164,7 +182,8 @@
             {
                 "idx": 28,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.06
             },
             {
                 "idx": 29,
@@ -179,7 +198,8 @@
             {
                 "idx": 31,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.1
             },
             {
                 "idx": 32,
@@ -194,12 +214,14 @@
             {
                 "idx": 34,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.17
             },
             {
                 "idx": 35,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.07
             },
             {
                 "idx": 36,
@@ -215,6 +237,7 @@
                 "idx": 38,
                 "confidence": null,
                 "flags": [
+                    "espalhadas por igual",
                     "longo"
                 ]
             },
@@ -231,17 +254,20 @@
             {
                 "idx": 41,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 42,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 43,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.05
             }
         ],
         "metrics": {
@@ -252,8 +278,16 @@
             "past_end": 0,
             "silence": 1,
             "long_verses": 1,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 1,
+            "stem_checked_lines": 19,
+            "displaced_lines": 2
+        },
+        "severe_lines": [
+            14,
+            23,
+            38
+        ]
     },
     "needs_review": false,
     "album": {

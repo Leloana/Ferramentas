@@ -13,88 +13,109 @@
         "plain_lyrics": "Can't get the stink off\r\nHe's been hanging 'round for days\r\nComes like a comet\r\nSuckered you, but not your friends\r\n\r\nOne day he'll get to you\r\nAnd teach you how to be a holy cow\r\n\r\nYou do it to yourself, you do\r\nAnd that's what really hurts\r\nIs that you do it to yourself, just you\r\nYou and no one else\r\nYou do it to yourself\r\nYou do it to yourself\r\n\r\nDon't get my sympathy\r\nHanging out the fifteenth floor\r\nYou've changed the locks three times\r\nHe still come reeling through the door\r\n\r\nOne day I'll get to you\r\nAnd teach you how to get to purest hell\r\n\r\nYou do it to yourself, you do\r\nAnd that's what really hurts\r\nYou do it to yourself, just you\r\nYou and no one else\r\nYou do it to yourself\r\nYou do it to yourself\r\n\r\nYou do it to yourself, you do\r\nAnd that's what really hurts\r\nIs that you do it to yourself, just you\r\nYou and no one else\r\nYou do it to yourself\r\nYou do it to yourself, ah\r\n\r\nSelf\r\n\r\nYou do it to yourself\r\nYou do it to yourself\r\nJust you\r\nYou do it to yourself\r\nJust you\r\nYou do it to yourself"
     },
     "alignment_quality": {
-        "score": 92.8,
+        "score": 84.1,
         "flags": [
             "palavras empilhadas (16)",
             "palavras com menos de 80 ms (1)",
             "palavras depois do fim do verso (1)",
-            "1% das palavras no silêncio da voz"
+            "1% das palavras no silêncio da voz",
+            "versos fora do tempo do canto (4)"
         ],
         "lines": [
             {
                 "idx": 0,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.07
             },
             {
                 "idx": 1,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 2,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.0
             },
             {
                 "idx": 3,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 4,
                 "confidence": null,
                 "flags": [
                     "empilhadas",
+                    "grudadas",
                     "no silêncio"
-                ]
+                ],
+                "stem_offset": 0.2
             },
             {
                 "idx": 5,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 6,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.21
             },
             {
                 "idx": 7,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 8,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
-                ]
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.13
             },
             {
                 "idx": 9,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 10,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -0.83
             },
             {
                 "idx": 11,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -1.47
             },
             {
                 "idx": 12,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.1
             },
             {
                 "idx": 13,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.06
             },
             {
                 "idx": 14,
@@ -104,7 +125,8 @@
             {
                 "idx": 15,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 16,
@@ -114,32 +136,38 @@
             {
                 "idx": 17,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 18,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.08
             },
             {
                 "idx": 19,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.08
             },
             {
                 "idx": 20,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 21,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 22,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 23,
@@ -150,9 +178,11 @@
                 "idx": 24,
                 "confidence": null,
                 "flags": [
+                    "deslocado",
                     "fora do verso",
                     "palavras curtas"
-                ]
+                ],
+                "stem_offset": -1.79
             },
             {
                 "idx": 25,
@@ -163,8 +193,11 @@
                 "idx": 26,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
-                ]
+                    "deslocado",
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -1.21
             },
             {
                 "idx": 27,
@@ -174,7 +207,8 @@
             {
                 "idx": 28,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.74
             },
             {
                 "idx": 29,
@@ -225,10 +259,21 @@
             "past_end": 1,
             "silence": 2,
             "long_verses": 0,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 24,
+            "displaced_lines": 4
+        },
+        "severe_lines": [
+            4,
+            8,
+            10,
+            11,
+            24,
+            26
+        ]
     },
-    "needs_review": false,
+    "needs_review": true,
     "album": {
         "name": "The Bends",
         "year": 1995,

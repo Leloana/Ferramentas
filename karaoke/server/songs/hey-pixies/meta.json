@@ -26,6 +26,7 @@
                 "confidence": null,
                 "flags": [
                     "empilhadas",
+                    "grudadas",
                     "palavras curtas"
                 ]
             },
@@ -34,6 +35,7 @@
                 "confidence": null,
                 "flags": [
                     "empilhadas",
+                    "grudadas",
                     "palavras curtas"
                 ]
             },
@@ -47,6 +49,7 @@
                 "confidence": null,
                 "flags": [
                     "empilhadas",
+                    "grudadas",
                     "no silêncio"
                 ]
             },
@@ -216,8 +219,16 @@
             "past_end": 0,
             "silence": 15,
             "long_verses": 1,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 0,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            0,
+            1,
+            3
+        ]
     },
     "needs_review": false,
     "album": {

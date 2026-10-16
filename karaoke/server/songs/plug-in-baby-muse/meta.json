@@ -18,36 +18,46 @@
         "has_lrc_file": false
     },
     "alignment_quality": {
-        "score": 97.2,
+        "score": 78.0,
         "flags": [
             "palavras empilhadas (3)",
-            "1% das palavras no silêncio da voz"
+            "1% das palavras no silêncio da voz",
+            "versos com palavras espalhadas por igual (4)",
+            "versos fora do tempo do canto (3)"
         ],
         "lines": [
             {
                 "idx": 0,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 1,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.15
             },
             {
                 "idx": 2,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.07
             },
             {
                 "idx": 3,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -1.12
             },
             {
                 "idx": 4,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "espalhadas por igual"
+                ]
             },
             {
                 "idx": 5,
@@ -62,7 +72,8 @@
             {
                 "idx": 7,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.06
             },
             {
                 "idx": 8,
@@ -77,7 +88,9 @@
             {
                 "idx": 10,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "espalhadas por igual"
+                ]
             },
             {
                 "idx": 11,
@@ -88,18 +101,23 @@
                 "idx": 12,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
-                ]
+                    "deslocado",
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -3.38
             },
             {
                 "idx": 13,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.35
             },
             {
                 "idx": 14,
                 "confidence": null,
                 "flags": [
+                    "espalhadas por igual",
                     "no silêncio"
                 ]
             },
@@ -116,7 +134,8 @@
             {
                 "idx": 17,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.5
             },
             {
                 "idx": 18,
@@ -131,7 +150,11 @@
             {
                 "idx": 20,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "deslocado",
+                    "espalhadas por igual"
+                ],
+                "stem_offset": -3.02
             },
             {
                 "idx": 21,
@@ -162,10 +185,21 @@
             "past_end": 0,
             "silence": 1,
             "long_verses": 0,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 4,
+            "stem_checked_lines": 9,
+            "displaced_lines": 3
+        },
+        "severe_lines": [
+            3,
+            4,
+            10,
+            12,
+            14,
+            20
+        ]
     },
-    "needs_review": false,
+    "needs_review": true,
     "album": {
         "name": "Origin of Symmetry",
         "year": 2001,

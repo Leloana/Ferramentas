@@ -21,22 +21,26 @@
             {
                 "idx": 0,
                 "confidence": 0.902,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.27
             },
             {
                 "idx": 1,
                 "confidence": 0.477,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.43
             },
             {
                 "idx": 2,
                 "confidence": 0.409,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.14
             },
             {
                 "idx": 3,
                 "confidence": 0.491,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.18
             },
             {
                 "idx": 4,
@@ -58,22 +62,26 @@
             {
                 "idx": 7,
                 "confidence": 0.56,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.17
             },
             {
                 "idx": 8,
                 "confidence": 0.621,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.4
             },
             {
                 "idx": 9,
                 "confidence": 0.557,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.29
             },
             {
                 "idx": 10,
                 "confidence": 0.426,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.45
             },
             {
                 "idx": 11,
@@ -83,7 +91,8 @@
             {
                 "idx": 12,
                 "confidence": 0.812,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.23
             },
             {
                 "idx": 13,
@@ -123,8 +132,12 @@
             "past_end": 0,
             "silence": 0,
             "long_verses": 0,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 9,
+            "displaced_lines": 0
+        },
+        "severe_lines": []
     },
     "needs_review": false,
     "album": {

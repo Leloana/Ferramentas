@@ -17,10 +17,11 @@
         "gain_db": -4.28
     },
     "alignment_quality": {
-        "score": 96.8,
+        "score": 91.4,
         "flags": [
             "1% das palavras no silêncio da voz",
-            "versos com mais de 12 s (2)"
+            "versos com mais de 12 s (2)",
+            "versos com palavras espalhadas por igual (3)"
         ],
         "lines": [
             {
@@ -41,7 +42,8 @@
             {
                 "idx": 3,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.54
             },
             {
                 "idx": 4,
@@ -116,12 +118,14 @@
             {
                 "idx": 18,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 19,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.44
             },
             {
                 "idx": 20,
@@ -157,6 +161,7 @@
                 "idx": 26,
                 "confidence": null,
                 "flags": [
+                    "espalhadas por igual",
                     "longo"
                 ]
             },
@@ -164,6 +169,7 @@
                 "idx": 27,
                 "confidence": null,
                 "flags": [
+                    "espalhadas por igual",
                     "no silêncio"
                 ]
             },
@@ -171,6 +177,7 @@
                 "idx": 28,
                 "confidence": null,
                 "flags": [
+                    "espalhadas por igual",
                     "longo"
                 ]
             },
@@ -203,8 +210,16 @@
             "past_end": 0,
             "silence": 1,
             "long_verses": 2,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 3,
+            "stem_checked_lines": 3,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            26,
+            27,
+            28
+        ]
     },
     "needs_review": false,
     "album": {

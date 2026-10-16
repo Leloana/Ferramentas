@@ -18,16 +18,19 @@
         "has_lrc_file": false
     },
     "alignment_quality": {
-        "score": 91.7,
+        "score": 87.3,
         "flags": [
             "palavras empilhadas (16)",
-            "2% das palavras no silêncio da voz"
+            "2% das palavras no silêncio da voz",
+            "versos com palavras espalhadas por igual (1)",
+            "versos fora do tempo do canto (1)"
         ],
         "lines": [
             {
                 "idx": 0,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.05
             },
             {
                 "idx": 1,
@@ -49,7 +52,8 @@
             {
                 "idx": 4,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.05
             },
             {
                 "idx": 5,
@@ -65,7 +69,8 @@
                 "idx": 7,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "empilhadas",
+                    "grudadas"
                 ]
             },
             {
@@ -93,49 +98,61 @@
             {
                 "idx": 12,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "espalhadas por igual"
+                ]
             },
             {
                 "idx": 13,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 14,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.0
             },
             {
                 "idx": 15,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 16,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.07
             },
             {
                 "idx": 17,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 2.84
             },
             {
                 "idx": 18,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.01
             },
             {
                 "idx": 19,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "empilhadas",
+                    "grudadas"
                 ]
             },
             {
                 "idx": 20,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 21,
@@ -151,7 +168,8 @@
                 "idx": 23,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "empilhadas",
+                    "grudadas"
                 ]
             },
             {
@@ -168,7 +186,8 @@
                 "idx": 26,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "empilhadas",
+                    "grudadas"
                 ]
             },
             {
@@ -205,10 +224,21 @@
             "past_end": 0,
             "silence": 3,
             "long_verses": 0,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 1,
+            "stem_checked_lines": 9,
+            "displaced_lines": 1
+        },
+        "severe_lines": [
+            7,
+            12,
+            17,
+            19,
+            23,
+            26
+        ]
     },
-    "needs_review": false,
+    "needs_review": true,
     "album": {
         "name": "In Rainbows",
         "year": 2007,

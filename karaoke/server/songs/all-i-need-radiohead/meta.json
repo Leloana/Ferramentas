@@ -17,8 +17,10 @@
         "gain_db": -3.23
     },
     "alignment_quality": {
-        "score": 100.0,
-        "flags": [],
+        "score": 90.0,
+        "flags": [
+            "versos com palavras espalhadas por igual (3)"
+        ],
         "lines": [
             {
                 "idx": 0,
@@ -33,27 +35,33 @@
             {
                 "idx": 2,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 3,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 4,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.29
             },
             {
                 "idx": 5,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.0
             },
             {
                 "idx": 6,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "espalhadas por igual"
+                ]
             },
             {
                 "idx": 7,
@@ -63,32 +71,40 @@
             {
                 "idx": 8,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.0
             },
             {
                 "idx": 9,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 10,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.1
             },
             {
                 "idx": 11,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 12,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 13,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "espalhadas por igual"
+                ],
+                "stem_offset": 0.22
             },
             {
                 "idx": 14,
@@ -108,7 +124,9 @@
             {
                 "idx": 17,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "espalhadas por igual"
+                ]
             }
         ],
         "metrics": {
@@ -119,10 +137,18 @@
             "past_end": 0,
             "silence": 0,
             "long_verses": 0,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 3,
+            "stem_checked_lines": 10,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            6,
+            13,
+            17
+        ]
     },
-    "needs_review": false,
+    "needs_review": true,
     "album": {
         "name": "In Rainbows",
         "year": 2007,

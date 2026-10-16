@@ -24,12 +24,13 @@
         "gain_db": -1.32
     },
     "alignment_quality": {
-        "score": 81.2,
+        "score": 79.2,
         "flags": [
             "palavras empilhadas (25)",
             "palavras com menos de 80 ms (71)",
             "palavras depois do fim do verso (58)",
-            "versos sobrepostos (35)"
+            "versos sobrepostos (35)",
+            "versos fora do tempo do canto (3)"
         ],
         "lines": [
             {
@@ -39,14 +40,16 @@
                     "fora do verso",
                     "palavras curtas",
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": 0.0
             },
             {
                 "idx": 1,
                 "confidence": null,
                 "flags": [
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": 0.01
             },
             {
                 "idx": 2,
@@ -55,26 +58,30 @@
                     "fora do verso",
                     "palavras curtas",
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": 0.0
             },
             {
                 "idx": 3,
                 "confidence": null,
                 "flags": [
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": 0.31
             },
             {
                 "idx": 4,
                 "confidence": null,
                 "flags": [
                     "palavras curtas"
-                ]
+                ],
+                "stem_offset": -0.02
             },
             {
                 "idx": 5,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 6,
@@ -83,14 +90,16 @@
                     "fora do verso",
                     "palavras curtas",
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": -0.01
             },
             {
                 "idx": 7,
                 "confidence": null,
                 "flags": [
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": -0.01
             },
             {
                 "idx": 8,
@@ -100,22 +109,26 @@
             {
                 "idx": 9,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 10,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.37
             },
             {
                 "idx": 11,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 12,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.07
             },
             {
                 "idx": 13,
@@ -123,7 +136,8 @@
                 "flags": [
                     "fora do verso",
                     "palavras curtas"
-                ]
+                ],
+                "stem_offset": 0.01
             },
             {
                 "idx": 14,
@@ -138,12 +152,14 @@
                 "confidence": null,
                 "flags": [
                     "empilhadas"
-                ]
+                ],
+                "stem_offset": -0.01
             },
             {
                 "idx": 16,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 17,
@@ -151,36 +167,43 @@
                 "flags": [
                     "fora do verso",
                     "palavras curtas"
-                ]
+                ],
+                "stem_offset": -0.05
             },
             {
                 "idx": 18,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 19,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
-                ]
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.01
             },
             {
                 "idx": 20,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 21,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 22,
                 "confidence": null,
                 "flags": [
                     "palavras curtas"
-                ]
+                ],
+                "stem_offset": -0.01
             },
             {
                 "idx": 23,
@@ -189,14 +212,16 @@
                     "fora do verso",
                     "palavras curtas",
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": -0.01
             },
             {
                 "idx": 24,
                 "confidence": null,
                 "flags": [
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": -0.01
             },
             {
                 "idx": 25,
@@ -234,7 +259,8 @@
                 "flags": [
                     "fora do verso",
                     "palavras curtas"
-                ]
+                ],
+                "stem_offset": -0.01
             },
             {
                 "idx": 32,
@@ -243,7 +269,8 @@
                     "fora do verso",
                     "palavras curtas",
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": -0.03
             },
             {
                 "idx": 33,
@@ -252,12 +279,14 @@
                     "fora do verso",
                     "palavras curtas",
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": 0.01
             },
             {
                 "idx": 34,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 35,
@@ -267,7 +296,8 @@
                     "fora do verso",
                     "palavras curtas",
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": -0.17
             },
             {
                 "idx": 36,
@@ -275,7 +305,8 @@
                 "flags": [
                     "empilhadas",
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": -0.0
             },
             {
                 "idx": 37,
@@ -284,24 +315,28 @@
                     "fora do verso",
                     "palavras curtas",
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": 0.06
             },
             {
                 "idx": 38,
                 "confidence": null,
                 "flags": [
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": 0.8
             },
             {
                 "idx": 39,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.01
             },
             {
                 "idx": 40,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.03
             },
             {
                 "idx": 41,
@@ -309,124 +344,150 @@
                 "flags": [
                     "fora do verso",
                     "palavras curtas"
-                ]
+                ],
+                "stem_offset": 0.01
             },
             {
                 "idx": 42,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.0
             },
             {
                 "idx": 43,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 44,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 45,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 46,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.01
             },
             {
                 "idx": 47,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 48,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 49,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 50,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 1.06
             },
             {
                 "idx": 51,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 52,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 53,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.0
             },
             {
                 "idx": 54,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.01
             },
             {
                 "idx": 55,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.07
             },
             {
                 "idx": 56,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 57,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 58,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 59,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.14
             },
             {
                 "idx": 60,
                 "confidence": null,
                 "flags": [
                     "palavras curtas"
-                ]
+                ],
+                "stem_offset": 0.0
             },
             {
                 "idx": 61,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 62,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 63,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.0
             },
             {
                 "idx": 64,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.22
             },
             {
                 "idx": 65,
@@ -435,14 +496,16 @@
                     "fora do verso",
                     "palavras curtas",
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": -0.01
             },
             {
                 "idx": 66,
                 "confidence": null,
                 "flags": [
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": -0.01
             },
             {
                 "idx": 67,
@@ -451,7 +514,8 @@
                     "fora do verso",
                     "palavras curtas",
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": -0.04
             },
             {
                 "idx": 68,
@@ -460,7 +524,8 @@
                     "fora do verso",
                     "palavras curtas",
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": 0.73
             },
             {
                 "idx": 69,
@@ -468,7 +533,8 @@
                 "flags": [
                     "fora do verso",
                     "palavras curtas"
-                ]
+                ],
+                "stem_offset": 0.01
             },
             {
                 "idx": 70,
@@ -477,21 +543,24 @@
                     "fora do verso",
                     "palavras curtas",
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": -0.13
             },
             {
                 "idx": 71,
                 "confidence": null,
                 "flags": [
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": 0.42
             },
             {
                 "idx": 72,
                 "confidence": null,
                 "flags": [
                     "palavras curtas"
-                ]
+                ],
+                "stem_offset": -0.01
             },
             {
                 "idx": 73,
@@ -500,19 +569,22 @@
                     "fora do verso",
                     "palavras curtas",
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": -0.03
             },
             {
                 "idx": 74,
                 "confidence": null,
                 "flags": [
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": 0.66
             },
             {
                 "idx": 75,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 76,
@@ -520,7 +592,8 @@
                 "flags": [
                     "fora do verso",
                     "palavras curtas"
-                ]
+                ],
+                "stem_offset": 0.05
             },
             {
                 "idx": 77,
@@ -529,7 +602,8 @@
                     "fora do verso",
                     "palavras curtas",
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": 0.0
             },
             {
                 "idx": 78,
@@ -538,19 +612,23 @@
                     "fora do verso",
                     "palavras curtas",
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": -0.02
             },
             {
                 "idx": 79,
                 "confidence": null,
                 "flags": [
+                    "deslocado",
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": 0.85
             },
             {
                 "idx": 80,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.14
             },
             {
                 "idx": 81,
@@ -558,7 +636,8 @@
                 "flags": [
                     "fora do verso",
                     "palavras curtas"
-                ]
+                ],
+                "stem_offset": 0.07
             },
             {
                 "idx": 82,
@@ -566,37 +645,44 @@
                 "flags": [
                     "fora do verso",
                     "palavras curtas"
-                ]
+                ],
+                "stem_offset": -0.02
             },
             {
                 "idx": 83,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 84,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 85,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 86,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 87,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 88,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 89,
@@ -605,14 +691,16 @@
                     "fora do verso",
                     "palavras curtas",
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": -0.01
             },
             {
                 "idx": 90,
                 "confidence": null,
                 "flags": [
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": -0.06
             },
             {
                 "idx": 91,
@@ -621,7 +709,8 @@
                     "fora do verso",
                     "palavras curtas",
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": -0.04
             },
             {
                 "idx": 92,
@@ -635,7 +724,8 @@
                 "confidence": null,
                 "flags": [
                     "palavras curtas"
-                ]
+                ],
+                "stem_offset": -0.02
             },
             {
                 "idx": 94,
@@ -644,24 +734,28 @@
                     "fora do verso",
                     "palavras curtas",
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": -0.06
             },
             {
                 "idx": 95,
                 "confidence": null,
                 "flags": [
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": 0.01
             },
             {
                 "idx": 96,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.06
             },
             {
                 "idx": 97,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.0
             },
             {
                 "idx": 98,
@@ -669,7 +763,8 @@
                 "flags": [
                     "fora do verso",
                     "palavras curtas"
-                ]
+                ],
+                "stem_offset": -0.04
             },
             {
                 "idx": 99,
@@ -677,26 +772,31 @@
                 "flags": [
                     "fora do verso",
                     "palavras curtas"
-                ]
+                ],
+                "stem_offset": -0.01
             },
             {
                 "idx": 100,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
-                ]
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.01
             },
             {
                 "idx": 101,
                 "confidence": null,
                 "flags": [
                     "palavras curtas"
-                ]
+                ],
+                "stem_offset": -0.02
             },
             {
                 "idx": 102,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.17
             },
             {
                 "idx": 103,
@@ -704,7 +804,8 @@
                 "flags": [
                     "fora do verso",
                     "palavras curtas"
-                ]
+                ],
+                "stem_offset": -0.01
             },
             {
                 "idx": 104,
@@ -713,14 +814,16 @@
                     "fora do verso",
                     "palavras curtas",
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": -0.01
             },
             {
                 "idx": 105,
                 "confidence": null,
                 "flags": [
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": 0.01
             },
             {
                 "idx": 106,
@@ -728,7 +831,8 @@
                 "flags": [
                     "fora do verso",
                     "palavras curtas"
-                ]
+                ],
+                "stem_offset": 0.03
             },
             {
                 "idx": 107,
@@ -738,7 +842,8 @@
                     "fora do verso",
                     "palavras curtas",
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": -0.01
             },
             {
                 "idx": 108,
@@ -746,76 +851,92 @@
                 "flags": [
                     "empilhadas",
                     "sobreposto"
-                ]
+                ],
+                "stem_offset": 0.65
             },
             {
                 "idx": 109,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.46
             },
             {
                 "idx": 110,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 111,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.01
             },
             {
                 "idx": 112,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.0
             },
             {
                 "idx": 113,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 114,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.1
             },
             {
                 "idx": 115,
                 "confidence": null,
                 "flags": [
                     "palavras curtas"
-                ]
+                ],
+                "stem_offset": 0.0
             },
             {
                 "idx": 116,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
-                ]
+                    "deslocado",
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": 1.51
             },
             {
                 "idx": 117,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 118,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.13
             },
             {
                 "idx": 119,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 120,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 121,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.0
             }
         ],
         "metrics": {
@@ -826,8 +947,18 @@
             "past_end": 58,
             "silence": 0,
             "long_verses": 0,
-            "overlaps": 35
-        }
+            "overlaps": 35,
+            "uniform_lines": 0,
+            "stem_checked_lines": 113,
+            "displaced_lines": 3
+        },
+        "severe_lines": [
+            19,
+            50,
+            79,
+            100,
+            116
+        ]
     },
     "needs_review": false
 }

@@ -13,84 +13,99 @@
         "plain_lyrics": "Ai, ai como eu me iludo\r\nDessa vez eu viajei\r\nMeu Deus confundi tudo\r\nNossa como eu vacilei\r\nPorque eu já fiz isso milhares de vezes\r\nComo é que eu nunca aprendi\r\nA não gostar das pessoas tão rápido assim\r\nAi, ai ai como eu me iludo\r\nDessa vez eu viajei\r\nMeu Deus confundi tudo\r\nNossa como eu vacilei\r\nPorque eu já fiz isso milhares de vezes\r\nComo é que eu nunca aprendi\r\nA não gostar das pessoas tão rápido assim\r\nEu pensei que ia mudar\r\nE que estava bem claro\r\nDepois dos erros e erros da última vez\r\nMas quando vejo me pego fazendo até planos\r\nDe apresentar pro meus pais\r\nTô vendo filme demais\r\nAi, como eu me iludo\r\nDessa vez eu viajei\r\nMeu Deus confundi tudo\r\nNossa como eu vacilei\r\nPorque eu já fiz isso milhares de vezes\r\nComo é que eu nunca aprendi\r\nA não gostar das pessoas tão rápido assim\r\nA não gostar das pessoas tão rápido assim\r\nA não gostar das pessoas tão rápido assim"
     },
     "alignment_quality": {
-        "score": 96.0,
+        "score": 94.0,
         "flags": [
             "palavras empilhadas (4)",
             "1% das palavras no silêncio da voz",
-            "versos com mais de 12 s (1)"
+            "versos com mais de 12 s (1)",
+            "versos com palavras espalhadas por igual (1)"
         ],
         "lines": [
             {
                 "idx": 0,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 1,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 2,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 3,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 4,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.0
             },
             {
                 "idx": 5,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 6,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.0
             },
             {
                 "idx": 7,
                 "confidence": null,
                 "flags": [
                     "longo"
-                ]
+                ],
+                "stem_offset": 0.01
             },
             {
                 "idx": 8,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 9,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 10,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 11,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 12,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.0
             },
             {
                 "idx": 13,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 14,
@@ -102,74 +117,90 @@
             {
                 "idx": 15,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 16,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.03
             },
             {
                 "idx": 17,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 18,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 19,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.05
             },
             {
                 "idx": 20,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "espalhadas por igual"
+                ]
             },
             {
                 "idx": 21,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.05
             },
             {
                 "idx": 22,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.05
             },
             {
                 "idx": 23,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 24,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 25,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.0
             },
             {
                 "idx": 26,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.02
             },
             {
                 "idx": 27,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.01
             },
             {
                 "idx": 28,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
-                ]
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.01
             }
         ],
         "metrics": {
@@ -180,8 +211,15 @@
             "past_end": 0,
             "silence": 2,
             "long_verses": 1,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 1,
+            "stem_checked_lines": 27,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            20,
+            28
+        ]
     },
     "needs_review": false,
     "album": {

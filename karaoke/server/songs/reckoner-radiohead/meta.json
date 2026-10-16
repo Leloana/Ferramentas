@@ -17,9 +17,10 @@
         "gain_db": -2.31
     },
     "alignment_quality": {
-        "score": 86.5,
+        "score": 75.2,
         "flags": [
-            "palavras empilhadas (11)"
+            "palavras empilhadas (11)",
+            "versos com palavras espalhadas por igual (3)"
         ],
         "lines": [
             {
@@ -35,7 +36,9 @@
             {
                 "idx": 2,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "espalhadas por igual"
+                ]
             },
             {
                 "idx": 3,
@@ -51,13 +54,16 @@
                 "idx": 5,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "empilhadas",
+                    "grudadas"
                 ]
             },
             {
                 "idx": 6,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "espalhadas por igual"
+                ]
             },
             {
                 "idx": 7,
@@ -72,7 +78,9 @@
             {
                 "idx": 9,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "espalhadas por igual"
+                ]
             },
             {
                 "idx": 10,
@@ -93,14 +101,16 @@
                 "idx": 13,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "empilhadas",
+                    "grudadas"
                 ]
             },
             {
                 "idx": 14,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "empilhadas",
+                    "grudadas"
                 ]
             },
             {
@@ -117,10 +127,21 @@
             "past_end": 0,
             "silence": 0,
             "long_verses": 0,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 3,
+            "stem_checked_lines": 0,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            2,
+            5,
+            6,
+            9,
+            13,
+            14
+        ]
     },
-    "needs_review": false,
+    "needs_review": true,
     "album": {
         "name": "In Rainbows",
         "year": 2007,

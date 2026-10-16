@@ -67,7 +67,8 @@
                 "idx": 8,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "empilhadas",
+                    "grudadas"
                 ]
             },
             {
@@ -193,7 +194,8 @@
                 "idx": 32,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "empilhadas",
+                    "grudadas"
                 ]
             },
             {
@@ -205,7 +207,8 @@
                 "idx": 34,
                 "confidence": null,
                 "flags": [
-                    "empilhadas"
+                    "empilhadas",
+                    "grudadas"
                 ]
             },
             {
@@ -314,8 +317,14 @@
             "past_end": 0,
             "silence": 2,
             "long_verses": 0,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 0
+        },
+        "severe_lines": [
+            8,
+            32,
+            34
+        ]
     },
     "needs_review": false,
     "album": {

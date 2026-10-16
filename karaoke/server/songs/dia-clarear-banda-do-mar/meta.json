@@ -26,104 +26,124 @@
             {
                 "idx": 0,
                 "confidence": 0.684,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.23
             },
             {
                 "idx": 1,
                 "confidence": 0.41,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.29
             },
             {
                 "idx": 2,
                 "confidence": 0.929,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.2
             },
             {
                 "idx": 3,
                 "confidence": 0.475,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.32
             },
             {
                 "idx": 4,
                 "confidence": 0.824,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.19
             },
             {
                 "idx": 5,
                 "confidence": 0.503,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.17
             },
             {
                 "idx": 6,
                 "confidence": 0.649,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.16
             },
             {
                 "idx": 7,
                 "confidence": 0.573,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.23
             },
             {
                 "idx": 8,
                 "confidence": 0.729,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.26
             },
             {
                 "idx": 9,
                 "confidence": 0.822,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.25
             },
             {
                 "idx": 10,
                 "confidence": 0.892,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.28
             },
             {
                 "idx": 11,
                 "confidence": 0.548,
                 "flags": [
                     "longo"
-                ]
+                ],
+                "stem_offset": -0.47
             },
             {
                 "idx": 12,
                 "confidence": 0.715,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.16
             },
             {
                 "idx": 13,
                 "confidence": 0.584,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.16
             },
             {
                 "idx": 14,
                 "confidence": 0.506,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.19
             },
             {
                 "idx": 15,
                 "confidence": 0.536,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.23
             },
             {
                 "idx": 16,
                 "confidence": 0.602,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.14
             },
             {
                 "idx": 17,
                 "confidence": 0.577,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.18
             },
             {
                 "idx": 18,
                 "confidence": 0.541,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.17
             },
             {
                 "idx": 19,
                 "confidence": 0.621,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.2
             }
         ],
         "metrics": {
@@ -136,8 +156,12 @@
             "past_end": 0,
             "silence": 0,
             "long_verses": 1,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 20,
+            "displaced_lines": 0
+        },
+        "severe_lines": []
     },
     "needs_review": false,
     "album": {

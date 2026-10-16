@@ -17,9 +17,10 @@
         "gain_db": -4.82
     },
     "alignment_quality": {
-        "score": 98.9,
+        "score": 97.1,
         "flags": [
-            "versos com mais de 12 s (1)"
+            "versos com mais de 12 s (1)",
+            "versos com palavras espalhadas por igual (1)"
         ],
         "lines": [
             {
@@ -35,12 +36,14 @@
             {
                 "idx": 2,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.23
             },
             {
                 "idx": 3,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.31
             },
             {
                 "idx": 4,
@@ -50,12 +53,14 @@
             {
                 "idx": 5,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.29
             },
             {
                 "idx": 6,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.64
             },
             {
                 "idx": 7,
@@ -65,7 +70,8 @@
             {
                 "idx": 8,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.6
             },
             {
                 "idx": 9,
@@ -75,7 +81,8 @@
             {
                 "idx": 10,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.29
             },
             {
                 "idx": 11,
@@ -90,7 +97,8 @@
             {
                 "idx": 13,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.34
             },
             {
                 "idx": 14,
@@ -105,7 +113,8 @@
             {
                 "idx": 16,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.54
             },
             {
                 "idx": 17,
@@ -115,7 +124,8 @@
             {
                 "idx": 18,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.28
             },
             {
                 "idx": 19,
@@ -135,7 +145,8 @@
             {
                 "idx": 22,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.3
             },
             {
                 "idx": 23,
@@ -145,7 +156,9 @@
             {
                 "idx": 24,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "espalhadas por igual"
+                ]
             },
             {
                 "idx": 25,
@@ -155,7 +168,8 @@
             {
                 "idx": 26,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.31
             },
             {
                 "idx": 27,
@@ -165,7 +179,8 @@
             {
                 "idx": 28,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.32
             },
             {
                 "idx": 29,
@@ -185,7 +200,8 @@
             {
                 "idx": 32,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": 0.32
             },
             {
                 "idx": 33,
@@ -208,8 +224,14 @@
             "past_end": 0,
             "silence": 0,
             "long_verses": 1,
-            "overlaps": 0
-        }
+            "overlaps": 0,
+            "uniform_lines": 1,
+            "stem_checked_lines": 13,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            24
+        ]
     },
     "needs_review": false,
     "album": {
