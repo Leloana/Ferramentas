@@ -7,6 +7,12 @@
 // inteiro vira retícula (pôster) ou mosaico de propósito (mosaico).
 // Medidas em share-card-styles.css, sempre em --u (1/100 da largura do cartão).
 
+// Cartão de perfil (kind 'profile'): o cantor no lugar da música e as melhores
+// músicas no lugar do pódio; os rótulos de música mudam aqui.
+function isProfile(data) {
+    return data.kind === 'profile';
+}
+
 function el(tag, cls, text) {
     const node = document.createElement(tag);
     if (cls) node.className = cls;
@@ -31,10 +37,11 @@ function numericDate() {
 
 function cover(data, cls) {
     const box = el('div', `sc-cover ${cls}`);
-    if (data.songId) {
+    const src = data.coverUrl || (data.songId ? `/api/songs/${encodeURIComponent(data.songId)}/cover` : null);
+    if (src) {
         const img = el('img');
         img.alt = '';
-        img.src = `/api/songs/${encodeURIComponent(data.songId)}/cover`;
+        img.src = src;
         img.onerror = () => { box.classList.add('sc-cover--empty'); img.remove(); };
         box.append(img);
     } else {
@@ -139,6 +146,7 @@ function hasExtras(data) {
 }
 
 function singerLabel(data) {
+    if (isProfile(data)) return data.games;
     if (hasPodium(data)) return `${data.podium.length} cantores`;
     return data.name || '–';
 }
@@ -151,14 +159,16 @@ function ingresso(card, data, ctx) {
     head.append(el('span', 'sc-ticket__brand', 'KARAOKE'), el('span', 'sc-ticket__no', `ENTRADA Nº ${String(ctx.scoreInt).padStart(4, '0')}`));
     const act = el('div', 'sc-ticket__act');
     const info = el('div', 'sc-ticket__info');
-    info.append(el('span', 'sc-label sc-accent', 'ATRAÇÃO'), el('h2', 'sc-ticket__title', data.title || ''),
+    info.append(el('span', 'sc-label sc-accent', isProfile(data) ? 'CANTOR' : 'ATRAÇÃO'), el('h2', 'sc-ticket__title', data.title || ''),
         el('p', 'sc-ticket__artist', data.artist || ''));
     act.append(cover(data, 'sc-ticket__cover'), info);
     const fields = el('div', 'sc-ticket__fields');
     const verses = s.good + s.ok + s.poor;
-    const third = hasPodium(data) ? field('VENCEU', data.podium[0].name, 'sc-ticket__field')
+    let third = hasPodium(data) ? field('VENCEU', data.podium[0].name, 'sc-ticket__field')
         : field('VERSOS', verses ? String(verses) : '–', 'sc-ticket__field');
-    fields.append(field('DATA', shortDate(), 'sc-ticket__field'), field('CANTOR', singerLabel(data), 'sc-ticket__field'), third);
+    if (isProfile(data)) third = field('RECORDE', data.best, 'sc-ticket__field');
+    fields.append(field('DATA', shortDate(), 'sc-ticket__field'),
+        field(isProfile(data) ? 'MÚSICAS' : 'CANTOR', singerLabel(data), 'sc-ticket__field'), third);
     main.append(head, act, fields);
     const badge = badgeText(data);
     if (badge) main.append(el('span', 'sc-ticket__stamp', badge));
@@ -199,7 +209,7 @@ function cupom(card, data, ctx) {
     if (!hasPodium(data) && data.name) who.append(el('span', null, `CANTOR: ${data.name.toUpperCase()}`));
     head.append(cover(data, 'sc-receipt__cover'), who);
     const item = el('div', 'sc-receipt__item');
-    item.append(el('strong', null, `1x ${(data.title || '').toUpperCase()}`), el('span', null, (data.artist || '').toUpperCase()));
+    item.append(el('strong', null, `${isProfile(data) ? '' : '1x '}${(data.title || '').toUpperCase()}`), el('span', null, (data.artist || '').toUpperCase()));
     const lines = el('div', 'sc-receipt__lines');
     if (hasPodium(data)) {
         data.podium.slice(0, 4).forEach((p) => lines.append(receiptLine(p.name.toUpperCase(), `${Math.round(p.score)}%`)));
@@ -210,7 +220,7 @@ function cupom(card, data, ctx) {
     }
     (data.extras || []).forEach(({ label, value }) => lines.append(receiptLine(label.toUpperCase(), value.toUpperCase())));
     const total = el('div', 'sc-receipt__total');
-    total.append(el('span', null, 'TOTAL'), el('strong', null, `${ctx.scoreInt}%`));
+    total.append(el('span', null, isProfile(data) ? 'MÉDIA' : 'TOTAL'), el('strong', null, `${ctx.scoreInt}%`));
     const rank = receiptLine('RANK', `${ctx.rank.letter} · ${ctx.rank.title.toUpperCase()}`, 'sc-receipt__rank');
     paper.append(head, el('div', 'sc-receipt__rule'), item, lines, el('div', 'sc-receipt__rule'), total, rank);
     const badge = badgeText(data);
@@ -256,7 +266,7 @@ function vinil(card, data, ctx) {
     if (badge) sleeve.append(el('span', 'sc-vinyl__sticker', badge));
     const text = el('div', 'sc-vinyl__text');
     const song = el('div', 'sc-vinyl__song');
-    song.append(el('span', 'sc-label', 'LADO A · FAIXA 1'), el('h2', 'sc-vinyl__title', data.title || ''),
+    song.append(el('span', 'sc-label', isProfile(data) ? 'COLETÂNEA' : 'LADO A · FAIXA 1'), el('h2', 'sc-vinyl__title', data.title || ''),
         el('p', 'sc-vinyl__artist', data.artist || ''));
     const foot = el('div', 'sc-vinyl__foot');
     if (hasPodium(data)) {
@@ -338,6 +348,7 @@ function mosaico(card, data, ctx) {
     result.append(scoreBlock(ctx, 'sc-score sc-mosaic__score'), rank);
     panel.append(result);
     if (hasPodium(data)) {
+        card.classList.add('sc-mosaic--podium');  // nota menor: a lista não cobre o título
         panel.append(podiumList(data, 'sc-podium sc-mosaic__podium'));
     } else {
         const foot = el('div', 'sc-mosaic__foot');
@@ -377,8 +388,9 @@ function letreiro(card, data, ctx) {
     brand.append(el('strong', null, 'KARAOKE'), el('span', 'sc-label', `PALCO · ${shortDate()} · ${clock()}`));
     head.append(brand, cover(data, 'sc-board__cover'));
     const winner = hasPodium(data) ? data.podium[0].name : data.name;
-    card.append(head, boardRow('MÚSICA', data.title), boardRow('ARTISTA', data.artist));
-    if (winner) card.append(boardRow(hasPodium(data) ? '1º LUGAR' : 'CANTOR', winner, 'accent'));
+    const profile = isProfile(data);
+    card.append(head, boardRow(profile ? 'CANTOR' : 'MÚSICA', data.title), boardRow(profile ? 'MÚSICAS' : 'ARTISTA', data.artist));
+    if (winner) card.append(boardRow(profile ? 'MELHOR' : (hasPodium(data) ? '1º LUGAR' : 'CANTOR'), winner, 'accent'));
     const result = el('div', 'sc-board__result');
     const score = el('div', 'sc-board__col');
     score.append(el('span', 'sc-label', 'NOTA'), flaps(String(ctx.scoreInt), 'sc-board__big', 3));

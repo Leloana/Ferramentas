@@ -9,7 +9,10 @@
 // coloridos sem texto, um por estilo — a pessoa toca e vê qual é qual. Com vários
 // cantores a TV mostra um cartão por pessoa (`mountShareCards`). `data`:
 //   { songId, title, artist, score, pitch, stats: {good, ok, poor}, name,
-//     record: {is_record, best_before, times_sung}, podium: [{name, score}] }
+//     record: {is_record, best_before, times_sung}, podium: [{name, score}],
+//     extras: [{label, value}], coverUrl, kind }
+// Cartão de perfil (players/profile-card.js): kind 'profile', o cantor no lugar
+// da música, a foto em coverUrl, a média como nota e as melhores músicas no pódio.
 import { iconSvg } from '../core/icons.js';
 import { buildStyledCard, hasOwnLayout, extrasLine } from './share-card-styles.js';
 
@@ -58,8 +61,9 @@ function saveStyle(id) {
     try { localStorage.setItem(STYLE_KEY, id); } catch (e) { /* sem storage: só não lembra */ }
 }
 
-function coverUrl(songId) {
-    return `/api/songs/${encodeURIComponent(songId)}/cover`;
+export function coverUrl(data) {
+    if (data.coverUrl) return data.coverUrl;
+    return data.songId ? `/api/songs/${encodeURIComponent(data.songId)}/cover` : null;
 }
 
 function today() {
@@ -89,10 +93,10 @@ function legendItem(tone, value, label) {
 // Arte: a capa ocupa o alto do cartão, com marca, data, selo e o nome da música por cima
 function artBlock(data) {
     const art = el('div', 'share-card__art');
-    if (data.songId) {
+    if (coverUrl(data)) {
         const img = el('img', 'share-card__cover');
         img.alt = '';
-        img.src = coverUrl(data.songId);
+        img.src = coverUrl(data);
         img.onerror = () => { art.classList.add('share-card__art--empty'); img.remove(); };
         art.append(img);
     } else {

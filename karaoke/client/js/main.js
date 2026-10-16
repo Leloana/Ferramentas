@@ -28,6 +28,7 @@ import { enhanceSelects } from './ui/select.js';
 import { initLobby, validateLobby } from './lobby/lobby.js';
 import { initGuideVocal } from './audio/guide-vocal.js';
 import { fetchProfile, renderProfile } from './players/profile-view.js';
+import { openProfileCard } from './players/profile-card.js';
 import { initPlayersModal } from './players/players-modal.js';
 import { initStatusPanel } from './ui/status-panel.js';
 import { initCoverPicker } from './lobby/cover-picker.js';
@@ -218,13 +219,20 @@ async function showMyProfile() {
     if (!view) return;
     const logout = document.getElementById('btn-mic-logout');
     if (logout) logout.hidden = !state.mobileNickname;
+    const cardBtn = document.getElementById('btn-mic-profile-card');
+    if (cardBtn) cardBtn.hidden = true;
     if (!state.mobileNickname) {
         renderProfile(view, null);
         return;
     }
     try {
-        renderProfile(view, await fetchProfile(state.mobileNickname),
-            { name: state.mobileNickname, editable: true, onChanged: showMyProfile });
+        const detail = await fetchProfile(state.mobileNickname);
+        renderProfile(view, detail, { name: state.mobileNickname, editable: true, onChanged: showMyProfile });
+        // card só com partidas (sem elas não há média nem músicas)
+        if (cardBtn && detail) {
+            cardBtn.hidden = false;
+            cardBtn.onclick = () => openProfileCard(detail);
+        }
     } catch (e) {
         showToast(e.message, 'error');
     }

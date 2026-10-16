@@ -350,6 +350,35 @@ class ScreensTest(unittest.TestCase):
                         self.assertEqual(errors, [])
                     page.close()
 
+    def test_profile_card_styles_and_download(self):
+        """Aba Perfil do celular: botão Card ao lado de Sair, os nove estilos e o PNG 1080x1350."""
+        page, errors = self.open("/?role=mic&room=1234", viewport=PHONE)
+        page.evaluate("async () => { (await import('/js/core/state.js')).state.mobileNickname = 'Marcelo'; }")
+        page.locator('.mic-tabbar [data-tab="profile"]').click()
+        page.wait_for_selector("#btn-mic-profile-card:visible")
+        page.locator("#btn-mic-profile-card").click()
+        page.wait_for_selector("#profile-card-view .share-card")
+        swatches = page.locator("#profile-card-styles .card-swatch")
+        self.assertEqual(swatches.count(), 9)
+        for i in range(9):
+            swatches.nth(i).click()
+            with self.subTest(estilo=i):
+                box = page.locator("#profile-card-view .share-card").bounding_box()
+                self.assertLessEqual(box["x"] + box["width"], PHONE["width"])
+                # cupom/pôster em maiúsculas, letreiro uma letra por plaquinha
+                text = page.locator("#profile-card-view .share-card").inner_text().upper().replace("\n", "")
+                self.assertIn("MARCELO", text)
+        size = page.evaluate("""async () => {
+            const { profileCardData } = await import('/js/players/profile-card.js');
+            const detail = await (await fetch('/api/players/Marcelo')).json();
+            return profileCardData(detail).podium.length;
+        }""")
+        self.assertGreaterEqual(size, 2)
+        with page.expect_download(timeout=20000) as dl:
+            page.locator("#btn-profile-card-download").click()
+        self.assertTrue(dl.value.suggested_filename.endswith(".png"))
+        self.assertEqual(errors, [])
+
     def test_phone_ignores_the_other_singers_verse(self):
         """Revezar versos: o servidor só manda a nota de quem cantou; o celular de quem
         não cantava mostrava essa nota ("falha 0%") como se fosse a dele."""

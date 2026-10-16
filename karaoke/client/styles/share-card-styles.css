@@ -590,3 +590,5 @@
 .sc-mosaic__extras { margin-top: calc(var(--u) * 1.6); font-size: calc(var(--u) * 2.6); }
 .sc-board__extras { margin-top: calc(var(--u) * 1.6); font-size: calc(var(--u) * 2.4); letter-spacing: 0.08em; text-transform: uppercase; }
 .sc-board__extras strong { color: var(--accent); }
+.sc-mosaic--podium .sc-mosaic__panel { padding-top: calc(var(--u) * 2.4); padding-bottom: calc(var(--u) * 2.6); }
+.sc-mosaic--podium .sc-mosaic__score .sc-score__num { font-size: calc(var(--u) * 13); }

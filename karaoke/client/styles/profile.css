@@ -198,3 +198,17 @@
 .profile-session-item .profile-session { flex: 1; min-width: 0; }
 .profile-session__play { flex: none; width: 2.4rem; height: 2.4rem; min-height: 0; padding: 0; justify-content: center; }
 .profile-session__play .ico { width: 1.1rem; height: 1.1rem; }
+
+/* Cartão do perfil (players/profile-card.js): o cartão cabe na tela do celular */
+.mic-profile-footer { display: flex; justify-content: center; gap: 0.6rem; }
+.mic-profile-footer [hidden] { display: none; }
+.profile-card-modal { width: auto; max-width: 96vw; max-height: 96vh; overflow-y: auto; padding: 1rem; text-align: center; }
+.profile-card-view .share-card-frame { --u: 0.5vh; }
+@supports (width: min(1px, 2px)) {
+    .profile-card-view .share-card-frame { --u: min(0.78vw, 0.52vh); }
+}
+.profile-card-modal .card-swatches { margin: 0.8rem 0 0.2rem; }
+.profile-card-actions { display: flex; gap: 0.6rem; margin-top: 0.6rem; }
+.profile-card-actions .btn { flex: 1; }
+/* cópia desenhada para o PNG: fora da tela, no tamanho final */
+.profile-card-export { position: fixed; top: 0; left: -20000px; }
