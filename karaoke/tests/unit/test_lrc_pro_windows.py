@@ -64,6 +64,18 @@ class ParseLrcTest(unittest.TestCase):
         lines, starts, _ = lrc_pro.lines_for_alignment(PLAIN, None, "en")
         self.assertIsNone(starts)
 
+    def test_lrc_text_used_when_lines_break_differently_with_the_same_count(self):
+        # IRIS OUT: 47 × 47 linhas, uma junta e outra separada — por índice, cada
+        # linha ganhava o tempo da vizinha
+        plain = "Hello world This is the place\nGoodbye\nnow"
+        lines, starts, _ = lrc_pro.lines_for_alignment(plain, LRC, "en")
+        self.assertEqual([" ".join(w["raw"] for w in ln) for ln in lines], ["Hello world", "This is the place", "Goodbye now"])
+        self.assertEqual(starts, [10.0, 13.0, 45.0])
+
+    def test_revised_spelling_keeps_the_plain_text(self):
+        lines, _, _ = lrc_pro.lines_for_alignment("Hello, world!\nThis is da place\nGoodbye now", LRC, "en")
+        self.assertEqual(lines[1][2]["raw"], "da")
+
 
 class WindowTest(unittest.TestCase):
     def test_window_bounds(self):
@@ -151,6 +163,22 @@ class AlignLinesTest(unittest.TestCase):
             self.assertEqual(starts, sorted(set(starts)))  # estritamente crescente
         for a, b in zip(segs, segs[1:]):
             self.assertLessEqual(a["sing_end"], b["sing_start"])
+
+    def test_alternative_needs_a_clear_margin_over_the_sync_choice(self):
+        # IRIS OUT: o LRC certo perdeu por 4 pontos para o plano que punha a letra na introdução
+        other = "[00:10.00]Hello world\n[00:44.00]Goodbye now"  # 2 linhas: dá para saber qual ficou
+        audio = np.zeros(60 * lrc_pro.SAMPLE_RATE, dtype=np.float32)
+
+        def run(scores):
+            with patch("utils.audio.load_audio_full", return_value=audio), \
+                    patch.object(lrc_pro, "_sync_candidates", return_value=[("lrc", LRC), ("estrutura", other)]), \
+                    patch.object(lrc_pro, "_selection_score", side_effect=scores):
+                _, lrc = lrc_pro.align_lyrics_forced("vocal.mp3", PLAIN, "en", synced_lrc=LRC,
+                                                     align_fn=FakeAligner(), transcribe_fn=lambda a: [])
+            return lrc
+
+        self.assertIn("This is the place", run([18.8, 23.2]))  # fica o 1º
+        self.assertNotIn("This is the place", run([18.8, 18.8 + lrc_pro.ALTERNATIVE_MARGIN + 1]))
 
     def test_out_of_sync_lrc_falls_back_to_whole_song(self):
         # LRC de outra versão (tudo 5 s depois): nenhuma janela acha as palavras

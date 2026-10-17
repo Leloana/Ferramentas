@@ -55,6 +55,8 @@ EDGE_WORD_SEC = 0.3
 SEC_PER_SYLLABLE = 0.28
 LINE_MIN_SEC, LINE_MAX_SEC = 0.8, 8.0
 MIN_VOICED_FRACTION = 0.35
+# voz encostada na ponta do intervalo até isso é cauda/começo da linha vizinha
+NEIGHBOR_VOICE_MAX_SEC = 2.0
 # refrão a mais: mínimo de palavras seguidas sem linha e de casamentos na letra
 REPEAT_MIN_WORDS = 4
 REPEAT_MIN_MATCHES = 3
@@ -252,13 +254,18 @@ def _fill_gap(lines_idx: list[int], texts: list[str], t0: float, t1: float,
 
 def _trim_neighbor_voice(voiced: np.ndarray, t0: float, t1: float, hop: float, min_keep: float) -> np.ndarray:
     """Tira a voz que encosta nas pontas do intervalo (cauda da linha anterior,
-    começo da seguinte), se ainda sobrar `min_keep` segundos de voz no meio."""
+    começo da seguinte), se ainda sobrar `min_keep` segundos de voz no meio.
+
+    Só trecho curto é do vizinho: linhas cantadas sem respiro até a âncora formam
+    um trecho longo encostado na ponta, e cortá-lo jogava as linhas na introdução
+    (IRIS OUT: 18 s de canto descartados, 8 linhas espremidas num "hum" de 4–18 s).
+    """
     if voiced.size < 2:
         return voiced
     runs = np.split(voiced, np.flatnonzero(np.diff(voiced) > 1.5 * hop) + 1)
-    if len(runs) > 1 and runs[0][0] - t0 <= hop:
+    if len(runs) > 1 and runs[0][0] - t0 <= hop and runs[0].size * hop <= NEIGHBOR_VOICE_MAX_SEC:
         runs = runs[1:]
-    if len(runs) > 1 and t1 - runs[-1][-1] <= hop:
+    if len(runs) > 1 and t1 - runs[-1][-1] <= hop and runs[-1].size * hop <= NEIGHBOR_VOICE_MAX_SEC:
         runs = runs[:-1]
     inner = np.concatenate(runs)
     return inner if inner.size * hop >= min_keep else voiced

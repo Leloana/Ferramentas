@@ -147,19 +147,42 @@ def lines_for_alignment(plain_lyrics: str, synced_lrc: str | None,
                         language: str) -> tuple[list[list[dict]], list[float] | None, list[float | None] | None]:
     """Linhas da letra + inícios (e fins) do LRC, se houver um que sirva.
 
-    Mesmo número de linhas: vale o texto da letra plana com os tempos do LRC.
-    Números diferentes: vale o texto do próprio LRC (é a mesma letra, já sincronizada).
+    Mesmas linhas (mesmo número e mesmo texto, linha a linha): vale o texto da
+    letra plana com os tempos do LRC. Senão vale o texto do próprio LRC (é a mesma
+    letra, já sincronizada). Só contar não basta: IRIS OUT tinha 47 × 47 linhas
+    quebradas em lugares diferentes, e 40 linhas ganharam o tempo da vizinha.
     """
     lines, _ = parse_and_normalize_lyrics(plain_lyrics or "", language)
     lrc_lines = parse_synced_lrc(synced_lrc) if synced_lrc else []
     if not lrc_lines:
         return lines, None, None
-    if len(lrc_lines) != len(lines):
-        logger.info(f"[MMS_FA] LRC com {len(lrc_lines)} linhas e letra com {len(lines)}: usando o texto do LRC")
-        lines, _ = parse_and_normalize_lyrics("\n".join(ln["text"] for ln in lrc_lines), language)
-        if len(lines) != len(lrc_lines):  # linha do LRC só com pontuação etc.
-            return parse_and_normalize_lyrics(plain_lyrics or "", language)[0], None, None
+    lrc_text_lines, _ = parse_and_normalize_lyrics("\n".join(ln["text"] for ln in lrc_lines), language)
+    if len(lrc_lines) != len(lines) or not _same_lines(lines, lrc_text_lines):
+        logger.info(f"[MMS_FA] LRC ({len(lrc_lines)} linhas) e letra ({len(lines)}) quebradas em lugares "
+                    "diferentes: usando o texto do LRC")
+        if len(lrc_text_lines) != len(lrc_lines):  # linha do LRC só com pontuação etc.
+            return lines, None, None
+        lines = lrc_text_lines
     return lines, [ln["start"] for ln in lrc_lines], [ln["end"] for ln in lrc_lines]
+
+
+# linha da letra × linha do LRC: abaixo disso (rapidfuzz 0–100, pela leitura) é outra linha
+SAME_LINE_MIN_RATIO = 60
+# fração de linhas diferentes tolerada (grafia revisada, palavra trocada)
+SAME_LINES_MAX_MISMATCH = 0.1
+
+
+def _same_lines(a: list[list[dict]], b: list[list[dict]]) -> bool:
+    """As duas letras quebram nas mesmas linhas? (a letra revisada pode mudar a grafia)"""
+    if len(a) != len(b):
+        return False
+    from rapidfuzz import fuzz
+
+    def key(line):
+        return "".join(w["norm"] for w in line)
+
+    bad = sum(fuzz.ratio(key(x), key(y)) < SAME_LINE_MIN_RATIO for x, y in zip(a, b))
+    return bad <= SAME_LINES_MAX_MISMATCH * len(a)
 
 
 def _syllables(word: str) -> int:
@@ -444,7 +467,7 @@ def align_lyrics_forced(
                         f"({'por linha' if plans[0][1][1] else 'letra inteira'})")
             align_fn, release = mms_align_fn(audio, device)
         best = None
-        for label, (lines, starts, ends) in plans:
+        for k, (label, (lines, starts, ends)) in enumerate(plans):
             pristine = copy.deepcopy(lines)
             modes = align_lines(lines, audio_duration, align_fn, starts, ends)
             segments = build_segments(lines, modes, audio_duration, language)
@@ -458,7 +481,12 @@ def align_lyrics_forced(
                 except Exception as e:
                     logger.warning(f"[MMS_FA] nota do candidato {label} falhou: {e}")
                     quality = float("-inf")
-                logger.info(f"[MMS_FA] candidato {label}: nota {quality:.1f}")
+                # o 1º é a escolha do lrc_sync (com prova própria): a alternativa só
+                # leva se for claramente melhor
+                if k > 0:
+                    quality -= ALTERNATIVE_MARGIN
+                logger.info(f"[MMS_FA] candidato {label}: nota {quality:.1f}"
+                            + (f" (já com −{ALTERNATIVE_MARGIN:.0f} de alternativa)" if k > 0 else ""))
                 if best is None or quality > best[0]:
                     best = (quality, segments)
             else:
@@ -477,6 +505,10 @@ def align_lyrics_forced(
 
 # peso da voz sem verso na escolha entre candidatos (plano tirou linha cantada)
 UNCOVERED_VOICE_WEIGHT = 60.0
+# quanto a alternativa do lrc_sync precisa superar a escolha dele. IRIS OUT: o LRC
+# certo (letra aos 18 s) perdeu por 4 pontos para um plano que punha a letra num
+# "hum" da introdução — voz sem letra que o LRC deixava descoberta
+ALTERNATIVE_MARGIN = 10.0
 
 
 def _sync_candidates(synced_lrc, plain_lyrics, audio, language, transcribe_fn) -> list[tuple[str, str | None]]:

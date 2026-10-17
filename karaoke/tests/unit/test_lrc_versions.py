@@ -18,7 +18,7 @@ sys.path.insert(0, str(PROJECT_ROOT / "server"))
 from utils import lyrics_fetcher  # noqa: E402
 from utils.lrc_fit import fit_lrc, remap_lrc  # noqa: E402
 from utils.lrc_pro import parse_synced_lrc  # noqa: E402
-from utils.lrc_structure import build_plan, plan_to_lrc  # noqa: E402
+from utils.lrc_structure import _trim_neighbor_voice, build_plan, plan_to_lrc  # noqa: E402
 from utils.lrc_sync import sync_lrc, uncovered_voice  # noqa: E402
 
 SR = 16000
@@ -223,6 +223,23 @@ class TestStructure(unittest.TestCase):
         line5 = next(a for a in plan.anchors if a.line == 5)
         self.assertEqual(line5.kind, "interp")
         self.assertAlmostEqual(line5.start, dict(tl)[5], delta=0.5)
+
+    def test_long_voice_touching_the_anchor_is_kept(self):
+        # IRIS OUT: linhas cantadas sem respiro até a âncora (18–36 s) não são "cauda
+        # do vizinho"; cortá-las deixava só o "hum" da introdução (4–10 s)
+        hop = 0.05
+        intro = np.arange(4.0, 10.0, hop) + hop / 2
+        sung = np.arange(18.0, 36.0, hop) + hop / 2
+        kept = _trim_neighbor_voice(np.concatenate([intro, sung]), 0.0, 36.0, hop, 1.0)
+        self.assertGreater(kept[-1], 35.0)
+
+    def test_short_neighbor_voice_at_the_edges_is_trimmed(self):
+        hop = 0.05
+        tail = np.arange(0.0, 0.5, hop) + hop / 2
+        middle = np.arange(5.0, 10.0, hop) + hop / 2
+        head = np.arange(35.5, 36.0, hop) + hop / 2
+        kept = _trim_neighbor_voice(np.concatenate([tail, middle, head]), 0.0, 36.0, hop, 1.0)
+        self.assertEqual((round(kept[0], 2), round(kept[-1], 2)), (round(middle[0], 2), round(middle[-1], 2)))
 
     def test_plan_lrc_has_one_line_per_anchor(self):
         order = list(range(9)) + CHORUS + list(range(9, len(LINES)))
