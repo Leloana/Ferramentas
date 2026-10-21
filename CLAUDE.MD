@@ -45,6 +45,10 @@ Este repositório (`Ferramentas`) agrupa scripts, automações e ecossistemas in
 * **Descrição:** Gera apresentações em PDF com cara de Canva (7 layouts: capa, cards, comparação, frase, blocos, número, decisões) a partir de um `.toml`. Tema por cores, fontes do Google Fonts, artes opcionais.
 * **Stack:** Python 3.11+ (stdlib, `tomllib`), Chrome/Chromium/Edge headless.
 * **Documentação:** [`apresentacao_pdf/README.md`](apresentacao_pdf/README.md).
+
+#### 9. 🖼️ Figurinhas (`/figurinhas`)
+* **Descrição:** App web que baixa um vídeo por link (TikTok, X, YouTube...) e gera figurinha de WhatsApp (.webp 512x512, animada ≤ 500 KB ou parada), com escolha de trecho, área do enquadramento e texto. Rodar: `cd figurinhas; .\venv\Scripts\python.exe run.py` (porta 8020).
+* **Stack:** FastAPI, yt-dlp (+curl-cffi), FFmpeg (libwebp), Vanilla JS.
 ---
 
 ### 🔴 Projetos Descontinuados / Arquivados (Mantidos para Referência)

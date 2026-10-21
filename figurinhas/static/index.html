@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Figurinhas</title>
+<style>
+  :root {
+    --bg: #0f1412; --card: #18201c; --borda: #2a3630; --texto: #e8f0ec;
+    --sutil: #8fa39a; --verde: #25d366; --verde-escuro: #128c4b; --erro: #ff6b6b;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--texto);
+    font: 16px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 560px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 26px; margin: 0 0 4px; }
+  .sub { color: var(--sutil); margin: 0 0 20px; }
+  .card { background: var(--card); border: 1px solid var(--borda); border-radius: 14px;
+    padding: 16px; margin-bottom: 16px; }
+  .linha { display: flex; gap: 8px; }
+  input[type=text], input[type=number] { flex: 1; min-width: 0; padding: 12px; border-radius: 10px;
+    border: 1px solid var(--borda); background: var(--bg); color: var(--texto); font-size: 16px; }
+  button { padding: 12px 16px; border: 0; border-radius: 10px; background: var(--verde);
+    color: #06150c; font-weight: 700; font-size: 16px; cursor: pointer; }
+  button.sec { background: transparent; color: var(--texto); border: 1px solid var(--borda); font-weight: 500; }
+  button:disabled { opacity: .5; cursor: wait; }
+  video { width: 100%; max-height: 420px; border-radius: 10px; background: #000; display: block; }
+  label { display: block; color: var(--sutil); font-size: 14px; margin: 14px 0 6px; }
+  .grupo { display: flex; gap: 6px; flex-wrap: wrap; }
+  .grupo input { display: none; }
+  .grupo span { display: inline-block; padding: 8px 12px; border: 1px solid var(--borda);
+    border-radius: 999px; cursor: pointer; font-size: 14px; }
+  .grupo input:checked + span { background: var(--verde-escuro); border-color: var(--verde); color: #fff; }
+  input[type=range] { width: 100%; accent-color: var(--verde); }
+  .titulo { font-size: 14px; color: var(--sutil); margin: 8px 0 0; overflow-wrap: anywhere; }
+  .msg { font-size: 14px; margin-top: 10px; min-height: 1em; }
+  .msg.erro { color: var(--erro); }
+  .resultado { text-align: center; }
+  .xadrez { width: 256px; height: 256px; margin: 0 auto; border-radius: 12px;
+    background: conic-gradient(#2a332f 25%, #1f2724 0 50%, #2a332f 0 75%, #1f2724 0) 0 0/24px 24px; }
+  .xadrez img { width: 100%; height: 100%; display: block; }
+  .acoes { display: flex; gap: 8px; justify-content: center; margin-top: 14px; flex-wrap: wrap; }
+  .dica { color: var(--sutil); font-size: 13px; margin-top: 12px; }
+  .oculto { display: none; }
+  .gerar { width: 100%; margin-top: 18px; }
+  .palco { position: relative; overflow: hidden; border-radius: 10px; }
+  .caixa { position: absolute; border: 2px solid #fff; box-shadow: 0 0 0 9999px rgba(0,0,0,.55);
+    cursor: move; touch-action: none; }
+  .caixa::before, .caixa::after { content: ""; position: absolute; background: rgba(255,255,255,.35); }
+  .caixa::before { left: 33.3%; right: 33.3%; top: 0; bottom: 0; border: solid rgba(255,255,255,.35); border-width: 0 1px; background: none; }
+  .caixa::after { top: 33.3%; bottom: 33.3%; left: 0; right: 0; border: solid rgba(255,255,255,.35); border-width: 1px 0; background: none; }
+  .alca { position: absolute; right: -9px; bottom: -9px; width: 22px; height: 22px; border-radius: 50%;
+    background: var(--verde); border: 2px solid #fff; cursor: nwse-resize; touch-action: none; z-index: 1; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Figurinhas</h1>
+  <p class="sub">Cole o link de um vídeo (TikTok, X, YouTube, Instagram...) e vire figurinha de WhatsApp.</p>
+
+  <div class="card">
+    <div class="linha">
+      <input id="url" type="text" placeholder="https://..." autocomplete="off">
+      <button id="btnBaixar">Baixar</button>
+    </div>
+    <div id="msgBaixar" class="msg"></div>
+  </div>
+
+  <div id="editor" class="card oculto">
+    <div class="palco">
+      <video id="video" controls playsinline muted></video>
+      <div id="caixa" class="caixa oculto"><div id="alca" class="alca"></div></div>
+    </div>
+    <p id="titulo" class="titulo"></p>
+
+    <label>Começa em (segundos)</label>
+    <div class="linha">
+      <input id="inicio" type="number" min="0" step="0.1" value="0">
+      <button id="btnAgora" class="sec">Usar ponto atual</button>
+    </div>
+
+    <div id="blocoDuracao">
+      <label>Duração: <b id="durTxt">5</b> s</label>
+      <input id="duracao" type="range" min="1" max="10" step="0.5" value="5">
+    </div>
+
+    <label>Tipo</label>
+    <div class="grupo">
+      <label style="margin:0"><input type="radio" name="tipo" value="animada" checked><span>Animada</span></label>
+      <label style="margin:0"><input type="radio" name="tipo" value="estatica"><span>Imagem parada</span></label>
+    </div>
+
+    <label>Enquadramento</label>
+    <div class="grupo">
+      <label style="margin:0"><input type="radio" name="modo" value="cortar" checked><span>Cortar no quadrado</span></label>
+      <label style="margin:0"><input type="radio" name="modo" value="area"><span>Escolher área</span></label>
+      <label style="margin:0"><input type="radio" name="modo" value="encaixar"><span>Vídeo inteiro (fundo transparente)</span></label>
+    </div>
+    <div id="blocoArea" class="oculto">
+      <label>Zoom: <b id="zoomTxt">100</b>% — arraste o quadrado no vídeo; o canto verde também redimensiona</label>
+      <input id="zoom" type="range" min="15" max="100" step="1" value="100">
+    </div>
+
+    <label>Texto (opcional)</label>
+    <input id="texto" type="text" maxlength="60" placeholder="ex: KKKKKK" style="width:100%">
+
+    <button id="btnGerar" class="gerar">Gerar figurinha</button>
+    <div id="msgGerar" class="msg"></div>
+  </div>
+
+  <div id="resultado" class="card resultado oculto">
+    <div class="xadrez"><img id="img" alt="figurinha"></div>
+    <div id="info" class="msg"></div>
+    <div class="acoes">
+      <a id="baixarLink" download><button>Baixar .webp</button></a>
+      <button id="btnCompartilhar" class="sec oculto">Compartilhar</button>
+    </div>
+    <p class="dica">No WhatsApp Web/Desktop: arraste o .webp para a conversa e ele vai como figurinha.
+      No celular: use “Compartilhar” → WhatsApp, ou salve e envie pelo app de figurinhas.</p>
+  </div>
+</main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+let atual = null;  // { id, ... } do vídeo baixado
+let figurinhaBlob = null;
+
+async function api(caminho, corpo) {
+  const r = await fetch(caminho, {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(corpo),
+  });
+  const dados = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(dados.detail || `erro ${r.status}`);
+  return dados;
+}
+
+function msg(el, texto, erro = false) {
+  el.textContent = texto;
+  el.classList.toggle("erro", erro);
+}
+
+$("btnBaixar").onclick = async () => {
+  const url = $("url").value.trim();
+  if (!url) return;
+  $("btnBaixar").disabled = true;
+  msg($("msgBaixar"), "Baixando o vídeo...");
+  try {
+    atual = await api("/api/baixar", { url });
+    $("video").src = atual.video;
+    $("titulo").textContent = atual.titulo;
+    $("inicio").value = 0;
+    $("editor").classList.remove("oculto");
+    $("resultado").classList.add("oculto");
+    msg($("msgBaixar"), "Pronto! Escolha o trecho abaixo.");
+  } catch (e) {
+    msg($("msgBaixar"), e.message, true);
+  } finally {
+    $("btnBaixar").disabled = false;
+  }
+};
+$("url").addEventListener("keydown", (e) => { if (e.key === "Enter") $("btnBaixar").click(); });
+
+$("btnAgora").onclick = () => { $("inicio").value = $("video").currentTime.toFixed(1); };
+
+$("duracao").oninput = () => { $("durTxt").textContent = $("duracao").value; };
+
+// toca o trecho escolhido em loop para conferir
+function tocarTrecho() {
+  const v = $("video");
+  v.currentTime = parseFloat($("inicio").value) || 0;
+  v.play();
+}
+$("inicio").onchange = tocarTrecho;
+$("duracao").onchange = tocarTrecho;
+$("video").ontimeupdate = () => {
+  const v = $("video");
+  const ini = parseFloat($("inicio").value) || 0;
+  const fim = ini + parseFloat($("duracao").value);
+  if (v.dataset.trecho === "1" && v.currentTime > fim) v.currentTime = ini;
+};
+$("video").onseeked = () => {
+  // só prende no trecho quando foi o app que pulou para o início
+  const v = $("video");
+  v.dataset.trecho = Math.abs(v.currentTime - (parseFloat($("inicio").value) || 0)) < 0.3 ? "1" : "0";
+};
+
+document.querySelectorAll("input[name=tipo]").forEach((r) => r.onchange = () => {
+  $("blocoDuracao").classList.toggle("oculto", r.value === "estatica" && r.checked);
+});
+
+// ---- modo "Escolher área": quadrado arrastável sobre o vídeo ----
+// x, y = canto superior esquerdo (fração da largura/altura do vídeo); lado = fração do menor lado
+const area = { x: 0, y: 0, lado: 1 };
+const modoAtual = () => document.querySelector("input[name=modo]:checked").value;
+
+// onde o vídeo aparece de fato dentro do elemento (object-fit: contain deixa faixas pretas)
+function telaVideo() {
+  const v = $("video");
+  const vw = v.videoWidth || 16, vh = v.videoHeight || 9;
+  const s = Math.min(v.clientWidth / vw, v.clientHeight / vh);
+  const w = vw * s, h = vh * s;
+  return { w, h, ox: (v.clientWidth - w) / 2, oy: (v.clientHeight - h) / 2 };
+}
+
+function limitarArea() {
+  const t = telaVideo();
+  const ladoPx = Math.min(t.w, t.h) * area.lado;
+  area.x = Math.min(Math.max(area.x, 0), Math.max(0, 1 - ladoPx / t.w));
+  area.y = Math.min(Math.max(area.y, 0), Math.max(0, 1 - ladoPx / t.h));
+}
+
+function desenharArea() {
+  const ativa = modoAtual() === "area";
+  $("caixa").classList.toggle("oculto", !ativa);
+  $("blocoArea").classList.toggle("oculto", !ativa);
+  if (!ativa) return;
+  limitarArea();
+  const t = telaVideo();
+  const ladoPx = Math.min(t.w, t.h) * area.lado;
+  Object.assign($("caixa").style, {
+    left: `${t.ox + area.x * t.w}px`, top: `${t.oy + area.y * t.h}px`,
+    width: `${ladoPx}px`, height: `${ladoPx}px`,
+  });
+  $("zoom").value = Math.round(area.lado * 100);
+  $("zoomTxt").textContent = $("zoom").value;
+}
+
+// muda o tamanho mantendo o centro do quadrado no lugar
+function mudarLado(novo) {
+  const t = telaVideo();
+  const m = Math.min(t.w, t.h);
+  const cx = area.x * t.w + (area.lado * m) / 2, cy = area.y * t.h + (area.lado * m) / 2;
+  area.lado = Math.min(Math.max(novo, 0.15), 1);
+  area.x = (cx - (area.lado * m) / 2) / t.w;
+  area.y = (cy - (area.lado * m) / 2) / t.h;
+  desenharArea();
+}
+
+function arrastar(el, aoMover) {
+  el.addEventListener("pointerdown", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    el.setPointerCapture(e.pointerId);
+    let ux = e.clientX, uy = e.clientY;
+    const mover = (ev) => { aoMover(ev.clientX - ux, ev.clientY - uy); ux = ev.clientX; uy = ev.clientY; };
+    const soltar = () => { el.removeEventListener("pointermove", mover); el.removeEventListener("pointerup", soltar); };
+    el.addEventListener("pointermove", mover);
+    el.addEventListener("pointerup", soltar);
+  });
+}
+arrastar($("caixa"), (dx, dy) => {
+  const t = telaVideo();
+  area.x += dx / t.w;
+  area.y += dy / t.h;
+  desenharArea();
+});
+arrastar($("alca"), (dx, dy) => {
+  const t = telaVideo();
+  mudarLado(area.lado + (dx + dy) / Math.min(t.w, t.h));
+});
+$("zoom").oninput = () => mudarLado($("zoom").value / 100);
+document.querySelectorAll("input[name=modo]").forEach((r) => r.onchange = desenharArea);
+$("video").addEventListener("loadedmetadata", () => {
+  // começa com o maior quadrado possível, centralizado
+  const t = telaVideo();
+  const m = Math.min(t.w, t.h);
+  Object.assign(area, { lado: 1, x: (1 - m / t.w) / 2, y: (1 - m / t.h) / 2 });
+  desenharArea();
+});
+window.addEventListener("resize", desenharArea);
+
+$("btnGerar").onclick = async () => {
+  if (!atual) return;
+  $("btnGerar").disabled = true;
+  msg($("msgGerar"), "Gerando... (pode levar alguns segundos)");
+  try {
+    const res = await api("/api/figurinha", {
+      id: atual.id,
+      inicio: parseFloat($("inicio").value) || 0,
+      duracao: parseFloat($("duracao").value),
+      modo: modoAtual(),
+      area_x: area.x, area_y: area.y, area_lado: area.lado,
+      estatica: document.querySelector("input[name=tipo]:checked").value === "estatica",
+      texto: $("texto").value,
+    });
+    $("img").src = res.url;
+    $("baixarLink").href = res.url;
+    $("baixarLink").download = "figurinha.webp";
+    const kb = (res.tamanho / 1024).toFixed(0);
+    msg($("info"), res.cabe
+      ? `${kb} KB — dentro do limite do WhatsApp.`
+      : `${kb} KB — passou do limite de ${res.limite / 1024} KB; diminua a duração.`, !res.cabe);
+    const pedida = parseFloat($("duracao").value);
+    if (res.cabe && !res.estatica && res.duracao && res.duracao < pedida)
+      $("info").textContent += ` Trecho encurtado para ${res.duracao} s para caber.`;
+    figurinhaBlob = await (await fetch(res.url)).blob();
+    const arquivo = new File([figurinhaBlob], "figurinha.webp", { type: "image/webp" });
+    $("btnCompartilhar").classList.toggle("oculto", !(navigator.canShare && navigator.canShare({ files: [arquivo] })));
+    $("resultado").classList.remove("oculto");
+    $("resultado").scrollIntoView({ behavior: "smooth" });
+    msg($("msgGerar"), "");
+  } catch (e) {
+    msg($("msgGerar"), e.message, true);
+  } finally {
+    $("btnGerar").disabled = false;
+  }
+};
+
+$("btnCompartilhar").onclick = async () => {
+  const arquivo = new File([figurinhaBlob], "figurinha.webp", { type: "image/webp" });
+  try { await navigator.share({ files: [arquivo] }); } catch (_) {}
+};
+</script>
+</body>
+</html>
