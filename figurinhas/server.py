@@ -22,7 +22,11 @@ LIMITE_ANIMADA = 500 * 1024
 LIMITE_ESTATICA = 100 * 1024
 DURACAO_MAX_VIDEO = 30 * 60  # não baixa vídeos com mais de 30 min
 VALIDADE_TRABALHO = 2 * 3600  # apaga downloads com mais de 2 h
-FONTE = Path("C:/Windows/Fonts/impact.ttf")
+FONTE = next((f for f in (
+    Path("C:/Windows/Fonts/impact.ttf"),
+    Path("/usr/share/fonts/truetype/msttcorefonts/Impact.ttf"),
+    Path("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"),
+) if f.exists()), None)
 
 app = FastAPI(title="Figurinhas")
 
@@ -123,7 +127,7 @@ def filtro_video(p: PedidoFigurinha, pasta: Path, fps: int | None) -> str:
             "format=rgba",
             "pad=512:512:(ow-iw)/2:(oh-ih)/2:color=0x00000000",
         ]
-    if p.texto.strip():
+    if p.texto.strip() and FONTE:
         # texto vai por arquivo para não precisar escapar nada no filtro
         (pasta / "texto.txt").write_text(p.texto.strip(), encoding="utf-8")
         fonte = str(FONTE).replace("\\", "/").replace(":", "\\:")
