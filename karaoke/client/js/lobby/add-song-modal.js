@@ -7,7 +7,7 @@ import { dom, startLoadingOverlay, stopLoadingOverlay } from '../core/dom.js';
 import { showToast } from '../core/toast.js';
 import { promptGenerationOptions } from './selection-view.js';
 import { openModal, closeModal } from '../ui/modal.js';
-import { initYoutubeSearch, resetYoutubeSearch, isYoutubeUrl } from './youtube-search.js';
+import { initYoutubeSearch, resetYoutubeSearch, stopYoutubePreview, isYoutubeUrl } from './youtube-search.js';
 import { formatEta } from './queue-view.js';
 import {
     initPlaylistImport, openPlaylist, closePlaylist, submitPlaylist, isPlaylistUrl,
@@ -122,7 +122,7 @@ export function initAddSongModal() {
         state.activeUploadTab = 'youtube';
         resetYoutubeSearch();
         setStep(1);
-        openModal(addSongModal);
+        openModal(addSongModal, { onClose: stopYoutubePreview });
     };
 
     // Escolheu um resultado da busca (ou colou link): segue para o passo 2

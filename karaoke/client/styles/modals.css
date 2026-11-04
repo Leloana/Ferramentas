@@ -123,23 +123,51 @@
 .yt-results__msg { margin: 0; padding: 0.75rem; color: var(--dim); text-align: center; }
 .yt-result {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.5rem;
     width: 100%;
     padding: 0.4rem;
     background: var(--paper);
     border: var(--hairline);
     border-radius: var(--radius);
+}
+.yt-result:hover { border-color: var(--ink); background: rgba(236, 213, 143, 0.35); }
+.yt-result__play {
+    flex-shrink: 0;
+    width: 2.2rem;
+    height: 2.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--paper-3);
+    border: var(--hairline);
+    border-radius: 50%;
+    color: var(--ink);
+    cursor: pointer;
+}
+.yt-result__play:hover { background: var(--butter); border-color: var(--ink); }
+.yt-result__play .ico { width: 1.1rem; height: 1.1rem; }
+.yt-result__main {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+    min-width: 0;
+    background: none;
+    border: none;
+    padding: 0;
     color: var(--ink);
     font-family: var(--font-ui);
     text-align: left;
     cursor: pointer;
 }
-.yt-result:hover { border-color: var(--ink); background: rgba(236, 213, 143, 0.35); }
 .yt-result__thumb { width: 96px; height: 54px; flex-shrink: 0; object-fit: cover; background: var(--paper-3); border: 1px solid var(--fold); }
 .yt-result__info { display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
 .yt-result__title { font-weight: 700; font-size: 0.95rem; line-height: 1.3; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
 .yt-result__meta { font-size: 0.8rem; color: var(--dim); }
+.yt-result__preview { position: relative; width: 100%; padding-top: 56.25%; }
+.yt-result__preview-frame { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: var(--radius); }
 
 /* Playlist (passo "playlist" do Adicionar música) */
 .playlist-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 0.5rem 0.75rem; margin-bottom: 0.6rem; }
