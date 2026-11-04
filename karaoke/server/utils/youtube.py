@@ -3,13 +3,88 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import re
 import shutil
+import tempfile
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
 DOWNLOAD_ATTEMPTS = 3
 DOWNLOAD_RETRY_DELAY_SEC = 5.0
+
+# Prévia da busca: só o áudio original (sem converter), guardado fora da biblioteca.
+PREVIEW_DIR = Path(tempfile.gettempdir()) / "karaoke_preview"
+PREVIEW_KEEP = 15
+PREVIEW_MAX_BYTES = 30 * 1024 * 1024
+PREVIEW_ATTEMPTS = 2
+PREVIEW_RETRY_DELAY_SEC = 2.0
+PREVIEW_MEDIA_TYPES = {".m4a": "audio/mp4", ".mp4": "audio/mp4", ".webm": "audio/webm",
+                       ".opus": "audio/ogg", ".ogg": "audio/ogg", ".mp3": "audio/mpeg"}
+_VIDEO_ID_RE = re.compile(r"^[\w-]{11}$")
+_preview_locks: dict[str, asyncio.Lock] = {}
+
+
+def is_video_id(value: str) -> bool:
+    return bool(_VIDEO_ID_RE.match(value or ""))
+
+
+def _cached_preview(video_id: str) -> Path | None:
+    # .part/.ytdl são download pela metade
+    for path in PREVIEW_DIR.glob(f"{video_id}.*"):
+        if path.suffix in PREVIEW_MEDIA_TYPES and path.stat().st_size > 1000:
+            return path
+    return None
+
+
+def _prune_previews(keep: int) -> None:
+    files = sorted((p for p in PREVIEW_DIR.glob("*") if p.is_file()), key=lambda p: p.stat().st_mtime, reverse=True)
+    for old in files[keep:]:
+        try:
+            old.unlink()
+        except OSError:
+            pass  # Windows: arquivo ainda sendo servido; sai na próxima
+
+
+async def fetch_youtube_preview(video_id: str) -> Path | None:
+    """Áudio do vídeo para ouvir antes de adicionar; None se o YouTube não entregar."""
+    import yt_dlp
+
+    # o navegador pede o mesmo áudio várias vezes (Range): um download só
+    lock = _preview_locks.setdefault(video_id, asyncio.Lock())
+    async with lock:
+        cached = _cached_preview(video_id)
+        if cached:
+            cached.touch()
+            return cached
+        PREVIEW_DIR.mkdir(parents=True, exist_ok=True)
+        ydl_opts: dict = {
+            # m4a toca em qualquer navegador (webm/opus não toca em iPhone antigo)
+            "format": "bestaudio[ext=m4a]/bestaudio",
+            "outtmpl": str(PREVIEW_DIR / f"{video_id}.%(ext)s"),
+            "quiet": True,
+            "noprogress": True,
+            "no_warnings": True,
+            "noplaylist": True,
+            "max_filesize": PREVIEW_MAX_BYTES,
+        }
+
+        def _download() -> None:
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([f"https://www.youtube.com/watch?v={video_id}"])
+
+        found = None
+        for attempt in range(1, PREVIEW_ATTEMPTS + 1):
+            try:
+                await asyncio.to_thread(_download)
+            except Exception as e:
+                logger.warning(f"Prévia do YouTube {video_id} (tentativa {attempt}): {e}")
+            found = _cached_preview(video_id)
+            if found or attempt == PREVIEW_ATTEMPTS:
+                break
+            await asyncio.sleep(PREVIEW_RETRY_DELAY_SEC)
+        _prune_previews(PREVIEW_KEEP)
+        return found
 
 
 async def download_youtube_audio(url: str, output_path: Path, ffmpeg_bin_dir: str | None = None) -> bool:

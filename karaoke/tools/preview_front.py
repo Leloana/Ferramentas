@@ -158,6 +158,14 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/youtube-playlist":
             url = (parse_qs(urlparse(self.path).query).get("url") or [""])[0]
             return self._json(youtube_playlist(url))
+        if path.startswith("/api/youtube-preview/"):
+            import asyncio
+            from utils.youtube import PREVIEW_MEDIA_TYPES, fetch_youtube_preview, is_video_id
+            video_id = path.rsplit("/", 1)[1]
+            audio = asyncio.run(fetch_youtube_preview(video_id)) if is_video_id(video_id) else None
+            if not audio:
+                return self._json({"detail": "Não foi possível tocar a prévia."}, 502)
+            return self._send(audio.read_bytes(), PREVIEW_MEDIA_TYPES[audio.suffix])
         if path == "/api/fetch-lyrics":
             return self._json({"success": False})
         if path == "/api/rooms":

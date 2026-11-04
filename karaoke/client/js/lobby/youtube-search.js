@@ -29,9 +29,7 @@ export function isYoutubeUrl(text) {
     return YT_URL_RE.test(text || '');
 }
 
-// Fecha a prévia aberta (se houver) sem tocar no resto da busca. Chamado ao
-// escolher um resultado, buscar de novo ou fechar o modal — senão o áudio do
-// vídeo embutido continua tocando escondido.
+// Sem isso o áudio continua tocando com o modal fechado.
 export function stopYoutubePreview() {
     const results = document.getElementById('youtube-results');
     if (!results) return;
@@ -52,10 +50,18 @@ function renderMessage(results, text) {
     results.replaceChildren(el('p', 'yt-results__msg', text));
 }
 
-// Remove qualquer prévia aberta dentro de `results` e devolve os botões de
-// play ao estado inicial. Só uma prévia toca por vez.
+// Só uma prévia toca por vez.
 function closeAllPreviews(results) {
-    results.querySelectorAll('.yt-result__preview').forEach((panel) => panel.remove());
+    results.querySelectorAll('.yt-result__preview').forEach((panel) => {
+        const audio = panel.querySelector('audio');
+        if (audio) {
+            // pausar e soltar o src também cancela o download em andamento
+            audio.pause();
+            audio.removeAttribute('src');
+            audio.load();
+        }
+        panel.remove();
+    });
     results.querySelectorAll('.yt-result__play').forEach((btn) => {
         btn.innerHTML = iconSvg('play');
         btn.setAttribute('aria-label', 'Ouvir prévia');
@@ -63,16 +69,32 @@ function closeAllPreviews(results) {
     });
 }
 
-function openPreview(itemEl, playBtn, videoId) {
+// O áudio vem do servidor (yt-dlp): toca também os vídeos que o YouTube não
+// deixa incorporar, e se tocar o download da música vai funcionar.
+function openPreview(itemEl, playBtn, item) {
     const panel = el('div', 'yt-result__preview');
-    const frame = document.createElement('iframe');
-    frame.className = 'yt-result__preview-frame';
-    frame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-    frame.title = 'Prévia do vídeo';
-    frame.allow = 'autoplay; encrypted-media';
-    frame.setAttribute('frameborder', '0');
-    panel.append(frame);
+    panel.setAttribute('data-state', 'loading');
+    const status = el('span', 'yt-result__preview-status', 'Carregando prévia...');
+    const audio = document.createElement('audio');
+    audio.className = 'yt-result__audio';
+    audio.controls = true;
+    audio.preload = 'auto';
+    const link = el('a', 'yt-result__preview-link', 'Abrir no YouTube');
+    link.href = item.url;
+    link.target = '_blank';
+    link.rel = 'noopener';
+    audio.addEventListener('canplay', () => panel.setAttribute('data-state', 'ready'));
+    audio.addEventListener('error', () => {
+        if (!audio.getAttribute('src')) return;  // fechada de propósito
+        panel.setAttribute('data-state', 'error');
+        status.textContent = 'Não deu para tocar a prévia.';
+    });
+    audio.src = `/api/youtube-preview/${encodeURIComponent(item.id)}`;
+    panel.append(status, audio, link);
     itemEl.append(panel);
+    // play() ainda dentro do clique: TV e celular só tocam com toque
+    const playing = audio.play();
+    if (playing && playing.catch) playing.catch(() => {});
     playBtn.innerHTML = iconSvg('close');
     playBtn.setAttribute('aria-label', 'Fechar prévia');
     playBtn.title = 'Fechar prévia';
@@ -126,7 +148,7 @@ async function runSearch(onPick, onPlaylist) {
                 e.stopPropagation();
                 const wasOpen = !!itemEl.querySelector('.yt-result__preview');
                 closeAllPreviews(results);
-                if (!wasOpen && item.id) openPreview(itemEl, playBtn, item.id);
+                if (!wasOpen && item.id) openPreview(itemEl, playBtn, item);
             });
 
             const main = el('button', 'yt-result__main');

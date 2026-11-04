@@ -172,6 +172,7 @@ Armazena a nota histórica de cada sessão.
 | `GET` | `/api/recordings/{id}/audio/{jogador}` | — | Voz gravada (WAV 16 kHz no tempo da música) |
 | `GET` | `/api/status` | — | Painel de saúde: GPU, fila, salas (tempo até a nota), disco |
 | `GET` | `/api/youtube-search` | `q: str`, `limit: int` (Query) | `{"results": [{"url", "title", "channel", "duration", "thumbnail", "artist_guess", "title_guess"}]}` |
+| `GET` | `/api/youtube-preview/{video_id}` | — | Áudio original (m4a) de um resultado da busca, para ouvir antes de adicionar. Baixado pelo yt-dlp para `%TEMP%/karaoke_preview` (cache das últimas 15, `utils/youtube.fetch_youtube_preview`); 502 se o YouTube não entregar |
 | `POST` | `/api/upload-song` | Form (`title`, `artist`, `language`, files/URLs) | `{"success": true, "lyrics_status": "draft", "draft_lrc": "...", "slug": "..."}` |
 | `GET` | `/api/youtube-playlist` | `url: str` (Query, link com `list=`) | `{"title", "truncated", "results": [... como a busca, + "status": "new"\|"library"\|"queue"]}` (até 50; `utils/youtube.PLAYLIST_LIMIT`) |
 | `POST` | `/api/queue/estimate` | JSON `{"durations": [seg\|null], "align_lyrics"}` | `{"total_sec", "own_sec", "queued"}` — tempo até a fila atual + estas ficarem prontas (`queue_eta.pipeline_finish`) |

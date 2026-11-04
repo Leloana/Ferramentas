@@ -8,13 +8,17 @@ import shutil
 from typing import Optional
 
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
+from fastapi.responses import FileResponse
 
 from state import SONGS_DIR, queue_manager
 from utils.lyrics_fetcher import fetch_lyrics
 from utils.prepare import run_reinstall_song
 from utils.song_paths import API_LYRICS_MARKER, USER_EDITED_MARKER
 from utils.text import normalize_lyrics_text, slugify
-from utils.youtube import get_youtube_video_info, is_playlist_url, list_youtube_playlist, search_youtube
+from utils.youtube import (
+    PREVIEW_MEDIA_TYPES, fetch_youtube_preview, get_youtube_video_info, is_playlist_url, is_video_id,
+    list_youtube_playlist, search_youtube,
+)
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -70,6 +74,18 @@ async def youtube_search(q: str, limit: int = 8):
         logger.error(f"Erro na busca do YouTube: {e}", exc_info=True)
         raise HTTPException(status_code=502, detail="Não foi possível buscar no YouTube agora.")
     return {"results": results}
+
+
+@router.get("/api/youtube-preview/{video_id}")
+async def youtube_preview(video_id: str):
+    """Áudio de um resultado da busca, para conferir a música antes de adicionar."""
+    if not is_video_id(video_id):
+        raise HTTPException(status_code=400, detail="Vídeo inválido.")
+    path = await fetch_youtube_preview(video_id)
+    if not path:
+        raise HTTPException(status_code=502, detail="Não foi possível tocar a prévia.")
+    return FileResponse(path, media_type=PREVIEW_MEDIA_TYPES[path.suffix],
+                        headers={"Cache-Control": "private, max-age=3600"})
 
 
 def _video_id(url: str) -> str:
