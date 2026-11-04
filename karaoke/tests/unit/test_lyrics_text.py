@@ -79,6 +79,11 @@ class TestJapaneseWords(unittest.TestCase):
                          "aoi-koi-daidaiirono-hi-mass-of-the-fermenting-dregs")
         self.assertEqual(slugify("Construção-Chico Buarque"), "construcao-chico-buarque")
 
+    def test_slug_of_a_cyrillic_title_is_transliterated(self):
+        from utils.text import slugify
+        # antes: "-" (todo título russo caía na mesma pasta)
+        self.assertEqual(slugify("Тёмная ночь-Марк Бернес"), "tiomnaia-noch-mark-bernes")
+
     def test_queue_switches_to_japanese_when_lyrics_have_kana(self):
         self.assertEqual(infer_language("[00:01.10] 待ちぼうけさ\n[00:04.20] 追い掛けても", "en"), "ja")
         self.assertEqual(infer_language("Joga pedra na Geni", "pt"), "pt")

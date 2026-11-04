@@ -68,13 +68,25 @@ def join_split_words(text: str) -> str:
     return "\n".join(out)
 
 
+def _ascii_char(ch: str) -> str:
+    """Letra latina perde o acento ("ç" → "c"); outro alfabeto translitera ("ё" → "e").
+
+    O NFKD continua valendo para o latim para não mudar o slug das músicas que já existem.
+    """
+    plain = unicodedata.normalize("NFKD", ch).encode("ascii", "ignore").decode("ascii")
+    if plain or not ch.isalnum():
+        return plain
+    from unidecode import unidecode
+    return unidecode(ch)
+
+
 def slugify(text: str) -> str:
     """Converte texto para slug ASCII-safe (lowercase, sem acentos, com hífens)."""
     # japonês vira romaji ("青い、濃い" → "aoi koi"): o ASCII descartaria tudo
     from lyrics_text import to_romaji  # sob demanda: servidor e ferramentas têm server/ no path
 
     text = to_romaji(text)
-    text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")
+    text = "".join(_ascii_char(ch) for ch in text)
     text = text.lower().strip()
     text = re.sub(r"[^\w\s-]", "", text)
     text = re.sub(r"[\s_-]+", "-", text)
