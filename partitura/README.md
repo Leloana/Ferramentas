@@ -6,8 +6,10 @@ Pega uma música normal (com voz e banda) e gera **PDF + MusicXML + MIDI** de pi
 
 ```powershell
 cd partitura
-.\venv\Scripts\python.exe gerar.py entrada\musica.wav --titulo "Nome" --subtitulo "Autor" [--pop2piano] [--grade 4]
+.\venv\Scripts\python.exe gerar.py entrada\musica.wav --titulo "Nome" --subtitulo "Autor" [--letra letra.txt] [--pop2piano] [--grade 4] [--sem-letra]
 ```
+
+Tudo automático, sem LLM: só modelos de áudio (Demucs, torchcrepe, Whisper, Pop2Piano) + regras musicais.
 
 Saída em `saida/`. O MusicXML abre no MuseScore pra corrigir à mão.
 
