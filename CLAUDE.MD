@@ -51,7 +51,7 @@ Este repositório (`Ferramentas`) agrupa scripts, automações e ecossistemas in
 * **Stack:** FastAPI, yt-dlp (+curl-cffi), FFmpeg (libwebp), Vanilla JS.
 
 #### 10. 🎹 Partitura (`/partitura`)
-* **Descrição:** Música com vocal → partitura de piano (PDF/MusicXML/MIDI): melodia cantada (Demucs + torchcrepe) na mão direita, acordes detectados na esquerda, cifra, armadura por trecho; `--pop2piano` gera também um arranjo completo. Rodar: `cd partitura; .\venv\Scripts\python.exe gerar.py entrada\musica.wav --titulo "..."`.
+* **Descrição:** Música com vocal → partitura de piano (PDF/MusicXML/MIDI): melodia cantada (Demucs + torchcrepe) na mão direita, acordes detectados na esquerda, cifra, armadura por trecho; `--pop2piano`/`--hibrido` usam IA (Pop2Piano) no acompanhamento; níveis fácil/médio/difícil; interface web com busca no YouTube (`cd partitura; .\venv\Scripts\python.exe run.py`, porta 8030). Linha de comando: `cd partitura; .\venv\Scripts\python.exe gerar.py entrada\musica.wav --titulo "..."`.
 * **Stack:** PyTorch (CUDA), Demucs, torchcrepe, librosa, transformers (Pop2Piano), music21, Verovio, Chrome headless.
 * **Documentação:** [`partitura/README.md`](partitura/README.md).
 

@@ -2,11 +2,33 @@
 
 Pega uma música normal (com voz e banda) e gera **PDF + MusicXML + MIDI** de piano, mais uma prévia `.mp3` sintetizada pra ouvir sem software.
 
-## Rodar
+## Interface web
 
 ```powershell
 cd partitura
-.\venv\Scripts\python.exe gerar.py entrada\musica.wav --titulo "Nome" --subtitulo "Autor" [--letra letra.txt] [--pop2piano] [--hibrido] [--grade 4] [--sem-letra]
+.\venv\Scripts\python.exe run.py          # http://127.0.0.1:8030  (--lan pra abrir na rede)
+```
+
+Busca a música no YouTube (com prévia ▶), escolhe dificuldade e versões, acompanha a fila
+e abre a partitura na biblioteca (PDF, prévia ao piano, gravação original, MusicXML).
+
+## Níveis de dificuldade (`--nivel facil,medio,dificil` ou `todos`)
+
+| | Fácil | Médio | Difícil |
+|---|---|---|---|
+| Ritmo | semínima | colcheia | semicolcheia |
+| Mão esquerda (Acordes) | só o baixo, segurado | baixo + 3ª e 7ª | baixo + acorde em ritmo |
+| Pop2Piano / Híbrido | 1 nota por mão | até 2–3 notas | completo |
+| Cifra | tríades | completa | completa |
+| Tom | armadura única, transposto pra sem acidentes | original | original |
+
+Arquivos: `<Versão> - <Nível>.pdf` (ex.: `Hibrido - Facil.pdf`).
+
+## Rodar pela linha de comando
+
+```powershell
+cd partitura
+.\venv\Scripts\python.exe gerar.py entrada\musica.wav --titulo "Nome" --subtitulo "Autor" [--letra letra.txt] [--pop2piano] [--hibrido] [--nivel todos] [--idioma auto] [--sem-letra]
 ```
 
 Tudo automático, sem LLM: só modelos de áudio (Demucs, torchcrepe, Whisper, Pop2Piano) + regras musicais.
