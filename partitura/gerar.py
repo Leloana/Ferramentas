@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -461,6 +462,22 @@ def eventos_melodia_acordes(notas_q, acs, beats_por_janela=2, letras=None):
 
 # ----------------------------------------------------------------------------- saída
 
+def nome_pasta(titulo: str) -> str:
+    return re.sub(r'[<>:"/\\|?*]', "", titulo).strip() or "sem_titulo"
+
+
+def salvar_versao(sc, pasta: Path, versao: str, mid_previa: Path | None = None):
+    """pasta/Versao.pdf + pasta/Versao - previa.mp3 + pasta/editaveis/Versao.musicxml|.mid"""
+    ed = pasta / "editaveis"
+    ed.mkdir(parents=True, exist_ok=True)
+    xml, mid, pdf = ed / f"{versao}.musicxml", ed / f"{versao}.mid", pasta / f"{versao}.pdf"
+    sc.write("musicxml", fp=str(xml))
+    sc.write("midi", fp=str(mid))
+    n = xml_para_pdf(xml, pdf)
+    midi_para_mp3(mid_previa or mid, pasta / f"{versao} - previa.mp3")
+    print(f"[ok] {pdf} ({n} páginas)")
+
+
 def achar_chrome() -> str:
     for n in ["google-chrome", "chromium", "msedge", "chrome"]:
         if p := shutil.which(n):
@@ -569,7 +586,7 @@ def main():
     audio = args.audio.resolve()
     titulo = args.titulo or audio.stem.replace("_", " ").title()
     args.saida.mkdir(parents=True, exist_ok=True)
-    base = args.saida / audio.stem
+    base = args.saida / nome_pasta(titulo)  # uma pasta por música
 
     stems = separar(audio, AQUI / "trabalho")
     sr = 22050
@@ -601,27 +618,19 @@ def main():
         from letra import letra_nas_notas, palavras_com_tempo
         oficial = args.letra.read_text(encoding="utf-8") if args.letra else None
         palavras = palavras_com_tempo(stems / "vocals.wav", args.idioma, oficial)
-        letras = letra_nas_notas(notas_q, palavras)
+        letras = letra_nas_notas(notas_q, palavras, args.idioma)
         print(f"[letra] {len(letras)} notas com sílaba")
     md_ev, me_ev, cifras = eventos_melodia_acordes(notas_q, acs, letras=letras)
-    def salvar(sc, b: Path):
-        xml, mid, pdf = b.with_suffix(".musicxml"), b.with_suffix(".mid"), b.with_suffix(".pdf")
-        sc.write("musicxml", fp=str(xml))
-        sc.write("midi", fp=str(mid))
-        n = xml_para_pdf(xml, pdf)
-        midi_para_mp3(mid, b.with_name(b.name + "_previa.mp3"))
-        print(f"[ok] {pdf} ({n} páginas)")
-
     sc, k = montar_partitura(md_ev, me_ev, cifras, bpm, titulo, args.subtitulo)
     print(f"[partitura] armadura: {k}")
-    salvar(sc, base)
+    salvar_versao(sc, base, "Acordes")
 
     if args.hibrido:
         # mão direita = melodia cantada (com letra); mão esquerda = acompanhamento do Pop2Piano
         from pop2piano import mao_esquerda
         me_p2p = mao_esquerda(audio, base, grade)
         sc, k = montar_partitura(md_ev, me_p2p, cifras, bpm, titulo, args.subtitulo)
-        salvar(sc, base.with_name(base.name + "_hibrido"))
+        salvar_versao(sc, base, "Hibrido")
 
     if args.pop2piano:
         from pop2piano import arranjo

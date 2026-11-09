@@ -42,16 +42,32 @@ def palavras_com_tempo(voz_wav: Path, idioma: str = "pt", letra_oficial: str | N
         letras_txt = re.sub(r"[^A-Za-zÀ-ÿ]", "", txt)
         if (s.no_speech_prob > 0.6 or s.avg_logprob < -1.2 or not letras_txt
                 or (letras_txt.isupper() and len(letras_txt) > 3)  # alucinação típica: "A CIDADE NO BRASIL"
-                or _norm(txt) in {"musica", "legenda", "obrigado", "aplausos", "risos"}):
+                or _norm(txt) in {"musica", "legenda", "obrigado", "aplausos", "risos"}
+                or _em_loop(txt, s.compression_ratio)):
             continue
         for w in s.words or []:
             t = w.word.strip()
+            if len(t) > 24 or " " in t or "," in t.rstrip(",.!?;:"):  # "palavra" que é um loop inteiro
+                continue
             if t and w.probability > 0.15:
                 palavras.append((float(w.start), float(w.end), t))
     print(f"[letra] {len(palavras)} palavras com tempo")
     if letra_oficial:
         palavras = _corrigir_grafia(palavras, letra_oficial)
     return palavras
+
+
+def _em_loop(txt: str, compressao: float) -> bool:
+    """Alucinação clássica do Whisper em trecho sem voz: "quatro, quatro, quatro, ..." """
+    if compressao > 2.4:
+        return True
+    ws = [_norm(w) for w in txt.split()]
+    seguidas = 1
+    for a, b in zip(ws, ws[1:]):
+        seguidas = seguidas + 1 if a and a == b else 1
+        if seguidas >= 4:
+            return True
+    return False
 
 
 def _corrigir_grafia(palavras, letra: str):
@@ -77,9 +93,13 @@ def _corrigir_grafia(palavras, letra: str):
     return saida
 
 
-def silabas(palavra: str) -> list[str]:
+PYPHEN_LANG = {"pt": "pt_BR", "en": "en_US", "es": "es", "fr": "fr", "it": "it_IT", "de": "de_DE"}
+
+
+def silabas(palavra: str, idioma: str = "pt") -> list[str]:
     import pyphen
-    d = pyphen.Pyphen(lang="pt_BR", left=1, right=1)
+    borda = 1 if idioma in ("pt", "es", "it") else 2  # inglês: nada de "friend-s", "o-h"
+    d = pyphen.Pyphen(lang=PYPHEN_LANG.get(idioma, idioma), left=borda, right=borda)
     pont = ""
     m = re.match(r"^(.*?)([,.!?;:]*)$", palavra)
     if m:
@@ -90,7 +110,7 @@ def silabas(palavra: str) -> list[str]:
     return partes
 
 
-def letra_nas_notas(notas_q, palavras) -> dict[int, str]:
+def letra_nas_notas(notas_q, palavras, idioma: str = "pt") -> dict[int, str]:
     """notas_q: (ini_tempo, fim_tempo, midi, ini_s, fim_s). Devolve {índice_nota: texto}.
 
     Alinhamento global (programação dinâmica): as sílabas, em ordem, caem nas notas cujo
@@ -107,7 +127,7 @@ def letra_nas_notas(notas_q, palavras) -> dict[int, str]:
     for w_ini, w_fim, w in palavras:
         if np.min(np.abs(t_nota - w_ini)) > 0.8:  # nenhuma nota cantada perto: descarta
             continue
-        partes = silabas(w)
+        partes = silabas(w, idioma)
         k = len(partes)
         dur = max(w_fim - w_ini, 0.05)
         for j, parte in enumerate(partes):
@@ -147,6 +167,8 @@ def letra_nas_notas(notas_q, palavras) -> dict[int, str]:
 
     letras: dict[int, list[str]] = {}
     for (_, parte, jj, k), nota in zip(sil, alvo):
+        if len(letras.get(nota, [])) >= 2:  # nunca empilha mais de 2 sílabas numa nota
+            continue
         txt = ("-" if jj > 0 else "") + parte + ("-" if jj < k - 1 else "")
         letras.setdefault(nota, []).append(txt)
     saida = {}

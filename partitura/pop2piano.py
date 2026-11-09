@@ -35,10 +35,11 @@ def _por_mao(notas, grade, passo):
 
 
 def notas_pop2piano(audio: Path, base: Path, grade, compositor: str = "composer1"):
-    """Notas (pretty_midi) do cover gerado. Fica em cache em <base>_pop2piano_bruto.mid."""
+    """Notas (pretty_midi) do cover gerado. Fica em cache em <pasta>/cache/pop2piano_bruto.mid."""
     import pretty_midi
 
-    mid_bruto = base.with_name(base.name + "_pop2piano_bruto.mid")
+    mid_bruto = base / "cache" / "pop2piano_bruto.mid"
+    mid_bruto.parent.mkdir(parents=True, exist_ok=True)
     if mid_bruto.exists():
         print(f"[pop2piano] usando cache {mid_bruto.name}")
         pm = pretty_midi.PrettyMIDI(str(mid_bruto))
@@ -82,10 +83,5 @@ def arranjo(audio: Path, base: Path, titulo: str, subtitulo: str, grade, bpm: fl
     me = _por_mao([n for n in notas if n.pitch < 60], grade, passo)
     sc, k = gerar.montar_partitura(md, me, cifras, bpm, titulo + " (arranjo Pop2Piano)", subtitulo)
 
-    b = base.with_name(base.name + "_pop2piano")
-    xml, mid, pdf = b.with_suffix(".musicxml"), b.with_suffix(".mid"), b.with_suffix(".pdf")
-    sc.write("musicxml", fp=str(xml))
-    sc.write("midi", fp=str(mid))
-    n = gerar.xml_para_pdf(xml, pdf)
-    gerar.midi_para_mp3(mid_bruto, b.with_name(b.name + "_previa.mp3"))
-    print(f"[ok] {pdf} ({n} páginas, armadura {k})")
+    gerar.salvar_versao(sc, base, "Pop2Piano", mid_previa=mid_bruto)
+    print(f"[pop2piano] armadura {k}")

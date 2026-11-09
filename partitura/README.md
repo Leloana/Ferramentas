@@ -11,7 +11,16 @@ cd partitura
 
 Tudo automático, sem LLM: só modelos de áudio (Demucs, torchcrepe, Whisper, Pop2Piano) + regras musicais.
 
-Saída em `saida/`. O MusicXML abre no MuseScore pra corrigir à mão.
+Saída organizada por música (`--idioma en` pra letra em inglês):
+
+```
+saida/<Título>/
+  Acordes.pdf   Acordes - previa.mp3
+  Hibrido.pdf   Hibrido - previa.mp3
+  Pop2Piano.pdf Pop2Piano - previa.mp3
+  editaveis/    .musicxml (abre no MuseScore pra corrigir à mão) e .mid
+  cache/        MIDI bruto do Pop2Piano
+```
 
 ## Duas versões
 
