@@ -624,6 +624,8 @@ def main():
     ap.add_argument("--pasta", default=None, help="nome da pasta em saida/ (padrão: o título)")
     ap.add_argument("--subtitulo", default="Transcrição automática para piano")
     ap.add_argument("--pop2piano", action="store_true", help="gera também o arranjo do Pop2Piano")
+    ap.add_argument("--estilo", type=int, default=1, choices=range(1, 22), metavar="1-21",
+                    help="estilo do Pop2Piano (composer1..21): 12 = mais baixo, 8 = mais acordes, 21 = mais leve")
     ap.add_argument("--amtapc", action="store_true",
                     help="gera também o arranjo do AMT-APC (IA de piano cover; precisa de modelos/amt-apc)")
     ap.add_argument("--sem-letra", action="store_true", help="não coloca a letra embaixo das notas")
@@ -705,7 +707,7 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
     versoes = {"Acordes": (md_ev, mao_esquerda_acordes(acs, nivel, fim, TIPOS))}
     if args.hibrido or args.pop2piano:
         from pop2piano import maos_pop2piano
-        p2p_md, p2p_me = maos_pop2piano(audio, base, grade)
+        p2p_md, p2p_me = maos_pop2piano(audio, base, grade, f"composer{args.estilo}")
         if args.hibrido:
             versoes["Hibrido"] = (md_ev, reduzir_mao(p2p_me, nivel, "esquerda"))
         if args.pop2piano:

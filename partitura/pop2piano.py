@@ -38,7 +38,8 @@ def notas_pop2piano(audio: Path, base: Path, grade, compositor: str = "composer1
     """Notas (pretty_midi) do cover gerado. Fica em cache em <pasta>/cache/pop2piano_bruto.mid."""
     import pretty_midi
 
-    mid_bruto = base / "cache" / "pop2piano_bruto.mid"
+    nome = "pop2piano_bruto.mid" if compositor == "composer1" else f"pop2piano_{compositor}.mid"
+    mid_bruto = base / "cache" / nome
     mid_bruto.parent.mkdir(parents=True, exist_ok=True)
     if mid_bruto.exists():
         print(f"[pop2piano] usando cache {mid_bruto.name}")
@@ -73,10 +74,11 @@ def mao_esquerda(audio: Path, base: Path, grade, corte: int = 60):
     return _por_mao([n for n in notas if n.pitch < corte], grade, 1 / gerar.SR_GRADE)
 
 
-def maos_pop2piano(audio: Path, base: Path, grade):
-    """(mão direita, mão esquerda) do Pop2Piano quantizadas na grade atual (gerar.SR_GRADE)."""
+def maos_pop2piano(audio: Path, base: Path, grade, compositor: str = "composer1"):
+    """(mão direita, mão esquerda) do Pop2Piano quantizadas na grade atual (gerar.SR_GRADE).
+    compositor: composer1..composer21 (estilos de pianistas; ex.: 12 tem mais baixo, 8 mais acordes)."""
     import gerar
-    notas, _ = notas_pop2piano(audio, base, grade)
+    notas, _ = notas_pop2piano(audio, base, grade, compositor)
     passo = 1 / gerar.SR_GRADE
     return (_por_mao([n for n in notas if n.pitch >= 60], grade, passo),
             _por_mao([n for n in notas if n.pitch < 60], grade, passo))

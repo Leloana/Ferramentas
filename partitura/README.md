@@ -57,6 +57,20 @@ saida/<Título>/
 
 As três usam a mesma grade de batidas e a mesma cifra. Gerar as três: `--pop2piano --hibrido`.
 
+## Estilos do Pop2Piano (`--estilo 1-21`)
+
+O Pop2Piano imita 21 pianistas ("composer1..21"). Medido em Baby (Justin Bieber):
+
+| estilo | notas/s | notas por ataque | % notas graves | leitura |
+|---|---|---|---|---|
+| 1 (padrão) | 6,1 | 1,56 | 19% | mão esquerda fraca |
+| 4 | 6,4 | 1,62 | 40% | equilibrado |
+| 8 | 7,8 | 2,40 | 27% | muitos acordes (difícil) |
+| 12 | 6,7 | 1,64 | 48% | mais baixo |
+| 21 | 5,7 | 1,50 | 39% | mais leve |
+
+Amostras em `saida/Baby/estilos_pop2piano/`.
+
 ## Etapas
 
 1. **Demucs** (`htdemucs`) separa voz / baixo / bateria / resto (cache em `trabalho/`).
