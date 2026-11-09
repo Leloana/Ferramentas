@@ -557,6 +557,8 @@ def main():
     ap.add_argument("--letra", type=Path, default=None,
                     help="letra oficial (.txt) pra corrigir a grafia do que o Whisper ouviu")
     ap.add_argument("--idioma", default="pt")
+    ap.add_argument("--hibrido", action="store_true",
+                    help="gera também melodia cantada + acompanhamento do Pop2Piano na mão esquerda")
     ap.add_argument("--grade", type=int, default=2, choices=[2, 4],
                     help="subdivisões por tempo na quantização: 2 = colcheia (mais legível), 4 = semicolcheia")
     args = ap.parse_args()
@@ -602,16 +604,24 @@ def main():
         letras = letra_nas_notas(notas_q, palavras)
         print(f"[letra] {len(letras)} notas com sílaba")
     md_ev, me_ev, cifras = eventos_melodia_acordes(notas_q, acs, letras=letras)
+    def salvar(sc, b: Path):
+        xml, mid, pdf = b.with_suffix(".musicxml"), b.with_suffix(".mid"), b.with_suffix(".pdf")
+        sc.write("musicxml", fp=str(xml))
+        sc.write("midi", fp=str(mid))
+        n = xml_para_pdf(xml, pdf)
+        midi_para_mp3(mid, b.with_name(b.name + "_previa.mp3"))
+        print(f"[ok] {pdf} ({n} páginas)")
+
     sc, k = montar_partitura(md_ev, me_ev, cifras, bpm, titulo, args.subtitulo)
     print(f"[partitura] armadura: {k}")
-    xml = base.with_suffix(".musicxml")
-    mid = base.with_suffix(".mid")
-    sc.write("musicxml", fp=str(xml))
-    sc.write("midi", fp=str(mid))
-    pdf = base.with_suffix(".pdf")
-    n = xml_para_pdf(xml, pdf)
-    midi_para_mp3(mid, base.with_name(base.name + "_previa.mp3"))
-    print(f"[ok] {pdf} ({n} páginas)\n     {xml}\n     {mid}")
+    salvar(sc, base)
+
+    if args.hibrido:
+        # mão direita = melodia cantada (com letra); mão esquerda = acompanhamento do Pop2Piano
+        from pop2piano import mao_esquerda
+        me_p2p = mao_esquerda(audio, base, grade)
+        sc, k = montar_partitura(md_ev, me_p2p, cifras, bpm, titulo, args.subtitulo)
+        salvar(sc, base.with_name(base.name + "_hibrido"))
 
     if args.pop2piano:
         from pop2piano import arranjo

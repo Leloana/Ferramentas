@@ -6,7 +6,7 @@ Pega uma música normal (com voz e banda) e gera **PDF + MusicXML + MIDI** de pi
 
 ```powershell
 cd partitura
-.\venv\Scripts\python.exe gerar.py entrada\musica.wav --titulo "Nome" --subtitulo "Autor" [--letra letra.txt] [--pop2piano] [--grade 4] [--sem-letra]
+.\venv\Scripts\python.exe gerar.py entrada\musica.wav --titulo "Nome" --subtitulo "Autor" [--letra letra.txt] [--pop2piano] [--hibrido] [--grade 4] [--sem-letra]
 ```
 
 Tudo automático, sem LLM: só modelos de áudio (Demucs, torchcrepe, Whisper, Pop2Piano) + regras musicais.
@@ -21,7 +21,9 @@ Saída em `saida/`. O MusicXML abre no MuseScore pra corrigir à mão.
 | Mão esquerda | acordes detectados em bloco (fundamental + 3ª + 7ª) a cada 2 tempos | acompanhamento "de pianista" gerado |
 | Bom pra | lead sheet / tocar e cantar | arranjo pra tocar solo |
 
-As duas usam a mesma grade de batidas e a mesma cifra.
+`--hibrido` junta o melhor das duas: **melodia cantada com letra** na mão direita + **acompanhamento do Pop2Piano** na esquerda (`<nome>_hibrido.pdf`). O MIDI do Pop2Piano fica em cache (`saida/<nome>_pop2piano_bruto.mid`).
+
+As três usam a mesma grade de batidas e a mesma cifra. Gerar as três: `--pop2piano --hibrido`.
 
 ## Etapas
 
