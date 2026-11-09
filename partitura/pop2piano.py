@@ -71,14 +71,14 @@ def mao_esquerda(audio: Path, base: Path, grade, corte: int = 60):
     """Só o acompanhamento do Pop2Piano (notas abaixo de `corte`), pra versão híbrida."""
     import gerar
     notas, _ = notas_pop2piano(audio, base, grade)
-    return _por_mao([n for n in notas if n.pitch < corte], grade, 1 / gerar.SR_GRADE)
+    return _por_mao([n for n in notas if n.pitch < corte], grade, grade.passo)
 
 
 def maos_pop2piano(audio: Path, base: Path, grade, compositor: str = "composer1"):
-    """(mão direita, mão esquerda) do Pop2Piano quantizadas na grade atual (gerar.SR_GRADE).
+    """(mão direita, mão esquerda) do Pop2Piano quantizadas na grade atual (grade.passo, definido pelo nível).
     compositor: composer1..composer21 (estilos de pianistas; ex.: 12 tem mais baixo, 8 mais acordes)."""
     import gerar
     notas, _ = notas_pop2piano(audio, base, grade, compositor)
-    passo = 1 / gerar.SR_GRADE
+    passo = grade.passo
     return (_por_mao([n for n in notas if n.pitch >= 60], grade, passo),
             _por_mao([n for n in notas if n.pitch < 60], grade, passo))

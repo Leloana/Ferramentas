@@ -30,7 +30,7 @@ def midi_amtapc(audio: Path, pasta: Path, nivel: str) -> Path:
         raise RuntimeError("AMT-APC não instalado em modelos/amt-apc (veja amtapc.py)")
     destino.parent.mkdir(parents=True, exist_ok=True)
     print(f"[amt-apc] gerando cover ({ESTILO[nivel]})...")
-    subprocess.run([sys.executable, "infer", str(audio.resolve()), "-o", str(destino.resolve()),
+    subprocess.run([sys.executable, "-X", "utf8", "infer", str(audio.resolve()), "-o", str(destino.resolve()),
                     "-s", ESTILO[nivel]], cwd=REPO, check=True)
     return destino
 
@@ -43,6 +43,6 @@ def maos_amtapc(audio: Path, pasta: Path, nivel: str, grade):
     from pop2piano import _por_mao
     pm = pretty_midi.PrettyMIDI(str(midi_amtapc(audio, pasta, nivel)))
     notas = [n for inst in pm.instruments for n in inst.notes]
-    passo = 1 / gerar.SR_GRADE
+    passo = grade.passo
     return (_por_mao([n for n in notas if n.pitch >= 60], grade, passo),
             _por_mao([n for n in notas if n.pitch < 60], grade, passo))

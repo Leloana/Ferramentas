@@ -30,7 +30,7 @@ PYTHON = sys.executable
 
 NIVEIS = ("facil", "medio", "dificil")
 NIVEL_ARQ = {"facil": "Facil", "medio": "Medio", "dificil": "Dificil"}
-VERSOES = ("Acordes", "Hibrido", "Pop2Piano")
+VERSOES = ("Acordes", "Hibrido", "Pop2Piano", "AMT-APC")
 TIPOS_PREVIA = {".m4a": "audio/mp4", ".mp4": "audio/mp4", ".webm": "audio/webm", ".mp3": "audio/mpeg"}
 ID_RE = re.compile(r"^[\w-]{11}$")
 
@@ -175,7 +175,8 @@ def _progresso(job: dict, linha: str):
     marcos = [("[demucs]", 12, "Separando voz e instrumentos"), ("[batidas]", 20, "Detectando o pulso"),
               ("[melodia] extraindo", 25, "Lendo a melodia cantada"), ("[acordes]", 35, "Detectando os acordes"),
               ("[letra] transcrevendo", 40, "Ouvindo a letra (Whisper)"),
-              ("[pop2piano] carregando", 0, "Gerando arranjo com IA (Pop2Piano)")]
+              ("[pop2piano] carregando", 0, "Gerando arranjo com IA (Pop2Piano)"),
+              ("[amt-apc] gerando", 0, "Gerando arranjo com IA (AMT-APC)")]
     for marca, pct, etapa in marcos:
         if linha.startswith(marca):
             if pct:
@@ -208,6 +209,8 @@ def _rodar(job: dict):
         cmd.append("--hibrido")
     if "Pop2Piano" in job["versoes"]:
         cmd.append("--pop2piano")
+    if "AMT-APC" in job["versoes"]:
+        cmd.append("--amtapc")
     proc = subprocess.Popen(cmd, cwd=RAIZ, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
                             encoding="utf-8", errors="replace", env={**__import__("os").environ,
                                                                      "PYTHONIOENCODING": "utf-8"})
@@ -277,7 +280,7 @@ async def job(jid: str):
 
 # ----------------------------------------------------------------------------- biblioteca
 
-ARQ_RE = re.compile(r"^(Acordes|Hibrido|Pop2Piano) - (Facil|Medio|Dificil)(?: - previa)?\.(pdf|mp3)$")
+ARQ_RE = re.compile(r"^(Acordes|Hibrido|Pop2Piano|AMT-APC) - (Facil|Medio|Dificil)(?: - previa)?\.(pdf|mp3)$")
 
 
 @app.get("/api/musicas")

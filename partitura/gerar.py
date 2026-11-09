@@ -103,6 +103,11 @@ class Grade:
         self.bt = bt
         self.idx = np.arange(len(bt), dtype=float) - fase  # batida `fase` vira posição 0
 
+    @property
+    def passo(self) -> float:
+        """Menor duração da grade atual (o nível muda SR_GRADE deste módulo)."""
+        return 1 / SR_GRADE
+
     def pos(self, t: float) -> float:
         return float(np.interp(t, self.bt, self.idx))
 
@@ -712,9 +717,10 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
             versoes["Hibrido"] = (md_ev, reduzir_mao(p2p_me, nivel, "esquerda"))
         if args.pop2piano:
             versoes["Pop2Piano"] = (reduzir_mao(p2p_md, nivel, "direita"), reduzir_mao(p2p_me, nivel, "esquerda"))
-    if args.amtapc:  # IA com estilo por nível (level1/2/3): não precisa simplificar depois
+    if args.amtapc:  # os "levels" do AMT-APC são mais estilo que dificuldade: simplifica igual ao Pop2Piano
         from amtapc import maos_amtapc
-        versoes["AMT-APC"] = maos_amtapc(audio, base, nivel, grade)
+        a_md, a_me = maos_amtapc(audio, base, nivel, grade)
+        versoes["AMT-APC"] = (reduzir_mao(a_md, nivel, "direita"), reduzir_mao(a_me, nivel, "esquerda"))
 
     k = 0
     if nivel == "facil" and not args.sem_transpor:  # mesmo intervalo pra todas as versões

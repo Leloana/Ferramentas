@@ -2,7 +2,7 @@
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const NIVEL_NOME = { facil: "Fácil", medio: "Médio", dificil: "Difícil" };
-const VERSAO_NOME = { Hibrido: "Híbrido", Acordes: "Acordes", Pop2Piano: "Pop2Piano" };
+const VERSAO_NOME = { Hibrido: "Híbrido", Acordes: "Acordes", Pop2Piano: "Pop2Piano", "AMT-APC": "AMT-APC" };
 const esc = (t) => String(t ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const urlArq = (rel) => "/arquivos/" + rel.split("/").map(encodeURIComponent).join("/");
 const dur = (s) => (s ? `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}` : "");
@@ -152,7 +152,7 @@ function desenharVisor() {
   visor.className = "visor";
   const niveis = ["facil", "medio", "dificil"].filter((n) => m.arquivos[n]);
   if (!m.arquivos[escolha.nivel]) escolha.nivel = niveis.includes("medio") ? "medio" : niveis[0];
-  const versoes = ["Hibrido", "Acordes", "Pop2Piano"].filter((v) => m.arquivos[escolha.nivel][v]);
+  const versoes = ["Hibrido", "Acordes", "Pop2Piano", "AMT-APC"].filter((v) => m.arquivos[escolha.nivel][v]);
   if (!m.arquivos[escolha.nivel][escolha.versao]) escolha.versao = versoes[0];
   try { localStorage.setItem("partitura.escolha", JSON.stringify(escolha)); } catch {}
   const item = m.arquivos[escolha.nivel][escolha.versao] || {};
@@ -161,7 +161,7 @@ function desenharVisor() {
     <p class="art">${esc(m.artista)}</p>
     <div class="seletor">
       <div class="grupo">${["facil", "medio", "dificil"].map((n) => `<button data-nivel="${n}" class="${n === escolha.nivel ? "ativa" : ""}" ${m.arquivos[n] ? "" : "disabled"}>${NIVEL_NOME[n]}</button>`).join("")}</div>
-      <div class="grupo">${["Hibrido", "Acordes", "Pop2Piano"].map((v) => `<button data-versao="${v}" class="${v === escolha.versao ? "ativa" : ""}" ${m.arquivos[escolha.nivel][v] ? "" : "disabled"}>${VERSAO_NOME[v]}</button>`).join("")}</div>
+      <div class="grupo">${["Hibrido", "Acordes", "Pop2Piano", "AMT-APC"].map((v) => `<button data-versao="${v}" class="${v === escolha.versao ? "ativa" : ""}" ${m.arquivos[escolha.nivel][v] ? "" : "disabled"}>${VERSAO_NOME[v]}</button>`).join("")}</div>
     </div>
     <div class="audios">
       ${item.previa ? `<div><label>🎹 Como soa esta partitura (piano)</label><audio controls preload="none" src="${urlArq(item.previa)}"></audio></div>` : ""}

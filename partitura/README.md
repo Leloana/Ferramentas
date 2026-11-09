@@ -71,6 +71,13 @@ O Pop2Piano imita 21 pianistas ("composer1..21"). Medido em Baby (Justin Bieber)
 
 Amostras em `saida/Baby/estilos_pop2piano/`.
 
+## AMT-APC (`--amtapc`)
+
+IA de "piano cover" de 2024 ([310hz/amt-apc](https://github.com/310hz/amt-apc), artigo arXiv 2409.14086),
+4ª versão ao lado do Pop2Piano. Instalação em `modelos/amt-apc` (ver `amtapc.py`). Roda em ~7 s por música
+na RTX 4070 (Pop2Piano: ~30 s). Seus estilos `level1/2/3` são ligados aos níveis, mas **não são dificuldade de
+verdade** (o level1 gera até mais notas que o Pop2Piano), então passa pela mesma simplificação por nível.
+
 ## Etapas
 
 1. **Demucs** (`htdemucs`) separa voz / baixo / bateria / resto (cache em `trabalho/`).
