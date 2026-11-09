@@ -1,0 +1,606 @@
+"""Música com vocal -> partitura de piano (PDF + MusicXML + MIDI).
+
+Pipeline "melodia + acordes":
+  1. Demucs separa voz / baixo / bateria / resto.
+  2. Mão direita: melodia do vocal (torchcrepe) quantizada nas batidas.
+  3. Mão esquerda: acordes detectados (chroma do resto + baixo), em bloco a cada 2 tempos.
+  4. Cifra em cima da pauta, MusicXML -> SVG (Verovio) -> PDF (Chrome headless).
+
+Uso:
+  python gerar.py entrada/musica.wav [--saida saida/] [--titulo "..."] [--pop2piano]
+"""
+from __future__ import annotations
+
+import argparse
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+import numpy as np
+
+AQUI = Path(__file__).resolve().parent
+SR_GRADE = 4  # subdivisões por tempo (4 = semicolcheia)
+
+NOMES_PC = ["C", "C#", "D", "E-", "E", "F", "F#", "G", "A-", "A", "B-", "B"]
+NOMES_PC_BEMOL = ["C", "D-", "D", "E-", "E", "F", "G-", "G", "A-", "A", "B-", "B"]
+
+# tipo de acorde -> (intervalos, kind do MusicXML/music21, sufixo da cifra)
+TIPOS = {
+    "maj": ([0, 4, 7], "major", ""),
+    "m": ([0, 3, 7], "minor", "m"),
+    "7": ([0, 4, 7, 10], "dominant-seventh", "7"),
+    "maj7": ([0, 4, 7, 11], "major-seventh", "7M"),
+    "m7": ([0, 3, 7, 10], "minor-seventh", "m7"),
+    "m7b5": ([0, 3, 6, 10], "half-diminished-seventh", "m7(b5)"),
+    "dim7": ([0, 3, 6, 9], "diminished-seventh", "°"),
+    "6": ([0, 4, 7, 9], "major-sixth", "6"),
+    "m6": ([0, 3, 7, 9], "minor-sixth", "m6"),
+}
+
+
+# ----------------------------------------------------------------------------- áudio
+
+def carregar(path: Path, sr: int) -> np.ndarray:
+    import librosa
+    y, _ = librosa.load(str(path), sr=sr, mono=True)
+    return y
+
+
+def separar(audio: Path, trabalho: Path) -> Path:
+    destino = trabalho / "htdemucs" / audio.stem
+    if (destino / "vocals.wav").exists():
+        print(f"[demucs] já separado: {destino}")
+        return destino
+    print("[demucs] separando faixas...")
+    subprocess.run([sys.executable, "-m", "demucs", "-n", "htdemucs", "-d", "cuda",
+                    "-o", str(trabalho), str(audio)], check=True)
+    return destino
+
+
+# ----------------------------------------------------------------------------- batidas
+
+def batidas(mix: np.ndarray, sr: int, perc: np.ndarray) -> tuple[np.ndarray, float]:
+    """Batidas em segundos, estendidas para trás até t<=0 e para frente até o fim."""
+    import librosa
+    env = librosa.onset.onset_strength(y=perc, sr=sr)
+    tempo, frames = librosa.beat.beat_track(onset_envelope=env, sr=sr, start_bpm=120, tightness=120)
+    bt = librosa.frames_to_time(frames, sr=sr)
+    periodo = float(np.median(np.diff(bt)))
+    dur = len(mix) / sr
+    antes = []
+    t = bt[0] - periodo
+    while t > -periodo:
+        antes.append(t)
+        t -= periodo
+    depois = []
+    t = bt[-1] + periodo
+    while t < dur + periodo:
+        depois.append(t)
+        t += periodo
+    bt = np.concatenate([antes[::-1], bt, depois])
+    return bt, 60.0 / periodo
+
+
+def fase_compasso(bt: np.ndarray, baixo: np.ndarray, sr: int) -> int:
+    """Escolhe qual batida (0..3) é o tempo 1: onde o baixo bate mais forte."""
+    import librosa
+    env = librosa.onset.onset_strength(y=baixo, sr=sr)
+    t_env = librosa.times_like(env, sr=sr)
+    forca = np.interp(bt, t_env, env)
+    somas = [forca[f::4].mean() + 0.5 * forca[(f + 2) % 4::4].mean() for f in range(4)]
+    return int(np.argmax(somas))
+
+
+class Grade:
+    """Converte tempo (s) <-> posição em tempos musicais, seguindo as batidas reais."""
+
+    def __init__(self, bt: np.ndarray, fase: int):
+        self.bt = bt
+        self.idx = np.arange(len(bt), dtype=float) - fase  # batida `fase` vira posição 0
+
+    def pos(self, t: float) -> float:
+        return float(np.interp(t, self.bt, self.idx))
+
+    def q(self, t: float) -> float:
+        return round(self.pos(t) * SR_GRADE) / SR_GRADE
+
+
+# ----------------------------------------------------------------------------- melodia
+
+def melodia(voz: np.ndarray, sr: int, onsets_voz: np.ndarray) -> list[tuple[float, float, int]]:
+    """Notas (inicio_s, fim_s, midi) da voz isolada."""
+    import torch
+    import torchcrepe
+    from scipy.signal import medfilt
+
+    hop = sr // 100  # 10 ms
+    x = torch.tensor(voz, dtype=torch.float32)[None]
+    dev = "cuda" if torch.cuda.is_available() else "cpu"
+    f0, per = torchcrepe.predict(x, sr, hop, fmin=65, fmax=1000, model="full",
+                                 decoder=torchcrepe.decode.viterbi, return_periodicity=True,
+                                 batch_size=1024, device=dev)
+    f0 = f0[0].cpu().numpy()
+    per = medfilt(per[0].cpu().numpy(), 5)
+
+    # volume da voz por frame, pra ignorar vazamento de instrumento quando ninguém canta
+    n = len(f0)
+    rms = np.array([np.sqrt(np.mean(voz[i * hop:(i + 1) * hop] ** 2) + 1e-12) for i in range(n)])
+    db = 20 * np.log10(rms)
+    vozeado = (per > 0.45) & (db > np.percentile(db, 95) - 30)
+
+    midi = 12 * np.log2(np.maximum(f0, 1) / 440.0) + 69
+    midi = medfilt(midi, 5)
+
+    notas: list[list] = []  # [ini_frame, fim_frame, [midis]]
+    atual = None
+    cand_cnt = 0
+    for i in range(n):
+        if not vozeado[i]:
+            if atual:
+                notas.append(atual)
+            atual, cand_cnt = None, 0
+            continue
+        m = midi[i]
+        if atual is None:
+            atual = [i, i + 1, [m]]
+            continue
+        p = round(float(np.median(atual[2][-15:])))
+        if abs(m - p) > 0.7:  # histerese: só troca de nota se ficar >= 40 ms em outra altura
+            cand_cnt += 1
+            if cand_cnt >= 4:
+                ini = i - cand_cnt + 1
+                atual[1] = ini
+                atual[2] = atual[2][:len(atual[2]) - cand_cnt + 1]
+                notas.append(atual)
+                atual = [ini, i + 1, list(midi[ini:i + 1])]
+                cand_cnt = 0
+                continue
+        else:
+            cand_cnt = 0
+        atual[1] = i + 1
+        atual[2].append(m)
+    if atual:
+        notas.append(atual)
+
+    # divide notas repetidas onde a voz tem ataque (sílaba nova na mesma altura)
+    saida = []
+    for ini, fim, ms in notas:
+        if not ms:
+            continue
+        cortes = [ini]
+        for o in onsets_voz:
+            fo = int(round(o * 100))
+            if ini + 8 < fo < fim - 8:
+                cortes.append(fo)
+        cortes.append(fim)
+        for a, b in zip(cortes[:-1], cortes[1:]):
+            if b - a >= 6:  # >= 60 ms
+                seg = midi[a:b]
+                saida.append((a / 100, b / 100, int(round(float(np.median(seg))))))
+    return saida
+
+
+def quantizar_melodia(notas, grade: Grade) -> list[tuple[float, float, int]]:
+    q = []
+    for ini, fim, p in notas:
+        a, b = grade.q(ini), grade.q(fim)
+        if b <= a:
+            b = a + 1 / SR_GRADE
+        q.append([a, b, p])
+    q.sort()
+    limpo = []
+    for n in q:
+        if limpo and n[0] == limpo[-1][0]:  # mesmo início: fica a mais longa
+            if n[1] - n[0] > limpo[-1][1] - limpo[-1][0]:
+                limpo[-1] = n
+            continue
+        limpo.append(n)
+    for a, b in zip(limpo[:-1], limpo[1:]):
+        if a[1] > b[0]:
+            a[1] = b[0]
+        elif b[0] - a[1] <= 1 / SR_GRADE:  # buraco minúsculo: legato
+            a[1] = b[0]
+    return [tuple(n) for n in limpo if n[1] > n[0]]
+
+
+# ----------------------------------------------------------------------------- acordes
+
+def _templates():
+    nomes, mats = [], []
+    for r in range(12):
+        for tipo, (ints, _, _) in TIPOS.items():
+            v = np.zeros(12)
+            for i in ints:
+                v[(r + i) % 12] = 1
+            v[r] += 0.5  # tônica pesa um pouco mais
+            nomes.append((r, tipo))
+            mats.append(v / np.linalg.norm(v))
+    return nomes, np.array(mats)
+
+
+def acordes(harm: np.ndarray, baixo: np.ndarray, sr: int, grade: Grade, beats_por_janela=2):
+    """Lista (pos_tempo, root_pc, tipo, baixo_pc) a cada `beats_por_janela` tempos."""
+    import librosa
+    hop = 512
+    ch = librosa.feature.chroma_cqt(y=harm, sr=sr, hop_length=hop)
+    chb = librosa.feature.chroma_cqt(y=baixo, sr=sr, hop_length=hop, fmin=librosa.note_to_hz("E1"), n_octaves=3)
+    t = librosa.times_like(ch, sr=sr, hop_length=hop)
+    pos = np.array([grade.pos(x) for x in t])
+
+    nomes, T = _templates()
+    ini, fim = int(np.floor(pos.min())), int(np.ceil(pos.max()))
+    janelas = list(range(ini - ini % beats_por_janela, fim, beats_por_janela))
+    obs, bassp, energia = [], [], []
+    for j in janelas:
+        m = (pos >= j) & (pos < j + beats_por_janela)
+        if m.sum() == 0:
+            obs.append(np.zeros(len(nomes))); bassp.append(-1); energia.append(0); continue
+        c = np.median(ch[:, m], axis=1)
+        b = chb[:, m].mean(axis=1)
+        energia.append(float(c.sum()))
+        c = c / (np.linalg.norm(c) + 1e-9)
+        s = T @ c
+        bp = int(np.argmax(b))
+        bassp.append(bp)
+        s = s + 0.08 * np.array([1.0 if r == bp else 0.0 for r, _ in nomes])
+        obs.append(s)
+    obs = np.array(obs)
+
+    # Viterbi: troca de acorde custa um pouco (evita pisca-pisca)
+    K = len(nomes)
+    troca = 0.12
+    dp = obs[0].copy()
+    back = np.zeros((len(obs), K), dtype=int)
+    for i in range(1, len(obs)):
+        melhor = dp.max()
+        arg = int(dp.argmax())
+        fica = dp
+        muda = melhor - troca
+        back[i] = np.where(fica >= muda, np.arange(K), arg)
+        dp = np.maximum(fica, muda) + obs[i]
+    k = int(dp.argmax())
+    seq = [k]
+    for i in range(len(obs) - 1, 0, -1):
+        k = back[i, k]
+        seq.append(k)
+    seq = seq[::-1]
+
+    limiar = 0.15 * np.percentile(energia, 90)
+    out = []
+    for j, k, bp, e in zip(janelas, seq, bassp, energia):
+        if e < limiar:
+            out.append((j, None, None, None))
+        else:
+            r, tipo = nomes[k]
+            out.append((j, r, tipo, bp))
+    return out
+
+
+# ----------------------------------------------------------------------------- partitura
+
+NOMES_PC_SUST = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
+
+
+def _custo_armaduras(eventos) -> np.ndarray:
+    """Para cada armadura (-6..5), peso das notas que ficariam com acidente. eventos: (dur, [midis])."""
+    peso = np.zeros(12)
+    for d, ps in eventos:
+        for p in ps:
+            peso[p % 12] += d
+    custo = np.zeros(12)
+    for i, s in enumerate(range(-6, 6)):
+        t = (7 * s) % 12
+        escala = {(t + k) % 12 for k in (0, 2, 4, 5, 7, 9, 11)}
+        custo[i] = sum(peso[pc] for pc in range(12) if pc not in escala) + 0.002 * abs(s) * peso.sum()
+    return custo
+
+
+def armaduras_por_trecho(eventos_off, fim: float, bloco: int = 32) -> list[tuple[float, int]]:
+    """Mudanças de armadura [(offset, sustenidos)], em blocos de 8 compassos, com custo para trocar.
+    eventos_off: (offset, dur, [midis]) já deslocados (offset >= 0)."""
+    nb = max(1, int(np.ceil(fim / bloco)))
+    custos = np.zeros((nb, 12))
+    peso = np.zeros(nb)
+    for b in range(nb):
+        ev = [(d, ps) for o, d, ps in eventos_off if b * bloco <= o < (b + 1) * bloco]
+        custos[b] = _custo_armaduras(ev)
+        peso[b] = sum(d * len(ps) for d, ps in ev)
+    # trocar de armadura só compensa se economizar >= 12% das notas de um bloco típico
+    troca = 0.12 * float(np.median(peso[peso > 0])) if (peso > 0).any() else 0.0
+    dp = custos[0].copy()
+    back = np.zeros((nb, 12), dtype=int)
+    for b in range(1, nb):
+        melhor = int(dp.argmin())
+        fica, muda = dp, dp[melhor] + troca
+        back[b] = np.where(fica <= muda, np.arange(12), melhor)
+        dp = np.minimum(fica, muda) + custos[b]
+    k = int(dp.argmin())
+    seq = [k]
+    for b in range(nb - 1, 0, -1):
+        k = back[b, k]
+        seq.append(k)
+    seq = seq[::-1]
+    mudancas = []
+    for b, k in enumerate(seq):
+        if not mudancas or mudancas[-1][1] != k - 6:
+            mudancas.append((float(b * bloco), k - 6))
+    return mudancas
+
+
+def escolher_armadura(eventos) -> int:
+    return int(np.argmin(_custo_armaduras(eventos))) - 6
+
+
+def nomes_para(sustenidos: int) -> list[str]:
+    if sustenidos < 0:
+        return NOMES_PC_BEMOL
+    return NOMES_PC_SUST if sustenidos >= 3 else NOMES_PC
+
+
+def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: str):
+    """md_ev / me_ev: (offset_em_tempos, duração, [midis]) sem sobreposição dentro da mão.
+    cifras: (offset, root_pc, tipo)."""
+    from music21 import (chord, clef, harmony, key, layout, meter, metadata, note, pitch, stream,
+                         tempo)
+
+    tudo = md_ev + me_ev
+    if not tudo:
+        sys.exit("nenhuma nota detectada")
+    desloc = -np.floor(min(e[0] for e in tudo) / 4) * 4  # começa num compasso inteiro
+    fim = max(o + d for o, d, _ in tudo) + desloc
+    # melodia manda; acordes da mão esquerda entram com peso menor (cada um soma 3 notas)
+    mudancas = armaduras_por_trecho([(o + desloc, d, ps) for o, d, ps in md_ev]
+                                    + [(o + desloc, 0.3 * d, ps) for o, d, ps in me_ev], fim)
+
+    def sust_em(off):
+        s_ = mudancas[0][1]
+        for o, k_ in mudancas:
+            if off >= o:
+                s_ = k_
+        return s_
+
+    def nome_raiz(r, off):
+        sus = sust_em(off)
+        if sus < 0:
+            return ["C", "D-", "D", "E-", "E", "F", "F#", "G", "A-", "A", "B-", "B"][r]
+        return (NOMES_PC_SUST if sus >= 3 else NOMES_PC)[r]
+
+    # grafia das notas do acorde vem da cifra (A7 = A C# E G, nunca D-)
+    ativos = []
+    for off, r, tipo in cifras:
+        cs = harmony.ChordSymbol(root=nome_raiz(r, off + desloc), kind=TIPOS[tipo][1])
+        ativos.append((off + desloc, {q.pitchClass: q.name for q in cs.pitches}))
+
+    def P(m, off):
+        nomes_pc = {}
+        for o, mapa in ativos:
+            if o <= off + 1e-6:
+                nomes_pc = mapa
+            else:
+                break
+        nome = nomes_pc.get(m % 12) or nomes_para(sust_em(off))[m % 12]
+        q = pitch.Pitch(nome)
+        q.octave = m // 12 - 1
+        q.octave += (m - q.midi) // 12  # B# / C- trocam de oitava
+        return q
+
+    md = stream.PartStaff(id="MD")
+    me = stream.PartStaff(id="ME")
+    for parte, cl in ((md, clef.TrebleClef()), (me, clef.BassClef())):
+        parte.insert(0, cl)
+        parte.insert(0, meter.TimeSignature("4/4"))
+        for o, k_ in mudancas:
+            parte.insert(o, key.KeySignature(k_))
+    md.insert(0, tempo.MetronomeMark(number=round(bpm)))
+
+    for parte, eventos in ((md, md_ev), (me, me_ev)):
+        for off, dur, ps in eventos:
+            o = off + desloc
+            el = note.Note(P(ps[0], o)) if len(ps) == 1 else chord.Chord([P(m, o) for m in sorted(ps)])
+            el.quarterLength = dur
+            parte.insert(o, el)
+
+    simbolos = []
+    for off, r, tipo in cifras:
+        o = off + desloc
+        if o < 0:
+            continue
+        cs = harmony.ChordSymbol(root=nome_raiz(r, o), kind=TIPOS[tipo][1])
+        cs.writeAsChord = False
+        simbolos.append((o, cs))
+        md.insert(o, cs)
+
+    sc = stream.Score()
+    sc.metadata = metadata.Metadata()
+    sc.metadata.title = titulo
+    sc.metadata.composer = subtitulo
+    sc.insert(0, md)
+    sc.insert(0, me)
+    sc.insert(0, layout.StaffGroup([md, me], symbol="brace", barTogether=True, name="Piano"))
+    for p in (md, me):
+        p.makeRests(fillGaps=True, inPlace=True, timeRangeFromBarDuration=True)
+    sc = sc.makeNotation()
+    # makeNotation põe bequadro nas cifras ("A♮m7"); cifra não leva acidente de armadura
+    for cs in sc.recurse().getElementsByClass(harmony.ChordSymbol):
+        for p_ in list(cs.pitches) + [cs.root(), cs.bass()]:
+            if p_ is not None and p_.accidental is not None and p_.accidental.name == "natural":
+                p_.accidental = None
+    return sc, ", ".join(f"compasso {int(o // 4) + 1}: {k_:+d}" for o, k_ in mudancas)
+
+
+def eventos_melodia_acordes(notas_q, acs, beats_por_janela=2):
+    """Converte melodia quantizada + acordes detectados em eventos das duas mãos + cifras."""
+    med = np.median([n[2] for n in notas_q])
+    transp = 12 if med < 62 else 0  # melodia confortável na clave de sol
+    md_ev = [(a, b - a, [p + transp]) for a, b, p in notas_q]
+    me_ev, cifras = [], []
+    fim = max(n[1] for n in notas_q) + 4
+    anterior = None
+    for j, r, tipo, _ in acs:
+        if r is None or j > fim:
+            anterior = None
+            continue
+        if (r, tipo) != anterior:
+            cifras.append((j, r, tipo))
+        anterior = (r, tipo)
+        ints = TIPOS[tipo][0]
+        raiz = 40 + (r - 4) % 12  # fundamental entre E2 e D#3
+        tons = [(r + ints[1]) % 12, (r + ints[-1]) % 12] if len(ints) == 4 else [(r + i) % 12 for i in ints[1:]]
+        sup = [52 + (pc - 4) % 12 for pc in tons]  # 3ª e 7ª (ou 5ª) entre E3 e D#4
+        me_ev.append((j, beats_por_janela, [raiz] + sup))
+    return md_ev, me_ev, cifras
+
+
+# ----------------------------------------------------------------------------- saída
+
+def achar_chrome() -> str:
+    for n in ["google-chrome", "chromium", "msedge", "chrome"]:
+        if p := shutil.which(n):
+            return p
+    for p in [r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+              r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
+              r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"]:
+        if os.path.exists(p):
+            return p
+    sys.exit("Chrome/Edge não encontrado para gerar o PDF")
+
+
+_MOJIBAKE = None
+
+
+def _desembaralhar(svg: str) -> str:
+    """Verovio no Windows às vezes devolve UTF-8 lido como cp1252 ("â€“" no lugar de "–")."""
+    import re
+    global _MOJIBAKE
+    if _MOJIBAKE is None:
+        alta = "".join(bytes([b]).decode("cp1252", "ignore") for b in range(0x80, 0xC0))
+        _MOJIBAKE = re.compile(f"[Â-ô][{re.escape(alta)}]{{1,3}}")
+
+    def conserta(m):
+        t = m.group(0)
+        for n in range(len(t), 1, -1):  # a sequência pode ter "sobra" colada (ex.: espaço duro)
+            try:
+                return t[:n].encode("cp1252").decode("utf-8") + t[n:]
+            except (UnicodeEncodeError, UnicodeDecodeError):
+                continue
+        return t
+    return _MOJIBAKE.sub(conserta, svg)
+
+
+def xml_para_pdf(xml: Path, pdf: Path):
+    import verovio
+    verovio.enableLog(False)
+    tk = verovio.toolkit()
+    tk.setOptions({"pageWidth": 2100, "pageHeight": 2970, "scale": 42,
+                   "pageMarginTop": 80, "pageMarginBottom": 80,
+                   "pageMarginLeft": 80, "pageMarginRight": 80,
+                   "adjustPageHeight": False, "footer": "none", "breaks": "auto"})
+    if not tk.loadFile(str(xml)):
+        sys.exit("Verovio não conseguiu ler o MusicXML")
+    pags = [_desembaralhar(tk.renderToSVG(i)) for i in range(1, tk.getPageCount() + 1)]
+    html = ["<!doctype html><meta charset='utf-8'><style>@page{size:A4;margin:0}"
+            "body{margin:0}.p{width:210mm;height:297mm;page-break-after:always;overflow:hidden}"
+            ".p svg{width:100%;height:100%}</style>"]
+    html += [f"<div class='p'>{s}</div>" for s in pags]
+    fd, nome = tempfile.mkstemp(suffix=".html")
+    os.close(fd)
+    h = Path(nome)
+    h.write_text("".join(html), encoding="utf-8")
+    subprocess.run([achar_chrome(), "--headless=new", "--disable-gpu", "--no-pdf-header-footer",
+                    f"--print-to-pdf={pdf.resolve()}", h.as_uri()], capture_output=True, timeout=180)
+    h.unlink(missing_ok=True)
+    return len(pags)
+
+
+def midi_para_mp3(mid: Path, mp3: Path):
+    """Prévia audível sem precisar de software: sintetiza o MIDI com um timbre simples."""
+    import pretty_midi
+    import soundfile as sf
+    pm = pretty_midi.PrettyMIDI(str(mid))
+    sr = 22050
+    y = np.zeros(int((pm.get_end_time() + 2) * sr))
+    for inst in pm.instruments:
+        for n in inst.notes:
+            f = 440 * 2 ** ((n.pitch - 69) / 12)
+            d = min(n.end - n.start, 3.0) + 0.3
+            t = np.arange(int(d * sr)) / sr
+            env = np.exp(-t * 3.0) * np.minimum(1, t * 200)
+            onda = (np.sin(2 * np.pi * f * t) + 0.4 * np.sin(4 * np.pi * f * t)
+                    + 0.15 * np.sin(6 * np.pi * f * t)) * env * (n.velocity / 127)
+            i = int(n.start * sr)
+            y[i:i + len(onda)] += onda[:len(y) - i]
+    y = 0.9 * y / (np.abs(y).max() + 1e-9)
+    wav = mp3.with_suffix(".wav")
+    sf.write(wav, y, sr)
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(wav), "-b:a", "160k", str(mp3)], check=True)
+    wav.unlink()
+
+
+# ----------------------------------------------------------------------------- main
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("audio", type=Path)
+    ap.add_argument("--saida", type=Path, default=AQUI / "saida")
+    ap.add_argument("--titulo", default=None)
+    ap.add_argument("--subtitulo", default="Transcrição automática para piano")
+    ap.add_argument("--pop2piano", action="store_true", help="gera também o arranjo do Pop2Piano")
+    ap.add_argument("--grade", type=int, default=2, choices=[2, 4],
+                    help="subdivisões por tempo na quantização: 2 = colcheia (mais legível), 4 = semicolcheia")
+    args = ap.parse_args()
+    global SR_GRADE
+    SR_GRADE = args.grade
+
+    import librosa
+    audio = args.audio.resolve()
+    titulo = args.titulo or audio.stem.replace("_", " ").title()
+    args.saida.mkdir(parents=True, exist_ok=True)
+    base = args.saida / audio.stem
+
+    stems = separar(audio, AQUI / "trabalho")
+    sr = 22050
+    mix = carregar(audio, sr)
+    voz = carregar(stems / "vocals.wav", sr)
+    baixo = carregar(stems / "bass.wav", sr)
+    resto = carregar(stems / "other.wav", sr)
+    bateria = carregar(stems / "drums.wav", sr)
+
+    print("[batidas] detectando pulso...")
+    perc = bateria + 0.5 * baixo + 0.3 * resto
+    bt, bpm = batidas(mix, sr, perc)
+    fase = fase_compasso(bt, baixo, sr)
+    grade = Grade(bt, fase)
+    print(f"[batidas] ~{bpm:.0f} bpm, {len(bt)} batidas, tempo 1 na batida {fase}")
+
+    print("[melodia] extraindo altura da voz...")
+    voz16 = librosa.resample(voz, orig_sr=sr, target_sr=16000)
+    ons = librosa.onset.onset_detect(y=voz, sr=sr, units="time", backtrack=True, delta=0.25)
+    notas = melodia(voz16, 16000, ons)
+    notas_q = quantizar_melodia(notas, grade)
+    print(f"[melodia] {len(notas)} notas -> {len(notas_q)} quantizadas")
+
+    print("[acordes] detectando harmonia...")
+    acs = acordes(resto + 0.3 * baixo, baixo, sr, grade)
+
+    md_ev, me_ev, cifras = eventos_melodia_acordes(notas_q, acs)
+    sc, k = montar_partitura(md_ev, me_ev, cifras, bpm, titulo, args.subtitulo)
+    print(f"[partitura] armadura: {k}")
+    xml = base.with_suffix(".musicxml")
+    mid = base.with_suffix(".mid")
+    sc.write("musicxml", fp=str(xml))
+    sc.write("midi", fp=str(mid))
+    pdf = base.with_suffix(".pdf")
+    n = xml_para_pdf(xml, pdf)
+    midi_para_mp3(mid, base.with_name(base.name + "_previa.mp3"))
+    print(f"[ok] {pdf} ({n} páginas)\n     {xml}\n     {mid}")
+
+    if args.pop2piano:
+        from pop2piano import arranjo
+        arranjo(audio, base, titulo, args.subtitulo, grade, bpm, cifras)
+
+
+if __name__ == "__main__":
+    main()

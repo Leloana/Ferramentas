@@ -49,6 +49,12 @@ Este repositório (`Ferramentas`) agrupa scripts, automações e ecossistemas in
 #### 9. 🖼️ Figurinhas (`/figurinhas`)
 * **Descrição:** App web que baixa um vídeo por link (TikTok, X, YouTube...) e gera figurinha de WhatsApp (.webp 512x512, animada ≤ 500 KB ou parada), com escolha de trecho, área do enquadramento e texto. Rodar: `cd figurinhas; .\venv\Scripts\python.exe run.py` (porta 8020).
 * **Stack:** FastAPI, yt-dlp (+curl-cffi), FFmpeg (libwebp), Vanilla JS.
+
+#### 10. 🎹 Partitura (`/partitura`)
+* **Descrição:** Música com vocal → partitura de piano (PDF/MusicXML/MIDI): melodia cantada (Demucs + torchcrepe) na mão direita, acordes detectados na esquerda, cifra, armadura por trecho; `--pop2piano` gera também um arranjo completo. Rodar: `cd partitura; .\venv\Scripts\python.exe gerar.py entrada\musica.wav --titulo "..."`.
+* **Stack:** PyTorch (CUDA), Demucs, torchcrepe, librosa, transformers (Pop2Piano), music21, Verovio, Chrome headless.
+* **Documentação:** [`partitura/README.md`](partitura/README.md).
+
 ---
 
 ### 🔴 Projetos Descontinuados / Arquivados (Mantidos para Referência)

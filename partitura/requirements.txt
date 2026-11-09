@@ -1,0 +1,11 @@
+# torch/torchaudio com CUDA: pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu124
+demucs
+transformers
+librosa
+pretty_midi
+music21
+torchcrepe
+verovio
+resampy
+soundfile
+scipy
