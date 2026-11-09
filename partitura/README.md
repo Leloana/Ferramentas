@@ -46,6 +46,16 @@ As três usam a mesma grade de batidas e a mesma cifra. Gerar as três: `--pop2p
 7. **Grafia** das notas guiada pelo acorde ativo (A7 = A C♯ E G).
 8. **music21** → MusicXML/MIDI; **Verovio** → SVG; Chrome headless → PDF.
 
+## Prévia com piano de verdade
+
+As prévias `.mp3` são tocadas pelo **FluidSynth** com um SoundFont de piano de cauda (Steinway NY Model B,
+"Dore Mark's NY S&S Model B v5.2", da coleção soundfonts4u). Ambos ficam fora do git:
+
+- `ferramentas/fluidsynth/.../bin/fluidsynth.exe` — release oficial win10-x64 do GitHub (FluidSynth/fluidsynth)
+- `soundfonts/piano.sf2` — https://huggingface.co/datasets/projectlosangeles/soundfonts4u
+
+Sem eles, cai num sintetizador simples (senoides).
+
 ## Limites conhecidos
 
 - Precisa ter **voz** na faixa: em gravação instrumental a melodia está na orquestra e a versão padrão não acha nada (use `--pop2piano`).

@@ -546,8 +546,46 @@ def xml_para_pdf(xml: Path, pdf: Path):
     return len(pags)
 
 
+def _fluidsynth() -> str | None:
+    if p := shutil.which("fluidsynth"):
+        return p
+    achados = sorted((AQUI / "ferramentas").glob("fluidsynth*/**/bin/fluidsynth.exe"))
+    return str(achados[-1]) if achados else None
+
+
+def _soundfont() -> Path | None:
+    sf = AQUI / "soundfonts" / "piano.sf2"
+    return sf if sf.exists() else None
+
+
 def midi_para_mp3(mid: Path, mp3: Path):
-    """Prévia audível sem precisar de software: sintetiza o MIDI com um timbre simples."""
+    """Prévia audível: piano de cauda de verdade (FluidSynth + SoundFont Steinway em soundfonts/piano.sf2).
+    Sem FluidSynth/SoundFont, cai no sintetizador simples."""
+    fs, sf2 = _fluidsynth(), _soundfont()
+    if not (fs and sf2):
+        return _midi_para_mp3_simples(mid, mp3)
+    import pretty_midi
+    pm = pretty_midi.PrettyMIDI(str(mid))
+    for inst in pm.instruments:  # tudo no piano acústico, dinâmica mais suave (som doce)
+        inst.program, inst.is_drum = 0, False
+        for n in inst.notes:
+            fator = 0.72 if n.pitch >= 60 else 0.8
+            n.velocity = int(np.clip(n.velocity * fator, 30, 100))
+    tmp_mid = mp3.with_name("_tmp_previa.mid")
+    wav = mp3.with_name("_tmp_previa.wav")
+    pm.write(str(tmp_mid))
+    subprocess.run([fs, "-ni", "-q", "-g", "0.8", "-r", "44100",
+                    "-o", "synth.reverb.active=1", "-o", "synth.reverb.room-size=0.6",
+                    "-o", "synth.reverb.level=0.35",
+                    "-F", str(wav), str(sf2), str(tmp_mid)], check=True, capture_output=True)
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(wav),
+                    "-af", "loudnorm=I=-16:TP=-1.5", "-b:a", "192k", str(mp3)], check=True)
+    wav.unlink(missing_ok=True)
+    tmp_mid.unlink(missing_ok=True)
+
+
+def _midi_para_mp3_simples(mid: Path, mp3: Path):
+    """Sintetizador de emergência (senoides) quando não há FluidSynth."""
     import pretty_midi
     import soundfile as sf
     pm = pretty_midi.PrettyMIDI(str(mid))
