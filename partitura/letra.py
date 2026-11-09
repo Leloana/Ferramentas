@@ -13,6 +13,7 @@ from pathlib import Path
 
 
 IDIOMA_DETECTADO = "pt"
+_IDIOMAS_MISTO: list[str] = []
 
 
 def _norm(p: str) -> str:
@@ -38,9 +39,20 @@ def palavras_com_tempo(voz_wav: Path, idioma: str = "pt", letra_oficial: str | N
     audio, _ = librosa.load(str(voz_wav), sr=16000, mono=True)
     # sem VAD: o filtro de voz do Whisper corta trechos cantados (ele foi feito pra fala)
     global IDIOMA_DETECTADO
-    segs, info = wm.transcribe(audio, language=None if idioma == "auto" else idioma, word_timestamps=True, vad_filter=False,
-                            initial_prompt=prompt, condition_on_previous_text=False, beam_size=5)
-    IDIOMA_DETECTADO = info.language or "pt"
+    if idioma == "auto":
+        # detecta o idioma olhando vários trechos com voz (o começo costuma ser só introdução
+        # instrumental; detectar só por ele fez o Whisper "traduzir" Garota de Ipanema pro inglês)
+        idioma, misto = _detectar_idioma(wm, audio)
+    else:
+        misto = False
+    # música com dois idiomas (ex.: Getz/Gilberto, João em português e Astrud em inglês):
+    # modo multilíngue troca de idioma por trecho em vez de traduzir tudo pro idioma principal
+    segs, info = wm.transcribe(audio, language=None if misto else idioma, multilingual=misto,
+                               word_timestamps=True, vad_filter=False, initial_prompt=prompt,
+                               condition_on_previous_text=False, beam_size=5)
+    IDIOMA_DETECTADO = idioma if idioma != "auto" else (info.language or "pt")
+    if misto and _IDIOMAS_MISTO and "pt" in _IDIOMAS_MISTO[:2]:
+        IDIOMA_DETECTADO = "pt"  # sílabas: regra do português serve razoavelmente pras palavras em inglês
     print(f"[letra] idioma: {IDIOMA_DETECTADO}")
     palavras = []
     for s in segs:
@@ -61,6 +73,27 @@ def palavras_com_tempo(voz_wav: Path, idioma: str = "pt", letra_oficial: str | N
     if letra_oficial:
         palavras = _corrigir_grafia(palavras, letra_oficial)
     return palavras
+
+
+def _detectar_idioma(wm, audio, janela_s: float = 30.0) -> str:
+    """Idioma mais provável somando a detecção em até 6 janelas de 30 s onde a voz está mais alta."""
+    import numpy as np
+    sr = 16000
+    n = int(janela_s * sr)
+    janelas = [(i, float(np.sqrt(np.mean(audio[i:i + n] ** 2)))) for i in range(0, max(1, len(audio) - n // 2), n // 2)]
+    melhores = sorted(janelas, key=lambda x: -x[1])[:6]
+    votos: dict[str, float] = {}
+    for i, _ in melhores:
+        lang, prob, _ = wm.detect_language(audio[i:i + n])
+        votos[lang] = votos.get(lang, 0.0) + prob
+    ordem = sorted(votos.items(), key=lambda x: -x[1]) or [("pt", 1.0)]
+    escolhido = ordem[0][0]
+    misto = len(ordem) > 1 and ordem[1][1] >= 0.5 * ordem[0][1]
+    global _IDIOMAS_MISTO
+    _IDIOMAS_MISTO = [k for k, _ in ordem]
+    print(f"[letra] idioma detectado: {escolhido}{' (misto)' if misto else ''} (votos: "
+          + ", ".join(f"{k} {v:.1f}" for k, v in ordem[:3]) + ")")
+    return escolhido, misto
 
 
 def _em_loop(txt: str, compressao: float) -> bool:

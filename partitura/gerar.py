@@ -624,6 +624,8 @@ def main():
     ap.add_argument("--pasta", default=None, help="nome da pasta em saida/ (padrão: o título)")
     ap.add_argument("--subtitulo", default="Transcrição automática para piano")
     ap.add_argument("--pop2piano", action="store_true", help="gera também o arranjo do Pop2Piano")
+    ap.add_argument("--amtapc", action="store_true",
+                    help="gera também o arranjo do AMT-APC (IA de piano cover; precisa de modelos/amt-apc)")
     ap.add_argument("--sem-letra", action="store_true", help="não coloca a letra embaixo das notas")
     ap.add_argument("--letra", type=Path, default=None,
                     help="letra oficial (.txt) pra corrigir a grafia do que o Whisper ouviu")
@@ -708,6 +710,9 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
             versoes["Hibrido"] = (md_ev, reduzir_mao(p2p_me, nivel, "esquerda"))
         if args.pop2piano:
             versoes["Pop2Piano"] = (reduzir_mao(p2p_md, nivel, "direita"), reduzir_mao(p2p_me, nivel, "esquerda"))
+    if args.amtapc:  # IA com estilo por nível (level1/2/3): não precisa simplificar depois
+        from amtapc import maos_amtapc
+        versoes["AMT-APC"] = maos_amtapc(audio, base, nivel, grade)
 
     k = 0
     if nivel == "facil" and not args.sem_transpor:  # mesmo intervalo pra todas as versões
