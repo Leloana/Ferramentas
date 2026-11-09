@@ -466,6 +466,15 @@ def nome_pasta(titulo: str) -> str:
     return re.sub(r'[<>:"/\\|?*]', "", titulo).strip() or "sem_titulo"
 
 
+def copiar_original(audio: Path, pasta: Path):
+    """Deixa o áudio de origem junto das partituras (mp3, pra não ocupar 50 MB de wav)."""
+    pasta.mkdir(parents=True, exist_ok=True)
+    destino = pasta / "Original.mp3"
+    if not destino.exists():
+        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(audio), "-b:a", "256k", str(destino)],
+                       check=True)
+
+
 def salvar_versao(sc, pasta: Path, versao: str, mid_previa: Path | None = None):
     """pasta/Versao.pdf + pasta/Versao - previa.mp3 + pasta/editaveis/Versao.musicxml|.mid"""
     ed = pasta / "editaveis"
@@ -587,6 +596,7 @@ def main():
     titulo = args.titulo or audio.stem.replace("_", " ").title()
     args.saida.mkdir(parents=True, exist_ok=True)
     base = args.saida / nome_pasta(titulo)  # uma pasta por música
+    copiar_original(audio, base)
 
     stems = separar(audio, AQUI / "trabalho")
     sr = 22050

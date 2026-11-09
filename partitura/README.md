@@ -15,6 +15,7 @@ Saída organizada por música (`--idioma en` pra letra em inglês):
 
 ```
 saida/<Título>/
+  Original.mp3  áudio de origem
   Acordes.pdf   Acordes - previa.mp3
   Hibrido.pdf   Hibrido - previa.mp3
   Pop2Piano.pdf Pop2Piano - previa.mp3
