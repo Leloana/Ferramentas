@@ -529,7 +529,7 @@ def xml_para_pdf(xml: Path, pdf: Path):
                    "pageMarginTop": 80, "pageMarginBottom": 80,
                    "pageMarginLeft": 80, "pageMarginRight": 80,
                    "adjustPageHeight": False, "footer": "none", "breaks": "auto"})
-    if not tk.loadFile(str(xml)):
+    if not tk.loadData(xml.read_text(encoding="utf-8")):  # loadFile falha com acento no caminho (Windows)
         sys.exit("Verovio não conseguiu ler o MusicXML")
     pags = [_desembaralhar(tk.renderToSVG(i)) for i in range(1, tk.getPageCount() + 1)]
     html = ["<!doctype html><meta charset='utf-8'><style>@page{size:A4;margin:0}"
