@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Partitura</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎹</text></svg>">
+</head>
+<body>
+  <header class="topo">
+    <div class="marca">
+      <span class="logo">𝄞</span>
+      <div>
+        <h1>Partitura</h1>
+        <p>música com voz → partitura de piano, com letra</p>
+      </div>
+    </div>
+    <nav class="abas">
+      <button class="aba ativa" data-aba="buscar">Buscar</button>
+      <button class="aba" data-aba="biblioteca">Biblioteca <span id="contBib" class="cont"></span></button>
+      <button class="aba" data-aba="fila">Fila <span id="contFila" class="cont"></span></button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- BUSCAR -->
+    <section id="buscar" class="painel ativo">
+      <form id="formBusca" class="busca">
+        <input id="q" type="search" placeholder="Nome da música ou artista… (ex.: Chega de Saudade Tom Jobim)" autocomplete="off" autofocus>
+        <button type="submit" class="btn primario">Buscar no YouTube</button>
+      </form>
+      <p id="statusBusca" class="status"></p>
+      <div id="resultados" class="resultados"></div>
+    </section>
+
+    <!-- BIBLIOTECA -->
+    <section id="biblioteca" class="painel">
+      <div class="bib">
+        <aside id="listaMusicas" class="lista-musicas"></aside>
+        <div id="visor" class="visor vazio">
+          <p>Escolha uma música à esquerda.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FILA -->
+    <section id="fila" class="painel">
+      <div id="listaJobs" class="jobs"></div>
+    </section>
+  </main>
+
+  <!-- diálogo de geração -->
+  <dialog id="dlgGerar">
+    <form method="dialog" id="formGerar">
+      <div class="dlg-topo">
+        <img id="gThumb" alt="">
+        <div>
+          <p class="mini" id="gVideo"></p>
+          <label>Título <input id="gTitulo" required></label>
+          <label>Artista <input id="gArtista"></label>
+        </div>
+      </div>
+
+      <fieldset>
+        <legend>Dificuldade</legend>
+        <div class="opcoes">
+          <label class="op"><input type="checkbox" name="nivel" value="facil"><span><b>Fácil</b><small>semínimas, só o baixo, tom sem acidentes</small></span></label>
+          <label class="op"><input type="checkbox" name="nivel" value="medio" checked><span><b>Médio</b><small>colcheias, baixo + 3ª e 7ª</small></span></label>
+          <label class="op"><input type="checkbox" name="nivel" value="dificil"><span><b>Difícil</b><small>semicolcheias, acompanhamento completo</small></span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Versões</legend>
+        <div class="opcoes">
+          <label class="op"><input type="checkbox" name="versao" value="Hibrido" checked><span><b>Híbrido</b><small>melodia cantada + acompanhamento da IA</small></span></label>
+          <label class="op"><input type="checkbox" name="versao" value="Acordes" checked><span><b>Acordes</b><small>melodia cantada + acordes em bloco</small></span></label>
+          <label class="op"><input type="checkbox" name="versao" value="Pop2Piano"><span><b>Pop2Piano</b><small>arranjo completo da IA, sem letra</small></span></label>
+        </div>
+      </fieldset>
+
+      <label class="linha">Idioma da letra
+        <select id="gIdioma">
+          <option value="auto">detectar sozinho</option>
+          <option value="pt">português</option>
+          <option value="en">inglês</option>
+          <option value="es">espanhol</option>
+        </select>
+      </label>
+
+      <div class="dlg-acoes">
+        <button value="cancelar" class="btn">Cancelar</button>
+        <button value="ok" id="gOk" class="btn primario">Gerar partitura</button>
+      </div>
+    </form>
+  </dialog>
+
+  <audio id="player" preload="none"></audio>
+  <script src="app.js"></script>
+</body>
+</html>

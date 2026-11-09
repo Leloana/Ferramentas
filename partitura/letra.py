@@ -12,6 +12,9 @@ import unicodedata
 from pathlib import Path
 
 
+IDIOMA_DETECTADO = "pt"
+
+
 def _norm(p: str) -> str:
     p = unicodedata.normalize("NFD", p.lower())
     return re.sub(r"[^a-z0-9]", "", "".join(c for c in p if unicodedata.category(c) != "Mn"))
@@ -34,8 +37,11 @@ def palavras_com_tempo(voz_wav: Path, idioma: str = "pt", letra_oficial: str | N
     import librosa  # o leitor do faster-whisper (PyAV) quebra em versões novas do av
     audio, _ = librosa.load(str(voz_wav), sr=16000, mono=True)
     # sem VAD: o filtro de voz do Whisper corta trechos cantados (ele foi feito pra fala)
-    segs, _ = wm.transcribe(audio, language=idioma, word_timestamps=True, vad_filter=False,
+    global IDIOMA_DETECTADO
+    segs, info = wm.transcribe(audio, language=None if idioma == "auto" else idioma, word_timestamps=True, vad_filter=False,
                             initial_prompt=prompt, condition_on_previous_text=False, beam_size=5)
+    IDIOMA_DETECTADO = info.language or "pt"
+    print(f"[letra] idioma: {IDIOMA_DETECTADO}")
     palavras = []
     for s in segs:
         txt = s.text.strip()

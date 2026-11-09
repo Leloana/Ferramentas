@@ -536,7 +536,9 @@ def xml_para_pdf(xml: Path, pdf: Path):
     if not tk.loadData(xml.read_text(encoding="utf-8")):  # loadFile falha com acento no caminho (Windows)
         sys.exit("Verovio não conseguiu ler o MusicXML")
     pags = [_desembaralhar(tk.renderToSVG(i)) for i in range(1, tk.getPageCount() + 1)]
-    html = ["<!doctype html><meta charset='utf-8'><style>@page{size:A4;margin:0}"
+    import html as _h
+    titulo_pdf = _h.escape(f"{pdf.parent.name} — {pdf.stem}")  # nome que o visualizador de PDF mostra
+    html = [f"<!doctype html><meta charset='utf-8'><title>{titulo_pdf}</title><style>@page{{size:A4;margin:0}}"
             "body{margin:0}.p{width:210mm;height:297mm;page-break-after:always;overflow:hidden}"
             ".p svg{width:100%;height:100%}</style>"]
     html += [f"<div class='p'>{s}</div>" for s in pags]
@@ -619,12 +621,13 @@ def main():
     ap.add_argument("audio", type=Path)
     ap.add_argument("--saida", type=Path, default=AQUI / "saida")
     ap.add_argument("--titulo", default=None)
+    ap.add_argument("--pasta", default=None, help="nome da pasta em saida/ (padrão: o título)")
     ap.add_argument("--subtitulo", default="Transcrição automática para piano")
     ap.add_argument("--pop2piano", action="store_true", help="gera também o arranjo do Pop2Piano")
     ap.add_argument("--sem-letra", action="store_true", help="não coloca a letra embaixo das notas")
     ap.add_argument("--letra", type=Path, default=None,
                     help="letra oficial (.txt) pra corrigir a grafia do que o Whisper ouviu")
-    ap.add_argument("--idioma", default="pt")
+    ap.add_argument("--idioma", default="pt", help="pt, en, es... ou auto (Whisper detecta)")
     ap.add_argument("--hibrido", action="store_true",
                     help="gera também melodia cantada + acompanhamento do Pop2Piano na mão esquerda")
     ap.add_argument("--nivel", default="medio",
@@ -642,7 +645,7 @@ def main():
     audio = args.audio.resolve()
     titulo = args.titulo or audio.stem.replace("_", " ").title()
     args.saida.mkdir(parents=True, exist_ok=True)
-    base = args.saida / nome_pasta(titulo)  # uma pasta por música
+    base = args.saida / (args.pasta or nome_pasta(titulo))  # uma pasta por música
     copiar_original(audio, base)
 
     stems = separar(audio, AQUI / "trabalho")
@@ -674,6 +677,9 @@ def main():
         from letra import palavras_com_tempo
         oficial = args.letra.read_text(encoding="utf-8") if args.letra else None
         palavras = palavras_com_tempo(stems / "vocals.wav", args.idioma, oficial)
+        if args.idioma == "auto":
+            import letra
+            args.idioma = letra.IDIOMA_DETECTADO
 
     for nivel in niveis:
         SR_GRADE = GRADE_NIVEL[nivel]
