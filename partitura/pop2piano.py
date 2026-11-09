@@ -73,15 +73,10 @@ def mao_esquerda(audio: Path, base: Path, grade, corte: int = 60):
     return _por_mao([n for n in notas if n.pitch < corte], grade, 1 / gerar.SR_GRADE)
 
 
-def arranjo(audio: Path, base: Path, titulo: str, subtitulo: str, grade, bpm: float, cifras,
-            compositor: str = "composer1"):
+def maos_pop2piano(audio: Path, base: Path, grade):
+    """(mão direita, mão esquerda) do Pop2Piano quantizadas na grade atual (gerar.SR_GRADE)."""
     import gerar
-
-    notas, mid_bruto = notas_pop2piano(audio, base, grade, compositor)
+    notas, _ = notas_pop2piano(audio, base, grade)
     passo = 1 / gerar.SR_GRADE
-    md = _por_mao([n for n in notas if n.pitch >= 60], grade, passo)
-    me = _por_mao([n for n in notas if n.pitch < 60], grade, passo)
-    sc, k = gerar.montar_partitura(md, me, cifras, bpm, titulo + " (arranjo Pop2Piano)", subtitulo)
-
-    gerar.salvar_versao(sc, base, "Pop2Piano", mid_previa=mid_bruto)
-    print(f"[pop2piano] armadura {k}")
+    return (_por_mao([n for n in notas if n.pitch >= 60], grade, passo),
+            _por_mao([n for n in notas if n.pitch < 60], grade, passo))

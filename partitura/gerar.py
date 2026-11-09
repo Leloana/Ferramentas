@@ -23,7 +23,8 @@ from pathlib import Path
 import numpy as np
 
 AQUI = Path(__file__).resolve().parent
-SR_GRADE = 4  # subdivisões por tempo (4 = semicolcheia)
+SR_GRADE = 2  # subdivisões por tempo (definido pelo nível: 1 semínima, 2 colcheia, 4 semicolcheia)
+GRADE_NIVEL = {"facil": 1, "medio": 2, "dificil": 4}
 
 NOMES_PC = ["C", "C#", "D", "E-", "E", "F", "F#", "G", "A-", "A", "B-", "B"]
 NOMES_PC_BEMOL = ["C", "D-", "D", "E-", "E", "F", "G-", "G", "A-", "A", "B-", "B"]
@@ -342,7 +343,7 @@ def nomes_para(sustenidos: int) -> list[str]:
     return NOMES_PC_SUST if sustenidos >= 3 else NOMES_PC
 
 
-def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: str):
+def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: str, uma_armadura=False):
     """md_ev / me_ev: (offset_em_tempos, duração, [midis]) sem sobreposição dentro da mão.
     cifras: (offset, root_pc, tipo)."""
     from music21 import (chord, clef, harmony, key, layout, meter, metadata, note, pitch, stream,
@@ -354,8 +355,11 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
     desloc = -np.floor(min(e[0] for e in tudo) / 4) * 4  # começa num compasso inteiro
     fim = max(e[0] + e[1] for e in tudo) + desloc
     # melodia manda; acordes da mão esquerda entram com peso menor (cada um soma 3 notas)
-    mudancas = armaduras_por_trecho([(e[0] + desloc, e[1], e[2]) for e in md_ev]
-                                    + [(e[0] + desloc, 0.3 * e[1], e[2]) for e in me_ev], fim)
+    if uma_armadura:  # nível fácil: armadura única, sem mudanças no meio
+        mudancas = [(0.0, escolher_armadura([(e[1], e[2]) for e in md_ev] + [(0.3 * e[1], e[2]) for e in me_ev]))]
+    else:
+        mudancas = armaduras_por_trecho([(e[0] + desloc, e[1], e[2]) for e in md_ev]
+                                        + [(e[0] + desloc, 0.3 * e[1], e[2]) for e in me_ev], fim)
 
     def sust_em(off):
         s_ = mudancas[0][1]
@@ -623,11 +627,16 @@ def main():
     ap.add_argument("--idioma", default="pt")
     ap.add_argument("--hibrido", action="store_true",
                     help="gera também melodia cantada + acompanhamento do Pop2Piano na mão esquerda")
-    ap.add_argument("--grade", type=int, default=2, choices=[2, 4],
-                    help="subdivisões por tempo na quantização: 2 = colcheia (mais legível), 4 = semicolcheia")
+    ap.add_argument("--nivel", default="medio",
+                    help="dificuldade: facil, medio, dificil ou lista (facil,medio,dificil) ou 'todos'")
+    ap.add_argument("--sem-transpor", action="store_true", help="no nível fácil, não transpõe pra tom sem acidentes")
     args = ap.parse_args()
     global SR_GRADE
-    SR_GRADE = args.grade
+    from niveis import NIVEIS
+    niveis = list(NIVEIS) if args.nivel == "todos" else [n.strip() for n in args.nivel.split(",")]
+    for n in niveis:
+        if n not in NIVEIS:
+            ap.error(f"nível inválido: {n} (use {', '.join(NIVEIS)})")
 
     import librosa
     audio = args.audio.resolve()
@@ -655,35 +664,61 @@ def main():
     voz16 = librosa.resample(voz, orig_sr=sr, target_sr=16000)
     ons = librosa.onset.onset_detect(y=voz, sr=sr, units="time", backtrack=True, delta=0.25)
     notas = melodia(voz16, 16000, ons)
-    notas_q = quantizar_melodia(notas, grade)
-    print(f"[melodia] {len(notas)} notas -> {len(notas_q)} quantizadas")
+    print(f"[melodia] {len(notas)} notas detectadas")
 
     print("[acordes] detectando harmonia...")
     acs = acordes(resto + 0.3 * baixo, baixo, sr, grade)
 
-    letras = {}
+    palavras = []
     if not args.sem_letra:
-        from letra import letra_nas_notas, palavras_com_tempo
+        from letra import palavras_com_tempo
         oficial = args.letra.read_text(encoding="utf-8") if args.letra else None
         palavras = palavras_com_tempo(stems / "vocals.wav", args.idioma, oficial)
+
+    for nivel in niveis:
+        SR_GRADE = GRADE_NIVEL[nivel]
+        gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, bpm)
+
+
+def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, bpm):
+    """Gera as versões pedidas (Acordes sempre; Híbrido/Pop2Piano se pedidos) num nível."""
+    from niveis import NOME, cifras_do_nivel, mao_esquerda_acordes, reduzir_mao, transpor_facil
+    print(f"\n=== nível {NOME[nivel]} (grade 1/{SR_GRADE} de tempo) ===")
+    notas_q = quantizar_melodia(notas, grade)
+    letras = {}
+    if palavras:
+        from letra import letra_nas_notas
         letras = letra_nas_notas(notas_q, palavras, args.idioma)
-        print(f"[letra] {len(letras)} notas com sílaba")
-    md_ev, me_ev, cifras = eventos_melodia_acordes(notas_q, acs, letras=letras)
-    sc, k = montar_partitura(md_ev, me_ev, cifras, bpm, titulo, args.subtitulo)
-    print(f"[partitura] armadura: {k}")
-    salvar_versao(sc, base, "Acordes")
+    print(f"[melodia] {len(notas_q)} notas quantizadas, {len(letras)} com sílaba")
+    md_ev, _, cifras = eventos_melodia_acordes(notas_q, acs, letras=letras)
+    fim = max(n[1] for n in notas_q) + 4
+    cifras = cifras_do_nivel(cifras, nivel)
 
-    if args.hibrido:
-        # mão direita = melodia cantada (com letra); mão esquerda = acompanhamento do Pop2Piano
-        from pop2piano import mao_esquerda
-        me_p2p = mao_esquerda(audio, base, grade)
-        sc, k = montar_partitura(md_ev, me_p2p, cifras, bpm, titulo, args.subtitulo)
-        salvar_versao(sc, base, "Hibrido")
+    versoes = {"Acordes": (md_ev, mao_esquerda_acordes(acs, nivel, fim, TIPOS))}
+    if args.hibrido or args.pop2piano:
+        from pop2piano import maos_pop2piano
+        p2p_md, p2p_me = maos_pop2piano(audio, base, grade)
+        if args.hibrido:
+            versoes["Hibrido"] = (md_ev, reduzir_mao(p2p_me, nivel, "esquerda"))
+        if args.pop2piano:
+            versoes["Pop2Piano"] = (reduzir_mao(p2p_md, nivel, "direita"), reduzir_mao(p2p_me, nivel, "esquerda"))
 
-    if args.pop2piano:
-        from pop2piano import arranjo
-        arranjo(audio, base, titulo, args.subtitulo, grade, bpm, cifras)
-
+    k = 0
+    if nivel == "facil" and not args.sem_transpor:  # mesmo intervalo pra todas as versões
+        _, _, _, k = transpor_facil(*versoes["Acordes"], cifras)
+    sub = args.subtitulo + f" · nível {NOME[nivel].lower().replace('facil', 'fácil').replace('dificil', 'difícil')}"
+    if k:
+        sub += f" (transposto {k:+d} semitons)"
+        print(f"[nível] transposto {k:+d} semitons pra tom sem acidentes")
+    for versao, (md, me) in versoes.items():
+        cf = cifras
+        if k:
+            md = [(o, d, [p + k for p in ps], *r) for o, d, ps, *r in md]
+            me = [(o, d, [p + k for p in ps], *r) for o, d, ps, *r in me]
+            cf = [(o, (r + k) % 12, t) for o, r, t in cifras]
+        sc, arm = montar_partitura(md, me, cf, bpm, titulo, sub, uma_armadura=(nivel == "facil"))
+        print(f"[{versao}] armadura: {arm}")
+        salvar_versao(sc, base, f"{versao} - {NOME[nivel]}")
 
 if __name__ == "__main__":
     main()
