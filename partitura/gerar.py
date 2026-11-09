@@ -183,13 +183,14 @@ def melodia(voz: np.ndarray, sr: int, onsets_voz: np.ndarray) -> list[tuple[floa
     return saida
 
 
-def quantizar_melodia(notas, grade: Grade) -> list[tuple[float, float, int]]:
+def quantizar_melodia(notas, grade: Grade) -> list[tuple]:
+    """-> (ini_tempo, fim_tempo, midi, ini_s, fim_s); os segundos servem pra encaixar a letra."""
     q = []
     for ini, fim, p in notas:
         a, b = grade.q(ini), grade.q(fim)
         if b <= a:
             b = a + 1 / SR_GRADE
-        q.append([a, b, p])
+        q.append([a, b, p, ini, fim])
     q.sort()
     limpo = []
     for n in q:
@@ -350,10 +351,10 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
     if not tudo:
         sys.exit("nenhuma nota detectada")
     desloc = -np.floor(min(e[0] for e in tudo) / 4) * 4  # começa num compasso inteiro
-    fim = max(o + d for o, d, _ in tudo) + desloc
+    fim = max(e[0] + e[1] for e in tudo) + desloc
     # melodia manda; acordes da mão esquerda entram com peso menor (cada um soma 3 notas)
-    mudancas = armaduras_por_trecho([(o + desloc, d, ps) for o, d, ps in md_ev]
-                                    + [(o + desloc, 0.3 * d, ps) for o, d, ps in me_ev], fim)
+    mudancas = armaduras_por_trecho([(e[0] + desloc, e[1], e[2]) for e in md_ev]
+                                    + [(e[0] + desloc, 0.3 * e[1], e[2]) for e in me_ev], fim)
 
     def sust_em(off):
         s_ = mudancas[0][1]
@@ -397,10 +398,12 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
     md.insert(0, tempo.MetronomeMark(number=round(bpm)))
 
     for parte, eventos in ((md, md_ev), (me, me_ev)):
-        for off, dur, ps in eventos:
+        for off, dur, ps, *resto in eventos:
             o = off + desloc
             el = note.Note(P(ps[0], o)) if len(ps) == 1 else chord.Chord([P(m, o) for m in sorted(ps)])
             el.quarterLength = dur
+            if resto and resto[0]:
+                el.addLyric(resto[0])  # "tris-" / "-te-" / "-za" viram sílabas ligadas
             parte.insert(o, el)
 
     simbolos = []
@@ -431,11 +434,13 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
     return sc, ", ".join(f"compasso {int(o // 4) + 1}: {k_:+d}" for o, k_ in mudancas)
 
 
-def eventos_melodia_acordes(notas_q, acs, beats_por_janela=2):
-    """Converte melodia quantizada + acordes detectados em eventos das duas mãos + cifras."""
+def eventos_melodia_acordes(notas_q, acs, beats_por_janela=2, letras=None):
+    """Converte melodia quantizada + acordes detectados em eventos das duas mãos + cifras.
+    letras: {índice_da_nota: sílaba} (opcional)."""
+    letras = letras or {}
     med = np.median([n[2] for n in notas_q])
     transp = 12 if med < 62 else 0  # melodia confortável na clave de sol
-    md_ev = [(a, b - a, [p + transp]) for a, b, p in notas_q]
+    md_ev = [(n[0], n[1] - n[0], [n[2] + transp], letras.get(i)) for i, n in enumerate(notas_q)]
     me_ev, cifras = [], []
     fim = max(n[1] for n in notas_q) + 4
     anterior = None
@@ -548,6 +553,10 @@ def main():
     ap.add_argument("--titulo", default=None)
     ap.add_argument("--subtitulo", default="Transcrição automática para piano")
     ap.add_argument("--pop2piano", action="store_true", help="gera também o arranjo do Pop2Piano")
+    ap.add_argument("--sem-letra", action="store_true", help="não coloca a letra embaixo das notas")
+    ap.add_argument("--letra", type=Path, default=None,
+                    help="letra oficial (.txt) pra corrigir a grafia do que o Whisper ouviu")
+    ap.add_argument("--idioma", default="pt")
     ap.add_argument("--grade", type=int, default=2, choices=[2, 4],
                     help="subdivisões por tempo na quantização: 2 = colcheia (mais legível), 4 = semicolcheia")
     args = ap.parse_args()
@@ -585,7 +594,14 @@ def main():
     print("[acordes] detectando harmonia...")
     acs = acordes(resto + 0.3 * baixo, baixo, sr, grade)
 
-    md_ev, me_ev, cifras = eventos_melodia_acordes(notas_q, acs)
+    letras = {}
+    if not args.sem_letra:
+        from letra import letra_nas_notas, palavras_com_tempo
+        oficial = args.letra.read_text(encoding="utf-8") if args.letra else None
+        palavras = palavras_com_tempo(stems / "vocals.wav", args.idioma, oficial)
+        letras = letra_nas_notas(notas_q, palavras)
+        print(f"[letra] {len(letras)} notas com sílaba")
+    md_ev, me_ev, cifras = eventos_melodia_acordes(notas_q, acs, letras=letras)
     sc, k = montar_partitura(md_ev, me_ev, cifras, bpm, titulo, args.subtitulo)
     print(f"[partitura] armadura: {k}")
     xml = base.with_suffix(".musicxml")

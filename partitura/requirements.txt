@@ -9,3 +9,5 @@ verovio
 resampy
 soundfile
 scipy
+faster-whisper
+pyphen

@@ -28,12 +28,14 @@ As duas usam a mesma grade de batidas e a mesma cifra.
 3. **Melodia**: torchcrepe + filtro de volume, histerese de 40 ms contra vibrato, notas repetidas divididas por ataque.
 4. **Acordes**: chroma do "resto + baixo", 9 tipos (maj, m, 7, 7M, m7, m7(b5), °, 6, m6), Viterbi pra não piscar.
 5. **Armadura por trecho** (blocos de 8 compassos, custo pra trocar) — ex.: Chega de Saudade sai Ré menor → maior.
-6. **Grafia** das notas guiada pelo acorde ativo (A7 = A C♯ E G).
-7. **music21** → MusicXML/MIDI; **Verovio** → SVG; Chrome headless → PDF.
+6. **Letra** (`letra.py`): Whisper `large-v3-turbo` marca o tempo de cada palavra na voz isolada (sem VAD, que corta canto; filtra alucinações tipo "Música"/CAIXA ALTA), `--letra` corrige a grafia pela letra oficial, pyphen separa sílabas e um alinhamento global (programação dinâmica) põe uma sílaba por nota, em ordem.
+7. **Grafia** das notas guiada pelo acorde ativo (A7 = A C♯ E G).
+8. **music21** → MusicXML/MIDI; **Verovio** → SVG; Chrome headless → PDF.
 
 ## Limites conhecidos
 
 - Precisa ter **voz** na faixa: em gravação instrumental a melodia está na orquestra e a versão padrão não acha nada (use `--pop2piano`).
 - Ritmo é o ponto fraco: síncope e rubato (bossa!) saem aproximados. `--grade 2` (colcheia, padrão) é mais legível; `--grade 4` é mais fiel e mais poluído.
+- A letra vai só na versão melodia + acordes (no Pop2Piano a melodia não é a cantada). Palavra que o Whisper não ouviu (ex.: primeira do verso) fica faltando.
 - O tempo 1 do compasso é um chute pelo baixo; a cifra às vezes erra tensões.
 - `essentia` não tem build pra Windows: `_stubs/essentia` é um substituto que só entrega as batidas pro Pop2Piano do `transformers`.
