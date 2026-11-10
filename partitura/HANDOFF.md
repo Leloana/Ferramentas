@@ -566,5 +566,6 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
   Agora é linha de pedal (colchete), um por acorde, terminando na nota que abre o trecho
   seguinte: os colchetes encadeados viram a linha com entalhe em cada troca. O `change`
   do MusicXML não é desenhado pelo Verovio (só o 1º colchete aparece), por isso o encadeamento.
-  A prévia solta o pedal na troca (`PedalMark.fim_q`), não no fim da nota seguinte.
+  A prévia solta o pedal na troca (`PedalMark.fim_q`), não no fim da nota seguinte.- Linha de pedal batia nas cifras do sistema de baixo (o Verovio não conta o pedal na
+  colisão; `spacingSystem` padrão 4). Agora 12 em todo desenho (PDF, visualizador v10, páginas).
 

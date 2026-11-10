@@ -7,7 +7,7 @@ from pathlib import Path
 from gerar import OPCOES_DEDOS, _desembaralhar, dedos_ao_lado
 
 _TRAVA = threading.Lock()
-VERSAO = 9
+VERSAO = 10
 
 
 def mapa_original(sinc: Path, versao: str, texto: str):

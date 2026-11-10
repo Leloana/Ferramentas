@@ -756,7 +756,9 @@ def xml_para_verovio(texto: str) -> str:
 
 
 # Verovio só põe dedilhado em cima/embaixo da nota; com isto ele grava a nota de cada número
-OPCOES_DEDOS = {"svgAdditionalAttribute": ["fing@startid"], "fingeringScale": 0.6}
+# spacingSystem: o Verovio não conta a linha de pedal na colisão; com o mínimo padrão (4)
+# ela batia nas cifras do sistema de baixo
+OPCOES_DEDOS = {"svgAdditionalAttribute": ["fing@startid"], "fingeringScale": 0.6, "spacingSystem": 12}
 
 _RE_NOTA = re.compile(r'<g id="([^"]+)" class="note">')
 _RE_CABECA = re.compile(r'class="notehead">\s*<use [^>]*transform="translate\((-?[\d.]+),\s*(-?[\d.]+)\)')
