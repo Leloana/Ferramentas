@@ -166,4 +166,9 @@ class OitavaEDedos(unittest.TestCase):
         self.assertIn('x="1950" y="1572" text-anchor="end"', saida)
         # colado na fórmula de compasso: fica onde estava
         com_compasso = '<g id="m" class="meterSig"><use transform="translate(1700, 1500) scale(1)"/></g>' + svg
-        self.assertIn('x="2100" y="900" text-anchor="middle"', gerar.dedos_ao_lado(com_compasso))
+        # colado na fórmula de compasso: vai pra direita da cabeça
+        self.assertIn('text-anchor="start"', gerar.dedos_ao_lado(com_compasso))
+        # e se a direita também estiver ocupada (outra nota logo depois), fica em cima
+        vizinha = ('<g id="n2" class="note"><g class="notehead"><use xlink:href="#x" '
+                   'transform="translate(2300, 1500) scale(1)"/></g></g>')
+        self.assertIn('x="2100" y="900" text-anchor="middle"', gerar.dedos_ao_lado(com_compasso + vizinha))

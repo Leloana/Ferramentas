@@ -761,26 +761,40 @@ def xml_para_verovio(texto: str) -> str:
 OPCOES_DEDOS = {"svgAdditionalAttribute": ["fing@startid"], "fingeringScale": 0.6, "spacingSystem": 12}
 
 _RE_NOTA = re.compile(r'<g id="([^"]+)" class="note">')
-_RE_CABECA = re.compile(r'class="notehead">\s*<use [^>]*transform="translate\((-?[\d.]+),\s*(-?[\d.]+)\)')
+_RE_CABECA = re.compile(r'class="notehead">\s*<use xlink:href="#(E0[0-9A-F]{2})?[^"]*"[^>]*transform="translate\((-?[\d.]+),\s*(-?[\d.]+)\)')
 _RE_ACID = re.compile(r'class="accid">\s*<use [^>]*transform="translate\((-?[\d.]+),\s*(-?[\d.]+)\)')
 _RE_DEDO = re.compile(r'(<g id="[^"]+" class="fing" data-startid="#([^"]+)">\s*<text )x="(-?[\d.]+)" y="(-?[\d.]+)" '
                       r'text-anchor="middle"(.*?</g>)', re.S)
+# largura da cabeça em espaços de pauta (SMuFL) e espaço de pauta no SVG do Verovio (glifo em scale 0.72)
+_LARG_CABECA = {"E0A2": 1.69, "E0A3": 1.18, "E0A4": 1.18}
+_ESPACO = 180.0
 
 
 def dedos_ao_lado(svg: str) -> str:
-    """Leva cada número de dedo pro lado esquerdo da cabeça da sua nota (antes do acidente).
+    """Leva cada número de dedo pro lado da cabeça da sua nota.
 
-    Em cima da nota os números empilham e ocupam espaço vertical (pedido do usuário)."""
-    pos = {}
+    Esquerda (antes do acidente) por padrão; se ali houver clave/armadura/fórmula de compasso
+    (primeira nota do sistema), vai pra direita da cabeça, se não bater em nota, acidente ou
+    barra; só com os dois lados ocupados fica em cima. Em cima da nota os números
+    empilham e ocupam espaço vertical (pedido do usuário)."""
+    pos, cabecas = {}, []
     marcas = list(_RE_NOTA.finditer(svg))
     for i, m in enumerate(marcas):
         trecho = svg[m.end(): marcas[i + 1].start() if i + 1 < len(marcas) else m.end() + 4000]
         c = _RE_CABECA.search(trecho)
         if not c:
             continue
+        hx, hy = float(c.group(2)), float(c.group(3))
+        hw = _LARG_CABECA.get(c.group(1), 1.2) * _ESPACO
         a = _RE_ACID.search(trecho)
-        x = float(a.group(1)) if a else float(c.group(1))
-        pos[m.group(1)] = (x, float(c.group(2)))
+        pos[m.group(1)] = (float(a.group(1)) if a else hx, hx, hy, hw)
+        cabecas.append((hx, hw, hy))
+        if a:
+            cabecas.append((float(a.group(1)), .8 * _ESPACO, float(a.group(2))))
+    barras = []
+    for grupo in re.findall(r'class="barLine[^"]*">(.*?)</g>', svg, re.S):
+        barras += [(float(x), min(float(y1), float(y2)), max(float(y1), float(y2)))
+                   for x, y1, y2 in re.findall(r'<path d="M(-?[\d.]+) (-?[\d.]+) L-?[\d.]+ (-?[\d.]+)"', grupo)]
 
     # clave, armadura e fórmula de compasso: à esquerda delas o número não cabe
     cabecalho = []
@@ -796,13 +810,23 @@ def dedos_ao_lado(svg: str) -> str:
             return m.group(0)
         tams = [float(t) for t in re.findall(r'font-size="(\d+)px"', m.group(5)) if float(t) > 0]
         fs = max(tams) if tams else 250.0   # o <text> externo vem com 0px; o tamanho real é o do tspan
-        x, y = alvo
-        direita = x - .25 * fs
+        x, hx, y, hw = alvo
         digitos = "".join(re.findall(r">\s*(\d+)\s*<", m.group(5)))
-        esquerda = direita - .7 * fs * max(1, len(digitos))
-        if any(gx - 50 < direita and esquerda < gx + 420 and abs(gy - y) < 900 for gx, gy in cabecalho):
-            return m.group(0)   # colado no começo do sistema: fica em cima da nota
-        return f'{m.group(1)}x="{direita:.0f}" y="{y + .36 * fs:.0f}" text-anchor="end"{m.group(5)}'
+        largura = .7 * fs * max(1, len(digitos))
+        base_y = f'y="{y + .36 * fs:.0f}"'
+        direita = x - .25 * fs
+        esquerda = direita - largura
+        if not any(gx - 50 < direita and esquerda < gx + 420 and abs(gy - y) < 900 for gx, gy in cabecalho):
+            return f'{m.group(1)}x="{direita:.0f}" {base_y} text-anchor="end"{m.group(5)}'
+        # esquerda ocupada pelo começo do sistema: tenta a direita da cabeça
+        ini = hx + hw + .2 * fs
+        fim = ini + largura
+        bate = any(ox < fim + 40 and ox + ow > ini and abs(oy - y) < 1.4 * _ESPACO and not (ox == hx and oy == y)
+                   for ox, ow, oy in cabecas)
+        bate = bate or any(ini - 20 < bx < fim + 40 and y1 - 100 < y < y2 + 100 for bx, y1, y2 in barras)
+        if not bate:
+            return f'{m.group(1)}x="{ini:.0f}" {base_y} text-anchor="start"{m.group(5)}'
+        return m.group(0)   # os dois lados ocupados: fica em cima da nota
     return _RE_DEDO.sub(mover, svg)
 
 

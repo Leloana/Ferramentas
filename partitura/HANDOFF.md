@@ -570,5 +570,7 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
   colisão; `spacingSystem` padrão 4). Agora 12 em todo desenho (PDF, visualizador v10, páginas).- Os colchetes encadeados ainda se cruzavam na troca ("||"). O `bounce` do MEI também não
   é desenhado pelo Verovio (testado: só o 1º colchete aparece). Solução: `gerar.pedal_continuo`
   pós-processa o SVG, juntando por sistema os colchetes encostados numa linha só com
-  gancho no começo/fim e entalhe "^" em cada troca. PDF, visualizador (v11) e páginas.
+  gancho no começo/fim e entalhe "^" em cada troca. PDF, visualizador (v11) e páginas.- Dedos na 1ª nota do sistema (colada em clave/armadura/compasso) ficavam em cima; agora
+  vão pra direita da cabeça se não baterem em nota, acidente ou barra (largura da cabeça
+  pelo glifo SMuFL), e só com os dois lados ocupados ficam em cima.
 
