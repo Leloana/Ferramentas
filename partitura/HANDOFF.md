@@ -437,3 +437,17 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
 - 8 testes em `test_palavras_sem_nota.py`; suíte 45 OK. Não validado em áudio real:
   conferir "Pensem" (2º/3º verso de Rosa) e se aparece nota onde não se canta.
 
+## 18. Armadura por frase, mínimo de 16 compassos — 2026-11-10
+
+- Pendência 3 da seção 8. Novo `armaduras.py` (o `gerar.armaduras_por_trecho` delega):
+  blocos de 4 compassos, cada armadura dura ≥ 16 compassos (ponte de 8 compassos fica
+  com acidentes, como nas cifras de Garota), troca no começo de frase da melodia (ataque
+  depois de pausa ≥ 1 tempo, até 1 compasso da fronteira do bloco) custa o mesmo que a
+  troca antiga e no meio da frase o dobro; a armadura é escrita no compasso da frase.
+- Simulação (30 peças por cenário, melodia com 25–50% de notas cromáticas e mão esquerda
+  com nota errada em 20–40% dos tempos): modulação Fá→Sol no compasso 37 trocada no
+  compasso certo 0/30 (antigo, sempre na fronteira de 8 compassos) → 28–30/30; ponte de
+  8 compassos: 3 → 1 troca indevida; peça sem modulação: 0 trocas nos dois.
+- `test_armaduras.py` (7). Suíte 52 OK. Conferir na biblioteca: número de trocas por
+  música e onde elas caem (Garota Híbrido era o caso ruim).
+

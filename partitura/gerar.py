@@ -307,50 +307,14 @@ NOMES_PC_SUST = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"
 
 
 def _custo_armaduras(eventos) -> np.ndarray:
-    """Para cada armadura (-6..5), peso das notas que ficariam com acidente. eventos: (dur, [midis])."""
-    peso = np.zeros(12)
-    for d, ps in eventos:
-        for p in ps:
-            peso[p % 12] += d
-    custo = np.zeros(12)
-    for i, s in enumerate(range(-6, 6)):
-        t = (7 * s) % 12
-        escala = {(t + k) % 12 for k in (0, 2, 4, 5, 7, 9, 11)}
-        custo[i] = sum(peso[pc] for pc in range(12) if pc not in escala) + 0.002 * abs(s) * peso.sum()
-    return custo
+    from armaduras import custo_por_armadura
+    return custo_por_armadura(eventos)
 
 
-def armaduras_por_trecho(eventos_off, fim: float, bloco: int = 32) -> list[tuple[float, int]]:
-    """Mudanças de armadura [(offset, sustenidos)], em blocos de 8 compassos, com custo para trocar.
-    eventos_off: (offset, dur, [midis]) já deslocados (offset >= 0)."""
-    nb = max(1, int(np.ceil(fim / bloco)))
-    custos = np.zeros((nb, 12))
-    peso = np.zeros(nb)
-    for b in range(nb):
-        ev = [(d, ps) for o, d, ps in eventos_off if b * bloco <= o < (b + 1) * bloco]
-        custos[b] = _custo_armaduras(ev)
-        peso[b] = sum(d * len(ps) for d, ps in ev)
-    # Exigir evidência mais forte de modulação: acordes cromáticos isolados não
-    # justificam trocar a armadura de leitura a cada bloco de oito compassos.
-    troca = 0.25 * float(np.median(peso[peso > 0])) if (peso > 0).any() else 0.0
-    dp = custos[0].copy()
-    back = np.zeros((nb, 12), dtype=int)
-    for b in range(1, nb):
-        melhor = int(dp.argmin())
-        fica, muda = dp, dp[melhor] + troca
-        back[b] = np.where(fica <= muda, np.arange(12), melhor)
-        dp = np.minimum(fica, muda) + custos[b]
-    k = int(dp.argmin())
-    seq = [k]
-    for b in range(nb - 1, 0, -1):
-        k = back[b, k]
-        seq.append(k)
-    seq = seq[::-1]
-    mudancas = []
-    for b, k in enumerate(seq):
-        if not mudancas or mudancas[-1][1] != k - 6:
-            mudancas.append((float(b * bloco), k - 6))
-    return mudancas
+def armaduras_por_trecho(eventos_off, fim: float, frases=()) -> list[tuple[float, int]]:
+    """Mudanças de armadura [(offset, sustenidos)]: ver armaduras.py."""
+    from armaduras import armaduras_por_trecho as por_trecho
+    return por_trecho(eventos_off, fim, frases)
 
 
 def escolher_armadura(eventos) -> int:
@@ -379,8 +343,10 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
     if uma_armadura:  # nível fácil: armadura única, sem mudanças no meio
         mudancas = [(0.0, escolher_armadura([(e[1], e[2]) for e in md_ev] + [(0.3 * e[1], e[2]) for e in me_ev]))]
     else:
+        from armaduras import inicios_de_frase
         mudancas = armaduras_por_trecho([(e[0] + desloc, e[1], e[2]) for e in md_ev]
-                                        + [(e[0] + desloc, 0.3 * e[1], e[2]) for e in me_ev], fim)
+                                        + [(e[0] + desloc, 0.3 * e[1], e[2]) for e in me_ev], fim,
+                                        frases=inicios_de_frase([(e[0] + desloc, e[1]) for e in md_ev]))
 
     def sust_em(off):
         s_ = mudancas[0][1]
