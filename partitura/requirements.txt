@@ -17,3 +17,7 @@ RapidFuzz
 Metaphone
 # validação (metricas.py): mir_eval; opcional: partitura (tensão tonal)
 mir_eval
+# japonês (letra em moras): pykakasi; com fugashi + unidic-lite a pronúncia fica como se canta
+pykakasi
+fugashi
+unidic-lite

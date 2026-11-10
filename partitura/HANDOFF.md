@@ -630,3 +630,13 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
 - Página `trabalho/acompanhamento_20261110/pagina/` (Ode, médio e difícil, 5 teores +
   padrão de hoje). `test_acompanhamento.py`. Suíte 93 OK.
 
+## 30. Japonês: letra em moras — 2026-11-10
+
+- `japones.py`: pronúncia como se canta (fugashi do karaokê; senão pykakasi), corte em
+  moras (kana pequeno, ー e っ juntam com a anterior; ん própria), romaji ou kana.
+  `letra.silabas(..., "ja")` usa isso; `gerar.py --escrita-ja romaji|kana`.
+- Romaji ok no desenho. Kana: sem hífen, mas o Verovio mede o texto como latino e os kana
+  ficam espremidos (pendente: espaçamento/fonte CJK). Kana mostra a pronúncia (とー), não a
+  grafia (とう). Falta testar com música japonesa real (Whisper "ja" + alinhamento).
+- `test_japones.py`. Suíte 96 OK.
+

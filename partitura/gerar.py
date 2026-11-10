@@ -1056,11 +1056,15 @@ def main():
                     help="modelo do Demucs; htdemucs_6s separa também guitarra e piano (acordes com eles)")
     ap.add_argument("--reusar-cache", action="store_true",
                     help="usa a transcrição guardada (cache/transcricao.json) e só escreve as partituras de novo")
+    ap.add_argument("--escrita-ja", default="romaji", choices=("romaji", "kana"),
+                    help="letra em japonês embaixo das notas: romaji (padrão) ou kana")
     ap.add_argument("--acompanhamento", default=None, choices=("calma", "lenta", "emotiva", "animada", "epica"),
                     help="mão esquerda da música inteira (versão Acordes) na textura desse teor")
     ap.add_argument("--variacao", type=int, default=0, help="outra versão da introdução gerada (0 = padrão)")
     ap.add_argument("--sem-transpor", action="store_true", help="no nível fácil, não transpõe pra tom sem acidentes")
     args = ap.parse_args()
+    import letra as _letra
+    _letra.ESCRITA_JA = args.escrita_ja
     global SR_GRADE
     from niveis import NIVEIS
     niveis = list(NIVEIS) if args.nivel == "todos" else [n.strip() for n in args.nivel.split(",")]

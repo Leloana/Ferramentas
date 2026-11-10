@@ -216,7 +216,13 @@ def _corrigir_grafia(palavras, letra: str):
 PYPHEN_LANG = {"pt": "pt_BR", "en": "en_US", "es": "es", "fr": "fr", "it": "it_IT", "de": "de_DE"}
 
 
+ESCRITA_JA = "romaji"   # japonês embaixo das notas: "romaji" ou "kana" (gerar.py --escrita-ja)
+
+
 def silabas(palavra: str, idioma: str = "pt") -> list[str]:
+    if idioma == "ja":  # uma mora por nota (japones.py)
+        from japones import silabas_japonesas
+        return silabas_japonesas(palavra, ESCRITA_JA)
     import pyphen
     borda = 1 if idioma in ("pt", "es", "it") else 2  # inglês: nada de "friend-s", "o-h"
     d = pyphen.Pyphen(lang=PYPHEN_LANG.get(idioma, idioma), left=borda, right=borda)
@@ -294,7 +300,10 @@ def letra_nas_notas(notas_q, palavras, idioma: str = "pt") -> dict[int, list[str
             pulando = sum(1 for x in letras.get(nota, []) if not x.startswith("-")) >= 4
         if pulando:
             continue
-        txt = ("-" if jj > 0 else "") + parte + ("-" if jj < k - 1 else "")
+        if idioma == "ja" and ESCRITA_JA == "kana":
+            txt = parte   # kana não leva hífen entre moras
+        else:
+            txt = ("-" if jj > 0 else "") + parte + ("-" if jj < k - 1 else "")
         letras.setdefault(nota, []).append(txt)
     saida = letras
     return saida
