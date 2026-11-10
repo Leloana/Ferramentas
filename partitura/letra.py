@@ -98,8 +98,11 @@ def _norm_espacos(t: str) -> str:
     return "".join(c for c in t if unicodedata.category(c) != "Mn")
 
 
-def buscar_letra(titulo: str, artista: str) -> str | None:
-    """Letra oficial no LRCLIB (base aberta, a mesma do karaokê). Só aceita se título e artista batem."""
+def buscar_letra(titulo: str, artista: str, com_sincronizada: bool = False):
+    """Letra oficial no LRCLIB (base aberta, a mesma do karaokê). Só aceita se título e artista batem.
+
+    com_sincronizada=True devolve (letra, lrc_sincronizado|None); o LRC dá o início de cada verso
+    pro alinhamento por janela (pode ser de outra gravação: o alinhador do karaokê confere)."""
     import json
     import urllib.parse
     import urllib.request
@@ -117,7 +120,7 @@ def buscar_letra(titulo: str, artista: str) -> str | None:
                 cands = json.loads(r.read().decode("utf-8"))
         except Exception as e:  # noqa: BLE001  (sem internet etc.: segue sem letra oficial)
             print(f"[letra] LRCLIB indisponível ({e})")
-            return None
+            return (None, None) if com_sincronizada else None
         for c in cands or []:
             letra = (c.get("plainLyrics") or "").strip()
             if not letra or c.get("instrumental"):
@@ -126,9 +129,11 @@ def buscar_letra(titulo: str, artista: str) -> str | None:
             sim_a = difflib.SequenceMatcher(a=_chave(c.get("artistName", "")), b=a_q).ratio() if a_q else 1.0
             if sim_t >= 0.8 and (sim_a >= 0.6 or a_q in _chave(c.get("artistName", ""))):
                 print(f"[letra] letra oficial: LRCLIB \"{c.get('trackName')}\" de {c.get('artistName')}")
+                if com_sincronizada:
+                    return letra, (c.get("syncedLyrics") or "").strip() or None
                 return letra
     print("[letra] letra oficial não encontrada no LRCLIB (segue só com o Whisper)")
-    return None
+    return (None, None) if com_sincronizada else None
 
 
 def _alucinacao(s) -> bool:

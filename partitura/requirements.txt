@@ -11,3 +11,7 @@ soundfile
 scipy
 faster-whisper
 pyphen
+# alinhamento da letra pelo karaokê (../karaoke/server/utils/lrc_pro.py): torchaudio vem com o torch
+Unidecode
+RapidFuzz
+Metaphone

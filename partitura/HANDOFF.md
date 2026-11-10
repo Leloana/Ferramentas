@@ -398,3 +398,26 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
   ouvir/ler as correções; calibrar o tempo de mudança de posição com quem toca. Harmonia (frente 3
   da PROXIMA_ETAPA) pode reaproveitar o custo da mão pra escolher voicings.
 
+## 16. Letra pelo alinhador do karaokê e partitura de música do karaokê — 2026-11-10
+
+- Pendências 5, 6 e 8 da seção 8. Novo `alinhamento.py`, sem copiar código do karaokê:
+  importa `karaoke/server/utils/lrc_pro.align_lyrics_forced` (sys.path no fim da lista).
+  Se o `utils.audio` do karaokê não importar (pydub no Python 3.13 pede audioop-lts),
+  registra um substituto que carrega o wav com librosa.
+- `palavras_alinhadas`: passa as palavras do Whisper já calculadas como `transcribe_fn`
+  (estrutura da gravação, sem transcrever de novo) e o LRC do LRCLIB (`buscar_letra(...,
+  com_sincronizada=True)`). Verso `fallback` vira buraco preenchido pelo Whisper; palavra
+  do Whisper fora de verso é descartada (caso "The girl from Ipanema"). Menos de 50% dos
+  versos alinhados: volta pro caminho antigo.
+- `--do-karaoke`: mix = vocal.mp3 + backing_track.mp3 (o karaokê apaga o original.mp3
+  depois de separar), voz do karaokê, Demucs só no acompanhamento (cópia com o slug no
+  nome, senão a pasta do Demucs colide), palavras do segments.json, idioma/título/artista
+  do meta.json. `needs_review` com nota < 60 ou poucos versos alinhados: realinha usando o
+  lyrics.lrc da música como janela.
+- Testes: `test_alinhamento.py` (4) com áudio de zeros e alinhador falso, como os testes do
+  karaokê. Suíte inteira: 37 OK (Linux, sem GPU).
+- Não validado com modelo: nesta máquina não há GPU nem os áudios do karaokê (só meta.json).
+  Na Windows: rodar Garota e Rosa com e sem `--sem-alinhamento` e comparar a letra; rodar
+  uma música do karaokê com `--do-karaoke`. O alinhamento usa a GPU fora do lock do servidor
+  do karaokê: não rodar durante uma partida.
+

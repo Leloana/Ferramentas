@@ -47,6 +47,26 @@ saida/<Título>/
   cache/        MIDI bruto do Pop2Piano
 ```
 
+### Letra alinhada e músicas do karaokê
+
+Com letra oficial (LRCLIB ou `--letra`), depois do Whisper a partitura usa o alinhador
+forçado do karaokê (`../karaoke/server/utils/lrc_pro.py`, MMS_FA): cada palavra da letra
+oficial vai pro tempo em que é cantada na voz separada, verso a verso pelo LRC sincronizado,
+e a estrutura da gravação (verso pulado ou repetido ao vivo) sai das palavras do Whisper.
+Verso que o alinhador não acha fica com as palavras do Whisper; palavra do Whisper fora de
+qualquer verso (alucinação na introdução) não entra. Com menos da metade dos versos
+alinhados, fica tudo como antes (Whisper + correção de grafia). `--sem-alinhamento` desliga.
+O resultado vai em `cache/transcricao.json` (`origem_letra`, `alinhamento`).
+
+```powershell
+.\venv\Scripts\python.exe gerar.py --do-karaoke a-flor-los-hermanos --nivel todos --hibrido --amtapc
+```
+
+`--do-karaoke` (slug de `../karaoke/server/songs` ou caminho da pasta) usa a voz e o
+acompanhamento que o karaokê já separou (o Demucs roda só no acompanhamento, pro baixo e a
+bateria) e as palavras do `segments.json`. Letra marcada pra revisão no karaokê (nota < 60)
+é alinhada de novo. Precisa de `Unidecode`, `RapidFuzz` e `Metaphone` (requirements).
+
 ## Duas versões
 
 | | `gerar.py` (padrão) | `--pop2piano` |

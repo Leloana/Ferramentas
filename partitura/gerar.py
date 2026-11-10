@@ -717,7 +717,11 @@ def _midi_para_mp3_simples(mid: Path, mp3: Path):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("audio", type=Path)
+    ap.add_argument("audio", type=Path, nargs="?", help="música (wav/mp3); dispensável com --do-karaoke")
+    ap.add_argument("--do-karaoke", default=None, metavar="MUSICA",
+                    help="usa uma música do karaokê (slug ou pasta): voz e acompanhamento já separados e a letra já alinhada")
+    ap.add_argument("--sem-alinhamento", action="store_true",
+                    help="não alinha a letra oficial com o alinhador do karaokê (fica só Whisper + correção de grafia)")
     ap.add_argument("--saida", type=Path, default=AQUI / "saida")
     ap.add_argument("--titulo", default=None)
     ap.add_argument("--pasta", default=None, help="nome da pasta em saida/ (padrão: o título)")
@@ -751,16 +755,34 @@ def main():
             ap.error(f"nível inválido: {n} (use {', '.join(NIVEIS)})")
 
     import librosa
-    audio = args.audio.resolve()
+    karaoke = None
+    if args.do_karaoke:
+        from alinhamento import musica_do_karaoke, pasta_do_karaoke
+        karaoke = musica_do_karaoke(pasta_do_karaoke(args.do_karaoke), AQUI / "trabalho")
+        audio = karaoke["audio"].resolve()
+        args.titulo = args.titulo or karaoke["titulo"]
+        args.artista = args.artista or karaoke["artista"]
+        args.idioma = karaoke["idioma"]
+        print(f"[karaoke] {karaoke['titulo']} de {karaoke['artista']} ({args.idioma}); "
+              f"letra {'já alinhada' if karaoke['palavras'] else 'será alinhada de novo'}")
+    elif args.audio is None:
+        ap.error("informe o áudio ou --do-karaoke")
+    else:
+        audio = args.audio.resolve()
     titulo = args.titulo or audio.stem.replace("_", " ").title()
     args.saida.mkdir(parents=True, exist_ok=True)
     base = args.saida / (args.pasta or nome_pasta(titulo))  # uma pasta por música
     copiar_original(audio, base)
 
-    stems = separar(audio, AQUI / "trabalho")
+    if karaoke:  # voz já separada pelo karaokê; Demucs só no acompanhamento (baixo/bateria/resto)
+        stems = separar(karaoke["acompanhamento"], AQUI / "trabalho")
+        voz_wav = karaoke["voz"]
+    else:
+        stems = separar(audio, AQUI / "trabalho")
+        voz_wav = stems / "vocals.wav"
     sr = 22050
     mix = carregar(audio, sr)
-    voz = carregar(stems / "vocals.wav", sr)
+    voz = carregar(voz_wav, sr)
     baixo = carregar(stems / "bass.wav", sr)
     resto = carregar(stems / "other.wav", sr)
     bateria = carregar(stems / "drums.wav", sr)
@@ -783,23 +805,38 @@ def main():
     acs = acordes(resto + 0.3 * baixo, baixo, sr, grade)
 
     palavras = []
-    if not args.sem_letra:
+    origem_letra, rel_alinhamento = None, None
+    if not args.sem_letra and karaoke and karaoke["palavras"]:
+        palavras, origem_letra = karaoke["palavras"], "karaoke"
+        print(f"[letra] {len(palavras)} palavras do karaokê (segments.json)")
+    elif not args.sem_letra:
         from letra import palavras_com_tempo
         oficial = args.letra.read_text(encoding="utf-8") if args.letra else None
+        sincronizada = None
+        if karaoke and oficial is None:
+            oficial, sincronizada = karaoke["plain_lyrics"], karaoke["synced_lyrics"]
         if oficial is None and not args.sem_busca_letra:
             from letra import buscar_letra
             artista = args.artista or re.split(r"\s[—–/·]\s|\s-\s", args.subtitulo)[0]
-            oficial = buscar_letra(titulo, artista)
-        palavras = palavras_com_tempo(stems / "vocals.wav", args.idioma, oficial)
+            oficial, sincronizada = buscar_letra(titulo, artista, com_sincronizada=True)
+        palavras = palavras_com_tempo(voz_wav, args.idioma, oficial)
+        origem_letra = "whisper"
         if args.idioma == "auto":
             import letra
             args.idioma = letra.IDIOMA_DETECTADO
+        if oficial and not args.sem_alinhamento:
+            from alinhamento import palavras_alinhadas
+            alinhadas, rel_alinhamento = palavras_alinhadas(voz_wav, oficial, args.idioma, whisper=palavras,
+                                                            sincronizada=sincronizada)
+            if alinhadas:
+                palavras, origem_letra = alinhadas, "alinhamento"
 
     cache=base/'cache'
     cache.mkdir(parents=True,exist_ok=True)
     transcricao=dict(audio=str(audio),audio_tamanho=audio.stat().st_size,
         audio_mtime_ns=audio.stat().st_mtime_ns,bt=bt.tolist(),fase=fase,bpm=float(bpm),
-        notas=notas,diagnostico=diagnostico,acordes=acs,palavras=palavras,idioma=args.idioma)
+        notas=notas,diagnostico=diagnostico,acordes=acs,palavras=palavras,idioma=args.idioma,
+        origem_letra=origem_letra,alinhamento=rel_alinhamento)
     (cache/'transcricao.json').write_text(json.dumps(transcricao,ensure_ascii=False,
         default=lambda v:v.item()),encoding='utf-8')
     for nivel in niveis:
