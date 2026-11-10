@@ -11,6 +11,10 @@ Feito e verificado no PC:
 - Gasto ElevenLabs: 1.148 de 10.000 caracteres (73 do aviso embarcado + 1.075 da narração).
 - App Android em `android/` (Kotlin, AGP 8.7.3, Gradle 8.11.1, minSdk 29, target 35, sem dependências). `assembleDebug` compila; permissões conferidas com aapt: INTERNET, USE_EXACT_ALARM (SCHEDULE_EXACT_ALARM só até API 32), FOREGROUND_SERVICE(+MEDIA_PLAYBACK), POST_NOTIFICATIONS, WAKE_LOCK, RECEIVE_BOOT_COMPLETED.
 
+Correção 0.1.1 (mesma noite): o 0.1.0 fechava ao abrir no S24. Causa confirmada no emulador (Android 16): `SecurityException: ACCESS_NETWORK_STATE required for jobs with a connectivity constraint` ao agendar o job de sync. Adicionada a permissão (normal, sem prompt) e o agendamento do job passou a não derrubar o app se falhar.
+
+Teste no emulador (Android 16, API 36.1) com o 0.1.1: app abre; sync pelo servidor do PC baixou a edição (2 arquivos, hash ok, promoção atômica); "Testar em 1 minuto" com tela bloqueada disparou na hora (alarme RTC_WAKEUP exato, serviço em primeiro plano mediaPlayback, foco de áudio USAGE_ALARM, MediaPlayer tocando); ao acender a tela o app aparece sobre o bloqueio; Parar encerra serviço e som; Soneca na notificação encerra e reagenda +9 min. Ainda falta o mesmo no S24 FE.
+
 Ainda NÃO testado (depende do aparelho): instalação, sincronização pela rede, disparo com tela bloqueada, modo avião, reinício, soneca, fallback sem jornal.
 
 Limitações conhecidas do MVP: sem tela cheia sobre o bloqueio (o alarme aparece como notificação com Parar/Soneca; tocar nela abre o app sobre a tela de bloqueio); sem Direct Boot (depois de reiniciar, só toca após o primeiro desbloqueio); HTTP na LAN.

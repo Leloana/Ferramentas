@@ -3,6 +3,8 @@
 
     <!-- Só para sincronizar a edição; o disparo do alarme não usa rede. -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Exigida (Android 14+) para o job de sincronização que espera o Wi-Fi. Sem prompt. -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- Alarme exato: USE_EXACT_ALARM (Android 13+) é a permissão própria de app de despertador. -->
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" android:maxSdkVersion="32" />

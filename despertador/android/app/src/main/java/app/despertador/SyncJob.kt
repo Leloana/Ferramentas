@@ -22,7 +22,13 @@ class SyncJob : JobService() {
     companion object {
         private const val ID = 42
 
+        /** Nunca deixa uma falha no agendamento da sync derrubar o app ou o boot. */
         fun agendar(ctx: Context) {
+            runCatching { agendarOuFalhar(ctx) }
+                .onFailure { android.util.Log.w("Despertador", "não agendou a sincronização", it) }
+        }
+
+        private fun agendarOuFalhar(ctx: Context) {
             val js = ctx.getSystemService(JobScheduler::class.java)
             if (js.getPendingJob(ID) != null) return
             js.schedule(
