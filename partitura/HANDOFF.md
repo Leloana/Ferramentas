@@ -480,3 +480,21 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
   de teste (original 4,5 s -> nota de 2,0 s; clique -> original 5,40 s; volta pra prévia).
   Suíte 60 OK. Músicas atuais precisam ser regeneradas pra ganhar o mapa.
 
+## 21. Revisão cega e choques melodia × acompanhamento — 2026-11-10
+
+- Página de comparação às cegas em `trabalho/comparacao_20261110/` (gerador `montar.py`
+  lá dentro): exemplos com antes/depois/hoje, mesmo piano (TimGM6mb via tinysoundfont),
+  partitura sem dedos até revelar, versões de notas iguais agrupadas, "onde muda" por par.
+  Usuário julgou: melhoria confirmada depois das técnicas. Achado: o exemplo
+  `exemplos/03-desmoronou` publicado tem antes == depois (mesmo MIDI/mp3); refazer o
+  recorte na Windows e fazer `verificar_exemplos.py` exigir diferença entre os lados.
+- Novo `harmonia.py` (frente 3): `corrigir_qualidade` troca a qualidade do acorde dentro
+  da família (maior: maj/7/maj7/6; menor: m/m7/m6) quando a voz sustenta (>= 1 tempo) uma
+  nota fora do acorde a um semitom de uma nota dele (C7 + Si cantado -> C7M); família não
+  muda (blue note). `tirar_choques` tira do acompanhamento (não o baixo) a voz a um semitom
+  da nota cantada forte que soa junto. Tensões sem semitom (9ª, 13ª) ficam.
+- `gerar_nivel`: qualidade antes de montar cifras/esquerda; choques por versão antes das
+  mãos; registro em `cache/harmonia_<versao>_<nivel>.json`.
+- Nos exemplos: só Garota dispara (Dó cantado sobre Sol7M, sai o Si da esquerda nos
+  compassos 2-3). `test_harmonia.py` (12). Suíte 72 OK.
+

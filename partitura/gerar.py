@@ -873,6 +873,10 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
         from letra import letra_nas_notas
         letras = letra_nas_notas(notas_q, palavras, args.idioma)
     print(f"[melodia] {len(notas_q)} notas quantizadas, {len(letras)} com sílaba")
+    # voz sustentada a um semitom do acorde detectado: corrige a qualidade (C7 x C7M etc.)
+    from harmonia import corrigir_qualidade, tirar_choques
+    acs, mud_qualidade = corrigir_qualidade(acs, notas_q, TIPOS)
+    print(f"[harmonia] {len(mud_qualidade)} acordes com a qualidade corrigida pela melodia")
     md_ev, _, cifras = eventos_melodia_acordes(notas_q, acs, letras=letras)
     fim = max(n[1] for n in notas_q) + 4
     cifras = cifras_do_nivel(cifras, nivel)
@@ -912,6 +916,13 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
             md = [(o, d, [p + k for p in ps], *r) for o, d, ps, *r in md]
             me = [(o, d, [p + k for p in ps], *r) for o, d, ps, *r in me]
             cf = [(o, (r + k) % 12, t) for o, r, t in cifras]
+        # acompanhamento a um semitom da nota cantada forte: tira essa voz (o baixo fica)
+        melodia_k = [(o, d, [p + k for p in ps]) for o, d, ps, *_ in md_ev]
+        me, mud_choques = tirar_choques(melodia_k, me)
+        print(f"[harmonia] {versao}: {len(mud_choques)} vozes do acompanhamento tiradas por choque com a melodia")
+        if diagnostico is not None:
+            (base / "cache" / f"harmonia_{versao}_{nivel}.json").write_text(
+                json.dumps(dict(qualidade=mud_qualidade, choques=mud_choques), ensure_ascii=False), encoding="utf-8")
         dmd = dme = None
         sem_maos, modo_dedos = getattr(args, "sem_maos", False), getattr(args, "dedos", "auto")
         if not sem_maos or modo_dedos != "nenhum":
