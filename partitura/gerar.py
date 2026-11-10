@@ -361,11 +361,12 @@ def nomes_para(sustenidos: int) -> list[str]:
     return NOMES_PC_SUST if sustenidos >= 3 else NOMES_PC
 
 
-def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: str, uma_armadura=False):
+def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: str, uma_armadura=False,
+                     dedos_md=None, dedos_me=None):
     """md_ev / me_ev: (offset_em_tempos, duração, [midis]) sem sobreposição dentro da mão.
-    cifras: (offset, root_pc, tipo)."""
-    from music21 import (chord, clef, harmony, key, layout, meter, metadata, note, pitch, stream,
-                         tempo)
+    cifras: (offset, root_pc, tipo). dedos_md/me: por evento, dedos na ordem de sorted(ps) ou None."""
+    from music21 import (articulations, chord, clef, harmony, key, layout, meter, metadata, note, pitch,
+                         stream, tempo)
 
     tudo = md_ev + me_ev
     if not tudo:
@@ -420,11 +421,15 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
             parte.insert(o, key.KeySignature(k_))
     md.insert(0, tempo.MetronomeMark(number=round(bpm)))
 
-    for parte, eventos in ((md, md_ev), (me, me_ev)):
-        for off, dur, ps, *resto in eventos:
+    for parte, eventos, dedos in ((md, md_ev, dedos_md), (me, me_ev, dedos_me)):
+        for i, (off, dur, ps, *resto) in enumerate(eventos):
             o = off + desloc
             el = note.Note(P(ps[0], o)) if len(ps) == 1 else chord.Chord([P(m, o) for m in sorted(ps)])
             el.quarterLength = dur
+            if dedos and i < len(dedos) and dedos[i]:
+                # acorde: o MusicXML distribui os dedos pelas notas na ordem (grave -> agudo)
+                for f in dedos[i]:
+                    el.articulations.append(articulations.Fingering(f))
             if resto and resto[0]:
                 el.addLyric(resto[0])  # "tris-" / "-te-" / "-za" viram sílabas ligadas
             parte.insert(o, el)
@@ -449,6 +454,10 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
     for p in (md, me):
         p.makeRests(fillGaps=True, inPlace=True, timeRangeFromBarDuration=True)
     sc = sc.makeNotation()
+    # nota dividida no compasso: o dedo fica só no ataque, não na continuação ligada
+    for el in sc.recurse().notes:
+        if el.tie is not None and el.tie.type in ("stop", "continue"):
+            el.articulations = [a for a in el.articulations if not isinstance(a, articulations.Fingering)]
     # makeNotation põe bequadro nas cifras ("A♮m7"); cifra não leva acidente de armadura
     for cs in sc.recurse().getElementsByClass(harmony.ChordSymbol):
         for p_ in list(cs.pitches) + [cs.root(), cs.bass()]:
@@ -728,6 +737,10 @@ def main():
                     help="gera também melodia cantada + acompanhamento do Pop2Piano na mão esquerda")
     ap.add_argument("--nivel", default="medio",
                     help="dificuldade: facil, medio, dificil ou lista (facil,medio,dificil) ou 'todos'")
+    ap.add_argument("--dedos", default="auto", choices=("auto", "todos", "mudancas", "nenhum"),
+                    help="números dos dedos na partitura (auto: todos no fácil, só nas mudanças de posição no resto)")
+    ap.add_argument("--sem-maos", action="store_true",
+                    help="não corrige trechos que a mão não alcança (só calcula os dedos)")
     ap.add_argument("--sem-transpor", action="store_true", help="no nível fácil, não transpõe pra tom sem acidentes")
     args = ap.parse_args()
     global SR_GRADE
@@ -852,7 +865,24 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
             md = [(o, d, [p + k for p in ps], *r) for o, d, ps, *r in md]
             me = [(o, d, [p + k for p in ps], *r) for o, d, ps, *r in me]
             cf = [(o, (r + k) % 12, t) for o, r, t in cifras]
-        sc, arm = montar_partitura(md, me, cf, bpm, titulo, sub, uma_armadura=(nivel == "facil"))
+        dmd = dme = None
+        sem_maos, modo_dedos = getattr(args, "sem_maos", False), getattr(args, "dedos", "auto")
+        if not sem_maos or modo_dedos != "nenhum":
+            from maos import tornar_tocavel
+            prot = {(round(o, 6), p + k) for o, _, ps, *_ in md_ev for p in ps}
+            md, me, dmd, dme, rel = tornar_tocavel(
+                md, me, nivel, bpm, prot, corrigir=not sem_maos,
+                mostrar=None if modo_dedos == "auto" else modo_dedos)
+            r = rel["resumo"]
+            print(f"[maos] {versao}: {r['corrigidos']} correções, {r['restantes']} trechos difíceis restantes "
+                  f"({r['restantes_na_melodia']} na melodia)")
+            cache = base / "cache"
+            cache.mkdir(parents=True, exist_ok=True)
+            (cache / f"maos_{versao}_{nivel}.json").write_text(json.dumps(rel, ensure_ascii=False), encoding="utf-8")
+            if modo_dedos == "nenhum":
+                dmd = dme = None
+        sc, arm = montar_partitura(md, me, cf, bpm, titulo, sub, uma_armadura=(nivel == "facil"),
+                                   dedos_md=dmd, dedos_me=dme)
         print(f"[{versao}] armadura: {arm}")
         salvar_versao(sc, base, f"{versao} - {NOME[nivel]}")
 

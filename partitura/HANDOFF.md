@@ -367,3 +367,34 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
   integridade dos arquivos, durações iguais, MP3 audível e SVG com fundo branco.
   Conferência visual de três pares em Chrome realizada. Nenhum modelo foi executado.
 - README da Partitura aponta para exemplos/plano; README da raiz agora lista o projeto.
+
+## 15. Mãos tocáveis e dedilhado — 2026-11-10
+
+- Pedido do usuário: partituras mais tocáveis, com a mão calculada (nota ligada precisa
+  ser alcançável junto com as próximas) e número dos dedos. Sempre algoritmo, sem LLM.
+- Pesquisa: no projeto só havia fechar acorde em uma oitava (`niveis.py`) e escolher a
+  oitava do baixo. Fora, o `pianoplayer` (MIT, v3.0.2) dá dedos a partir de MusicXML, mas
+  não modela nota segurada nem corrige notas; ficou só como referência.
+- Novo `maos.py`: estado = dedo de cada nota que soa no instante; nota segurada mantém o
+  dedo. Problemas: `abertura`, `dedos`, `ligada`, `salto`. Correção por janela de ±6
+  eventos, aceita só se reduz problemas, escolhendo a menor mudança musical. Até 3 rodadas.
+  `separar_maos` impede a esquerda acima da direita (fecha em volta do baixo antes de descer oitava).
+- `gerar.py`: `tornar_tocavel` roda por versão depois da transposição do fácil; notas de
+  `md_ev` são protegidas. `montar_partitura(..., dedos_md, dedos_me)` grava `<fingering>`;
+  continuação ligada de nota dividida no compasso não repete o dedo. CLI: `--dedos`, `--sem-maos`.
+- Validação (Linux, venv só com music21/numpy/pretty_midi/verovio, sem GPU): 13 testes novos
+  em `test_maos.py` (escalas 1-2-3-1-2-3-4-5, acorde 5-3-1, segurada, salto por nível, melodia
+  intocada, mãos sem cruzar) + 19 antigos OK. `avaliar_maos.py exemplos`: Garota antes 8
+  trechos difíceis → 0 com 8 correções (7 "fecha o acorde"). Render no Verovio conferido.
+  Música sintética de 2200 eventos: ~25 s (memo das digitações por instante, janela
+  avaliada uma vez, busca binária na outra mão), esquerda sem problemas restantes.
+- Ajustes do dedilhado: redução por tamanho de mão só nos pares com polegar; mesmo dedo
+  em outra tecla custa +2; troca de dedo em nota repetida +1,5; mudança de posição custa
+  pelo aperto de tempo (pausa longa quase de graça). Referência de método em `test_maos.py`
+  (escalas, arpejos, cinco dedos, melodias infantis): 88/97 → **95/97** dedos iguais ao
+  livro; a diferença restante (Parabéns 3-2 em vez de 4-3) também é digitação válida.
+  Garota: Dó-Dó-Dó-Dó#-Si-Láb-Mi saiu 3-3-3-4-3-2-1.
+- Pendente: rodar `avaliar_maos.py saida` e regenerar a biblioteca na máquina Windows;
+  ouvir/ler as correções; calibrar o tempo de mudança de posição com quem toca. Harmonia (frente 3
+  da PROXIMA_ETAPA) pode reaproveitar o custo da mão pra escolher voicings.
+

@@ -112,6 +112,29 @@ diagnóstico fica em `cache/transcricao.json`. Em 2026-11-10, Para Machucar Meu 
 foi regenerada para validar os exemplos indicados pelo usuário; os arquivos anteriores
 estão em `trabalho/protecao_20261110/`. As outras músicas receberão a proteção quando regeneradas.
 
+### Mãos tocáveis e dedilhado
+
+Antes de montar a partitura, `maos.py` confere cada mão ao longo do tempo com um
+modelo da mão: limite de abertura entre cada par de dedos (tabela de Parncutt/Jacobs,
+escalada por nível), nota segurada prendendo a mão no lugar, número de dedos livres e
+tempo pra mudar a mão de posição. Uma programação dinâmica acha a melhor digitação.
+Nada de LLM nem modelo treinado.
+
+Quando nenhuma digitação cabe, só o acompanhamento muda, na ordem de menor mudança
+musical: fecha o acorde, muda a oitava, solta a nota segurada e, por último, tira uma
+nota. A melodia cantada nunca muda; trecho difícil dela fica só registrado. A esquerda
+também não sobe por cima da direita.
+
+| | fácil | médio | difícil |
+|---|---|---|---|
+| maior abertura da mão | oitava | oitava | 9ª menor |
+| tempo pra mudar a mão de lugar (oitava) | ~0,85 s | ~0,5 s | ~0,3 s |
+| números dos dedos | todas as notas | só onde a mão muda de posição | só onde a mão muda de posição |
+
+`--dedos todos|mudancas|nenhum` troca o padrão; `--sem-maos` só calcula os dedos, sem
+corrigir notas. O que foi corrigido e o que ficou difícil vai pra `cache/maos_<versao>_<nivel>.json`.
+`python avaliar_maos.py saida` mede partituras já geradas sem regenerar nada.
+
 ## Partitura acompanhando o áudio
 
 Na Biblioteca, a **prévia de piano** destaca as notas em um visualizador SVG com cursor,
