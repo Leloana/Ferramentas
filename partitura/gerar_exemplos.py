@@ -143,6 +143,11 @@ def svg_compacto(xml,destino):
     destino.write_text(ET.tostring(svg,encoding='unicode'),encoding='utf-8')
 
 
+def notas_do_recorte(maos):
+    """Conjunto (início, fim, altura) das duas mãos, pra comparar antes e depois."""
+    return {(round(n['inicio'],3),round(n['fim'],3),n['pitch']) for mao in maos for n in mao}
+
+
 def main():
     manifesto=dict(gerado_em=datetime.now().astimezone().isoformat(timespec='seconds'),
         descricao='Recortes de arranjos automáticos; áudios sintetizados novamente com o mesmo piano.',casos=[])
@@ -167,8 +172,13 @@ def main():
         caso.update(bpm=depois['bpm'],duracao_musical_s=(caso['fim']-caso['inicio'])*60/depois['bpm'],
                     deslocamento_antes=delta,armadura_sustenidos=armadura,
                     fonte_antes=str(antes_path.relative_to(RAIZ)),fonte_depois=str(depois_path.relative_to(RAIZ)),arquivos={})
+        recortes={v:recortar(d,caso['inicio'],caso['fim'],a) for v,d,a in [('antes',antes,delta),('depois',depois,0)]}
+        # recorte onde nada mudou não serve de exemplo (o 03-desmoronou saiu assim em 2026-11-10)
+        if notas_do_recorte(recortes['antes'])==notas_do_recorte(recortes['depois']):
+            raise ValueError(f"{caso['id']}: antes e depois têm as mesmas notas no trecho "
+                             f"{caso['inicio']}-{caso['fim']}; escolha outro recorte")
         for versao,dados,ajuste in [('antes',antes,delta),('depois',depois,0)]:
-            maos=recortar(dados,caso['inicio'],caso['fim'],ajuste)
+            maos=recortes[versao]
             sc=montar(maos,dados,caso,versao,armadura,ajuste)
             xml=pasta/f'{versao}.musicxml'; mid=pasta/f'{versao}.mid'; mp3=pasta/f'{versao}.mp3'
             sc.write('musicxml',fp=str(xml)); gerar.salvar_midi_notas(sc,mid,xml)

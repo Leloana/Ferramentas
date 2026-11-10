@@ -18,6 +18,7 @@ for caso in manifesto['casos']:
         assert len(conteudo)==metadados['bytes'],nome
         assert hashlib.sha256(conteudo).hexdigest()==metadados['sha256'],nome
     duracoes=[]
+    notas_lado={}
     for versao in ('antes','depois'):
         xml=pasta/f'{versao}.musicxml'
         _,segmentos=preparar_musicxml(xml.read_text(encoding='utf-8'))
@@ -25,6 +26,7 @@ for caso in manifesto['casos']:
         pm=pretty_midi.PrettyMIDI(str(pasta/f'{versao}.mid'))
         reais=[n for inst in pm.instruments for n in inst.notes]
         assert len(reais)==len(ns)==sum(caso[versao][mao]['notas'] for mao in ('direita','esquerda'))
+        notas_lado[versao]={(round(n['inicio'],3),round(n['fim'],3),n['pitch']) for n in ns}
         notas_total+=len(ns)
         for n in ns:
             candidatos=[(abs(r.start-n['inicio'])+abs(r.end-n['fim']),i) for i,r in enumerate(reais)
@@ -45,6 +47,8 @@ for caso in manifesto['casos']:
         pico=re.search(r'max_volume:\s*([-\d.]+)\s*dB',volume)
         assert pico and float(pico.group(1))>-50,'Áudio vazio ou inaudível'
     assert abs(duracoes[0]-duracoes[1])<.03
+    # exemplo de antes/depois precisa mostrar alguma diferença de nota
+    assert notas_lado['antes']!=notas_lado['depois'],f"{caso['id']}: antes e depois têm as mesmas notas"
     print('[ok]',caso['id'],'notas/tempos, hashes, SVG/PDF e dois MP3 com mesma duração',flush=True)
 alcance=next(c for c in manifesto['casos'] if c['id']=='04-alcance')
 assert alcance['antes']['esquerda']['abertura_max_semitons']>12

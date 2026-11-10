@@ -64,6 +64,10 @@ revisto, a entrada se apoia na altura estável da frase.
 
 ## 3. Passagem em “desmoronou”
 
+> **Aviso (2026-11-10):** neste recorte o antes e o depois ficaram com as mesmas notas
+> (mesmo MIDI e mesmo MP3). O exemplo será refeito com outro trecho na máquina com a
+> biblioteca; até lá o `verificar_exemplos.py` reprova este caso de propósito.
+
 **Para Machucar Meu Coração — Híbrido AMT, Médio.** Três compassos, aproximadamente 5,6 s de música.
 O Lá natural aparece brevemente no gesto vocal, mas a quantização dava peso
 excessivo a ele. Compare a passagem e sua duração, não apenas o número de notas:
