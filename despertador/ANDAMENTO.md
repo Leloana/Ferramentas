@@ -21,6 +21,8 @@ Ainda NÃO testado (depende do aparelho): instalação, sincronização pela red
 
 Limitações conhecidas do MVP: sem tela cheia sobre o bloqueio (o alarme aparece como notificação com Parar/Soneca; tocar nela abre o app sobre a tela de bloqueio); sem Direct Boot (depois de reiniciar, só toca após o primeiro desbloqueio); HTTP na LAN.
 
+Voz de reserva local (10/11/2026): o servidor Linux final não tem GPU (Xeon E5-2630 v4, ~12 GB RAM). Preparado `server/bench_tts/bench_tts.py` + instruções em `docs/TESTE_TTS_SERVIDOR.md` para o agente do servidor comparar Piper, Kokoro e XTTS-v2 em CPU, com prioridade baixa e respeitando os outros processos. Validado no PC: script e Piper (59 s de áudio em 3,3 s no i5-13400F, só CPU). Aguardando resultado do servidor.
+
 Próximos passos:
 1. Proprietário instala o APK, configura endereço/token, sincroniza e roda "Testar em 1 minuto" com tela bloqueada e depois em modo avião.
 2. Corrigir o que falhar no aparelho; avaliar tela cheia (USE_FULL_SCREEN_INTENT) se a notificação não bastar.
