@@ -444,13 +444,46 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
     return sc, ", ".join(f"compasso {int(o // 4) + 1}: {k_:+d}" for o, k_ in mudancas)
 
 
+def _juntar_silabas(partes: list[str]) -> str | None:
+    """["-da-", "-de"] -> "-dade";  ["que", "eu"] -> "que eu"."""
+    if not partes:
+        return None
+    txt = partes[0]
+    for p in partes[1:]:
+        if txt.endswith("-") and p.startswith("-"):
+            txt = txt[:-1] + p[1:]
+        else:
+            txt = txt.rstrip("-") + " " + p.lstrip("-")
+    return txt
+
+
+def _nota_com_silabas(ini: float, dur: float, midi: int, silabas: list[str]) -> list[tuple]:
+    """Uma nota com várias sílabas vira notas repetidas na mesma altura (uma sílaba cada),
+    como numa partitura de verdade, se couber na grade; senão as sílabas ficam juntas na nota."""
+    passo = 1 / SR_GRADE
+    cabem = int(round(dur / passo))
+    m = min(len(silabas), cabem)
+    if m <= 1:
+        return [(ini, dur, [midi], _juntar_silabas(silabas))]
+    base = max(1, cabem // m)  # em passos
+    saida, pos = [], ini
+    for j in range(m):
+        d = base * passo if j < m - 1 else ini + dur - pos
+        texto = _juntar_silabas(silabas[j:j + 1] if j < m - 1 else silabas[j:])
+        saida.append((pos, d, [midi], texto))
+        pos += d
+    return saida
+
+
 def eventos_melodia_acordes(notas_q, acs, beats_por_janela=2, letras=None):
     """Converte melodia quantizada + acordes detectados em eventos das duas mãos + cifras.
     letras: {índice_da_nota: sílaba} (opcional)."""
     letras = letras or {}
     med = np.median([n[2] for n in notas_q])
     transp = 12 if med < 62 else 0  # melodia confortável na clave de sol
-    md_ev = [(n[0], n[1] - n[0], [n[2] + transp], letras.get(i)) for i, n in enumerate(notas_q)]
+    md_ev = []
+    for i, n in enumerate(notas_q):
+        md_ev += _nota_com_silabas(n[0], n[1] - n[0], n[2] + transp, letras.get(i) or [])
     me_ev, cifras = [], []
     fim = max(n[1] for n in notas_q) + 4
     anterior = None
@@ -636,6 +669,8 @@ def main():
     ap.add_argument("--sem-letra", action="store_true", help="não coloca a letra embaixo das notas")
     ap.add_argument("--letra", type=Path, default=None,
                     help="letra oficial (.txt) pra corrigir a grafia do que o Whisper ouviu")
+    ap.add_argument("--artista", default=None, help="artista (pra buscar a letra oficial; padrão: começo do subtítulo)")
+    ap.add_argument("--sem-busca-letra", action="store_true", help="não busca a letra oficial no LRCLIB")
     ap.add_argument("--idioma", default="pt", help="pt, en, es... ou auto (Whisper detecta)")
     ap.add_argument("--hibrido", action="store_true",
                     help="gera também melodia cantada + acompanhamento do Pop2Piano na mão esquerda")
@@ -685,6 +720,10 @@ def main():
     if not args.sem_letra:
         from letra import palavras_com_tempo
         oficial = args.letra.read_text(encoding="utf-8") if args.letra else None
+        if oficial is None and not args.sem_busca_letra:
+            from letra import buscar_letra
+            artista = args.artista or re.split(r"\s[—–/·]\s|\s-\s", args.subtitulo)[0]
+            oficial = buscar_letra(titulo, artista)
         palavras = palavras_com_tempo(stems / "vocals.wav", args.idioma, oficial)
         if args.idioma == "auto":
             import letra
@@ -721,6 +760,8 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
         from amtapc import maos_amtapc
         a_md, a_me = maos_amtapc(audio, base, nivel, grade)
         versoes["AMT-APC"] = (reduzir_mao(a_md, nivel, "direita"), reduzir_mao(a_me, nivel, "esquerda"))
+        if args.hibrido:  # melodia cantada com letra + mão esquerda do AMT-APC (mais tocável que a do Pop2Piano)
+            versoes["HibridoAMT"] = (md_ev, reduzir_mao(a_me, nivel, "esquerda"))
 
     k = 0
     if nivel == "facil" and not args.sem_transpor:  # mesmo intervalo pra todas as versões

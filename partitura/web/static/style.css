@@ -160,3 +160,12 @@ legend { padding: 0 6px; color: var(--ouro2); font-weight: 600; font-size: 13px;
   .busca { flex-direction: column; }
   .pdf { height: 70vh; }
 }
+
+/* aviso flutuante */
+#aviso {
+  position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
+  background: var(--verde); color: #0f1a11; font-weight: 600; padding: 12px 18px; border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0,0,0,.5); transition: opacity .25s, transform .25s; z-index: 50; max-width: calc(100vw - 32px);
+}
+#aviso.erro { background: var(--vermelho); color: #1d0c09; }
+#aviso.mostrar { opacity: 1; transform: translate(-50%, 0); }

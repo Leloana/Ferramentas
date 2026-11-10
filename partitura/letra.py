@@ -32,9 +32,9 @@ def palavras_com_tempo(voz_wav: Path, idioma: str = "pt", letra_oficial: str | N
     except Exception as e:  # sem CUDA: CPU (mais lento)
         print(f"[letra] CUDA falhou ({e}); usando CPU")
         wm = WhisperModel(modelo, device="cpu", compute_type="int8")
+    # A letra oficial NÃO vai como prompt: testado em Rosa de Hiroshima, o prompt faz o Whisper misturar
+    # versos ("Pensem nas meninas, mudas, telepáticas"). Ele transcreve livre e a grafia é corrigida depois.
     prompt = None
-    if letra_oficial:
-        prompt = " ".join(letra_oficial.split())[:600]
     import librosa  # o leitor do faster-whisper (PyAV) quebra em versões novas do av
     audio, _ = librosa.load(str(voz_wav), sr=16000, mono=True)
     # sem VAD: o filtro de voz do Whisper corta trechos cantados (ele foi feito pra fala)
@@ -55,24 +55,100 @@ def palavras_com_tempo(voz_wav: Path, idioma: str = "pt", letra_oficial: str | N
         IDIOMA_DETECTADO = "pt"  # sílabas: regra do português serve razoavelmente pras palavras em inglês
     print(f"[letra] idioma: {IDIOMA_DETECTADO}")
     palavras = []
+    rejeitados = []
     for s in segs:
-        txt = s.text.strip()
-        letras_txt = re.sub(r"[^A-Za-zÀ-ÿ]", "", txt)
-        if (s.no_speech_prob > 0.6 or s.avg_logprob < -1.2 or not letras_txt
-                or (letras_txt.isupper() and len(letras_txt) > 3)  # alucinação típica: "A CIDADE NO BRASIL"
-                or _norm(txt) in {"musica", "legenda", "obrigado", "aplausos", "risos"}
-                or _em_loop(txt, s.compression_ratio)):
+        if _alucinacao(s):
+            rejeitados.append((s.start, s.end))
             continue
-        for w in s.words or []:
-            t = w.word.strip()
-            if len(t) > 24 or " " in t or "," in t.rstrip(",.!?;:"):  # "palavra" que é um loop inteiro
-                continue
-            if t and w.probability > 0.15:
-                palavras.append((float(w.start), float(w.end), t))
+        palavras += _palavras_do_segmento(s)
+    # Trecho descartado como alucinação ("A CIDADE NO BRASIL" no lugar do 1º verso) costuma ter voz de
+    # verdade: transcrito sozinho, sem o contexto da música inteira, o Whisper acerta. Segunda chance.
+    recuperadas = 0
+    for ini, fim in rejeitados:
+        a = max(0.0, ini - 1.0)
+        trecho = audio[int(a * 16000):int((fim + 1.0) * 16000)]
+        if len(trecho) < 16000:
+            continue
+        segs2, _ = wm.transcribe(trecho, language=None if misto else idioma, multilingual=misto,
+                                 word_timestamps=True, vad_filter=False, condition_on_previous_text=False,
+                                 beam_size=5)
+        for s2 in segs2:
+            if not _alucinacao(s2):
+                novas = [(i + a, f + a, t) for i, f, t in _palavras_do_segmento(s2)]
+                palavras += novas
+                recuperadas += len(novas)
+    if rejeitados:
+        print(f"[letra] {len(rejeitados)} trecho(s) alucinado(s) descartado(s); {recuperadas} palavras recuperadas na 2ª tentativa")
+    palavras.sort()
     print(f"[letra] {len(palavras)} palavras com tempo")
     if letra_oficial:
         palavras = _corrigir_grafia(palavras, letra_oficial)
     return palavras
+
+
+def _chave(t: str) -> str:
+    """Nome pra comparar: sem acento, sem "(Remasterizado)", sem " - Ao Vivo"."""
+    t = re.sub(r"[\(\[].*?[\)\]]", " ", t or "")
+    t = re.sub(r"\s+[-–—]\s+.*$", " ", t)
+    return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9]+", " ", _norm_espacos(t))).strip()
+
+
+def _norm_espacos(t: str) -> str:
+    t = unicodedata.normalize("NFD", t.lower())
+    return "".join(c for c in t if unicodedata.category(c) != "Mn")
+
+
+def buscar_letra(titulo: str, artista: str) -> str | None:
+    """Letra oficial no LRCLIB (base aberta, a mesma do karaokê). Só aceita se título e artista batem."""
+    import json
+    import urllib.parse
+    import urllib.request
+    if not titulo:
+        return None
+    t_q, a_q = _chave(titulo), _chave(artista)
+    urls = []
+    if artista:
+        urls.append("https://lrclib.net/api/search?" + urllib.parse.urlencode({"artist_name": artista, "track_name": titulo}))
+    urls.append("https://lrclib.net/api/search?" + urllib.parse.urlencode({"q": f"{titulo} {artista}".strip()}))
+    for url in urls:
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "Partitura/1.0"})
+            with urllib.request.urlopen(req, timeout=10) as r:
+                cands = json.loads(r.read().decode("utf-8"))
+        except Exception as e:  # noqa: BLE001  (sem internet etc.: segue sem letra oficial)
+            print(f"[letra] LRCLIB indisponível ({e})")
+            return None
+        for c in cands or []:
+            letra = (c.get("plainLyrics") or "").strip()
+            if not letra or c.get("instrumental"):
+                continue
+            sim_t = difflib.SequenceMatcher(a=_chave(c.get("trackName", "")), b=t_q).ratio()
+            sim_a = difflib.SequenceMatcher(a=_chave(c.get("artistName", "")), b=a_q).ratio() if a_q else 1.0
+            if sim_t >= 0.8 and (sim_a >= 0.6 or a_q in _chave(c.get("artistName", ""))):
+                print(f"[letra] letra oficial: LRCLIB \"{c.get('trackName')}\" de {c.get('artistName')}")
+                return letra
+    print("[letra] letra oficial não encontrada no LRCLIB (segue só com o Whisper)")
+    return None
+
+
+def _alucinacao(s) -> bool:
+    txt = s.text.strip()
+    letras_txt = re.sub(r"[^A-Za-zÀ-ÿ]", "", txt)
+    return (s.no_speech_prob > 0.6 or s.avg_logprob < -1.2 or not letras_txt
+            or (letras_txt.isupper() and len(letras_txt) > 3)  # alucinação típica: "A CIDADE NO BRASIL"
+            or _norm(txt) in {"musica", "legenda", "obrigado", "aplausos", "risos"}
+            or _em_loop(txt, s.compression_ratio))
+
+
+def _palavras_do_segmento(s) -> list[tuple[float, float, str]]:
+    saida = []
+    for w in s.words or []:
+        t = w.word.strip()
+        if len(t) > 24 or " " in t or "," in t.rstrip(",.!?;:"):  # "palavra" que é um loop inteiro
+            continue
+        if t and w.probability > 0.15:
+            saida.append((float(w.start), float(w.end), t))
+    return saida
 
 
 def _detectar_idioma(wm, audio, janela_s: float = 30.0) -> str:
@@ -149,7 +225,7 @@ def silabas(palavra: str, idioma: str = "pt") -> list[str]:
     return partes
 
 
-def letra_nas_notas(notas_q, palavras, idioma: str = "pt") -> dict[int, str]:
+def letra_nas_notas(notas_q, palavras, idioma: str = "pt") -> dict[int, list[str]]:
     """notas_q: (ini_tempo, fim_tempo, midi, ini_s, fim_s). Devolve {índice_nota: texto}.
 
     Alinhamento global (programação dinâmica): as sílabas, em ordem, caem nas notas cujo
@@ -204,19 +280,16 @@ def letra_nas_notas(notas_q, palavras, idioma: str = "pt") -> dict[int, str]:
         if i:
             j = j if de[i, j] == -1 else int(de[i, j])
 
+    # {nota: [sílabas]} — várias sílabas na mesma nota viram notas repetidas na partitura (gerar.py);
+    # o limite de 4 palavras por nota só barra lixo (alucinação que escapou dos filtros)
     letras: dict[int, list[str]] = {}
+    pulando = False
     for (_, parte, jj, k), nota in zip(sil, alvo):
-        if len(letras.get(nota, [])) >= 2:  # nunca empilha mais de 2 sílabas numa nota
+        if jj == 0:
+            pulando = sum(1 for x in letras.get(nota, []) if not x.startswith("-")) >= 4
+        if pulando:
             continue
         txt = ("-" if jj > 0 else "") + parte + ("-" if jj < k - 1 else "")
         letras.setdefault(nota, []).append(txt)
-    saida = {}
-    for i, partes in letras.items():
-        txt = partes[0]  # várias sílabas na mesma nota: "-da-" + "-de" -> "-dade"
-        for p_ in partes[1:]:
-            if txt.endswith("-") and p_.startswith("-"):
-                txt = txt[:-1] + p_[1:]
-            else:
-                txt = txt.rstrip("-") + " " + p_.lstrip("-")
-        saida[i] = txt
+    saida = letras
     return saida

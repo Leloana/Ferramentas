@@ -2,14 +2,14 @@
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const NIVEL_NOME = { facil: "Fácil", medio: "Médio", dificil: "Difícil" };
-const VERSAO_NOME = { Hibrido: "Híbrido", Acordes: "Acordes", Pop2Piano: "Pop2Piano", "AMT-APC": "AMT-APC" };
+const VERSAO_NOME = { HibridoAMT: "Híbrido (AMT)", Hibrido: "Híbrido (Pop2Piano)", Acordes: "Acordes", Pop2Piano: "Pop2Piano", "AMT-APC": "AMT-APC" };
 const esc = (t) => String(t ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const urlArq = (rel) => "/arquivos/" + rel.split("/").map(encodeURIComponent).join("/");
 const dur = (s) => (s ? `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}` : "");
 
 let musicas = [];
 let selecionada = null;
-let escolha = { nivel: "medio", versao: "Hibrido" };
+let escolha = { nivel: "medio", versao: "HibridoAMT" };
 try { escolha = { ...escolha, ...JSON.parse(localStorage.getItem("partitura.escolha") || "{}") }; } catch {}
 
 // ------------------------------------------------------------------ abas
@@ -83,8 +83,18 @@ function abrirDialogo(v) {
   $("#gArtista").value = v.artista;
   $("#dlgGerar").showModal();
 }
-$("#dlgGerar").addEventListener("close", async () => {
-  if ($("#dlgGerar").returnValue !== "ok" || !videoAtual) return;
+// Enter em qualquer campo = "Gerar partitura" (antes o Enter acionava o primeiro botão, "Cancelar",
+// e o pedido sumia sem aviso). Cancelar é type="button" e só fecha.
+$("#gCancelar").addEventListener("click", () => $("#dlgGerar").close());
+$("#formGerar").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (!videoAtual) return;
+  const botao = $("#gOk");
+  botao.disabled = true;
+  botao.textContent = "Enviando…";
+  try { await enviarPedido(); } finally { botao.disabled = false; botao.textContent = "Gerar partitura"; }
+});
+async function enviarPedido() {
   const niveis = $$('input[name="nivel"]:checked').map((i) => i.value);
   const versoes = $$('input[name="versao"]:checked').map((i) => i.value);
   const corpo = {
@@ -92,10 +102,31 @@ $("#dlgGerar").addEventListener("close", async () => {
     niveis: niveis.length ? niveis : ["medio"], versoes: versoes.length ? versoes : ["Hibrido"],
     idioma: $("#gIdioma").value,
   };
-  const r = await fetch("/api/gerar", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(corpo) });
-  if (r.ok) { abrirAba("fila"); } else { alertaSuave("Não deu para pedir a geração."); }
-});
-function alertaSuave(msg) { $("#statusBusca").textContent = msg; }
+  let r;
+  try {
+    r = await fetch("/api/gerar", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(corpo) });
+  } catch {
+    aviso("Servidor fora do ar? Não consegui enviar o pedido.", true);
+    return;
+  }
+  if (!r.ok) {
+    const d = await r.json().catch(() => ({}));
+    aviso("Não deu para pedir a geração: " + (d.detail || r.status), true);
+    return;
+  }
+  $("#dlgGerar").close();
+  aviso(`“${corpo.titulo}” entrou na fila.`);
+  abrirAba("fila");
+}
+function aviso(msg, erro = false) {
+  let el = $("#aviso");
+  if (!el) { el = document.createElement("div"); el.id = "aviso"; document.body.appendChild(el); }
+  el.textContent = msg;
+  el.className = erro ? "erro mostrar" : "mostrar";
+  clearTimeout(aviso.t);
+  aviso.t = setTimeout(() => el.classList.remove("mostrar"), 4000);
+}
+function alertaSuave(msg) { aviso(msg, true); }
 
 // ------------------------------------------------------------------ fila
 let timerFila = null;
@@ -152,7 +183,7 @@ function desenharVisor() {
   visor.className = "visor";
   const niveis = ["facil", "medio", "dificil"].filter((n) => m.arquivos[n]);
   if (!m.arquivos[escolha.nivel]) escolha.nivel = niveis.includes("medio") ? "medio" : niveis[0];
-  const versoes = ["Hibrido", "Acordes", "Pop2Piano", "AMT-APC"].filter((v) => m.arquivos[escolha.nivel][v]);
+  const versoes = ["HibridoAMT", "Hibrido", "Acordes", "Pop2Piano", "AMT-APC"].filter((v) => m.arquivos[escolha.nivel][v]);
   if (!m.arquivos[escolha.nivel][escolha.versao]) escolha.versao = versoes[0];
   try { localStorage.setItem("partitura.escolha", JSON.stringify(escolha)); } catch {}
   const item = m.arquivos[escolha.nivel][escolha.versao] || {};
@@ -161,7 +192,7 @@ function desenharVisor() {
     <p class="art">${esc(m.artista)}</p>
     <div class="seletor">
       <div class="grupo">${["facil", "medio", "dificil"].map((n) => `<button data-nivel="${n}" class="${n === escolha.nivel ? "ativa" : ""}" ${m.arquivos[n] ? "" : "disabled"}>${NIVEL_NOME[n]}</button>`).join("")}</div>
-      <div class="grupo">${["Hibrido", "Acordes", "Pop2Piano", "AMT-APC"].map((v) => `<button data-versao="${v}" class="${v === escolha.versao ? "ativa" : ""}" ${m.arquivos[escolha.nivel][v] ? "" : "disabled"}>${VERSAO_NOME[v]}</button>`).join("")}</div>
+      <div class="grupo">${["HibridoAMT", "Hibrido", "Acordes", "Pop2Piano", "AMT-APC"].map((v) => `<button data-versao="${v}" class="${v === escolha.versao ? "ativa" : ""}" ${m.arquivos[escolha.nivel][v] ? "" : "disabled"}>${VERSAO_NOME[v]}</button>`).join("")}</div>
     </div>
     <div class="audios">
       ${item.previa ? `<div><label>🎹 Como soa esta partitura (piano)</label><audio controls preload="none" src="${urlArq(item.previa)}"></audio></div>` : ""}

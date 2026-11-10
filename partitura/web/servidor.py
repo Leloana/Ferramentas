@@ -30,11 +30,21 @@ PYTHON = sys.executable
 
 NIVEIS = ("facil", "medio", "dificil")
 NIVEL_ARQ = {"facil": "Facil", "medio": "Medio", "dificil": "Dificil"}
-VERSOES = ("Acordes", "Hibrido", "Pop2Piano", "AMT-APC")
+VERSOES = ("Acordes", "Hibrido", "Pop2Piano", "AMT-APC", "HibridoAMT")
 TIPOS_PREVIA = {".m4a": "audio/mp4", ".mp4": "audio/mp4", ".webm": "audio/webm", ".mp3": "audio/mpeg"}
 ID_RE = re.compile(r"^[\w-]{11}$")
 
 app = FastAPI(title="Partitura")
+
+
+@app.middleware("http")
+async def sem_cache_na_pagina(request, call_next):
+    """index/app.js/style.css sempre revalidados: senão o navegador roda o JS velho depois de uma atualização."""
+    resp = await call_next(request)
+    caminho = request.url.path
+    if not caminho.startswith(("/api/", "/arquivos/")):
+        resp.headers["Cache-Control"] = "no-cache"
+    return resp
 
 
 # ----------------------------------------------------------------------------- YouTube
@@ -175,6 +185,7 @@ def _progresso(job: dict, linha: str):
     marcos = [("[demucs]", 12, "Separando voz e instrumentos"), ("[batidas]", 20, "Detectando o pulso"),
               ("[melodia] extraindo", 25, "Lendo a melodia cantada"), ("[acordes]", 35, "Detectando os acordes"),
               ("[letra] transcrevendo", 40, "Ouvindo a letra (Whisper)"),
+              ("[letra] letra oficial:", 0, "Letra oficial encontrada (LRCLIB)"),
               ("[pop2piano] carregando", 0, "Gerando arranjo com IA (Pop2Piano)"),
               ("[amt-apc] gerando", 0, "Gerando arranjo com IA (AMT-APC)")]
     for marca, pct, etapa in marcos:
@@ -205,6 +216,8 @@ def _rodar(job: dict):
     cmd = [PYTHON, str(RAIZ / "gerar.py"), str(wav), "--titulo", job["titulo"],
            "--subtitulo", job["artista"] or "Transcrição automática", "--pasta", job["pasta"],
            "--nivel", ",".join(job["niveis"]), "--idioma", job["idioma"]]
+    if job["artista"]:
+        cmd += ["--artista", job["artista"]]
     if "Hibrido" in job["versoes"]:
         cmd.append("--hibrido")
     if "Pop2Piano" in job["versoes"]:
@@ -280,7 +293,7 @@ async def job(jid: str):
 
 # ----------------------------------------------------------------------------- biblioteca
 
-ARQ_RE = re.compile(r"^(Acordes|Hibrido|Pop2Piano|AMT-APC) - (Facil|Medio|Dificil)(?: - previa)?\.(pdf|mp3)$")
+ARQ_RE = re.compile(r"^(Acordes|HibridoAMT|Hibrido|Pop2Piano|AMT-APC) - (Facil|Medio|Dificil)(?: - previa)?\.(pdf|mp3)$")
 
 
 @app.get("/api/musicas")
