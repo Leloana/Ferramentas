@@ -2,7 +2,9 @@
 
 Pega uma música normal (com voz e banda) e gera **PDF + MusicXML + MIDI** de piano, mais uma prévia `.mp3` sintetizada pra ouvir sem software.
 
-Veja os [exemplos de antes/depois](exemplos/README.md) e o [plano da próxima etapa](PROXIMA_ETAPA.md).
+Documentação: [estado atual, pendências e pegadinhas](HANDOFF.md) ·
+[plano por frentes](PROXIMA_ETAPA.md) · [métricas de validação](METRICAS_VALIDACAO.md) ·
+[histórico das sessões](HISTORICO.md) · [exemplos de antes/depois](exemplos/README.md).
 
 ## Interface web
 
@@ -30,21 +32,37 @@ Arquivos: `<Versão> - <Nível>.pdf` (ex.: `Hibrido - Facil.pdf`).
 
 ```powershell
 cd partitura
-.\venv\Scripts\python.exe gerar.py entrada\musica.wav --titulo "Nome" --subtitulo "Autor" [--letra letra.txt] [--pop2piano] [--hibrido] [--nivel todos] [--idioma auto] [--sem-letra]
+.\venv\Scripts\python.exe gerar.py entrada\musica.wav --titulo "Nome" --artista "Artista" `
+    --nivel todos --hibrido --amtapc --idioma auto
 ```
 
-Tudo automático, sem LLM: só modelos de áudio (Demucs, torchcrepe, Whisper, Pop2Piano) + regras musicais.
+Tudo automático, sem LLM: modelos de áudio (Demucs, torchcrepe, Whisper, MMS_FA, Pop2Piano,
+AMT-APC) + regras musicais. Opções principais:
 
-Saída organizada por música (`--idioma en` pra letra em inglês):
+| opção | o que faz |
+|---|---|
+| `--nivel facil,medio,dificil` / `todos` | níveis gerados |
+| `--hibrido`, `--pop2piano`, `--amtapc`, `--estilo 1-21` | versões com acompanhamento de IA |
+| `--idioma pt\|en\|ja\|auto`, `--letra arq.txt`, `--sem-letra`, `--sem-busca-letra`, `--sem-alinhamento` | letra |
+| `--escrita-ja romaji\|kana` | japonês embaixo das notas (uma mora por nota) |
+| `--introducao <teor>`, `--final <teor>`, `--variacao N` | introdução/final gerados (calma, lenta, emotiva, animada, epica) |
+| `--acompanhamento <teor>` | esquerda da música inteira no teor (versão Acordes) |
+| `--dedos auto\|todos\|mudancas\|nenhum`, `--sem-maos` | números dos dedos; desligar a correção das mãos |
+| `--sem-transpor` | fácil sem transpor pra tom sem acidentes |
+| `--separador htdemucs\|htdemucs_6s` | separação em 4 ou 6 faixas (guitarra e piano) |
+| `--do-karaoke <música>` | entrada vinda do karaokê (voz, acompanhamento e letra já prontos) |
+| `--reusar-cache` | só reescreve as partituras a partir de `cache/transcricao.json` |
+
+Saída por música em `saida/<Título>/`:
 
 ```
-saida/<Título>/
-  Original.mp3  áudio de origem
-  Acordes.pdf   Acordes - previa.mp3
-  Hibrido.pdf   Hibrido - previa.mp3
-  Pop2Piano.pdf Pop2Piano - previa.mp3
-  editaveis/    .musicxml (abre no MuseScore pra corrigir à mão) e .mid
-  cache/        MIDI bruto do Pop2Piano
+Original.mp3                       áudio de origem
+<Versão> - <Nível>.pdf             ex.: "HibridoAMT - Medio.pdf"
+<Versão> - <Nível> - previa.mp3    como a partitura soa (piano de cauda; dinâmica e pedal)
+editaveis/                         .musicxml (MuseScore) e .mid
+cache/                             transcrição, MIDIs brutos das IAs e o registro de cada etapa
+variacoes/vN/                      variações anteriores de introdução/final
+meta.json                          vídeo, título, artista, teores escolhidos
 ```
 
 ### Letra alinhada e músicas do karaokê
@@ -183,6 +201,10 @@ também não sobe por cima da direita.
 | tempo pra mudar a mão de lugar (oitava) | ~0,85 s | ~0,5 s | ~0,3 s |
 | números dos dedos | todas as notas | só onde a mão muda de posição | só onde a mão muda de posição |
 
+Os números ficam **ao lado** da nota (à esquerda, antes do acidente; à direita quando a
+esquerda está ocupada por clave/armadura/compasso; em cima só sem lugar), menores que o
+padrão do Verovio. Trechos agudos da direita saem em **8va**.
+
 `--dedos todos|mudancas|nenhum` troca o padrão; `--sem-maos` só calcula os dedos, sem
 corrigir notas. O que foi corrigido e o que ficou difícil vai pra `cache/maos_<versao>_<nivel>.json`.
 `python avaliar_maos.py saida` mede partituras já geradas sem regenerar nada.
@@ -202,14 +224,28 @@ e os recalcula quando o MusicXML muda.
 
 ## Etapas
 
-1. **Demucs** (`htdemucs`) separa voz / baixo / bateria / resto (cache em `trabalho/`).
-2. **Batidas** (librosa) seguindo o pulso real (rubato de gravação ao vivo), tempo 1 pelo baixo.
-3. **Melodia**: torchcrepe + filtro de volume, histerese de 40 ms contra vibrato, notas repetidas divididas por ataque.
-4. **Acordes**: chroma do "resto + baixo", 9 tipos (maj, m, 7, 7M, m7, m7(b5), °, 6, m6), Viterbi pra não piscar.
-5. **Armadura por trecho** (blocos de 8 compassos, custo pra trocar) — ex.: Chega de Saudade sai Ré menor → maior.
-6. **Letra** (`letra.py`): Whisper `large-v3-turbo` marca o tempo de cada palavra na voz isolada (sem VAD, que corta canto; filtra alucinações tipo "Música"/CAIXA ALTA), `--letra` corrige a grafia pela letra oficial, pyphen separa sílabas e um alinhamento global (programação dinâmica) põe uma sílaba por nota, em ordem.
-7. **Grafia** das notas guiada pelo acorde ativo (A7 = A C♯ E G).
-8. **music21** → MusicXML/MIDI; **Verovio** → SVG; Chrome headless → PDF.
+1. **Separação** (Demucs `htdemucs`, ou `htdemucs_6s` com guitarra e piano), cache em `trabalho/`.
+2. **Batidas** (librosa) seguindo o pulso real, tempo 1 pelo baixo.
+3. **Melodia**: torchcrepe + filtro de volume, histerese contra vibrato, proteção contra
+   ataques instáveis (`protecao_melodia.py`), nota pra palavra sem nota (`palavras_sem_nota.py`).
+4. **Acordes**: croma + Viterbi, 9 tipos; qualidade corrigida pela voz sustentada (`harmonia.py`).
+5. **Letra**: Whisper + alinhamento forçado da letra oficial pelo karaokê (`alinhamento.py`),
+   sílabas por pyphen (japonês: moras, `japones.py`), uma sílaba por nota por programação dinâmica.
+6. **Níveis** (`niveis.py`): grade rítmica, esquerda, cromatismos curtos do fácil levados à escala.
+7. **Introdução/final/acompanhamento** gerados por teor (`introducao.py`, `acompanhamento.py`).
+8. **Tocabilidade** (`maos.py`): dedilhado por programação dinâmica, correção do acompanhamento
+   que a mão não alcança, voz do acompanhamento em semitom com a voz tirada (`harmonia.py`).
+9. **Partitura**: armadura por frase (`armaduras.py`), grafia pelo acorde, 8va nos agudos,
+   dedos ao lado da nota, pedal em linha, fermata; music21 → MusicXML/MIDI; Verovio → SVG;
+   Chrome → PDF.
+
+## Validação
+
+`validar_biblioteca.py` mede a biblioteca antes, regenera, mede depois e monta um relatório e
+uma página às cegas com trechos reais (ver `METRICAS_VALIDACAO.md`): fidelidade da prévia à
+gravação (Qmax, DTW), melodia contra a voz (MCA e F1 via mir_eval), dificuldade por mão
+(fácil < médio < difícil), grave embolado, padrão rítmico da esquerda. `avaliar_maos.py`
+mede só os trechos difíceis pra mão; `experimento_6faixas.py` compara 4 × 6 faixas.
 
 ## Prévia com piano de verdade
 
@@ -229,6 +265,8 @@ Híbrido (Pop2Piano); Acordes e as versões AMT não usam esse estilo. Na linha 
 
 - Precisa ter **voz** na faixa: em gravação instrumental a melodia está na orquestra e a versão padrão não acha nada (use `--pop2piano`).
 - Ritmo é o ponto fraco: síncope e rubato (bossa!) saem aproximados. O nível Médio usa colcheias; o Difícil, semicolcheias.
-- A letra aparece em Acordes e nos Híbridos. Os covers completos não recebem letra. Palavra que o Whisper não ouviu (ex.: primeira do verso) continua faltando.
+- A letra aparece em Acordes e nos Híbridos. Os covers completos não recebem letra.
 - O tempo 1 do compasso é um chute pelo baixo; a cifra às vezes erra tensões.
+- A esquerda fechada pra caber na mão pode embolar no grave (terças abaixo de Dó3); em estudo.
+- Japonês em kana fica espremido no desenho; use romaji (padrão).
 - `essentia` não tem build pra Windows: `_stubs/essentia` é um substituto que só entrega as batidas pro Pop2Piano do `transformers`.

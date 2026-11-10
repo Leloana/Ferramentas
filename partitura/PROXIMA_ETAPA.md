@@ -3,6 +3,18 @@
 Preparado em 2026-11-10. Este documento descreve trabalho futuro; as propostas
 abaixo ainda precisam ser investigadas, implementadas e avaliadas.
 
+## 0. Situação em 2026-11-10 (detalhes no HANDOFF.md)
+
+| frente | situação |
+|---|---|
+| 1 investigar harmonia | métricas pesquisadas (`METRICAS_VALIDACAO.md`); achado: grave embolado da esquerda fechada |
+| 2 introduções e acompanhamento | introdução, final e acompanhamento por teor feitos e aprovados (falta julgar o acompanhamento) |
+| 3 harmonia coerente | qualidade do acorde pela voz e choque voz × acompanhamento feitos; condução de vozes e tensão ainda não |
+| 4 visualizador | acompanha a gravação original; dedos ao lado, 8va, pedal em linha |
+| 5 japonês | letra em moras (romaji ok; kana com espaçamento pendente); falta música real |
+| 6 testar e reduzir opções | `validar_biblioteca.py` + páginas cegas prontos; rodar na Windows |
+| §12 6 faixas | pronto pra rodar (`experimento_6faixas.py`) |
+
 ## 1. Objetivo geral
 
 Transformar o Partitura em uma ferramenta que entregue um arranjo de piano coerente,
