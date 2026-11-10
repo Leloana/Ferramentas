@@ -395,6 +395,15 @@ def carregar_transcricao(base: Path, audio: Path):
     return dados
 
 
+def _json_numpy(o):
+    """json.dumps(default=...): números do numpy (alturas vindas das IAs) viram int/float."""
+    if hasattr(o, "item"):
+        return o.item()
+    if hasattr(o, "tolist"):
+        return o.tolist()
+    raise TypeError(f"{type(o).__name__} não vai pra JSON")
+
+
 def deslocamento(md_ev, me_ev) -> float:
     """Tempos somados aos offsets pra partitura começar num compasso inteiro."""
     return float(-np.floor(min(e[0] for e in list(md_ev) + list(me_ev)) / 4) * 4)
@@ -1322,7 +1331,7 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
                   f"({r['restantes_na_melodia']} na melodia)")
             cache = base / "cache"
             cache.mkdir(parents=True, exist_ok=True)
-            (cache / f"maos_{versao}_{nivel}.json").write_text(json.dumps(rel, ensure_ascii=False), encoding="utf-8")
+            (cache / f"maos_{versao}_{nivel}.json").write_text(json.dumps(rel, ensure_ascii=False, default=_json_numpy), encoding="utf-8")
             if modo_dedos == "nenhum":
                 dmd = dme = None
         sc, arm = montar_partitura(md, me, cf, bpm, titulo, sub, uma_armadura=(nivel == "facil"),
