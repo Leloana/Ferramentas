@@ -560,5 +560,7 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
   leva o número pra esquerda da cabeça (antes do acidente), `fingeringScale` 0.6. Perto de
   clave/armadura/fórmula de compasso fica em cima. Aplicado no PDF, no visualizador
   (cache versão 9) e nas páginas de comparação.
-- Testes em `test_maos.py` (8va e dedos). Suíte 82 OK.
+- Testes em `test_maos.py` (8va e dedos). Suíte 82 OK.- Achado na conferência: cifra que cai no meio de uma nota da direita fazia o music21
+  criar uma 2ª voz só de pausas (pausas soltas embaixo das notas). Cifras agora entram
+  depois do makeNotation, direto no compasso. Vale pra todas as partituras.
 

@@ -537,7 +537,6 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
         cs = harmony.ChordSymbol(root=nome_raiz(r, o), kind=TIPOS[tipo][1])
         cs.writeAsChord = False
         simbolos.append((o, cs))
-        md.insert(o, cs)
 
     sc = stream.Score()
     sc.metadata = metadata.Metadata()
@@ -549,6 +548,14 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
     for p in (md, me):
         p.makeRests(fillGaps=True, inPlace=True, timeRangeFromBarDuration=True)
     sc = sc.makeNotation()
+    # cifras só depois dos compassos montados: inserida antes, cifra que cai no meio de uma
+    # nota conta como sobreposição e o music21 cria uma 2ª voz só de pausas na direita
+    compassos = list(sc.parts[0].getElementsByClass(stream.Measure))
+    for o, cs in simbolos:
+        for m_ in compassos:
+            if m_.offset - 1e-6 <= o < m_.offset + m_.duration.quarterLength - 1e-6:
+                m_.insert(o - m_.offset, cs)
+                break
     _marcas_nas_notas(sc, marcas, desloc)
     _oitava_acima(sc)
     # nota dividida no compasso: o dedo fica só no ataque, não na continuação ligada
