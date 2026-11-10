@@ -211,3 +211,54 @@ def transpor_facil(md_ev, me_ev, cifras):
     if k > 6:
         k -= 12
     return md_ev, me_ev, cifras, k
+
+
+def escala_da_armadura(sustenidos):
+    """Classes de altura da escala maior da armadura (a relativa menor tem as mesmas)."""
+    t = (7 * sustenidos) % 12
+    return {(t + k) % 12 for k in (0, 2, 4, 5, 7, 9, 11)}
+
+
+def notas_do_acorde(acs, tipos, pos, janela=2):
+    """Classes de altura do acorde detectado na posição (tempos), ou set() sem acorde."""
+    for j, r, t, *_ in reversed(acs):
+        if j <= pos + 1e-6:
+            if r is None or pos >= j + janela:
+                return set()
+            return {(r + i) % 12 for i in tipos[t][0]}
+    return set()
+
+
+def alinhar_cromaticas(notas, palavras, pos, acs, tipos, escala, max_tempos=1.0):
+    """No Fácil, nota curta fora da escala e fora do acorde vai pro grau vizinho da escala.
+
+    Fica como está: nota com 1 tempo ou mais, nota do acorde do momento (inclui a sensível
+    do menor, que é nota do acorde de dominante), ataque de palavra e nota sem grau vizinho
+    na escala a um semitom. Entre os dois vizinhos, prefere nota do acorde, depois a nota
+    igual à anterior/seguinte, depois a mais perto da média das vizinhas.
+    notas: (ini_s, fim_s, midi); pos: segundos -> tempos. Devolve (notas, mudanças).
+    """
+    saida, mudancas = list(notas), []
+    for i, (a, b, p) in enumerate(notas):
+        if p % 12 in escala:
+            continue
+        if pos(b) - pos(a) >= max_tempos:
+            continue
+        acorde = notas_do_acorde(acs, tipos, pos(a))
+        if p % 12 in acorde:
+            continue
+        if any(ini - .03 <= a < fim for ini, fim, _ in palavras):
+            continue
+        cands = [q for q in (p - 1, p + 1) if q % 12 in escala]
+        if not cands:
+            continue
+        viz = [notas[k][2] for k in (i - 1, i + 1) if 0 <= k < len(notas)]
+        media = sum(viz) / len(viz) if viz else p
+
+        def chave(q):
+            return (q % 12 not in acorde, q not in viz, abs(q - media))
+        novo = min(cands, key=chave)
+        saida[i] = (a, b, novo)
+        mudancas.append(dict(ini=round(a, 3), antes=p, depois=novo,
+                             motivo="acorde" if novo % 12 in acorde else "escala"))
+    return saida, mudancas

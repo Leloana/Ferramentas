@@ -834,6 +834,15 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
             (base/'cache'/f'palavras_sem_nota_{nivel}.json').write_text(
                 json.dumps(log_palavras, ensure_ascii=False), encoding='utf-8')
     usadas = simplificar_passagens(usadas,palavras) if nivel=='facil' else usadas
+    if nivel == 'facil':  # menos acidentes: cromatismo curto que não é do acorde vai pra escala
+        from niveis import alinhar_cromaticas, escala_da_armadura
+        cromaticas = [(b_-a_, [p]) for a_,b_,p in usadas] + [
+            (.3*2, [(r+i) % 12 + 48 for i in TIPOS[t][0]]) for _,r,t,*_ in acs if r is not None]
+        escala = escala_da_armadura(escolher_armadura(cromaticas))
+        usadas, mudadas = alinhar_cromaticas(usadas, palavras, grade.pos, acs, TIPOS, escala)
+        print(f"[facil] {len(mudadas)} notas cromáticas curtas levadas pra escala")
+        if diagnostico is not None:
+            (base/'cache'/'cromaticas_facil.json').write_text(json.dumps(mudadas), encoding='utf-8')
     notas_q = quantizar_melodia(usadas, grade)
     letras = {}
     if palavras:

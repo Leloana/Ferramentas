@@ -451,3 +451,17 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
 - `test_armaduras.py` (7). Suíte 52 OK. Conferir na biblioteca: número de trocas por
   música e onde elas caem (Garota Híbrido era o caso ruim).
 
+## 19. Menos acidentes no Fácil — 2026-11-10
+
+- Pendência 1 da seção 8 (~24% das notas da melodia com acidente no Fácil).
+  `niveis.alinhar_cromaticas`, só no Fácil, depois de `simplificar_passagens`: nota
+  < 1 tempo, fora da escala da armadura da música e fora do acorde detectado naquele
+  tempo, que não seja ataque de palavra, vai pro grau vizinho da escala a um semitom
+  (prefere nota do acorde, depois repetir a vizinha, depois a mais perto das vizinhas).
+  Fica: nota longa, nota do acorde (a sensível do menor é nota do V), ataque de palavra.
+  Escala = `escolher_armadura` da melodia + acordes (a mesma conta do Fácil transposto).
+  Mudanças em `cache/cromaticas_facil.json`.
+- `test_cromaticas.py` (6). Suíte 58 OK. Não medido na biblioteca: rodar
+  `analisar_completo.py` antes/depois e conferir a fração de acidentes e a concordância
+  da melodia no Fácil. Se cair demais a fidelidade, subir a exigência (ex.: só < 1/2 tempo).
+
