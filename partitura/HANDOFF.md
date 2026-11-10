@@ -621,3 +621,12 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
   (terças abaixo de Dó3) na versão Acordes; na Ode, difícil 40/min com correção × 9/min sem.
   Próximo passo: fechar o acorde num registro acima do limite, com teste às cegas.
 
+## 29. Acompanhamento da música inteira no teor — 2026-11-10
+
+- `acompanhamento.py`: esquerda da versão Acordes com as texturas da introdução por teor,
+  sobre os acordes detectados; compasso com canto denso usa a textura um nível abaixo;
+  pedal por acorde em calma/lenta/emotiva; dinâmica da música = a do teor.
+  `--acompanhamento <teor>`; web "Acompanhamento (versão Acordes)". Híbridos não mudam.
+- Página `trabalho/acompanhamento_20261110/pagina/` (Ode, médio e difícil, 5 teores +
+  padrão de hoje). `test_acompanhamento.py`. Suíte 93 OK.
+

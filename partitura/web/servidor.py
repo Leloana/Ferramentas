@@ -151,6 +151,7 @@ class Pedido(BaseModel):
     estilo: int = Field(default=1, ge=1, le=21)
     introducao: str = ""          # "", calma, lenta, emotiva, animada, epica
     final: str = ""               # idem, final gerado
+    acompanhamento: str = ""      # idem, esquerda da música inteira (versão Acordes)
     variacao: int = Field(default=0, ge=0, le=99)
 
 
@@ -228,6 +229,8 @@ def _rodar(job: dict):
         cmd += ["--introducao", job["introducao"]]
     if job.get("final"):
         cmd += ["--final", job["final"]]
+    if job.get("acompanhamento"):
+        cmd += ["--acompanhamento", job["acompanhamento"]]
     if job.get("introducao") or job.get("final"):
         cmd += ["--variacao", str(job.get("variacao", 0))]
     if job.get("reusar_cache"):
@@ -258,6 +261,7 @@ def _rodar(job: dict):
     meta.update({"video_id": vid, "titulo": job["titulo"], "artista": job["artista"],
                  "estilo_pop2piano": job.get("estilo", 1),
                  "introducao": job.get("introducao") or None, "final": job.get("final") or None,
+                 "acompanhamento": job.get("acompanhamento") or None,
                  "variacao_introducao": job.get("variacao", 0),
                  "atualizado": time.strftime("%Y-%m-%d %H:%M")})
     meta_p.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -288,13 +292,14 @@ async def gerar(p: Pedido):
     versoes = [v for v in VERSOES if v in p.versoes] or ["Acordes"]
     titulo = (p.titulo or "").strip() or "Sem título"
     teores = ("calma", "lenta", "emotiva", "animada", "epica")
-    if (p.introducao and p.introducao not in teores) or (p.final and p.final not in teores):
+    if any(x and x not in teores for x in (p.introducao, p.final, p.acompanhamento)):
         raise HTTPException(400, "Teor de introdução ou final inválido.")
     jid = uuid.uuid4().hex[:10]
     JOBS[jid] = {"id": jid, "video_id": p.video_id, "titulo": titulo, "artista": p.artista.strip(),
                  "pasta": _pasta_livre(titulo, p.artista.strip(), p.video_id), "niveis": niveis,
                  "versoes": versoes, "idioma": p.idioma or "auto", "estilo": p.estilo,
-                 "introducao": p.introducao, "final": p.final, "variacao": p.variacao,
+                 "introducao": p.introducao, "final": p.final, "acompanhamento": p.acompanhamento,
+                 "variacao": p.variacao,
                  "status": "fila", "etapa": "Na fila",
                  "progresso": 0, "feitos": 0, "log": [], "criado": time.time()}
     FILA.put(jid)
@@ -340,7 +345,8 @@ async def variacao(p: PedidoVariacao):
                  "niveis": [n for n in NIVEIS if n in niveis] or ["medio"],
                  "versoes": ["Acordes"] + sorted(flags), "idioma": meta.get("idioma", "auto"),
                  "estilo": meta.get("estilo_pop2piano", 1), "introducao": meta.get("introducao") or "",
-                 "final": meta.get("final") or "", "variacao": atual + 1, "reusar_cache": True,
+                 "final": meta.get("final") or "", "acompanhamento": meta.get("acompanhamento") or "",
+                 "variacao": atual + 1, "reusar_cache": True,
                  "status": "fila", "etapa": "Na fila", "progresso": 0, "feitos": 0, "log": [],
                  "criado": time.time()}
     FILA.put(jid)

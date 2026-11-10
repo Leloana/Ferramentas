@@ -122,6 +122,7 @@ async function enviarPedido() {
     estilo: Number($("#gEstilo").value),
     introducao: $("#gIntro").value,
     final: $("#gFinal").value,
+    acompanhamento: $("#gAcomp").value,
   };
   let r;
   try {

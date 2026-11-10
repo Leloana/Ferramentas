@@ -1056,6 +1056,8 @@ def main():
                     help="modelo do Demucs; htdemucs_6s separa também guitarra e piano (acordes com eles)")
     ap.add_argument("--reusar-cache", action="store_true",
                     help="usa a transcrição guardada (cache/transcricao.json) e só escreve as partituras de novo")
+    ap.add_argument("--acompanhamento", default=None, choices=("calma", "lenta", "emotiva", "animada", "epica"),
+                    help="mão esquerda da música inteira (versão Acordes) na textura desse teor")
     ap.add_argument("--variacao", type=int, default=0, help="outra versão da introdução gerada (0 = padrão)")
     ap.add_argument("--sem-transpor", action="store_true", help="no nível fácil, não transpõe pra tom sem acidentes")
     args = ap.parse_args()
@@ -1219,6 +1221,15 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
 
     bloqueios = [(grade.pos(a)-.5, grade.pos(b)+.5) for a,b,_ in palavras]
     versoes = {"Acordes": (md_ev, suavizar_baixo(fechar_acordes(mao_esquerda_acordes(acs, nivel, fim, TIPOS)), nivel))}
+    teor_acomp = getattr(args, "acompanhamento", None)
+    pedais_acomp = []
+    if teor_acomp:  # esquerda da música inteira no teor escolhido (só na versão Acordes)
+        from acompanhamento import acompanhamento_no_teor
+        me_teor, pedais_acomp, info_acomp = acompanhamento_no_teor(
+            acs, md_ev, TIPOS, nivel, teor_acomp, fim, getattr(args, "variacao", 0))
+        versoes["Acordes"] = (md_ev, me_teor)
+        print(f"[acompanhamento] {teor_acomp}: {len(me_teor)} eventos, "
+              f"{info_acomp['compassos_simplificados_pelo_canto']} compassos simplificados pelo canto")
     if args.hibrido or args.pop2piano:
         from pop2piano import maos_pop2piano
         p2p_md, p2p_me = maos_pop2piano(audio, base, grade, f"composer{args.estilo}")
@@ -1280,6 +1291,13 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
         if final:
             md, me, cf, marcas_f = com_final(md, me, cf, final, k)
             marcas += marcas_f
+        if teor_acomp and versao == "Acordes":
+            from introducao import DINAMICA
+            inicio_mus = 4.0 * np.floor(min(e[0] for e in md_ev) / 4)
+            # a dinâmica da música passa a ser a do teor (no lugar do mf da introdução)
+            marcas = [m_ for m_ in marcas if not (m_[1] == "dinamica" and abs(m_[0] - inicio_mus) < 1e-6)]
+            marcas += [(inicio_mus, "dinamica", DINAMICA[teor_acomp])]
+            marcas += [(a, "pedal", b) for a, b in pedais_acomp]
         # acompanhamento a um semitom da nota cantada forte: tira essa voz (o baixo fica)
         melodia_k = [(o, d, [p + k for p in ps]) for o, d, ps, *_ in md_ev]
         me, mud_choques = tirar_choques(melodia_k, me)
