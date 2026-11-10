@@ -532,3 +532,16 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
   3 níveis. Pendente: validar com músicas inteiras na Windows (refrão de verdade) e, se a
   leitura incomodar, mostrar dedos da introdução difícil só no começo do compasso.
 
+## 23. Final gerado, pedal e fermata — 2026-11-10
+
+- `introducao.gerar_final` (mesmo material do refrão; cadência por teor; acorde final na
+  tônica; fácil com acorde final de uma nota e sem passar de Sol5). `gerar.com_final` põe
+  no compasso depois da última nota. CLI `--final`, web "Final gerado".
+- Marcas novas em `montar_partitura`: "fermata" (nas notas que atacam no offset) e "pedal"
+  (PedalMark da 1ª à última nota da esquerda no trecho), aplicadas depois do makeNotation.
+  Pedal por acorde em calma/lenta/emotiva (introdução e final). `salvar_midi_notas` grava
+  CC64 em todos os canais.
+- Tensão da épica: sobe do registro do motivo e para uma oitava acima do centro.
+- Página `trabalho/introducoes_20261110/pagina3/` (introdução + começo + final, partitura
+  inteira). Suíte 80 OK.
+

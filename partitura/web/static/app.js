@@ -121,6 +121,7 @@ async function enviarPedido() {
     idioma: $("#gIdioma").value,
     estilo: Number($("#gEstilo").value),
     introducao: $("#gIntro").value,
+    final: $("#gFinal").value,
   };
   let r;
   try {

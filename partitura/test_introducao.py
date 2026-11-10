@@ -3,7 +3,7 @@ import unittest
 
 import gerar
 from gerar import TIPOS
-from introducao import COMPASSOS, TEORES, achar_refrao, gerar_introducao
+from introducao import COMPASSOS, COMPASSOS_FINAL, TEORES, achar_refrao, gerar_final, gerar_introducao
 from maos import tornar_tocavel
 
 # Ode à Alegria (domínio público), Dó maior: A A' B A'
@@ -100,6 +100,48 @@ class Introducao(unittest.TestCase):
         textos = [t.content for t in sc.recurse().getElementsByClass(expressions.TextExpression)]
         self.assertIn("Introdução gerada (emotiva)", textos)
         self.assertIn("Música", textos)
+
+
+class Final(unittest.TestCase):
+    def test_forma_e_acorde_final_na_tonica(self):
+        md, acs = ode()
+        cadencias = {"calma": [5], "lenta": [5, 5], "emotiva": [5], "animada": [5, 7], "epica": [8, 10]}
+        for teor in TEORES:
+            for nivel in ("facil", "medio", "dificil"):
+                d, e, cf, info = gerar_final(md, acs, TIPOS, nivel, teor, 0)
+                L = 4 * COMPASSOS_FINAL[nivel]
+                self.assertEqual(max(o + du for o, du, *_ in d + e), L, (teor, nivel))
+                self.assertEqual(cf[-1][1:], (0, "maj"), (teor, nivel))       # termina em Dó maior
+                cad = [r for o, r, _ in cf if L - 8 <= o < L - 4]
+                self.assertEqual(cad, cadencias[teor], (teor, nivel))
+                self.assertEqual(d[-1][2][-1] % 12, 0)                         # melodia termina na tônica
+                if nivel == "facil":
+                    self.assertTrue(all(len(ps) == 1 for _, _, ps, *_ in d))
+                    self.assertTrue(all(max(ps) <= 79 for _, _, ps, *_ in d))
+
+    def test_fermata_pedal_e_previa(self):
+        import tempfile
+        from pathlib import Path
+        import pretty_midi
+        md, acs = ode()
+        intro = gerar_introducao(md, acs, TIPOS, "medio", "calma", 0, "ode")
+        final = gerar_final(md, acs, TIPOS, "medio", "calma", 0)
+        md2, me2, cf, marcas = gerar.com_introducao(md[:8], [(0, 4, [48])], [(0, 0, "maj")], intro)
+        md3, me3, cf, marcas_f = gerar.com_final(md2, me2, cf, final)
+        sc, _ = gerar.montar_partitura(md3, me3, cf, 100, "Ode", "teste", marcas=marcas + marcas_f)
+        from music21 import expressions
+        self.assertTrue(list(sc.recurse().getElementsByClass(expressions.PedalMark)))
+        self.assertTrue(any(isinstance(x, expressions.Fermata) for n in sc.recurse().notes for x in n.expressions))
+        with tempfile.TemporaryDirectory() as tmp:
+            xml, mid = Path(tmp) / "x.musicxml", Path(tmp) / "x.mid"
+            sc.write("musicxml", fp=str(xml))
+            texto = xml.read_text(encoding="utf-8")
+            self.assertIn("<pedal", texto)
+            self.assertIn("<fermata", texto)
+            gerar.salvar_midi_notas(sc, mid, xml)
+            pm = pretty_midi.PrettyMIDI(str(mid))
+            ccs = [c for i in pm.instruments for c in i.control_changes if c.number == 64]
+            self.assertTrue(any(c.value == 127 for c in ccs) and any(c.value == 0 for c in ccs))
 
 
 def gerar_fechar(acs, fim):

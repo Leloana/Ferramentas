@@ -339,7 +339,26 @@ def com_introducao(md, me, cf, intro, k=0):
     cf = [(o + inicio - L, (r + k) % 12, t) for o, r, t in i_cf] + [c for c in cf if c[0] >= inicio - 1e-6]
     marcas = [(inicio - L, "texto", f"Introdução gerada ({NOME_TEOR[info['teor']]})")]
     marcas += [(inicio - L + o, "dinamica", v) for o, v in info.get("dinamicas", [(0.0, info["dinamica"])])]
+    marcas += [(inicio - L + a, "pedal", inicio - L + b) for a, b in info.get("pedal", [])]
     marcas += [(inicio, "texto", "Música"), (inicio, "dinamica", "mf")]
+    return md, me, cf, marcas
+
+
+def com_final(md, me, cf, final, k=0):
+    """Põe o final gerado no compasso depois da última nota. Devolve (md, me, cifras, marcas)."""
+    from introducao import NOME_TEOR
+    f_md, f_me, f_cf, info = final
+    fim = 4.0 * np.ceil(max(o + d for o, d, *_ in list(md) + list(me)) / 4 - 1e-6)
+    md = list(md) + [(o + fim, d, [p + k for p in ps], *r) for o, d, ps, *r in f_md]
+    me = list(me) + [(o + fim, d, [p + k for p in ps]) for o, d, ps in f_me]
+    cf = list(cf) + [(o + fim, (r + k) % 12, t) for o, r, t in f_cf]
+    marcas = [(fim, "texto", f"Final gerado ({NOME_TEOR[info['teor']]})")]
+    marcas += [(fim + o, "dinamica", v) for o, v in info["dinamicas"]]
+    if info.get("rit") is not None:
+        marcas.append((fim + info["rit"], "texto", "rit."))
+    if info.get("fermata") is not None:
+        marcas.append((fim + info["fermata"], "fermata", None))
+    marcas += [(fim + a, "pedal", fim + b) for a, b in info.get("pedal", [])]
     return md, me, cf, marcas
 
 
@@ -365,6 +384,25 @@ def registrar_sincronia(base: Path, versao_nivel: str, grade, desloc: float):
     dados.setdefault("versoes", {})[versao_nivel] = desloc
     arq.parent.mkdir(parents=True, exist_ok=True)
     arq.write_text(json.dumps(dados), encoding="utf-8")
+
+
+def _marcas_nas_notas(sc, marcas, desloc):
+    """Fermata nas notas que atacam no offset; pedal da 1ª à última nota da esquerda no trecho."""
+    from music21 import expressions
+    partes = list(sc.parts)
+    for off, tipo, valor in marcas:
+        o = off + desloc
+        if tipo == "fermata":
+            for parte in partes:
+                for n in parte.recurse().notes:
+                    if abs(float(n.getOffsetInHierarchy(parte)) - o) < 1e-6:
+                        n.expressions.append(expressions.Fermata())
+        elif tipo == "pedal" and len(partes) > 1:
+            esq = partes[1]
+            ns = [n for n in esq.recurse().notes
+                  if o - 1e-6 <= float(n.getOffsetInHierarchy(esq)) < valor + desloc - 1e-6]
+            if ns:
+                esq.insert(0, expressions.PedalMark(ns[0], ns[-1]))
 
 
 def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: str, uma_armadura=False,
@@ -445,6 +483,8 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
 
     for off, tipo_marca, valor in marcas:
         o = off + desloc
+        if tipo_marca in ("fermata", "pedal"):
+            continue  # depois do makeNotation, nas notas já escritas
         if tipo_marca == "dinamica":
             md.insert(o, dynamics.Dynamic(valor))
             me.insert(o, dynamics.Dynamic(valor))
@@ -473,6 +513,7 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
     for p in (md, me):
         p.makeRests(fillGaps=True, inPlace=True, timeRangeFromBarDuration=True)
     sc = sc.makeNotation()
+    _marcas_nas_notas(sc, marcas, desloc)
     # nota dividida no compasso: o dedo fica só no ataque, não na continuação ligada
     for el in sc.recurse().notes:
         if el.tie is not None and el.tie.type in ("stop", "continue"):
@@ -598,6 +639,17 @@ def salvar_midi_notas(sc, destino: Path, xml: Path | None = None):
     for n in notas_ligadas(segmentos):
         inst=instrumentos.setdefault(n['voz'],pretty_midi.Instrument(program=0,name=n['voz']))
         inst.notes.append(pretty_midi.Note(velocity=velocidade(n['inicio']),pitch=n['pitch'],start=n['inicio'],end=n['fim']))
+    # pedal escrito vira sustain (CC64) na prévia, em todos os canais
+    from music21 import expressions as _expr
+    for pm_ in sc.recurse().getElementsByClass(_expr.PedalMark):
+        ns_=list(pm_.getSpannedElements())
+        if not ns_:
+            continue
+        ini_=float(ns_[0].getOffsetInHierarchy(sc))*60/bpm
+        fim_=(float(ns_[-1].getOffsetInHierarchy(sc))+float(ns_[-1].quarterLength))*60/bpm
+        for inst in instrumentos.values():
+            inst.control_changes.append(pretty_midi.ControlChange(64,127,ini_+.01))
+            inst.control_changes.append(pretty_midi.ControlChange(64,0,max(ini_+.02,fim_-.02)))
     pm.instruments=list(instrumentos.values())
     pm.write(str(destino))
 
@@ -777,6 +829,8 @@ def main():
                     help="não corrige trechos que a mão não alcança (só calcula os dedos)")
     ap.add_argument("--introducao", default=None, choices=("calma", "lenta", "emotiva", "animada", "epica"),
                     help="acrescenta uma introdução gerada (não existe na gravação) com esse teor, feita do refrão")
+    ap.add_argument("--final", default=None, choices=("calma", "lenta", "emotiva", "animada", "epica"),
+                    help="acrescenta um final gerado (não existe na gravação) com esse teor")
     ap.add_argument("--variacao", type=int, default=0, help="outra versão da introdução gerada (0 = padrão)")
     ap.add_argument("--sem-transpor", action="store_true", help="no nível fácil, não transpõe pra tom sem acidentes")
     args = ap.parse_args()
@@ -963,6 +1017,16 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
         (base / "cache").mkdir(parents=True, exist_ok=True)
         (base / "cache" / f"introducao_{nivel}.json").write_text(json.dumps(info, ensure_ascii=False), encoding="utf-8")
         sub += f" · introdução gerada ({NOME_TEOR[teor]})"
+    final = None
+    teor_final = getattr(args, "final", None)
+    if teor_final:  # final gerado (não existe na gravação)
+        from introducao import gerar_final, NOME_TEOR
+        final = gerar_final(md_ev, acs, TIPOS, nivel, teor_final, inicio_musica=min(e[0] for e in md_ev),
+                            variacao=getattr(args, "variacao", 0))
+        print(f"[final] {NOME_TEOR[teor_final]}, {final[3]['compassos']} compassos")
+        (base / "cache").mkdir(parents=True, exist_ok=True)
+        (base / "cache" / f"final_{nivel}.json").write_text(json.dumps(final[3], ensure_ascii=False), encoding="utf-8")
+        sub += f" · final gerado ({NOME_TEOR[teor_final]})"
     for versao, (md, me) in versoes.items():
         cf = cifras
         if k:
@@ -972,6 +1036,9 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
         marcas = []
         if intro:
             md, me, cf, marcas = com_introducao(md, me, cf, intro, k)
+        if final:
+            md, me, cf, marcas_f = com_final(md, me, cf, final, k)
+            marcas += marcas_f
         # acompanhamento a um semitom da nota cantada forte: tira essa voz (o baixo fica)
         melodia_k = [(o, d, [p + k for p in ps]) for o, d, ps, *_ in md_ev]
         me, mud_choques = tirar_choques(melodia_k, me)

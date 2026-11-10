@@ -149,6 +149,7 @@ class Pedido(BaseModel):
     idioma: str = "auto"
     estilo: int = Field(default=1, ge=1, le=21)
     introducao: str = ""          # "", calma, lenta, emotiva, animada, epica
+    final: str = ""               # idem, final gerado
     variacao: int = Field(default=0, ge=0, le=99)
 
 
@@ -223,7 +224,11 @@ def _rodar(job: dict):
     if job["artista"]:
         cmd += ["--artista", job["artista"]]
     if job.get("introducao"):
-        cmd += ["--introducao", job["introducao"], "--variacao", str(job.get("variacao", 0))]
+        cmd += ["--introducao", job["introducao"]]
+    if job.get("final"):
+        cmd += ["--final", job["final"]]
+    if job.get("introducao") or job.get("final"):
+        cmd += ["--variacao", str(job.get("variacao", 0))]
     if "Hibrido" in job["versoes"]:
         cmd.append("--hibrido")
     if "Pop2Piano" in job["versoes"]:
@@ -249,7 +254,8 @@ def _rodar(job: dict):
         meta = json.loads(meta_p.read_text(encoding="utf-8"))
     meta.update({"video_id": vid, "titulo": job["titulo"], "artista": job["artista"],
                  "estilo_pop2piano": job.get("estilo", 1),
-                 "introducao": job.get("introducao") or None, "variacao_introducao": job.get("variacao", 0),
+                 "introducao": job.get("introducao") or None, "final": job.get("final") or None,
+                 "variacao_introducao": job.get("variacao", 0),
                  "atualizado": time.strftime("%Y-%m-%d %H:%M")})
     meta_p.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
 
@@ -278,13 +284,14 @@ async def gerar(p: Pedido):
     niveis = [n for n in NIVEIS if n in p.niveis] or ["medio"]
     versoes = [v for v in VERSOES if v in p.versoes] or ["Acordes"]
     titulo = (p.titulo or "").strip() or "Sem título"
-    if p.introducao and p.introducao not in ("calma", "lenta", "emotiva", "animada", "epica"):
-        raise HTTPException(400, "Teor de introdução inválido.")
+    teores = ("calma", "lenta", "emotiva", "animada", "epica")
+    if (p.introducao and p.introducao not in teores) or (p.final and p.final not in teores):
+        raise HTTPException(400, "Teor de introdução ou final inválido.")
     jid = uuid.uuid4().hex[:10]
     JOBS[jid] = {"id": jid, "video_id": p.video_id, "titulo": titulo, "artista": p.artista.strip(),
                  "pasta": _pasta_livre(titulo, p.artista.strip(), p.video_id), "niveis": niveis,
                  "versoes": versoes, "idioma": p.idioma or "auto", "estilo": p.estilo,
-                 "introducao": p.introducao, "variacao": p.variacao,
+                 "introducao": p.introducao, "final": p.final, "variacao": p.variacao,
                  "status": "fila", "etapa": "Na fila",
                  "progresso": 0, "feitos": 0, "log": [], "criado": time.time()}
     FILA.put(jid)

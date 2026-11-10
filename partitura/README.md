@@ -154,6 +154,16 @@ música. A partitura marca "Introdução gerada (teor)" e "Música". `--variacao
 versão controlada (origem do motivo, registro, sentido do arpejo). Parâmetros em
 `cache/introducao_<nivel>.json`. Na interface: campo "Introdução gerada" no pedido.
 
+### Final gerado (`--final calma|lenta|emotiva|animada|epica`) e pedal
+
+Final que não existe na gravação, depois da última nota: fácil/médio 2 compassos (cadência
+com o contorno do refrão preso às notas dos acordes + acorde final), difícil 4 (2 de motivo
+do refrão). Cadência por teor: calma IV -> I (plagal), lenta IV -> iv -> I, emotiva iv -> I,
+animada IV -> V7 -> I com dois golpes no fim, épica bVI -> bVII -> I em ff. Termina na
+tônica (o 1º acorde da música), com fermata (menos na animada) e "rit." nos teores calmos.
+Calma, lenta e emotiva levam pedal trocando a cada acorde, na introdução e no final; a
+prévia toca o pedal (CC64) e as dinâmicas escritas.
+
 ### Mãos tocáveis e dedilhado
 
 Antes de montar a partitura, `maos.py` confere cada mão ao longo do tempo com um

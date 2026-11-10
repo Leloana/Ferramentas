@@ -335,7 +335,10 @@ def gerar_introducao(md_ev, acs, tipos, nivel, teor, inicio_musica=None, semente
     dom = ((r0 + 7) % 12, "7")
     ultima = notas[-1][2] if notas else centro
     if tensao:
-        # sobe por bVI e bVII (emprestados) com a melodia subindo por notas dos acordes
+        # sobe por bVI e bVII (emprestados) com a melodia subindo por notas dos acordes,
+        # a partir do registro do motivo (não da repetição uma oitava acima)
+        while ultima > centro + 5:
+            ultima -= 12
         passo_t = 1.0 if nivel != "facil" else 2.0
         for i, (rr, tt) in enumerate((((r0 + 8) % 12, "maj"), ((r0 + 10) % 12, "maj"))):
             o_seg = corpo + i * tensao / 2
@@ -344,7 +347,10 @@ def gerar_introducao(md_ev, acs, tipos, nivel, teor, inicio_musica=None, semente
             pos_t = o_seg
             while pos_t < o_seg + tensao / 2 - EPS:
                 acima = [q for q in (_nota_perto(pc, ultima + 3) for pc in pcs_t) if q > ultima]
-                ultima = min(acima) if acima else ultima + 2
+                prox = min(acima) if acima else ultima + 2
+                if prox > centro + 12:   # chegou no topo: fica em volta dele (nota do acorde mais perto)
+                    prox = min((_nota_perto(pc, centro + 10) for pc in pcs_t), key=lambda q: abs(q - (centro + 10)))
+                ultima = prox
                 notas.append((pos_t, passo_t, ultima))
                 pos_t += passo_t
         corpo = corpo + tensao   # a cadência vem depois da tensão
@@ -386,5 +392,128 @@ def gerar_introducao(md_ev, acs, tipos, nivel, teor, inicio_musica=None, semente
                 refrao=como, refrao_inicio=round(ini_frase, 3), motivo_tempos=janela,
                 entrada=dict(raiz=r0, tipo=entrada[1]), dinamica=DINAMICA[teor],
                 dinamicas=([(0.0, "mp"), (corpo - tensao, "f"), (corpo, "ff")] if tensao
-                           else [(0.0, DINAMICA[teor])]))
+                           else [(0.0, DINAMICA[teor])]),
+                pedal=_pedal_por_acorde(harmonia, total) if teor in COM_PEDAL else [])
+    return [(o, d, ps, None) for o, d, ps in direita], esquerda, cifras, info
+
+
+# ------------------------------------------------------------------ final gerado
+
+COMPASSOS_FINAL = {"facil": 2, "medio": 2, "dificil": 4}
+DINAMICAS_FINAL = {"calma": ("p", "pp"), "lenta": ("p", "pp"), "emotiva": ("mp", "p"),
+                   "animada": ("mf", "f"), "epica": ("f", "ff")}
+COM_PEDAL = ("calma", "lenta", "emotiva")
+COM_FERMATA = ("calma", "lenta", "emotiva", "epica")
+COM_RIT = ("calma", "lenta", "emotiva")
+
+
+def _cadencia(teor, r0, maior):
+    """Acordes do compasso antes do acorde final: [(offset no compasso, raiz, tipo)]."""
+    iv = ((r0 + 5) % 12, "m")
+    IV = ((r0 + 5) % 12, "maj" if maior else "m")
+    if teor == "calma":
+        return [(0.0, *IV)]
+    if teor == "lenta":
+        return [(0.0, *IV), (2.0, *iv)]
+    if teor == "emotiva":
+        return [(0.0, *iv)]
+    if teor == "animada":
+        return [(0.0, *IV), (2.0, (r0 + 7) % 12, "7")]
+    return [(0.0, (r0 + 8) % 12, "maj"), (2.0, (r0 + 10) % 12, "maj")]   # épica: bVI -> bVII
+
+
+def _pedal_por_acorde(harmonia, total):
+    """Um pedal por acorde (troca na mudança de harmonia)."""
+    saida = []
+    for i, (o, _, _) in enumerate(harmonia):
+        fim = harmonia[i + 1][0] if i + 1 < len(harmonia) else total
+        if fim - o > EPS:
+            saida.append((o, fim))
+    return saida
+
+
+def gerar_final(md_ev, acs, tipos, nivel, teor, inicio_musica=None, variacao=0):
+    """Final que não existe na gravação: motivo do refrão (difícil), cadência do teor e
+    acorde final na tônica (o 1º acorde da música). (direita, esquerda, cifras, info)."""
+    if teor not in TEORES:
+        raise ValueError(f"teor inválido: {teor} (use {', '.join(TEORES)})")
+    total = 4.0 * COMPASSOS_FINAL[nivel]
+    entrada = primeiro_acorde(acs, inicio_musica) or (0, "maj")
+    r0 = entrada[0]
+    maior = entrada[1] in ("maj", "7", "maj7", "6")
+    tonica = (r0, "maj" if maior else "m")
+    frase, como = achar_refrao(md_ev)
+    compasso_frase = 4.0 * (frase[0][0] // 4)
+    centro = REGISTRO[teor] + [0, 12, -12][(variacao // 3) % 3]
+    motivo_tempos = total - 8.0                      # difícil: 2 compassos de motivo
+    notas, harmonia = [], []
+    mot = motivo(frase, max(4.0, motivo_tempos), compasso_frase)
+    alturas = _no_registro([p for _, _, p in mot], centro) if mot else []
+    mot = [(o, d, p) for (o, d, _), p in zip(mot, alturas)]
+    if motivo_tempos > 0:
+        base = acordes_em(acs, compasso_frase, compasso_frase + motivo_tempos) or [(0.0, *tonica)]
+        if base[0][0] > EPS:
+            base = [(0.0, base[0][1], base[0][2])] + base
+        harmonia += base
+        notas += [(o, d, p) for o, d, p in mot if o < motivo_tempos - EPS]
+    cad0 = max(0.0, motivo_tempos)
+    cad = [(cad0 + o, r, t) for o, r, t in _cadencia(teor, r0, maior)]
+    harmonia += cad
+    # compasso da cadência: contorno do motivo (1º compasso) preso às notas dos acordes
+    for o, d, p in mot:
+        if o >= 4.0 - EPS:
+            break
+        _, r, t = _acorde_no_tempo(cad, cad0 + o)
+        alvo = min((_nota_perto(pc, p) for pc in _pcs(r, t, tipos)), key=lambda q: abs(q - p))
+        notas.append((cad0 + o, min(d, 4.0 - o), alvo))
+    if not any(o >= cad0 - EPS for o, _, _ in notas):
+        notas.append((cad0, 4.0, _nota_perto((cad[0][1] + 4) % 12, centro)))
+    final = cad0 + 4.0
+    harmonia.append((final, *tonica))
+    ultima = notas[-1][2] if notas else centro
+    raiz_dir = _nota_perto(r0, ultima)
+    if nivel != "dificil":   # acorde final sem linha suplementar demais pra ler
+        while raiz_dir > 79:
+            raiz_dir -= 12
+        while raiz_dir < 60:
+            raiz_dir += 12
+    quinta = raiz_dir + 7
+    if nivel == "facil":
+        acorde_dir = [raiz_dir]
+    elif nivel == "medio":
+        acorde_dir = sorted({raiz_dir - 12 + tipos[tonica[1]][0][1], raiz_dir})   # 3ª abaixo da tônica
+    else:
+        acorde_dir = sorted({raiz_dir - 12, raiz_dir - 12 + tipos[tonica[1]][0][1], quinta - 12, raiz_dir})
+    grave = 31 if teor == "epica" else 36
+    baixo = grave + (r0 - grave % 12) % 12
+    if nivel == "facil":
+        acorde_esq = [baixo, baixo + 12] if teor == "epica" else [baixo if baixo >= 41 else baixo + 12]
+    elif nivel == "medio":
+        acorde_esq = [baixo, baixo + 7] + ([baixo + 12] if teor == "epica" else [])
+    else:
+        acorde_esq = [baixo, baixo + 7, baixo + 12]
+    passo = 1.0 if nivel == "facil" else GRADE[nivel]
+    corpo = _quantizar(notas, passo, final)
+    direita = mao_direita(corpo, harmonia, teor, nivel, tipos)
+    esquerda = _quantizar(mao_esquerda([h for h in harmonia if h[0] < final - EPS], final, teor, nivel, tipos, variacao),
+                          passo, final)
+    if teor == "animada":   # "ta-dá": dois golpes no acorde final
+        direita += [(final, 1.0, acorde_dir), (final + 2, 2.0, acorde_dir)]
+        esquerda += [(final, 1.0, acorde_esq), (final + 2, 2.0, acorde_esq)]
+    else:
+        direita.append((final, 4.0, acorde_dir))
+        esquerda.append((final, 4.0, acorde_esq))
+    cifras, ant = [], None
+    for o, r, t in sorted({o: (o, r, t) for o, r, t in harmonia}.values()):
+        if (r, t) != ant:
+            cifras.append((o, r, t))
+        ant = (r, t)
+    din_ini, din_fim = DINAMICAS_FINAL[teor]
+    info = dict(teor=teor, nivel=nivel, compassos=COMPASSOS_FINAL[nivel], variacao=variacao, refrao=como,
+                tonica=dict(raiz=r0, tipo=tonica[1]),
+                dinamicas=[(0.0, din_ini), (final, din_fim)],
+                fermata=final if teor in COM_FERMATA else None,
+                rit=cad0 if teor in COM_RIT else None,
+                pedal=_pedal_por_acorde(sorted({o: (o, r, t) for o, r, t in harmonia}.values()), total)
+                if teor in COM_PEDAL else [])
     return [(o, d, ps, None) for o, d, ps in direita], esquerda, cifras, info
