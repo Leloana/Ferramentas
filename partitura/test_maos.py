@@ -136,3 +136,34 @@ class Correcao(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class OitavaEDedos(unittest.TestCase):
+    def test_8va_escrita_abaixo_e_midi_na_altura_certa(self):
+        import re
+        import tempfile
+        from pathlib import Path
+        import pretty_midi
+        import gerar
+        alturas = [72, 74, 76, 84, 86, 88, 89, 91, 88, 84, 76, 74]
+        md = [(i * .5, .5, [p], None) for i, p in enumerate(alturas)]
+        sc, _ = gerar.montar_partitura(md, [(0, 4, [48]), (4, 2, [43])], [], 100, "t", "s")
+        with tempfile.TemporaryDirectory() as tmp:
+            xml, mid = Path(tmp) / "x.musicxml", Path(tmp) / "x.mid"
+            sc.write("musicxml", fp=str(xml))
+            texto = xml.read_text(encoding="utf-8")
+            self.assertEqual(len(re.findall(r'<octave-shift[^>]*type="down"', texto)), 1)
+            gerar.salvar_midi_notas(sc, mid, xml)
+            tocadas = [n.pitch for i in pretty_midi.PrettyMIDI(str(mid)).instruments for n in i.notes if n.pitch >= 60]
+            self.assertEqual(tocadas, alturas)
+
+    def test_dedos_ao_lado_da_nota(self):
+        import gerar
+        svg = ('<g id="n1" class="note"><g class="notehead"><use xlink:href="#x" transform="translate(2000, 1500) scale(1)"/></g></g>'
+               '<g id="f1" class="fing" data-startid="#n1"><text x="2100" y="900" text-anchor="middle" font-size="0px">'
+               '<tspan class="text"><tspan font-size="200px">3</tspan></tspan></text></g>')
+        saida = gerar.dedos_ao_lado(svg)
+        self.assertIn('x="1950" y="1572" text-anchor="end"', saida)
+        # colado na fórmula de compasso: fica onde estava
+        com_compasso = '<g id="m" class="meterSig"><use transform="translate(1700, 1500) scale(1)"/></g>' + svg
+        self.assertIn('x="2100" y="900" text-anchor="middle"', gerar.dedos_ao_lado(com_compasso))

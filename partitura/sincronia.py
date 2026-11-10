@@ -8,6 +8,7 @@ def preparar_musicxml(texto, com_percurso=False):
     segmentos=[]; andamentos={Fraction(0):120.0}; numero=0; percurso=[]
     for ip,parte in enumerate(raiz.findall('part')):
         base=Fraction(0); divisao=1; compasso=Fraction(4)
+        oitava={}  # pauta -> semitons somados (8va: a nota escrita soa uma oitava acima)
         for im,medida in enumerate(parte.findall('measure')):
             ident_medida=f'compasso-{ip}-{im}'
             medida.set('id',ident_medida)
@@ -24,6 +25,12 @@ def preparar_musicxml(texto, com_percurso=False):
                     cursor+=dur if el.tag=='forward' else -dur
                     maior=max(maior,cursor)
                 elif el.tag=='direction':
+                    for os_ in el.iter('octave-shift'):
+                        pauta=el.findtext('staff') or '1'
+                        tam=int(os_.get('size') or 8)
+                        salto=12*((tam-1)//7)
+                        tipo=os_.get('type')
+                        oitava[pauta]=salto if tipo=='down' else -salto if tipo=='up' else 0
                     sound=el.find('sound')
                     if sound is not None and sound.get('tempo'):
                         off=Fraction(el.findtext('offset') or 0)/divisao
@@ -40,6 +47,7 @@ def preparar_musicxml(texto, com_percurso=False):
                     if pitch is not None and dur>0:
                         semitons={'C':0,'D':2,'E':4,'F':5,'G':7,'A':9,'B':11}
                         p=(int(pitch.findtext('octave'))+1)*12+semitons[pitch.findtext('step')]+float(pitch.findtext('alter') or 0)
+                        p+=oitava.get(el.findtext('staff') or '1',0)
                         segmentos.append({'id':ident,'a':base+inicio,'b':base+inicio+dur,'pitch':int(p),
                             'voz':f'{ip}:{el.findtext("staff") or 1}:{el.findtext("voice") or 1}',
                             'letra':el.find('lyric') is not None,

@@ -386,6 +386,42 @@ def registrar_sincronia(base: Path, versao_nivel: str, grade, desloc: float):
     arq.write_text(json.dumps(dados), encoding="utf-8")
 
 
+def _oitava_acima(sc, minimo=79, topo=84, min_notas=3, respiro=2.0):
+    """Trecho agudo da mão direita vira 8va: escrito uma oitava abaixo, com a linha 8va.
+
+    Trecho = notas seguidas (sem pausa > respiro tempos) todas com a mais grave >= minimo
+    (Sol5) e alguma >= topo (Dó6), com pelo menos min_notas. A 8va não é "transpositora"
+    no music21 (o exportador dele erra as oitavas nesse modo); o MusicXML marca
+    octave-shift e o sincronia.py soma a oitava de volta pro MIDI e pro visualizador."""
+    from music21 import spanner
+    direita = list(sc.parts)[0]
+    notas = [n for n in direita.recurse().notes if not n.isChord or n.__class__.__name__ == "Chord"]
+    notas = [n for n in notas if n.__class__.__name__ in ("Note", "Chord")]
+    trechos, atual, fim_ant = [], [], None
+    for n in notas:
+        o = float(n.getOffsetInHierarchy(direita))
+        agudo = min(p.midi for p in n.pitches) >= minimo
+        if agudo and (not atual or o - fim_ant <= respiro + 1e-6):
+            atual.append(n)
+        else:
+            if atual:
+                trechos.append(atual)
+            atual = [n] if agudo else []
+        fim_ant = o + float(n.quarterLength)
+    if atual:
+        trechos.append(atual)
+    total = 0
+    for t in trechos:
+        if len(t) < min_notas or max(p.midi for n in t for p in n.pitches) < topo:
+            continue
+        for n in t:
+            for p in n.pitches:
+                p.octave -= 1
+        direita.insert(0, spanner.Ottava(t[0], t[-1], type="8va", transposing=False))
+        total += 1
+    return total
+
+
 def _marcas_nas_notas(sc, marcas, desloc):
     """Fermata nas notas que atacam no offset; pedal da 1ª à última nota da esquerda no trecho."""
     from music21 import expressions
@@ -514,6 +550,7 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
         p.makeRests(fillGaps=True, inPlace=True, timeRangeFromBarDuration=True)
     sc = sc.makeNotation()
     _marcas_nas_notas(sc, marcas, desloc)
+    _oitava_acima(sc)
     # nota dividida no compasso: o dedo fica só no ataque, não na continuação ligada
     for el in sc.recurse().notes:
         if el.tie is not None and el.tie.type in ("stop", "continue"):
@@ -700,6 +737,55 @@ def xml_para_verovio(texto: str) -> str:
     return ET.tostring(raiz,encoding='unicode')
 
 
+# Verovio só põe dedilhado em cima/embaixo da nota; com isto ele grava a nota de cada número
+OPCOES_DEDOS = {"svgAdditionalAttribute": ["fing@startid"], "fingeringScale": 0.6}
+
+_RE_NOTA = re.compile(r'<g id="([^"]+)" class="note">')
+_RE_CABECA = re.compile(r'class="notehead">\s*<use [^>]*transform="translate\((-?[\d.]+),\s*(-?[\d.]+)\)')
+_RE_ACID = re.compile(r'class="accid">\s*<use [^>]*transform="translate\((-?[\d.]+),\s*(-?[\d.]+)\)')
+_RE_DEDO = re.compile(r'(<g id="[^"]+" class="fing" data-startid="#([^"]+)">\s*<text )x="(-?[\d.]+)" y="(-?[\d.]+)" '
+                      r'text-anchor="middle"(.*?</g>)', re.S)
+
+
+def dedos_ao_lado(svg: str) -> str:
+    """Leva cada número de dedo pro lado esquerdo da cabeça da sua nota (antes do acidente).
+
+    Em cima da nota os números empilham e ocupam espaço vertical (pedido do usuário)."""
+    pos = {}
+    marcas = list(_RE_NOTA.finditer(svg))
+    for i, m in enumerate(marcas):
+        trecho = svg[m.end(): marcas[i + 1].start() if i + 1 < len(marcas) else m.end() + 4000]
+        c = _RE_CABECA.search(trecho)
+        if not c:
+            continue
+        a = _RE_ACID.search(trecho)
+        x = float(a.group(1)) if a else float(c.group(1))
+        pos[m.group(1)] = (x, float(c.group(2)))
+
+    # clave, armadura e fórmula de compasso: à esquerda delas o número não cabe
+    cabecalho = []
+    for m in re.finditer(r'class="(clef|keySig|meterSig)"', svg):
+        trecho = svg[m.end(): m.end() + 1500]
+        corte = re.search(r'class="(?!keyAccid)', trecho)
+        trecho = trecho[:corte.start()] if corte else trecho
+        cabecalho += [(float(a), float(b)) for a, b in re.findall(r'translate\((-?[\d.]+),\s*(-?[\d.]+)\)', trecho)]
+
+    def mover(m):
+        alvo = pos.get(m.group(2))
+        if not alvo:
+            return m.group(0)
+        tams = [float(t) for t in re.findall(r'font-size="(\d+)px"', m.group(5)) if float(t) > 0]
+        fs = max(tams) if tams else 250.0   # o <text> externo vem com 0px; o tamanho real é o do tspan
+        x, y = alvo
+        direita = x - .25 * fs
+        digitos = "".join(re.findall(r">\s*(\d+)\s*<", m.group(5)))
+        esquerda = direita - .7 * fs * max(1, len(digitos))
+        if any(gx - 50 < direita and esquerda < gx + 420 and abs(gy - y) < 900 for gx, gy in cabecalho):
+            return m.group(0)   # colado no começo do sistema: fica em cima da nota
+        return f'{m.group(1)}x="{direita:.0f}" y="{y + .36 * fs:.0f}" text-anchor="end"{m.group(5)}'
+    return _RE_DEDO.sub(mover, svg)
+
+
 def xml_para_pdf(xml: Path, pdf: Path):
     import verovio
     verovio.enableLog(False)
@@ -708,10 +794,10 @@ def xml_para_pdf(xml: Path, pdf: Path):
     tk.setOptions({"pageWidth": 2100, "pageHeight": 2970, "scale": 42,
                    "pageMarginTop": 80, "pageMarginBottom": 80,
                    "pageMarginLeft": 80, "pageMarginRight": 80,
-                   "adjustPageHeight": False, "footer": "none", "breaks": "auto"})
+                   "adjustPageHeight": False, "footer": "none", "breaks": "auto", **OPCOES_DEDOS})
     if not tk.loadData(xml_para_verovio(xml.read_text(encoding="utf-8"))):  # loadFile falha com acento no caminho (Windows)
         raise RuntimeError(f"Verovio não conseguiu ler o MusicXML: {xml}")
-    pags = [_desembaralhar(tk.renderToSVG(i)) for i in range(1, tk.getPageCount() + 1)]
+    pags = [dedos_ao_lado(_desembaralhar(tk.renderToSVG(i))) for i in range(1, tk.getPageCount() + 1)]
     import html as _h
     titulo_pdf = _h.escape(f"{pdf.parent.name} — {pdf.stem}")  # nome que o visualizador de PDF mostra
     html = [f"<!doctype html><meta charset='utf-8'><title>{titulo_pdf}</title><style>@page{{size:A4;margin:0}}"

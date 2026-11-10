@@ -544,4 +544,21 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
 - Tensão da épica: sobe do registro do motivo e para uma oitava acima do centro.
 - Página `trabalho/introducoes_20261110/pagina3/` (introdução + começo + final, partitura
   inteira). Suíte 80 OK.
+- 3ª rodada (`pagina3/`, introdução + começo + final): 20/20 com nota 5 e final bom.
+  Pedido: marcar 8va onde a animada difícil acumula agudos; dedos ao lado da nota (em cima
+  ocupava muito espaço).
+
+## 24. 8va e dedos ao lado da nota — 2026-11-10
+
+- `gerar._oitava_acima` (depois do makeNotation): trecho de >= 3 notas da direita, todas
+  com a mais grave >= Sol5 e alguma >= Dó6, sem pausa > 2 tempos, é escrito uma oitava
+  abaixo com `spanner.Ottava(transposing=False)` — o exportador do music21 erra as oitavas
+  com transposing=True. `sincronia.py` passa a ler `octave-shift` (soma a oitava por
+  pauta), então MIDI da prévia e visualizador tocam/destacam na altura real.
+- `gerar.dedos_ao_lado(svg)`: Verovio só põe dedilhado em cima/embaixo; com a opção
+  `svgAdditionalAttribute: fing@startid` cada número sabe a nota, e o pós-processamento
+  leva o número pra esquerda da cabeça (antes do acidente), `fingeringScale` 0.6. Perto de
+  clave/armadura/fórmula de compasso fica em cima. Aplicado no PDF, no visualizador
+  (cache versão 9) e nas páginas de comparação.
+- Testes em `test_maos.py` (8va e dedos). Suíte 82 OK.
 
