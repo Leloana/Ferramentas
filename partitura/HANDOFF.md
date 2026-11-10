@@ -574,3 +574,9 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
   vão pra direita da cabeça se não baterem em nota, acidente ou barra (largura da cabeça
   pelo glifo SMuFL), e só com os dois lados ocupados ficam em cima.
 
+## 25. Anotado: experimento com separação em 6 faixas
+
+- Usuário sugeriu o Moseca; o útil é o `htdemucs_6s` (guitarra e piano separados), que já
+  está no `demucs`. Hipóteses, protocolo e critério de decisão em `PROXIMA_ETAPA.md` §12.
+  Nada implementado; teste na Windows.
+

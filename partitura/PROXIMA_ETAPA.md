@@ -396,3 +396,39 @@ intermediários, anotar as referências e comparar:
 A entrega inicial deve ser um relatório de causas e uma tabela de comparação,
 com exemplos audíveis. A partir dele, decidir quais regras implementar e quais
 opções o usuário deixará de precisar escolher.
+
+## 12. Experimento anotado: separação em 6 faixas (`htdemucs_6s`) — 2026-11-10
+
+Origem: o usuário achou o Moseca (github.com/fabiogra/moseca, MIT), interface Streamlit em
+volta do Demucs que separa voz, bateria, baixo, guitarra, piano e "resto". Não precisa do
+Moseca: o modelo `htdemucs_6s` já vem no pacote `demucs` que a partitura usa
+(`python -m demucs -n htdemucs_6s`). Ressalvas: o próprio Demucs avisa que a faixa de piano
+tem bastante vazamento e artefatos, e o modelo é mais lento que o `htdemucs`.
+
+**Hipóteses a testar (na Windows, com GPU e a biblioteca):**
+
+1. **Acordes mais limpos.** Hoje `acordes()` usa a faixa "resto" (teclado, guitarra, sopro,
+   cordas, efeitos misturados) + 0,3 × baixo. Com 6 faixas, usar guitarra + piano (+ baixo)
+   como harmonia deve reduzir ruído na detecção de acordes e nas cifras.
+2. **Piano da gravação no acompanhamento.** Em música com piano de verdade, transcrever a
+   faixa de piano e oferecer uma versão com ele na esquerda (ao lado de Pop2Piano/AMT-APC).
+
+**Protocolo:**
+
+- Músicas: 2-3 da biblioteca com piano ou violão bem presentes, mais 1 sem (controle).
+- Separar com `htdemucs` e `htdemucs_6s` e ouvir as faixas de piano e guitarra.
+- Acordes: rodar `acordes()` com "resto" e com guitarra+piano; comparar com cifras de
+  referência conferidas à mão em 3-4 trechos (concordância por janela de 2 tempos, nº de
+  trocas espúrias). Medir também `harmonia_estimada` do `analisar_completo.py`.
+- Piano: se a faixa vier limpa, transcrever e montar a versão; julgar às cegas na página
+  de comparação (mesmo piano, partitura visível, "onde muda").
+- Custo: tempo de separação das duas variantes.
+
+**Decisão:** só trocar o padrão se a concordância dos acordes melhorar nos trechos
+conferidos sem piorar o controle, e se a avaliação cega preferir; senão fica como opção
+(`--seis-faixas`) ou é descartado, com o resultado registrado aqui.
+
+**Implementação prevista (pequena):** opção na linha de comando pra escolher o modelo; em
+`separar()` o nome da pasta muda com o modelo; em `main()`, se houver `guitar.wav` e
+`piano.wav`, a harmonia de `acordes()` passa a ser guitarra + piano (+ "resto" com peso
+menor) em vez de só "resto".
