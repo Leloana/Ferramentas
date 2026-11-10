@@ -15,8 +15,8 @@ function originalParaPartitura(t, mapa) { return (interpolar(t, mapa.bt, mapa.id
 function partituraParaOriginal(s, mapa) { return interpolar(s * mapa.bpm / 60 - mapa.desloc, mapa.idx, mapa.bt); }
 
 class LeitorPartitura {
-  constructor({ area, audio, original, arquivo, mostrador, seguir, zoom }) {
-    Object.assign(this, { area, audio, original, arquivo, mostrador, seguir, zoom });
+  constructor({ area, audio, original, arquivo, mostrador, seguir, zoom, layout = 'pagina' }) {
+    Object.assign(this, { area, audio, original, arquivo, mostrador, seguir, zoom, layout });
     this.fonte = audio;  // relógio atual: prévia ou gravação original
     this.abort = new AbortController();
     this.ativos = new Set();
@@ -66,7 +66,7 @@ class LeitorPartitura {
 
   async carregar() {
     try {
-      const r = await fetch('/api/partitura?arquivo=' + encodeURIComponent(this.arquivo), { signal: this.abort.signal, cache: 'no-store' });
+      const r = await fetch('/api/partitura?arquivo=' + encodeURIComponent(this.arquivo) + (this.layout !== 'pagina' ? '&layout=' + this.layout : ''), { signal: this.abort.signal, cache: 'no-store' });
       const d = await r.json();
       if (!r.ok) throw new Error(d.detail || 'Erro ao carregar a partitura.');
       if (this.abort.signal.aborted) return;
@@ -118,7 +118,8 @@ class LeitorPartitura {
     const formatar = (s) => `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
     const relogio = this.fonte;
     const qual = relogio === this.original ? 'gravação original' : 'prévia de piano';
-    this.mostrador.textContent = `${formatar(relogio.currentTime)} / ${formatar(relogio.duration || this.quadros.at(-1)?.tempo || 0)} · ${qual} · clique numa nota para ir até ela`;
+    const toque = matchMedia('(pointer: coarse)').matches ? 'toque' : 'clique';
+    this.mostrador.textContent = `${formatar(relogio.currentTime)} / ${formatar(relogio.duration || this.quadros.at(-1)?.tempo || 0)} · ${qual} · ${toque} numa nota para ir até ela`;
     if (agendar && !relogio.paused && !relogio.ended) {
       cancelAnimationFrame(this.raf);
       this.raf = requestAnimationFrame(this.atualizar);

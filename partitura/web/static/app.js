@@ -339,6 +339,7 @@ function desenharVisor() {
       ${m.original ? `<div><label>${icone("fone")} Gravação original</label><audio id="audioOriginal" controls preload="none" src="${urlArq(m.original)}"></audio></div>` : ""}
     </div>
     ${item.previa ? `<div class="controles-partitura">
+      <button type="button" id="abrirFoco" class="btn pequeno primario">${icone("foco")}Modo foco</button>
       <label><input type="checkbox" id="seguirPartitura" checked> Acompanhar piano</label>
       <label>Zoom <select id="zoomPartitura"><option value="100">100%</option><option value="125">125%</option><option value="150">150%</option><option value="200">200%</option></select></label>
       <span id="tempoPartitura">Preparando partitura…</span>
@@ -352,8 +353,10 @@ function desenharVisor() {
   const audio = $("#audioPartitura", visor), original = $("#audioOriginal", visor);
   if (audio) {
     const arquivo = `${m.pasta}/editaveis/${escolha.versao} - ${{facil:"Facil",medio:"Medio",dificil:"Dificil"}[escolha.nivel]}.musicxml`;
-    leitorPartitura = new LeitorPartitura({ area: $("#partituraInterativa",visor), audio, original, arquivo,
-      mostrador: $("#tempoPartitura",visor), seguir: $("#seguirPartitura",visor), zoom: $("#zoomPartitura",visor) });
+    const criarLeitor = () => (leitorPartitura = new LeitorPartitura({ area: $("#partituraInterativa",visor), audio, original, arquivo,
+      mostrador: $("#tempoPartitura",visor), seguir: $("#seguirPartitura",visor), zoom: $("#zoomPartitura",visor) }));
+    criarLeitor();
+    $("#abrirFoco", visor).addEventListener("click", () => abrirFoco({ m, audio, original, arquivo, aoSair: criarLeitor }));
     // o leitor segue o que estiver tocando (o original só se a música tiver o mapa de batidas)
     audio.addEventListener('play', () => { original?.pause(); player.pause(); });
     original?.addEventListener('play', () => { audio.pause(); player.pause(); });
@@ -378,8 +381,126 @@ function desenharVisor() {
   $$("[data-versao]", visor).forEach((b) => b.addEventListener("click", () => { escolha.versao = b.dataset.versao; desenharVisor(); }));
 }
 
+// ------------------------------------------------------------------ modo foco
+// Partitura em tela cheia, desenhada estreita no celular (poucos compassos por linha, pauta
+// grande), com uma barra de controle para o dedo. Tocar no fundo esconde/mostra as barras.
+let focoAtual = null;
+const ZOOMS = [70, 85, 100, 120, 145, 175, 210];
+function layoutFoco() {
+  if (innerWidth >= 1000) return "pagina";
+  return innerWidth < innerHeight ? "retrato" : "paisagem";
+}
+function abrirFoco({ m, audio, original, arquivo, aoSair }) {
+  leitorPartitura?.destruir();
+  leitorPartitura = null;
+  const el = document.createElement("div");
+  el.className = "foco";
+  el.setAttribute("role", "dialog");
+  el.setAttribute("aria-label", "Modo foco: " + m.titulo);
+  el.innerHTML = `
+    <div class="foco-topo">
+      <div class="foco-titulo"><b>${esc(m.titulo)}</b><small>${NIVEL_NOME[escolha.nivel]} · ${VERSAO_NOME[escolha.versao]}</small></div>
+      <button type="button" class="foco-btn" data-acao="sair" aria-label="Sair do modo foco">${icone("sair")}</button>
+    </div>
+    <div class="partitura-interativa foco-area"><p>Carregando notas…</p></div>
+    <div class="foco-barra">
+      <button type="button" class="foco-play" data-acao="tocar" aria-label="Tocar">${ICONE_TOCAR}</button>
+      <div class="foco-tempo">
+        <input type="range" min="0" max="1000" value="0" aria-label="Posição na música">
+        <span class="foco-relogio">0:00 / 0:00</span>
+      </div>
+      ${original ? `<div class="grupo foco-fonte" role="group" aria-label="O que tocar">
+        <button type="button" data-fonte="piano" class="ativa">${icone("piano")}<span>Piano</span></button>
+        <button type="button" data-fonte="original">${icone("fone")}<span>Original</span></button></div>` : ""}
+      <div class="foco-zoom">
+        <button type="button" class="foco-btn" data-acao="menos" aria-label="Diminuir">${icone("menos")}</button>
+        <button type="button" class="foco-btn" data-acao="mais" aria-label="Aumentar">${icone("mais")}</button>
+      </div>
+      <label class="foco-seguir"><input type="checkbox" checked> Seguir</label>
+      <button type="button" class="foco-btn foco-sair-barra" data-acao="sair" aria-label="Sair do modo foco">${icone("sair")}</button>
+      <select hidden>${ZOOMS.map((z) => `<option value="${z}" ${z === 100 ? "selected" : ""}>${z}</option>`).join("")}</select>
+      <span hidden class="foco-mostrador"></span>
+    </div>`;
+  document.body.appendChild(el);
+  document.body.classList.add("em-foco");
+  const area = $(".foco-area", el), zoom = $("select", el), seguir = $(".foco-seguir input", el);
+  const barra = $('input[type="range"]', el), relogio = $(".foco-relogio", el), play = $('[data-acao="tocar"]', el);
+  let fonte = !audio.paused || !original ? audio : (!original.paused ? original : audio);
+  let leitor = null, layout = null, wake = null;
+  const abort = new AbortController();
+  const montar = () => {
+    const novo = layoutFoco();
+    if (novo === layout) return;
+    layout = novo;
+    leitor?.destruir();
+    area.innerHTML = "<p>Carregando notas…</p>";
+    leitor = new LeitorPartitura({ area, audio, original, arquivo, mostrador: $(".foco-mostrador", el), seguir, zoom, layout });
+  };
+  montar();
+  const fmt = (s) => (isFinite(s) ? `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}` : "0:00");
+  const pintar = () => {
+    const tocando = !fonte.paused && !fonte.ended;
+    play.innerHTML = tocando ? ICONE_PAUSAR : ICONE_TOCAR;
+    play.setAttribute("aria-label", tocando ? "Pausar" : "Tocar");
+    relogio.textContent = `${fmt(fonte.currentTime)} / ${fmt(fonte.duration)}`;
+    if (document.activeElement !== barra && fonte.duration) barra.value = Math.round(1000 * fonte.currentTime / fonte.duration);
+    $$("[data-fonte]", el).forEach((b) => b.classList.toggle("ativa", (b.dataset.fonte === "original") === (fonte === original)));
+  };
+  for (const a of [audio, original].filter(Boolean))
+    for (const t of ["play", "pause", "timeupdate", "ended", "loadedmetadata"])
+      a.addEventListener(t, (e) => { if (t === "play") fonte = e.target; pintar(); }, { signal: abort.signal });
+  const tocarPausar = () => {
+    if (fonte.paused) { (fonte === audio ? original : audio)?.pause(); player.pause(); fonte.play().catch(() => {}); }
+    else fonte.pause();
+  };
+  barra.addEventListener("input", () => { if (fonte.duration) fonte.currentTime = barra.value / 1000 * fonte.duration; });
+  const mudarZoom = (passo) => {
+    const i = Math.max(0, Math.min(ZOOMS.length - 1, ZOOMS.indexOf(Number(zoom.value)) + passo));
+    zoom.value = ZOOMS[i];
+    zoom.dispatchEvent(new Event("change"));
+  };
+  el.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (b?.dataset.acao === "sair") return sair();
+    if (b?.dataset.acao === "tocar") return tocarPausar();
+    if (b?.dataset.acao === "mais") return mudarZoom(1);
+    if (b?.dataset.acao === "menos") return mudarZoom(-1);
+    if (b?.dataset.fonte) {
+      const nova = b.dataset.fonte === "original" ? original : audio;
+      if (nova !== fonte) { const tocava = !fonte.paused; fonte.pause(); fonte = nova; if (tocava) nova.play().catch(() => {}); pintar(); }
+      return;
+    }
+    // toque no fundo (fora de nota) esconde/mostra as barras
+    if (e.target.closest(".foco-area") && !e.target.closest(".nota-navegavel")) el.classList.toggle("sem-barras");
+  }, { signal: abort.signal });
+  addEventListener("resize", montar, { signal: abort.signal });
+  // tela acesa enquanto lê; volta a pedir quando a aba volta a aparecer
+  const pedirTela = () => navigator.wakeLock?.request("screen").then((w) => (wake = w)).catch(() => {});
+  pedirTela();
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") pedirTela(); }, { signal: abort.signal });
+  // botão voltar do celular sai do foco
+  history.pushState({ foco: true }, "");
+  addEventListener("popstate", () => sair(true), { signal: abort.signal });
+  if (matchMedia("(pointer: coarse)").matches) document.documentElement.requestFullscreen?.().catch(() => {});
+  function sair(peloVoltar = false) {
+    abort.abort();
+    leitor?.destruir();
+    wake?.release().catch(() => {});
+    if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+    el.remove();
+    document.body.classList.remove("em-foco");
+    focoAtual = null;
+    if (!peloVoltar && history.state?.foco) history.back();
+    aoSair();
+  }
+  focoAtual = { sair: () => sair(), tocarPausar };
+  pintar();
+}
+
 // espaço toca/pausa a prévia de piano na biblioteca (fora de campos de texto)
 document.addEventListener("keydown", (e) => {
+  if (e.code === "Escape" && focoAtual) { focoAtual.sair(); return; }
+  if (e.code === "Space" && focoAtual && !e.target.closest("button, input")) { e.preventDefault(); focoAtual.tocarPausar(); return; }
   if (e.code !== "Space" || e.repeat || !$("#biblioteca").classList.contains("ativo")) return;
   if (e.target.closest("input, select, textarea, button, audio, dialog[open]")) return;
   const a = $("#audioPartitura");

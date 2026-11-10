@@ -268,7 +268,8 @@ dialog { max-height: calc(100vh - 32px); }
 @media (max-width: 860px) {
   .topo { padding: 14px 16px; }
   main { padding: 16px 16px 60px; }
-  .bib { grid-template-columns: 1fr; }
+  .bib { grid-template-columns: minmax(0, 1fr); }
+  .coluna-musicas { min-width: 0; }
   .coluna-musicas { position: static; max-height: none; }
   .lista-musicas { flex-direction: row; overflow-x: auto; padding-bottom: 4px; }
   .mus { min-width: 220px; }
@@ -305,3 +306,112 @@ dialog { max-height: calc(100vh - 32px); }
 .tempo { font-variant-numeric: tabular-nums; }
 .btn.discreto { background: transparent; color: var(--suave); }
 .btn.discreto:hover { color: var(--texto); }
+
+/* ------------------------------------------------------------------ modo foco */
+body.em-foco { overflow: hidden; }
+.foco {
+  position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column;
+  background: #ece6dc; height: 100dvh;
+}
+.foco-topo, .foco-barra { background: rgba(29,25,22,.97); color: var(--texto); flex: none; }
+.foco-topo {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: max(8px, env(safe-area-inset-top)) 12px 8px max(14px, env(safe-area-inset-left));
+}
+.foco-titulo { min-width: 0; }
+.foco-titulo b { display: block; font: 700 17px/1.2 Fraunces, serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.foco-titulo small { color: var(--suave); font-size: 12px; }
+.foco-area { flex: 1; height: auto; border: 0; border-radius: 0; background: #ece6dc; -webkit-overflow-scrolling: touch; }
+.foco .folha-partitura { min-width: 0; margin: 0 auto; box-shadow: none; background: #fffdf8; }
+.foco .numero-folha { display: none; }
+.foco .cursor-partitura { width: 3px; opacity: .6; }
+.foco-barra {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 8px max(12px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+}
+.foco-btn {
+  width: 42px; height: 42px; border-radius: 12px; border: 1px solid var(--borda); background: var(--cartao);
+  color: var(--texto); display: grid; place-items: center; cursor: pointer; flex: none;
+}
+.foco-btn .ic { width: 20px; height: 20px; vertical-align: 0; }
+.foco-play {
+  width: 52px; height: 52px; border-radius: 50%; border: 0; background: var(--ouro); color: #1b140c;
+  display: grid; place-items: center; cursor: pointer; flex: none; box-shadow: 0 4px 14px rgba(0,0,0,.4);
+}
+.foco-play .ic { width: 22px; height: 22px; vertical-align: 0; }
+.foco-tempo { flex: 1 1 220px; display: flex; align-items: center; gap: 10px; min-width: 0; }
+.foco-tempo input { flex: 1; padding: 0; height: 28px; border: 0; background: transparent; accent-color: var(--ouro); }
+.foco-relogio { font-size: 13px; color: var(--suave); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.foco-zoom { display: flex; gap: 6px; }
+.foco-fonte button { display: inline-flex; align-items: center; gap: 5px; padding: 8px 12px; }
+.foco-fonte .ic { width: 16px; height: 16px; vertical-align: 0; }
+.foco-seguir { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--suave); }
+.foco-seguir input { width: 18px; height: 18px; accent-color: var(--ouro); }
+.foco.sem-barras .foco-topo, .foco.sem-barras .foco-barra { display: none; }
+.foco-sair-barra { display: none; }
+
+/* ------------------------------------------------------------------ celular */
+@media (max-width: 600px) {
+  .topo { padding: 10px 14px; gap: 10px; }
+  .logo { width: 34px; height: 34px; }
+  .marca { gap: 10px; }
+  .marca h1 { font-size: 21px; }
+  .marca p { display: none; }
+  main { padding: 12px 12px 48px; }
+  .hero { margin-top: 4px; }
+  .hero-arte { width: 150px; }
+  .hero-sub { font-size: 14px; margin-bottom: 16px; }
+  .busca { padding-left: 14px; }
+  .busca input { font-size: 16px; }
+  .busca .btn { padding: 10px 14px; }
+  .resultados { grid-template-columns: 1fr; gap: 12px; }
+  .res { flex-direction: row; }
+  .res .capa { width: 42%; flex: none; aspect-ratio: 16/10; }
+  .res .info { padding: 10px 12px; }
+  .res h3 { font-size: 14px; }
+  .res .canal { margin-bottom: 6px; font-size: 12px; }
+  .res .gerar { padding: 8px 10px; font-size: 13px; }
+  .res .tocar { width: 36px; height: 36px; left: 8px; bottom: 8px; }
+  .res .ja { font-size: 11px; }
+  .res:hover { transform: none; }
+  .recentes { margin-top: 24px; }
+  .recentes-lista { flex-direction: column; align-items: stretch; }
+  .recentes-lista button { max-width: none; }
+
+  .visor { padding: 12px; border-radius: 12px; min-height: 0; }
+  .visor h2 { font-size: 21px; }
+  .seletor { gap: 8px; flex-wrap: nowrap; flex-direction: column; align-items: stretch; }
+  .grupo { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .grupo button { flex: none; }
+  .audios { grid-template-columns: 1fr; }
+  .controles-partitura { gap: 10px; }
+  .controles-partitura #abrirFoco { width: 100%; padding: 12px; font-size: 15px; order: -1; }
+  #tempoPartitura { margin-left: 0; width: 100%; }
+  .partitura-interativa { height: 62vh; }
+  .folha-partitura { min-width: 0; }
+  .etiquetas { margin-bottom: 8px; }
+
+  dialog { width: 100vw; max-width: 100vw; max-height: 100dvh; height: 100dvh; margin: 0; border-radius: 0; border: 0; }
+  #formGerar { padding: 14px; }
+  .dlg-topo { grid-template-columns: 96px 1fr; gap: 10px; }
+  .dlg-topo img { align-self: start; }
+  .opcoes { grid-template-columns: 1fr 1fr; }
+  .job { padding: 12px; }
+  .job .cab { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .job .acoes { width: 100%; }
+  .job .acoes .btn { flex: 1; }
+}
+@media (max-width: 600px) and (orientation: portrait) {
+  .foco-barra { gap: 8px; }
+  .foco-tempo { order: -1; flex-basis: 100%; }
+  .foco-fonte span { display: none; }
+  .foco-seguir { margin-left: auto; }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .foco-topo { display: none; }
+  .foco-sair-barra { display: grid; }
+  .foco-seguir { font-size: 12px; }
+  .foco-barra { flex-wrap: nowrap; padding-top: 4px; padding-bottom: 4px; }
+  .foco-play { width: 42px; height: 42px; }
+  .foco-fonte span { display: none; }
+}

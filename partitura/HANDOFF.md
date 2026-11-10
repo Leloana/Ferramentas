@@ -115,6 +115,9 @@ mãos, introdução, final, cromáticas do fácil, sincronia).
 - Verovio não conta a linha de pedal na colisão: `spacingSystem: 12` (`OPCOES_DEDOS`).
 - Visualizador: cache em `cache/visor_*.json` com versão (`web/partitura.py VERSAO`, hoje 11);
   mudou o desenho, suba a versão.
+- Modo foco (celular): `/api/partitura?layout=retrato|paisagem` desenha página estreita e
+  contínua (`web/partitura.LAYOUTS`), cache em `visor_<nome>.<layout>.json`. Tela >= 1000 px
+  usa a página A4.
 
 **Integração com o karaokê**
 - `alinhamento.py` importa `karaoke/server` (sys.path no fim). `utils.audio` importa pydub,

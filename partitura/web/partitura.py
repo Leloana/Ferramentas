@@ -8,6 +8,17 @@ from gerar import OPCOES_DEDOS, _desembaralhar, dedos_ao_lado, pedal_continuo
 
 _TRAVA = threading.Lock()
 VERSAO = 11
+# Desenho da página. "pagina" = A4 (tela grande e PDF); "retrato"/"paisagem" = modo foco no
+# celular: página estreita e contínua (uma folha comprida), poucos compassos por linha, para
+# a pauta ficar grande na tela pequena.
+LAYOUTS = {
+    'pagina': {'pageWidth': 2100, 'pageHeight': 2970, 'adjustPageHeight': False,
+               'pageMarginLeft': 80, 'pageMarginRight': 80},
+    'retrato': {'pageWidth': 850, 'pageHeight': 60000, 'adjustPageHeight': True,
+                'pageMarginLeft': 30, 'pageMarginRight': 30},
+    'paisagem': {'pageWidth': 2200, 'pageHeight': 60000, 'adjustPageHeight': True,
+                 'pageMarginLeft': 40, 'pageMarginRight': 40},
+}
 
 
 def mapa_original(sinc: Path, versao: str, texto: str):
@@ -28,14 +39,17 @@ def mapa_original(sinc: Path, versao: str, texto: str):
     return {'bt':dados['bt'],'idx':dados['idx'],'desloc':dados['versoes'][versao],'bpm':bpm}
 
 
-def renderizar(xml: Path):
+def renderizar(xml: Path, layout: str = 'pagina'):
     # Verovio usa estado global nativo; serializar renderizações dentro do servidor.
+    if layout not in LAYOUTS:
+        raise ValueError('Layout desconhecido.')
     with _TRAVA:
         stat=xml.stat()
         sinc=xml.parent.parent/'cache'/'sincronia_original.json'
         sinc_mtime=sinc.stat().st_mtime_ns if sinc.exists() else 0
-        chave=f'{VERSAO}:{stat.st_mtime_ns}:{stat.st_size}:{sinc_mtime}'
-        cache=xml.parent.parent/'cache'/f'visor_{xml.stem}.json'
+        chave=f'{VERSAO}:{stat.st_mtime_ns}:{stat.st_size}:{sinc_mtime}'+('' if layout=='pagina' else f":{layout}:{LAYOUTS[layout]['pageWidth']}")
+        sufixo='' if layout=='pagina' else f'.{layout}'
+        cache=xml.parent.parent/'cache'/f'visor_{xml.stem}{sufixo}.json'
         if cache.exists():
             try:
                 salvo=json.loads(cache.read_text(encoding='utf-8'))
@@ -47,10 +61,8 @@ def renderizar(xml: Path):
         verovio.enableLog(False)
         tk=verovio.toolkit()
         tk.setResourcePath(str(Path(verovio.__file__).parent/'data'))
-        tk.setOptions({'pageWidth':2100,'pageHeight':2970,'scale':42,
-                       'pageMarginTop':80,'pageMarginBottom':80,
-                       'pageMarginLeft':80,'pageMarginRight':80,
-                       'adjustPageHeight':False,'footer':'none','breaks':'auto',**OPCOES_DEDOS})
+        tk.setOptions({'scale':42,'pageMarginTop':80,'pageMarginBottom':80,
+                       'footer':'none','breaks':'auto',**LAYOUTS[layout],**OPCOES_DEDOS})
         texto,segmentos,percurso=preparar_musicxml(xml.read_text(encoding='utf-8'),com_percurso=True)
         if not tk.loadData(texto):
             raise ValueError('Não foi possível abrir esta partitura.')

@@ -396,7 +396,7 @@ ARQ_RE = re.compile(r"^(Acordes|HibridoAMT|Hibrido|Pop2Piano|AMT-APC) - (Facil|M
 
 
 @app.get('/api/partitura')
-async def partitura(arquivo: str):
+async def partitura(arquivo: str, layout: str = "pagina"):
     xml=(SAIDA/arquivo).resolve()
     if not xml.is_relative_to(SAIDA.resolve()) or xml.suffix.lower()!='.musicxml':
         raise HTTPException(400,'Partitura inválida.')
@@ -404,7 +404,7 @@ async def partitura(arquivo: str):
         raise HTTPException(404,'Partitura não encontrada.')
     from web.partitura import renderizar
     try:
-        return await asyncio.to_thread(renderizar,xml)
+        return await asyncio.to_thread(renderizar,xml,layout)
     except (ValueError,OSError) as e:
         __import__('logging').getLogger('uvicorn.error').exception('Falha ao desenhar %s',xml.name)
         raise HTTPException(422,str(e))

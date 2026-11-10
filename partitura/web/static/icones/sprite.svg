@@ -87,4 +87,13 @@
     <path d="M3 12c1.5 0 1.7-4.3 3.2-4.3s1.7 8.6 3.3 8.6S11.2 5 12.8 5s1.8 14 3.4 14 1.7-7 3.2-7H21"/>
     <path d="M3.2 16.8c1.1.4 2.3.4 3.4 0" opacity=".65"/>
   </symbol>
+  <symbol id="i-foco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4.5 9V6.2c0-1 .7-1.7 1.7-1.7H9M15 4.5h2.8c1 0 1.7.7 1.7 1.7V9M19.5 15v2.8c0 1-.7 1.7-1.7 1.7H15M9 19.5H6.2c-1 0-1.7-.7-1.7-1.7V15"/>
+    <path d="M8.5 10.2h7M8.5 12h7M8.5 13.8h7" opacity=".7"/>
+  </symbol>
+  <symbol id="i-sair" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 4.5v2.8c0 1-.7 1.7-1.7 1.7H4.5M19.5 9h-2.8c-1 0-1.7-.7-1.7-1.7V4.5M15 19.5v-2.8c0-1 .7-1.7 1.7-1.7h2.8M4.5 15h2.8c1 0 1.7.7 1.7 1.7v2.8"/>
+  </symbol>
+  <symbol id="i-mais" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M12 6v12M6 12h12"/></symbol>
+  <symbol id="i-menos" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M6 12h12"/></symbol>
 </svg>
