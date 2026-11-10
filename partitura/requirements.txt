@@ -22,3 +22,8 @@ partitura
 pykakasi
 fugashi
 unidic-lite
+# versão Híbrido Gravado (gravado.py): piano (Kong et al.; checkpoint em modelos/piano_transcription/)
+# e violão (Basic Pitch, instalar com --no-deps: as dependências dele pedem tensorflow/numpy antigo)
+piano_transcription_inference
+audioread
+resampy

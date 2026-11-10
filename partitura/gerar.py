@@ -1112,6 +1112,9 @@ def main():
                     help="mão esquerda da música inteira (versão Acordes) na textura desse teor")
     ap.add_argument("--variacao", type=int, default=0, help="outra versão da introdução gerada (0 = padrão)")
     ap.add_argument("--sem-transpor", action="store_true", help="no nível fácil, não transpõe pra tom sem acidentes")
+    ap.add_argument("--gravado", action="store_true",
+                    help="versão Híbrido Gravado: esquerda com o piano e o violão transcritos da gravação "
+                         "(6 faixas + Kong/Basic Pitch; ver gravado.py)")
     ap.add_argument("--facil-fiel", action="store_true",
                     help="nível fácil com a melodia do médio (grade de 1/2 tempo, sem tirar passagens nem "
                          "cromatismos, no tom original); só a mão esquerda fica fácil")
@@ -1307,6 +1310,14 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
             completa = completar_instrumentais(md_ev, dir_ia, grade.passo, bloqueios)
             print(f"[instrumental] HibridoAMT: {len(completa)-len(md_ev)} ataques acrescentados")
             versoes["HibridoAMT"] = (completa, reduzir_mao(a_me, nivel, "esquerda"))
+    if getattr(args, "gravado", False):  # piano + violão tocados na gravação, transcritos nota a nota
+        from gravado import completar_com, maos_gravado
+        g_md, g_me = maos_gravado(audio, base, grade)
+        completa = completar_instrumentais(md_ev, reduzir_mao(g_md, nivel, "direita"), grade.passo, bloqueios)
+        esq, preenchidos = completar_com(reduzir_mao(g_me, nivel, "esquerda"), versoes["Acordes"][1])
+        print(f"[gravado] {len(completa)-len(md_ev)} ataques instrumentais na direita; "
+              f"{preenchidos} compassos sem piano/violão completados com a esquerda da versão Acordes")
+        versoes["HibridoGravado"] = (completa, esq)
 
     k = 0
     if nivel == "facil" and not args.sem_transpor and not getattr(args, "facil_fiel", False):  # mesmo intervalo pra todas as versões
