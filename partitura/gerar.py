@@ -327,6 +327,30 @@ def nomes_para(sustenidos: int) -> list[str]:
     return NOMES_PC_SUST if sustenidos >= 3 else NOMES_PC
 
 
+def deslocamento(md_ev, me_ev) -> float:
+    """Tempos somados aos offsets pra partitura começar num compasso inteiro."""
+    return float(-np.floor(min(e[0] for e in list(md_ev) + list(me_ev)) / 4) * 4)
+
+
+def registrar_sincronia(base: Path, versao_nivel: str, grade, desloc: float):
+    """cache/sincronia_original.json: batidas da gravação + deslocamento de cada versão.
+
+    Posição na partitura (tempos) q -> segundos no original: interp(q - desloc, idx, bt).
+    O visualizador usa isso pra acompanhar a gravação original, não só a prévia."""
+    arq = base / "cache" / "sincronia_original.json"
+    dados = {}
+    if arq.exists():
+        try:
+            dados = json.loads(arq.read_text(encoding="utf-8"))
+        except ValueError:
+            dados = {}
+    dados["bt"] = [round(float(x), 4) for x in grade.bt]
+    dados["idx"] = [float(x) for x in grade.idx]
+    dados.setdefault("versoes", {})[versao_nivel] = desloc
+    arq.parent.mkdir(parents=True, exist_ok=True)
+    arq.write_text(json.dumps(dados), encoding="utf-8")
+
+
 def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: str, uma_armadura=False,
                      dedos_md=None, dedos_me=None):
     """md_ev / me_ev: (offset_em_tempos, duração, [midis]) sem sobreposição dentro da mão.
@@ -337,7 +361,7 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
     tudo = md_ev + me_ev
     if not tudo:
         sys.exit("nenhuma nota detectada")
-    desloc = -np.floor(min(e[0] for e in tudo) / 4) * 4  # começa num compasso inteiro
+    desloc = deslocamento(md_ev, me_ev)  # começa num compasso inteiro
     fim = max(e[0] + e[1] for e in tudo) + desloc
     # melodia manda; acordes da mão esquerda entram com peso menor (cada um soma 3 notas)
     if uma_armadura:  # nível fácil: armadura única, sem mudanças no meio
@@ -908,6 +932,7 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
                                    dedos_md=dmd, dedos_me=dme)
         print(f"[{versao}] armadura: {arm}")
         salvar_versao(sc, base, f"{versao} - {NOME[nivel]}")
+        registrar_sincronia(base, f"{versao} - {NOME[nivel]}", grade, deslocamento(md, me))
 
 if __name__ == "__main__":
     main()

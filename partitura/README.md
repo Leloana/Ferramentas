@@ -171,8 +171,9 @@ rolagem automática e zoom. A barra avança continuamente pelo tempo de cada com
 inclusive nas pausas e notas sustentadas. Clique numa nota para ir até aquele momento. Desmarque
 **Acompanhar piano** para rolar livremente. O PDF estático continua disponível abaixo e para download.
 
-Ao tocar a gravação original, o piano pausa e o destaque é limpo. A sincronia com o original
-ainda não está implementada. O visualizador e o MIDI usam os mesmos tempos do MusicXML;
+Ao tocar a gravação original, o piano pausa e a partitura passa a seguir a gravação, pelas
+batidas detectadas (`cache/sincronia_original.json`); clicar numa nota leva a gravação até ela.
+Músicas geradas antes disso não têm esse mapa: nelas o destaque é limpo. O visualizador e o MIDI usam os mesmos tempos do MusicXML;
 cifras não são tocadas como notas extras. O servidor guarda o desenho e os tempos em cache
 e os recalcula quando o MusicXML muda.
 

@@ -7,14 +7,34 @@ from pathlib import Path
 from gerar import _desembaralhar
 
 _TRAVA = threading.Lock()
-VERSAO = 7
+VERSAO = 8
+
+
+def mapa_original(sinc: Path, versao: str, texto: str):
+    """Batidas da gravação + deslocamento desta versão + andamento da partitura, ou None.
+
+    No navegador: segundos da partitura s -> posição q = s*bpm/60 -> original
+    t = interp(q - desloc, idx, bt). Gerações antigas não têm o arquivo: só a prévia."""
+    if not sinc.exists():
+        return None
+    try:
+        dados=json.loads(sinc.read_text(encoding='utf-8'))
+    except (OSError,ValueError):
+        return None
+    if versao not in dados.get('versoes',{}) or len(dados.get('bt',[]))<2:
+        return None
+    som=ET.fromstring(texto).find('.//sound[@tempo]')
+    bpm=float(som.get('tempo')) if som is not None else 120.0
+    return {'bt':dados['bt'],'idx':dados['idx'],'desloc':dados['versoes'][versao],'bpm':bpm}
 
 
 def renderizar(xml: Path):
     # Verovio usa estado global nativo; serializar renderizações dentro do servidor.
     with _TRAVA:
         stat=xml.stat()
-        chave=f'{VERSAO}:{stat.st_mtime_ns}:{stat.st_size}'
+        sinc=xml.parent.parent/'cache'/'sincronia_original.json'
+        sinc_mtime=sinc.stat().st_mtime_ns if sinc.exists() else 0
+        chave=f'{VERSAO}:{stat.st_mtime_ns}:{stat.st_size}:{sinc_mtime}'
         cache=xml.parent.parent/'cache'/f'visor_{xml.stem}.json'
         if cache.exists():
             try:
@@ -55,7 +75,8 @@ def renderizar(xml: Path):
             quadros.append({'tempo':t,'notas':sorted(ativos)})
         resultado={'chave':chave,'paginas':paginas,'quadros':quadros,
                    'inicios':inicios,'percurso':percurso,
-                   'duracao':percurso[-1]['fim'] if percurso else 0}
+                   'duracao':percurso[-1]['fim'] if percurso else 0,
+                   'original':mapa_original(sinc,xml.stem,texto)}
         cache.parent.mkdir(parents=True,exist_ok=True)
         # Troca atômica para não oferecer cache incompleto.
         temporario=cache.with_suffix('.json.tmp')

@@ -233,10 +233,11 @@ function desenharVisor() {
   const audio = $("#audioPartitura", visor), original = $("#audioOriginal", visor);
   if (audio) {
     const arquivo = `${m.pasta}/editaveis/${escolha.versao} - ${{facil:"Facil",medio:"Medio",dificil:"Dificil"}[escolha.nivel]}.musicxml`;
-    leitorPartitura = new LeitorPartitura({ area: $("#partituraInterativa",visor), audio, arquivo,
+    leitorPartitura = new LeitorPartitura({ area: $("#partituraInterativa",visor), audio, original, arquivo,
       mostrador: $("#tempoPartitura",visor), seguir: $("#seguirPartitura",visor), zoom: $("#zoomPartitura",visor) });
+    // o leitor segue o que estiver tocando (o original só se a música tiver o mapa de batidas)
     audio.addEventListener('play', () => { original?.pause(); player.pause(); });
-    original?.addEventListener('play', () => { audio.pause(); leitorPartitura?.limpar(); player.pause(); });
+    original?.addEventListener('play', () => { audio.pause(); player.pause(); });
   }
   $$("[data-nivel]", visor).forEach((b) => b.addEventListener("click", () => {
     escolha.nivel = b.dataset.nivel;

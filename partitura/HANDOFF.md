@@ -465,3 +465,18 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
   `analisar_completo.py` antes/depois e conferir a fração de acidentes e a concordância
   da melodia no Fácil. Se cair demais a fidelidade, subir a exigência (ex.: só < 1/2 tempo).
 
+## 20. Partitura acompanhando a gravação original — 2026-11-10
+
+- Pendência da seção 10 ("sincroniza somente a prévia"). `gerar.registrar_sincronia`
+  grava `cache/sincronia_original.json` (batidas `bt`/`idx` da grade + `desloc` de cada
+  versão, o mesmo de `montar_partitura`, agora em `gerar.deslocamento`).
+- `web/partitura.py` (cache versão 8, chave inclui o mtime do arquivo de sincronia)
+  devolve `original: {bt, idx, desloc, bpm}`; sem o arquivo (gerações antigas) `None`.
+- `partitura.js`: o leitor tem dois relógios (prévia e original) e segue o que está
+  tocando; original -> partitura `(interp(t, bt, idx) + desloc) * 60 / bpm` e o inverso
+  no clique numa nota. Sem mapa, o original continua limpando o destaque como antes.
+- Testado: `test_sincronia_original.py` (renderiza pelo visualizador e confere cada nota
+  no segundo do original, gravação com andamento variando) e no Chrome com uma biblioteca
+  de teste (original 4,5 s -> nota de 2,0 s; clique -> original 5,40 s; volta pra prévia).
+  Suíte 60 OK. Músicas atuais precisam ser regeneradas pra ganhar o mapa.
+

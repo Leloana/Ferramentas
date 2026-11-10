@@ -1,7 +1,23 @@
 // SVG e mapa de tempos são gerados juntos no servidor. Nenhum modelo no navegador.
+
+// np.interp: interpolação linear, presa nas pontas. xs crescente.
+function interpolar(x, xs, ys) {
+  if (!xs.length) return x;
+  if (x <= xs[0]) return ys[0];
+  if (x >= xs[xs.length-1]) return ys[ys.length-1];
+  let lo = 0, hi = xs.length - 1;
+  while (hi - lo > 1) { const mid = (lo+hi) >>> 1; if (xs[mid] <= x) lo = mid; else hi = mid; }
+  return ys[lo] + (ys[hi]-ys[lo]) * (x-xs[lo]) / (xs[hi]-xs[lo]);
+}
+// Gravação original <-> segundos da partitura (os da prévia), pelas batidas detectadas.
+// mapa: {bt, idx, desloc, bpm} de /api/partitura (cache/sincronia_original.json).
+function originalParaPartitura(t, mapa) { return (interpolar(t, mapa.bt, mapa.idx) + mapa.desloc) * 60 / mapa.bpm; }
+function partituraParaOriginal(s, mapa) { return interpolar(s * mapa.bpm / 60 - mapa.desloc, mapa.idx, mapa.bt); }
+
 class LeitorPartitura {
-  constructor({ area, audio, arquivo, mostrador, seguir, zoom }) {
-    Object.assign(this, { area, audio, arquivo, mostrador, seguir, zoom });
+  constructor({ area, audio, original, arquivo, mostrador, seguir, zoom }) {
+    Object.assign(this, { area, audio, original, arquivo, mostrador, seguir, zoom });
+    this.fonte = audio;  // relógio atual: prévia ou gravação original
     this.abort = new AbortController();
     this.ativos = new Set();
     this.elementos = new Map();
@@ -10,12 +26,20 @@ class LeitorPartitura {
     this.sistema = null;
     this.suspenso = false;
     this.atualizar = this.atualizar.bind(this);
-    this.reproduzir = () => { this.suspenso = false; cancelAnimationFrame(this.raf); this.atualizar(); };
-    this.pausar = () => { cancelAnimationFrame(this.raf); this.raf = null; this.atualizar(false); };
-    this.buscar = () => { this.suspenso = false; this.sistema = null; this.indice = -2; this.atualizar(false); };
+    // Só o relógio atual move a partitura; tocar o outro troca de relógio.
+    this.reproduzir = (e) => {
+      const el = e?.target || this.fonte;
+      if (el === this.original && !this.mapaOriginal) { this.limpar(); return; }
+      this.fonte = el;
+      this.suspenso = false; this.sistema = null; this.indice = -2;
+      cancelAnimationFrame(this.raf); this.atualizar();
+    };
+    this.pausar = (e) => { if (e && e.target !== this.fonte) return; cancelAnimationFrame(this.raf); this.raf = null; this.atualizar(false); };
+    this.buscar = (e) => { if (e && e.target !== this.fonte) return; this.suspenso = false; this.sistema = null; this.indice = -2; this.atualizar(false); };
     this.redimensionar = () => { this.geometria = null; this.sistema = null; this.posicionarCursor(); };
-    for (const [tipo, fn] of [['play',this.reproduzir], ['pause',this.pausar], ['seeked',this.buscar], ['ended',this.pausar]])
-      audio.addEventListener(tipo, fn, { signal: this.abort.signal });
+    for (const el of [audio, original].filter(Boolean))
+      for (const [tipo, fn] of [['play',this.reproduzir], ['pause',this.pausar], ['seeked',this.buscar], ['ended',this.pausar]])
+        el.addEventListener(tipo, fn, { signal: this.abort.signal });
     window.addEventListener('resize', this.redimensionar, { signal: this.abort.signal });
     this.observador = new ResizeObserver(this.redimensionar);
     this.observador.observe(area);
@@ -28,7 +52,9 @@ class LeitorPartitura {
       let el = e.target;
       while (el && el !== area) {
         if (this.inicios && Object.hasOwn(this.inicios, el.id)) {
-          audio.currentTime = this.inicios[el.id];
+          const s = this.inicios[el.id];
+          if (this.fonte === this.original && this.mapaOriginal) this.original.currentTime = partituraParaOriginal(s, this.mapaOriginal);
+          else this.audio.currentTime = s;
           this.buscar();
           return;
         }
@@ -47,6 +73,7 @@ class LeitorPartitura {
       this.quadros = d.quadros;
       this.inicios = d.inicios;
       this.percurso = d.percurso;
+      this.mapaOriginal = d.original || null;
       this.area.innerHTML = d.paginas.map((svg, i) =>
         `<div class="folha-partitura" style="width:${this.zoom.value}%" aria-label="Página ${i+1}">${svg}<div class="cursor-partitura" hidden></div><span class="numero-folha">${i+1} / ${d.paginas.length}</span></div>`).join('');
       for (const el of this.area.querySelectorAll('[id]')) this.elementos.set(el.id, el);
@@ -63,9 +90,15 @@ class LeitorPartitura {
     }
   }
 
+  // Segundos da partitura (= da prévia) no relógio atual.
+  tempo() {
+    if (this.fonte === this.original && this.mapaOriginal) return originalParaPartitura(this.original.currentTime, this.mapaOriginal);
+    return this.audio.currentTime;
+  }
+
   atualizar(agendar = true) {
-    if (this.abort.signal.aborted || !this.quadros) return;
-    const t = this.audio.currentTime;
+    if (this.abort.signal.aborted || !this.quadros || this.suspenso) return;
+    const t = this.tempo();
     let lo = 0, hi = this.quadros.length;
     while (lo < hi) {
       const mid = (lo + hi) >>> 1;
@@ -83,8 +116,10 @@ class LeitorPartitura {
     // A barra segue o relógio do áudio a cada frame, mesmo sem ataques ou notas.
     this.posicionarCursor();
     const formatar = (s) => `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
-    this.mostrador.textContent = `${formatar(t)} / ${formatar(this.audio.duration || this.quadros.at(-1)?.tempo || 0)} · clique numa nota para ir até ela`;
-    if (agendar && !this.audio.paused && !this.audio.ended) {
+    const relogio = this.fonte;
+    const qual = relogio === this.original ? 'gravação original' : 'prévia de piano';
+    this.mostrador.textContent = `${formatar(relogio.currentTime)} / ${formatar(relogio.duration || this.quadros.at(-1)?.tempo || 0)} · ${qual} · clique numa nota para ir até ela`;
+    if (agendar && !relogio.paused && !relogio.ended) {
       cancelAnimationFrame(this.raf);
       this.raf = requestAnimationFrame(this.atualizar);
     }
@@ -126,7 +161,7 @@ class LeitorPartitura {
     if (this.suspenso || !this.percurso) return;
     if (!this.geometria) this.medirPercurso();
     if (!this.geometria.length) return;
-    const t = this.audio.currentTime;
+    const t = this.tempo();
     let lo = 0, hi = this.geometria.length;
     while (lo < hi) {
       const mid = (lo+hi) >>> 1;
@@ -177,3 +212,4 @@ class LeitorPartitura {
   }
 }
 window.LeitorPartitura = LeitorPartitura;
+if (typeof module !== 'undefined') module.exports = { interpolar, originalParaPartitura, partituraParaOriginal };
