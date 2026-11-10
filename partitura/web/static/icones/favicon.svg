@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" role="img" aria-label="Partitura">
+  <defs>
+    <linearGradient id="ouro" x1="7" y1="5" x2="26" y2="27" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#d9a75b"/>
+      <stop offset="1" stop-color="#f0c27f"/>
+    </linearGradient>
+  </defs>
+  <rect x="1" y="1" width="30" height="30" rx="7" fill="#241f1b"/>
+  <path d="M19.2 5.2c-5 3-7.2 6.2-5.7 9.4 1.1 2.5 4.8 2.2 5.3-.3.4-2-1.7-3.6-3.4-2.3-2.2 1.7.5 4.3 1.2 5.9 1.9 4.3-1.1 8.7-4.5 8.2-2.5-.4-2.7-3.7-.5-4.2" stroke="url(#ouro)" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="m19.2 5.2-1.4 18.5M19.5 19.5h6v6.2h-7.3M22.4 19.8v5.5" stroke="url(#ouro)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

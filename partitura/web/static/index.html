@@ -6,41 +6,57 @@
   <title>Partitura</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=8">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎹</text></svg>">
+  <link rel="stylesheet" href="style.css?v=10">
+  <link rel="icon" type="image/svg+xml" href="icones/favicon.svg">
 </head>
 <body>
   <header class="topo">
     <div class="marca">
-      <span class="logo">𝄞</span>
+      <img class="logo" src="icones/logo.svg" alt="" width="44" height="44">
       <div>
         <h1>Partitura</h1>
         <p>música com voz → partitura de piano, com letra</p>
       </div>
     </div>
     <nav class="abas">
-      <button class="aba ativa" data-aba="buscar">Buscar</button>
-      <button class="aba" data-aba="biblioteca">Biblioteca <span id="contBib" class="cont"></span></button>
-      <button class="aba" data-aba="fila">Fila <span id="contFila" class="cont"></span></button>
+      <button class="aba ativa" data-aba="buscar"><svg class="ic" aria-hidden="true"><use href="icones/sprite.svg#i-buscar"/></svg><span>Buscar</span></button>
+      <button class="aba" data-aba="biblioteca"><svg class="ic" aria-hidden="true"><use href="icones/sprite.svg#i-biblioteca"/></svg><span>Biblioteca</span> <span id="contBib" class="cont"></span></button>
+      <button class="aba" data-aba="fila"><svg class="ic" aria-hidden="true"><use href="icones/sprite.svg#i-fila"/></svg><span>Fila</span> <span id="contFila" class="cont"></span></button>
     </nav>
   </header>
 
   <main>
     <!-- BUSCAR -->
     <section id="buscar" class="painel ativo">
-      <form id="formBusca" class="busca">
-        <input id="q" type="search" placeholder="Nome da música ou artista… (ex.: Chega de Saudade Tom Jobim)" autocomplete="off" autofocus>
-        <button type="submit" class="btn primario">Buscar no YouTube</button>
-      </form>
+      <div class="hero" id="hero">
+        <img class="hero-arte" src="icones/vazio-busca.svg" alt="" onerror="this.remove()">
+        <h2>Qual música vamos tocar?</h2>
+        <p class="hero-sub">Busque no YouTube, ouça um trecho e gere a partitura com a letra embaixo das notas.</p>
+        <form id="formBusca" class="busca">
+          <svg class="ic busca-ic" aria-hidden="true"><use href="icones/sprite.svg#i-buscar"/></svg>
+          <input id="q" type="search" placeholder="Música ou artista" autocomplete="off" autofocus aria-label="Música ou artista">
+          <button type="submit" class="btn primario">Buscar</button>
+        </form>
+        <div class="sugestoes" id="sugestoes">
+          <button type="button" data-q="Chega de Saudade Tom Jobim">Chega de Saudade</button>
+          <button type="button" data-q="Garota de Ipanema">Garota de Ipanema</button>
+          <button type="button" data-q="Evidências Chitãozinho e Xororó">Evidências</button>
+          <button type="button" data-q="Hallelujah Leonard Cohen">Hallelujah</button>
+        </div>
+      </div>
       <p id="statusBusca" class="status"></p>
       <div id="resultados" class="resultados"></div>
+      <div id="recentes" class="recentes" hidden>
+        <h3>Na sua biblioteca</h3>
+        <div id="listaRecentes" class="recentes-lista"></div>
+      </div>
     </section>
 
     <!-- BIBLIOTECA -->
     <section id="biblioteca" class="painel">
       <div class="bib">
         <div class="coluna-musicas">
-          <input id="filtroBib" type="search" placeholder="Filtrar por título ou artista" autocomplete="off" aria-label="Filtrar biblioteca">
+          <label class="filtro"><svg class="ic" aria-hidden="true"><use href="icones/sprite.svg#i-filtro"/></svg><input id="filtroBib" type="search" placeholder="Filtrar por título ou artista" autocomplete="off" aria-label="Filtrar biblioteca"></label>
           <aside id="listaMusicas" class="lista-musicas"></aside>
         </div>
         <div id="visor" class="visor vazio">
@@ -51,7 +67,7 @@
 
     <!-- FILA -->
     <section id="fila" class="painel">
-      <div class="jobs-topo"><button type="button" id="limparFila" class="btn pequeno" hidden>Limpar concluídos</button></div>
+      <div class="jobs-topo"><button type="button" id="limparFila" class="btn pequeno discreto" hidden>Limpar concluídos</button></div>
       <div id="listaJobs" class="jobs"></div>
     </section>
   </main>
@@ -88,7 +104,7 @@
       </fieldset>
 
       <fieldset>
-        <legend>Teor gerado</legend>
+        <legend><svg class="ic" aria-hidden="true"><use href="icones/sprite.svg#i-teor"/></svg> Teor gerado</legend>
         <div class="teor">
           <span class="teor-nome">Introdução<small>feita a partir do refrão</small></span>
           <div class="pilulas" role="radiogroup" aria-label="Introdução"><label class="pilula"><input type="radio" name="intro" value="" checked><span>nenhuma</span></label><label class="pilula"><input type="radio" name="intro" value="calma"><span>calma</span></label><label class="pilula"><input type="radio" name="intro" value="lenta"><span>lenta</span></label><label class="pilula"><input type="radio" name="intro" value="emotiva"><span>emotiva</span></label><label class="pilula"><input type="radio" name="intro" value="animada"><span>animada</span></label><label class="pilula"><input type="radio" name="intro" value="epica"><span>épica</span></label></div>
@@ -137,13 +153,13 @@
 
       <div class="dlg-acoes">
         <button type="button" id="gCancelar" class="btn">Cancelar</button>
-        <button type="submit" id="gOk" class="btn primario">Gerar partitura</button>
+        <button type="submit" id="gOk" class="btn primario"><svg class="ic" aria-hidden="true"><use href="icones/sprite.svg#i-gerar"/></svg><span>Gerar partitura</span></button>
       </div>
     </form>
   </dialog>
 
   <audio id="player" preload="none"></audio>
   <script src="partitura.js?v=3"></script>
-  <script src="app.js?v=10"></script>
+  <script src="app.js?v=12"></script>
 </body>
 </html>

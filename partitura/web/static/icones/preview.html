@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ícones — Partitura</title>
+  <style>
+    :root { color-scheme: dark; --fundo:#14110f; --cartao:#241f1b; --borda:#3a322b; --texto:#f1e9df; --ouro:#d9a75b; --suave:#b3a597; }
+    * { box-sizing: border-box; }
+    body { margin:0; padding:36px; background:var(--fundo); color:var(--texto); font:14px/1.45 Inter,system-ui,sans-serif; }
+    main { max-width:1120px; margin:auto; }
+    h1,h2 { font-family:Fraunces,Georgia,serif; } h1 { margin:0 0 8px; font-size:32px; } h2 { margin:36px 0 14px; color:#f0c27f; }
+    .intro { margin:0; color:var(--suave); }
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(155px,1fr)); gap:12px; }
+    .item,.marca { border:1px solid var(--borda); background:var(--cartao); border-radius:12px; }
+    .item { min-height:112px; padding:14px; display:grid; grid-template-columns:1fr 1fr; align-items:center; text-align:center; color:var(--ouro); }
+    .item svg { margin:auto; } .s20 { width:20px;height:20px; } .s32 { width:32px;height:32px; }
+    .item span { grid-column:1/-1; color:var(--suave); font-size:12px; margin-top:10px; }
+    .marcas { display:flex; flex-wrap:wrap; gap:14px; align-items:stretch; }
+    .marca { padding:20px; min-width:150px; display:grid; place-items:center; gap:10px; color:var(--suave); }
+    .marca img { display:block; } .vazio { flex:1 1 300px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Partitura — conjunto de ícones</h1>
+  <p class="intro">Cada símbolo é exibido em 20 px e 32 px.</p>
+  <h2>Interface</h2>
+  <div class="grid" id="grade"></div>
+  <h2>Marca e estado vazio</h2>
+  <div class="marcas">
+    <div class="marca"><img src="logo.svg" width="64" height="64" alt="Logo Partitura"><span>logo.svg · 64 px</span></div>
+    <div class="marca"><img src="logo.svg" width="28" height="28" alt="Logo Partitura em 28 px"><span>logo.svg · 28 px</span></div>
+    <div class="marca"><img src="favicon.svg" width="32" height="32" alt="Favicon Partitura"><span>favicon.svg · 32 px</span></div>
+    <div class="marca"><img src="favicon.svg" width="16" height="16" alt="Favicon Partitura em 16 px"><span>favicon.svg · 16 px</span></div>
+    <div class="marca vazio"><img src="vazio-busca.svg" width="240" height="160" alt="Ilustração de busca vazia"><span>vazio-busca.svg · 240 × 160 px</span></div>
+  </div>
+</main>
+<script>
+  const nomes = ['buscar','tocar','pausar','carregando','piano','fone','biblioteca','fila','gerar','baixar','pdf','musicxml','variacao','ok','erro','filtro','fechar','relogio','letra','teor'];
+  document.querySelector('#grade').innerHTML = nomes.map(nome => `
+    <div class="item">
+      <svg class="s20" aria-hidden="true"><use href="sprite.svg#i-${nome}"></use></svg>
+      <svg class="s32" aria-hidden="true"><use href="sprite.svg#i-${nome}"></use></svg>
+      <span>i-${nome}</span>
+    </div>`).join('');
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Partitura</title>
+  <desc id="desc">Uma clave musical que se transforma em teclas de piano</desc>
+  <defs>
+    <linearGradient id="ouro" x1="14" y1="10" x2="52" y2="55" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#d9a75b"/>
+      <stop offset="1" stop-color="#f0c27f"/>
+    </linearGradient>
+  </defs>
+  <path d="M37.7 8.5c-7.8 4.6-12.1 10.2-12 16.1.1 5.5 4.2 9 9.1 8.2 4.8-.8 7.4-5.7 5.5-9.8-1.5-3.2-5.4-4.8-8.5-3.2-3.9 2-4.3 7.2-1.3 10.8 3.9 4.7 6.1 9.1 4.4 15.5-1.4 5.2-5.5 8.3-10 7.4-4.1-.8-6.4-4.3-5.5-7.7.8-3 4-4.7 6.6-3.5 2.1.9 2.8 3.5 1.6 5.2" stroke="url(#ouro)" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M37.8 8.5 35.1 45" stroke="url(#ouro)" stroke-width="4.6" stroke-linecap="round"/>
+  <path d="M38.8 39.5h14.4v13.2H36.8" stroke="url(#ouro)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M43.6 40v12.1M48.4 40v12.1M43.7 40v6.8M48.5 40v6.8" stroke="url(#ouro)" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

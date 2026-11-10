@@ -34,30 +34,42 @@ $$(".aba").forEach((b) => b.addEventListener("click", () => abrirAba(b.dataset.a
 const player = $("#player");
 let tocandoId = null;
 
+const icone = (nome, cls = "ic") => `<svg class="${cls}" aria-hidden="true"><use href="icones/sprite.svg#i-${nome}"/></svg>`;
+const ICONE_TOCAR = icone("tocar"), ICONE_PAUSAR = icone("pausar"), ICONE_CARREGANDO = icone("carregando");
+
+$$("#sugestoes [data-q]").forEach((b) => b.addEventListener("click", () => {
+  $("#q").value = b.dataset.q;
+  $("#formBusca").requestSubmit();
+}));
+
 $("#formBusca").addEventListener("submit", async (e) => {
   e.preventDefault();
   const q = $("#q").value.trim();
-  if (q.length < 2) return;
-  $("#statusBusca").textContent = "Buscando…";
-  $("#resultados").innerHTML = "";
+  if (q.length < 2) { $("#q").focus(); return; }
+  $("#hero").classList.add("compacto");
+  $("#recentes").hidden = true;
+  $("#statusBusca").textContent = "";
+  $("#resultados").innerHTML = Array.from({ length: 8 }, () => `
+    <article class="res esqueleto" aria-hidden="true"><div class="capa"></div>
+      <div class="info"><div class="linha-esq" style="width:90%"></div><div class="linha-esq" style="width:55%"></div></div></article>`).join("");
   try {
     const r = await fetch(`/api/busca?q=${encodeURIComponent(q)}`);
     const d = await r.json();
     if (!r.ok) throw new Error(d.detail || "erro");
-    $("#statusBusca").textContent = d.resultados.length ? "" : "Nada encontrado.";
+    $("#statusBusca").textContent = d.resultados.length ? "" : "Nada encontrado. Tente com o nome do artista.";
     const jaTem = new Set(musicas.map((m) => m.video_id).filter(Boolean));
-    $("#resultados").innerHTML = d.resultados.map((v) => `
-      <article class="res" data-id="${v.id}">
+    $("#resultados").innerHTML = d.resultados.map((v, i) => `
+      <article class="res" data-id="${esc(v.id)}" style="animation-delay:${i * 40}ms">
         <div class="capa">
-          <img src="${v.thumb}" alt="" loading="lazy">
-          <button class="tocar" title="Ouvir antes">▶</button>
+          <img src="${esc(v.thumb)}" alt="" loading="lazy">
+          ${jaTem.has(v.id) ? `<span class="ja">${icone("ok")}na biblioteca</span>` : ""}
+          <button class="tocar" title="Ouvir um trecho" aria-label="Ouvir um trecho">${ICONE_TOCAR}</button>
           <span class="dur">${dur(v.duracao)}</span>
         </div>
         <div class="info">
-          <h3>${esc(v.titulo_video)}</h3>
+          <h3 title="${esc(v.titulo_video)}">${esc(v.titulo_video)}</h3>
           <span class="canal">${esc(v.canal)}</span>
-          ${jaTem.has(v.id) ? '<span class="ja">✓ já está na biblioteca</span>' : ""}
-          <button class="btn primario gerar">Gerar partitura</button>
+          <button class="btn primario gerar">${icone("gerar")}Gerar partitura</button>
         </div>
       </article>`).join("");
     $$(".res").forEach((el, i) => {
@@ -66,23 +78,46 @@ $("#formBusca").addEventListener("submit", async (e) => {
       $(".gerar", el).addEventListener("click", () => abrirDialogo(v));
     });
   } catch (err) {
+    $("#resultados").innerHTML = "";
     $("#statusBusca").textContent = "Erro na busca: " + err.message;
   }
 });
+// apagar a busca volta para a tela inicial
+$("#q").addEventListener("input", () => {
+  if ($("#q").value) return;
+  $("#hero").classList.remove("compacto");
+  $("#resultados").innerHTML = "";
+  $("#statusBusca").textContent = "";
+  desenharRecentes();
+});
+
+function desenharRecentes() {
+  const lista = musicas.slice(0, 6);
+  $("#recentes").hidden = !lista.length || !!$("#resultados").children.length;
+  $("#listaRecentes").innerHTML = lista.map((m) => `
+    <button type="button" data-pasta="${esc(m.pasta)}">
+      ${m.video_id ? `<img src="https://i.ytimg.com/vi/${esc(m.video_id)}/mqdefault.jpg" alt="">` : '<img alt="">'}
+      <span><b>${esc(m.titulo)}</b><small>${esc(m.artista)}</small></span>
+    </button>`).join("");
+  $$("#listaRecentes [data-pasta]").forEach((b) => b.addEventListener("click", () => {
+    abrirAba("biblioteca");
+    selecionar(b.dataset.pasta);
+  }));
+}
 
 function tocar(id, botao) {
   $("#audioPartitura")?.pause();
   $("#audioOriginal")?.pause();
-  $$(".tocar").forEach((b) => { b.textContent = "▶"; b.classList.remove("carregando"); });
+  $$(".tocar").forEach((b) => { b.innerHTML = ICONE_TOCAR; b.classList.remove("carregando", "tocando"); });
   if (tocandoId === id && !player.paused) { player.pause(); tocandoId = null; return; }
   tocandoId = id;
   botao.classList.add("carregando");
-  botao.textContent = "…";
+  botao.innerHTML = ICONE_CARREGANDO;
   player.src = `/api/previa/${id}`;
-  player.play().then(() => { botao.classList.remove("carregando"); botao.textContent = "❚❚"; })
-    .catch(() => { botao.classList.remove("carregando"); botao.textContent = "!"; });
+  player.play().then(() => { botao.classList.remove("carregando"); botao.classList.add("tocando"); botao.innerHTML = ICONE_PAUSAR; })
+    .catch(() => { botao.classList.remove("carregando"); botao.innerHTML = icone("erro"); });
 }
-player.addEventListener("ended", () => $$(".tocar").forEach((b) => (b.textContent = "▶")));
+player.addEventListener("ended", () => $$(".tocar").forEach((b) => { b.innerHTML = ICONE_TOCAR; b.classList.remove("tocando"); }));
 
 // ------------------------------------------------------------------ diálogo de geração
 let videoAtual = null;
@@ -137,7 +172,7 @@ $("#formGerar").addEventListener("submit", async (e) => {
   const botao = $("#gOk");
   botao.disabled = true;
   botao.textContent = "Enviando…";
-  try { await enviarPedido(); } finally { botao.disabled = false; botao.textContent = "Gerar partitura"; }
+  try { await enviarPedido(); } finally { botao.disabled = false; botao.innerHTML = icone("gerar") + "<span>Gerar partitura</span>"; }
 });
 async function enviarPedido() {
   const niveis = $$('input[name="nivel"]:checked').map((i) => i.value);
@@ -189,7 +224,8 @@ function linhaJob(j) {
     : j.status === "pronto" && j.fim && j.inicio ? ` · levou ${tempoDecorrido(j.fim - j.inicio)}` : "";
   const teores = [["intro", j.introducao], ["final", j.final], ["acomp.", j.acompanhamento]]
     .filter(([, t]) => t).map(([n, t]) => `${n} ${TEOR_NOME[t] || t}`);
-  const estado = j.status === "pronto" ? "✓ Pronto" : j.status === "erro" ? "✗ " + esc(j.etapa) : esc(j.etapa);
+  const estado = j.status === "pronto" ? `${icone("ok")} Pronto` : j.status === "erro" ? `${icone("erro")} ${esc(j.etapa)}`
+    : j.status === "fila" ? `${icone("relogio")} ${esc(j.etapa)}` : esc(j.etapa);
   return `
     <div class="job ${j.status}">
       <div class="cab">
@@ -200,7 +236,7 @@ function linhaJob(j) {
       <div class="cab">
         <span class="etapa tempo">${estado}${j.status === "rodando" ? ` · ${j.progresso}%` : ""}${tempo}</span>
         <span class="acoes">
-          ${j.status === "pronto" ? `<button class="btn pequeno" data-abrir="${esc(j.pasta)}">Abrir partitura</button>` : ""}
+          ${j.status === "pronto" ? `<button class="btn pequeno" data-abrir="${esc(j.pasta)}">${icone("biblioteca")}Abrir partitura</button>` : ""}
           ${j.status === "fila" ? `<button class="btn pequeno discreto" data-tirar="${j.id}">Cancelar</button>` : ""}
           ${j.status === "pronto" || j.status === "erro" ? `<button class="btn pequeno discreto" data-tirar="${j.id}" title="Tirar da lista">Tirar</button>` : ""}
         </span>
@@ -248,6 +284,7 @@ async function carregarMusicas() {
   musicas = d.musicas;
   $("#contBib").textContent = musicas.length ? `(${musicas.length})` : "";
   if (mudou || !$("#listaMusicas").children.length) desenharLista();
+  if (mudou || !$("#listaRecentes").children.length) desenharRecentes();
   if (!selecionada && musicas.length) selecionar(musicas[0].pasta);
 }
 const semAcento = (t) => String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -285,7 +322,7 @@ function desenharVisor() {
   visor.innerHTML = `
     <div class="visor-cab">
       <div><h2>${esc(m.titulo)}</h2><p class="art">${esc(m.artista)}${m.atualizado ? ` <span class="atualizado">· gerada em ${esc(m.atualizado)}</span>` : ""}</p></div>
-      ${(m.introducao || m.final) ? `<button type="button" id="outraVariacao" class="btn pequeno" title="Gera outra introdução/final; a atual fica guardada">Outra variação</button>` : ""}
+      ${(m.introducao || m.final) ? `<button type="button" id="outraVariacao" class="btn pequeno" title="Gera outra introdução/final; a atual fica guardada">${icone("variacao")}Outra variação</button>` : ""}
     </div>
     ${(m.introducao || m.final || m.acompanhamento) ? `<div class="etiquetas">
       ${m.introducao ? `<span class="etiqueta">introdução <b>${TEOR_NOME[m.introducao] || esc(m.introducao)}</b></span>` : ""}
@@ -298,8 +335,8 @@ function desenharVisor() {
       <div class="grupo">${["HibridoAMT", "Hibrido", "Acordes", "Pop2Piano", "AMT-APC"].map((v) => `<button data-versao="${v}" class="${v === escolha.versao ? "ativa" : ""}" ${m.arquivos[escolha.nivel][v] ? "" : "disabled"} title="${PADRAO[escolha.nivel] === v ? "recomendada para este nível" : ""}">${VERSAO_NOME[v]}${PADRAO[escolha.nivel] === v ? " ★" : ""}</button>`).join("")}</div>
     </div>
     <div class="audios">
-      ${item.previa ? `<div><label>🎹 Como soa esta partitura (piano)</label><audio id="audioPartitura" controls preload="metadata" src="${urlArq(item.previa)}"></audio></div>` : ""}
-      ${m.original ? `<div><label>🎧 Gravação original</label><audio id="audioOriginal" controls preload="none" src="${urlArq(m.original)}"></audio></div>` : ""}
+      ${item.previa ? `<div><label>${icone("piano")} Como soa esta partitura (piano)</label><audio id="audioPartitura" controls preload="metadata" src="${urlArq(item.previa)}"></audio></div>` : ""}
+      ${m.original ? `<div><label>${icone("fone")} Gravação original</label><audio id="audioOriginal" controls preload="none" src="${urlArq(m.original)}"></audio></div>` : ""}
     </div>
     ${item.previa ? `<div class="controles-partitura">
       <label><input type="checkbox" id="seguirPartitura" checked> Acompanhar piano</label>
@@ -308,9 +345,9 @@ function desenharVisor() {
     </div><div id="partituraInterativa" class="partitura-interativa" aria-label="Partitura sincronizada com o piano"><p>Carregando notas…</p></div>` : ""}
     ${item.pdf ? `<details class="pdf-alternativo" ${item.previa ? "" : "open"}><summary>Ver PDF estático</summary><iframe loading="lazy" title="PDF da partitura" class="pdf" src="${urlArq(item.pdf)}#view=FitH"></iframe></details>` : "<p>Sem PDF para esta combinação.</p>"}
     <div class="links">
-      ${item.pdf ? `<a href="${urlArq(item.pdf)}" target="_blank">abrir PDF em nova aba</a>` : ""}
+      ${item.pdf ? `<a href="${urlArq(item.pdf)}" target="_blank">${icone("pdf")}abrir PDF em nova aba</a>` : ""}
       ${m.editaveis.filter((e) => e.includes(`${escolha.versao} - ${{ facil: "Facil", medio: "Medio", dificil: "Dificil" }[escolha.nivel]}`))
-        .map((e) => `<a href="${urlArq(e)}" download>baixar MusicXML (MuseScore)</a>`).join("")}
+        .map((e) => `<a href="${urlArq(e)}" download>${icone("musicxml")}baixar MusicXML (MuseScore)</a>`).join("")}
     </div>`;
   const audio = $("#audioPartitura", visor), original = $("#audioOriginal", visor);
   if (audio) {
