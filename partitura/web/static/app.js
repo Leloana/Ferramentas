@@ -2,6 +2,8 @@
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const NIVEL_NOME = { facil: "Fácil", medio: "Médio", dificil: "Difícil" };
+// versão recomendada por nível (analisar.py: tocabilidade + coerência com a harmonia, 7 músicas)
+const PADRAO = { facil: "Acordes", medio: "HibridoAMT", dificil: "AMT-APC" };
 const VERSAO_NOME = { HibridoAMT: "Híbrido (AMT)", Hibrido: "Híbrido (Pop2Piano)", Acordes: "Acordes", Pop2Piano: "Pop2Piano", "AMT-APC": "AMT-APC" };
 const esc = (t) => String(t ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const urlArq = (rel) => "/arquivos/" + rel.split("/").map(encodeURIComponent).join("/");
@@ -192,7 +194,7 @@ function desenharVisor() {
     <p class="art">${esc(m.artista)}</p>
     <div class="seletor">
       <div class="grupo">${["facil", "medio", "dificil"].map((n) => `<button data-nivel="${n}" class="${n === escolha.nivel ? "ativa" : ""}" ${m.arquivos[n] ? "" : "disabled"}>${NIVEL_NOME[n]}</button>`).join("")}</div>
-      <div class="grupo">${["HibridoAMT", "Hibrido", "Acordes", "Pop2Piano", "AMT-APC"].map((v) => `<button data-versao="${v}" class="${v === escolha.versao ? "ativa" : ""}" ${m.arquivos[escolha.nivel][v] ? "" : "disabled"}>${VERSAO_NOME[v]}</button>`).join("")}</div>
+      <div class="grupo">${["HibridoAMT", "Hibrido", "Acordes", "Pop2Piano", "AMT-APC"].map((v) => `<button data-versao="${v}" class="${v === escolha.versao ? "ativa" : ""}" ${m.arquivos[escolha.nivel][v] ? "" : "disabled"} title="${PADRAO[escolha.nivel] === v ? "recomendada para este nível" : ""}">${VERSAO_NOME[v]}${PADRAO[escolha.nivel] === v ? " ★" : ""}</button>`).join("")}</div>
     </div>
     <div class="audios">
       ${item.previa ? `<div><label>🎹 Como soa esta partitura (piano)</label><audio controls preload="none" src="${urlArq(item.previa)}"></audio></div>` : ""}
@@ -204,7 +206,12 @@ function desenharVisor() {
       ${m.editaveis.filter((e) => e.includes(`${escolha.versao} - ${{ facil: "Facil", medio: "Medio", dificil: "Dificil" }[escolha.nivel]}`))
         .map((e) => `<a href="${urlArq(e)}" download>baixar MusicXML (MuseScore)</a>`).join("")}
     </div>`;
-  $$("[data-nivel]", visor).forEach((b) => b.addEventListener("click", () => { escolha.nivel = b.dataset.nivel; desenharVisor(); }));
+  $$("[data-nivel]", visor).forEach((b) => b.addEventListener("click", () => {
+    escolha.nivel = b.dataset.nivel;
+    // ao trocar de nível, vai pra versão recomendada dele (análise de 7 músicas, ver README)
+    if (m.arquivos[escolha.nivel]?.[PADRAO[escolha.nivel]]) escolha.versao = PADRAO[escolha.nivel];
+    desenharVisor();
+  }));
   $$("[data-versao]", visor).forEach((b) => b.addEventListener("click", () => { escolha.versao = b.dataset.versao; desenharVisor(); }));
 }
 

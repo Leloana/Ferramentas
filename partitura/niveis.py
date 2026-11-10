@@ -60,7 +60,10 @@ def mao_esquerda_acordes(acs, nivel, fim, tipos, janela=2):
         tons = [(r + ints[1]) % 12, (r + ints[-1]) % 12] if len(ints) == 4 else [(r + x) % 12 for x in ints[1:]]
         sup = sorted(52 + (pc - 4) % 12 for pc in tons)
         if nivel == "medio":
-            ev.append((j, janela, [raiz] + sup))
+            # acorde fechado dentro de 1 oitava (baixo entre G2 e F#3 + 3ª/7ª logo acima): a análise mostrou
+            # 64% de aberturas > oitava no voicing antigo (baixo e 3ª/7ª em oitavas separadas)
+            baixo = 43 + (r - 7) % 12
+            ev.append((j, janela, [baixo] + sorted(baixo + (pc - baixo) % 12 for pc in tons)))
         else:  # difícil: baixo no 1, acorde no 2 (padrão de "comping")
             ev.append((j, 1, [raiz]))
             ev.append((j + 1, janela - 1, sup + ([raiz + 19] if len(ints) == 3 else [])))

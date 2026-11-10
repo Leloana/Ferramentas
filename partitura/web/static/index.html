@@ -6,7 +6,7 @@
   <title>Partitura</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css?v=4">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎹</text></svg>">
 </head>
 <body>
@@ -67,9 +67,9 @@
       <fieldset>
         <legend>Dificuldade</legend>
         <div class="opcoes">
-          <label class="op"><input type="checkbox" name="nivel" value="facil"><span><b>Fácil</b><small>semínimas, só o baixo, tom sem acidentes</small></span></label>
+          <label class="op"><input type="checkbox" name="nivel" value="facil" checked><span><b>Fácil</b><small>semínimas, só o baixo, tom sem acidentes</small></span></label>
           <label class="op"><input type="checkbox" name="nivel" value="medio" checked><span><b>Médio</b><small>colcheias, baixo + 3ª e 7ª</small></span></label>
-          <label class="op"><input type="checkbox" name="nivel" value="dificil"><span><b>Difícil</b><small>semicolcheias, acompanhamento completo</small></span></label>
+          <label class="op"><input type="checkbox" name="nivel" value="dificil" checked><span><b>Difícil</b><small>semicolcheias, acompanhamento completo</small></span></label>
         </div>
       </fieldset>
 
@@ -79,7 +79,7 @@
           <label class="op"><input type="checkbox" name="versao" value="Hibrido" checked><span><b>Híbrido</b><small>melodia cantada + acompanhamento da IA</small></span></label>
           <label class="op"><input type="checkbox" name="versao" value="Acordes" checked><span><b>Acordes</b><small>melodia cantada + acordes em bloco</small></span></label>
           <label class="op"><input type="checkbox" name="versao" value="Pop2Piano"><span><b>Pop2Piano</b><small>arranjo completo da IA, sem letra</small></span></label>
-          <label class="op"><input type="checkbox" name="versao" value="AMT-APC"><span><b>AMT-APC</b><small>outra IA de arranjo (2024), sem letra. Com Híbrido marcado, gera também o Híbrido (AMT)</small></span></label>
+          <label class="op"><input type="checkbox" name="versao" value="AMT-APC" checked><span><b>AMT-APC</b><small>outra IA de arranjo (2024), sem letra. Com Híbrido marcado, gera também o Híbrido (AMT)</small></span></label>
         </div>
       </fieldset>
 
@@ -100,6 +100,6 @@
   </dialog>
 
   <audio id="player" preload="none"></audio>
-  <script src="app.js?v=3"></script>
+  <script src="app.js?v=4"></script>
 </body>
 </html>
