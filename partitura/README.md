@@ -141,6 +141,19 @@ transcrição), com a altura dos quadros do detector aceitando confiança menor,
 pra oitava das vizinhas quando o desvio é de oitava; sem altura confiável, a da nota
 seguinte. Nunca sobrepõe nota existente. Criadas e recusadas em `cache/palavras_sem_nota_<nivel>.json`.
 
+### Introdução gerada (`--introducao calma|lenta|emotiva|animada|epica`)
+
+Acrescenta antes da música uma introdução que **não existe na gravação**: feita do refrão
+(frase cuja letra mais se repete; sem letra, o desenho melódico que mais se repete), com
+os acordes dele, na textura do teor escolhido (calma: acordes abertos sustentados; lenta:
+motivo com durações dobradas; emotiva: arpejo e apojatura na cadência; animada: baixo e
+acorde alternados, registro mais agudo; épica: baixo em oitavas, acordes em bloco, motivo
+dobrado). Fácil: uma nota por mão, 4 compassos; médio: padrões simples, 4 compassos;
+difícil: arpejos e dobramentos, 8 compassos. Termina na dominante do primeiro acorde da
+música. A partitura marca "Introdução gerada (teor)" e "Música". `--variacao N` dá outra
+versão controlada (origem do motivo, registro, sentido do arpejo). Parâmetros em
+`cache/introducao_<nivel>.json`. Na interface: campo "Introdução gerada" no pedido.
+
 ### Mãos tocáveis e dedilhado
 
 Antes de montar a partitura, `maos.py` confere cada mão ao longo do tempo com um

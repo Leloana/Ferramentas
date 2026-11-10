@@ -120,6 +120,7 @@ async function enviarPedido() {
     niveis: niveis.length ? niveis : ["medio"], versoes: versoes.length ? versoes : ["Hibrido"],
     idioma: $("#gIdioma").value,
     estilo: Number($("#gEstilo").value),
+    introducao: $("#gIntro").value,
   };
   let r;
   try {

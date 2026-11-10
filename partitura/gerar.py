@@ -327,6 +327,22 @@ def nomes_para(sustenidos: int) -> list[str]:
     return NOMES_PC_SUST if sustenidos >= 3 else NOMES_PC
 
 
+def com_introducao(md, me, cf, intro, k=0):
+    """Põe a introdução gerada nos compassos antes da música. intro = gerar_introducao(...);
+    k = transposição já aplicada à música. Devolve (md, me, cifras, marcas)."""
+    from introducao import NOME_TEOR
+    i_md, i_me, i_cf, info = intro
+    inicio = 4.0 * np.floor(min(e[0] for e in list(md) + list(me)) / 4)   # 1º compasso da música
+    L = 4.0 * info["compassos"]
+    md = [(o + inicio - L, d, [p + k for p in ps], *r) for o, d, ps, *r in i_md] + list(md)
+    me = [(o + inicio - L, d, [p + k for p in ps]) for o, d, ps in i_me] + list(me)
+    cf = [(o + inicio - L, (r + k) % 12, t) for o, r, t in i_cf] + [c for c in cf if c[0] >= inicio - 1e-6]
+    marcas = [(inicio - L, "texto", f"Introdução gerada ({NOME_TEOR[info['teor']]})"),
+              (inicio - L, "dinamica", info["dinamica"]),
+              (inicio, "texto", "Música"), (inicio, "dinamica", "mf")]
+    return md, me, cf, marcas
+
+
 def deslocamento(md_ev, me_ev) -> float:
     """Tempos somados aos offsets pra partitura começar num compasso inteiro."""
     return float(-np.floor(min(e[0] for e in list(md_ev) + list(me_ev)) / 4) * 4)
@@ -352,11 +368,12 @@ def registrar_sincronia(base: Path, versao_nivel: str, grade, desloc: float):
 
 
 def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: str, uma_armadura=False,
-                     dedos_md=None, dedos_me=None):
+                     dedos_md=None, dedos_me=None, marcas=()):
     """md_ev / me_ev: (offset_em_tempos, duração, [midis]) sem sobreposição dentro da mão.
-    cifras: (offset, root_pc, tipo). dedos_md/me: por evento, dedos na ordem de sorted(ps) ou None."""
-    from music21 import (articulations, chord, clef, harmony, key, layout, meter, metadata, note, pitch,
-                         stream, tempo)
+    cifras: (offset, root_pc, tipo). dedos_md/me: por evento, dedos na ordem de sorted(ps) ou None.
+    marcas: (offset, "texto"|"dinamica", valor) na pauta de cima (ex.: "Introdução gerada", "p")."""
+    from music21 import (articulations, chord, clef, dynamics, expressions, harmony, key, layout, meter,
+                         metadata, note, pitch, stream, tempo)
 
     tudo = md_ev + me_ev
     if not tudo:
@@ -425,6 +442,16 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
             if resto and resto[0]:
                 el.addLyric(resto[0])  # "tris-" / "-te-" / "-za" viram sílabas ligadas
             parte.insert(o, el)
+
+    for off, tipo_marca, valor in marcas:
+        o = off + desloc
+        if tipo_marca == "dinamica":
+            md.insert(o, dynamics.Dynamic(valor))
+            me.insert(o, dynamics.Dynamic(valor))
+        else:
+            te = expressions.TextExpression(valor)
+            te.placement = "above"
+            md.insert(o, te)
 
     simbolos = []
     for off, r, tipo in cifras:
@@ -737,6 +764,9 @@ def main():
                     help="números dos dedos na partitura (auto: todos no fácil, só nas mudanças de posição no resto)")
     ap.add_argument("--sem-maos", action="store_true",
                     help="não corrige trechos que a mão não alcança (só calcula os dedos)")
+    ap.add_argument("--introducao", default=None, choices=("calma", "lenta", "emotiva", "animada", "epica"),
+                    help="acrescenta uma introdução gerada (não existe na gravação) com esse teor, feita do refrão")
+    ap.add_argument("--variacao", type=int, default=0, help="outra versão da introdução gerada (0 = padrão)")
     ap.add_argument("--sem-transpor", action="store_true", help="no nível fácil, não transpõe pra tom sem acidentes")
     args = ap.parse_args()
     global SR_GRADE
@@ -910,12 +940,27 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
     if k:
         sub += f" (transposto {k:+d} semitons)"
         print(f"[nível] transposto {k:+d} semitons pra tom sem acidentes")
+    intro = None
+    teor = getattr(args, "introducao", None)
+    if teor:  # introdução gerada (não existe na gravação), a mesma pra todas as versões do nível
+        from introducao import gerar_introducao, NOME_TEOR
+        inicio_canto = min(e[0] for e in md_ev)
+        intro = gerar_introducao(md_ev, acs, TIPOS, nivel, teor, inicio_musica=inicio_canto,
+                                 semente=titulo, variacao=getattr(args, "variacao", 0))
+        info = intro[3]
+        print(f"[introducao] {NOME_TEOR[teor]}, {info['compassos']} compassos, motivo de {info['refrao']}")
+        (base / "cache").mkdir(parents=True, exist_ok=True)
+        (base / "cache" / f"introducao_{nivel}.json").write_text(json.dumps(info, ensure_ascii=False), encoding="utf-8")
+        sub += f" · introdução gerada ({NOME_TEOR[teor]})"
     for versao, (md, me) in versoes.items():
         cf = cifras
         if k:
             md = [(o, d, [p + k for p in ps], *r) for o, d, ps, *r in md]
             me = [(o, d, [p + k for p in ps], *r) for o, d, ps, *r in me]
             cf = [(o, (r + k) % 12, t) for o, r, t in cifras]
+        marcas = []
+        if intro:
+            md, me, cf, marcas = com_introducao(md, me, cf, intro, k)
         # acompanhamento a um semitom da nota cantada forte: tira essa voz (o baixo fica)
         melodia_k = [(o, d, [p + k for p in ps]) for o, d, ps, *_ in md_ev]
         me, mud_choques = tirar_choques(melodia_k, me)
@@ -940,7 +985,7 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
             if modo_dedos == "nenhum":
                 dmd = dme = None
         sc, arm = montar_partitura(md, me, cf, bpm, titulo, sub, uma_armadura=(nivel == "facil"),
-                                   dedos_md=dmd, dedos_me=dme)
+                                   dedos_md=dmd, dedos_me=dme, marcas=marcas)
         print(f"[{versao}] armadura: {arm}")
         salvar_versao(sc, base, f"{versao} - {NOME[nivel]}")
         registrar_sincronia(base, f"{versao} - {NOME[nivel]}", grade, deslocamento(md, me))

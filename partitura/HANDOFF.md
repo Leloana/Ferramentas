@@ -498,3 +498,21 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
 - Nos exemplos: só Garota dispara (Dó cantado sobre Sol7M, sai o Si da esquerda nos
   compassos 2-3). `test_harmonia.py` (12). Suíte 72 OK.
 
+## 22. Introdução gerada por teor — 2026-11-10
+
+- Pedido do usuário: introdução sintética (não é a da música), com teor escolhido (animada,
+  épica, calma, lenta, emotiva), baseada na música (notas do refrão) e diferente por nível.
+  Frente 2 / 4.1 da PROXIMA_ETAPA.
+- `introducao.py`: refrão por letra repetida -> desenho melódico repetido -> 1ª frase longa;
+  motivo de até 2 compassos alinhado ao compasso (anacruse no lugar) com os acordes
+  detectados; teor define textura/registro/aumento/dinâmica; nível define densidade e
+  tamanho (4/4/8 compassos); cadência na dominante do 1º acorde da música (emotiva: IV ->
+  V com 4ª-3ª). Determinístico; `variacao` troca origem do motivo/registro/arpejo.
+- `gerar.com_introducao` põe a introdução nos compassos antes da música (offsets negativos;
+  `deslocamento` e a sincronia com o original já tratam: a introdução não tem
+  correspondência na gravação). `montar_partitura(..., marcas=)` escreve texto e dinâmica.
+  A introdução passa por harmonia/mãos/dedos como o resto (não é protegida).
+- CLI `--introducao`, `--variacao`; web: campo "Introdução gerada" (servidor valida).
+- `test_introducao.py` (5) com a Ode à Alegria (domínio público). Suíte 77 OK.
+  Dinâmica não muda o volume da prévia (MIDI com velocidade fixa) — fica só escrita.
+
