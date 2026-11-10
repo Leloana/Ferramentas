@@ -562,5 +562,9 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
   (cache versão 9) e nas páginas de comparação.
 - Testes em `test_maos.py` (8va e dedos). Suíte 82 OK.- Achado na conferência: cifra que cai no meio de uma nota da direita fazia o music21
   criar uma 2ª voz só de pausas (pausas soltas embaixo das notas). Cifras agora entram
-  depois do makeNotation, direto no compasso. Vale pra todas as partituras.
+  depois do makeNotation, direto no compasso. Vale pra todas as partituras.- Pedal: o "Ped. *" sobrepunha o asterisco de soltar e o Ped. seguinte a cada troca.
+  Agora é linha de pedal (colchete), um por acorde, terminando na nota que abre o trecho
+  seguinte: os colchetes encadeados viram a linha com entalhe em cada troca. O `change`
+  do MusicXML não é desenhado pelo Verovio (só o 1º colchete aparece), por isso o encadeamento.
+  A prévia solta o pedal na troca (`PedalMark.fim_q`), não no fim da nota seguinte.
 

@@ -434,11 +434,20 @@ def _marcas_nas_notas(sc, marcas, desloc):
                     if abs(float(n.getOffsetInHierarchy(parte)) - o) < 1e-6:
                         n.expressions.append(expressions.Fermata())
         elif tipo == "pedal" and len(partes) > 1:
+            # linha de pedal (colchete). Termina na nota que abre o trecho seguinte: os colchetes
+            # encadeados formam a linha com um entalhe em cada troca. Com "Ped. *" o asterisco
+            # de soltar e o Ped. seguinte caíam um em cima do outro.
             esq = partes[1]
-            ns = [n for n in esq.recurse().notes
-                  if o - 1e-6 <= float(n.getOffsetInHierarchy(esq)) < valor + desloc - 1e-6]
-            if ns:
-                esq.insert(0, expressions.PedalMark(ns[0], ns[-1]))
+            todas = [(float(n.getOffsetInHierarchy(esq)), n) for n in esq.recurse().notes]
+            fim = valor + desloc
+            dentro = [n for t, n in todas if o - 1e-6 <= t < fim - 1e-6]
+            if not dentro:
+                continue
+            depois = [n for t, n in todas if abs(t - fim) < 1e-6]
+            pm = expressions.PedalMark(dentro[0], depois[0] if depois else dentro[-1])
+            pm.pedalForm = expressions.PedalForm.Line
+            pm.fim_q = fim          # pra prévia soltar o pedal na troca, não no fim da nota
+            esq.insert(0, pm)
 
 
 def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: str, uma_armadura=False,
@@ -690,7 +699,9 @@ def salvar_midi_notas(sc, destino: Path, xml: Path | None = None):
         if not ns_:
             continue
         ini_=float(ns_[0].getOffsetInHierarchy(sc))*60/bpm
-        fim_=(float(ns_[-1].getOffsetInHierarchy(sc))+float(ns_[-1].quarterLength))*60/bpm
+        fim_q=getattr(pm_,'fim_q',None)
+        fim_=(fim_q if fim_q is not None else
+              float(ns_[-1].getOffsetInHierarchy(sc))+float(ns_[-1].quarterLength))*60/bpm
         for inst in instrumentos.values():
             inst.control_changes.append(pretty_midi.ControlChange(64,127,ini_+.01))
             inst.control_changes.append(pretty_midi.ControlChange(64,0,max(ini_+.02,fim_-.02)))
