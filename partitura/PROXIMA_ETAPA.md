@@ -428,7 +428,8 @@ tem bastante vazamento e artefatos, e o modelo é mais lento que o `htdemucs`.
 conferidos sem piorar o controle, e se a avaliação cega preferir; senão fica como opção
 (`--seis-faixas`) ou é descartado, com o resultado registrado aqui.
 
-**Implementação prevista (pequena):** opção na linha de comando pra escolher o modelo; em
-`separar()` o nome da pasta muda com o modelo; em `main()`, se houver `guitar.wav` e
-`piano.wav`, a harmonia de `acordes()` passa a ser guitarra + piano (+ "resto" com peso
-menor) em vez de só "resto".
+**Pronto pra rodar (2026-11-10):** `gerar.py --separador htdemucs_6s` (acordes com
+guitarra + piano + 0,5 × resto quando as faixas existem) e
+`python experimento_6faixas.py entrada\a.wav entrada\b.wav [--referencias pasta]`
+(referência: `<pasta>/<nome>.csv` com linhas `inicio_s,fim_s,acorde`, ex. `12.5,14.0,Am7`),
+que gera relatório, JSON e página em `trabalho/experimento_6faixas/`.

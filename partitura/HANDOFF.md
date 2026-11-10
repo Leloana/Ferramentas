@@ -595,3 +595,12 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
 - Notado: a cifra G7 do compasso 23 da Ode saiu perto da pauta de baixo (compasso só com
   pausas na direita); ver depois.
 
+## 27. Métricas pesquisadas e 6 faixas pronto pra testar — 2026-11-10
+
+- `METRICAS_VALIDACAO.md`: pesquisa (subagente, web) de métricas sem LLM pra validar as
+  partituras, priorizadas: Qmax/DTW da prévia × original, MCA e F1 via mir_eval, tensão do
+  spiral array (pacote partitura), descritores de dificuldade do RubricNet, dissonância
+  sensorial, 2º modelo de dedilhado, ritmo (LHL, RGC/IPE, groove), MGEval.
+- `gerar.py --separador htdemucs_6s` + `gerar.harmonia_das_faixas`; `experimento_6faixas.py`
+  com testes das contas (`test_experimento_6faixas.py`). Rodar na Windows (PROXIMA_ETAPA §12).
+

@@ -52,15 +52,29 @@ def carregar(path: Path, sr: int) -> np.ndarray:
     return y
 
 
-def separar(audio: Path, trabalho: Path) -> Path:
-    destino = trabalho / "htdemucs" / audio.stem
+def separar(audio: Path, trabalho: Path, modelo: str = "htdemucs") -> Path:
+    """Faixas do Demucs. htdemucs: voz/bateria/baixo/resto; htdemucs_6s também guitarra e
+    piano (o piano vaza bastante, segundo o próprio Demucs; ver PROXIMA_ETAPA §12)."""
+    destino = trabalho / modelo / audio.stem
     if (destino / "vocals.wav").exists():
         print(f"[demucs] já separado: {destino}")
         return destino
-    print("[demucs] separando faixas...")
-    subprocess.run([sys.executable, "-m", "demucs", "-n", "htdemucs", "-d", "cuda",
+    print(f"[demucs] separando faixas ({modelo})...")
+    subprocess.run([sys.executable, "-m", "demucs", "-n", modelo, "-d", "cuda",
                     "-o", str(trabalho), str(audio)], check=True)
     return destino
+
+
+def harmonia_das_faixas(stems: Path, sr: int):
+    """Sinal usado pra detectar acordes: guitarra + piano (+ resto mais fraco) quando a
+    separação tem 6 faixas; senão o "resto" de sempre. Devolve (sinal, descrição)."""
+    resto = carregar(stems / "other.wav", sr)
+    if (stems / "guitar.wav").exists() and (stems / "piano.wav").exists():
+        guitarra = carregar(stems / "guitar.wav", sr)
+        piano = carregar(stems / "piano.wav", sr)
+        n = min(len(resto), len(guitarra), len(piano))
+        return guitarra[:n] + piano[:n] + .5 * resto[:n], "guitarra + piano + 0,5 x resto"
+    return resto, "resto"
 
 
 # ----------------------------------------------------------------------------- batidas
@@ -1038,6 +1052,8 @@ def main():
                     help="acrescenta uma introdução gerada (não existe na gravação) com esse teor, feita do refrão")
     ap.add_argument("--final", default=None, choices=("calma", "lenta", "emotiva", "animada", "epica"),
                     help="acrescenta um final gerado (não existe na gravação) com esse teor")
+    ap.add_argument("--separador", default="htdemucs", choices=("htdemucs", "htdemucs_6s"),
+                    help="modelo do Demucs; htdemucs_6s separa também guitarra e piano (acordes com eles)")
     ap.add_argument("--reusar-cache", action="store_true",
                     help="usa a transcrição guardada (cache/transcricao.json) e só escreve as partituras de novo")
     ap.add_argument("--variacao", type=int, default=0, help="outra versão da introdução gerada (0 = padrão)")
@@ -1084,10 +1100,10 @@ def main():
               f"{len(palavras)} palavras (sem separar nem transcrever de novo)")
     else:
         if karaoke:  # voz já separada pelo karaokê; Demucs só no acompanhamento (baixo/bateria/resto)
-            stems = separar(karaoke["acompanhamento"], AQUI / "trabalho")
+            stems = separar(karaoke["acompanhamento"], AQUI / "trabalho", args.separador)
             voz_wav = karaoke["voz"]
         else:
-            stems = separar(audio, AQUI / "trabalho")
+            stems = separar(audio, AQUI / "trabalho", args.separador)
             voz_wav = stems / "vocals.wav"
         sr = 22050
         mix = carregar(audio, sr)
@@ -1111,7 +1127,10 @@ def main():
         print(f"[melodia] {len(notas)} notas detectadas")
 
         print("[acordes] detectando harmonia...")
-        acs = acordes(resto + 0.3 * baixo, baixo, sr, grade)
+        harm, fonte_harm = harmonia_das_faixas(stems, sr)
+        n_ = min(len(harm), len(baixo))
+        print(f"[acordes] harmonia de: {fonte_harm}")
+        acs = acordes(harm[:n_] + 0.3 * baixo[:n_], baixo, sr, grade)
 
         palavras = []
         origem_letra, rel_alinhamento = None, None
@@ -1145,7 +1164,7 @@ def main():
         transcricao=dict(audio=str(audio),audio_tamanho=audio.stat().st_size,
             audio_mtime_ns=audio.stat().st_mtime_ns,bt=bt.tolist(),fase=fase,bpm=float(bpm),
             notas=notas,diagnostico=diagnostico,acordes=acs,palavras=palavras,idioma=args.idioma,
-            origem_letra=origem_letra,alinhamento=rel_alinhamento)
+            origem_letra=origem_letra,alinhamento=rel_alinhamento,separador=args.separador)
         (cache/'transcricao.json').write_text(json.dumps(transcricao,ensure_ascii=False,
             default=lambda v:v.item()),encoding='utf-8')
     for nivel in niveis:
