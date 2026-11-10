@@ -604,3 +604,20 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
 - `gerar.py --separador htdemucs_6s` + `gerar.harmonia_das_faixas`; `experimento_6faixas.py`
   com testes das contas (`test_experimento_6faixas.py`). Rodar na Windows (PROXIMA_ETAPA §12).
 
+## 28. Validação da biblioteca num comando — 2026-11-10
+
+- `metricas.py`: fidelidade (Qmax de recorrência cruzada + desvio do DTW, prévia × original,
+  cortando introdução/final), melodia (MCA e F1 via mir_eval contra a voz do cache),
+  dificuldade por mão (descritores do RubricNet, só no corpo da música), grave embolado
+  (low interval limits), groove da esquerda, tensão do spiral array se `partitura` instalado.
+- `comparacao_cega.py`: página às cegas antes × depois com trechos reais (alinha os lados
+  pela melodia cantada, acha os 4 compassos que mais mudaram, recorta, desenha sem dedos,
+  toca com o piano das prévias).
+- `validar_biblioteca.py`: antes (cópia + métricas) → regenerar (mesmos níveis/versões;
+  `--rapido` usa o cache; argumentos depois de `--` vão pro gerar.py) → depois →
+  relatorio.md (média por versão/nível e quebra de monotonia fácil<médio<difícil) → página.
+  Testado de ponta a ponta aqui com a Ode. `test_metricas.py`. Suíte 90 OK.
+- Achado: a correção das mãos (fechar o acorde pra caber) aumenta o grave embolado
+  (terças abaixo de Dó3) na versão Acordes; na Ode, difícil 40/min com correção × 9/min sem.
+  Próximo passo: fechar o acorde num registro acima do limite, com teste às cegas.
+

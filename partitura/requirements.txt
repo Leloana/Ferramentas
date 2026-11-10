@@ -15,3 +15,5 @@ pyphen
 Unidecode
 RapidFuzz
 Metaphone
+# validação (metricas.py): mir_eval; opcional: partitura (tensão tonal)
+mir_eval
