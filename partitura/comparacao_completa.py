@@ -56,15 +56,19 @@ def montar(lados: dict, saida: Path, niveis=("Facil", "Medio", "Dificil"), verso
     saida.mkdir(parents=True)
     rnd = random.Random(semente)
     rotulos = list(lados)
+    # "pasta|Versao": esse lado usa outra versão (ex.: HibridoAMT × HibridoGravado da mesma biblioteca)
+    versao_lado = {r: (str(lados[r]).split("|", 1) + [None])[1] for r in rotulos}
+    lados = {r: str(lados[r]).split("|", 1)[0] for r in rotulos}
     ref = Path(lados[rotulos[0]])
     casos, sem = [], []
-    for pasta_ref in sorted(p for p in ref.iterdir() if p.is_dir()):
+    for pasta_ref in sorted(p for p in ref.iterdir() if p.is_dir() and not p.name.startswith("pagina")):
         musica = pasta_ref.name
         if musicas and musica not in musicas:
             continue
         for nivel in niveis:
             vn = f"{versoes[nivel]} - {nivel}"
-            arqs = {r: (Path(lados[r]) / musica / f"{vn} - previa.mp3", Path(lados[r]) / musica / f"{vn}.pdf")
+            vns = {r: f"{versao_lado[r]} - {nivel}" if versao_lado[r] else vn for r in rotulos}
+            arqs = {r: (Path(lados[r]) / musica / f"{vns[r]} - previa.mp3", Path(lados[r]) / musica / f"{vns[r]}.pdf")
                     for r in rotulos}
             if not all(m.exists() and p.exists() for m, p in arqs.values()):
                 sem.append(f"{musica} · {vn} (falta arquivo)")
@@ -84,7 +88,7 @@ def montar(lados: dict, saida: Path, niveis=("Facil", "Medio", "Dificil"), verso
                 _ligar(pdf, pasta / f"{letra}.pdf")
                 opcoes.append(dict(id=r, rotulo=r, letra=letra, mp3=f"{pasta.name}/{letra}.mp3",
                                    pdf=f"{pasta.name}/{letra}.pdf", svg="", cego="", medidas={}, correcoes=[]))
-            ident = f"{musica} · {vn}"
+            ident = f"{musica} · {nivel}" if any(versao_lado.values()) else f"{musica} · {vn}"
             casos.append(dict(id=ident, titulo=ident, musica=musica, versao=vn,
                               ouvir=ouvir or "Música inteira, as opções na mesma versão e nível.",
                               original=f"{pasta.name}/original.mp3" if original else "",
@@ -100,7 +104,7 @@ def montar(lados: dict, saida: Path, niveis=("Facil", "Medio", "Dificil"), verso
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("saida", type=Path)
-    ap.add_argument("lados", nargs="+", help="rotulo=pasta_da_biblioteca (o 1º é a referência)")
+    ap.add_argument("lados", nargs="+", help="rotulo=pasta_da_biblioteca[|Versao] (o 1º é a referência)")
     ap.add_argument("--niveis", default="Facil,Medio,Dificil")
     ap.add_argument("--versoes", default="", help="ex.: Medio=Acordes,Dificil=Acordes")
     ap.add_argument("--musicas", default="")
