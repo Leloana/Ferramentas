@@ -421,3 +421,19 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
   uma música do karaokê com `--do-karaoke`. O alinhamento usa a GPU fora do lock do servidor
   do karaokê: não rodar durante uma partida.
 
+## 17. Nota pra palavra sem nota — 2026-11-10
+
+- Pendência 2 da seção 8. Antes, sílaba sem nota a mais de 0,8 s sumia e perto grudava
+  na nota vizinha (`letra_nas_notas`).
+- `melodia()` guarda no diagnóstico os quadros de 10 ms (`quadros`: altura, confiança,
+  energia relativa ao volume cantado medido só nos quadros com voz confiante); vão pro
+  `cache/transcricao.json`.
+- `palavras_sem_nota.notas_para_palavras` roda em `gerar_nivel` depois da proteção da
+  melodia. Palavra coberta = nota no ataque (até 150 ms depois do início); 2ª sílaba com
+  nota não basta. Exige ≥35% do trecho com voz (> −32 dB do volume cantado); altura =
+  mediana dos quadros com confiança ≥ .20; dobra de oitava só se o desvio pras vizinhas
+  for ≥ 9 semitons; sem altura, nota seguinte (até 1 s) ou anterior. Cache sem quadros
+  (gerações antigas) usa só as vizinhas.
+- 8 testes em `test_palavras_sem_nota.py`; suíte 45 OK. Não validado em áudio real:
+  conferir "Pensem" (2º/3º verso de Rosa) e se aparece nota onde não se canta.
+

@@ -132,6 +132,15 @@ diagnóstico fica em `cache/transcricao.json`. Em 2026-11-10, Para Machucar Meu 
 foi regenerada para validar os exemplos indicados pelo usuário; os arquivos anteriores
 estão em `trabalho/protecao_20261110/`. As outras músicas receberão a proteção quando regeneradas.
 
+### Palavra sem nota
+
+Quando o detector de melodia não pega o ataque de uma palavra (começo de verso soprado,
+como o "Pensem" de Rosa de Hiroshima), `palavras_sem_nota.py` cria a nota antes da
+quantização: só se houver voz de verdade naquele trecho (senão é alucinação da
+transcrição), com a altura dos quadros do detector aceitando confiança menor, trazida
+pra oitava das vizinhas quando o desvio é de oitava; sem altura confiável, a da nota
+seguinte. Nunca sobrepõe nota existente. Criadas e recusadas em `cache/palavras_sem_nota_<nivel>.json`.
+
 ### Mãos tocáveis e dedilhado
 
 Antes de montar a partitura, `maos.py` confere cada mão ao longo do tempo com um

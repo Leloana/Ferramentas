@@ -199,6 +199,8 @@ def melodia(voz: np.ndarray, sr: int, onsets_voz: np.ndarray, diagnostico=None) 
                     qualidades.append(qualidade_segmento(midi,per,a,b))
     if diagnostico is not None:
         diagnostico['notas']=qualidades
+        from palavras_sem_nota import quadros_do_detector
+        diagnostico['quadros']=quadros_do_detector(midi,per,db)  # pra dar nota a palavra sem nota
     return saida
 
 
@@ -856,6 +858,15 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
     if diagnostico is not None:
         cache=base/'cache'; cache.mkdir(parents=True,exist_ok=True)
         (cache/f'protecao_{nivel}.json').write_text(json.dumps(correcoes,ensure_ascii=False),encoding='utf-8')
+    if palavras:  # palavra cantada que o detector não pegou (ex.: começo de verso) ganha nota
+        from palavras_sem_nota import notas_para_palavras
+        usadas, log_palavras = notas_para_palavras(usadas, palavras, (diagnostico or {}).get('quadros'))
+        criadas = [x for x in log_palavras if x['criada']]
+        print(f"[palavras] {len(criadas)} notas criadas pra palavras sem nota, "
+              f"{len(log_palavras)-len(criadas)} recusadas")
+        if diagnostico is not None:
+            (base/'cache'/f'palavras_sem_nota_{nivel}.json').write_text(
+                json.dumps(log_palavras, ensure_ascii=False), encoding='utf-8')
     usadas = simplificar_passagens(usadas,palavras) if nivel=='facil' else usadas
     notas_q = quantizar_melodia(usadas, grade)
     letras = {}
