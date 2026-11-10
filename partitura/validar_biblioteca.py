@@ -57,20 +57,49 @@ def copiar_biblioteca(biblioteca: Path, destino: Path):
     shutil.copytree(biblioteca, destino, ignore=shutil.ignore_patterns("variacoes", "visor_*.json"))
 
 
-def regenerar(biblioteca: Path, rapido: bool, extra: list[str]):
+def _slug(texto: str) -> str:
+    import unicodedata
+    t = unicodedata.normalize("NFKD", texto).encode("ascii", "ignore").decode().lower()
+    return re.sub(r"[^a-z0-9]+", "_", t).strip("_")
+
+
+def achar_audio(pasta: Path, meta: dict) -> Path | None:
+    """Áudio de entrada de uma música sem cache/transcricao.json (biblioteca anterior ao cache):
+    pelo video_id no nome do arquivo em entrada/, senão pelo título."""
+    entrada = AQUI / "entrada"
+    arqs = sorted(entrada.glob("*.wav")) + sorted(entrada.glob("*.mp3"))
+    vid = meta.get("video_id")
+    if vid:
+        achados = [a for a in arqs if vid in a.stem]
+        if achados:
+            return achados[0]
+    slug = _slug(meta.get("titulo") or pasta.name)
+    achados = [a for a in arqs if a.stem.startswith(slug)]
+    if len(achados) > 1:   # ex.: chega_de_saudade_..._instrumental × _montreal: desempata pelo artista
+        art = set(_slug(meta.get("artista", "")).split("_"))
+        achados.sort(key=lambda a: -len(art & set(a.stem.split("_"))))
+    return achados[0] if achados else None
+
+
+def regenerar(biblioteca: Path, rapido: bool, extra: list[str], so: set[str] | None = None):
     erros = []
     for pasta in sorted(p for p in biblioteca.iterdir() if p.is_dir()):
-        vs = versoes_da_pasta(pasta)
-        transc = pasta / "cache" / "transcricao.json"
-        if not vs or not transc.exists():
-            print(f"[regenerar] {pasta.name}: sem partituras ou sem cache/transcricao.json, pulando")
+        if so and pasta.name not in so:
             continue
-        t = json.loads(transc.read_text(encoding="utf-8"))
-        audio = Path(t.get("audio", ""))
-        if not audio.exists():
-            erros.append(f"{pasta.name}: áudio de entrada não encontrado ({audio})")
+        vs = versoes_da_pasta(pasta)
+        if not vs:
+            print(f"[regenerar] {pasta.name}: sem partituras, pulando")
             continue
         meta = json.loads((pasta / "meta.json").read_text(encoding="utf-8")) if (pasta / "meta.json").exists() else {}
+        transc = pasta / "cache" / "transcricao.json"
+        t = json.loads(transc.read_text(encoding="utf-8")) if transc.exists() else {}
+        audio = Path(t["audio"]) if t.get("audio") else achar_audio(pasta, meta)
+        if rapido and not transc.exists():
+            erros.append(f"{pasta.name}: --rapido precisa de cache/transcricao.json")
+            continue
+        if audio is None or not audio.exists():
+            erros.append(f"{pasta.name}: áudio de entrada não encontrado ({audio})")
+            continue
         niveis = sorted({v.split(" - ")[1].lower() for v in vs})
         nomes = {v.split(" - ")[0] for v in vs}
         cmd = [sys.executable, "-u", "-X", "utf8", str(AQUI / "gerar.py"), str(audio), "--pasta", pasta.name,
@@ -162,6 +191,7 @@ def main():
     ap.add_argument("--etapas", default=",".join(ETAPAS))
     ap.add_argument("--rapido", action="store_true", help="regenera do cache (--reusar-cache)")
     ap.add_argument("--sem-audio", action="store_true", help="pula a fidelidade à gravação (mais rápido)")
+    ap.add_argument("--so", default="", help="só estas músicas (pastas separadas por vírgula) na regeneração")
     a = ap.parse_args(argv)
     etapas = [e.strip() for e in a.etapas.split(",") if e.strip()]
     a.dir.mkdir(parents=True, exist_ok=True)
@@ -171,7 +201,7 @@ def main():
         medir_biblioteca(a.dir / "antes", a.dir / "antes.json", not a.sem_audio)
     if "regenerar" in etapas:
         print("== regenerar ==", flush=True)
-        erros = regenerar(a.biblioteca, a.rapido, extra)
+        erros = regenerar(a.biblioteca, a.rapido, extra, set(a.so.split(",")) if a.so else None)
         (a.dir / "erros_regenerar.txt").write_text("\n".join(erros), encoding="utf-8")
         for e in erros:
             print("[erro]", e)
