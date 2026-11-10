@@ -25,7 +25,7 @@ import wave
 from pathlib import Path
 
 AQUI = Path(__file__).resolve().parent
-MOTORES = ("piper", "kokoro", "xtts", "teste")
+MOTORES = ("piper", "kokoro", "xtts", "chatterbox", "qwen", "teste")
 
 
 # --------------------------------------------------------------------------- worker
@@ -101,6 +101,63 @@ def motor_xtts(texto: str, saida: Path, args) -> dict:
     tts.tts_to_file(text=texto, speaker=voz, language="pt", file_path=str(saida), split_sentences=True)
     return {"carga_s": carga, "sintese_s": time.perf_counter() - t0, "voz": voz,
             "vozes_disponiveis": len(vozes)}
+
+
+def _paragrafos(texto: str, maximo: int = 300) -> list[str]:
+    """Quebra em trechos curtos (parágrafos/frases) para modelos com limite por geração."""
+    import re
+    trechos = []
+    for par in [p.strip() for p in texto.split("\n") if p.strip()]:
+        atual = ""
+        for frase in re.split(r"(?<=[.!?])\s+", par):
+            if atual and len(atual) + len(frase) + 1 > maximo:
+                trechos.append(atual); atual = frase
+            else:
+                atual = f"{atual} {frase}".strip()
+        if atual:
+            trechos.append(atual)
+    return trechos
+
+
+def _juntar(partes, taxa: int, pausa_s: float = 0.35):
+    import numpy as np
+    silencio = np.zeros(int(taxa * pausa_s), dtype="float32")
+    saida = []
+    for p in partes:
+        saida += [np.asarray(p, dtype="float32").reshape(-1), silencio]
+    return np.concatenate(saida)
+
+
+def motor_chatterbox(texto: str, saida: Path, args) -> dict:
+    import torch
+    torch.set_num_threads(args.threads)
+    from chatterbox.mtl_tts import ChatterboxMultilingualTTS  # pip install chatterbox-tts
+    disp = "cuda" if (args.gpu and torch.cuda.is_available()) else "cpu"
+    t0 = time.perf_counter()
+    modelo = ChatterboxMultilingualTTS.from_pretrained(device=disp)
+    carga = time.perf_counter() - t0
+    t0 = time.perf_counter()
+    partes = [modelo.generate(t, language_id="pt").squeeze(0).cpu().numpy() for t in _paragrafos(texto)]
+    _salvar_wav(saida, _juntar(partes, modelo.sr), modelo.sr)
+    return {"carga_s": carga, "sintese_s": time.perf_counter() - t0, "voz": f"padrão ({disp})"}
+
+
+def motor_qwen(texto: str, saida: Path, args) -> dict:
+    import torch
+    torch.set_num_threads(args.threads)
+    from qwen_tts import Qwen3TTSModel  # pip install qwen-tts
+    disp = "cuda:0" if (args.gpu and torch.cuda.is_available()) else "cpu"
+    t0 = time.perf_counter()
+    modelo = Qwen3TTSModel.from_pretrained(args.qwen_modelo, device_map=disp,
+                                           dtype=torch.bfloat16 if disp != "cpu" else torch.float32)
+    carga = time.perf_counter() - t0
+    t0 = time.perf_counter()
+    partes, taxa = [], 24000
+    for t in _paragrafos(texto):
+        wavs, taxa = modelo.generate_custom_voice(text=t, language="Portuguese", speaker=args.qwen_voz)
+        partes.append(wavs[0])
+    _salvar_wav(saida, _juntar(partes, taxa), taxa)
+    return {"carga_s": carga, "sintese_s": time.perf_counter() - t0, "voz": f"{args.qwen_voz} ({disp})"}
 
 
 def worker(args) -> None:
@@ -203,6 +260,9 @@ def main() -> None:
     ap.add_argument("--piper-modelo", default=str(AQUI / "modelos/pt_BR-faber-medium.onnx"))
     ap.add_argument("--kokoro-voz", default="pm_alex")
     ap.add_argument("--xtts-voz", default="Damien Black")
+    ap.add_argument("--qwen-modelo", default="Qwen/Qwen3-TTS-12Hz-0.6B-CustomVoice")
+    ap.add_argument("--qwen-voz", default="Ryan")
+    ap.add_argument("--gpu", action="store_true", help="usar CUDA se houver (só para comparar qualidade no PC)")
     ap.add_argument("--_motor", choices=MOTORES, help=argparse.SUPPRESS)
     args = ap.parse_args()
     if args.carga_max is None:

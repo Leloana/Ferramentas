@@ -73,3 +73,19 @@ O **Piper** fica como reserva da reserva. Gera em segundos com 335 MB, mas a voz
 O Kokoro só pode ser avaliado depois da instalação do `espeak-ng`.
 
 A decisão é do proprietário, depois de escutar as amostras. O `.venv-tts` e os modelos (~2,2 GB + ~1,9 GB) ficaram em `despertador/server` para reaproveitar.
+
+## Comparação complementar no PC (10/11/2026, Claude no Windows)
+
+Testados também no PC (i5-13400F, **só CPU**, 8 threads), com o mesmo roteiro. Qualidade conferida transcrevendo cada amostra com Whisper large-v3-turbo e comparando com o roteiro. Quase todo "erro" é número escrito em algarismos pelo Whisper; a narração ElevenLabs (referência) dá 12,2% só por isso, então o que conta é o que passa disso.
+
+| Motor | Síntese / áudio (PC, CPU) | Erro de palavras | O que apareceu além dos números |
+|---|---|---|---|
+| ElevenLabs turbo v4 (referência) | — / 75 s | 12,2% | nada |
+| Chatterbox Multilingual (voz padrão) | 320 s / 58 s (RTF 5,5) | 13,2% | "miá" inventado; "Selic" → "Selig" |
+| Piper `pt_BR-cadu-medium` | 1,8 s / 67 s (RTF 0,03) | 14,3% | "Selic" → "Selig"; quase nada |
+| Piper `pt_BR-faber-medium` | 3,3 s / 59 s | 18,5% | "Bom dia" → "pondian", "cupom", "combotíveis" |
+| XTTS-v2 (amostra do servidor) | — / 93 s | 19,0% | fala **"ponto"** no fim de várias frases (defeito conhecido do XTTS) |
+| Piper `pt_BR-jeff-medium` | 1,7 s / 66 s | 20,6% | "cupom", "provocou", "tíveis"; soa triste |
+| Qwen3-TTS 0.6B CustomVoice (Ryan) | 424 s / 93 s (RTF 4,5) | 31,7% | **pulou um trecho inteiro** (fim de Combustíveis + começo de Clima) e 5 pausas longas |
+
+Leitura: Chatterbox e Piper cadu ficam perto da ElevenLabs em inteligibilidade; Qwen 0.6B descartado; XTTS precisa de tratamento para o "ponto". Chatterbox ainda não foi medido no Xeon (estimativa: RTF ~10, ~10–15 min por edição). Amostras em `docs/amostras_tts/` (chatterbox, piper-cadu, qwen-0.6b, além de piper e xtts do servidor). O proprietário escolhe de ouvido.
