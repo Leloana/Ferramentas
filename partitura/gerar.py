@@ -1112,6 +1112,9 @@ def main():
                     help="mão esquerda da música inteira (versão Acordes) na textura desse teor")
     ap.add_argument("--variacao", type=int, default=0, help="outra versão da introdução gerada (0 = padrão)")
     ap.add_argument("--sem-transpor", action="store_true", help="no nível fácil, não transpõe pra tom sem acidentes")
+    ap.add_argument("--facil-fiel", action="store_true",
+                    help="nível fácil com a melodia do médio (grade de 1/2 tempo, sem tirar passagens nem "
+                         "cromatismos, no tom original); só a mão esquerda fica fácil")
     args = ap.parse_args()
     import letra as _letra
     _letra.ESCRITA_JA = args.escrita_ja
@@ -1224,7 +1227,7 @@ def main():
         (cache/'transcricao.json').write_text(json.dumps(transcricao,ensure_ascii=False,
             default=lambda v:v.item()),encoding='utf-8')
     for nivel in niveis:
-        SR_GRADE = GRADE_NIVEL[nivel]
+        SR_GRADE = GRADE_NIVEL["medio" if (nivel == "facil" and args.facil_fiel) else nivel]
         gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, bpm, diagnostico)
 
 
@@ -1249,8 +1252,9 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
         if diagnostico is not None:
             (base/'cache'/f'palavras_sem_nota_{nivel}.json').write_text(
                 json.dumps(log_palavras, ensure_ascii=False), encoding='utf-8')
-    usadas = simplificar_passagens(usadas,palavras) if nivel=='facil' else usadas
-    if nivel == 'facil':  # menos acidentes: cromatismo curto que não é do acorde vai pra escala
+    fiel = nivel == 'facil' and getattr(args, 'facil_fiel', False)
+    usadas = simplificar_passagens(usadas,palavras) if (nivel=='facil' and not fiel) else usadas
+    if nivel == 'facil' and not fiel:  # menos acidentes: cromatismo curto que não é do acorde vai pra escala
         from niveis import alinhar_cromaticas, escala_da_armadura
         cromaticas = [(b_-a_, [p]) for a_,b_,p in usadas] + [
             (.3*2, [(r+i) % 12 + 48 for i in TIPOS[t][0]]) for _,r,t,*_ in acs if r is not None]
@@ -1305,7 +1309,7 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
             versoes["HibridoAMT"] = (completa, reduzir_mao(a_me, nivel, "esquerda"))
 
     k = 0
-    if nivel == "facil" and not args.sem_transpor:  # mesmo intervalo pra todas as versões
+    if nivel == "facil" and not args.sem_transpor and not getattr(args, "facil_fiel", False):  # mesmo intervalo pra todas as versões
         _, _, _, k = transpor_facil(*versoes["Acordes"], cifras)
     sub = args.subtitulo + f" · nível {NOME[nivel].lower().replace('facil', 'fácil').replace('dificil', 'difícil')}"
     if k:
