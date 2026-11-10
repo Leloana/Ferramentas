@@ -15,6 +15,8 @@ Correção 0.1.1 (mesma noite): o 0.1.0 fechava ao abrir no S24. Causa confirmad
 
 Teste no emulador (Android 16, API 36.1) com o 0.1.1: app abre; sync pelo servidor do PC baixou a edição (2 arquivos, hash ok, promoção atômica); "Testar em 1 minuto" com tela bloqueada disparou na hora (alarme RTC_WAKEUP exato, serviço em primeiro plano mediaPlayback, foco de áudio USAGE_ALARM, MediaPlayer tocando); ao acender a tela o app aparece sobre o bloqueio; Parar encerra serviço e som; Soneca na notificação encerra e reagenda +9 min. Ainda falta o mesmo no S24 FE.
 
+Teste no S24 FE (10/11/2026, noite, 0.1.1): app abre; sincronizou pela rede de casa (S24 em 192.168.15.54 baixou manifesto, narração e música); "Testar em 1 minuto" com tela bloqueada tocou certinho. Tropeço na configuração: o endereço digitado como `https://` gerou "unable to parse TLS packet header" (servidor de teste é HTTP); com `http://` funcionou. Pendentes no aparelho: modo avião, alarme recorrente real (manhã seguinte), reinício, Bluetooth/Não Perturbe.
+
 Ainda NÃO testado (depende do aparelho): instalação, sincronização pela rede, disparo com tela bloqueada, modo avião, reinício, soneca, fallback sem jornal.
 
 Limitações conhecidas do MVP: sem tela cheia sobre o bloqueio (o alarme aparece como notificação com Parar/Soneca; tocar nela abre o app sobre a tela de bloqueio); sem Direct Boot (depois de reiniciar, só toca após o primeiro desbloqueio); HTTP na LAN.
