@@ -1,6 +1,24 @@
 # Despertador pessoal
 
-Status: planejamento. Ainda não há servidor executável nem APK nesta pasta.
+Status (10/11/2026): **MVP de teste pronto**, com este PC Windows como servidor. Falta validar no S24 FE.
+
+## Teste local (PC como servidor)
+
+```powershell
+# 1. Servidor (deixe a janela aberta). Mostra o endereço e o token para digitar no app.
+cd despertador\server; .\.venv\Scripts\python.exe run.py
+
+# 2. Nova edição a partir de um roteiro (narração ElevenLabs + música local)
+.\.venv\Scripts\python.exe gerar_edicao.py conteudo\2026-11-10\roteiro.json --musica ..\..\karaoke\server\songs\so-nice-summer-samba-marcos-valle
+
+# 3. APK (sai em android\dist\ depois de copiar; instalar manualmente no celular)
+cd despertador\android; $env:JAVA_HOME="C:\Program Files\Eclipse Adoptium\jdk-21.0.7.6-hotspot"; .\gradlew assembleDebug
+```
+
+- `server/`: FastAPI (`app.py`), gerador de edição (`gerar_edicao.py`), adaptador ElevenLabs com cache e teto (`voz.py`, modelo `eleven_v4_turbo`, voz David). Chave em `server/.env` (gitignored). Gerado fica em `server/data/` (gitignored): edições, token, `gastos.jsonl`.
+- Orçamento: 10.000 caracteres no total e 2.500 por edição (`config.py`). Narração repetida sai do cache sem gastar.
+- `android/`: Kotlin sem bibliotecas externas (AlarmManager `setAlarmClock`, MediaPlayer com áudio de alarme, JobScheduler para sincronizar no Wi‑Fi a cada ~3 h). Sequência: toque embarcado com volume crescente → jornal (ou aviso embarcado se faltar/vencer) → música → toque em loop até Parar/Soneca (limite de 15 min).
+- HTTP sem TLS só na rede de casa (`usesCleartextTraffic`, temporário). No servidor final: HTTPS.
 
 Despertador para uso pessoal no Samsung S24 FE. O servidor Linux prepara um jornal em áudio; o celular sincroniza, guarda os arquivos e toca no horário, mesmo sem rede.
 

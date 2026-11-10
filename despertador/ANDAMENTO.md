@@ -1,5 +1,30 @@
 # Andamento do projeto e próximos passos
 
+## Sessão de 10/11/2026 (noite) — MVP de teste construído
+
+Decisões do proprietário: ElevenLabs em vez de XTTS (10.000 créditos separados, modelo `eleven_v4_turbo`, chave própria em `server/.env`); instalação manual do APK (via Google Drive); conteúdo da primeira rodada escolhido pelo Claude, automação depois.
+
+Feito e verificado no PC:
+- Servidor FastAPI em `server/` (venv próprio, Python 3.11): `/healthz`, `/v1/editions/latest` (ETag/304), `/v1/editions/{id}`, `/v1/assets/{id}`, token Bearer. Testado: 401 sem token, 304 com ETag, sha256 do download confere, caminho arbitrário dá 404.
+- Firewall: regra existente já libera `Python311\python.exe` no perfil Público; nenhuma regra foi criada.
+- Edição `2026-11-10-r1`: 5 matérias da Agência Brasil (ata do Copom, desoneração da gasolina/etanol, Lula na COP31, marco de financiamento da saúde), roteiro em `server/conteudo/2026-11-10/roteiro.json` com fontes. Narração 75 s + música 151 s (So Nice, Marcos Valle, vocal + instrumental do karaokê misturados; originais intactos; pico -1,3 dB). Vale até 12/11 06:29.
+- Gasto ElevenLabs: 1.148 de 10.000 caracteres (73 do aviso embarcado + 1.075 da narração).
+- App Android em `android/` (Kotlin, AGP 8.7.3, Gradle 8.11.1, minSdk 29, target 35, sem dependências). `assembleDebug` compila; permissões conferidas com aapt: INTERNET, USE_EXACT_ALARM (SCHEDULE_EXACT_ALARM só até API 32), FOREGROUND_SERVICE(+MEDIA_PLAYBACK), POST_NOTIFICATIONS, WAKE_LOCK, RECEIVE_BOOT_COMPLETED.
+
+Ainda NÃO testado (depende do aparelho): instalação, sincronização pela rede, disparo com tela bloqueada, modo avião, reinício, soneca, fallback sem jornal.
+
+Limitações conhecidas do MVP: sem tela cheia sobre o bloqueio (o alarme aparece como notificação com Parar/Soneca; tocar nela abre o app sobre a tela de bloqueio); sem Direct Boot (depois de reiniciar, só toca após o primeiro desbloqueio); HTTP na LAN.
+
+Próximos passos:
+1. Proprietário instala o APK, configura endereço/token, sincroniza e roda "Testar em 1 minuto" com tela bloqueada e depois em modo avião.
+2. Corrigir o que falhar no aparelho; avaliar tela cheia (USE_FULL_SCREEN_INTENT) se a notificação não bastar.
+3. Automatizar a seleção de notícias (agy no Linux) gerando o mesmo `roteiro.json`.
+4. Portar o servidor para o Linux com HTTPS e systemd.
+
+---
+
+## Registro anterior (preparação)
+
 Atualizado em 10/11/2026, durante a preparação do primeiro teste local.
 
 Este arquivo é o registro de continuidade do trabalho. Atualizar após cada etapa relevante, anotando resultados reais, falhas e pendências. Não registrar senhas, tokens ou conteúdo de `.env`.
