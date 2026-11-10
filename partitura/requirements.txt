@@ -15,8 +15,9 @@ pyphen
 Unidecode
 RapidFuzz
 Metaphone
-# validação (metricas.py): mir_eval; opcional: partitura (tensão tonal)
+# validação (metricas.py): mir_eval; partitura (tensão tonal do spiral array)
 mir_eval
+partitura
 # japonês (letra em moras): pykakasi; com fugashi + unidic-lite a pronúncia fica como se canta
 pykakasi
 fugashi

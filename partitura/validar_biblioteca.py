@@ -131,15 +131,16 @@ CAMPOS = [("fidelidade", "qmax", "maior é melhor"), ("fidelidade", "desvio_dtw_
           ("melodia", "mca", "maior é melhor"), ("melodia", "f1", "maior é melhor"),
           ("grave_embolado", "por_minuto", "menor é melhor"), ("groove_esquerda", None, "estável"),
           ("direita", "notas_por_s", ""), ("esquerda", "notas_por_s", ""),
-          ("esquerda", "deslocamento_por_s", ""), ("direita", "entropia", ""), ("esquerda", "lempel_ziv", "")]
+          ("esquerda", "deslocamento_por_s", ""), ("direita", "entropia", ""), ("esquerda", "lempel_ziv", ""),
+          ("tensao", "tensile_strain.media", "tensão tonal (spiral array)"), ("tensao", "cloud_momentum.media", "")]
 
 
 def _valor(r, a, b):
     if not isinstance(r, dict):
         return None
     v = r.get(a)
-    if b is not None:
-        v = v.get(b) if isinstance(v, dict) else None
+    for parte in (b.split(".") if b is not None else []):
+        v = v.get(parte) if isinstance(v, dict) else None
     return v if isinstance(v, (int, float)) else None
 
 
