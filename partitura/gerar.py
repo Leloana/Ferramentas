@@ -587,8 +587,11 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
     sc.insert(0, md)
     sc.insert(0, me)
     sc.insert(0, layout.StaffGroup([md, me], symbol="brace", barTogether=True, name="Piano"))
+    # as duas mãos até o mesmo compasso final: se a direita acaba antes, o último compasso
+    # dela não existia (sem pausa) e as cifras desse trecho sumiam ou iam pra pauta de baixo
+    fim_compasso = 4.0 * np.ceil((fim - 1e-6) / 4)
     for p in (md, me):
-        p.makeRests(fillGaps=True, inPlace=True, timeRangeFromBarDuration=True)
+        p.makeRests(refStreamOrTimeRange=(0.0, fim_compasso), fillGaps=True, inPlace=True)
     sc = sc.makeNotation()
     # cifras só depois dos compassos montados: inserida antes, cifra que cai no meio de uma
     # nota conta como sobreposição e o music21 cria uma 2ª voz só de pausas na direita
@@ -597,6 +600,7 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
         for m_ in compassos:
             if m_.offset - 1e-6 <= o < m_.offset + m_.duration.quarterLength - 1e-6:
                 m_.insert(o - m_.offset, cs)
+                _partir_pausa(m_, o - m_.offset)
                 break
     _marcas_nas_notas(sc, marcas, desloc)
     _oitava_acima(sc)
@@ -610,6 +614,24 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
             if p_ is not None and p_.accidental is not None and p_.accidental.name == "natural":
                 p_.accidental = None
     return sc, ", ".join(f"compasso {int(o // 4) + 1}: {k_:+d}" for o, k_ in mudancas)
+
+
+def _partir_pausa(compasso, off: float):
+    """Cifra no meio de uma pausa da direita: divide a pausa ali.
+
+    Sem figura da pauta de cima naquele tempo o Verovio prende a cifra na pauta de baixo
+    (G7 desenhado embaixo no compasso só de pausa). Pausa partida não cria voz nova.
+    """
+    from music21 import note
+    for r in list(compasso.recurse().getElementsByClass(note.Rest)):
+        ini = float(r.getOffsetBySite(r.activeSite))
+        if ini + 1e-6 < off < ini + float(r.quarterLength) - 1e-6:
+            dono = r.activeSite
+            esq, dir_ = r.splitAtQuarterLength(off - ini)
+            dono.remove(r)
+            dono.insert(ini, esq)
+            dono.insert(off, dir_)
+            return
 
 
 def _juntar_silabas(partes: list[str]) -> str | None:
@@ -776,8 +798,25 @@ def _desembaralhar(svg: str) -> str:
     return _MOJIBAKE.sub(conserta, svg)
 
 
+_RE_CHAR_JA = re.compile("[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff]")
+_RE_LETRA_JA = re.compile(r"(<lyric\b[^>]*>(?:(?!</lyric>).)*?<text[^>]*>)([^<]*[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff][^<]*)(</text>)", re.S)
+
+
+def espacar_kana(texto: str) -> str:
+    """O Verovio mede kana/kanji como letra latina (metade da largura real) e espreme a letra.
+
+    Um espaço duro de cada lado por caractere japonês reserva a largura que falta, com a
+    sílaba centrada na nota. Só no desenho: o MusicXML salvo fica com a letra limpa.
+    """
+    def pad(m):
+        n = len(_RE_CHAR_JA.findall(m.group(2)))
+        return m.group(1) + "\u00a0" * n + m.group(2).strip() + "\u00a0" * n + m.group(3)
+    return _RE_LETRA_JA.sub(pad, texto)
+
+
 def xml_para_verovio(texto: str) -> str:
-    """Verovio não aceita layer zero; renumerar sem alterar conteúdo musical."""
+    """Verovio não aceita layer zero; renumerar sem alterar conteúdo musical. Kana espaçado."""
+    texto = espacar_kana(texto)
     if '<voice>0</voice>' not in texto:
         return texto
     import xml.etree.ElementTree as ET
@@ -1048,6 +1087,8 @@ def main():
                     help="números dos dedos na partitura (auto: todos no fácil, só nas mudanças de posição no resto)")
     ap.add_argument("--sem-maos", action="store_true",
                     help="não corrige trechos que a mão não alcança (só calcula os dedos)")
+    ap.add_argument("--grave-embolado", action="store_true",
+                    help="não tira da esquerda a voz que embola no grave (terça abaixo de Dó3; comportamento antigo)")
     ap.add_argument("--introducao", default=None, choices=("calma", "lenta", "emotiva", "animada", "epica"),
                     help="acrescenta uma introdução gerada (não existe na gravação) com esse teor, feita do refrão")
     ap.add_argument("--final", default=None, choices=("calma", "lenta", "emotiva", "animada", "epica"),
@@ -1316,7 +1357,8 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
             prot = {(round(o, 6), p + k) for o, _, ps, *_ in md_ev for p in ps}
             md, me, dmd, dme, rel = tornar_tocavel(
                 md, me, nivel, bpm, prot, corrigir=not sem_maos,
-                mostrar=None if modo_dedos == "auto" else modo_dedos)
+                mostrar=None if modo_dedos == "auto" else modo_dedos,
+                clarear=not getattr(args, "grave_embolado", False))
             r = rel["resumo"]
             print(f"[maos] {versao}: {r['corrigidos']} correções, {r['restantes']} trechos difíceis restantes "
                   f"({r['restantes_na_melodia']} na melodia)")

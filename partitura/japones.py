@@ -8,6 +8,8 @@ karaoke/server/lyrics_text.py); sem ele, do pykakasi. Regras de corte:
 - ー (vogal longa) e っ (consoante dobrada) também ficam com a mora anterior: a nota
   da mora segura o tempo (ー) ou corta seco (っ), sem sílaba própria;
 - ん é mora própria (n).
+Em kana a letra mostra a grafia (とう, は) cortada como a pronúncia (とー, わ): a nota
+de "とう" é uma só, como a de "toー" em romaji.
 """
 from __future__ import annotations
 
@@ -47,6 +49,27 @@ def pronuncia(palavra: str) -> str:
     return "".join(item["kana"] for item in _kakasi().convert(palavra))
 
 
+@lru_cache(maxsize=4096)
+def grafia(palavra: str) -> str:
+    """Leitura escrita em katakana (トウキョウ, ハ), do mesmo tamanho da pronúncia; "" se não der."""
+    try:
+        if str(KARAOKE_SERVER) not in sys.path:
+            sys.path.append(str(KARAOKE_SERVER))
+        from lyrics_text import _tagger
+        pron, escrita = "", ""
+        for tok in _tagger()(palavra):
+            if tok.feature.pos1 == "補助記号":
+                continue
+            k = tok.feature.kana or tok.surface
+            pr = tok.feature.pron or k
+            if len(k) != len(pr):
+                return ""
+            pron, escrita = pron + pr, escrita + k
+        return escrita if pron == pronuncia(palavra) else ""
+    except Exception:
+        return ""
+
+
 def moras(kana: str) -> list[str]:
     saida = []
     for ch in kana:
@@ -79,6 +102,14 @@ def silabas_japonesas(palavra: str, escrita: str = "romaji") -> list[str]:
     if not ms:
         return [palavra]
     if escrita == "kana":
+        # mostra a grafia (とう, は) cortada nos mesmos lugares das moras da pronúncia (とー, わ)
+        g = grafia(corpo)
+        if g and len(g) == sum(len(x) for x in ms):
+            cortes, i = [], 0
+            for x in ms:
+                cortes.append(g[i:i + len(x)])
+                i += len(x)
+            ms = cortes
         partes = [_hiragana(x) for x in ms]
     else:
         partes = []

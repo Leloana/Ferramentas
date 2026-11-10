@@ -103,7 +103,7 @@ class Correcao(unittest.TestCase):
 
     def test_fecha_acorde_sem_perder_classes(self):
         me = [(0, 2, [36, 52, 58]), (2, 2, [43, 50, 55, 59])]
-        _, me2, _, _, rel = tornar_tocavel([], me, "medio", 100)
+        _, me2, _, _, rel = tornar_tocavel([], me, "medio", 100, clarear=False)
         for a, b in zip(me, me2):
             self.assertEqual({p % 12 for p in a[2]}, {p % 12 for p in b[2]})
             self.assertEqual(min(a[2]), min(b[2]))
@@ -132,6 +132,33 @@ class Correcao(unittest.TestCase):
         _, _, d_md, _, _ = tornar_tocavel(md, [], "medio", 100)
         self.assertEqual(d_md[0], [1])          # primeira nota sempre
         self.assertTrue(any(d is None for d in d_md))  # no médio só nas mudanças
+
+
+class GraveClaro(unittest.TestCase):
+    def test_terca_grave_sai_e_quinta_sai_antes_da_terca(self):
+        from maos import clarear_grave, embolados
+        # G7 com baixo em Sol2: a 3ª (Si2) embola; fica Sol2 + Fá3
+        me, c = clarear_grave([(0, 2, [43, 47, 53])])
+        self.assertEqual(me[0][2], [43, 53])
+        self.assertEqual(embolados(me[0][2]), 0)
+        self.assertEqual(c[0]["tipo"], "grave")
+        # acorde acima do limite fica igual
+        me, c = clarear_grave([(0, 2, [48, 52, 55])])
+        self.assertEqual((me[0][2], c), ([48, 52, 55], []))
+
+    def test_baixo_e_nota_protegida_ficam(self):
+        from maos import clarear_grave
+        me, _ = clarear_grave([(1, 1, [45, 48, 52])], protegidas={(1.0, 48)})
+        self.assertIn(45, me[0][2])
+        self.assertIn(48, me[0][2])
+
+    def test_tornar_tocavel_clareia_e_pode_desligar(self):
+        md = [(0, 2, [72])]
+        me = [(0, 2, [43, 47, 53])]
+        _, me1, *_ = tornar_tocavel(md, me, "medio", 100)
+        _, me2, *_ = tornar_tocavel(md, me, "medio", 100, clarear=False)
+        self.assertEqual(me1[0][2], [43, 53])
+        self.assertEqual(me2[0][2], [43, 47, 53])
 
 
 if __name__ == "__main__":
