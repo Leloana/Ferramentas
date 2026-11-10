@@ -52,6 +52,9 @@ AMT-APC) + regras musicais. Opções principais:
 | `--separador htdemucs\|htdemucs_6s` | separação em 4 ou 6 faixas (guitarra e piano) |
 | `--do-karaoke <música>` | entrada vinda do karaokê (voz, acompanhamento e letra já prontos) |
 | `--reusar-cache` | só reescreve as partituras a partir de `cache/transcricao.json` |
+| `--gravado` | versão **Híbrido Gravado**: esquerda com o piano e o violão transcritos da gravação (6 faixas + Kong/Basic Pitch, `gravado.py`) |
+| `--facil-fiel` | fácil com a melodia do médio (ritmo de 1/2 tempo, sem cortar passagens, no tom original); só a esquerda fica fácil |
+| `--grave-embolado` | não tira da esquerda a voz que embola no grave (comportamento antigo) |
 
 Saída por música em `saida/<Título>/`:
 
@@ -270,3 +273,9 @@ Híbrido (Pop2Piano); Acordes e as versões AMT não usam esse estilo. Na linha 
 - A esquerda fechada pra caber na mão pode embolar no grave (terças abaixo de Dó3); em estudo.
 - Japonês em kana fica espremido no desenho; use romaji (padrão).
 - `essentia` não tem build pra Windows: `_stubs/essentia` é um substituto que só entrega as batidas pro Pop2Piano do `transformers`.
+
+## Páginas às cegas com a música inteira
+
+`comparacao_completa.py <saida> rotulo=biblioteca[|Versao] ...` monta a página com a prévia e o PDF
+inteiros de cada lado (nomes neutros A/B, gravação original no topo, nota 1–5, copiar resultado).
+Ex.: `python comparacao_completa.py trabalho/x/pagina "amt=saida|HibridoAMT" "gravado=saida|HibridoGravado"`.

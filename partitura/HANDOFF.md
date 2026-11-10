@@ -63,31 +63,44 @@ mãos, introdução, final, cromáticas do fácil, sincronia).
 
 ## 4. Pendências (prioridade)
 
-**Na Windows** (precisa da biblioteca/GPU):
-1. `pip install -r requirements.txt` (novos: Unidecode, RapidFuzz, Metaphone, mir_eval,
-   pykakasi, fugashi, unidic-lite).
-2. `validar_biblioteca.py` (antes → regenerar → depois → relatório → página cega). Conferir:
-   letra alinhada (Garota, bossas), "Pensem" de Rosa, refrão escolhido pra introdução,
-   acidentes do fácil, trechos difíceis pra mão, Qmax contra os números do AMT-APC.
-3. `experimento_6faixas.py` com 2–3 músicas (PROXIMA_ETAPA §12) + cifras de referência em CSV.
-4. Refazer o recorte do `exemplos/03-desmoronou` (antes == depois; o verificador reprova).
-5. Testar `--do-karaoke` com uma música instalada no karaokê.
-6. Ainda sem julgamento do usuário: página do acompanhamento no teor
-   (`trabalho/acompanhamento_20261110/`), versão "hoje + harmonia" e o fácil com menos acidentes.
+### Sessão Windows 2026-11-10 (noite) — feito
 
-**Aqui mesmo** (dá pra fazer e validar com dados montados):
-1. **Grave embolado**: fechar o acorde da esquerda pra caber na mão cria terças abaixo de
-   Dó3 (Ode, difícil: 40/min com correção × 9/min sem). Fechar num registro acima do "low
-   interval limit" (`metricas.LIMITE_GRAVE`) e julgar às cegas.
-2. Kana espremido no desenho (Verovio mede como texto latino); kana mostra a pronúncia (とー)
-   e não a grafia (とう).
-3. Cifra desenhada perto da pauta de baixo em compasso só com pausas na direita (G7 do
-   compasso 23 da Ode).
-4. Métricas da pesquisa ainda não implementadas: tensão tonal (pacote `partitura`,
-   opcional hoje), 2º modelo de dedilhado (HMM do Nakamura ou ArGNN), ritmo (LHL, RGC/IPE),
-   MGEval contra covers humanos; formulação de Nakamura & Yoshii 2018 (fidelidade máxima sob
-   teto de dificuldade por nível).
-5. Calibrar o tempo de mudança de posição da mão (`maos.PERFIL`) com alguém tocando.
+- Dependências novas instaladas; suíte 102 OK. `validar_biblioteca.py` agora acha o áudio das
+  músicas sem `cache/transcricao.json` (antes só 1 de 9 regenerava) e tem `--so`.
+- Biblioteca inteira regenerada com o pipeline novo (`trabalho/validacao_20261110/`).
+  **Revisão cega do usuário (música inteira):** quase empate, o novo ganhou 8×4 onde ele
+  escolheu → mudanças mantidas. Recado forte: **o fácil (Acordes) "não parece a música"**;
+  ele quer a melodia preservada ao máximo no fácil. Médio Híbrido AMT "muito melhor".
+  No Surprises: melodia soa desafinada. Baby: desvio do DTW piorou muito (5,4 → 24,5 s no
+  Híbrido difícil) — investigar (fase do compasso?).
+- `maos.clarear_grave` (grave embolado: biblioteca toda de 35,7/min → 0 no Acordes médio),
+  kana espaçado + grafia (とう/は), cifra em compasso só de pausa, `--grave-embolado` (antigo).
+- `--facil-fiel`: fácil com a melodia do médio (grade 1/2, sem cortar passagens/cromatismos,
+  sem transpor). `--gravado`: versão **Híbrido Gravado** (`gravado.py`: piano Kong + violão
+  Basic Pitch das faixas do htdemucs_6s na esquerda). `comparacao_completa.py`: página às
+  cegas com a **música inteira** (o usuário prefere isso a trechos; versão por lado com `pasta|Versao`).
+- Exemplo 03 refeito (trecho "machucar meu coração"). `--do-karaoke` testado (Águas de
+  Março; corrigido int64 no JSON das mãos). Experimento 6 faixas rodado sem referências
+  (concordância 4×6: 60–87% de fundamental). Tensão tonal (pacote `partitura`) no relatório.
+- Conjunto de teste do karaokê (o usuário conhece as músicas): `trabalho/karaoke_teste_20261110/`
+  (11 músicas, todas as versões + Gravado).
+
+### Esperando o julgamento do usuário (páginas em `trabalho/`)
+
+| página | decide |
+|---|---|
+| `validacao_grave_20261110/pagina_completa` | `clarear_grave` fica como padrão? |
+| `facil_fiel_20261110/pagina_completa(_hibrido)` e `karaoke_facil_fiel_20261110/pagina` | `--facil-fiel` vira o fácil padrão? |
+| `acompanhamento_20261110/pagina_completa` | qual teor (ou o de hoje) por música |
+| `gravado_20261110/pagina_completa` e `karaoke_teste_20261110/pagina_gravado` | Híbrido Gravado × Híbrido AMT |
+
+### Ainda abertas
+
+1. Cifras de referência conferidas à mão (CSV) pro `experimento_6faixas.py` — só o usuário.
+2. Piano grave vaza pra faixa de baixo do htdemucs_6s (JVKE 16%, Videotape 36%): transcrever
+   também o baixo no `gravado.py` pode completar a esquerda.
+3. Linux: métricas da pesquisa ainda não implementadas (2º dedilhado, ritmo LHL/RGC, MGEval);
+   calibrar `maos.PERFIL` com alguém tocando.
 
 ## 5. Pegadinhas técnicas
 
