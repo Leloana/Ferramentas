@@ -7,6 +7,8 @@ Este repositório agrupa scripts, automações e ferramentas diversas criadas pa
 ### 🟢 Ativas
 
 | Ferramenta | Descrição |
+| --- | --- |
+| [**Partitura** (`partitura`)](./partitura) | Gera partituras de piano com letra, prévia de áudio e visualizador sincronizado. Inclui [exemplos de antes/depois](./partitura/exemplos) e um [plano de evolução](./partitura/PROXIMA_ETAPA.md). |
 | [**Agent-Remote** (`agent-remote`)](./agent-remote) | Central web minimalista para controle remoto do agente (Ollama) e visualização de aplicações locais em tela dividida (duas abas: Chat + Live Preview), com terminal seguro embutido (whitelist) e túnel Cloudflare Tunnel. |
 | [**Plataforma de TTS e Vídeos** (`tts_platform_pt`)](./tts_platform_pt) | Plataforma de síntese de voz em português (XTTS-v2), geração de imagens com consistência de personagem no ComfyUI (Qwen-Image-2.1 INT8) e orquestrador em lote para produção de vídeos curtos verticais (9:16) para TikTok, Reels e Shorts. |
 | [**Karaoke AI Premium** (`karaoke`)](./karaoke) | Ecossistema de karaokê local de alta performance com separação de faixas (Demucs), transcrição e alinhamento fonético em tempo real (Whisper GPU + MMS_FA) e microfones via celular (WebSockets). |

@@ -1,0 +1,86 @@
+{
+  "id": "01-violao",
+  "titulo": "Transição em meu violão",
+  "musica": "Para Machucar Meu Coração",
+  "versao": "HibridoAMT - Medio",
+  "backup": "protecao_20261110",
+  "inicio": 64,
+  "fim": 76,
+  "motivo": "O Sol♭/Fá♯ intermediário da subida Fá–Sol deixa de virar uma nota longa no piano.",
+  "bpm": 129.0,
+  "duracao_musical_s": 5.5813953488372094,
+  "deslocamento_antes": 0.0,
+  "armadura_sustenidos": -3,
+  "fonte_antes": "trabalho\\protecao_20261110\\Para Machucar Meu Coração\\editaveis\\HibridoAMT - Medio.musicxml",
+  "fonte_depois": "saida\\Para Machucar Meu Coração\\editaveis\\HibridoAMT - Medio.musicxml",
+  "arquivos": {
+    "antes.musicxml": {
+      "bytes": 8828,
+      "sha256": "9e6a97603f435bc0250fb47621d414a7168e485fde6f38d8a185cfb91a3eef32"
+    },
+    "antes.mid": {
+      "bytes": 187,
+      "sha256": "c966bc75803bd4c62ada855b977396db6c87871126e47c0c240136a7dd28dfbe"
+    },
+    "antes.mp3": {
+      "bytes": 159597,
+      "sha256": "5d8f7ad8cb5921d2cd00dafd89e8bc37ebac8435bb71261357b45704c9335260"
+    },
+    "antes.pdf": {
+      "bytes": 50025,
+      "sha256": "eb424579ec4f8d1c324ac2289b87772d4c1ae11a5fc72e331d7eb27f96532d5c"
+    },
+    "antes.svg": {
+      "bytes": 88636,
+      "sha256": "5290f7a8b654340c7a4551b4e9ace641bfe8fca30697c4b78f842dbb35ae91d6"
+    },
+    "depois.musicxml": {
+      "bytes": 8492,
+      "sha256": "3fe86d95ad6b2ce646b9842ace418fce2e4435cb3616d233d77a9f700e8c39ea"
+    },
+    "depois.mid": {
+      "bytes": 181,
+      "sha256": "ae496509ea1b076c47183542bb3215d9d69705b7ed578b4eadc7afbdce91a2ef"
+    },
+    "depois.mp3": {
+      "bytes": 159597,
+      "sha256": "27535e403a26acf53c59c6029207de7a445eee37ef141da8d9d272cca1c5e9ff"
+    },
+    "depois.pdf": {
+      "bytes": 49652,
+      "sha256": "58e77ff2311abb0e0ef909597f605cf31f9ac53bdd44f7306249d6a710715619"
+    },
+    "depois.svg": {
+      "bytes": 87229,
+      "sha256": "0571308709c58014abcbe2cd12d394a76bb74d15b3dcc61bef1838dd89e57b8e"
+    }
+  },
+  "antes": {
+    "direita": {
+      "notas": 7,
+      "abertura_max_semitons": 0,
+      "aberturas_maiores_oitava": 0,
+      "ataques_polifonicos": 0
+    },
+    "esquerda": {
+      "notas": 7,
+      "abertura_max_semitons": 0,
+      "aberturas_maiores_oitava": 0,
+      "ataques_polifonicos": 0
+    }
+  },
+  "depois": {
+    "direita": {
+      "notas": 6,
+      "abertura_max_semitons": 0,
+      "aberturas_maiores_oitava": 0,
+      "ataques_polifonicos": 0
+    },
+    "esquerda": {
+      "notas": 7,
+      "abertura_max_semitons": 0,
+      "aberturas_maiores_oitava": 0,
+      "ataques_polifonicos": 0
+    }
+  }
+}

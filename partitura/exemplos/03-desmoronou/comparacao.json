@@ -1,0 +1,86 @@
+{
+  "id": "03-desmoronou",
+  "titulo": "Passagem em desmoronou",
+  "musica": "Para Machucar Meu Coração",
+  "versao": "HibridoAMT - Medio",
+  "backup": "protecao_20261110",
+  "inicio": 44,
+  "fim": 56,
+  "motivo": "A passagem muito breve por Lá natural deixa de receber o peso de uma colcheia inteira.",
+  "bpm": 129.0,
+  "duracao_musical_s": 5.5813953488372094,
+  "deslocamento_antes": 0.0,
+  "armadura_sustenidos": -3,
+  "fonte_antes": "trabalho\\protecao_20261110\\Para Machucar Meu Coração\\editaveis\\HibridoAMT - Medio.musicxml",
+  "fonte_depois": "saida\\Para Machucar Meu Coração\\editaveis\\HibridoAMT - Medio.musicxml",
+  "arquivos": {
+    "antes.musicxml": {
+      "bytes": 10106,
+      "sha256": "ca4cb6caceaaf83780be9a5a592c51c36821fb6cc76568f4f5e33a3da935268f"
+    },
+    "antes.mid": {
+      "bytes": 216,
+      "sha256": "2e36e2183b9df799b68102936491627ab0badc55be21253cea9dfe25db8bf375"
+    },
+    "antes.mp3": {
+      "bytes": 159597,
+      "sha256": "b91917951bc34636b39df584b3fce70ea0c656cba729940e818e609f5d307eec"
+    },
+    "antes.pdf": {
+      "bytes": 46799,
+      "sha256": "60ab348c42f22f15b825aa4e4908b8542e5404e346e233ee1ff758c1ea57ba5a"
+    },
+    "antes.svg": {
+      "bytes": 92711,
+      "sha256": "0ab0fe83270095ed80c29bb841d55a70ce6ace19ab19592d43bcc676f4a128f2"
+    },
+    "depois.musicxml": {
+      "bytes": 10108,
+      "sha256": "743adf5a179fa7386f75243f4d382ba59546f10b342233331758a6c0b5c4407a"
+    },
+    "depois.mid": {
+      "bytes": 216,
+      "sha256": "2e36e2183b9df799b68102936491627ab0badc55be21253cea9dfe25db8bf375"
+    },
+    "depois.mp3": {
+      "bytes": 159597,
+      "sha256": "b91917951bc34636b39df584b3fce70ea0c656cba729940e818e609f5d307eec"
+    },
+    "depois.pdf": {
+      "bytes": 47421,
+      "sha256": "c37775540ada3eaa19a67823b2ba9ceee1cbc114bcc7d17d19731daeaf1f8a9a"
+    },
+    "depois.svg": {
+      "bytes": 92796,
+      "sha256": "091975bfd6e390640dc2671e356269edbc02768713a2f332af632a676bfdc8d9"
+    }
+  },
+  "antes": {
+    "direita": {
+      "notas": 7,
+      "abertura_max_semitons": 0,
+      "aberturas_maiores_oitava": 0,
+      "ataques_polifonicos": 0
+    },
+    "esquerda": {
+      "notas": 12,
+      "abertura_max_semitons": 10,
+      "aberturas_maiores_oitava": 0,
+      "ataques_polifonicos": 1
+    }
+  },
+  "depois": {
+    "direita": {
+      "notas": 7,
+      "abertura_max_semitons": 0,
+      "aberturas_maiores_oitava": 0,
+      "ataques_polifonicos": 0
+    },
+    "esquerda": {
+      "notas": 12,
+      "abertura_max_semitons": 10,
+      "aberturas_maiores_oitava": 0,
+      "ataques_polifonicos": 1
+    }
+  }
+}

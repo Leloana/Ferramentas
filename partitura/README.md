@@ -2,6 +2,8 @@
 
 Pega uma música normal (com voz e banda) e gera **PDF + MusicXML + MIDI** de piano, mais uma prévia `.mp3` sintetizada pra ouvir sem software.
 
+Veja os [exemplos de antes/depois](exemplos/README.md) e o [plano da próxima etapa](PROXIMA_ETAPA.md).
+
 ## Interface web
 
 ```powershell

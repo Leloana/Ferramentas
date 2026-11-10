@@ -1,0 +1,8 @@
+# Preservar bytes dos artefatos para manter os SHA-256 do manifesto em qualquer SO.
+*.musicxml -text
+*.svg -text whitespace=trailing-space,space-before-tab,cr-at-eol
+*.mid binary
+*.mp3 binary
+*.pdf binary
+*.json text eol=lf
+*.md text eol=lf

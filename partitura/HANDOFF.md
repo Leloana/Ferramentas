@@ -1,6 +1,6 @@
 # Handoff — Partitura (sessão de 2026-11-09)
 
-**Estado atualizado até a seção 13.** As seções 6 e 7 registram a análise anterior à revisão das 120 partituras.
+**Estado atualizado até a seção 14.** As seções 6 e 7 registram a análise anterior à revisão das 120 partituras.
 
 Ferramenta que pega uma **música normal, com voz**, e gera **partitura de piano com a letra embaixo das notas**
 (PDF + MusicXML + MIDI + prévia em áudio), com interface web e níveis de dificuldade.
@@ -341,3 +341,29 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
   `analise_resumo.json`. Mantidas 120 partituras, sem aberturas acima de oitava.
 - Servidor não precisou de reinício (gera por subprocesso que lê o código novo).
   Atualizar a página para buscar PDFs/prévias/partitura com novos arquivos.
+
+## 14. Exemplos para o repositório e planejamento da próxima etapa
+
+- Usuário pediu exemplos publicados para comparar, depois pediu um Markdown
+  detalhando a próxima etapa. Plano em `PROXIMA_ETAPA.md`, com seis frentes:
+  investigação musical, criação de introduções/acompanhamentos, coerência harmônica,
+  visualizador, japonês/karaokê e redução de opções apoiada por testes.
+- O plano separa métricas objetivas, referências musicais revisadas e preferência
+  cega. Propõe benchmark reproduzível antes de escolher novos padrões; não iniciar
+  automaticamente todas as implementações só porque estão descritas no documento.
+- `exemplos/README.md`: cinco comparações curtas, com SVG/PDF, MP3, MIDI, MusicXML
+  e medidas antes/depois. Três trechos de Para Machucar, um de alcance em Garota e
+  uma introdução de No Surprises. Total aproximado de 3,4 MB, 58 arquivos.
+- Os áudios são novas sínteses dos recortes escritos, com o mesmo piano e andamento;
+  não foram incluídos áudios originais, músicas completas, modelos ou caches.
+- Recortes preservam contexto e armadura comum nos dois lados. Manifesto registra
+  origem relativa, intervalos, medidas e SHA-256. Comparações históricas podem conter
+  outras diferenças de transcrição; não são experimento isolado de uma regra.
+- Garota ainda mostra texto em inglês indevido; limitação registrada na explicação
+  desse exemplo, que avalia apenas alcance. O documento não a apresenta como letra correta.
+- `gerar_exemplos.py` reconstrói a seleção a partir da biblioteca/backups locais.
+  Os exemplos prontos podem ser usados num clone sem esses arquivos locais.
+- `verificar_exemplos.py`: cinco casos, dez pares partitura/MIDI, 205 notas,
+  integridade dos arquivos, durações iguais, MP3 audível e SVG com fundo branco.
+  Conferência visual de três pares em Chrome realizada. Nenhum modelo foi executado.
+- README da Partitura aponta para exemplos/plano; README da raiz agora lista o projeto.

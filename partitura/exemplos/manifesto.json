@@ -1,0 +1,436 @@
+{
+  "gerado_em": "2026-11-10T01:29:04-03:00",
+  "descricao": "Recortes de arranjos automáticos; áudios sintetizados novamente com o mesmo piano.",
+  "casos": [
+    {
+      "id": "01-violao",
+      "titulo": "Transição em meu violão",
+      "musica": "Para Machucar Meu Coração",
+      "versao": "HibridoAMT - Medio",
+      "backup": "protecao_20261110",
+      "inicio": 64,
+      "fim": 76,
+      "motivo": "O Sol♭/Fá♯ intermediário da subida Fá–Sol deixa de virar uma nota longa no piano.",
+      "bpm": 129.0,
+      "duracao_musical_s": 5.5813953488372094,
+      "deslocamento_antes": 0.0,
+      "armadura_sustenidos": -3,
+      "fonte_antes": "trabalho\\protecao_20261110\\Para Machucar Meu Coração\\editaveis\\HibridoAMT - Medio.musicxml",
+      "fonte_depois": "saida\\Para Machucar Meu Coração\\editaveis\\HibridoAMT - Medio.musicxml",
+      "arquivos": {
+        "antes.musicxml": {
+          "bytes": 8828,
+          "sha256": "9e6a97603f435bc0250fb47621d414a7168e485fde6f38d8a185cfb91a3eef32"
+        },
+        "antes.mid": {
+          "bytes": 187,
+          "sha256": "c966bc75803bd4c62ada855b977396db6c87871126e47c0c240136a7dd28dfbe"
+        },
+        "antes.mp3": {
+          "bytes": 159597,
+          "sha256": "5d8f7ad8cb5921d2cd00dafd89e8bc37ebac8435bb71261357b45704c9335260"
+        },
+        "antes.pdf": {
+          "bytes": 50025,
+          "sha256": "eb424579ec4f8d1c324ac2289b87772d4c1ae11a5fc72e331d7eb27f96532d5c"
+        },
+        "antes.svg": {
+          "bytes": 88636,
+          "sha256": "5290f7a8b654340c7a4551b4e9ace641bfe8fca30697c4b78f842dbb35ae91d6"
+        },
+        "depois.musicxml": {
+          "bytes": 8492,
+          "sha256": "3fe86d95ad6b2ce646b9842ace418fce2e4435cb3616d233d77a9f700e8c39ea"
+        },
+        "depois.mid": {
+          "bytes": 181,
+          "sha256": "ae496509ea1b076c47183542bb3215d9d69705b7ed578b4eadc7afbdce91a2ef"
+        },
+        "depois.mp3": {
+          "bytes": 159597,
+          "sha256": "27535e403a26acf53c59c6029207de7a445eee37ef141da8d9d272cca1c5e9ff"
+        },
+        "depois.pdf": {
+          "bytes": 49652,
+          "sha256": "58e77ff2311abb0e0ef909597f605cf31f9ac53bdd44f7306249d6a710715619"
+        },
+        "depois.svg": {
+          "bytes": 87229,
+          "sha256": "0571308709c58014abcbe2cd12d394a76bb74d15b3dcc61bef1838dd89e57b8e"
+        }
+      },
+      "antes": {
+        "direita": {
+          "notas": 7,
+          "abertura_max_semitons": 0,
+          "aberturas_maiores_oitava": 0,
+          "ataques_polifonicos": 0
+        },
+        "esquerda": {
+          "notas": 7,
+          "abertura_max_semitons": 0,
+          "aberturas_maiores_oitava": 0,
+          "ataques_polifonicos": 0
+        }
+      },
+      "depois": {
+        "direita": {
+          "notas": 6,
+          "abertura_max_semitons": 0,
+          "aberturas_maiores_oitava": 0,
+          "ataques_polifonicos": 0
+        },
+        "esquerda": {
+          "notas": 7,
+          "abertura_max_semitons": 0,
+          "aberturas_maiores_oitava": 0,
+          "ataques_polifonicos": 0
+        }
+      }
+    },
+    {
+      "id": "02-nosso-lar",
+      "titulo": "Ataque grave em nosso lar",
+      "musica": "Para Machucar Meu Coração",
+      "versao": "HibridoAMT - Medio",
+      "backup": "protecao_20261110",
+      "inicio": 132,
+      "fim": 144,
+      "motivo": "A excursão grave suspeita no ataque deixa de ser tratada como nota melódica estável.",
+      "bpm": 129.0,
+      "duracao_musical_s": 5.5813953488372094,
+      "deslocamento_antes": 0.0,
+      "armadura_sustenidos": -3,
+      "fonte_antes": "trabalho\\protecao_20261110\\Para Machucar Meu Coração\\editaveis\\HibridoAMT - Medio.musicxml",
+      "fonte_depois": "saida\\Para Machucar Meu Coração\\editaveis\\HibridoAMT - Medio.musicxml",
+      "arquivos": {
+        "antes.musicxml": {
+          "bytes": 9108,
+          "sha256": "f9d5154d33288e351357cd2c194d605068182db2c7333c7b9e920e66e3a30d01"
+        },
+        "antes.mid": {
+          "bytes": 190,
+          "sha256": "2566364c2a040d0e7b02cf82d218ae218ec4df612a344aa8662a92f758df088e"
+        },
+        "antes.mp3": {
+          "bytes": 159597,
+          "sha256": "4a977b11d10137c369e2239d525aa5088e04d2c80ee4ee4f1d4521fa75e2947e"
+        },
+        "antes.pdf": {
+          "bytes": 47403,
+          "sha256": "3b7298fc076e2edfc43e90a1ad53c57b89318ac0a7506d4d61c0453ede1406dc"
+        },
+        "antes.svg": {
+          "bytes": 89555,
+          "sha256": "192e280a99845c6dc25124744d908eaba208d0e655a08a876e6c3ac5d6125e74"
+        },
+        "depois.musicxml": {
+          "bytes": 8762,
+          "sha256": "ae40420b912293a3363b2d16f03fd5ed68e63b1f220fe55e3a76539b8691ca1d"
+        },
+        "depois.mid": {
+          "bytes": 186,
+          "sha256": "59cb861b920e4b02b8f1e3f53be19c335837b3291d0a0a97b0ee1b6aa614e394"
+        },
+        "depois.mp3": {
+          "bytes": 159597,
+          "sha256": "d3abf6e3c9737888fefc312bdf06ad4a7487a22be5265fa6778744283b1cf385"
+        },
+        "depois.pdf": {
+          "bytes": 48371,
+          "sha256": "409be4958e8d4f7959abd26fd9eab9f3e59f11efe61f9c63fa81c48ba0ae1a1f"
+        },
+        "depois.svg": {
+          "bytes": 88289,
+          "sha256": "797eb6738a2d675f86eee891f94b5dad42e686c28a3d0945ca747c15040242a3"
+        }
+      },
+      "antes": {
+        "direita": {
+          "notas": 6,
+          "abertura_max_semitons": 0,
+          "aberturas_maiores_oitava": 0,
+          "ataques_polifonicos": 0
+        },
+        "esquerda": {
+          "notas": 9,
+          "abertura_max_semitons": 7,
+          "aberturas_maiores_oitava": 0,
+          "ataques_polifonicos": 1
+        }
+      },
+      "depois": {
+        "direita": {
+          "notas": 5,
+          "abertura_max_semitons": 0,
+          "aberturas_maiores_oitava": 0,
+          "ataques_polifonicos": 0
+        },
+        "esquerda": {
+          "notas": 9,
+          "abertura_max_semitons": 7,
+          "aberturas_maiores_oitava": 0,
+          "ataques_polifonicos": 1
+        }
+      }
+    },
+    {
+      "id": "03-desmoronou",
+      "titulo": "Passagem em desmoronou",
+      "musica": "Para Machucar Meu Coração",
+      "versao": "HibridoAMT - Medio",
+      "backup": "protecao_20261110",
+      "inicio": 44,
+      "fim": 56,
+      "motivo": "A passagem muito breve por Lá natural deixa de receber o peso de uma colcheia inteira.",
+      "bpm": 129.0,
+      "duracao_musical_s": 5.5813953488372094,
+      "deslocamento_antes": 0.0,
+      "armadura_sustenidos": -3,
+      "fonte_antes": "trabalho\\protecao_20261110\\Para Machucar Meu Coração\\editaveis\\HibridoAMT - Medio.musicxml",
+      "fonte_depois": "saida\\Para Machucar Meu Coração\\editaveis\\HibridoAMT - Medio.musicxml",
+      "arquivos": {
+        "antes.musicxml": {
+          "bytes": 10106,
+          "sha256": "ca4cb6caceaaf83780be9a5a592c51c36821fb6cc76568f4f5e33a3da935268f"
+        },
+        "antes.mid": {
+          "bytes": 216,
+          "sha256": "2e36e2183b9df799b68102936491627ab0badc55be21253cea9dfe25db8bf375"
+        },
+        "antes.mp3": {
+          "bytes": 159597,
+          "sha256": "b91917951bc34636b39df584b3fce70ea0c656cba729940e818e609f5d307eec"
+        },
+        "antes.pdf": {
+          "bytes": 46799,
+          "sha256": "60ab348c42f22f15b825aa4e4908b8542e5404e346e233ee1ff758c1ea57ba5a"
+        },
+        "antes.svg": {
+          "bytes": 92711,
+          "sha256": "0ab0fe83270095ed80c29bb841d55a70ce6ace19ab19592d43bcc676f4a128f2"
+        },
+        "depois.musicxml": {
+          "bytes": 10108,
+          "sha256": "743adf5a179fa7386f75243f4d382ba59546f10b342233331758a6c0b5c4407a"
+        },
+        "depois.mid": {
+          "bytes": 216,
+          "sha256": "2e36e2183b9df799b68102936491627ab0badc55be21253cea9dfe25db8bf375"
+        },
+        "depois.mp3": {
+          "bytes": 159597,
+          "sha256": "b91917951bc34636b39df584b3fce70ea0c656cba729940e818e609f5d307eec"
+        },
+        "depois.pdf": {
+          "bytes": 47421,
+          "sha256": "c37775540ada3eaa19a67823b2ba9ceee1cbc114bcc7d17d19731daeaf1f8a9a"
+        },
+        "depois.svg": {
+          "bytes": 92796,
+          "sha256": "091975bfd6e390640dc2671e356269edbc02768713a2f332af632a676bfdc8d9"
+        }
+      },
+      "antes": {
+        "direita": {
+          "notas": 7,
+          "abertura_max_semitons": 0,
+          "aberturas_maiores_oitava": 0,
+          "ataques_polifonicos": 0
+        },
+        "esquerda": {
+          "notas": 12,
+          "abertura_max_semitons": 10,
+          "aberturas_maiores_oitava": 0,
+          "ataques_polifonicos": 1
+        }
+      },
+      "depois": {
+        "direita": {
+          "notas": 7,
+          "abertura_max_semitons": 0,
+          "aberturas_maiores_oitava": 0,
+          "ataques_polifonicos": 0
+        },
+        "esquerda": {
+          "notas": 12,
+          "abertura_max_semitons": 10,
+          "aberturas_maiores_oitava": 0,
+          "ataques_polifonicos": 1
+        }
+      }
+    },
+    {
+      "id": "04-alcance",
+      "titulo": "Acordes dentro do alcance",
+      "musica": "Garota de Ipanema",
+      "versao": "Acordes - Medio",
+      "backup": "revisao_20261109",
+      "inicio": 0,
+      "fim": 16,
+      "motivo": "Notas do acompanhamento são reposicionadas por oitavas para diminuir a abertura da mão esquerda.",
+      "bpm": 129.0,
+      "duracao_musical_s": 7.441860465116279,
+      "deslocamento_antes": 0.0,
+      "armadura_sustenidos": 2,
+      "fonte_antes": "trabalho\\revisao_20261109\\Garota de Ipanema\\editaveis\\Acordes - Medio.musicxml",
+      "fonte_depois": "saida\\Garota de Ipanema\\editaveis\\Acordes - Medio.musicxml",
+      "arquivos": {
+        "antes.musicxml": {
+          "bytes": 13325,
+          "sha256": "5d686c3c0b5f839469363c82bf482233ff1ab5f6f57b49cc15d65848b34720a9"
+        },
+        "antes.mid": {
+          "bytes": 296,
+          "sha256": "b7dc239cadc082abe3ec7fd25552daddb4e4583201cce37326d85c02c404d914"
+        },
+        "antes.mp3": {
+          "bytes": 203949,
+          "sha256": "699b4a5f0f9dd5524ceab4b056b59d910b037405c01ab7fd4096679bde0d2b3b"
+        },
+        "antes.pdf": {
+          "bytes": 47826,
+          "sha256": "f49d8f468a38833dea3bf0c0b0d0b9f2aad8292952ba99d3f716ddff1b52cb36"
+        },
+        "antes.svg": {
+          "bytes": 98084,
+          "sha256": "d1c8059a49920d03785faea0ef12cd894eaa047deff4ef532176231032d5ebf0"
+        },
+        "depois.musicxml": {
+          "bytes": 13288,
+          "sha256": "0b10a96951413227c01a55f51c51d747adc8af7dffb909c730b5c6ed372be8bc"
+        },
+        "depois.mid": {
+          "bytes": 296,
+          "sha256": "4f67a7253e87e7d576b21614f838603c05141b9ca15114157dc239e202abcecb"
+        },
+        "depois.mp3": {
+          "bytes": 203949,
+          "sha256": "e979359b84ace7fd823052c91cf8f06d6af0ef0fa729d0ab4c39a19c5c3998b2"
+        },
+        "depois.pdf": {
+          "bytes": 47793,
+          "sha256": "d130994764b1058e8923518ba5408c28bc8de916089a2a83c0bda06c6df10e76"
+        },
+        "depois.svg": {
+          "bytes": 97628,
+          "sha256": "c23edf104e33bfa2fec5bcd9bbd12dee5f3ab99c289918132eea98372214ab2b"
+        }
+      },
+      "antes": {
+        "direita": {
+          "notas": 11,
+          "abertura_max_semitons": 0,
+          "aberturas_maiores_oitava": 0,
+          "ataques_polifonicos": 0
+        },
+        "esquerda": {
+          "notas": 21,
+          "abertura_max_semitons": 19,
+          "aberturas_maiores_oitava": 7,
+          "ataques_polifonicos": 7
+        }
+      },
+      "depois": {
+        "direita": {
+          "notas": 11,
+          "abertura_max_semitons": 0,
+          "aberturas_maiores_oitava": 0,
+          "ataques_polifonicos": 0
+        },
+        "esquerda": {
+          "notas": 21,
+          "abertura_max_semitons": 11,
+          "aberturas_maiores_oitava": 0,
+          "ataques_polifonicos": 7
+        }
+      }
+    },
+    {
+      "id": "05-introducao",
+      "titulo": "Introdução instrumental",
+      "musica": "No Surprises (Radiohead)",
+      "versao": "HibridoAMT - Medio",
+      "backup": "revisao_20261109",
+      "inicio": 0,
+      "fim": 24,
+      "motivo": "O Híbrido recebe notas da direita instrumental que eram descartadas antes da entrada da voz.",
+      "bpm": 152.0,
+      "duracao_musical_s": 9.473684210526315,
+      "deslocamento_antes": 0.0,
+      "armadura_sustenidos": -1,
+      "fonte_antes": "trabalho\\revisao_20261109\\No Surprises (Radiohead)\\editaveis\\HibridoAMT - Medio.musicxml",
+      "fonte_depois": "saida\\No Surprises (Radiohead)\\editaveis\\HibridoAMT - Medio.musicxml",
+      "arquivos": {
+        "antes.musicxml": {
+          "bytes": 10259,
+          "sha256": "0920700e7565ef966f5727b85f4697e9de9d912bb8804e8fc009ae5edf898d7d"
+        },
+        "antes.mid": {
+          "bytes": 215,
+          "sha256": "c7948b0ccb4e5ed7ec55c8a2817647c1db6be69505be148d9e89447b581798b8"
+        },
+        "antes.mp3": {
+          "bytes": 252909,
+          "sha256": "2e1574d9d0d8ade445cefc1ebf50cf633b39a0a67cd72422cbf5193179892407"
+        },
+        "antes.pdf": {
+          "bytes": 44678,
+          "sha256": "573684ad93abab2ad3f0278bb27c7167f8caca2d79c45567af83f8e4442714c2"
+        },
+        "antes.svg": {
+          "bytes": 89050,
+          "sha256": "1e8291f5f2845dbea19d2b30c02aaabb85dd68a465073f678acdba59945e9801"
+        },
+        "depois.musicxml": {
+          "bytes": 10819,
+          "sha256": "0973e8b1703f6df19b1ad06c0aec5aef18ec7e2baf6178bbb42603b94d597c05"
+        },
+        "depois.mid": {
+          "bytes": 268,
+          "sha256": "80397322b25c42d9aeb4b363b826acd86488a9bef8f693c8a6a4c626e10118f9"
+        },
+        "depois.mp3": {
+          "bytes": 252909,
+          "sha256": "769a6927d363cc7281595cdea6c17af3f902c845266c9167e0ff136bf05acde7"
+        },
+        "depois.pdf": {
+          "bytes": 45580,
+          "sha256": "ceaacec727f5f0f50ce72280c007438e487bbaebaabe1571a4c075a392a5d740"
+        },
+        "depois.svg": {
+          "bytes": 91412,
+          "sha256": "f031377331cbfaec5e3bcf94c29cdc3eaa0f2648a2e8f4e096fcc9fd442d2e02"
+        }
+      },
+      "antes": {
+        "direita": {
+          "notas": 0,
+          "abertura_max_semitons": 0,
+          "aberturas_maiores_oitava": 0,
+          "ataques_polifonicos": 0
+        },
+        "esquerda": {
+          "notas": 22,
+          "abertura_max_semitons": 12,
+          "aberturas_maiores_oitava": 0,
+          "ataques_polifonicos": 6
+        }
+      },
+      "depois": {
+        "direita": {
+          "notas": 9,
+          "abertura_max_semitons": 0,
+          "aberturas_maiores_oitava": 0,
+          "ataques_polifonicos": 0
+        },
+        "esquerda": {
+          "notas": 16,
+          "abertura_max_semitons": 0,
+          "aberturas_maiores_oitava": 0,
+          "ataques_polifonicos": 0
+        }
+      }
+    }
+  ]
+}

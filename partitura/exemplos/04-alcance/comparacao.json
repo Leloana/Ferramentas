@@ -1,0 +1,86 @@
+{
+  "id": "04-alcance",
+  "titulo": "Acordes dentro do alcance",
+  "musica": "Garota de Ipanema",
+  "versao": "Acordes - Medio",
+  "backup": "revisao_20261109",
+  "inicio": 0,
+  "fim": 16,
+  "motivo": "Notas do acompanhamento são reposicionadas por oitavas para diminuir a abertura da mão esquerda.",
+  "bpm": 129.0,
+  "duracao_musical_s": 7.441860465116279,
+  "deslocamento_antes": 0.0,
+  "armadura_sustenidos": 2,
+  "fonte_antes": "trabalho\\revisao_20261109\\Garota de Ipanema\\editaveis\\Acordes - Medio.musicxml",
+  "fonte_depois": "saida\\Garota de Ipanema\\editaveis\\Acordes - Medio.musicxml",
+  "arquivos": {
+    "antes.musicxml": {
+      "bytes": 13325,
+      "sha256": "5d686c3c0b5f839469363c82bf482233ff1ab5f6f57b49cc15d65848b34720a9"
+    },
+    "antes.mid": {
+      "bytes": 296,
+      "sha256": "b7dc239cadc082abe3ec7fd25552daddb4e4583201cce37326d85c02c404d914"
+    },
+    "antes.mp3": {
+      "bytes": 203949,
+      "sha256": "699b4a5f0f9dd5524ceab4b056b59d910b037405c01ab7fd4096679bde0d2b3b"
+    },
+    "antes.pdf": {
+      "bytes": 47826,
+      "sha256": "f49d8f468a38833dea3bf0c0b0d0b9f2aad8292952ba99d3f716ddff1b52cb36"
+    },
+    "antes.svg": {
+      "bytes": 98084,
+      "sha256": "d1c8059a49920d03785faea0ef12cd894eaa047deff4ef532176231032d5ebf0"
+    },
+    "depois.musicxml": {
+      "bytes": 13288,
+      "sha256": "0b10a96951413227c01a55f51c51d747adc8af7dffb909c730b5c6ed372be8bc"
+    },
+    "depois.mid": {
+      "bytes": 296,
+      "sha256": "4f67a7253e87e7d576b21614f838603c05141b9ca15114157dc239e202abcecb"
+    },
+    "depois.mp3": {
+      "bytes": 203949,
+      "sha256": "e979359b84ace7fd823052c91cf8f06d6af0ef0fa729d0ab4c39a19c5c3998b2"
+    },
+    "depois.pdf": {
+      "bytes": 47793,
+      "sha256": "d130994764b1058e8923518ba5408c28bc8de916089a2a83c0bda06c6df10e76"
+    },
+    "depois.svg": {
+      "bytes": 97628,
+      "sha256": "c23edf104e33bfa2fec5bcd9bbd12dee5f3ab99c289918132eea98372214ab2b"
+    }
+  },
+  "antes": {
+    "direita": {
+      "notas": 11,
+      "abertura_max_semitons": 0,
+      "aberturas_maiores_oitava": 0,
+      "ataques_polifonicos": 0
+    },
+    "esquerda": {
+      "notas": 21,
+      "abertura_max_semitons": 19,
+      "aberturas_maiores_oitava": 7,
+      "ataques_polifonicos": 7
+    }
+  },
+  "depois": {
+    "direita": {
+      "notas": 11,
+      "abertura_max_semitons": 0,
+      "aberturas_maiores_oitava": 0,
+      "ataques_polifonicos": 0
+    },
+    "esquerda": {
+      "notas": 21,
+      "abertura_max_semitons": 11,
+      "aberturas_maiores_oitava": 0,
+      "ataques_polifonicos": 7
+    }
+  }
+}

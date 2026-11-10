@@ -1,0 +1,86 @@
+{
+  "id": "05-introducao",
+  "titulo": "Introdução instrumental",
+  "musica": "No Surprises (Radiohead)",
+  "versao": "HibridoAMT - Medio",
+  "backup": "revisao_20261109",
+  "inicio": 0,
+  "fim": 24,
+  "motivo": "O Híbrido recebe notas da direita instrumental que eram descartadas antes da entrada da voz.",
+  "bpm": 152.0,
+  "duracao_musical_s": 9.473684210526315,
+  "deslocamento_antes": 0.0,
+  "armadura_sustenidos": -1,
+  "fonte_antes": "trabalho\\revisao_20261109\\No Surprises (Radiohead)\\editaveis\\HibridoAMT - Medio.musicxml",
+  "fonte_depois": "saida\\No Surprises (Radiohead)\\editaveis\\HibridoAMT - Medio.musicxml",
+  "arquivos": {
+    "antes.musicxml": {
+      "bytes": 10259,
+      "sha256": "0920700e7565ef966f5727b85f4697e9de9d912bb8804e8fc009ae5edf898d7d"
+    },
+    "antes.mid": {
+      "bytes": 215,
+      "sha256": "c7948b0ccb4e5ed7ec55c8a2817647c1db6be69505be148d9e89447b581798b8"
+    },
+    "antes.mp3": {
+      "bytes": 252909,
+      "sha256": "2e1574d9d0d8ade445cefc1ebf50cf633b39a0a67cd72422cbf5193179892407"
+    },
+    "antes.pdf": {
+      "bytes": 44678,
+      "sha256": "573684ad93abab2ad3f0278bb27c7167f8caca2d79c45567af83f8e4442714c2"
+    },
+    "antes.svg": {
+      "bytes": 89050,
+      "sha256": "1e8291f5f2845dbea19d2b30c02aaabb85dd68a465073f678acdba59945e9801"
+    },
+    "depois.musicxml": {
+      "bytes": 10819,
+      "sha256": "0973e8b1703f6df19b1ad06c0aec5aef18ec7e2baf6178bbb42603b94d597c05"
+    },
+    "depois.mid": {
+      "bytes": 268,
+      "sha256": "80397322b25c42d9aeb4b363b826acd86488a9bef8f693c8a6a4c626e10118f9"
+    },
+    "depois.mp3": {
+      "bytes": 252909,
+      "sha256": "769a6927d363cc7281595cdea6c17af3f902c845266c9167e0ff136bf05acde7"
+    },
+    "depois.pdf": {
+      "bytes": 45580,
+      "sha256": "ceaacec727f5f0f50ce72280c007438e487bbaebaabe1571a4c075a392a5d740"
+    },
+    "depois.svg": {
+      "bytes": 91412,
+      "sha256": "f031377331cbfaec5e3bcf94c29cdc3eaa0f2648a2e8f4e096fcc9fd442d2e02"
+    }
+  },
+  "antes": {
+    "direita": {
+      "notas": 0,
+      "abertura_max_semitons": 0,
+      "aberturas_maiores_oitava": 0,
+      "ataques_polifonicos": 0
+    },
+    "esquerda": {
+      "notas": 22,
+      "abertura_max_semitons": 12,
+      "aberturas_maiores_oitava": 0,
+      "ataques_polifonicos": 6
+    }
+  },
+  "depois": {
+    "direita": {
+      "notas": 9,
+      "abertura_max_semitons": 0,
+      "aberturas_maiores_oitava": 0,
+      "ataques_polifonicos": 0
+    },
+    "esquerda": {
+      "notas": 16,
+      "abertura_max_semitons": 0,
+      "aberturas_maiores_oitava": 0,
+      "ataques_polifonicos": 0
+    }
+  }
+}

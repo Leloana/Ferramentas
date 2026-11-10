@@ -1,0 +1,86 @@
+{
+  "id": "02-nosso-lar",
+  "titulo": "Ataque grave em nosso lar",
+  "musica": "Para Machucar Meu Coração",
+  "versao": "HibridoAMT - Medio",
+  "backup": "protecao_20261110",
+  "inicio": 132,
+  "fim": 144,
+  "motivo": "A excursão grave suspeita no ataque deixa de ser tratada como nota melódica estável.",
+  "bpm": 129.0,
+  "duracao_musical_s": 5.5813953488372094,
+  "deslocamento_antes": 0.0,
+  "armadura_sustenidos": -3,
+  "fonte_antes": "trabalho\\protecao_20261110\\Para Machucar Meu Coração\\editaveis\\HibridoAMT - Medio.musicxml",
+  "fonte_depois": "saida\\Para Machucar Meu Coração\\editaveis\\HibridoAMT - Medio.musicxml",
+  "arquivos": {
+    "antes.musicxml": {
+      "bytes": 9108,
+      "sha256": "f9d5154d33288e351357cd2c194d605068182db2c7333c7b9e920e66e3a30d01"
+    },
+    "antes.mid": {
+      "bytes": 190,
+      "sha256": "2566364c2a040d0e7b02cf82d218ae218ec4df612a344aa8662a92f758df088e"
+    },
+    "antes.mp3": {
+      "bytes": 159597,
+      "sha256": "4a977b11d10137c369e2239d525aa5088e04d2c80ee4ee4f1d4521fa75e2947e"
+    },
+    "antes.pdf": {
+      "bytes": 47403,
+      "sha256": "3b7298fc076e2edfc43e90a1ad53c57b89318ac0a7506d4d61c0453ede1406dc"
+    },
+    "antes.svg": {
+      "bytes": 89555,
+      "sha256": "192e280a99845c6dc25124744d908eaba208d0e655a08a876e6c3ac5d6125e74"
+    },
+    "depois.musicxml": {
+      "bytes": 8762,
+      "sha256": "ae40420b912293a3363b2d16f03fd5ed68e63b1f220fe55e3a76539b8691ca1d"
+    },
+    "depois.mid": {
+      "bytes": 186,
+      "sha256": "59cb861b920e4b02b8f1e3f53be19c335837b3291d0a0a97b0ee1b6aa614e394"
+    },
+    "depois.mp3": {
+      "bytes": 159597,
+      "sha256": "d3abf6e3c9737888fefc312bdf06ad4a7487a22be5265fa6778744283b1cf385"
+    },
+    "depois.pdf": {
+      "bytes": 48371,
+      "sha256": "409be4958e8d4f7959abd26fd9eab9f3e59f11efe61f9c63fa81c48ba0ae1a1f"
+    },
+    "depois.svg": {
+      "bytes": 88289,
+      "sha256": "797eb6738a2d675f86eee891f94b5dad42e686c28a3d0945ca747c15040242a3"
+    }
+  },
+  "antes": {
+    "direita": {
+      "notas": 6,
+      "abertura_max_semitons": 0,
+      "aberturas_maiores_oitava": 0,
+      "ataques_polifonicos": 0
+    },
+    "esquerda": {
+      "notas": 9,
+      "abertura_max_semitons": 7,
+      "aberturas_maiores_oitava": 0,
+      "ataques_polifonicos": 1
+    }
+  },
+  "depois": {
+    "direita": {
+      "notas": 5,
+      "abertura_max_semitons": 0,
+      "aberturas_maiores_oitava": 0,
+      "ataques_polifonicos": 0
+    },
+    "esquerda": {
+      "notas": 9,
+      "abertura_max_semitons": 7,
+      "aberturas_maiores_oitava": 0,
+      "ataques_polifonicos": 1
+    }
+  }
+}
