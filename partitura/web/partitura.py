@@ -4,10 +4,10 @@ import threading
 import xml.etree.ElementTree as ET
 from sincronia import preparar_musicxml
 from pathlib import Path
-from gerar import OPCOES_DEDOS, _desembaralhar, dedos_ao_lado, pedal_continuo
+from gerar import OPCOES_DEDOS, _desembaralhar, dedos_ao_lado, espacar_kana, pedal_continuo
 
 _TRAVA = threading.Lock()
-VERSAO = 11
+VERSAO = 12
 # Desenho da página. "pagina" = A4 (tela grande e PDF); "retrato"/"paisagem" = modo foco no
 # celular: página estreita e contínua (uma folha comprida), poucos compassos por linha, para
 # a pauta ficar grande na tela pequena.
@@ -64,7 +64,7 @@ def renderizar(xml: Path, layout: str = 'pagina'):
         tk.setOptions({'scale':42,'pageMarginTop':80,'pageMarginBottom':80,
                        'footer':'none','breaks':'auto',**LAYOUTS[layout],**OPCOES_DEDOS})
         texto,segmentos,percurso=preparar_musicxml(xml.read_text(encoding='utf-8'),com_percurso=True)
-        if not tk.loadData(texto):
+        if not tk.loadData(espacar_kana(texto)):
             raise ValueError('Não foi possível abrir esta partitura.')
         paginas=[pedal_continuo(dedos_ao_lado(_desembaralhar(tk.renderToSVG(i)))) for i in range(1,tk.getPageCount()+1)]
         # O relógio vem do MusicXML/MIDI, nunca da interpretação rítmica do

@@ -21,7 +21,7 @@ import numpy as np
 
 # menor nota (MIDI) em que cada intervalo ainda soa claro no piano ("low interval limits",
 # regra de arranjo/orquestração); abaixo disso a esquerda embola
-LIMITE_GRAVE = {1: 52, 2: 51, 3: 48, 4: 46, 5: 45, 6: 46, 7: 34, 8: 41, 9: 41, 10: 41, 11: 41}
+from maos import LIMITE_GRAVE  # noqa: E402  (mesma tabela da correção)
 
 
 def notas_do_xml(xml: Path):

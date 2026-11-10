@@ -413,6 +413,51 @@ def _rodada_correcao(mao, ev, protegidas, outra, faixa, fila, correcoes, passos,
     return ev, passos
 
 
+# menor nota (MIDI) em que cada intervalo ainda soa claro no piano ("low interval limits");
+# mesma tabela de metricas.LIMITE_GRAVE
+LIMITE_GRAVE = {1: 52, 2: 51, 3: 48, 4: 46, 5: 45, 6: 46, 7: 34, 8: 41, 9: 41, 10: 41, 11: 41}
+# custo de tirar uma voz pelo intervalo até o baixo: a 5ª é a que menos faz falta, a 3ª a que mais
+CUSTO_TIRAR = {7: 1, 0: 1, 10: 2, 11: 2, 3: 3, 4: 3}
+
+
+def embolados(ps):
+    """Pares vizinhos abaixo do limite de clareza do grave."""
+    ps = sorted(set(ps))
+    return sum(1 for a, b in zip(ps, ps[1:]) if b - a in LIMITE_GRAVE and a < LIMITE_GRAVE[b - a])
+
+
+def clarear_grave(me, protegidas=frozenset()):
+    """Tira da esquerda a voz que embola no grave (terça abaixo de Dó3 etc.).
+
+    Fechar o acorde pra caber na mão põe 3ª/7ª logo acima de um baixo grave; ali o
+    intervalo vira ruído. O baixo e as notas protegidas ficam; das outras, tira o
+    conjunto mais barato (5ª antes de 7ª antes de 3ª) que acaba com o embolado.
+    """
+    saida, correcoes = [], []
+    for off, dur, ps, *r in me:
+        ps = sorted(set(ps))
+        if len(ps) < 2 or not embolados(ps):
+            saida.append((off, dur, ps, *r))
+            continue
+        baixo = ps[0]
+        fixas = {baixo} | {p for p in ps if (round(off, 6), p) in protegidas}
+        livres = [p for p in ps if p not in fixas]
+        melhor = None
+        for k in range(len(livres) + 1):
+            for tirar in combinations(livres, k):
+                resto = [p for p in ps if p not in tirar]
+                custo = (embolados(resto), sum(CUSTO_TIRAR.get((p - baixo) % 12, 2) for p in tirar), k)
+                if melhor is None or custo < melhor[0]:
+                    melhor = (custo, resto)
+        resto = melhor[1]
+        if resto != ps and embolados(resto) < embolados(ps):
+            correcoes.append(dict(instante=round(off, 4), tipo="grave", acao="tira a voz que embola no grave",
+                                  antes=ps, depois=resto))
+            ps = resto
+        saida.append((off, dur, ps, *r))
+    return saida, correcoes
+
+
 def separar_maos(md, me, nivel, protegidas):
     """Esquerda não pode tocar em cima da direita no mesmo instante: desce a oitava ou tira a nota."""
     lo = (FAIXA_FACIL_ESQ if nivel == "facil" else FAIXA["esquerda"])[0]
@@ -438,11 +483,12 @@ def separar_maos(md, me, nivel, protegidas):
     return saida, correcoes
 
 
-def tornar_tocavel(md, me, nivel, bpm, protegidas=frozenset(), corrigir=True, mostrar=None):
+def tornar_tocavel(md, me, nivel, bpm, protegidas=frozenset(), corrigir=True, mostrar=None, clarear=True):
     """Corrige as duas mãos e calcula os dedos.
 
     md/me: eventos (offset, duração, [midis], *resto) em tempos.
     protegidas: {(offset arredondado a 6 casas, midi)} das notas que não podem mudar.
+    clarear: tira da esquerda a voz que embola no grave (`clarear_grave`).
     Devolve (md, me, dedos_md, dedos_me, relatório); dedos_* têm uma entrada por evento:
     lista de dedos na ordem de sorted(ps), ou None quando o dedo não vai pra partitura.
     """
@@ -459,6 +505,9 @@ def tornar_tocavel(md, me, nivel, bpm, protegidas=frozenset(), corrigir=True, mo
         rel["correcoes"] += [dict(mao="direita", **x) for x in c]
         me, c = corrigir_mao(maos["esquerda"], me, protegidas, md)
         rel["correcoes"] += [dict(mao="esquerda", **x) for x in c]
+        if clarear:
+            me, c = clarear_grave(me, protegidas)
+            rel["correcoes"] += [dict(mao="esquerda", **x) for x in c]
     dedos_saida = {}
     for lado, ev in (("direita", md), ("esquerda", me)):
         notas = _notas(ev, protegidas, lado)

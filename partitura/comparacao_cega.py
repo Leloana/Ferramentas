@@ -155,6 +155,65 @@ def montar_pagina(antes_dir: Path, depois_dir: Path, saida: Path, niveis=("Facil
     return saida / "index.html"
 
 
+def montar_pagina_varias(lados: dict, saida: Path, casos: list, semente=7319, ouvir=None):
+    """Página às cegas com várias opções por trecho (ex.: padrão × 5 teores de acompanhamento).
+
+    lados: {rótulo: biblioteca}; o 1º é a referência do alinhamento. casos: [(música, "Versao - Nivel")].
+    O trecho é o de 4 compassos que mais muda somando todas as opções contra a referência.
+    """
+    if saida.exists():
+        shutil.rmtree(saida)
+    saida.mkdir(parents=True)
+    rnd = random.Random(semente)
+    rotulos = list(lados)
+    saida_casos, sem = [], []
+    for musica, vn in casos:
+        xmls = {r: Path(lados[r]) / musica / "editaveis" / f"{vn}.musicxml" for r in rotulos}
+        if not all(x.exists() for x in xmls.values()):
+            sem.append(f"{musica} · {vn} (falta arquivo)")
+            continue
+        notas = {r: notas_do_xml(x) for r, x in xmls.items()}
+        bpms = {r: _bpm(x) for r, x in xmls.items()}
+        ref = rotulos[0]
+        cref = _por_compasso(notas[ref], bpms[ref])
+        ks = {r: alinhar(notas[ref], notas[r], bpms[ref], bpms[r]) for r in rotulos}
+        soma = {}
+        for r in rotulos[1:]:
+            co = _por_compasso(notas[r], bpms[r])
+            for c in cref:
+                soma[c] = soma.get(c, 0) + len(cref[c] ^ co.get(c + ks[r], set()))
+        janelas = [(sum(soma.get(c, 0) for c in range(c0, c0 + 4)), c0) for c0 in sorted(cref)[:-3] or sorted(cref)]
+        valor, c0 = max(janelas) if janelas else (0, None)
+        if not valor:
+            sem.append(f"{musica} · {vn}")
+            continue
+        pasta = saida / f"{len(saida_casos):02d}"
+        pasta.mkdir()
+        opcoes = []
+        for i, r in enumerate(rotulos):
+            ini = c0 + ks[r] - min(_por_compasso(notas[r], bpms[r]))
+            nome = f"op{i}"
+            cut = recortar(xmls[r], ini, ini + 3, pasta / f"{nome}.musicxml")
+            desenhar(cut, pasta / f"{nome}.svg")
+            desenhar(cut, pasta / f"{nome}_cego.svg", sem_dedos=True)
+            tocar(cut, pasta / f"{nome}.mp3")
+            opcoes.append(dict(id=r, rotulo=r, mp3=f"{pasta.name}/{nome}.mp3", svg=f"{pasta.name}/{nome}.svg",
+                               cego=f"{pasta.name}/{nome}_cego.svg", medidas={}, correcoes=[]))
+        rnd.shuffle(opcoes)
+        for letra, o in zip("ABCDEFGHIJ", opcoes):
+            o["letra"] = letra
+        ident = f"{musica} · {vn}"
+        saida_casos.append(dict(id=ident, titulo=ident, musica=musica, versao=vn,
+                                ouvir=ouvir or "Trecho de 4 compassos onde as opções mais diferem.",
+                                opcoes=opcoes, diferem=[1, 2, 3, 4], pares=[], so_dedos=None))
+        print("[pagina]", ident, "compassos", c0 + 1, "a", c0 + 4, "diferenças", valor, flush=True)
+    dados = dict(casos=saida_casos, descartados=[dict(id=x, titulo=x) for x in sem])
+    (saida / "casos.json").write_text(json.dumps(dados, ensure_ascii=False, indent=1), encoding="utf-8")
+    (saida / "index.html").write_text(MODELO.replace("__CASOS__", json.dumps(dados, ensure_ascii=False)),
+                                      encoding="utf-8")
+    return saida / "index.html"
+
+
 MODELO = r"""<!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Comparar partituras</title>
