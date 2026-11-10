@@ -527,4 +527,8 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
   notas destacadas e antecipação do tempo 3.
 - Prévia: `salvar_midi_notas` usa a dinâmica escrita como volume (pp 40 ... ff 115; sem
   marca, 90 como antes). Segunda rodada da página em `pagina2/`. Suíte 78 OK.
+- 2ª rodada (`pagina2/`): épica (fácil, médio, difícil, Para Machucar), calma, emotiva e
+  animada do difícil: todas nota 5 no teor e entrada boa. Todos os 5 teores aprovados nos
+  3 níveis. Pendente: validar com músicas inteiras na Windows (refrão de verdade) e, se a
+  leitura incomodar, mostrar dedos da introdução difícil só no começo do compasso.
 
