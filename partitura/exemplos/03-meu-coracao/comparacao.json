@@ -1,0 +1,86 @@
+{
+  "id": "03-meu-coracao",
+  "titulo": "Passagem em machucar meu coração",
+  "musica": "Para Machucar Meu Coração",
+  "versao": "HibridoAMT - Medio",
+  "backup": "protecao_20261110",
+  "inicio": 196,
+  "fim": 208,
+  "motivo": "O Fá♯ de passagem entre \"meu\" e \"coração\" deixa de virar nota; a sílaba cai no Mi e o \"co-\" no Fá.",
+  "bpm": 129.0,
+  "duracao_musical_s": 5.5813953488372094,
+  "deslocamento_antes": 0.0,
+  "armadura_sustenidos": -3,
+  "fonte_antes": "trabalho\\protecao_20261110\\Para Machucar Meu Coração\\editaveis\\HibridoAMT - Medio.musicxml",
+  "fonte_depois": "trabalho\\validacao_20261110\\antes\\Para Machucar Meu Coração\\editaveis\\HibridoAMT - Medio.musicxml",
+  "arquivos": {
+    "antes.musicxml": {
+      "bytes": 10031,
+      "sha256": "521b1eb7454d34fca0205ba6a95c1cb705ab5db63ae07dd9f6f5b0bf013effc8"
+    },
+    "antes.mid": {
+      "bytes": 213,
+      "sha256": "1585bf522f07862f05218312036f2891ca19cca3abd8a7c33e527e7e5bdc13cd"
+    },
+    "antes.mp3": {
+      "bytes": 159597,
+      "sha256": "a1c5dc99002cb41f0dfbaf4f05e2c4649b6a39c344e0b87d9516e6041f3c34eb"
+    },
+    "antes.pdf": {
+      "bytes": 46893,
+      "sha256": "ebc83b6a3c34ae999bf2c68f584345797d8c83a56a796a41860e170281cb99dc"
+    },
+    "antes.svg": {
+      "bytes": 90228,
+      "sha256": "85a72639ee2b0549cfacdbbca7c581020f8208f8cc794174ce4ffb42b0e10a83"
+    },
+    "depois.musicxml": {
+      "bytes": 10084,
+      "sha256": "7b3f9a7b3379b9e9edf2b4638c5715442ea1757e23d671f5217d33ed0b8af83f"
+    },
+    "depois.mid": {
+      "bytes": 213,
+      "sha256": "2a52c37fdf42b25563808ddd6cbc466e733affa966cb796784fb48d9344fe24f"
+    },
+    "depois.mp3": {
+      "bytes": 159597,
+      "sha256": "8e8d8960bca7f10fe68ee2588594a5f68711f00038d1c32a90580183dd2ae13f"
+    },
+    "depois.pdf": {
+      "bytes": 47881,
+      "sha256": "5379124bc3adc376df6b701cae12e957bf1074bdf6f87eca6b91e0a6ed860b45"
+    },
+    "depois.svg": {
+      "bytes": 90725,
+      "sha256": "478da934f4c0b878477afb5cb3d22f9339e21dfa8f602802ab72f5de144d0e27"
+    }
+  },
+  "antes": {
+    "direita": {
+      "notas": 7,
+      "abertura_max_semitons": 0,
+      "aberturas_maiores_oitava": 0,
+      "ataques_polifonicos": 0
+    },
+    "esquerda": {
+      "notas": 11,
+      "abertura_max_semitons": 10,
+      "aberturas_maiores_oitava": 0,
+      "ataques_polifonicos": 3
+    }
+  },
+  "depois": {
+    "direita": {
+      "notas": 7,
+      "abertura_max_semitons": 0,
+      "aberturas_maiores_oitava": 0,
+      "ataques_polifonicos": 0
+    },
+    "esquerda": {
+      "notas": 11,
+      "abertura_max_semitons": 10,
+      "aberturas_maiores_oitava": 0,
+      "ataques_polifonicos": 3
+    }
+  }
+}

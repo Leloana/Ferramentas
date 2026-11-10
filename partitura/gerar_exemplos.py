@@ -20,6 +20,8 @@ from analisar_completo import deslocamento
 
 RAIZ=Path(__file__).resolve().parent
 DESTINO=RAIZ/'exemplos'
+# A biblioteca (saida/) é regenerada; o "depois" dos exemplos é a cópia congelada de quando foram feitos.
+DEPOIS=RAIZ/'trabalho'/'validacao_20261110'/'antes'
 CASOS=[
     dict(id='01-violao',titulo='Transição em meu violão',musica='Para Machucar Meu Coração',
          versao='HibridoAMT - Medio',backup='protecao_20261110',inicio=64,fim=76,
@@ -27,9 +29,10 @@ CASOS=[
     dict(id='02-nosso-lar',titulo='Ataque grave em nosso lar',musica='Para Machucar Meu Coração',
          versao='HibridoAMT - Medio',backup='protecao_20261110',inicio=132,fim=144,
          motivo='A excursão grave suspeita no ataque deixa de ser tratada como nota melódica estável.'),
-    dict(id='03-desmoronou',titulo='Passagem em desmoronou',musica='Para Machucar Meu Coração',
-         versao='HibridoAMT - Medio',backup='protecao_20261110',inicio=44,fim=56,
-         motivo='A passagem muito breve por Lá natural deixa de receber o peso de uma colcheia inteira.'),
+    # 2026-11-10: o trecho antigo (44-56, "desmoronou") saiu com antes == depois; trocado por este
+    dict(id='03-meu-coracao',titulo='Passagem em machucar meu coração',musica='Para Machucar Meu Coração',
+         versao='HibridoAMT - Medio',backup='protecao_20261110',inicio=196,fim=208,
+         motivo='O Fá♯ de passagem entre "meu" e "coração" deixa de virar nota; a sílaba cai no Mi e o "co-" no Fá.'),
     dict(id='04-alcance',titulo='Acordes dentro do alcance',musica='Garota de Ipanema',
          versao='Acordes - Medio',backup='revisao_20261109',inicio=None,fim=None,
          motivo='Notas do acompanhamento são reposicionadas por oitavas para diminuir a abertura da mão esquerda.'),
@@ -149,13 +152,22 @@ def notas_do_recorte(maos):
 
 
 def main():
+    import sys
+    so=set(sys.argv[1:])   # ids dos casos a refazer; vazio = todos
     manifesto=dict(gerado_em=datetime.now().astimezone().isoformat(timespec='seconds'),
         descricao='Recortes de arranjos automáticos; áudios sintetizados novamente com o mesmo piano.',casos=[])
+    anteriores={}
+    if so and (DESTINO/'manifesto.json').exists():
+        anteriores={c['id']:c for c in json.loads((DESTINO/'manifesto.json').read_text(encoding='utf-8'))['casos']}
     for configuracao in CASOS:
+        if so and configuracao['id'] not in so:
+            if configuracao['id'] in anteriores:
+                manifesto['casos'].append(anteriores[configuracao['id']])
+            continue
         caso=dict(configuracao)
         nome=caso['versao']+'.musicxml'
         antes_path=RAIZ/'trabalho'/caso['backup']/caso['musica']/'editaveis'/nome
-        depois_path=RAIZ/'saida'/caso['musica']/'editaveis'/nome
+        depois_path=(DEPOIS if DEPOIS.exists() else RAIZ/'saida')/caso['musica']/'editaveis'/nome
         if not antes_path.exists() or not depois_path.exists():
             raise FileNotFoundError(f'Biblioteca/backups locais necessários para reconstruir {caso["id"]}. Os exemplos prontos já estão em exemplos/.')
         antes=carregar(antes_path); depois=carregar(depois_path)
@@ -198,7 +210,7 @@ def main():
         manifesto['casos'].append(caso)
     DESTINO.mkdir(exist_ok=True)
     (DESTINO/'manifesto.json').write_text(json.dumps(manifesto,ensure_ascii=False,indent=2),encoding='utf-8')
-    print('[concluido] Cinco comparações exportadas.',flush=True)
+    print(f"[concluido] {len(manifesto['casos'])} comparações no manifesto.",flush=True)
 
 
 if __name__=='__main__':main()

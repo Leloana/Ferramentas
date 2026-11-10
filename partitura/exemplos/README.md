@@ -24,7 +24,7 @@ uma prova de preferência musical. O protocolo para isso está no [plano da pró
 |---|---|
 | [1. Violão](#1-transição-em-meu-violão) | O degrau cromático curto que a grade alongava. |
 | [2. Nosso lar](#2-ataque-grave-em-nosso-lar) | Uma excursão grave no ataque da melodia. |
-| [3. Desmoronou](#3-passagem-em-desmoronou) | O peso dado a uma passagem por Lá natural. |
+| [3. Meu coração](#3-passagem-em-machucar-meu-coração) | O Fá♯ de passagem que virava nota em “meu”. |
 | [4. Alcance](#4-acordes-dentro-do-alcance) | Abertura máxima da esquerda reduzida de 19 a 11 semitons. |
 | [5. Introdução](#5-introdução-instrumental) | A direita instrumental que o Híbrido descartava. |
 
@@ -62,27 +62,24 @@ revisto, a entrada se apoia na altura estável da frase.
 [MusicXML antes](02-nosso-lar/antes.musicxml) · [MusicXML depois](02-nosso-lar/depois.musicxml) ·
 [medidas e origem](02-nosso-lar/comparacao.json).
 
-## 3. Passagem em “desmoronou”
-
-> **Aviso (2026-11-10):** neste recorte o antes e o depois ficaram com as mesmas notas
-> (mesmo MIDI e mesmo MP3). O exemplo será refeito com outro trecho na máquina com a
-> biblioteca; até lá o `verificar_exemplos.py` reprova este caso de propósito.
+## 3. Passagem em “machucar meu coração”
 
 **Para Machucar Meu Coração — Híbrido AMT, Médio.** Três compassos, aproximadamente 5,6 s de música.
-O Lá natural aparece brevemente no gesto vocal, mas a quantização dava peso
-excessivo a ele. Compare a passagem e sua duração, não apenas o número de notas:
-os dois recortes têm sete notas na direita, mas alturas e divisões não são idênticas.
+Na versão anterior, a passagem da voz entre “meu” e “coração” vira um Sol♭ (o Fá♯
+intermediário) em “meu”, seguido de um Mi sem sílaba. No resultado revisto, “meu” fica
+no Mi e “co-ra” no Fá, sem o degrau de passagem. O recorte antigo (“desmoronou”) saiu
+com as mesmas notas nos dois lados e foi trocado em 2026-11-10.
 
 | Antes | Depois |
 |---|---|
-| ![Desmoronou antes](03-desmoronou/antes.svg) | ![Desmoronou depois](03-desmoronou/depois.svg) |
+| ![Meu coração antes](03-meu-coracao/antes.svg) | ![Meu coração depois](03-meu-coracao/depois.svg) |
 
-**Ouvir:** [antes](03-desmoronou/antes.mp3) · [depois](03-desmoronou/depois.mp3).
+**Ouvir:** [antes](03-meu-coracao/antes.mp3) · [depois](03-meu-coracao/depois.mp3).
 
-**Arquivos:** [PDF antes](03-desmoronou/antes.pdf) · [PDF depois](03-desmoronou/depois.pdf) ·
-[MIDI antes](03-desmoronou/antes.mid) · [MIDI depois](03-desmoronou/depois.mid) ·
-[MusicXML antes](03-desmoronou/antes.musicxml) · [MusicXML depois](03-desmoronou/depois.musicxml) ·
-[medidas e origem](03-desmoronou/comparacao.json).
+**Arquivos:** [PDF antes](03-meu-coracao/antes.pdf) · [PDF depois](03-meu-coracao/depois.pdf) ·
+[MIDI antes](03-meu-coracao/antes.mid) · [MIDI depois](03-meu-coracao/depois.mid) ·
+[MusicXML antes](03-meu-coracao/antes.musicxml) · [MusicXML depois](03-meu-coracao/depois.musicxml) ·
+[medidas e origem](03-meu-coracao/comparacao.json).
 
 ## 4. Acordes dentro do alcance
 
