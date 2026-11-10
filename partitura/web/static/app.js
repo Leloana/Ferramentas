@@ -213,6 +213,8 @@ function desenharVisor() {
   visor.innerHTML = `
     <h2>${esc(m.titulo)}</h2>
     <p class="art">${esc(m.artista)}</p>
+    ${(m.introducao || m.final) ? `<p class="variacao">Introdução/final gerados · variação ${m.variacao || 0}${m.variacoes && m.variacoes.length ? ` (anteriores guardadas em variacoes/: ${m.variacoes.join(", ")})` : ""}
+      <button type="button" id="outraVariacao">Outra variação</button></p>` : ""}
     <div class="seletor">
       <div class="grupo">${["facil", "medio", "dificil"].map((n) => `<button data-nivel="${n}" class="${n === escolha.nivel ? "ativa" : ""}" ${m.arquivos[n] ? "" : "disabled"}>${NIVEL_NOME[n]}</button>`).join("")}</div>
       <div class="grupo">${["HibridoAMT", "Hibrido", "Acordes", "Pop2Piano", "AMT-APC"].map((v) => `<button data-versao="${v}" class="${v === escolha.versao ? "ativa" : ""}" ${m.arquivos[escolha.nivel][v] ? "" : "disabled"} title="${PADRAO[escolha.nivel] === v ? "recomendada para este nível" : ""}">${VERSAO_NOME[v]}${PADRAO[escolha.nivel] === v ? " ★" : ""}</button>`).join("")}</div>
@@ -241,6 +243,17 @@ function desenharVisor() {
     audio.addEventListener('play', () => { original?.pause(); player.pause(); });
     original?.addEventListener('play', () => { audio.pause(); player.pause(); });
   }
+  $("#outraVariacao", visor)?.addEventListener("click", async (ev) => {
+    ev.target.disabled = true;
+    try {
+      const r = await fetch("/api/variacao", { method: "POST", headers: { "Content-Type": "application/json" },
+                                               body: JSON.stringify({ pasta: m.pasta }) });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.detail || "Não consegui pedir outra variação.");
+      aviso(`Gerando a variação ${d.variacao}; a atual fica guardada.`);
+      abrirAba("fila");
+    } catch (e) { aviso(e.message, true); ev.target.disabled = false; }
+  });
   $$("[data-nivel]", visor).forEach((b) => b.addEventListener("click", () => {
     escolha.nivel = b.dataset.nivel;
     // ao trocar de nível, vai pra versão recomendada dele (análise de 7 músicas, ver README)

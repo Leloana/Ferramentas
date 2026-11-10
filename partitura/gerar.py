@@ -362,6 +362,25 @@ def com_final(md, me, cf, final, k=0):
     return md, me, cf, marcas
 
 
+def carregar_transcricao(base: Path, audio: Path):
+    """cache/transcricao.json da música, se for do mesmo áudio (tamanho e data); senão None."""
+    arq = base / "cache" / "transcricao.json"
+    if not arq.exists():
+        print("[cache] sem transcrição guardada: gera do zero")
+        return None
+    try:
+        dados = json.loads(arq.read_text(encoding="utf-8"))
+    except ValueError:
+        return None
+    st = audio.stat()
+    if dados.get("audio_tamanho") != st.st_size or dados.get("audio_mtime_ns") != st.st_mtime_ns:
+        print("[cache] transcrição é de outro áudio: gera do zero")
+        return None
+    if not dados.get("notas") or not dados.get("acordes"):
+        return None
+    return dados
+
+
 def deslocamento(md_ev, me_ev) -> float:
     """Tempos somados aos offsets pra partitura começar num compasso inteiro."""
     return float(-np.floor(min(e[0] for e in list(md_ev) + list(me_ev)) / 4) * 4)
@@ -1019,6 +1038,8 @@ def main():
                     help="acrescenta uma introdução gerada (não existe na gravação) com esse teor, feita do refrão")
     ap.add_argument("--final", default=None, choices=("calma", "lenta", "emotiva", "animada", "epica"),
                     help="acrescenta um final gerado (não existe na gravação) com esse teor")
+    ap.add_argument("--reusar-cache", action="store_true",
+                    help="usa a transcrição guardada (cache/transcricao.json) e só escreve as partituras de novo")
     ap.add_argument("--variacao", type=int, default=0, help="outra versão da introdução gerada (0 = padrão)")
     ap.add_argument("--sem-transpor", action="store_true", help="no nível fácil, não transpõe pra tom sem acidentes")
     args = ap.parse_args()
@@ -1049,71 +1070,84 @@ def main():
     base = args.saida / (args.pasta or nome_pasta(titulo))  # uma pasta por música
     copiar_original(audio, base)
 
-    if karaoke:  # voz já separada pelo karaokê; Demucs só no acompanhamento (baixo/bateria/resto)
-        stems = separar(karaoke["acompanhamento"], AQUI / "trabalho")
-        voz_wav = karaoke["voz"]
+    reuso = carregar_transcricao(base, audio) if getattr(args, "reusar_cache", False) else None
+    if reuso:
+        # só a escrita da partitura: melodia, acordes, batidas e letra do cache (sem Demucs/Whisper)
+        bt, fase, bpm = np.array(reuso["bt"]), int(reuso["fase"]), float(reuso["bpm"])
+        grade = Grade(bt, fase)
+        notas = [tuple(n) for n in reuso["notas"]]
+        acs = [tuple(a) for a in reuso["acordes"]]
+        palavras = [tuple(p) for p in reuso.get("palavras") or []]
+        diagnostico = reuso.get("diagnostico") or {}
+        args.idioma = reuso.get("idioma") or args.idioma
+        print(f"[cache] reusando transcrição: {len(notas)} notas, {len(acs)} janelas de acorde, "
+              f"{len(palavras)} palavras (sem separar nem transcrever de novo)")
     else:
-        stems = separar(audio, AQUI / "trabalho")
-        voz_wav = stems / "vocals.wav"
-    sr = 22050
-    mix = carregar(audio, sr)
-    voz = carregar(voz_wav, sr)
-    baixo = carregar(stems / "bass.wav", sr)
-    resto = carregar(stems / "other.wav", sr)
-    bateria = carregar(stems / "drums.wav", sr)
+        if karaoke:  # voz já separada pelo karaokê; Demucs só no acompanhamento (baixo/bateria/resto)
+            stems = separar(karaoke["acompanhamento"], AQUI / "trabalho")
+            voz_wav = karaoke["voz"]
+        else:
+            stems = separar(audio, AQUI / "trabalho")
+            voz_wav = stems / "vocals.wav"
+        sr = 22050
+        mix = carregar(audio, sr)
+        voz = carregar(voz_wav, sr)
+        baixo = carregar(stems / "bass.wav", sr)
+        resto = carregar(stems / "other.wav", sr)
+        bateria = carregar(stems / "drums.wav", sr)
 
-    print("[batidas] detectando pulso...")
-    perc = bateria + 0.5 * baixo + 0.3 * resto
-    bt, bpm = batidas(mix, sr, perc)
-    fase = fase_compasso(bt, baixo, sr)
-    grade = Grade(bt, fase)
-    print(f"[batidas] ~{bpm:.0f} bpm, {len(bt)} batidas, tempo 1 na batida {fase}")
+        print("[batidas] detectando pulso...")
+        perc = bateria + 0.5 * baixo + 0.3 * resto
+        bt, bpm = batidas(mix, sr, perc)
+        fase = fase_compasso(bt, baixo, sr)
+        grade = Grade(bt, fase)
+        print(f"[batidas] ~{bpm:.0f} bpm, {len(bt)} batidas, tempo 1 na batida {fase}")
 
-    print("[melodia] extraindo altura da voz...")
-    voz16 = librosa.resample(voz, orig_sr=sr, target_sr=16000)
-    ons = librosa.onset.onset_detect(y=voz, sr=sr, units="time", backtrack=True, delta=0.25)
-    diagnostico = {}
-    notas = melodia(voz16, 16000, ons, diagnostico=diagnostico)
-    print(f"[melodia] {len(notas)} notas detectadas")
+        print("[melodia] extraindo altura da voz...")
+        voz16 = librosa.resample(voz, orig_sr=sr, target_sr=16000)
+        ons = librosa.onset.onset_detect(y=voz, sr=sr, units="time", backtrack=True, delta=0.25)
+        diagnostico = {}
+        notas = melodia(voz16, 16000, ons, diagnostico=diagnostico)
+        print(f"[melodia] {len(notas)} notas detectadas")
 
-    print("[acordes] detectando harmonia...")
-    acs = acordes(resto + 0.3 * baixo, baixo, sr, grade)
+        print("[acordes] detectando harmonia...")
+        acs = acordes(resto + 0.3 * baixo, baixo, sr, grade)
 
-    palavras = []
-    origem_letra, rel_alinhamento = None, None
-    if not args.sem_letra and karaoke and karaoke["palavras"]:
-        palavras, origem_letra = karaoke["palavras"], "karaoke"
-        print(f"[letra] {len(palavras)} palavras do karaokê (segments.json)")
-    elif not args.sem_letra:
-        from letra import palavras_com_tempo
-        oficial = args.letra.read_text(encoding="utf-8") if args.letra else None
-        sincronizada = None
-        if karaoke and oficial is None:
-            oficial, sincronizada = karaoke["plain_lyrics"], karaoke["synced_lyrics"]
-        if oficial is None and not args.sem_busca_letra:
-            from letra import buscar_letra
-            artista = args.artista or re.split(r"\s[—–/·]\s|\s-\s", args.subtitulo)[0]
-            oficial, sincronizada = buscar_letra(titulo, artista, com_sincronizada=True)
-        palavras = palavras_com_tempo(voz_wav, args.idioma, oficial)
-        origem_letra = "whisper"
-        if args.idioma == "auto":
-            import letra
-            args.idioma = letra.IDIOMA_DETECTADO
-        if oficial and not args.sem_alinhamento:
-            from alinhamento import palavras_alinhadas
-            alinhadas, rel_alinhamento = palavras_alinhadas(voz_wav, oficial, args.idioma, whisper=palavras,
-                                                            sincronizada=sincronizada)
-            if alinhadas:
-                palavras, origem_letra = alinhadas, "alinhamento"
+        palavras = []
+        origem_letra, rel_alinhamento = None, None
+        if not args.sem_letra and karaoke and karaoke["palavras"]:
+            palavras, origem_letra = karaoke["palavras"], "karaoke"
+            print(f"[letra] {len(palavras)} palavras do karaokê (segments.json)")
+        elif not args.sem_letra:
+            from letra import palavras_com_tempo
+            oficial = args.letra.read_text(encoding="utf-8") if args.letra else None
+            sincronizada = None
+            if karaoke and oficial is None:
+                oficial, sincronizada = karaoke["plain_lyrics"], karaoke["synced_lyrics"]
+            if oficial is None and not args.sem_busca_letra:
+                from letra import buscar_letra
+                artista = args.artista or re.split(r"\s[—–/·]\s|\s-\s", args.subtitulo)[0]
+                oficial, sincronizada = buscar_letra(titulo, artista, com_sincronizada=True)
+            palavras = palavras_com_tempo(voz_wav, args.idioma, oficial)
+            origem_letra = "whisper"
+            if args.idioma == "auto":
+                import letra
+                args.idioma = letra.IDIOMA_DETECTADO
+            if oficial and not args.sem_alinhamento:
+                from alinhamento import palavras_alinhadas
+                alinhadas, rel_alinhamento = palavras_alinhadas(voz_wav, oficial, args.idioma, whisper=palavras,
+                                                                sincronizada=sincronizada)
+                if alinhadas:
+                    palavras, origem_letra = alinhadas, "alinhamento"
 
-    cache=base/'cache'
-    cache.mkdir(parents=True,exist_ok=True)
-    transcricao=dict(audio=str(audio),audio_tamanho=audio.stat().st_size,
-        audio_mtime_ns=audio.stat().st_mtime_ns,bt=bt.tolist(),fase=fase,bpm=float(bpm),
-        notas=notas,diagnostico=diagnostico,acordes=acs,palavras=palavras,idioma=args.idioma,
-        origem_letra=origem_letra,alinhamento=rel_alinhamento)
-    (cache/'transcricao.json').write_text(json.dumps(transcricao,ensure_ascii=False,
-        default=lambda v:v.item()),encoding='utf-8')
+        cache=base/'cache'
+        cache.mkdir(parents=True,exist_ok=True)
+        transcricao=dict(audio=str(audio),audio_tamanho=audio.stat().st_size,
+            audio_mtime_ns=audio.stat().st_mtime_ns,bt=bt.tolist(),fase=fase,bpm=float(bpm),
+            notas=notas,diagnostico=diagnostico,acordes=acs,palavras=palavras,idioma=args.idioma,
+            origem_letra=origem_letra,alinhamento=rel_alinhamento)
+        (cache/'transcricao.json').write_text(json.dumps(transcricao,ensure_ascii=False,
+            default=lambda v:v.item()),encoding='utf-8')
     for nivel in niveis:
         SR_GRADE = GRADE_NIVEL[nivel]
         gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, bpm, diagnostico)

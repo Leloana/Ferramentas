@@ -580,3 +580,18 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
   está no `demucs`. Hipóteses, protocolo e critério de decisão em `PROXIMA_ETAPA.md` §12.
   Nada implementado; teste na Windows.
 
+## 26. Trava nos exemplos, --reusar-cache e "Outra variação" — 2026-11-10
+
+- `gerar_exemplos.py` recusa recorte com antes == depois; `verificar_exemplos.py` reprova
+  (hoje reprova o 03-desmoronou de propósito; README dos exemplos avisa).
+- `gerar.py --reusar-cache`: usa `cache/transcricao.json` (se for do mesmo áudio: tamanho
+  e mtime) e só escreve as partituras; pula Demucs, batidas, melodia, acordes e letra.
+  Testado de ponta a ponta aqui com a Ode (cache montado à mão): harmonia, mãos, intro
+  épica, final calmo, PDF e prévias.
+- Web: `POST /api/variacao {pasta}` copia PDFs/prévias/editáveis pra `variacoes/v<N>/`,
+  gera a variação N+1 com `--reusar-cache` e os mesmos níveis/versões; `/api/musicas`
+  devolve introducao/final/variacao/variacoes; botão "Outra variação" no visor. Testado
+  com o servidor local (job pronto, v0 guardada, meta com variação 1).
+- Notado: a cifra G7 do compasso 23 da Ode saiu perto da pauta de baixo (compasso só com
+  pausas na direita); ver depois.
+

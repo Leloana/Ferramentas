@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import shutil
 import queue
 import re
 import subprocess
@@ -229,6 +230,8 @@ def _rodar(job: dict):
         cmd += ["--final", job["final"]]
     if job.get("introducao") or job.get("final"):
         cmd += ["--variacao", str(job.get("variacao", 0))]
+    if job.get("reusar_cache"):
+        cmd.append("--reusar-cache")
     if "Hibrido" in job["versoes"]:
         cmd.append("--hibrido")
     if "Pop2Piano" in job["versoes"]:
@@ -298,6 +301,52 @@ async def gerar(p: Pedido):
     return JOBS[jid]
 
 
+class PedidoVariacao(BaseModel):
+    pasta: str
+
+
+@app.post("/api/variacao")
+async def variacao(p: PedidoVariacao):
+    """Outra variação da introdução/final gerados: guarda a atual em variacoes/vN e gera a
+    próxima a partir do cache (sem separar nem transcrever de novo)."""
+    pasta = (SAIDA / p.pasta).resolve()
+    if not pasta.is_relative_to(SAIDA.resolve()) or not (pasta / "meta.json").exists():
+        raise HTTPException(404, "Música não encontrada.")
+    meta = json.loads((pasta / "meta.json").read_text(encoding="utf-8"))
+    if not (meta.get("introducao") or meta.get("final")) or not meta.get("video_id"):
+        raise HTTPException(400, "Esta música não tem introdução nem final gerados.")
+    atual = int(meta.get("variacao_introducao") or 0)
+    guardar = pasta / "variacoes" / f"v{atual}"
+    guardar.mkdir(parents=True, exist_ok=True)
+    niveis, versoes = set(), set()
+    for f in pasta.iterdir():
+        m = ARQ_RE.match(f.name)
+        if m:
+            shutil.copy2(f, guardar / f.name)
+            niveis.add(m.group(2).lower())
+            versoes.add(m.group(1))
+    if (pasta / "editaveis").exists():
+        shutil.copytree(pasta / "editaveis", guardar / "editaveis", dirs_exist_ok=True)
+    flags = set()
+    if versoes & {"Hibrido", "HibridoAMT"}:
+        flags.add("Hibrido")
+    if versoes & {"AMT-APC", "HibridoAMT"}:
+        flags.add("AMT-APC")
+    if "Pop2Piano" in versoes:
+        flags.add("Pop2Piano")
+    jid = uuid.uuid4().hex[:10]
+    JOBS[jid] = {"id": jid, "video_id": meta["video_id"], "titulo": meta.get("titulo") or p.pasta,
+                 "artista": meta.get("artista", ""), "pasta": p.pasta,
+                 "niveis": [n for n in NIVEIS if n in niveis] or ["medio"],
+                 "versoes": ["Acordes"] + sorted(flags), "idioma": meta.get("idioma", "auto"),
+                 "estilo": meta.get("estilo_pop2piano", 1), "introducao": meta.get("introducao") or "",
+                 "final": meta.get("final") or "", "variacao": atual + 1, "reusar_cache": True,
+                 "status": "fila", "etapa": "Na fila", "progresso": 0, "feitos": 0, "log": [],
+                 "criado": time.time()}
+    FILA.put(jid)
+    return JOBS[jid]
+
+
 @app.get("/api/jobs")
 async def jobs():
     return {"jobs": sorted(JOBS.values(), key=lambda j: j["criado"], reverse=True)}
@@ -356,6 +405,10 @@ async def musicas():
         lista.append({
             "pasta": pasta.name, "titulo": meta.get("titulo") or pasta.name, "artista": meta.get("artista", ""),
             "video_id": meta.get("video_id"), "arquivos": arquivos,
+            "introducao": meta.get("introducao"), "final": meta.get("final"),
+            "variacao": meta.get("variacao_introducao", 0),
+            "variacoes": sorted(d.name for d in (pasta / "variacoes").iterdir() if d.is_dir())
+            if (pasta / "variacoes").exists() else [],
             "original": f"{pasta.name}/Original.mp3" if (pasta / "Original.mp3").exists() else None,
             "editaveis": sorted(f"{pasta.name}/editaveis/{f.name}" for f in (pasta / "editaveis").glob("*.musicxml"))
             if (pasta / "editaveis").exists() else [],
