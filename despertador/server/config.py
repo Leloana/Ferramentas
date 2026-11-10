@@ -20,8 +20,11 @@ VALIDADE_HORAS = 36                # depois disso o app trata o jornal como venc
 ELEVEN_MODEL = "eleven_v4_turbo"
 ELEVEN_VOZ = "7i7dgyCkKt4c16dLtwT3"  # David (a mesma dos vídeos)
 ELEVEN_AJUSTES = {"stability": 0.5, "similarity_boost": 0.75, "style": 0.2}
-TETO_TOTAL_CARACTERES = 10_000     # créditos separados para o despertador
-TETO_POR_EDICAO = 2_500
+TETO_TOTAL_CREDITOS = 10_000       # créditos separados para o despertador
+TETO_POR_EDICAO = 2_500            # caracteres por chamada
+# Estimativa para checar o teto ANTES de chamar; o gasto real vem do cabeçalho
+# `character-cost` da resposta (turbo v4 medido em 10/11/2026: 0,25 crédito/caractere).
+CREDITOS_POR_CARACTERE = 0.25
 
 
 def env(nome: str) -> str | None:

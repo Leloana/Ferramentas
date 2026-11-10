@@ -8,7 +8,7 @@ Feito e verificado no PC:
 - Servidor FastAPI em `server/` (venv próprio, Python 3.11): `/healthz`, `/v1/editions/latest` (ETag/304), `/v1/editions/{id}`, `/v1/assets/{id}`, token Bearer. Testado: 401 sem token, 304 com ETag, sha256 do download confere, caminho arbitrário dá 404.
 - Firewall: regra existente já libera `Python311\python.exe` no perfil Público; nenhuma regra foi criada.
 - Edição `2026-11-10-r1`: 5 matérias da Agência Brasil (ata do Copom, desoneração da gasolina/etanol, Lula na COP31, marco de financiamento da saúde), roteiro em `server/conteudo/2026-11-10/roteiro.json` com fontes. Narração 75 s + música 151 s (So Nice, Marcos Valle, vocal + instrumental do karaokê misturados; originais intactos; pico -1,3 dB). Vale até 12/11 06:29.
-- Gasto ElevenLabs: 1.148 de 10.000 caracteres (73 do aviso embarcado + 1.075 da narração).
+- Gasto ElevenLabs: ~292 de 10.000 créditos (1.148 caracteres: aviso embarcado + narração; painel mostrou ~300). O turbo v4 cobra 0,25 crédito/caractere, confirmado pelo cabeçalho `character-cost`; o orçamento passou a contar créditos reais.
 - App Android em `android/` (Kotlin, AGP 8.7.3, Gradle 8.11.1, minSdk 29, target 35, sem dependências). `assembleDebug` compila; permissões conferidas com aapt: INTERNET, USE_EXACT_ALARM (SCHEDULE_EXACT_ALARM só até API 32), FOREGROUND_SERVICE(+MEDIA_PLAYBACK), POST_NOTIFICATIONS, WAKE_LOCK, RECEIVE_BOOT_COMPLETED.
 
 Correção 0.1.1 (mesma noite): o 0.1.0 fechava ao abrir no S24. Causa confirmada no emulador (Android 16): `SecurityException: ACCESS_NETWORK_STATE required for jobs with a connectivity constraint` ao agendar o job de sync. Adicionada a permissão (normal, sem prompt) e o agendamento do job passou a não derrubar o app se falhar.

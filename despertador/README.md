@@ -16,7 +16,7 @@ cd despertador\android; $env:JAVA_HOME="C:\Program Files\Eclipse Adoptium\jdk-21
 ```
 
 - `server/`: FastAPI (`app.py`), gerador de edição (`gerar_edicao.py`), adaptador ElevenLabs com cache e teto (`voz.py`, modelo `eleven_v4_turbo`, voz David). Chave em `server/.env` (gitignored). Gerado fica em `server/data/` (gitignored): edições, token, `gastos.jsonl`.
-- Orçamento: 10.000 caracteres no total e 2.500 por edição (`config.py`). Narração repetida sai do cache sem gastar.
+- Orçamento: 10.000 créditos no total (custo real lido do cabeçalho `character-cost`; turbo v4 ≈ 0,25 crédito/caractere, ~290 créditos por edição de 1 min ⇒ ~33 edições) e 2.500 caracteres por edição (`config.py`). Narração repetida sai do cache sem gastar.
 - `android/`: Kotlin sem bibliotecas externas (AlarmManager `setAlarmClock`, MediaPlayer com áudio de alarme, JobScheduler para sincronizar no Wi‑Fi a cada ~3 h). Sequência: toque embarcado com volume crescente → jornal (ou aviso embarcado se faltar/vencer) → música → toque em loop até Parar/Soneca (limite de 15 min).
 - HTTP sem TLS só na rede de casa (`usesCleartextTraffic`, temporário). No servidor final: HTTPS.
 

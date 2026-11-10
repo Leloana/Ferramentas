@@ -85,7 +85,7 @@ def main() -> None:
         bruto = tmp / "narracao_bruta.mp3"
         chamou = voz.sintetizar(texto, bruto, motivo=f"edição {edicao_id}")
         print(f"Narração: {'ElevenLabs' if chamou else 'cache'} ({len(texto)} caracteres; "
-              f"gasto acumulado {voz.gasto_total()}/{config.TETO_TOTAL_CARACTERES})")
+              f"gasto acumulado {voz.gasto_total()}/{config.TETO_TOTAL_CREDITOS} créditos)")
         normalizar_narracao(bruto, tmp / "narracao.mp3")
         bruto.unlink()
 
