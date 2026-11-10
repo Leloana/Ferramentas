@@ -10,6 +10,8 @@ const urlArq = (rel) => {
   const m = musicas.find((m) => rel.startsWith(m.pasta + "/"));
   return "/arquivos/" + rel.split("/").map(encodeURIComponent).join("/") + (m ? `?v=${m.mtime}` : "");
 };
+const TEOR_NOME = { calma: "calma", lenta: "lenta", emotiva: "emotiva", animada: "animada", epica: "épica" };
+const tempoDecorrido = (seg) => (seg >= 3600 ? `${Math.floor(seg / 3600)}h${String(Math.floor(seg % 3600 / 60)).padStart(2, "0")}` : dur(Math.max(1, seg)));
 const dur = (s) => (s ? `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}` : "");
 
 let musicas = [];
@@ -20,6 +22,7 @@ try { escolha = { ...escolha, ...JSON.parse(localStorage.getItem("partitura.esco
 
 // ------------------------------------------------------------------ abas
 function abrirAba(nome) {
+  if (location.hash.slice(1) !== nome) history.replaceState(null, "", "#" + nome);
   $$(".aba").forEach((b) => b.classList.toggle("ativa", b.dataset.aba === nome));
   $$(".painel").forEach((p) => p.classList.toggle("ativo", p.id === nome));
   if (nome === "biblioteca") carregarMusicas();
@@ -93,6 +96,30 @@ function atualizarEstilo() {
 }
 $$('input[name="versao"]').forEach((i) => i.addEventListener("change", atualizarEstilo));
 atualizarEstilo();
+// o idioma japonês tem a escolha de escrita (romaji ou kana)
+function atualizarEscrita() { $("#linhaEscrita").hidden = $("#gIdioma").value !== "ja"; }
+$("#gIdioma").addEventListener("change", atualizarEscrita);
+const radio = (nome) => $(`input[name="${nome}"]:checked`)?.value || "";
+// lembra as escolhas do último pedido (níveis, versões, teores, idioma)
+const CAMPOS_PEDIDO = ["gIdioma", "gEscrita", "gEstilo", "gSeparador"];
+function guardarPedido() {
+  const d = { nivel: $$('input[name="nivel"]:checked').map((i) => i.value),
+              versao: $$('input[name="versao"]:checked').map((i) => i.value),
+              intro: radio("intro"), final: radio("final"), acomp: radio("acomp") };
+  CAMPOS_PEDIDO.forEach((id) => (d[id] = $("#" + id).value));
+  try { localStorage.setItem("partitura.pedido", JSON.stringify(d)); } catch {}
+}
+function restaurarPedido() {
+  let d;
+  try { d = JSON.parse(localStorage.getItem("partitura.pedido") || "null"); } catch {}
+  if (!d) return;
+  ["nivel", "versao"].forEach((n) => Array.isArray(d[n]) && $$(`input[name="${n}"]`).forEach((i) => (i.checked = d[n].includes(i.value))));
+  ["intro", "final", "acomp"].forEach((n) => { const i = $(`input[name="${n}"][value="${d[n] || ""}"]`); if (i) i.checked = true; });
+  CAMPOS_PEDIDO.forEach((id) => { if (d[id] && $(`#${id} option[value="${d[id]}"]`)) $("#" + id).value = d[id]; });
+}
+restaurarPedido();
+atualizarEstilo();
+atualizarEscrita();
 function abrirDialogo(v) {
   videoAtual = v;
   $("#gThumb").src = v.thumb;
@@ -119,11 +146,14 @@ async function enviarPedido() {
     video_id: videoAtual.id, titulo: $("#gTitulo").value.trim(), artista: $("#gArtista").value.trim(),
     niveis: niveis.length ? niveis : ["medio"], versoes: versoes.length ? versoes : ["Hibrido"],
     idioma: $("#gIdioma").value,
+    escrita_ja: $("#gEscrita").value,
     estilo: Number($("#gEstilo").value),
-    introducao: $("#gIntro").value,
-    final: $("#gFinal").value,
-    acompanhamento: $("#gAcomp").value,
+    separador: $("#gSeparador").value,
+    introducao: radio("intro"),
+    final: radio("final"),
+    acompanhamento: radio("acomp"),
   };
+  guardarPedido();
   let r;
   try {
     r = await fetch("/api/gerar", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(corpo) });
@@ -152,45 +182,86 @@ function alertaSuave(msg) { aviso(msg, true); }
 
 // ------------------------------------------------------------------ fila
 let timerFila = null;
-async function carregarJobs() {
-  const d = await (await fetch("/api/jobs")).json();
-  const ativos = d.jobs.filter((j) => j.status === "fila" || j.status === "rodando").length;
-  $("#contFila").textContent = ativos ? `(${ativos})` : "";
-  $("#listaJobs").innerHTML = d.jobs.length ? d.jobs.map((j) => `
+let jobsAtuais = [];
+function linhaJob(j) {
+  const agora = Date.now() / 1000;
+  const tempo = j.status === "rodando" ? ` · ${tempoDecorrido(agora - (j.inicio || agora))}`
+    : j.status === "pronto" && j.fim && j.inicio ? ` · levou ${tempoDecorrido(j.fim - j.inicio)}` : "";
+  const teores = [["intro", j.introducao], ["final", j.final], ["acomp.", j.acompanhamento]]
+    .filter(([, t]) => t).map(([n, t]) => `${n} ${TEOR_NOME[t] || t}`);
+  const estado = j.status === "pronto" ? "✓ Pronto" : j.status === "erro" ? "✗ " + esc(j.etapa) : esc(j.etapa);
+  return `
     <div class="job ${j.status}">
       <div class="cab">
         <h3>${esc(j.titulo)} <small class="etapa">${esc(j.artista)}</small></h3>
-        <span class="etapa">${j.niveis.map((n) => NIVEL_NOME[n]).join(", ")} · ${j.versoes.map((v) => VERSAO_NOME[v]).join(", ")}</span>
+        <span class="etapa">${j.niveis.map((n) => NIVEL_NOME[n]).join(", ")} · ${j.versoes.map((v) => VERSAO_NOME[v] || v).join(", ")}${teores.length ? " · " + esc(teores.join(", ")) : ""}${j.reusar_cache ? ` · variação ${j.variacao}` : ""}</span>
       </div>
       <div class="barra"><div style="width:${j.progresso}%"></div></div>
       <div class="cab">
-        <span class="etapa">${j.status === "pronto" ? "✓ Pronto" : j.status === "erro" ? "✗ " + esc(j.etapa) : esc(j.etapa)}${j.status === "rodando" ? ` · ${j.progresso}%` : ""}</span>
-        ${j.status === "pronto" ? `<button class="btn pequeno" data-abrir="${esc(j.pasta)}">Abrir partitura</button>` : ""}
+        <span class="etapa tempo">${estado}${j.status === "rodando" ? ` · ${j.progresso}%` : ""}${tempo}</span>
+        <span class="acoes">
+          ${j.status === "pronto" ? `<button class="btn pequeno" data-abrir="${esc(j.pasta)}">Abrir partitura</button>` : ""}
+          ${j.status === "fila" ? `<button class="btn pequeno discreto" data-tirar="${j.id}">Cancelar</button>` : ""}
+          ${j.status === "pronto" || j.status === "erro" ? `<button class="btn pequeno discreto" data-tirar="${j.id}" title="Tirar da lista">Tirar</button>` : ""}
+        </span>
       </div>
-      ${j.log.length ? `<details><summary class="etapa">detalhes</summary><pre>${esc(j.log.join("\n"))}</pre></details>` : ""}
-    </div>`).join("") : '<p class="vazio-msg">Nenhum pedido ainda. Busque uma música e clique em “Gerar partitura”.</p>';
+      ${j.log.length ? `<details ${j.status === "erro" ? "open" : ""}><summary class="etapa">detalhes</summary><pre>${esc(j.log.join("\n"))}</pre></details>` : ""}
+    </div>`;
+}
+async function carregarJobs() {
+  let d;
+  try { d = await (await fetch("/api/jobs")).json(); } catch { clearTimeout(timerFila); timerFila = setTimeout(carregarJobs, 5000); return; }
+  jobsAtuais = d.jobs;
+  const ativos = d.jobs.filter((j) => j.status === "fila" || j.status === "rodando").length;
+  $("#contFila").textContent = ativos ? `(${ativos})` : "";
+  $("#limparFila").hidden = !d.jobs.some((j) => j.status === "pronto" || j.status === "erro");
+  // não redesenha enquanto a pessoa lê os detalhes de um pedido aberto
+  const abertos = new Set($$("#listaJobs details[open]").map((x) => x.closest(".job")?.querySelector("h3")?.textContent));
+  $("#listaJobs").innerHTML = d.jobs.length ? d.jobs.map(linhaJob).join("")
+    : '<p class="vazio-msg">Nenhum pedido ainda. Busque uma música e clique em “Gerar partitura”.</p>';
+  $$("#listaJobs .job").forEach((el) => { if (abertos.has($("h3", el)?.textContent)) $("details", el)?.setAttribute("open", ""); });
   $$("[data-abrir]").forEach((b) => b.addEventListener("click", async () => {
     abrirAba("biblioteca");
     await carregarMusicas();
     selecionar(b.dataset.abrir);
   }));
+  $$("[data-tirar]").forEach((b) => b.addEventListener("click", () => tirarJob(b.dataset.tirar)));
   clearTimeout(timerFila);
   if (ativos) timerFila = setTimeout(() => { carregarJobs(); if ($("#biblioteca").classList.contains("ativo")) carregarMusicas(); }, 2000);
 }
+async function tirarJob(id) {
+  const r = await fetch(`/api/jobs/${id}`, { method: "DELETE" }).catch(() => null);
+  if (!r || !r.ok) { const d = await r?.json().catch(() => ({})); aviso(d?.detail || "Não consegui tirar o pedido.", true); }
+  carregarJobs();
+}
+$("#limparFila").addEventListener("click", async () => {
+  await Promise.all(jobsAtuais.filter((j) => j.status === "pronto" || j.status === "erro")
+    .map((j) => fetch(`/api/jobs/${j.id}`, { method: "DELETE" }).catch(() => null)));
+  carregarJobs();
+});
 
 // ------------------------------------------------------------------ biblioteca
 async function carregarMusicas() {
-  const d = await (await fetch("/api/musicas")).json();
+  let d;
+  try { d = await (await fetch("/api/musicas")).json(); } catch { aviso("Servidor fora do ar?", true); return; }
+  const mudou = JSON.stringify(d.musicas) !== JSON.stringify(musicas);
   musicas = d.musicas;
   $("#contBib").textContent = musicas.length ? `(${musicas.length})` : "";
-  $("#listaMusicas").innerHTML = musicas.map((m) => `
+  if (mudou || !$("#listaMusicas").children.length) desenharLista();
+  if (!selecionada && musicas.length) selecionar(musicas[0].pasta);
+}
+const semAcento = (t) => String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+function desenharLista() {
+  const f = semAcento($("#filtroBib").value.trim());
+  const lista = f ? musicas.filter((m) => semAcento(`${m.titulo} ${m.artista}`).includes(f)) : musicas;
+  $("#listaMusicas").innerHTML = lista.map((m) => `
     <button class="mus ${selecionada === m.pasta ? "ativa" : ""}" data-pasta="${esc(m.pasta)}">
       ${m.video_id ? `<img src="https://i.ytimg.com/vi/${m.video_id}/mqdefault.jpg" alt="">` : '<img alt="">'}
       <span><b>${esc(m.titulo)}</b><small>${esc(m.artista)}</small></span>
-    </button>`).join("") || '<p class="vazio-msg">Nenhuma partitura ainda.</p>';
+    </button>`).join("") || `<p class="vazio-msg">${f ? "Nada com esse nome." : "Nenhuma partitura ainda. Busque uma música na aba Buscar."}</p>`;
   $$(".mus").forEach((b) => b.addEventListener("click", () => selecionar(b.dataset.pasta)));
-  if (!selecionada && musicas.length) selecionar(musicas[0].pasta);
 }
+$("#filtroBib").addEventListener("input", desenharLista);
 
 function selecionar(pasta) {
   selecionada = pasta;
@@ -212,10 +283,16 @@ function desenharVisor() {
   try { localStorage.setItem("partitura.escolha", JSON.stringify(escolha)); } catch {}
   const item = m.arquivos[escolha.nivel][escolha.versao] || {};
   visor.innerHTML = `
-    <h2>${esc(m.titulo)}</h2>
-    <p class="art">${esc(m.artista)}</p>
-    ${(m.introducao || m.final) ? `<p class="variacao">Introdução/final gerados · variação ${m.variacao || 0}${m.variacoes && m.variacoes.length ? ` (anteriores guardadas em variacoes/: ${m.variacoes.join(", ")})` : ""}
-      <button type="button" id="outraVariacao">Outra variação</button></p>` : ""}
+    <div class="visor-cab">
+      <div><h2>${esc(m.titulo)}</h2><p class="art">${esc(m.artista)}${m.atualizado ? ` <span class="atualizado">· gerada em ${esc(m.atualizado)}</span>` : ""}</p></div>
+      ${(m.introducao || m.final) ? `<button type="button" id="outraVariacao" class="btn pequeno" title="Gera outra introdução/final; a atual fica guardada">Outra variação</button>` : ""}
+    </div>
+    ${(m.introducao || m.final || m.acompanhamento) ? `<div class="etiquetas">
+      ${m.introducao ? `<span class="etiqueta">introdução <b>${TEOR_NOME[m.introducao] || esc(m.introducao)}</b></span>` : ""}
+      ${m.final ? `<span class="etiqueta">final <b>${TEOR_NOME[m.final] || esc(m.final)}</b></span>` : ""}
+      ${m.acompanhamento ? `<span class="etiqueta">acompanhamento <b>${TEOR_NOME[m.acompanhamento] || esc(m.acompanhamento)}</b></span>` : ""}
+      ${(m.introducao || m.final) ? `<span class="etiqueta" title="${m.variacoes?.length ? "anteriores em variacoes/: " + esc(m.variacoes.join(", ")) : ""}">variação <b>${m.variacao || 0}</b>${m.variacoes?.length ? ` · ${m.variacoes.length} guardada${m.variacoes.length > 1 ? "s" : ""}` : ""}</span>` : ""}
+    </div>` : ""}
     <div class="seletor">
       <div class="grupo">${["facil", "medio", "dificil"].map((n) => `<button data-nivel="${n}" class="${n === escolha.nivel ? "ativa" : ""}" ${m.arquivos[n] ? "" : "disabled"}>${NIVEL_NOME[n]}</button>`).join("")}</div>
       <div class="grupo">${["HibridoAMT", "Hibrido", "Acordes", "Pop2Piano", "AMT-APC"].map((v) => `<button data-versao="${v}" class="${v === escolha.versao ? "ativa" : ""}" ${m.arquivos[escolha.nivel][v] ? "" : "disabled"} title="${PADRAO[escolha.nivel] === v ? "recomendada para este nível" : ""}">${VERSAO_NOME[v]}${PADRAO[escolha.nivel] === v ? " ★" : ""}</button>`).join("")}</div>
@@ -263,6 +340,16 @@ function desenharVisor() {
   }));
   $$("[data-versao]", visor).forEach((b) => b.addEventListener("click", () => { escolha.versao = b.dataset.versao; desenharVisor(); }));
 }
+
+// espaço toca/pausa a prévia de piano na biblioteca (fora de campos de texto)
+document.addEventListener("keydown", (e) => {
+  if (e.code !== "Space" || e.repeat || !$("#biblioteca").classList.contains("ativo")) return;
+  if (e.target.closest("input, select, textarea, button, audio, dialog[open]")) return;
+  const a = $("#audioPartitura");
+  if (!a) return;
+  e.preventDefault();
+  a.paused ? a.play() : a.pause();
+});
 
 carregarMusicas();
 carregarJobs();

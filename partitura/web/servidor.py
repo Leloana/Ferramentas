@@ -153,6 +153,8 @@ class Pedido(BaseModel):
     final: str = ""               # idem, final gerado
     acompanhamento: str = ""      # idem, esquerda da música inteira (versão Acordes)
     variacao: int = Field(default=0, ge=0, le=99)
+    escrita_ja: str = "romaji"    # romaji ou kana (letra em japonês)
+    separador: str = "htdemucs"   # htdemucs ou htdemucs_6s (experimento)
 
 
 JOBS: dict[str, dict] = {}
@@ -233,6 +235,10 @@ def _rodar(job: dict):
         cmd += ["--acompanhamento", job["acompanhamento"]]
     if job.get("introducao") or job.get("final"):
         cmd += ["--variacao", str(job.get("variacao", 0))]
+    if job.get("escrita_ja") == "kana":
+        cmd += ["--escrita-ja", "kana"]
+    if job.get("separador") == "htdemucs_6s":
+        cmd += ["--separador", "htdemucs_6s"]
     if job.get("reusar_cache"):
         cmd.append("--reusar-cache")
     if "Hibrido" in job["versoes"]:
@@ -262,6 +268,8 @@ def _rodar(job: dict):
                  "estilo_pop2piano": job.get("estilo", 1),
                  "introducao": job.get("introducao") or None, "final": job.get("final") or None,
                  "acompanhamento": job.get("acompanhamento") or None,
+                 "idioma": job.get("idioma", "auto"), "escrita_ja": job.get("escrita_ja", "romaji"),
+                 "separador": job.get("separador", "htdemucs"),
                  "variacao_introducao": job.get("variacao", 0),
                  "atualizado": time.strftime("%Y-%m-%d %H:%M")})
     meta_p.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -270,7 +278,9 @@ def _rodar(job: dict):
 def _trabalhador():
     while True:
         jid = FILA.get()
-        job = JOBS[jid]
+        job = JOBS.get(jid)
+        if not job or job["status"] != "fila":   # cancelado ou removido enquanto esperava
+            continue
         job["status"], job["inicio"] = "rodando", time.time()
         try:
             _rodar(job)
@@ -294,12 +304,14 @@ async def gerar(p: Pedido):
     teores = ("calma", "lenta", "emotiva", "animada", "epica")
     if any(x and x not in teores for x in (p.introducao, p.final, p.acompanhamento)):
         raise HTTPException(400, "Teor de introdução ou final inválido.")
+    if p.escrita_ja not in ("romaji", "kana") or p.separador not in ("htdemucs", "htdemucs_6s"):
+        raise HTTPException(400, "Opção de escrita ou separador inválida.")
     jid = uuid.uuid4().hex[:10]
     JOBS[jid] = {"id": jid, "video_id": p.video_id, "titulo": titulo, "artista": p.artista.strip(),
                  "pasta": _pasta_livre(titulo, p.artista.strip(), p.video_id), "niveis": niveis,
                  "versoes": versoes, "idioma": p.idioma or "auto", "estilo": p.estilo,
                  "introducao": p.introducao, "final": p.final, "acompanhamento": p.acompanhamento,
-                 "variacao": p.variacao,
+                 "variacao": p.variacao, "escrita_ja": p.escrita_ja, "separador": p.separador,
                  "status": "fila", "etapa": "Na fila",
                  "progresso": 0, "feitos": 0, "log": [], "criado": time.time()}
     FILA.put(jid)
@@ -344,6 +356,7 @@ async def variacao(p: PedidoVariacao):
                  "artista": meta.get("artista", ""), "pasta": p.pasta,
                  "niveis": [n for n in NIVEIS if n in niveis] or ["medio"],
                  "versoes": ["Acordes"] + sorted(flags), "idioma": meta.get("idioma", "auto"),
+                 "escrita_ja": meta.get("escrita_ja", "romaji"), "separador": meta.get("separador", "htdemucs"),
                  "estilo": meta.get("estilo_pop2piano", 1), "introducao": meta.get("introducao") or "",
                  "final": meta.get("final") or "", "acompanhamento": meta.get("acompanhamento") or "",
                  "variacao": atual + 1, "reusar_cache": True,
@@ -356,6 +369,18 @@ async def variacao(p: PedidoVariacao):
 @app.get("/api/jobs")
 async def jobs():
     return {"jobs": sorted(JOBS.values(), key=lambda j: j["criado"], reverse=True)}
+
+
+@app.delete("/api/jobs/{jid}")
+async def tirar_job(jid: str):
+    """Cancela um pedido que ainda está na fila ou tira da lista um que já terminou."""
+    job = JOBS.get(jid)
+    if not job:
+        raise HTTPException(404, "Pedido não encontrado.")
+    if job["status"] == "rodando":
+        raise HTTPException(409, "Este pedido já está rodando.")
+    del JOBS[jid]
+    return {"ok": True}
 
 
 @app.get("/api/jobs/{jid}")
@@ -412,6 +437,7 @@ async def musicas():
             "pasta": pasta.name, "titulo": meta.get("titulo") or pasta.name, "artista": meta.get("artista", ""),
             "video_id": meta.get("video_id"), "arquivos": arquivos,
             "introducao": meta.get("introducao"), "final": meta.get("final"),
+            "acompanhamento": meta.get("acompanhamento"), "atualizado": meta.get("atualizado"),
             "variacao": meta.get("variacao_introducao", 0),
             "variacoes": sorted(d.name for d in (pasta / "variacoes").iterdir() if d.is_dir())
             if (pasta / "variacoes").exists() else [],

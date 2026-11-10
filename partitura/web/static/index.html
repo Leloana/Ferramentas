@@ -6,7 +6,7 @@
   <title>Partitura</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=7">
+  <link rel="stylesheet" href="style.css?v=8">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎹</text></svg>">
 </head>
 <body>
@@ -39,7 +39,10 @@
     <!-- BIBLIOTECA -->
     <section id="biblioteca" class="painel">
       <div class="bib">
-        <aside id="listaMusicas" class="lista-musicas"></aside>
+        <div class="coluna-musicas">
+          <input id="filtroBib" type="search" placeholder="Filtrar por título ou artista" autocomplete="off" aria-label="Filtrar biblioteca">
+          <aside id="listaMusicas" class="lista-musicas"></aside>
+        </div>
         <div id="visor" class="visor vazio">
           <p>Escolha uma música à esquerda.</p>
         </div>
@@ -48,6 +51,7 @@
 
     <!-- FILA -->
     <section id="fila" class="painel">
+      <div class="jobs-topo"><button type="button" id="limparFila" class="btn pequeno" hidden>Limpar concluídos</button></div>
       <div id="listaJobs" class="jobs"></div>
     </section>
   </main>
@@ -83,52 +87,53 @@
         </div>
       </fieldset>
 
-      <label class="linha" id="linhaEstilo">Estilo do Pop2Piano
-        <select id="gEstilo" aria-describedby="ajudaEstilo"></select>
-      </label>
-      <p class="mini" id="ajudaEstilo">Muda o arranjo do Pop2Piano e do Híbrido (Pop2Piano).</p>
+      <fieldset>
+        <legend>Teor gerado</legend>
+        <div class="teor">
+          <span class="teor-nome">Introdução<small>feita a partir do refrão</small></span>
+          <div class="pilulas" role="radiogroup" aria-label="Introdução"><label class="pilula"><input type="radio" name="intro" value="" checked><span>nenhuma</span></label><label class="pilula"><input type="radio" name="intro" value="calma"><span>calma</span></label><label class="pilula"><input type="radio" name="intro" value="lenta"><span>lenta</span></label><label class="pilula"><input type="radio" name="intro" value="emotiva"><span>emotiva</span></label><label class="pilula"><input type="radio" name="intro" value="animada"><span>animada</span></label><label class="pilula"><input type="radio" name="intro" value="epica"><span>épica</span></label></div>
+        </div>
+        <div class="teor">
+          <span class="teor-nome">Final<small>cadência com fermata</small></span>
+          <div class="pilulas" role="radiogroup" aria-label="Final"><label class="pilula"><input type="radio" name="final" value="" checked><span>nenhum</span></label><label class="pilula"><input type="radio" name="final" value="calma"><span>calmo</span></label><label class="pilula"><input type="radio" name="final" value="lenta"><span>lento</span></label><label class="pilula"><input type="radio" name="final" value="emotiva"><span>emotivo</span></label><label class="pilula"><input type="radio" name="final" value="animada"><span>animado</span></label><label class="pilula"><input type="radio" name="final" value="epica"><span>épico</span></label></div>
+        </div>
+        <div class="teor">
+          <span class="teor-nome">Acompanhamento<small>mão esquerda da versão Acordes</small></span>
+          <div class="pilulas" role="radiogroup" aria-label="Acompanhamento"><label class="pilula"><input type="radio" name="acomp" value="" checked><span>padrão</span></label><label class="pilula"><input type="radio" name="acomp" value="calma"><span>calmo</span></label><label class="pilula"><input type="radio" name="acomp" value="lenta"><span>lento</span></label><label class="pilula"><input type="radio" name="acomp" value="emotiva"><span>emotivo</span></label><label class="pilula"><input type="radio" name="acomp" value="animada"><span>animado</span></label><label class="pilula"><input type="radio" name="acomp" value="epica"><span>épico</span></label></div>
+        </div>
+      </fieldset>
 
-      <label class="linha">Introdução gerada
-        <select id="gIntro">
-          <option value="">nenhuma</option>
-          <option value="calma">calma</option>
-          <option value="lenta">lenta</option>
-          <option value="emotiva">emotiva</option>
-          <option value="animada">animada</option>
-          <option value="epica">épica</option>
-        </select>
-      </label>
+      <div class="dlg-linha">
+        <label class="linha">Idioma da letra
+          <select id="gIdioma">
+            <option value="auto">detectar sozinho</option>
+            <option value="pt">português</option>
+            <option value="en">inglês</option>
+            <option value="es">espanhol</option>
+            <option value="ja">japonês</option>
+          </select>
+        </label>
+        <label class="linha" id="linhaEscrita" hidden>Letra em japonês
+          <select id="gEscrita">
+            <option value="romaji">romaji (so-ra)</option>
+            <option value="kana">kana (そら)</option>
+          </select>
+        </label>
+      </div>
 
-      <label class="linha">Final gerado
-        <select id="gFinal">
-          <option value="">nenhum</option>
-          <option value="calma">calmo</option>
-          <option value="lenta">lento</option>
-          <option value="emotiva">emotivo</option>
-          <option value="animada">animado</option>
-          <option value="epica">épico</option>
-        </select>
-      </label>
-
-      <label class="linha">Acompanhamento (versão Acordes)
-        <select id="gAcomp">
-          <option value="">padrão</option>
-          <option value="calma">calmo</option>
-          <option value="lenta">lento</option>
-          <option value="emotiva">emotivo</option>
-          <option value="animada">animado</option>
-          <option value="epica">épico</option>
-        </select>
-      </label>
-
-      <label class="linha">Idioma da letra
-        <select id="gIdioma">
-          <option value="auto">detectar sozinho</option>
-          <option value="pt">português</option>
-          <option value="en">inglês</option>
-          <option value="es">espanhol</option>
-        </select>
-      </label>
+      <details class="avancado">
+        <summary>Avançado</summary>
+        <label class="linha" id="linhaEstilo">Estilo do Pop2Piano
+          <select id="gEstilo" aria-describedby="ajudaEstilo"></select>
+        </label>
+        <p class="mini" id="ajudaEstilo">Muda o arranjo do Pop2Piano e do Híbrido (Pop2Piano).</p>
+        <label class="linha">Separação da voz
+          <select id="gSeparador">
+            <option value="htdemucs">4 faixas (padrão)</option>
+            <option value="htdemucs_6s">6 faixas, com guitarra e piano (experimento)</option>
+          </select>
+        </label>
+      </details>
 
       <div class="dlg-acoes">
         <button type="button" id="gCancelar" class="btn">Cancelar</button>
@@ -139,6 +144,6 @@
 
   <audio id="player" preload="none"></audio>
   <script src="partitura.js?v=3"></script>
-  <script src="app.js?v=9"></script>
+  <script src="app.js?v=10"></script>
 </body>
 </html>
