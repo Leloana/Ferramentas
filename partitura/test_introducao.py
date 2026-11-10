@@ -52,8 +52,25 @@ class Introducao(unittest.TestCase):
                 # cadência: dominante do primeiro acorde da música (Dó -> Sol7)
                 self.assertEqual(cf[-1][1:], (7, "7"), (teor, nivel))
                 if nivel == "facil":
-                    self.assertTrue(all(len(ps) == 1 for _, _, ps, *_ in d + e))
+                    self.assertTrue(all(len(ps) == 1 for _, _, ps, *_ in d))
+                    # esquerda: uma nota, ou oitava (mesma nota) na épica
+                    self.assertTrue(all(len({p % 12 for p in ps}) == 1 for _, _, ps, *_ in e))
                     self.assertTrue(all(du >= 1 - 1e-6 for _, du, *_ in d + e))
+                if teor in ("calma", "lenta"):  # esquerda só com notas longas
+                    self.assertTrue(all(du >= 2 - 1e-6 for _, du, *_ in e), (teor, nivel))
+
+    def test_epica_tem_tensao_e_crescendo(self):
+        md, acs = ode()
+        for nivel in ("facil", "medio", "dificil"):
+            d, e, cf, info = gerar_introducao(md, acs, TIPOS, nivel, "epica", 0, "ode")
+            graus = [(r - 0) % 12 for _, r, _ in cf]
+            self.assertIn(8, graus)    # bVI (Láb)
+            self.assertIn(10, graus)   # bVII (Sib)
+            self.assertEqual([v for _, v in info["dinamicas"]], ["mp", "f", "ff"])
+            self.assertTrue(any(len(ps) >= 2 for _, _, ps, *_ in e))   # oitavas/acordes na esquerda
+            # sus4: Dó (4ª de Sol) antes do Si (3ª) no último compasso
+            ultimas = [ps[-1] % 12 for o, _, ps, *_ in d if o >= 4 * info["compassos"] - 4]
+            self.assertEqual(ultimas[:2], [0, 11])
 
     def test_teores_diferentes_soam_diferente(self):
         md, acs = ode()

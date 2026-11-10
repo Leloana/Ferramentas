@@ -337,9 +337,9 @@ def com_introducao(md, me, cf, intro, k=0):
     md = [(o + inicio - L, d, [p + k for p in ps], *r) for o, d, ps, *r in i_md] + list(md)
     me = [(o + inicio - L, d, [p + k for p in ps]) for o, d, ps in i_me] + list(me)
     cf = [(o + inicio - L, (r + k) % 12, t) for o, r, t in i_cf] + [c for c in cf if c[0] >= inicio - 1e-6]
-    marcas = [(inicio - L, "texto", f"Introdução gerada ({NOME_TEOR[info['teor']]})"),
-              (inicio - L, "dinamica", info["dinamica"]),
-              (inicio, "texto", "Música"), (inicio, "dinamica", "mf")]
+    marcas = [(inicio - L, "texto", f"Introdução gerada ({NOME_TEOR[info['teor']]})")]
+    marcas += [(inicio - L + o, "dinamica", v) for o, v in info.get("dinamicas", [(0.0, info["dinamica"])])]
+    marcas += [(inicio, "texto", "Música"), (inicio, "dinamica", "mf")]
     return md, me, cf, marcas
 
 
@@ -583,10 +583,21 @@ def salvar_midi_notas(sc, destino: Path, xml: Path | None = None):
     som=ET.fromstring(texto).find('.//sound[@tempo]')
     bpm=float(som.get('tempo')) if som is not None else 120
     pm=pretty_midi.PrettyMIDI(initial_tempo=bpm)
+    # dinâmica escrita vira volume na prévia (pp..ff); sem marca, o volume de sempre (90)
+    from music21 import dynamics as _din
+    VEL={'pp':40,'p':55,'mp':70,'mf':85,'f':100,'ff':115}
+    marcas_din=sorted({(float(d.getOffsetInHierarchy(sc))*60/bpm, VEL.get(d.value,90))
+                       for d in sc.recurse().getElementsByClass(_din.Dynamic)})
+    def velocidade(t):
+        v=90
+        for tm,vel in marcas_din:
+            if tm<=t+1e-6:
+                v=vel
+        return v
     instrumentos={}
     for n in notas_ligadas(segmentos):
         inst=instrumentos.setdefault(n['voz'],pretty_midi.Instrument(program=0,name=n['voz']))
-        inst.notes.append(pretty_midi.Note(velocity=90,pitch=n['pitch'],start=n['inicio'],end=n['fim']))
+        inst.notes.append(pretty_midi.Note(velocity=velocidade(n['inicio']),pitch=n['pitch'],start=n['inicio'],end=n['fim']))
     pm.instruments=list(instrumentos.values())
     pm.write(str(destino))
 

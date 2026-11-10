@@ -515,4 +515,16 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
 - CLI `--introducao`, `--variacao`; web: campo "Introdução gerada" (servidor valida).
 - `test_introducao.py` (5) com a Ode à Alegria (domínio público). Suíte 77 OK.
   Dinâmica não muda o volume da prévia (MIDI com velocidade fixa) — fica só escrita.
+- Avaliação do usuário (página `trabalho/introducoes_20261110/`, Ode à Alegria + trecho de
+  Para Machucar): calma/lenta/animada 5 em todos os níveis, emotiva 5 no médio, entrada boa
+  em todos; épica 1 (faltam peso e tensão); calma difícil não pode ter figuras curtas na
+  esquerda; emotiva difícil rápida demais e parecida com a animada.
+- Ajustes: épica com compassos de tensão bVI -> bVII antes da cadência, dominante sus4
+  resolvendo na 3ª, esquerda em oitavas graves (no fácil também, como exceção de leitura),
+  médio raiz-5ª-oitava em mínimas, difícil oitava + acordes em colcheia; crescendo mp -> f
+  -> ff (`info["dinamicas"]`). Calma/lenta: esquerda só com notas >= 2 tempos. Emotiva
+  difícil: arpejo em semínimas até a 10ª e iv menor emprestado na cadência. Animada difícil:
+  notas destacadas e antecipação do tempo 3.
+- Prévia: `salvar_midi_notas` usa a dinâmica escrita como volume (pp 40 ... ff 115; sem
+  marca, 90 como antes). Segunda rodada da página em `pagina2/`. Suíte 78 OK.
 

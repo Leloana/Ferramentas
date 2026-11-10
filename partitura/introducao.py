@@ -175,30 +175,27 @@ def mao_esquerda(harmonia, total, teor, nivel, tipos, variacao=0):
             pos = o
             while pos < fim - EPS:
                 d = min(4.0 if teor in ("calma", "lenta", "epica") else 2.0, fim - pos)
-                ev.append((pos, d, [raiz if raiz >= 41 else raiz + 12]))
+                if teor == "epica":   # exceção do fácil: oitava grave (mesma nota, fácil de ler) pra pesar
+                    ev.append((pos, d, [raiz, raiz + 12]))
+                else:
+                    ev.append((pos, d, [raiz if raiz >= 41 else raiz + 12]))
                 pos += d
             continue
         if teor in ("calma", "lenta"):
+            # só notas longas (mínima ou mais): acorde aberto sustentado
             vozes = [raiz, quinta] if nivel == "medio" else [raiz, quinta, terca]
-            if nivel == "dificil" and teor == "calma":
-                padrao = [raiz, quinta, raiz + 12, terca]
-                passo = 1.0
-                k, pos = 0, o
-                while pos < fim - EPS:
-                    ev.append((pos, min(passo, fim - pos), [padrao[k % 4]]))
-                    pos += passo
-                    k += 1
-            else:
-                pos = o
-                while pos < fim - EPS:
-                    d = min(4.0, fim - pos)
-                    ev.append((pos, d, vozes))
-                    pos += d
+            pos = o
+            while pos < fim - EPS:
+                d = min(4.0, fim - pos)
+                ev.append((pos, d, vozes))
+                pos += d
         elif teor == "emotiva":
-            padrao = [raiz, quinta, terca, quinta] if nivel == "medio" else [raiz, quinta, raiz + 12, terca, raiz + 12, quinta]
-            if variacao % 2:  # arpejo subindo e descendo no outro sentido (o baixo continua no tempo 1)
+            # semínimas nos dois níveis (em colcheia ficava rápido e parecido com a animada);
+            # no difícil o arpejo abre até a 10ª
+            padrao = [raiz, quinta, terca, quinta] if nivel == "medio" else [raiz, quinta, terca, quinta + 12]
+            if variacao % 2:  # arpejo no outro sentido (o baixo continua no tempo 1)
                 padrao = [padrao[0]] + padrao[:0:-1]
-            passo = 1.0 if nivel == "medio" else .5
+            passo = 1.0
             k, pos = 0, o
             while pos < fim - EPS:
                 ev.append((pos, min(passo, fim - pos), [padrao[k % len(padrao)]]))
@@ -217,19 +214,20 @@ def mao_esquerda(harmonia, total, teor, nivel, tipos, variacao=0):
                     ev.append((pos, min(passo, fim - pos), acorde))
                 pos += passo
                 k += 1
-        else:  # epica
+        else:  # epica: pesada, oitavas graves
             pos = o
-            if nivel == "medio":
+            if nivel == "medio":   # oitava com a quinta no meio, em mínimas
                 while pos < fim - EPS:
                     d = min(2.0, fim - pos)
-                    ev.append((pos, d, [raiz, raiz + 12]))
+                    ev.append((pos, d, [raiz, quinta, raiz + 12]))
                     pos += d
-            else:
+            else:                  # oitava no tempo 1 e acordes repetidos em colcheia (ostinato)
                 ev.append((pos, min(1.0, dur), [raiz, raiz + 12]))
                 pos += 1.0
+                topo = sorted({raiz + 12, quinta + 12 if quinta + 12 < 60 else quinta, terca})
                 while pos < fim - EPS:
-                    ev.append((pos, min(1.0, fim - pos), sorted({raiz + 12, quinta + 12 if quinta + 12 < 60 else quinta, terca})))
-                    pos += 1.0
+                    ev.append((pos, min(.5, fim - pos), topo))
+                    pos += .5
     return ev
 
 
@@ -257,6 +255,22 @@ def mao_direita(notas, harmonia, teor, nivel, tipos):
     return ev
 
 
+def _saltitar(notas, ate):
+    """Animada: notas destacadas (metade da duração) e antecipação de colcheia no tempo 3."""
+    saida = []
+    for i, (o, d, p) in enumerate(notas):
+        if o >= ate - EPS:
+            saida.append((o, d, p))
+            continue
+        fim_ant = saida[-1][0] + saida[-1][1] if saida else -1
+        if abs(o % 4 - 2) < EPS and fim_ant <= o - .5 + EPS:
+            o, d = o - .5, d + .5            # antecipa o tempo 3
+        if d >= 1 - EPS:
+            d = d / 2                         # destacada
+        saida.append((o, d, p))
+    return saida
+
+
 # ------------------------------------------------------------------ introdução
 
 def gerar_introducao(md_ev, acs, tipos, nivel, teor, inicio_musica=None, semente="", variacao=0):
@@ -264,7 +278,9 @@ def gerar_introducao(md_ev, acs, tipos, nivel, teor, inicio_musica=None, semente
     if teor not in TEORES:
         raise ValueError(f"teor inválido: {teor} (use {', '.join(TEORES)})")
     total = 4.0 * COMPASSOS[nivel]
-    corpo = total - 4.0
+    # épica: antes da cadência, compassos de tensão (bVI -> bVII, a progressão "heroica")
+    tensao = (4.0 if total <= 16 else 8.0) if teor == "epica" else 0.0
+    corpo = total - 4.0 - tensao
     frase, como = achar_refrao(md_ev)
     # variação controlada: de onde vem o motivo, registro e ordem do arpejo
     fonte, reg = variacao % 3, [0, 12, -12][(variacao // 3) % 3]
@@ -318,8 +334,24 @@ def gerar_introducao(md_ev, acs, tipos, nivel, teor, inicio_musica=None, semente
     r0 = entrada[0]
     dom = ((r0 + 7) % 12, "7")
     ultima = notas[-1][2] if notas else centro
+    if tensao:
+        # sobe por bVI e bVII (emprestados) com a melodia subindo por notas dos acordes
+        passo_t = 1.0 if nivel != "facil" else 2.0
+        for i, (rr, tt) in enumerate((((r0 + 8) % 12, "maj"), ((r0 + 10) % 12, "maj"))):
+            o_seg = corpo + i * tensao / 2
+            harmonia.append((o_seg, rr, tt))
+            pcs_t = _pcs(rr, tt, tipos)
+            pos_t = o_seg
+            while pos_t < o_seg + tensao / 2 - EPS:
+                acima = [q for q in (_nota_perto(pc, ultima + 3) for pc in pcs_t) if q > ultima]
+                ultima = min(acima) if acima else ultima + 2
+                notas.append((pos_t, passo_t, ultima))
+                pos_t += passo_t
+        corpo = corpo + tensao   # a cadência vem depois da tensão
     if teor == "emotiva" and nivel != "facil":
-        sub = ((r0 + 5) % 12, "maj" if entrada[1] in ("maj", "7", "maj7", "6") else "m")
+        maior = entrada[1] in ("maj", "7", "maj7", "6")
+        # difícil: iv menor emprestado (mais melancólico); médio: IV
+        sub = ((r0 + 5) % 12, "m" if (nivel == "dificil" or not maior) else "maj")
         harmonia += [(corpo, sub[0], sub[1]), (corpo + 2, dom[0], dom[1])]
         quarta = _nota_perto((dom[0] + 5) % 12, ultima)
         terca = _nota_perto((dom[0] + 4) % 12, quarta - 1)
@@ -330,8 +362,10 @@ def gerar_introducao(md_ev, acs, tipos, nivel, teor, inicio_musica=None, semente
         alvo = _nota_perto((dom[0] + 7) % 12, ultima)   # 5ª da dominante: pede resolução
         if teor == "animada":
             notas += [(corpo + i, 1.0, alvo if i % 2 == 0 else _nota_perto((dom[0] + 4) % 12, alvo)) for i in range(4)]
-        elif teor == "epica" and nivel != "facil":
-            notas += [(corpo, 2.0, alvo), (corpo + 2, 2.0, _nota_perto((dom[0] + 4) % 12, alvo + 2))]
+        elif teor == "epica":
+            # dominante suspensa (4ª) que só resolve na 3ª no meio do compasso
+            quarta = _nota_perto((dom[0] + 5) % 12, ultima)
+            notas += [(corpo, 2.0, quarta), (corpo + 2, 2.0, _nota_perto((dom[0] + 4) % 12, quarta - 1))]
         else:
             notas.append((corpo, 4.0, alvo))
     harmonia = sorted({o: (o, r, t) for o, r, t in harmonia}.values())
@@ -339,6 +373,8 @@ def gerar_introducao(md_ev, acs, tipos, nivel, teor, inicio_musica=None, semente
     if nivel == "facil":
         passo = 1.0
     notas_q = _quantizar(notas, passo, total)
+    if teor == "animada" and nivel == "dificil":
+        notas_q = _saltitar(notas_q, corpo)
     direita = mao_direita(notas_q, harmonia, teor, nivel, tipos)
     esquerda = _quantizar(mao_esquerda(harmonia, total, teor, nivel, tipos, variacao), passo, total)
     cifras, ant = [], None
@@ -348,5 +384,7 @@ def gerar_introducao(md_ev, acs, tipos, nivel, teor, inicio_musica=None, semente
         ant = (r, t)
     info = dict(teor=teor, nivel=nivel, musica=semente, compassos=COMPASSOS[nivel], variacao=variacao,
                 refrao=como, refrao_inicio=round(ini_frase, 3), motivo_tempos=janela,
-                entrada=dict(raiz=r0, tipo=entrada[1]), dinamica=DINAMICA[teor])
+                entrada=dict(raiz=r0, tipo=entrada[1]), dinamica=DINAMICA[teor],
+                dinamicas=([(0.0, "mp"), (corpo - tensao, "f"), (corpo, "ff")] if tensao
+                           else [(0.0, DINAMICA[teor])]))
     return [(o, d, ps, None) for o, d, ps in direita], esquerda, cifras, info
