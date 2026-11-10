@@ -1,5 +1,7 @@
 # Handoff — Partitura (sessão de 2026-11-09)
 
+**Estado atualizado até a seção 13.** As seções 6 e 7 registram a análise anterior à revisão das 120 partituras.
+
 Ferramenta que pega uma **música normal, com voz**, e gera **partitura de piano com a letra embaixo das notas**
 (PDF + MusicXML + MIDI + prévia em áudio), com interface web e níveis de dificuldade.
 **Tudo automático e local, sem LLM**: só modelos de áudio (Demucs, torchcrepe, Whisper, Pop2Piano, AMT-APC)
@@ -69,7 +71,8 @@ Fora do git (`.gitignore`): `venv/`, `entrada/` (wav baixado), `trabalho/` (stem
 | cifra | tríades | completa | completa |
 | tom | armadura única, transposto pra sem acidentes | original (armadura muda por trecho) | original |
 
-**Padrão por nível** (definido pela análise, seção 6): **Fácil = Acordes · Médio = Híbrido (AMT) · Difícil = AMT-APC**.
+**Padrão atual por nível** (revisão da seção 10): **Fácil = Acordes · Médio = Híbrido (AMT) · Difícil = Híbrido (AMT)**.
+AMT-APC completo continua disponível como cover instrumental sem letra.
 A interface marca com ★ e pula pra ela ao trocar de nível.
 
 ## 4. Linha do tempo do que foi feito
@@ -162,10 +165,179 @@ A interface marca com ★ e pula pra ela ao trocar de nível.
    (ex.: "Pensem" no 2º/3º verso de Rosa). Ideia: usar o ataque da sílaba (Whisper) pra criar a nota que falta.
 3. **Armadura troca demais** em músicas que modulam (Garota de Ipanema no Híbrido): aumentar o custo de troca
    ou trocar só em fronteira de seção.
-4. **Escolha de estilo do Pop2Piano na interface** (hoje só `--estilo` na linha de comando); usuário ainda não
-   escolheu um estilo padrão.
+4. **Escolha de estilo do Pop2Piano na interface — implementada nesta continuação**: seletor 1–21,
+   ativo quando Híbrido (Pop2Piano) ou Pop2Piano está marcado. API valida o intervalo, passa `--estilo`
+   ao pipeline e salva `estilo_pop2piano` no meta.json. Mantido o padrão 1; o usuário ainda não escolheu outro.
 5. **Alinhamento forçado da letra oficial** (como o karaokê faz com MMS_FA) em vez de Whisper + correção:
    resolveria trechos perdidos nas bossas.
 6. **Integração com o karaokê**: gerar partitura direto das músicas da biblioteca (stems e letra alinhada já existem).
 7. Rap/trap (Bandido com Bandida): melodia é aproximada (voz meio falada) — esperado.
 8. "The girl from Ipanema" alucinado no início de Garota (não é caixa alta, passa no filtro).
+
+## 9. Continuação de 2026-11-09 — No Surprises e pendências
+
+- Corrigido `melodia()` em gerar.py: o CREPE pode retornar um frame além das amostras disponíveis.
+  `mean([])` nesse frame gerava NaN; o percentil do volume virava NaN e descartava TODAS as notas.
+  Agora o cálculo RMS preenche o final com zeros. Validação na voz de No Surprises: 488 notas sem
+  subdivisão por ataques; execução completa pela interface: 483 notas, antes zero.
+- `eventos_melodia_acordes()` agora informa claramente quando não há notas, antes de median/max.
+- Servidor iniciado em segundo plano; stdout/stderr em `servidor.stdout.log` e `servidor.stderr.log`.
+  O log por pedido continua só na memória.
+- No Surprises terminou e foi revisada novamente na seção 10. O seletor de estilos foi ativado após reinício.
+- Conferência dos MusicXML existentes, sem regeneração: Acordes–Médio tem abertura > oitava de 0%
+  em Baby, Bandido com Bandida, Chega de Saudade, Para Machucar Meu Coração e Quando a Sorte.
+  **Ainda falta regenerar Garota de Ipanema (83,3%) e Rosa de Hiroshima (55,9%) no nível Médio**
+  e atualizar `saida/analise.json`. Não disputar a GPU com a geração atual.
+- Validação: sintaxe JS (`node --check`), parsing Python, API aceita estilos 1 e 21, padrão 1,
+  rejeita 0 e 22. Não houve teste visual do seletor no navegador.
+
+## 10. Revisão completa e visualizador sincronizado
+
+Pedidos do usuário: refazer a análise dos modelos/partituras, corrigir divergência entre
+prévia e PDF de No Surprises, recuperar a introdução instrumental, executar melhorias e
+mostrar na partitura o momento atual do áudio. Autorizou seguir autonomamente.
+
+### Estado entregue
+
+- Biblioteca atual: **8 músicas × 5 versões × 3 níveis = 120 partituras**, PDFs/MusicXML/MIDI/prévias atualizados.
+- No Surprises ganhou o Pop2Piano completo e os Híbridos receberam direita instrumental
+  nas lacunas sem voz. No Híbrido AMT foram +69/+73/+61 ataques nos três níveis.
+- Nas outras sete músicas, revisão dos MusicXML preservou melodia/letra existentes;
+  introduções/outros foram acrescentados a partir das versões completas. Sem tempos
+  originais das palavras, a região cantada foi toda protegida; não se preencheram interlúdios internos.
+- Acordes–Médio de Garota e Rosa finalmente revisados: aberturas grandes passaram de
+  83,3%/55,9% a zero. **As 120 partituras têm zero aberturas > oitava**, máximo medido de 11 semitons.
+- No Híbrido AMT–Médio, a média do percentil 95 dos saltos da esquerda caiu de 15,7 a 9,7
+  semitons; no Difícil, de 16,3 a 10,5. Não é um teto para cada salto.
+- Principais na interface: Acordes/Fácil, Híbrido AMT/Médio e **Híbrido AMT/Difícil**.
+  O Difícil mudou para preservar melodia/letra agora que também há instrumentais.
+- Servidor respondendo na porta 8030 com a nova API e o visualizador. Não há geração
+  ou processo de revisão deixado pendente desta rodada.
+
+### Implementação e descobertas
+
+- `niveis.py`: revoicing dentro de uma oitava, redução por nível, escolha de oitavas
+  do baixo por programação dinâmica e preenchimento instrumental protegido por voz/palavras.
+- Ornamentos do Fácil: regra conservadora só para notas de até 180 ms entre notas iguais,
+  sem ataque de palavra. Aplicada antes da quantização em novas gerações; não força toda a escala.
+- Armaduras: custo de troca de 12% para 25% do peso típico de um bloco; Médio/Híbrido AMT
+  passou de sete a quatro mudanças nas oito músicas, Difícil de sete a cinco.
+- **Bug das cifras no MIDI**: `music21` tocava `ChordSymbol` mesmo com `writeAsChord=False`.
+  No Acordes–Fácil antigo de No Surprises eram 437 notas escritas e 688 tocadas.
+- **Ligações parciais**: exportação direta do Score e `stripTies()` em acordes não eram
+  referência suficiente para conferir ligações por nota. Agora `salvar_midi_notas()` lê
+  o MusicXML e usa `sincronia.py` para reunir ligações por nota/voz; preserva BPM original.
+- `sincronia.py`: interpreta divisions, backup/forward, acordes, pausas, ligações, tempo
+  e pautas; atribui IDs às notas. É a fonte comum de tempo para MIDI e visualizador.
+- **Não usar o timemap interno do Verovio como relógio**: na validação real houve
+  deslocamentos em arquivos com múltiplas vozes/ligações. O SVG preserva IDs explícitos;
+  o destaque usa os tempos do MusicXML. Voz zero é renumerada para o importador gráfico.
+- **Fontes do Verovio em threads**: definir explicitamente `tk.setResourcePath()` apontando
+  ao `data` do pacote em cada toolkit. Sem isso, novos trabalhadores falharam em abrir XML.
+- `web/partitura.py` + `GET /api/partitura?arquivo=...`: SVG e mapa em cache por mtime/size
+  e versão. A API valida o caminho e serializa a renderização. Cache atual versão 6.
+- `web/static/partitura.js`: destaque das notas, cursor no ataque mais recente, busca ao
+  clicar, zoom, rolagem automática, descarte ao trocar de versão e botão de tentar novamente.
+- **Sincroniza somente a prévia de piano.** O original pausa o piano e limpa o destaque.
+  Para sincronizar original, ainda é necessário persistir batidas e origem de cada versão.
+- PDF estático mantido em um painel expansível e nos links de download. URLs dos arquivos
+  recebem mtime para evitar tocar prévia antiga do cache após regeneração.
+
+### Evidências e reprodução
+
+- Relatório: `ANALISE_PARTITURAS.md`.
+- Métricas atuais: `saida/analise_completa.json`, `saida/analise_resumo.json`.
+- Backups e métricas antes: `trabalho/revisao_20261109/`, com arquivos originais por música.
+  `analise_antes.json` e `resumo_antes.json` nessa pasta foram recalculados pelo analisador novo.
+- `analisar_completo.py` analisa a biblioteca; `--antes` analisa os backups. O velho
+  `analisar.py`/`saida/analise.json` é histórico e não foi usado para as decisões finais.
+- `conferir_previa.py --todas`: **120 MIDIs, 91.401 notas**, alturas/ataques/durações iguais
+  ao MusicXML, tolerância de 5 ms para ticks. A análise também contou exatamente 91.401 notas.
+- `validar_tempos_visor.py`: IDs e tempos do desenho conferidos em sete partituras,
+  incluindo as cinco versões Médias de No Surprises.
+- `python -m unittest test_visualizador test_melhorias`: oito testes aprovados.
+- `node verificar_visualizador.cjs`: Chrome headless aprovado no desktop/celular,
+  reprodução/seek/clique/zoom, pausa entre players e nova recomendação do Difícil.
+  Usa Puppeteer já disponível em `C:/Users/mf827/node_modules`; não foi instalada dependência.
+- Capturas em `trabalho/visualizador.png` e `visualizador-mobile.png`.
+- Scripts de aplicação: `aplicar_melhorias.py`, `revisar_biblioteca.py`, `finalizar_revisao.py`
+  e `reparar_previas.py`. Backups são preservados. Não reexecutar regenerações sem necessidade.
+
+### O que continua pendente
+
+Alinhamento forçado da letra oficial e palavras não ouvidas; integração com karaokê;
+sincronia com áudio original; avaliação auditiva da fidelidade dos motivos instrumentais.
+O alcance foi corrigido, mas isso não elimina erros de transcrição, rubato/síncope ou
+trechos ritmicamente difíceis. Não declarar os 100% de concordância com a melodia interna
+como acurácia de 100% contra a gravação. Não foi feita revisão humana de todas as páginas.
+
+## 11. Barra contínua durante pausas — 2026-11-10
+
+- Pedido do usuário: a barra desaparecia nas pausas e saltava apenas a cada nota.
+- `sincronia.preparar_musicxml(..., com_percurso=True)` agora também retorna intervalos
+  dos compassos e âncoras rítmicas de notas/pausas, com IDs explícitos. A chamada padrão
+  mantém os dois valores anteriores e não altera a exportação MIDI.
+- `web/partitura.py`: cache versão **7**, com `percurso`. Inclui compassos inteiros sem som.
+- `partitura.js`: barra interpolada a cada frame pelo relógio do áudio, sem depender
+  das notas ativas. Âncoras de notas e pausas seguem o espaçamento musical; pausa de
+  compasso inteiro usa limites do compasso, não o símbolo centralizado. A barra muda
+  de sistema/página ao atravessar a fronteira e fica no final após o último compasso.
+- Geometria recalculada ao mudar zoom/tamanho; destaque das notas continua separado.
+  Ao tocar o original, a barra permanece suspensa até voltar à prévia de piano.
+- Testes: nove testes Python aprovados; Chrome desktop/celular verifica movimento da
+  barra em uma pausa real sem notas ativas, além dos controles anteriores.
+- Servidor reiniciado sem pedidos ativos para carregar a mudança. Não foi necessário
+  regenerar músicas ou prévias; basta atualizar a página.
+
+## 12. Diagnóstico de três notas em Para Machucar Meu Coração
+
+O usuário indicou Sol♭ em “meu violão”, outro Sol♭ grave em “nosso lar des…” e Lá
+natural em “mo-ro-nou”. Verificados MusicXML dos três níveis e duas estimativas
+de altura (CREPE/pYIN) em seis trechos da voz isolada, com batidas alinhadas.
+Resultados e limites em `DIAGNOSTICO_CORACAO.md`; dados em `trabalho/diagnostico_coracao.json`.
+Conclusão: primeiro Sol♭ discretiza uma subida Fá–Sol; o segundo é provável captura
+de um ataque grave instável em vez da linha em Ré; Lá natural aparece brevemente
+na passagem para Si♭, mas a grade do Médio o alonga. Não trocar Lá por Lá♭ nem
+forçar a música inteira à escala. Não foram alterados os arranjos nesta verificação.
+
+## 13. Proteção de ataques/deslizamentos na geração — 2026-11-10
+
+Usuário pediu implementar a proteção no algoritmo. Entregue e aplicada a Para
+Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261110/`.
+
+- Novo `protecao_melodia.py`: mede periodicidade, fração de apoio à altura e duração
+  do patamar estável por segmento de voz. Remove excursões breves fora do registro
+  entre apoios firmes e transições sem patamar que a quantização alongaria.
+- Preserva notas longas/cromáticas sustentadas, saltos curtos com apoio forte e
+  ataques de palavras apoiados. Não usa escala/acorde como filtro obrigatório.
+  Sem diagnóstico de confiança, conserva as notas; não adivinha a correção.
+- Regras antes da quantização em Acordes/Híbridos. Médio/Fácil simplificam mais;
+  Difícil conserva mais ornamentos. Quando necessário, recupera o início de uma
+  palavra na altura firme seguinte, com limite de 250 ms e sem sobrepor notas.
+- `melodia(..., diagnostico=...)` mantém retorno antigo (tuplas de três valores),
+  adicionando qualidades em um dicionário opcional. `gerar_nivel()` recebe esse
+  diagnóstico e registra `[protecao]` no log. CLI/web usam a proteção nas novas gerações.
+- Novas execuções do pipeline salvam notas/diagnóstico/batidas/palavras em
+  `cache/transcricao.json` e decisões em `cache/protecao_<nivel>.json`.
+- Validação real: em Para Machucar, Sol♭ de “violão” (31,33 s, 90 ms), excursão grave
+  de “nosso lar” (62,30 s, 160 ms) e passagem de “desmoronou” (22,15 s, 100 ms)
+  filtrados no Médio. O Difícil preserva alguns detalhes curtos (ex.: o primeiro Sol♭).
+- Foram filtrados 76/71/19 segmentos brutos nos níveis Fácil/Médio/Difícil dessa
+  gravação, incluindo outros ataques e transições ao longo da faixa. Isso não é
+  uma avaliação humana de que cada trecho removido fosse um erro musical.
+- Foram regeneradas as 15 saídas da música; só Acordes/Híbridos usam a proteção
+  vocal. Os covers completos continuam com as notas da IA. Reutilizados MIDIs brutos
+  das IAs; voz/palavras foram analisadas novamente. As outras sete músicas não foram
+  regeneradas nesta rodada e receberão a proteção ao executar o pipeline novamente.
+- Snapshot dessa validação em `cache/transcricao_protecao.json`, extração bruta em
+  `trabalho/protecao_coracao_bruta.json`; metadata da música marca `protecao_melodia: v1`.
+- Utilitários: `avaliar_protecao_coracao.py` (validação sem alterar biblioteca),
+  `aplicar_protecao_coracao.py` (reuso da extração e renderização com backup).
+- Testes: **19 testes** aprovados. Casos protegem contra apagar cromatismos reais,
+  saltos legítimos e ataques de palavras. Auditoria dos 15 MIDIs: **15.249 notas**,
+  sem diferenças de altura/ataque/duração em relação ao MusicXML. A API do visor
+  carregou a nova versão corretamente; cache é invalidado pelo mtime do MusicXML.
+- Métricas da biblioteca recalculadas em `saida/analise_completa.json` e
+  `analise_resumo.json`. Mantidas 120 partituras, sem aberturas acima de oitava.
+- Servidor não precisou de reinício (gera por subprocesso que lê o código novo).
+  Atualizar a página para buscar PDFs/prévias/partitura com novos arquivos.

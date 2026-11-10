@@ -78,31 +78,49 @@ IA de "piano cover" de 2024 ([310hz/amt-apc](https://github.com/310hz/amt-apc), 
 na RTX 4070 (Pop2Piano: ~30 s). Seus estilos `level1/2/3` são ligados aos níveis, mas **não são dificuldade de
 verdade** (o level1 gera até mais notas que o Pop2Piano), então passa pela mesma simplificação por nível.
 
-## Versão recomendada por nível (`analisar.py`)
+## Versão recomendada por nível
 
-`python analisar.py` mede as 105 partituras (7 músicas × 5 versões × 3 níveis) e grava `saida/analise.json`.
-Médias de 2026-11-09:
+Revisão de **120 partituras, oito músicas**, com relatório completo em [ANALISE_PARTITURAS.md](ANALISE_PARTITURAS.md).
 
-| nível | versão | notas/s dir. | notas/s esq. | abertura > 8ª | harmonia | melodia cantada |
-|---|---|---|---|---|---|---|
-| Fácil | **Acordes** ★ | 1,3 | **0,5** | 0% | 58% | (é a própria) |
-| Fácil | Híbrido (AMT) | 1,3 | 1,0 | 0% | 55% | (é a própria) |
-| Médio | **Híbrido (AMT)** ★ | 2,0 | 1,9 | **12%** | 64% | (é a própria) |
-| Médio | Híbrido (Pop2Piano) | 1,9 | 1,7 | 26% | 57% | (é a própria) |
-| Médio | Pop2Piano | 2,8 | 1,7 | 20% | 63% | 30% |
-| Difícil | **AMT-APC** ★ | 3,7 | 1,9 | 11% | **70%** | 25% |
-| Difícil | Pop2Piano | 2,9 | 1,9 | 23% | 63% | 30% |
+| Nível | Principal | Notas/s direita / esquerda | Abertura > oitava |
+|---|---|---:|---:|
+| Fácil | **Acordes** | 1,25 / 0,57 | 0% |
+| Médio | **Híbrido AMT** | 2,09 / 1,48 | 0% |
+| Difícil | **Híbrido AMT** | 2,58 / 1,41 | 0% |
 
-- **AMT-APC ganha do Pop2Piano em tudo que mede tocabilidade**: metade das aberturas maiores que uma oitava
-  e +7 pontos de coerência com a harmonia (bate com o ouvido: "mais tocáveis").
-- Nenhuma das duas IAs carrega bem a melodia cantada (25–30% dos tempos): pra cantar junto, só as versões com
-  melodia + letra (Acordes / Híbridos).
-- A letra **não depende do nível** (sílabas viram notas repetidas quando precisa): 74–86% da letra oficial nas
-  músicas cantadas com clareza, ~48% nas de bossa ao vivo (o Whisper perde trechos sussurrados).
-- O "Acordes – Médio" tinha 64% de aberturas > oitava (baixo e 3ª/7ª em oitavas separadas) → corrigido pra
-  acorde fechado.
-- Melodia cantada tem ~24% de notas com acidente (o detector pega notas "de passagem" e afinação solta); as IAs,
-  11–16%. Próximo passo: no Fácil, alinhar notas curtas cromáticas à escala.
+O Híbrido mantém melodia e letra e agora aproveita a direita da IA nos trechos instrumentais.
+AMT-APC completo continua como alternativa de cover instrumental, sem letra. A redução fecha acordes
+e escolhe oitavas do baixo para diminuir saltos. As oito músicas foram atualizadas; os backups ficam
+em `trabalho/revisao_20261109/`. Alcance menor não garante ritmo fácil nem transcrição exata.
+
+`python analisar_completo.py` gera as métricas em `saida/analise_completa.json` e `analise_resumo.json`.
+`python conferir_previa.py --todas` confere alturas, ataques e durações dos MIDIs contra o MusicXML.
+O analisador antigo `analisar.py` e `saida/analise.json` são históricos; as métricas atuais usam ligações
+por nota e alinhamento temporal entre as versões.
+
+### Proteção da melodia vocal
+
+Novas gerações de Acordes e Híbridos analisam confiança, estabilidade e duração de
+cada nota antes de quantizar. Filtram quedas breves fora do registro e deslizamentos
+que virariam notas longas na grade, preservando cromatismos sustentados e ataques
+de palavras apoiados. O Difícil conserva mais ornamentos. A regra não força notas à escala.
+
+O motivo de cada remoção fica em `cache/protecao_<nivel>.json`; a extração com
+diagnóstico fica em `cache/transcricao.json`. Em 2026-11-10, Para Machucar Meu Coração
+foi regenerada para validar os exemplos indicados pelo usuário; os arquivos anteriores
+estão em `trabalho/protecao_20261110/`. As outras músicas receberão a proteção quando regeneradas.
+
+## Partitura acompanhando o áudio
+
+Na Biblioteca, a **prévia de piano** destaca as notas em um visualizador SVG com cursor,
+rolagem automática e zoom. A barra avança continuamente pelo tempo de cada compasso,
+inclusive nas pausas e notas sustentadas. Clique numa nota para ir até aquele momento. Desmarque
+**Acompanhar piano** para rolar livremente. O PDF estático continua disponível abaixo e para download.
+
+Ao tocar a gravação original, o piano pausa e o destaque é limpo. A sincronia com o original
+ainda não está implementada. O visualizador e o MIDI usam os mesmos tempos do MusicXML;
+cifras não são tocadas como notas extras. O servidor guarda o desenho e os tempos em cache
+e os recalcula quando o MusicXML muda.
 
 ## Etapas
 
@@ -127,8 +145,12 @@ Sem eles, cai num sintetizador simples (senoides).
 
 ## Limites conhecidos
 
+Na interface, o seletor **Estilo do Pop2Piano** oferece os 21 estilos quando Pop2Piano ou Híbrido
+está marcado. O padrão continua sendo o estilo 1. A escolha também afeta o acompanhamento do
+Híbrido (Pop2Piano); Acordes e as versões AMT não usam esse estilo. Na linha de comando: `--estilo 1` a `--estilo 21`.
+
 - Precisa ter **voz** na faixa: em gravação instrumental a melodia está na orquestra e a versão padrão não acha nada (use `--pop2piano`).
-- Ritmo é o ponto fraco: síncope e rubato (bossa!) saem aproximados. `--grade 2` (colcheia, padrão) é mais legível; `--grade 4` é mais fiel e mais poluído.
-- A letra vai só na versão melodia + acordes (no Pop2Piano a melodia não é a cantada). Palavra que o Whisper não ouviu (ex.: primeira do verso) fica faltando.
+- Ritmo é o ponto fraco: síncope e rubato (bossa!) saem aproximados. O nível Médio usa colcheias; o Difícil, semicolcheias.
+- A letra aparece em Acordes e nos Híbridos. Os covers completos não recebem letra. Palavra que o Whisper não ouviu (ex.: primeira do verso) continua faltando.
 - O tempo 1 do compasso é um chute pelo baixo; a cifra às vezes erra tensões.
 - `essentia` não tem build pra Windows: `_stubs/essentia` é um substituto que só entrega as batidas pro Pop2Piano do `transformers`.

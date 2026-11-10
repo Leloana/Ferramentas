@@ -73,9 +73,7 @@ def mao_esquerda_acordes(acs, nivel, fim, tipos, janela=2):
 def reduzir_mao(ev, nivel, mao):
     """Simplifica eventos polifônicos (Pop2Piano): limita notas por acorde.
     Mão direita guarda as de cima (melodia), esquerda as de baixo (baixo)."""
-    if nivel == "dificil":
-        return ev
-    maximo = 1 if nivel == "facil" else (3 if mao == "direita" else 2)
+    maximo = 4 if nivel == "dificil" else (1 if nivel == "facil" else (3 if mao == "direita" else 2))
     saida = []
     for off, dur, ps, *resto in ev:
         ps = sorted(ps)
@@ -86,8 +84,121 @@ def reduzir_mao(ev, nivel, mao):
                 ps = ps[-maximo:]
             else:
                 ps = [ps[0], ps[-1]]
+        # Conservar classes de altura e a voz externa, mudando apenas oitavas.
+        # Selecionar os extremos, sozinho, mantinha justamente a maior abertura.
+        if ps:
+            ancora = ps[-1] if mao == "direita" else ps[0]
+            ps = sorted({ancora - (ancora-p) % 12 if mao == "direita"
+                         else ancora + (p-ancora) % 12 for p in ps})
         saida.append((off, dur, ps, *resto))
+    return suavizar_baixo(saida, nivel) if mao == "esquerda" else saida
+
+
+def suavizar_baixo(ev, nivel):
+    """Escolhe oitavas por programação dinâmica, com custo para saltos rápidos.
+
+    Mantém ritmo e classes de altura. A mão direita nunca é transposta aqui.
+    Pausas longas permitem deslocamentos maiores; penaliza mudanças de registro.
+    """
+    if not ev:
+        return []
+    lo, hi = (36, 60) if nivel == "facil" else (28, 60)
+    candidatos = []
+    for _, _, ps, *_ in ev:
+        opts = [[p+k for p in ps] for k in range(-48, 49, 12)
+                if ps and lo <= min(ps)+k and max(ps)+k <= hi]
+        candidatos.append(opts or [list(ps)])
+    custos, caminhos = [], []
+    for i, opts in enumerate(candidatos):
+        local, back = [], []
+        for ps in opts:
+            ancora = min(ps) if ps else 48
+            origem = min(ev[i][2]) if ev[i][2] else 48
+            registro = .025 * (ancora-origem)**2
+            if i == 0:
+                local.append(registro)
+                back.append(0)
+                continue
+            # Tempo desde o ataque anterior: ligações longas também dão tempo
+            # para preparar o movimento. Limite cresce até duas oitavas.
+            tempo = max(0, ev[i][0]-ev[i-1][0])
+            limite = min(24, (5 if nivel == 'facil' else 7) + 2*tempo)
+            escolhas = []
+            for j, ant in enumerate(candidatos[i-1]):
+                salto = abs(ancora-min(ant)) if ant else 0
+                escolhas.append(custos[i-1][j] + max(0, salto-limite)**2 + .04*salto)
+            j = int(np.argmin(escolhas))
+            local.append(registro+escolhas[j])
+            back.append(j)
+        custos.append(local)
+        caminhos.append(back)
+    j = int(np.argmin(custos[-1]))
+    resultado = []
+    for i in range(len(ev)-1, -1, -1):
+        off, dur, _, *resto = ev[i]
+        resultado.append((off, dur, candidatos[i][j], *resto))
+        j = caminhos[i][j]
+    return resultado[::-1]
+
+
+def fechar_acordes(ev, mao='esquerda'):
+    """Fecha a abertura sem reduzir o número de classes de altura."""
+    saida = []
+    for o,d,ps,*resto in ev:
+        ancora = (max(ps) if mao == 'direita' else min(ps)) if ps else 48
+        notas = sorted({ancora-(ancora-p)%12 if mao == 'direita'
+                        else ancora+(p-ancora)%12 for p in ps})
+        saida.append((o,d,notas,*resto))
     return saida
+
+
+def completar_instrumentais(melodia, instrumental, passo, bloqueios=()):
+    """Usa a direita da IA em lacunas de >= quatro tempos sem melodia/palavras.
+
+    Recorta notas nas bordas, sem sobrepor a voz nem associar letra ao instrumental.
+    Os bloqueios vêm também das palavras do Whisper, protegendo voz não detectada.
+    """
+    if not instrumental or not melodia:
+        return list(melodia)
+    fim = max(o+d for o,d,*_ in melodia+instrumental)
+    ocupados = [(o, o+d) for o,d,*_ in melodia]
+    ocupados += [(np.floor(a/passo)*passo, np.ceil(b/passo)*passo) for a,b in bloqueios]
+    unidos = []
+    for a,b in sorted(ocupados):
+        if unidos and a <= unidos[-1][1]+1e-7:
+            unidos[-1][1] = max(b,unidos[-1][1])
+        else:
+            unidos.append([a,b])
+    lacunas, inicio = [], min(0, min(o for o, *_ in instrumental))
+    for a,b in unidos+[[fim,fim]]:
+        if a-inicio >= 4:
+            lacunas.append((inicio,a))
+        inicio = max(inicio,b)
+    extras = []
+    for o,d,ps,*_ in instrumental:
+        for a,b in lacunas:
+            ini, fin = max(o,a), min(o+d,b)
+            if fin-ini >= passo-1e-7:
+                extras.append((ini, fin-ini, ps))
+    return sorted(list(melodia)+extras, key=lambda e:e[0])
+
+
+def simplificar_passagens(notas, palavras=()):
+    """No Fácil, suaviza ornamento cromático curto entre duas notas iguais.
+
+    Não altera ataque de palavra, notas longas, nem cromatismos sem esse contexto.
+    Usa os segundos originais, antes da quantização, e mantém o ritmo.
+    """
+    out=list(notas)
+    for i in range(1,len(notas)-1):
+        a,b,p=notas[i]
+        ant,seg=notas[i-1],notas[i+1]
+        if (b-a<=.18 and ant[2]==seg[2] and abs(p-ant[2])==1
+            and a-ant[1]<=.12 and seg[0]-b<=.12
+            and ant[1]-ant[0]>=.2 and seg[1]-seg[0]>=.2
+            and not any(a-.03<=ini<b for ini,_,_ in palavras)):
+            out[i]=(a,b,ant[2])
+    return out
 
 
 def transpor_facil(md_ev, me_ev, cifras):

@@ -2,15 +2,19 @@
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const NIVEL_NOME = { facil: "Fácil", medio: "Médio", dificil: "Difícil" };
-// versão recomendada por nível (analisar.py: tocabilidade + coerência com a harmonia, 7 músicas)
-const PADRAO = { facil: "Acordes", medio: "HibridoAMT", dificil: "AMT-APC" };
+// Revisão de 120 partituras: preservar melodia/letra e também trechos instrumentais.
+const PADRAO = { facil: "Acordes", medio: "HibridoAMT", dificil: "HibridoAMT" };
 const VERSAO_NOME = { HibridoAMT: "Híbrido (AMT)", Hibrido: "Híbrido (Pop2Piano)", Acordes: "Acordes", Pop2Piano: "Pop2Piano", "AMT-APC": "AMT-APC" };
 const esc = (t) => String(t ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const urlArq = (rel) => "/arquivos/" + rel.split("/").map(encodeURIComponent).join("/");
+const urlArq = (rel) => {
+  const m = musicas.find((m) => rel.startsWith(m.pasta + "/"));
+  return "/arquivos/" + rel.split("/").map(encodeURIComponent).join("/") + (m ? `?v=${m.mtime}` : "");
+};
 const dur = (s) => (s ? `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}` : "");
 
 let musicas = [];
 let selecionada = null;
+let leitorPartitura = null;
 let escolha = { nivel: "medio", versao: "HibridoAMT" };
 try { escolha = { ...escolha, ...JSON.parse(localStorage.getItem("partitura.escolha") || "{}") }; } catch {}
 
@@ -64,6 +68,8 @@ $("#formBusca").addEventListener("submit", async (e) => {
 });
 
 function tocar(id, botao) {
+  $("#audioPartitura")?.pause();
+  $("#audioOriginal")?.pause();
   $$(".tocar").forEach((b) => { b.textContent = "▶"; b.classList.remove("carregando"); });
   if (tocandoId === id && !player.paused) { player.pause(); tocandoId = null; return; }
   tocandoId = id;
@@ -77,6 +83,16 @@ player.addEventListener("ended", () => $$(".tocar").forEach((b) => (b.textConten
 
 // ------------------------------------------------------------------ diálogo de geração
 let videoAtual = null;
+$("#gEstilo").innerHTML = Array.from({ length: 21 }, (_, i) =>
+  `<option value="${i + 1}">Estilo ${i + 1}${i === 0 ? " (padrão)" : ""}</option>`).join("");
+function atualizarEstilo() {
+  const usa = $$('input[name="versao"]:checked').some((i) => ["Hibrido", "Pop2Piano"].includes(i.value));
+  $("#gEstilo").disabled = !usa;
+  $("#linhaEstilo").hidden = !usa;
+  $("#ajudaEstilo").hidden = !usa;
+}
+$$('input[name="versao"]').forEach((i) => i.addEventListener("change", atualizarEstilo));
+atualizarEstilo();
 function abrirDialogo(v) {
   videoAtual = v;
   $("#gThumb").src = v.thumb;
@@ -103,6 +119,7 @@ async function enviarPedido() {
     video_id: videoAtual.id, titulo: $("#gTitulo").value.trim(), artista: $("#gArtista").value.trim(),
     niveis: niveis.length ? niveis : ["medio"], versoes: versoes.length ? versoes : ["Hibrido"],
     idioma: $("#gIdioma").value,
+    estilo: Number($("#gEstilo").value),
   };
   let r;
   try {
@@ -179,6 +196,8 @@ function selecionar(pasta) {
 }
 
 function desenharVisor() {
+  leitorPartitura?.destruir();
+  leitorPartitura = null;
   const m = musicas.find((x) => x.pasta === selecionada);
   const visor = $("#visor");
   if (!m) { visor.className = "visor vazio"; visor.innerHTML = "<p>Escolha uma música à esquerda.</p>"; return; }
@@ -197,15 +216,28 @@ function desenharVisor() {
       <div class="grupo">${["HibridoAMT", "Hibrido", "Acordes", "Pop2Piano", "AMT-APC"].map((v) => `<button data-versao="${v}" class="${v === escolha.versao ? "ativa" : ""}" ${m.arquivos[escolha.nivel][v] ? "" : "disabled"} title="${PADRAO[escolha.nivel] === v ? "recomendada para este nível" : ""}">${VERSAO_NOME[v]}${PADRAO[escolha.nivel] === v ? " ★" : ""}</button>`).join("")}</div>
     </div>
     <div class="audios">
-      ${item.previa ? `<div><label>🎹 Como soa esta partitura (piano)</label><audio controls preload="none" src="${urlArq(item.previa)}"></audio></div>` : ""}
-      ${m.original ? `<div><label>🎧 Gravação original</label><audio controls preload="none" src="${urlArq(m.original)}"></audio></div>` : ""}
+      ${item.previa ? `<div><label>🎹 Como soa esta partitura (piano)</label><audio id="audioPartitura" controls preload="metadata" src="${urlArq(item.previa)}"></audio></div>` : ""}
+      ${m.original ? `<div><label>🎧 Gravação original</label><audio id="audioOriginal" controls preload="none" src="${urlArq(m.original)}"></audio></div>` : ""}
     </div>
-    ${item.pdf ? `<iframe class="pdf" src="${urlArq(item.pdf)}#view=FitH"></iframe>` : "<p>Sem PDF para esta combinação.</p>"}
+    ${item.previa ? `<div class="controles-partitura">
+      <label><input type="checkbox" id="seguirPartitura" checked> Acompanhar piano</label>
+      <label>Zoom <select id="zoomPartitura"><option value="100">100%</option><option value="125">125%</option><option value="150">150%</option><option value="200">200%</option></select></label>
+      <span id="tempoPartitura">Preparando partitura…</span>
+    </div><div id="partituraInterativa" class="partitura-interativa" aria-label="Partitura sincronizada com o piano"><p>Carregando notas…</p></div>` : ""}
+    ${item.pdf ? `<details class="pdf-alternativo" ${item.previa ? "" : "open"}><summary>Ver PDF estático</summary><iframe loading="lazy" title="PDF da partitura" class="pdf" src="${urlArq(item.pdf)}#view=FitH"></iframe></details>` : "<p>Sem PDF para esta combinação.</p>"}
     <div class="links">
       ${item.pdf ? `<a href="${urlArq(item.pdf)}" target="_blank">abrir PDF em nova aba</a>` : ""}
       ${m.editaveis.filter((e) => e.includes(`${escolha.versao} - ${{ facil: "Facil", medio: "Medio", dificil: "Dificil" }[escolha.nivel]}`))
         .map((e) => `<a href="${urlArq(e)}" download>baixar MusicXML (MuseScore)</a>`).join("")}
     </div>`;
+  const audio = $("#audioPartitura", visor), original = $("#audioOriginal", visor);
+  if (audio) {
+    const arquivo = `${m.pasta}/editaveis/${escolha.versao} - ${{facil:"Facil",medio:"Medio",dificil:"Dificil"}[escolha.nivel]}.musicxml`;
+    leitorPartitura = new LeitorPartitura({ area: $("#partituraInterativa",visor), audio, arquivo,
+      mostrador: $("#tempoPartitura",visor), seguir: $("#seguirPartitura",visor), zoom: $("#zoomPartitura",visor) });
+    audio.addEventListener('play', () => { original?.pause(); player.pause(); });
+    original?.addEventListener('play', () => { audio.pause(); leitorPartitura?.limpar(); player.pause(); });
+  }
   $$("[data-nivel]", visor).forEach((b) => b.addEventListener("click", () => {
     escolha.nivel = b.dataset.nivel;
     // ao trocar de nível, vai pra versão recomendada dele (análise de 7 músicas, ver README)

@@ -12,6 +12,7 @@ Uso:
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import re
 import shutil
@@ -117,7 +118,7 @@ class Grade:
 
 # ----------------------------------------------------------------------------- melodia
 
-def melodia(voz: np.ndarray, sr: int, onsets_voz: np.ndarray) -> list[tuple[float, float, int]]:
+def melodia(voz: np.ndarray, sr: int, onsets_voz: np.ndarray, diagnostico=None) -> list[tuple[float, float, int]]:
     """Notas (inicio_s, fim_s, midi) da voz isolada."""
     import torch
     import torchcrepe
@@ -134,7 +135,11 @@ def melodia(voz: np.ndarray, sr: int, onsets_voz: np.ndarray) -> list[tuple[floa
 
     # volume da voz por frame, pra ignorar vazamento de instrumento quando ninguém canta
     n = len(f0)
-    rms = np.array([np.sqrt(np.mean(voz[i * hop:(i + 1) * hop] ** 2) + 1e-12) for i in range(n)])
+    # CREPE inclui um frame final quando a duração é múltipla do hop.
+    # Sem padding, esse frame usa mean([]), produz NaN e invalida o
+    # percentil de volume, descartando TODAS as notas da música.
+    amostras = np.pad(voz[:n * hop], (0, max(0, n * hop - len(voz))))
+    rms = np.sqrt(np.mean(amostras.reshape(n, hop) ** 2, axis=1) + 1e-12)
     db = 20 * np.log10(rms)
     vozeado = (per > 0.45) & (db > np.percentile(db, 95) - 30)
 
@@ -174,6 +179,9 @@ def melodia(voz: np.ndarray, sr: int, onsets_voz: np.ndarray) -> list[tuple[floa
 
     # divide notas repetidas onde a voz tem ataque (sílaba nova na mesma altura)
     saida = []
+    qualidades = []
+    if diagnostico is not None:
+        from protecao_melodia import qualidade_segmento
     for ini, fim, ms in notas:
         if not ms:
             continue
@@ -187,6 +195,10 @@ def melodia(voz: np.ndarray, sr: int, onsets_voz: np.ndarray) -> list[tuple[floa
             if b - a >= 6:  # >= 60 ms
                 seg = midi[a:b]
                 saida.append((a / 100, b / 100, int(round(float(np.median(seg))))))
+                if diagnostico is not None:
+                    qualidades.append(qualidade_segmento(midi,per,a,b))
+    if diagnostico is not None:
+        diagnostico['notas']=qualidades
     return saida
 
 
@@ -316,8 +328,9 @@ def armaduras_por_trecho(eventos_off, fim: float, bloco: int = 32) -> list[tuple
         ev = [(d, ps) for o, d, ps in eventos_off if b * bloco <= o < (b + 1) * bloco]
         custos[b] = _custo_armaduras(ev)
         peso[b] = sum(d * len(ps) for d, ps in ev)
-    # trocar de armadura só compensa se economizar >= 12% das notas de um bloco típico
-    troca = 0.12 * float(np.median(peso[peso > 0])) if (peso > 0).any() else 0.0
+    # Exigir evidência mais forte de modulação: acordes cromáticos isolados não
+    # justificam trocar a armadura de leitura a cada bloco de oito compassos.
+    troca = 0.25 * float(np.median(peso[peso > 0])) if (peso > 0).any() else 0.0
     dp = custos[0].copy()
     back = np.zeros((nb, 12), dtype=int)
     for b in range(1, nb):
@@ -478,6 +491,8 @@ def _nota_com_silabas(ini: float, dur: float, midi: int, silabas: list[str]) -> 
 def eventos_melodia_acordes(notas_q, acs, beats_por_janela=2, letras=None):
     """Converte melodia quantizada + acordes detectados em eventos das duas mãos + cifras.
     letras: {índice_da_nota: sílaba} (opcional)."""
+    if not notas_q:
+        raise ValueError("Nenhuma nota de melodia detectada na voz; não é possível gerar a partitura com melodia.")
     letras = letras or {}
     med = np.median([n[2] for n in notas_q])
     transp = 12 if med < 62 else 0  # melodia confortável na clave de sol
@@ -523,10 +538,29 @@ def salvar_versao(sc, pasta: Path, versao: str, mid_previa: Path | None = None):
     ed.mkdir(parents=True, exist_ok=True)
     xml, mid, pdf = ed / f"{versao}.musicxml", ed / f"{versao}.mid", pasta / f"{versao}.pdf"
     sc.write("musicxml", fp=str(xml))
-    sc.write("midi", fp=str(mid))
+    salvar_midi_notas(sc, mid, xml)
     n = xml_para_pdf(xml, pdf)
     midi_para_mp3(mid_previa or mid, pasta / f"{versao} - previa.mp3")
     print(f"[ok] {pdf} ({n} páginas)")
+
+
+def salvar_midi_notas(sc, destino: Path, xml: Path | None = None):
+    """Exporta somente notas escritas e respeita ligações parciais de acordes."""
+    import pretty_midi
+    from music21 import musicxml
+    from sincronia import preparar_musicxml, notas_ligadas
+    import xml.etree.ElementTree as ET
+    texto=xml.read_text(encoding='utf-8') if xml else musicxml.m21ToXml.GeneralObjectExporter(sc).parse().decode('utf-8')
+    _,segmentos=preparar_musicxml(texto)
+    som=ET.fromstring(texto).find('.//sound[@tempo]')
+    bpm=float(som.get('tempo')) if som is not None else 120
+    pm=pretty_midi.PrettyMIDI(initial_tempo=bpm)
+    instrumentos={}
+    for n in notas_ligadas(segmentos):
+        inst=instrumentos.setdefault(n['voz'],pretty_midi.Instrument(program=0,name=n['voz']))
+        inst.notes.append(pretty_midi.Note(velocity=90,pitch=n['pitch'],start=n['inicio'],end=n['fim']))
+    pm.instruments=list(instrumentos.values())
+    pm.write(str(destino))
 
 
 def achar_chrome() -> str:
@@ -563,16 +597,29 @@ def _desembaralhar(svg: str) -> str:
     return _MOJIBAKE.sub(conserta, svg)
 
 
+def xml_para_verovio(texto: str) -> str:
+    """Verovio não aceita layer zero; renumerar sem alterar conteúdo musical."""
+    if '<voice>0</voice>' not in texto:
+        return texto
+    import xml.etree.ElementTree as ET
+    raiz=ET.fromstring(texto)
+    for voz in raiz.iter('voice'):
+        if voz.text and voz.text.isdigit():
+            voz.text=str(int(voz.text)+1)
+    return ET.tostring(raiz,encoding='unicode')
+
+
 def xml_para_pdf(xml: Path, pdf: Path):
     import verovio
     verovio.enableLog(False)
     tk = verovio.toolkit()
+    tk.setResourcePath(str(Path(verovio.__file__).parent / 'data'))
     tk.setOptions({"pageWidth": 2100, "pageHeight": 2970, "scale": 42,
                    "pageMarginTop": 80, "pageMarginBottom": 80,
                    "pageMarginLeft": 80, "pageMarginRight": 80,
                    "adjustPageHeight": False, "footer": "none", "breaks": "auto"})
-    if not tk.loadData(xml.read_text(encoding="utf-8")):  # loadFile falha com acento no caminho (Windows)
-        sys.exit("Verovio não conseguiu ler o MusicXML")
+    if not tk.loadData(xml_para_verovio(xml.read_text(encoding="utf-8"))):  # loadFile falha com acento no caminho (Windows)
+        raise RuntimeError(f"Verovio não conseguiu ler o MusicXML: {xml}")
     pags = [_desembaralhar(tk.renderToSVG(i)) for i in range(1, tk.getPageCount() + 1)]
     import html as _h
     titulo_pdf = _h.escape(f"{pdf.parent.name} — {pdf.stem}")  # nome que o visualizador de PDF mostra
@@ -584,9 +631,14 @@ def xml_para_pdf(xml: Path, pdf: Path):
     os.close(fd)
     h = Path(nome)
     h.write_text("".join(html), encoding="utf-8")
-    subprocess.run([achar_chrome(), "--headless=new", "--disable-gpu", "--no-pdf-header-footer",
-                    f"--print-to-pdf={pdf.resolve()}", h.as_uri()], capture_output=True, timeout=180)
-    h.unlink(missing_ok=True)
+    try:
+        subprocess.run([achar_chrome(), "--headless=new", "--disable-gpu", "--no-pdf-header-footer",
+                        f"--print-to-pdf={pdf.resolve()}", h.as_uri()],
+                       capture_output=True, timeout=180, check=True)
+        if not pdf.exists() or pdf.stat().st_size < 100:
+            raise RuntimeError(f"Chrome não produziu o PDF: {pdf}")
+    finally:
+        h.unlink(missing_ok=True)
     return len(pags)
 
 
@@ -710,7 +762,8 @@ def main():
     print("[melodia] extraindo altura da voz...")
     voz16 = librosa.resample(voz, orig_sr=sr, target_sr=16000)
     ons = librosa.onset.onset_detect(y=voz, sr=sr, units="time", backtrack=True, delta=0.25)
-    notas = melodia(voz16, 16000, ons)
+    diagnostico = {}
+    notas = melodia(voz16, 16000, ons, diagnostico=diagnostico)
     print(f"[melodia] {len(notas)} notas detectadas")
 
     print("[acordes] detectando harmonia...")
@@ -729,16 +782,32 @@ def main():
             import letra
             args.idioma = letra.IDIOMA_DETECTADO
 
+    cache=base/'cache'
+    cache.mkdir(parents=True,exist_ok=True)
+    transcricao=dict(audio=str(audio),audio_tamanho=audio.stat().st_size,
+        audio_mtime_ns=audio.stat().st_mtime_ns,bt=bt.tolist(),fase=fase,bpm=float(bpm),
+        notas=notas,diagnostico=diagnostico,acordes=acs,palavras=palavras,idioma=args.idioma)
+    (cache/'transcricao.json').write_text(json.dumps(transcricao,ensure_ascii=False,
+        default=lambda v:v.item()),encoding='utf-8')
     for nivel in niveis:
         SR_GRADE = GRADE_NIVEL[nivel]
-        gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, bpm)
+        gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, bpm, diagnostico)
 
 
-def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, bpm):
+def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, bpm, diagnostico=None):
     """Gera as versões pedidas (Acordes sempre; Híbrido/Pop2Piano se pedidos) num nível."""
-    from niveis import NOME, cifras_do_nivel, mao_esquerda_acordes, reduzir_mao, transpor_facil
+    from niveis import (NOME, cifras_do_nivel, mao_esquerda_acordes, reduzir_mao,
+                        transpor_facil, completar_instrumentais, suavizar_baixo,
+                        fechar_acordes, simplificar_passagens)
     print(f"\n=== nível {NOME[nivel]} (grade 1/{SR_GRADE} de tempo) ===")
-    notas_q = quantizar_melodia(notas, grade)
+    from protecao_melodia import proteger_melodia
+    usadas,correcoes=proteger_melodia(notas,grade,nivel,palavras,diagnostico)
+    print(f"[protecao] {NOME[nivel]}: {len(correcoes)} transições/ataques instáveis filtrados")
+    if diagnostico is not None:
+        cache=base/'cache'; cache.mkdir(parents=True,exist_ok=True)
+        (cache/f'protecao_{nivel}.json').write_text(json.dumps(correcoes,ensure_ascii=False),encoding='utf-8')
+    usadas = simplificar_passagens(usadas,palavras) if nivel=='facil' else usadas
+    notas_q = quantizar_melodia(usadas, grade)
     letras = {}
     if palavras:
         from letra import letra_nas_notas
@@ -748,12 +817,16 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
     fim = max(n[1] for n in notas_q) + 4
     cifras = cifras_do_nivel(cifras, nivel)
 
-    versoes = {"Acordes": (md_ev, mao_esquerda_acordes(acs, nivel, fim, TIPOS))}
+    bloqueios = [(grade.pos(a)-.5, grade.pos(b)+.5) for a,b,_ in palavras]
+    versoes = {"Acordes": (md_ev, suavizar_baixo(fechar_acordes(mao_esquerda_acordes(acs, nivel, fim, TIPOS)), nivel))}
     if args.hibrido or args.pop2piano:
         from pop2piano import maos_pop2piano
         p2p_md, p2p_me = maos_pop2piano(audio, base, grade, f"composer{args.estilo}")
         if args.hibrido:
-            versoes["Hibrido"] = (md_ev, reduzir_mao(p2p_me, nivel, "esquerda"))
+            dir_ia = reduzir_mao(p2p_md, nivel, "direita")
+            completa = completar_instrumentais(md_ev, dir_ia, grade.passo, bloqueios)
+            print(f"[instrumental] Hibrido: {len(completa)-len(md_ev)} ataques acrescentados")
+            versoes["Hibrido"] = (completa, reduzir_mao(p2p_me, nivel, "esquerda"))
         if args.pop2piano:
             versoes["Pop2Piano"] = (reduzir_mao(p2p_md, nivel, "direita"), reduzir_mao(p2p_me, nivel, "esquerda"))
     if args.amtapc:  # os "levels" do AMT-APC são mais estilo que dificuldade: simplifica igual ao Pop2Piano
@@ -761,7 +834,10 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
         a_md, a_me = maos_amtapc(audio, base, nivel, grade)
         versoes["AMT-APC"] = (reduzir_mao(a_md, nivel, "direita"), reduzir_mao(a_me, nivel, "esquerda"))
         if args.hibrido:  # melodia cantada com letra + mão esquerda do AMT-APC (mais tocável que a do Pop2Piano)
-            versoes["HibridoAMT"] = (md_ev, reduzir_mao(a_me, nivel, "esquerda"))
+            dir_ia = reduzir_mao(a_md, nivel, "direita")
+            completa = completar_instrumentais(md_ev, dir_ia, grade.passo, bloqueios)
+            print(f"[instrumental] HibridoAMT: {len(completa)-len(md_ev)} ataques acrescentados")
+            versoes["HibridoAMT"] = (completa, reduzir_mao(a_me, nivel, "esquerda"))
 
     k = 0
     if nivel == "facil" and not args.sem_transpor:  # mesmo intervalo pra todas as versões

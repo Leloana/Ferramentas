@@ -7,3 +7,5 @@ soundfonts/
 ferramentas/
 modelos/
 web/cache_previas/
+servidor.stdout.log
+servidor.stderr.log

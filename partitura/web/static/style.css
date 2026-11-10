@@ -103,7 +103,7 @@ input:focus, select:focus { outline: 2px solid var(--ouro); outline-offset: 1px;
 .vazio-msg { color: var(--suave); }
 
 /* biblioteca */
-.bib { display: grid; grid-template-columns: 300px 1fr; gap: 20px; align-items: start; }
+.bib { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 20px; align-items: start; }
 .lista-musicas { display: flex; flex-direction: column; gap: 8px; position: sticky; top: 96px; max-height: calc(100vh - 120px); overflow: auto; }
 .mus {
   text-align: left; background: var(--cartao); border: 1px solid var(--borda); color: var(--texto);
@@ -113,12 +113,12 @@ input:focus, select:focus { outline: 2px solid var(--ouro); outline-offset: 1px;
 .mus b { display: block; font-weight: 600; }
 .mus small { color: var(--suave); }
 .mus.ativa { border-color: var(--ouro); background: #2c241c; }
-.visor { background: var(--cartao); border: 1px solid var(--borda); border-radius: var(--raio); padding: 16px; min-height: 60vh; }
+.visor { background: var(--cartao); border: 1px solid var(--borda); border-radius: var(--raio); padding: 16px; min-height: 60vh; min-width:0; }
 .visor.vazio { display: grid; place-items: center; color: var(--suave); }
 .visor h2 { font: 700 24px Fraunces, serif; margin: 0; }
 .visor .art { color: var(--suave); margin: 2px 0 12px; }
 .seletor { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-bottom: 12px; }
-.grupo { display: flex; gap: 4px; background: var(--fundo2); padding: 4px; border-radius: 10px; border: 1px solid var(--borda); }
+.grupo { display: flex; flex-wrap:wrap; max-width:100%; gap: 4px; background: var(--fundo2); padding: 4px; border-radius: 10px; border: 1px solid var(--borda); }
 .grupo button { border: 0; background: transparent; color: var(--suave); padding: 6px 12px; border-radius: 7px; cursor: pointer; font: 500 13px Inter, sans-serif; }
 .grupo button.ativa { background: var(--ouro); color: #1b140c; }
 .grupo button:disabled { opacity: .3; cursor: default; }
@@ -128,6 +128,25 @@ input:focus, select:focus { outline: 2px solid var(--ouro); outline-offset: 1px;
 .pdf { width: 100%; height: 78vh; border: 0; border-radius: 10px; background: #fff; }
 .links { display: flex; gap: 10px; flex-wrap: wrap; margin: 10px 0 0; font-size: 13px; }
 .links a { color: var(--ouro2); }
+
+/* Partitura que acompanha a prévia de piano */
+.controles-partitura { display:flex; align-items:center; flex-wrap:wrap; gap:12px; padding:10px 0; font-size:13px; color:var(--suave); }
+.controles-partitura label { display:flex; align-items:center; gap:6px; }
+.controles-partitura input { width:auto; accent-color:var(--ouro); }
+.controles-partitura select { width:auto; padding:4px 8px; }
+#tempoPartitura { margin-left:auto; font-variant-numeric:tabular-nums; font-size:12px; }
+.partitura-interativa { height:76vh; overflow:auto; border:1px solid var(--borda); border-radius:10px; background:#e8e4dd; color:#30281f; position:relative; overscroll-behavior:contain; }
+.partitura-interativa > p { padding:20px; }
+.folha-partitura { position:relative; min-width:540px; margin:0 auto 12px; background:white; box-shadow:0 2px 8px #0002; }
+.folha-partitura > svg { display:block; width:100%; height:auto; }
+.numero-folha { position:absolute; right:12px; bottom:8px; color:#786f65; font:11px Inter,sans-serif; }
+.nota-navegavel { cursor:pointer; }
+.nota-navegavel:hover use { fill:#a56c22; }
+.nota-tocando use, .nota-tocando path, .nota-tocando text { fill:#d1552d !important; }
+.nota-tocando .stem { stroke:#d1552d !important; }
+.cursor-partitura { position:absolute; width:2px; background:#d1552d; opacity:.55; pointer-events:none; border-radius:2px; }
+.pdf-alternativo { margin-top:12px; }
+.pdf-alternativo summary { cursor:pointer; color:var(--ouro2); font-size:13px; margin-bottom:8px; }
 
 /* diálogo */
 dialog {

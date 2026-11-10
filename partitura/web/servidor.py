@@ -19,7 +19,7 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 RAIZ = Path(__file__).resolve().parent.parent  # partitura/
 SAIDA = RAIZ / "saida"
@@ -147,6 +147,7 @@ class Pedido(BaseModel):
     niveis: list[str] = ["medio"]
     versoes: list[str] = ["Acordes", "Hibrido"]
     idioma: str = "auto"
+    estilo: int = Field(default=1, ge=1, le=21)
 
 
 JOBS: dict[str, dict] = {}
@@ -215,7 +216,8 @@ def _rodar(job: dict):
     job["progresso"] = 8
     cmd = [PYTHON, str(RAIZ / "gerar.py"), str(wav), "--titulo", job["titulo"],
            "--subtitulo", job["artista"] or "Transcrição automática", "--pasta", job["pasta"],
-           "--nivel", ",".join(job["niveis"]), "--idioma", job["idioma"]]
+           "--nivel", ",".join(job["niveis"]), "--idioma", job["idioma"],
+           "--estilo", str(job.get("estilo", 1))]
     if job["artista"]:
         cmd += ["--artista", job["artista"]]
     if "Hibrido" in job["versoes"]:
@@ -242,6 +244,7 @@ def _rodar(job: dict):
     if meta_p.exists():
         meta = json.loads(meta_p.read_text(encoding="utf-8"))
     meta.update({"video_id": vid, "titulo": job["titulo"], "artista": job["artista"],
+                 "estilo_pop2piano": job.get("estilo", 1),
                  "atualizado": time.strftime("%Y-%m-%d %H:%M")})
     meta_p.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
 
@@ -273,7 +276,8 @@ async def gerar(p: Pedido):
     jid = uuid.uuid4().hex[:10]
     JOBS[jid] = {"id": jid, "video_id": p.video_id, "titulo": titulo, "artista": p.artista.strip(),
                  "pasta": _pasta_livre(titulo, p.artista.strip(), p.video_id), "niveis": niveis,
-                 "versoes": versoes, "idioma": p.idioma or "auto", "status": "fila", "etapa": "Na fila",
+                 "versoes": versoes, "idioma": p.idioma or "auto", "estilo": p.estilo,
+                 "status": "fila", "etapa": "Na fila",
                  "progresso": 0, "feitos": 0, "log": [], "criado": time.time()}
     FILA.put(jid)
     return JOBS[jid]
@@ -294,6 +298,21 @@ async def job(jid: str):
 # ----------------------------------------------------------------------------- biblioteca
 
 ARQ_RE = re.compile(r"^(Acordes|HibridoAMT|Hibrido|Pop2Piano|AMT-APC) - (Facil|Medio|Dificil)(?: - previa)?\.(pdf|mp3)$")
+
+
+@app.get('/api/partitura')
+async def partitura(arquivo: str):
+    xml=(SAIDA/arquivo).resolve()
+    if not xml.is_relative_to(SAIDA.resolve()) or xml.suffix.lower()!='.musicxml':
+        raise HTTPException(400,'Partitura inválida.')
+    if not xml.is_file():
+        raise HTTPException(404,'Partitura não encontrada.')
+    from web.partitura import renderizar
+    try:
+        return await asyncio.to_thread(renderizar,xml)
+    except (ValueError,OSError) as e:
+        __import__('logging').getLogger('uvicorn.error').exception('Falha ao desenhar %s',xml.name)
+        raise HTTPException(422,str(e))
 
 
 @app.get("/api/musicas")
