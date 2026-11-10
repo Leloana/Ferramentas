@@ -1,0 +1,43 @@
+{
+  "editorial_date": "2026-11-10",
+  "titulo": "Jornal de terça-feira, 10 de novembro de 2026",
+  "selecao": "Primeira rodada escolhida manualmente pelo Claude, a partir de matérias da Agência Brasil publicadas em 10/11/2026 (o valor da Selic vem da matéria de 04/11).",
+  "texto": "[animado] Bom dia! Este é o seu jornal, com as notícias de terça-feira, dez de novembro.\n\n[noticia] Economia. O Banco Central divulgou a ata do Copom, a reunião que manteve os juros básicos em treze vírgula setenta e cinco por cento ao ano. Segundo o documento, a economia já dá sinais de desaceleração, mas a inflação continua pressionada, acima do limite de tolerância da meta. Por isso, a Selic deve ficar em nível alto por mais tempo.\n\n[noticia] Combustíveis. O governo prorrogou até nove de dezembro a desoneração da gasolina e do etanol, para evitar que a alta do petróleo no mercado internacional chegue à inflação. O impacto estimado nas contas públicas é de dois vírgula setenta e seis bilhões de reais em trinta dias.\n\n[noticia] Clima. O presidente Lula chegou a Antália, na Turquia, para a COP trinta e um. A cúpula de líderes acontece nos dias onze e doze, e Lula deve discursar duas vezes, uma delas na abertura. O Brasil também apresentou na conferência um plano para financiar a adaptação da saúde às mudanças do clima.\n\n[despedida] Essas foram as notícias, com informações da Agência Brasil. Tenha um ótimo dia!",
+  "fontes": [
+    {
+      "titulo": "Ata do Copom indica que desaceleração da economia não conteve inflação",
+      "veiculo": "Agência Brasil",
+      "publicado_em": "2026-11-10T11:20:00-03:00",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/ata-do-copom-indica-que-desaceleracao-da-economia-nao-conteve-inflacao"
+    },
+    {
+      "titulo": "Banco Central surpreende e mantém juros básicos em 13,75% ao ano",
+      "veiculo": "Agência Brasil",
+      "publicado_em": "2026-11-04T18:33:00-03:00",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/bc-surpreende-e-mantem-juros-basicos-em-1375-ao-ano"
+    },
+    {
+      "titulo": "Governo prorroga até 9 de dezembro desoneração da gasolina e do etanol",
+      "veiculo": "Agência Brasil",
+      "publicado_em": "2026-11-10T09:33:00-03:00",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/governo-prorroga-ate-9-de-dezembro-desoneracao-da-gasolina-e-do-etanol"
+    },
+    {
+      "titulo": "Lula está na Turquia e se prepara para discurso na COP 31",
+      "veiculo": "Agência Brasil",
+      "publicado_em": "2026-11-10T14:36:00-03:00",
+      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/lula-esta-na-turquia-e-se-prepara-para-discurso-na-cop-31"
+    },
+    {
+      "titulo": "Brasil apresenta marco de financiamento para área de saúde na COP31",
+      "veiculo": "Agência Brasil",
+      "publicado_em": "2026-11-10T12:25:00-03:00",
+      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/brasil-apresenta-marco-de-financiamento-para-area-de-saude-na-cop31"
+    }
+  ],
+  "musica": {
+    "titulo": "So Nice (Summer Samba)",
+    "artista": "Marcos Valle",
+    "origem": "karaoke/server/songs/so-nice-summer-samba-marcos-valle (vocal + instrumental misturados)"
+  }
+}

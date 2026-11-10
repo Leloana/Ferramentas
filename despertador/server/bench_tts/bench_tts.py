@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import os
 import subprocess
 import sys
@@ -137,9 +138,38 @@ def motor_chatterbox(texto: str, saida: Path, args) -> dict:
     modelo = ChatterboxMultilingualTTS.from_pretrained(device=disp)
     carga = time.perf_counter() - t0
     t0 = time.perf_counter()
-    partes = [modelo.generate(t, language_id="pt").squeeze(0).cpu().numpy() for t in _paragrafos(texto)]
+    partes = [modelo.generate(t, language_id="pt", cfg_weight=args.cb_cfg, exaggeration=args.cb_exag)
+              .squeeze(0).cpu().numpy() for t in _paragrafos(texto)]
     _salvar_wav(saida, _juntar(partes, modelo.sr), modelo.sr)
-    return {"carga_s": carga, "sintese_s": time.perf_counter() - t0, "voz": f"padrão ({disp})"}
+    return {"carga_s": carga, "sintese_s": time.perf_counter() - t0,
+            "voz": f"padrão ({disp}) cfg={args.cb_cfg} exag={args.cb_exag}"}
+
+
+# Tags de estilo no roteiro, ex.: "[animado] Bom dia!". Cada parágrafo herda a tag que o abre;
+# a tag vira a instrução (`instruct`) do Qwen3-TTS. Para os outros motores as tags são removidas.
+TAGS = {
+    "animado": "Speak like a cheerful, energetic Brazilian morning radio host, smiling, upbeat and warm.",
+    "noticia": "Speak like a clear, confident Brazilian news anchor, natural pace, engaging but neutral.",
+    "serio": "Speak in a calm, serious and steady news tone.",
+    "leve": "Speak in a relaxed, friendly and light conversational tone.",
+    "despedida": "Speak warmly and cheerfully, like saying goodbye to a friend in the morning.",
+}
+_TAG_RE = re.compile(r"^\s*\[([a-zà-ú]+)\]\s*", re.IGNORECASE)
+
+
+def sem_tags(texto: str) -> str:
+    return "\n".join(_TAG_RE.sub("", l) for l in texto.split("\n"))
+
+
+def _trechos_com_tag(texto: str, maximo: int) -> list[tuple[str, str]]:
+    trechos, tag = [], ""
+    for par in [p for p in texto.split("\n") if p.strip()]:
+        m = _TAG_RE.match(par)
+        if m:
+            tag = m.group(1).lower()
+            par = par[m.end():]
+        trechos += [(tag, t) for t in _paragrafos(par, maximo)]
+    return trechos
 
 
 def motor_qwen(texto: str, saida: Path, args) -> dict:
@@ -152,17 +182,42 @@ def motor_qwen(texto: str, saida: Path, args) -> dict:
                                            dtype=torch.bfloat16 if disp != "cpu" else torch.float32)
     carga = time.perf_counter() - t0
     t0 = time.perf_counter()
-    partes, taxa = [], 24000
-    for t in _paragrafos(texto):
-        wavs, taxa = modelo.generate_custom_voice(text=t, language="Portuguese", speaker=args.qwen_voz)
+    partes, taxa, instrucao_ok = [], 24000, True
+    trechos = _trechos_com_tag(texto, args.qwen_max_trecho)
+    for i, (tag, t) in enumerate(trechos, 1):
+        instr = TAGS.get(tag) or args.qwen_instrucao
+        if args.qwen_modo == "design":
+            # VoiceDesign: a voz é descrita em texto; o estilo da tag vai junto.
+            kw = dict(text=t, language="Portuguese", instruct=f"{args.qwen_descricao} {instr}".strip())
+            wavs, taxa = modelo.generate_voice_design(**kw)
+            print(f"trecho {i}/{len(trechos)} [{tag or '-'}] {len(t)} car.", flush=True)
+            partes.append(wavs[0])
+            continue
+        kw = dict(text=t, language="Portuguese", speaker=args.qwen_voz)
+        if instr and instrucao_ok:
+            kw["instruct"] = instr
+        try:
+            wavs, taxa = modelo.generate_custom_voice(**kw)
+        except (TypeError, ValueError) as e:
+            if "instruct" not in kw:
+                raise
+            print(f"modelo não aceitou instruct ({e}); seguindo sem", flush=True)
+            instrucao_ok = False
+            kw.pop("instruct")
+            wavs, taxa = modelo.generate_custom_voice(**kw)
+        print(f"trecho {i}/{len(trechos)} [{tag or '-'}] {len(t)} car.", flush=True)
         partes.append(wavs[0])
-    _salvar_wav(saida, _juntar(partes, taxa), taxa)
-    return {"carga_s": carga, "sintese_s": time.perf_counter() - t0, "voz": f"{args.qwen_voz} ({disp})"}
+    _salvar_wav(saida, _juntar(partes, taxa, 0.3), taxa)
+    return {"carga_s": carga, "sintese_s": time.perf_counter() - t0,
+            "voz": ("design" if args.qwen_modo == "design" else args.qwen_voz) + f" ({disp}){' +instrução' if instrucao_ok and (args.qwen_instrucao or any(tg for tg, _ in trechos)) else ''}",
+            "trechos": len(trechos)}
 
 
 def worker(args) -> None:
     _limitar_threads(args.threads)
     texto = json.loads(Path(args.roteiro).read_text(encoding="utf-8"))["texto"].strip()
+    if args._motor != "qwen":
+        texto = sem_tags(texto)
     saida = Path(args.saida) / f"{args._motor}.wav"
     r = globals()[f"motor_{args._motor}"](texto, saida, args)
     with wave.open(str(saida), "rb") as w:
@@ -262,6 +317,14 @@ def main() -> None:
     ap.add_argument("--xtts-voz", default="Damien Black")
     ap.add_argument("--qwen-modelo", default="Qwen/Qwen3-TTS-12Hz-0.6B-CustomVoice")
     ap.add_argument("--qwen-voz", default="Ryan")
+    ap.add_argument("--qwen-instrucao", default="", help="instrução de estilo padrão (as [tags] do roteiro têm prioridade)")
+    ap.add_argument("--qwen-modo", choices=("custom", "design"), default="custom",
+                    help="custom = vozes prontas (CustomVoice); design = voz descrita em texto (VoiceDesign)")
+    ap.add_argument("--qwen-descricao", default="A Brazilian Portuguese male radio news presenter in his 40s, "
+                    "warm, deep and clear voice, native accent from São Paulo, natural and friendly.")
+    ap.add_argument("--cb-cfg", type=float, default=0.5, help="Chatterbox: menor = fala mais calma (0.3 recomendado p/ quem fala rápido)")
+    ap.add_argument("--cb-exag", type=float, default=0.5, help="Chatterbox: exagero de emoção (0.25 a 2)")
+    ap.add_argument("--qwen-max-trecho", type=int, default=160, help="caracteres por geração (curto evita pular texto)")
     ap.add_argument("--gpu", action="store_true", help="usar CUDA se houver (só para comparar qualidade no PC)")
     ap.add_argument("--_motor", choices=MOTORES, help=argparse.SUPPRESS)
     args = ap.parse_args()
