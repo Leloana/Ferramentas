@@ -806,6 +806,64 @@ def dedos_ao_lado(svg: str) -> str:
     return _RE_DEDO.sub(mover, svg)
 
 
+_RE_PEDAL = re.compile(r'<g id="[^"]+" class="pedal">(.*?)</g>', re.S)
+_RE_RET = re.compile(r'<rect x="(-?[\d.]+)" y="(-?[\d.]+)" height="([\d.]+)" width="([\d.]+)" */>')
+
+
+def pedal_continuo(svg: str, encosta: float = 260.0) -> str:
+    """Colchetes de pedal encostados viram uma linha só com entalhe "^" em cada troca.
+
+    O Verovio desenha cada trecho de pedal como um colchete; na troca o fim de um e o começo
+    do seguinte caem juntos ("||", linhas sobrepostas), e o "bounce" do MEI ele não desenha."""
+    sistemas = [m.start() for m in re.finditer(r'<g id="[^"]+" class="system">', svg)]
+    if not sistemas or "class=\"pedal\"" not in svg:
+        return svg
+    partes = [svg[:sistemas[0]]]
+    limites = sistemas + [len(svg)]
+    for a, b in zip(limites, limites[1:]):
+        bloco = svg[a:b]
+        colchetes = []
+        for m in _RE_PEDAL.finditer(bloco):
+            rets = [tuple(float(v) for v in r) for r in _RE_RET.findall(m.group(1))]
+            if not rets:
+                continue
+            horiz = [r for r in rets if r[3] > r[2]]
+            vert = [r for r in rets if r[2] > r[3]]
+            y = max((r[1] for r in horiz), default=max(r[1] for r in rets))
+            topo = min((r[1] for r in vert), default=y - 160)
+            espessura = min((r[2] for r in horiz), default=18.0)
+            colchetes.append([min(r[0] for r in rets), max(r[0] + r[3] for r in rets), y, topo, espessura])
+        if len(colchetes) < 2:
+            partes.append(bloco)
+            continue
+        colchetes.sort()
+        linhas, atual = [], [colchetes[0]]
+        for c in colchetes[1:]:
+            if c[0] - atual[-1][1] <= encosta and abs(c[2] - atual[-1][2]) < 60:
+                atual.append(c)
+            else:
+                linhas.append(atual)
+                atual = [c]
+        linhas.append(atual)
+        caminhos = []
+        for ln in linhas:
+            y = max(c[2] for c in ln) + ln[0][4] / 2
+            topo = min(c[3] for c in ln)
+            alt = y - topo
+            x0, x1 = ln[0][0] + ln[0][4] / 2, ln[-1][1] - ln[0][4] / 2
+            d = f"M{x0:.0f} {topo:.0f} L{x0:.0f} {y:.0f}"
+            for c in ln[1:]:
+                xc = c[0] + c[4] / 2
+                d += f" L{xc - alt * .6:.0f} {y:.0f} L{xc:.0f} {y - alt * .9:.0f} L{xc + alt * .6:.0f} {y:.0f}"
+            d += f" L{x1:.0f} {y:.0f} L{x1:.0f} {topo:.0f}"
+            caminhos.append(f'<path d="{d}" fill="none" stroke="currentColor" stroke-width="{ln[0][4]:.0f}" />')
+        bloco = _RE_PEDAL.sub("", bloco)
+        fim = bloco.rfind("</g>")
+        bloco = bloco[:fim] + '<g class="pedal">' + "".join(caminhos) + "</g>" + bloco[fim:]
+        partes.append(bloco)
+    return "".join(partes)
+
+
 def xml_para_pdf(xml: Path, pdf: Path):
     import verovio
     verovio.enableLog(False)
@@ -817,7 +875,7 @@ def xml_para_pdf(xml: Path, pdf: Path):
                    "adjustPageHeight": False, "footer": "none", "breaks": "auto", **OPCOES_DEDOS})
     if not tk.loadData(xml_para_verovio(xml.read_text(encoding="utf-8"))):  # loadFile falha com acento no caminho (Windows)
         raise RuntimeError(f"Verovio não conseguiu ler o MusicXML: {xml}")
-    pags = [dedos_ao_lado(_desembaralhar(tk.renderToSVG(i))) for i in range(1, tk.getPageCount() + 1)]
+    pags = [pedal_continuo(dedos_ao_lado(_desembaralhar(tk.renderToSVG(i)))) for i in range(1, tk.getPageCount() + 1)]
     import html as _h
     titulo_pdf = _h.escape(f"{pdf.parent.name} — {pdf.stem}")  # nome que o visualizador de PDF mostra
     html = [f"<!doctype html><meta charset='utf-8'><title>{titulo_pdf}</title><style>@page{{size:A4;margin:0}}"

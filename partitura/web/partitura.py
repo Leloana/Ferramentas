@@ -4,10 +4,10 @@ import threading
 import xml.etree.ElementTree as ET
 from sincronia import preparar_musicxml
 from pathlib import Path
-from gerar import OPCOES_DEDOS, _desembaralhar, dedos_ao_lado
+from gerar import OPCOES_DEDOS, _desembaralhar, dedos_ao_lado, pedal_continuo
 
 _TRAVA = threading.Lock()
-VERSAO = 10
+VERSAO = 11
 
 
 def mapa_original(sinc: Path, versao: str, texto: str):
@@ -54,7 +54,7 @@ def renderizar(xml: Path):
         texto,segmentos,percurso=preparar_musicxml(xml.read_text(encoding='utf-8'),com_percurso=True)
         if not tk.loadData(texto):
             raise ValueError('Não foi possível abrir esta partitura.')
-        paginas=[dedos_ao_lado(_desembaralhar(tk.renderToSVG(i))) for i in range(1,tk.getPageCount()+1)]
+        paginas=[pedal_continuo(dedos_ao_lado(_desembaralhar(tk.renderToSVG(i)))) for i in range(1,tk.getPageCount()+1)]
         # O relógio vem do MusicXML/MIDI, nunca da interpretação rítmica do
         # importador gráfico. O SVG preserva os IDs que atribuímos acima.
         agrupados={}
