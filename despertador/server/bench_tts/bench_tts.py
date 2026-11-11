@@ -138,11 +138,13 @@ def motor_chatterbox(texto: str, saida: Path, args) -> dict:
     modelo = ChatterboxMultilingualTTS.from_pretrained(device=disp)
     carga = time.perf_counter() - t0
     t0 = time.perf_counter()
-    partes = [modelo.generate(t, language_id="pt", cfg_weight=args.cb_cfg, exaggeration=args.cb_exag)
+    ref = {"audio_prompt_path": args.ref_audio} if args.ref_audio else {}
+    partes = [modelo.generate(t, language_id="pt", cfg_weight=args.cb_cfg, exaggeration=args.cb_exag, **ref)
               .squeeze(0).cpu().numpy() for t in _paragrafos(texto)]
     _salvar_wav(saida, _juntar(partes, modelo.sr), modelo.sr)
     return {"carga_s": carga, "sintese_s": time.perf_counter() - t0,
-            "voz": f"padrão ({disp}) cfg={args.cb_cfg} exag={args.cb_exag}"}
+            "voz": f"{'clone ' + Path(args.ref_audio).stem if args.ref_audio else 'padrão'} ({disp}) "
+                   f"cfg={args.cb_cfg} exag={args.cb_exag}"}
 
 
 # Tags de estilo no roteiro, ex.: "[animado] Bom dia!". Cada parágrafo herda a tag que o abre;
@@ -184,6 +186,19 @@ def motor_qwen(texto: str, saida: Path, args) -> dict:
     t0 = time.perf_counter()
     partes, taxa, instrucao_ok = [], 24000, True
     trechos = _trechos_com_tag(texto, args.qwen_max_trecho)
+    if args.qwen_modo == "clone":
+        # Modelo Base: copia a voz (e o sotaque) de um áudio de referência. Não aceita instrução de estilo;
+        # o tom vem da própria referência. O prompt é montado uma vez e reaproveitado em todos os trechos.
+        if not (args.ref_audio and args.ref_texto):
+            raise SystemExit("--qwen-modo clone precisa de --ref-audio e --ref-texto")
+        prompt = modelo.create_voice_clone_prompt(ref_audio=args.ref_audio, ref_text=args.ref_texto)
+        for i, (tag, t) in enumerate(trechos, 1):
+            wavs, taxa = modelo.generate_voice_clone(text=t, language="Portuguese", voice_clone_prompt=prompt)
+            print(f"trecho {i}/{len(trechos)} {len(t)} car.", flush=True)
+            partes.append(wavs[0])
+        _salvar_wav(saida, _juntar(partes, taxa, 0.3), taxa)
+        return {"carga_s": carga, "sintese_s": time.perf_counter() - t0,
+                "voz": f"clone {Path(args.ref_audio).stem} ({disp})", "trechos": len(trechos)}
     for i, (tag, t) in enumerate(trechos, 1):
         instr = TAGS.get(tag) or args.qwen_instrucao
         if args.qwen_modo == "design":
@@ -318,8 +333,11 @@ def main() -> None:
     ap.add_argument("--qwen-modelo", default="Qwen/Qwen3-TTS-12Hz-0.6B-CustomVoice")
     ap.add_argument("--qwen-voz", default="Ryan")
     ap.add_argument("--qwen-instrucao", default="", help="instrução de estilo padrão (as [tags] do roteiro têm prioridade)")
-    ap.add_argument("--qwen-modo", choices=("custom", "design"), default="custom",
-                    help="custom = vozes prontas (CustomVoice); design = voz descrita em texto (VoiceDesign)")
+    ap.add_argument("--qwen-modo", choices=("custom", "design", "clone"), default="custom",
+                    help="custom = vozes prontas (CustomVoice); design = voz descrita em texto (VoiceDesign); "
+                         "clone = copia a voz de --ref-audio (modelo Base)")
+    ap.add_argument("--ref-audio", default="", help="áudio de referência (5-15 s) para clonar a voz (Qwen clone, Chatterbox)")
+    ap.add_argument("--ref-texto", default="", help="transcrição exata do --ref-audio (Qwen clone)")
     ap.add_argument("--qwen-descricao", default="A Brazilian Portuguese male radio news presenter in his 40s, "
                     "warm, deep and clear voice, native accent from São Paulo, natural and friendly.")
     ap.add_argument("--cb-cfg", type=float, default=0.5, help="Chatterbox: menor = fala mais calma (0.3 recomendado p/ quem fala rápido)")
