@@ -674,6 +674,33 @@ def _nota_com_silabas(ini: float, dur: float, midi: int, silabas: list[str]) -> 
     return saida
 
 
+def juntar_repetidas(notas_q, letras, com_silaba=False, max_tempos=0.5):
+    """Nota repetida colada na anterior vira uma nota sustentada só.
+
+    Sem sílaba própria, a repetição é artefato (vibrato, consoante, corte no ataque da voz):
+    sempre junta. com_silaba=True junta também a repetida curta (< max_tempos, as duas) que
+    tem sílaba, e as sílabas ficam juntas na nota ("co-ra" -> "cora"); deixa menos ataques
+    no piano, mas a letra perde uma nota por sílaba.
+    Devolve (notas_q, letras, quantas juntou)."""
+    saida, novas, juntou = [], {}, 0
+    for i, n in enumerate(notas_q):
+        sil = letras.get(i) or []
+        if saida:
+            ant = saida[-1]
+            colada = abs(n[0] - ant[1]) < 1e-6 and n[2] == ant[2]
+            curtas = (ant[1] - ant[0]) < max_tempos + 1e-6 and (n[1] - n[0]) < max_tempos + 1e-6
+            if colada and (not sil or (com_silaba and curtas)):
+                saida[-1] = (ant[0], n[1], ant[2], ant[3], n[4] if len(n) > 4 else ant[4])
+                if sil:  # um texto só ("cora"), senão _nota_com_silabas dividiria a nota de novo
+                    novas[len(saida) - 1] = [_juntar_silabas((novas.get(len(saida) - 1) or []) + list(sil))]
+                juntou += 1
+                continue
+        saida.append(tuple(n))
+        if sil:
+            novas[len(saida) - 1] = list(sil)
+    return saida, novas, juntou
+
+
 def eventos_melodia_acordes(notas_q, acs, beats_por_janela=2, letras=None):
     """Converte melodia quantizada + acordes detectados em eventos das duas mãos + cifras.
     letras: {índice_da_nota: sílaba} (opcional)."""
@@ -1141,6 +1168,10 @@ def main():
                     help="mão esquerda da música inteira (versão Acordes) na textura desse teor")
     ap.add_argument("--variacao", type=int, default=0, help="outra versão da introdução gerada (0 = padrão)")
     ap.add_argument("--sem-transpor", action="store_true", help="no nível fácil, não transpõe pra tom sem acidentes")
+    ap.add_argument("--repetidas", action="store_true",
+                    help="mantém as notas repetidas coladas sem sílaba (comportamento antigo)")
+    ap.add_argument("--juntar-silabas", action="store_true",
+                    help="junta também repetida curta com sílaba (as sílabas ficam na mesma nota)")
     ap.add_argument("--melodia-crua", action="store_true",
                     help="não corrige afinação nem puxa pra escala as notas duvidosas da voz (afinacao.py)")
     ap.add_argument("--gravado", action="store_true",
@@ -1315,6 +1346,9 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
     from harmonia import corrigir_qualidade, tirar_choques
     acs, mud_qualidade = corrigir_qualidade(acs, notas_q, TIPOS)
     print(f"[harmonia] {len(mud_qualidade)} acordes com a qualidade corrigida pela melodia")
+    if not getattr(args, "repetidas", False):  # repetida colada sem sílaba vira nota sustentada
+        notas_q, letras, juntadas = juntar_repetidas(notas_q, letras, getattr(args, "juntar_silabas", False))
+        print(f"[melodia] {juntadas} notas repetidas juntadas numa nota sustentada")
     md_ev, _, cifras = eventos_melodia_acordes(notas_q, acs, letras=letras)
     fim = max(n[1] for n in notas_q) + 4
     cifras = cifras_do_nivel(cifras, nivel)
