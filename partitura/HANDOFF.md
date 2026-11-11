@@ -105,7 +105,7 @@ mãos, introdução, final, cromáticas do fácil, sincronia).
 - `lote.py` + `qualidade.py`: 537 músicas integrais em `trabalho/lote/` (áudio, MIDI do AMT-APC,
   partituras e medidas `medidas_*.json`). Adotados: grafia pela escala, `--acordes ambos`, difícil sem
   choque, baixo do fácil Fá2–Mi3 (validado em 473 músicas fora da calibração).
-- **Ouvir a página às cegas** `trabalho/escuta_20261111/pagina/index.html` (antes × depois). Se
+- **Ouvir a página às cegas** `trabalho/escuta_20261111/escuta/index.html` (antes × depois). Se
   reprovar algo: `gerar.GRAFIA_ESCALA`, `--acordes mistura`, `derivados.DIFICIL["evitar_choque"]`,
   `derivados.FACIL_BAIXO = (36, 55)` voltam ao antigo.
 - Decidir: `niveis.GRAVE_MINIMO = 36` (baixo mais legível no médio/difícil) e `--dinamica` no site.

@@ -910,5 +910,5 @@ somados), como no uso real.
   suplementares na clave de fá −32%/−29%, nada piora, mas muda o peso do baixo (pede escuta);
   `--dinamica` (`dinamica.py`): p/mp/mf/f pela intensidade da gravação por DP com trecho mínimo de 4
   compassos; calibrado: ~5 marcas por música, p 9% · mp 9% · mf 56% · f 26%, correlação 0,66.
-- Página às cegas (antes × depois, música inteira, 3 níveis): `trabalho/escuta_20261111/pagina/`
+- Página às cegas (antes × depois, música inteira, 3 níveis): `trabalho/escuta_20261111/escuta/` (comparacao_completa.py com `--versoes Facil=AMT-APC,Medio=AMT-APC,Dificil=AMT-APC`: o padrão do gerador ainda é Acordes/HibridoAMT)
   (Azul da Cor do Mar, Riptide, Experience). Suíte 171 OK.
