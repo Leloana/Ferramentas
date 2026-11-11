@@ -7,5 +7,6 @@ import uvicorn
 if __name__ == "__main__":
     host = "0.0.0.0" if "--lan" in sys.argv else "127.0.0.1"
     if "--sem-navegador" not in sys.argv:
-        webbrowser.open("http://127.0.0.1:8030")
-    uvicorn.run("web.servidor:app", host=host, port=8030)
+        webbrowser.open("http://127.0.0.1:%d" % int(next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--porta=")), 8030)))
+    porta = int(next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--porta=")), 8030))
+    uvicorn.run("web.servidor:app", host=host, port=porta)

@@ -23,7 +23,8 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 RAIZ = Path(__file__).resolve().parent.parent  # partitura/
-SAIDA = RAIZ / "saida"
+# biblioteca: saida/ (padrão) ou outra pasta (ex.: PARTITURA_SAIDA=trabalho/lote/biblioteca, o teste em massa)
+SAIDA = Path(__import__("os").environ.get("PARTITURA_SAIDA") or RAIZ / "saida").resolve()
 ENTRADA = RAIZ / "entrada"
 KARAOKE = RAIZ.parent / "karaoke" / "server" / "songs"   # músicas instaladas no karaokê (voz/acompanhamento/letra)
 SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]{0,120}$")
@@ -234,7 +235,7 @@ def _rodar(job: dict):
     cmd = [PYTHON, str(RAIZ / "gerar.py"), str(wav), "--titulo", job["titulo"],
            "--subtitulo", job["artista"] or "Transcrição automática", "--pasta", job["pasta"],
            "--nivel", ",".join(job["niveis"]), "--idioma", job["idioma"],
-           "--estilo", str(job.get("estilo", 1))]
+           "--estilo", str(job.get("estilo", 1)), "--saida", str(SAIDA)]
     if job["artista"]:
         cmd += ["--artista", job["artista"]]
     if job.get("introducao"):

@@ -5,6 +5,8 @@
     python lote.py preparar   --fonte pasta                          # (opcional) converte áudios integrais de uma pasta
     python lote.py amtapc                                            # AMT-APC de todas, modelo carregado 1 vez (GPU)
     python lote.py gerar      [--trabalhadores 12] [--reusar-cache]  # modo leve até o MusicXML (sem PDF nem prévia)
+    python lote.py biblioteca [--trabalhadores 10]                   # PDF + prévia + original de todas, pro site:
+                                                                     #   PARTITURA_SAIDA=trabalho/lote/biblioteca python run.py --lan --porta=8031
     python lote.py medir      [--trabalhadores 14] [--nome rodada]   # métricas por partitura -> <lote>/medidas_<nome>.json
     python lote.py resumo     [--nome rodada] [--contra outra]       # agregados (média, p50, p90) e comparação
 
@@ -280,6 +282,84 @@ def gerar_lote(a):
     print(f"{len(audios) - len(erros)} ok, {len(erros)} com erro: {erros[:20]}")
 
 
+# ------------------------------------------------------------------ biblioteca pro site (PDF + prévia)
+
+def _info_musica(slug: str) -> dict:
+    """titulo, artista e video_id: do meta.json do karaokê ou da busca "Artista - Música"."""
+    info = {}
+    kar = KARAOKE / slug / "meta.json"
+    if kar.exists():
+        m = json.loads(kar.read_text(encoding="utf-8"))
+        info = dict(titulo=m.get("meta", {}).get("title"), artista=m.get("meta", {}).get("artist"))
+    else:
+        for linha in (LOTE / "buscas.txt").read_text(encoding="utf-8").splitlines():
+            if linha.strip() and not linha.startswith("#") and _slug(linha) == slug and " - " in linha:
+                artista, titulo = linha.split(" - ", 1)
+                info = dict(titulo=titulo.strip(), artista=artista.strip())
+    txt = LOTE / "audio" / f"{slug}.txt"
+    if txt.exists():
+        m = re.search(r"[?&]v=([\w-]{11})", txt.read_text(encoding="utf-8", errors="replace"))
+        if m:
+            info["video_id"] = m.group(1)
+    info["titulo"] = info.get("titulo") or slug
+    return info
+
+
+def _biblioteca_um(slug: str, destino: str):
+    _um_thread()
+    import io
+    import contextlib
+    import shutil
+    sys.path.insert(0, str(AQUI))
+    pasta = Path(destino) / slug
+    if (pasta / "AMT-APC - Dificil - previa.mp3").exists():
+        return slug, True, 0.0
+    (pasta / "cache").mkdir(parents=True, exist_ok=True)
+    for f in ("transcricao.json", "amtapc_medio.mid"):
+        shutil.copy(LOTE / "saida" / slug / "cache" / f, pasta / "cache" / f)
+    info = _info_musica(slug)
+    meta = {k: v for k, v in info.items() if v}
+    (pasta / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=1), encoding="utf-8")
+    import gerar
+    _renderizar = gerar.renderizar_previas_pendentes
+    gerar.renderizar_previas_pendentes = lambda *a, **k: _renderizar(2)   # vários processos ao mesmo tempo
+    sys.argv = ["gerar.py", str(LOTE / "audio" / f"{slug}.wav"), "--leve", "--nivel", "todos", "--saida", destino,
+                "--pasta", slug, "--titulo", info["titulo"], "--subtitulo", info.get("artista") or "Transcrição automática",
+                "--reusar-cache"]
+    t0, buf = time.time(), io.StringIO()
+    try:
+        with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
+            gerar.main()
+        ok = True
+    except BaseException:
+        buf.write(traceback.format_exc())
+        ok = False
+    (LOTE / "logs").mkdir(exist_ok=True)
+    (LOTE / "logs" / f"biblioteca_{slug}.log").write_text(buf.getvalue(), encoding="utf-8")
+    return slug, ok, time.time() - t0
+
+
+def biblioteca(a):
+    destino = LOTE / "biblioteca"
+    destino.mkdir(parents=True, exist_ok=True)
+    slugs = sorted(p.parent.parent.name for p in (LOTE / "saida").glob("*/cache/transcricao.json")
+                   if (LOTE / "audio" / f"{p.parent.parent.name}.wav").exists())
+    if a.musicas:
+        slugs = [s_ for s_ in slugs if s_ in set(a.musicas.split(","))]
+    if a.limite:
+        slugs = slugs[:a.limite]
+    t0, erros = time.time(), []
+    with ProcessPoolExecutor(a.trabalhadores) as ex:
+        fut = [ex.submit(_biblioteca_um, s_, str(destino)) for s_ in slugs]
+        for i, f in enumerate(as_completed(fut), 1):
+            slug, ok, dt = f.result()
+            if not ok:
+                erros.append(slug)
+            print(f"[{i}/{len(fut)}] {'ok  ' if ok else 'ERRO'} {slug} {dt:.0f} s (total {(time.time() - t0) / 60:.1f} min)",
+                  flush=True)
+    print(f"{len(slugs) - len(erros)} ok, {len(erros)} com erro: {erros[:20]}")
+
+
 # ------------------------------------------------------------------ medir
 
 def _medir_um(pasta: str, com_dedos: bool):
@@ -368,7 +448,7 @@ def resumo(a):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("etapa", choices=("lista", "baixar", "preparar", "amtapc", "gerar", "medir", "resumo"))
+    ap.add_argument("etapa", choices=("lista", "baixar", "preparar", "amtapc", "gerar", "biblioteca", "medir", "resumo"))
     ap.add_argument("--fonte", default="")
     ap.add_argument("--limite", type=int, default=0)
     ap.add_argument("--musicas", default="")
@@ -383,7 +463,7 @@ def main():
     ap.add_argument("--contra", default="")
     ap.add_argument("--dedos", action="store_true", help="medir também dedos sobrepostos (renderiza no Verovio)")
     a = ap.parse_args()
-    {"lista": lista, "baixar": baixar, "preparar": preparar, "amtapc": amtapc, "gerar": gerar_lote, "medir": medir, "resumo": resumo}[a.etapa](a)
+    {"lista": lista, "baixar": baixar, "preparar": preparar, "amtapc": amtapc, "gerar": gerar_lote, "biblioteca": biblioteca, "medir": medir, "resumo": resumo}[a.etapa](a)
 
 
 if __name__ == "__main__":
