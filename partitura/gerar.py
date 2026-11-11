@@ -1353,8 +1353,10 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
     acs, mud_qualidade = corrigir_qualidade(acs, notas_q, TIPOS)
     print(f"[harmonia] {len(mud_qualidade)} acordes com a qualidade corrigida pela melodia")
     if not getattr(args, "repetidas", False):  # repetida colada sem sílaba vira nota sustentada
+        from limpeza import tirar_bordaduras
+        notas_q, bordaduras = tirar_bordaduras(notas_q, letras)   # A-B-A tremido: B vira A
         notas_q, letras, juntadas = juntar_repetidas(notas_q, letras, getattr(args, "juntar_silabas", False))
-        print(f"[melodia] {juntadas} notas repetidas juntadas numa nota sustentada")
+        print(f"[melodia] {bordaduras} bordaduras falsas tiradas, {juntadas} notas repetidas juntadas numa nota sustentada")
     md_ev, _, cifras = eventos_melodia_acordes(notas_q, acs, letras=letras)
     fim = max(n[1] for n in notas_q) + 4
     cifras = cifras_do_nivel(cifras, nivel)
@@ -1452,6 +1454,11 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
             md, me, cf, marcas_f = com_final(md, me, cf, final, k)
             marcas += marcas_f
         marcas += marcas_derivadas.get(versao, [])   # pedal/fermata do difícil derivado
+        if not getattr(args, "repetidas", False):
+            from limpeza import juntar_repetidas_esquerda, melodia_no_topo
+            me = juntar_repetidas_esquerda(me)            # Si♭ Si♭ Si♭ colado na esquerda: nota segurada
+            md, me, no_topo = melodia_no_topo(md, me)     # nada do acompanhamento acima da nota cantada
+            print(f"[melodia] {versao}: {no_topo} notas do acompanhamento acima da melodia tiradas")
         if teor_acomp and versao == "Acordes":
             from introducao import DINAMICA
             inicio_mus = 4.0 * np.floor(min(e[0] for e in md_ev) / 4)
