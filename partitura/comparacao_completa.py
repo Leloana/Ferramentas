@@ -70,7 +70,9 @@ def montar(lados: dict, saida: Path, niveis=("Facil", "Medio", "Dificil"), verso
             continue
         for nivel in niveis:
             vn = f"{versoes[nivel]} - {nivel}"
-            vns = {r: f"{versao_lado[r]} - {nivel}" if versao_lado[r] else vn for r in rotulos}
+            # "Versao" usa o nível do caso; "Versao - Nivel" fixa o nível desse lado (ex.: o médio como referência)
+            vns = {r: (versao_lado[r] if " - " in versao_lado[r] else f"{versao_lado[r]} - {nivel}")
+                   if versao_lado[r] else vn for r in rotulos}
             arqs = {r: (Path(lados[r]) / musica / f"{vns[r]} - previa.mp3", Path(lados[r]) / musica / f"{vns[r]}.pdf")
                     for r in rotulos}
             if not all(m.exists() and p.exists() for m, p in arqs.values()):
