@@ -279,3 +279,20 @@ Híbrido (Pop2Piano); Acordes e as versões AMT não usam esse estilo. Na linha 
 `comparacao_completa.py <saida> rotulo=biblioteca[|Versao] ...` monta a página com a prévia e o PDF
 inteiros de cada lado (nomes neutros A/B, gravação original no topo, nota 1–5, copiar resultado).
 Ex.: `python comparacao_completa.py trabalho/x/pagina "amt=saida|HibridoAMT" "gravado=saida|HibridoGravado"`.
+
+## Montar num servidor (só o fluxo do site: buscar → gerar AMT-APC no modo leve → ler)
+
+Não precisa de GPU: o site gera com `--leve` (só o AMT-APC, ~1,5 min por música em CPU; ~15 s com GPU).
+O que **não** vem pelo git e precisa ser instalado à parte:
+
+1. Python 3.12 + `pip install -r requirements.txt` no `venv/` (torch CPU basta para o modo leve).
+2. AMT-APC (código MIT, autor komiya): `git clone https://github.com/310hz/amt-apc modelos/amt-apc` e o peso
+   `curl -L -o modelos/amt-apc/models/params/apc.pth https://github.com/310hz/amt-apc/releases/download/beta/apc.pth`.
+   Os pesos foram treinados com covers do YouTube: para uso comercial, confirmar os termos com o autor.
+3. Prévia de piano: FluidSynth no PATH (ou em `ferramentas/fluidsynth*/bin/`) e a SoundFont em `soundfonts/piano.sf2`.
+   Sem eles, a prévia cai num sintetizador simples.
+4. `ffmpeg` no PATH (MP3 das prévias) e Chrome/Chromium (PDF das partituras).
+5. `yt-dlp` vem pelo pip (busca e download do YouTube).
+6. Subir: `python run.py --lan` (porta 8030). Atrás de um proxy/túnel (Cloudflare), apontar o hostname para
+   `http://127.0.0.1:8030` e criar uma Cache Rule respeitando o cache da origem (o site manda `no-cache` na página).
+   Não há autenticação: qualquer um com o link pode gerar.
