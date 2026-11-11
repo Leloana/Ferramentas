@@ -9,8 +9,10 @@ estuda, a mesma música deveria ter as mesmas notas. Sem LLM, só contas:
 2. Repetição = diagonal da matriz de autossimilaridade: o compasso i parece o i+L por pelo menos
    `min_compassos` seguidos (média móvel acima de `limiar`).
 3. Os pares (i, i+L) dessas diagonais formam grupos de compassos equivalentes (união-busca).
-4. Em cada grupo, o padrão é o compasso mais parecido com os outros (medoide); os demais recebem
-   as notas dele, deslocadas pro próprio lugar.
+4. Em cada grupo, o padrão é a versão real que mais concorda com a votação entre as versões
+   (consenso, como na letra por repetição de McVicar, Ellis e Goto, 2014), desempate pela mais
+   simples de ler; as demais recebem as notas dela. Compasso cuja emenda obrigaria a mão direita a
+   um salto sem tempo fica como estava.
 
 Eventos do gerar.py: (offset_em_tempos, duração, [midis], *resto); compasso de 4 tempos.
 """
@@ -153,33 +155,11 @@ def achados_confirmados(sim, lags_compasso, limiar=.6, min_compassos=4):
     return achados
 
 
-def consenso(instancias, compasso=4.0):
-    """Votação entre as versões de um mesmo compasso (lista de listas de eventos relativos ao início
-    do compasso): fica a nota (ataque, altura) presente na maioria; duração = mediana; as notas que
-    atacam juntas viram um evento. Como na transcrição de letra por consenso (McVicar, Ellis e Goto,
-    2014): o erro pontual de uma das vezes some em vez de ser copiado."""
-    votos, duracoes = {}, {}
-    for inst in instancias:
-        vistas = set()
-        for off, dur, ps, *_ in inst:
-            for p in ps:
-                chave = (round(off * 4) / 4, p)          # tolera ataque a 1/4 de tempo
-                if chave not in vistas:
-                    vistas.add(chave)
-                    votos[chave] = votos.get(chave, 0) + 1
-                    duracoes.setdefault(chave, []).append(dur)
-    maioria = len(instancias) / 2
-    por_ataque = {}
-    for (off, p), v in votos.items():
-        if v > maioria - EPS:
-            por_ataque.setdefault(off, []).append((p, float(np.median(duracoes[(off, p)]))))
-    return [(off, max(d for _, d in notas), sorted(p for p, _ in notas)) for off, notas in sorted(por_ataque.items())]
-
-
-def unificar(md, me, gs, sim, compasso=4.0):
-    """Cada grupo de compassos equivalentes passa a ter as mesmas notas: o consenso por votação entre
-    as versões (`consenso`), mão por mão; se o consenso de uma mão sair vazio onde as versões tinham
-    nota, fica o medoide (a versão mais parecida com as outras). Nota que vem de antes e invade um
+def unificar(md, me, gs, sim, compasso=4.0, bpm=None, nivel="medio", max_salto=7):
+    """Cada grupo de compassos equivalentes passa a ter as mesmas notas: a versão real que mais
+    concorda com a votação entre as versões (acorde por ataque), mão por mão;
+    desempate pela mais simples de ler. Montar o compasso acorde a acorde de versões diferentes criava
+    saltos que nenhuma versão tinha (Fuyu médio). Nota que vem de antes e invade um
     compasso trocado é cortada na barra; nota que passa do compasso é cortada no próximo ataque da
     mesma mão. Devolve (md, me, compassos reescritos)."""
     if not gs:
@@ -191,13 +171,60 @@ def unificar(md, me, gs, sim, compasso=4.0):
             pc.setdefault(int(e[0] // compasso + EPS), []).append(e)
         return pc
 
+    from tocavel import suplementares_sol
+
+    def assinatura(inst):   # acordes por ataque (a 1/4 de tempo)
+        por = {}
+        for off, dur, ps, *_ in inst:
+            if ps:
+                por.setdefault(round(off * 4) / 4, set()).update(ps)
+        return {(a, tuple(sorted(ps))) for a, ps in por.items()}
+
+    def ataques(ev, b):
+        return [e for e in ev if int(e[0] // compasso + EPS) == b]
+
+    def custo_ler(b):   # a versão mais simples de ler: linhas suplementares + um pouco por nota
+        notas = [p for e in ataques(md, b) + ataques(me, b) for p in e[2]]
+        return sum(suplementares_sol(p) for e in ataques(md, b) for p in e[2]) + .05 * len(notas)
+    # desempate pela versão mais simples (o medoide às vezes é a que tem o enfeite agudo, e copiar
+    # ele dobrava as notas acima de Lá5 na Ode)
+
     def padrao(pc, g):
+        """Uma versão real inteira (as passagens dentro do compasso existiram de verdade): a que mais
+        concorda com a votação (soma dos votos dos seus acordes), desempate pela mais simples."""
         rel = [[(e[0] - b * compasso, *e[1:]) for e in pc.get(b, [])] for b in g]
-        c = consenso(rel, compasso)
-        if not c and any(rel):
-            medoide = max(g, key=lambda b: sum(sim[b, o] for o in g if o != b))
-            c = rel[g.index(medoide)]
-        return c
+        votos = {}
+        for inst in rel:
+            for chave in assinatura(inst):
+                votos[chave] = votos.get(chave, 0) + 1
+        def nota(k):
+            return (sum(votos[c] for c in assinatura(rel[k])) - PESO_LEITURA * custo_ler(g[k]), -g[k])
+        return rel[max(range(len(g)), key=nota)]
+
+    # compasso reescrito que obrigaria a mão direita a um salto sem tempo (emenda com o vizinho que
+    # ficou original) não é reescrito: modelo do maos.PERFIL (base + distância/velocidade do nível)
+    pular = set()
+    if bpm:
+        from maos import PERFIL
+        perf = PERFIL[nivel]
+        pc_md = por_compasso(md)
+        trocados = {b for g in gs for b in g}
+        padroes = {b: [(off + b * compasso, *r) for off, *r in padrao(pc_md, g)] for g in gs for b in g}
+
+        def chega(e1, e2):
+            if not e1 or not e2 or not e1[2] or not e2[2]:
+                return True
+            salto = abs(max(e2[2]) - max(e1[2]))
+            tempo = (e2[0] - e1[0]) * 60 / bpm
+            return salto <= max_salto or tempo >= perf["base"] + salto / perf["vel"] - EPS
+        for b in sorted(trocados):
+            novo_b = padroes[b]
+            if not novo_b:
+                continue
+            ant = None if b - 1 in trocados else (pc_md.get(b - 1) or [None])[-1]
+            seg = None if b + 1 in trocados else (pc_md.get(b + 1) or [None])[0]
+            if not chega(ant, novo_b[0]) or not chega(novo_b[-1], seg):
+                pular.add(b)
 
     def refazer(ev):
         pc = por_compasso(ev)
@@ -205,7 +232,8 @@ def unificar(md, me, gs, sim, compasso=4.0):
         for g in gs:
             c = padrao(pc, g)
             for b in g:
-                novo[b] = [(off + b * compasso, *r) for off, *r in c]
+                if b not in pular:
+                    novo[b] = [(off + b * compasso, *r) for off, *r in c]
         saida = []
         for b, lista in pc.items():
             if b in novo:
@@ -223,10 +251,11 @@ def unificar(md, me, gs, sim, compasso=4.0):
             if saida[i][0] + saida[i][1] > saida[i + 1][0] + EPS and saida[i + 1][0] > saida[i][0] + EPS:
                 saida[i] = (saida[i][0], saida[i + 1][0] - saida[i][0], *saida[i][2:])
         return saida
-    return refazer(md), refazer(me), sum(len(g) for g in gs)
+    return refazer(md), refazer(me), sum(len(g) for g in gs) - len(pular)
 
 
 _CACHE_LAGS = {}
+PESO_LEITURA = 2.0   # (varredura 0,5–4 nas 5 músicas: 2 é o único sem piora de leitura) quanto cada linha suplementar da versão pesa contra um voto na escolha do padrão
 
 
 def apertar(gs, sim, limiar=.75):
@@ -241,12 +270,16 @@ def apertar(gs, sim, limiar=.75):
     return saida
 
 
-def padronizar(md, me, audio, bt, limiar=.6, min_compassos=4, compasso=4.0, min_lag=4, limiar_grupo=.75):
+def padronizar(md, me, audio, bt, limiar=.6, min_compassos=4, compasso=4.0, min_lag=4, limiar_grupo=.75, bpm=None):
     """Modo leve: repetições pelo áudio (lag múltiplo do compasso), confirmadas pelas notas, escritas
     com o mesmo padrão (consenso). Devolve (md, me, registro)."""
     chave = str(audio)
     if chave not in _CACHE_LAGS:
-        _CACHE_LAGS[chave] = lags_do_audio(audio, bt)
+        try:
+            _CACHE_LAGS[chave] = lags_do_audio(audio, bt)
+        except Exception as e:   # áudio ruim/curto demais: segue sem padronizar, não derruba a geração
+            print(f"[repeticoes] análise do áudio falhou ({type(e).__name__}: {e}); segue sem padronizar")
+            _CACHE_LAGS[chave] = []
     picos = _CACHE_LAGS[chave]
     # lag em batidas -> em compassos (a fase do compasso não muda a distância)
     lags = sorted({int(round(lag / compasso)) for lag, _ in picos
@@ -258,5 +291,5 @@ def padronizar(md, me, audio, bt, limiar=.6, min_compassos=4, compasso=4.0, min_
     f = impressoes(md, me, n, compasso)
     sim = f @ f.T
     gs = apertar(grupos(n, achados_confirmados(sim, lags, limiar, min_compassos)), sim, limiar_grupo)
-    md2, me2, k = unificar(md, me, gs, sim, compasso)
+    md2, me2, k = unificar(md, me, gs, sim, compasso, bpm=bpm)
     return md2, me2, dict(lags_compasso=lags, grupos=len(gs), compassos=k)

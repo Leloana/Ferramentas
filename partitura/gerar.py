@@ -298,6 +298,8 @@ def acordes(harm: np.ndarray, baixo: np.ndarray, sr: int, grade: Grade, beats_po
     hop = 512
     ch = librosa.feature.chroma_cqt(y=harm, sr=sr, hop_length=hop)
     chb = librosa.feature.chroma_cqt(y=baixo, sr=sr, hop_length=hop, fmin=librosa.note_to_hz("E1"), n_octaves=3)
+    n = min(ch.shape[1], chb.shape[1])   # CQTs com faixas diferentes podem sair com 1 quadro de diferença
+    ch, chb = ch[:, :n], chb[:, :n]
     t = librosa.times_like(ch, sr=sr, hop_length=hop)
     pos = np.array([grade.pos(x) for x in t])
 
@@ -1755,7 +1757,7 @@ def gerar_nivel_leve(nivel, args, audio, base, titulo, acs, grade, bpm):
         print(f"[tonalidade] AMT-APC: {len(reg_tom)} notas fora do tom corrigidas")
     if not getattr(args, "sem_repeticoes", False):   # trecho que repete escrito igual (repeticoes.py)
         from repeticoes import padronizar
-        md, me, reg_rep = padronizar(md, me, audio, grade.bt)
+        md, me, reg_rep = padronizar(md, me, audio, grade.bt, bpm=bpm)
         print(f"[repeticoes] distâncias {reg_rep['lags_compasso'][:6]} compassos; "
               f"{reg_rep['grupos']} grupos, {reg_rep['compassos']} compassos com o mesmo padrão")
     cifras, anterior = [], None

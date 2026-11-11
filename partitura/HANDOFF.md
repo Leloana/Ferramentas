@@ -22,7 +22,7 @@ frentes) → `METRICAS_VALIDACAO.md` (como medir) → `HISTORICO.md` (crônica d
   rapidfuzz metaphone fugashi unidic-lite pykakasi fastapi uvicorn pillow; `tinysoundfont`
   com `--no-deps` (a dependência pyaudio não compila) + soundfont
   `/snap/vlc/*/usr/share/sounds/sf2/TimGM6mb.sf2` pras páginas de comparação.
-- Suíte: `python -m unittest test_*` (158 testes em 2026-11-11, todos OK no Linux).
+- Suíte: `python -m unittest test_*` (161 testes em 2026-11-11, todos OK no Linux).
 - AMT-APC instalado aqui também (`modelos/amt-apc`, torch CPU no venv): o modo leve roda no
   Linux (~8 min por música do zero neste notebook, ~30 s do cache). Áudio de teste:
   `entrada/aguas_de_marco_BnB1G63XvCQ.wav` (vídeo de origem do karaokê).
@@ -116,6 +116,21 @@ da direita pra esquerda quando a esquerda alcança. Página às cegas do fácil 
 Júlia): aprovada ("ficou muito boa a simplificação"). Dedos: nenhum sobreposto nas 15 partituras. Atraso das batidas:
 medido e descartado (HISTORICO §38).
 
+### Regressão automática (usar a cada mudança)
+
+`python regressao.py saida --musicas "Ode,Aguas de Marco,Fuyu no Hanashi,Anna Julia,Calice" --base
+trabalho/regressao_base_20261111.json` (as 5 músicas de teste do Linux, modo leve). Sai com 1 e
+lista o que piorou. Depois de uma melhoria aceita, `--salvar` a nova referência.
+
+### Próximos (pesquisa 2026-11-11, HISTORICO §41)
+
+1. Compasso e downbeat robustos: madmom DBN `beats_per_bar=[2,3,4]` + fase por trecho (Shibata et
+   al. 2021) + alinhar as repetições: resolve Fuyu (repetição 38,5 compassos) e 3/4, 6/8.
+2. Grafia ps13 (`partitura.musicanalysis.estimate_spelling`), armadura e raiz do acorde de desempate.
+3. Seções por spectral clustering (McFee e Ellis 2014) → ritornelo e casa 1/2.
+4. Métricas do Score Analyzer (Sébastien et al. 2012) e MV2H entre níveis na `regressao.py`.
+5. Dedilhado por HMM (Nakamura et al. 2020) e redução com dificuldade controlada (Nakamura e Yoshii 2018).
+
 ### Abertas
 
 1. **Letra no fluxo padrão.** O AMT-APC (leve ou completo) sai sem letra, então o site perdeu a
@@ -140,8 +155,8 @@ medido e descartado (HISTORICO §38).
 4. Front novo não usa `/api/karaoke`, `/api/gerar_karaoke`, `/api/variacao` nem `DELETE /api/jobs`
    (aba Karaokê e "Outra variação" saíram da tela); `/api/gerar` aceita `introducao/final/estilo`
    que o leve ignora. Decidir: volta na tela ou sai do servidor.
-4b. Repetições escritas iguais (`repeticoes.py`, HISTORICO §40): **esperando a página às cegas**
-   `trabalho/rodada4_20261111/pagina`. Falta: repetição deslocada meio compasso (Fuyu, lag 38,5
+4b. Repetições escritas iguais (`repeticoes.py`, HISTORICO §40–41): ouvindo "ficou igual"; o
+   usuário só vai saber tocando. Padrão = versão real mais votada menos leitura. Falta: repetição deslocada meio compasso (Fuyu, lag 38,5
    compassos) pede corrigir a métrica (compasso de 2 tempos) usando a própria repetição; sinal de
    repetição/ritornelo pra encurtar a partitura.
 5. Cifras de referência conferidas à mão (CSV) pro `experimento_6faixas.py` — só o usuário.
@@ -228,6 +243,7 @@ e `--acompanhamento` continuam na linha de comando, fora do site.
 | `afinacao.py` | afinação da voz descontada e nota duvidosa puxada pra escala (2026-11-11) |
 | `limpeza.py` | melodia no topo, bordadura falsa, repetidas da esquerda (2026-11-11) |
 | `derivados.py` | fácil e difícil derivados do médio (2026-11-11) |
+| `regressao.py` | mede legibilidade/tocabilidade das partituras prontas e acusa piora contra uma referência |
 | `repeticoes.py` | repetições pelo áudio + notas, escritas iguais por consenso (2026-11-11) |
 | `tocavel.py` | tocabilidade por regra no modo leve: medir (síncopes, saltos, densidade, posição) e corrigir (2026-11-11) |
 | `tonalidade.py` | tom por trecho (Krumhansl + Viterbi) e nota fora do tom do arranjo da IA (2026-11-11) |

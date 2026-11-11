@@ -65,6 +65,7 @@ AMT-APC) + regras musicais. Opções principais:
 | `--repetidas`, `--juntar-silabas` | mantém as repetidas coladas (antigo) / junta também a repetida curta com sílaba |
 | `--tom-ia-cru` | não corrige nota fora do tom no arranjo da IA (`tonalidade.py`) |
 | `--cifras` | desenha o nome dos acordes em cima da pauta (padrão desde 2026-11-11: sem cifra) |
+| `--sem-repeticoes` | modo leve sem escrever igual os trechos que se repetem (`repeticoes.py`) |
 | `--sem-ajuste` | modo leve sem a tocabilidade por regra (`tocavel.py`: síncopes no tempo, oitava da esquerda) |
 
 Saída por música em `saida/<Título>/`:
@@ -317,3 +318,10 @@ O que **não** vem pelo git e precisa ser instalado à parte:
 6. Subir: `python run.py --lan` (porta 8030). Atrás de um proxy/túnel (Cloudflare), apontar o hostname para
    `http://127.0.0.1:8030` e criar uma Cache Rule respeitando o cache da origem (o site manda `no-cache` na página).
    Não há autenticação: qualquer um com o link pode gerar.
+
+## Regressão (sem ouvir)
+
+`python regressao.py saida --salvar base.json` mede todas as partituras (linhas suplementares, 8va,
+acidentes, trechos que a mão não alcança, mudanças de posição, síncopes, compassos repetidos, dedos
+sobrepostos, ordem de dificuldade dos níveis); `--base base.json` acusa o que piorou e sai com 1.
+

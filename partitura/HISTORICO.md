@@ -820,3 +820,31 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
 - Compassos iguais a um anterior (fácil): Ode 14 → 49/99, Anna Júlia 15 → 47/131, Águas 1 → 6,
   Fuyu 3 → 6, Cálice 1 → 4. Página às cegas `trabalho/rodada4_20261111/pagina`. `test_repeticoes.py`.
   Suíte 158 OK.
+
+## 41. Robustez, regressão automática e repetições sem piora — 2026-11-11
+
+- Usuário: "ouvir ficou igual, provavelmente só tocando pra saber"; pediu commit (73f0d4d), mais
+  robustez e pesquisa mais funda ("música é matemática").
+- Robustez: modo leve de ponta a ponta num trecho de 60 s quebrava em `acordes` (cromagrama geral
+  e do grave com 1 quadro de diferença; agora cortados no menor). `test_robustez.py` com entradas
+  vazias/degeneradas; a análise de repetição pelo áudio falhando não derruba a geração.
+- `regressao.py`: mede as partituras prontas (linhas suplementares com a 8va como o Verovio desenha,
+  nota embaixo da pauta na 8va, linhas 8va, acidentes, trechos difíceis, mudanças de posição,
+  síncopes, compassos repetidos, dedos sobrepostos no SVG, ordem fácil < médio < difícil), salva
+  referência (`--salvar`) e acusa piora (`--base`, sai com 1). 15 partituras em ~45 s.
+- A regressão pegou o consenso piorando a tocabilidade: voto nota a nota montava acordes que
+  nenhuma versão tinha (Fuyu médio, trechos difíceis 1 → 7); voto por acorde ainda montava
+  sequências inexistentes (saltos dentro do compasso) e replicava enfeite agudo (Ode difícil, notas
+  acima de Lá5 52 → 100). Final: o padrão do grupo é uma versão REAL inteira, a que mais concorda
+  com a votação menos 2 × linhas suplementares (`PESO_LEITURA`, varredura 0,5–4: 2 é o único sem
+  piora de leitura), e compasso cuja emenda obriga a direita a um salto sem tempo (maos.PERFIL)
+  fica como estava. Contra antes das repetições: única piora acusada é síncope no difícil de Anna
+  Júlia (134 → 149; no difícil a síncope é mantida de propósito).
+- Pesquisa (subagente, citações conferidas): top 5 pra CPU — (1) downbeat/compasso: madmom DBN com
+  beats_per_bar=[2,3,4] (Böck, Krebs e Widmer, ISMIR 2016) + fase por trecho pelas estatísticas
+  de Shibata, Nakamura e Yoshii (2021) + alinhamento das repetições (caso Fuyu); (2) grafia ps13
+  (Meredith 2006, 99,3%; `partitura.musicanalysis.estimate_spelling`); (3) seções por spectral
+  clustering (McFee e Ellis, ISMIR 2014; librosa) pra ritornelo/casa 1-2; (4) métricas automáticas
+  (Score Analyzer, Sébastien et al. ISMIR 2012; MV2H, McLeod e Steedman ISMIR 2018); (5) dedilhado
+  por HMM (Nakamura, Saito e Yoshii 2020) e redução com dificuldade controlada (Nakamura e Yoshii,
+  APSIPA 2018). Suíte 161 OK.

@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from repeticoes import achados_confirmados, consenso, grupos, impressoes, unificar
+from repeticoes import achados_confirmados, grupos, impressoes, unificar
 
 
 def compasso(b, notas):
@@ -13,15 +13,6 @@ def compasso(b, notas):
 TEMA = [(0, 1, [72]), (1, 1, [74]), (2, 1, [76]), (3, 1, [72])]
 TEMA_ERRO = [(0, 1, [72]), (1, 1, [75]), (2, 1, [76]), (3, 1, [72])]   # uma nota errada
 OUTRO = [(0, 2, [67]), (2, 2, [65])]
-
-
-class Consenso(unittest.TestCase):
-    def test_maioria_vence_o_erro(self):
-        c = consenso([TEMA, TEMA_ERRO, TEMA])
-        self.assertEqual([ps for _, _, ps in c], [[72], [74], [76], [72]])
-
-    def test_sem_maioria_fica_vazio(self):
-        self.assertEqual(consenso([[(0, 1, [60])], [(1, 1, [62])], [(2, 1, [64])]]), [])
 
 
 class Grupos(unittest.TestCase):
