@@ -20,7 +20,10 @@ from pathlib import Path
 from comparacao_cega import MODELO, PADRAO
 
 _TROCAS = [
-    ('</style>', 'a{color:var(--ac)}</style>'),
+    ('</style>', 'a{color:var(--ac)}audio{max-width:100%}section,.op{min-width:0}'
+                 '@media (max-width:640px){main{padding:16px 12px 80px}section{padding:14px}'
+                 '.topo audio{flex-basis:100%;min-width:0;order:2}.topo .letra{order:1}.topo button{order:3}'
+                 'p.sub audio{display:block;width:100%;margin-top:6px}}</style>'),
     ('<div class="folha"><img src="${o.cego}?v=${VER}" alt=""></div>',
      '<p><a href="${o.pdf}" target="_blank" rel="noopener">abrir a partitura inteira (PDF)</a></p>'),
     ('<div class="folha"><img loading="lazy" src="${o.svg}?v=${VER}" alt=""></div>', ''),
