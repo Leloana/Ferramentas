@@ -7,10 +7,12 @@
     python lote.py gerar      [--trabalhadores 12] [--reusar-cache]  # modo leve até o MusicXML (sem PDF nem prévia)
     python lote.py biblioteca [--trabalhadores 10]                   # PDF + prévia + original de todas, pro site:
                                                                      #   PARTITURA_SAIDA=trabalho/lote/biblioteca python run.py --lan --porta=8031
-    python lote.py medir      [--trabalhadores 14] [--nome rodada]   # métricas por partitura -> <lote>/medidas_<nome>.json
+    python lote.py medir      [--trabalhadores 14] [--nome rodada]   # métricas por partitura -> <lote>/medidas/<nome>.json
     python lote.py resumo     [--nome rodada] [--contra outra]       # agregados (média, p50, p90) e comparação
+    python lote.py relatorio                                         # relatorio.md de todos os experimentos registrados
 
-Tudo fica em trabalho/lote/ (fora do git): audio/<slug>.wav, saida/<slug>/ (cache + editaveis/*.musicxml).
+Tudo fica em trabalho/lote/ (fora do git; mapa em trabalho/lote/LEIAME.md): audio/<slug>.wav, saida/<slug>/
+(cache + editaveis/*.musicxml, sempre no padrão atual), medidas/<rodada>.json e medidas/experimentos.json.
 O `gerar` chama o próprio `gerar.main` (mesmo código do site), trocando só PDF, prévia e Original.mp3 por nada.
 """
 from __future__ import annotations
@@ -27,6 +29,7 @@ from pathlib import Path
 
 AQUI = Path(__file__).resolve().parent
 LOTE = AQUI / "trabalho" / "lote"
+MEDIDAS = LOTE / "medidas"   # <nome>.json por rodada + experimentos.json (o que cada rodada testou)
 KARAOKE = AQUI.parent / "karaoke" / "server" / "songs"
 NIVEIS = ("Facil", "Medio", "Dificil")
 
@@ -251,7 +254,7 @@ def gerar_lote(a):
     if a.musicas:
         quer = set(a.musicas.split(","))
         audios = [p for p in audios if p.stem in quer]
-    if a.lista:   # medidas_<nome>.json (as músicas medidas nela) ou .txt (uma por linha)
+    if a.lista:   # medidas/<nome>.json (as músicas medidas nela) ou .txt (uma por linha)
         arq = LOTE / a.lista
         quer = set(json.loads(arq.read_text(encoding="utf-8"))) if arq.suffix == ".json" else             set(arq.read_text(encoding="utf-8").split())
         audios = [p for p in audios if p.stem in quer]
@@ -400,7 +403,8 @@ def medir(a):
             res[nome] = r
             if i % 20 == 0 or i == len(fut):
                 print(f"[{i}/{len(fut)}] {(time.time() - t0) / 60:.1f} min", flush=True)
-    destino = LOTE / f"medidas_{a.nome}.json"
+    MEDIDAS.mkdir(parents=True, exist_ok=True)
+    destino = MEDIDAS / f"{a.nome}.json"
     destino.write_text(json.dumps(res, ensure_ascii=False, indent=0), encoding="utf-8")
     print(f"salvo em {destino}")
 
@@ -425,11 +429,11 @@ def _agregados(res):
 
 
 def resumo(a):
-    res = json.loads((LOTE / f"medidas_{a.nome}.json").read_text(encoding="utf-8"))
+    res = json.loads((MEDIDAS / f"{a.nome}.json").read_text(encoding="utf-8"))
     ag = _agregados(res)
     contra = None
     if a.contra:
-        outro = json.loads((LOTE / f"medidas_{a.contra}.json").read_text(encoding="utf-8"))
+        outro = json.loads((MEDIDAS / f"{a.contra}.json").read_text(encoding="utf-8"))
         comuns = set(res) & set(outro)
         ag = _agregados({k: res[k] for k in comuns})
         contra = _agregados({k: outro[k] for k in comuns})
@@ -446,9 +450,52 @@ def resumo(a):
             print(linha)
 
 
+CHAVES_RELATORIO = ("acid_por_100", "evitaveis_por_100", "sup_por_100", "sup_fa_por_100", "choques_por_100",
+                    "croma_audio", "precisao_ia", "recall_ia", "mudancas_por_min", "dificeis_por_min", "sincopes",
+                    "compassos_repetidos", "lig_por_100")
+
+
+def relatorio(a):
+    """relatorio.md: cada experimento de medidas/experimentos.json contra a sua base, nas músicas em comum."""
+    reg = json.loads((MEDIDAS / "experimentos.json").read_text(encoding="utf-8"))
+    linhas = ["# Teste em massa do modo leve — relatório", "",
+              "Gerado por `python lote.py relatorio` a partir de `medidas/`. Média nas músicas em comum; "
+              "entre parênteses, a diferença contra a base. Métricas: docstrings de `qualidade.py` e `regressao.py`.", ""]
+    for nome, e in reg.items():
+        arq, base = MEDIDAS / f"{nome}.json", MEDIDAS / f"{e.get('base', '')}.json"
+        if not arq.exists():
+            continue
+        res = json.loads(arq.read_text(encoding="utf-8"))
+        outro = json.loads(base.read_text(encoding="utf-8")) if e.get("base") and base.exists() else None
+        comuns = sorted(set(res) & set(outro)) if outro else sorted(res)
+        ag = _agregados({k: res[k] for k in comuns})
+        ab = _agregados({k: outro[k] for k in comuns}) if outro else None
+        linhas += [f"## {nome}", "", f"{e.get('descricao', '')}", "",
+                   f"Conjunto: {e.get('conjunto', '?')} · {len(comuns)} músicas · base: `{e.get('base') or '—'}` · "
+                   f"configuração: `{e.get('config', 'padrão da época')}`", "",
+                   "| métrica | Fácil | Médio | Difícil |", "|---|---|---|---|"]
+        for k in CHAVES_RELATORIO:
+            cel = []
+            for nv in NIVEIS:
+                s_ = ag[nv].get(k)
+                if not s_:
+                    cel.append("—")
+                    continue
+                txt = f"{s_['media']:.2f}"
+                if ab and k in ab[nv]:
+                    txt += f" ({s_['media'] - ab[nv][k]['media']:+.2f})"
+                cel.append(txt)
+            linhas.append(f"| {k} | " + " | ".join(cel) + " |")
+        if e.get("conclusao"):
+            linhas += ["", f"**Conclusão:** {e['conclusao']}"]
+        linhas.append("")
+    (LOTE / "relatorio.md").write_text("\n".join(linhas), encoding="utf-8")
+    print(f"salvo em {LOTE / 'relatorio.md'}")
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("etapa", choices=("lista", "baixar", "preparar", "amtapc", "gerar", "biblioteca", "medir", "resumo"))
+    ap.add_argument("etapa", choices=("lista", "baixar", "preparar", "amtapc", "gerar", "biblioteca", "medir", "resumo", "relatorio"))
     ap.add_argument("--fonte", default="")
     ap.add_argument("--limite", type=int, default=0)
     ap.add_argument("--musicas", default="")
@@ -463,7 +510,7 @@ def main():
     ap.add_argument("--contra", default="")
     ap.add_argument("--dedos", action="store_true", help="medir também dedos sobrepostos (renderiza no Verovio)")
     a = ap.parse_args()
-    {"lista": lista, "baixar": baixar, "preparar": preparar, "amtapc": amtapc, "gerar": gerar_lote, "biblioteca": biblioteca, "medir": medir, "resumo": resumo}[a.etapa](a)
+    {"lista": lista, "baixar": baixar, "preparar": preparar, "amtapc": amtapc, "gerar": gerar_lote, "biblioteca": biblioteca, "medir": medir, "resumo": resumo, "relatorio": relatorio}[a.etapa](a)
 
 
 if __name__ == "__main__":

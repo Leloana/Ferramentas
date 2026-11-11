@@ -102,8 +102,9 @@ mãos, introdução, final, cromáticas do fácil, sincronia).
 
 ### Retomar daqui (2026-11-11, noite, Windows — teste em massa, HISTORICO §43)
 
-- `lote.py` + `qualidade.py`: 537 músicas integrais em `trabalho/lote/` (áudio, MIDI do AMT-APC,
-  partituras e medidas `medidas_*.json`). Adotados: grafia pela escala, `--acordes ambos`, difícil sem
+- `lote.py` + `qualidade.py`: 537 músicas integrais em `trabalho/lote/` (mapa em `trabalho/lote/LEIAME.md`:
+  áudio, cache do fluxo, MusicXML no padrão atual, `medidas/`, `relatorio.md`; referência
+  `medidas/referencia_20261111.json`). Biblioteca do site (`saida/`) regenerada no padrão novo. Adotados: grafia pela escala, `--acordes ambos`, difícil sem
   choque, baixo do fácil Fá2–Mi3 (validado em 473 músicas fora da calibração).
 - **Ouvir a página às cegas** `trabalho/escuta_20261111/escuta/index.html` (antes × depois). Se
   reprovar algo: `gerar.GRAFIA_ESCALA`, `--acordes mistura`, `derivados.DIFICIL["evitar_choque"]`,
