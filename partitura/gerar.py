@@ -1112,6 +1112,8 @@ def main():
                     help="mão esquerda da música inteira (versão Acordes) na textura desse teor")
     ap.add_argument("--variacao", type=int, default=0, help="outra versão da introdução gerada (0 = padrão)")
     ap.add_argument("--sem-transpor", action="store_true", help="no nível fácil, não transpõe pra tom sem acidentes")
+    ap.add_argument("--melodia-crua", action="store_true",
+                    help="não corrige afinação nem puxa pra escala as notas duvidosas da voz (afinacao.py)")
     ap.add_argument("--gravado", action="store_true",
                     help="versão Híbrido Gravado: esquerda com o piano e o violão transcritos da gravação "
                          "(6 faixas + Kong/Basic Pitch; ver gravado.py)")
@@ -1229,6 +1231,14 @@ def main():
             origem_letra=origem_letra,alinhamento=rel_alinhamento,separador=args.separador)
         (cache/'transcricao.json').write_text(json.dumps(transcricao,ensure_ascii=False,
             default=lambda v:v.item()),encoding='utf-8')
+    if not getattr(args, "melodia_crua", False):  # afinação + notas duvidosas da voz puxadas pra escala
+        from afinacao import melodia_no_tom
+        notas, reg_tom, cents = melodia_no_tom(notas, (diagnostico or {}).get("quadros"), acs, TIPOS, grade.pos)
+        print(f"[afinacao] voz {cents:+d} cents; {sum(r['motivo'] == 'tom' for r in reg_tom)} notas fora do tom "
+              f"puxadas pra escala, {sum(r['motivo'] == 'afinacao' for r in reg_tom)} pela afinação")
+        (base / "cache").mkdir(parents=True, exist_ok=True)
+        (base / "cache" / "melodia_no_tom.json").write_text(
+            json.dumps(dict(cents=cents, mudancas=reg_tom), ensure_ascii=False), encoding="utf-8")
     for nivel in niveis:
         SR_GRADE = GRADE_NIVEL["medio" if (nivel == "facil" and args.facil_fiel) else nivel]
         gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, bpm, diagnostico)
