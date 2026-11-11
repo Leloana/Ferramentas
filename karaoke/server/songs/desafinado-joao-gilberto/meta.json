@@ -1,0 +1,292 @@
+{
+    "meta": {
+        "title": "Desafinado",
+        "artist": "João Gilberto",
+        "language": "pt",
+        "slug": "desafinado-joao-gilberto"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=EQwqnixbevg",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Se você disser que eu desafino, amor\nSaiba que isto, em mim, provoca imensa dor\nSó privilegiados têm ouvido igual ao seu\nEu possuo apenas o que Deus me deu\n\nSe você insiste em classificar\nMeu comportamento de anti-musical\nEu, mesmo mentindo, devo argumentar\nQue isto é bossa nova, que isto é muito natural\n\nO que você não sabe nem sequer pressente\nÉ que os desafinados também têm um coração\nFotografei você na minha Rolleiflex\nRevelou-se a sua enorme ingratidão\n\nSó não poderá falar assim do meu amor\nEle é o maior que você pode encontrar, viu?!\nVocê, com a sua música, esqueceu o principal\nQue no peito dos desafinados\nNo fundo do peito, bate calado\nNo peito dos desafinados, também bate um coração\n\nTumt-tu-dumt-tum-dum-ctum\nTumt-tum-tumt-tu-dum-dumt-tun-tumt\nTumt-tu-dumt-tum-dum-ctum\nTumt-tum-tumt-tu-dum-dumt-tun-tumt\nTumt-tu-dumt..."
+    },
+    "album": {
+        "name": "Chega de Saudade",
+        "year": 1959,
+        "track": 7,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -18.49,
+        "gain_db": 2.49
+    },
+    "alignment_quality": {
+        "score": 99.8,
+        "flags": [
+            "palavras com menos de 80 ms (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.11
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.16
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.12
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.17
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 253,
+            "lines": 41,
+            "stacked": 0,
+            "short": 1,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 36,
+            "displaced_lines": 0
+        },
+        "severe_lines": []
+    },
+    "needs_review": false
+}

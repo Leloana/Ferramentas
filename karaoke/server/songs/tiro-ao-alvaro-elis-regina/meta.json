@@ -1,0 +1,297 @@
+{
+    "meta": {
+        "title": "Tiro Ao Álvaro",
+        "artist": "Elis Regina",
+        "language": "pt",
+        "slug": "tiro-ao-alvaro-elis-regina"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=mD72d3pwEMg",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "De tanto levar\nFrechada do teu olhar\n\nDe tanto levar\nFrechada do teu olhar\nMeu peito até\nParece sabe o quê\n\nTáubua de tiro ao Álvaro\nNão tem mais onde furar\nNão tem mais\n\nDe tanto levar\nFrechada do teu olhar\nMeu peito até\nParece sabe o quê\n\nTáubua de tiro ao Álvaro\nNão tem mais onde furar\n\nTeu olhar mata mais do que bala de carabina\nQue veneno estricnina, que peixeira de baiano\nTeu olhar mata mais que atropelamento de automóver\nMata mais que bala de revórver\n\nDe tanto levar\nFrechada do teu olhar\nMeu peito até\nParece sabe o quê\n\nTáubua de tiro ao Álvaro\nNão tem mais onde furar\nNão tem mais\n\nDe tanto levar\nFrechada do teu olhar\nMeu peito até\nParece sabe o quê\n\nTáubua de tiro ao Álvaro\nNão tem mais onde furar\n\nTeu olhar mata mais do que bala de carabina\nQue veneno estricnina, que peixeira de baiano\nTeu olhar mata mais que atropelamento de automóver\nMata mais que bala de revórver"
+    },
+    "album": {
+        "name": null,
+        "year": null,
+        "track": null,
+        "kind": "unknown",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -17.4,
+        "gain_db": 1.4
+    },
+    "alignment_quality": {
+        "score": 77.0,
+        "flags": [
+            "palavras empilhadas (6)",
+            "1% das palavras no silêncio da voz",
+            "versos com palavras espalhadas por igual (1)",
+            "versos fora do tempo do canto (8)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "espalhadas por igual",
+                    "no silêncio"
+                ],
+                "stem_offset": -1.57
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -1.09
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.22
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.39
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -1.03
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -1.98
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -0.97
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -1.08
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.27
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.03
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.41
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -0.89
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.73
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.1
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -1.98
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            }
+        ],
+        "metrics": {
+            "words": 169,
+            "lines": 36,
+            "stacked": 6,
+            "short": 0,
+            "past_end": 0,
+            "silence": 2,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 1,
+            "stem_checked_lines": 34,
+            "displaced_lines": 8
+        },
+        "severe_lines": [
+            1,
+            4,
+            11,
+            14,
+            19,
+            21,
+            26,
+            31
+        ]
+    },
+    "needs_review": true
+}

@@ -1,0 +1,221 @@
+{
+    "meta": {
+        "title": "Tim Tim por Tim Tim",
+        "artist": "Luciana Souza",
+        "language": "pt",
+        "slug": "tim-tim-por-tim-tim-luciana-souza"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=1T4wGiR-Vz0",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Você tem que dar, tem que dar\nO que prometeu meu bem\nMande o meu anel que de volta\nEu lhe mando o seu também\n\nMande a carta em que eu dizia\nO amor não tem fim\nQue eu te mando outra\nExplicando tim tim por tim tim\n\nVocê tem que devolver\nO que era meu, bem meu\nMande o meu retrato\nE ponha outro em seu lugar\n\nMorreu um rei\nSalve o rei que vai chegar\nNão sei sofrer, não sei chorar\nEu sei me conformar\n\nVocê tem que devolver\nO que era meu, bem meu\nMande o meu retrato\nE ponha outro em seu lugar\n\nMorreu um rei\nSalve o rei que vai chega\nNão sei sofrer, não sei chorar\nEu sei me conformar\n\nNão sei sofrer, não sei chorar\nEu sei me conformar"
+    },
+    "album": {
+        "name": "Duos III",
+        "year": 2012,
+        "track": 1,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -17.33,
+        "gain_db": 1.33
+    },
+    "alignment_quality": {
+        "score": 89.4,
+        "flags": [
+            "palavras empilhadas (5)",
+            "palavras com menos de 80 ms (3)",
+            "palavras depois do fim do verso (2)",
+            "versos sobrepostos (2)",
+            "versos fora do tempo do canto (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.32
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.09
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.3
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "fora do verso",
+                    "grudadas",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": -1.67
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.09
+            }
+        ],
+        "metrics": {
+            "words": 136,
+            "lines": 26,
+            "stacked": 5,
+            "short": 3,
+            "past_end": 2,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 2,
+            "uniform_lines": 0,
+            "stem_checked_lines": 26,
+            "displaced_lines": 1
+        },
+        "severe_lines": [
+            23
+        ]
+    },
+    "needs_review": false
+}

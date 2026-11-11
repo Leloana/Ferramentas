@@ -1,0 +1,232 @@
+{
+    "meta": {
+        "title": "Delícia/Luxúria",
+        "artist": "Sophia Chablau e Uma Enorme Perda De Tempo",
+        "language": "pt",
+        "slug": "delicialuxuria-sophia-chablau-e-uma-enorme-perda-de-tempo"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=_XuB9Qe7fK8",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "O cheiro do carro\nO motor vibrando delícia luxúria\nMe resta o pecado\nSe você não quer também não posso fazer nada por nós\nVocê me deforma\nComo qualquer som que invade os meus ouvidos\nOu pulsa no cerne de cada ser um tema inaudível\nO cheiro do carro\nO motor vibrando delícia luxúria\nMe resta o pecado\nSe você não quer também não posso fazer nada por nós\n\nMas se quer\nE não há nada que contenha que segure esse tesão\nMinha vertigem, minha mágoa\nMinha desculpa, meu resto de drão\n\nO cheiro do carro\nO motor vibrando delícia luxúria\nMe resta o pecado\nSe você não quer também não posso fazer nada por nós\nVocê me deforma\nComo qualquer som que invade os meus ouvidos\nOu pulsa no cerne de cada ser um tema inaudível\nO cheiro do carro\nO motor vibrando delícia luxúria\nMe resta o pecado\nSe você não quer também não posso fazer nada por nós\n\nMas se quer\nE não há nada que contenha que segure esse tesão\nMinha vertigem, minha mágoa\nDesculpa, meu resto de drão"
+    },
+    "album": {
+        "name": "Sophia Chablau e Uma Enorme Perda de Tempo",
+        "year": 2021,
+        "track": 9,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -13.41,
+        "gain_db": -2.59
+    },
+    "alignment_quality": {
+        "score": 98.7,
+        "flags": [
+            "palavras empilhadas (3)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.03
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.09
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.03
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": 0.55
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            }
+        ],
+        "metrics": {
+            "words": 183,
+            "lines": 30,
+            "stacked": 3,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 28,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            28
+        ]
+    },
+    "needs_review": false
+}

@@ -1,0 +1,149 @@
+{
+    "meta": {
+        "title": "Assim Assado",
+        "artist": "Secos & Molhados",
+        "language": "pt",
+        "slug": "assim-assado-secos-molhados"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=kjKsfuTGhOE",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "São duas horas da madrugada de um dia assim\nUm velho anda de terno velho assim assim\nQuando aparece o guarda belo\nQuando aparece o guarda belo\nÉ posto em cena fazendo cena um treco assim\nBem apontado nariz chato assim assim\nQuando aparece a cor do velho\nQuando aparece a cor do velho\n\nMas guarda belo não acredita na cor assim\nEle decide o terno velho assim assim\nPorque ele quer o velho assado\nPorque ele quer o velho assado\nPas mesmo assim o velho morre assim assim\nE o guarda belo é o heroi assim assado\nPor que é preciso ser assim assado\nPor que é preciso ser assim assado"
+    },
+    "album": {
+        "name": "Gigantes",
+        "year": 1973,
+        "track": 9,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -20.06,
+        "gain_db": 4.06
+    },
+    "alignment_quality": {
+        "score": 84.1,
+        "flags": [
+            "7% das palavras no silêncio da voz",
+            "versos com mais de 12 s (1)",
+            "versos com palavras espalhadas por igual (1)",
+            "versos fora do tempo do canto (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.3
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "espalhadas por igual",
+                    "longo",
+                    "no silêncio"
+                ],
+                "stem_offset": 14.94
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            }
+        ],
+        "metrics": {
+            "words": 107,
+            "lines": 15,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 7,
+            "long_verses": 1,
+            "overlaps": 0,
+            "uniform_lines": 1,
+            "stem_checked_lines": 15,
+            "displaced_lines": 1
+        },
+        "severe_lines": [
+            7
+        ]
+    },
+    "needs_review": false
+}

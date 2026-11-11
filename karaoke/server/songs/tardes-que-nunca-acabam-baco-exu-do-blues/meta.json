@@ -1,0 +1,283 @@
+{
+    "meta": {
+        "title": "Tardes Que Nunca Acabam",
+        "artist": "Baco Exu do Blues",
+        "language": "pt",
+        "slug": "tardes-que-nunca-acabam-baco-exu-do-blues"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=Cz7SNDO9Vfs",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Tudo começa e termina nos seus lábios\nAmores burros\nMovimentos sábios\n\nCê não me deixa sem palavras\nDeixa minha língua cansada\nAndo aprendendo a linguagem\nQue seu corpo fala\nAprendi a observar\nSeu corpo fala\nPinga\nExala\nMe deixe experimentá-la\nAté a última tara\n\nNa mesa da sua sala\nCê sorri quando goza, goza, goza\nAcha que eu sou\nUm cara engraçado\nÊta, tesão desgraçado\nPincelada no seu corpo\nMeu amor, cê é meu quadro\nCê é meu quadro\nEu devo ser um cara engraçado\n\nReebok classic\nCasaco da Fila\nBaby, cê é tão chique\nBaby baby, cê é tão chique\nSua buceta e minha língua\nPrecisam de um feat\nSua buceta e minha língua\nPrecisam de um feat\n\nReebok classic\nCasaco da fila\nBaby, cê é tão chique\nBaby baby, cê é tão chique\nSua buceta e minha língua\nPrecisam de um feat\nSua buceta em minha língua\nPrecisam de um feat"
+    },
+    "album": {
+        "name": null,
+        "year": null,
+        "track": null,
+        "kind": "single",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -14.37,
+        "gain_db": -1.63
+    },
+    "alignment_quality": {
+        "score": 91.6,
+        "flags": [
+            "versos fora do tempo do canto (4)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 2.43
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 1.1
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.11
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 2.41
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 2.48
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.22
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            }
+        ],
+        "metrics": {
+            "words": 153,
+            "lines": 38,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 31,
+            "displaced_lines": 4
+        },
+        "severe_lines": [
+            6,
+            19,
+            24,
+            32
+        ]
+    },
+    "needs_review": true
+}

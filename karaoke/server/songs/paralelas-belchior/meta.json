@@ -1,0 +1,184 @@
+{
+    "meta": {
+        "title": "Paralelas",
+        "artist": "Belchior",
+        "language": "pt",
+        "slug": "paralelas-belchior"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=iNTVx8IRZKU",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Dentro do carro, sobre o trevo a 100 por hora\nOh, meu amor!\nSó tens agora os carinhos do motor\nE no escritório em que eu trabalho e fico rico\nQuanto mais eu multiplico, diminui o meu amor\n\nEm cada luz de mercúrio vejo a luz do teu olhar\nPassas praças, viaduto, nem te lembras de voltar\nDe voltar, de voltar\n\nNo Corcovado quem abre os braços sou eu\nCopacabana, esta semana o mar sou eu\nComo é perversa a juventude do meu coração\nQue só entende o que é cruel, o que é paixão\n\nE as paralelas dos pneus nq água das ruas\nSão duas estradas nuas em que foges do que é teu\nNo apartamento, oitavo andar, abro a vidraça e grito\nGrito quando o carro passa: teu infinito sou eu\nSou eu, sou eu, sou eu\n\nNo Corcovado quem abre os braços sou eu\nCopacabana, esta semana o mar sou eu\nComo é perversa a juventude do meu coração\nQue só entende o que é cruel e o que é paixão"
+    },
+    "album": {
+        "name": "Paralelas",
+        "year": 1978,
+        "track": 1,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -14.57,
+        "gain_db": -1.43
+    },
+    "alignment_quality": {
+        "score": 94.4,
+        "flags": [
+            "palavras empilhadas (5)",
+            "2% das palavras no silêncio da voz",
+            "versos com mais de 12 s (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [
+                    "longo"
+                ],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas",
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            }
+        ],
+        "metrics": {
+            "words": 174,
+            "lines": 21,
+            "stacked": 5,
+            "short": 0,
+            "past_end": 0,
+            "silence": 4,
+            "long_verses": 1,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 20,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            12
+        ]
+    },
+    "needs_review": false
+}

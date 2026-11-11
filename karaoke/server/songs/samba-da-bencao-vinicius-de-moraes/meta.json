@@ -1,0 +1,894 @@
+{
+    "meta": {
+        "title": "Samba da Bênção",
+        "artist": "Vinicius de Moraes",
+        "language": "pt",
+        "slug": "samba-da-bencao-vinicius-de-moraes"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=cFKPobzgqpo",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "É melhor ser alegre que ser triste\nA alegria é a melhor coisa que existe\nÉ assim como a luz no coração\n\nMas pra fazer um samba com beleza\nÉ preciso um bocado de tristeza\nPreciso um bocado de tristeza\nSenão, não se faz um samba, não\n\nSenão\nÉ como amar uma mulher só linda\nE daí?\n\nUma mulher tem que ter\nQualquer coisa além de beleza\nQualquer coisa de triste\nQualquer coisa que chora\nQualquer coisa que sente saudade\n\nUm molejo de amor machucado\nUma beleza\nQue vem da tristeza de se saber mulher\nFeita apenas para amar\nPara sofrer pelo seu amor\nE pra ser só perdão\n\nFazer samba não é contar piada\nQuem faz samba assim não é de nada\nO bom samba é uma forma de oração\n\nPorque o samba é a tristeza que balança\nE a tristeza tem sempre uma esperança\nA tristeza tem sempre uma esperança\nDe um dia não ser mais triste não\n\nFeito essa gente que anda por aí\nBrincando com a vida\nCuidado, companheiro!\nA vida é pra valer\nE não se engane não, tem uma só\n\nDuas mesmo que é bom\nNinguém vai me dizer que tem\nSem provar muito bem provado\nCom certidão passada em cartório do céu\nE assinado embaixo: Deus\nE com firma reconhecida!\n\nA vida não é brincadeira, amigo\nA vida é arte do encontro\nEmbora haja tanto desencontro pela vida\n\nHá sempre uma mulher à sua espera\nCom os olhos cheios de carinho\nE as mãos cheias de perdão\nPonha um pouco de amor na sua vida\nComo no seu samba\n\nPonha um pouco de amor numa cadência\nE vai ver que ninguém no mundo vence\nA beleza que tem um samba, não\n\nPorque o samba nasceu lá na Bahia\nE se hoje ele é branco na poesia\nSe hoje ele é branco na poesia\nEle é negro demais no coração\n\nEu, por exemplo\nO capitão do mato Vinicius de Moraes\nPoeta e diplomata\nO branco mais preto do Brasil\nNa linha direta de Xangô\nSaravá! (Saravá)\n\nA bênção, Senhora\nA maior ialorixá da Bahia\nTerra de Caymmi e João Gilberto\nA bênção, Pixinguinha\nTu que choraste na flauta\nTodas as minhas mágoas de amor\n\nA bênção, Sinhô\nA benção, Cartola\nA bênção, Ismael Silva\nSua bênção, Heitor dos Prazeres\nA bênção, Nelson Cavaquinho\nA bênção, Geraldo Pereira\n\nA bênção, meu bom Cyro Monteiro\nVocê, sobrinho de Nonô\nA bênção, Noel\nSua bênção, Ary\n\nA bênção, todos os grandes\nSambistas do meu Brasil\nBranco, preto, mulato\nLindo como a pele macia de Oxum\n\nA bênção, maestro Antônio Carlos Jobim\nParceiro e amigo querido\nQue já viajaste tantas canções comigo\nE ainda há tantas a viajar\n\nA bênção, Carlinhos Lyra\nParceiro cem por cento\nVocê que une a ação ao sentimento\nE ao pensamento\n\nA bênção\nA bênção, Baden Powell\nAmigo novo, parceiro novo\nQue fizeste este samba comigo\nA bênção, amigo\n\nA bênção, maestro Moacir Santos\nQue não és um só, és tantos\nTantos como o meu Brasil de todos os santos\nInclusive meu São Sebastião\nSaravá! (Saravá!)\n\nA bênção, que eu vou partir\nEu vou ter que dizer adeus\n\nPonha um pouco de amor numa cadência\nE vai ver que ninguém no mundo vence\nA beleza que tem um samba, não\n\nPorque o samba nasceu lá na Bahia\nE se hoje ele é branco na poesia\nSe hoje ele é branco na poesia\nEle é negro demais no coração\n\nPorque o samba nasceu lá na Bahia\nE se hoje ele é branco na poesia\nSe hoje ele é branco na poesia\nEle é negro demais no coração\nEle é negro demais no coração\nEle é negro demais no coração..."
+    },
+    "album": {
+        "name": "En Mar del Plata",
+        "year": 1970,
+        "track": 5,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -21.1,
+        "gain_db": 5.1
+    },
+    "alignment_quality": {
+        "score": 65.2,
+        "flags": [
+            "palavras empilhadas (102)",
+            "palavras com menos de 80 ms (13)",
+            "palavras depois do fim do verso (11)",
+            "4% das palavras no silêncio da voz",
+            "versos com mais de 12 s (1)",
+            "versos sobrepostos (10)",
+            "versos fora do tempo do canto (19)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [
+                    "longo"
+                ],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ],
+                "stem_offset": -0.16
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.31
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.23
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.48
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "no silêncio"
+                ],
+                "stem_offset": -0.91
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.86
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.69
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.73
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.09
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "fora do verso",
+                    "no silêncio",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": -1.72
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.11
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -1.06
+            },
+            {
+                "idx": 49,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 50,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 51,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 52,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 53,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 54,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 55,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.46
+            },
+            {
+                "idx": 56,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -1.82
+            },
+            {
+                "idx": 57,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": -2.29
+            },
+            {
+                "idx": 58,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.23
+            },
+            {
+                "idx": 59,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 60,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 61,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.51
+            },
+            {
+                "idx": 62,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.12
+            },
+            {
+                "idx": 63,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 64,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -1.64
+            },
+            {
+                "idx": 65,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "no silêncio"
+                ],
+                "stem_offset": -1.49
+            },
+            {
+                "idx": 66,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 67,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.44
+            },
+            {
+                "idx": 68,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 69,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 70,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 71,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 72,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 73,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 74,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 75,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.41
+            },
+            {
+                "idx": 76,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 77,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -1.58
+            },
+            {
+                "idx": 78,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 79,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "no silêncio"
+                ],
+                "stem_offset": -1.66
+            },
+            {
+                "idx": 80,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 81,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.73
+            },
+            {
+                "idx": 82,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "no silêncio",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 83,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.65
+            },
+            {
+                "idx": 84,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.15
+            },
+            {
+                "idx": 85,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 86,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.43
+            },
+            {
+                "idx": 87,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "no silêncio"
+                ],
+                "stem_offset": -1.91
+            },
+            {
+                "idx": 88,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 89,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 90,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -2.05
+            },
+            {
+                "idx": 91,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.66
+            },
+            {
+                "idx": 92,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 93,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -1.54
+            },
+            {
+                "idx": 94,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "grudadas",
+                    "no silêncio"
+                ],
+                "stem_offset": -1.84
+            },
+            {
+                "idx": 95,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.16
+            },
+            {
+                "idx": 96,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -1.46
+            },
+            {
+                "idx": 97,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 98,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 99,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.79
+            },
+            {
+                "idx": 100,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 101,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.4
+            },
+            {
+                "idx": 102,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -1.44
+            },
+            {
+                "idx": 103,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 104,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.18
+            },
+            {
+                "idx": 105,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "fora do verso",
+                    "grudadas",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.93
+            },
+            {
+                "idx": 106,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.34
+            },
+            {
+                "idx": 107,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 108,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": 2.34
+            },
+            {
+                "idx": 109,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ]
+            },
+            {
+                "idx": 110,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -1.11
+            },
+            {
+                "idx": 111,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 112,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            }
+        ],
+        "metrics": {
+            "words": 615,
+            "lines": 113,
+            "stacked": 102,
+            "short": 13,
+            "past_end": 11,
+            "silence": 27,
+            "long_verses": 1,
+            "overlaps": 10,
+            "uniform_lines": 0,
+            "stem_checked_lines": 95,
+            "displaced_lines": 19
+        },
+        "severe_lines": [
+            11,
+            20,
+            29,
+            34,
+            35,
+            41,
+            43,
+            44,
+            48,
+            55,
+            56,
+            57,
+            64,
+            65,
+            67,
+            77,
+            79,
+            81,
+            83,
+            86,
+            87,
+            90,
+            91,
+            93,
+            94,
+            95,
+            96,
+            99,
+            101,
+            102,
+            105,
+            106,
+            108,
+            109,
+            110
+        ]
+    },
+    "needs_review": true
+}

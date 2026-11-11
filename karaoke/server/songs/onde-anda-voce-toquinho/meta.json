@@ -1,0 +1,194 @@
+{
+    "meta": {
+        "title": "Onde Anda Você",
+        "artist": "Toquinho",
+        "language": "pt",
+        "slug": "onde-anda-voce-toquinho"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=vBSoY99Gqgk",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "E por falar em saudade, onde anda você?\nOnde andam os seus olhos que a gente não vê?\nOnde anda esse corpo?\nQue me deixou morto de tanto prazer\n\nE por falar em beleza, onde anda a canção que se ouvia na noite?\nDos bares de então onde a gente ficava\nOnde a gente se amava em total solidão\n\nHoje eu saio na noite vazia\nNuma boemia sem razão de ser\nNa rotina dos bares\nQue, apesar dos pesares, me trazem você\n\nE por falar em paixão, em razão de viver\nVocê bem que podia me aparecer\nNesses mesmos lugares, na noite, nos bares\nOnde anda você?\n\nHoje eu saio na noite vazia\nNuma boemia sem razão de ser\nNa rotina dos bares\nQue, apesar dos pesares, me trazem você\n\nE por falar em paixão, em razão de viver\nVocê bem que podia me aparecer\nNesses mesmos lugares, na noite, nos bares\nOnde anda você?"
+    },
+    "album": {
+        "name": "Bossa Sempre Nova",
+        "year": 2026,
+        "track": 8,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -18.31,
+        "gain_db": 2.31
+    },
+    "alignment_quality": {
+        "score": 93.4,
+        "flags": [
+            "palavras empilhadas (6)",
+            "versos fora do tempo do canto (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -1.16
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.09
+            }
+        ],
+        "metrics": {
+            "words": 155,
+            "lines": 23,
+            "stacked": 6,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 23,
+            "displaced_lines": 1
+        },
+        "severe_lines": [
+            10
+        ]
+    },
+    "needs_review": false
+}

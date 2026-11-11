@@ -1,0 +1,123 @@
+{
+    "meta": {
+        "title": "Brutal Triste",
+        "artist": "DJ Sasori 011",
+        "language": "pt",
+        "slug": "brutal-triste-dj-sasori-011"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=jH0vxsTRS7o",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": null
+    },
+    "album": {
+        "name": null,
+        "year": null,
+        "track": null,
+        "kind": "single",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -16.3,
+        "gain_db": 0.3
+    },
+    "alignment_quality": {
+        "score": 73.7,
+        "flags": [
+            "palavras empilhadas (3)",
+            "4% das palavras no silêncio da voz",
+            "versos com mais de 12 s (1)",
+            "versos fora do tempo do canto (2)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "no silêncio"
+                ],
+                "stem_offset": -1.54
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": 1.86
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [
+                    "longo"
+                ],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.1
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.03
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 57,
+            "lines": 10,
+            "stacked": 3,
+            "short": 0,
+            "past_end": 0,
+            "silence": 2,
+            "long_verses": 1,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 9,
+            "displaced_lines": 2
+        },
+        "severe_lines": [
+            0,
+            3
+        ]
+    },
+    "needs_review": false
+}

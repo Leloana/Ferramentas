@@ -1,0 +1,280 @@
+{
+    "meta": {
+        "title": "Carta ao Tom 74",
+        "artist": "Vinicius de Moraes",
+        "language": "pt",
+        "slug": "carta-ao-tom-74-vinicius-de-moraes"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=jWLvb4T3bOY",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Rua Nascimento Silva, cento e sete\nVocê ensinando pra Elizete\nAs canções de canção do amor demais\n\nLembra que tempo feliz, ai que saudade\nIpanema era só felicidade\nEra como se o amor doesse em paz\n\nNossa famosa garota nem sabia\nA que ponto a cidade turvaria\nEste Rio de amor que se perdeu\n\nMesmo a tristeza da gente era mais bela\nE além disso se via da janela\nUm cantinho de céu e o Redentor\n\nÉ, meu amigo, só resta uma certeza\nÉ preciso acabar com essa tristeza\nÉ preciso inventar de novo o amor\n\nRua Nascimento Silva, cento e sete\nVocê ensinando pra Elizete\nAs canções de canção do amor demais\n\nLembra que tempo feliz, ai que saudade\nIpanema era só felicidade\nEra como se o amor doesse em paz\n\nNossa famosa garota nem sabia\nA que ponto a cidade turvaria\nEste Rio de amor que se perdeu\n\nMesmo a tristeza da gente era mais bela\nE além disso se via da janela\nUm cantinho de céu e o Redentor\n\nÉ, meu amigo, só resta uma certeza\nÉ preciso acabar com essa tristeza\nÉ preciso inventar de novo o amor"
+    },
+    "album": {
+        "name": "20 Grandes Sucessos de Toquinho & Vinicius",
+        "year": 1988,
+        "track": 16,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -15.11,
+        "gain_db": -0.89
+    },
+    "alignment_quality": {
+        "score": 69.9,
+        "flags": [
+            "palavras empilhadas (26)",
+            "palavras com menos de 80 ms (5)",
+            "palavras depois do fim do verso (5)",
+            "3% das palavras no silêncio da voz",
+            "versos sobrepostos (2)",
+            "versos com palavras espalhadas por igual (1)",
+            "versos fora do tempo do canto (4)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [
+                    "espalhadas por igual",
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.09
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.14
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "fora do verso",
+                    "palavras curtas"
+                ],
+                "stem_offset": -2.21
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.12
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -0.89
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ]
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "fora do verso",
+                    "grudadas",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": -2.09
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "sobreposto"
+                ],
+                "stem_offset": -1.45
+            }
+        ],
+        "metrics": {
+            "words": 192,
+            "lines": 30,
+            "stacked": 26,
+            "short": 5,
+            "past_end": 5,
+            "silence": 6,
+            "long_verses": 0,
+            "overlaps": 2,
+            "uniform_lines": 1,
+            "stem_checked_lines": 25,
+            "displaced_lines": 4
+        },
+        "severe_lines": [
+            0,
+            2,
+            5,
+            7,
+            8,
+            10,
+            19,
+            21,
+            24,
+            28,
+            29
+        ]
+    },
+    "needs_review": true
+}

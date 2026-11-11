@@ -1,0 +1,178 @@
+{
+    "meta": {
+        "title": "Casa Pré-Fabricada",
+        "artist": "Los Hermanos",
+        "language": "pt",
+        "slug": "casa-pre-fabricada-los-hermanos"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=g9QZNF6RwVg",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Abre os teus armários, eu estou a te esperar\nPara ver deitar o sol sobre os teus braços, castos\nCobre a culpa vã, até amanhã eu vou ficar\nE fazer do teu sorriso um abrigo\n\nCanta que é no canto que eu vou chegar\nCanta o teu encanto que é pra me encantar\nCanta para mim qualquer coisa assim sobre você\nQue explique a minha paz\nTristeza nunca mais\n\nMais vale o meu pranto que esse canto em solidão\nNessa espera o mundo gira em linhas tortas\nAbre essa janela, a primavera quer entrar\nPra fazer da nossa voz uma só nota\n\nCanto que é de canto que eu vou chegar\nCanto e toco um tanto que é pra te encantar\nCanto para mim qualquer coisa assim sobre você\nQue explique a minha paz\nTristeza nunca mais"
+    },
+    "album": {
+        "name": "Bloco do Eu Sozinho",
+        "year": 1999,
+        "track": 5,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -14.93,
+        "gain_db": -1.07
+    },
+    "alignment_quality": {
+        "score": 80.2,
+        "flags": [
+            "palavras empilhadas (6)",
+            "palavras com menos de 80 ms (5)",
+            "palavras depois do fim do verso (5)",
+            "versos sobrepostos (2)",
+            "versos fora do tempo do canto (2)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.26
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "fora do verso",
+                    "palavras curtas"
+                ],
+                "stem_offset": -0.98
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "fora do verso",
+                    "grudadas",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": -3.19
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.13
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.37
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            }
+        ],
+        "metrics": {
+            "words": 137,
+            "lines": 18,
+            "stacked": 6,
+            "short": 5,
+            "past_end": 5,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 2,
+            "uniform_lines": 0,
+            "stem_checked_lines": 18,
+            "displaced_lines": 2
+        },
+        "severe_lines": [
+            5,
+            10
+        ]
+    },
+    "needs_review": false
+}

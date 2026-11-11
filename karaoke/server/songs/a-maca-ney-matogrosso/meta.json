@@ -1,0 +1,273 @@
+{
+    "meta": {
+        "title": "A Maçã",
+        "artist": "Ney Matogrosso",
+        "language": "pt",
+        "slug": "a-maca-ney-matogrosso"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=VWScu5fbbW8",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Se eu te amo e tu me amas\nUm amor a dois profana\nO amor de todos os mortais\nPorque quem gosta de maçã\nIrá gostar de todas\nPorque todas são iguais...\n\nSe eu te amo e tu me amas\nE outro vem quando tu chamas\nComo poderei te condenar\nInfinita tua beleza\nComo podes ficar presa\nQue nem santa num altar...\n\nQuando eu te escolhi\nPara morar junto de mim\nEu quis ser tua alma\nTer seu corpo, tudo enfim\nMas compreendi\nQue além de dois existem mais...\n\nAmor só dura em liberdade\nO ciúme é só vaidade\nSofro, mas eu vou te libertar\nO que é que eu quero\nSe eu te privo\nDo que eu mais venero\nQue é a beleza de deitar...\n\nQuando eu te escolhi\nPara morar junto de mim\nEu quis ser tua alma\nTer seu corpo, tudo enfim\nMas compreendi\nQue além de dois existem mais...\n\nAmor só dura em liberdade\nO ciúme é só vaidade\nSofro, mas eu vou te libertar\nO que é que eu quero\nSe eu te privo\nDo que eu mais venero\nQue é a beleza de deitar..."
+    },
+    "album": {
+        "name": "Bloco Na Rua",
+        "year": 2019,
+        "track": 8,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -16.66,
+        "gain_db": 0.66
+    },
+    "alignment_quality": {
+        "score": 100.0,
+        "flags": [],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.24
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.09
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.12
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.03
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.21
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.09
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.04
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.03
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            }
+        ],
+        "metrics": {
+            "words": 190,
+            "lines": 38,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 36,
+            "displaced_lines": 0
+        },
+        "severe_lines": []
+    },
+    "needs_review": false
+}

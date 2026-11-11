@@ -1,0 +1,491 @@
+{
+    "meta": {
+        "title": "Bye Bye Brasil",
+        "artist": "Chico Buarque",
+        "language": "pt",
+        "slug": "bye-bye-brasil-chico-buarque"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=MfXBm7puDic",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Oi, coração\nNão dá pra falar muito não\nEspera passar o avião\nAssim que o inverno passar\nEu acho que vou te buscar\nAqui tá fazendo calor\nDeu pane no ventilador\nJá tem fliperama em Macau\nTomei a costeira em Belém do Pará\nPuseram uma usina no mar\nTalvez fique ruim pra pescar\nMeu amor\n\nNo Tocantins\nO chefe dos Parintintins\nVidrou na minha calça Lee\nEu vi uns patins pra você\nEu vi um Brasil na tevê\nCapaz de cair um toró\nEstou me sentindo tão só\nOh, tenha dó de mim\nPintou uma chance legal\nUm lance lá na capital\nNem tem que ter ginasial\nMeu amor\n\nNo Tabariz\nO som é que nem os Bee Gees\nDancei com uma dona infeliz\nQue tem um tufão nos quadris\nTem um japonês trás de mim\nEu vou dar um pulo em Manaus\nAqui tá quarenta e dois graus\nO sol nunca mais vai se pôr\nEu tenho saudades da nossa canção\nSaudades de roça e sertão\nBom mesmo é ter um caminhão\nMeu amor\n\nBaby, bye bye\nAbraços na mãe e no pai\nEu acho que vou desligar\nAs fichas já vão terminar\nEu vou me mandar de trenó\nPra Rua do Sol, Maceió\nPeguei uma doença em Ilhéus\nMas já tô quase bom\nEm março vou pro Ceará\nCom a benção do meu orixá\nEu acho bauxita por lá\nMeu amor\n\nBye bye, Brasil\nA última ficha caiu\nEu penso em vocês night and day\nExplica que tá tudo okay\nEu só ando dentro da lei\nEu quero voltar, podes crer\nEu vi um Brasil na tevê\nPeguei uma doença em Belém\nAgora já tá tudo bem\nMas a ligação tá no fim\nTem um japonês trás de mim\nAquela aquarela mudou\nNa estrada peguei uma cor\nCapaz de cair um toró\nEstou me sentindo um jiló\nEu tenho tesão é no mar\nAssim que o inverno passar\nBateu uma saudade de ti\nTô a fim de encarar um siri\nCom a benção do Nosso Senhor\nO sol nunca mais vai se pôr"
+    },
+    "album": {
+        "name": "Vida",
+        "year": 1980,
+        "track": 11,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -19.47,
+        "gain_db": 3.47
+    },
+    "alignment_quality": {
+        "score": 90.2,
+        "flags": [
+            "palavras empilhadas (15)",
+            "palavras com menos de 80 ms (5)",
+            "palavras depois do fim do verso (5)",
+            "1% das palavras no silêncio da voz",
+            "versos sobrepostos (4)",
+            "versos fora do tempo do canto (2)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.1
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "grudadas",
+                    "no silêncio"
+                ],
+                "stem_offset": -2.35
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "fora do verso",
+                    "grudadas",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": -2.9
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.15
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 49,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.33
+            },
+            {
+                "idx": 50,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 51,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 52,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 53,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 54,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 55,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 56,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 57,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 58,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 59,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 60,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 61,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 62,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.16
+            },
+            {
+                "idx": 63,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 64,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 65,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 66,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 67,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.45
+            },
+            {
+                "idx": 68,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            }
+        ],
+        "metrics": {
+            "words": 345,
+            "lines": 69,
+            "stacked": 15,
+            "short": 5,
+            "past_end": 5,
+            "silence": 3,
+            "long_verses": 0,
+            "overlaps": 4,
+            "uniform_lines": 0,
+            "stem_checked_lines": 62,
+            "displaced_lines": 2
+        },
+        "severe_lines": [
+            17,
+            32,
+            38
+        ]
+    },
+    "needs_review": false
+}

@@ -1,0 +1,209 @@
+{
+    "meta": {
+        "title": "this is what falling in love feels like",
+        "artist": "JVKE",
+        "language": "en",
+        "slug": "this-is-what-falling-in-love-feels-like-jvke"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=mvrpyZqk3Ho",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Feel like sun on my skin\nSo this is love, I know it is\nI know I sound super cliché\nBut you make me feel some type of way\nThis is falling, falling in love\nYeah\n\nOoh, yeah\nI got a lot on my mind\nGot some more on my plate\nMy baby got me looking forward to the end of the day\n\nWhat you say? You and me?\nJust forget about the past, throw it in the trash\nWhat you say? You and me?\nLive the life we never had, like we're never going back\n\nFeel like sun on my skin\nSo this is love, I know it is\nI know I sound super cliché\nBut you make me feel some type of way\n\nThis is falling, falling in love\nI know I sound super cliché\nBut you make me feel some type of way\nThis is falling, falling in love...\n\nYeah\nThis is falling, falling in love\nOoh...\nThis is falling, falling in love"
+    },
+    "album": {
+        "name": "this is what ____ feels like (Vol. 1-4)",
+        "year": 2021,
+        "track": 1,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -13.67,
+        "gain_db": -2.33
+    },
+    "alignment_quality": {
+        "score": 96.4,
+        "flags": [
+            "palavras com menos de 80 ms (1)",
+            "palavras depois do fim do verso (1)",
+            "versos sobrepostos (2)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.45
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.43
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ],
+                "stem_offset": 0.03
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.56
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.38
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            }
+        ],
+        "metrics": {
+            "words": 166,
+            "lines": 26,
+            "stacked": 0,
+            "short": 1,
+            "past_end": 1,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 2,
+            "uniform_lines": 0,
+            "stem_checked_lines": 22,
+            "displaced_lines": 0
+        },
+        "severe_lines": []
+    },
+    "needs_review": false
+}

@@ -1,0 +1,264 @@
+{
+    "meta": {
+        "title": "Deslocado",
+        "artist": "NAPA",
+        "language": "pt",
+        "slug": "deslocado-napa"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=EPn9pzrx2Ec",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Conto os dias para mim com a mala arrumada\nJá quase não cabia a saudade acumulada\nDo azul vejo o jardim, mesmo por trás da asa\nMãe, olha à janela que eu 'tou a chegar a casa\nQue eu 'tou a chegar a casa\nQue eu 'tou a chegar a casa\nQue eu 'tou a chegar a casa\nPor mais que possa parecer\nEu nunca vou pertencer àquela cidade\nO mar de gente, o sol diferente\nO monte de betão não me provoca nada\nNão me convoca casa\nPorque eu vim de longe, eu vim do mеio do mar\nNo coração do oceano eu tenho a vida intеira\nO meu caminho eu faço a pensar em regressar\nÀ minha casa, ilha, paz, Madeira\nSe eu te explicar palavra a palavra\nNunca vais entender a dor que me cala\nA solidão que assombra a hora da partida\nCarrego o sossego de poder voltar\nMãe, olha à janela que eu 'tou a chegar\nPor mais que possa parecer\nEu nunca vou pertencer àquela cidade\nO mar de gente, o sol diferente\nO monte de betão não me provoca nada\nNão me convo—\nO mar de gente, o sol diferente\nO monte de betão não me provoca nada\nNão me convoca casa"
+    },
+    "album": {
+        "name": "Semitrópico",
+        "year": 2025,
+        "track": 8,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -15.52,
+        "gain_db": -0.48
+    },
+    "alignment_quality": {
+        "score": 79.0,
+        "flags": [
+            "palavras empilhadas (25)",
+            "palavras com menos de 80 ms (8)",
+            "palavras depois do fim do verso (7)",
+            "0% das palavras no silêncio da voz",
+            "versos sobrepostos (2)",
+            "versos fora do tempo do canto (2)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": 6.18
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "palavras curtas"
+                ],
+                "stem_offset": 5.23
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.11
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.09
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.17
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.1
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.24
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.34
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.12
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.13
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ]
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.17
+            }
+        ],
+        "metrics": {
+            "words": 209,
+            "lines": 29,
+            "stacked": 25,
+            "short": 8,
+            "past_end": 7,
+            "silence": 1,
+            "long_verses": 0,
+            "overlaps": 2,
+            "uniform_lines": 0,
+            "stem_checked_lines": 27,
+            "displaced_lines": 2
+        },
+        "severe_lines": [
+            4,
+            5,
+            7,
+            11,
+            16,
+            21,
+            26
+        ]
+    },
+    "needs_review": true
+}

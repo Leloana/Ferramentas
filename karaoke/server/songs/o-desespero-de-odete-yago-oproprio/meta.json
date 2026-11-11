@@ -1,0 +1,405 @@
+{
+    "meta": {
+        "title": "O Desespero de Odete",
+        "artist": "Yago Oproprio",
+        "language": "pt",
+        "slug": "o-desespero-de-odete-yago-oproprio"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=ltrshflKQRA",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Eu ouvi Odete pedindo socorro\nDuas da tarde no morro Brejão Santa Luz\nE os home que invadiro sentaram o pipoco\nE ela com os filhos nos braços fez sinal da cruz\n\nEu ouvi Odete pedindo socorro\nDuas da tarde no morro Brejão Santa Luz\nE os home que invadiro sentaram o pipoco\nE ela com o filho nos braços fez sinal da cruz\n\nPapacificando a quebrada inteira\nChega sexta-feira\nDia de crachá\nPapacificando o filho leva um tiro\nFoi correr perigo\nIndo trabalhar\n\nSangue mistura-se com lágrimas\nQue lástima\nOlha pro céu quer se enganar\nReza pra santos e caboclos\nDe toda fé\nSerá que Deus vai me ajudar?\n\nApelou pra Xangô, Balaô, Yemanja\nNada disso vai adiantar\nLeva consigo\nO desespero da certeza de saber\nDe que não vai ver o filho crescer\n\nEu ouvi Odete pedindo socorro (eu ouvi Odete pedindo socorro)\nEra duas da tarde Brejão Santa Luz (duas da tarde brejão santa luz)\nE os home que invadiro sentaram o pipoco (e não foi pouco)\nE ela com o filho nos braços fez sinal da cruz\n\nEla clamou por Jesus, Allah, Shiva\nQualquer um lá de cima, venha me acudir\nMas quem diz se eu for polícia, quirimba, malícia\nOdete gritou até não 'guentar mais\n\nSob o sol nada novo e o povo\nSegunda-feira já esqueceu\nQuem que matou, quantos morreu\nE os frutos que ano de 64 deu\n\nNão, com nóis não, sangue bom\nSe esqueceu que nois é malan'\nE o que vira é a revolução\nNão vejo fita dominada\n\nFalta estudo e organização\nEstratégia e aplicação\nPresidente em decaptação\nE um samba pra ouvir com a rapa\n\nEu ouvi Odete pedindo socorro (eu ouvi Odete pedindo socorro)\nEra duas da tarde Brejão Santa Luz\nE os home que invadiro sentaram o pipoco (num foi pouco)\nE ela com os filhos nos braços fez sinal da cruz\n\nOuvi Odete pedindo socorro\nDuas da tarde no morro Brejão Santa Luz\nQue invadiro sentaram o pipoco\nE ela com os filhos nos braços fez sinal da cruz\n\nOuvi Odete pedindo socorro\nDuas da tarde no morro Brejão Santa Luz\nQue invadiro sentaram o pipoco\nE ela com os filhos nos braços fez sinal da cruz"
+    },
+    "album": {
+        "name": null,
+        "year": null,
+        "track": null,
+        "kind": "single",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -14.33,
+        "gain_db": -1.67
+    },
+    "alignment_quality": {
+        "score": 93.9,
+        "flags": [
+            "palavras empilhadas (20)",
+            "1% das palavras no silêncio da voz",
+            "versos fora do tempo do canto (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.06
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ]
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": 1.0
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.03
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.12
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.06
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 49,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 50,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 51,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 52,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 53,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 54,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 55,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 56,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ],
+                "stem_offset": 0.0
+            }
+        ],
+        "metrics": {
+            "words": 370,
+            "lines": 57,
+            "stacked": 20,
+            "short": 0,
+            "past_end": 0,
+            "silence": 2,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 51,
+            "displaced_lines": 1
+        },
+        "severe_lines": [
+            25,
+            26,
+            45
+        ]
+    },
+    "needs_review": false
+}

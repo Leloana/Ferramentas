@@ -1,0 +1,312 @@
+{
+    "meta": {
+        "title": "Pela Luz dos Olhos Teus",
+        "artist": "Miúcha",
+        "language": "pt",
+        "slug": "pela-luz-dos-olhos-teus-miucha"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=bmzqgVhAYAg",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Quando a luz dos olhos meus\nE a luz dos olhos teus resolvem se encontrar\nAi, que bom que isso é, meu Deus\nQue frio que me dá o encontro desse olhar\n\nMas se a luz dos olhos teus\nResiste aos olhos meus só pra me provocar\nMeu amor, juro por Deus, me sinto incendiar\n\nMeu amor, juro por Deus\nQue a luz dos olhos meus já não pode esperar\nQuero a luz dos olhos meus\nNa luz dos olhos teus sem mais lará-rará\n\nPela luz dos olhos teus\nEu acho, meu amor, e só se pode achar\nQue a luz dos olhos meus precisa se casar\n\nLará-ri-rarará\nLará-ri-rarará\n\nQuando a luz dos olhos meus\nE a luz dos olhos teus resolvem se encontrar\nAi, que bom que isso é, meu Deus\nQue frio que me dá o encontro desse olhar\n\nMas se a luz dos olhos teus\nResiste aos olhos meus só pra me provocar\nMeu amor, juro por Deus, me sinto incendiar\nMe sinto incendiar\n\nMeu amor, juro por Deus\nQue a luz dos olhos meus já não pode esperar\nQuero a luz dos olhos meus\nNa luz dos olhos teus sem mais lará-rará\n\nPela luz dos olhos teus\nEu acho, meu amor, e só se pode achar\nQue a luz dos olhos meus precisa se casar\n\nQue a luz dos olhos meus precisa se casar\nQue a luz dos olhos meus precisa se casar\nPrecisa se casar (precisa se casar)\nPrecisa se casar (precisa se casar)\n\nPrecisa se casar, precisa se casar\nPrecisa se casar, precisa se casar\nPrecisa se casar, precisa se casar\nPrecisa se casar, precisa se casar\nPrecisa se casar, precisa se casar..."
+    },
+    "album": {
+        "name": "Miucha & Tom Jobim, Vol. 1",
+        "year": 1977,
+        "track": 7,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -15.63,
+        "gain_db": -0.37
+    },
+    "alignment_quality": {
+        "score": 88.3,
+        "flags": [
+            "palavras empilhadas (4)",
+            "palavras com menos de 80 ms (3)",
+            "palavras depois do fim do verso (1)",
+            "versos fora do tempo do canto (5)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.03
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 0.98
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.07
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 3.31
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 1.58
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": 1.1
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -2.8
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 279,
+            "lines": 40,
+            "stacked": 4,
+            "short": 3,
+            "past_end": 1,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 35,
+            "displaced_lines": 5
+        },
+        "severe_lines": [
+            16,
+            31,
+            33,
+            34,
+            36
+        ]
+    },
+    "needs_review": true
+}

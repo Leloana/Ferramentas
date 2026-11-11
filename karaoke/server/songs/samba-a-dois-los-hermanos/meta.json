@@ -1,0 +1,306 @@
+{
+    "meta": {
+        "title": "Samba a Dois",
+        "artist": "Los Hermanos",
+        "language": "pt",
+        "slug": "samba-a-dois-los-hermanos"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=o7WvEM5mT5I",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Quem se atreve a me dizer\nDo que é feito o samba?\nQuem se atreve a me dizer?\n\nQuem se atreve a me dizer\nDo que é feito o samba?\nQuem se atreve a me dizer?\n\nNão, eu não sambo mais em vão\nO meu samba tem cordão\nO meu bloco tem sem ter e ainda assim\n\nSambo bem a dois por mim\nBambo e só, mas sambo sim\nSambo por gostar de alguém, gostar de\n\nMe lavra a alma\nMe leva embora\nDeixa haver samba no peito de quem...\n\nQuem se atreve a me dizer\nDo que é feito o samba?\nQuem se atreve a me dizer?\n\nQuem se atreve a me dizer\nDo que é feito o samba?\nQuem se atreve a me dizer?\n\nQuem me ensinou a te dizer\nVem que passa o teu sofrer\nFoi mais um que deu as mãos entre nós dois\n\nEu entendo o seu depois\nNão me entenda aqui por mal\nMas pro samba foi vital falar em\n\nMe laça a alma\nMe leva agora\nJá que um bom samba não tem lugar nem-\n\nNem se atreva a me dizer\nDo que é feito o samba\nNem se atreva a me dizer\n\nNem se atreva a me dizer\nDo que é feito o samba\nNem se atreva a me dizer\n\nNem se atreva a me dizer\nDo que é feito o samba\nNem se atreva a me dizer\n\nNem se atreva a me dizer\nDo que é feito o samba\nNem se atreva a me dizer"
+    },
+    "album": {
+        "name": "Ventura",
+        "year": 2003,
+        "track": 1,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -12.8,
+        "gain_db": -3.2
+    },
+    "alignment_quality": {
+        "score": 96.2,
+        "flags": [
+            "palavras empilhadas (6)",
+            "versos fora do tempo do canto (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": 1.82
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.09
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.1
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            }
+        ],
+        "metrics": {
+            "words": 254,
+            "lines": 42,
+            "stacked": 6,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 40,
+            "displaced_lines": 1
+        },
+        "severe_lines": [
+            2
+        ]
+    },
+    "needs_review": false
+}

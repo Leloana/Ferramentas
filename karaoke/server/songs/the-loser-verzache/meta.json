@@ -1,0 +1,341 @@
+{
+    "meta": {
+        "title": "The Loser",
+        "artist": "Verzache",
+        "language": "en",
+        "slug": "the-loser-verzache"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=BE7H6FjioaA",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "I just want your love\nI just want your love\nI just-\nI just want your love\nI just want your-\n\nI just want your love\nYour, want your love\nI'm ready for it\nI'm ready for-\nI just want your love\nI just want your love\nI just-\nI just want your love\nI just want your-\n\nI just want your love\nYour love\nI'm ready for it\nI'm ready for-\nI just want your love\nI just want your love\nI just-\nI just want your love\nI just want your-\n\nI just want your love\nYour love\nI'm ready for it\nI'm ready for-\nI just want your love\nI just want your love\nI just-\nI just want your love\nI just want your-\n\nI just want your love\nYour-\nWant your love\nI'm ready for it\nI'm ready for it\n\nLove you\nWant your love\nI'm ready for it\nI'm ready for it\nLove you\nWant your love\nI'm ready for it\nI'm ready for it\nLove you\nWant your love\nI'm ready for it\nI'm ready for it"
+    },
+    "album": {
+        "name": "for when i want to cry",
+        "year": 2016,
+        "track": 23,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -13.47,
+        "gain_db": -2.53
+    },
+    "alignment_quality": {
+        "score": 85.5,
+        "flags": [
+            "palavras empilhadas (9)",
+            "palavras com menos de 80 ms (3)",
+            "palavras depois do fim do verso (3)",
+            "1% das palavras no silêncio da voz",
+            "versos sobrepostos (5)",
+            "versos fora do tempo do canto (3)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.12
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -1.52
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 1.33
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -0.96
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ]
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ]
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "no silêncio",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ]
+            }
+        ],
+        "metrics": {
+            "words": 184,
+            "lines": 49,
+            "stacked": 9,
+            "short": 3,
+            "past_end": 3,
+            "silence": 1,
+            "long_verses": 0,
+            "overlaps": 5,
+            "uniform_lines": 0,
+            "stem_checked_lines": 5,
+            "displaced_lines": 3
+        },
+        "severe_lines": [
+            1,
+            3,
+            5,
+            17,
+            26
+        ]
+    },
+    "needs_review": true
+}

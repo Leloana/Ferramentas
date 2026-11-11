@@ -1,0 +1,217 @@
+{
+    "meta": {
+        "title": "Tim-Tim por Tim-Tim",
+        "artist": "Os Cariocas",
+        "language": "pt",
+        "slug": "tim-tim-por-tim-tim-os-cariocas"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=GQdNoVNo_z8",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Você tem que dar, tem que dar\nO que prometeu, meu bem\nMande o meu anel que de volta\nEu lhe mando o seu também\n\nMande a carta em que eu dizia\nO amor não tem fim\nQue eu lhe mando outra explicando\nTim-tim por tim-tim\n\nVocê tem que devolver\nO que era meu, bem meu\nMande o meu retrato\nE ponha outro em seu lugar\n\nMorreu um rei, uh, salve o rei que vai chegar\nNão sei sofrer, não sei chorar\nEu sei me conformar\n\nVocê tem que dar, tem que dar\nO que prometeu, meu bem\nEnvie o meu anel que de volta\nEu lhe mando o seu\n\nVocê tem que devolver\nO que era meu, bem meu\nMande o meu retrato e ponha outro em seu lugar\n\nMorreu um rei, uh, salve o rei que vai chegar\nNão sei sofrer, não sei chorar\nEu sei me conformar\n\nNão sei sofrer, não sei chorar\nEu sei me conformar"
+    },
+    "album": {
+        "name": "Pure Bossa Nova: Los Cariocas",
+        "year": 1963,
+        "track": 6,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -17.7,
+        "gain_db": 1.7
+    },
+    "alignment_quality": {
+        "score": 96.0,
+        "flags": [
+            "palavras empilhadas (8)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.11
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.33
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ]
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            }
+        ],
+        "metrics": {
+            "words": 160,
+            "lines": 27,
+            "stacked": 8,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 24,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            12,
+            23
+        ]
+    },
+    "needs_review": false
+}

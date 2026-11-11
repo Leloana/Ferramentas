@@ -1,0 +1,282 @@
+{
+    "meta": {
+        "title": "Garota de Ipanema",
+        "artist": "Tom Jobim",
+        "language": "pt",
+        "slug": "garota-de-ipanema-tom-jobim"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=WuenyQ4NCQE",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Olha que coisa mais linda\nMais cheia de graça\nÉ ela a menina que vem e que passa\nNum doce balanço a caminho do mar\n\nAh, por que estou tão sozinho\nAh, por que tudo é tão triste\nAh, a beleza que existe\nA beleza que não é só minha\nQue também passa sozinha\n\nAh, se ela soubesse\nQue quando ela passa\nO mundo inteirinho se enche de graça\nE fica mais lindo por causa do amor\nPor causa do amor\nPor causa do amor\n\nIpanema\n\nArigato Gonzaga\n\nTem uma exposição do Vinicíus\nDe fotografias e coisas\nMe pediram pra escrever uma coisinha\nPra o meu querido e inesquecível amigo e parceiro\nEntão eu escrevi uma coisinha assim\n\nMeu Vinícius de Morais, não consigo te esquecer\nQuanto mais o tempo passa, mais me lembro de você\nCadê o meu poetinha, cadê minha letra, cadê\nEu morro neste piano de saudade de você\n\nAqui uma coisa do Vinícius\nO Vinícius serviu em Paris duas\nDois períodos diferentes\nNegócio do Itamarati\nE ele escreveu essa valsinha\nTem um sabor assim meio parisiense, né\nMeio francês, olha aqui"
+    },
+    "album": {
+        "name": null,
+        "year": null,
+        "track": null,
+        "kind": "unknown",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -18.1,
+        "gain_db": 2.1
+    },
+    "alignment_quality": {
+        "score": 63.5,
+        "flags": [
+            "palavras empilhadas (35)",
+            "palavras com menos de 80 ms (28)",
+            "palavras depois do fim do verso (23)",
+            "versos sobrepostos (7)",
+            "versos com palavras espalhadas por igual (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [
+                    "espalhadas por igual"
+                ]
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.27
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "grudadas",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "grudadas",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "grudadas",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "grudadas",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            }
+        ],
+        "metrics": {
+            "words": 185,
+            "lines": 33,
+            "stacked": 35,
+            "short": 28,
+            "past_end": 23,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 7,
+            "uniform_lines": 1,
+            "stem_checked_lines": 9,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            0,
+            20,
+            22,
+            24,
+            25,
+            30
+        ]
+    },
+    "needs_review": true
+}

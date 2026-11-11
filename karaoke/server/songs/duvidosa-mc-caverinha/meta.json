@@ -1,0 +1,485 @@
+{
+    "meta": {
+        "title": "Duvidosa",
+        "artist": "MC Caverinha",
+        "language": "pt",
+        "slug": "duvidosa-mc-caverinha"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=ku3tTnnG98k",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Du-du-duvidosa, safada\nSe você, se você quiser, eu te busco agora\nMalvada, sabe, sabe, não tem hora pra ir embora de casa\nTe mostrei que eu sou o cara certo\nNosso futuro é incerto\n\nDu-du-duvidosa, safada\nSe você quiser, eu te busco agora\nMalvada, sabe, sabe, não tem hora pra ir embora de casa\nTe mostrei que eu sou o cara certo\nNosso futuro é incerto\n\nSabe que eu posso te proporcionar\nVários momentos bons\nSei que \"cê\" gosta de vivenciar\nE que a abre Chandon\nVárias loucuras, intrigas que deixam marca no meu moletom\nNa boca, o vermelho batom\nSinto falta do seu beijo\nSempre várias dúvidas\nSe pá, vou me afastar\n\nCoração remendado, vou tomar cuidado pra não me machucar\nFui até um cara bacana, mas me iludi com ela\nVou esquecer essa louca, resgatar a \"Two-win \"e volto lá pra favela\n\nDuvidosa, safada\nSe você, se você quiser, eu te busco agora\nMalvada, sabe, sabe, não tem hora pra ir embora de casa\nTe mostrei que eu sou o cara certo\nNosso futuro é incerto\n\nDu-du-duvidosa, safada\nSe você quiser, eu te busco agora\nMalvada, sabe, sabe, não tem hora pra ir embora de casa\nTe mostrei que eu sou o cara certo\nNosso futuro é incerto\n\nFica difícil acreditar que\nNós dois mudou e agora resta a dúvida que\nO que passou será que fica no passado\nEu sinto que a nossa história não dá mais\nE eu assumo que eu errei e todas recaída\nSó me fizeram confirmar que a gente não combina\nE se eu aparecer com alguma das suas amigas\nPra você aprender a escolher em quem você confia\n\nBig boy, bebê, ela que é o cara mais foda do jogo\nGrite meu nome bem alto, é o Baco, dono do asfalto\nEu não me apaixono e nem me comovo\nEu não minto, só te falo verdades\nMuito sincero\nDesculpa se eu te machuco\nPor que você ligou de novo?\n\nEla sabe que nesse mundo inteiro não tem ninguém\nQue se preocupe tanto em te proteger\nCiumenta, possessiva\nComo eu vou te levar no pagodinho assim?\n\nEu sei que não sou certo, mas \"cê\" tem certeza que me quer\nGosta de problema, então deixa eu ser problema seu\nSe prepara, melhor não ter dúvida\nPorque a inveja persegue tudo que é meu\n\nDu-du-duvidosa, safada\nSe você, se você quiser, eu te busco agora\nMalvada, sabe, sabe, não tem hora pra ir embora de casa\nTe mostrei que eu sou o cara certo\nNosso futuro é incerto\n\nDu-du-duvidosa, safada\nSe você quiser, eu te busco agora\nMalvada, sabe, sabe, não tem hora pra ir embora de casa\nTe mostrei que eu sou o cara certo\nNosso futuro é incerto"
+    },
+    "album": {
+        "name": "RELATOS",
+        "year": 2024,
+        "track": 1,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -15.31,
+        "gain_db": -0.69
+    },
+    "alignment_quality": {
+        "score": 88.5,
+        "flags": [
+            "palavras empilhadas (27)",
+            "palavras com menos de 80 ms (12)",
+            "palavras depois do fim do verso (9)",
+            "versos sobrepostos (6)",
+            "versos fora do tempo do canto (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.21
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.09
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.1
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.12
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.23
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.14
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.58
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ],
+                "stem_offset": -0.09
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "fora do verso",
+                    "grudadas",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": -1.87
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.13
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 49,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 50,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 51,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 52,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 53,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 54,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 55,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 56,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.19
+            },
+            {
+                "idx": 57,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 58,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 59,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.33
+            },
+            {
+                "idx": 60,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 61,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 62,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 63,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 64,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            }
+        ],
+        "metrics": {
+            "words": 455,
+            "lines": 65,
+            "stacked": 27,
+            "short": 12,
+            "past_end": 9,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 6,
+            "uniform_lines": 0,
+            "stem_checked_lines": 57,
+            "displaced_lines": 1
+        },
+        "severe_lines": [
+            38,
+            41,
+            42,
+            43
+        ]
+    },
+    "needs_review": false
+}

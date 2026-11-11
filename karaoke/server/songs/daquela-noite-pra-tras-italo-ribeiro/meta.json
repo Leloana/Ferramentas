@@ -1,0 +1,232 @@
+{
+    "meta": {
+        "title": "Daquela Noite pra Trás",
+        "artist": "Italo Ribeiro",
+        "language": "pt",
+        "slug": "daquela-noite-pra-tras-italo-ribeiro"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=M8F2zMqovmI",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Hoje eu vou ver o meu amor\nPerfeito\nColonia e medo perfumam meu peito\nVou ver se ainda tem o mesmo calor\nDerreto\nE ver se me olha do mesmo jeito, amor\nEntão a minha boca encontra a sua\nNada faz sentido, aliás nem eu\nCessando o beijo, inesperadamente eu vejo\nQue uma lágrima sua cedeu\n\nEu acho que ela quer dizer que me ama\nEu acho que ela quer dizer que tem saudade\nEu acho que quando 'cê me mandou embora\nMandou com dor no peito não era verdade\n\nEu acho que ela quer dizer que me ama\nEu acho que ela quer dizer que tem saudade\nEu acho que quando 'cê me mandou embora\nMandou com dor no peito não era verdade\n\nEntão a minha boca encontra a sua\nNada faz sentido, aliás nem eu\nCessando o beijo, inesperamente eu vejo\nQue uma lágrima sua cedeu\n\nEu acho que ela quer dizer que me ama\nEu acho que ela quer dizer que tem saudade\nEu acho que quando 'cê me mandou embora\nMandou com dor no peito não era verdade\n\nEu acho que ela sente falta da minha cama\nEu acho que ela sabe do antigo pranto\nEu acho que ela acha que sabe de tudo\nPorque chorou do mesmo tanto"
+    },
+    "album": {
+        "name": "Minha Mãe Mandou Eu Parar de Fazer Música Triste (EP)",
+        "year": 2019,
+        "track": 3,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -21.98,
+        "gain_db": 5.98
+    },
+    "alignment_quality": {
+        "score": 98.9,
+        "flags": [
+            "palavras empilhadas (3)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.05
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.44
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            }
+        ],
+        "metrics": {
+            "words": 213,
+            "lines": 30,
+            "stacked": 3,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 28,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            9
+        ]
+    },
+    "needs_review": false
+}

@@ -1,0 +1,268 @@
+{
+    "meta": {
+        "title": "SEM PAUSA",
+        "artist": "Sotam",
+        "language": "pt",
+        "slug": "sem-pausa-sotam"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=_5nGHgajXKU",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Não, não, não, não, pera aí, pera aí\nTava com saudade de nós dois\nE uma vontade de querer se arrepender\nSenti o gosto e o sabor que nós já foi\nCom uma pitada das fotos que eu apaguei\n\nMe perguntando do por que tu me ligou\nMesmo sabendo que eu nunca ia atender\nQuer frequentar os lugares que eu sempre vou\nCom a esperança de um dia me rever\n\nTô fudendo com as loucas que um dia tu xingou\nAs que eu não conhecia, mas você fez eu querer\nFala pra mim se é do jeito que imaginou\nE é assim que eu viveria nos dias que me perder\n\nSem pausa elas vão me pedir de novo\nE eu já não sei o que eu quero oferecer\nOuvi dizer que em SP não tem amor\nE mesmo raso acho que eu encon-\n\nNão, não, não, não, pera aí, pera aí\nTava com saudade de nós dois\nE uma vontade de querer se arrepender\nSenti o gosto e o sabor que nós já foi\nCom uma pitada das fotos que eu apaguei\n\nMe perguntando do por que tu me ligou\nMesmo sabendo que eu nunca ia atender\nQuer frequentar os lugares que eu sempre vou\nCom a esperança de um dia me rever\n\nTô fudendo com as loucas que um dia tu xingou\nAs que eu não conhecia, mas você fez eu querer\nFala pra mim se é do jeito que imaginou\nE é assim que eu viveria nos dias que me perder\n\nSem pausa elas vão me pedir de novo\nE eu já não sei o que eu quero oferecer\nOuvi dizer que em SP não tem amor\nE mesmo raso acho que eu encon-\n\nNão, não, não, não, pera aí, pera aí"
+    },
+    "album": {
+        "name": null,
+        "year": null,
+        "track": null,
+        "kind": "single",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -13.78,
+        "gain_db": -2.22
+    },
+    "alignment_quality": {
+        "score": 96.7,
+        "flags": [
+            "palavras empilhadas (12)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.09
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.11
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.14
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            }
+        ],
+        "metrics": {
+            "words": 294,
+            "lines": 35,
+            "stacked": 12,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 35,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            10
+        ]
+    },
+    "needs_review": false
+}

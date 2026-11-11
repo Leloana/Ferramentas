@@ -1,0 +1,395 @@
+{
+    "meta": {
+        "title": "Xote dos Milagres",
+        "artist": "Falamansa",
+        "language": "pt",
+        "slug": "xote-dos-milagres-falamansa"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=J1asvRNIPq4",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Escrevi seu nome na areia\nO sangue que corre em mim sai da tua veia\nVeja só você é a única que não me dá valor\nEntão por que será que esse valor\nÉ o que eu ainda quero ter\n\nTenho tudo nas mãos, mas não tenho nada\nEntão melhor ter nada e lutar pelo que eu quiser\n\nÉ, mas péra aí\nOuça o forró tocando e muita gente aí\nNão é hora pra chorar\nPorém não é pecado se eu falar de amor\nSe eu canto sentimento seja ele qual for\n\nMe leve onde eu quero ir\nSe quiser também pode vir\nEscuta o meu coração\nQue bate no compasso\nDa zabumba de paixão\n\nÉ pra surdo ouvir, pra cego ver\nQue este xote faz milagre acontecer\nÉ pra surdo ouvir, pra cego ver\nQue este xote faz milagre acontecer\n\nÉ pra surdo ouvir, pra cego ver\nQue este xote faz milagre acontecer\nÉ pra surdo ouvir, pra cego ver\nFalamansa faz milagre acontecer\n\nEu escrevi seu nome na areia\nO sangue que corre em mim sai da tua veia\nVeja só você é a única que não me dá valor\nEntão por que será que esse valor\nÉ o que eu ainda quero ter\n\nTenho tudo nas mãos, mas não tenho nada\nEntão melhor ter nada e lutar pelo que eu quiser\n\nÉ, mas péra aí\nOuça o forró tocando e muita gente aí\nNão é hora pra chorar\nPorém não é pecado se eu falar de amor\nSe eu canto sentimento seja ele qual for\n\nMe leva onde eu quero ir\nSe quiser também pode vir\nEscuta o meu coração\nQue bate no compasso\nDa zabumba de paixão\n\nÉ pra surdo ouvir, pra cego ver\nQue este xote faz milagre acontecer\nÉ pra surdo ouvir, pra cego ver\nQue este xote faz milagre acontecer\n\nÉ pra surdo ouvir, pra cego ver\nQue este xote faz milagre acontecer\nÉ pra surdo ouvir, pra cego ver\nFalamansa faz milagre acontecer"
+    },
+    "album": {
+        "name": "Deixa Entrar...",
+        "year": 2000,
+        "track": 3,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -18.42,
+        "gain_db": 2.42
+    },
+    "alignment_quality": {
+        "score": 80.6,
+        "flags": [
+            "palavras empilhadas (26)",
+            "palavras com menos de 80 ms (8)",
+            "palavras depois do fim do verso (8)",
+            "versos sobrepostos (2)",
+            "versos fora do tempo do canto (6)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "fora do verso",
+                    "grudadas",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": -3.83
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.78
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -1.01
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.48
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.22
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.11
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -1.98
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.35
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.6
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.54
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.78
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -1.0
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "fora do verso",
+                    "grudadas",
+                    "palavras curtas"
+                ],
+                "stem_offset": -1.48
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -1.25
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.36
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.14
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 49,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.03
+            }
+        ],
+        "metrics": {
+            "words": 331,
+            "lines": 50,
+            "stacked": 26,
+            "short": 8,
+            "past_end": 8,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 2,
+            "uniform_lines": 0,
+            "stem_checked_lines": 47,
+            "displaced_lines": 6
+        },
+        "severe_lines": [
+            4,
+            8,
+            18,
+            29,
+            33,
+            37,
+            38,
+            47
+        ]
+    },
+    "needs_review": true
+}

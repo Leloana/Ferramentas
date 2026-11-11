@@ -1,0 +1,222 @@
+{
+    "meta": {
+        "title": "Eu Sei Onde Você Está",
+        "artist": "Vanguart",
+        "language": "pt",
+        "slug": "eu-sei-onde-voce-esta-vanguart"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=u2y3L3cWUxw",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Minh'alma sabe que viver é se entregar\nSabendo que ninguém pode julgar\nSe teve que olhar pra trás ou não\nTalvez se a vida me trouxer o que eu pedi\nTe encontro e faço tudo que quiser\nTe dizendo o sol renasce amanhã\nA vida é tão mais vida de manhã\nQuando eu vejo você, éh\nSaiba você é meu sol\nEla tem entrelinhas fáceis de rimar\nMe encosta o colo e fica onde quiser\nE me molha como um rio que lava o chão\nSó pra você, eu tenho os olhos e meu coração\nEspero o teu sorriso e as tuas mãos\nNão esquece o sol renasce amanhã\nA vida enfim vivida de manhã, quando eu tenho você éh\nSempre você é, meu sol\nMeu sol\nSaiba você é\nMeu sol\nSempre você, meu sol oh\nEu já me preparei demais e declaro\nAgora é a hora, o amor profundo\nO amor que salva\nVem depressa, não demora\nMeu sol\nSaiba você é, meu sol\nSempre você, meu sol"
+    },
+    "album": {
+        "name": "Muito Mais Que o Amor",
+        "year": 2013,
+        "track": 3,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -13.7,
+        "gain_db": -2.3
+    },
+    "alignment_quality": {
+        "score": 79.8,
+        "flags": [
+            "palavras empilhadas (5)",
+            "palavras com menos de 80 ms (1)",
+            "palavras depois do fim do verso (1)",
+            "15% das palavras no silêncio da voz",
+            "versos com mais de 12 s (1)",
+            "versos sobrepostos (2)",
+            "versos com palavras espalhadas por igual (2)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ]
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [
+                    "espalhadas por igual"
+                ]
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [
+                    "espalhadas por igual",
+                    "longo",
+                    "no silêncio"
+                ]
+            }
+        ],
+        "metrics": {
+            "words": 170,
+            "lines": 28,
+            "stacked": 5,
+            "short": 1,
+            "past_end": 1,
+            "silence": 25,
+            "long_verses": 1,
+            "overlaps": 2,
+            "uniform_lines": 2,
+            "stem_checked_lines": 0,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            10,
+            24,
+            27
+        ]
+    },
+    "needs_review": true
+}

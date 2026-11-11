@@ -1,0 +1,211 @@
+{
+    "meta": {
+        "title": "nada contra (ciúme)",
+        "artist": "Clarissa",
+        "language": "pt",
+        "slug": "nada-contra-ciume-clarissa"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=ijCaxQLSoDo",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Sei que te mandei passear, mas agora que perdi\nTe quero de volta\nPorque sim às vezes é resposta\nPor que não posso te ter de volta?\nVolta\n\nE se for, oh-oh\nPra ser?\nE se for, oh-oh\nPra gente acontecer?\n\nNada contra ela, inclusive até faria\nMas acho que quem caberia bem melhor sou eu\nSou eu, sou eu, sou eu\n\nTe falei tanta bobagem\nNossa, que viagem acho que eu sequelei\nPorque sim às vezes é resposta\nPor que não posso te ter de volta?\n\nNão é sempre que eu vou admitir\nMas que ciúme, que que eu tô fazendo aqui?\n\nE se for, oh-oh\nPra ser?\nE se for, oh-oh\nPra gente acontecer?\n\nNada contra ela, inclusive até faria\nMas acho que quem caberia bem melhor sou eu\nSou eu, sou eu, sou eu\n\nSou eu, sou eu, sou eu\nSou eu, sou eu, sou eu\nSou eu, sou eu, sou eu"
+    },
+    "loudness": {
+        "lufs_before": -13.61,
+        "gain_db": -2.39
+    },
+    "alignment_quality": {
+        "score": 97.1,
+        "flags": [
+            "versos fora do tempo do canto (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.15
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.12
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.1
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -0.83
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 155,
+            "lines": 28,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 18,
+            "displaced_lines": 1
+        },
+        "severe_lines": [
+            18
+        ]
+    },
+    "needs_review": false,
+    "album": {
+        "name": null,
+        "year": null,
+        "track": null,
+        "kind": "single",
+        "source": "itunes"
+    }
+}

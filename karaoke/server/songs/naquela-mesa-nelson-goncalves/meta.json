@@ -1,0 +1,262 @@
+{
+    "meta": {
+        "title": "Naquela Mesa",
+        "artist": "Nelson Gonçalves",
+        "language": "pt",
+        "slug": "naquela-mesa-nelson-goncalves"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=vKbUEdV6FHw",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Naquela mesa ele sentava sempre\nE me dizia sempre o que é viver melhor\nNaquela mesa ele contava histórias\nQue hoje na memória eu guardo e sei de cor\n\nNaquela mesa ele juntava gente\nE contava contente o que fez de manhã\nE nos seus olhos era tanto brilho\nQue mais que seu filho, eu fiquei seu fã\n\nEu não sabia que doía tanto\nUma mesa num canto, uma casa e um jardim\nSe eu soubesse quanto dói a vida\nEssa dor tão doída não doía assim\n\nAgora resta uma mesa na sala\nE hoje ninguém mais fala no seu bandolim\n\nNaquela mesa tá faltando ele\nE a saudade dele tá doendo em mim\nNaquela mesa tá faltando ele\nE a saudade dele tá doendo em mim\n\nAgora resta uma mesa na sala\nE hoje ninguém mais fala no seu bandolim\n\nNaquela mesa tá faltando ele\nE a saudade dele tá doendo em mim\nNaquela mesa tá faltando ele\nE a saudade dele tá doendo em mim\n\nEu não sabia que doía tanto\nUma mesa num canto, uma casa e um jardim\nSe eu soubesse quanto dói a vida\nEssa dor tão doída não doía assim\n\nAgora resta uma mesa na sala\nE hoje ninguém mais fala no seu bandolim\n\nNaquela mesa tá faltando ele\nE a saudade dele tá doendo em mim\nNaquela mesa tá faltando ele\nE a saudade dele tá doendo em mim"
+    },
+    "album": {
+        "name": "Passado e Presente",
+        "year": 1974,
+        "track": 1,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -15.59,
+        "gain_db": 0.0
+    },
+    "alignment_quality": {
+        "score": 98.0,
+        "flags": [
+            "palavras empilhadas (6)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            }
+        ],
+        "metrics": {
+            "words": 236,
+            "lines": 34,
+            "stacked": 6,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 34,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            8,
+            24
+        ]
+    },
+    "needs_review": false
+}

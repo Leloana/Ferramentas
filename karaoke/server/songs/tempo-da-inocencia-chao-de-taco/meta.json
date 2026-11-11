@@ -1,0 +1,146 @@
+{
+    "meta": {
+        "title": "Tempo da Inocência",
+        "artist": "Chão de Taco",
+        "language": "pt",
+        "slug": "tempo-da-inocencia-chao-de-taco"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=0KLuUvRi-zQ",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "se eu soubesse que seria\ndesse jeito, tentaria mais\nmas é tarde demais\nmas é tarde demais\neu só peço que me entenda\nnão sou forte como pensa\neu não aguento mais\neu não aguento mais\nme leva até o começo quando não existia\ntodo esse peso, toda essa agonia\nnunca na minha vida eu imaginei estar\nperdido num lugar no qual eu já chamei de lar\neu quero estar bem perto quando estou distante\ne às vezes o contrário é mais interessante\nnão sei o que dizer e eu nem sei o que pensar\nmas já se foi o tempo, o tempo da inocência"
+    },
+    "album": {
+        "name": "difícil",
+        "year": 2023,
+        "track": 2,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -12.04,
+        "gain_db": -3.96
+    },
+    "alignment_quality": {
+        "score": 97.5,
+        "flags": [
+            "versos com mais de 12 s (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.2
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [
+                    "longo"
+                ],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            }
+        ],
+        "metrics": {
+            "words": 105,
+            "lines": 16,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 1,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 15,
+            "displaced_lines": 0
+        },
+        "severe_lines": []
+    },
+    "needs_review": false
+}

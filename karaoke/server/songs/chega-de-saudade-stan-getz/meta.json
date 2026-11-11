@@ -1,0 +1,185 @@
+{
+    "meta": {
+        "title": "Chega De Saudade",
+        "artist": "Stan Getz",
+        "language": "pt",
+        "slug": "chega-de-saudade-stan-getz"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=XryHLBRLc20",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Vai, minha tristeza, e diz a ela\nQue sem ela não pode ser\nDiz-lhe numa prece que ela regresse\nPorque eu não posso mais sofrer\n\nChega de saudade, a realidade é que\nSem ela não há paz, não há beleza\nÉ só tristeza e a melancolia que não sai de mim\nNão sai de mim, não sai\n\nMas se ela voltar, se ela voltar\nQue coisa linda, que coisa louca\nPois há menos peixinhos a nadar no mar\nDo que os beijinhos que eu darei na sua boca\n\nDentro dos meus braços\nOs abraços hão de ser milhões de abraços\nApertado assim, colado assim, calado assim\nAbraços e beijinhos e carinhos sem ter fim\nQue é pra acabar com esse negócio de viver longe de mim\n\nVai, minha tristeza, e diz a ela\nQue sem ela não pode ser\nDiz-lhe numa prece que ela regresse\nPorque eu não posso mais sofrer\n\nChega de saudade, a realidade é que\nSem ela não há paz, não há beleza\nÉ só tristeza e a melancolia que não sai de mim\nNão sai de mim, não sai\n\nMas se ela voltar, se ela voltar\nQue coisa linda, que coisa louca\nPois há menos peixinhos a nadar no mar\nDo que os beijinhos que eu darei na sua boca\n\nDentro dos meus braços\nOs abraços hão de ser milhões de abraços\nApertado assim, colado assim, calado assim\nAbraços e beijinhos e carinhos sem ter fim\nQue é pra acabar com esse negócio de viver longe de mim\nNão quero mais esse negócio de você viver assim\nVamos deixar desse negócio de você viver sem mim"
+    },
+    "album": {
+        "name": "Big Band Bossa Nova",
+        "year": 1962,
+        "track": 5,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -13.7,
+        "gain_db": -2.3
+    },
+    "alignment_quality": {
+        "score": 89.5,
+        "flags": [
+            "palavras empilhadas (9)",
+            "palavras com menos de 80 ms (3)",
+            "palavras depois do fim do verso (3)",
+            "1% das palavras no silêncio da voz",
+            "versos sobrepostos (2)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.16
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.32
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.04
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ]
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "no silêncio",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas",
+                    "sobreposto"
+                ]
+            }
+        ],
+        "metrics": {
+            "words": 156,
+            "lines": 20,
+            "stacked": 9,
+            "short": 3,
+            "past_end": 3,
+            "silence": 1,
+            "long_verses": 0,
+            "overlaps": 2,
+            "uniform_lines": 0,
+            "stem_checked_lines": 18,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            19
+        ]
+    },
+    "needs_review": false
+}

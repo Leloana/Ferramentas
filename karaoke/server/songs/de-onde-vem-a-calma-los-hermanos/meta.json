@@ -1,0 +1,233 @@
+{
+    "meta": {
+        "title": "De Onde Vem a Calma",
+        "artist": "Los Hermanos",
+        "language": "pt",
+        "slug": "de-onde-vem-a-calma-los-hermanos"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=ncbPBuxlw48",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "De onde vem a calma daquele cara?\nEle não sabe ser melhor, viu?\nComo não entende de ser valente\nEle não sabe ser mais viril\nEle não sabe não, viu?\nE às vezes dá como um frio\nÉ o mundo que anda hostil\nO mundo todo é hostil\nDe onde vem o jeito tão sem defeito\nQue esse rapaz consegue fingir?\nOlha esse sorriso tão indeciso\n'Tá se exibindo pra solidão\nNão vão embora daqui\nEu sou o que vocês são\nNão solta da minha mão\nNão solta da minha mão\nEu não vou mudar não\nEu vou ficar são\nMesmo se for só\nNão vou ceder\nDeus vai dar aval sim\nO mal vai ter fim\nE no final assim calado\nEu sei que vou ser coroado rei de mim"
+    },
+    "album": {
+        "name": "Ventura",
+        "year": 2003,
+        "track": 15,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -13.32,
+        "gain_db": -2.68
+    },
+    "alignment_quality": {
+        "score": 65.9,
+        "flags": [
+            "palavras empilhadas (21)",
+            "palavras com menos de 80 ms (2)",
+            "palavras depois do fim do verso (2)",
+            "2% das palavras no silêncio da voz",
+            "versos sobrepostos (2)",
+            "versos com palavras espalhadas por igual (1)",
+            "versos fora do tempo do canto (4)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.28
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -1.68
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.27
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -1.66
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.09
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [
+                    "espalhadas por igual",
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -1.45
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "fora do verso",
+                    "no silêncio",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": -3.29
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.51
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ],
+                "stem_offset": -0.11
+            }
+        ],
+        "metrics": {
+            "words": 131,
+            "lines": 24,
+            "stacked": 21,
+            "short": 2,
+            "past_end": 2,
+            "silence": 2,
+            "long_verses": 0,
+            "overlaps": 2,
+            "uniform_lines": 1,
+            "stem_checked_lines": 21,
+            "displaced_lines": 4
+        },
+        "severe_lines": [
+            10,
+            11,
+            13,
+            16,
+            18,
+            20,
+            21
+        ]
+    },
+    "needs_review": true
+}

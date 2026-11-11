@@ -1,0 +1,172 @@
+{
+    "meta": {
+        "title": "crush on you",
+        "artist": "elijah who",
+        "language": "en",
+        "slug": "crush-on-you-elijah-who"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=2_EHUsa9J6E",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "I bet you're attractive\nBut, oh, my heart grew active\nWhen you came into view\n\nI've got a crush on you\nSweetie pie\nAll the day and night-time\nHear me sigh\nCrush on you\nSweetie pie\nAll the day and night-time\nHear me sigh\nI've got a c-c-crush on you\nSweetie pie\nAll the day and night-time\nHear me sigh\nCrush on you\nSweetie pie\nAll the day and night-time\nHear me sigh\n\nI never had the least notion\nThat I could fall with so much emotion"
+    },
+    "album": {
+        "name": null,
+        "year": null,
+        "track": null,
+        "kind": "unknown",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -22.42,
+        "gain_db": 6.42
+    },
+    "alignment_quality": {
+        "score": 93.1,
+        "flags": [
+            "11% das palavras no silêncio da voz"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            }
+        ],
+        "metrics": {
+            "words": 87,
+            "lines": 21,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 10,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 12,
+            "displaced_lines": 0
+        },
+        "severe_lines": []
+    },
+    "needs_review": false
+}

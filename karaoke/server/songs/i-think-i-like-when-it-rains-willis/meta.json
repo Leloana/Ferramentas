@@ -1,0 +1,278 @@
+{
+    "meta": {
+        "title": "I Think I Like When It Rains",
+        "artist": "WILLIS",
+        "language": "en",
+        "slug": "i-think-i-like-when-it-rains-willis"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=38ICl7_UvEI",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "I think I like when it rains\nYou told me to go to the light\nAnd what it's like to feel your pain\nNow I'm okay if you're alright\nI start to wonder why I came\nI dreamed of things you said to me\nWe stayed at your place while it rains\nWe talk and we laugh and watch TV\n\nAnd I couldn't find the words\nI couldn't think of what to say\nAnd all that I can do is stop\nAnd think about the day\nWhen all we used to dream about was meeting after school\nAnd we would go on home and start right back again\n\nI think I like when it rains\nCall up some friends and have some fun\nOh Lord, I wish things were the same, nowadays\nWe'd go back to your place when we're done\nAnd I got nothing else to blame\nI wish the words would come to me\nWe stay at your place while it rains\nWe party while your mom is asleep\n\nAnd I couldn't find the words\nI couldn't think of what to say\nAnd all that I can do is stop and think about the days\nWhen all we used to dream about was meeting after school\nAnd we would go on home and start back again\n\nOoh, ooh, ooh, ooh, ooh, ooh, ooh\nOoh, ooh, ooh, ooh, ooh, ooh, ooh\nOoh, ooh, ooh, ooh, ooh, ooh, ooh\n\nAnd I couldn't find the words\nI couldn't think of what to say\nAnd all that I can do is stop think and about the days\nWhen all we used to dream about\nWas meeting after school\nAnd we would go on home and start back again\n\nWe would go on home and start back again"
+    },
+    "album": {
+        "name": "Locals 2 (EP)",
+        "year": 2017,
+        "track": 5,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -15.57,
+        "gain_db": -0.43
+    },
+    "alignment_quality": {
+        "score": 95.7,
+        "flags": [
+            "palavras empilhadas (16)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.64
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ]
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ]
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ]
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.13
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.6
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.1
+            }
+        ],
+        "metrics": {
+            "words": 295,
+            "lines": 37,
+            "stacked": 16,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 31,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            27,
+            28,
+            29
+        ]
+    },
+    "needs_review": false
+}

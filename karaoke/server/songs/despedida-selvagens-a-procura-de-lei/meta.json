@@ -1,0 +1,334 @@
+{
+    "meta": {
+        "title": "Despedida",
+        "artist": "Selvagens À Procura de Lei",
+        "language": "pt",
+        "slug": "despedida-selvagens-a-procura-de-lei"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=PghmgvqwPOs",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Tentei falar, mas você não entendeu\r\nVoltei pra casa, te liguei não atendeu\r\n\r\nEu me entrego à cidade\r\nVou atrás de você\r\nAlgumas coisas não mudam\r\nMas como posso saber\r\nQuero tirar essa dúvida\r\n\r\nEu me dei conta de mim mesmo\r\nE quando vejo sua foto\r\nParece que você tá falando comigo\r\nAgora eu tô no prejuízo\r\n\r\nBem que eu queria te ver\r\nMas não posso\r\nPorque meus olhos estão encharcados\r\nEu não consigo te ver por enquanto\r\n\r\nEu não queria partir\r\nMas você me convenceu\r\nEu não queria partir (Eu não queria partir)\r\nMas você me convenceu\r\nEu não queria partir\r\nMas você me convenceu\r\nEu não queria partir\r\n\r\nSó não quero que você\r\nMe mantenha hipnotizado\r\nDuvido de tudo\r\nQue segue pelo o que é mais fácil\r\n\r\nEu me entrego a você\r\nComo uma cidade derruba os muros\r\nMostrando a realidade da nossa dupla solidão\r\n\r\nEu me dei conta de mim mesmo\r\nE quando vejo sua foto\r\nParece que você tá falando comigo\r\nQuem vai carregar esse crucifixo?\r\n\r\nBem que eu queria te ver\r\nMas não posso\r\nPorque meus olhos estão encharcados\r\nEu não consigo te ver\r\nPelo menos por enquanto\r\n\r\nEu não queria partir\r\nMas você me convenceu\r\nEu não queria partir (Eu não queria partir)\r\nMas você me convenceu\r\nEu não queria partir\r\nMas você me convenceu\r\nEu não queria partir"
+    },
+    "album": {
+        "name": "Selvagens à Procura de Lei",
+        "year": 2013,
+        "track": 5,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -14.38,
+        "gain_db": -1.62
+    },
+    "alignment_quality": {
+        "score": 93.4,
+        "flags": [
+            "palavras empilhadas (9)",
+            "0% das palavras no silêncio da voz",
+            "versos com palavras espalhadas por igual (1)",
+            "versos fora do tempo do canto (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.09
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.09
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.28
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.09
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.17
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.15
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ]
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.66
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.55
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "espalhadas por igual",
+                    "no silêncio"
+                ],
+                "stem_offset": -1.28
+            }
+        ],
+        "metrics": {
+            "words": 225,
+            "lines": 45,
+            "stacked": 9,
+            "short": 0,
+            "past_end": 0,
+            "silence": 1,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 1,
+            "stem_checked_lines": 43,
+            "displaced_lines": 1
+        },
+        "severe_lines": [
+            40,
+            42,
+            44
+        ]
+    },
+    "needs_review": false
+}

@@ -1,0 +1,418 @@
+{
+    "meta": {
+        "title": "Águas de Março",
+        "artist": "Elis Regina",
+        "language": "pt",
+        "slug": "aguas-de-marco-elis-regina"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=BnB1G63XvCQ",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "É pau, é pedra, é o fim do caminho\nÉ um resto de toco, é um pouco sozinho\nÉ um caco de vidro, é a vida, é o sol\nÉ a noite, é a morte, é o laço, é o anzol\n\nÉ peroba do campo, é o nó da madeira\nCaingá, candeia, é o Matita Pereira\nÉ madeira de vento, tombo da ribanceira\nÉ o mistério profundo, é o queira ou não queira\n\nÉ o vento ventando, é o fim da ladeira\nÉ a viga, é o vão, festa da cumeeira\nÉ a chuva chovendo, é conversa ribeira\nDas águas de março, é o fim da canseira\n\nÉ o pé, é o chão, é a marcha estradeira\nPassarinho na mão, pedra de atiradeira\nUma ave no céu, uma ave no chão\nÉ um regato, é uma fonte, é um pedaço de pão\n\nÉ o fundo do poço, é o fim do caminho\nNo rosto o desgosto, é um pouco sozinho\nÉ um estrepe, é um prego, é uma ponta, é um ponto\nÉ um pingo pingando, é uma conta, é um conto\n\nÉ um peixe, é um gesto, é uma prata brilhando\nÉ a luz da manhã, é o tijolo chegando\nÉ a lenha, é o dia, é o fim da picada\nÉ a garrafa de cana, o estilhaço na estrada\n\nÉ o projeto da casa, é o corpo na cama\nÉ o carro enguiçado, é a lama, é a lama\nÉ um passo, é uma ponte, é um sapo, é uma rã\nÉ um resto de mato, na luz da manhã\n\nSão as águas de março fechando o verão\nÉ a promessa de vida no teu coração\n\nÉ pau, é pedra, é o fim do caminho\nÉ um resto de toco, é um pouco sozinho\nÉ uma cobra, é um pau, é João, é José\nÉ um espinho na mão, é um corte no pé\n\nSão as águas de março fechando o verão\nÉ a promessa de vida no teu coração\n\nÉ pau, é pedra, é o fim do caminho\nÉ um resto de toco, é um pouco sozinho\nÉ um passo, é uma ponte, é um sapo, é uma rã\nÉ um belo horizonte, é uma febre terçã\n\nSão as águas de março fechando o verão\nÉ a promessa de vida no teu coração\n\nÉ pau, é pedra, é o fim do caminho\nÉ um resto de toco, é um pouco sozinho\nÉ pau, é pedra, é o fim do caminho\nÉ um resto de toco, é um pouco sozinho\n\nPau, pedra, fim do caminho\nResto de toco, um pouco sozinho\nPau, pedra, fim do caminho\nResto de toco, um pouco sozinho"
+    },
+    "album": {
+        "name": "Elis",
+        "year": 1972,
+        "track": 7,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -15.22,
+        "gain_db": -0.78
+    },
+    "alignment_quality": {
+        "score": 78.3,
+        "flags": [
+            "palavras empilhadas (59)",
+            "palavras com menos de 80 ms (16)",
+            "palavras depois do fim do verso (16)",
+            "2% das palavras no silêncio da voz",
+            "versos sobrepostos (7)",
+            "versos fora do tempo do canto (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.21
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.37
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "grudadas",
+                    "no silêncio",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "grudadas",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.2
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": 0.18
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do ritmo",
+                    "grudadas"
+                ],
+                "stem_offset": -0.1
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas",
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas",
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "no silêncio",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 49,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 444,
+            "lines": 50,
+            "stacked": 59,
+            "short": 16,
+            "past_end": 16,
+            "silence": 7,
+            "long_verses": 0,
+            "overlaps": 7,
+            "uniform_lines": 0,
+            "stem_checked_lines": 40,
+            "displaced_lines": 1
+        },
+        "severe_lines": [
+            18,
+            30,
+            31,
+            32,
+            36,
+            37,
+            42,
+            43
+        ]
+    },
+    "needs_review": true
+}

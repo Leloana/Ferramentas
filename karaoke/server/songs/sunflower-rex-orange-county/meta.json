@@ -1,0 +1,355 @@
+{
+    "meta": {
+        "title": "Sunflower",
+        "artist": "Rex Orange County",
+        "language": "en",
+        "slug": "sunflower-rex-orange-county"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=D-6FeedpTpg",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "I want to know\nWhere I can go\nWhen you're not around\nAnd I'm feeling down\nSo won't you stay for a moment\nSo I can say\nI, I need you so\n\n'Cause right now you know that nothing here's new\nAnd I'm obsessed with you\nThen I fell to the ground\nAnd you smiled at me and said\n\nI don't wanna see you cry\nYou don't have to feel this emptiness\nShe said I love you till the day that I die\nWell maybe she's right\n'Cause I don't wanna feel like I'm not me\nAnd to be honest I don't even know why\nI let myself get down in the first place\n\nTryna keep my mind at bay\nSunflower still grows at night\nWaiting for a minute till the sun's seen through my eyes\nMake it down down, do-do-down\nDiggy dig down, du du du du\nWaiting for a minute till the sun's seen through my eyes\n\nYou know you need to get yourself to sleep and dream\nA dream of you and I\nThere's no need to keep an open eye\nI promise I'm the one for you\nJust let me hold you in these arms tonight\nI'm lucky to be me and you can see it in my face\nBack when I fucked my shit up too many times\nWhy would I let myself get down in the first place\n\nTryna keep my mind at bay\nSunflower still grows at night\nWaiting for a minute till the sun's seen through my eyes\nMake it down down, do-do-down\nDiggy dig down, du du du\nWaiting for a minute till the sun's seen through my eyes\n\nAnd so she sat me down and told me that I didn't have to cry\nSaid I didn't need to get down and feel empty inside\nAnd told me that she'll love me for as long as she's alive\nAnd well, maybe she's right, 'cause I hate it when I feel like I'm not me\nSee, I honestly, don't even know why\nI, I honestly don't even know why\n\nTryna keep my mind at bay\nSunflower still grows at night\nWaiting for a minute till the sun's seen through my eyes\nMake it down down, do-do-down\nDiggy dig down, du du du\nWaiting for a minute till the sun's seen through my eyes"
+    },
+    "album": {
+        "name": null,
+        "year": null,
+        "track": null,
+        "kind": "single",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -12.09,
+        "gain_db": -3.91
+    },
+    "alignment_quality": {
+        "score": 96.2,
+        "flags": [
+            "palavras empilhadas (3)",
+            "versos fora do tempo do canto (2)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.1
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ]
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 3.4
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.09
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 3.78
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.39
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 49,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.02
+            }
+        ],
+        "metrics": {
+            "words": 391,
+            "lines": 50,
+            "stacked": 3,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 44,
+            "displaced_lines": 2
+        },
+        "severe_lines": [
+            6,
+            21,
+            35
+        ]
+    },
+    "needs_review": false
+}

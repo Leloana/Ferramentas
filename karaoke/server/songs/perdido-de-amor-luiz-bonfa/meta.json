@@ -1,0 +1,131 @@
+{
+    "meta": {
+        "title": "Perdido de Amor",
+        "artist": "Luiz Bonfá",
+        "language": "pt",
+        "slug": "perdido-de-amor-luiz-bonfa"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=JdgIv2kwmBU",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Perdido de amor, perdido estou por você\nAmar seu olhar, seus lábios beijar é viver\nÀ luz do luar eu fico a pensar em você\nUm verso que diz: serei tão feliz com você\n\nPerdido de amor, perdido estou por você\nSeu beijo sensual, carícia ideal, não posso esquecer\nE vivo a sonhar, seu nome a chamar, só penso em você\nPerdido de amor, perdido estou por você\n\nPerdido de amor, perdido estou por você\nSeu beijo sensual, carícia ideal, não posso esquecer\nE vivo a sonhar, seu nome a chamar, só penso em você\nPerdido de amor, perdido estou por você"
+    },
+    "album": {
+        "name": "Solo in Rio 1959",
+        "year": 1959,
+        "track": 10,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -24.52,
+        "gain_db": 8.52
+    },
+    "alignment_quality": {
+        "score": 81.5,
+        "flags": [
+            "6% das palavras no silêncio da voz",
+            "versos com mais de 12 s (1)",
+            "versos com palavras espalhadas por igual (1)",
+            "versos fora do tempo do canto (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "espalhadas por igual",
+                    "longo",
+                    "no silêncio"
+                ],
+                "stem_offset": 29.45
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.02
+            }
+        ],
+        "metrics": {
+            "words": 102,
+            "lines": 12,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 6,
+            "long_verses": 1,
+            "overlaps": 0,
+            "uniform_lines": 1,
+            "stem_checked_lines": 12,
+            "displaced_lines": 1
+        },
+        "severe_lines": [
+            8
+        ]
+    },
+    "needs_review": false
+}

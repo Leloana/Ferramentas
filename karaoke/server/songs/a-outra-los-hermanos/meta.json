@@ -1,0 +1,213 @@
+{
+    "meta": {
+        "title": "A Outra",
+        "artist": "Los Hermanos",
+        "language": "pt",
+        "slug": "a-outra-los-hermanos"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=4CDdPiParJA",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Paz, eu quero paz\nJá me cansei de ser a última a saber de ti\nSe todo mundo sabe quem te faz\nChegar mais tarde\nEu já cansei de imaginar você com ela\nDiz pra mim\nSe vale a pena, amor\nA gente ria tanto desses nossos desencontros\nMas você passou do ponto\nE agora eu já não sei mais\nEu quero paz\nQuero dançar com outro par\nPra variar, amor\nNão dá mais pra fingir que ainda não vi\nAs cicatrizes que ela fez\nSe dessa vez\nEla é senhora deste amor\nPois vá embora, por favor\nQue não demora pra essa dor\nSangrar\nNão dá mais pra fingir que ainda não vi\nAs cicatrizes que ela fez\nSe dessa vez\nEla é senhora deste amor\nPois vá embora, por favor\nQue não demora pra essa dor\nSangrar"
+    },
+    "album": {
+        "name": "Ventura",
+        "year": 2003,
+        "track": 6,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -13.4,
+        "gain_db": -2.6
+    },
+    "alignment_quality": {
+        "score": 95.4,
+        "flags": [
+            "palavras empilhadas (8)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ]
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 139,
+            "lines": 27,
+            "stacked": 8,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 24,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            20
+        ]
+    },
+    "needs_review": false
+}

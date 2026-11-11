@@ -1,0 +1,401 @@
+{
+    "meta": {
+        "title": "Essa Moça Tá Diferente",
+        "artist": "Chico Buarque",
+        "language": "pt",
+        "slug": "essa-moca-ta-diferente-chico-buarque"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=Ix6D9QC8rpA",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Essa moça tá diferente\nJá não me conhece mais\nEstá pra lá de pra frente\nEstá me passando pra trás\n\nEssa moça tá decidida\nA se supermodernizar\nEla só samba escondida\nQue é pra ninguém reparar\n\nEu cultivo rosas e rimas\nAchando que é muito bom\nEla me olha de cima\nE vai desinventar o som\n\nFaço-lhe um concerto de flauta\nE não lhe desperto emoção\nEla quer ver o astronauta\nDescer na televisão\n\nMas o tempo vai\nMas o tempo vem\nEla me desfaz\nMas o que é que tem?\nQue ela só me guarda despeito\nQue ela só me guarda desdém\n\nMas o tempo vai\nMas o tempo vem\nEla me desfaz\nMas o que é que tem?\nSe do lado esquerdo do peito\nNo fundo, ela ainda me quer bem\n\nEssa moça tá diferente\nJá não me conhece mais\nEstá pra lá de pra frente\nEstá me passando pra trás\n\nEssa moça é a tal da janela\nQue eu me cansei de cantar\nE agora está só na dela\nBotando só pra quebrar\n\nMas o tempo vai\nMas o tempo vem\nEla me desfaz\nMas o que é que tem?\nQue ela só me guarda despeito\nQue ela só me guarda desdém\n\nMas o tempo vai\nMas o tempo vem\nEla me desfaz\nMas o que é que tem?\nSe do lado esquerdo do peito\nNo fundo, ela ainda me quer bem\n\nEssa moça..."
+    },
+    "album": {
+        "name": "A Arte de Chico Buarque",
+        "year": 1990,
+        "track": 12,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -14.04,
+        "gain_db": -1.96
+    },
+    "alignment_quality": {
+        "score": 82.7,
+        "flags": [
+            "palavras empilhadas (10)",
+            "palavras com menos de 80 ms (15)",
+            "palavras depois do fim do verso (13)",
+            "0% das palavras no silêncio da voz",
+            "versos sobrepostos (11)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.05
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.08
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.18
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.14
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.4
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.09
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ],
+                "stem_offset": 0.4
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.28
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.48
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ],
+                "stem_offset": 0.68
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "no silêncio",
+                    "palavras curtas"
+                ],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas",
+                    "palavras curtas"
+                ],
+                "stem_offset": -0.28
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ],
+                "stem_offset": -0.12
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": 0.03
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.25
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": [
+                    "palavras curtas"
+                ],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.03
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.38
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 237,
+            "lines": 49,
+            "stacked": 10,
+            "short": 15,
+            "past_end": 13,
+            "silence": 1,
+            "long_verses": 0,
+            "overlaps": 11,
+            "uniform_lines": 0,
+            "stem_checked_lines": 48,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            37,
+            39
+        ]
+    },
+    "needs_review": false
+}

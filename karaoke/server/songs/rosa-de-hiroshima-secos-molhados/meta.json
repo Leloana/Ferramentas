@@ -1,0 +1,101 @@
+{
+    "meta": {
+        "title": "Rosa de Hiroshima",
+        "artist": "Secos & Molhados",
+        "language": "pt",
+        "slug": "rosa-de-hiroshima-secos-molhados"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=xjAdCroaMFQ",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Pensem nas crianças, mudas, telepáticas\nPensem nas meninas, cegas, inexatas\nPensem nas mulheres, rotas alteradas\n\nPensem nas feridas, como rosas cálidas\nMas, oh, não se esqueçam da rosa, da rosa\nDa rosa de Hiroshima, a rosa hereditária\nA rosa radioativa, estúpida e inválida\n\nA rosa com cirrose, a anti-rosa atômica\nSem cor, sem perfume, sem rosa, sem nada"
+    },
+    "album": {
+        "name": "Gigantes",
+        "year": 1973,
+        "track": 7,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -19.66,
+        "gain_db": 3.66
+    },
+    "alignment_quality": {
+        "score": 100.0,
+        "flags": [],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            }
+        ],
+        "metrics": {
+            "words": 58,
+            "lines": 9,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 9,
+            "displaced_lines": 0
+        },
+        "severe_lines": []
+    },
+    "needs_review": false
+}

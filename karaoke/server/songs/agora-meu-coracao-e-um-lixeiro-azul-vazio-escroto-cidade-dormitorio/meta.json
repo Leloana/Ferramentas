@@ -1,0 +1,222 @@
+{
+    "meta": {
+        "title": "Agora Meu Coração É Um Lixeiro Azul Vazio Escroto",
+        "artist": "Cidade Dormitório",
+        "language": "pt",
+        "slug": "agora-meu-coracao-e-um-lixeiro-azul-vazio-escroto-cidade-dormitorio"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=2zBJ5JrmcR0",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Quando você chegar\nQuando você chegar, eu não quero mais estar aqui\nQuando você chegar\nQuando você chegar, eu não quero mais estar aqui\n\nVocê magoou meu coração\nE agora no meu peito rola algo meio mau\nUm pedaço de plástico pesado e azul\nDepredando o meu miocárdio tão sentimental\n\nAgora o meu coração é um lixeiro azul vazio escroto\nAgora o meu coração é um lixeiro azul vazio escroto\nAgora o meu coração é um lixeiro azul vazio escroto\nAzul vazio\nAzul vazio\nAzul vazio\n\nVocê magoou meu coração\nE agora no meu peito rola algo meio mau\nUm pedaço de plástico pesado e azul\nDepredando o meu miocárdio tão sentimental\n\nAgora o meu coração é um lixeiro azul vazio escroto\nAgora o meu coração é um lixeiro azul vazio escroto\nAgora o meu coração é um lixeiro azul vazio escroto\nAzul vazio\nAzul vazio\nAzul vazio"
+    },
+    "album": {
+        "name": "Esperando o Pior (EP)",
+        "year": 2017,
+        "track": 2,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -13.23,
+        "gain_db": -2.77
+    },
+    "alignment_quality": {
+        "score": 67.5,
+        "flags": [
+            "palavras empilhadas (18)",
+            "palavras com menos de 80 ms (19)",
+            "palavras depois do fim do verso (16)",
+            "versos sobrepostos (6)",
+            "versos fora do tempo do canto (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "fora do verso",
+                    "grudadas",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": -4.74
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "grudadas",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 148,
+            "lines": 24,
+            "stacked": 18,
+            "short": 19,
+            "past_end": 16,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 6,
+            "uniform_lines": 0,
+            "stem_checked_lines": 16,
+            "displaced_lines": 1
+        },
+        "severe_lines": [
+            9,
+            14
+        ]
+    },
+    "needs_review": true
+}

@@ -1,0 +1,187 @@
+{
+    "meta": {
+        "title": "Trem Das Onze",
+        "artist": "Adoniran Barbosa",
+        "language": "pt",
+        "slug": "trem-das-onze-adoniran-barbosa"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=Ted9UTfKvco",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Não posso ficar nem mais um minuto com você\nSinto muito amor, mas não pode ser\nMoro em Jaçanã, se eu perder esse trem\nQue sai agora às 11 horas, só amanhã de manhã\n\nNão posso ficar nem mais um minuto com você\nSinto muito amor, mas não pode ser\nMoro em Jaçanã, se eu perder esse trem\nQue sai agora às 11 horas, só amanhã de manhã\n\nAlém disso, mulher, tem outra coisa\nMinha mãe não dorme enquanto eu não chegar\n\nSou filho único\nTenho minha casa pra olhar\nNão posso ficar\n\nNão posso ficar nem mais um minuto com você\nSinto muito amor, mas não pode ser\nMoro em Jaçanã, se eu perder esse trem\nQue sai agora às 11 horas, só amanhã de manhã\n\nAlém disso, mulher, tem outra coisa\nMinha mãe não dorme enquanto eu não chegar\n\nSou filho único\nTenho minha casa pra olhar\nNão posso ficar"
+    },
+    "album": {
+        "name": "Talento",
+        "year": 1999,
+        "track": 2,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -17.93,
+        "gain_db": 1.93
+    },
+    "alignment_quality": {
+        "score": 92.7,
+        "flags": [
+            "versos fora do tempo do canto (2)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.11
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 1.38
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -0.96
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.17
+            }
+        ],
+        "metrics": {
+            "words": 152,
+            "lines": 22,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 21,
+            "displaced_lines": 2
+        },
+        "severe_lines": [
+            12,
+            19
+        ]
+    },
+    "needs_review": false
+}

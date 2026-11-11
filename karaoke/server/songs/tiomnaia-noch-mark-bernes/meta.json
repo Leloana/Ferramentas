@@ -1,0 +1,149 @@
+{
+    "meta": {
+        "title": "Тёмная ночь",
+        "artist": "Марк Бернес",
+        "language": "ru",
+        "slug": "tiomnaia-noch-mark-bernes"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=iqjv1x_lOBo",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Темная ночь, только пули свистят по степи\nТолько ветер гудит в проводах, тускло звезды мерцают\nВ темную ночь ты любимая знаю не спишь\nИ у детской кроватки тайком ты слезу утираешь\n\nКак я люблю глубину твоих ласковых глаз\nКак я хочу к ним прижаться сейчас губами\nТемная ночь разделяет, любимая, нас\nИ тревожная черная степь пролегла между нами\n\nВерю в тебя, в дорогую подругу мою\nЭта вера от пули меня темной ночью хранила\nРадостно мне, я спокоен в смертельном бою\nЗнаю, встретишь с любовью меня, что б со мной ни случилось\n\nСмерть не страшна, с ней встречались не раз мы в степи\nВот и теперь надо мною она кружится\nТы меня ждешь, и у детской кроватки не спишь\nИ поэтому, знаю, со мной ничего не случится"
+    },
+    "album": {
+        "name": null,
+        "year": null,
+        "track": null,
+        "kind": "unknown",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -26.67,
+        "gain_db": 10.67
+    },
+    "alignment_quality": {
+        "score": 100.0,
+        "flags": [],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.13
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            }
+        ],
+        "metrics": {
+            "words": 134,
+            "lines": 17,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 17,
+            "displaced_lines": 0
+        },
+        "severe_lines": []
+    },
+    "needs_review": false
+}

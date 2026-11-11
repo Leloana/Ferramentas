@@ -1,0 +1,631 @@
+{
+    "meta": {
+        "title": "Songs for Smoke, Vol. 1",
+        "artist": "Sotam",
+        "language": "pt",
+        "slug": "songs-for-smoke-vol-1-sotam"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=k17r3zaxjhs",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Um, dois, três e...\n\nOh, girl\nEu te dou o céu\nUma flor, duas noites\nNesse motel\nMe instigou, me amarrou o seu blue jeans chanel\nTira sua camisa\nQue o resto eu vou tirar\nÉ só você falar\n\nPuff, puff, puff, weed\nMistura o baco com esse haxixe\nColoca a flora no toca disc\nNós nessa cama fazemos hit, girl\nLove, love, love me\nAqui em Sampa' ou lá em Paris\nSei que é bandida tipo Arlequina\nNos combinamos não só no drip, girl\nAgora você entende porque por onde eu passo chamam de O.G\nDaqueles que ninguém prende\nMas agora ama tá preso a ti\nEu sei é inacreditável shawty, mas você tem que deixar fluir\nQuantos você viu assim igual a mim\nIgual a você eu também nunca vi, girl\n\nOh, girl\nEu te dou o céu\nUma flor, duas noites\nNesse motel\nMe instigou, me amarrou o seu blue jeans chanel\nTira sua camisa\nQue o resto eu vou tirar\nÉ só você falar\n\nNós nesse Chinese bar\nPede um sushi\nÉ tão louco como você sempre está\nMuito chique\nMe parece que o tempo para\nBaby, eu odeio quando você cala\nOk, ok\nEu sei que deixei a desejar tudo bem\nImaginar, imaginei\nImagem sua na frente\nDaquele mar transparente\nParecia a Beyoncé, só que melhor\nCai aqui entre a gente girl\nNós lá em Palm beach\nCalifórnia weed\nVocê quente que\nGata eu quase me queimei\nDesculpa deixar triste\nOu hackear seu insta\nTudo por ciúmes\nGata eu também errei-ei\n\nBae, me dá um sinal\nSe quiser, ou se não\nOh, oh, céus, hoje eu vou te hm—hm—hm... ver de novo\nBae, me dá um sinal\nSe quiser, ou se não\nOh, oh, céus, hoje eu vou te hm—hm—hm... ver de novo\n\nEu vi seu visu'\nEles também viram\nCalifórnia chique\nIsso já me deu nos nervos\nTava tão propício, arruma intriga\nE você me deu um beijo\nAté lembrei do primeiro... não sossego\nSabe que eu sou sincero e não cinzeiro\nPra apagar fogo de palha\nSabe como eu fico se tiver de saia\nNunca dou um erro, muito menos falha\nDo jeito que rebola, essa vida é uma metade\nLiga no meu celular\nOnde 'cê tiver só deixa eu te buscar\nEu to no caminho e vou adiantar\nEu tô apaixonado e sei que não é só fase\n\nBae, me dá um sinal\nSe quiser, ou se não\nOh, oh, céus, hoje eu vou te hm—hm—hm... ver de novo\nBae, me dá um sinal\nSe quiser, ou se não\nOh, oh, céus, hoje eu vou te hm—hm—hm... ver de novo\n\nHm—hm—hm, ohh\nJá que tu me usou\nI don't know\nVem no mó' breque, de Nike Bruin, ohh\nSenta que te quero mais\nSei que tu não é nada shay', baby, baby\nPaca de copão no baile\n2L e um lime, nine, não\nMinha mão desliza naquele falcão\nSinto seu cheiro molhando edredom (Shii)\nNa maciota um bom som, bae\nFaz da madruga um mundão\nNão para meu Deus, que tesão bom\nFoda na cama e no chão\nGamo naquele teu bom tom, oh, yeah"
+    },
+    "album": {
+        "name": null,
+        "year": null,
+        "track": null,
+        "kind": "single",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -16.69,
+        "gain_db": 0.69
+    },
+    "alignment_quality": {
+        "score": 94.1,
+        "flags": [
+            "palavras empilhadas (7)",
+            "versos com palavras espalhadas por igual (1)",
+            "versos fora do tempo do canto (5)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.13
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.23
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.12
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.09
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.1
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.51
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -1.0
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.05
+            },
+            {
+                "idx": 49,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 50,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 51,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 52,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 1.12
+            },
+            {
+                "idx": 53,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 54,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.09
+            },
+            {
+                "idx": 55,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 1.09
+            },
+            {
+                "idx": 56,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.09
+            },
+            {
+                "idx": 57,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.15
+            },
+            {
+                "idx": 58,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 59,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 60,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 61,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 62,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 63,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 64,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 65,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 66,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 67,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 68,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 69,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 70,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 71,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 72,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 73,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 74,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 1.24
+            },
+            {
+                "idx": 75,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 76,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.11
+            },
+            {
+                "idx": 77,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 1.18
+            },
+            {
+                "idx": 78,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.55
+            },
+            {
+                "idx": 79,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 80,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 81,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 82,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.16
+            },
+            {
+                "idx": 83,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.18
+            },
+            {
+                "idx": 84,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 85,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 86,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 87,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ]
+            },
+            {
+                "idx": 88,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 89,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 90,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 91,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 92,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 93,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 94,
+                "confidence": null,
+                "flags": [
+                    "espalhadas por igual"
+                ]
+            }
+        ],
+        "metrics": {
+            "words": 523,
+            "lines": 95,
+            "stacked": 7,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 1,
+            "stem_checked_lines": 78,
+            "displaced_lines": 5
+        },
+        "severe_lines": [
+            8,
+            36,
+            52,
+            55,
+            74,
+            77,
+            87,
+            94
+        ]
+    },
+    "needs_review": false
+}

@@ -1,0 +1,140 @@
+{
+    "meta": {
+        "title": "Coisa Mais Linda",
+        "artist": "João Gilberto",
+        "language": "pt",
+        "slug": "coisa-mais-linda-joao-gilberto"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=CtvDavh7w1c",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Coisa mais bonita é você\nAssim, justinho você\nEu juro, eu não sei por que você\n\nVocê é mais bonita que a flor\nQuem dera, a primavera da flor\nTivesse todo esse aroma de beleza\nQue é o amor\nPerfumando a natureza\nNuma forma de mulher\n\nPorque tão linda assim não existe\nA flor, nem mesmo a cor não existe\nE o amor, nem mesmo o amor existe\n\nPorque tão linda assim não existe\nA flor, nem mesmo a cor não existe\nE o amor, nem mesmo o amor existe"
+    },
+    "album": {
+        "name": "O Mito",
+        "year": 1959,
+        "track": 15,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -13.96,
+        "gain_db": -2.04
+    },
+    "alignment_quality": {
+        "score": 98.0,
+        "flags": [
+            "3% das palavras no silêncio da voz"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            }
+        ],
+        "metrics": {
+            "words": 90,
+            "lines": 15,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 3,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 14,
+            "displaced_lines": 0
+        },
+        "severe_lines": []
+    },
+    "needs_review": false
+}

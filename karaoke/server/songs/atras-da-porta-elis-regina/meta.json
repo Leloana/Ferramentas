@@ -1,0 +1,190 @@
+{
+    "meta": {
+        "title": "Atrás da Porta",
+        "artist": "Elis Regina",
+        "language": "pt",
+        "slug": "atras-da-porta-elis-regina"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=I1Ub9Ie6Rzo",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Quando olhaste bem\nNos olhos meus\nE o teu olhar\nEra de adeus\nJuro que não acreditei\n\nEu te estranhei, me debrucei\nSobre teu corpo\nE duvidei\nE me arrastei\nE te arranhei\n\nE me agarrei nos teus cabelos\nNo teu peito\nTeu pijama\nNos teus pés ao pé da cama\n\nSem carinho, sem coberta\nNo tapete atrás da porta\nReclamei baixinho\nDei pra maldizer o nosso lar\n\nPra sujar teu nome, te humilhar\nE me vingar a qualquer preço\nTe adorando pelo avesso\nPra mostrar que 'inda sou tua\nAté provar que 'inda sou tua"
+    },
+    "album": {
+        "name": "Elis",
+        "year": 1972,
+        "track": 8,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -20.69,
+        "gain_db": 4.69
+    },
+    "alignment_quality": {
+        "score": 95.0,
+        "flags": [
+            "1% das palavras no silêncio da voz",
+            "versos com mais de 12 s (1)",
+            "versos com palavras espalhadas por igual (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.11
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.11
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.21
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [
+                    "espalhadas por igual",
+                    "longo",
+                    "no silêncio"
+                ]
+            }
+        ],
+        "metrics": {
+            "words": 96,
+            "lines": 23,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 1,
+            "long_verses": 1,
+            "overlaps": 0,
+            "uniform_lines": 1,
+            "stem_checked_lines": 18,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            22
+        ]
+    },
+    "needs_review": false
+}

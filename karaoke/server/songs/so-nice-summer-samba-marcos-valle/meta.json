@@ -1,0 +1,122 @@
+{
+    "meta": {
+        "title": "So Nice (Summer Samba)",
+        "artist": "Marcos Valle",
+        "language": "en",
+        "slug": "so-nice-summer-samba-marcos-valle"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=-sM-BxtS5jQ",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Você viu só que amor nunca vi coisa assim\nE passou, nem parou, mas olhou só pra mim\nSe voltar, vou atrás, vou pedir, vou falar\nVou contar que o amor foi feitinho pra dar\nOlha é como o verão quente o coração\nSalta de repente só pra ver a menina que vem\nEla vem sempre tem esse mar no olhar\nE vai ver tem que ser nunca tem que amar\nHoje sim diz que sim já cansei de esperar\nNem parei, nem dormi, só pensando em me dar\nPeço, mas você não vem\nDeixo então, falo só, digo ao céu, mas você vem\nVocê viu só que amor nunca vi coisa assim\nE passou, nem parou, mas olhou só pra mim\nSe voltar, vou atrás, vou pedir, vou falar\nVou contar que o amor foi feitinho pra dar\nOlha é como o verão quente o coração\nSalta de repente só pra ver a menina que vem\nEla vem sempre tem esse mar no olhar\nE vai ver tem que ser nunca tem que amar\nHoje sim diz que sim já cansei de esperar\nNem parei, nem dormi, só pensando em me dar\nPeço, mas você não vem\nDeixo então, falo só, digo ao céu, mas você vem"
+    },
+    "album": {
+        "name": "Samba '68",
+        "year": 1968,
+        "track": 3,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -18.63,
+        "gain_db": 2.63
+    },
+    "alignment_quality": {
+        "score": 99.4,
+        "flags": [
+            "1% das palavras no silêncio da voz"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 104,
+            "lines": 12,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 1,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 11,
+            "displaced_lines": 0
+        },
+        "severe_lines": []
+    },
+    "needs_review": false
+}

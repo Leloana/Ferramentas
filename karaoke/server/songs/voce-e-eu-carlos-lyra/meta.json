@@ -1,0 +1,119 @@
+{
+    "meta": {
+        "title": "Você e Eu",
+        "artist": "Carlos Lyra",
+        "language": "pt",
+        "slug": "voce-e-eu-carlos-lyra"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=MvIWH_swZo0",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Podem me chamar e me pedir e me rogar\nE podem mesmo falar mal\nFicar de mal que não faz mal\nPodem preparar milhões de festas ao luar\n\nEu não vou ir, melhor nem pedir\nEu não vou ir, não quero ir\nE também podem me entregar\nE até sorrir, até chorar\n\nE podem mesmo imaginar o que melhor lhes parecer\nPodem espalhar que eu estou cansado de viver\nE que é uma pena para quem me conheceu\nEu sou mais você é eu"
+    },
+    "album": {
+        "name": "Rapaz De Bem",
+        "year": 1961,
+        "track": 3,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -15.8,
+        "gain_db": -0.2
+    },
+    "alignment_quality": {
+        "score": 100.0,
+        "flags": [],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            }
+        ],
+        "metrics": {
+            "words": 84,
+            "lines": 12,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 12,
+            "displaced_lines": 0
+        },
+        "severe_lines": []
+    },
+    "needs_review": false
+}

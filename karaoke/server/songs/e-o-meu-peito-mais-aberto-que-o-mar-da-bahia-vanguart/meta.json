@@ -1,0 +1,346 @@
+{
+    "meta": {
+        "title": "E O Meu Peito Mais Aberto Que o Mar da Bahia",
+        "artist": "Vanguart",
+        "language": "pt",
+        "slug": "e-o-meu-peito-mais-aberto-que-o-mar-da-bahia-vanguart"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=5AgcdYfKhx8",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Quando eu chego em casa e você não está\nPenso em te procurar\nMesmo sabendo que vais voltar\nSe um dia foi diferente\nÉ porque tudo era diferente\nO teu amor me pôs de pé\nVem cortar meus cabelos\nVou molhar os teus olhos\nE o meu peito mais aberto que o mar da Bahia\nE eu só queria te contar\nTudo que faz em mim\n\nAh, ah, ah, quem diria que seria\nTão bonito assim viver\nTão bonito assim olhar alguém\nAh, ah, ah, quem diria que seria\nTão bonito assim viver\nTão bonito assim olhar alguém\nE não sentir medo\nE não sentir frio\nNão sentir vontade que não seja de infinito\nPodes me chamar\nPodes me chamar\n\nQuando eu chego em casa e você não está\nPenso em te procurar\nMesmo sabendo que vais voltar\nE os seus módulos\nTão bonitos que eu estranho de onde vem\nSó há uma língua entre nós\nSó há uma língua entre nós\n\nE eu só queria te guardar\nOnde eu pudesse ter\nSempre que eu sentisse medo\nTudo então\nSeria pra dizer\nQue o teu amor sem fim\nJá mudou a minha vida\n\nAh, ah, ah, quem diria que seria\nTão bonito assim viver\nTão bonito assim olhar alguém\nAh, ah, ah, quem diria que seria\nTão bonito assim"
+    },
+    "album": {
+        "name": "Beijo Estranho",
+        "year": 2017,
+        "track": 4,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -13.72,
+        "gain_db": -2.28
+    },
+    "alignment_quality": {
+        "score": 76.0,
+        "flags": [
+            "palavras empilhadas (28)",
+            "palavras com menos de 80 ms (3)",
+            "palavras depois do fim do verso (3)",
+            "versos com mais de 12 s (1)",
+            "versos sobrepostos (2)",
+            "versos fora do tempo do canto (5)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.27
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.16
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.27
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.11
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "fora do verso",
+                    "palavras curtas"
+                ],
+                "stem_offset": -3.8
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -1.53
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -1.2
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.2
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.46
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.25
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -0.95
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.61
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.61
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.5
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ]
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "longo"
+                ],
+                "stem_offset": -20.19
+            }
+        ],
+        "metrics": {
+            "words": 219,
+            "lines": 41,
+            "stacked": 28,
+            "short": 3,
+            "past_end": 3,
+            "silence": 0,
+            "long_verses": 1,
+            "overlaps": 2,
+            "uniform_lines": 0,
+            "stem_checked_lines": 34,
+            "displaced_lines": 5
+        },
+        "severe_lines": [
+            1,
+            13,
+            17,
+            18,
+            21,
+            23,
+            25,
+            28,
+            35,
+            36,
+            40
+        ]
+    },
+    "needs_review": true
+}

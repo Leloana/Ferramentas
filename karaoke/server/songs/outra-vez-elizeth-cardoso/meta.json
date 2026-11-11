@@ -1,0 +1,202 @@
+{
+    "meta": {
+        "title": "Outra Vez",
+        "artist": "Elizeth Cardoso",
+        "language": "pt",
+        "slug": "outra-vez-elizeth-cardoso"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=E4ZEog5iWtc",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Outra vez sem você\nOutra vez sem amor\nOutra vez vou sofrer, vou chorar\nAté você voltar\n\nOutra vez vou vagar\nPor aí pra esquecer\nOutra vez vou falar mal do mundo\nAté você voltar\n\nTodo mundo me pergunta\nPorque ando triste assim\nNinguém sabe o que é que eu sinto\nCom você longe de mim\n\nVejo o sol quando ele sai\nVejo a chuva quando cai\nTudo agora é só tristeza\nTraz saudade de você\n\nOutra vez sem você\nOutra vez sem amor\nOutra vez vou sofrer, vou chorar\nAté você voltar\n\nOutra vez vou vagar\nPor aí pra esquecer\nOutra vez vou falar mal do mundo\nAté você voltar\n\nOutra vez"
+    },
+    "album": {
+        "name": "Canção do Amor Demais",
+        "year": 1958,
+        "track": 8,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -22.42,
+        "gain_db": 6.42
+    },
+    "alignment_quality": {
+        "score": 97.6,
+        "flags": [
+            "versos com palavras espalhadas por igual (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.12
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.18
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.05
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [
+                    "espalhadas por igual"
+                ],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.15
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.16
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 113,
+            "lines": 25,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 1,
+            "stem_checked_lines": 24,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            16
+        ]
+    },
+    "needs_review": false
+}

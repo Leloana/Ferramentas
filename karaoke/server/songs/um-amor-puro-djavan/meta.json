@@ -1,0 +1,385 @@
+{
+    "meta": {
+        "title": "Um Amor Puro",
+        "artist": "Djavan",
+        "language": "pt",
+        "slug": "um-amor-puro-djavan"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=HA2iehAdiLM",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "O que há dentro do meu coração\nEu tenho guardado pra te dar\nE todas as horas que o tempo tem pra me conceder\nSão tuas até morrer\n\nE a tua história, eu não sei\nMas me diga só o que for bom\nUm amor tão puro\nQue ainda nem sabe a força que tem\nÉ teu e de mais ninguém\n\nTe adoro em tudo, tudo, tudo\nQuero mais que tudo, tudo, tudo\nTe amar sem limites\nViver uma grande história\n\nTe adoro em tudo, tudo, tudo\nQuero mais que tudo, tudo, tudo\nTe amar sem limites\nViver uma grande história\n\nAqui ou noutro lugar\nQue pode ser feio ou bonito\nSe nós estivermos juntos\nHaverá um céu azul\n\nUm amor puro\nNão sabe a força que tem\nMeu amor, eu juro\nSer teu e de mais ninguém\nUm amor puro\n\nO que há dentro do meu coração\nEu tenho guardado pra te dar\nE todas as horas que o tempo tem pra me conceder\nSão tuas até morrer\n\nE a tua história, eu não sei\nMas me diga só o que for bom\nUm amor tão puro\nQue ainda nem sabe a força que tem\nÉ teu e de mais ninguém\n\nTe adoro em tudo, tudo, tudo\nQuero mais que tudo, tudo, tudo\nTe amar sem limites\nViver uma grande história\n\nTe adoro em tudo, tudo, tudo\nQuero mais que tudo, tudo, tudo, tudo\nTe amar sem limites\nViver uma grande história\n\nTe adoro em tudo, tudo, tudo\nQuero mais que tudo\nTe amar sem limites\nViver uma grande história\n\nTe amar sem limites\nViver uma grande história\n\nTe adoro em tudo, tudo, tudo\nQuero mais que tudo, tudo, tudo\nTe amar sem limites\nViver uma grande história\n\nTe adoro em tudo, tudo, tudo\nQuero mais que tudo"
+    },
+    "album": {
+        "name": "Djavan Mais Tocadas",
+        "year": 1999,
+        "track": 16,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -15.83,
+        "gain_db": -0.17
+    },
+    "alignment_quality": {
+        "score": 95.6,
+        "flags": [
+            "palavras empilhadas (3)",
+            "5% das palavras no silêncio da voz",
+            "versos com mais de 12 s (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.49
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.03
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.15
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [
+                    "longo"
+                ],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.44
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.49
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.29
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 49,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 50,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 51,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas",
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 52,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 53,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            }
+        ],
+        "metrics": {
+            "words": 295,
+            "lines": 54,
+            "stacked": 3,
+            "short": 0,
+            "past_end": 0,
+            "silence": 14,
+            "long_verses": 1,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 52,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            51
+        ]
+    },
+    "needs_review": false
+}

@@ -1,0 +1,361 @@
+{
+    "meta": {
+        "title": "Novo Ciclo",
+        "artist": "Orgânico",
+        "language": "pt",
+        "slug": "novo-ciclo-organico"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=BCovKDC5cIg",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Desde sempre eles me ensinaram\nApontaram o caminho que eu devia ir\nNa minha cabeça confusões\nE sentimentos que eu não conseguia distinguir\nO tempo foi passando e eu me acostumando a levar\nO peso dessas cordas\nE o ar que eu respirava já não era puro\nFardo era duro, e isso me sufoca\nNadar contra a corrente era o dilema\nEscolha serena não era opção\nVisão pra quem tinha olhos fechados tapados\nCorrentes, cadeados segurando o coração\nOs gritos ecoavam mas ninguém ouvia\nA noite era fria, virou poesia\nVersos e canções me pareciam a saída\nDo lado a bíblia aberta me servindo como guia\nÊ-ê eu só quero saber\nQuem me perguntou o que eu queria ser\nÊ-ê eu pretendo partir\nPra qualquer lugar bem longe daqui\nÊ-ê eu só quero saber\nQuem me perguntou o que eu queria ser\nÊ-ê eu pretendo partir\nGente de mentira brinca com a verdade\nE faz da vaidade sua religião\nBuscando no preço das coisas\nValores e amores que lhe faltam no coração\nNa pressa pra meta que lhe foi vendida\nUm tanto de vida se deixa ali\nNa fila, no beijo da cena do filme\nQue não deu tempo de assistir\nFechar os olhos pra ver\nEsquecer do medo e sentir\nA fonte divina que existe dentro de si\nÉ o que te liberta a prisão\nDepende da sua visão\nPorque querer ser já não é\nE aquilo que resta é você\nVeja bem, os olhos brilham\nQuando a gente tem um novo ciclo\nPra recomeçar e calmaria\nDesacelerar a nossa vida\nOlhe só, um mundo gira, e\nGira ao redor, estrela guia\nSeja o meu farol\nTodos os dias quero ser o sol que irradia\nÊ-ê eu só quero saber\nQuem me perguntou o que eu queria ser\nÊ-ê eu pretendo partir"
+    },
+    "loudness": {
+        "lufs_before": -15.15,
+        "gain_db": -0.85
+    },
+    "alignment_quality": {
+        "score": 97.0,
+        "flags": [
+            "palavras com menos de 80 ms (5)",
+            "palavras depois do fim do verso (5)",
+            "versos fora do tempo do canto (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 1.35
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.38
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.58
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.14
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas"
+                ],
+                "stem_offset": 0.13
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.1
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.27
+            }
+        ],
+        "metrics": {
+            "words": 303,
+            "lines": 49,
+            "stacked": 0,
+            "short": 5,
+            "past_end": 5,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 49,
+            "displaced_lines": 1
+        },
+        "severe_lines": [
+            18
+        ]
+    },
+    "needs_review": false,
+    "album": {
+        "name": null,
+        "year": null,
+        "track": null,
+        "kind": "unknown",
+        "source": "itunes"
+    }
+}

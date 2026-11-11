@@ -1,0 +1,129 @@
+{
+    "meta": {
+        "title": "Sangue Latino",
+        "artist": "Secos & Molhados",
+        "language": "pt",
+        "slug": "sangue-latino-secos-molhados"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=pHOwnIil_0o",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Jurei mentiras e sigo sozinho\nAssumo os pecados\nOs ventos do norte não movem moinhos\nE o que me resta é só um gemido\n\nMinha vida, meus mortos, meus caminhos tortos\nMeu sangue latino\nMinh'alma cativa\n\nRompi tratados, traí os ritos\nQuebrei a lança, lancei no espaço\nUm grito, um desabafo\nE o que me importa é não estar vencido\n\nMinha vida, meus mortos, meus caminhos tortos\nMeu sangue latino\nMinh'alma cativa"
+    },
+    "album": {
+        "name": "Gigantes",
+        "year": 1973,
+        "track": 1,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -15.39,
+        "gain_db": -0.61
+    },
+    "alignment_quality": {
+        "score": 100.0,
+        "flags": [],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 72,
+            "lines": 14,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 12,
+            "displaced_lines": 0
+        },
+        "severe_lines": []
+    },
+    "needs_review": false
+}

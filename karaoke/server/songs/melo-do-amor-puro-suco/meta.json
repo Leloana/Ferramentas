@@ -1,0 +1,372 @@
+{
+    "meta": {
+        "title": "Melô do Amor",
+        "artist": "Puro Suco",
+        "language": "pt",
+        "slug": "melo-do-amor-puro-suco"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=gBbNRmYknbQ",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Eu preciso falar algumas coisas de\nAmor!\n\nQuando tá despenteada\nO lado leoa desperta\nTuas coxas falam me aperta\nEnvenena tua flecha e me acerta\nO som que toca, é a chave do cofre\nQue abre junto com os lábios\nQue tem o dom de gemer, e me chamar de poeta\nEu adoro quando você me dá\nImagina ação, pra entortar essa vidinha reta\nConfundo tua pernas com as de outras moças\nCom o aroma das ervas, colhidos nos jarros das tuas ideias\nGostosa!\nEm forma, de provar quem sou\nE eu sou meio exagerado, amor!\nMas se eu não te mastigar\nNão vai dar pra sentir o sabor\n\nÓh meu amor eu vou voltar\nHoje eu volto mais cedo pra casa pra ficar\nPreciso de um tempo pra poder espairecer\nBrindo outro poema concebido pelo bar\nBeija minha boca até o amanhecer\nDesgasto outro maço sem nem precisar fumar\nCorro pro teus braços pra poder me enaltecer\nCê me fez sorrir quando tentei me dirrubar\nSem ser\n\nAmor\nNão me ame demais, eu peço\n\nContinua depois do anúncio\n\nAmar demasiado geram filhos\nFilhos pagam pelo excesso\n\nA noite nos espia pela janela\nE a lua ilumina o lençol maracujá\n\nOs vizinhos escutam o tesão no ar que falta\nNos pulmões em par\n\nÊxtase, frenesi, pernas tremem\nO suor escorre, as falas gemem\n\nA cama sente, a carne mente, o corpo pede\nE quem goza?\n\nContinua depois do anúncio\n\nA gente!\n\nÓh meu amor eu vou voltar\nHoje eu volto mais cedo pra casa pra ficar\nPreciso de um tempo pra poder espairecer\nBrindo outro poema concebido pelo bar\nBeija minha boca até o amanhecer\nDesgasto outro maço sem nem precisar fumar\nCorro pro teus braços pra poder me enaltecer\nCê me fez sorrir quando tentei me dirrubar\nSem ser."
+    },
+    "album": {
+        "name": null,
+        "year": null,
+        "track": null,
+        "kind": "single",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -18.09,
+        "gain_db": 2.09
+    },
+    "alignment_quality": {
+        "score": 90.9,
+        "flags": [
+            "palavras empilhadas (11)",
+            "palavras com menos de 80 ms (4)",
+            "palavras depois do fim do verso (4)",
+            "1% das palavras no silêncio da voz",
+            "versos sobrepostos (4)",
+            "versos fora do tempo do canto (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.13
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "no silêncio",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "no silêncio",
+                    "palavras curtas",
+                    "sobreposto"
+                ],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "sobreposto"
+                ],
+                "stem_offset": 1.27
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.21
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ]
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 49,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 50,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 300,
+            "lines": 51,
+            "stacked": 11,
+            "short": 4,
+            "past_end": 4,
+            "silence": 2,
+            "long_verses": 0,
+            "overlaps": 4,
+            "uniform_lines": 0,
+            "stem_checked_lines": 36,
+            "displaced_lines": 1
+        },
+        "severe_lines": [
+            0,
+            35,
+            40
+        ]
+    },
+    "needs_review": false
+}

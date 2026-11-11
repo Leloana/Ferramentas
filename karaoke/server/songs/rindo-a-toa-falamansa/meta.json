@@ -1,0 +1,247 @@
+{
+    "meta": {
+        "title": "Rindo à Toa",
+        "artist": "Falamansa",
+        "language": "pt",
+        "slug": "rindo-a-toa-falamansa"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=5n3NSj6N-FA",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Tô numa boa, tô aqui de novo\nDaqui não saio, daqui não me movo\nTenho certeza, esse é o meu lugar, ha aha\n\nTô numa boa, tô ficando esperto\nJá não pergunto se isso tudo é certo\nE uso esse tempo pra recomeçar, ha aha\n\nDoeu, doeu, agora não dói, não dói, não dói\nChorei, chorei, agora não choro mais\nToda a mágoa que passei é motivo pra comemorar\nPois se não sofresse assim, não tinha razões pra cantar\n\nHa ha ha ha ha! Mas eu tô rindo à toa\nNão que a vida esteja assim tão boa\nMas um sorriso ajuda a melhorar, ha aha\n\nE cantando assim parece que o tempo voa\nQuanto mais triste, mais bonito soa\nEu agradeço por poder cantar\nLá-laiá, laiá, laiá-ê\n\nTô numa boa, tô aqui de novo\nDaqui não saio, daqui não me movo\nTenho certeza, esse é o meu lugar, ha aha\n\nTô numa boa, tô ficando esperto\nJá não pergunto se isso tudo é certo\nE uso esse tempo pra recomeçar, ha aha\n\nDoeu, doeu, agora não dói, não dói, não dói\nChorei, chorei, agora não choro mais\nToda a mágoa que passei é motivo pra comemorar\nPois se não sofresse assim, não tinha razões pra cantar\n\nHa ha ha ha ha! Mas eu tô rindo à toa\nNão que a vida esteja assim tão boa\nMas um sorriso ajuda a melhorar, ha aha\n\nE cantando assim parece que o tempo voa\nQuanto mais triste, mais bonito soa\nEu agradeço por poder cantar\nLá-laiá, laiá, laiá, 'simbora!"
+    },
+    "album": {
+        "name": "Deixa Entrar...",
+        "year": 2000,
+        "track": 4,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -18.41,
+        "gain_db": 2.41
+    },
+    "alignment_quality": {
+        "score": 100.0,
+        "flags": [],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 257,
+            "lines": 34,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 30,
+            "displaced_lines": 0
+        },
+        "severe_lines": []
+    },
+    "needs_review": false
+}

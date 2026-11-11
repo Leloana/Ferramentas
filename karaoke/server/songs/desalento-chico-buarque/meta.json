@@ -1,0 +1,184 @@
+{
+    "meta": {
+        "title": "Desalento",
+        "artist": "Chico Buarque",
+        "language": "pt",
+        "slug": "desalento-chico-buarque"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=XjWSYQwR-4I",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Sim, vai e diz, diz assim\nQue eu chorei, que eu morri\nDe arrependimento\nQue o meu desalento\nJá não tem mais fim\n\nVai e diz, diz assim\nComo sou infeliz\nNo meu descaminho\nDiz que estou sozinho\nE sem saber de mim\n\nDiz que eu estive por pouco\nDiz a ela que eu estou louco pra perdoar\nQue seja lá como for, por amor\nPor favor, é pra ela voltar, sim\n\nSim, vai e diz, diga assim\nQue eu rodei, que eu bebi\nQue eu caí, que eu não sei\nQue eu só sei que cansei, enfim\n\nDos meus desencontros\nCorre e diz a ela\nQue eu entrego os pontos"
+    },
+    "album": {
+        "name": "Construção",
+        "year": 1971,
+        "track": 3,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -14.51,
+        "gain_db": -1.49
+    },
+    "alignment_quality": {
+        "score": 89.0,
+        "flags": [
+            "1% das palavras no silêncio da voz",
+            "versos com palavras espalhadas por igual (1)",
+            "versos fora do tempo do canto (2)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ],
+                "stem_offset": -0.57
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.37
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": -1.97
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.14
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.32
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.09
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.12
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "espalhadas por igual"
+                ],
+                "stem_offset": -1.45
+            }
+        ],
+        "metrics": {
+            "words": 111,
+            "lines": 21,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 1,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 1,
+            "stem_checked_lines": 18,
+            "displaced_lines": 2
+        },
+        "severe_lines": [
+            6,
+            20
+        ]
+    },
+    "needs_review": false
+}

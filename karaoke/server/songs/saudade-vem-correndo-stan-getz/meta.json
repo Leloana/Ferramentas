@@ -1,0 +1,95 @@
+{
+    "meta": {
+        "title": "Saudade Vem Correndo",
+        "artist": "Stan Getz",
+        "language": "pt",
+        "slug": "saudade-vem-correndo-stan-getz"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=D0a4vuKQR5w",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Espere um pouco, meu amor\nDeixe outro amor chegar\nSe a saudade vem correndo\nÉ só para se mostrar\n\nSempre há tempo para amar\nQuando um bem você achar\nE então você vai ver, você vai ver e vai voltar\nE então você vai ver, você vai ver e vai voltar"
+    },
+    "album": {
+        "name": "Jazz Samba Encore!",
+        "year": 1963,
+        "track": 8,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -17.54,
+        "gain_db": 1.54
+    },
+    "alignment_quality": {
+        "score": 100.0,
+        "flags": [],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            }
+        ],
+        "metrics": {
+            "words": 51,
+            "lines": 8,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 8,
+            "displaced_lines": 0
+        },
+        "severe_lines": []
+    },
+    "needs_review": false
+}

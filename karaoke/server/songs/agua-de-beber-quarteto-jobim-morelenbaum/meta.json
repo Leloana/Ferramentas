@@ -1,0 +1,154 @@
+{
+    "meta": {
+        "title": "Água de Beber",
+        "artist": "Quarteto Jobim-Morelenbaum",
+        "language": "pt",
+        "slug": "agua-de-beber-quarteto-jobim-morelenbaum"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=Qic8rJRvYMU",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Eu quis amar, mas tive medo\nE quis salvar meu coração\nMas o amor sabe o segredo\nO medo pode matar o seu coração\n\nÁgua de beber\nÁgua de beber, camará\nÁgua de beber\nÁgua de beber, camará\n\nEu nunca fiz coisa tão certa\nEntrei pra escola do perdão\nA minha casa vive aberta\nAbri todas as portas do coração\n\nÁgua de beber\nÁgua de beber, camará\nÁgua de beber\nÁgua de beber, camará"
+    },
+    "album": {
+        "name": "Quarteto Jobim-Morelenbaum",
+        "year": 1995,
+        "track": 1,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -15.47,
+        "gain_db": -0.53
+    },
+    "alignment_quality": {
+        "score": 89.5,
+        "flags": [
+            "palavras com menos de 80 ms (1)",
+            "versos fora do tempo do canto (2)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.27
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.14
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "palavras curtas"
+                ],
+                "stem_offset": -2.58
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.11
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.3
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 3.1
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            }
+        ],
+        "metrics": {
+            "words": 74,
+            "lines": 16,
+            "stacked": 0,
+            "short": 1,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 16,
+            "displaced_lines": 2
+        },
+        "severe_lines": [
+            5,
+            13
+        ]
+    },
+    "needs_review": false
+}

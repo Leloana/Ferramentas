@@ -1,0 +1,224 @@
+{
+    "meta": {
+        "title": "Postal de Amor",
+        "artist": "Ney Matogrosso",
+        "language": "pt",
+        "slug": "postal-de-amor-ney-matogrosso"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=LKgWDH4yoBw",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Meu amor, sem cor, velho postal, amor banal\nSem nenhum, sem nenhum valor\nNessa noite meu pobre amor de papel\nEsqueça a cor do anúncio lá do céu\n\nNa arcada principal, secreto mal\nNuma noite de neon, de papel crepom\nNa arcada principal, secreto mal\nNuma noite de neon, de papel crepom\n\nO mar vai e volta com um gosto\nDo licor que ficou da tua boca\nDo suor que ficou na minha boca\nVai deixando minha parda voz\nParda voz, parda voz, parda voz\nParda voz de louca, louca, louca, louca\nLouca, louca, muito louca, muito louca\nLouca, louca, louca, louca, louca muito louca\n\nO mar vai e volta com um gosto\nDo licor que ficou da tua boca\nDo suor que ficou na minha boca\nVai deixando minha parda voz\nParda voz, parda voz, parda voz\nParda voz de louca, louca, louca, louca\nLouca, louca, muito louca, muito louca\nLouca, louca, louca, louca, louca muito louca"
+    },
+    "album": {
+        "name": "Bloco Na Rua",
+        "year": 2019,
+        "track": 10,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -15.85,
+        "gain_db": -0.15
+    },
+    "alignment_quality": {
+        "score": 63.0,
+        "flags": [
+            "9% das palavras no silêncio da voz",
+            "versos com mais de 12 s (2)",
+            "versos com palavras espalhadas por igual (2)",
+            "versos fora do tempo do canto (7)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "espalhadas por igual",
+                    "longo",
+                    "no silêncio"
+                ],
+                "stem_offset": 16.33
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 1.12
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 1.54
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.14
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [
+                    "deslocado",
+                    "espalhadas por igual",
+                    "longo",
+                    "no silêncio"
+                ],
+                "stem_offset": 15.68
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.0
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 1.11
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 1.13
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [
+                    "deslocado"
+                ],
+                "stem_offset": 1.66
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            }
+        ],
+        "metrics": {
+            "words": 158,
+            "lines": 24,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 14,
+            "long_verses": 2,
+            "overlaps": 0,
+            "uniform_lines": 2,
+            "stem_checked_lines": 24,
+            "displaced_lines": 7
+        },
+        "severe_lines": [
+            8,
+            12,
+            13,
+            16,
+            19,
+            20,
+            21
+        ]
+    },
+    "needs_review": true
+}

@@ -1,0 +1,352 @@
+{
+    "meta": {
+        "title": "IRIS OUT",
+        "artist": "Kenshi Yonezu",
+        "language": "ja",
+        "slug": "iris-out-kenshi-yonezu"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=LmZD-TU96q4",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "駄目駄目駄目\n脳みその中から「やめろ馬鹿」と喚くモラリティ\nダーリンベイビーダーリン\n半端なくラブ！ときらめき浮き足立つフィロソフィ\n\n死ぬほど可愛い上目遣い\nなにがし法に触れるくらい\n\nばら撒く乱心\n気づけば蕩尽\nこの世に生まれた君が悪い\n\nやたらとしんどい恋煩い\nバラバラんなる頭とこの身体\n\n頸動脈からアイラブユーが噴き出て\n\nIRIS OUT\n\n一体どうしようこの想いを\nどうしようあばらの奥を\nザラメが溶けてゲロになりそう(ぼんっ)\n\n瞳孔バチ開いて溺れ死にそう\n今この世で君だけ大正解\n\nダーリンダーリンダーリンダーリン\nダーリンダーリンダーリンダーリン\n\nひっくり返っても勝ちようない\n君だけルールは適用外\n四つともオセロは黒しかない\nカツアゲ放題\n\n君が笑顔で放ったアバダケダブラ\nデコにスティグマ申し訳ねぇな\n矢を刺して\n貫いて\nここ弱点？\n\n死ぬほど可愛い上目遣い\nなにがし法に触れるくらい\n\nばら撒く乱心\n気づけば蕩尽\nこの世に生まれた君が悪い\n\nパチモンでもいい何でもいい\n今君と名付いてる全て欲しい\n\n頸動脈からアイラブユーが噴き出て\n\nIRIS OUT\n\nIRIS OUT\n\nIRIS OUT\n\n一体どうしようこの想いを\nどうしようあばらの奥を\nザラメが溶けてゲロになりそう(ばんっ)\n\n瞳孔バチ開いて溺れ死にそう\n今この世で君だけ大正解\n\nダーリンダーリンダーリンダーリン\nダーリンダーリンダーリンダーリン"
+    },
+    "album": {
+        "name": null,
+        "year": null,
+        "track": null,
+        "kind": "single",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -13.35,
+        "gain_db": -2.65
+    },
+    "alignment_quality": {
+        "score": 64.3,
+        "flags": [
+            "confiança baixa em 44% das palavras",
+            "palavras empilhadas (3)",
+            "1% das palavras no silêncio da voz",
+            "versos fora do tempo do canto (1)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": 0.503,
+                "flags": []
+            },
+            {
+                "idx": 1,
+                "confidence": 0.665,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": 0.448,
+                "flags": []
+            },
+            {
+                "idx": 3,
+                "confidence": 0.588,
+                "flags": []
+            },
+            {
+                "idx": 4,
+                "confidence": 0.427,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": 0.315,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 6,
+                "confidence": 0.186,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 7,
+                "confidence": 0.444,
+                "flags": []
+            },
+            {
+                "idx": 8,
+                "confidence": 0.299,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 9,
+                "confidence": 0.415,
+                "flags": [],
+                "stem_offset": -0.09
+            },
+            {
+                "idx": 10,
+                "confidence": 0.305,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 11,
+                "confidence": 0.579,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 12,
+                "confidence": 0.432,
+                "flags": []
+            },
+            {
+                "idx": 13,
+                "confidence": 0.016,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 14,
+                "confidence": 0.289,
+                "flags": [
+                    "confiança baixa"
+                ],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 15,
+                "confidence": 0.112,
+                "flags": [
+                    "confiança baixa"
+                ],
+                "stem_offset": 0.18
+            },
+            {
+                "idx": 16,
+                "confidence": 0.322,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 17,
+                "confidence": 0.366,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": 0.749,
+                "flags": [],
+                "stem_offset": -0.14
+            },
+            {
+                "idx": 19,
+                "confidence": 0.154,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 20,
+                "confidence": 0.14,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 21,
+                "confidence": 0.333,
+                "flags": [
+                    "confiança baixa",
+                    "deslocado"
+                ],
+                "stem_offset": 1.7
+            },
+            {
+                "idx": 22,
+                "confidence": 0.357,
+                "flags": []
+            },
+            {
+                "idx": 23,
+                "confidence": 0.329,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 24,
+                "confidence": 0.356,
+                "flags": []
+            },
+            {
+                "idx": 25,
+                "confidence": 0.587,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 26,
+                "confidence": 0.439,
+                "flags": []
+            },
+            {
+                "idx": 27,
+                "confidence": 0.49,
+                "flags": []
+            },
+            {
+                "idx": 28,
+                "confidence": 0.489,
+                "flags": []
+            },
+            {
+                "idx": 29,
+                "confidence": 0.483,
+                "flags": []
+            },
+            {
+                "idx": 30,
+                "confidence": 0.147,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 31,
+                "confidence": 0.53,
+                "flags": []
+            },
+            {
+                "idx": 32,
+                "confidence": 0.487,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": 0.358,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": 0.243,
+                "flags": [
+                    "confiança baixa"
+                ],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 35,
+                "confidence": 0.715,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 36,
+                "confidence": 0.484,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 37,
+                "confidence": 0.434,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": 0.468,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": 0.021,
+                "flags": [
+                    "confiança baixa",
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 40,
+                "confidence": 0.074,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 41,
+                "confidence": 0.204,
+                "flags": [
+                    "confiança baixa"
+                ],
+                "stem_offset": -0.07
+            },
+            {
+                "idx": 42,
+                "confidence": 0.194,
+                "flags": [
+                    "confiança baixa"
+                ],
+                "stem_offset": 0.13
+            },
+            {
+                "idx": 43,
+                "confidence": 0.277,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 44,
+                "confidence": 0.427,
+                "flags": [],
+                "stem_offset": -0.39
+            },
+            {
+                "idx": 45,
+                "confidence": 0.286,
+                "flags": [
+                    "confiança baixa"
+                ]
+            },
+            {
+                "idx": 46,
+                "confidence": 0.086,
+                "flags": [
+                    "confiança baixa"
+                ]
+            }
+        ],
+        "metrics": {
+            "words": 158,
+            "lines": 47,
+            "low_confidence": 0.437,
+            "median_confidence": 0.408,
+            "stacked": 3,
+            "short": 0,
+            "past_end": 0,
+            "silence": 2,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 13,
+            "displaced_lines": 1
+        },
+        "severe_lines": [
+            21,
+            36
+        ]
+    },
+    "needs_review": true
+}

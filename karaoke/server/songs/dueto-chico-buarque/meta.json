@@ -1,0 +1,255 @@
+{
+    "meta": {
+        "title": "Dueto",
+        "artist": "Chico Buarque",
+        "language": "pt",
+        "slug": "dueto-chico-buarque"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=f3L6TKMKkhs",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Consta nos astros, nos signos, nos búzios\nEu li num anúncio, eu vi no espelho\n'Tá lá no evangelho, garantem os orixás\nSerás o meu amor, serás a minha paz\nConsta nos autos, nas bulas, nos dogmas\nEu fiz uma tese, eu li num tratado\nEstá computado nos dados oficiais\nSerás o meu amor, serás a minha paz\nMas se a ciência provar o contrário\nE se o calendário nos contrariar\nMas se o destino insistir em nos separar\nDanem-se os astros, (os autos), os signos, (os dogmas)\nOs búzios, (as bulas), anúncios, (tratados), ciganas, (projetos)\nProfetas, (sinopses), espelhos, (conselhos)\nSe dane o evangelho e todos os orixás\nSerás o meu amor, serás amor, a minha paz\nConsta na pauta, (no Karma), na carne\nPassou na novela, está no seguro, (picharam no muro)\nMandei fazer um cartaz\nSerás o meu amor, serás a minha paz\nMas se a ciência provar o contrário\n(E se o calendário nos contrariar)\nMas se o destino insistir em nos separar\nDanem-se os astros, (os autos), os signos, (os dogmas)\nOs búzios, (as bulas), anúncios, (tratados), ciganas, (projetos)\nProfetas, (sinopses), espelhos, (conselhos)\nSe dane o evangelho e todos os orixás\nSerás o meu amor, serás amor, a minha paz\nConsta nos mapas, (nos lábios), nos lápis\n(Consta no Google), no Twiter, (no Face), no Tinder\n(No whatsapp), no Instagram, (no email), no Snapchat\n(No Orkut, no telegrama), no Skype"
+    },
+    "album": {
+        "name": "Caravanas",
+        "year": 2017,
+        "track": 6,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -16.23,
+        "gain_db": 0.23
+    },
+    "alignment_quality": {
+        "score": 94.8,
+        "flags": [
+            "palavras empilhadas (6)",
+            "palavras com menos de 80 ms (2)",
+            "palavras depois do fim do verso (2)",
+            "versos sobrepostos (2)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [
+                    "empilhadas"
+                ],
+                "stem_offset": -0.57
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.4
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.77
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.06
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.13
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.08
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.12
+            }
+        ],
+        "metrics": {
+            "words": 234,
+            "lines": 32,
+            "stacked": 6,
+            "short": 2,
+            "past_end": 2,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 2,
+            "uniform_lines": 0,
+            "stem_checked_lines": 30,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            25
+        ]
+    },
+    "needs_review": false
+}

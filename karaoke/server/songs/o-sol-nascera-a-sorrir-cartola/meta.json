@@ -1,0 +1,124 @@
+{
+    "meta": {
+        "title": "O Sol Nascerá (A Sorrir)",
+        "artist": "Cartola",
+        "language": "pt",
+        "slug": "o-sol-nascera-a-sorrir-cartola"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=Ii1pHKXe9O0",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "A sorrir, eu pretendo levar a vida\nPois chorando, eu vi a mocidade perdida\nA sorrir, eu pretendo levar a vida\nPois chorando, eu vi a mocidade perdida\n\nFinda a tempestade\nO sol nascerá\nFinda esta saudade\nHei de ter outro alguém para amar\n\nA sorrir, eu pretendo levar a vida\nPois chorando, eu vi a mocidade perdida\nA sorrir, eu pretendo levar a vida\nPois chorando, eu vi a mocidade perdida"
+    },
+    "album": {
+        "name": "Raízes do Samba: Cartola",
+        "year": 1974,
+        "track": 2,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -14.51,
+        "gain_db": -1.49
+    },
+    "alignment_quality": {
+        "score": 94.4,
+        "flags": [
+            "palavras empilhadas (5)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.32
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.21
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.09
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.14
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            }
+        ],
+        "metrics": {
+            "words": 72,
+            "lines": 12,
+            "stacked": 5,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 10,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            7
+        ]
+    },
+    "needs_review": false
+}

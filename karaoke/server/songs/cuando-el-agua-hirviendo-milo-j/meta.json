@@ -1,0 +1,342 @@
+{
+    "meta": {
+        "title": "Cuando El Agua Hirviendo",
+        "artist": "Milo J",
+        "language": "es",
+        "slug": "cuando-el-agua-hirviendo-milo-j"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=Zwggkz3z6SY",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Cuando el agua hirviendo no queme más\nY seas esclavo de tu historial\nCuando te sinceres con esas lágrimas mal tiradas\nCuando suene raro escuchar un sí\nY pidas al tiempo volver atrás\nCuando veas las páginas no leídas que están pasadas\nCuando veas lo tonto que fuiste ayer\nY lo equivocado que aún estás\nFuiste tan feliz que no comprendiste que no es por siempre\nSolo estás y sólo aprendiste a estar\nPor vivir con miedo a volver a amar\nOjalá te quieran como quisiste\n(Tres golpes, tres golpes, tres golpes no más)\n(Y al son de la Villa Nueva tres golpes no más)\n(Tres golpes, tres golpes, tres golpes no más)\n(Y al son de la Villa Nueva tres golpes no más)\n\nAhora estoy sintiendo ese malestar\nDe querer ser alguien que ya no está\nJusto ahí es el cuando de mi porqué\nY ese es el porque de mi soledad\nDando pasos cortos hacia el altar\nPero pasos largos a progresar\nEn el juego sucio de ser feliz\nSin sufrir el doble\nSolo estás y sólo aprendiste a estar\nPor vivir con miedo a volver a amar\nOjalá te quieran como quisiste\n\nQue mal se debe estar vivo\nPa' que el fin no nos asuste\nNo encuentro un puto velero\nEn el camino de las luces\nSigo enojado conmigo\nToy malauguriando con el cuerpo de otra gente\nPor los rincones oscuros\nDel camino de las luces\n(Tres golpes, tres golpes, tres golpes no más)\nAyudame con esto\n(Y al son de la Villa Nueva tres golpes no más)\nNo me des mas consejos\n(Tres golpes, tres golpes, tres golpes no más)\nMiro el paso del tiempo\n(Y al son de la Villa Nueva tres golpes no más)\n\nCuando el agua hirviendo no queme más\nY seas esclavo de tu historial\nCuando te sinceres con esas lágrimas mal tiradas\nSolo estás y sólo aprendiste a estar\nPor vivir con miedo a volver a amar\nOjalá te quieran"
+    },
+    "album": {
+        "name": "La Vida Era Más Corta",
+        "year": 2025,
+        "track": 10,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -15.51,
+        "gain_db": -0.49
+    },
+    "alignment_quality": {
+        "score": 95.7,
+        "flags": [
+            "palavras empilhadas (17)",
+            "0% das palavras no silêncio da voz"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.03
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ]
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ]
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.42
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.22
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            }
+        ],
+        "metrics": {
+            "words": 329,
+            "lines": 48,
+            "stacked": 17,
+            "short": 0,
+            "past_end": 0,
+            "silence": 1,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 41,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            35,
+            37
+        ]
+    },
+    "needs_review": false
+}

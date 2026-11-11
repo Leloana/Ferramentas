@@ -1,0 +1,131 @@
+{
+    "meta": {
+        "title": "Para Machucar Meu Coração",
+        "artist": "Stan Getz & João Gilberto",
+        "language": "pt",
+        "slug": "para-machucar-meu-coracao-stan-getz-joao-gilberto"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=RZ9rfIR6_5c",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "Tá fazendo um ano e meio, amor\nQue o nosso lar desmoronou\nMeu sabiá, meu violão\nE uma cruel desilusão foi tudo que ficou\nFicou pra machucar meu coração\n\nTá fazendo um ano e meio, amor\nQue o nosso lar desmoronou\nMeu sabiá, meu violão\nE uma cruel desilusão foi tudo que ficou\nFicou pra machucar meu coração\n\nQuem sabe, não foi bem melhor assim\nMelhor pra você e melhor pra mim\nA vida é uma escola que a gente precisa aprender\nA ciência de viver pra não sofrer"
+    },
+    "album": {
+        "name": null,
+        "year": null,
+        "track": null,
+        "kind": "unknown",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -16.16,
+        "gain_db": 0.0
+    },
+    "alignment_quality": {
+        "score": 100.0,
+        "flags": [],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.15
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.01
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.01
+            }
+        ],
+        "metrics": {
+            "words": 89,
+            "lines": 14,
+            "stacked": 0,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 14,
+            "displaced_lines": 0
+        },
+        "severe_lines": []
+    },
+    "needs_review": false
+}

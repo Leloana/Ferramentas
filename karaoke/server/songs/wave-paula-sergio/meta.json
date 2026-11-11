@@ -1,0 +1,234 @@
+{
+    "meta": {
+        "title": "Wave",
+        "artist": "Paula Sergio",
+        "language": "pt",
+        "slug": "wave-paula-sergio"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=fBp4Vop7Zw4",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "So close your eyes\nFor that's a lovely way to be\nAware of things your heart alone was meant to see\nThe fundamental loneliness goes whenever two can dream a dream\nTogether\nYou can't deny, don't try to fight the rising sea\nDon't fight the moon, the stars above, don't fight me\nThe fundamental loneliness goes whenever two can dream a dream\nTogether\nWhen I saw you first, the time was half past three\nWhen your eyes met mine it was eternity\nBy now we know the wave is on it's way to be\nJust catch the wave, don't be afraid of loving me\nThe fundamental loneliness goes whenever two can dream a dream\nTogether\nWhen I saw you first, the time was half past three\nWhen your eyes met mine it was eternity\nBy now we know the wave is on it's way to be\nJust catch that wave, don't be afraid of loving me\nThe fundamental loneliness goes whenever two can dream a dream\nTogether\nTogether\nTogether"
+    },
+    "album": {
+        "name": "Brasil Bossa Nova Grandes Autores Vinicius Toquinho Tom Jobin",
+        "year": 2009,
+        "track": 5,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -17.69,
+        "gain_db": 1.69
+    },
+    "alignment_quality": {
+        "score": 52.2,
+        "flags": [
+            "palavras empilhadas (24)",
+            "palavras com menos de 80 ms (20)",
+            "palavras depois do fim do verso (20)",
+            "13% das palavras no silêncio da voz",
+            "versos com mais de 12 s (1)",
+            "versos sobrepostos (10)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ]
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas",
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "no silêncio",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "no silêncio",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas",
+                    "no silêncio",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [
+                    "no silêncio",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "no silêncio",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [
+                    "no silêncio",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": [
+                    "longo"
+                ]
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas"
+                ]
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": [
+                    "fora do verso",
+                    "no silêncio",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": [
+                    "no silêncio",
+                    "sobreposto"
+                ]
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": [
+                    "no silêncio"
+                ]
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 169,
+            "lines": 23,
+            "stacked": 24,
+            "short": 20,
+            "past_end": 20,
+            "silence": 22,
+            "long_verses": 1,
+            "overlaps": 10,
+            "uniform_lines": 0,
+            "stem_checked_lines": 0,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            0,
+            1,
+            7
+        ]
+    },
+    "needs_review": true
+}
