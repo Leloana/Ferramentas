@@ -350,6 +350,8 @@ def main() -> None:
     ap.add_argument("--gpu", action="store_true", help="usar CUDA se houver (só para comparar qualidade no PC)")
     ap.add_argument("--_motor", choices=MOTORES, help=argparse.SUPPRESS)
     args = ap.parse_args()
+    if args.ref_audio and not args.ref_texto and Path(args.ref_audio).with_suffix(".txt").exists():
+        args.ref_texto = Path(args.ref_audio).with_suffix(".txt").read_text(encoding="utf-8").strip()
     if args.carga_max is None:
         args.carga_max = (os.cpu_count() or 2) / 2
     Path(args.saida).mkdir(parents=True, exist_ok=True)

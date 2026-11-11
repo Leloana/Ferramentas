@@ -96,3 +96,80 @@ Se `coqui-tts` ou `kokoro` não instalarem na versão de Python do servidor, ou 
 5. Deixe o `.venv-tts` e os modelos no servidor. Se um motor for escolhido, eles serão reaproveitados na implementação da reserva.
 
 A decisão de qual motor usar é do proprietário, depois de escutar. Não implemente a troca de voz no `gerar_edicao.py` nesta etapa.
+
+---
+
+# Rodada 2 (10/11/2026): clone da voz no CPU
+
+**Para o agente do servidor.** As regras de convivência da rodada 1 continuam valendo: nice/ionice, no máximo 4 threads, um motor por vez, nada de sudo/apt e nunca mexer em outros serviços.
+
+## O que mudou
+
+O proprietário ouviu as amostras e escolheu a **clonagem de voz**: o modelo copia a voz, o sotaque e o tom de um áudio de referência de 15 s. A referência é a voz David da ElevenLabs, gerada em tom animado. Medido na GPU do PC:
+
+| Motor | Modelo | Escolha |
+|---|---|---|
+| **Qwen3-TTS clone** | `Qwen/Qwen3-TTS-12Hz-1.7B-Base` (4,3 GB) | **preferido** ("ficou perfeita") |
+| Chatterbox clone | `ResembleAI/chatterbox` multilíngue (~3 GB) | segunda opção, ~3x mais rápido |
+| Qwen3-TTS clone leve | `Qwen/Qwen3-TTS-12Hz-0.6B-Base` (2,4 GB) | alternativa se o 1.7B não couber |
+
+Agora precisamos saber se dá para rodar no Xeon sem GPU. Para cada motor, meça:
+- tempo de síntese;
+- pico de RAM;
+- impacto nos outros serviços.
+
+Estimativa do PC: o Qwen 1.7B no CPU deve levar de 20 a 40 min por edição e usar 8 a 10 GB de RAM. Se for isso, é aceitável de madrugada, mas confirme.
+
+## Passos
+
+```bash
+cd despertador/server
+git pull
+
+# 1. Referência de voz. NÃO está no git (repositório público).
+#    Se existir server/.env com ELEVENLABS_API_KEY (e o .venv da API), gere (~40 créditos, uma vez só):
+.venv/bin/python bench_tts/gerar_referencia.py
+#    Sem chave no servidor: peça ao proprietário para copiar do PC
+#    bench_tts/saida/ref/david_animado.wav e david_animado.txt para a mesma pasta.
+#    Nunca peça nem registre a chave.
+
+# 2. Ambiente separado do Qwen (não misturar com .venv-tts: as versões do transformers conflitam)
+python3 -m venv bench_tts/venvs/qwen
+bench_tts/venvs/qwen/bin/pip install --no-cache-dir torch torchaudio --index-url https://download.pytorch.org/whl/cpu
+bench_tts/venvs/qwen/bin/pip install --no-cache-dir qwen-tts==0.1.1
+bench_tts/venvs/qwen/bin/pip freeze > bench_tts/saida-pip-freeze-qwen.txt
+
+export HF_HOME="$PWD/bench_tts/modelos/hf"
+REF=bench_tts/saida/ref/david_animado.wav   # a transcrição (.txt ao lado) é lida sozinha
+RT=conteudo/2026-11-10/roteiro_tags.json
+COMUM="--motores qwen --qwen-modo clone --ref-audio $REF --qwen-max-trecho 60 --pausa 0.55 --ritmo 0.95 --roteiro $RT --threads 4"
+
+# 3. Primeiro o leve (0.6B), para ver o comportamento de memória
+nice -n 19 ionice -c3 bench_tts/venvs/qwen/bin/python bench_tts/bench_tts.py $COMUM \
+    --qwen-modelo Qwen/Qwen3-TTS-12Hz-0.6B-Base --saida bench_tts/saida-r2/qwen06 2>&1 | tee bench_tts/saida-r2/log-qwen06.txt
+
+# 4. O preferido (1.7B). A RAM fica justa: acompanhe com `free -h` / `vmstat 5` e aborte se entrar em swap.
+nice -n 19 ionice -c3 bench_tts/venvs/qwen/bin/python bench_tts/bench_tts.py $COMUM --mem-min-mb 9000 \
+    --qwen-modelo Qwen/Qwen3-TTS-12Hz-1.7B-Base --saida bench_tts/saida-r2/qwen17 2>&1 | tee bench_tts/saida-r2/log-qwen17.txt
+```
+
+Crie `bench_tts/saida-r2/` antes, com `mkdir -p`.
+
+**Chatterbox (opcional, só se sobrar tempo e o servidor estiver calmo).** Ele exige `torch==2.6`, então precisa de outro venv (`bench_tts/venvs/chatterbox`), com torch/torchaudio 2.6.0 CPU e depois `chatterbox-tts==0.1.7`. Rode:
+
+`--motores chatterbox --cb-cfg 0.4 --cb-exag 0.8 --ref-audio $REF --pausa 0.55 --ritmo 0.95 --roteiro $RT --threads 4 --saida bench_tts/saida-r2/chatterbox`
+
+Se a instalação brigar com o Python do sistema, pule e anote.
+
+Se a API instalada do `qwen-tts` diferir do script (`create_voice_clone_prompt` / `generate_voice_clone`), ajuste o mínimo necessário e registre o que mudou. Não invente parâmetros.
+
+## Entrega
+
+1. Acrescente uma seção "Rodada 2" em `despertador/docs/RESULTADO_TTS_SERVIDOR.md` com:
+   - as tabelas `resultados.md` de cada saída;
+   - o pico de RAM e se houve swap;
+   - a carga do servidor antes e durante;
+   - se algo foi afetado;
+   - sua recomendação: qual motor cabe na madrugada.
+2. Copie os MP3 para `despertador/docs/amostras_tts/` (`clone-qwen06.mp3`, `clone-qwen17.mp3`, `clone-chatterbox.mp3`). Eles são gerados localmente, então podem ir para o git. A referência da ElevenLabs **não** vai.
+3. Faça commit e push conforme o CLAUDE.md. Deixe os venvs e os modelos no servidor: serão usados na implementação.
