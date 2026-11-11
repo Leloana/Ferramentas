@@ -132,7 +132,9 @@ CAMPOS = [("fidelidade", "qmax", "maior é melhor"), ("fidelidade", "desvio_dtw_
           ("grave_embolado", "por_minuto", "menor é melhor"), ("groove_esquerda", None, "estável"),
           ("direita", "notas_por_s", ""), ("esquerda", "notas_por_s", ""),
           ("esquerda", "deslocamento_por_s", ""), ("direita", "entropia", ""), ("esquerda", "lempel_ziv", ""),
-          ("tensao", "tensile_strain.media", "tensão tonal (spiral array)"), ("tensao", "cloud_momentum.media", "")]
+          ("tensao", "tensile_strain.media", "tensão tonal (spiral array)"), ("tensao", "cloud_momentum.media", ""),
+          ("qualidade_melodia", "fora_do_tom", "% menor é melhor"), ("qualidade_melodia", "repetidas", "% menor é melhor"),
+          ("qualidade_melodia", "nao_no_topo", "% menor é melhor")]
 
 
 def _valor(r, a, b):

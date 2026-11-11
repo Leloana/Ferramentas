@@ -43,5 +43,18 @@ class Alinhamento(unittest.TestCase):
         self.assertTrue(c0 <= 9 <= c0 + 3)
 
 
+class QualidadeMelodia(unittest.TestCase):
+    def test_fora_do_tom_repetidas_e_topo(self):
+        from metricas import qualidade_melodia
+        def m(i, f, p, mao="direita", letra=True):
+            return dict(inicio=i, fim=f, pitch=p, mao=mao, letra=letra)
+        notas = [m(0, 1, 60), m(1, 2, 62), m(2, 3, 64), m(3, 4, 65), m(4, 5, 67), m(5, 6, 61),   # Dó# fora
+                 m(6, 7, 67), m(7, 8, 67), m(0, 1, 72, "esquerda", False)]                        # repetida; esquerda acima
+        q = qualidade_melodia(notas)
+        self.assertAlmostEqual(q["fora_do_tom"], 12.5)
+        self.assertAlmostEqual(q["repetidas"], 12.5)
+        self.assertAlmostEqual(q["nao_no_topo"], 12.5)
+
+
 if __name__ == "__main__":
     unittest.main()

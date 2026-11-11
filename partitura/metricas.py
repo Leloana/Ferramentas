@@ -213,6 +213,43 @@ def tensao(xml: Path):
     return saida
 
 
+# ------------------------------------------------------------------ melodia limpa (guarda contra regressão)
+
+def qualidade_melodia(notas, janela_s=16.0):
+    """O que o usuário reprovou na escuta (2026-11-10), em %:
+    fora_do_tom: nota cantada fora da escala maior que melhor encaixa na janela de 16 s;
+    repetidas: ataque da direita (nota de cima) igual e colado no anterior;
+    nao_no_topo: nota cantada com outra nota (de qualquer mão) mais aguda soando no ataque."""
+    # num acorde o MusicXML põe a sílaba na nota de baixo (a 3ª/6ª posta embaixo da melodia):
+    # em todo ataque da direita que tem sílaba, a melodia é a nota mais aguda
+    com_letra = {round(n["inicio"], 3) for n in notas if n["mao"] == "direita" and n["letra"]}
+    por_ataque = {}
+    for n in notas:
+        k = round(n["inicio"], 3)
+        if n["mao"] == "direita" and k in com_letra and (k not in por_ataque or n["pitch"] > por_ataque[k]["pitch"]):
+            por_ataque[k] = n
+    cantadas = [por_ataque[k] for k in sorted(por_ataque)]
+    if not cantadas:
+        return None
+    escalas = [{(t + k) % 12 for k in (0, 2, 4, 5, 7, 9, 11)} for t in range(12)]
+    fora = 0
+    for n in cantadas:
+        viz = [m["pitch"] % 12 for m in cantadas if abs(m["inicio"] - n["inicio"]) <= janela_s / 2]
+        melhor = max(escalas, key=lambda e: sum(p in e for p in viz))
+        fora += n["pitch"] % 12 not in melhor
+    direita = sorted((n for n in notas if n["mao"] == "direita"), key=lambda n: (n["inicio"], -n["pitch"]))
+    topo = {}
+    for n in direita:
+        topo.setdefault(round(n["inicio"], 3), n)
+    seq = [topo[k] for k in sorted(topo)]
+    repetidas = sum(1 for a, b in zip(seq, seq[1:]) if a["pitch"] == b["pitch"] and b["inicio"] - a["fim"] < .05)
+    nao_topo = sum(1 for n in cantadas if any(m is not n and m["pitch"] > n["pitch"]
+                                              and m["inicio"] <= n["inicio"] + 1e-3 < m["fim"] for m in notas))
+    return dict(fora_do_tom=round(100 * fora / len(cantadas), 1),
+                repetidas=round(100 * repetidas / max(1, len(seq)), 1),
+                nao_no_topo=round(100 * nao_topo / len(cantadas), 1))
+
+
 # ------------------------------------------------------------------ uma partitura
 
 def medir_versao(pasta: Path, versao_nivel: str, com_audio=True):
@@ -241,7 +278,8 @@ def medir_versao(pasta: Path, versao_nivel: str, com_audio=True):
     fim_total = max((n["fim"] for n in notas), default=0)
     corpo = [n for n in notas if corte_ini - 1e-6 <= n["inicio"] < fim_total - corte_fim - 1e-6]
     r = dict(direita=dificuldade(corpo, "direita"), esquerda=dificuldade(corpo, "esquerda"),
-             grave_embolado=grave_embolado(corpo), groove_esquerda=groove(corpo, bpm))
+             grave_embolado=grave_embolado(corpo), groove_esquerda=groove(corpo, bpm),
+             qualidade_melodia=qualidade_melodia(corpo))
     if sinc.get("versoes", {}).get(versao_nivel) is not None and transcricao:
         mapa = dict(bt=sinc["bt"], idx=sinc["idx"], desloc=sinc["versoes"][versao_nivel], bpm=bpm)
         try:
