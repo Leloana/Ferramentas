@@ -4,7 +4,7 @@ const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const NIVEL_NOME = { facil: "Fácil", medio: "Médio", dificil: "Difícil" };
 // Revisão de 120 partituras: preservar melodia/letra e também trechos instrumentais.
 // Revisão às cegas 2026-11-10: o médio Híbrido é a base e fácil/difícil saem dele: Híbrido (AMT) nos três.
-const PADRAO = { facil: "HibridoAMT", medio: "HibridoAMT", dificil: "HibridoAMT" };
+const PADRAO = { facil: "AMT-APC", medio: "AMT-APC", dificil: "AMT-APC" };   // 2026-11-11: o AMT-APC é o melhor
 const VERSAO_NOME = { HibridoAMT: "Híbrido (AMT)", Hibrido: "Híbrido (Pop2Piano)", Acordes: "Acordes", Pop2Piano: "Pop2Piano", "AMT-APC": "AMT-APC" };
 const esc = (t) => String(t ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const urlArq = (rel) => {
@@ -18,8 +18,8 @@ const dur = (s) => (s ? `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padS
 let musicas = [];
 let selecionada = null;
 let leitorPartitura = null;
-let escolha = { nivel: "medio", versao: "HibridoAMT" };
-try { escolha = { ...escolha, ...JSON.parse(localStorage.getItem("partitura.escolha") || "{}") }; } catch {}
+let escolha = { nivel: "medio", versao: "AMT-APC" };
+try { escolha = { ...escolha, ...JSON.parse(localStorage.getItem("partitura.escolha.v2") || "{}") }; } catch {}
 
 // ------------------------------------------------------------------ abas
 function abrirAba(nome) {
@@ -144,11 +144,11 @@ function guardarPedido() {
               versao: $$('input[name="versao"]:checked').map((i) => i.value),
               intro: radio("intro"), final: radio("final"), acomp: radio("acomp") };
   CAMPOS_PEDIDO.forEach((id) => (d[id] = $("#" + id).value));
-  try { localStorage.setItem("partitura.pedido", JSON.stringify(d)); } catch {}
+  try { localStorage.setItem("partitura.pedido.v2", JSON.stringify(d)); } catch {}
 }
 function restaurarPedido() {
   let d;
-  try { d = JSON.parse(localStorage.getItem("partitura.pedido") || "null"); } catch {}
+  try { d = JSON.parse(localStorage.getItem("partitura.pedido.v2") || "null"); } catch {}
   if (!d) return;
   ["nivel", "versao"].forEach((n) => Array.isArray(d[n]) && $$(`input[name="${n}"]`).forEach((i) => (i.checked = d[n].includes(i.value))));
   ["intro", "final", "acomp"].forEach((n) => { const i = $(`input[name="${n}"][value="${d[n] || ""}"]`); if (i) i.checked = true; });
@@ -319,7 +319,7 @@ function desenharVisor() {
   if (!m.arquivos[escolha.nivel]) escolha.nivel = niveis.includes("medio") ? "medio" : niveis[0];
   const versoes = ["HibridoAMT", "Hibrido", "Acordes", "Pop2Piano", "AMT-APC"].filter((v) => m.arquivos[escolha.nivel][v]);
   if (!m.arquivos[escolha.nivel][escolha.versao]) escolha.versao = versoes[0];
-  try { localStorage.setItem("partitura.escolha", JSON.stringify(escolha)); } catch {}
+  try { localStorage.setItem("partitura.escolha.v2", JSON.stringify(escolha)); } catch {}
   const item = m.arquivos[escolha.nivel][escolha.versao] || {};
   visor.innerHTML = `
     <div class="visor-cab">

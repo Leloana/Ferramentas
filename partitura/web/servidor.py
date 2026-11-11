@@ -148,7 +148,7 @@ class Pedido(BaseModel):
     titulo: str
     artista: str = ""
     niveis: list[str] = ["medio"]
-    versoes: list[str] = ["Acordes", "Hibrido"]
+    versoes: list[str] = ["AMT-APC"]   # escuta 2026-11-11: o AMT-APC é o melhor, até que o Híbrido
     idioma: str = "auto"
     estilo: int = Field(default=1, ge=1, le=21)
     introducao: str = ""          # "", calma, lenta, emotiva, animada, epica
@@ -252,6 +252,7 @@ def _rodar(job: dict):
         cmd.append("--pop2piano")
     if "AMT-APC" in job["versoes"]:
         cmd.append("--amtapc")
+    cmd += ["--versoes", ",".join(_saidas(job["versoes"]))]
     proc = subprocess.Popen(cmd, cwd=RAIZ, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
                             encoding="utf-8", errors="replace", env={**__import__("os").environ,
                                                                      "PYTHONIOENCODING": "utf-8"})
@@ -296,11 +297,20 @@ def _acompanhar(job: dict, cmd: list):
         raise RuntimeError("a geração falhou: " + " | ".join(job["log"][-4:]))
 
 
+def _saidas(versoes) -> list[str]:
+    """Arquivos que o pedido quer (o gerar.py só escreve esses; escrever é a parte cara)."""
+    v = set(versoes)
+    saida = [x for x in ("AMT-APC", "Acordes", "Pop2Piano") if x in v]
+    if "Hibrido" in v:
+        saida += ["Hibrido"] + (["HibridoAMT"] if "AMT-APC" in v else [])
+    return saida or ["AMT-APC"]
+
+
 def _rodar_karaoke(job: dict):
     job["progresso"] = 8
     cmd = [PYTHON, str(RAIZ / "gerar.py"), "--do-karaoke", job["karaoke"], "--pasta", job["pasta"],
            "--titulo", job["titulo"], "--subtitulo", job["artista"] or "Transcrição automática",
-           "--nivel", ",".join(job["niveis"]), "--hibrido", "--amtapc"]
+           "--nivel", ",".join(job["niveis"]), "--amtapc", "--versoes", "AMT-APC"]
     if job["artista"]:
         cmd += ["--artista", job["artista"]]
     _acompanhar(job, cmd)
@@ -410,7 +420,7 @@ async def gerar_karaoke(p: PedidoKaraoke):
     jid = uuid.uuid4().hex[:10]
     JOBS[jid] = {"id": jid, "video_id": "", "karaoke": p.slug, "titulo": titulo, "artista": artista,
                  "pasta": _pasta_livre(titulo, artista, p.slug), "niveis": niveis,
-                 "versoes": ["Acordes", "Hibrido", "AMT-APC", "HibridoAMT"], "status": "fila", "etapa": "Na fila",
+                 "versoes": ["AMT-APC"], "status": "fila", "etapa": "Na fila",
                  "progresso": 0, "feitos": 0, "log": [], "criado": time.time()}
     FILA.put(jid)
     return JOBS[jid]

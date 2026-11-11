@@ -69,7 +69,7 @@
     <!-- KARAOKÊ: músicas instaladas no karaokê (voz, acompanhamento e letra prontos) -->
     <section id="karaoke" class="painel">
       <div class="karaoke">
-        <p class="mini">Músicas que já estão no karaokê: voz, acompanhamento e letra prontos, sem baixar nada. Gera os três níveis (o médio é a base; fácil e difícil saem dele).</p>
+        <p class="mini">Músicas que já estão no karaokê: voz, acompanhamento e letra prontos, sem baixar nada. Gera os três níveis do AMT-APC (o médio é a base; fácil e difícil saem dele).</p>
         <label class="filtro"><svg class="ic" aria-hidden="true"><use href="icones/sprite.svg#i-filtro"/></svg><input id="filtroKar" type="search" placeholder="Filtrar por título ou artista" autocomplete="off" aria-label="Filtrar músicas do karaokê"></label>
         <div id="listaKar" class="lista-kar"></div>
       </div>
@@ -126,10 +126,10 @@
         <fieldset>
         <legend>Versões</legend>
         <div class="opcoes">
-          <label class="op"><input type="checkbox" name="versao" value="Hibrido" checked><span><b>Híbrido</b><small>melodia cantada + acompanhamento da IA</small></span></label>
-          <label class="op"><input type="checkbox" name="versao" value="Acordes" checked><span><b>Acordes</b><small>melodia cantada + acordes em bloco</small></span></label>
+          <label class="op"><input type="checkbox" name="versao" value="Hibrido"><span><b>Híbrido</b><small>melodia cantada + acompanhamento da IA</small></span></label>
+          <label class="op"><input type="checkbox" name="versao" value="Acordes"><span><b>Acordes</b><small>melodia cantada + acordes em bloco</small></span></label>
           <label class="op"><input type="checkbox" name="versao" value="Pop2Piano"><span><b>Pop2Piano</b><small>arranjo completo da IA, sem letra</small></span></label>
-          <label class="op"><input type="checkbox" name="versao" value="AMT-APC" checked><span><b>AMT-APC</b><small>outra IA de arranjo (2024), sem letra. Com Híbrido marcado, gera também o Híbrido (AMT)</small></span></label>
+          <label class="op"><input type="checkbox" name="versao" value="AMT-APC" checked><span><b>AMT-APC</b><small>arranjo de piano da IA (2024), sem letra. O padrão: o mais bonito na escuta. Com Híbrido marcado, gera também o Híbrido (AMT)</small></span></label>
         </div>
       </fieldset>
 

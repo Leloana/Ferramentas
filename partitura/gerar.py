@@ -14,6 +14,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import time
 import re
 import shutil
 import subprocess
@@ -745,6 +746,23 @@ def copiar_original(audio: Path, pasta: Path):
                        check=True)
 
 
+PREVIAS_PENDENTES: list | None = None   # lista = prévias renderizadas no fim, em paralelo (main)
+
+
+def renderizar_previas_pendentes(trabalhadores: int = 8):
+    """Renderiza as prévias guardadas por salvar_versao, várias de uma vez (FluidSynth e ffmpeg
+    são processos separados: os 16 núcleos ficavam parados com uma prévia por vez)."""
+    global PREVIAS_PENDENTES
+    fila, PREVIAS_PENDENTES = PREVIAS_PENDENTES or [], None
+    if not fila:
+        return
+    from concurrent.futures import ThreadPoolExecutor
+    t0 = time.time()
+    with ThreadPoolExecutor(max_workers=max(1, min(trabalhadores, os.cpu_count() or 4, len(fila)))) as ex:
+        list(ex.map(lambda par: midi_para_mp3(*par), fila))
+    print(f"[previas] {len(fila)} prévias em {time.time() - t0:.0f} s")
+
+
 def salvar_versao(sc, pasta: Path, versao: str, mid_previa: Path | None = None):
     """pasta/Versao.pdf + pasta/Versao - previa.mp3 + pasta/editaveis/Versao.musicxml|.mid"""
     ed = pasta / "editaveis"
@@ -753,7 +771,10 @@ def salvar_versao(sc, pasta: Path, versao: str, mid_previa: Path | None = None):
     sc.write("musicxml", fp=str(xml))
     salvar_midi_notas(sc, mid, xml)
     n = xml_para_pdf(xml, pdf)
-    midi_para_mp3(mid_previa or mid, pasta / f"{versao} - previa.mp3")
+    if PREVIAS_PENDENTES is not None:
+        PREVIAS_PENDENTES.append((mid_previa or mid, pasta / f"{versao} - previa.mp3"))
+    else:
+        midi_para_mp3(mid_previa or mid, pasta / f"{versao} - previa.mp3")
     print(f"[ok] {pdf} ({n} páginas)")
 
 
@@ -1083,15 +1104,26 @@ def midi_para_mp3(mid: Path, mp3: Path):
         for n in inst.notes:
             fator = 0.72 if n.pitch >= 60 else 0.8
             n.velocity = int(np.clip(n.velocity * fator, 30, 100))
-    tmp_mid = mp3.with_name("_tmp_previa.mid")
-    wav = mp3.with_name("_tmp_previa.wav")
+    tmp_mid = mp3.with_name(f"_tmp_{mp3.stem}.mid")   # nome por prévia: elas rodam em paralelo
+    wav = mp3.with_name(f"_tmp_{mp3.stem}.wav")
     pm.write(str(tmp_mid))
     subprocess.run([fs, "-ni", "-q", "-g", "0.8", "-r", "44100",
                     "-o", "synth.reverb.active=1", "-o", "synth.reverb.room-size=0.6",
                     "-o", "synth.reverb.level=0.35",
                     "-F", str(wav), str(sf2), str(tmp_mid)], check=True, capture_output=True)
+    # volume: ganho calculado (RMS dos trechos com som ~ -18 dBFS, pico <= -1,5 dB). Era o loudnorm
+    # do ffmpeg, que sozinho levava mais tempo que a síntese inteira
+    import soundfile as sf
+    y, _ = sf.read(str(wav), dtype="float32")
+    y = y.mean(axis=1) if y.ndim > 1 else y
+    quadros = np.abs(y[: len(y) // 2205 * 2205]).reshape(-1, 2205) if len(y) >= 2205 else np.abs(y)[None]
+    rms_q = np.sqrt((quadros ** 2).mean(axis=1))
+    ativos = rms_q[rms_q > max(1e-4, rms_q.max() * .05)]
+    rms = float(np.sqrt((ativos ** 2).mean())) if len(ativos) else 1e-3
+    pico = float(np.abs(y).max()) or 1.0
+    ganho = min(10 ** (-18 / 20) / max(rms, 1e-6), 10 ** (-1.5 / 20) / pico)
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(wav),
-                    "-af", "loudnorm=I=-16:TP=-1.5", "-b:a", "192k", str(mp3)], check=True)
+                    "-af", f"volume={ganho:.4f}", "-b:a", "192k", str(mp3)], check=True)
     wav.unlink(missing_ok=True)
     tmp_mid.unlink(missing_ok=True)
 
@@ -1168,6 +1200,8 @@ def main():
                     help="mão esquerda da música inteira (versão Acordes) na textura desse teor")
     ap.add_argument("--variacao", type=int, default=0, help="outra versão da introdução gerada (0 = padrão)")
     ap.add_argument("--sem-transpor", action="store_true", help="no nível fácil, não transpõe pra tom sem acidentes")
+    ap.add_argument("--versoes", default="",
+                    help="só escreve estas versões (ex.: AMT-APC ou AMT-APC,HibridoAMT); vazio = todas as calculadas")
     ap.add_argument("--derivar", action="store_true",
                     help="(padrão) fácil e difícil derivados do médio (derivados.py): fácil simplifica, difícil "
                          "enriquece (arpejos, 3ª/6ª, oitavas, pedal, fermata)")
@@ -1189,7 +1223,7 @@ def main():
     args.derivar = not args.sem_derivar   # revisão às cegas 2026-11-10: derivar do médio ficou "infinitamente melhor"
     import letra as _letra
     _letra.ESCRITA_JA = args.escrita_ja
-    global SR_GRADE
+    global SR_GRADE, PREVIAS_PENDENTES
     from niveis import NIVEIS
     niveis = list(NIVEIS) if args.nivel == "todos" else [n.strip() for n in args.nivel.split(",")]
     for n in niveis:
@@ -1305,9 +1339,11 @@ def main():
         (base / "cache").mkdir(parents=True, exist_ok=True)
         (base / "cache" / "melodia_no_tom.json").write_text(
             json.dumps(dict(cents=cents, mudancas=reg_tom), ensure_ascii=False), encoding="utf-8")
+    PREVIAS_PENDENTES = []   # prévias de todos os níveis renderizadas juntas no fim, em paralelo
     for nivel in niveis:
         SR_GRADE = GRADE_NIVEL["medio" if ((nivel == "facil" and args.facil_fiel) or args.derivar) else nivel]
         gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, bpm, diagnostico)
+    renderizar_previas_pendentes()
 
 
 def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, bpm, diagnostico=None):
@@ -1444,7 +1480,10 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
         (base / "cache").mkdir(parents=True, exist_ok=True)
         (base / "cache" / f"final_{nivel}.json").write_text(json.dumps(final[3], ensure_ascii=False), encoding="utf-8")
         sub += f" · final gerado ({NOME_TEOR[teor_final]})"
+    so = {v.strip() for v in getattr(args, "versoes", "").split(",") if v.strip()}
     for versao, (md, me) in versoes.items():
+        if so and versao not in so:
+            continue
         cf = cifras
         if k:
             md = [(o, d, [p + k for p in ps], *r) for o, d, ps, *r in md]
