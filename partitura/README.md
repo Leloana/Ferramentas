@@ -13,8 +13,11 @@ cd partitura
 .\venv\Scripts\python.exe run.py          # http://127.0.0.1:8030  (--lan pra abrir na rede)
 ```
 
-Busca a música no YouTube (com prévia ▶), escolhe dificuldade e versões, acompanha a fila
-e abre a partitura na biblioteca (PDF, prévia ao piano, gravação original, MusicXML).
+Um campo só: filtra a biblioteca e, com Enter, busca no YouTube. **Gerar** num toque (AMT-APC
+nos três níveis, modo `--leve`, sem GPU) com o progresso no cartão. A música abre em tela cheia
+com Fácil/Médio/Difícil, partitura que acompanha o áudio e barra de controle (play, piano ou
+gravação original, zoom, seguir, tela cheia, downloads). Celular primeiro. Sai **sem letra**:
+pra letra embaixo das notas, use a linha de comando com `--hibrido` (versão Híbrido/HibridoAMT).
 
 ## Níveis de dificuldade (`--nivel facil,medio,dificil` ou `todos`)
 
@@ -55,6 +58,14 @@ AMT-APC) + regras musicais. Opções principais:
 | `--gravado` | versão **Híbrido Gravado**: esquerda com o piano e o violão transcritos da gravação (6 faixas + Kong/Basic Pitch, `gravado.py`) |
 | `--facil-fiel` | fácil com a melodia do médio (ritmo de 1/2 tempo, sem cortar passagens, no tom original); só a esquerda fica fácil |
 | `--grave-embolado` | não tira da esquerda a voz que embola no grave (comportamento antigo) |
+| `--leve` | só o AMT-APC, sem separar a voz, sem melodia e sem letra (o que o site usa; roda em CPU) |
+| `--versoes AMT-APC[,HibridoAMT...]` | escreve só essas versões (escrever é a parte cara) |
+| `--sem-derivar` | fácil e difícil transcritos cada um no seu nível (padrão: derivados do médio, `derivados.py`) |
+| `--melodia-crua` | não desconta a afinação nem puxa pra escala as notas duvidosas da voz (`afinacao.py`) |
+| `--repetidas`, `--juntar-silabas` | mantém as repetidas coladas (antigo) / junta também a repetida curta com sílaba |
+| `--tom-ia-cru` | não corrige nota fora do tom no arranjo da IA (`tonalidade.py`) |
+| `--cifras` | desenha o nome dos acordes em cima da pauta (padrão desde 2026-11-11: sem cifra) |
+| `--sem-ajuste` | modo leve sem a tocabilidade por regra (`tocavel.py`: síncopes no tempo, oitava da esquerda) |
 
 Saída por música em `saida/<Título>/`:
 
@@ -121,7 +132,16 @@ IA de "piano cover" de 2024 ([310hz/amt-apc](https://github.com/310hz/amt-apc), 
 na RTX 4070 (Pop2Piano: ~30 s). Seus estilos `level1/2/3` são ligados aos níveis, mas **não são dificuldade de
 verdade** (o level1 gera até mais notas que o Pop2Piano), então passa pela mesma simplificação por nível.
 
+**Desde 2026-11-11 é a base de tudo** (escuta do usuário: melhor que o Híbrido). Só o estilo `level2`
+roda; fácil e difícil são derivados do médio por regra. Depois do modelo vêm só passos determinísticos:
+nota fora do tom (`tonalidade.py`), repetidas da esquerda, mãos tocáveis e dedos (`maos.py`), armadura
+pelo tom (`armaduras.py`, Krumhansl + menos acidentes) e grafia da cifra sem dobrado
+(`gerar.acorde_com_grafia`). Em CPU: ~1,5 min por música na Windows, ~8 min num notebook Linux.
+
 ## Versão recomendada por nível
+
+> Superada em 2026-11-11: o padrão agora é **AMT-APC nos três níveis** (seção acima). A tabela abaixo
+> fica como registro da revisão de 2026-11-09.
 
 Revisão de **120 partituras, oito músicas**, com relatório completo em [ANALISE_PARTITURAS.md](ANALISE_PARTITURAS.md).
 
@@ -288,6 +308,7 @@ O que **não** vem pelo git e precisa ser instalado à parte:
 1. Python 3.12 + `pip install -r requirements.txt` no `venv/` (torch CPU basta para o modo leve).
 2. AMT-APC (código MIT, autor komiya): `git clone https://github.com/310hz/amt-apc modelos/amt-apc` e o peso
    `curl -L -o modelos/amt-apc/models/params/apc.pth https://github.com/310hz/amt-apc/releases/download/beta/apc.pth`.
+   Com torchaudio >= 2.9 sem `torchcodec`, o `amtapc.py` lê o áudio com soundfile.
    Os pesos foram treinados com covers do YouTube: para uso comercial, confirmar os termos com o autor.
 3. Prévia de piano: FluidSynth no PATH (ou em `ferramentas/fluidsynth*/bin/`) e a SoundFont em `soundfonts/piano.sf2`.
    Sem eles, a prévia cai num sintetizador simples.

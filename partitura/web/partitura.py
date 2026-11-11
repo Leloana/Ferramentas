@@ -7,7 +7,7 @@ from pathlib import Path
 from gerar import OPCOES_DEDOS, _desembaralhar, dedos_ao_lado, espacar_kana, pedal_continuo
 
 _TRAVA = threading.Lock()
-VERSAO = 12
+VERSAO = 14
 # Desenho da página. "pagina" = A4 (tela grande e PDF); "retrato"/"paisagem" = modo foco no
 # celular: página estreita e contínua (uma folha comprida), poucos compassos por linha, para
 # a pauta ficar grande na tela pequena.

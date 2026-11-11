@@ -1,7 +1,8 @@
 """Armadura por trecho: troca só com modulação de verdade e em lugar de leitura natural.
 
 Programação dinâmica sobre segmentos de blocos de 4 compassos:
-- custo de cada armadura num bloco = peso das notas que ficariam com acidente;
+- custo de cada armadura num bloco = peso das notas que ficariam com acidente + distância do
+  tom provável (Krumhansl-Kessler: armadura do tom, não só a de menos acidentes);
 - cada armadura dura pelo menos `min_blocos` blocos (16 compassos): passagem cromática,
   acorde emprestado ou ponte de 8 compassos não trocam a armadura;
 - trocar no começo de frase da melodia (logo depois de pausa) custa `troca`, no meio da
@@ -19,18 +20,44 @@ PAUSA_FRASE = 1.0   # pausa da melodia (tempos) que separa frases
 JANELA_FRASE = 4.0  # começo de frase até 1 compasso da fronteira do bloco conta
 
 
-def custo_por_armadura(eventos) -> np.ndarray:
-    """Para cada armadura (-6..5), peso das notas com acidente. eventos: (dur, [midis])."""
-    peso = np.zeros(12)
-    for d, ps in eventos:
-        for p in ps:
-            peso[p % 12] += d
+# peso da tônica: a armadura é a do tom (Krumhansl-Kessler), não só a que tem menos acidentes.
+# Sem isso, música mixolídia (Si♭ com o Lá♭ do Si♭7, Águas de Março) ganhava a armadura de Mi♭.
+PESO_TONICA = 0.5
+
+
+def _correlacao_tons(peso) -> np.ndarray:
+    """Correlação do histograma com cada armadura (-6..5): melhor entre o maior e o relativo menor."""
+    from tonalidade import _perfis
+    if peso.sum() <= 0 or peso.std() == 0:
+        return np.zeros(12)
+    h = (peso - peso.mean()) / peso.std()
+    corr = _perfis() @ h / 12   # 24 tons: 2t = maior de t, 2t+1 = menor de t
+    saida = np.zeros(12)
+    for i, s in enumerate(range(-6, 6)):
+        t = (7 * s) % 12
+        saida[i] = max(corr[2 * t], corr[2 * ((t + 9) % 12) + 1])
+    return saida
+
+
+def custo_do_histograma(peso) -> np.ndarray:
+    """Para cada armadura (-6..5): peso das notas com acidente + distância do tom mais provável."""
+    peso = np.asarray(peso, dtype=float)
     custo = np.zeros(12)
     for i, s in enumerate(range(-6, 6)):
         t = (7 * s) % 12
         escala = {(t + k) % 12 for k in (0, 2, 4, 5, 7, 9, 11)}
         custo[i] = sum(peso[pc] for pc in range(12) if pc not in escala) + 0.002 * abs(s) * peso.sum()
-    return custo
+    corr = _correlacao_tons(peso)
+    return custo + PESO_TONICA * (corr.max() - corr) * peso.sum()
+
+
+def custo_por_armadura(eventos) -> np.ndarray:
+    """Para cada armadura (-6..5), custo de escrever esses eventos nela. eventos: (dur, [midis])."""
+    peso = np.zeros(12)
+    for d, ps in eventos:
+        for p in ps:
+            peso[p % 12] += d
+    return custo_do_histograma(peso)
 
 
 def inicios_de_frase(melodia_off) -> list[float]:
@@ -48,12 +75,14 @@ def armaduras_por_trecho(eventos_off, fim: float, frases=(), bloco: int = BLOCO,
                          min_blocos: int = MIN_BLOCOS, fator_troca: float = .5):
     """[(offset, sustenidos)] das mudanças. eventos_off: (offset, dur, [midis]) com offset >= 0."""
     nb = max(1, int(np.ceil(fim / bloco)))
-    custos = np.zeros((nb, 12))
+    hist = np.zeros((nb, 12))
     peso = np.zeros(nb)
     for o, d, ps in eventos_off:
         b = min(nb - 1, int(o // bloco))
-        custos[b] += custo_por_armadura([(d, ps)])
+        for p in ps:
+            hist[b, p % 12] += d
         peso[b] += d * len(ps)
+    custos = np.array([custo_do_histograma(h) for h in hist])
     acum = np.vstack([np.zeros(12), np.cumsum(custos, axis=0)])
     troca = fator_troca * float(np.median(peso[peso > 0])) if (peso > 0).any() else 0.0
     frases = sorted(frases)

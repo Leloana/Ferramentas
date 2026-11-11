@@ -5,6 +5,17 @@ import gerar
 
 
 class CifraEmPausa(unittest.TestCase):
+    def setUp(self):
+        gerar.MOSTRAR_CIFRAS = True    # padrão é sem cifra; aqui testa o desenho com --cifras
+
+    def tearDown(self):
+        gerar.MOSTRAR_CIFRAS = False
+
+    def test_padrao_sem_cifra(self):
+        gerar.MOSTRAR_CIFRAS = False
+        sc, harmony, _, _ = self.montar()
+        self.assertEqual(len(list(sc.recurse().getElementsByClass(harmony.ChordSymbol))), 0)
+
     def montar(self):
         from music21 import harmony, note, stream
         md = [(0, 4, [64], "la")]                       # direita só no 1º compasso

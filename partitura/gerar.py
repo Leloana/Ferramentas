@@ -370,6 +370,29 @@ def escolher_armadura(eventos) -> int:
     return int(np.argmin(_custo_armaduras(eventos))) - 6
 
 
+# cifra (nome do acorde) em cima da pauta: o usuário pediu sem (2026-11-11, "atrapalha").
+# O acorde detectado continua decidindo a grafia das notas; `--cifras` volta a desenhar.
+MOSTRAR_CIFRAS = False
+
+
+def acorde_com_grafia(r: int, kind: str, sustenidos: int):
+    """ChordSymbol com a raiz na grafia (C#/D-, G#/A-...) que dá menos acidentes contra a armadura,
+    sem dobrado bemol/sustenido (G#dim7 num tom com bemóis, não A-dim7 com G--)."""
+    from music21 import harmony, key as m21key
+    na_armadura = {p.step: p.alter for p in m21key.KeySignature(sustenidos).alteredPitches}
+    padrao = (["C", "D-", "D", "E-", "E", "F", "F#", "G", "A-", "A", "B-", "B"] if sustenidos < 0
+              else (NOMES_PC_SUST if sustenidos >= 3 else NOMES_PC))[r]
+    candidatos = [padrao] + [n for n in (NOMES_PC_SUST[r], NOMES_PC_BEMOL[r], NOMES_PC[r]) if n != padrao]
+    melhor, menor = None, None
+    for nome in dict.fromkeys(candidatos):
+        cs = harmony.ChordSymbol(root=nome, kind=kind)
+        custo = sum(abs(q.alter - na_armadura.get(q.step, 0)) + (10 if abs(q.alter) >= 2 else 0)
+                    for q in cs.pitches)
+        if menor is None or custo < menor:
+            melhor, menor = cs, custo
+    return melhor
+
+
 def nomes_para(sustenidos: int) -> list[str]:
     if sustenidos < 0:
         return NOMES_PC_BEMOL
@@ -463,38 +486,91 @@ def registrar_sincronia(base: Path, versao_nivel: str, grade, desloc: float):
     arq.write_text(json.dumps(dados), encoding="utf-8")
 
 
-def _oitava_acima(sc, minimo=79, topo=84, min_notas=3, respiro=2.0):
+def _suplementares(dn: int) -> int:
+    """Linhas suplementares na clave de sol pela nota diatônica do music21 (Dó4 = 29, Mi4 = 31, Fá5 = 39)."""
+    if dn >= 41:
+        return (dn - 39) // 2
+    if dn <= 29:
+        return (31 - dn) // 2
+    return 0
+
+
+# 2026-11-11, 5 músicas × 3 níveis (regra antiga: 79 linhas 8va, 828 suplementares em cima):
+# abrir 6 e nota embaixo da pauta dentro da 8va proibida (peso 100) -> 62 linhas, 624, nenhuma embaixo.
+# Usuário: "escrever lá embaixo é tão ruim quanto lá em cima".
+OITAVA_ABRIR = 6.0          # custo de abrir uma linha 8va (em linhas suplementares)
+OITAVA_PESO_EMBAIXO = 100.0  # nota escrita embaixo da pauta DENTRO da 8va: na prática, proibida
+
+
+def _oitava_acima(sc, abrir=None, min_notas=3, respiro=2.0, peso_embaixo=None):
     """Trecho agudo da mão direita vira 8va: escrito uma oitava abaixo, com a linha 8va.
 
-    Trecho = notas seguidas (sem pausa > respiro tempos) todas com a mais grave >= minimo
-    (Sol5) e alguma >= topo (Dó6), com pelo menos min_notas. A 8va não é "transpositora"
-    no music21 (o exportador dele erra as oitavas nesse modo); o MusicXML marca
-    octave-shift e o sincronia.py soma a oitava de volta pro MIDI e pro visualizador."""
+    Programação dinâmica nas notas da direita em ordem de tempo: cada ataque fica normal ou em 8va;
+    custo = linhas suplementares escritas (em cima e embaixo pesam igual: nota escrita lá embaixo
+    é tão ruim de ler quanto lá em cima) + `abrir` por linha 8va nova (metade depois de pausa
+    longa, lugar natural). Nota ligada fica no estado da que ataca. Linha com menos de
+    `min_notas` ataques volta ao normal. As notas ficam na altura que soa: no MusicXML a altura é
+    a sonora e o Verovio desenha uma oitava abaixo sob o octave-shift (até 2026-11-11 a nota era
+    baixada aqui também e saía desenhada DUAS oitavas abaixo do que soa)."""
     from music21 import spanner
     direita = list(sc.parts)[0]
-    notas = [n for n in direita.recurse().notes if not n.isChord or n.__class__.__name__ == "Chord"]
-    notas = [n for n in notas if n.__class__.__name__ in ("Note", "Chord")]
-    trechos, atual, fim_ant = [], [], None
+    notas = [n for n in direita.recurse().notes if n.__class__.__name__ in ("Note", "Chord")]
+    notas.sort(key=lambda n: float(n.getOffsetInHierarchy(direita)))
+    grupos = []   # [ataque + continuações ligadas]
     for n in notas:
-        o = float(n.getOffsetInHierarchy(direita))
-        agudo = min(p.midi for p in n.pitches) >= minimo
-        if agudo and (not atual or o - fim_ant <= respiro + 1e-6):
-            atual.append(n)
+        if grupos and n.tie is not None and n.tie.type in ("stop", "continue"):
+            grupos[-1].append(n)
         else:
-            if atual:
-                trechos.append(atual)
-            atual = [n] if agudo else []
-        fim_ant = o + float(n.quarterLength)
+            grupos.append([n])
+    if not grupos:
+        return 0
+
+    abrir = OITAVA_ABRIR if abrir is None else abrir
+    peso_embaixo = OITAVA_PESO_EMBAIXO if peso_embaixo is None else peso_embaixo
+
+    def custo(gr, s):
+        c = 0.0
+        for n in gr:
+            for p in n.pitches:
+                dn = p.diatonicNoteNum - 7 * s
+                c += _suplementares(dn) * (peso_embaixo if s and dn <= 29 else 1.0)
+        return c
+
+    inicio = [float(g_[0].getOffsetInHierarchy(direita)) for g_ in grupos]
+    fim = [float(g_[-1].getOffsetInHierarchy(direita)) + float(g_[-1].quarterLength) for g_ in grupos]
+    INF = float("inf")
+    melhor = [[custo(grupos[0], 0), custo(grupos[0], 1) + abrir]]
+    volta = [[0, 0]]
+    for k in range(1, len(grupos)):
+        pausa = inicio[k] - fim[k - 1] > respiro + 1e-6
+        abre = abrir / 2 if pausa else abrir
+        linha, de = [], []
+        for s in (0, 1):
+            opcoes = [melhor[-1][0] + (abre if s == 1 else 0), melhor[-1][1]]
+            ant = 0 if opcoes[0] <= opcoes[1] else 1
+            linha.append(opcoes[ant] + custo(grupos[k], s))
+            de.append(ant)
+        melhor.append(linha)
+        volta.append(de)
+    s = 0 if melhor[-1][0] <= melhor[-1][1] else 1
+    estado = [0] * len(grupos)
+    for k in range(len(grupos) - 1, -1, -1):
+        estado[k] = s
+        s = volta[k][s]
+    trechos, atual = [], []
+    for k, st in enumerate(estado):
+        if st:
+            atual.append(k)
+        elif atual:
+            trechos.append(atual)
+            atual = []
     if atual:
         trechos.append(atual)
     total = 0
     for t in trechos:
-        if len(t) < min_notas or max(p.midi for n in t for p in n.pitches) < topo:
+        if len(t) < min_notas:
             continue
-        for n in t:
-            for p in n.pitches:
-                p.octave -= 1
-        direita.insert(0, spanner.Ottava(t[0], t[-1], type="8va", transposing=False))
+        direita.insert(0, spanner.Ottava(grupos[t[0]][0], grupos[t[-1]][-1], type="8va", transposing=False))
         total += 1
     return total
 
@@ -556,17 +632,19 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
                 s_ = k_
         return s_
 
-    def nome_raiz(r, off):
-        sus = sust_em(off)
-        if sus < 0:
-            return ["C", "D-", "D", "E-", "E", "F", "F#", "G", "A-", "A", "B-", "B"][r]
-        return (NOMES_PC_SUST if sus >= 3 else NOMES_PC)[r]
-
     # grafia das notas do acorde vem da cifra (A7 = A C# E G, nunca D-)
     ativos = []
     for off, r, tipo in cifras:
-        cs = harmony.ChordSymbol(root=nome_raiz(r, off + desloc), kind=TIPOS[tipo][1])
+        cs = acorde_com_grafia(r, TIPOS[tipo][1], sust_em(off + desloc))
         ativos.append((off + desloc, {q.pitchClass: q.name for q in cs.pitches}))
+
+    # nota cromática fora do acorde: grafia pela direção da linha (sobe com #, desce com ♭)
+    direcao = {}
+    for eventos in (md_ev, me_ev):
+        topos = sorted((e[0] + desloc, max(e[2])) for e in eventos if e[2])
+        for (o1, m1), (o2, m2) in zip(topos, topos[1:]):
+            if abs(m2 - m1) == 1 and o2 - o1 <= 2 + 1e-6:
+                direcao[(round(o1, 6), m1)] = m2 - m1
 
     def P(m, off):
         nomes_pc = {}
@@ -575,7 +653,15 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
                 nomes_pc = mapa
             else:
                 break
-        nome = nomes_pc.get(m % 12) or nomes_para(sust_em(off))[m % 12]
+        nome = nomes_pc.get(m % 12)
+        if nome is None:
+            sus = sust_em(off)
+            na_escala = {(7 * sus + k) % 12 for k in (0, 2, 4, 5, 7, 9, 11)}
+            d = direcao.get((round(off, 6), m))
+            if d and m % 12 not in na_escala:
+                nome = (NOMES_PC_SUST if d > 0 else NOMES_PC_BEMOL)[m % 12]
+            else:
+                nome = nomes_para(sus)[m % 12]
         q = pitch.Pitch(nome)
         q.octave = m // 12 - 1
         q.octave += (m - q.midi) // 12  # B# / C- trocam de oitava
@@ -616,11 +702,11 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
             md.insert(o, te)
 
     simbolos = []
-    for off, r, tipo in cifras:
+    for off, r, tipo in (cifras if MOSTRAR_CIFRAS else ()):
         o = off + desloc
         if o < 0:
             continue
-        cs = harmony.ChordSymbol(root=nome_raiz(r, o), kind=TIPOS[tipo][1])
+        cs = acorde_com_grafia(r, TIPOS[tipo][1], sust_em(o))
         cs.writeAsChord = False
         simbolos.append((o, cs))
 
@@ -967,11 +1053,12 @@ _ESPACO = 180.0
 def dedos_ao_lado(svg: str) -> str:
     """Leva cada número de dedo pro lado da cabeça da sua nota.
 
-    Esquerda (antes do acidente) por padrão; se ali houver clave/armadura/fórmula de compasso
+    Esquerda (antes do acidente) por padrão; acorde com segunda (cabeça vizinha colada à
+    esquerda), passa pra esquerda dela. Se ali houver clave/armadura/fórmula de compasso
     (primeira nota do sistema), vai pra direita da cabeça, se não bater em nota, acidente ou
     barra; só com os dois lados ocupados fica em cima. Em cima da nota os números
     empilham e ocupam espaço vertical (pedido do usuário)."""
-    pos, cabecas = {}, []
+    pos, cabecas, esquerda_da_nota = {}, [], []   # esquerda_da_nota: (x da cabeça, y, x do acidente ou da cabeça)
     marcas = list(_RE_NOTA.finditer(svg))
     for i, m in enumerate(marcas):
         trecho = svg[m.end(): marcas[i + 1].start() if i + 1 < len(marcas) else m.end() + 4000]
@@ -983,6 +1070,7 @@ def dedos_ao_lado(svg: str) -> str:
         a = _RE_ACID.search(trecho)
         pos[m.group(1)] = (float(a.group(1)) if a else hx, hx, hy, hw)
         cabecas.append((hx, hw, hy))
+        esquerda_da_nota.append((hx, hy, float(a.group(1)) if a else hx))
         if a:
             cabecas.append((float(a.group(1)), .8 * _ESPACO, float(a.group(2))))
     barras = []
@@ -998,6 +1086,8 @@ def dedos_ao_lado(svg: str) -> str:
         trecho = trecho[:corte.start()] if corte else trecho
         cabecalho += [(float(a), float(b)) for a, b in re.findall(r'translate\((-?[\d.]+),\s*(-?[\d.]+)\)', trecho)]
 
+    colocados = []   # (ini, fim, y) dos dedos já postos ao lado: um não pode cair em cima do outro
+
     def mover(m):
         alvo = pos.get(m.group(2))
         if not alvo:
@@ -1008,18 +1098,35 @@ def dedos_ao_lado(svg: str) -> str:
         digitos = "".join(re.findall(r">\s*(\d+)\s*<", m.group(5)))
         largura = .7 * fs * max(1, len(digitos))
         base_y = f'y="{y + .36 * fs:.0f}"'
+
+        def no_cabecalho(ini, fim):
+            return any(gx - 50 < fim and ini < gx + 420 and abs(gy - y) < 900 for gx, gy in cabecalho)
+
+        def livre_de_dedos(ini, fim):
+            return not any(a < fim + 20 and ini < b + 20 and abs(cy - y) < .7 * fs for a, b, cy in colocados)   # terça (1 espaço) empilha; segunda não
+
+        def pronto(ini, fim, texto):
+            colocados.append((ini, fim, y))
+            return texto
+
         direita = x - .25 * fs
-        esquerda = direita - largura
-        if not any(gx - 50 < direita and esquerda < gx + 420 and abs(gy - y) < 900 for gx, gy in cabecalho):
-            return f'{m.group(1)}x="{direita:.0f}" {base_y} text-anchor="end"{m.group(5)}'
-        # esquerda ocupada pelo começo do sistema: tenta a direita da cabeça
+        # acorde com segunda: a cabeça vizinha do mesmo acorde fica do outro lado da haste, colada à
+        # esquerda (meio espaço acima/abaixo). O dedo passa pra esquerda dela, com lugar pro dedo dela.
+        vizinhas = [ex for ox, oy, ex in esquerda_da_nota          # ex: onde começa a vizinha (acidente incluso)
+                    if hx - 1.3 * hw <= ox < hx - 1 and 1 < abs(oy - y) <= .6 * _ESPACO]
+        if vizinhas:
+            direita = min(vizinhas) - .25 * fs - largura - 30
+        if not no_cabecalho(direita - largura, direita) and livre_de_dedos(direita - largura, direita):
+            return pronto(direita - largura, direita,
+                          f'{m.group(1)}x="{direita:.0f}" {base_y} text-anchor="end"{m.group(5)}')
+        # esquerda ocupada (começo do sistema ou outro dedo): tenta a direita da cabeça
         ini = hx + hw + .2 * fs
         fim = ini + largura
         bate = any(ox < fim + 40 and ox + ow > ini and abs(oy - y) < 1.4 * _ESPACO and not (ox == hx and oy == y)
                    for ox, ow, oy in cabecas)
         bate = bate or any(ini - 20 < bx < fim + 40 and y1 - 100 < y < y2 + 100 for bx, y1, y2 in barras)
-        if not bate:
-            return f'{m.group(1)}x="{ini:.0f}" {base_y} text-anchor="start"{m.group(5)}'
+        if not bate and livre_de_dedos(ini, fim):
+            return pronto(ini, fim, f'{m.group(1)}x="{ini:.0f}" {base_y} text-anchor="start"{m.group(5)}')
         return m.group(0)   # os dois lados ocupados: fica em cima da nota
     return _RE_DEDO.sub(mover, svg)
 
@@ -1241,6 +1348,11 @@ def main():
     ap.add_argument("--leve", action="store_true",
                     help="só o AMT-APC, sem separar a voz, sem melodia e sem letra (sem Demucs/CREPE/Whisper): "
                          "batidas e acordes da própria mistura. Roda só em CPU (~1,5 min por música)")
+    ap.add_argument("--cifras", action="store_true", help="desenha o nome dos acordes em cima da pauta (padrão: sem)")
+    ap.add_argument("--sem-repeticoes", action="store_true",
+                    help="modo leve: não escreve igual os trechos que se repetem (repeticoes.py)")
+    ap.add_argument("--sem-ajuste", action="store_true",
+                    help="modo leve: não aplica a tocabilidade por regra (tocavel.py: síncopes, oitavas da esquerda)")
     ap.add_argument("--versoes", default="",
                     help="só escreve estas versões (ex.: AMT-APC ou AMT-APC,HibridoAMT); vazio = todas as calculadas")
     ap.add_argument("--derivar", action="store_true",
@@ -1262,6 +1374,8 @@ def main():
                          "cromatismos, no tom original); só a mão esquerda fica fácil")
     args = ap.parse_args()
     args.derivar = not args.sem_derivar   # revisão às cegas 2026-11-10: derivar do médio ficou "infinitamente melhor"
+    global MOSTRAR_CIFRAS
+    MOSTRAR_CIFRAS = args.cifras
     import letra as _letra
     _letra.ESCRITA_JA = args.escrita_ja
     global SR_GRADE, PREVIAS_PENDENTES
@@ -1316,6 +1430,9 @@ def main():
         print("[batidas] detectando pulso (modo leve, da mistura)...")
         bt, bpm = batidas(mix, sr, mix)
         from amtapc import midi_amtapc   # o arranjo sai de qualquer jeito: o grave dele dá o tempo 1
+        # Medido 2026-11-11: os ataques do AMT-APC caem ~35 ms antes das batidas em todas as músicas,
+        # mas puxar a grade pra eles piorou a partitura (mais síncope, mais linha suplementar): fica a
+        # batida do áudio. Ver HISTORICO §38.
         fase = fase_pelo_midi(bt, midi_amtapc(audio, base, "medio" if args.derivar else niveis[0]))
         grade = Grade(bt, fase)
         print(f"[batidas] ~{bpm:.0f} bpm, {len(bt)} batidas, tempo 1 na batida {fase}")
@@ -1636,6 +1753,11 @@ def gerar_nivel_leve(nivel, args, audio, base, titulo, acs, grade, bpm):
         from tonalidade import corrigir_tom
         md, me, reg_tom = corrigir_tom(md, me, acs, TIPOS)
         print(f"[tonalidade] AMT-APC: {len(reg_tom)} notas fora do tom corrigidas")
+    if not getattr(args, "sem_repeticoes", False):   # trecho que repete escrito igual (repeticoes.py)
+        from repeticoes import padronizar
+        md, me, reg_rep = padronizar(md, me, audio, grade.bt)
+        print(f"[repeticoes] distâncias {reg_rep['lags_compasso'][:6]} compassos; "
+              f"{reg_rep['grupos']} grupos, {reg_rep['compassos']} compassos com o mesmo padrão")
     cifras, anterior = [], None
     for j, r, t, *_ in acs:
         if r is not None and (r, t) != anterior:
@@ -1646,6 +1768,10 @@ def gerar_nivel_leve(nivel, args, audio, base, titulo, acs, grade, bpm):
         md, me, marcas = (facil_de_medio(md, me, acs, TIPOS) if nivel == "facil"
                           else dificil_de_medio(md, me, acs, TIPOS, bpm))
     cifras = cifras_do_nivel(cifras, nivel)
+    if not getattr(args, "sem_ajuste", False):   # tocabilidade por regra (tocavel.py)
+        from tocavel import ajustar
+        md, me, reg_toc = ajustar(md, me, nivel, bpm)
+        print(f"[tocavel] {', '.join(f'{k} {v}' for k, v in reg_toc.items())}")
     me = juntar_repetidas_esquerda(me)
     md, me, dmd, dme, rel = tornar_tocavel(md, me, nivel, bpm, frozenset(),
                                            clarear=not getattr(args, "grave_embolado", False))

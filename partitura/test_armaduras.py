@@ -63,5 +63,34 @@ class Armaduras(unittest.TestCase):
         self.assertEqual(inicios_de_frase(md), [0, 3])
 
 
+class TomDaMusica(unittest.TestCase):
+    def test_mixolidio_fica_na_armadura_da_tonica(self):
+        # Si♭ com o Lá♭ do Si♭7 mais frequente que o Lá (Águas de Março): 2 bemóis, não 3
+        from armaduras import custo_por_armadura
+        peso = {58: 29, 65: 17, 62: 14, 56: 8, 55: 7, 63: 6, 60: 6, 64: 5, 66: 4, 61: 2, 57: 1}
+        eventos = [(d, [m]) for m, d in peso.items()]
+        self.assertEqual(int(custo_por_armadura(eventos).argmin()) - 6, -2)
+
+    def test_tom_sem_acidentes_continua_igual(self):
+        from armaduras import custo_por_armadura
+        self.assertEqual(int(custo_por_armadura([(1, [m]) for m in DO]).argmin()) - 6, 0)
+        self.assertEqual(int(custo_por_armadura([(1, [m]) for m in LA_BEMOL]).argmin()) - 6, -4)
+
+
+class GrafiaDoAcorde(unittest.TestCase):
+    def nomes(self, r, kind, sust):
+        from gerar import acorde_com_grafia
+        return [q.name for q in acorde_com_grafia(r, kind, sust).pitches]
+
+    def test_diminuto_sem_dobrado_bemol(self):
+        nomes = self.nomes(8, "diminished-seventh", -2)
+        self.assertEqual(nomes[0], "G#")
+        self.assertFalse(any("--" in n or "##" in n for n in nomes))
+
+    def test_acorde_do_tom_nao_muda(self):
+        self.assertEqual(self.nomes(10, "dominant-seventh", -2), ["B-", "D", "F", "A-"])
+        self.assertEqual(self.nomes(9, "dominant-seventh", 0), ["A", "C#", "E", "G"])
+
+
 if __name__ == "__main__":
     unittest.main()

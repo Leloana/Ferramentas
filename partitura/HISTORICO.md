@@ -642,3 +642,181 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
   grafia (とう). Falta testar com música japonesa real (Whisper "ja" + alinhamento).
 - `test_japones.py`. Suíte 96 OK.
 
+
+## 31. Sessão Windows: grave claro, fácil fiel, Híbrido Gravado, música inteira — 2026-11-10 (noite)
+
+- `validar_biblioteca.py` acha o áudio das músicas sem `cache/transcricao.json` e tem `--so`.
+  Biblioteca regenerada; revisão cega da música inteira: novo ganhou 8×4; recado "o fácil não
+  parece a música"; Híbrido AMT no médio "muito melhor"; Baby com desvio do DTW 5,4 → 24,5 s.
+- `maos.clarear_grave` (grave embolado 35,7/min → 0 no Acordes médio), kana espaçado, cifra em
+  compasso de pausa; `--facil-fiel`; `--gravado` (`gravado.py`); `comparacao_completa.py`.
+- Exemplo 03 refeito; `--do-karaoke` testado (Águas de Março); experimento 6 faixas sem referências.
+
+## 32. Melodia reconhecível — 2026-11-10 (noite)
+
+- `afinacao.py`: desvio de afinação da voz descontado antes de arredondar; nota fora da escala e
+  do acorde vai pro grau vizinho quando a altura puxava pra ele ou é curta (Don't Look Back in
+  Anger 179/590 fora do tom; biblioteca 20–40% → 0–4%). `--melodia-crua` desliga.
+- Prévia com a melodia em destaque (`gerar.DESTAQUE`, só volume). `reparar_previas.py` voltou a funcionar.
+- Nota repetida colada sem sílaba vira sustentada (20–34% dos ataques da direita eram repetição);
+  `--juntar-silabas`, `--repetidas` volta ao antigo.
+- `limpeza.py`: melodia no topo, bordadura falsa A-B-A, repetidas da esquerda viram nota segurada.
+- `metricas.py`: fora do tom, repetidas e melodia no topo no relatório (guarda contra regressão).
+
+## 33. Níveis derivados do médio — 2026-11-10 (noite)
+
+- `derivados.py` (proposta do usuário), padrão desde então (`--sem-derivar` volta): fácil =
+  melodia do médio + uma nota grave por acorde; difícil = 3ª/6ª embaixo das longas, oitava nos
+  picos, arpejo no lugar de bloco/repetidas, pedal por acorde, fermata. Só tríade nos acréscimos.
+- Aba Karaokê no site (`/api/karaoke`, `/api/gerar_karaoke`), capa pelo vídeo de origem do karaokê.
+
+## 34. AMT-APC como base, modo leve e front novo — 2026-11-11 (madrugada)
+
+- Escuta do usuário: AMT-APC é a melhor versão, até que o Híbrido. `--versoes` escreve só o
+  pedido; prévias no fim, 8 em paralelo, ganho no lugar do loudnorm (Rosa de Hiroshima do cache
+  ~2 min → 11 s). Site mostra só o AMT-APC nos 3 níveis.
+- `--leve` (`gerar_nivel_leve`): sem Demucs/CREPE/Whisper; batidas e acordes da mistura, tempo 1
+  pelas notas graves do AMT-APC (`fase_pelo_midi`). Rosa do zero em CPU (Windows) 87 s. **Sem letra.**
+- `corrigir_fase`: o baixo forte no 1 e no 3 deixava a fase meio compasso deslocada em ~metade
+  das músicas; se as trocas de acorde caem claramente mais no 3, anda 2 batidas.
+- `tonalidade.py`: tom por trecho (Krumhansl-Kessler + Viterbi), vocabulário da música, função
+  melódica; só o erro provável do AMT-APC muda (348 notas na biblioteca). `--tom-ia-cru` desliga.
+- Front refeito do zero: um campo que filtra a biblioteca e busca no YouTube com Enter, Gerar num
+  toque com progresso no cartão, música em tela cheia com Fácil/Médio/Difícil, partitura que
+  acompanha, barra de controle. Trem das Onze do clique até pronta: 31 s. README: montar num servidor.
+
+## 35. AMT-APC no Linux e armadura de Águas de Março — 2026-11-11
+
+- Diretriz do usuário: **AMT-APC é a base de tudo**; o resto são ferramentas determinísticas pra
+  deixar o arranjo mais tocável e legível.
+- AMT-APC instalado no Linux (CPU, torch 2.x CPU). torchaudio >= 2.9 pede torchcodec pra ler
+  áudio: o lançador do `amtapc.py` cai pro soundfile quando ele falta. Águas de Março (3:34)
+  do zero em 8 min neste notebook (8 núcleos); do cache, 31 s.
+- Achado (usuário: "diversos bemóis"): armadura de Mi♭ (−3) numa música em Si♭ (Krumhansl 0,91
+  × 0,48). `custo_por_armadura` só contava nota fora da escala e o Lá♭ do Si♭7 (mixolídio) pesava
+  mais que o Lá. Agora `armaduras.custo_do_histograma` soma a distância do tom provável
+  (`PESO_TONICA` 0,5, perfis do `tonalidade.py`), por bloco no DP.
+- Grafia da cifra: raiz sempre bemol em tom com bemóis gerava Lá♭dim7 (Sol𝄫, Mi𝄫) e F#7 com Lá#.
+  `gerar.acorde_com_grafia` escolhe a grafia da raiz com menos acidentes contra a armadura, sem
+  dobrado. Águas de Março médio: 22 dobrados → 0, acidentes 189 → 161 (fácil 117 → 103,
+  difícil 340 → 291). Os que sobram são a harmonia (Lá♭ do Si♭7, Sol♭ do Mi♭m6, Mi♮ do Dó7).
+  Antes/depois em `trabalho/bemois_20261111/`. Testes em `test_armaduras.py`. Suíte 127 OK.
+
+## 36. Tocabilidade por regra no modo leve — 2026-11-11
+
+- `tocavel.py`: `medir` (ataques por tempo, notas juntas, síncopes que atravessam o tempo, saltos
+  da esquerda > oitava em < 1 tempo, mudanças de posição/min e trechos difíceis do `maos.py`) e
+  `ajustar` por nível: `desfazer_sincopes` (antecipação vai pro tempo e a nota anterior segura;
+  não mexe se atropela outro ataque ou se a nota fica < 1/2 tempo), fácil nas duas mãos e médio só
+  na esquerda; `oitavas_da_esquerda` (DP com oitava −12/0/+12 por ataque, custo do deslocamento
+  além de 7 semitons dividido pelo tempo disponível, +3 por mudar, proibido sair da faixa ou
+  encostar na direita), fácil e médio (no difícil a esquerda é arpejo). Difícil não muda.
+- `gerar.montar_partitura`: nota cromática fora do acorde com grafia pela direção (sobe #, desce ♭).
+- Águas de Março (144 bpm): fácil síncopes da direita 94 → 0, mudanças da esquerda 2,6 → 1,4/min;
+  médio síncopes da esquerda 105 → 7, mudanças 9,2 → 5,7/min, acidentes 161 → 155. Densidade já
+  baixa (1,25 ataque/tempo; a grade do nível segura), sem regra nova. `--sem-ajuste` desliga.
+- Medição: `trabalho/tocavel_20261111/medir.py <pasta>`. `test_tocavel.py`. Suíte 136 OK.
+- Pedido do usuário ouvindo a página: tirar o nome dos acordes de cima da partitura ("atrapalha").
+  `gerar.MOSTRAR_CIFRAS = False` (só não desenha; a grafia continua pelo acorde), `--cifras` volta.
+  Visualizador `VERSAO` 13. Suíte 137 OK.
+- Página 1 (Águas, Ode, fácil e médio): aprovada ("ficou muito bom com a mudança"). Pedido:
+  testar outros gêneros. Fuyu no Hanashi (J-pop, 136 bpm), Anna Júlia (rock, 152 bpm), Cálice
+  (MPB) geradas no Linux; armaduras conferidas contra Krumhansl nas 5 músicas (todas batem:
+  Si♭, Lá♭, Fá, Mi♭, Mi).
+- Fuyu: atrasar a antecipação criou 2 trechos difíceis (salto de 11 semitons ficou com 0,44 s).
+  `desfazer_sincopes` não move quando o salto pra próxima nota passa de uma quinta e o tempo que
+  sobra é menor que base + distância/velocidade do `maos.PERFIL` do nível. Fácil, síncopes da
+  direita antes → depois: Águas 94 → 15, Ode 88 → 7, Fuyu 100 → 26, Anna Júlia 56 → 5, Cálice
+  75 → 13, sem trecho difícil novo. Médio, esquerda: 105 → 17, 66 → 14, 40 → 12, 46 → 8, 58 → 2.
+- Pegadinha: `while read ... done <<EOF` com `python`/`yt-dlp` dentro: o processo lê o stdin e
+  engole as linhas seguintes da lista; passar `</dev/null`. Suíte 138 OK.
+- Página 2 aprovada: "as músicas são iguais, mas a partitura ficou bem mais legível". O ajuste
+  fica como padrão do modo leve (`--sem-ajuste` desliga).
+
+## 37. 8va desenhada duas oitavas abaixo e 8va por linhas suplementares — 2026-11-11
+
+- Usuário (Fuyu no Hanashi médio): "qual a lógica de mandar uma oitava acima e colocar as notas lá
+  embaixo? escrever lá embaixo é tão ruim quanto lá em cima". Causa: o `_oitava_acima` escrevia a
+  nota uma oitava abaixo e o Verovio, que lê a altura do MusicXML como a que soa, baixava de novo
+  (MEI `oct` 4, `oct.ges` 5 pra um Dó6). A pegadinha antiga ("transposing=True exporta oitavas
+  erradas") era diagnóstico errado. Agora a altura fica a que soa e o `sincronia.py` não soma
+  oitava. `test_oitava.py` confere pelo MEI do Verovio. Visualizador `VERSAO` 14.
+- Regra nova: DP nas notas da direita (normal × 8va), custo = linhas suplementares desenhadas +
+  6 por linha 8va nova (metade depois de pausa longa), nota embaixo da pauta dentro da 8va ×100.
+  5 músicas × 3 níveis: linhas 8va 79 → 62, suplementares em cima 828 → 624, nenhuma nota embaixo
+  da pauta dentro da 8va. Varredura (abrir/peso): 4/1 62·487·45 embaixo; 8/4 38·723·12; 12/4 29·810·12.
+- Difícil: a direita muda de posição 35–50/min contra 15–19 no médio. Experimento: sem a 3ª/6ª
+  embaixo das notas longas cai pra 24–35; sem a oitava dos picos nada muda; acrescentar a 3ª/6ª só
+  em nota sozinha, só com abertura ≤ 7/9 ou conduzindo a voz interna (peso 0,5–2) não muda nada.
+  É o próprio tocar em terças; fica. Chaves do experimento desfeitas no `derivados.py`.
+- Suíte 143 OK.
+
+## 38. Rodada 3: dedo, oitava do fácil, graves pra esquerda, atraso das batidas — 2026-11-11
+
+- Direção do usuário: modo leve é o padrão; letra não cabe nele (precisa de Demucs + tempos);
+  quer um leve otimizado, legível, fácil e condizente com a música.
+- Dedo dentro da nota (acorde com segunda: a cabeça vizinha fica do outro lado da haste e o dedo
+  "à esquerda" caía em cima dela). `dedos_ao_lado` confere cabeças/acidentes/barras/começo do
+  sistema também à esquerda; ocupado, passa pra esquerda da vizinha; senão direita; senão em cima.
+- Fácil na oitava confortável: oitava única pra música toda não serve (Fuyu fácil vai de Dó4 a
+  Sol6; descer criou 224 linhas suplementares embaixo). `tocavel.oitava_por_frase`: DP por frase
+  (pausa >= 1 tempo ou 16 tempos na barra), custo = linhas suplementares (ou a frase sob 8va, se
+  melhor) + 3 por frase mudada + salto > oitava entre frases; só aceita se `custo_leitura` (a mesma
+  DP da 8va do gerar, linhas + 6 por 8va) cair. Fuyu fácil: custo 144 → 104 (8va 14 → 3 antes dos
+  passos seguintes; na partitura final 12 → 2 linhas 8va, suplementares 33 → 61); Águas 113 → 104.
+- Graves da direita pra esquerda (`graves_pra_esquerda`): nota abaixo de Ré4 que não é a de cima vai
+  pra esquerda se ela está livre ou ataca junto com a mesma duração e o acorde cabe na mão do nível
+  (`maos.PERFIL` abertura, até 4 notas). Pouco efeito (0–4 notas por partitura): nos graves de
+  Cálice (96 linhas embaixo no difícil) é a própria melodia que desce, e ela não sai da direita.
+- Atraso das batidas: os ataques do AMT-APC caem 34–39 ms antes da batida detectada nas 5
+  músicas (mediana até o tempo/meio tempo mais próximo). Deslocar a grade piorou: Anna Júlia médio
+  síncopes 38 → 47, suplementares 25 → 35; Fuyu difícil 112 → 159. Descartado; a batida do áudio fica.
+- Suíte 154 OK.
+- Página às cegas do fácil aprovada: "ficou muito boa a simplificação".
+- Dois dedos na mesma nota (imagem do usuário): a primeira versão da correção do dedo conferia
+  qualquer cabeça à esquerda; em grau conjunto o dedo ia pra direita e caía no dedo da nota
+  seguinte (15 partituras: 1 → 232 sobreposições). Agora: regra antiga + só a cabeça do mesmo
+  acorde colada à esquerda (segunda, até 0,6 espaço, sem contar o próprio acidente), reservando o
+  lugar do dedo dela a partir do acidente dela; e cada dedo posto ao lado é guardado, outro não
+  pode cair em cima (distância vertical < 0,7 da fonte: terça empilha, segunda não). Resultado:
+  0 sobreposições, 16 dedos em cima da nota (eram 15). Conferência:
+  `trabalho/rodada3_20261111/dedos_sobrepostos.py`.
+
+## 39. Velocidade do AMT-APC em CPU, clave da direita e repetições — 2026-11-11
+
+- AMT-APC em CPU (trecho de 60 s de Águas de Março, notebook com load alto): 86 s; o modelo é
+  ~10 s por segmento de 512 quadros (linear 40%, atenção 20%, softmax 8%); espectro e notas < 0,2 s.
+  8 threads (núcleos lógicos): −10%, notas idênticas → no lançador do `amtapc.py`. Quantização int8
+  dinâmica nas lineares: −15 a −22%, mas 425 × 377 notas (F1 0,85 contra o original) → fora (mudaria
+  o arranjo base). `inference_mode`: nada.
+- Clave de fá na direita por DP (compasso a compasso, troca na barra): não disparou em nenhuma das
+  15 partituras e foi removida. O AMT-APC já separa as mãos em Dó4; as "linhas embaixo" contadas
+  eram quase todas o Dó central (1 linha suplementar, leitura normal). Só o difícil põe nota abaixo
+  (3ª/6ª até Sol3: 13 em Cálice).
+- Repetições: quase nenhum compasso se repete igual (Ode fácil 14/99, Águas 1/125), nem bloco de 4
+  compassos; pela melodia (Levenshtein por bloco de 4) só Ode e Anna Júlia têm blocos ≥ 70% iguais.
+  O mesmo trecho sai transcrito diferente a cada vez. Unificar as repetições (achar as seções com
+  alinhamento livre e escrever igual) seria o próximo passo grande pra leitura e estudo; muda o
+  conteúdo, precisa de página às cegas.
+
+## 40. Repetições escritas iguais (consenso) — 2026-11-11
+
+- Pedido do usuário: identificar as repetições e dar o mesmo padrão de notas (facilita aprender).
+- Pesquisa (o que já existe): consenso entre repetições na transcrição de letra (McVicar, Ellis e
+  Goto, ICASSP 2014), modelo da própria peça pras repetições no ritmo (Nakamura et al., arXiv
+  1908.06969), refinamento por segmentos repetidos em música folclórica (AES), autossimilaridade
+  pra métrica na transcrição de piano (Shibata, Nakamura e Yoshii, arXiv 2008.12710), Etude (piano
+  cover com etapa de estrutura, arXiv 2509.16522). Nenhum força consistência num arranjo pronto.
+- Detecção pelas notas por compasso só achou a Ode. Pelo áudio, cromagrama cru casa tudo com tudo;
+  receita padrão (croma sem a média, 8 batidas empilhadas, recorrência kNN, `path_enhance`) achou
+  a estrutura: Ode e Anna Júlia a cada 16 batidas, Águas 64–80, Cálice ~32–35 (rubato), Fuyu 154
+  (= 38,5 compassos: repetição deslocada meio compasso, métrica a corrigir; Shibata et al.).
+- `repeticoes.py`: lags do áudio (picos, múltiplos de compasso, >= 4 compassos) → confirmação pelas
+  notas (impressão de classes de altura por meio compasso, cada mão normalizada à parte, cosseno
+  >= 0,6 por 4+ compassos) → grupos por união-busca, apertados (cosseno >= 0,75 contra o medoide;
+  sem isso a Ode encadeava 87 de 99 compassos em 6 grupos) → consenso por votação (ataque a 1/4 de
+  tempo + altura presentes na maioria; vazio → medoide). No médio do modo leve antes de derivar;
+  `--sem-repeticoes` desliga.
+- Compassos iguais a um anterior (fácil): Ode 14 → 49/99, Anna Júlia 15 → 47/131, Águas 1 → 6,
+  Fuyu 3 → 6, Cálice 1 → 4. Página às cegas `trabalho/rodada4_20261111/pagina`. `test_repeticoes.py`.
+  Suíte 158 OK.

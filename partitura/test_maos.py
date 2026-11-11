@@ -184,6 +184,18 @@ class OitavaEDedos(unittest.TestCase):
             tocadas = [n.pitch for i in pretty_midi.PrettyMIDI(str(mid)).instruments for n in i.notes if n.pitch >= 60]
             self.assertEqual(tocadas, alturas)
 
+    def test_dedo_nao_entra_na_cabeca_vizinha_da_segunda(self):
+        # acorde com segunda: a cabeça de cima fica à esquerda da haste, colada na de baixo
+        import re
+        import gerar
+        cabeca = lambda i, x, y: (f'<g id="n{i}" class="note"><g class="notehead"><use xlink:href="#x" '
+                                  f'transform="translate({x}, {y}) scale(1)"/></g></g>')
+        dedo = ('<g id="f1" class="fing" data-startid="#n1"><text x="2100" y="900" text-anchor="middle" '
+                'font-size="0px"><tspan class="text"><tspan font-size="200px">4</tspan></tspan></text></g>')
+        svg = cabeca(0, 1784, 1410) + cabeca(1, 2000, 1500) + dedo
+        x = float(re.search(r'<text x="(-?[\d.]+)"', gerar.dedos_ao_lado(svg)).group(1))
+        self.assertLess(x, 1784)          # à esquerda da cabeça vizinha, não em cima dela
+
     def test_dedos_ao_lado_da_nota(self):
         import gerar
         svg = ('<g id="n1" class="note"><g class="notehead"><use xlink:href="#x" transform="translate(2000, 1500) scale(1)"/></g></g>'

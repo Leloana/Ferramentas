@@ -8,7 +8,7 @@ def preparar_musicxml(texto, com_percurso=False):
     segmentos=[]; andamentos={Fraction(0):120.0}; numero=0; percurso=[]
     for ip,parte in enumerate(raiz.findall('part')):
         base=Fraction(0); divisao=1; compasso=Fraction(4)
-        oitava={}  # pauta -> semitons somados (8va: a nota escrita soa uma oitava acima)
+        oitava={}  # pauta -> 8va ativa (só registro: a altura do MusicXML já é a que soa)
         for im,medida in enumerate(parte.findall('measure')):
             ident_medida=f'compasso-{ip}-{im}'
             medida.set('id',ident_medida)
@@ -47,7 +47,7 @@ def preparar_musicxml(texto, com_percurso=False):
                     if pitch is not None and dur>0:
                         semitons={'C':0,'D':2,'E':4,'F':5,'G':7,'A':9,'B':11}
                         p=(int(pitch.findtext('octave'))+1)*12+semitons[pitch.findtext('step')]+float(pitch.findtext('alter') or 0)
-                        p+=oitava.get(el.findtext('staff') or '1',0)
+                        # a altura do MusicXML já é a que soa: o octave-shift só muda o desenho (Verovio)
                         segmentos.append({'id':ident,'a':base+inicio,'b':base+inicio+dur,'pitch':int(p),
                             'voz':f'{ip}:{el.findtext("staff") or 1}:{el.findtext("voice") or 1}',
                             'letra':el.find('lyric') is not None,

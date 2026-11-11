@@ -19,10 +19,23 @@ ESTILO = {"facil": "level1", "medio": "level2", "dificil": "level3"}
 # o checkpoint do AMT-APC foi salvo com os pesos na GPU: sem placa, torch.load falha. Este
 # lançador roda o `infer` do repositório mapeando os pesos pra CPU quando não há CUDA (modo leve)
 _RODAR_SEM_GPU = "\n".join([
-    "import sys, runpy, torch",
+    "import os, sys, runpy, torch",
+    # todos os núcleos lógicos: ~10% mais rápido em CPU, notas idênticas (medido 2026-11-11; a
+    # quantização int8 acelerava mais, mas mudava 15% das notas, então ficou de fora)
+    "torch.set_num_threads(os.cpu_count() or 1)",
     "if not torch.cuda.is_available() or torch.cuda.device_count() == 0:",
     "    _carregar = torch.load",
     "    torch.load = lambda *a, **k: _carregar(*a, **{**k, 'map_location': 'cpu'})",
+    # torchaudio >= 2.9 carrega áudio pelo torchcodec; sem ele, lê com soundfile (mesmo formato)
+    "import torchaudio",
+    "try:",
+    "    import torchcodec  # noqa: F401",
+    "except Exception:",
+    "    import soundfile",
+    "    def _ler(caminho, *a, **k):",
+    "        dados, sr = soundfile.read(str(caminho), dtype='float32', always_2d=True)",
+    "        return torch.from_numpy(dados.T.copy()), sr",
+    "    torchaudio.load = _ler",
     "sys.argv = ['infer'] + sys.argv[1:]",
     "runpy.run_module('infer', run_name='__main__', alter_sys=True)",
 ])
