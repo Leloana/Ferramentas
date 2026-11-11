@@ -817,14 +817,15 @@ def salvar_versao(sc, pasta: Path, versao: str, mid_previa: Path | None = None):
 DESTAQUE = dict(cantada=+22, topo_direita=+8, resto_direita=-12, esquerda=-24)
 
 
-def _velocidade_destaque(n, topos, base):
+def _velocidade_destaque(n, topos, base, sem_letra=False):
     mao = n['voz'].split(':')[-1]  # 'parte:voz:pauta'; pauta 1 = direita
     if mao != '1':
         d = DESTAQUE['esquerda']
     elif n.get('letra'):
         d = DESTAQUE['cantada']
     else:
-        d = DESTAQUE['topo_direita'] if (round(n['inicio'], 4), n['pitch']) in topos else DESTAQUE['resto_direita']
+        topo = (round(n['inicio'], 4), n['pitch']) in topos
+        d = (DESTAQUE['cantada'] if sem_letra else DESTAQUE['topo_direita']) if topo else DESTAQUE['resto_direita']
     return int(min(127, max(25, base + d)))
 
 
@@ -861,11 +862,12 @@ def salvar_midi_notas(sc, destino: Path, xml: Path | None = None, destaque: bool
         if n['voz'].split(':')[-1]=='1':
             k=round(n['inicio'],4); topos[k]=max(topos.get(k,0),n['pitch'])
     topos={(k,p) for k,p in topos.items()}
+    sem_letra=not any(n.get('letra') for n in ligadas)   # arranjo da IA: a voz de cima é a melodia
     for n in ligadas:
         inst=instrumentos.setdefault(n['voz'],pretty_midi.Instrument(program=0,name=n['voz']))
         v=velocidade(n['inicio'])
         if destaque:
-            v=_velocidade_destaque(n,topos,v)
+            v=_velocidade_destaque(n,topos,v,sem_letra)
         inst.notes.append(pretty_midi.Note(velocity=v,pitch=n['pitch'],start=n['inicio'],end=n['fim']))
     # pedal escrito vira sustain (CC64) na prévia, em todos os canais
     from music21 import expressions as _expr
@@ -1234,6 +1236,8 @@ def main():
                     help="mão esquerda da música inteira (versão Acordes) na textura desse teor")
     ap.add_argument("--variacao", type=int, default=0, help="outra versão da introdução gerada (0 = padrão)")
     ap.add_argument("--sem-transpor", action="store_true", help="no nível fácil, não transpõe pra tom sem acidentes")
+    ap.add_argument("--tom-ia-cru", action="store_true",
+                    help="não corrige nota fora do tom no arranjo da IA (tonalidade.py)")
     ap.add_argument("--leve", action="store_true",
                     help="só o AMT-APC, sem separar a voz, sem melodia e sem letra (sem Demucs/CREPE/Whisper): "
                          "batidas e acordes da própria mistura. Roda só em CPU (~1,5 min por música)")
@@ -1497,12 +1501,18 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
     if args.amtapc:  # os "levels" do AMT-APC são mais estilo que dificuldade: simplifica igual ao Pop2Piano
         from amtapc import maos_amtapc
         a_md, a_me = maos_amtapc(audio, base, nivel, grade)
-        versoes["AMT-APC"] = (reduzir_mao(a_md, nivel, "direita"), reduzir_mao(a_me, nivel, "esquerda"))
+        r_md, r_me = reduzir_mao(a_md, nivel, "direita"), reduzir_mao(a_me, nivel, "esquerda")
+        if not getattr(args, "tom_ia_cru", False):   # nota fora do tom do arranjo da IA (tonalidade.py)
+            from tonalidade import corrigir_tom
+            r_md, r_me, reg_tom = corrigir_tom(r_md, r_me, acs, TIPOS)
+            print(f"[tonalidade] AMT-APC: {len(reg_tom)} notas fora do tom corrigidas")
+        versoes["AMT-APC"] = (r_md, r_me)
+        a_me_corrigida = r_me
         if args.hibrido:  # melodia cantada com letra + mão esquerda do AMT-APC (mais tocável que a do Pop2Piano)
-            dir_ia = reduzir_mao(a_md, nivel, "direita")
+            dir_ia = r_md
             completa = completar_instrumentais(md_ev, dir_ia, grade.passo, bloqueios)
             print(f"[instrumental] HibridoAMT: {len(completa)-len(md_ev)} ataques acrescentados")
-            versoes["HibridoAMT"] = (completa, reduzir_mao(a_me, nivel, "esquerda"))
+            versoes["HibridoAMT"] = (completa, a_me_corrigida)
     if getattr(args, "gravado", False):  # piano + violão tocados na gravação, transcritos nota a nota
         from gravado import completar_com, maos_gravado
         g_md, g_me = maos_gravado(audio, base, grade)
@@ -1622,6 +1632,10 @@ def gerar_nivel_leve(nivel, args, audio, base, titulo, acs, grade, bpm):
     print(f"\n=== nível {NOME[nivel]} (modo leve, AMT-APC) ===")
     a_md, a_me = maos_amtapc(audio, base, base_nivel, grade)
     md, me = reduzir_mao(a_md, base_nivel, "direita"), reduzir_mao(a_me, base_nivel, "esquerda")
+    if not getattr(args, "tom_ia_cru", False):   # nota fora do tom do arranjo da IA (tonalidade.py)
+        from tonalidade import corrigir_tom
+        md, me, reg_tom = corrigir_tom(md, me, acs, TIPOS)
+        print(f"[tonalidade] AMT-APC: {len(reg_tom)} notas fora do tom corrigidas")
     cifras, anterior = [], None
     for j, r, t, *_ in acs:
         if r is not None and (r, t) != anterior:
