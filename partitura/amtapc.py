@@ -16,6 +16,18 @@ REPO = AQUI / "modelos" / "amt-apc"
 ESTILO = {"facil": "level1", "medio": "level2", "dificil": "level3"}
 
 
+# o checkpoint do AMT-APC foi salvo com os pesos na GPU: sem placa, torch.load falha. Este
+# lançador roda o `infer` do repositório mapeando os pesos pra CPU quando não há CUDA (modo leve)
+_RODAR_SEM_GPU = "\n".join([
+    "import sys, runpy, torch",
+    "if not torch.cuda.is_available() or torch.cuda.device_count() == 0:",
+    "    _carregar = torch.load",
+    "    torch.load = lambda *a, **k: _carregar(*a, **{**k, 'map_location': 'cpu'})",
+    "sys.argv = ['infer'] + sys.argv[1:]",
+    "runpy.run_module('infer', run_name='__main__', alter_sys=True)",
+])
+
+
 def disponivel() -> bool:
     return (REPO / "infer" / "__main__.py").exists() and (REPO / "models" / "params" / "apc.pth").exists()
 
@@ -30,8 +42,8 @@ def midi_amtapc(audio: Path, pasta: Path, nivel: str) -> Path:
         raise RuntimeError("AMT-APC não instalado em modelos/amt-apc (veja amtapc.py)")
     destino.parent.mkdir(parents=True, exist_ok=True)
     print(f"[amt-apc] gerando cover ({ESTILO[nivel]})...")
-    subprocess.run([sys.executable, "-X", "utf8", "infer", str(audio.resolve()), "-o", str(destino.resolve()),
-                    "-s", ESTILO[nivel]], cwd=REPO, check=True)
+    subprocess.run([sys.executable, "-X", "utf8", "-c", _RODAR_SEM_GPU, str(audio.resolve()), "-o",
+                    str(destino.resolve()), "-s", ESTILO[nivel]], cwd=REPO, check=True)
     return destino
 
 

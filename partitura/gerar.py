@@ -112,6 +112,40 @@ def fase_compasso(bt: np.ndarray, baixo: np.ndarray, sr: int) -> int:
     return int(np.argmax(somas))
 
 
+def fase_pelo_midi(bt: np.ndarray, mid: Path, grave: int = 55) -> int:
+    """Modo leve: o tempo 1 pelas notas graves do arranjo do AMT-APC (força dos ataques nas batidas)."""
+    import pretty_midi
+    notas = [n for i in pretty_midi.PrettyMIDI(str(mid)).instruments for n in i.notes if n.pitch < grave]
+    if not notas or len(bt) < 8:
+        return 0
+    forca = np.zeros(len(bt))
+    for n in notas:
+        k = int(np.argmin(np.abs(bt - n.start)))
+        if abs(bt[k] - n.start) < .08:
+            forca[k] += n.velocity * (1 + (60 - n.pitch) / 24)   # mais grave pesa mais
+    somas = [forca[f::4].mean() + 0.5 * forca[(f + 2) % 4::4].mean() for f in range(4)]
+    return int(np.argmax(somas))
+
+
+def corrigir_fase(fase: int, acs, razao: float = 1.3):
+    """O baixo bate forte no 1 e no 3: a fase pode sair meio compasso deslocada. A harmonia muda
+    mais no tempo 1; se as trocas de acorde caem claramente mais no 3, anda 2 batidas.
+    Devolve (fase, acs com as posições ajustadas, mudou)."""
+    trocas, ant = {0: 0, 2: 0}, None
+    for j, r, t, *_ in acs:
+        if r is None:
+            ant = None
+            continue
+        if ant is not None and (r, t) != ant and int(round(j)) % 4 in trocas:
+            trocas[int(round(j)) % 4] += 1
+        ant = (r, t)
+    if trocas[2] <= max(4, razao * trocas[0]):
+        return fase, acs, False
+    nova = (fase + 2) % 4
+    delta = fase - nova                      # posição = batida - fase
+    return nova, [(j + delta, *resto) for j, *resto in acs], True
+
+
 class Grade:
     """Converte tempo (s) <-> posição em tempos musicais, seguindo as batidas reais."""
 
@@ -1200,6 +1234,9 @@ def main():
                     help="mão esquerda da música inteira (versão Acordes) na textura desse teor")
     ap.add_argument("--variacao", type=int, default=0, help="outra versão da introdução gerada (0 = padrão)")
     ap.add_argument("--sem-transpor", action="store_true", help="no nível fácil, não transpõe pra tom sem acidentes")
+    ap.add_argument("--leve", action="store_true",
+                    help="só o AMT-APC, sem separar a voz, sem melodia e sem letra (sem Demucs/CREPE/Whisper): "
+                         "batidas e acordes da própria mistura. Roda só em CPU (~1,5 min por música)")
     ap.add_argument("--versoes", default="",
                     help="só escreve estas versões (ex.: AMT-APC ou AMT-APC,HibridoAMT); vazio = todas as calculadas")
     ap.add_argument("--derivar", action="store_true",
@@ -1257,11 +1294,40 @@ def main():
         grade = Grade(bt, fase)
         notas = [tuple(n) for n in reuso["notas"]]
         acs = [tuple(a) for a in reuso["acordes"]]
+        fase, acs, mudou = corrigir_fase(fase, acs)
+        if mudou:   # cache anterior à correção: compassos meio compasso deslocados
+            grade = Grade(bt, fase)
+            print(f"[batidas] tempo 1 corrigido pela harmonia: batida {fase}")
         palavras = [tuple(p) for p in reuso.get("palavras") or []]
         diagnostico = reuso.get("diagnostico") or {}
         args.idioma = reuso.get("idioma") or args.idioma
         print(f"[cache] reusando transcrição: {len(notas)} notas, {len(acs)} janelas de acorde, "
               f"{len(palavras)} palavras (sem separar nem transcrever de novo)")
+    elif getattr(args, "leve", False):
+        # modo leve: nada de voz/melodia/letra. Batidas e acordes da mistura; o grave por passa-baixa
+        from scipy.signal import butter, sosfiltfilt
+        sr = 22050
+        mix = carregar(audio, sr)
+        baixo = sosfiltfilt(butter(4, 200, "low", fs=sr, output="sos"), mix).astype(np.float32)
+        print("[batidas] detectando pulso (modo leve, da mistura)...")
+        bt, bpm = batidas(mix, sr, mix)
+        from amtapc import midi_amtapc   # o arranjo sai de qualquer jeito: o grave dele dá o tempo 1
+        fase = fase_pelo_midi(bt, midi_amtapc(audio, base, "medio" if args.derivar else niveis[0]))
+        grade = Grade(bt, fase)
+        print(f"[batidas] ~{bpm:.0f} bpm, {len(bt)} batidas, tempo 1 na batida {fase}")
+        print("[acordes] detectando harmonia (modo leve, da mistura)...")
+        acs = acordes(mix, baixo, sr, grade)
+        fase, acs, mudou = corrigir_fase(fase, acs)
+        if mudou:
+            grade = Grade(bt, fase)
+            print(f"[batidas] tempo 1 corrigido pela harmonia: batida {fase}")
+        notas, palavras, diagnostico = [], [], None
+        cache = base / "cache"
+        cache.mkdir(parents=True, exist_ok=True)
+        (cache / "transcricao.json").write_text(json.dumps(dict(
+            audio=str(audio), audio_tamanho=audio.stat().st_size, audio_mtime_ns=audio.stat().st_mtime_ns,
+            bt=bt.tolist(), fase=fase, bpm=float(bpm), notas=[], diagnostico={}, acordes=acs, palavras=[],
+            idioma=args.idioma, leve=True), ensure_ascii=False, default=lambda v: v.item()), encoding="utf-8")
     else:
         if karaoke:  # voz já separada pelo karaokê; Demucs só no acompanhamento (baixo/bateria/resto)
             stems = separar(karaoke["acompanhamento"], AQUI / "trabalho", args.separador)
@@ -1295,6 +1361,10 @@ def main():
         n_ = min(len(harm), len(baixo))
         print(f"[acordes] harmonia de: {fonte_harm}")
         acs = acordes(harm[:n_] + 0.3 * baixo[:n_], baixo, sr, grade)
+        fase, acs, mudou = corrigir_fase(fase, acs)
+        if mudou:
+            grade = Grade(bt, fase)
+            print(f"[batidas] tempo 1 corrigido pela harmonia: batida {fase}")
 
         palavras = []
         origem_letra, rel_alinhamento = None, None
@@ -1331,7 +1401,7 @@ def main():
             origem_letra=origem_letra,alinhamento=rel_alinhamento,separador=args.separador)
         (cache/'transcricao.json').write_text(json.dumps(transcricao,ensure_ascii=False,
             default=lambda v:v.item()),encoding='utf-8')
-    if not getattr(args, "melodia_crua", False):  # afinação + notas duvidosas da voz puxadas pra escala
+    if not getattr(args, "melodia_crua", False) and notas:  # afinação + notas duvidosas da voz puxadas pra escala
         from afinacao import melodia_no_tom
         notas, reg_tom, cents = melodia_no_tom(notas, (diagnostico or {}).get("quadros"), acs, TIPOS, grade.pos)
         print(f"[afinacao] voz {cents:+d} cents; {sum(r['motivo'] == 'tom' for r in reg_tom)} notas fora do tom "
@@ -1342,7 +1412,10 @@ def main():
     PREVIAS_PENDENTES = []   # prévias de todos os níveis renderizadas juntas no fim, em paralelo
     for nivel in niveis:
         SR_GRADE = GRADE_NIVEL["medio" if ((nivel == "facil" and args.facil_fiel) or args.derivar) else nivel]
-        gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, bpm, diagnostico)
+        if getattr(args, "leve", False):
+            gerar_nivel_leve(nivel, args, audio, base, titulo, acs, grade, bpm)
+        else:
+            gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, bpm, diagnostico)
     renderizar_previas_pendentes()
 
 
@@ -1537,6 +1610,40 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
         print(f"[{versao}] armadura: {arm}")
         salvar_versao(sc, base, f"{versao} - {NOME[nivel]}")
         registrar_sincronia(base, f"{versao} - {NOME[nivel]}", grade, deslocamento(md, me))
+
+def gerar_nivel_leve(nivel, args, audio, base, titulo, acs, grade, bpm):
+    """Modo leve: só o AMT-APC (fácil e difícil derivados do médio), sem melodia nem letra."""
+    from amtapc import maos_amtapc
+    from derivados import dificil_de_medio, facil_de_medio
+    from limpeza import juntar_repetidas_esquerda
+    from maos import tornar_tocavel
+    from niveis import NOME, cifras_do_nivel, reduzir_mao
+    base_nivel = "medio" if getattr(args, "derivar", True) else nivel
+    print(f"\n=== nível {NOME[nivel]} (modo leve, AMT-APC) ===")
+    a_md, a_me = maos_amtapc(audio, base, base_nivel, grade)
+    md, me = reduzir_mao(a_md, base_nivel, "direita"), reduzir_mao(a_me, base_nivel, "esquerda")
+    cifras, anterior = [], None
+    for j, r, t, *_ in acs:
+        if r is not None and (r, t) != anterior:
+            cifras.append((j, r, t))
+        anterior = (r, t) if r is not None else None
+    marcas = []
+    if base_nivel != nivel:
+        md, me, marcas = (facil_de_medio(md, me, acs, TIPOS) if nivel == "facil"
+                          else dificil_de_medio(md, me, acs, TIPOS, bpm))
+    cifras = cifras_do_nivel(cifras, nivel)
+    me = juntar_repetidas_esquerda(me)
+    md, me, dmd, dme, rel = tornar_tocavel(md, me, nivel, bpm, frozenset(),
+                                           clarear=not getattr(args, "grave_embolado", False))
+    r = rel["resumo"]
+    print(f"[maos] AMT-APC: {r['corrigidos']} correções, {r['restantes']} trechos difíceis restantes")
+    sub = args.subtitulo + f" · nível {NOME[nivel].lower().replace('facil', 'fácil').replace('dificil', 'difícil')}"
+    sc, arm = montar_partitura(md, me, cifras, bpm, titulo, sub, uma_armadura=(nivel == "facil"),
+                               dedos_md=dmd, dedos_me=dme, marcas=marcas)
+    print(f"[AMT-APC] armadura: {arm}")
+    salvar_versao(sc, base, f"AMT-APC - {NOME[nivel]}")
+    registrar_sincronia(base, f"AMT-APC - {NOME[nivel]}", grade, deslocamento(md, me))
+
 
 if __name__ == "__main__":
     main()
