@@ -323,5 +323,6 @@ def ajustar(md, me, nivel, bpm):
     if nivel in ("facil", "medio"):
         me, reg["sincopes_esquerda"] = desfazer_sincopes(me, nivel=nivel, bpm=bpm)
     if nivel in ("facil", "medio"):   # no difícil a esquerda é arpejo nota a nota: oitava por nota desmancharia o desenho
-        me, reg["oitavas_esquerda"] = oitavas_da_esquerda(me, md, (36, 64) if nivel == "facil" else (28, 64))
+        from niveis import GRAVE_MINIMO
+        me, reg["oitavas_esquerda"] = oitavas_da_esquerda(me, md, (36, 64) if nivel == "facil" else (GRAVE_MINIMO, 64))
     return md, me, reg

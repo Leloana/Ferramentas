@@ -68,6 +68,26 @@ AMT-APC) + regras musicais. Opções principais:
 | `--batidas-librosa` | modo leve com a grade antiga (librosa + tempo 1 pela heurística) em vez do madmom |
 | `--sem-repeticoes` | modo leve sem escrever igual os trechos que se repetem (`repeticoes.py`) |
 | `--sem-ajuste` | modo leve sem a tocabilidade por regra (`tocavel.py`: síncopes no tempo, oitava da esquerda) |
+| `--acordes mistura\|ia\|ambos` | modo leve: acordes pelo croma da gravação, pelas notas do AMT-APC ou pelos dois (padrão `ambos`) |
+| `--dinamica` | modo leve: escreve p/mp/mf/f pela intensidade da gravação (`dinamica.py`) |
+
+### Teste em massa (`lote.py`, `qualidade.py`)
+
+Centenas de músicas **integrais** (nunca faixas separadas) pelo modo leve, sem PDF nem prévia, e
+métricas de leitura, tocabilidade e som por partitura. Tudo em `trabalho/lote/` (fora do git).
+
+```powershell
+python lote.py lista; python lote.py baixar          # vídeos de origem do karaokê + trabalho/lote/buscas.txt
+python lote.py amtapc                                 # AMT-APC na GPU, modelo carregado uma vez (~5 s/música)
+python lote.py gerar --trabalhadores 12               # modo leve até o MusicXML (~25 s/música por processo)
+python lote.py medir --nome base; python lote.py resumo --nome base
+python lote.py gerar --reusar-cache --lista dev.txt --saida exp_x --ajustes '{"derivados.DIFICIL": {"arpejo": false}}'
+python lote.py resumo --nome exp_x --contra base      # médias, p50, p90 e diferença nas músicas em comum
+```
+
+`--ajustes` troca constantes (`"niveis.GRAVE_MINIMO": 36`) e padrões de argumento de função
+(`"repeticoes.padronizar.limiar_grupo": 0.85`) sem mexer no código. Métricas em `qualidade.py`
+(docstring) e `regressao.py`.
 
 Saída por música em `saida/<Título>/`:
 

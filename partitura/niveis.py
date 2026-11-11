@@ -70,6 +70,10 @@ def mao_esquerda_acordes(acs, nivel, fim, tipos, janela=2):
     return ev
 
 
+# nota mais grave da esquerda no médio/difícil (MIDI). 28 = Mi1, quatro linhas abaixo da clave de fá.
+GRAVE_MINIMO = 28
+
+
 def reduzir_mao(ev, nivel, mao):
     """Simplifica eventos polifônicos (Pop2Piano): limita notas por acorde.
     Mão direita guarda as de cima (melodia), esquerda as de baixo (baixo)."""
@@ -102,7 +106,7 @@ def suavizar_baixo(ev, nivel):
     """
     if not ev:
         return []
-    lo, hi = (36, 60) if nivel == "facil" else (28, 60)
+    lo, hi = (36, 60) if nivel == "facil" else (GRAVE_MINIMO, 60)
     candidatos = []
     for _, _, ps, *_ in ev:
         opts = [[p+k for p in ps] for k in range(-48, 49, 12)

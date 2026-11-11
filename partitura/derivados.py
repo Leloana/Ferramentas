@@ -33,6 +33,10 @@ def _silaba(ev):
 
 # ------------------------------------------------------------------ fácil
 
+# faixa da nota grave do fácil (MIDI): Fá2–Mi3, sem linha suplementar na clave de fá. Antes (36, 55),
+# Dó2–Sol3: 64 músicas (lote.py, 2026-11-11) linhas suplementares na clave de fá 9,9 → 0 por 100 notas.
+FACIL_BAIXO = (41, 52)
+
 def facil_de_medio(md, me, acs, tipos, compasso=4.0):
     """(md, me, marcas) do fácil a partir do médio."""
     direita = []
@@ -62,9 +66,9 @@ def facil_de_medio(md, me, acs, tipos, compasso=4.0):
         if not soando:
             continue
         baixo = min(soando)
-        while baixo < 36:
+        while baixo < FACIL_BAIXO[0]:
             baixo += 12
-        while baixo > 55:
+        while baixo > FACIL_BAIXO[1]:
             baixo -= 12
         ant = esquerda[-1] if esquerda else None
         if ant and ant[2] == [baixo] and abs(ant[0] + ant[1] - a) < EPS and (a % compasso) > EPS:
@@ -94,8 +98,26 @@ def _nota_do_acorde_abaixo(p, pcs, minimo=3, maximo=9, alvo=4):
     return min(cands, key=lambda q: abs((p - q) - alvo)) if cands else None
 
 
-def dificil_de_medio(md, me, acs, tipos, bpm, faixa_esq=(28, 64)):
+# enriquecimentos do difícil (lote.py --ajustes '{"derivados.DIFICIL": {...}}' liga/desliga cada um).
+# evitar_choque: a nota acrescentada não pode formar 2ª/9ª menor com a outra mão soando junto
+# (64 músicas, 2026-11-11: choques do difícil 1,53 → 0,24 por 100 ataques, nada piorou).
+DIFICIL = dict(tercas=True, oitava_pico=True, arpejo=True, baixo_oitava=True, evitar_choque=True)
+
+
+def _choca(x, outras, acima: bool):
+    """x forma 2ª/9ª menor com alguma de `outras` (acima=True: as outras estão acima de x)."""
+    return any(((o - x) if acima else (x - o)) > 0 and ((o - x) if acima else (x - o)) % 12 == 1 for o in outras)
+
+
+def _soando(ev, ini, fim):
+    return [p for o, d, ps, *_ in ev for p in ps if o < fim - EPS and ini < o + d - EPS]
+
+
+def dificil_de_medio(md, me, acs, tipos, bpm, faixa_esq=None):
     """(md, me, marcas) do difícil a partir do médio."""
+    if faixa_esq is None:
+        from niveis import GRAVE_MINIMO
+        faixa_esq = (GRAVE_MINIMO, 64)
     md = sorted(md, key=lambda e: e[0])
     topo = [max(e[2]) if e[2] else None for e in md]
     direita = []
@@ -104,10 +126,12 @@ def dificil_de_medio(md, me, acs, tipos, bpm, faixa_esq=(28, 64)):
         if ps and dur >= 1 - EPS:
             p = max(ps)
             viz = [t for t in topo[max(0, i - 4):i + 5] if t is not None]
-            if dur >= 2 - EPS and p >= max(viz) and p - 12 >= 55:
+            if DIFICIL["oitava_pico"] and dur >= 2 - EPS and p >= max(viz) and p - 12 >= 55:
                 ps = sorted(set(ps) | {p - 12})                     # pico de frase: oitava
-            else:
+            elif DIFICIL["tercas"]:
                 q = _nota_do_acorde_abaixo(p, notas_do_acorde(acs, tipos, off))
+                if q is not None and DIFICIL["evitar_choque"] and _choca(q, _soando(me, off, off + dur), acima=False):
+                    q = None
                 if q is not None and q >= 55:
                     ps = sorted(set(ps) | {q})                      # 3ª/6ª do acorde embaixo
         direita.append((off, dur, ps, *ev[3:]))
@@ -115,6 +139,12 @@ def dificil_de_medio(md, me, acs, tipos, bpm, faixa_esq=(28, 64)):
     esquerda, marcas = [], []
     for off, dur, ps, *r in _juntar_iguais(me):
         ps = sorted(ps)
+        if not DIFICIL["arpejo"]:
+            if DIFICIL["baixo_oitava"] and len(ps) == 1 and dur >= 2 - EPS and ps[0] - 12 >= faixa_esq[0]:
+                esquerda.append((off, dur, [ps[0] - 12, ps[0]]))
+            else:
+                esquerda.append((off, dur, ps, *r))
+            continue
         if len(ps) == 1 and dur >= 1 - EPS:   # nota solta (ou repetida) longa: arpejo do acorde a partir dela
             pcs = notas_do_acorde(acs, tipos, off)
             acima = [q for q in range(ps[0] + 1, ps[0] + 17) if q % 12 in pcs and q <= faixa_esq[1]][:3]
@@ -126,11 +156,14 @@ def dificil_de_medio(md, me, acs, tipos, bpm, faixa_esq=(28, 64)):
             t, k = off, 0
             while t < off + dur - EPS:
                 d = min(passo, off + dur - t)
-                esquerda.append((t, d, [padrao[k % len(padrao)]]))
+                x = padrao[k % len(padrao)]
+                if DIFICIL["evitar_choque"] and _choca(x, _soando(direita, t, t + d), acima=True):
+                    x = ps[0]                                       # choca com a direita: volta ao baixo
+                esquerda.append((t, d, [x]))
                 t += d
                 k += 1
             marcas.append((off, "pedal", off + dur))
-        elif len(ps) == 1 and dur >= 2 - EPS and ps[0] - 12 >= faixa_esq[0]:
+        elif DIFICIL["baixo_oitava"] and len(ps) == 1 and dur >= 2 - EPS and ps[0] - 12 >= faixa_esq[0]:
             esquerda.append((off, dur, [ps[0] - 12, ps[0]]))         # baixo longo em oitava
         else:
             esquerda.append((off, dur, ps, *r))
