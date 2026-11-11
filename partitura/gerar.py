@@ -730,10 +730,30 @@ def salvar_versao(sc, pasta: Path, versao: str, mid_previa: Path | None = None):
     print(f"[ok] {pdf} ({n} páginas)")
 
 
-def salvar_midi_notas(sc, destino: Path, xml: Path | None = None):
-    """Exporta somente notas escritas e respeita ligações parciais de acordes."""
+# destaque da melodia na prévia (só volume; a partitura não muda): nota cantada mais forte,
+# nota de cima da direita sem letra um pouco mais forte, acompanhamento mais baixo
+DESTAQUE = dict(cantada=+22, topo_direita=+8, resto_direita=-12, esquerda=-24)
+
+
+def _velocidade_destaque(n, topos, base):
+    mao = n['voz'].split(':')[-1]  # 'parte:voz:pauta'; pauta 1 = direita
+    if mao != '1':
+        d = DESTAQUE['esquerda']
+    elif n.get('letra'):
+        d = DESTAQUE['cantada']
+    else:
+        d = DESTAQUE['topo_direita'] if (round(n['inicio'], 4), n['pitch']) in topos else DESTAQUE['resto_direita']
+    return int(min(127, max(25, base + d)))
+
+
+def salvar_midi_notas(sc, destino: Path, xml: Path | None = None, destaque: bool = True):
+    """Exporta somente notas escritas e respeita ligações parciais de acordes.
+
+    destaque: melodia mais forte que o acompanhamento na prévia (DESTAQUE)."""
     import pretty_midi
-    from music21 import musicxml
+    from music21 import converter, musicxml
+    if sc is None:
+        sc = converter.parse(str(xml))
     from sincronia import preparar_musicxml, notas_ligadas
     import xml.etree.ElementTree as ET
     texto=xml.read_text(encoding='utf-8') if xml else musicxml.m21ToXml.GeneralObjectExporter(sc).parse().decode('utf-8')
@@ -753,9 +773,18 @@ def salvar_midi_notas(sc, destino: Path, xml: Path | None = None):
                 v=vel
         return v
     instrumentos={}
-    for n in notas_ligadas(segmentos):
+    ligadas=notas_ligadas(segmentos)
+    topos={}
+    for n in ligadas:  # nota mais aguda de cada ataque da direita
+        if n['voz'].split(':')[-1]=='1':
+            k=round(n['inicio'],4); topos[k]=max(topos.get(k,0),n['pitch'])
+    topos={(k,p) for k,p in topos.items()}
+    for n in ligadas:
         inst=instrumentos.setdefault(n['voz'],pretty_midi.Instrument(program=0,name=n['voz']))
-        inst.notes.append(pretty_midi.Note(velocity=velocidade(n['inicio']),pitch=n['pitch'],start=n['inicio'],end=n['fim']))
+        v=velocidade(n['inicio'])
+        if destaque:
+            v=_velocidade_destaque(n,topos,v)
+        inst.notes.append(pretty_midi.Note(velocity=v,pitch=n['pitch'],start=n['inicio'],end=n['fim']))
     # pedal escrito vira sustain (CC64) na prévia, em todos os canais
     from music21 import expressions as _expr
     for pm_ in sc.recurse().getElementsByClass(_expr.PedalMark):
