@@ -6,7 +6,7 @@ prévia em áudio), três níveis, interface web. **Sempre algoritmo**: modelos 
 **Nada de LLM na geração nem na validação** (pedido do usuário).
 
 Leia nesta ordem: este arquivo → `README.md` (uso e opções) → `PROXIMA_ETAPA.md` (plano por
-frentes) → `METRICAS_VALIDACAO.md` (como medir) → `HISTORICO.md` (crônica detalhada, §1–30).
+frentes) → `METRICAS_VALIDACAO.md` (como medir) → `HISTORICO.md` (crônica detalhada, §1–42).
 
 ## 1. Onde roda
 
@@ -30,11 +30,24 @@ frentes) → `METRICAS_VALIDACAO.md` (como medir) → `HISTORICO.md` (crônica d
 
 ## 2. Pipeline (ordem real em `gerar.py`)
 
-**Padrão desde 2026-11-11:** o site gera só a versão **AMT-APC** nos 3 níveis com `--leve`
-(`gerar_nivel_leve`): sem Demucs/CREPE/Whisper, batidas e acordes da mistura, tempo 1 pelas
-notas graves do AMT-APC, `corrigir_tom` (`tonalidade.py`), fácil e difícil derivados do médio
-(`derivados.py`), mãos tocáveis, partitura. **Sai sem letra.** O pipeline completo abaixo
-continua valendo pra linha de comando, `--do-karaoke` e as versões Acordes/Híbridos.
+**Padrão desde 2026-11-11: modo leve** (`--leve`, `gerar_nivel_leve`), o que o site usa. **Sai sem
+letra** (letra precisa de Demucs + tempos das palavras, caro; decisão do usuário). Ordem:
+
+1. Batidas e tempo 1 pelo **madmom** (`batidas_madmom`; sem ele, librosa + `fase_pelo_midi` +
+   `corrigir_fase`) → `Grade`; acordes da mistura (croma + Viterbi).
+2. AMT-APC (`amtapc.py`, estilo do médio, uma vez por música, cache `cache/amtapc_medio.mid`).
+3. Médio: `reduzir_mao` → `corrigir_tom` (`tonalidade.py`) → **repetições escritas iguais**
+   (`repeticoes.padronizar`: lags pelo áudio, confirmação pelas notas, versão real mais votada).
+4. Fácil/difícil derivados do médio (`derivados.py`).
+5. **Tocabilidade por regra** (`tocavel.ajustar`): fácil com oitava por frase (se a leitura melhora)
+   e síncope no tempo; grave da direita pra esquerda; médio com síncope da esquerda no tempo e
+   oitava da esquerda por DP. Depois `juntar_repetidas_esquerda` e `maos.tornar_tocavel` (dedos).
+6. `montar_partitura`: armadura pelo tom (`armaduras.py`), grafia pela cifra sem dobrado e
+   cromatismo pela direção, sem cifra desenhada, **8va por DP** de linhas suplementares (altura
+   que soa no MusicXML) → PDF (Verovio + `dedos_ao_lado` sem sobreposição) → prévias.
+
+O pipeline completo abaixo continua valendo pra linha de comando, `--do-karaoke` e as versões
+Acordes/Híbridos (com letra).
 
 1. Separação (`separar`, Demucs `htdemucs`; `--separador htdemucs_6s` também guitarra e piano)
    ou `--do-karaoke` (voz/acompanhamento do karaokê) ou `--reusar-cache` (pula 1–5).
@@ -86,6 +99,17 @@ mãos, introdução, final, cromáticas do fácil, sincronia).
   (`afinacao.py`, `--melodia-crua` desliga).
 
 ## 4. Pendências (prioridade)
+
+### Retomar daqui (fim da sessão 2026-11-11)
+
+- Tudo commitado e enviado (`73f0d4d`, `01fed37`, `50f0720` + docs). Suíte 161 OK.
+- Músicas de teste no Linux (`entrada/`, `saida/`, fora do git): Águas de Março, Ode, Fuyu no
+  Hanashi, Anna Júlia, Cálice, com o MIDI do AMT-APC em cache (regerar do cache leva ~30 s cada).
+- Antes de qualquer mudança: `python regressao.py saida --musicas "Ode,Aguas de Marco,Fuyu no
+  Hanashi,Anna Julia,Calice" --base trabalho/regressao_base_20261111.json`.
+- Próximo passo combinado: item 2 ou 3/4 de verdade da lista "Próximos" abaixo (o usuário escolhe).
+- Windows: instalar madmom do GitHub (README, "Montar num servidor") e regenerar a biblioteca do
+  cache (`--reusar-cache`): o MusicXML antigo tem a 8va errada e a grade antiga.
 
 ### Direção (usuário, 2026-11-11)
 
