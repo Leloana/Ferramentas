@@ -100,6 +100,18 @@ mãos, introdução, final, cromáticas do fácil, sincronia).
 
 ## 4. Pendências (prioridade)
 
+### Retomar daqui (2026-11-11, noite, Windows — teste em massa, HISTORICO §43)
+
+- `lote.py` + `qualidade.py`: 537 músicas integrais em `trabalho/lote/` (áudio, MIDI do AMT-APC,
+  partituras e medidas `medidas_*.json`). Adotados: grafia pela escala, `--acordes ambos`, difícil sem
+  choque, baixo do fácil Fá2–Mi3 (validado em 473 músicas fora da calibração).
+- **Ouvir a página às cegas** `trabalho/escuta_20261111/pagina/index.html` (antes × depois). Se
+  reprovar algo: `gerar.GRAFIA_ESCALA`, `--acordes mistura`, `derivados.DIFICIL["evitar_choque"]`,
+  `derivados.FACIL_BAIXO = (36, 55)` voltam ao antigo.
+- Decidir: `niveis.GRAVE_MINIMO = 36` (baixo mais legível no médio/difícil) e `--dinamica` no site.
+- **Instalar o madmom na Windows** (README, "Montar num servidor"): o site daqui roda com a grade do
+  librosa (andamento dobrado em parte das músicas, compasso sempre 4/4).
+
 ### Retomar daqui (fim da sessão 2026-11-11)
 
 - Tudo commitado e enviado (`73f0d4d`, `01fed37`, `50f0720` + docs). Suíte 161 OK.
@@ -273,3 +285,6 @@ e `--acompanhamento` continuam na linha de comando, fora do site.
 | `repeticoes.py` | repetições pelo áudio + notas, escritas iguais por consenso (2026-11-11) |
 | `tocavel.py` | tocabilidade por regra no modo leve: medir (síncopes, saltos, densidade, posição) e corrigir (2026-11-11) |
 | `tonalidade.py` | tom por trecho (Krumhansl + Viterbi) e nota fora do tom do arranjo da IA (2026-11-11) |
+| `lote.py` | teste em massa do modo leve: baixar, AMT-APC em lote na GPU, gerar em paralelo, medir, comparar, `--ajustes` |
+| `qualidade.py` | métricas de leitura, tocabilidade e som (croma × gravação com pedal, choques, acidentes evitáveis) |
+| `dinamica.py` | p/mp/mf/f pela intensidade da gravação (`--dinamica`, opcional) |

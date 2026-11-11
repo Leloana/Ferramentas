@@ -14,9 +14,10 @@ import numpy as np
 NIVEIS = ("p", "mp", "mf", "f")
 CENTROS = (-1.4, -0.45, 0.35, 1.2)   # em desvios-padrão da intensidade da música
 # faixas de quantis (da intensidade da própria música) que definem o centro de p | mp | mf | f;
-# None = centros fixos em CENTROS
-QUANTIS = (.15, .45, .8)
-TROCA = 2.5                           # custo de mudar de nível
+# None = centros fixos em CENTROS. Calibrado em 64 músicas (2026-11-11): ~5 marcas por música, compassos
+# p 9% · mp 9% · mf 56% · f 26%, correlação 0,66 com a intensidade (centros fixos: f em 1% dos compassos)
+QUANTIS = (.1, .3, .6)
+TROCA = 1.0                           # custo de mudar de nível
 MIN_COMPASSOS = 4
 DB_MINIMO = 3.0                       # música com menos variação que isso (dB, p10–p90) fica num nível só
 
@@ -54,6 +55,8 @@ def niveis_por_compasso(intens):
         cortes = np.quantile(zs, (0,) + tuple(QUANTIS) + (1,))
         centros = tuple(float(np.median(zs[(zs >= a) & (zs <= b)])) if ((zs >= a) & (zs <= b)).any() else c
                         for a, b, c in zip(cortes, cortes[1:], CENTROS))
+        if min(b - a for a, b in zip(centros, centros[1:])) < .05:   # poucos patamares: quantis colapsam
+            centros = CENTROS
     n, L = len(vs), len(NIVEIS)
     # estado: (nível, compassos desde a troca, limitado a MIN_COMPASSOS)
     INF = float("inf")

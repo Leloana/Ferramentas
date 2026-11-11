@@ -867,3 +867,48 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
   1517, trechos difíceis 17 → 20 (vêm da grade, não das repetições: testado com --sem-repeticoes).
 - Dedo que fica em cima da nota agora entra na lista dos já postos e sobe se bater em outro
   (Cálice fácil tinha 1 sobreposto). Suíte 161 OK; referência da regressão atualizada.
+
+## 43. Teste em massa do modo leve: 537 músicas integrais — 2026-11-11 (Windows)
+
+Pedido do usuário: testar o modo leve em escala na GPU, avaliar leitura, som, tocabilidade e dedos,
+calibrar as regras e propor cálculos novos; **sempre a música integral** (nunca voz + acompanhamento
+somados), como no uso real.
+
+- Corpus: 537 músicas baixadas inteiras do YouTube (os vídeos de origem das 248 do karaokê + ~300
+  buscas de MPB, samba, sertanejo, gospel, pop/rock/soul/jazz, latino, k-pop, anime, trilhas,
+  clássico; 11 falharam com 403). `lote.py`: AMT-APC em lote na GPU (modelo carregado uma vez,
+  ~5 s/música, MIDI idêntico ao `amtapc.py`), modo leve em 12 processos até o MusicXML
+  (~25 s/música cada), métricas novas em `qualidade.py`. Método: calibrar em 64 músicas
+  (desenvolvimento, `trabalho/lote/dev.txt`) e confirmar nas outras 473 (teste).
+- **madmom não está instalado na Windows** (instalação do GitHub bloqueada pela permissão automática):
+  todo o teste usou a grade do librosa, que é o que o site roda hoje nesta máquina.
+- Lendo as páginas: (1) Mi♭/Lá♭ num tom de 5♯ — o detector de acordes da mistura dizia Sol♯maj7 em
+  41 janelas de uma música em Sol♯ menor; a grafia pela cifra evitava o Fá𝄪 e levava até as notas da
+  escala pra enarmônica; (2) esquerda até Mi1 (4 linhas abaixo da clave de fá); (3) valsa (Piano Man)
+  escrita em 4/4; (4) andamento dobrado (Someone Like You 136 em vez de 68, grade do librosa).
+- Adotado (teste, 473 músicas, antigo → novo):
+  - `gerar.GRAFIA_ESCALA`: nota da escala da armadura sempre com a grafia dela. Acidentes evitáveis
+    0,7/1,9/1,9 → 0 por 100 notas (fácil/médio/difícil); acidentes 8,3 → 7,4, 6,7 → 5,2, 10,8 → 6,9.
+  - `--acordes ambos` (padrão do leve): croma da gravação + croma das notas do AMT-APC (`croma_do_midi`).
+  - `derivados.DIFICIL["evitar_choque"]`: 3ª/6ª e nota do arpejo não formam 2ª/9ª menor com a outra
+    mão (a do arpejo volta ao baixo). Choques no difícil 2,45 → 0,19 por 100 ataques; croma 0,66 → 0,65.
+  - `derivados.FACIL_BAIXO = (41, 52)`: baixo do fácil Fá2–Mi3. Linhas suplementares na clave de fá
+    9,3 → 0,02 por 100 notas; mudanças de posição 10,4 → 9,4/min.
+- Corrigido: `carregar_transcricao` recusava cache sem melodia, então o `--reusar-cache` do modo
+  leve nunca reaproveitava as batidas; no reuso, a fase do madmom passava pelo `corrigir_fase`
+  (agora `batidas`, `fonte_acordes` e `compasso` vão no `transcricao.json`). A base (médio) do leve
+  é calculada uma vez pros três níveis (saída idêntica, ~10–25% mais rápido).
+- Ablação (desenvolvimento): `tocavel.py` segura as síncopes (fácil 70 → 12, médio 91 → 67);
+  `tonalidade.py` corta os choques do médio pela metade (0,93 → 0,47); as 3ª/6ª do difícil ajudam o
+  croma (+0,02). Repetições escritas iguais custam precisão contra o arranjo (médio 0,91 → 0,80) sem
+  mexer no croma; limiar do grupo 0,75 → 26 compassos idênticos por música, 0,85 → 14, 0,90 → 7
+  (curva de troca; fica 0,75, já aprovado de ouvido).
+- Pegadinha de medida: o croma sem pedal dizia que o difícil soava pior que o médio (0,57 × 0,61) e
+  que tirar o arpejo melhorava (+0,06). Com o pedal do MusicXML (`qualidade.pedais`), o difícil fica
+  em 0,65 (acima do médio) e o arpejo não piora. Sempre medir som com o pedal.
+- Proposto, fora do padrão: `niveis.GRAVE_MINIMO = 36` (Dó2 em vez de Mi1 no médio/difícil): linhas
+  suplementares na clave de fá −32%/−29%, nada piora, mas muda o peso do baixo (pede escuta);
+  `--dinamica` (`dinamica.py`): p/mp/mf/f pela intensidade da gravação por DP com trecho mínimo de 4
+  compassos; calibrado: ~5 marcas por música, p 9% · mp 9% · mf 56% · f 26%, correlação 0,66.
+- Página às cegas (antes × depois, música inteira, 3 níveis): `trabalho/escuta_20261111/pagina/`
+  (Azul da Cor do Mar, Riptide, Experience). Suíte 171 OK.
