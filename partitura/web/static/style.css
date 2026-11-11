@@ -54,7 +54,7 @@ legend .ic { width: 16px; height: 16px; vertical-align: -3px; }
 .job.erro .etapa .ic { color: var(--vermelho); }
 .filtro { position: relative; display: block; }
 .filtro .ic { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--suave); pointer-events: none; }
-.coluna-musicas .filtro input { padding-left: 34px; }
+.coluna-musicas .filtro input, .karaoke .filtro input { padding-left: 34px; }
 .res .tocar .ic { width: 18px; height: 18px; }
 .cont:empty { display: none; }
 .cont { margin-left: 4px; font-size: 12px; opacity: .8; }
@@ -415,3 +415,11 @@ body.em-foco { overflow: hidden; }
   .foco-play { width: 42px; height: 42px; }
   .foco-fonte span { display: none; }
 }
+
+/* karaokê */
+.karaoke { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+.lista-kar { display: flex; flex-direction: column; gap: 8px; }
+.kar { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--borda); border-radius: 10px; }
+.kar-txt { flex: 1; min-width: 0; }
+.kar-txt b { display: block; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.kar-txt small { display: block; color: var(--suave); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

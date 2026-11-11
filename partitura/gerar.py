@@ -1169,8 +1169,10 @@ def main():
     ap.add_argument("--variacao", type=int, default=0, help="outra versão da introdução gerada (0 = padrão)")
     ap.add_argument("--sem-transpor", action="store_true", help="no nível fácil, não transpõe pra tom sem acidentes")
     ap.add_argument("--derivar", action="store_true",
-                    help="fácil e difícil derivados do médio (derivados.py): fácil simplifica, difícil enriquece "
-                         "(arpejos, 3ª/6ª, oitavas, pedal, fermata)")
+                    help="(padrão) fácil e difícil derivados do médio (derivados.py): fácil simplifica, difícil "
+                         "enriquece (arpejos, 3ª/6ª, oitavas, pedal, fermata)")
+    ap.add_argument("--sem-derivar", action="store_true",
+                    help="fácil e difícil transcritos cada um no seu nível (comportamento antigo)")
     ap.add_argument("--repetidas", action="store_true",
                     help="mantém as notas repetidas coladas sem sílaba (comportamento antigo)")
     ap.add_argument("--juntar-silabas", action="store_true",
@@ -1184,6 +1186,7 @@ def main():
                     help="nível fácil com a melodia do médio (grade de 1/2 tempo, sem tirar passagens nem "
                          "cromatismos, no tom original); só a mão esquerda fica fácil")
     args = ap.parse_args()
+    args.derivar = not args.sem_derivar   # revisão às cegas 2026-11-10: derivar do médio ficou "infinitamente melhor"
     import letra as _letra
     _letra.ESCRITA_JA = args.escrita_ja
     global SR_GRADE

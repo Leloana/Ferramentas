@@ -3,7 +3,8 @@ const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const NIVEL_NOME = { facil: "Fácil", medio: "Médio", dificil: "Difícil" };
 // Revisão de 120 partituras: preservar melodia/letra e também trechos instrumentais.
-const PADRAO = { facil: "Acordes", medio: "HibridoAMT", dificil: "HibridoAMT" };
+// Revisão às cegas 2026-11-10: o médio Híbrido é a base e fácil/difícil saem dele: Híbrido (AMT) nos três.
+const PADRAO = { facil: "HibridoAMT", medio: "HibridoAMT", dificil: "HibridoAMT" };
 const VERSAO_NOME = { HibridoAMT: "Híbrido (AMT)", Hibrido: "Híbrido (Pop2Piano)", Acordes: "Acordes", Pop2Piano: "Pop2Piano", "AMT-APC": "AMT-APC" };
 const esc = (t) => String(t ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const urlArq = (rel) => {
@@ -27,6 +28,7 @@ function abrirAba(nome) {
   $$(".painel").forEach((p) => p.classList.toggle("ativo", p.id === nome));
   if (nome === "biblioteca") carregarMusicas();
   if (nome === "fila") carregarJobs();
+  if (nome === "karaoke") carregarKaraoke();
 }
 $$(".aba").forEach((b) => b.addEventListener("click", () => abrirAba(b.dataset.aba)));
 
@@ -511,4 +513,46 @@ document.addEventListener("keydown", (e) => {
 
 carregarMusicas();
 carregarJobs();
-if (["biblioteca", "fila", "buscar"].includes(location.hash.slice(1))) abrirAba(location.hash.slice(1));
+
+
+// ------------------------------------------------------------------ karaokê
+let karaoke = [];
+async function carregarKaraoke() {
+  try { karaoke = await (await fetch("/api/karaoke")).json(); } catch { aviso("Servidor fora do ar?", true); return; }
+  $("#contKar").textContent = karaoke.length || "";
+  desenharKaraoke();
+}
+function desenharKaraoke() {
+  const f = semAcento($("#filtroKar").value);
+  const norm = semAcento;
+  const lista = karaoke.filter((m) => !f || norm(m.titulo + " " + m.artista).includes(f));
+  $("#listaKar").innerHTML = lista.map((m) => `
+    <div class="kar" data-slug="${esc(m.slug)}">
+      <span class="kar-txt"><b>${esc(m.titulo)}</b><small>${esc(m.artista)}${m.pasta ? " · na biblioteca" : ""}</small></span>
+      ${m.pasta ? `<button type="button" class="btn pequeno discreto kar-abrir" data-pasta="${esc(m.pasta)}">Abrir</button>` : ""}
+      <button type="button" class="btn pequeno ${m.pasta ? "" : "primario"} kar-gerar">${icone("gerar")}<span>${m.pasta ? "Gerar de novo" : "Gerar"}</span></button>
+    </div>`).join("") || `<p class="status">Nenhuma música encontrada.</p>`;
+}
+$("#filtroKar").addEventListener("input", desenharKaraoke);
+$("#listaKar").addEventListener("click", async (ev) => {
+  const linha = ev.target.closest(".kar");
+  if (!linha) return;
+  if (ev.target.closest(".kar-abrir")) {
+    abrirAba("biblioteca");
+    const pasta = ev.target.closest(".kar-abrir").dataset.pasta;
+    setTimeout(() => { const b = [...document.querySelectorAll("#listaMusicas [data-pasta]")].find((x) => x.dataset.pasta === pasta); if (b) b.click(); }, 400);
+    return;
+  }
+  if (!ev.target.closest(".kar-gerar")) return;
+  const m = karaoke.find((x) => x.slug === linha.dataset.slug);
+  let r;
+  try {
+    r = await fetch("/api/gerar_karaoke", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ slug: m.slug }) });
+  } catch { aviso("Servidor fora do ar? Não consegui enviar o pedido.", true); return; }
+  if (!r.ok) { const d = await r.json().catch(() => ({})); aviso("Não deu para pedir a geração: " + (d.detail || r.status), true); return; }
+  aviso(`“${m.titulo}” entrou na fila.`);
+  abrirAba("fila");
+});
+
+// aba pela URL (#karaoke etc.): no fim, depois de tudo declarado
+if (["biblioteca", "fila", "buscar", "karaoke"].includes(location.hash.slice(1))) abrirAba(location.hash.slice(1));

@@ -25,6 +25,8 @@ from pydantic import BaseModel, Field
 RAIZ = Path(__file__).resolve().parent.parent  # partitura/
 SAIDA = RAIZ / "saida"
 ENTRADA = RAIZ / "entrada"
+KARAOKE = RAIZ.parent / "karaoke" / "server" / "songs"   # músicas instaladas no karaokê (voz/acompanhamento/letra)
+SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]{0,120}$")
 PREVIAS = RAIZ / "web" / "cache_previas"
 ESTATICO = RAIZ / "web" / "static"
 PYTHON = sys.executable
@@ -181,7 +183,8 @@ def _pasta_livre(titulo: str, artista: str, vid: str) -> str:
         if not (SAIDA / cand).exists():
             return cand
         try:
-            if json.loads(meta.read_text(encoding="utf-8")).get("video_id") == vid:
+            d = json.loads(meta.read_text(encoding="utf-8"))
+            if vid and vid in (d.get("video_id"), d.get("karaoke")):   # mesma música: regera no lugar
                 return cand
         except (OSError, ValueError):
             pass
@@ -210,6 +213,8 @@ def _progresso(job: dict, linha: str):
 
 def _rodar(job: dict):
     vid = job["video_id"]
+    if job.get("karaoke"):   # voz, acompanhamento e letra já prontos no karaokê: nada pra baixar
+        return _rodar_karaoke(job)
     ENTRADA.mkdir(exist_ok=True)
     wav = ENTRADA / f"{_slug(job['titulo'])}_{vid}.wav"
     if not wav.exists():
@@ -275,6 +280,37 @@ def _rodar(job: dict):
     meta_p.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+def _acompanhar(job: dict, cmd: list):
+    proc = subprocess.Popen(cmd, cwd=RAIZ, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
+                            encoding="utf-8", errors="replace", env={**__import__("os").environ,
+                                                                     "PYTHONIOENCODING": "utf-8"})
+    for linha in proc.stdout:
+        linha = linha.rstrip()
+        if not linha or "Warning" in linha or "%|" in linha:
+            continue
+        job["log"].append(linha)
+        job["log"] = job["log"][-60:]
+        _progresso(job, linha)
+    proc.wait()
+    if proc.returncode != 0:
+        raise RuntimeError("a geração falhou: " + " | ".join(job["log"][-4:]))
+
+
+def _rodar_karaoke(job: dict):
+    job["progresso"] = 8
+    cmd = [PYTHON, str(RAIZ / "gerar.py"), "--do-karaoke", job["karaoke"], "--pasta", job["pasta"],
+           "--titulo", job["titulo"], "--subtitulo", job["artista"] or "Transcrição automática",
+           "--nivel", ",".join(job["niveis"]), "--hibrido", "--amtapc"]
+    if job["artista"]:
+        cmd += ["--artista", job["artista"]]
+    _acompanhar(job, cmd)
+    meta_p = SAIDA / job["pasta"] / "meta.json"
+    meta = json.loads(meta_p.read_text(encoding="utf-8")) if meta_p.exists() else {}
+    meta.update({"karaoke": job["karaoke"], "titulo": job["titulo"], "artista": job["artista"],
+                 "atualizado": time.strftime("%Y-%m-%d %H:%M")})
+    meta_p.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
 def _trabalhador():
     while True:
         jid = FILA.get()
@@ -313,6 +349,53 @@ async def gerar(p: Pedido):
                  "introducao": p.introducao, "final": p.final, "acompanhamento": p.acompanhamento,
                  "variacao": p.variacao, "escrita_ja": p.escrita_ja, "separador": p.separador,
                  "status": "fila", "etapa": "Na fila",
+                 "progresso": 0, "feitos": 0, "log": [], "criado": time.time()}
+    FILA.put(jid)
+    return JOBS[jid]
+
+
+@app.get("/api/karaoke")
+async def karaoke():
+    """Músicas instaladas no karaokê (com voz e acompanhamento), e se já estão na biblioteca."""
+    na_bib = {}
+    for m in SAIDA.glob("*/meta.json"):
+        try:
+            d = json.loads(m.read_text(encoding="utf-8"))
+        except ValueError:
+            continue
+        if d.get("karaoke"):
+            na_bib[d["karaoke"]] = m.parent.name
+    saida = []
+    for pasta in sorted(KARAOKE.iterdir()) if KARAOKE.exists() else []:
+        if not ((pasta / "vocal.mp3").exists() and (pasta / "backing_track.mp3").exists()
+                and (pasta / "meta.json").exists()):
+            continue
+        try:
+            info = json.loads((pasta / "meta.json").read_text(encoding="utf-8")).get("meta", {})
+        except ValueError:
+            continue
+        saida.append(dict(slug=pasta.name, titulo=info.get("title") or pasta.name, artista=info.get("artist") or "",
+                          idioma=info.get("language") or "", pasta=na_bib.get(pasta.name)))
+    saida.sort(key=lambda m: (m["titulo"].lower(), m["artista"].lower()))
+    return saida
+
+
+class PedidoKaraoke(BaseModel):
+    slug: str
+    niveis: list[str] = ["facil", "medio", "dificil"]
+
+
+@app.post("/api/gerar_karaoke")
+async def gerar_karaoke(p: PedidoKaraoke):
+    if not SLUG_RE.match(p.slug) or not (KARAOKE / p.slug / "vocal.mp3").exists():
+        raise HTTPException(404, "Música do karaokê não encontrada.")
+    info = json.loads((KARAOKE / p.slug / "meta.json").read_text(encoding="utf-8")).get("meta", {})
+    titulo, artista = (info.get("title") or p.slug).strip(), (info.get("artist") or "").strip()
+    niveis = [n for n in NIVEIS if n in p.niveis] or list(NIVEIS)
+    jid = uuid.uuid4().hex[:10]
+    JOBS[jid] = {"id": jid, "video_id": "", "karaoke": p.slug, "titulo": titulo, "artista": artista,
+                 "pasta": _pasta_livre(titulo, artista, p.slug), "niveis": niveis,
+                 "versoes": ["Acordes", "Hibrido", "AMT-APC", "HibridoAMT"], "status": "fila", "etapa": "Na fila",
                  "progresso": 0, "feitos": 0, "log": [], "criado": time.time()}
     FILA.put(jid)
     return JOBS[jid]
