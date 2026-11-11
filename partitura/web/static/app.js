@@ -181,7 +181,7 @@ async function enviarPedido() {
   const versoes = $$('input[name="versao"]:checked').map((i) => i.value);
   const corpo = {
     video_id: videoAtual.id, titulo: $("#gTitulo").value.trim(), artista: $("#gArtista").value.trim(),
-    niveis: niveis.length ? niveis : ["medio"], versoes: versoes.length ? versoes : ["Hibrido"],
+    niveis: niveis.length ? niveis : ["medio"], versoes: versoes.length ? versoes : ["AMT-APC"],
     idioma: $("#gIdioma").value,
     escrita_ja: $("#gEscrita").value,
     estilo: Number($("#gEstilo").value),
@@ -232,7 +232,7 @@ function linhaJob(j) {
     <div class="job ${j.status}">
       <div class="cab">
         <h3>${esc(j.titulo)} <small class="etapa">${esc(j.artista)}</small></h3>
-        <span class="etapa">${j.niveis.map((n) => NIVEL_NOME[n]).join(", ")} · ${j.versoes.map((v) => VERSAO_NOME[v] || v).join(", ")}${teores.length ? " · " + esc(teores.join(", ")) : ""}${j.reusar_cache ? ` · variação ${j.variacao}` : ""}</span>
+        <span class="etapa">${j.niveis.map((n) => NIVEL_NOME[n]).join(", ")}${teores.length ? " · " + esc(teores.join(", ")) : ""}${j.reusar_cache ? ` · variação ${j.variacao}` : ""}</span>
       </div>
       <div class="barra"><div style="width:${j.progresso}%"></div></div>
       <div class="cab">
@@ -317,8 +317,9 @@ function desenharVisor() {
   visor.className = "visor";
   const niveis = ["facil", "medio", "dificil"].filter((n) => m.arquivos[n]);
   if (!m.arquivos[escolha.nivel]) escolha.nivel = niveis.includes("medio") ? "medio" : niveis[0];
-  const versoes = ["HibridoAMT", "Hibrido", "Acordes", "Pop2Piano", "AMT-APC"].filter((v) => m.arquivos[escolha.nivel][v]);
-  if (!m.arquivos[escolha.nivel][escolha.versao]) escolha.versao = versoes[0];
+  // uma versão só no site (a padrão, AMT-APC); música antiga sem ela usa a que tiver
+  const versoes = ["AMT-APC", "HibridoAMT", "Hibrido", "Acordes", "Pop2Piano"].filter((v) => m.arquivos[escolha.nivel][v]);
+  escolha.versao = m.arquivos[escolha.nivel][PADRAO[escolha.nivel]] ? PADRAO[escolha.nivel] : versoes[0];
   try { localStorage.setItem("partitura.escolha.v2", JSON.stringify(escolha)); } catch {}
   const item = m.arquivos[escolha.nivel][escolha.versao] || {};
   visor.innerHTML = `
@@ -334,7 +335,6 @@ function desenharVisor() {
     </div>` : ""}
     <div class="seletor">
       <div class="grupo">${["facil", "medio", "dificil"].map((n) => `<button data-nivel="${n}" class="${n === escolha.nivel ? "ativa" : ""}" ${m.arquivos[n] ? "" : "disabled"}>${NIVEL_NOME[n]}</button>`).join("")}</div>
-      <div class="grupo">${["HibridoAMT", "Hibrido", "Acordes", "Pop2Piano", "AMT-APC"].map((v) => `<button data-versao="${v}" class="${v === escolha.versao ? "ativa" : ""}" ${m.arquivos[escolha.nivel][v] ? "" : "disabled"} title="${PADRAO[escolha.nivel] === v ? "recomendada para este nível" : ""}">${VERSAO_NOME[v]}${PADRAO[escolha.nivel] === v ? " ★" : ""}</button>`).join("")}</div>
     </div>
     <div class="audios">
       ${item.previa ? `<div><label>${icone("piano")} Como soa esta partitura (piano)</label><audio id="audioPartitura" controls preload="metadata" src="${urlArq(item.previa)}"></audio></div>` : ""}
@@ -401,7 +401,7 @@ function abrirFoco({ m, audio, original, arquivo, aoSair }) {
   el.setAttribute("aria-label", "Modo foco: " + m.titulo);
   el.innerHTML = `
     <div class="foco-topo">
-      <div class="foco-titulo"><b>${esc(m.titulo)}</b><small>${NIVEL_NOME[escolha.nivel]} · ${VERSAO_NOME[escolha.versao]}</small></div>
+      <div class="foco-titulo"><b>${esc(m.titulo)}</b><small>${NIVEL_NOME[escolha.nivel]}</small></div>
       <button type="button" class="foco-btn" data-acao="sair" aria-label="Sair do modo foco">${icone("sair")}</button>
     </div>
     <div class="partitura-interativa foco-area"><p>Carregando notas…</p></div>
