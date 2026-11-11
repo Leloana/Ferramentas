@@ -1168,6 +1168,9 @@ def main():
                     help="mão esquerda da música inteira (versão Acordes) na textura desse teor")
     ap.add_argument("--variacao", type=int, default=0, help="outra versão da introdução gerada (0 = padrão)")
     ap.add_argument("--sem-transpor", action="store_true", help="no nível fácil, não transpõe pra tom sem acidentes")
+    ap.add_argument("--derivar", action="store_true",
+                    help="fácil e difícil derivados do médio (derivados.py): fácil simplifica, difícil enriquece "
+                         "(arpejos, 3ª/6ª, oitavas, pedal, fermata)")
     ap.add_argument("--repetidas", action="store_true",
                     help="mantém as notas repetidas coladas sem sílaba (comportamento antigo)")
     ap.add_argument("--juntar-silabas", action="store_true",
@@ -1300,12 +1303,15 @@ def main():
         (base / "cache" / "melodia_no_tom.json").write_text(
             json.dumps(dict(cents=cents, mudancas=reg_tom), ensure_ascii=False), encoding="utf-8")
     for nivel in niveis:
-        SR_GRADE = GRADE_NIVEL["medio" if (nivel == "facil" and args.facil_fiel) else nivel]
+        SR_GRADE = GRADE_NIVEL["medio" if ((nivel == "facil" and args.facil_fiel) or args.derivar) else nivel]
         gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, bpm, diagnostico)
 
 
 def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, bpm, diagnostico=None):
     """Gera as versões pedidas (Acordes sempre; Híbrido/Pop2Piano se pedidos) num nível."""
+    nivel_alvo = nivel
+    if getattr(args, "derivar", False) and nivel != "medio":
+        nivel = "medio"   # monta tudo como no médio; fácil/difícil saem dele no fim (derivados.py)
     from niveis import (NOME, cifras_do_nivel, mao_esquerda_acordes, reduzir_mao,
                         transpor_facil, completar_instrumentais, suavizar_baixo,
                         fechar_acordes, simplificar_passagens)
@@ -1391,9 +1397,21 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
         print(f"[gravado] {len(completa)-len(md_ev)} ataques instrumentais na direita; "
               f"{preenchidos} compassos sem piano/violão completados com a esquerda da versão Acordes")
         versoes["HibridoGravado"] = (completa, esq)
+    marcas_derivadas = {}
+    if nivel_alvo != nivel:
+        from derivados import dificil_de_medio, facil_de_medio
+        for v, (md_v, me_v) in list(versoes.items()):
+            if nivel_alvo == "facil":
+                md_v, me_v, mv = facil_de_medio(md_v, me_v, acs, TIPOS)
+            else:
+                md_v, me_v, mv = dificil_de_medio(md_v, me_v, acs, TIPOS, bpm)
+            versoes[v], marcas_derivadas[v] = (md_v, me_v), mv
+        print(f"[derivar] {NOME[nivel_alvo]} derivado do médio em {len(versoes)} versões")
+        nivel = nivel_alvo
+        cifras = cifras_do_nivel(cifras, nivel)
 
     k = 0
-    if nivel == "facil" and not args.sem_transpor and not getattr(args, "facil_fiel", False):  # mesmo intervalo pra todas as versões
+    if nivel == "facil" and not args.sem_transpor and not getattr(args, "derivar", False) and not getattr(args, "facil_fiel", False):  # mesmo intervalo pra todas as versões
         _, _, _, k = transpor_facil(*versoes["Acordes"], cifras)
     sub = args.subtitulo + f" · nível {NOME[nivel].lower().replace('facil', 'fácil').replace('dificil', 'difícil')}"
     if k:
@@ -1433,6 +1451,7 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
         if final:
             md, me, cf, marcas_f = com_final(md, me, cf, final, k)
             marcas += marcas_f
+        marcas += marcas_derivadas.get(versao, [])   # pedal/fermata do difícil derivado
         if teor_acomp and versao == "Acordes":
             from introducao import DINAMICA
             inicio_mus = 4.0 * np.floor(min(e[0] for e in md_ev) / 4)
