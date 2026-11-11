@@ -140,3 +140,42 @@ a.card:hover { border-color: var(--ouro); transform: translateY(-2px); }
 @media (max-width: 380px) {
   .grade { grid-template-columns: 1fr; }
 }
+
+/* ------------------------------------------------------------ música sendo gerada: card e tela de espera */
+.card.job .capa img { filter: brightness(.45) saturate(.8); }
+.card.job .veu { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--texto); }
+.card.job .pct { font: 700 20px Fraunces, serif; }
+.card.job .info small { color: var(--ouro2); margin-bottom: 8px; }
+.card.job .prog-barra { margin-top: auto; }
+.card.job.falhou { border-color: var(--vermelho); }
+.card.job.falhou .info small, .card.job.falhou .veu { color: var(--vermelho); }
+.card.job.falhou .veu .ic { width: 34px; height: 34px; }
+.girando { width: 26px; height: 26px; border-radius: 50%; border: 3px solid rgba(240, 194, 127, .25); border-top-color: var(--ouro2); animation: girar .9s linear infinite; }
+.btn .girando { width: 16px; height: 16px; border-width: 2px; }
+@keyframes girar { to { transform: rotate(360deg); } }
+.progresso { cursor: pointer; }
+
+.espera { position: fixed; inset: 0; z-index: 15; background: var(--fundo); overflow-y: auto; display: flex; flex-direction: column; }
+.e-fundo { position: fixed; inset: -40px; background-size: cover; background-position: center; filter: blur(36px) brightness(.35) saturate(1.2); transform: scale(1.1); }
+.e-topo { position: relative; padding: 12px max(12px, env(safe-area-inset-left)); }
+.e-topo .m-voltar { color: var(--texto); display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(0, 0, 0, .35); }
+.e-centro { position: relative; width: min(520px, 100%); margin: 0 auto; padding: 8px 20px max(32px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 10px; }
+.e-capa { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--raio); box-shadow: 0 16px 40px rgba(0, 0, 0, .55); background: #000; }
+.e-capa:not([src]), .e-capa[src=""] { visibility: hidden; }
+.espera h1 { font: 700 26px/1.2 Fraunces, serif; margin: 10px 0 0; }
+.e-artista { color: var(--suave); margin: 0 0 6px; }
+.e-linha { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.e-etapa { color: var(--ouro2); font-weight: 500; }
+.e-pct { font: 700 22px Fraunces, serif; }
+.e-barra { height: 10px; }
+.e-passos { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; color: var(--suave); font-size: 14px; }
+.e-passos li { display: flex; align-items: center; gap: 10px; }
+.e-passos .marca { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--borda); display: grid; place-items: center; font-size: 12px; flex: none; }
+.e-passos li.feito { color: var(--texto); }
+.e-passos li.feito .marca { background: var(--ouro); border-color: var(--ouro); color: #1b140c; }
+.e-passos li.agora { color: var(--ouro2); font-weight: 600; }
+.e-passos li.agora .marca { border-color: var(--ouro2); border-top-color: transparent; animation: girar .9s linear infinite; }
+.e-passos li.msg { color: var(--vermelho); white-space: pre-wrap; word-break: break-word; }
+.e-tempo { color: var(--suave); font-size: 13px; margin: 4px 0 0; }
+.e-acoes { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+.espera.falhou .e-capa { filter: grayscale(.7); }

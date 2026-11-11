@@ -14,7 +14,11 @@ const ZOOMS = [70, 85, 100, 120, 145, 175, 210];
 
 let musicas = [];
 let resultados = [];
-const pedidos = new Map();   // video_id -> job (desta página)
+let jobs = [];               // pedidos do servidor (de qualquer aparelho) + o que está sendo enviado daqui
+const ativo = (j) => j.status === "fila" || j.status === "rodando";
+// etapas da tela de espera: [nome, progresso em que começa] (o servidor marca o progresso, web/servidor._progresso)
+const PASSOS = [["Baixando a música", 3], ["Detectando o pulso", 20], ["Arranjo com IA", 25], ["Detectando os acordes", 35],
+  ["Partitura fácil", 45], ["Partitura média", 60], ["Partitura difícil", 75], ["Piano das prévias", 90]];
 let nivel = "medio";
 try { nivel = localStorage.getItem("partitura.nivel") || "medio"; } catch {}
 
@@ -31,6 +35,7 @@ const urlArq = (rel, m) => "/arquivos/" + rel.split("/").map(encodeURIComponent)
 function rota() {
   const h = location.hash;
   if (h.startsWith("#/m/")) abrirMusica(decodeURIComponent(h.slice(4)));
+  else if (h.startsWith("#/g/")) abrirEspera(decodeURIComponent(h.slice(4)));
   else mostrarInicio();
 }
 addEventListener("hashchange", rota);
@@ -45,27 +50,44 @@ async function carregarMusicas() {
 function mostrarInicio() {
   fecharMusica();
   $("#musica").hidden = true;
+  $("#espera").hidden = true;
   $("#inicio").hidden = false;
   document.title = "Partitura";
   desenharInicio();
+  pintarProgresso();
+}
+
+// card de uma música sendo gerada: abre a tela de espera
+function cardJob(j) {
+  const erro = j.status === "erro";
+  return `
+    <a class="card job ${erro ? "falhou" : ""}" href="#/g/${encodeURIComponent(j.id)}" aria-label="Ver o andamento de ${esc(j.titulo)}">
+      <div class="capa">${j.video_id ? `<img src="${capa(j.video_id)}" alt="" loading="lazy">` : ""}
+        <div class="veu">${erro ? icone("erro") : `<span class="girando"></span><span class="pct">${j.progresso || 0}%</span>`}</div></div>
+      <div class="info"><b>${esc(j.titulo)}</b>
+        <small>${esc(erro ? "Não deu certo · toque para ver" : j.status === "fila" ? "Na fila" : j.etapa || "Começando…")}</small>
+        ${erro ? "" : `<div class="prog-barra"><i style="width:${j.progresso || 0}%"></i></div>`}</div>
+    </a>`;
 }
 
 function desenharInicio() {
   const f = semAcento($("#q").value.trim());
-  const lib = f ? musicas.filter((m) => semAcento(`${m.titulo} ${m.artista}`).includes(f)) : musicas;
+  const casa = (t) => !f || semAcento(t).includes(f);
+  const lib = musicas.filter((m) => casa(`${m.titulo} ${m.artista}`));
+  const emCurso = jobs.filter((j) => (ativo(j) || j.status === "erro") && casa(`${j.titulo} ${j.artista}`));
   $("#tituloBib").textContent = f ? "Na sua biblioteca" : "Sua biblioteca";
-  $("#secBiblioteca").hidden = f && !lib.length;
-  $("#biblioteca").innerHTML = lib.map((m) => `
+  $("#secBiblioteca").hidden = f && !lib.length && !emCurso.length;
+  $("#biblioteca").innerHTML = (emCurso.map(cardJob).join("") + lib.map((m) => `
     <a class="card" href="#/m/${encodeURIComponent(m.pasta)}">
       <div class="capa">${m.capa ? `<img src="${capa(m.capa)}" alt="" loading="lazy">` : ""}</div>
       <div class="info"><b>${esc(m.titulo)}</b><small>${esc(m.artista)}</small></div>
-    </a>`).join("") || `<p class="vazio">Nenhuma partitura ainda. Busque uma música acima.</p>`;
+    </a>`).join("")) || `<p class="vazio">Nenhuma partitura ainda. Busque uma música acima.</p>`;
   $("#secResultados").hidden = !resultados.length;
   const porVideo = new Map(musicas.filter((m) => m.video_id).map((m) => [m.video_id, m]));
   $("#resultados").innerHTML = resultados.map((v) => {
-    const m = porVideo.get(v.id), job = pedidos.get(v.id);
-    const acao = m ? `<a class="btn" href="#/m/${encodeURIComponent(m.pasta)}">${icone("biblioteca")}Abrir</a>`
-      : job ? `<div class="gerando"><span>${esc(job.etapa || "Na fila")}</span><div class="prog-barra"><i style="width:${job.progresso || 0}%"></i></div></div>`
+    const m = porVideo.get(v.id), job = jobs.find((j) => j.video_id === v.id && ativo(j));
+    const acao = job ? `<a class="btn" href="#/g/${encodeURIComponent(job.id)}"><span class="girando"></span>Gerando… ver</a>`
+      : m ? `<a class="btn" href="#/m/${encodeURIComponent(m.pasta)}">${icone("biblioteca")}Abrir</a>`
       : `<button type="button" class="btn primario" data-gerar="${esc(v.id)}">${icone("gerar")}Gerar partitura</button>`;
     return `
     <article class="card res" data-id="${esc(v.id)}">
@@ -122,55 +144,137 @@ $("#resultados").addEventListener("click", async (e) => {
 trecho.addEventListener("ended", () => $$("[data-trecho]").forEach((b) => (b.innerHTML = icone("tocar"))));
 
 // ------------------------------------------------------------------ gerar
+// Gerar: volta pra tela principal com o card da música já carregando (toque nele = tela de espera)
 async function gerar(v) {
   trecho.pause();
-  pedidos.set(v.id, { etapa: "Enviando…", progresso: 1 });
-  desenharInicio();
+  const temp = { id: `enviando-${v.id}`, video_id: v.id, titulo: v.titulo, artista: v.artista || v.canal || "",
+                 status: "fila", etapa: "Enviando…", progresso: 1, local: true };
+  jobs.unshift(temp);
+  $("#q").value = "";
+  resultados = [];
+  $("#status").hidden = true;
+  if (location.hash && location.hash !== "#/") location.hash = "#/";
+  else { desenharInicio(); pintarProgresso(); }
+  scrollTo({ top: 0, behavior: "smooth" });
   try {
     const r = await fetch("/api/gerar", { method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ video_id: v.id, titulo: v.titulo, artista: v.artista,
                              niveis: ["facil", "medio", "dificil"], versoes: ["AMT-APC"] }) });
     const d = await r.json();
     if (!r.ok) throw new Error(d.detail || r.status);
-    pedidos.set(v.id, d);
-    acompanhar();
+    jobs = jobs.filter((j) => j !== temp);
+    jobs.unshift(d);
+    vistos.add(d.id);
+    if (location.hash === `#/g/${temp.id}`) location.replace(`#/g/${encodeURIComponent(d.id)}`);
   } catch (err) {
-    pedidos.delete(v.id);
+    jobs = jobs.filter((j) => j !== temp);
     aviso("Não deu para gerar: " + err.message, true);
-    desenharInicio();
   }
+  acompanhar();
 }
 
-let timerPedidos = null;
+let timerJobs = null, jobsCarregados = false;
+const vistos = new Set();   // pedidos vistos em andamento nesta página (pra avisar quando terminam)
 async function acompanhar() {
-  clearTimeout(timerPedidos);
-  let jobs = [];
-  try { jobs = (await (await fetch("/api/jobs")).json()).jobs; } catch { timerPedidos = setTimeout(acompanhar, 4000); return; }
-  const porId = new Map(jobs.map((j) => [j.id, j]));
-  let ativo = null;
-  for (const [vid, pedido] of [...pedidos]) {
-    const j = porId.get(pedido.id);
-    if (!j) continue;
-    pedidos.set(vid, j);
-    if (j.status === "pronto") {
-      pedidos.delete(vid);
-      await carregarMusicas();
+  clearTimeout(timerJobs);
+  let lista;
+  try { lista = (await (await fetch("/api/jobs")).json()).jobs; } catch { timerJobs = setTimeout(acompanhar, 4000); return; }
+  let recarregar = false;
+  jobsCarregados = true;
+  for (const j of lista) {
+    if (j.status === "pronto") jobsProntos.set(j.id, j.pasta);
+    if (vistos.has(j.id) && j.status === "pronto") {
+      vistos.delete(j.id);
+      recarregar = true;
       aviso(`“${j.titulo}” pronta.`);
-      if (!$("#inicio").hidden) location.hash = "#/m/" + encodeURIComponent(j.pasta);
-    } else if (j.status === "erro") {
-      pedidos.delete(vid);
-      aviso(`Não deu para gerar “${j.titulo}”: ${j.etapa}`, true);
-    } else ativo = ativo || j;
+      if (location.hash === `#/g/${j.id}`) { await carregarMusicas(); location.replace("#/m/" + encodeURIComponent(j.pasta)); }
+    } else if (vistos.has(j.id) && j.status === "erro") {
+      vistos.delete(j.id);
+      aviso(`Não deu para gerar “${j.titulo}”.`, true);
+    }
+    if (ativo(j)) vistos.add(j.id);
   }
-  const barra = $("#progresso");
-  barra.hidden = !ativo;
-  if (ativo) {
-    $("#progTexto").textContent = `Gerando “${ativo.titulo}” · ${ativo.etapa || "na fila"}`;
-    $("#progBarra").style.width = `${ativo.progresso || 0}%`;
-  }
+  jobs = [...jobs.filter((j) => j.local), ...lista.filter((j) => j.status !== "pronto")];
+  if (recarregar) await carregarMusicas();
+  pintarProgresso();
   if (!$("#inicio").hidden) desenharInicio();
-  if (pedidos.size) timerPedidos = setTimeout(acompanhar, 1200);
+  if (!$("#espera").hidden) desenharEspera();
+  if (jobs.some(ativo)) timerJobs = setTimeout(acompanhar, 1200);
 }
+
+// aviso flutuante de geração: só na tela da música (no início o card mostra, na espera a tela toda)
+function pintarProgresso() {
+  const j = jobs.find(ativo);
+  const barra = $("#progresso");
+  barra.hidden = !j || $("#musica").hidden;
+  if (!j) return;
+  barra.dataset.job = j.id;
+  $("#progTexto").textContent = `Gerando “${j.titulo}” · ${j.status === "fila" ? "na fila" : j.etapa || "começando"}`;
+  $("#progBarra").style.width = `${j.progresso || 0}%`;
+}
+$("#progresso").addEventListener("click", () => { if ($("#progresso").dataset.job) location.hash = "#/g/" + encodeURIComponent($("#progresso").dataset.job); });
+
+// ------------------------------------------------------------------ espera (música sendo gerada, tela cheia)
+let esperaId = null, timerEspera = null;
+function abrirEspera(id) {
+  fecharMusica();
+  trecho.pause();
+  esperaId = id;
+  $("#inicio").hidden = true;
+  $("#musica").hidden = true;
+  $("#espera").hidden = false;
+  pintarProgresso();
+  desenharEspera();
+  clearInterval(timerEspera);
+  timerEspera = setInterval(() => { if ($("#espera").hidden) clearInterval(timerEspera); else desenharEspera(); }, 1000);
+  if (!jobs.length) acompanhar();
+}
+
+function desenharEspera() {
+  const j = jobs.find((x) => x.id === esperaId);
+  if (!j && !jobsCarregados) return;   // abriu direto na espera: espera a lista de pedidos chegar
+  if (!j) {   // já terminou (ou o servidor reiniciou): procura a música pronta
+    const m = musicas.find((x) => x.pasta && jobsProntos.get(esperaId) === x.pasta);
+    location.replace(m ? "#/m/" + encodeURIComponent(m.pasta) : "#/");
+    return;
+  }
+  document.title = `Gerando ${j.titulo} · Partitura`;
+  const img = j.video_id ? capa(j.video_id) : "";
+  if ($("#eCapa").dataset.src !== img) {
+    $("#eCapa").dataset.src = img;
+    $("#eCapa").src = img;
+    $("#eFundo").style.backgroundImage = img ? `url("${img}")` : "";
+  }
+  $("#eTitulo").textContent = j.titulo;
+  $("#eArtista").textContent = j.artista || "";
+  const erro = j.status === "erro", p = erro ? 0 : j.progresso || 0;
+  $("#espera").classList.toggle("falhou", erro);
+  $("#ePct").textContent = erro ? "" : `${p}%`;
+  $("#eBarra").style.width = `${p}%`;
+  const frente = jobs.filter((x) => x.status === "rodando" || (x.status === "fila" && x.criado < j.criado)).length;
+  $("#eEtapa").textContent = erro ? "Não deu para gerar esta música."
+    : j.status === "fila" ? (j.local ? "Enviando o pedido…" : frente ? `Na fila · ${frente} na frente` : "Na fila")
+    : j.etapa || "Começando…";
+  $("#ePassos").innerHTML = erro ? `<li class="msg">${esc(j.etapa)}</li>` : PASSOS.map(([nome, ini], i) => {
+    const fim = PASSOS[i + 1]?.[1] ?? 100;
+    const estado = j.status !== "rodando" ? "" : p >= fim ? "feito" : p >= ini ? "agora" : "";
+    return `<li class="${estado}"><span class="marca">${estado === "feito" ? "✓" : ""}</span>${nome}</li>`;
+  }).join("");
+  $("#eTempo").textContent = j.inicio && !erro ? `${fmt(Date.now() / 1000 - j.inicio)} · costuma levar menos de 1 minuto` : "";
+  $("#eAcoes").innerHTML = erro ? `<button type="button" class="btn primario" data-de-novo>Tentar de novo</button>
+    <button type="button" class="btn" data-remover>Remover</button>` : `<a class="btn" href="#/">Voltar pra biblioteca</a>`;
+}
+const jobsProntos = new Map();   // id do pedido -> pasta (pra quem abre a espera depois de pronto)
+$("#eAcoes").addEventListener("click", async (e) => {
+  const j = jobs.find((x) => x.id === esperaId);
+  if (!j) return;
+  if (e.target.closest("[data-remover]") || e.target.closest("[data-de-novo]")) {
+    await fetch(`/api/jobs/${encodeURIComponent(j.id)}`, { method: "DELETE" }).catch(() => {});
+    jobs = jobs.filter((x) => x !== j);
+    if (e.target.closest("[data-de-novo]")) gerar({ id: j.video_id, titulo: j.titulo, artista: j.artista });
+    else location.hash = "#/";
+  }
+});
 
 // ------------------------------------------------------------------ música
 let atual = null;   // { m, leitor, layout, abort, wake }
@@ -187,6 +291,7 @@ async function abrirMusica(pasta) {
   if (!m) { aviso("Música não encontrada.", true); location.hash = "#/"; return; }
   trecho.pause();
   $("#inicio").hidden = true;
+  $("#espera").hidden = true;
   $("#musica").hidden = false;
   document.title = `${m.titulo} · Partitura`;
   $("#mTitulo").textContent = m.titulo;
@@ -215,6 +320,7 @@ async function abrirMusica(pasta) {
       a.addEventListener(t, (e) => { if (t === "play") { fonte = e.target; (fonte === piano ? original : piano).pause(); pedirTela(); } pintar(); }, { signal: atual.abort.signal });
   addEventListener("resize", montarLeitor, { signal: atual.abort.signal });
   pintar();
+  pintarProgresso();
 }
 
 function montarLeitor() {
@@ -319,4 +425,4 @@ document.addEventListener("keydown", (e) => {
 });
 
 // ------------------------------------------------------------------ começo
-carregarMusicas().then(rota);
+Promise.all([carregarMusicas(), acompanhar()]).then(rota);

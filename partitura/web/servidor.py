@@ -204,7 +204,8 @@ def _progresso(job: dict, linha: str):
               ("[letra] transcrevendo", 40, "Ouvindo a letra (Whisper)"),
               ("[letra] letra oficial:", 0, "Letra oficial encontrada (LRCLIB)"),
               ("[pop2piano] carregando", 0, "Gerando arranjo com IA (Pop2Piano)"),
-              ("[amt-apc] gerando", 0, "Gerando arranjo com IA (AMT-APC)")]
+              ("[amt-apc] gerando", 25, "Gerando arranjo com IA (AMT-APC)"),
+              ("[amt-apc] usando cache", 30, "Arranjo da IA pronto")]
     for marca, pct, etapa in marcos:
         if linha.startswith(marca):
             if pct:
@@ -214,7 +215,9 @@ def _progresso(job: dict, linha: str):
         job["etapa"] = "Escrevendo partitura — " + linha.strip("= ").split("(")[0].replace("nível ", "nível ")
     if linha.startswith("[ok]"):
         job["feitos"] += 1
-        job["progresso"] = max(job["progresso"], 50 + int(50 * job["feitos"] / total) - 1)
+        job["progresso"] = max(job["progresso"], 45 + int(45 * job["feitos"] / total))
+        if job["feitos"] >= total:   # depois da última partitura: as prévias em áudio (FluidSynth)
+            job["etapa"] = "Gravando o piano das prévias"
 
 
 def _rodar(job: dict):
