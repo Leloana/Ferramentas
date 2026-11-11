@@ -354,6 +354,21 @@ async def gerar(p: Pedido):
     return JOBS[jid]
 
 
+def _capa_karaoke(slug):
+    """Vídeo do YouTube de onde o karaokê tirou a música (pra capa de quem não tem video_id)."""
+    if not slug or not SLUG_RE.match(slug):
+        return None
+    try:
+        audio = json.loads((KARAOKE / slug / "meta.json").read_text(encoding="utf-8")).get("audio", {})
+    except (OSError, ValueError):
+        return None
+    for url in (audio.get("youtube_vocal_url"), audio.get("youtube_backing_url")):
+        m = re.search(r"(?:v=|youtu\.be/)([\w-]{11})", url or "")
+        if m:
+            return m.group(1)
+    return None
+
+
 @app.get("/api/karaoke")
 async def karaoke():
     """Músicas instaladas no karaokê (com voz e acompanhamento), e se já estão na biblioteca."""
@@ -518,7 +533,8 @@ async def musicas():
             continue
         lista.append({
             "pasta": pasta.name, "titulo": meta.get("titulo") or pasta.name, "artista": meta.get("artista", ""),
-            "video_id": meta.get("video_id"), "arquivos": arquivos,
+            "video_id": meta.get("video_id"), "capa": meta.get("video_id") or _capa_karaoke(meta.get("karaoke")),
+            "arquivos": arquivos,
             "introducao": meta.get("introducao"), "final": meta.get("final"),
             "acompanhamento": meta.get("acompanhamento"), "atualizado": meta.get("atualizado"),
             "variacao": meta.get("variacao_introducao", 0),

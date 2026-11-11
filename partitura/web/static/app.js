@@ -98,7 +98,7 @@ function desenharRecentes() {
   $("#recentes").hidden = !lista.length || !!$("#resultados").children.length;
   $("#listaRecentes").innerHTML = lista.map((m) => `
     <button type="button" data-pasta="${esc(m.pasta)}">
-      ${m.video_id ? `<img src="https://i.ytimg.com/vi/${esc(m.video_id)}/mqdefault.jpg" alt="">` : '<img alt="">'}
+      ${m.capa ? `<img src="https://i.ytimg.com/vi/${esc(m.capa)}/mqdefault.jpg" alt="">` : '<img alt="">'}
       <span><b>${esc(m.titulo)}</b><small>${esc(m.artista)}</small></span>
     </button>`).join("");
   $$("#listaRecentes [data-pasta]").forEach((b) => b.addEventListener("click", () => {
@@ -295,7 +295,7 @@ function desenharLista() {
   const lista = f ? musicas.filter((m) => semAcento(`${m.titulo} ${m.artista}`).includes(f)) : musicas;
   $("#listaMusicas").innerHTML = lista.map((m) => `
     <button class="mus ${selecionada === m.pasta ? "ativa" : ""}" data-pasta="${esc(m.pasta)}">
-      ${m.video_id ? `<img src="https://i.ytimg.com/vi/${m.video_id}/mqdefault.jpg" alt="">` : '<img alt="">'}
+      ${m.capa ? `<img src="https://i.ytimg.com/vi/${esc(m.capa)}/mqdefault.jpg" alt="">` : '<img alt="">'}
       <span><b>${esc(m.titulo)}</b><small>${esc(m.artista)}</small></span>
     </button>`).join("") || `<p class="vazio-msg">${f ? "Nada com esse nome." : "Nenhuma partitura ainda. Busque uma música na aba Buscar."}</p>`;
   $$(".mus").forEach((b) => b.addEventListener("click", () => selecionar(b.dataset.pasta)));
