@@ -237,13 +237,16 @@ function fecharMusica(pararAudio = true) {
   $("#mMenu").hidden = true;
 }
 
+let arrastando = false;   // a bolinha da posição está sendo arrastada
 function pintar() {
   const tocando = !fonte.paused && !fonte.ended;
   $("#mTocar").innerHTML = icone(tocando ? "pausar" : "tocar");
   $("#mTocar").setAttribute("aria-label", tocando ? "Pausar" : "Tocar");
   $("#mRelogio").textContent = `${fmt(fonte.currentTime)} / ${fmt(fonte.duration)}`;
   const pos = $("#mPosicao");
-  if (document.activeElement !== pos && fonte.duration) pos.value = Math.round(1000 * fonte.currentTime / fonte.duration);
+  // só não segue o áudio enquanto o dedo/mouse arrasta (o foco ficava preso no controle depois do 1º toque
+  // e a bolinha parava de andar)
+  if (!arrastando && fonte.duration) pos.value = Math.round(1000 * fonte.currentTime / fonte.duration);
   $$("#mFonte [data-fonte]").forEach((b) => b.classList.toggle("ativa", (b.dataset.fonte === "original") === (fonte === original)));
 }
 function tocarPausar() {
@@ -253,6 +256,9 @@ function tocarPausar() {
 function pedirTela() { navigator.wakeLock?.request("screen").then((w) => { if (atual) atual.wake = w; }).catch(() => {}); }
 
 $("#mTocar").addEventListener("click", tocarPausar);
+$("#mPosicao").addEventListener("pointerdown", () => { arrastando = true; });
+for (const ev of ["pointerup", "pointercancel", "change", "blur"])
+  $("#mPosicao").addEventListener(ev, () => { arrastando = false; });
 $("#mPosicao").addEventListener("input", () => { if (fonte.duration) fonte.currentTime = $("#mPosicao").value / 1000 * fonte.duration; });
 $("#mNiveis").addEventListener("click", (e) => {
   const b = e.target.closest("[data-nivel]");
