@@ -66,6 +66,11 @@ def separar_artista_titulo(titulo: str, canal: str) -> tuple[str, str]:
             a, b = t.split(sep, 1)
             b = re.split(r"\s[|–—-]\s", b)[0]  # "Artista | Música | Inédito" -> "Música"
             return a.strip(), _limpa_titulo(b)
+    # sem separador: "Adoniran Barbosa O trem das onze" com o canal "Adoniran Barbosa" -> "O trem das onze"
+    norm = lambda x: "".join(c for c in unicodedata.normalize("NFD", x.lower()) if unicodedata.category(c) != "Mn")
+    if canal and norm(t).startswith(norm(canal) + " ") and len(t) > len(canal) + 2:
+        t = t[len(canal):].strip(" -:|")
+        return canal, t[:1].upper() + t[1:]
     return canal, t
 
 
@@ -147,7 +152,7 @@ class Pedido(BaseModel):
     video_id: str
     titulo: str
     artista: str = ""
-    niveis: list[str] = ["medio"]
+    niveis: list[str] = ["facil", "medio", "dificil"]
     versoes: list[str] = ["AMT-APC"]   # escuta 2026-11-11: o AMT-APC é o melhor, até que o Híbrido
     idioma: str = "auto"
     estilo: int = Field(default=1, ge=1, le=21)
@@ -253,6 +258,8 @@ def _rodar(job: dict):
     if "AMT-APC" in job["versoes"]:
         cmd.append("--amtapc")
     cmd += ["--versoes", ",".join(_saidas(job["versoes"]))]
+    if set(job["versoes"]) == {"AMT-APC"}:   # só o arranjo: sem separar voz, sem melodia, sem letra (sem GPU)
+        cmd.append("--leve")
     proc = subprocess.Popen(cmd, cwd=RAIZ, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
                             encoding="utf-8", errors="replace", env={**__import__("os").environ,
                                                                      "PYTHONIOENCODING": "utf-8"})

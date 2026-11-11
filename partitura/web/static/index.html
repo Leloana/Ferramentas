@@ -2,174 +2,76 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#14110f">
   <title>Partitura</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=11">
+  <link rel="stylesheet" href="style.css?v=20">
   <link rel="icon" type="image/svg+xml" href="icones/favicon.svg">
 </head>
 <body>
-  <header class="topo">
-    <div class="marca">
-      <img class="logo" src="icones/logo.svg" alt="" width="44" height="44">
-      <div>
-        <h1>Partitura</h1>
-        <p>música com voz → partitura de piano, com letra</p>
+  <!-- INÍCIO: um campo só — filtra a biblioteca enquanto digita; Enter busca no YouTube -->
+  <section id="inicio" class="tela">
+    <header class="topo">
+      <a class="marca" href="#/"><img class="logo" src="icones/logo.svg" alt="" width="36" height="36"><span>Partitura</span></a>
+      <form id="formBusca" class="busca" role="search">
+        <svg class="ic" aria-hidden="true"><use href="icones/sprite.svg#i-buscar"/></svg>
+        <input id="q" type="search" placeholder="Qual música vamos tocar?" autocomplete="off" enterkeyhint="search" aria-label="Música ou artista">
+        <button type="submit" class="btn primario">Buscar</button>
+      </form>
+    </header>
+    <main class="conteudo">
+      <p id="status" class="status" hidden></p>
+      <section id="secResultados" hidden>
+        <h2>No YouTube</h2>
+        <div id="resultados" class="grade"></div>
+      </section>
+      <section id="secBiblioteca">
+        <h2 id="tituloBib">Sua biblioteca</h2>
+        <div id="biblioteca" class="grade"></div>
+      </section>
+    </main>
+  </section>
+
+  <!-- MÚSICA: a partitura ocupa a tela; barra de controle embaixo -->
+  <section id="musica" class="tela" hidden>
+    <header class="m-topo">
+      <a class="m-voltar" href="#/" aria-label="Voltar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="m-titulo"><b id="mTitulo"></b><small id="mArtista"></small></div>
+      <div id="mNiveis" class="niveis" role="group" aria-label="Dificuldade"></div>
+    </header>
+    <div id="mArea" class="partitura-interativa m-area" aria-label="Partitura"><p>Carregando…</p></div>
+    <footer class="m-barra">
+      <button type="button" id="mTocar" class="m-play" aria-label="Tocar"></button>
+      <div class="m-tempo">
+        <input id="mPosicao" type="range" min="0" max="1000" value="0" aria-label="Posição na música">
+        <span id="mRelogio" class="m-relogio">0:00 / 0:00</span>
       </div>
-    </div>
-    <nav class="abas">
-      <button class="aba ativa" data-aba="buscar"><svg class="ic" aria-hidden="true"><use href="icones/sprite.svg#i-buscar"/></svg><span>Buscar</span></button>
-      <button class="aba" data-aba="karaoke"><svg class="ic" aria-hidden="true"><use href="icones/sprite.svg#i-fone"/></svg><span>Karaokê</span> <span id="contKar" class="cont"></span></button>
-      <button class="aba" data-aba="biblioteca"><svg class="ic" aria-hidden="true"><use href="icones/sprite.svg#i-biblioteca"/></svg><span>Biblioteca</span> <span id="contBib" class="cont"></span></button>
-      <button class="aba" data-aba="fila"><svg class="ic" aria-hidden="true"><use href="icones/sprite.svg#i-fila"/></svg><span>Fila</span> <span id="contFila" class="cont"></span></button>
-    </nav>
-  </header>
-
-  <main>
-    <!-- BUSCAR -->
-    <section id="buscar" class="painel ativo">
-      <div class="hero" id="hero">
-        <img class="hero-arte" src="icones/vazio-busca.svg" alt="" onerror="this.remove()">
-        <h2>Qual música vamos tocar?</h2>
-        <p class="hero-sub">Busque no YouTube, ouça um trecho e gere a partitura com a letra embaixo das notas.</p>
-        <form id="formBusca" class="busca">
-          <svg class="ic busca-ic" aria-hidden="true"><use href="icones/sprite.svg#i-buscar"/></svg>
-          <input id="q" type="search" placeholder="Música ou artista" autocomplete="off" autofocus aria-label="Música ou artista">
-          <button type="submit" class="btn primario">Buscar</button>
-        </form>
-        <div class="sugestoes" id="sugestoes">
-          <button type="button" data-q="Chega de Saudade Tom Jobim">Chega de Saudade</button>
-          <button type="button" data-q="Garota de Ipanema">Garota de Ipanema</button>
-          <button type="button" data-q="Evidências Chitãozinho e Xororó">Evidências</button>
-          <button type="button" data-q="Hallelujah Leonard Cohen">Hallelujah</button>
-        </div>
+      <div id="mFonte" class="niveis m-fonte" role="group" aria-label="O que tocar">
+        <button type="button" data-fonte="piano" class="ativa"><svg class="ic" aria-hidden="true"><use href="icones/sprite.svg#i-piano"/></svg><span>Piano</span></button>
+        <button type="button" data-fonte="original"><svg class="ic" aria-hidden="true"><use href="icones/sprite.svg#i-fone"/></svg><span>Original</span></button>
       </div>
-      <p id="statusBusca" class="status"></p>
-      <div id="resultados" class="resultados"></div>
-      <div id="recentes" class="recentes" hidden>
-        <h3>Na sua biblioteca</h3>
-        <div id="listaRecentes" class="recentes-lista"></div>
+      <div class="m-acoes">
+        <button type="button" class="m-btn" data-acao="menos" aria-label="Diminuir"><svg class="ic" aria-hidden="true"><use href="icones/sprite.svg#i-menos"/></svg></button>
+        <button type="button" class="m-btn" data-acao="mais" aria-label="Aumentar"><svg class="ic" aria-hidden="true"><use href="icones/sprite.svg#i-mais"/></svg></button>
+        <button type="button" class="m-btn ativo" id="mSeguir" aria-pressed="true" aria-label="Seguir a música" title="Seguir a música"><svg class="ic" aria-hidden="true"><use href="icones/sprite.svg#i-foco"/></svg></button>
+        <button type="button" class="m-btn" id="mMais" aria-label="Mais opções" aria-haspopup="menu">⋯</button>
       </div>
-    </section>
+      <div id="mMenu" class="m-menu" role="menu" hidden></div>
+      <audio id="mPiano" preload="metadata"></audio>
+      <audio id="mOriginal" preload="none"></audio>
+      <select id="mZoom" hidden></select>
+      <input id="mSeguirCaixa" type="checkbox" checked hidden>
+      <span id="mMostrador" hidden></span>
+    </footer>
+  </section>
 
-    <!-- BIBLIOTECA -->
-    <section id="biblioteca" class="painel">
-      <div class="bib">
-        <div class="coluna-musicas">
-          <label class="filtro"><svg class="ic" aria-hidden="true"><use href="icones/sprite.svg#i-filtro"/></svg><input id="filtroBib" type="search" placeholder="Filtrar por título ou artista" autocomplete="off" aria-label="Filtrar biblioteca"></label>
-          <aside id="listaMusicas" class="lista-musicas"></aside>
-        </div>
-        <div id="visor" class="visor vazio">
-          <p>Escolha uma música à esquerda.</p>
-        </div>
-      </div>
-    </section>
+  <div id="progresso" class="progresso" hidden><span id="progTexto"></span><div class="prog-barra"><i id="progBarra"></i></div></div>
+  <div id="aviso" role="status" aria-live="polite"></div>
+  <audio id="trecho" preload="none"></audio>
 
-    <!-- KARAOKÊ: músicas instaladas no karaokê (voz, acompanhamento e letra prontos) -->
-    <section id="karaoke" class="painel">
-      <div class="karaoke">
-        <p class="mini">Músicas que já estão no karaokê: voz, acompanhamento e letra prontos, sem baixar nada. Gera os três níveis do AMT-APC (o médio é a base; fácil e difícil saem dele).</p>
-        <label class="filtro"><svg class="ic" aria-hidden="true"><use href="icones/sprite.svg#i-filtro"/></svg><input id="filtroKar" type="search" placeholder="Filtrar por título ou artista" autocomplete="off" aria-label="Filtrar músicas do karaokê"></label>
-        <div id="listaKar" class="lista-kar"></div>
-      </div>
-    </section>
-
-    <!-- FILA -->
-    <section id="fila" class="painel">
-      <div class="jobs-topo"><button type="button" id="limparFila" class="btn pequeno discreto" hidden>Limpar concluídos</button></div>
-      <div id="listaJobs" class="jobs"></div>
-    </section>
-  </main>
-
-  <!-- diálogo de geração -->
-  <dialog id="dlgGerar">
-    <form method="dialog" id="formGerar">
-      <div class="dlg-topo">
-        <img id="gThumb" alt="">
-        <div>
-          <p class="mini" id="gVideo"></p>
-          <label>Título <input id="gTitulo" required></label>
-          <label>Artista <input id="gArtista"></label>
-        </div>
-      </div>
-
-      <fieldset>
-        <legend>Dificuldade</legend>
-        <div class="opcoes">
-          <label class="op"><input type="checkbox" name="nivel" value="facil" checked><span><b>Fácil</b><small>a melodia do médio, uma nota grave por acorde</small></span></label>
-          <label class="op"><input type="checkbox" name="nivel" value="medio" checked><span><b>Médio</b><small>a base: melodia cantada + acompanhamento</small></span></label>
-          <label class="op"><input type="checkbox" name="nivel" value="dificil" checked><span><b>Difícil</b><small>o médio enriquecido: arpejos, oitavas, pedal</small></span></label>
-        </div>
-      </fieldset>
-
-      <div class="dlg-linha">
-        <label class="linha">Idioma da letra
-          <select id="gIdioma">
-            <option value="auto">detectar sozinho</option>
-            <option value="pt">português</option>
-            <option value="en">inglês</option>
-            <option value="es">espanhol</option>
-            <option value="ja">japonês</option>
-          </select>
-        </label>
-        <label class="linha" id="linhaEscrita" hidden>Letra em japonês
-          <select id="gEscrita">
-            <option value="romaji">romaji (so-ra)</option>
-            <option value="kana">kana (そら)</option>
-          </select>
-        </label>
-      </div>
-
-      <details class="avancado">
-        <summary>Avançado</summary>
-        <fieldset>
-        <legend>Versões</legend>
-        <div class="opcoes">
-          <label class="op"><input type="checkbox" name="versao" value="Hibrido"><span><b>Híbrido</b><small>melodia cantada + acompanhamento da IA</small></span></label>
-          <label class="op"><input type="checkbox" name="versao" value="Acordes"><span><b>Acordes</b><small>melodia cantada + acordes em bloco</small></span></label>
-          <label class="op"><input type="checkbox" name="versao" value="Pop2Piano"><span><b>Pop2Piano</b><small>arranjo completo da IA, sem letra</small></span></label>
-          <label class="op"><input type="checkbox" name="versao" value="AMT-APC" checked><span><b>AMT-APC</b><small>arranjo de piano da IA (2024), sem letra. O padrão: o mais bonito na escuta. Com Híbrido marcado, gera também o Híbrido (AMT)</small></span></label>
-        </div>
-      </fieldset>
-
-        <fieldset>
-        <legend><svg class="ic" aria-hidden="true"><use href="icones/sprite.svg#i-teor"/></svg> Teor gerado</legend>
-        <div class="teor">
-          <span class="teor-nome">Introdução<small>feita a partir do refrão</small></span>
-          <div class="pilulas" role="radiogroup" aria-label="Introdução"><label class="pilula"><input type="radio" name="intro" value="" checked><span>nenhuma</span></label><label class="pilula"><input type="radio" name="intro" value="calma"><span>calma</span></label><label class="pilula"><input type="radio" name="intro" value="lenta"><span>lenta</span></label><label class="pilula"><input type="radio" name="intro" value="emotiva"><span>emotiva</span></label><label class="pilula"><input type="radio" name="intro" value="animada"><span>animada</span></label><label class="pilula"><input type="radio" name="intro" value="epica"><span>épica</span></label></div>
-        </div>
-        <div class="teor">
-          <span class="teor-nome">Final<small>cadência com fermata</small></span>
-          <div class="pilulas" role="radiogroup" aria-label="Final"><label class="pilula"><input type="radio" name="final" value="" checked><span>nenhum</span></label><label class="pilula"><input type="radio" name="final" value="calma"><span>calmo</span></label><label class="pilula"><input type="radio" name="final" value="lenta"><span>lento</span></label><label class="pilula"><input type="radio" name="final" value="emotiva"><span>emotivo</span></label><label class="pilula"><input type="radio" name="final" value="animada"><span>animado</span></label><label class="pilula"><input type="radio" name="final" value="epica"><span>épico</span></label></div>
-        </div>
-        <div class="teor">
-          <span class="teor-nome">Acompanhamento<small>mão esquerda da versão Acordes</small></span>
-          <div class="pilulas" role="radiogroup" aria-label="Acompanhamento"><label class="pilula"><input type="radio" name="acomp" value="" checked><span>padrão</span></label><label class="pilula"><input type="radio" name="acomp" value="calma"><span>calmo</span></label><label class="pilula"><input type="radio" name="acomp" value="lenta"><span>lento</span></label><label class="pilula"><input type="radio" name="acomp" value="emotiva"><span>emotivo</span></label><label class="pilula"><input type="radio" name="acomp" value="animada"><span>animado</span></label><label class="pilula"><input type="radio" name="acomp" value="epica"><span>épico</span></label></div>
-        </div>
-      </fieldset>
-
-        <label class="linha" id="linhaEstilo">Estilo do Pop2Piano
-          <select id="gEstilo" aria-describedby="ajudaEstilo"></select>
-        </label>
-        <p class="mini" id="ajudaEstilo">Muda o arranjo do Pop2Piano e do Híbrido (Pop2Piano).</p>
-        <label class="linha">Separação da voz
-          <select id="gSeparador">
-            <option value="htdemucs">4 faixas (padrão)</option>
-            <option value="htdemucs_6s">6 faixas, com guitarra e piano (experimento)</option>
-          </select>
-        </label>
-      </details>
-
-      <div class="dlg-acoes">
-        <button type="button" id="gCancelar" class="btn">Cancelar</button>
-        <button type="submit" id="gOk" class="btn primario"><svg class="ic" aria-hidden="true"><use href="icones/sprite.svg#i-gerar"/></svg><span>Gerar partitura</span></button>
-      </div>
-    </form>
-  </dialog>
-
-  <audio id="player" preload="none"></audio>
-  <script src="partitura.js?v=4"></script>
-  <script src="app.js?v=13"></script>
+  <script src="partitura.js?v=20"></script>
+  <script src="app.js?v=20"></script>
 </body>
 </html>

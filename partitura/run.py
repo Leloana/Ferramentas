@@ -1,4 +1,4 @@
-"""Sobe a interface web da Partitura em http://127.0.0.1:8030 (use --lan pra abrir na rede local)."""
+"""Sobe a Partitura em http://127.0.0.1:8030 (--lan abre na rede local): buscar, gerar (AMT-APC, modo leve) e ler."""
 import sys
 import webbrowser
 
