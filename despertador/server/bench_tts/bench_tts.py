@@ -141,7 +141,7 @@ def motor_chatterbox(texto: str, saida: Path, args) -> dict:
     ref = {"audio_prompt_path": args.ref_audio} if args.ref_audio else {}
     partes = [modelo.generate(t, language_id="pt", cfg_weight=args.cb_cfg, exaggeration=args.cb_exag, **ref)
               .squeeze(0).cpu().numpy() for t in _paragrafos(texto)]
-    _salvar_wav(saida, _juntar(partes, modelo.sr), modelo.sr)
+    _salvar_wav(saida, _juntar(partes, modelo.sr, args.pausa), modelo.sr)
     return {"carga_s": carga, "sintese_s": time.perf_counter() - t0,
             "voz": f"{'clone ' + Path(args.ref_audio).stem if args.ref_audio else 'padrão'} ({disp}) "
                    f"cfg={args.cb_cfg} exag={args.cb_exag}"}
@@ -196,7 +196,7 @@ def motor_qwen(texto: str, saida: Path, args) -> dict:
             wavs, taxa = modelo.generate_voice_clone(text=t, language="Portuguese", voice_clone_prompt=prompt)
             print(f"trecho {i}/{len(trechos)} {len(t)} car.", flush=True)
             partes.append(wavs[0])
-        _salvar_wav(saida, _juntar(partes, taxa, 0.3), taxa)
+        _salvar_wav(saida, _juntar(partes, taxa, args.pausa), taxa)
         return {"carga_s": carga, "sintese_s": time.perf_counter() - t0,
                 "voz": f"clone {Path(args.ref_audio).stem} ({disp})", "trechos": len(trechos)}
     for i, (tag, t) in enumerate(trechos, 1):
@@ -222,7 +222,7 @@ def motor_qwen(texto: str, saida: Path, args) -> dict:
             wavs, taxa = modelo.generate_custom_voice(**kw)
         print(f"trecho {i}/{len(trechos)} [{tag or '-'}] {len(t)} car.", flush=True)
         partes.append(wavs[0])
-    _salvar_wav(saida, _juntar(partes, taxa, 0.3), taxa)
+    _salvar_wav(saida, _juntar(partes, taxa, args.pausa), taxa)
     return {"carga_s": carga, "sintese_s": time.perf_counter() - t0,
             "voz": ("design" if args.qwen_modo == "design" else args.qwen_voz) + f" ({disp}){' +instrução' if instrucao_ok and (args.qwen_instrucao or any(tg for tg, _ in trechos)) else ''}",
             "trechos": len(trechos)}
@@ -309,9 +309,11 @@ def rodar_motor(motor: str, args) -> dict:
     return r
 
 
-def para_mp3(wav: Path) -> None:
+def para_mp3(wav: Path, ritmo: float = 1.0) -> None:
+    filtro = ["-af", f"atempo={ritmo}"] if ritmo != 1.0 else []  # <1 = fala mais devagar, sem mudar o tom
     try:
-        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(wav), "-b:a", "96k", str(wav.with_suffix(".mp3"))],
+        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(wav), *filtro, "-b:a", "96k",
+                        str(wav.with_suffix(".mp3"))],
                        check=True)
     except (OSError, subprocess.CalledProcessError):
         pass
@@ -343,6 +345,8 @@ def main() -> None:
     ap.add_argument("--cb-cfg", type=float, default=0.5, help="Chatterbox: menor = fala mais calma (0.3 recomendado p/ quem fala rápido)")
     ap.add_argument("--cb-exag", type=float, default=0.5, help="Chatterbox: exagero de emoção (0.25 a 2)")
     ap.add_argument("--qwen-max-trecho", type=int, default=160, help="caracteres por geração (curto evita pular texto)")
+    ap.add_argument("--pausa", type=float, default=0.3, help="silêncio (s) entre trechos; maior = fala mais cadenciada")
+    ap.add_argument("--ritmo", type=float, default=1.0, help="velocidade aplicada no MP3 (ex.: 0.93 = 7%% mais devagar)")
     ap.add_argument("--gpu", action="store_true", help="usar CUDA se houver (só para comparar qualidade no PC)")
     ap.add_argument("--_motor", choices=MOTORES, help=argparse.SUPPRESS)
     args = ap.parse_args()
@@ -366,7 +370,7 @@ def main() -> None:
         r = rodar_motor(m, args)
         resultados.append(r)
         if r["status"] == "ok":
-            para_mp3(Path(args.saida) / f"{m}.wav")
+            para_mp3(Path(args.saida) / f"{m}.wav", args.ritmo)
         print(f"   -> {json.dumps(r, ensure_ascii=False)[:400]}", flush=True)
 
     (Path(args.saida) / "resultados.json").write_text(json.dumps(resultados, ensure_ascii=False, indent=2), encoding="utf-8")
