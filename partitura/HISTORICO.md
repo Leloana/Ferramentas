@@ -848,3 +848,22 @@ Machucar Meu Coração nos três níveis, com backup em `trabalho/protecao_20261
   (Score Analyzer, Sébastien et al. ISMIR 2012; MV2H, McLeod e Steedman ISMIR 2018); (5) dedilhado
   por HMM (Nakamura, Saito e Yoshii 2020) e redução com dificuldade controlada (Nakamura e Yoshii,
   APSIPA 2018). Suíte 161 OK.
+
+## 42. Batidas e tempo 1 pelo madmom no modo leve — 2026-11-11
+
+- madmom 0.17.dev0 (GitHub; o PyPI 0.16 não compila em Python 3.13), RNN + DBN de downbeat (Böck,
+  Krebs e Widmer, ISMIR 2016), `beats_per_bar=[3, 4]`: ~36 s de CPU por música.
+- As 5 músicas saíram 4/4 constante: o "compasso de 2 tempos" de Fuyu não existe; a grade do librosa
+  ganhava 13 batidas (478 × 465) e a repetição caía em 38,5 compassos. As batidas do madmom vêm
+  ~40 ms antes das do librosa, o mesmo atraso medido nos ataques do AMT-APC (§38).
+- Medidas objetivas, librosa + fase heurística → madmom: ataques do arranjo no tempo Águas 38 → 55%,
+  Anna Júlia 51 → 63%; grave no tempo 1 Ode 16 → 38% (a heurística errava a fase em 2 tempos: troca
+  de acorde não separa o 1 do 3), Cálice 26 → 45%; repetições em compasso inteiro Fuyu 0/3 → 2/3.
+- `gerar.batidas_madmom` no modo leve (sem madmom ou `--batidas-librosa`: grade antiga; com ele, a
+  fase vem do madmom e `fase_pelo_midi`/`corrigir_fase` não rodam). Compasso de 3 detectado só avisa:
+  a partitura ainda é 4/4 em todo o código (pendência: 3/4 e 6/8 de verdade).
+- Regressão (soma das 15 partituras): síncopes 1092 → 834, compassos repetidos 298 → 423, linhas
+  suplementares 832 → 739, linhas 8va 49 → 37, mudanças de posição 501 → 470/min; acidentes 1472 →
+  1517, trechos difíceis 17 → 20 (vêm da grade, não das repetições: testado com --sem-repeticoes).
+- Dedo que fica em cima da nota agora entra na lista dos já postos e sobe se bater em outro
+  (Cálice fácil tinha 1 sobreposto). Suíte 161 OK; referência da regressão atualizada.

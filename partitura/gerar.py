@@ -102,6 +102,38 @@ def batidas(mix: np.ndarray, sr: int, perc: np.ndarray) -> tuple[np.ndarray, flo
     return bt, 60.0 / periodo
 
 
+def batidas_madmom(audio: Path, dur: float):
+    """Batidas e tempo 1 pelo madmom (RNN + rede bayesiana dinâmica; Böck, Krebs e Widmer, ISMIR 2016),
+    estendidas pra trás até t <= 0 e pra frente até o fim como em `batidas`. Devolve
+    (bt, bpm, fase, batidas_por_compasso) ou None sem madmom.
+
+    Medido 2026-11-11 nas 5 músicas de teste contra librosa + fase pela heurística: mais ataques do
+    arranjo caindo no tempo (Águas 38 → 55%, Anna Júlia 51 → 63%), o grave no tempo 1 (Ode 16 → 38%,
+    a heurística errava a fase em 2 tempos; Cálice 26 → 45%) e as repetições em número inteiro de
+    compassos (Fuyu: a grade do librosa ganhava 13 batidas e a repetição caía em 38,5 compassos)."""
+    try:
+        from madmom.features.downbeats import DBNDownBeatTrackingProcessor, RNNDownBeatProcessor
+    except Exception:
+        return None
+    r = DBNDownBeatTrackingProcessor(beats_per_bar=[3, 4], fps=100)(RNNDownBeatProcessor()(str(audio)))
+    if len(r) < 8 or not (r[:, 1] == 1).any():
+        return None
+    bt, pos = r[:, 0].astype(float), r[:, 1].astype(int)
+    por_compasso = int(pos.max())
+    periodo = float(np.median(np.diff(bt)))
+    primeiro_1 = int(np.where(pos == 1)[0][0])
+    antes, t = [], bt[0] - periodo
+    while t > -periodo:
+        antes.append(t)
+        t -= periodo
+    depois, t = [], bt[-1] + periodo
+    while t < dur + periodo:
+        depois.append(t)
+        t += periodo
+    fase = (primeiro_1 + len(antes)) % por_compasso
+    return np.concatenate([antes[::-1], bt, depois]), 60.0 / periodo, fase, por_compasso
+
+
 def fase_compasso(bt: np.ndarray, baixo: np.ndarray, sr: int) -> int:
     """Escolhe qual batida (0..3) é o tempo 1: onde o baixo bate mais forte."""
     import librosa
@@ -1129,7 +1161,21 @@ def dedos_ao_lado(svg: str) -> str:
         bate = bate or any(ini - 20 < bx < fim + 40 and y1 - 100 < y < y2 + 100 for bx, y1, y2 in barras)
         if not bate and livre_de_dedos(ini, fim):
             return pronto(ini, fim, f'{m.group(1)}x="{ini:.0f}" {base_y} text-anchor="start"{m.group(5)}')
-        return m.group(0)   # os dois lados ocupados: fica em cima da nota
+        # os dois lados ocupados: fica em cima da nota (onde o Verovio pôs); se bater em outro dedo, sobe
+        orig = re.search(r'x="(-?[\d.]+)" y="(-?[\d.]+)"', m.group(0))
+        if not orig:
+            return m.group(0)
+        ox_, oy_ = float(orig.group(1)), float(orig.group(2))
+        ini, fim = ox_ - largura / 2, ox_ + largura / 2
+        for _ in range(4):
+            y_salvo = y
+            y = oy_ - .36 * fs              # livre_de_dedos compara pela linha de base da nota
+            if livre_de_dedos(ini, fim):
+                break
+            oy_ -= .8 * fs
+            y = y_salvo
+        colocados.append((ini, fim, oy_ - .36 * fs))
+        return m.group(0).replace(orig.group(0), f'x="{ox_:.0f}" y="{oy_:.0f}"', 1)
     return _RE_DEDO.sub(mover, svg)
 
 
@@ -1351,6 +1397,8 @@ def main():
                     help="só o AMT-APC, sem separar a voz, sem melodia e sem letra (sem Demucs/CREPE/Whisper): "
                          "batidas e acordes da própria mistura. Roda só em CPU (~1,5 min por música)")
     ap.add_argument("--cifras", action="store_true", help="desenha o nome dos acordes em cima da pauta (padrão: sem)")
+    ap.add_argument("--batidas-librosa", action="store_true",
+                    help="modo leve: batidas do librosa e tempo 1 pela heurística (sem madmom; comportamento antigo)")
     ap.add_argument("--sem-repeticoes", action="store_true",
                     help="modo leve: não escreve igual os trechos que se repetem (repeticoes.py)")
     ap.add_argument("--sem-ajuste", action="store_true",
@@ -1430,20 +1478,28 @@ def main():
         mix = carregar(audio, sr)
         baixo = sosfiltfilt(butter(4, 200, "low", fs=sr, output="sos"), mix).astype(np.float32)
         print("[batidas] detectando pulso (modo leve, da mistura)...")
-        bt, bpm = batidas(mix, sr, mix)
+        madmom = None if getattr(args, "batidas_librosa", False) else batidas_madmom(audio, len(mix) / sr)
+        if madmom:
+            bt, bpm, fase_m, por_compasso = madmom
+            if por_compasso != 4:
+                print(f"[batidas] AVISO: compasso de {por_compasso} tempos detectado; a partitura ainda sai em 4/4")
+        else:
+            bt, bpm = batidas(mix, sr, mix)
         from amtapc import midi_amtapc   # o arranjo sai de qualquer jeito: o grave dele dá o tempo 1
-        # Medido 2026-11-11: os ataques do AMT-APC caem ~35 ms antes das batidas em todas as músicas,
-        # mas puxar a grade pra eles piorou a partitura (mais síncope, mais linha suplementar): fica a
-        # batida do áudio. Ver HISTORICO §38.
-        fase = fase_pelo_midi(bt, midi_amtapc(audio, base, "medio" if args.derivar else niveis[0]))
+        # As batidas do librosa vêm ~40 ms depois dos ataques (os do AMT-APC e as batidas do madmom
+        # concordam); deslocar a grade do librosa piorava (HISTORICO §38), trocar pelo madmom melhora (§42).
+        mid_arranjo = midi_amtapc(audio, base, "medio" if args.derivar else niveis[0])
+        fase = fase_m if madmom else fase_pelo_midi(bt, mid_arranjo)
         grade = Grade(bt, fase)
-        print(f"[batidas] ~{bpm:.0f} bpm, {len(bt)} batidas, tempo 1 na batida {fase}")
+        print(f"[batidas] ~{bpm:.0f} bpm, {len(bt)} batidas, tempo 1 na batida {fase}"
+              f" ({'madmom' if madmom else 'librosa + graves do arranjo'})")
         print("[acordes] detectando harmonia (modo leve, da mistura)...")
         acs = acordes(mix, baixo, sr, grade)
-        fase, acs, mudou = corrigir_fase(fase, acs)
-        if mudou:
-            grade = Grade(bt, fase)
-            print(f"[batidas] tempo 1 corrigido pela harmonia: batida {fase}")
+        if not madmom:   # a heurística da troca de acorde só pra grade do librosa (não separa o 1 do 3)
+            fase, acs, mudou = corrigir_fase(fase, acs)
+            if mudou:
+                grade = Grade(bt, fase)
+                print(f"[batidas] tempo 1 corrigido pela harmonia: batida {fase}")
         notas, palavras, diagnostico = [], [], None
         cache = base / "cache"
         cache.mkdir(parents=True, exist_ok=True)

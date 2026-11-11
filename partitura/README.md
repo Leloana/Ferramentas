@@ -65,6 +65,7 @@ AMT-APC) + regras musicais. Opções principais:
 | `--repetidas`, `--juntar-silabas` | mantém as repetidas coladas (antigo) / junta também a repetida curta com sílaba |
 | `--tom-ia-cru` | não corrige nota fora do tom no arranjo da IA (`tonalidade.py`) |
 | `--cifras` | desenha o nome dos acordes em cima da pauta (padrão desde 2026-11-11: sem cifra) |
+| `--batidas-librosa` | modo leve com a grade antiga (librosa + tempo 1 pela heurística) em vez do madmom |
 | `--sem-repeticoes` | modo leve sem escrever igual os trechos que se repetem (`repeticoes.py`) |
 | `--sem-ajuste` | modo leve sem a tocabilidade por regra (`tocavel.py`: síncopes no tempo, oitava da esquerda) |
 
@@ -314,7 +315,7 @@ O que **não** vem pelo git e precisa ser instalado à parte:
 3. Prévia de piano: FluidSynth no PATH (ou em `ferramentas/fluidsynth*/bin/`) e a SoundFont em `soundfonts/piano.sf2`.
    Sem eles, a prévia cai num sintetizador simples.
 4. `ffmpeg` no PATH (MP3 das prévias) e Chrome/Chromium (PDF das partituras).
-5. `yt-dlp` vem pelo pip (busca e download do YouTube).
+5. `yt-dlp` vem pelo pip (busca e download do YouTube). madmom (batidas e tempo 1): `pip install cython && pip install --no-build-isolation git+https://github.com/CPJKU/madmom.git`; sem ele, o leve usa a grade antiga do librosa.
 6. Subir: `python run.py --lan` (porta 8030). Atrás de um proxy/túnel (Cloudflare), apontar o hostname para
    `http://127.0.0.1:8030` e criar uma Cache Rule respeitando o cache da origem (o site manda `no-cache` na página).
    Não há autenticação: qualquer um com o link pode gerar.

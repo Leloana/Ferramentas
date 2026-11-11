@@ -27,3 +27,5 @@ unidic-lite
 piano_transcription_inference
 audioread
 resampy
+# batidas e tempo 1 do modo leve (Böck et al. 2016); do GitHub (o PyPI 0.16 não compila em Python novo):
+#   pip install cython && pip install --no-build-isolation git+https://github.com/CPJKU/madmom.git

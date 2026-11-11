@@ -23,6 +23,7 @@ frentes) → `METRICAS_VALIDACAO.md` (como medir) → `HISTORICO.md` (crônica d
   com `--no-deps` (a dependência pyaudio não compila) + soundfont
   `/snap/vlc/*/usr/share/sounds/sf2/TimGM6mb.sf2` pras páginas de comparação.
 - Suíte: `python -m unittest test_*` (161 testes em 2026-11-11, todos OK no Linux).
+- madmom no venv (GitHub, ver requirements.txt) pras batidas do modo leve.
 - AMT-APC instalado aqui também (`modelos/amt-apc`, torch CPU no venv): o modo leve roda no
   Linux (~8 min por música do zero neste notebook, ~30 s do cache). Áudio de teste:
   `entrada/aguas_de_marco_BnB1G63XvCQ.wav` (vídeo de origem do karaokê).
@@ -124,8 +125,9 @@ lista o que piorou. Depois de uma melhoria aceita, `--salvar` a nova referência
 
 ### Próximos (pesquisa 2026-11-11, HISTORICO §41)
 
-1. Compasso e downbeat robustos: madmom DBN `beats_per_bar=[2,3,4]` + fase por trecho (Shibata et
-   al. 2021) + alinhar as repetições: resolve Fuyu (repetição 38,5 compassos) e 3/4, 6/8.
+1. ~~Batidas e tempo 1 pelo madmom~~ feito (§42; Fuyu era grade com batidas a mais, não 2/4).
+   Falta: 3/4 e 6/8 de verdade (hoje só avisa; `compasso=4` está no código todo) e fase por trecho
+   (Shibata et al. 2021) se aparecer música com troca de métrica.
 2. Grafia ps13 (`partitura.musicanalysis.estimate_spelling`), armadura e raiz do acorde de desempate.
 3. Seções por spectral clustering (McFee e Ellis 2014) → ritornelo e casa 1/2.
 4. Métricas do Score Analyzer (Sébastien et al. 2012) e MV2H entre níveis na `regressao.py`.
