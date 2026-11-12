@@ -24,6 +24,8 @@ from pathlib import Path
 
 import numpy as np
 
+import metrica
+
 AQUI = Path(__file__).resolve().parent
 SR_GRADE = 2  # subdivisões por tempo (definido pelo nível: 1 semínima, 2 colcheia, 4 semicolcheia)
 GRADE_NIVEL = {"facil": 1, "medio": 2, "dificil": 4}
@@ -363,13 +365,14 @@ def croma_do_midi(mid: Path, grade: Grade, janelas, beats_por_janela=2, grave=55
     return c, baixos
 
 
-def acordes(harm: np.ndarray, baixo: np.ndarray, sr: int, grade: Grade, beats_por_janela=2,
+def acordes(harm: np.ndarray, baixo: np.ndarray, sr: int, grade: Grade, beats_por_janela=None,
             midi_arranjo: Path | None = None, fonte: str = "mistura"):
-    """Lista (pos_tempo, root_pc, tipo, baixo_pc) a cada `beats_por_janela` tempos.
+    """Lista (pos_tempo, root_pc, tipo, baixo_pc) a cada `beats_por_janela` tempos (2 no 4/4, um compasso no 3/4).
 
     fonte: "mistura" (croma do áudio), "ia" (croma das notas do arranjo do AMT-APC, `midi_arranjo`)
     ou "ambos" (média das semelhanças com os moldes)."""
     import librosa
+    beats_por_janela = beats_por_janela or (2 if metrica.TEMPOS == 4 else metrica.TEMPOS)
     hop = 512
     ch = librosa.feature.chroma_cqt(y=harm, sr=sr, hop_length=hop)
     chb = librosa.feature.chroma_cqt(y=baixo, sr=sr, hop_length=hop, fmin=librosa.note_to_hz("E1"), n_octaves=3)
@@ -448,10 +451,11 @@ def _custo_armaduras(eventos) -> np.ndarray:
     return custo_por_armadura(eventos)
 
 
-def armaduras_por_trecho(eventos_off, fim: float, frases=()) -> list[tuple[float, int]]:
-    """Mudanças de armadura [(offset, sustenidos)]: ver armaduras.py."""
+def armaduras_por_trecho(eventos_off, fim: float, frases=(), bloco=None) -> list[tuple[float, int]]:
+    """Mudanças de armadura [(offset, sustenidos)]: ver armaduras.py (bloco = 4 compassos, em tempos)."""
+    from armaduras import BLOCO
     from armaduras import armaduras_por_trecho as por_trecho
-    return por_trecho(eventos_off, fim, frases)
+    return por_trecho(eventos_off, fim, frases, bloco=bloco or BLOCO)
 
 
 def escolher_armadura(eventos) -> int:
@@ -507,8 +511,9 @@ def com_introducao(md, me, cf, intro, k=0):
     k = transposição já aplicada à música. Devolve (md, me, cifras, marcas)."""
     from introducao import NOME_TEOR
     i_md, i_me, i_cf, info = intro
-    inicio = 4.0 * np.floor(min(e[0] for e in list(md) + list(me)) / 4)   # 1º compasso da música
-    L = 4.0 * info["compassos"]
+    c = metrica.TEMPOS
+    inicio = c * np.floor(min(e[0] for e in list(md) + list(me)) / c)   # 1º compasso da música
+    L = float(c * info["compassos"])
     md = [(o + inicio - L, d, [p + k for p in ps], *r) for o, d, ps, *r in i_md] + list(md)
     me = [(o + inicio - L, d, [p + k for p in ps]) for o, d, ps in i_me] + list(me)
     cf = [(o + inicio - L, (r + k) % 12, t) for o, r, t in i_cf] + [c for c in cf if c[0] >= inicio - 1e-6]
@@ -523,7 +528,8 @@ def com_final(md, me, cf, final, k=0):
     """Põe o final gerado no compasso depois da última nota. Devolve (md, me, cifras, marcas)."""
     from introducao import NOME_TEOR
     f_md, f_me, f_cf, info = final
-    fim = 4.0 * np.ceil(max(o + d for o, d, *_ in list(md) + list(me)) / 4 - 1e-6)
+    c = metrica.TEMPOS
+    fim = c * np.ceil(max(o + d for o, d, *_ in list(md) + list(me)) / c - 1e-6)
     md = list(md) + [(o + fim, d, [p + k for p in ps], *r) for o, d, ps, *r in f_md]
     me = list(me) + [(o + fim, d, [p + k for p in ps]) for o, d, ps in f_me]
     cf = list(cf) + [(o + fim, (r + k) % 12, t) for o, r, t in f_cf]
@@ -567,7 +573,8 @@ def _json_numpy(o):
 
 def deslocamento(md_ev, me_ev) -> float:
     """Tempos somados aos offsets pra partitura começar num compasso inteiro."""
-    return float(-np.floor(min(e[0] for e in list(md_ev) + list(me_ev)) / 4) * 4)
+    c = metrica.TEMPOS
+    return float(-np.floor(min(e[0] for e in list(md_ev) + list(me_ev)) / c) * c)
 
 
 def registrar_sincronia(base: Path, versao_nivel: str, grade, desloc: float):
@@ -726,7 +733,8 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
         from armaduras import inicios_de_frase
         mudancas = armaduras_por_trecho([(e[0] + desloc, e[1], e[2]) for e in md_ev]
                                         + [(e[0] + desloc, 0.3 * e[1], e[2]) for e in me_ev], fim,
-                                        frases=inicios_de_frase([(e[0] + desloc, e[1]) for e in md_ev]))
+                                        frases=inicios_de_frase([(e[0] + desloc, e[1]) for e in md_ev]),
+                                        bloco=4 * metrica.TEMPOS)
 
     def sust_em(off):
         s_ = mudancas[0][1]
@@ -781,7 +789,7 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
     me = stream.PartStaff(id="ME")
     for parte, cl in ((md, clef.TrebleClef()), (me, clef.BassClef())):
         parte.insert(0, cl)
-        parte.insert(0, meter.TimeSignature("4/4"))
+        parte.insert(0, meter.TimeSignature(f"{metrica.TEMPOS}/4"))
         for o, k_ in mudancas:
             parte.insert(o, key.KeySignature(k_))
     md.insert(0, tempo.MetronomeMark(number=round(bpm)))
@@ -829,7 +837,7 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
     sc.insert(0, layout.StaffGroup([md, me], symbol="brace", barTogether=True, name="Piano"))
     # as duas mãos até o mesmo compasso final: se a direita acaba antes, o último compasso
     # dela não existia (sem pausa) e as cifras desse trecho sumiam ou iam pra pauta de baixo
-    fim_compasso = 4.0 * np.ceil((fim - 1e-6) / 4)
+    fim_compasso = metrica.TEMPOS * np.ceil((fim - 1e-6) / metrica.TEMPOS)
     for p in (md, me):
         p.makeRests(refStreamOrTimeRange=(0.0, fim_compasso), fillGaps=True, inPlace=True)
     sc = sc.makeNotation()
@@ -853,7 +861,7 @@ def montar_partitura(md_ev, me_ev, cifras, bpm: float, titulo: str, subtitulo: s
         for p_ in list(cs.pitches) + [cs.root(), cs.bass()]:
             if p_ is not None and p_.accidental is not None and p_.accidental.name == "natural":
                 p_.accidental = None
-    return sc, ", ".join(f"compasso {int(o // 4) + 1}: {k_:+d}" for o, k_ in mudancas)
+    return sc, ", ".join(f"compasso {int(o // metrica.TEMPOS) + 1}: {k_:+d}" for o, k_ in mudancas)
 
 
 def _partir_pausa(compasso, off: float):
@@ -1540,7 +1548,10 @@ def main():
     reuso = carregar_transcricao(base, audio) if getattr(args, "reusar_cache", False) else None
     if reuso and reuso.get("leve") and not getattr(args, "leve", False):
         reuso = None   # cache do modo leve não tem melodia nem letra: o completo gera do zero
+    metrica.definir(4)   # 3/4 só quando o madmom do modo leve detecta (o resto do pipeline é 4/4)
     if reuso:
+        if reuso.get("leve") and reuso.get("batidas") == "madmom":
+            metrica.definir(reuso.get("compasso", 4))
         # só a escrita da partitura: melodia, acordes, batidas e letra do cache (sem Demucs/Whisper)
         bt, fase = np.array(reuso["bt"]), int(reuso["fase"])
         bpm = 60.0 / periodo_das_batidas(bt)   # cache antigo guardava o andamento preso aos quadros do detector
@@ -1576,8 +1587,8 @@ def main():
         madmom = None if getattr(args, "batidas_librosa", False) else batidas_madmom(audio, len(mix) / sr)
         if madmom:
             bt, bpm, fase_m, por_compasso = madmom
-            if por_compasso != 4:
-                print(f"[batidas] AVISO: compasso de {por_compasso} tempos detectado; a partitura ainda sai em 4/4")
+            if metrica.definir(por_compasso) == 3:
+                print("[batidas] compasso de 3 tempos: a partitura sai em 3/4")
         else:
             bt, bpm = batidas(mix, sr, mix)
         from amtapc import midi_amtapc   # o arranjo sai de qualquer jeito: o grave dele dá o tempo 1
@@ -1602,7 +1613,7 @@ def main():
             audio=str(audio), audio_tamanho=audio.stat().st_size, audio_mtime_ns=audio.stat().st_mtime_ns,
             bt=bt.tolist(), fase=fase, bpm=float(bpm), notas=[], diagnostico={}, acordes=acs, palavras=[],
             idioma=args.idioma, leve=True, batidas="madmom" if madmom else "librosa", fonte_acordes=args.acordes,
-            compasso=int(madmom[3]) if madmom else 4), ensure_ascii=False, default=lambda v: v.item()), encoding="utf-8")
+            compasso=metrica.TEMPOS), ensure_ascii=False, default=lambda v: v.item()), encoding="utf-8")
     else:
         if karaoke:  # voz já separada pelo karaokê; Demucs só no acompanhamento (baixo/bateria/resto)
             stems = separar(karaoke["acompanhamento"], AQUI / "trabalho", args.separador)
@@ -1857,7 +1868,7 @@ def gerar_nivel(nivel, args, audio, base, titulo, notas, acs, palavras, grade, b
             print(f"[melodia] {versao}: {no_topo} notas do acompanhamento acima da melodia tiradas")
         if teor_acomp and versao == "Acordes":
             from introducao import DINAMICA
-            inicio_mus = 4.0 * np.floor(min(e[0] for e in md_ev) / 4)
+            inicio_mus = metrica.TEMPOS * np.floor(min(e[0] for e in md_ev) / metrica.TEMPOS)
             # a dinâmica da música passa a ser a do teor (no lugar do mf da introdução)
             marcas = [m_ for m_ in marcas if not (m_[1] == "dinamica" and abs(m_[0] - inicio_mus) < 1e-6)]
             marcas += [(inicio_mus, "dinamica", DINAMICA[teor_acomp])]
@@ -1919,7 +1930,7 @@ def gerar_nivel_leve(nivel, args, audio, base, titulo, acs, grade, bpm):
             print(f"[tonalidade] AMT-APC: {len(reg_tom)} notas fora do tom corrigidas")
         if not getattr(args, "sem_repeticoes", False):   # trecho que repete escrito igual (repeticoes.py)
             from repeticoes import padronizar
-            md, me, reg_rep = padronizar(md, me, audio, grade.bt, bpm=bpm)
+            md, me, reg_rep = padronizar(md, me, audio, grade.bt, bpm=bpm, compasso=float(metrica.TEMPOS))
             print(f"[repeticoes] distâncias {reg_rep['lags_compasso'][:6]} compassos; "
                   f"{reg_rep['grupos']} grupos, {reg_rep['compassos']} compassos com o mesmo padrão")
         _BASE_LEVE.clear()
@@ -1932,7 +1943,7 @@ def gerar_nivel_leve(nivel, args, audio, base, titulo, acs, grade, bpm):
         anterior = (r, t) if r is not None else None
     marcas = []
     if base_nivel != nivel:
-        md, me, marcas = (facil_de_medio(md, me, acs, TIPOS) if nivel == "facil"
+        md, me, marcas = (facil_de_medio(md, me, acs, TIPOS, compasso=float(metrica.TEMPOS)) if nivel == "facil"
                           else dificil_de_medio(md, me, acs, TIPOS, bpm))
     cifras = cifras_do_nivel(cifras, nivel)
     if getattr(args, "dinamica", False) and (md or me):   # p/mp/mf/f pela intensidade da gravação
@@ -1941,10 +1952,11 @@ def gerar_nivel_leve(nivel, args, audio, base, titulo, acs, grade, bpm):
             dyn = [tuple(x) for x in json.loads(arq.read_text(encoding="utf-8"))]
         else:
             from dinamica import marcas_de_dinamica
-            dyn = marcas_de_dinamica(audio, grade.bt, grade.idx, inicio=min(e[0] for e in md + me))
+            dyn = marcas_de_dinamica(audio, grade.bt, grade.idx, compasso=metrica.TEMPOS,
+                                         inicio=min(e[0] for e in md + me))
             arq.write_text(json.dumps(dyn), encoding="utf-8")
         marcas = list(marcas) + dyn
-        print(f"[dinamica] {' '.join(f'c{int(o // 4) + 1}:{v}' for o, _, v in dyn)}")
+        print(f"[dinamica] {' '.join(f'c{int(o // metrica.TEMPOS) + 1}:{v}' for o, _, v in dyn)}")
     if not getattr(args, "sem_ajuste", False):   # tocabilidade por regra (tocavel.py)
         from tocavel import ajustar
         md, me, reg_toc = ajustar(md, me, nivel, bpm)

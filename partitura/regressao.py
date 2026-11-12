@@ -16,6 +16,7 @@ Por partitura (MusicXML em <música>/editaveis/<Versão> - <Nível>.musicxml):
 """
 from __future__ import annotations
 
+import metrica
 import argparse
 import json
 import re
@@ -61,12 +62,12 @@ def leitura(xml: Path) -> dict:
                 acidentes=len(re.findall(r"<accidental", texto)))
 
 
-def repetidos(md, me) -> int:
+def repetidos(md, me, compasso=4) -> int:
     c = {}
     for mao, ev in (("d", md), ("e", me)):
         for o, d, ps in ev:
-            k = int(o // 4)
-            c.setdefault(k, []).append((mao, round(o - 4 * k, 3), round(d, 3), tuple(ps)))
+            k = int(o // compasso)
+            c.setdefault(k, []).append((mao, round(o - compasso * k, 3), round(d, 3), tuple(ps)))
     vistos, n = set(), 0
     for k in sorted(c):
         t = tuple(sorted(c[k]))
@@ -115,7 +116,7 @@ def medir_partitura(xml: Path, nivel: str) -> dict:
     r = dict(leitura(xml), dificeis=t["dificeis"],
              mudancas_por_min=round(t["direita"]["mudancas_por_min"] + t["esquerda"]["mudancas_por_min"], 1),
              sincopes=t["direita"]["sincopes"] + t["esquerda"]["sincopes"],
-             compassos_repetidos=repetidos(md, me), dedos_sobrepostos=dedos_sobrepostos(xml),
+             compassos_repetidos=repetidos(md, me, metrica.do_musicxml(xml.read_text(encoding="utf-8"))), dedos_sobrepostos=dedos_sobrepostos(xml),
              notas_por_s_direita=round(sum(len(ps) for _, _, ps in md) / (fim * 60 / bpm), 2))
     return r
 

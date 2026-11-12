@@ -12,6 +12,8 @@ Eventos no formato do gerar.py: (offset_em_tempos, duração, [midis], *resto) �
 """
 from __future__ import annotations
 
+import metrica
+
 
 EPS = 1e-6
 
@@ -86,7 +88,7 @@ def _juntar_iguais(me):
     for ev in sorted(me, key=lambda e: e[0]):
         ant = saida[-1] if saida else None
         if (ant and len(ev[2]) == 1 and ant[2] == list(ev[2]) and abs(ant[0] + ant[1] - ev[0]) < EPS
-                and (ev[0] % 4) > EPS):          # não atravessa a barra: o arpejo recomeça no compasso
+                and (ev[0] % metrica.TEMPOS) > EPS):          # não atravessa a barra: o arpejo recomeça no compasso
             saida[-1] = (ant[0], ant[1] + ev[1], ant[2])
         else:
             saida.append((ev[0], ev[1], list(ev[2])))

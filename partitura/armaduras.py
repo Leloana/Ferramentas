@@ -12,6 +12,7 @@ Sem LLM: só contagem de notas fora da escala e regras de leitura.
 """
 from __future__ import annotations
 
+import metrica
 import numpy as np
 
 BLOCO = 16          # tempos (4 compassos 4/4)
@@ -89,7 +90,7 @@ def armaduras_por_trecho(eventos_off, fim: float, frases=(), bloco: int = BLOCO,
 
     def frase_perto(b):
         x = b * bloco
-        perto = [f for f in frases if abs(f - x) <= JANELA_FRASE]
+        perto = [f for f in frases if abs(f - x) <= JANELA_FRASE * metrica.TEMPOS / 4]
         return min(perto, key=lambda f: abs(f - x)) if perto else None
 
     def custo_troca(b):
@@ -132,6 +133,6 @@ def armaduras_por_trecho(eventos_off, fim: float, frases=(), bloco: int = BLOCO,
         off = 0.0 if s == 0 else float(s * bloco)
         f = frase_perto(s) if s else None
         if f is not None:
-            off = float(np.floor(f / 4) * 4)  # armadura no começo do compasso da frase
+            off = float(np.floor(f / metrica.TEMPOS) * metrica.TEMPOS)  # armadura no começo do compasso da frase
         mudancas.append((off, int(k) - 6))
     return mudancas

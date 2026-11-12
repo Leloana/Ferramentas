@@ -29,6 +29,7 @@ Som (indicado):
 """
 from __future__ import annotations
 
+import metrica
 import json
 import math
 import re
@@ -362,7 +363,7 @@ def medir_xml(xml: Path, nivel: str, pasta: Path) -> dict:
     bt, idx = np.array(sinc["bt"]), np.array(sinc["idx"])
     tr = json.loads((pasta / "cache" / "transcricao.json").read_text(encoding="utf-8"))
     r.update(som(md, me, tr["acordes"], desloc, gerar.TIPOS))
-    r.update(fidelidade(md, me, pasta, desloc, bt, idx, pedais(texto)))
+    r.update(fidelidade(md, me, pasta, desloc, bt, idx, pedais(texto, metrica.do_musicxml(texto))))
     r["bpm"] = round(bpm, 1)
     r["duracao_s"] = round(max([o + d for o, d, _ in md + me] or [0]) * 60 / bpm, 1)
     return r

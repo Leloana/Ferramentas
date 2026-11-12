@@ -17,7 +17,8 @@ from pathlib import Path
 import gerar
 from metricas import notas_do_xml
 
-PADRAO = {"Facil": "Acordes", "Medio": "HibridoAMT", "Dificil": "HibridoAMT"}
+# AMT-APC nos três níveis: é a base do site e da biblioteca desde 2026-11-11 (--versoes troca)
+PADRAO = {"Facil": "AMT-APC", "Medio": "AMT-APC", "Dificil": "AMT-APC"}
 
 
 def _bpm(xml: Path) -> float:

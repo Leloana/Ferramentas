@@ -22,7 +22,8 @@ frentes) → `METRICAS_VALIDACAO.md` (como medir) → `HISTORICO.md` (crônica d
   rapidfuzz metaphone fugashi unidic-lite pykakasi fastapi uvicorn pillow; `tinysoundfont`
   com `--no-deps` (a dependência pyaudio não compila) + soundfont
   `/snap/vlc/*/usr/share/sounds/sf2/TimGM6mb.sf2` pras páginas de comparação.
-- Suíte: `python -m unittest test_*` (161 testes em 2026-11-11, todos OK no Linux).
+- Suíte: `python -m unittest test_*` (181 testes em 2026-11-12, todos OK no Linux).
+- O AMT-APC no venv também pede `tqdm` (está no `modelos/amt-apc/requirements.txt`).
 - madmom no venv (GitHub, ver requirements.txt) pras batidas do modo leve.
 - AMT-APC instalado aqui também (`modelos/amt-apc`, torch CPU no venv): o modo leve roda no
   Linux (~8 min por música do zero neste notebook, ~30 s do cache). Áudio de teste:
@@ -100,6 +101,16 @@ mãos, introdução, final, cromáticas do fácil, sincronia).
 
 ## 4. Pendências (prioridade)
 
+### Feito em 2026-11-12 (Linux, HISTORICO §44)
+
+- **3/4 de verdade** no modo leve (`metrica.py`): o compasso de 3 tempos do madmom sai em 3/4. 4/4 idêntico
+  ao de antes nas 5 músicas de teste. Na Windows, depois do madmom instalado e da biblioteca regenerada sem
+  cache, Piano Man deve sair em 3/4: conferir a partitura. 6/8 segue sem escrita própria.
+- **AMT-APC carregado no site** (`amtapc.py --servico`, sobe com o `run.py`): falta medir o ganho na Windows
+  (esperado ~8 s por música). `PARTITURA_SEM_SERVICO=1` desliga.
+- `comparacao_cega`/`comparacao_completa` com AMT-APC nos três níveis por padrão.
+- Os itens 1 a 4 abaixo continuam: dependem da Windows ou de decisão do usuário.
+
 ### Retomar daqui (2026-11-12) — pendências pra amanhã
 
 **Estado:** tudo commitado e enviado (último: `25f3be4`); suíte 173 OK. O app **não está rodando**
@@ -136,8 +147,7 @@ http://192.168.15.6:8030 (o venv usa o Python 3.12 da Store, já liberado no fir
   média dos intervalos (`gerar.periodo_das_batidas`). Biblioteca (29 músicas) regenerada com isso.
 - Velocidade medida: geração limpa no site ~37 s pra 4 min (AMT-APC 9 s carregando o modelo a cada
   música, prévias 6 s, PDFs 3,5 s). Ideia não feita: manter o AMT-APC carregado no servidor (~−8 s).
-- Pendências antigas que seguem abertas: 3/4 e 6/8 de verdade (compasso 4 no código todo), letra no
-  fluxo padrão, `comparacao_completa.py` ainda tem Acordes/HibridoAMT como versões padrão.
+- Pendências antigas que seguem abertas: 6/8 (3/4 feito em 2026-11-12), letra no fluxo padrão.
 
 ### Retomar daqui (2026-11-11, noite, Windows — teste em massa, HISTORICO §43)
 
@@ -202,7 +212,7 @@ lista o que piorou. Depois de uma melhoria aceita, `--salvar` a nova referência
 ### Próximos (pesquisa 2026-11-11, HISTORICO §41)
 
 1. ~~Batidas e tempo 1 pelo madmom~~ feito (§42; Fuyu era grade com batidas a mais, não 2/4).
-   Falta: 3/4 e 6/8 de verdade (hoje só avisa; `compasso=4` está no código todo) e fase por trecho
+   3/4 feito (2026-11-12, `metrica.py`). Falta: 6/8 e fase por trecho
    (Shibata et al. 2021) se aparecer música com troca de métrica.
 2. Grafia ps13 (`partitura.musicanalysis.estimate_spelling`), armadura e raiz do acorde de desempate.
 3. Seções por spectral clustering (McFee e Ellis 2014) → ritornelo e casa 1/2.
@@ -328,3 +338,4 @@ e `--acompanhamento` continuam na linha de comando, fora do site.
 | `lote.py` | teste em massa do modo leve: baixar, AMT-APC em lote na GPU, gerar em paralelo, medir, comparar, `--ajustes` |
 | `qualidade.py` | métricas de leitura, tocabilidade e som (croma × gravação com pedal, choques, acidentes evitáveis) |
 | `dinamica.py` | p/mp/mf/f pela intensidade da gravação (`--dinamica`, opcional) |
+| `metrica.py` | tempos por compasso da música (3/4 ou 4/4, do madmom) lidos pelos passos do modo leve (2026-11-12) |

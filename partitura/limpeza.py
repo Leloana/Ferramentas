@@ -11,6 +11,8 @@ Notas da melodia em quantizar_melodia: (ini_t, fim_t, midi, ini_s, fim_s).
 """
 from __future__ import annotations
 
+import metrica
+
 EPS = 1e-6
 
 
@@ -29,7 +31,9 @@ def tirar_bordaduras(notas_q, letras, max_tempos=0.5, max_salto=2):
     return saida, feitas
 
 
-def juntar_repetidas_esquerda(me, janela=2.0):
+def juntar_repetidas_esquerda(me, janela=None):
+    # meio compasso no 4/4; no 3/4 o compasso inteiro (mínima pontuada), senão a nota junta atravessa a barra
+    janela = janela or (2.0 if metrica.TEMPOS == 4 else float(metrica.TEMPOS))
     saida = []
     for ev in sorted(me, key=lambda e: e[0]):
         off, dur, ps = ev[0], ev[1], sorted(ev[2])

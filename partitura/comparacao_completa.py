@@ -1,7 +1,7 @@
 """Página às cegas com a MÚSICA INTEIRA: prévia completa + partitura completa (PDF) de cada lado.
 
     python comparacao_completa.py <saida> rotulo1=biblioteca1 rotulo2=biblioteca2 [...] [--niveis Facil,Medio]
-                                  [--versoes Facil=Acordes,Medio=HibridoAMT] [--musicas "A,B"]
+                                  [--versoes Facil=Acordes,Medio=HibridoAMT]  (padrão: AMT-APC) [--musicas "A,B"]
 
 Mesma página da comparacao_cega.py (notas 1-5, "melhor", revelar, copiar resultado), mas cada
 opção é a prévia inteira e o PDF inteiro, com nomes neutros (A.mp3/A.pdf) pra não denunciar o

@@ -66,6 +66,7 @@ AMT-APC) + regras musicais. Opções principais:
 | `--tom-ia-cru` | não corrige nota fora do tom no arranjo da IA (`tonalidade.py`) |
 | `--cifras` | desenha o nome dos acordes em cima da pauta (padrão desde 2026-11-11: sem cifra) |
 | `--batidas-librosa` | modo leve com a grade antiga (librosa + tempo 1 pela heurística) em vez do madmom |
+| (automático) | modo leve: compasso de 3 tempos detectado pelo madmom sai em 3/4 (6/8 sai em 3/4 ou 4/4) |
 | `--sem-repeticoes` | modo leve sem escrever igual os trechos que se repetem (`repeticoes.py`) |
 | `--sem-ajuste` | modo leve sem a tocabilidade por regra (`tocavel.py`: síncopes no tempo, oitava da esquerda) |
 | `--acordes mistura\|ia\|ambos` | modo leve: acordes pelo croma da gravação, pelas notas do AMT-APC ou pelos dois (padrão `ambos`) |
@@ -336,7 +337,9 @@ O que **não** vem pelo git e precisa ser instalado à parte:
    Sem eles, a prévia cai num sintetizador simples.
 4. `ffmpeg` no PATH (MP3 das prévias) e Chrome/Chromium (PDF das partituras).
 5. `yt-dlp` vem pelo pip (busca e download do YouTube). madmom (batidas e tempo 1): `pip install cython && pip install --no-build-isolation git+https://github.com/CPJKU/madmom.git`; sem ele, o leve usa a grade antiga do librosa.
-6. Subir: `python run.py --lan` (porta 8030). Atrás de um proxy/túnel (Cloudflare), apontar o hostname para
+6. Subir: `python run.py --lan` (porta 8030). O site sobe junto um serviço com o AMT-APC já carregado
+   (`amtapc.py --servico`, porta livre em 127.0.0.1): cada geração economiza a carga do modelo (~8 s).
+   `PARTITURA_SEM_SERVICO=1` desliga; sem o serviço, o `gerar.py` carrega o modelo a cada música. Atrás de um proxy/túnel (Cloudflare), apontar o hostname para
    `http://127.0.0.1:8030` e criar uma Cache Rule respeitando o cache da origem (o site manda `no-cache` na página).
    Não há autenticação: qualquer um com o link pode gerar.
 

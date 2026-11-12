@@ -18,6 +18,7 @@ Eventos do gerar.py: (offset_em_tempos, duração, [midis], *resto).
 """
 from __future__ import annotations
 
+import metrica
 import numpy as np
 
 EPS = 1e-6
@@ -91,7 +92,7 @@ def vocabulario(eventos, tons, janela, minimo=.04, compassos_min=4):
             total += d
             if p % 12 not in e:
                 peso[p % 12] += d
-                onde[p % 12].add(int(o // 4))
+                onde[p % 12].add(int(o // metrica.TEMPOS))
     return {pc for pc in range(12) if total and peso[pc] / total >= minimo and len(onde[pc]) >= compassos_min}
 
 

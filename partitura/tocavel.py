@@ -9,6 +9,7 @@ posição da mão por minuto e trechos que a mão não alcança (modelo do `maos
 """
 from __future__ import annotations
 
+import metrica
 import math
 
 EPS = 1e-6
@@ -45,8 +46,9 @@ def saltos(ev, max_tempos=1.0, limite=12):
     return n
 
 
-def densidade(ev, compasso=4.0):
+def densidade(ev, compasso=None):
     """(ataques por tempo na média, no compasso mais cheio)."""
+    compasso = compasso or metrica.TEMPOS
     a = _ataques(ev)
     if not a:
         return 0.0, 0.0
@@ -198,7 +200,7 @@ def oitava_por_frase(md, me, opcoes=(0, -12, 12), pausa=1.0, mudar=3.0, salto=12
         return md, 0
     frases, atual, fim = [], [], None
     for e in ev:
-        longa = atual and e[0] - atual[0][0] >= max_tempos - EPS and abs(e[0] / 4 - round(e[0] / 4)) < EPS
+        longa = atual and e[0] - atual[0][0] >= max_tempos - EPS and abs(e[0] / metrica.TEMPOS - round(e[0] / metrica.TEMPOS)) < EPS
         if atual and (e[0] - fim >= pausa - EPS or longa):
             frases.append(atual)
             atual = []

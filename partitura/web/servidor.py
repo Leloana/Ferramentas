@@ -41,6 +41,33 @@ ID_RE = re.compile(r"^[\w-]{11}$")
 
 app = FastAPI(title="Partitura")
 
+# AMT-APC carregado uma vez (amtapc.servir): cada geração economiza a carga do modelo (~8 s, 2026-11-11).
+# O gerar.py herda PARTITURA_AMTAPC e cai pro jeito antigo se o serviço não responder.
+_SERVICO_AMTAPC: dict = {}
+
+
+@app.on_event("startup")
+def _subir_amtapc():
+    import os
+    import socket
+    sys.path.insert(0, str(RAIZ))
+    import amtapc
+    if os.environ.get("PARTITURA_SEM_SERVICO") or not amtapc.disponivel():
+        return
+    with socket.socket() as s:
+        s.bind(("127.0.0.1", 0))
+        porta = s.getsockname()[1]
+    _SERVICO_AMTAPC["proc"] = subprocess.Popen([PYTHON, "-X", "utf8", str(RAIZ / "amtapc.py"), "--servico", str(porta)],
+                                               cwd=RAIZ)
+    os.environ[amtapc.VARIAVEL] = f"127.0.0.1:{porta}"
+
+
+@app.on_event("shutdown")
+def _descer_amtapc():
+    proc = _SERVICO_AMTAPC.pop("proc", None)
+    if proc and proc.poll() is None:
+        proc.terminate()
+
 
 @app.middleware("http")
 async def sem_cache_na_pagina(request, call_next):

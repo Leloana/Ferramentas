@@ -910,5 +910,29 @@ somados), como no uso real.
   suplementares na clave de fá −32%/−29%, nada piora, mas muda o peso do baixo (pede escuta);
   `--dinamica` (`dinamica.py`): p/mp/mf/f pela intensidade da gravação por DP com trecho mínimo de 4
   compassos; calibrado: ~5 marcas por música, p 9% · mp 9% · mf 56% · f 26%, correlação 0,66.
-- Página às cegas (antes × depois, música inteira, 3 níveis): `trabalho/escuta_20261111/escuta/` (comparacao_completa.py com `--versoes Facil=AMT-APC,Medio=AMT-APC,Dificil=AMT-APC`: o padrão do gerador ainda é Acordes/HibridoAMT)
+- Página às cegas (antes × depois, música inteira, 3 níveis): `trabalho/escuta_20261111/escuta/` (comparacao_completa.py com `--versoes Facil=AMT-APC,Medio=AMT-APC,Dificil=AMT-APC`; desde §44 o padrão já é AMT-APC)
   (Azul da Cor do Mar, Riptide, Experience). Suíte 171 OK.
+
+## 44. 3/4 de verdade e AMT-APC carregado no site — 2026-11-12 (Linux)
+
+- **3/4**: o madmom (`beats_per_bar=[3, 4]`) já detectava; a partitura saía em 4/4 com aviso. Agora
+  `metrica.py` guarda os tempos por compasso da música (módulo à parte: o `gerar.py` roda como
+  `__main__`) e o modo leve escreve 3/4: fórmula de compasso, barra final, deslocamento da anacruse,
+  janela dos acordes (um compasso), repetições, fácil derivado (uma nota grave por compasso), nota
+  repetida da esquerda juntada até o compasso inteiro, frase do `tocavel`, armadura (blocos de 4
+  compassos), dinâmica e as métricas da `regressao.py`/`qualidade.py` (lidas do `<time>` do MusicXML).
+  O `transcricao.json` guarda `compasso` e o `--reusar-cache` usa. O pipeline completo segue 4/4.
+- 6/8 não é escrito: o DBN do madmom só tem 3 ou 4 tempos; uma música em 6/8 sai em 3/4 (colcheia
+  pontuada como tempo) ou 4/4.
+- Conferido: as 5 músicas de teste (4/4) regeneradas do cache saem com o MusicXML idêntico ao de antes
+  (só o id aleatório da parte muda). Valsa sintética de 64 compassos a 156 bpm (TimGM6mb, oom-pa-pa +
+  melodia): madmom 3 tempos, 64 compassos de 3/4 nos três níveis, baixo no tempo 1 em 63/64,
+  repetição achada a cada 8 compassos (a frase tem 8).
+- **AMT-APC carregado**: `amtapc.servir` (subido pelo `web/servidor.py` no início) carrega o modelo uma
+  vez e atende um pedido por vez por socket local; o `gerar.py` acha pela variável `PARTITURA_AMTAPC` e
+  cai pro lançador antigo se não houver serviço. As linhas do tqdm voltam pelo socket (a barra do site
+  segue pelos segmentos). Mesmas notas que o lançador (1242/1242 na valsa). Ganho esperado ~8 s por
+  música (medido na Windows em 2026-11-11: carga do modelo 9 s); falta medir lá.
+- `comparacao_cega.PADRAO` (e a `comparacao_completa.py`) passam a AMT-APC nos três níveis.
+- Suíte 181 OK (`test_metrica.py`).
+
