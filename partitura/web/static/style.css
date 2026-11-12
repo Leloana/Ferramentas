@@ -201,3 +201,12 @@ a.card:hover { border-color: var(--ouro); transform: translateY(-2px); }
 }
 .caixa-renomear input:focus { border-color: var(--ouro); }
 .rn-acoes { display: flex; justify-content: flex-end; gap: 10px; margin-top: 4px; }
+
+/* ------------------------------------------------------------ apagar */
+.btn.perigo { color: var(--vermelho); border-color: rgba(224, 122, 108, .45); background: transparent; }
+.btn.perigo:hover { background: rgba(224, 122, 108, .12); }
+.btn.perigo.cheio { background: var(--vermelho); border-color: var(--vermelho); color: #1b140c; }
+.btn.perigo.cheio:hover { background: #ea9184; }
+.rn-apagar { margin-right: auto; }
+.ap-texto { margin: 0; color: var(--suave); line-height: 1.5; }
+.m-menu .perigo { color: var(--vermelho); }

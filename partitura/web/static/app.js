@@ -427,6 +427,7 @@ $(".m-acoes").addEventListener("click", (e) => {
     const menu = $("#mMenu");
     if (!menu.hidden) { menu.hidden = true; return; }
     menu.innerHTML = `<button type="button" role="menuitem" data-renomear-atual>${icone("editar")}Renomear</button>` +
+      `<button type="button" role="menuitem" class="perigo" data-apagar-atual>${icone("lixo")}Apagar música</button>` +
       `<button type="button" role="menuitem" data-tela-cheia>${icone("foco")}Tela cheia</button>` +
       (atual?.downloads || []).map(([rel, ic, nome]) => `<a role="menuitem" href="${urlArq(rel, atual.m)}" download>${icone(ic)}${nome}</a>`).join("");
     menu.hidden = false;
@@ -434,6 +435,7 @@ $(".m-acoes").addEventListener("click", (e) => {
 });
 $("#mMenu").addEventListener("click", (e) => {
   if (e.target.closest("[data-renomear-atual]") && atual) abrirRenomear(atual.m);
+  if (e.target.closest("[data-apagar-atual]") && atual) abrirApagar(atual.m);
   if (e.target.closest("[data-tela-cheia]")) {
     document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.().catch(() => {});
   }
@@ -449,7 +451,7 @@ $("#mArea").addEventListener("click", (e) => {
 document.addEventListener("keydown", (e) => {
   if ($("#musica").hidden || e.target.closest("input, select, textarea")) return;
   if (e.code === "Space") { e.preventDefault(); tocarPausar(); }
-  if (e.code === "Escape" && $("#renomear").hidden) location.hash = "#/";
+  if (e.code === "Escape" && $("#renomear").hidden && $("#apagar").hidden) location.hash = "#/";
 });
 
 // ------------------------------------------------------------------ renomear (título e artista mostrados)
@@ -494,6 +496,41 @@ $("#formRenomear").addEventListener("submit", async (e) => {
     if (!$("#inicio").hidden) desenharInicio();
     aviso("Nome salvo.");
   } catch (err) { aviso("Não deu para renomear: " + err.message, true); }
+});
+
+// ------------------------------------------------------------------ apagar (vai pra lixeira, recuperável)
+let apagando = null;
+function abrirApagar(m) {
+  apagando = m;
+  $("#apTexto").textContent = `“${m.titulo}”${m.artista ? ` (${m.artista})` : ""} sai da biblioteca: partituras, prévias e áudio. ` +
+    "Fica guardada na lixeira do PC (partitura/trabalho/lixeira) se precisar recuperar.";
+  $("#apagar").hidden = false;
+  $("#apConfirmar").focus();
+}
+const fecharApagar = () => { $("#apagar").hidden = true; apagando = null; };
+$("#apagar").addEventListener("click", (e) => { if (e.target.id === "apagar" || e.target.closest("[data-fechar]")) fecharApagar(); });
+document.addEventListener("keydown", (e) => { if (e.code === "Escape" && !$("#apagar").hidden) fecharApagar(); });
+$("#renomear").addEventListener("click", (e) => {
+  if (!e.target.closest("[data-apagar-renomeando]") || !renomeando) return;
+  const m = renomeando;
+  fecharRenomear();
+  abrirApagar(m);
+});
+$("#apConfirmar").addEventListener("click", async () => {
+  if (!apagando) return;
+  const m = apagando;
+  $("#apConfirmar").disabled = true;
+  try {
+    const r = await fetch(`/api/musicas/${encodeURIComponent(m.pasta)}`, { method: "DELETE" });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.detail || r.status);
+    musicas = musicas.filter((x) => x !== m);
+    fecharApagar();
+    if (atual?.m === m) location.hash = "#/";
+    else if (!$("#inicio").hidden) desenharInicio();
+    aviso(`“${m.titulo}” apagada.`);
+  } catch (err) { aviso("Não deu para apagar: " + err.message, true); }
+  finally { $("#apConfirmar").disabled = false; }
 });
 
 // ------------------------------------------------------------------ começo

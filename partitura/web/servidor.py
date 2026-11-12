@@ -584,6 +584,23 @@ async def renomear(pasta: str, p: Renomear):
     return {"ok": True, "titulo": meta["titulo"], "artista": meta["artista"]}
 
 
+LIXEIRA = RAIZ / "trabalho" / "lixeira"   # música apagada no site vai pra cá (recuperável), não some
+
+
+@app.delete("/api/musicas/{pasta}")
+async def apagar_musica(pasta: str):
+    """Tira a música da biblioteca movendo a pasta pra trabalho/lixeira/<data>_<pasta>."""
+    alvo = (SAIDA / pasta).resolve()
+    if not alvo.is_relative_to(SAIDA) or alvo == SAIDA or not alvo.is_dir():
+        raise HTTPException(404, "Música não encontrada.")
+    if any(j["status"] in ("fila", "rodando") and j.get("pasta") == alvo.name for j in JOBS.values()):
+        raise HTTPException(409, "Esta música está sendo gerada agora.")
+    LIXEIRA.mkdir(parents=True, exist_ok=True)
+    destino = LIXEIRA / f"{time.strftime('%Y%m%d-%H%M%S')}_{alvo.name}"
+    shutil.move(str(alvo), str(destino))
+    return {"ok": True, "lixeira": str(destino.relative_to(RAIZ))}
+
+
 @app.delete("/api/jobs/{jid}")
 async def tirar_job(jid: str):
     """Cancela um pedido que ainda está na fila ou tira da lista um que já terminou."""

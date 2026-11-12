@@ -7,7 +7,7 @@
   <title>Partitura</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=23">
+  <link rel="stylesheet" href="style.css?v=24">
   <link rel="icon" type="image/svg+xml" href="icones/favicon.svg">
 </head>
 <body>
@@ -92,13 +92,24 @@
       <h2 id="rnCabeca">Renomear</h2>
       <label>Música<input id="rnTitulo" required maxlength="200" autocomplete="off"></label>
       <label>Artista<input id="rnArtista" maxlength="200" autocomplete="off"></label>
-      <div class="rn-acoes"><button type="button" class="btn" data-fechar>Cancelar</button><button type="submit" class="btn primario">Salvar</button></div>
+      <div class="rn-acoes"><button type="button" class="btn perigo rn-apagar" data-apagar-renomeando>Apagar</button>
+        <button type="button" class="btn" data-fechar>Cancelar</button><button type="submit" class="btn primario">Salvar</button></div>
     </form>
+  </div>
+
+  <!-- APAGAR: confirmação (a pasta vai pra trabalho/lixeira, recuperável) -->
+  <div id="apagar" class="sobreposto" hidden>
+    <div class="caixa-renomear" role="alertdialog" aria-labelledby="apCabeca" aria-describedby="apTexto">
+      <h2 id="apCabeca">Apagar música?</h2>
+      <p id="apTexto" class="ap-texto"></p>
+      <div class="rn-acoes"><button type="button" class="btn" data-fechar>Cancelar</button>
+        <button type="button" class="btn perigo cheio" id="apConfirmar">Apagar</button></div>
+    </div>
   </div>
   <div id="aviso" role="status" aria-live="polite"></div>
   <audio id="trecho" preload="none"></audio>
 
   <script src="partitura.js?v=21"></script>
-  <script src="app.js?v=24"></script>
+  <script src="app.js?v=25"></script>
 </body>
 </html>
