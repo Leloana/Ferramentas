@@ -561,6 +561,29 @@ async def jobs():
     return {"jobs": sorted(lista, key=lambda j: j["criado"], reverse=True)}
 
 
+class Renomear(BaseModel):
+    titulo: str = Field(min_length=1, max_length=200)
+    artista: str = Field(default="", max_length=200)
+
+
+@app.post("/api/musicas/{pasta}/renomear")
+async def renomear(pasta: str, p: Renomear):
+    """Troca o título e o artista mostrados (meta.json). A pasta e os arquivos ficam com o nome antigo."""
+    alvo = (SAIDA / pasta).resolve()
+    if not alvo.is_relative_to(SAIDA) or alvo == SAIDA or not alvo.is_dir():
+        raise HTTPException(404, "Música não encontrada.")
+    meta_p = alvo / "meta.json"
+    meta = {}
+    if meta_p.exists():
+        try:
+            meta = json.loads(meta_p.read_text(encoding="utf-8"))
+        except ValueError:
+            meta = {}
+    meta["titulo"], meta["artista"] = p.titulo.strip(), p.artista.strip()
+    meta_p.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+    return {"ok": True, "titulo": meta["titulo"], "artista": meta["artista"]}
+
+
 @app.delete("/api/jobs/{jid}")
 async def tirar_job(jid: str):
     """Cancela um pedido que ainda está na fila ou tira da lista um que já terminou."""

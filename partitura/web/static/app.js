@@ -98,7 +98,8 @@ function desenharInicio() {
   $("#secBiblioteca").hidden = f && !lib.length && !emCurso.length;
   $("#biblioteca").innerHTML = (emCurso.map(cardJob).join("") + lib.map((m) => `
     <a class="card" href="#/m/${encodeURIComponent(m.pasta)}">
-      <div class="capa">${m.capa ? `<img src="${capa(m.capa)}" alt="" loading="lazy">` : ""}</div>
+      <div class="capa">${m.capa ? `<img src="${capa(m.capa)}" alt="" loading="lazy">` : ""}
+        <button type="button" class="editar" data-renomear="${esc(m.pasta)}" aria-label="Renomear ${esc(m.titulo)}">${icone("editar")}</button></div>
       <div class="info"><b>${esc(m.titulo)}</b><small>${esc(m.artista)}</small></div>
     </a>`).join("")) || `<p class="vazio">Nenhuma partitura ainda. Busque uma música acima.</p>`;
   $("#secResultados").hidden = !resultados.length;
@@ -425,12 +426,14 @@ $(".m-acoes").addEventListener("click", (e) => {
   } else if (b.id === "mMais") {
     const menu = $("#mMenu");
     if (!menu.hidden) { menu.hidden = true; return; }
-    menu.innerHTML = `<button type="button" role="menuitem" data-tela-cheia>${icone("foco")}Tela cheia</button>` +
+    menu.innerHTML = `<button type="button" role="menuitem" data-renomear-atual>${icone("editar")}Renomear</button>` +
+      `<button type="button" role="menuitem" data-tela-cheia>${icone("foco")}Tela cheia</button>` +
       (atual?.downloads || []).map(([rel, ic, nome]) => `<a role="menuitem" href="${urlArq(rel, atual.m)}" download>${icone(ic)}${nome}</a>`).join("");
     menu.hidden = false;
   }
 });
 $("#mMenu").addEventListener("click", (e) => {
+  if (e.target.closest("[data-renomear-atual]") && atual) abrirRenomear(atual.m);
   if (e.target.closest("[data-tela-cheia]")) {
     document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.().catch(() => {});
   }
@@ -446,7 +449,51 @@ $("#mArea").addEventListener("click", (e) => {
 document.addEventListener("keydown", (e) => {
   if ($("#musica").hidden || e.target.closest("input, select, textarea")) return;
   if (e.code === "Space") { e.preventDefault(); tocarPausar(); }
-  if (e.code === "Escape") location.hash = "#/";
+  if (e.code === "Escape" && $("#renomear").hidden) location.hash = "#/";
+});
+
+// ------------------------------------------------------------------ renomear (título e artista mostrados)
+let renomeando = null;
+function abrirRenomear(m) {
+  renomeando = m;
+  $("#rnTitulo").value = m.titulo || "";
+  $("#rnArtista").value = m.artista || "";
+  $("#renomear").hidden = false;
+  $("#rnTitulo").focus();
+  $("#rnTitulo").select();
+}
+const fecharRenomear = () => { $("#renomear").hidden = true; renomeando = null; };
+$("#biblioteca").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-renomear]");
+  if (!b) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const m = musicas.find((x) => x.pasta === b.dataset.renomear);
+  if (m) abrirRenomear(m);
+});
+$("#renomear").addEventListener("click", (e) => { if (e.target.id === "renomear" || e.target.closest("[data-fechar]")) fecharRenomear(); });
+document.addEventListener("keydown", (e) => { if (e.code === "Escape" && !$("#renomear").hidden) fecharRenomear(); });
+$("#formRenomear").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (!renomeando) return;
+  const m = renomeando, titulo = $("#rnTitulo").value.trim(), artista = $("#rnArtista").value.trim();
+  if (!titulo) return $("#rnTitulo").focus();
+  try {
+    const r = await fetch(`/api/musicas/${encodeURIComponent(m.pasta)}/renomear`, {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ titulo, artista }) });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.detail || r.status);
+    m.titulo = d.titulo;
+    m.artista = d.artista;
+    if (atual?.m === m) {
+      $("#mTitulo").textContent = m.titulo;
+      $("#mArtista").textContent = m.artista;
+      document.title = `${m.titulo} · Partitura`;
+    }
+    fecharRenomear();
+    if (!$("#inicio").hidden) desenharInicio();
+    aviso("Nome salvo.");
+  } catch (err) { aviso("Não deu para renomear: " + err.message, true); }
 });
 
 // ------------------------------------------------------------------ começo

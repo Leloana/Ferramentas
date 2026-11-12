@@ -133,9 +133,13 @@ class LeitorPartitura {
       const pagina = el?.closest('.folha-partitura');
       if (!pagina || m.fim <= m.inicio) continue;
       const sistema = el.closest('.system') || el;
-      const p = pagina.getBoundingClientRect(), r = el.getBoundingClientRect(), s = sistema.getBoundingClientRect();
+      // Limites pela pauta e pela barra de compasso, não pela caixa do compasso inteiro: ligadura de nota
+      // longa, linha de 8va ou dedo ao lado esticam a caixa até o fim da linha, e o cursor corria até lá e
+      // voltava quando o compasso seguinte começava.
+      const pauta = el.querySelector(':scope > .staff') || el, barra = el.querySelector(':scope > .barLine');
+      const p = pagina.getBoundingClientRect(), r = pauta.getBoundingClientRect(), s = sistema.getBoundingClientRect();
       let esquerda = r.left - p.left + 8;
-      const direita = r.right - p.left - 4;
+      const direita = (barra ? barra.getBoundingClientRect().left : r.right) - p.left - 4;
       for (const cabecalho of el.querySelectorAll('.clef,.keySig,.meterSig'))
         esquerda = Math.max(esquerda, cabecalho.getBoundingClientRect().right - p.left + 10);
       const porTempo = new Map();
@@ -155,6 +159,13 @@ class LeitorPartitura {
       let xAnterior = esquerda;
       for (const ponto of pontos) ponto[1] = xAnterior = Math.max(xAnterior, Math.min(direita, ponto[1]));
       this.geometria.push({ ...m, pagina, sistema, pontos, y:s.top-p.top, altura:s.height });
+    }
+    // Trava: na mesma linha, o fim de um compasso nunca passa do começo do seguinte.
+    for (let i = 0; i + 1 < this.geometria.length; i++) {
+      const a = this.geometria[i], b = this.geometria[i + 1];
+      if (a.sistema !== b.sistema) continue;
+      const limite = b.pontos[0][1];
+      for (const ponto of a.pontos) ponto[1] = Math.min(ponto[1], limite);
     }
   }
 

@@ -179,3 +179,25 @@ a.card:hover { border-color: var(--ouro); transform: translateY(-2px); }
 .e-tempo { color: var(--suave); font-size: 13px; margin: 4px 0 0; }
 .e-acoes { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
 .espera.falhou .e-capa { filter: grayscale(.7); }
+
+/* ------------------------------------------------------------ renomear */
+.card .editar {
+  position: absolute; top: 8px; right: 8px; width: 34px; height: 34px; border-radius: 50%; border: 0; cursor: pointer;
+  background: rgba(20, 17, 15, .78); color: var(--texto); display: grid; place-items: center; opacity: 0; transition: opacity .15s;
+}
+.card:hover .editar, .card .editar:focus-visible { opacity: 1; }
+@media (pointer: coarse) { .card .editar { opacity: .9; } }
+.card .editar:hover { background: var(--ouro); color: #1b140c; }
+.sobreposto { position: fixed; inset: 0; z-index: 40; background: rgba(0, 0, 0, .6); display: grid; place-items: center; padding: 16px; }
+.caixa-renomear {
+  width: min(440px, 100%); background: var(--fundo2); border: 1px solid var(--borda); border-radius: var(--raio);
+  padding: 18px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 16px 40px rgba(0, 0, 0, .5); color: var(--texto);
+}
+.caixa-renomear h2 { margin: 0; font: 700 20px Fraunces, serif; }
+.caixa-renomear label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--suave); }
+.caixa-renomear input {
+  font: 16px Inter, sans-serif; color: var(--texto); background: var(--fundo); border: 1px solid var(--borda);
+  border-radius: 10px; padding: 10px 12px; outline: none;
+}
+.caixa-renomear input:focus { border-color: var(--ouro); }
+.rn-acoes { display: flex; justify-content: flex-end; gap: 10px; margin-top: 4px; }

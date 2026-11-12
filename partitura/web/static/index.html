@@ -7,7 +7,7 @@
   <title>Partitura</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=22">
+  <link rel="stylesheet" href="style.css?v=23">
   <link rel="icon" type="image/svg+xml" href="icones/favicon.svg">
 </head>
 <body>
@@ -86,10 +86,19 @@
   </section>
 
   <div id="progresso" class="progresso" hidden role="button" tabindex="0"><span id="progTexto"></span><div class="prog-barra"><i id="progBarra"></i></div></div>
+  <!-- RENOMEAR: título e artista mostrados (meta.json) -->
+  <div id="renomear" class="sobreposto" hidden>
+    <form id="formRenomear" class="caixa-renomear" aria-labelledby="rnCabeca">
+      <h2 id="rnCabeca">Renomear</h2>
+      <label>Música<input id="rnTitulo" required maxlength="200" autocomplete="off"></label>
+      <label>Artista<input id="rnArtista" maxlength="200" autocomplete="off"></label>
+      <div class="rn-acoes"><button type="button" class="btn" data-fechar>Cancelar</button><button type="submit" class="btn primario">Salvar</button></div>
+    </form>
+  </div>
   <div id="aviso" role="status" aria-live="polite"></div>
   <audio id="trecho" preload="none"></audio>
 
-  <script src="partitura.js?v=20"></script>
-  <script src="app.js?v=23"></script>
+  <script src="partitura.js?v=21"></script>
+  <script src="app.js?v=24"></script>
 </body>
 </html>
