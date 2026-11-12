@@ -55,6 +55,10 @@ Este repositório (`Ferramentas`) agrupa scripts, automações e ecossistemas in
 * **Stack:** PyTorch (CUDA), Demucs, torchcrepe, librosa, transformers (Pop2Piano), music21, Verovio, Chrome headless.
 * **Documentação:** [`partitura/README.md`](partitura/README.md).
 
+#### 11. 🧠 Modelos Locais (`/modelos_locais`)
+* **Descrição:** Catálogo do melhor modelo aberto por área (texto/código, imagem, vídeo, música, TTS, STT) para RTX 4070 12GB + 32GB RAM, escolhido por benchmark, com script de download e lançador do LLM (llama.cpp).
+* **Stack:** PowerShell, llama.cpp, ComfyUI, `hf` CLI.
+* **Documentação:** [`modelos_locais/README.md`](modelos_locais/README.md).
 ---
 
 ### 🔴 Projetos Descontinuados / Arquivados (Mantidos para Referência)
