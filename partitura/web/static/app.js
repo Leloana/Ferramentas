@@ -17,8 +17,8 @@ let resultados = [];
 let jobs = [];               // pedidos do servidor (de qualquer aparelho) + o que está sendo enviado daqui
 const ativo = (j) => j.status === "fila" || j.status === "rodando";
 // etapas da tela de espera: [nome, progresso em que começa] (o servidor marca o progresso, web/servidor._progresso)
-const PASSOS = [["Baixando a música", 3], ["Detectando o pulso", 20], ["Arranjo com IA", 25], ["Detectando os acordes", 35],
-  ["Partitura fácil", 45], ["Partitura média", 60], ["Partitura difícil", 75], ["Piano das prévias", 90]];
+const PASSOS = [["Baixando a música", 1], ["Preparando o áudio", 15], ["Detectando o pulso", 20], ["Arranjo com IA", 25],
+  ["Detectando os acordes", 55], ["Partitura fácil", 60], ["Partitura média", 69], ["Partitura difícil", 79], ["Piano das prévias", 88]];
 let nivel = "medio";
 try { nivel = localStorage.getItem("partitura.nivel") || "medio"; } catch {}
 
@@ -58,19 +58,38 @@ function mostrarInicio() {
 }
 
 // card de uma música sendo gerada: abre a tela de espera
+const textoJob = (j) => j.status === "erro" ? "Não deu certo · toque para ver" : j.status === "fila" ? "Na fila" : j.etapa || "Começando…";
 function cardJob(j) {
   const erro = j.status === "erro";
   return `
-    <a class="card job ${erro ? "falhou" : ""}" href="#/g/${encodeURIComponent(j.id)}" aria-label="Ver o andamento de ${esc(j.titulo)}">
+    <a class="card job ${erro ? "falhou" : ""}" data-job="${esc(j.id)}" href="#/g/${encodeURIComponent(j.id)}" aria-label="Ver o andamento de ${esc(j.titulo)}">
       <div class="capa">${j.video_id ? `<img src="${capa(j.video_id)}" alt="" loading="lazy">` : ""}
         <div class="veu">${erro ? icone("erro") : `<span class="girando"></span><span class="pct">${j.progresso || 0}%</span>`}</div></div>
       <div class="info"><b>${esc(j.titulo)}</b>
-        <small>${esc(erro ? "Não deu certo · toque para ver" : j.status === "fila" ? "Na fila" : j.etapa || "Começando…")}</small>
+        <small>${esc(textoJob(j))}</small>
         ${erro ? "" : `<div class="prog-barra"><i style="width:${j.progresso || 0}%"></i></div>`}</div>
     </a>`;
 }
 
+function chaveInicio() {
+  return JSON.stringify([$("#q").value, musicas.map((m) => m.pasta + m.mtime), resultados.map((v) => v.id),
+    jobs.filter((j) => ativo(j) || j.status === "erro").map((j) => j.id + j.status)]);
+}
+// a cada consulta dos pedidos: atualiza porcentagem, etapa e barra no lugar; redesenha só se a estrutura mudou
+function atualizarInicio() {
+  if (chaveInicio() !== desenharInicio.chave) return desenharInicio();
+  for (const j of jobs) {
+    const c = document.querySelector(`.card.job[data-job="${CSS.escape(j.id)}"]`);
+    if (!c) continue;
+    const pct = c.querySelector(".pct"), barra = c.querySelector(".prog-barra i"), txt = c.querySelector("small");
+    if (pct) pct.textContent = `${j.progresso || 0}%`;
+    if (barra) barra.style.width = `${j.progresso || 0}%`;
+    if (txt && txt.textContent !== textoJob(j)) txt.textContent = textoJob(j);
+  }
+}
+
 function desenharInicio() {
+  desenharInicio.chave = chaveInicio();
   const f = semAcento($("#q").value.trim());
   const casa = (t) => !f || semAcento(t).includes(f);
   const lib = musicas.filter((m) => casa(`${m.titulo} ${m.artista}`));
@@ -197,7 +216,7 @@ async function acompanhar() {
   jobs = [...jobs.filter((j) => j.local), ...lista.filter((j) => j.status !== "pronto")];
   if (recarregar) await carregarMusicas();
   pintarProgresso();
-  if (!$("#inicio").hidden) desenharInicio();
+  if (!$("#inicio").hidden) atualizarInicio();
   if (!$("#espera").hidden) desenharEspera();
   if (jobs.some(ativo)) timerJobs = setTimeout(acompanhar, 1200);
 }
@@ -230,6 +249,12 @@ function abrirEspera(id) {
   if (!jobs.length) acompanhar();
 }
 
+// troca o HTML só se mudou: reescrever a cada segundo recomeçava a animação de "carregando"
+function trocar(sel, html) {
+  const el = $(sel);
+  if (el.dataset.html !== html) { el.innerHTML = html; el.dataset.html = html; }
+}
+
 function desenharEspera() {
   const j = jobs.find((x) => x.id === esperaId);
   if (!j && !jobsCarregados) return;   // abriu direto na espera: espera a lista de pedidos chegar
@@ -255,14 +280,14 @@ function desenharEspera() {
   $("#eEtapa").textContent = erro ? "Não deu para gerar esta música."
     : j.status === "fila" ? (j.local ? "Enviando o pedido…" : frente ? `Na fila · ${frente} na frente` : "Na fila")
     : j.etapa || "Começando…";
-  $("#ePassos").innerHTML = erro ? `<li class="msg">${esc(j.etapa)}</li>` : PASSOS.map(([nome, ini], i) => {
+  trocar("#ePassos", erro ? `<li class="msg">${esc(j.etapa)}</li>` : PASSOS.map(([nome, ini], i) => {
     const fim = PASSOS[i + 1]?.[1] ?? 100;
     const estado = j.status !== "rodando" ? "" : p >= fim ? "feito" : p >= ini ? "agora" : "";
     return `<li class="${estado}"><span class="marca">${estado === "feito" ? "✓" : ""}</span>${nome}</li>`;
-  }).join("");
+  }).join(""));
   $("#eTempo").textContent = j.inicio && !erro ? `${fmt(Date.now() / 1000 - j.inicio)} · costuma levar menos de 1 minuto` : "";
-  $("#eAcoes").innerHTML = erro ? `<button type="button" class="btn primario" data-de-novo>Tentar de novo</button>
-    <button type="button" class="btn" data-remover>Remover</button>` : `<a class="btn" href="#/">Voltar pra biblioteca</a>`;
+  trocar("#eAcoes", erro ? `<button type="button" class="btn primario" data-de-novo>Tentar de novo</button>
+    <button type="button" class="btn" data-remover>Remover</button>` : `<a class="btn" href="#/">Voltar pra biblioteca</a>`);
 }
 const jobsProntos = new Map();   // id do pedido -> pasta (pra quem abre a espera depois de pronto)
 $("#eAcoes").addEventListener("click", async (e) => {

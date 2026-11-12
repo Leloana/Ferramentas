@@ -971,6 +971,7 @@ def renderizar_previas_pendentes(trabalhadores: int = 8):
     fila, PREVIAS_PENDENTES = PREVIAS_PENDENTES or [], None
     if not fila:
         return
+    print(f"[previas] gravando {len(fila)} prévias em áudio...", flush=True)   # o site marca a etapa por esta linha
     from concurrent.futures import ThreadPoolExecutor
     t0 = time.time()
     with ThreadPoolExecutor(max_workers=max(1, min(trabalhadores, os.cpu_count() or 4, len(fila)))) as ex:

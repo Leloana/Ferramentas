@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import math
 import shutil
 import queue
 import re
@@ -197,27 +198,86 @@ def _pasta_livre(titulo: str, artista: str, vid: str) -> str:
     return f"{nome} [{vid}]"
 
 
+# Progresso por etapas (modo leve): cada etapa tem uma faixa da barra e um tempo esperado, medido na
+# Windows (2026-11-11: 37 s pra uma música de 4 min, sem contar o download). Dentro da etapa a barra anda
+# pelo tempo (curva que se aproxima do fim sem chegar, ver `progresso_exibido`) ou pelo progresso real
+# quando existe: bytes do download (yt-dlp) e segmentos já processados pelo AMT-APC.
+SEG_RE = re.compile(r"Processing each segment:\s*\d+%\|[^|]*\|\s*(\d+)/(\d+)")
+NIVEL_RE = re.compile(r"=== nível (\w+)")
+
+
+def _marco(job: dict, ini: float, fim: float, esperado: float, etapa: str | None = None):
+    """Começa uma etapa: a barra vai de `ini` a `fim` em ~`esperado` s (× duração da música / 4 min)."""
+    job["progresso"] = max(job["progresso"], int(ini))
+    job["alvo"], job["marco_t"] = fim, time.time()
+    job["esperado"] = esperado * job.get("fator", 1.0)
+    if etapa:
+        job["etapa"] = etapa
+
+
+def progresso_exibido(job: dict) -> int:
+    """Progresso mostrado: o da etapa + o andar pelo tempo; nunca desce (a contagem real de segmentos
+    do AMT-APC pode chegar atrás do que o tempo já tinha andado)."""
+    p, alvo = job.get("progresso", 0), job.get("alvo")
+    if job.get("status") != "rodando":
+        return int(p)
+    valor = p
+    if alvo and alvo > p:
+        dt = time.time() - job.get("marco_t", time.time())
+        frac = 1 - math.exp(-1.6 * dt / max(job.get("esperado", 5), .5))   # ~80% no tempo esperado
+        valor = min(alvo - 1, p + (alvo - p) * min(frac, .97))
+    job["mostrado"] = max(job.get("mostrado", 0), int(valor))
+    return job["mostrado"]
+
+
 def _progresso(job: dict, linha: str):
+    m = SEG_RE.search(linha)
+    if m:   # AMT-APC: segmentos de áudio já processados (tqdm)
+        feito, total_seg = int(m.group(1)), max(1, int(m.group(2)))
+        job["progresso"] = max(job["progresso"], int(25 + 30 * feito / total_seg))
+        job["alvo"] = 25 + 30 * min(total_seg, feito + 1) / total_seg
+        job["marco_t"], job["esperado"] = time.time(), 10 * job.get("fator", 1.0) / total_seg
+        return
     total = max(1, len(job["niveis"]) * len(job["versoes"]))
-    marcos = [("[demucs]", 12, "Separando voz e instrumentos"), ("[batidas]", 20, "Detectando o pulso"),
-              ("[melodia] extraindo", 25, "Lendo a melodia cantada"), ("[acordes]", 35, "Detectando os acordes"),
-              ("[letra] transcrevendo", 40, "Ouvindo a letra (Whisper)"),
-              ("[letra] letra oficial:", 0, "Letra oficial encontrada (LRCLIB)"),
-              ("[pop2piano] carregando", 0, "Gerando arranjo com IA (Pop2Piano)"),
-              ("[amt-apc] gerando", 25, "Gerando arranjo com IA (AMT-APC)"),
-              ("[amt-apc] usando cache", 30, "Arranjo da IA pronto")]
-    for marca, pct, etapa in marcos:
+    marcos = [("[demucs]", 12, 20, 60, "Separando voz e instrumentos"),
+              ("[batidas] detectando", 20, 25, 2.5, "Detectando o pulso"),
+              ("[melodia] extraindo", 25, 30, 10, "Lendo a melodia cantada"),
+              ("[letra] transcrevendo", 40, 45, 20, "Ouvindo a letra (Whisper)"),
+              ("[pop2piano] carregando", 25, 55, 30, "Gerando arranjo com IA (Pop2Piano)"),
+              ("[amt-apc] gerando", 25, 55, 10, "Gerando arranjo com IA (AMT-APC)"),
+              ("[acordes]", 55, 60, 2.5, "Detectando os acordes"),
+              ("[previas]", 88, 99, 6, "Gravando o piano das prévias")]
+    for marca, ini, fim, esperado, etapa in marcos:
         if linha.startswith(marca):
-            if pct:
-                job["progresso"] = max(job["progresso"], pct)
-            job["etapa"] = etapa
-    if linha.startswith("=== nível"):
-        job["etapa"] = "Escrevendo partitura — " + linha.strip("= ").split("(")[0].replace("nível ", "nível ")
+            _marco(job, ini, fim, esperado, etapa)
+    m = NIVEL_RE.match(linha)
+    if m:   # cada nível escrito: uma fatia de 60 a 88
+        k = job.get("niveis_vistos", 0)
+        job["niveis_vistos"] = k + 1
+        nome = {"Facil": "fácil", "Medio": "média", "Dificil": "difícil"}.get(m.group(1), m.group(1).lower())
+        _marco(job, 60 + 28 * k / total, 60 + 28 * (k + 1) / total, 4, f"Escrevendo a partitura {nome}")
     if linha.startswith("[ok]"):
         job["feitos"] += 1
-        job["progresso"] = max(job["progresso"], 45 + int(45 * job["feitos"] / total))
-        if job["feitos"] >= total:   # depois da última partitura: as prévias em áudio (FluidSynth)
-            job["etapa"] = "Gravando o piano das prévias"
+        job["progresso"] = max(job["progresso"], int(60 + 28 * job["feitos"] / total))
+
+
+def _linhas(stream):
+    """Linhas da saída do processo assim que chegam, separando também no \r (barras do tqdm)."""
+    import codecs
+    import os
+    dec, buf = codecs.getincrementaldecoder("utf-8")(errors="replace"), ""
+    fd = stream.fileno()
+    while True:
+        bloco = os.read(fd, 4096)
+        if not bloco:
+            break
+        buf += dec.decode(bloco)
+        partes = re.split(r"[\r\n]", buf)
+        buf = partes.pop()
+        yield from partes
+    buf += dec.decode(b"", final=True)
+    if buf:
+        yield buf
 
 
 def _rodar(job: dict):
@@ -227,14 +287,31 @@ def _rodar(job: dict):
     ENTRADA.mkdir(exist_ok=True)
     wav = ENTRADA / f"{_slug(job['titulo'])}_{vid}.wav"
     if not wav.exists():
-        job["etapa"], job["progresso"] = "Baixando do YouTube", 3
+        job["etapa"], job["progresso"] = "Baixando do YouTube", 1
         import yt_dlp
+
+        def gancho(d):   # bytes baixados / total (ou estimado; sem nenhum, o tamanho típico de uma música)
+            if d.get("status") == "downloading":
+                total = d.get("total_bytes") or d.get("total_bytes_estimate") or 4_000_000
+                feito = d.get("downloaded_bytes") or 0
+                vel = d.get("speed")
+                job["progresso"] = max(job["progresso"], int(1 + 14 * min(1.0, feito / total)))
+                job["alvo"] = None
+                job["etapa"] = (f"Baixando do YouTube · {feito / 1e6:.1f} de {total / 1e6:.1f} MB"
+                                + (f" · {vel / 1e6:.1f} MB/s" if vel else ""))
+            elif d.get("status") == "finished":
+                _marco(job, 15, 17, 3, "Convertendo o áudio")
         opts = {"format": "bestaudio/best", "outtmpl": str(wav.with_suffix(".%(ext)s")), "quiet": True,
-                "no_warnings": True, "noplaylist": True,
+                "no_warnings": True, "noplaylist": True, "progress_hooks": [gancho],
                 "postprocessors": [{"key": "FFmpegExtractAudio", "preferredcodec": "wav"}]}
         with yt_dlp.YoutubeDL(opts) as ydl:
             ydl.download([f"https://www.youtube.com/watch?v={vid}"])
-    job["progresso"] = 8
+    try:   # etapas mais longas em música mais longa (tempos esperados medidos com 4 min)
+        import soundfile
+        job["fator"] = min(3.0, max(.5, soundfile.info(str(wav)).duration / 240))
+    except Exception:  # noqa: BLE001
+        job["fator"] = 1.0
+    _marco(job, 17, 20, 6, "Preparando")
     cmd = [PYTHON, str(RAIZ / "gerar.py"), str(wav), "--titulo", job["titulo"],
            "--subtitulo", job["artista"] or "Transcrição automática", "--pasta", job["pasta"],
            "--nivel", ",".join(job["niveis"]), "--idioma", job["idioma"],
@@ -264,19 +341,7 @@ def _rodar(job: dict):
     cmd += ["--versoes", ",".join(_saidas(job["versoes"]))]
     if set(job["versoes"]) == {"AMT-APC"}:   # só o arranjo: sem separar voz, sem melodia, sem letra (sem GPU)
         cmd.append("--leve")
-    proc = subprocess.Popen(cmd, cwd=RAIZ, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
-                            encoding="utf-8", errors="replace", env={**__import__("os").environ,
-                                                                     "PYTHONIOENCODING": "utf-8"})
-    for linha in proc.stdout:
-        linha = linha.rstrip()
-        if not linha or "Warning" in linha or "%|" in linha:
-            continue
-        job["log"].append(linha)
-        job["log"] = job["log"][-60:]
-        _progresso(job, linha)
-    proc.wait()
-    if proc.returncode != 0:
-        raise RuntimeError("a geração falhou: " + " | ".join(job["log"][-4:]))
+    _acompanhar(job, cmd)
     meta_p = SAIDA / job["pasta"] / "meta.json"
     meta = {}
     if meta_p.exists():
@@ -293,16 +358,21 @@ def _rodar(job: dict):
 
 
 def _acompanhar(job: dict, cmd: list):
-    proc = subprocess.Popen(cmd, cwd=RAIZ, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
-                            encoding="utf-8", errors="replace", env={**__import__("os").environ,
-                                                                     "PYTHONIOENCODING": "utf-8"})
-    for linha in proc.stdout:
+    """Roda o gerar.py sem buffer (-u: cada linha chega na hora; antes a saída vinha toda no fim e a
+    barra pulava de 8% pra 90%) e atualiza o progresso linha a linha."""
+    import os
+    cmd = [cmd[0], "-u", *cmd[1:]] if cmd and cmd[0] == PYTHON else cmd
+    proc = subprocess.Popen(cmd, cwd=RAIZ, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                            env={**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUNBUFFERED": "1"})
+    for linha in _linhas(proc.stdout):
         linha = linha.rstrip()
-        if not linha or "Warning" in linha or "%|" in linha:
+        if not linha or "Warning" in linha:
+            continue
+        _progresso(job, linha)
+        if "%|" in linha:   # barra do tqdm: progresso sim, log não
             continue
         job["log"].append(linha)
         job["log"] = job["log"][-60:]
-        _progresso(job, linha)
     proc.wait()
     if proc.returncode != 0:
         raise RuntimeError("a geração falhou: " + " | ".join(job["log"][-4:]))
@@ -487,7 +557,8 @@ async def variacao(p: PedidoVariacao):
 
 @app.get("/api/jobs")
 async def jobs():
-    return {"jobs": sorted(JOBS.values(), key=lambda j: j["criado"], reverse=True)}
+    lista = [{**j, "progresso": progresso_exibido(j)} for j in JOBS.values()]
+    return {"jobs": sorted(lista, key=lambda j: j["criado"], reverse=True)}
 
 
 @app.delete("/api/jobs/{jid}")
