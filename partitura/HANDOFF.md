@@ -100,6 +100,45 @@ mãos, introdução, final, cromáticas do fácil, sincronia).
 
 ## 4. Pendências (prioridade)
 
+### Retomar daqui (2026-11-12) — pendências pra amanhã
+
+**Estado:** tudo commitado e enviado (último: `25f3be4`); suíte 173 OK. O app **não está rodando**
+(caiu com o fim da sessão): `cd partitura; .\venv\Scripts\python.exe run.py --lan` → celular em
+http://192.168.15.6:8030 (o venv usa o Python 3.12 da Store, já liberado no firewall).
+
+**Decidir / fazer (usuário):**
+1. **Instalar o madmom** na Windows (a instalação do GitHub foi bloqueada pela permissão automática):
+   `.\venv\Scripts\python.exe -m pip install cython; .\venv\Scripts\python.exe -m pip install --no-build-isolation git+https://github.com/CPJKU/madmom.git`.
+   Sem ele: andamento às vezes dobrado (Someone Like You 136 em vez de 68) e valsa em 4/4 (Piano Man).
+   Depois de instalar, regenerar a biblioteca **sem** `--reusar-cache` (as batidas do cache são do librosa).
+2. **Página às cegas** (antes × depois do teste em massa, 3 músicas × 3 níveis):
+   `trabalho/escuta_20261111/escuta/index.html` (servir com `python -m http.server 8040` dentro de
+   `trabalho/escuta_20261111` pra ouvir no celular). O usuário ouviu e achou "bem mais harmônica a nova
+   partitura"; falta colar as notas. Se reprovar algo, voltam ao antigo: `gerar.GRAFIA_ESCALA`,
+   `--acordes mistura`, `derivados.DIFICIL["evitar_choque"]`, `derivados.FACIL_BAIXO = (36, 55)`.
+3. **Propostas fora do padrão:** `niveis.GRAVE_MINIMO = 36` (baixo do médio/difícil sem descer de Dó2:
+   −30% de linhas suplementares na clave de fá, muda o peso do baixo) e `--dinamica` no site (p/mp/mf/f
+   pela intensidade, calibrado: ~5 marcas por música).
+4. **Limpeza opcional:** `trabalho/escuta_20261111` (156 MB, depois de ouvir); as cópias antigas sem áudio
+   "Cálice" e "No Surprises" em `saida/` (as versões com áudio ficam); `trabalho/lixeira/` tem 2 músicas
+   apagadas pelo usuário no site (esvaziar só se ele pedir). `trabalho/lote/` (~12 GB) fica: dados de calibração.
+
+**Feito nesta sessão (2026-11-11, tarde/noite, Windows):**
+- Teste em massa de 537 músicas integrais e padrões novos do modo leve (HISTORICO §43, `trabalho/lote/LEIAME.md`).
+- Site: Gerar volta pra biblioteca com o card carregando; toque no card = tela de espera em tela cheia
+  (etapas, tempo, tentar de novo/remover); progresso real e suave (download em bytes pelo yt-dlp,
+  segmentos do AMT-APC, demais etapas pelo tempo esperado; nunca desce; antes pulava de 8% pra 90%
+  porque a saída do gerar.py chegava toda no fim); renomear (lápis no card e menu ⋯) e apagar (vai pra
+  `trabalho/lixeira`); bolinha da posição seguindo o áudio depois do 1º toque; cursor das notas não corre
+  mais até o fim da linha e volta na nota longa (limites pela barra de compasso); `PARTITURA_SAIDA` e
+  `run.py --porta=N` pra servir outra biblioteca.
+- Andamento: era preso a valores fixos (129, 123, 117...) pela mediana em quadros do detector; agora a
+  média dos intervalos (`gerar.periodo_das_batidas`). Biblioteca (29 músicas) regenerada com isso.
+- Velocidade medida: geração limpa no site ~37 s pra 4 min (AMT-APC 9 s carregando o modelo a cada
+  música, prévias 6 s, PDFs 3,5 s). Ideia não feita: manter o AMT-APC carregado no servidor (~−8 s).
+- Pendências antigas que seguem abertas: 3/4 e 6/8 de verdade (compasso 4 no código todo), letra no
+  fluxo padrão, `comparacao_completa.py` ainda tem Acordes/HibridoAMT como versões padrão.
+
 ### Retomar daqui (2026-11-11, noite, Windows — teste em massa, HISTORICO §43)
 
 - `lote.py` + `qualidade.py`: 537 músicas integrais em `trabalho/lote/` (mapa em `trabalho/lote/LEIAME.md`:
