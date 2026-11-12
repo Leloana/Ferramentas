@@ -121,3 +121,19 @@ class TestDificilSemChoque(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestAndamento(unittest.TestCase):
+    def test_periodo_entre_quadros(self):
+        """126 bpm com batidas presas a quadros de 23,2 ms: a mediana cai num valor fixo (123,05); a média acerta."""
+        import gerar
+        quadro = 512 / 22050
+        bt = np.round(np.arange(200) * (60 / 126) / quadro) * quadro
+        self.assertAlmostEqual(60 / float(np.median(np.diff(bt))), 123.05, delta=.1)
+        self.assertAlmostEqual(60 / gerar.periodo_das_batidas(bt), 126, delta=.3)
+
+    def test_ignora_batida_perdida(self):
+        import gerar
+        bt = list(np.arange(50) * .5)
+        del bt[20]                                   # uma batida perdida (intervalo dobrado)
+        self.assertAlmostEqual(gerar.periodo_das_batidas(bt), .5, places=3)

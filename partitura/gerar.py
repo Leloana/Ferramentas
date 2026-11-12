@@ -80,13 +80,28 @@ def harmonia_das_faixas(stems: Path, sr: int):
 
 # ----------------------------------------------------------------------------- batidas
 
+def periodo_das_batidas(bt) -> float:
+    """Período médio entre batidas (s), mais fino que o quadro do detector.
+
+    A mediana dos intervalos é sempre um número inteiro de quadros (librosa: 512/22050 = 23,2 ms;
+    madmom: 10 ms), então o andamento só podia ser 129,2 · 123,05 · 117,45... (537 músicas, 2026-11-11:
+    22 andamentos diferentes, 59 em 129). A média dos intervalos perto da mediana (sem batida perdida
+    ou dobrada) acerta entre os quadros."""
+    d = np.diff(np.asarray(bt, dtype=float))
+    if not len(d):
+        return 0.5
+    med = float(np.median(d))
+    bons = d[np.abs(d - med) <= .25 * med]
+    return float(bons.mean()) if len(bons) else med
+
+
 def batidas(mix: np.ndarray, sr: int, perc: np.ndarray) -> tuple[np.ndarray, float]:
     """Batidas em segundos, estendidas para trás até t<=0 e para frente até o fim."""
     import librosa
     env = librosa.onset.onset_strength(y=perc, sr=sr)
     tempo, frames = librosa.beat.beat_track(onset_envelope=env, sr=sr, start_bpm=120, tightness=120)
     bt = librosa.frames_to_time(frames, sr=sr)
-    periodo = float(np.median(np.diff(bt)))
+    periodo = periodo_das_batidas(bt)
     dur = len(mix) / sr
     antes = []
     t = bt[0] - periodo
@@ -120,7 +135,7 @@ def batidas_madmom(audio: Path, dur: float):
         return None
     bt, pos = r[:, 0].astype(float), r[:, 1].astype(int)
     por_compasso = int(pos.max())
-    periodo = float(np.median(np.diff(bt)))
+    periodo = periodo_das_batidas(bt)
     primeiro_1 = int(np.where(pos == 1)[0][0])
     antes, t = [], bt[0] - periodo
     while t > -periodo:
@@ -1527,7 +1542,8 @@ def main():
         reuso = None   # cache do modo leve não tem melodia nem letra: o completo gera do zero
     if reuso:
         # só a escrita da partitura: melodia, acordes, batidas e letra do cache (sem Demucs/Whisper)
-        bt, fase, bpm = np.array(reuso["bt"]), int(reuso["fase"]), float(reuso["bpm"])
+        bt, fase = np.array(reuso["bt"]), int(reuso["fase"])
+        bpm = 60.0 / periodo_das_batidas(bt)   # cache antigo guardava o andamento preso aos quadros do detector
         grade = Grade(bt, fase)
         notas = [tuple(n) for n in reuso["notas"]]
         acs = [tuple(a) for a in reuso["acordes"]]
