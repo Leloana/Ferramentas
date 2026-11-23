@@ -1,0 +1,27 @@
+# LongCat-Video INT8 na RTX 4070 (Windows ou Linux), Python 3.10 ou 3.11.
+#
+# 1) torch com CUDA ANTES deste arquivo (o pip padrão do Windows vem sem CUDA):
+#    pip install torch==2.6.0+cu124 torchvision==0.21.0+cu124 --index-url https://download.pytorch.org/whl/cu124
+# 2) triton (o código oficial importa no topo; o refino usa para o BSA):
+#    Windows: pip install "triton-windows<3.3"      Linux: já vem com o torch
+# 3) pip install -r requirements.txt
+# 4) opcional, mais rápido que SDPA: flash-attn 2.7.x (no Windows só com wheel pronta
+#    para torch 2.6 + cu124 + sua versão do Python; sem ela o SDPA é usado sozinho)
+
+numpy==1.26.4
+transformers==4.41.0
+diffusers==0.35.1
+safetensors>=0.4.3
+huggingface_hub>=0.24
+accelerate>=0.33
+sentencepiece
+loguru==0.7.2
+einops==0.8.0
+ftfy==6.2.0
+psutil
+pillow
+imageio==2.37.0
+imageio-ffmpeg==0.6.0
+opencv-python==4.9.0.80
+av==12.0.0
+pytest

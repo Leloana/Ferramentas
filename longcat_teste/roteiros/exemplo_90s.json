@@ -1,0 +1,20 @@
+{
+  "_comentario": "Uma cena contínua de 90 s. Cada trecho muda só a ação; personagem, roupa, lugar e câmera se repetem em todos para o modelo não trocar de cena.",
+  "trechos": [
+    {
+      "segundos": 25,
+      "prompt": "realistic filming style, vertical video. A young woman with short black hair, wearing a yellow raincoat and white sneakers, walks a golden retriever on a leash along a wet city sidewalk at dusk. Neon shop signs reflect on the wet ground. The camera moves backwards in front of her at walking pace, handheld, natural motion."
+    },
+    {
+      "segundos": 25,
+      "prompt": "realistic filming style, vertical video. A young woman with short black hair, wearing a yellow raincoat and white sneakers, stops at a street food stall with her golden retriever and buys a paper cup of hot noodles, steam rising. Neon shop signs reflect on the wet ground at dusk. The camera stays close in front of her, handheld, natural motion."
+    },
+    {
+      "segundos": 20,
+      "prompt": "realistic filming style, vertical video. A young woman with short black hair, wearing a yellow raincoat and white sneakers, sits on a low wall under a shop awning eating noodles while her golden retriever sits beside her wagging its tail. Light rain falls in front of the neon signs at dusk. The camera slowly circles around them, handheld."
+    },
+    {
+      "prompt": "realistic filming style, vertical video. A young woman with short black hair, wearing a yellow raincoat and white sneakers, stands up and walks away down the wet neon-lit street with her golden retriever as the rain stops. The camera stays still and she gets smaller in the frame, natural motion."
+    }
+  ]
+}

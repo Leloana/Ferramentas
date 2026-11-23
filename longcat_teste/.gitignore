@@ -1,0 +1,6 @@
+vendor/
+pesos/
+output/
+trabalho/
+venv/
+.pytest_cache/
