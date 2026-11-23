@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+import time
 from collections import deque
 from typing import Optional
 
@@ -15,6 +16,19 @@ logger = logging.getLogger(__name__)
 
 
 ROOM_NAME_MAX = 24
+# A tela manda {"type": "alive"} a cada 10 s pelo JS. Sem nada dela por este tempo a
+# sala a considera fora: aba congelada (celular no modo Sala com a tela bloqueada,
+# TV em segundo plano) continua respondendo ao ping do navegador, mas não executa
+# os comandos dos celulares. Aí outra tela pode assumir a sala.
+DISPLAY_SILENT_SEC = 30.0
+
+
+def display_alive(room: "KaraokeRoom", now: float | None = None) -> bool:
+    """Há uma tela conectada e ela deu sinal de vida (qualquer mensagem) há pouco."""
+    if room.display is None:
+        return False
+    now = time.monotonic() if now is None else now
+    return now - room.display_seen <= DISPLAY_SILENT_SEC
 
 
 def room_name(raw: str) -> str:
@@ -34,9 +48,12 @@ def display_conflict(room: "KaraokeRoom", device: str, seq: int) -> str | None:
       atrasada (a do lobby, cancelada no INICIAR, depois da do jogo). Descarta
       sem mexer na sala: antes ela fechava a partida e mostrava "outra tela assumiu".
     - "taken": a sala é de outro aparelho (nome de sala já em uso).
-    - None: pode assumir (mesma tela reconectando, ou tela antiga sem id).
+    - None: pode assumir (mesma tela reconectando, tela antiga sem id, ou a tela
+      atual parou de dar sinal de vida: `display_alive`).
     """
     if room.display is None or not device or not room.display_device:
+        return None
+    if not display_alive(room):
         return None
     if device != room.display_device:
         return "taken"
@@ -53,6 +70,10 @@ class KaraokeRoom:
         # aparelho da tela e ordem da conexão dela (display_conflict)
         self.display_device = ""
         self.display_seq = 0
+        # última mensagem da tela (time.monotonic): display_alive
+        self.display_seen = 0.0
+        # has_display do último remote_state: o ping dos celulares reenvia quando muda
+        self.remote_has_display: bool | None = None
         self.mic: Optional[WebSocket] = None
         # Multiplayer properties
         self.players: dict[str, WebSocket] = {}

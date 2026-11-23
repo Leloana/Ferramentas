@@ -6,6 +6,7 @@ import shutil
 
 from fastapi import APIRouter, Response
 
+from rooms import display_alive
 from state import SONGS_DIR, queue_manager, room_manager
 from utils.http import set_no_cache
 
@@ -35,7 +36,7 @@ async def api_status(response: Response):
         rooms.append({
             "id": room_id,
             "song": room.song_title or room.song_id or None,
-            "display": room.display is not None,
+            "display": display_alive(room),
             "players": sorted(room.players.keys()),
             "waiting_mics": len(room.unregistered_mics),
             "singing": room.is_singing_active,

@@ -9,7 +9,7 @@ import { fillLine, setLyricsScriptAvailable } from '../game/lyrics-script.js';
 import { verseQuality, replayClass } from '../game/verse-stamp.js';
 import { escapeHtml } from '../core/html.js';
 import { onRequestsUpdate } from '../lobby/requests.js';
-import { onRemoteState } from './room-panel.js';
+import { onRemoteState, renderRoomPanel } from './room-panel.js';
 import { showMicGameOver, setFinalLayout } from './mic-final.js';
 import { setMicStatus } from './mic-socket.js';
 import { remindMicIfOff, setMicLocked, reportMicState } from './mobile-mic-view.js';
@@ -75,17 +75,13 @@ const MIC_HANDLERS = {
         }
         setRegisterButton(false);
     },
-    register_wait(data) {
-        setAppState('waiting');
-        if (dom.mobileQueuePosition) {
-            dom.mobileQueuePosition.innerText = data.position;
-        }
-    },
     registration_success(data) {
         state.mobileNickname = data.name;
+        state.micRegistered = true;
         saveMicName(data.name);
         const automatic = state.micAutoRegistering;
         state.micAutoRegistering = false;
+        renderRoomPanel();  // comandos da aba Sala voltam a valer
         if (!automatic) showToast(`Registrado como "${data.name}"`, "success");
         showNameInStatus(data.name);
         setAppState('singing');

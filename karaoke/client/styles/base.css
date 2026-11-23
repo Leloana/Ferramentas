@@ -272,6 +272,35 @@ input[type="range"] { accent-color: var(--ink); }
 .empty-state p { margin: 0; max-width: 360px; }
 .empty-state .btn { margin-top: 1.25rem; }
 
+/* ---------- Aviso "Fulano mudou X" (ui/remote-notice.js): celular mexeu na sala ---------- */
+.remote-notice {
+    position: fixed;
+    top: 12px;
+    left: 50%;
+    z-index: 10040;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    max-width: calc(100% - 32px);
+    padding: 0.45rem 0.9rem;
+    background: var(--paper-light);
+    border: var(--border);
+    box-shadow: var(--shadow-lift);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: none;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+.remote-notice[data-visible="true"] { opacity: 1; }
+.remote-notice__icon { flex-shrink: 0; width: 16px; height: 16px; }
+.remote-notice__who { font-weight: 700; }
+
 /* ---------- Toasts ---------- */
 .toast-container {
     position: fixed;

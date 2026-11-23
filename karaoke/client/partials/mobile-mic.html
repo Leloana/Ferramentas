@@ -18,13 +18,6 @@
             <div id="mobile-register-error" class="form-error"></div>
         </div>
 
-        <!-- Fila de espera para registrar -->
-        <div id="mobile-queue-container" class="mic-card">
-            <div class="spinner"></div>
-            <h3 class="mic-card__title">Na fila</h3>
-            <p class="mic-card__hint">Posição <strong id="mobile-queue-position">1</strong></p>
-        </div>
-
         <!-- Microfone ativo -->
         <div id="mobile-active-mic-container">
             <div id="mobile-mic-trigger-container">
@@ -94,6 +87,10 @@
                 <i data-icon="play"></i> <span id="room-start-label">Iniciar</span>
             </button>
             <p id="room-start-note" class="room-note" hidden></p>
+            <!-- Tocando: encerrar (toque duas vezes). No placar do fim: voltar ao lobby. -->
+            <button type="button" id="btn-room-end" class="btn btn--danger btn--block room-end" hidden>
+                <i data-icon="close"></i> <span id="room-end-label">Encerrar música</span>
+            </button>
         </section>
 
         <!-- Fila da noite: quando a música da vez acaba, a 1ª da fila entra no lugar dela (requests.js) -->

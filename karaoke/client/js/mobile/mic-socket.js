@@ -5,7 +5,7 @@
 // os timers da aba. Por isso o celular manda um ping a cada 10 s e, sem resposta do
 // servidor em 25 s, troca de conexão. Ao voltar a tela, reconecta na hora.
 import { state } from '../core/state.js';
-import { myRoom, MIC_REPLACED_CODE } from '../core/config.js';
+import { myRoom, MIC_REPLACED_CODE, savedMicName, deviceId } from '../core/config.js';
 import { escapeHtml } from '../core/html.js';
 import { handleMicMessage } from './mic-messages.js';
 
@@ -68,12 +68,21 @@ export function connectMobileMicrophoneWebSocket() {
     clearReconnect();
     hookVisibility();
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${protocol}//${window.location.host}/ws/room/${encodeURIComponent(myRoom)}?role=mic`;
+    // Já entrou antes neste celular: o apelido e o aparelho vão na URL e o servidor
+    // devolve o lugar na sala direto (tela desbloqueada, rede caiu), sem passar
+    // pelo pedido de apelido.
+    const saved = savedMicName();
+    const back = saved ? `&name=${encodeURIComponent(saved)}&device=${encodeURIComponent(deviceId())}` : '';
+    const wsUrl = `${protocol}//${window.location.host}/ws/room/${encodeURIComponent(myRoom)}?role=mic${back}`;
 
     const ws = new WebSocket(wsUrl);
     state.mobileWs = ws;
     ws.binaryType = 'arraybuffer';
     state.micLastServerAt = Date.now();
+    // cada conexão nova se registra de novo; a falha da entrada automática vale só para ela
+    state.micRegistered = false;
+    state.micAutoRegisterFailed = false;
+    state.micAutoRegistering = !!saved;
     if (!state.micHeartbeatTimer) state.micHeartbeatTimer = setInterval(heartbeat, PING_EVERY_MS);
 
     ws.onopen = () => {

@@ -36,13 +36,16 @@ export const state = {
     micProcessorNode: null,
     mobileNickname: null,
     micAutoRegistering: false,   // mobile/mic-messages.js: entrando sozinho com o apelido lembrado
-    micAutoRegisterFailed: false, // ...e falhou (apelido em uso): mostra o formulário
+    micAutoRegisterFailed: false, // ...e falhou nesta conexão (apelido em uso): mostra o formulário
+    micRegistered: false,     // esta conexão está registrada no servidor (comandos da aba Sala valem)
     isActiveInGame: false,
     micVuFrame: null,         // mobile/mobile-mic-view.js: laço do medidor de volume
     micHealthCleanup: null,   // mobile/mic-health.js: tira os vigias do áudio do microfone
     micHeartbeatTimer: null,  // mobile/mic-socket.js: ping a cada 10 s
     micReconnectTimer: null,
     micLastServerAt: 0,       // última mensagem do servidor (Date.now)
+    displayAliveTimer: null,  // lobby/remote-control.js: sinal de vida da tela a cada 10 s
+    remoteNoticeTimer: null,  // ui/remote-notice.js: some o aviso "Fulano mudou X"
     micVisibilityHooked: false,
     micReplaced: false,       // 4002: outra aba assumiu o microfone, não reconecta
     activePlayers: null,

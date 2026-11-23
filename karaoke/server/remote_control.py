@@ -12,7 +12,9 @@ Travas (mutex):
 - GPU gerando letra: não inicia (a nota de cada verso esperaria o Whisper);
 - tom, velocidade, volume da música e da voz guia, pausar e encerrar valem sempre;
 - escrita da letra (original/romaji/ambos) e sincronia (palavra/verso) também: valem
-  para a sala toda (TV e todos os celulares acompanham).
+  para a sala toda (TV e todos os celulares acompanham);
+- voltar ao lobby (sair do placar do fim de jogo) só sem música tocando: tocando,
+  é o "encerrar".
 """
 from __future__ import annotations
 
@@ -21,9 +23,9 @@ TEAMS = ("A", "B", "C", "D")
 PC_MIC = "PC_Local"
 
 ACTIONS = ("select_song", "seats", "turns", "scoring_mode", "transpose", "speed", "volume", "guide_volume",
-           "pause", "stop", "start", "lyrics_script", "sync_mode")
+           "pause", "stop", "start", "lyrics_script", "sync_mode", "lobby")
 # só fora da partida: mudam quem canta, a música ou como pontua
-LOCKED_WHILE_PLAYING = ("select_song", "seats", "turns", "scoring_mode", "start")
+LOCKED_WHILE_PLAYING = ("select_song", "seats", "turns", "scoring_mode", "start", "lobby")
 # ajustes de som (controle de arrastar no celular): faixa de valores aceitos
 SOUND_RANGES = {"transpose": (-6, 6), "speed": (0.75, 1.5), "volume": (0.0, 1.0), "guide_volume": (0.0, 1.0)}
 # aparência da letra, igual na TV e nos celulares

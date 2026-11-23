@@ -36,8 +36,9 @@ function remote(action, extra) {
         showToast('Entre com um apelido primeiro.', 'error');
         return false;
     }
-    if (!ws || ws.readyState !== WebSocket.OPEN) {
-        showToast('Sem conexão com a sala.', 'error');
+    if (!ws || ws.readyState !== WebSocket.OPEN || !state.micRegistered) {
+        // conexão nova (tela desbloqueada, rede caiu) ainda voltando para a sala
+        showToast('Reconectando à sala...', 'error');
         return false;
     }
     const msg = { type: 'remote', action };
@@ -58,6 +59,7 @@ function playing() {
 function startBlock() {
     const s = rs();
     if (!state.mobileNickname) return 'Entre com um apelido';
+    if (!state.micRegistered) return 'Reconectando à sala';
     if (!s.has_display) return 'TV desconectada';
     if (s.in_game) return null;  // botão vira "Tocando"
     const gpu = state.gpuBlock || s.gpu_busy;
@@ -326,7 +328,54 @@ export function renderRoomPanel() {
     }
     note.hidden = !block;
     note.textContent = block || '';
+    renderEndButton();
     renderSettings();
+}
+
+// --- encerrar a música / sair do placar ---
+
+const ARM_MS = 4000;
+
+// Ação destrutiva sem confirm() (o diálogo do navegador trava a aba em alguns
+// celulares): o 1º toque arma o botão e troca o texto, o 2º em até 4 s executa.
+function armOrRun(btn, armedText, run) {
+    if (btn.dataset.armed === 'true') {
+        clearTimeout(btn._armTimer);
+        btn.dataset.armed = 'false';
+        run();
+        return;
+    }
+    btn.dataset.armed = 'true';
+    btn._idleText = btn.querySelector('span').textContent;
+    btn.querySelector('span').textContent = armedText;
+    btn._armTimer = setTimeout(() => {
+        btn.dataset.armed = 'false';
+        btn.querySelector('span').textContent = btn._idleText;
+    }, ARM_MS);
+}
+
+function endMode() {
+    const s = rs();
+    if (!s.has_display) return null;
+    if (playing()) return 'stop';
+    if (s.screen === 'game-over') return 'lobby';
+    return null;
+}
+
+function renderEndButton() {
+    const btn = byId('btn-room-end');
+    if (!btn) return;
+    const mode = endMode();
+    btn.hidden = !mode;
+    if (!mode || (btn.dataset.armed === 'true' && btn.dataset.mode === mode)) return;
+    // a música acabou com o botão armado: desarma
+    clearTimeout(btn._armTimer);
+    btn.dataset.armed = 'false';
+    btn.dataset.mode = mode;
+    btn.classList.toggle('btn--danger', mode === 'stop');
+    btn.classList.toggle('btn--ghost', mode === 'lobby');
+    btn.innerHTML = iconSvg(mode === 'stop' ? 'close' : 'back');
+    btn.append(el('span', null, mode === 'stop' ? 'Encerrar música' : 'Voltar ao lobby'));
 }
 
 export function onRemoteState(data) {
@@ -375,8 +424,13 @@ export function initRoomPanel() {
     byId('btn-room-scoring').addEventListener('click', () => remote('scoring_mode', { value: rs().scoring_mode === 'words' ? 'timing' : 'words' }));
     initSoundSliders();
     byId('btn-room-pause').addEventListener('click', () => remote('pause'));
-    byId('btn-room-stop').addEventListener('click', () => {
-        if (confirm('Encerrar a música agora? A nota desta partida não é salva.')) remote('stop');
+    byId('btn-room-stop').addEventListener('click', (ev) => {
+        armOrRun(ev.currentTarget, 'Toque de novo: sem nota', () => remote('stop'));
+    });
+    byId('btn-room-end').addEventListener('click', (ev) => {
+        const btn = ev.currentTarget;
+        if (btn.dataset.mode === 'lobby') remote('lobby');
+        else armOrRun(btn, 'Toque de novo: sem nota', () => remote('stop'));
     });
 
     const queueAdd = byId('btn-room-queue-add');

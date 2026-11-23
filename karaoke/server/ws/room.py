@@ -19,7 +19,7 @@ from segment_scoring import (
     needs_whisper, score_whisper_free, score_words, shift_words, transcribe_kwargs,
 )
 from state import room_manager, song_manager, queue_manager
-from rooms import display_conflict, room_key, room_name
+from rooms import display_alive, display_conflict, room_key, room_name
 from pitch import load_or_build_reference, verse_pitch_score
 from players import get_or_create_profile, record_game, song_leaderboard
 from song_requests import add_request, remove_request, requests_payload
@@ -156,9 +156,14 @@ LOBBY_STATE_KEYS = ("screen", "song", "seats", "mics", "turns", "scoring_mode", 
 
 async def _send_remote_state(room, targets=None) -> None:
     """Controle pelo celular: estado da sala (lobby da TV + partida + GPU) para os celulares."""
-    payload = remote_state_payload(room.lobby_state, room.in_game, queue_manager.alignment_busy(),
-                                   room.display is not None)
-    for ws in (targets if targets is not None else list(room.players.values())):
+    has_display = display_alive(room)
+    room.remote_has_display = has_display
+    payload = remote_state_payload(room.lobby_state, room.in_game, queue_manager.alignment_busy(), has_display)
+    # todos os celulares, inclusive quem ainda não registrou: a aba Sala não congela
+    # num estado velho enquanto o celular reconecta
+    if targets is None:
+        targets = list(room.players.values()) + list(room.unregistered_mics)
+    for ws in targets:
         try:
             await ws.send_json(payload)
         except Exception as e:
@@ -210,20 +215,67 @@ async def _notify_players_status(room) -> None:
     })
 
 
-async def _advance_registration_queue(room) -> None:
-    while room.unregistered_mics:
-        next_ws = room.unregistered_mics[0]
+async def _register_mic(room, websocket, raw_name: str, device: str) -> str | None:
+    """Registra o celular com o apelido. Devolve o apelido ou None (erro já enviado).
+
+    Sem fila: cada celular se registra na hora, em paralelo. Antes só o 1º da fila
+    recebia `register_request`, e um celular com a tela bloqueada no topo (o
+    navegador responde ao ping, mas o JS está congelado e nunca responde) travava
+    o registro de todo mundo que chegava depois.
+    """
+    name = (raw_name or "").strip()
+    # sem caracteres de controle, tamanho do campo do celular (15)
+    name = "".join(c for c in name if c.isprintable())[:MAX_NICKNAME_LEN].strip()
+    sanitized = "".join(c for c in name if c.isalnum() or c in ("-", "_")).strip()
+    device = (device or "")[:64]
+    # Mesmo aparelho voltando (recarregou/caiu/desbloqueou a tela): a conexão antiga,
+    # que o servidor talvez ainda não viu cair, sai e o apelido é retomado.
+    old_ws = room.players.get(name)
+    if old_ws is not None and old_ws is not websocket and device and room.player_devices.get(name) == device:
+        room.players.pop(name, None)
         try:
-            await next_ws.send_json({"type": "register_request"})
-            break
-        except Exception:
-            room.unregistered_mics.pop(0)
-    
-    for idx, ws in enumerate(room.unregistered_mics[1:], start=1):
-        try:
-            await ws.send_json({"type": "register_wait", "position": idx})
+            await old_ws.close(code=MIC_REPLACED_CODE, reason="Mesmo aparelho reconectou")
         except Exception:
             pass
+        logger.info(f"Celular de {name} reconectou: apelido retomado")
+    if not name:
+        error = "O apelido não pode ser vazio!"
+    elif not sanitized:
+        error = "O apelido deve conter pelo menos uma letra ou número!"
+    elif _nickname_taken(room, name, sanitized):
+        error = "Este apelido já está em uso!"
+    else:
+        error = None
+    if error:
+        await websocket.send_json({"type": "registration_error", "message": error})
+        return None
+
+    room.players[name] = websocket
+    if device:
+        room.player_devices[name] = device
+    if websocket in room.unregistered_mics:
+        room.unregistered_mics.remove(websocket)
+
+    get_or_create_profile(name)
+    await websocket.send_json({"type": "registration_success", "name": name})
+    await _send_remote_state(room, [websocket])
+    if room.in_game:
+        # voltou no meio da música (recarregou, rede caiu): sem isto o
+        # celular não sabe que está no jogo e não manda o áudio
+        await websocket.send_json({
+            "type": "game_started",
+            "game_mode": room.game_mode,
+            "active_players": room.active_players,
+            "resumed": True,
+        })
+        # o singing_state da conexão chegou antes de ele saber que está no jogo
+        await websocket.send_json({"type": "singing_state", "active": room.is_singing_active,
+                                   "song_time": room.song_clock.now()})
+        await _send_current_segment(room, websocket)
+    if room.recording:
+        room.recording.add_event("mic_joined", room.last_client_time, value=name)
+    await _notify_players_status(room)
+    return name
 
 
 async def process_segment_multiplayer(
@@ -558,22 +610,22 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
     # Pareamento
     if role == "mic":
         room.unregistered_mics.append(websocket)
-        logger.info(f"Microfone conectado na fila de registro. Fila total: {len(room.unregistered_mics)}")
-        
         try:
-            if len(room.unregistered_mics) == 1:
+            # Celular que já entrou antes manda o apelido e o aparelho na URL: volta
+            # para a sala direto, sem esperar `register_request` (tela desbloqueada,
+            # rede caiu, página recarregada).
+            url_name = websocket.query_params.get("name") or ""
+            if url_name and device:
+                player_name = await _register_mic(room, websocket, url_name, device)
+            if not player_name:
                 await websocket.send_json({"type": "register_request"})
-            else:
-                await websocket.send_json({"type": "register_wait", "position": len(room.unregistered_mics) - 1})
+                await _send_remote_state(room, [websocket])
         except Exception as e:
-            # Celular fechou na hora (recarregou): sem isso o socket morto ficava
-            # na frente da fila e ninguém mais recebia register_request.
-            logger.debug(f"Celular saiu antes do pareamento: {e}")
+            logger.debug(f"Celular saiu antes do registro: {e}")
             if websocket in room.unregistered_mics:
-                was_front = room.unregistered_mics[0] is websocket
                 room.unregistered_mics.remove(websocket)
-                if was_front:
-                    await _advance_registration_queue(room)
+            if player_name and room.players.get(player_name) is websocket:
+                room.players.pop(player_name, None)
             room_manager.clean_room(room_id)
             return
     else:
@@ -589,6 +641,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
         room.display = websocket
         room.display_device = device
         room.display_seq = seq
+        room.display_seen = time.monotonic()
         logger.info(f"Display (TV) conectado para a sala: {room_id}")
         await _notify_players_status(room)
         # Celular que viu "TV Desconectada" numa troca de página volta a "pareado".
@@ -640,6 +693,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                         room.mic_timelines[stream_key].add_in_flight(first_index, samples)
 
             elif "text" in message:
+                if role == "display" and room.display is websocket:
+                    room.display_seen = time.monotonic()  # sinal de vida da tela (display_alive)
                 # Mensagem malformada é ignorada: uma exceção aqui derrubaria a TV
                 try:
                     data = json.loads(message["text"])
@@ -652,58 +707,20 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
 
                 if msg_type == "register_name":
                     raw_name = data.get("name")
-                    name = raw_name.strip() if isinstance(raw_name, str) else ""
-                    # sem caracteres de controle, tamanho do campo do celular (15)
-                    name = "".join(c for c in name if c.isprintable())[:MAX_NICKNAME_LEN].strip()
-                    sanitized = "".join(c for c in name if c.isalnum() or c in ("-", "_")).strip()
-                    device = str(data.get("device") or "")[:64]
-                    # Mesmo aparelho voltando (recarregou/caiu): a conexão antiga, que o
-                    # servidor talvez ainda não viu cair, sai e o apelido é retomado.
-                    old_ws = room.players.get(name)
-                    if old_ws is not None and old_ws is not websocket and device and room.player_devices.get(name) == device:
-                        room.players.pop(name, None)
-                        try:
-                            await old_ws.close(code=MIC_REPLACED_CODE, reason="Mesmo aparelho reconectou")
-                        except Exception:
-                            pass
-                        logger.info(f"Celular de {name} reconectou: apelido retomado")
-                    if not name:
-                        await websocket.send_json({"type": "registration_error", "message": "O apelido não pode ser vazio!"})
-                    elif not sanitized:
-                        await websocket.send_json({"type": "registration_error", "message": "O apelido deve conter pelo menos uma letra ou número!"})
-                    elif _nickname_taken(room, name, sanitized):
-                        await websocket.send_json({"type": "registration_error", "message": "Este apelido já está em uso!"})
-                    else:
-                        player_name = name
-                        room.players[name] = websocket
-                        if device:
-                            room.player_devices[name] = device
-                        if websocket in room.unregistered_mics:
-                            room.unregistered_mics.remove(websocket)
-                        
-                        get_or_create_profile(name)
-                        await websocket.send_json({"type": "registration_success", "name": name})
-                        await _send_remote_state(room, [websocket])
-                        if room.in_game:
-                            # voltou no meio da música (recarregou, rede caiu): sem isto o
-                            # celular não sabe que está no jogo e não manda o áudio
-                            await websocket.send_json({
-                                "type": "game_started",
-                                "game_mode": room.game_mode,
-                                "active_players": room.active_players,
-                                "resumed": True,
-                            })
-                            # o singing_state da conexão chegou antes de ele saber que está no jogo
-                            await websocket.send_json({"type": "singing_state", "active": room.is_singing_active,
-                                                       "song_time": room.song_clock.now()})
-                            await _send_current_segment(room, websocket)
-                        if room.recording:
-                            room.recording.add_event("mic_joined", room.last_client_time, value=name)
-                        await _notify_players_status(room)
-                        await _advance_registration_queue(room)
+                    registered = await _register_mic(room, websocket, raw_name if isinstance(raw_name, str) else "",
+                                                     str(data.get("device") or ""))
+                    if registered:
+                        player_name = registered
 
                 elif msg_type == "ping":
                     await websocket.send_json({"type": "pong"})
+                    # a tela pode ter parado de dar sinal de vida sem fechar a conexão:
+                    # o ping dos celulares (10 s) leva a mudança para a aba Sala
+                    if role == "mic" and display_alive(room) != room.remote_has_display:
+                        await _send_remote_state(room)
+
+                elif msg_type == "alive" and role == "display":
+                    pass  # sinal de vida da tela: já contado acima
 
                 elif msg_type == "reaction" and role == "mic":
                     # plateia: só quem está na sala e não canta esta música
@@ -808,9 +825,13 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                 elif msg_type == "remote" and role == "mic":
                     # Controle pelo celular: confere as travas aqui e a TV executa
                     action = str(data.get("action") or "")
-                    error = None if player_name else "Entre com um apelido primeiro."
-                    error = error or check_remote(action, room.in_game, queue_manager.alignment_busy(),
-                                                  room.display is not None)
+                    if not player_name:
+                        # o celular acha que está na sala, mas esta conexão não registrou
+                        # (reconectou): pede o apelido de novo em vez de recusar calado
+                        await websocket.send_json({"type": "remote_error", "message": "Reconectando à sala, tente de novo."})
+                        await websocket.send_json({"type": "register_request"})
+                        continue
+                    error = check_remote(action, room.in_game, queue_manager.alignment_busy(), display_alive(room))
                     command = None
                     if not error:
                         ready = {s_["id"] for s_ in song_manager.list_songs() if s_.get("is_ready")}                             if action == "select_song" else set()
@@ -1092,16 +1113,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                     room.recording.add_event("mic_left", room.last_client_time, value=player_name, code=close_code)
             
             if websocket in room.unregistered_mics:
-                is_front = (room.unregistered_mics[0] == websocket)
                 room.unregistered_mics.remove(websocket)
-                if is_front:
-                    await _advance_registration_queue(room)
-                else:
-                    for idx, ws in enumerate(room.unregistered_mics[1:], start=1):
-                        try:
-                            await ws.send_json({"type": "register_wait", "position": idx})
-                        except Exception:
-                            pass
 
             await _notify_players_status(room)
 

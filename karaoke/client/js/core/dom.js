@@ -48,8 +48,6 @@ export const dom = {
     get mobileNicknameInput() { return $('mobile-nickname-input'); },
     get btnMobileRegister() { return $('btn-mobile-register'); },
     get mobileRegisterError() { return $('mobile-register-error'); },
-    get mobileQueueContainer() { return $('mobile-queue-container'); },
-    get mobileQueuePosition() { return $('mobile-queue-position'); },
     get mobileActiveMicContainer() { return $('mobile-active-mic-container'); },
 };
 

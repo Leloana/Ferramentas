@@ -17,6 +17,15 @@ sys.path.insert(0, str(PROJECT_ROOT / "server"))
 
 from fastapi.testclient import TestClient
 
+
+def recv(ws):
+    """Próxima mensagem, pulando o estado da sala (remote_state), que o celular
+    recebe a cada mudança e inclusive antes de registrar."""
+    while True:
+        msg = ws.receive_json()
+        if msg.get("type") != "remote_state":
+            return msg
+
 class TestWebsocketGameFlow(unittest.TestCase):
 
     @classmethod
@@ -142,11 +151,11 @@ class TestWebsocketGameFlow(unittest.TestCase):
             # 2. Connect Mic client (Player 1)
             with self.client.websocket_connect(f"/ws/room/{room_id}?role=mic") as ws_mic:
                 # Mic receives registration request
-                msg_mic = ws_mic.receive_json()
+                msg_mic = recv(ws_mic)
                 self.assertEqual(msg_mic["type"], "register_request")
 
                 # Mic receives singing_state next
-                msg_mic_sing = ws_mic.receive_json()
+                msg_mic_sing = recv(ws_mic)
                 self.assertEqual(msg_mic_sing["type"], "singing_state")
 
                 # Register nickname
@@ -259,10 +268,10 @@ class TestWebsocketGameFlow(unittest.TestCase):
                 self.assertEqual(ws_display.receive_json()["type"], expected_type)
 
             with self.client.websocket_connect("/ws/room/graceroom?role=mic") as ws_mic:
-                self.assertEqual(ws_mic.receive_json()["type"], "register_request")
-                self.assertEqual(ws_mic.receive_json()["type"], "singing_state")
+                self.assertEqual(recv(ws_mic)["type"], "register_request")
+                self.assertEqual(recv(ws_mic)["type"], "singing_state")
                 ws_mic.send_json({"type": "register_name", "name": "PlayerTwo"})
-                self.assertEqual(ws_mic.receive_json()["type"], "registration_success")
+                self.assertEqual(recv(ws_mic)["type"], "registration_success")
                 self.assertEqual(ws_display.receive_json()["type"], "pairing_status")
                 self.assertEqual(ws_display.receive_json()["type"], "players_update")
 
@@ -358,10 +367,10 @@ class TestWebsocketGameFlow(unittest.TestCase):
                 self.assertEqual(ws_old.receive_json()["type"], expected_type)
 
             with self.client.websocket_connect("/ws/room/swaproom?role=mic") as ws_mic:
-                self.assertEqual(ws_mic.receive_json()["type"], "register_request")
-                self.assertEqual(ws_mic.receive_json()["type"], "singing_state")
+                self.assertEqual(recv(ws_mic)["type"], "register_request")
+                self.assertEqual(recv(ws_mic)["type"], "singing_state")
                 ws_mic.send_json({"type": "register_name", "name": "Swapper"})
-                self.assertEqual(ws_mic.receive_json()["type"], "registration_success")
+                self.assertEqual(recv(ws_mic)["type"], "registration_success")
 
                 with self.client.websocket_connect(f"/ws/room/swaproom?role=display&song_id={self.song_slug}") as ws_new:
                     for expected_type in ("pairing_status", "players_update", "singing_state"):
@@ -408,10 +417,10 @@ class TestWebsocketGameFlow(unittest.TestCase):
             for expected_type in ("pairing_status", "players_update", "singing_state"):
                 self.assertEqual(ws_tv.receive_json()["type"], expected_type)
             with self.client.websocket_connect("/ws/room/backroom?role=mic") as ws_mic:
-                self.assertEqual(ws_mic.receive_json()["type"], "register_request")
-                self.assertEqual(ws_mic.receive_json()["type"], "singing_state")
+                self.assertEqual(recv(ws_mic)["type"], "register_request")
+                self.assertEqual(recv(ws_mic)["type"], "singing_state")
                 ws_mic.send_json({"type": "register_name", "name": "Volta"})
-                self.assertEqual(ws_mic.receive_json()["type"], "registration_success")
+                self.assertEqual(recv(ws_mic)["type"], "registration_success")
 
                 ws_tv.close()
                 drain_until(ws_mic, is_display_status("unpaired"))
@@ -599,8 +608,9 @@ class TestWebsocketGameFlow(unittest.TestCase):
                 # celular que chegou com a partida rolando e ainda está na fila de registro
                 with self.client.websocket_connect("/ws/room/cancelroom?role=mic") as ws_queue, \
                         self.client.websocket_connect("/ws/room/cancelroom?role=mic") as ws_queue2:
+                    # sem fila de registro: os dois recebem o pedido de apelido na hora
                     self._until(ws_queue, "register_request")
-                    self._until(ws_queue2, "register_wait")
+                    self._until(ws_queue2, "register_request")
                     with self.client.websocket_connect("/ws/room/cancelroom?role=display"):
                         self._until(ws_bia, "game_cancelled")
                         self._until(ws_queue, "game_cancelled")

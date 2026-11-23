@@ -277,6 +277,7 @@
 .room-settings-btn__label { font-weight: 800; }
 .room-settings-btn__summary { font-size: 0.85rem; color: var(--dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .room-start { font-size: 1.15rem; letter-spacing: 0.04em; }
+.room-end[data-armed="true"] { outline: 2px solid var(--ink); outline-offset: 2px; }
 .room-note { margin: 0; font-family: var(--font-ui); font-size: 0.85rem; color: var(--dim); text-align: center; }
 .room-note--lock { display: flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.5rem; background: var(--butter); color: var(--ink); }
 .room-note--lock .ico { width: 16px; height: 16px; }

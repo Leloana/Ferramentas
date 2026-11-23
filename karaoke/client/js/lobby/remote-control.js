@@ -12,6 +12,7 @@ import { availableMics, renderLobby } from './lobby.js';
 import { stopAutoNext } from './requests.js';
 import { changeTranspose, changeSpeed, togglePause, setScoreMode, currentScoringMode, setSyncMode } from '../game/controls.js';
 import { getLyricsScript, setLyricsScript } from '../game/lyrics-script.js';
+import { showRemoteNotice } from '../ui/remote-notice.js';
 
 const PUBLISH_DEBOUNCE_MS = 150;
 // volume da música e da voz guia: os mesmos sliders da TV (net/sync.js, audio/guide-vocal.js)
@@ -106,28 +107,33 @@ async function openSong(song) {
     if (state.currentAppState !== 'waiting' || state.selectedSongId !== song.id) state.selectSongFn(song);
 }
 
+// true = a partida vai começar; false = recusado (o celular recebe o motivo)
 async function startFromRemote(reply, from) {
     const song = await findSong(state.remoteSongId);
-    if (!song) return reply('Escolha uma música.');
+    if (!song) { reply('Escolha uma música.'); return false; }
     await openSong(song);
-    if (!state.lobbySeats.length) return reply('Adicione pelo menos um cantor.');
-    if (state.gpuBlock) return reply(`GPU ocupada: gerando a letra de ${state.gpuBlock}.`);
+    if (!state.lobbySeats.length) { reply('Adicione pelo menos um cantor.'); return false; }
+    if (state.gpuBlock) { reply(`GPU ocupada: gerando a letra de ${state.gpuBlock}.`); return false; }
     // o aviso da 1ª partida pede um clique na TV: quem usa o celular não está lá
     try { localStorage.setItem('karaoke_onboarding_seen', 'true'); } catch (e) { }
     state.remoteStartFrom = from;
     dom.btnStart.click();
+    return true;
 }
 
 export async function handleRemote(cmd) {
     const reply = (message) => send({ type: 'remote_reply', to: cmd.from, message });
     // o servidor já barra, mas a TV pode estar no meio de uma troca de tela
-    if (isPlaying() && ['select_song', 'seats', 'turns', 'scoring_mode', 'start'].indexOf(cmd.action) !== -1) {
+    if (isPlaying() && ['select_song', 'seats', 'turns', 'scoring_mode', 'start', 'lobby'].indexOf(cmd.action) !== -1) {
         return reply('Espere a música acabar.');
     }
+    // aviso na tela "Fulano mudou X" (ui/remote-notice.js); skip = comando sem efeito
+    const notice = {};
     switch (cmd.action) {
         case 'select_song': {
             const song = await findSong(cmd.song_id);
             if (!song) return reply('Música não encontrada.');
+            notice.title = song.title;
             await openSong(song);
             break;
         }
@@ -164,9 +170,12 @@ export async function handleRemote(cmd) {
             break;
         case 'pause':
             if (isPlaying()) togglePause();
+            else notice.skip = true;
+            notice.paused = !!dom.audioPlayer && dom.audioPlayer.paused;
             break;
         case 'stop':
-            if (isPlaying()) {
+            if (!isPlaying()) notice.skip = true;
+            else {
                 // encerra sem placar e deixa a mesma música no lobby
                 const song = await findSong(state.remoteSongId);
                 await state.resetGameFn();
@@ -174,17 +183,31 @@ export async function handleRemote(cmd) {
             }
             break;
         case 'start':
-            await startFromRemote(reply, cmd.from);
+            if (!(await startFromRemote(reply, cmd.from))) notice.skip = true;
+            break;
+        case 'lobby':
+            // sai do placar do fim de jogo (a contagem da próxima para)
+            if (state.currentAppState !== 'game-over') notice.skip = true;
+            await leaveGameOver();
             break;
         default:
             break;
     }
+    if (!notice.skip) showRemoteNotice(cmd, notice);
     publishLobbyState();
 }
+
+// Sinal de vida da tela (server/rooms.py display_alive): aba congelada (celular no
+// modo Sala bloqueado, TV em segundo plano) para de mandar, e outra tela pode
+// assumir a sala em vez de os comandos dos celulares sumirem nela.
+const ALIVE_EVERY_MS = 10000;
 
 // Troca de tela (lobby, partida, fim de jogo): os celulares acompanham
 export function initRemoteControl() {
     if (myRole !== 'display') return;
+    if (!state.displayAliveTimer) {
+        state.displayAliveTimer = setInterval(() => send({ type: 'alive' }), ALIVE_EVERY_MS);
+    }
     state.publishLobbyState = publishLobbyState;
     // volume mexido na própria TV: o celular acompanha
     Object.keys(VOLUME_SLIDERS).forEach((key) => {
