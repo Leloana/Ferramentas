@@ -136,6 +136,15 @@ function initProgressSlider(slider) {
     };
 }
 
+// Sincronia da letra (palavra/verso): vale para a sala, o celular também troca
+export function setSyncMode(mode) {
+    if (mode !== 'word' && mode !== 'verse') return;
+    state.syncMode = mode;
+    try { localStorage.setItem('karaoke_sync_mode', mode); } catch (e) { /* sem storage: vale só agora */ }
+    updateSyncModeButton();
+    notifyLobby();
+}
+
 export function initGameControls() {
     // Estilo de pontuação: botão toggle único (tempo+palavras vs. só palavras),
     // no mesmo padrão do botão de sincronia de letras.
@@ -159,11 +168,7 @@ export function initGameControls() {
             state.syncMode = 'verse';
         }
         updateSyncModeButton();
-        dom.btnSyncMode.onclick = () => {
-            state.syncMode = state.syncMode === 'word' ? 'verse' : 'word';
-            localStorage.setItem('karaoke_sync_mode', state.syncMode);
-            updateSyncModeButton();
-        };
+        dom.btnSyncMode.onclick = () => setSyncMode(state.syncMode === 'word' ? 'verse' : 'word');
     }
 }
 

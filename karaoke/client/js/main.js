@@ -17,7 +17,7 @@ import { initGameControls } from './game/controls.js';
 import { initModals } from './lobby/modals.js';
 import { initQueueView } from './lobby/queue-view.js';
 import { initRemoteControl } from './lobby/remote-control.js';
-import { initRoomPanel } from './mobile/room-panel.js';
+import { initRoomPanel, chooseLyricsScript } from './mobile/room-panel.js';
 import { initMicReminder } from './game/mic-reminder.js';
 import { openModal, closeModal } from './ui/modal.js';
 import { initAnnotation } from './players/annotate.js';
@@ -66,7 +66,7 @@ function bootstrap() {
 
         connectMobileMicrophoneWebSocket();
         initMobileMicView();
-        initLyricsScriptControls();
+        initLyricsScriptControls(chooseLyricsScript);
         initQueueView();
         return;
     }

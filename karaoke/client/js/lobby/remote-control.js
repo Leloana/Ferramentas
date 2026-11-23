@@ -10,7 +10,8 @@ import { dom } from '../core/dom.js';
 import { myRole } from '../core/config.js';
 import { availableMics, renderLobby } from './lobby.js';
 import { stopAutoNext } from './requests.js';
-import { changeTranspose, changeSpeed, togglePause, setScoreMode, currentScoringMode } from '../game/controls.js';
+import { changeTranspose, changeSpeed, togglePause, setScoreMode, currentScoringMode, setSyncMode } from '../game/controls.js';
+import { getLyricsScript, setLyricsScript } from '../game/lyrics-script.js';
 
 const PUBLISH_DEBOUNCE_MS = 150;
 // volume da música e da voz guia: os mesmos sliders da TV (net/sync.js, audio/guide-vocal.js)
@@ -66,6 +67,9 @@ function lobbyStateMessage() {
         volume: sliderValue(VOLUME_SLIDERS.volume),
         guide_volume: sliderValue(VOLUME_SLIDERS.guide_volume),
         paused: isPlaying() && !!dom.audioPlayer && dom.audioPlayer.paused,
+        // aparência da letra: os celulares acompanham a TV
+        lyrics_script: getLyricsScript(),
+        sync_mode: state.syncMode === 'verse' ? 'verse' : 'word',
     };
 }
 
@@ -151,6 +155,12 @@ export async function handleRemote(cmd) {
         case 'volume':
         case 'guide_volume':
             setSlider(VOLUME_SLIDERS[cmd.action], cmd.value);
+            break;
+        case 'lyrics_script':
+            setLyricsScript(cmd.value);
+            break;
+        case 'sync_mode':
+            setSyncMode(cmd.value);
             break;
         case 'pause':
             if (isPlaying()) togglePause();

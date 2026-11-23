@@ -50,6 +50,16 @@ class CleanCommandTest(unittest.TestCase):
         self.assertEqual(clean_command("scoring_mode", {"value": "words"}, [], set())[0]["value"], "words")
         self.assertEqual(clean_command("turns", {"value": 1}, [], set())[0], {"action": "turns", "value": True})
 
+    def test_lyrics_look_is_room_wide_and_allowed_while_playing(self):
+        self.assertIsNone(check_remote("lyrics_script", True, None, True))
+        self.assertIsNone(check_remote("sync_mode", True, None, True))
+        self.assertEqual(clean_command("lyrics_script", {"value": "romaji"}, [], set())[0],
+                         {"action": "lyrics_script", "value": "romaji"})
+        self.assertIsNotNone(clean_command("lyrics_script", {"value": "kanji"}, [], set())[1])
+        self.assertEqual(clean_command("sync_mode", {"value": "verse"}, [], set())[0],
+                         {"action": "sync_mode", "value": "verse"})
+        self.assertIsNotNone(clean_command("sync_mode", {"value": 1}, [], set())[1])
+
     def test_state_payload_adds_server_locks(self):
         payload = remote_state_payload({"song": {"id": "x"}, "in_game": False}, True, "Reptilia", True)
         self.assertEqual(payload["type"], "remote_state")

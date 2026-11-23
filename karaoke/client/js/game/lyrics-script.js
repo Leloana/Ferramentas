@@ -111,6 +111,7 @@ export function setLyricsScript(mode) {
     syncButtons();
     repaintAll();
     fitLongVerse(document.getElementById('line-curr'));  // romaji muda o tamanho do verso
+    if (state.publishLobbyState) state.publishLobbyState();  // TV: os celulares acompanham
 }
 
 // Mostra o seletor quando a música tem letra em kanji/kana (o servidor gera o
@@ -124,9 +125,10 @@ export function songHasRomaji(segments) {
     return (segments || []).some(seg => seg && seg.lyrics_romaji);
 }
 
-export function initLyricsScriptControls() {
+// `choose(mode)`: no celular a escolha vai para a TV, que devolve para a sala toda
+export function initLyricsScriptControls(choose) {
     document.querySelectorAll('.lyrics-script-choice').forEach(btn => {
-        btn.addEventListener('click', () => setLyricsScript(btn.dataset.script));
+        btn.addEventListener('click', () => (choose || setLyricsScript)(btn.dataset.script));
     });
     syncButtons();
 }

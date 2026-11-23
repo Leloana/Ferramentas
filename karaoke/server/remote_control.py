@@ -10,7 +10,9 @@ Travas (mutex):
 - música tocando: trocar a música, mexer nos cantores/times, revezar versos,
   forma de pontuação e iniciar outra ficam bloqueados até ela acabar;
 - GPU gerando letra: não inicia (a nota de cada verso esperaria o Whisper);
-- tom, velocidade, volume da música e da voz guia, pausar e encerrar valem sempre.
+- tom, velocidade, volume da música e da voz guia, pausar e encerrar valem sempre;
+- escrita da letra (original/romaji/ambos) e sincronia (palavra/verso) também: valem
+  para a sala toda (TV e todos os celulares acompanham).
 """
 from __future__ import annotations
 
@@ -19,11 +21,14 @@ TEAMS = ("A", "B", "C", "D")
 PC_MIC = "PC_Local"
 
 ACTIONS = ("select_song", "seats", "turns", "scoring_mode", "transpose", "speed", "volume", "guide_volume",
-           "pause", "stop", "start")
+           "pause", "stop", "start", "lyrics_script", "sync_mode")
 # só fora da partida: mudam quem canta, a música ou como pontua
 LOCKED_WHILE_PLAYING = ("select_song", "seats", "turns", "scoring_mode", "start")
 # ajustes de som (controle de arrastar no celular): faixa de valores aceitos
 SOUND_RANGES = {"transpose": (-6, 6), "speed": (0.75, 1.5), "volume": (0.0, 1.0), "guide_volume": (0.0, 1.0)}
+# aparência da letra, igual na TV e nos celulares
+LYRICS_SCRIPTS = ("original", "romaji", "both")
+SYNC_MODES = ("word", "verse")
 # precisam de uma partida em andamento
 ONLY_WHILE_PLAYING = ("pause", "stop")
 
@@ -79,6 +84,14 @@ def clean_command(action: str, data: dict, players: list[str], ready_song_ids) -
         if mode not in ("timing", "words"):
             return None, "Forma de pontuação inválida."
         return {"action": action, "value": mode}, None
+    if action == "lyrics_script":
+        if data.get("value") not in LYRICS_SCRIPTS:
+            return None, "Escrita da letra inválida."
+        return {"action": action, "value": data["value"]}, None
+    if action == "sync_mode":
+        if data.get("value") not in SYNC_MODES:
+            return None, "Sincronia inválida."
+        return {"action": action, "value": data["value"]}, None
     if action in SOUND_RANGES:
         low, high = SOUND_RANGES[action]
         value = data.get("value")

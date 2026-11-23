@@ -14,7 +14,7 @@ import { showToast } from '../core/toast.js';
 import { openModal } from '../ui/modal.js';
 import { songMatcher } from '../core/song-search.js';
 import { micLabel } from '../lobby/lobby.js';
-import { setLyricsScriptAvailable } from '../game/lyrics-script.js';
+import { setLyricsScriptAvailable, getLyricsScript, setLyricsScript } from '../game/lyrics-script.js';
 import { loadMicSongs } from '../lobby/requests.js';
 
 const TEAMS = ['A', 'B', 'C', 'D'];
@@ -219,6 +219,13 @@ function renderSettings() {
         turns.disabled = locked;
         turns.setAttribute('aria-pressed', String(!!s.turns));
     }
+    const sync = byId('btn-room-sync');
+    if (sync) {
+        const verse = s.sync_mode === 'verse';
+        sync.setAttribute('aria-pressed', String(verse));
+        sync.innerHTML = iconSvg(verse ? 'sync-verse' : 'sync-word');
+        sync.append(el('span', null, verse ? 'Verso inteiro' : 'Palavra por palavra'));
+    }
     const scoring = byId('btn-room-scoring');
     if (scoring) {
         const words = s.scoring_mode === 'words';
@@ -324,7 +331,20 @@ export function renderRoomPanel() {
 
 export function onRemoteState(data) {
     state.remoteState = data;
+    // escrita da letra é da sala: este celular acompanha a TV
+    if (data.lyrics_script && data.lyrics_script !== getLyricsScript()) setLyricsScript(data.lyrics_script);
     renderRoomPanel();
+}
+
+// Escolha da escrita no celular: vai para a TV, que devolve para a sala toda.
+// Sem sala (ainda sem apelido ou sem conexão), vale só aqui.
+export function chooseLyricsScript(mode) {
+    const s = rs();
+    if (state.mobileNickname && s.has_display && state.mobileWs && state.mobileWs.readyState === WebSocket.OPEN) {
+        remote('lyrics_script', { value: mode });
+    } else {
+        setLyricsScript(mode);
+    }
 }
 
 export function initRoomPanel() {
@@ -351,6 +371,7 @@ export function initRoomPanel() {
     });
 
     byId('btn-room-turns').addEventListener('click', () => remote('turns', { value: !rs().turns }));
+    byId('btn-room-sync').addEventListener('click', () => remote('sync_mode', { value: rs().sync_mode === 'verse' ? 'word' : 'verse' }));
     byId('btn-room-scoring').addEventListener('click', () => remote('scoring_mode', { value: rs().scoring_mode === 'words' ? 'timing' : 'words' }));
     initSoundSliders();
     byId('btn-room-pause').addEventListener('click', () => remote('pause'));

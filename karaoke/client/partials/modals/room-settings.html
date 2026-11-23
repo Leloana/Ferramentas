@@ -19,10 +19,15 @@
             </button>
         </div>
 
-        <!-- Escrita da letra neste celular (game/lyrics-script.js): só em música japonesa,
-             vale também durante a música -->
+        <!-- Letra da sala toda (TV e celulares), vale também durante a música: sincronia
+             palavra/verso e, só em música japonesa, a escrita (game/lyrics-script.js) -->
+        <h3 class="room-settings__title">Letra</h3>
+        <div class="room-toggles">
+            <button type="button" id="btn-room-sync" class="room-toggle" aria-pressed="false">
+                <i data-icon="sync-word"></i><span>Palavra por palavra</span>
+            </button>
+        </div>
         <div class="lyrics-script-control" hidden>
-            <h3 class="room-settings__title">Letra</h3>
             <div class="room-script lyrics-script-group" role="group" aria-label="Escrita da letra">
                 <button type="button" class="room-toggle lyrics-script-choice" data-script="original" aria-pressed="false">あ Original</button>
                 <button type="button" class="room-toggle lyrics-script-choice" data-script="romaji" aria-pressed="false">Aa Romaji</button>

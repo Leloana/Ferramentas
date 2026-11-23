@@ -151,7 +151,7 @@ async def _cancel_game(room) -> None:
 
 # chaves do lobby_state da TV que vão para os celulares (o resto é descartado)
 LOBBY_STATE_KEYS = ("screen", "song", "seats", "mics", "turns", "scoring_mode", "transpose", "speed",
-                    "volume", "guide_volume", "paused")
+                    "volume", "guide_volume", "paused", "lyrics_script", "sync_mode")
 
 
 async def _send_remote_state(room, targets=None) -> None:
