@@ -59,6 +59,11 @@ Este repositório (`Ferramentas`) agrupa scripts, automações e ecossistemas in
 * **Descrição:** Catálogo do melhor modelo aberto por área (texto/código, imagem, vídeo, música, TTS, STT) para RTX 4070 12GB + 32GB RAM, escolhido por benchmark, com script de download e lançador do LLM (llama.cpp).
 * **Stack:** PowerShell, llama.cpp, ComfyUI, `hf` CLI.
 * **Documentação:** [`modelos_locais/README.md`](modelos_locais/README.md).
+
+#### 12. 🐱 LongCat-Video Teste (`/longcat_teste`)
+* **Descrição:** Teste do LongCat-Video (Meituan, 13,6B, MIT) para vídeos verticais de 90 s na RTX 4070 12GB + 32GB RAM: DiT quantizado em INT8 (com as LoRAs de destilação/refino fundidas), offload por bloco, atenção SDPA sem flash-attn, texto pré-codificado e geração longa por continuação, retomável. **Ainda não rodou na GPU** (testado só em CPU com modelos minúsculos); roteiro em `longcat_teste/TESTES_GPU.md`.
+* **Stack:** PyTorch (CUDA), código oficial do LongCat clonado em `vendor/`, diffusers, safetensors, FFmpeg.
+* **Documentação:** [`longcat_teste/README.md`](longcat_teste/README.md).
 ---
 
 ### 🔴 Projetos Descontinuados / Arquivados (Mantidos para Referência)
