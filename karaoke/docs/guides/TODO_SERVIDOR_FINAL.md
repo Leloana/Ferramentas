@@ -152,6 +152,16 @@ item de áudio em [AUDIO_PIPELINE_MELHORIAS.md](AUDIO_PIPELINE_MELHORIAS.md).
 - [ ] **Gravações novas** (formato 2, com as duas passadas do Whisper) → virar fixture com gabarito →
       calibrar `PROMPT_TRUST_MIN_PROB`, VAD, tolerância de tempo.
 - [ ] **Tela acesa** no celular-microfone durante uma música inteira (Android e iPhone).
+- [ ] **Dependências atualizadas em 2026-11-23** (`pip install -r requirements.txt`, servidor parado):
+      Demucs 4.1.0 (fork do adefossez; o repo do facebookresearch foi arquivado), sem dora/submitit/treetable/
+      openunmix. Conferir `python tools/validar_gpu.py separacao server/songs/<slug>/original.mp3` com
+      htdemucs e htdemucs_ft (1ª vez baixa os pesos do Hugging Face) e uma música nova pela fila.
+- [ ] **Deno para o yt-dlp** — vem pelo pacote `deno` do requirements. Na subida não pode aparecer
+      "[YouTube] Deno não encontrado"; baixar uma música e uma playlist pela fila.
+- [ ] **Subida pelo `lifespan`** (saiu o `on_event`): fila gravada retomada e álbuns preenchidos no log.
+- [ ] **A/B do voice isolator** (Inworld, Apache-2.0) no alinhamento: `pip install inworld-voice-isolation`
+      e `python tools/ab_voice_isolator.py --piores 10 --melhores 5` (relatório em `ab_isolador/`). Entra no
+      pipeline só se melhorar as ruins sem piorar as boas.
 
 ## Próximos afazeres (anotado em 2026-10-02)
 

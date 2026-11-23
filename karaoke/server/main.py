@@ -1,8 +1,10 @@
 """Entrypoint do servidor de karaokê. Cria o FastAPI app e monta os routers."""
 from __future__ import annotations
 
+import asyncio
 import logging
 import sys
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI
@@ -44,7 +46,49 @@ STATIC_PREFIXES = ("/js/", "/styles/", "/assets/")
 # com o padrão de 20 s o celular caía com a tela apagada.
 WS_PING_TIMEOUT_SEC = 60
 
-app = FastAPI(title="Karaoke MVP Server")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Subida do servidor (o `on_event("startup")` está depreciado no FastAPI/Starlette 1.x)."""
+    warn_missing_js_runtime()
+    resume_processing_queue()
+    start_album_fill(app)
+    yield
+
+
+def warn_missing_js_runtime() -> None:
+    from utils.youtube import js_runtime_path
+
+    if js_runtime_path() is None:
+        logger.warning("[YouTube] Deno não encontrado: o yt-dlp precisa dele para baixar do YouTube. "
+                       "pip install -r requirements.txt (pacote deno) ou instale o Deno no PATH.")
+
+
+def resume_processing_queue() -> None:
+    """Músicas que estavam na fila quando o servidor caiu continuam de onde pararam."""
+    from state import queue_manager
+
+    resumed = queue_manager.resume_saved()
+    if resumed:
+        logger.info(f"[QUEUE] {resumed} música(s) retomada(s) da fila gravada.")
+
+
+def start_album_fill(app: FastAPI) -> None:
+    """Álbum de cada música (lista agrupada por álbum): as que ainda não têm, em segundo plano."""
+    from state import SONGS_DIR
+    from utils.album import fill_missing_albums as fill
+
+    async def run():
+        try:
+            filled = await asyncio.to_thread(fill, SONGS_DIR)
+            if filled:
+                logger.info(f"[Álbum] {filled} música(s) com álbum preenchido.")
+        except Exception as e:  # opcional: a lista só não agrupa
+            logger.warning(f"[Álbum] Falha ao preencher os álbuns: {e}")
+
+    app.state.album_task = asyncio.create_task(run())  # referência forte
+
+
+app = FastAPI(title="Karaoke MVP Server", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -66,35 +110,6 @@ app.mount("/styles", StaticFiles(directory=str(CLIENT_DIR / "styles")), name="st
 app.mount("/js", StaticFiles(directory=str(CLIENT_DIR / "js")), name="js")
 app.mount("/assets", StaticFiles(directory=str(CLIENT_DIR / "assets")), name="assets")
 
-
-
-@app.on_event("startup")
-async def resume_processing_queue():
-    """Músicas que estavam na fila quando o servidor caiu continuam de onde pararam."""
-    from state import queue_manager
-
-    resumed = queue_manager.resume_saved()
-    if resumed:
-        logger.info(f"[QUEUE] {resumed} música(s) retomada(s) da fila gravada.")
-
-
-@app.on_event("startup")
-async def fill_missing_albums():
-    """Álbum de cada música (lista agrupada por álbum): as que ainda não têm, em segundo plano."""
-    import asyncio
-
-    from state import SONGS_DIR
-    from utils.album import fill_missing_albums as fill
-
-    async def run():
-        try:
-            filled = await asyncio.to_thread(fill, SONGS_DIR)
-            if filled:
-                logger.info(f"[Álbum] {filled} música(s) com álbum preenchido.")
-        except Exception as e:  # opcional: a lista só não agrupa
-            logger.warning(f"[Álbum] Falha ao preencher os álbuns: {e}")
-
-    app.state.album_task = asyncio.create_task(run())  # referência forte
 
 
 app.include_router(songs_router)

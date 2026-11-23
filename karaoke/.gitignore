@@ -7,3 +7,6 @@ server/*.pem
 
 # médias de tempo da fila (server/queue_eta.py)
 server/queue_stats.json
+
+# A/B do voice isolator (tools/ab_voice_isolator.py)
+ab_isolador/

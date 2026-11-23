@@ -25,6 +25,21 @@ _VIDEO_ID_RE = re.compile(r"^[\w-]{11}$")
 _preview_locks: dict[str, asyncio.Lock] = {}
 
 
+def js_runtime_path() -> str | None:
+    """Deno que o yt-dlp vai usar (Scripts do venv, onde o `pip install deno` põe, ou PATH).
+
+    Desde o yt-dlp 2025.11 o YouTube só entrega todos os formatos com um runtime de
+    JavaScript; sem ele o download degrada ou falha. Só o Deno vem ligado por padrão.
+    """
+    import os
+    import sysconfig
+
+    venv_bin = Path(sysconfig.get_path("scripts")) / ("deno" + (sysconfig.get_config_var("EXE") or ""))
+    if venv_bin.is_file() and os.access(venv_bin, os.X_OK):
+        return str(venv_bin)
+    return shutil.which("deno")
+
+
 def is_video_id(value: str) -> bool:
     return bool(_VIDEO_ID_RE.match(value or ""))
 
