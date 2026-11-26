@@ -72,11 +72,8 @@ export class AudioLifecycleManager {
     constructor(options = {}) {
         this.captureMic = options.captureMic || false;
         this.mediaElement = options.mediaElement || null;
-        // Voz guia (vocal.mp3): segue o mesmo caminho de tom do instrumental
-        this.guideElement = options.guideElement || null;
-        this.guideSource = null;
-        this.guideGain = null;
-        this.currentGuideVolume = options.guideVolume || 0;
+        // Voz guia: não é mais um <audio> à parte. Quando ligada, o próprio mediaElement
+        // toca a mixagem instrumental + voz (audio/guide-vocal.js), sempre no tempo.
         this.onAudioChunk = options.onAudioChunk || null;
         // TV: música direto pelo <audio> (o Web Audio picotava num aparelho fraco);
         // o grafo só é montado se o tom mudar.
@@ -220,7 +217,6 @@ export class AudioLifecycleManager {
         if (this.mediaElement && !this.mediaElementSource) {
             if (this.nativePlayback && this.currentTranspose === 0) {
                 this.mediaElement.volume = this.currentVolume;
-                if (this.guideElement) this.guideElement.volume = this.currentGuideVolume;
             } else {
                 this._connectMediaGraph();
             }
@@ -230,14 +226,13 @@ export class AudioLifecycleManager {
     }
 
     /**
-     * Routes the media element (and guide vocal) through the Web Audio graph
+     * Routes the media element through the Web Audio graph
      * (gain + optional pitch shift).
      * @private
      */
     _connectMediaGraph() {
         // de volta ao volume cheio: quem controla agora é o GainNode
         this.mediaElement.volume = 1;
-        if (this.guideElement) this.guideElement.volume = 1;
         try {
             this.mediaElementSource = this.audioContext.createMediaElementSource(this.mediaElement);
             this.nodes.add(this.mediaElementSource);
@@ -247,15 +242,6 @@ export class AudioLifecycleManager {
                 this.gainNode = this.audioContext.createGain();
                 this.gainNode.gain.value = this.currentVolume;
                 this.nodes.add(this.gainNode);
-            }
-
-            if (this.guideElement && !this.guideSource) {
-                this.guideSource = this.audioContext.createMediaElementSource(this.guideElement);
-                this.guideGain = this.audioContext.createGain();
-                this.guideGain.gain.value = this.currentGuideVolume;
-                this.guideSource.connect(this.guideGain);
-                this.nodes.add(this.guideSource);
-                this.nodes.add(this.guideGain);
             }
 
             this.updateTranspose(this.currentTranspose);
@@ -323,8 +309,6 @@ export class AudioLifecycleManager {
         }
         this.analyserNode = null;
         this.mediaElementSource = null;
-        this.guideSource = null;
-        this.guideGain = null;
 
         // 4. Safely close AudioContext
         if (this.audioContext) {
@@ -359,17 +343,6 @@ export class AudioLifecycleManager {
             }
             this.mediaElement = null;
         }
-        if (this.guideElement) {
-            try {
-                const oldGuide = this.guideElement;
-                oldGuide.pause();
-                const newGuide = oldGuide.cloneNode(true);
-                if (oldGuide.parentNode) oldGuide.parentNode.replaceChild(newGuide, oldGuide);
-            } catch (e) {
-                console.error("AudioLifecycleManager: Error cloning guide element:", e);
-            }
-            this.guideElement = null;
-        }
 
         this._initialized = false;
         this._started = false;
@@ -401,13 +374,9 @@ export class AudioLifecycleManager {
         this._stopJungleBufferSources();
 
         // Route media element source through gainNode, then Jungle or directly to destination
-        if (this.guideGain) {
-            try { this.guideGain.disconnect(); } catch (e) { /* já desconectado */ }
-        }
         if (transpose === 0) {
             this.mediaElementSource.connect(this.gainNode);
             this.gainNode.connect(this.audioContext.destination);
-            if (this.guideGain) this.guideGain.connect(this.audioContext.destination);
             console.log("AudioLifecycleManager: Connected playback via gainNode -> destination (transpose=0).");
         } else {
             this.jungleNode = new Jungle(this.audioContext);
@@ -415,7 +384,6 @@ export class AudioLifecycleManager {
 
             this.mediaElementSource.connect(this.gainNode);
             this.gainNode.connect(this.jungleNode.input);
-            if (this.guideGain) this.guideGain.connect(this.jungleNode.input);
             this.jungleNode.output.connect(this.audioContext.destination);
             console.log(`AudioLifecycleManager: Connected playback via gainNode -> Jungle (transpose=${transpose}).`);
         }
@@ -429,12 +397,6 @@ export class AudioLifecycleManager {
      *
      * @param {number} val - Volume level between 0.0 and 1.0.
      */
-    setGuideVolume(val) {
-        this.currentGuideVolume = Math.max(0, Math.min(1, val));
-        if (this.guideGain) this.guideGain.gain.value = this.currentGuideVolume;
-        else if (this.nativePlayback && this.guideElement) this.guideElement.volume = this.currentGuideVolume;
-    }
-
     setVolume(val) {
         this.currentVolume = Math.max(0, Math.min(1, val));
         if (this.gainNode) {

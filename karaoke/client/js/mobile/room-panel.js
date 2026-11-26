@@ -255,6 +255,7 @@ const SOUND_SEND_MS = 150;
 function soundLabel(key, value) {
     if (key === 'transpose') return value === 0 ? 'Normal' : `${value > 0 ? '+' : ''}${value}`;
     if (key === 'speed') return `${value.toFixed(2)}x`;
+    if (key === 'guide_volume') return value <= 0 ? 'Desligada' : value >= 1 ? 'Normal' : `${Math.round(value * 100)}%`;
     return `${Math.round(value * 100)}%`;
 }
 

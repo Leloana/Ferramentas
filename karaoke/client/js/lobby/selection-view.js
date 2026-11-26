@@ -4,7 +4,7 @@ import { showToast } from '../core/toast.js';
 import { openModal, closeModal } from '../ui/modal.js';
 import { initTabs } from '../ui/tabs.js';
 import { ensureDefaultSeat } from './lobby.js';
-import { setGuideSong } from '../audio/guide-vocal.js';
+import { setGuideSong, songAudioUrl } from '../audio/guide-vocal.js';
 import { togglePreview, stopPreview } from '../audio/song-preview.js';
 import { setLyricsScriptAvailable } from '../game/lyrics-script.js';
 import { songMatcher } from '../core/song-search.js';
@@ -362,7 +362,8 @@ export function selectSong(song) {
     showSongCover(song.id);
     setAppState('waiting');
     ensureDefaultSeat();
-    dom.audioPlayer.src = `/songs/${song.id}/audio`;
+    // voz guia ligada: já a mixagem com a voz (um arquivo só, sem sincronizar dois players)
+    dom.audioPlayer.src = songAudioUrl(song.id);
     setGuideSong(song.id);
     setLyricsScriptAvailable(!!song.japanese_script);  // original/romaji/ambos já no lobby
 

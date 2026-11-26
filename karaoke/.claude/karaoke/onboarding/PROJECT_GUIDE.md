@@ -57,7 +57,7 @@ karaoke/
 │       │   ├── jungle.js                           # Pitch shifter (Web Audio API)
 │       │   ├── mic-stream.js                       # Constraints de captura do microfone
 │       │   ├── mic-status.js                       # Painel de microfones da TV
-│       │   ├── guide-vocal.js                      # Voz guia: vocal separado baixinho, no tom do instrumental
+│       │   ├── guide-vocal.js                      # Voz guia: troca o arquivo do player pela mixagem com a voz (sem 2º player)
 │       │   ├── song-preview.js                     # Ouvir 12 s do refrão na lista
 │       │   └── replay.js                           # Ouvir a própria apresentação (voz gravada + instrumental)
 │       ├── net/                                    # Conexão com o servidor fora da partida

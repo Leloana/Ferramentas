@@ -23,7 +23,7 @@ export function describeRemote(cmd, extra) {
         case 'transpose': return `mudou o tom: ${cmd.value === 0 ? 'normal' : (cmd.value > 0 ? '+' : '') + cmd.value}`;
         case 'speed': return `mudou a velocidade: ${Number(cmd.value).toFixed(2)}x`;
         case 'volume': return `mudou o volume da música: ${pct(cmd.value)}`;
-        case 'guide_volume': return `mudou a voz guia: ${pct(cmd.value)}`;
+        case 'guide_volume': return cmd.value > 0 ? `ligou a voz guia: ${cmd.value >= 1 ? 'normal' : pct(cmd.value)}` : 'desligou a voz guia';
         case 'pause': return info.paused ? 'pausou a música' : 'retomou a música';
         case 'stop': return 'encerrou a música';
         case 'start': return 'deu o play';

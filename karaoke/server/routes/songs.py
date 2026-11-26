@@ -14,6 +14,7 @@ from pydantic import BaseModel
 
 from state import SONGS_DIR, song_manager, queue_manager
 from utils.cover import choose_cover, cover_options, find_cover
+from utils.guide_mix import guide_mix_path
 from utils.html_includes import render_page
 from utils.song_paths import safe_song_dir
 from utils.http import set_no_cache
@@ -93,10 +94,18 @@ AUDIO_CACHE = {"Cache-Control": "public, max-age=86400"}
 
 
 @router.get("/songs/{song_id}/audio")
-async def get_audio(song_id: str):
+async def get_audio(song_id: str, guide: int = 0):
+    """Instrumental; com `guide` (50 ou 100) a mixagem com a voz original (voz guia).
+
+    A voz guia é o mesmo arquivo com a voz somada (utils/guide_mix.py): a TV troca o
+    arquivo em vez de sincronizar dois players. Sem voz separada, volta o instrumental."""
     audio_path = song_manager.get_audio_path(song_id)
     if not audio_path:
         raise HTTPException(status_code=404, detail="Música não encontrada")
+    if guide > 0:
+        mix = await asyncio.to_thread(guide_mix_path, audio_path.parent, guide)
+        if mix:
+            return FileResponse(mix, headers=AUDIO_CACHE)
     return FileResponse(audio_path, headers=AUDIO_CACHE)
 
 

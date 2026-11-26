@@ -1,5 +1,7 @@
 export const state = {
     selectedSongId: null,
+    guideSongId: null,        // música da voz guia (audio/guide-vocal.js)
+    guideApplyTimer: null,
     allSongs: [],
     ws: null,
     mobileWs: null,

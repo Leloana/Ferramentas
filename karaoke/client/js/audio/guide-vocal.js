@@ -1,106 +1,74 @@
-// Voz guia: o vocal separado (vocal.mp3) tocando baixinho junto do
-// instrumental, para quem não sabe a música. Começa em 0% (desligada).
+// Voz guia: a música com a voz original, para quem não sabe cantar ela.
 //
-// O áudio passa pelo mesmo caminho de tom do instrumental
-// (audio-lifecycle-manager.js). Aqui fica o controle de volume e a
-// sincronia com o player principal (play/pausa/seek/velocidade + correção
-// de deriva).
+// Antes era um segundo <audio> (vocal.mp3) correndo atrás do instrumental: as
+// gravações mostraram a voz sempre 80–200 ms atrasada, e os saltos de correção
+// não davam conta. Agora não há o que sincronizar: o servidor mistura
+// instrumental + voz num arquivo só (/songs/<id>/audio?guide=50|100, gerado uma
+// vez e guardado) e o player principal toca esse arquivo no lugar do
+// instrumental. A voz fica exatamente no tempo da gravação, passa pelo mesmo tom
+// e pela mesma velocidade, e o instrumental puro continua lá para quando desliga.
+//
+// O controle tem três posições: desligada (0), metade (50%) e voz normal (100%).
 import { state } from '../core/state.js';
 import { dom } from '../core/dom.js';
 import { sendPlayerEvent } from '../game/game-events.js';
 
 const STORAGE_KEY = 'karaoke_guide_volume';
-// Deriva da voz guia: acima disso salta para a posição do instrumental. A velocidade
-// fica sempre igual à dele: alcançar mudando a velocidade deixou a voz audivelmente
-// adiantada na TV (Firefox Android). 80 ms com salto a cada conferência engasgava:
-// agora 150 ms e no máximo um salto a cada RESYNC_GAP_MS.
-const MAX_DRIFT_SEC = 0.15;
-const RESYNC_GAP_MS = 5000;
-// amostra da deriva na gravação da partida, para calibrar (event guide_drift, em ms)
-const DRIFT_SAMPLE_MS = 10000;
+const LEVELS = [0, 0.5, 1];
+// troca o arquivo só quando o slider parar (arrastar não baixa cada posição)
+const APPLY_DELAY_MS = 350;
+
+function snap(v) {
+    const x = Number.isFinite(v) ? v : 0;
+    return LEVELS.reduce((best, lv) => (Math.abs(lv - x) < Math.abs(best - x) ? lv : best), 0);
+}
 
 export function savedGuideVolume() {
     try {
-        const v = parseFloat(localStorage.getItem(STORAGE_KEY));
-        return isNaN(v) ? 0 : v;
+        return snap(parseFloat(localStorage.getItem(STORAGE_KEY)));
     } catch (e) {
         return 0;
     }
 }
 
+// Endereço do áudio da música: instrumental puro ou a mixagem com a voz.
+export function songAudioUrl(songId, level = savedGuideVolume()) {
+    const base = `/songs/${encodeURIComponent(songId)}/audio`;
+    return level > 0 ? `${base}?guide=${Math.round(level * 100)}` : base;
+}
+
 function paintValue(vol) {
     const label = document.getElementById('guide-volume-value');
-    if (label) label.textContent = Math.round(vol * 100) + '%';
+    if (label) label.textContent = vol === 0 ? 'Desligada' : vol === 1 ? 'Normal' : Math.round(vol * 100) + '%';
 }
 
-// Troca de música: aponta a voz guia para a música nova (sem baixar enquanto 0%).
+// Troca de música: lembra qual é, para trocar o arquivo quando o nível mudar.
 export function setGuideSong(songId) {
-    const guide = dom.guidePlayer;
+    state.guideSongId = songId;
     const block = document.getElementById('guide-volume-block');
-    if (!guide) return;
     if (block) block.hidden = false;
-    guide.preload = savedGuideVolume() > 0 ? 'auto' : 'none';
-    guide.onerror = () => { if (block) block.hidden = true; };  // música sem voz separada
-    guide.src = `/songs/${encodeURIComponent(songId)}/vocal`;
 }
 
-function follow(audio) {
-    // o <audio> da voz guia é trocado por um clone a cada partida: sempre o atual
-    const guide = () => dom.guidePlayer;
-    const active = () => savedGuideVolume() > 0 && !!guide();
-    let lastResync = 0;
-    let lastSample = 0;
-    // play/seek do instrumental: salta sempre que estiver fora
-    const align = () => {
-        const g = guide();
-        if (g && Math.abs(g.currentTime - audio.currentTime) > MAX_DRIFT_SEC) {
-            try { g.currentTime = audio.currentTime; } catch (e) { /* ainda sem metadados */ }
-            lastResync = Date.now();
-        }
-    };
-    // durante a música: salta só com folga desde o último salto
-    const keepUp = () => {
-        const g = guide();
-        if (!g) return;
-        const drift = g.currentTime - audio.currentTime;
-        const now = Date.now();
-        if (now - lastSample > DRIFT_SAMPLE_MS) {
-            lastSample = now;
-            sendPlayerEvent('guide_drift', Math.round(drift * 1000));
-        }
-        if (Math.abs(drift) > MAX_DRIFT_SEC && now - lastResync > RESYNC_GAP_MS) {
-            sendPlayerEvent('guide_resync', Math.round(drift * 1000));
-            align();
-        }
-    };
-    const play = () => {
-        const g = guide();
-        g.playbackRate = audio.playbackRate;
-        g.play().catch(() => {});
-    };
-    audio.addEventListener('play', () => {
-        if (!active()) return;
-        align();
-        play();
-    });
-    audio.addEventListener('pause', () => { if (guide()) guide().pause(); });
-    audio.addEventListener('ended', () => { if (guide()) guide().pause(); });
-    audio.addEventListener('seeked', align);
-    audio.addEventListener('ratechange', () => { if (guide()) guide().playbackRate = audio.playbackRate; });
-    audio.addEventListener('timeupdate', () => {
-        if (!active() || audio.paused) return;
-        if (guide().paused) { align(); play(); return; }
-        keepUp();
-    });
-}
-
-// Chamado a cada partida: o audio-lifecycle-manager troca os elementos <audio>
-// por clones ao destruir o grafo, então os ouvintes são ligados de novo.
-export function attachGuideSync() {
+// Troca o arquivo do player sem perder a posição, a velocidade nem o play/pausa.
+function swapSource(url) {
     const audio = dom.audioPlayer;
-    if (!audio || audio._guideSynced) return;
-    audio._guideSynced = true;
-    follow(audio);
+    if (!audio || !state.guideSongId) return;
+    if (audio.getAttribute('src') === url) return;
+    const hadMedia = !!audio.getAttribute('src') && audio.readyState > 0;
+    const t = audio.currentTime;
+    const rate = audio.playbackRate;
+    const wasPlaying = !audio.paused && !audio.ended;
+    audio.src = url;
+    if (!hadMedia) return;
+    audio.addEventListener('loadedmetadata', () => {
+        try { audio.currentTime = t; } catch (e) { /* ainda sem metadados */ }
+        audio.playbackRate = rate;  // o load volta para defaultPlaybackRate
+        if (wasPlaying) audio.play().catch(() => {});
+    }, { once: true });
+}
+
+export function applyGuideLevel(level = savedGuideVolume()) {
+    if (state.guideSongId) swapSource(songAudioUrl(state.guideSongId, level));
 }
 
 export function initGuideVocal() {
@@ -110,20 +78,14 @@ export function initGuideVocal() {
     slider.value = vol;
     paintValue(vol);
     slider.addEventListener('input', () => {
-        const v = parseFloat(slider.value) || 0;
+        const v = snap(parseFloat(slider.value));
+        slider.value = v;
         try { localStorage.setItem(STORAGE_KEY, String(v)); } catch (e) { /* sem storage */ }
         paintValue(v);
-        if (state.audioManager) state.audioManager.setGuideVolume(v);
-        sendPlayerEvent('guide_volume', v);
-        const guide = dom.guidePlayer;
-        const audio = dom.audioPlayer;
-        if (!guide || !audio) return;
-        if (v > 0 && !audio.paused) {
-            guide.preload = 'auto';
-            guide.currentTime = audio.currentTime;
-            guide.play().catch(() => {});
-        } else if (v === 0) {
-            guide.pause();
-        }
+        clearTimeout(state.guideApplyTimer);
+        state.guideApplyTimer = setTimeout(() => {
+            sendPlayerEvent('guide_volume', v);
+            applyGuideLevel(v);
+        }, APPLY_DELAY_MS);
     });
 }

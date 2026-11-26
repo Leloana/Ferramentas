@@ -5,7 +5,7 @@ import { dom } from '../core/dom.js';
 import { myRoom, DISPLAY_REPLACED_CODE, DISPLAY_STALE_CODE, ROOM_TAKEN_CODE, isTvBrowser, displaySocketParams } from '../core/config.js';
 import { lobbyLineup, validateLobby, PC_MIC } from '../lobby/lobby.js';
 import { keepScreenOn, allowScreenOff } from '../core/wake-lock.js';
-import { attachGuideSync, savedGuideVolume } from '../audio/guide-vocal.js';
+import { savedGuideVolume } from '../audio/guide-vocal.js';
 import { stopReplay } from '../audio/replay.js';
 import { stopAutoNext } from '../lobby/requests.js';
 import { attachPlayerEvents, deviceInfo } from './game-events.js';
@@ -58,8 +58,6 @@ async function startAudio(captureMic, streamMic) {
     const options = {
         captureMic,
         mediaElement: dom.audioPlayer,
-        guideElement: dom.guidePlayer,
-        guideVolume: savedGuideVolume(),
         nativePlayback: isTvBrowser,
     };
     if (streamMic) {
@@ -277,7 +275,7 @@ function connectGameWebSocket(game, attempt) {
 // clique do INICIAR libera o elemento para os play() seguintes (no PC o
 // navegador lembra do clique na página e isso não fazia falta).
 export function unlockSongAudio() {
-    [dom.audioPlayer, dom.guidePlayer].forEach((el) => {
+    [dom.audioPlayer].forEach((el) => {
         if (!el || !el.getAttribute('src')) return;
         try {
             const p = el.play();
@@ -358,7 +356,6 @@ export async function startKaraoke() {
         return;
     }
 
-    attachGuideSync();
     attachPlayerEvents();
 
     // Aplica o volume salvo ao GainNode do AudioLifecycleManager
