@@ -6,7 +6,7 @@ from utils.lrc import read_lrc_meta
 from utils.meta import get_meta_field
 from utils.segment_timing import finalize_segments
 from utils.song_paths import USER_EDITED_MARKER, safe_song_dir
-from lyrics_text import add_romaji, has_japanese_script, is_japanese, to_romaji
+from lyrics_text import add_romaji, assign_line_languages, has_japanese_script, has_korean_script, is_japanese, to_romaji
 
 def _title_fallback(name: str) -> str:
     return name.replace("_", " ").replace("-", " ").title()
@@ -47,8 +47,9 @@ class SongManager:
                         needs_review = bool(meta.get("needs_review")) and not (item / USER_EDITED_MARKER).exists()
                         album = album_of(meta)
                         # letra em kanji/kana: a tela oferece original/romaji/ambos já no lobby
-                        japanese_script = is_japanese(get_meta_field(meta, "meta", "language")) and has_japanese_script(
-                            get_meta_field(meta, "lyrics", "plain_lyrics") or title)
+                        plain = get_meta_field(meta, "lyrics", "plain_lyrics") or title
+                        japanese_script = (is_japanese(get_meta_field(meta, "meta", "language")) and has_japanese_script(plain)
+                                           ) or has_korean_script(plain)  # coreano também tem romanização
                 except Exception:
                     pass
 
@@ -116,7 +117,9 @@ class SongManager:
             title = title or lrc_title
             artist = artist or lrc_artist
 
-        # Japonês: romaji por palavra e por linha, para a tela mostrar original, romaji ou ambos.
+        # K-pop: verso com hangul no Whisper em coreano, o resto em inglês (vale para as já preparadas)
+        assign_line_languages(segments)
+        # Japonês/coreano: romanização por palavra e por linha (original, romanizado ou ambos).
         add_romaji(segments)
         return {"id": song_id, "title": title, "artist": artist, "segments": segments}
 

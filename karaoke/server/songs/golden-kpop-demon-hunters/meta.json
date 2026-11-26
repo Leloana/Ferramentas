@@ -1,0 +1,347 @@
+{
+    "meta": {
+        "title": "Golden",
+        "artist": "Kpop Demon Hunters",
+        "language": "ko",
+        "slug": "golden-kpop-demon-hunters"
+    },
+    "audio": {
+        "youtube_vocal_url": "https://www.youtube.com/watch?v=yebNIHKAC4A",
+        "youtube_backing_url": ""
+    },
+    "lyrics": {
+        "plain_lyrics": "I was a ghost,i was alone(hah)\r\n어두워진 (hah) 압길속에 (ah)\r\nGiven the throne i don't know (hah)\r\nHow to believe(hah)\r\nI was the queen that i'm meant to be\r\nI lived two lives,tried to play both sides\r\nBut I couldn't find my own place\r\nCalled a problem child cause i got too wild\r\nBut now that's how i'm getting paid,끝없이 on stage\r\n\r\nI'm done hidin' now I'm shinin'\r\nLike I'm born to be\r\nWe dreamin hard,we came so far\r\nNow I believe\r\n\r\nWe're goin' up-up-up\r\nIt's our moment\r\nYou know together we're glowing\r\nGonna be,gonna be golden\r\nOh, up-up-up\r\nWith our voices\r\n영원히 깨질 수 없는\r\nGonna be,gonna be golden\r\n\r\nOoh, i'm done hidin' now I'm shinin'\r\nLike I'm born to be\r\nOh, our time, no fear, no lies\r\nThat's who we're born to be\r\n\r\nWaited so long to break these walls down\r\nTo make up and feel like me\r\nPut these patterns all in the past now\r\nAnd finally live like the girl they all see\r\n\r\nNo more hiding, i'll be shining\r\nLike I'm born to be\r\nCause we are hunters,voices strong\r\nAnd i know i believe\r\n\r\nWe're goin' up-up-up\r\nIt's our moment\r\nYou know together we're glowing\r\nGonna be, gonna be golden\r\nOh, up-up-up\r\nWith our voices\r\n영원히 깨질 수 없는\r\nGonna be, gonna be golden\r\n\r\nOoh, i'm done hidin' now I'm shining\r\nLike I'm born to be\r\nOh, our time, no fears, no lies\r\nThat's who we're born to be\r\n\r\nYou know we're gonna be,gonna be golden\r\nWe're gonna be, gonna be\r\nBorn to be,born to be glowin'\r\n밝게 빛나는 우린\r\nYou know that it's our time,no fears,no lies\r\nThat's who we're born to be"
+    },
+    "album": {
+        "name": "Golden (from the Netflix film KPop Demon Hunters)",
+        "year": 2025,
+        "track": 1,
+        "kind": "album",
+        "source": "itunes"
+    },
+    "loudness": {
+        "lufs_before": -18.56,
+        "gain_db": 2.56
+    },
+    "alignment_quality": {
+        "score": 94.8,
+        "flags": [
+            "palavras empilhadas (18)"
+        ],
+        "lines": [
+            {
+                "idx": 0,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 1,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 2,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.03
+            },
+            {
+                "idx": 3,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.22
+            },
+            {
+                "idx": 4,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 5,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 6,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.19
+            },
+            {
+                "idx": 7,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 8,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 9,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 10,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.13
+            },
+            {
+                "idx": 11,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.1
+            },
+            {
+                "idx": 12,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 13,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 14,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 15,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.02
+            },
+            {
+                "idx": 16,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 17,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 18,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 19,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 20,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 21,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ]
+            },
+            {
+                "idx": 22,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.52
+            },
+            {
+                "idx": 23,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 24,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ]
+            },
+            {
+                "idx": 25,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 26,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 27,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 28,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 29,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.04
+            },
+            {
+                "idx": 30,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.05
+            },
+            {
+                "idx": 31,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.2
+            },
+            {
+                "idx": 32,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 33,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 34,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 35,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 36,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 37,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 38,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 39,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 40,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 41,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.71
+            },
+            {
+                "idx": 42,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 43,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": 0.0
+            },
+            {
+                "idx": 44,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 45,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.11
+            },
+            {
+                "idx": 46,
+                "confidence": null,
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ],
+                "stem_offset": -0.51
+            },
+            {
+                "idx": 47,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 48,
+                "confidence": null,
+                "flags": []
+            },
+            {
+                "idx": 49,
+                "confidence": null,
+                "flags": [],
+                "stem_offset": -0.02
+            },
+            {
+                "idx": 50,
+                "confidence": null,
+                "flags": []
+            }
+        ],
+        "metrics": {
+            "words": 278,
+            "lines": 51,
+            "stacked": 18,
+            "short": 0,
+            "past_end": 0,
+            "silence": 0,
+            "long_verses": 0,
+            "overlaps": 0,
+            "uniform_lines": 0,
+            "stem_checked_lines": 26,
+            "displaced_lines": 0
+        },
+        "severe_lines": [
+            21,
+            24,
+            41,
+            46
+        ]
+    },
+    "needs_review": false
+}

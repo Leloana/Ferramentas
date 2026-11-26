@@ -28,7 +28,7 @@ from typing import Callable
 import numpy as np
 from unidecode import unidecode
 
-from lyrics_text import is_japanese, ja_reading, join_words, split_words
+from lyrics_text import has_korean_script, is_japanese, ja_reading, join_words, ko_reading, split_words
 
 logger = logging.getLogger(__name__)
 
@@ -82,6 +82,9 @@ def parse_and_normalize_lyrics(plain_lyrics: str, language: str = "pt") -> tuple
             # Japonês: leitura em romaji (unidecode daria pinyin chinês para kanji).
             if is_japanese(language):
                 norm_word = ja_reading(raw_word)
+            elif has_korean_script(raw_word):
+                # coreano: romanização como se canta (unidecode ignora as regras de som)
+                norm_word = ko_reading(raw_word)
             else:
                 norm_word = unidecode(raw_word).lower()
                 norm_word = re.sub(r"[^a-z']", "", norm_word)

@@ -5,7 +5,7 @@ from functools import lru_cache
 
 from rapidfuzz import fuzz
 
-from lyrics_text import is_japanese, ja_reading
+from lyrics_text import has_korean_script, is_japanese, ja_reading, ko_reading
 from phonetic import phonetic_key
 
 logger = logging.getLogger(__name__)
@@ -163,6 +163,10 @@ def clean_text(text, language=None):
     # Japonês compara pela leitura: o STT escreve a mesma palavra em kanji ou kana.
     if is_japanese(language):
         return ja_reading(text)
+    # Hangul compara pela romanização (pronúncia): o Whisper pode escrever o mesmo som
+    # com outra grafia, e a letra mista de K-pop fica toda em a–z.
+    if has_korean_script(text):
+        return ko_reading(text)
     t = text.lower().strip()
     t = t.replace("-", " ")  # hífen vira espaço antes de limpar
     t = re.sub(r'[^\w\s]', '', t)

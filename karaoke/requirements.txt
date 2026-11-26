@@ -70,4 +70,5 @@ yt-dlp-ejs==0.8.0  # YouTube exige JS desde 2025.11: solver do yt-dlp
 deno==2.9.5  # runtime JS do yt-dlp (o binário vai para o Scripts do venv)
 fugashi==1.5.2
 pykakasi==2.3.0
+korean-romanizer==0.28.0
 unidic-lite==1.0.8

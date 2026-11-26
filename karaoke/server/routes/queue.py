@@ -130,7 +130,7 @@ async def queue_add_song(
 
     detected = infer_language(f"{synced_lrc or ''}\n{plain_lyrics or ''}", language.strip())
     if detected != language.strip():
-        logger.info(f"[Queue] Letra em japonês: idioma '{language}' trocado por '{detected}'.")
+        logger.info(f"[Queue] Letra em japonês/coreano: idioma '{language}' trocado por '{detected}'.")
         language = detected
 
     try:

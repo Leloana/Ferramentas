@@ -14,6 +14,13 @@ decide pela ESCRITA de cada linha, não só pelo idioma da música:
 Para comparar o cantado com a letra, japonês usa a PRONÚNCIA em romaji (は
 partícula → "wa", を → "o"), que é como quem escreve romaji escreve; o STT pode
 escrever a mesma palavra em kanji ou kana.
+
+Coreano (K-pop, hangul misturado com inglês): separa por espaço como o
+português, e cada palavra em hangul ganha a romanização revisada COM as regras
+de pronúncia (끝없이 → "kkeuteopsi", 밝게 → "bakge", pelo korean-romanizer). Ela
+aparece na tela (o mesmo campo `romaji` do japonês), é a chave de comparação da
+nota e o texto que o MMS_FA alinha. Verso com hangul é pontuado com o Whisper
+em coreano; verso só em inglês, com o Whisper em inglês (`assign_line_languages`).
 """
 from __future__ import annotations
 
@@ -29,6 +36,49 @@ _JA_PREFIX_POS = "接頭辞"
 _KANA_RE = re.compile(r"[\u3040-\u30ff]")  # hiragana + katakana
 # kana + kanji (CJK unificado e extensão A) + 々
 _JA_SCRIPT_RE = re.compile(r"[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\u3005]")
+
+
+_HANGUL_RE = re.compile(r"[ᄀ-ᇿ㄰-㆏가-힯]")  # jamo + sílabas
+_HANGUL_RUN = re.compile(r"[ᄀ-ᇿ㄰-㆏가-힯]+")
+
+
+def is_korean(language: str | None) -> bool:
+    return bool(language) and language.lower().startswith("ko")
+
+
+def has_korean_script(text: str | None) -> bool:
+    return bool(text) and bool(_HANGUL_RE.search(text))
+
+
+@lru_cache(maxsize=4096)
+def ko_romaja(text: str) -> str:
+    """Hangul → romanização como se canta; o que não é hangul fica como veio."""
+    if not has_korean_script(text):
+        return text
+    from korean_romanizer.romanizer import Romanizer
+
+    # um bloco de hangul por vez: as regras de pronúncia valem dentro da palavra
+    return _HANGUL_RUN.sub(lambda m: Romanizer(m.group()).romanize(), text)
+
+
+def ko_reading(word: str) -> str:
+    """Chave de comparação (só a–z, ') de uma palavra com hangul."""
+    return re.sub(r"[^a-z']", "", unidecode(ko_romaja(word)).lower())
+
+
+def assign_line_languages(segments: list[dict], song_language: str | None = None) -> list[dict]:
+    """K-pop: verso com hangul vai para o Whisper em coreano, o resto em inglês (in place).
+
+    Vale para músicas já preparadas (chamado ao carregar). Música sem hangul fica como está.
+    """
+    if not any(has_korean_script(s.get("lyrics")) for s in segments):
+        return segments
+    for seg in segments:
+        if has_korean_script(seg.get("lyrics")):
+            seg["language"] = "ko"
+        elif is_korean(seg.get("language")) or is_korean(song_language):
+            seg["language"] = "en"
+    return segments
 
 
 def is_japanese(language: str | None) -> bool:
@@ -53,6 +103,9 @@ def infer_language(lyrics: str, chosen: str) -> str:
     """
     if not is_japanese(chosen) and lyrics and len(_KANA_RE.findall(lyrics)) >= 5:
         return "ja"
+    # hangul só existe em coreano (K-pop mistura com inglês: vale o coreano)
+    if not is_korean(chosen) and lyrics and len(_HANGUL_RE.findall(lyrics)) >= 5:
+        return "ko"
     return chosen
 
 
@@ -178,7 +231,9 @@ _JA_RUN = re.compile("[%s]+" % "".join(f"{chr(a)}-{chr(b)}" for a, b in _JA_RANG
 
 def to_romaji(text: str) -> str:
     """Texto com trechos em japonês em romaji, palavra a palavra ("青い、濃い、橙色の日" →
-    "aoi koi daidaiirono hi"). Sem japonês, volta igual."""
+    "aoi koi daidaiirono hi"); hangul vira a romanização coreana. Sem os dois, volta igual."""
+    if has_korean_script(text):
+        text = ko_romaja(text)
     if not text or not _JA_RUN.search(text):
         return text
     out = _JA_RUN.sub(lambda m: " " + " ".join(ja_romaji(w) for w in split_words(m.group(), "ja")) + " ", text)
@@ -193,6 +248,12 @@ def add_romaji(segments: list[dict]) -> list[dict]:
     Calculado ao carregar a música, então vale também para músicas já preparadas.
     """
     for seg in segments:
+        if has_korean_script(seg.get("lyrics")):
+            words = seg.get("lyrics_timed") or []
+            for w in words:
+                w["romaji"] = ko_romaja(w["word"])
+            seg["lyrics_romaji"] = ko_romaja(seg["lyrics"])
+            continue
         if not _uses_bunsetsu(seg.get("lyrics", ""), seg.get("language")):
             continue
         words = seg.get("lyrics_timed") or []
