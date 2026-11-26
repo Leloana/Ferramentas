@@ -367,7 +367,10 @@ async def reinstall_song(
             logger.warning(f"Erro ao buscar a versão da letra pela duração: {e}")
 
     vocal_16k = None
-    structure_transcriber = _structure_transcriber(song_lang, song_dir)
+    # Whisper da música inteira: K-pop quase todo em inglês vai em inglês (lyrics_text.whisper_language)
+    from lyrics_text import whisper_language
+    stt_lang = whisper_language(song_lang, plain_lyrics)
+    structure_transcriber = _structure_transcriber(stt_lang, song_dir)
 
     def _vocal_16k():
         nonlocal vocal_16k
@@ -517,7 +520,7 @@ async def reinstall_song(
                     def transcribe_trans():
                         segments, _info = stt.model.transcribe(
                             raw_data,
-                            language=song_lang,
+                            language=stt_lang,
                             initial_prompt=plain_lyrics if plain_lyrics else None,
                             **TRANSCRIBE_KWARGS,
                         )
@@ -540,7 +543,7 @@ async def reinstall_song(
                         has_lrc = True
                     else:
                         logger.info("Tentando fallback de geração automática de LRC puro...")
-                        await asyncio.to_thread(generate_lrc, str(song_dir), language=song_lang, debug=False)
+                        await asyncio.to_thread(generate_lrc, str(song_dir), language=stt_lang, debug=False)
                         has_lrc = True
         else:
             # Caso align_lyrics=False (FAST) ou plain_lyrics ausente. Com a letra, o
@@ -564,7 +567,7 @@ async def reinstall_song(
                 logger.info("Executando transcrição direta com Whisper (FAST)...")
             try:
                 if not has_lrc:
-                    await asyncio.to_thread(generate_lrc, str(song_dir), language=song_lang, debug=False)
+                    await asyncio.to_thread(generate_lrc, str(song_dir), language=stt_lang, debug=False)
                 has_lrc = True
             except Exception as e:
                 logger.error(f"Erro ao gerar transcrição FAST com Whisper: {e}")
@@ -583,7 +586,7 @@ async def reinstall_song(
         else:
             logger.info("Nenhuma letra disponível ou plain_lyrics ausente. Gerando resultado do Whisper direto para lyrics.lrc...")
         try:
-            await asyncio.to_thread(generate_lrc, str(song_dir), language=song_lang, debug=False)
+            await asyncio.to_thread(generate_lrc, str(song_dir), language=stt_lang, debug=False)
         except Exception as e:
             logger.error(f"Erro ao gerar transcrição direto com o Whisper: {e}")
             if lrc_backup is not None:
@@ -595,7 +598,7 @@ async def reinstall_song(
         # Se já alinhamos, opcionalmente geramos a versão debug pura como referência secundária
         logger.info("Gerando versão de referência de transcrição pura com Whisper (lyrics_debug.lrc)...")
         try:
-            await asyncio.to_thread(generate_lrc, str(song_dir), language=song_lang, debug=True)
+            await asyncio.to_thread(generate_lrc, str(song_dir), language=stt_lang, debug=True)
         except Exception as e:
             logger.error(f"Aviso: Erro ao gerar transcrição de debug com o Whisper: {e}")
 

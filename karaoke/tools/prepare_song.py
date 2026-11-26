@@ -11,7 +11,7 @@ import utils.cuda_bootstrap  # noqa: F401
 import torch  # noqa: F401 (Força carregamento de DLLs do PyTorch/cuDNN primeiro)
 import torchaudio  # noqa: F401
 
-from lyrics_text import is_japanese, regroup_timed_words, split_words, time_words_by_characters
+from lyrics_text import has_korean_script, is_japanese, line_language, regroup_timed_words, split_words, time_words_by_characters
 from stt_engine import get_stt_engine
 from utils.alignment_quality import record_alignment_quality
 from utils.audio import load_audio_full
@@ -153,7 +153,8 @@ def prepare_song(song_dir, language="en", debug=False):
         segment_audio = full_audio[start_sample : min(end_sample, start_sample + max_segment_samples)]
         
         # 3. Transcrever segmento (passando a letra esperada como initial_prompt para guiar a IA)
-        _, words = engine.transcribe(segment_audio, language=language, initial_prompt=line["text"])
+        _, words = engine.transcribe(segment_audio, language=line_language(line["text"], language),
+                                     initial_prompt=line["text"])
         
         # 4. Alinhamento inteligente (Smart Word Alignment)
         lyrics_timed = []
@@ -222,7 +223,10 @@ def prepare_song(song_dir, language="en", debug=False):
         # Japonês: o verso fica no tempo do LRC. O Whisper perde a 1ª sílaba quando a voz
         # entra junto do corte da janela ("待ちぼうけさ" vira "ち…"), e empurrar o verso para
         # a 1ª sílaba ouvida deixava a letra ~0,8 s atrasada (medido cantando).
-        voice_delay = max(0.0, words[0]["start"] - 0.4) if words and not is_japanese(language) else 0.0
+        # Coreano (verso com hangul) idem: o Whisper troca/perde o começo ("어두워진" → "두어진")
+        # e a Golden ficou 2,8 s atrasada no 1º verso em coreano.
+        keep_lrc_time = is_japanese(language) or has_korean_script(line["text"])
+        voice_delay = max(0.0, words[0]["start"] - 0.4) if words and not keep_lrc_time else 0.0
         if words:
             for w in lyrics_timed:
                 w["expected_start"] = max(0.0, round(w["expected_start"] - voice_delay, 3))

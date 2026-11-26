@@ -24,9 +24,12 @@
         "gain_db": 2.56
     },
     "alignment_quality": {
-        "score": 94.8,
+        "score": 89.3,
         "flags": [
-            "palavras empilhadas (18)"
+            "palavras empilhadas (16)",
+            "palavras com menos de 80 ms (5)",
+            "palavras depois do fim do verso (5)",
+            "versos sobrepostos (6)"
         ],
         "lines": [
             {
@@ -44,7 +47,7 @@
                 "idx": 2,
                 "confidence": null,
                 "flags": [],
-                "stem_offset": -0.03
+                "stem_offset": -0.04
             },
             {
                 "idx": 3,
@@ -74,7 +77,7 @@
                 "idx": 7,
                 "confidence": null,
                 "flags": [],
-                "stem_offset": -0.02
+                "stem_offset": -0.0
             },
             {
                 "idx": 8,
@@ -86,7 +89,7 @@
                 "idx": 9,
                 "confidence": null,
                 "flags": [],
-                "stem_offset": -0.02
+                "stem_offset": -0.06
             },
             {
                 "idx": 10,
@@ -98,13 +101,13 @@
                 "idx": 11,
                 "confidence": null,
                 "flags": [],
-                "stem_offset": -0.1
+                "stem_offset": -0.07
             },
             {
                 "idx": 12,
                 "confidence": null,
                 "flags": [],
-                "stem_offset": -0.05
+                "stem_offset": -0.15
             },
             {
                 "idx": 13,
@@ -159,20 +162,19 @@
                 "idx": 22,
                 "confidence": null,
                 "flags": [],
-                "stem_offset": -0.52
+                "stem_offset": -0.05
             },
             {
                 "idx": 23,
                 "confidence": null,
-                "flags": []
+                "flags": [],
+                "stem_offset": -0.04
             },
             {
                 "idx": 24,
                 "confidence": null,
-                "flags": [
-                    "empilhadas",
-                    "grudadas"
-                ]
+                "flags": [],
+                "stem_offset": -0.06
             },
             {
                 "idx": 25,
@@ -183,13 +185,13 @@
                 "idx": 26,
                 "confidence": null,
                 "flags": [],
-                "stem_offset": -0.02
+                "stem_offset": -0.03
             },
             {
                 "idx": 27,
                 "confidence": null,
                 "flags": [],
-                "stem_offset": -0.02
+                "stem_offset": -0.01
             },
             {
                 "idx": 28,
@@ -201,7 +203,7 @@
                 "idx": 29,
                 "confidence": null,
                 "flags": [],
-                "stem_offset": -0.04
+                "stem_offset": -0.03
             },
             {
                 "idx": 30,
@@ -213,7 +215,7 @@
                 "idx": 31,
                 "confidence": null,
                 "flags": [],
-                "stem_offset": -0.2
+                "stem_offset": -0.16
             },
             {
                 "idx": 32,
@@ -233,22 +235,34 @@
             {
                 "idx": 35,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
             },
             {
                 "idx": 36,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "sobreposto"
+                ]
             },
             {
                 "idx": 37,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
             },
             {
                 "idx": 38,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "sobreposto"
+                ]
             },
             {
                 "idx": 39,
@@ -267,44 +281,50 @@
                     "empilhadas",
                     "grudadas"
                 ],
-                "stem_offset": -0.71
+                "stem_offset": -0.79
             },
             {
                 "idx": 42,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "empilhadas",
+                    "fora do verso",
+                    "palavras curtas",
+                    "sobreposto"
+                ]
             },
             {
                 "idx": 43,
                 "confidence": null,
-                "flags": [],
+                "flags": [
+                    "empilhadas",
+                    "sobreposto"
+                ],
                 "stem_offset": 0.0
             },
             {
                 "idx": 44,
                 "confidence": null,
-                "flags": []
+                "flags": [
+                    "empilhadas",
+                    "grudadas"
+                ]
             },
             {
                 "idx": 45,
                 "confidence": null,
-                "flags": [],
-                "stem_offset": -0.11
+                "flags": []
             },
             {
                 "idx": 46,
                 "confidence": null,
-                "flags": [
-                    "empilhadas",
-                    "grudadas"
-                ],
-                "stem_offset": -0.51
+                "flags": [],
+                "stem_offset": 0.48
             },
             {
                 "idx": 47,
                 "confidence": null,
-                "flags": [],
-                "stem_offset": -0.02
+                "flags": []
             },
             {
                 "idx": 48,
@@ -315,7 +335,7 @@
                 "idx": 49,
                 "confidence": null,
                 "flags": [],
-                "stem_offset": -0.02
+                "stem_offset": 0.02
             },
             {
                 "idx": 50,
@@ -326,21 +346,20 @@
         "metrics": {
             "words": 278,
             "lines": 51,
-            "stacked": 18,
-            "short": 0,
-            "past_end": 0,
+            "stacked": 16,
+            "short": 5,
+            "past_end": 5,
             "silence": 0,
             "long_verses": 0,
-            "overlaps": 0,
+            "overlaps": 6,
             "uniform_lines": 0,
             "stem_checked_lines": 26,
             "displaced_lines": 0
         },
         "severe_lines": [
             21,
-            24,
             41,
-            46
+            44
         ]
     },
     "needs_review": false

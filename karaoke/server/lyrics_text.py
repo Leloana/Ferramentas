@@ -81,6 +81,29 @@ def assign_line_languages(segments: list[dict], song_language: str | None = None
     return segments
 
 
+def whisper_language(language: str | None, lyrics: str | None = "") -> str | None:
+    """Idioma do Whisper para a MÚSICA INTEIRA (estrutura, rascunho do LRC, fallback).
+
+    K-pop costuma ser quase todo em inglês com poucas linhas em hangul: o Whisper
+    em coreano na música toda alucinou ("다음 영상에서 만나요") e a estrutura casou 0%.
+    Vale o coreano só quando a maioria das linhas tem hangul; senão, inglês.
+    """
+    if not is_korean(language):
+        return language
+    lines = [ln for ln in (lyrics or "").splitlines() if ln.strip() and not ln.strip().startswith("[")]
+    if not lines:
+        return language
+    hangul = sum(1 for ln in lines if has_korean_script(ln))
+    return "ko" if hangul * 2 >= len(lines) else "en"
+
+
+def line_language(text: str | None, language: str | None) -> str | None:
+    """Idioma do Whisper para UMA linha: hangul → coreano; linha latina de K-pop → inglês."""
+    if has_korean_script(text):
+        return "ko"
+    return "en" if is_korean(language) else language
+
+
 def is_japanese(language: str | None) -> bool:
     return bool(language) and language.lower().startswith("ja")
 

@@ -8,7 +8,9 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 sys.path.insert(0, str(PROJECT_ROOT / "server"))
 
-from lyrics_text import add_romaji, assign_line_languages, infer_language, ko_romaja, to_romaji  # noqa: E402
+from lyrics_text import (  # noqa: E402
+    add_romaji, assign_line_languages, infer_language, ko_romaja, line_language, to_romaji, whisper_language,
+)
 from score_engine import clean_text  # noqa: E402
 from utils.lrc_pro import parse_and_normalize_lyrics  # noqa: E402
 
@@ -46,6 +48,14 @@ class KoreanLyricsTest(unittest.TestCase):
         self.assertEqual(clean_text("Stage!", "ko"), "stage")
         lines, flat = parse_and_normalize_lyrics("밝게 빛나는 우린", "ko")
         self.assertEqual(flat, ["bakge", "bitnaneun", "urin"])
+
+    def test_whole_song_whisper_language(self):
+        mostly_english = "I was a ghost\n어두워진 압길속에\nGiven the throne\nHow to believe"
+        self.assertEqual(whisper_language("ko", mostly_english), "en")
+        self.assertEqual(whisper_language("ko", "영원히 깨질\n밝게 빛나는\nGolden"), "ko")
+        self.assertEqual(whisper_language("pt", "Olá"), "pt")
+        self.assertEqual(line_language("끝없이 on stage", "ko"), "ko")
+        self.assertEqual(line_language("on stage", "ko"), "en")
 
 
 if __name__ == "__main__":
